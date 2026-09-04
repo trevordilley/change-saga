@@ -1,5 +1,24 @@
 # Change Saga format quick reference
 
+## V3 report with embedded decks
+
+A v3 Report Saga may contain several independent
+`___slides/<deck-id>.deck/` bundles. Keep requirements, acceptance criteria,
+prototypes, design, and work-plan history in their living/report surfaces; add
+a deck only for a complex implemented change that benefits from a visual
+breakdown. Each bundle contains one v4 `role: change` deck and its flat
+slide/Item/evidence records, but every target URN uses the parent v3 Saga ID.
+
+```sh
+change-saga add-deck --objective "Explain the retry failure path." report.saga retry-flow
+change-saga add-slide --deck retry-flow --intent trace --layout sequence --title "Retry sequence" report.saga retry-sequence
+change-saga add-item --slide retry-sequence --kind callout --id hidden-retry --element-id hidden-retry --description "The retry reviewers may not expect." --body "The second write is conditional." report.saga
+```
+
+The v1 overview exposes report chapters/fragments and deck summaries together;
+read deck content with `query slide` and Item evidence with `query slide-diffs`.
+Do not read an embedded slide through `query fragment`.
+
 ## Slide-native v4
 
 v4 is an intentionally incompatible visual document mode. It does not contain

@@ -200,11 +200,11 @@ func loadFlatReviewState(index MutationIndex, outline bool) (ReviewState, Valida
 }
 
 func applyFlatReviews(section *Section, byTarget map[string][]Review) {
-	section.Reviews = byTarget[section.Target]
+	section.Reviews = append(section.Reviews, byTarget[section.Target]...)
 	for _, fragment := range section.Fragments {
-		fragment.Reviews = byTarget[fragment.Target]
+		fragment.Reviews = append(fragment.Reviews, byTarget[fragment.Target]...)
 		for index := range fragment.Landmarks {
-			fragment.Landmarks[index].Reviews = byTarget[fragment.Landmarks[index].Target]
+			fragment.Landmarks[index].Reviews = append(fragment.Landmarks[index].Reviews, byTarget[fragment.Landmarks[index].Target]...)
 		}
 	}
 	for _, child := range section.Children {

@@ -25,6 +25,12 @@ const appJavaScript = `(() => {
 
   function nativeSlides() { return qa('[data-native-slide]'); }
 
+  function nativeSlideSurfaceActive() {
+    const surface = q('[data-slide-native]');
+    const view = surface?.closest('[data-view]');
+    return Boolean(surface && (!view || view.classList.contains('active')));
+  }
+
   function activateNativeSlide(index, updateHash = false) {
     const slides = nativeSlides();
     if (!slides.length) return;
@@ -907,9 +913,8 @@ const appJavaScript = `(() => {
     // The anchor may name something inside a chapter or an explanation that has
     // not been fetched yet, so it is resolved before it is scrolled to.
     const destination = await revealAnchor(id);
-    if (destination?.closest('[data-view="saga"]')) {
-      setView('saga', false);
-    }
+    const destinationView = destination?.closest('[data-view]')?.dataset.view;
+    if (destinationView === 'saga' || destinationView === 'slides') setView(destinationView, false);
     const target = id ? q('[data-landmark-anchor="' + CSS.escape(id) + '"]') : null;
     if (!target) {
       destination?.scrollIntoView({block:'start'});
@@ -1580,14 +1585,16 @@ const appJavaScript = `(() => {
     const codeMeta = q('.top-meta');
     if (sagaSide) sagaSide.hidden = name !== 'saga';
     if (codeSide) codeSide.hidden = name !== 'code';
-    if (toolbox) toolbox.hidden = name !== 'saga' || !toolbox.dataset.annotationTarget;
+    if (toolbox) toolbox.hidden = (name !== 'saga' && name !== 'slides') || !toolbox.dataset.annotationTarget;
     if (codeMeta) codeMeta.hidden = name !== 'code';
     const shell = q('[data-shell]');
     if (shell) shell.classList.toggle('code-mode', name === 'code');
-    qa('[data-slide-sidebar-toggle],[data-slide-present]').forEach(button => { button.hidden = name !== 'saga'; });
+    qa('[data-slide-sidebar-toggle]').forEach(button => { button.hidden = name !== 'saga'; });
+    const slideView = q('[data-view="slides"]') ? 'slides' : 'saga';
+    qa('[data-slide-present]').forEach(button => { button.hidden = name !== slideView; });
     // A hidden view measures as zero, so the bubbles are placed once the saga
     // view is actually on screen.
-    if (name === 'saga') globalThis.requestAnimationFrame?.(positionFragmentOverlays);
+    if (name === 'saga' || name === 'slides') globalThis.requestAnimationFrame?.(positionFragmentOverlays);
     if (updateURL) {
       const url = new URL(location.href);
       if (name === 'saga') url.searchParams.delete('view'); else url.searchParams.set('view', name);
@@ -3380,7 +3387,7 @@ const appJavaScript = `(() => {
       syncSlidePresentation();
       return;
     }
-    if ((event.key === 'ArrowLeft' || event.key === 'ArrowRight') && nativeSlides().length && !selectedAnnotation && !annotationDraft && !event.target.matches?.('input,textarea,select,[contenteditable="true"]')) {
+    if ((event.key === 'ArrowLeft' || event.key === 'ArrowRight') && nativeSlideSurfaceActive() && nativeSlides().length && !selectedAnnotation && !annotationDraft && !event.target.matches?.('input,textarea,select,[contenteditable="true"]')) {
       const slides = nativeSlides();
       const current = slides.findIndex(slide => !slide.hidden);
       event.preventDefault();
@@ -3672,10 +3679,10 @@ const appJavaScript = `(() => {
   }, {passive:true});
   const requestedView = new URL(location.href).searchParams.get('view');
   const activityRequested = new URL(location.href).searchParams.has('activity') || requestedView === 'activity';
-  const initialView = requestedView === 'code' || requestedView === 'manifest' ? requestedView : 'saga';
+  const initialView = requestedView === 'code' || requestedView === 'manifest' || requestedView === 'slides' ? requestedView : 'saga';
   setView(initialView, false);
   setManifestMode('code');
-  const anchorResolving = initialView === 'saga'
+  const anchorResolving = initialView === 'saga' || initialView === 'slides'
     ? activateLandmark().then(revealHashedAnnotationBubble)
     : hydrateReviewSurface(initialView).then(revealHashedAnnotationBubble);
 	 syncNativeSlideForHash();
@@ -3697,7 +3704,7 @@ const appJavaScript = `(() => {
   addEventListener('popstate', () => {
     const url = new URL(location.href);
     const view = url.searchParams.get('view');
-    setView(view === 'code' || view === 'manifest' ? view : 'saga', false);
+    setView(view === 'code' || view === 'manifest' || view === 'slides' ? view : 'saga', false);
     if (url.searchParams.has('activity') || view === 'activity') void openActivityDrawer(url.toString(), null, false);
     else if (q('.diff-drawer')?.dataset.drawerMode === 'activity') closeDrawer(false);
   });

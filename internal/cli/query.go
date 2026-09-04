@@ -317,8 +317,8 @@ func queryWithOpener(ctx context.Context, args []string, out io.Writer, open que
 		if manifestErr != nil && (operation == "slide" || operation == "slide-diffs") {
 			return writeQueryOperationFailure(out, operation, normalizeQueryError(manifestErr))
 		}
-		if manifestErr == nil && (operation == "slide" || operation == "slide-diffs") && manifest.Version != saga.SlideSagaVersion {
-			return writeQueryOperationFailure(out, operation, &queryError{Code: "invalid_argument", Message: "slide queries require a v4 slide-native Saga"})
+		if manifestErr == nil && (operation == "slide" || operation == "slide-diffs") && manifest.Version != saga.SlideSagaVersion && manifest.Version != saga.CurrentSagaVersion {
+			return writeQueryOperationFailure(out, operation, &queryError{Code: "invalid_argument", Message: "slide queries require a v3 Report Saga with embedded decks or a v4 slide-native Saga"})
 		}
 		if manifestErr == nil && (operation == "fragment" || operation == "fragment-diffs") && manifest.Version == saga.SlideSagaVersion {
 			return writeQueryOperationFailure(out, operation, &queryError{Code: "invalid_argument", Message: "v4 does not expose slides as fragments; use slide or slide-diffs"})
@@ -417,7 +417,7 @@ func queryHelpFor(operation string) queryHelp {
 
 func querySchemaFor(operation string) querySchemaDescription {
 	paths := map[string][]string{
-		"overview":            {"data.saga", "data.source", "data.root", "data.overview_fragments", "data.chapters", "data.coverage"},
+		"overview":            {"data.saga", "data.source", "data.root", "data.overview_fragments", "data.chapters", "data.decks", "data.coverage"},
 		"children":            {"data.children"},
 		"fragment":            {"data.target", "data.content.data", "data.content.next_offset", "data.assets", "data.landmarks"},
 		"fragment-diffs":      {"data.selectors", "data.atoms", "data.stale"},

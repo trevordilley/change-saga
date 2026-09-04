@@ -772,6 +772,22 @@ func indexedReviewFingerprint(ctx context.Context, index saga.MutationIndex) (st
 			return "", err
 		}
 	}
+	if len(index.FlatTargets) > 0 {
+		entries, err := os.ReadDir(index.Root)
+		if err != nil {
+			return "", err
+		}
+		for _, entry := range entries {
+			if !saga.IsFlatReviewRecord(entry.Name()) || entry.IsDir() {
+				continue
+			}
+			info, err := entry.Info()
+			if err != nil {
+				return "", err
+			}
+			fmt.Fprintf(digest, "f\x00%s\x00%d\x00%d\x00", entry.Name(), info.Size(), info.ModTime().UnixNano())
+		}
+	}
 	// Attribution changes when review files are committed even though their
 	// bytes do not. The saga may legitimately live outside Git; absence is a
 	// stable value.

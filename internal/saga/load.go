@@ -155,9 +155,22 @@ func load(root string, options loadOptions) (*Saga, Validation, error) {
 			section.Children = append(section.Children, design.Children...)
 			sortSectionContents(section)
 		}
+		if metadataDirectorySafe(abs, abs, EmbeddedSlidesDir, &validation) {
+			decks, err = loadEmbeddedDecks(abs, manifest, options, &validation)
+			if err != nil {
+				return nil, validation, err
+			}
+		}
+		// The query and coverage applications already understand deck/slide/Item
+		// nodes through the v4 projection. Joining only the projected deck children
+		// keeps the v3 report root and its overview fragments intact.
+		if len(decks) > 0 {
+			section.Children = append(section.Children, projectDecks(manifest, decks).Children...)
+			sortSectionContents(section)
+		}
 	}
 	document := &Saga{Root: abs, Manifest: manifest, Section: section, Decks: decks}
-	if manifest.Version == SlideSagaVersion && !options.skipReviews {
+	if (manifest.Version == SlideSagaVersion || manifest.Version == CurrentSagaVersion && len(decks) > 0) && !options.skipReviews {
 		state, reviewValidation, reviewErr := loadFlatReviewState(MutationIndexFromDocument(document), options.outline)
 		if reviewErr != nil {
 			return nil, validation, reviewErr
@@ -202,16 +215,22 @@ func load(root string, options loadOptions) (*Saga, Validation, error) {
 		reviewDir := filepath.Join(abs, "___review")
 		if metadataDirectorySafe(abs, reviewDir, "threads", &validation) {
 			if options.outline {
-				document.Threads, err = loadThreadSummaries(abs, manifest.ID, &validation)
+				var threads []*Thread
+				threads, err = loadThreadSummaries(abs, manifest.ID, &validation)
+				document.Threads = append(document.Threads, threads...)
 			} else {
-				document.Threads, err = loadThreads(abs, manifest.ID, options, &validation)
+				var threads []*Thread
+				threads, err = loadThreads(abs, manifest.ID, options, &validation)
+				document.Threads = append(document.Threads, threads...)
 			}
 			if err != nil {
 				return nil, validation, err
 			}
 		}
 		if !options.skipCoverage && metadataDirectorySafe(abs, reviewDir, "diffs", &validation) {
-			document.DiffReviews, err = loadDiffReviews(abs, &validation)
+			var reviews []DiffReview
+			reviews, err = loadDiffReviews(abs, &validation)
+			document.DiffReviews = append(document.DiffReviews, reviews...)
 			if err != nil {
 				return nil, validation, err
 			}
@@ -525,9 +544,10 @@ func LoadTargetDiffs(index MutationIndex, target string) ([]DiffFile, Validation
 		validation.Valid = false
 		return nil, validation, nil
 	}
-	if index.Manifest.Version == SlideSagaVersion {
+	if index.Manifest.Version == SlideSagaVersion || index.FlatTargets[target] {
 		prefix := "40-e-" + FlatTargetKey(target) + "-"
-		entries, err := os.ReadDir(index.Root)
+		recordRoot := dir
+		entries, err := os.ReadDir(recordRoot)
 		if err != nil {
 			return nil, validation, err
 		}
@@ -537,11 +557,11 @@ func LoadTargetDiffs(index MutationIndex, target string) ([]DiffFile, Validation
 				continue
 			}
 			var value DiffFile
-			if err := readJSON(filepath.Join(index.Root, entry.Name()), &value); err != nil {
+			if err := readJSON(filepath.Join(recordRoot, entry.Name()), &value); err != nil {
 				addIssue(&validation, "error", entry.Name(), err.Error())
 				continue
 			}
-			value.Path = entry.Name()
+			value.Path = relativePath(index.Root, filepath.Join(recordRoot, entry.Name()))
 			validateDiff(value, &validation)
 			diffs = append(diffs, value)
 		}
@@ -1003,6 +1023,9 @@ func knownReservedDirectory(name string, root bool, sagaVersion int) bool {
 		return false
 	}
 	if name == "___review" || name == "___claims" || name == "___verifications" {
+		return true
+	}
+	if sagaVersion == CurrentSagaVersion && name == EmbeddedSlidesDir {
 		return true
 	}
 	return (sagaVersion == CurrentSagaVersion || sagaVersion == SlideSagaVersion) && (name == "___requirements" || name == "___design" || name == "___workplan")

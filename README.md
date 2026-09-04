@@ -8,6 +8,13 @@
 
 Change Saga is experimental. Its formats may change before 1.0.
 
+A v3 Report Saga can now keep living, chapter-like documentation as its entry
+surface while embedding several focused visual decks for complex implemented
+changes. Each deck is an independently mergeable drill-down; stories,
+requirements, prototypes, design, and work-plan history are not mechanically
+turned into slides. The reviewer opens those breakdowns in a separate **Decks**
+view under the same Saga identity.
+
 The slide-native v4 preview treats a review as a sequence of visual arguments,
 not a report split into pages. Start it explicitly with `change-saga init --mode
 slides ...`. Each meaningful node, edge, region, transition, or overlaid
@@ -192,8 +199,9 @@ Version 4 is intentionally slide-native rather than a compatibility mode for
 older reports. Slides use self-contained SVG, raster, or sandboxed HTML visual
 entrypoints; prose formats are not slide entrypoints. Each slide makes one
 review argument, and its addressable items carry the exact implementation
-evidence. Existing v2/v3 sagas remain readable as legacy reports and must be
-semantically rewritten—not mechanically upgraded or paginated—to become v4.
+evidence. Existing v2/v3 sagas remain readable as reports. V3 reports may opt
+into focused embedded decks without changing format; becoming a standalone v4
+Saga still requires a semantic rewrite rather than pagination.
 
 Everything remains ordinary files in a `.saga` directory. The v4 flat format
 keeps decks, slides, items, evidence, claims, verifications, and review actions
@@ -209,11 +217,14 @@ decision came from and does not substitute for implementation evidence.
 
 ## Reviewing a saga
 
-`change-saga open` starts a local review application with three views:
+`change-saga open` starts a local review application with report, deck, and code
+review surfaces as applicable:
 
-- **Saga** presents v4 as decks of authored slides with thumbnails, sequential
-  navigation, and fullscreen presentation. Linked code opens in a drawer
-  without losing the active slide. V2/v3 retain their legacy report reader.
+- **Saga** presents living/report documentation. Standalone v4 Sagas use this
+  space for their native deck.
+- **Decks** appears when a v3 report embeds visual implementation breakdowns,
+  with thumbnails, sequential navigation, and fullscreen presentation. Linked
+  code opens without losing the active slide.
 - **Code Diff** provides a traditional changed-file tree and diff view, with
   links back to every relevant explanation.
 - **Coverage** shows the mapping in both directions: code to explanations and
@@ -221,7 +232,8 @@ decision came from and does not substitute for implementation evidence.
 
 Reviews can be spread across multiple sessions. Reviewers can comment on text
 or code, highlight content, draw shapes, add sticky notes, mark files reviewed,
-and approve or reject report sections or, in v4, complete slides.
+and approve or reject report sections or complete slides in either an embedded
+deck or a standalone v4 Saga.
 
 Every newly initialized saga also carries a small root `README.md`. It tells a
 human or AI assistant how to install and open the intended reviewer, and tells

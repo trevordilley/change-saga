@@ -61,6 +61,60 @@ func TestSlideNativeAssetRouteResolvesTheSlideTarget(t *testing.T) {
 	}
 }
 
+func TestReportSagaRendersEmbeddedDeckAsSeparateSurface(t *testing.T) {
+	root := filepath.Join(t.TempDir(), "hybrid.saga")
+	assetName := writeEmbeddedSlideFixture(t, root)
+	index, indexValidation, err := saga.LoadMutationIndex(root)
+	if err != nil || !indexValidation.Valid {
+		t.Fatalf("load hybrid mutation index: valid=%v err=%v issues=%#v", indexValidation.Valid, err, indexValidation.Issues)
+	}
+	before, err := indexedReviewFingerprint(t.Context(), index)
+	if err != nil {
+		t.Fatal(err)
+	}
+	itemTarget := saga.ItemTarget("visual", "change", "premise")
+	if _, err := reviewstore.AddThread(root, itemTarget, "Keep the surprise visible.", saga.Anchor{Type: "target"}, "comment", "", nil); err != nil {
+		t.Fatal(err)
+	}
+	after, err := indexedReviewFingerprint(t.Context(), index)
+	if err != nil || after == before {
+		t.Fatalf("embedded flat review did not advance fingerprint: before=%q after=%q err=%v", before, after, err)
+	}
+	document, validation, err := saga.LoadNarrative(root)
+	if err != nil || !validation.Valid {
+		t.Fatalf("load hybrid: valid=%v err=%v issues=%#v", validation.Valid, err, validation.Issues)
+	}
+	reportRoot, slideRoot := splitReportAndDeckSections(document.Section)
+	tmpl, err := newPageTemplate()
+	if err != nil {
+		t.Fatal(err)
+	}
+	var rendered bytes.Buffer
+	data := pageData{
+		Saga: document, HybridSlides: true,
+		Root: makeSectionView(reportRoot, viewScope{}), SlideRoot: makeSectionView(slideRoot, viewScope{}),
+	}
+	if err := tmpl.ExecuteTemplate(&rendered, "page", data); err != nil {
+		t.Fatal(err)
+	}
+	html := rendered.String()
+	for _, contract := range []string{`data-view-tab="slides"`, `id="view-slides"`, `class="embedded-slide-surface"`, `data-native-slide`, `data-slide-thumbnail`, `/f/change/` + assetName} {
+		if !strings.Contains(html, contract) {
+			t.Fatalf("hybrid slide contract %q missing:\n%s", contract, html)
+		}
+	}
+	if !strings.Contains(html, "Living overview") || !strings.Contains(html, "Complex flow") {
+		t.Fatalf("report or deck surface disappeared:\n%s", html)
+	}
+
+	request := httptest.NewRequest(http.MethodGet, "/f/change/"+assetName, nil)
+	recorder := httptest.NewRecorder()
+	newMux(&app{root: root}).ServeHTTP(recorder, request)
+	if recorder.Code != http.StatusOK || !strings.Contains(recorder.Body.String(), "Complex flow") {
+		t.Fatalf("embedded slide asset was not served: status=%d body=%s", recorder.Code, recorder.Body.String())
+	}
+}
+
 func TestSlideNativeCoverageAndActivityUseTheFlatReviewOverlay(t *testing.T) {
 	repo := t.TempDir()
 	serverGit(t, repo, "init", "-b", "main")
@@ -170,5 +224,25 @@ func writeFlatSlideFixture(t *testing.T, root string) string {
 	itemTarget := saga.ItemTarget("visual", "change", "premise")
 	itemName, _ := saga.FlatItemFilename(slideTarget, itemTarget, 0)
 	writeServerFile(t, filepath.Join(root, itemName), `{"version":4,"id":"premise","slide":"change","rank":0,"kind":"statement","label":"Premise","description":"Validation happens first.","selector":{"type":"element","element_id":"premise"}}`)
+	return assetName
+}
+
+func writeEmbeddedSlideFixture(t *testing.T, root string) string {
+	t.Helper()
+	writeServerFile(t, filepath.Join(root, "saga.json"), `{"version":3,"id":"visual","title":"Hybrid review","source":{"repository":"https://example.test/acme/app.git","base":"main","head":"feature"}}`)
+	writeServerFile(t, filepath.Join(root, "overview.fragment", "fragment.json"), `{"version":2,"id":"overview","title":"Living overview","media_type":"text/markdown","entrypoint":"content.md"}`)
+	writeServerFile(t, filepath.Join(root, "overview.fragment", "content.md"), "# Living overview {#living-overview}\n")
+	bundle := filepath.Join(root, saga.EmbeddedSlidesDir, "flow"+saga.EmbeddedDeckSuffix)
+	deckTarget := saga.DeckTarget("visual", "flow")
+	deckName, _ := saga.FlatDeckFilename(deckTarget, 0)
+	writeServerFile(t, filepath.Join(bundle, deckName), `{"version":4,"id":"flow","title":"Complex flow","role":"change","rank":0,"objective":"Explain the complex implementation."}`)
+	slideTarget := saga.SlideTarget("visual", "change")
+	slideName, _ := saga.FlatSlideFilename(deckTarget, slideTarget, 0)
+	assetName, _ := saga.FlatSlideAssetFilename(slideName, ".svg")
+	writeServerFile(t, filepath.Join(bundle, slideName), `{"version":4,"id":"change","deck":"flow","title":"Complex flow","rank":0,"intent":"explain","layout":"diagram","media_type":"image/svg+xml","entrypoint":"`+assetName+`","takeaway":"The implementation path is explicit.","reading_order":["premise"]}`)
+	writeServerFile(t, filepath.Join(bundle, assetName), `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720"><text id="premise">Complex flow</text></svg>`)
+	itemTarget := saga.ItemTarget("visual", "change", "premise")
+	itemName, _ := saga.FlatItemFilename(slideTarget, itemTarget, 0)
+	writeServerFile(t, filepath.Join(bundle, itemName), `{"version":4,"id":"premise","slide":"change","rank":0,"kind":"callout","label":"Surprise","description":"The non-obvious implementation path.","selector":{"type":"element","element_id":"premise"},"body":"The implementation path is not the expected one."}`)
 	return assetName
 }

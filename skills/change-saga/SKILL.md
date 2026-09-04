@@ -1,6 +1,6 @@
 ---
 name: change-saga
-description: 'Author, update, validate, and open a Git-native, slide-native successor to the pull-request description for a large PR number, URL, branch, commit range, or working-tree change. Use for requests like "make a change saga for PR 123" or "draft this change for review": explain the complete changeset through visual decks and slides, purpose-fit diagrams, interactive HTML, worked examples, and fully accounted diff URIs. The primary purpose is to create the artifact submitted for human review, not to perform the review; only conduct review actions when explicitly requested.'
+description: 'Author, update, validate, and open a Git-native Change Saga for a large PR number, URL, branch, commit range, or working-tree change. Use chapter-like living documentation for requirements, design, prototypes, and work-plan history; use focused visual decks and slides for complex implemented changes, with purpose-fit diagrams, worked examples, surprise callouts, and fully accounted diff URIs. The primary purpose is to create the artifact submitted for human review, not to perform the review; only conduct review actions when explicitly requested.'
 ---
 
 # Change Saga
@@ -51,10 +51,11 @@ review.
 
 The structured directory format is intentionally friendly to parallel
 development. When work is parallelized, partition ownership along independent
-decks and slides, and let each lane add its own Items, evidence, claims,
-verifications, and review records. Avoid aggregating unrelated work into shared
-files; merge the lanes before the final coverage and validation passes. This
-localizes Git conflicts but does not make parallel edits conflict-free.
+chapters and embedded deck bundles, and let each lane add its own slides, Items,
+evidence, claims, verifications, and review records. Avoid aggregating unrelated
+work into shared files; merge the lanes before the final coverage and validation
+passes. This localizes Git conflicts but does not make parallel edits
+conflict-free.
 
 ## Choose the workflow before authoring
 
@@ -143,7 +144,19 @@ children.
 
 ## Author a saga
 
-For a new visual review deck, choose the intentionally incompatible v4 mode:
+Prefer a v3 Report Saga as the durable parent when requirements, acceptance
+criteria, prototypes, technical design, or work-plan history need to remain
+living documentation. Add one or more focused decks with `add-deck` only for
+implemented changes that benefit from a visual breakdown. These decks live
+under the same Saga identity and appear as a separate reviewer surface; never
+turn every report fragment into a slide.
+
+Prototype persistence is currently internal-only. Until public prototype CLI,
+query, and reviewer surfaces exist, state that prototype authoring is staged
+instead of claiming the living workflow is end-to-end.
+
+For a wholly visual review artifact with no living report surface, choose the
+intentionally incompatible v4 mode:
 
 ```sh
 change-saga init --mode slides --base <base> --head <head> --title "<title>" <name>.saga

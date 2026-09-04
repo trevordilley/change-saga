@@ -88,7 +88,9 @@ func OpenBrowser(rawURL string) error { return launchBrowser(rawURL) }
 type pageData struct {
 	Saga          *saga.Saga
 	SlideNative   bool
+	HybridSlides  bool
 	Root          *sectionView
+	SlideRoot     *sectionView
 	Nav           []*navNodeView
 	ActivityCount int
 	Diagnostic    string
@@ -928,7 +930,7 @@ func (a *app) page(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "The saga could not be loaded. Run change-saga validate for details.", http.StatusInternalServerError)
 		return
 	}
-	if document.Manifest.Version == saga.SlideSagaVersion {
+	if document.Manifest.Version == saga.SlideSagaVersion || len(document.Decks) > 0 {
 		document = a.narrativeDocument(r.Context())
 		if document == nil {
 			http.Error(w, "The slide deck could not be loaded. Run change-saga validate for details.", http.StatusInternalServerError)
@@ -956,29 +958,59 @@ func (a *app) page(w http.ResponseWriter, r *http.Request) {
 	// outline. Everything below that arrives from /api/section and
 	// /api/fragment as a reviewer opens it.
 	scope := viewScope{threads: threadsByTarget}
+	reportRoot, slideRoot := splitReportAndDeckSections(document.Section)
+	rootScope := scope
 	if document.Manifest.Version != saga.SlideSagaVersion {
-		scope = scope.shell()
+		rootScope = scope.shell()
 	}
-	rootView := makeSectionView(document.Section, scope)
+	rootView := makeSectionView(reportRoot, rootScope)
+	if document.Manifest.Version == saga.SlideSagaVersion {
+		rootView = makeSectionView(slideRoot, scope)
+	}
 	data := pageData{
 		Saga:           document,
 		SlideNative:    document.Manifest.Version == saga.SlideSagaVersion,
+		HybridSlides:   document.Manifest.Version == saga.CurrentSagaVersion && len(document.Decks) > 0,
 		Root:           rootView,
 		MutationToken:  a.mutationToken,
 		CoverageTotals: a.cachedCoverageTotals(),
 	}
+	if data.HybridSlides {
+		data.SlideRoot = makeSectionView(slideRoot, scope)
+	}
 	if data.SlideNative {
-		data.ReviewItems = makeSlideReviewProgressItems(document.Section)
+		data.ReviewItems = makeSlideReviewProgressItems(slideRoot)
+	} else if data.HybridSlides {
+		data.ReviewItems = append(makeReviewProgressItems(reportRoot), makeSlideReviewProgressItems(slideRoot)...)
 	} else {
-		data.ReviewItems = makeReviewProgressItems(document.Section)
+		data.ReviewItems = makeReviewProgressItems(reportRoot)
 	}
 	data.ReviewDecided, data.ReviewTotal = reviewProgressSummary(data.ReviewItems)
 	data.ActivityCount = reviewActivityCount(document)
-	data.Nav = makeNavTree(document.Section, threadsByTarget)
+	data.Nav = makeNavTree(reportRoot, threadsByTarget)
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	if err := a.template.ExecuteTemplate(w, "page", data); err != nil {
 		http.Error(w, "The review page could not be rendered.", http.StatusInternalServerError)
 	}
+}
+
+func splitReportAndDeckSections(root *saga.Section) (*saga.Section, *saga.Section) {
+	if root == nil {
+		return root, root
+	}
+	report := *root
+	slides := *root
+	report.Children = nil
+	slides.Fragments = nil
+	slides.Children = nil
+	for _, child := range root.Children {
+		if child.Kind == "deck" {
+			slides.Children = append(slides.Children, child)
+		} else {
+			report.Children = append(report.Children, child)
+		}
+	}
+	return &report, &slides
 }
 
 func (a *app) narrativeDocument(ctx context.Context) *saga.Saga {
@@ -1847,6 +1879,8 @@ func (a *app) fragmentFile(w http.ResponseWriter, r *http.Request) {
 	assetTarget := saga.FragmentTarget(index.Manifest.ID, r.PathValue("id"))
 	if index.Manifest.Version == saga.SlideSagaVersion {
 		assetTarget = saga.SlideTarget(index.Manifest.ID, r.PathValue("id"))
+	} else if slideTarget := saga.SlideTarget(index.Manifest.ID, r.PathValue("id")); index.FlatTargets[slideTarget] {
+		assetTarget = slideTarget
 	}
 	fragmentDir, ok := index.Targets[assetTarget]
 	if !ok {
