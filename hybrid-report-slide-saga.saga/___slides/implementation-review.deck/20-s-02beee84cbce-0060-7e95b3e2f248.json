@@ -1,0 +1,21 @@
+{
+  "version": 4,
+  "id": "deck-thumbnail-navigation",
+  "deck": "implementation-review",
+  "title": "Decks expand into rendered thumbnails",
+  "rank": 60,
+  "section": "Reviewer experience",
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-02beee84cbce-0060-7e95b3e2f248.svg",
+  "takeaway": "Expanding a named deck reveals its rendered slides; selection and previous/next navigation stay inside that deck.",
+  "reading_order": [
+    "deck-node",
+    "thumbnail-stack",
+    "selected-thumbnail",
+    "full-stage",
+    "deck-local-step",
+    "deck-boundary"
+  ]
+}

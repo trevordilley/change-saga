@@ -1,8 +1,0 @@
-{
-  "version": 4,
-  "id": "lifecycle-model",
-  "title": "Lifecycle model",
-  "role": "change",
-  "rank": 0,
-  "objective": "Show why requirements and review decks are separate documents under one Saga identity."
-}

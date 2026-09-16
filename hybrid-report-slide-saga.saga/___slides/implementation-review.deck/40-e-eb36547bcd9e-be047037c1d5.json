@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "diffs": [
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=81\u0026head=product-89a45eaa46c1a2d3c2b02afd6debfd04bc94a812a1aaeab85ec24f359031bbe8\u0026path=internal%2Fserver%2Fstyles.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=80",
+      "note": "Styles rendered slide thumbnails and their subtle in-deck section dividers while retaining a full-size selected slide in the main pane."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=100\u0026head=product-89a45eaa46c1a2d3c2b02afd6debfd04bc94a812a1aaeab85ec24f359031bbe8\u0026path=internal%2Fserver%2Fstyles.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=100",
+      "note": "Styles rendered slide thumbnails and their subtle in-deck section dividers while retaining a full-size selected slide in the main pane."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=196\u0026head=product-89a45eaa46c1a2d3c2b02afd6debfd04bc94a812a1aaeab85ec24f359031bbe8\u0026path=internal%2Fserver%2Fstyles.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=187",
+      "note": "Styles rendered slide thumbnails and their subtle in-deck section dividers while retaining a full-size selected slide in the main pane."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=235\u0026head=product-89a45eaa46c1a2d3c2b02afd6debfd04bc94a812a1aaeab85ec24f359031bbe8\u0026path=internal%2Fserver%2Fstyles.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=232",
+      "note": "Styles rendered slide thumbnails and their subtle in-deck section dividers while retaining a full-size selected slide in the main pane."
+    }
+  ]
+}

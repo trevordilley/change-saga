@@ -1,8 +1,0 @@
-{
-  "version": 4,
-  "id": "reviewer-experience",
-  "title": "Reviewer experience",
-  "role": "change",
-  "rank": 20,
-  "objective": "Show how reviewers move between living documentation, visual implementation breakdowns, and exact code."
-}
