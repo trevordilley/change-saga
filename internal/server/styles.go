@@ -189,7 +189,7 @@ body.presentation-mode .slide-native-stage:hover .slide-exit-presentation,body.p
 .doc-deck-link .i{width:14px;height:14px;flex:none;color:var(--muted)}
 .doc-deck-link[aria-expanded=true]{font-weight:600}
 .doc-link[aria-current=page]{color:var(--accent);font-weight:600}
-.doc-deck>.doc-children{margin:0 2px 8px 10px;padding:7px 4px 2px 8px;counter-reset:slide-thumbnail}
+.doc-deck>.doc-children{margin:0 0 8px;padding:7px 0 2px;border-left:0;counter-reset:slide-thumbnail}
 .doc-slide-thumbnail{margin:0 0 10px;min-width:0}
 .doc-slide-thumbnail .slide-thumbnail-card{padding-left:22px}
 .doc-slide-thumbnail .slide-thumbnail-preview{border-width:1px;background:#fff}
@@ -423,7 +423,7 @@ section:hover>.section-actions .review-controls,.section:hover>.section-head>.se
 .content-landmark-text.content-landmark-active{background:#f2bd4b40;outline:2px solid #d39418}
 .landmark-hotspot{position:absolute;z-index:3;border:1px solid transparent;border-radius:4px;pointer-events:auto}
 .landmark-hotspot>.landmark-affordance{position:absolute;right:3px;top:3px}
-.landmark-hotspot:hover,.landmark-hotspot:focus-within,.landmark-hotspot.active{border-color:#d39418;background:#f2bd4b1a}
+.landmark-hotspot:hover,.landmark-hotspot:focus-within,.landmark-hotspot.active{border-color:#d39418;background:transparent}
 .landmark-hotspot:hover>.landmark-affordance,.landmark-hotspot:focus-within>.landmark-affordance,.landmark-hotspot.active>.landmark-affordance{opacity:1}
 
 /* Annotation overlay ----------------------------------------------------- */

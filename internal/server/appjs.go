@@ -76,6 +76,9 @@ const appJavaScript = `(() => {
       const anchor = q('.fragment', active)?.id;
       if (anchor) history.replaceState(history.state, '', location.pathname + location.search + '#' + encodeURIComponent(anchor));
     }
+    const fragment = q('.fragment', active);
+    const targetCodeButton = q(':scope > .fragment-head [data-target-code-href]', fragment);
+    if (targetCodeButton) void hydrateTargetCodeSummary(targetCodeButton);
     positionFragmentOverlays();
   }
 
@@ -2140,6 +2143,16 @@ const appJavaScript = `(() => {
     } catch (_) {
       delete button.dataset.targetCodeLoading;
       button.removeAttribute('aria-busy');
+      button.title = 'Linked code could not be loaded — try again';
+    }
+  }
+
+  async function hydrateTargetCodeSummary(button) {
+    const href = button?.dataset.targetCodeHref;
+    if (!href) return;
+    try {
+      installTargetCodeResponse(href, await requestTargetCode(href, {priority:20}), button);
+    } catch (_) {
       button.title = 'Linked code could not be loaded — try again';
     }
   }

@@ -439,6 +439,7 @@ func projectDecks(manifest Manifest, decks []*Deck) *Section {
 			for _, item := range slide.Items {
 				meta := item.ItemManifest
 				fragment.Landmarks = append(fragment.Landmarks, Landmark{Path: item.Path, Directory: item.Directory, Version: item.Version, ID: item.ID, Label: item.Label, Description: item.Description, Selector: item.Selector, Hotspot: item.Hotspot, Target: item.Target, Diffs: item.Diffs, HasDiffs: item.HasDiffs, ItemMeta: &meta, Reviews: item.Reviews})
+				fragment.HasDiffs = fragment.HasDiffs || item.HasDiffs
 			}
 			section.Fragments = append(section.Fragments, fragment)
 		}

@@ -98,6 +98,29 @@ func TestFragmentIntentPrefetchIsBoundedCancellableAndClickPromotable(t *testing
 	}
 }
 
+func TestActiveSlideLoadsItsAggregateDiffSummary(t *testing.T) {
+	for _, contract := range []string{
+		"const targetCodeButton = q(':scope > .fragment-head [data-target-code-href]', fragment)",
+		"if (targetCodeButton) void hydrateTargetCodeSummary(targetCodeButton)",
+		"installTargetCodeResponse(href, await requestTargetCode(href, {priority:20}), button)",
+	} {
+		if !strings.Contains(appJavaScript, contract) {
+			t.Errorf("active-slide linked-code summary is missing %q", contract)
+		}
+	}
+}
+
+func TestSlideChromeDoesNotMaskOrIndentContent(t *testing.T) {
+	for _, contract := range []string{
+		`.doc-deck>.doc-children{margin:0 0 8px;padding:7px 0 2px;border-left:0;`,
+		`.landmark-hotspot:hover,.landmark-hotspot:focus-within,.landmark-hotspot.active{border-color:#d39418;background:transparent}`,
+	} {
+		if !strings.Contains(pageStyles, contract) {
+			t.Errorf("slide chrome regression contract is missing %q", contract)
+		}
+	}
+}
+
 func TestCoverageContinuouslyLoadsSummariesAndDefersDetails(t *testing.T) {
 	for _, contract := range []string{
 		"beginContinuousCoverageLoad(surface)",

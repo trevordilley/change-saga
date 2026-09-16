@@ -47,6 +47,9 @@ func TestLoadV4SlideNativeItemEvidence(t *testing.T) {
 	if projected.Target != item.Target || len(projected.Diffs) != 1 {
 		t.Fatalf("review projection lost Item identity or evidence: %#v", projected)
 	}
+	if !document.Section.Children[0].Fragments[0].HasDiffs {
+		t.Fatal("slide projection did not advertise its Item evidence")
+	}
 	index := MutationIndexFromDocument(document)
 	if index.Targets[item.Target] != item.Directory {
 		t.Fatalf("item is not a stable mutation target: %#v", index)

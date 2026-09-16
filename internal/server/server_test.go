@@ -1402,6 +1402,100 @@ func TestTargetCodeLoadsOneNarrativeMappingWithoutGlobalSnapshot(t *testing.T) {
 	}
 }
 
+func TestSlideTargetCodeRollsUpItemFiles(t *testing.T) {
+	repo := t.TempDir()
+	serverGit(t, repo, "init", "-b", "main")
+	serverGit(t, repo, "config", "user.name", "Test")
+	serverGit(t, repo, "config", "user.email", "test@example.test")
+	writeServerFile(t, filepath.Join(repo, "base.txt"), "base\n")
+	serverGit(t, repo, "add", "base.txt")
+	serverGit(t, repo, "commit", "-m", "base")
+	base := strings.TrimSpace(serverGit(t, repo, "rev-parse", "HEAD"))
+	writeServerFile(t, filepath.Join(repo, "app.go"), "package app\n\nfunc Ready() bool { return true }\n")
+	writeServerFile(t, filepath.Join(repo, "guide.md"), "# Guide\n\nReady.\n")
+	serverGit(t, repo, "add", "app.go", "guide.md")
+	serverGit(t, repo, "commit", "-m", "feature")
+	repository, err := diffuri.FileRepository(repo)
+	if err != nil {
+		t.Fatal(err)
+	}
+	changes, err := gitdiff.Read(t.Context(), repo, repository, base, "HEAD")
+	if err != nil {
+		t.Fatal(err)
+	}
+	uriByPath := map[string]string{}
+	for _, atom := range changes.Atoms {
+		if atom.Kind == "line" && uriByPath[atom.Path] == "" {
+			uriByPath[atom.Path] = atom.URI
+		}
+	}
+
+	root := filepath.Join(repo, "slides.saga")
+	writeServerFile(t, filepath.Join(root, saga.FlatManifestName), `{"version":4,"id":"slides","title":"Slides","source":{"repository":"`+repository+`","base":"`+base+`","head":"HEAD"},"presentation":{"mode":"slides","aspect_ratio":"16:9","overview_deck":"review"}}`)
+	deckTarget := saga.DeckTarget("slides", "review")
+	deckName, _ := saga.FlatDeckFilename(deckTarget, 0)
+	writeServerFile(t, filepath.Join(root, deckName), `{"version":4,"id":"review","title":"Review","role":"overview","rank":0,"objective":"Review the change."}`)
+	slideTarget := saga.SlideTarget("slides", "summary")
+	slideName, _ := saga.FlatSlideFilename(deckTarget, slideTarget, 0)
+	assetName, _ := saga.FlatSlideAssetFilename(slideName, ".svg")
+	writeServerFile(t, filepath.Join(root, slideName), `{"version":4,"id":"summary","deck":"review","title":"Changed files","rank":0,"intent":"explain","layout":"diagram","media_type":"image/svg+xml","entrypoint":"`+assetName+`","takeaway":"Both files support this slide.","reading_order":["code","guide"]}`)
+	writeServerFile(t, filepath.Join(root, assetName), `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720"><g id="code"/><g id="guide"/></svg>`)
+	for rank, fixture := range []struct {
+		id, label, path, note string
+	}{
+		{id: "code", label: "Code", path: "app.go", note: "Implements readiness."},
+		{id: "guide", label: "Guide", path: "guide.md", note: "Documents readiness."},
+	} {
+		itemTarget := saga.ItemTarget("slides", "summary", fixture.id)
+		itemName, _ := saga.FlatItemFilename(slideTarget, itemTarget, rank*10)
+		writeServerFile(t, filepath.Join(root, itemName), fmt.Sprintf(`{"version":4,"id":%q,"slide":"summary","rank":%d,"kind":"node","label":%q,"description":%q,"selector":{"type":"element","element_id":%q}}`, fixture.id, rank*10, fixture.label, fixture.note, fixture.id))
+		evidence := fmt.Sprintf(`{"version":2,"diffs":[{"uri":%q,"note":%q}]}`, uriByPath[fixture.path], fixture.note)
+		if fixture.id == "guide" {
+			// Repeating one exact diff on a second Item must not inflate the
+			// slide's file totals, even though coverage validation will surface
+			// the overlapping ownership to the author.
+			evidence = fmt.Sprintf(`{"version":2,"diffs":[{"uri":%q,"note":%q},{"uri":%q,"note":"Also mentioned by the guide."}]}`, uriByPath[fixture.path], fixture.note, uriByPath["app.go"])
+		}
+		writeServerFile(t, filepath.Join(root, saga.FlatEvidenceFilename(itemTarget, fixture.id)), evidence)
+	}
+
+	application := &app{root: root, sourceDir: repo, template: serverTemplate(t)}
+	application.comparisonLoader = func(context.Context) (*reviewSnapshot, error) {
+		t.Fatal("slide-scoped linked code requested the global comparison")
+		return nil, nil
+	}
+	handler := newMux(application)
+
+	summary := httptest.NewRecorder()
+	handler.ServeHTTP(summary, httptest.NewRequest(http.MethodGet, "/api/target-code?target="+url.QueryEscape(slideTarget), nil))
+	body := summary.Body.String()
+	if summary.Code != http.StatusOK || !strings.Contains(body, `data-target-code-count="6"`) || !strings.Contains(body, `aria-label="Open linked code with 6 additions and 0 deletions"`) || !strings.Contains(body, "app.go") || !strings.Contains(body, "guide.md") || !strings.Contains(body, "Implements readiness.") || !strings.Contains(body, "Documents readiness.") {
+		t.Fatalf("slide linked-code summary did not aggregate its Item files: status=%d body=%s", summary.Code, body)
+	}
+
+	file := httptest.NewRecorder()
+	handler.ServeHTTP(file, httptest.NewRequest(http.MethodGet, "/api/file-diff?file=guide.md&target="+url.QueryEscape(slideTarget), nil))
+	if file.Code != http.StatusOK || !strings.Contains(file.Body.String(), `data-file-path="guide.md"`) || !strings.Contains(file.Body.String(), "linked-evidence") || strings.Contains(file.Body.String(), "app.go") {
+		t.Fatalf("slide linked-file body was not scoped to the requested referenced file: status=%d body=%s", file.Code, file.Body.String())
+	}
+}
+
+func TestNarrativeEvidenceTargetsFindsTheRequestedDeck(t *testing.T) {
+	target := saga.SlideTarget("slides", "summary")
+	itemTarget := saga.ItemTarget("slides", "summary", "code")
+	root := &saga.Section{Children: []*saga.Section{
+		{Kind: "deck", Fragments: []*saga.Fragment{{Target: saga.SlideTarget("slides", "other"), SlideMeta: &saga.SlideManifest{}}}},
+		{Kind: "deck", Fragments: []*saga.Fragment{{Target: target, SlideMeta: &saga.SlideManifest{}, Landmarks: []saga.Landmark{{Target: itemTarget, ItemMeta: &saga.ItemManifest{}}}}}},
+	}}
+	got := narrativeEvidenceTargets(root, target)
+	if len(got) != 2 || got[0] != target || got[1] != itemTarget {
+		t.Fatalf("slide evidence targets = %#v", got)
+	}
+	if direct := narrativeEvidenceTargets(root, itemTarget); len(direct) != 1 || direct[0] != itemTarget {
+		t.Fatalf("Item target unexpectedly widened to %#v", direct)
+	}
+}
+
 // Resume state is read from the document and the thread index, so a chapter
 // reports where a reviewer left off before its body has ever been fetched.
 func TestChapterResumeState(t *testing.T) {
