@@ -1,0 +1,125 @@
+{
+  "version": 2,
+  "diffs": [
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=33\u0026head=product-c994f627250337c508dfc7e7cfae02a3a9930754ef4890e6275705a97a058b69\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=28",
+      "note": "Coordinates deck disclosure, sidebar slide selection, URL state, and full-main-pane slide activation inside the Saga context."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=67\u0026head=product-c994f627250337c508dfc7e7cfae02a3a9930754ef4890e6275705a97a058b69\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=58",
+      "note": "Coordinates deck disclosure, sidebar slide selection, URL state, and full-main-pane slide activation inside the Saga context."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=85\u0026head=product-c994f627250337c508dfc7e7cfae02a3a9930754ef4890e6275705a97a058b69\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=84",
+      "note": "Coordinates deck disclosure, sidebar slide selection, URL state, and full-main-pane slide activation inside the Saga context."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=929\u0026head=product-c994f627250337c508dfc7e7cfae02a3a9930754ef4890e6275705a97a058b69\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=928",
+      "note": "Coordinates deck disclosure, sidebar slide selection, URL state, and full-main-pane slide activation inside the Saga context."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=1211\u0026head=product-c994f627250337c508dfc7e7cfae02a3a9930754ef4890e6275705a97a058b69\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=1203",
+      "note": "Coordinates deck disclosure, sidebar slide selection, URL state, and full-main-pane slide activation inside the Saga context."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=1214\u0026head=product-c994f627250337c508dfc7e7cfae02a3a9930754ef4890e6275705a97a058b69\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=1213",
+      "note": "Coordinates deck disclosure, sidebar slide selection, URL state, and full-main-pane slide activation inside the Saga context."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=1216\u0026head=product-c994f627250337c508dfc7e7cfae02a3a9930754ef4890e6275705a97a058b69\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=1216",
+      "note": "Coordinates deck disclosure, sidebar slide selection, URL state, and full-main-pane slide activation inside the Saga context."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=1596\u0026head=product-c994f627250337c508dfc7e7cfae02a3a9930754ef4890e6275705a97a058b69\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=1596",
+      "note": "Coordinates deck disclosure, sidebar slide selection, URL state, and full-main-pane slide activation inside the Saga context."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=1606\u0026head=product-c994f627250337c508dfc7e7cfae02a3a9930754ef4890e6275705a97a058b69\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=1606",
+      "note": "Coordinates deck disclosure, sidebar slide selection, URL state, and full-main-pane slide activation inside the Saga context."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=1608\u0026head=product-c994f627250337c508dfc7e7cfae02a3a9930754ef4890e6275705a97a058b69\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=1608",
+      "note": "Coordinates deck disclosure, sidebar slide selection, URL state, and full-main-pane slide activation inside the Saga context."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=1617\u0026head=product-c994f627250337c508dfc7e7cfae02a3a9930754ef4890e6275705a97a058b69\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=1611",
+      "note": "Coordinates deck disclosure, sidebar slide selection, URL state, and full-main-pane slide activation inside the Saga context."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=1620\u0026head=product-c994f627250337c508dfc7e7cfae02a3a9930754ef4890e6275705a97a058b69\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=1620",
+      "note": "Coordinates deck disclosure, sidebar slide selection, URL state, and full-main-pane slide activation inside the Saga context."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=3185\u0026head=product-c994f627250337c508dfc7e7cfae02a3a9930754ef4890e6275705a97a058b69\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=3175",
+      "note": "Coordinates deck disclosure, sidebar slide selection, URL state, and full-main-pane slide activation inside the Saga context."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=3304\u0026head=product-c994f627250337c508dfc7e7cfae02a3a9930754ef4890e6275705a97a058b69\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=3301",
+      "note": "Coordinates deck disclosure, sidebar slide selection, URL state, and full-main-pane slide activation inside the Saga context."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=3428\u0026head=product-c994f627250337c508dfc7e7cfae02a3a9930754ef4890e6275705a97a058b69\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=3428",
+      "note": "Coordinates deck disclosure, sidebar slide selection, URL state, and full-main-pane slide activation inside the Saga context."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=3720\u0026head=product-c994f627250337c508dfc7e7cfae02a3a9930754ef4890e6275705a97a058b69\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=3720",
+      "note": "Coordinates deck disclosure, sidebar slide selection, URL state, and full-main-pane slide activation inside the Saga context."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=3723\u0026head=product-c994f627250337c508dfc7e7cfae02a3a9930754ef4890e6275705a97a058b69\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=3723",
+      "note": "Coordinates deck disclosure, sidebar slide selection, URL state, and full-main-pane slide activation inside the Saga context."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=3745\u0026head=product-c994f627250337c508dfc7e7cfae02a3a9930754ef4890e6275705a97a058b69\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=3745",
+      "note": "Coordinates deck disclosure, sidebar slide selection, URL state, and full-main-pane slide activation inside the Saga context."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=912\u0026head=product-c994f627250337c508dfc7e7cfae02a3a9930754ef4890e6275705a97a058b69\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=910",
+      "note": "Coordinates deck disclosure, sidebar slide selection, URL state, and full-main-pane slide activation inside the Saga context."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=1187\u0026head=product-c994f627250337c508dfc7e7cfae02a3a9930754ef4890e6275705a97a058b69\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=1187",
+      "note": "Coordinates deck disclosure, sidebar slide selection, URL state, and full-main-pane slide activation inside the Saga context."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=1191\u0026head=product-c994f627250337c508dfc7e7cfae02a3a9930754ef4890e6275705a97a058b69\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=1189",
+      "note": "Coordinates deck disclosure, sidebar slide selection, URL state, and full-main-pane slide activation inside the Saga context."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=1571\u0026head=product-c994f627250337c508dfc7e7cfae02a3a9930754ef4890e6275705a97a058b69\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=1571",
+      "note": "Coordinates deck disclosure, sidebar slide selection, URL state, and full-main-pane slide activation inside the Saga context."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=1581\u0026head=product-c994f627250337c508dfc7e7cfae02a3a9930754ef4890e6275705a97a058b69\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=1581",
+      "note": "Coordinates deck disclosure, sidebar slide selection, URL state, and full-main-pane slide activation inside the Saga context."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=1583\u0026head=product-c994f627250337c508dfc7e7cfae02a3a9930754ef4890e6275705a97a058b69\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=1583",
+      "note": "Coordinates deck disclosure, sidebar slide selection, URL state, and full-main-pane slide activation inside the Saga context."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=1587\u0026head=product-c994f627250337c508dfc7e7cfae02a3a9930754ef4890e6275705a97a058b69\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=1586",
+      "note": "Coordinates deck disclosure, sidebar slide selection, URL state, and full-main-pane slide activation inside the Saga context."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=1590\u0026head=product-c994f627250337c508dfc7e7cfae02a3a9930754ef4890e6275705a97a058b69\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=1590",
+      "note": "Coordinates deck disclosure, sidebar slide selection, URL state, and full-main-pane slide activation inside the Saga context."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=3383\u0026head=product-c994f627250337c508dfc7e7cfae02a3a9930754ef4890e6275705a97a058b69\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=3383",
+      "note": "Coordinates deck disclosure, sidebar slide selection, URL state, and full-main-pane slide activation inside the Saga context."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=3675\u0026head=product-c994f627250337c508dfc7e7cfae02a3a9930754ef4890e6275705a97a058b69\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=3675",
+      "note": "Coordinates deck disclosure, sidebar slide selection, URL state, and full-main-pane slide activation inside the Saga context."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=3678\u0026head=product-c994f627250337c508dfc7e7cfae02a3a9930754ef4890e6275705a97a058b69\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=3678",
+      "note": "Coordinates deck disclosure, sidebar slide selection, URL state, and full-main-pane slide activation inside the Saga context."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=3700\u0026head=product-c994f627250337c508dfc7e7cfae02a3a9930754ef4890e6275705a97a058b69\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=3700",
+      "note": "Coordinates deck disclosure, sidebar slide selection, URL state, and full-main-pane slide activation inside the Saga context."
+    }
+  ]
+}

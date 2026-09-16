@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "slide-destination",
+  "slide": "sidebar-deck-review",
+  "rank": 30,
+  "kind": "node",
+  "label": "Slide destinations",
+  "description": "Expanding a deck reveals its ordered slides and selecting one changes the main review surface.",
+  "selector": {
+    "type": "element",
+    "element_id": "slide-destination"
+  }
+}

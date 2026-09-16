@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "active-slide-stage",
+  "slide": "sidebar-deck-review",
+  "rank": 40,
+  "kind": "region",
+  "label": "Full main slide area",
+  "description": "The selected slide fills the main review area while the shared sidebar remains available.",
+  "selector": {
+    "type": "element",
+    "element_id": "active-slide-stage"
+  }
+}

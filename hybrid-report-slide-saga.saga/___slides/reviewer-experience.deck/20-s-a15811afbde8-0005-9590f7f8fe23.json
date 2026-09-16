@@ -1,0 +1,21 @@
+{
+  "version": 4,
+  "id": "sidebar-deck-review",
+  "deck": "reviewer-experience",
+  "title": "Decks live in the Saga sidebar",
+  "rank": 5,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-a15811afbde8-0005-9590f7f8fe23.svg",
+  "takeaway": "A named deck expands to slide links in the Saga sidebar; the selected slide occupies the full main review area.",
+  "reading_order": [
+    "saga-tab-context",
+    "report-nav",
+    "deck-disclosure",
+    "slide-destination",
+    "active-slide-stage",
+    "linked-code",
+    "sidebar-surprise"
+  ]
+}

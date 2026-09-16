@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "diffs": [
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=12\u0026head=product-c994f627250337c508dfc7e7cfae02a3a9930754ef4890e6275705a97a058b69\u0026path=schema%2Fv3%2Frelation.schema.json\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=12",
+      "note": "Adds explains and visual target URN shapes to the public v3 relation schema."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=38\u0026head=product-c994f627250337c508dfc7e7cfae02a3a9930754ef4890e6275705a97a058b69\u0026path=schema%2Fv3%2Frelation.schema.json\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=38",
+      "note": "Adds explains and visual target URN shapes to the public v3 relation schema."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=40\u0026head=product-c994f627250337c508dfc7e7cfae02a3a9930754ef4890e6275705a97a058b69\u0026path=schema%2Fv3%2Frelation.schema.json\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=40",
+      "note": "Adds explains and visual target URN shapes to the public v3 relation schema."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=12\u0026head=product-c994f627250337c508dfc7e7cfae02a3a9930754ef4890e6275705a97a058b69\u0026path=schema%2Fv3%2Frelation.schema.json\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=12",
+      "note": "Adds explains and visual target URN shapes to the public v3 relation schema."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=38\u0026head=product-c994f627250337c508dfc7e7cfae02a3a9930754ef4890e6275705a97a058b69\u0026path=schema%2Fv3%2Frelation.schema.json\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=38",
+      "note": "Adds explains and visual target URN shapes to the public v3 relation schema."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=41\u0026head=product-c994f627250337c508dfc7e7cfae02a3a9930754ef4890e6275705a97a058b69\u0026path=schema%2Fv3%2Frelation.schema.json\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=40",
+      "note": "Adds explains and visual target URN shapes to the public v3 relation schema."
+    }
+  ]
+}
