@@ -25,6 +25,12 @@ const appJavaScript = `(() => {
 
   function nativeSlides() { return qa('[data-native-slide]'); }
 
+  function nativeDeckSlides(slide) {
+    const slides = nativeSlides();
+    if (!slide?.dataset.deckTarget) return slides;
+    return slides.filter(candidate => candidate.dataset.deckTarget === slide.dataset.deckTarget);
+  }
+
   function nativeSlideSurfaceActive() {
     const surface = q('[data-slide-native]');
     const view = surface?.closest('[data-view]');
@@ -46,34 +52,42 @@ const appJavaScript = `(() => {
     const position = q('[data-slide-position]', shell);
     const deckTitle = q('[data-slide-deck-title]', shell);
     const slideTitle = q('[data-current-slide-title]', shell);
-    if (position) position.textContent = (bounded + 1) + ' / ' + slides.length;
+    const deckSlides = nativeDeckSlides(active);
+    const deckIndex = deckSlides.indexOf(active);
+    if (position) position.textContent = (deckIndex + 1) + ' / ' + deckSlides.length;
     if (deckTitle) deckTitle.textContent = active.dataset.deckTitle || '';
     if (slideTitle) slideTitle.textContent = active.dataset.slideTitle || '';
+    let activeThumbnail = null;
     qa('[data-slide-thumbnail]').forEach(thumbnail => {
       const selected = thumbnail.dataset.slideTarget === active.dataset.slideTarget;
       thumbnail.setAttribute('aria-current', String(selected));
       thumbnail.closest('[data-slide-thumbnail-card]')?.classList.toggle('active', selected);
+      if (selected) activeThumbnail = thumbnail;
       if (selected && updateHash) thumbnail.scrollIntoView({block:'nearest'});
     });
-    let activeNav = null;
-    qa('[data-slide-nav-target]').forEach(link => {
-      const selected = link.dataset.slideNavTarget === active.dataset.slideTarget;
-      link.toggleAttribute('aria-current', selected);
-      link.closest('.doc-row')?.classList.toggle('current', selected);
-      if (selected) activeNav = link;
-    });
-    qa('.doc-deck>.doc-row').forEach(row => row.classList.toggle('current', Boolean(activeNav && row.parentElement.contains(activeNav))));
-    const deckChildren = activeNav?.closest('.doc-children');
+    qa('.doc-deck>.doc-row').forEach(row => row.classList.toggle('current', Boolean(activeThumbnail && row.parentElement.contains(activeThumbnail))));
+    const deckChildren = activeThumbnail?.closest('.doc-children');
     if (deckChildren?.id) setDocNodeExpandedByID(deckChildren.id, true);
     const previous = q('[data-slide-previous]', shell);
     const next = q('[data-slide-next]', shell);
-    if (previous) previous.disabled = bounded === 0;
-    if (next) next.disabled = bounded === slides.length - 1;
+    if (previous) previous.disabled = deckIndex === 0;
+    if (next) next.disabled = deckIndex === deckSlides.length - 1;
     if (updateHash) {
       const anchor = q('.fragment', active)?.id;
       if (anchor) history.replaceState(history.state, '', location.pathname + location.search + '#' + encodeURIComponent(anchor));
     }
     positionFragmentOverlays();
+  }
+
+  function stepNativeSlide(delta) {
+    const slides = nativeSlides();
+    const active = slides.find(slide => !slide.hidden);
+    if (!active) return;
+    const deckSlides = nativeDeckSlides(active);
+    const current = deckSlides.indexOf(active);
+    const target = deckSlides[Math.max(0, Math.min(deckSlides.length - 1, current + delta))];
+    const index = slides.indexOf(target);
+    if (index >= 0) activateNativeSlide(index, true);
   }
 
   function syncNativeSlideForHash() {
@@ -3172,22 +3186,14 @@ const appJavaScript = `(() => {
   });
 
   document.addEventListener('click', event => {
-    const slideNav = event.target.closest?.('[data-slide-nav-target]');
-    if (slideNav) {
-      event.preventDefault();
-      const slides = nativeSlides();
-      const index = slides.findIndex(slide => slide.dataset.slideTarget === slideNav.dataset.slideNavTarget);
-      if (index >= 0) {
-        setView('slides');
-        activateNativeSlide(index, true);
-      }
-      return;
-    }
     const slideThumbnail = event.target.closest?.('[data-slide-thumbnail]');
     if (slideThumbnail) {
       const slides = nativeSlides();
       const index = slides.findIndex(slide => slide.dataset.slideTarget === slideThumbnail.dataset.slideTarget);
-      if (index >= 0) activateNativeSlide(index, true);
+      if (index >= 0) {
+        if (q('[data-view="slides"]')) setView('slides');
+        activateNativeSlide(index, true);
+      }
       return;
     }
     const slideSidebarToggle = event.target.closest?.('[data-slide-sidebar-toggle]');
@@ -3202,9 +3208,7 @@ const appJavaScript = `(() => {
     }
     const slideDirection = event.target.closest?.('[data-slide-previous],[data-slide-next]');
     if (slideDirection) {
-      const slides = nativeSlides();
-      const current = slides.findIndex(slide => !slide.hidden);
-      activateNativeSlide(current + (slideDirection.matches('[data-slide-next]') ? 1 : -1), true);
+      stepNativeSlide(slideDirection.matches('[data-slide-next]') ? 1 : -1);
       return;
     }
     const retryFile = event.target.closest?.('[data-retry-file]');
@@ -3426,10 +3430,8 @@ const appJavaScript = `(() => {
       return;
     }
     if ((event.key === 'ArrowLeft' || event.key === 'ArrowRight') && nativeSlideSurfaceActive() && nativeSlides().length && !selectedAnnotation && !annotationDraft && !event.target.matches?.('input,textarea,select,[contenteditable="true"]')) {
-      const slides = nativeSlides();
-      const current = slides.findIndex(slide => !slide.hidden);
       event.preventDefault();
-      activateNativeSlide(current + (event.key === 'ArrowRight' ? 1 : -1), true);
+      stepNativeSlide(event.key === 'ArrowRight' ? 1 : -1);
       return;
     }
     const editingField = event.target.closest?.('.sticky-note-text');

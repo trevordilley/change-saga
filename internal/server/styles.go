@@ -187,6 +187,11 @@ body.presentation-mode .slide-native-stage:hover .slide-exit-presentation,body.p
 .doc-deck-link .i{width:14px;height:14px;flex:none;color:var(--muted)}
 .doc-deck-link[aria-expanded=true]{font-weight:600}
 .doc-link[aria-current=page]{color:var(--accent);font-weight:600}
+.doc-deck>.doc-children{margin:0 2px 8px 10px;padding:7px 4px 2px 8px;counter-reset:slide-thumbnail}
+.doc-slide-thumbnail{margin:0 0 10px;min-width:0}
+.doc-slide-thumbnail .slide-thumbnail-card{padding-left:22px}
+.doc-slide-thumbnail .slide-thumbnail-preview{border-width:1px;background:#fff}
+.doc-slide-thumbnail .slide-thumbnail-card.active .slide-thumbnail-preview{border-width:2px}
 .doc-state{display:grid;place-items:center;width:20px;flex:none;color:var(--faint)}
 .doc-state .i{width:12px;height:12px}
 .doc-state.approved{color:var(--green)}

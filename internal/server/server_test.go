@@ -1579,7 +1579,7 @@ func TestNavigationTreeReadsAsCollapsedDocumentationOutline(t *testing.T) {
 	}
 }
 
-func TestDeckNavigationNamesDecksAndExpandsToSlideDestinations(t *testing.T) {
+func TestDeckNavigationNamesDecksAndExpandsToRenderedSlideThumbnails(t *testing.T) {
 	root := &saga.Section{ID: "root", Title: "Slides", Target: saga.SagaTarget("test"), Children: []*saga.Section{
 		{Kind: "deck", ID: "flow", Title: "Request flow", Target: saga.DeckTarget("test", "flow"), Fragments: []*saga.Fragment{
 			{ID: "happy", Title: "Happy path", Target: saga.SlideTarget("test", "happy")},
@@ -1594,8 +1594,8 @@ func TestDeckNavigationNamesDecksAndExpandsToSlideDestinations(t *testing.T) {
 	if nodes[0].Expanded || len(nodes[0].Children) != 2 {
 		t.Fatalf("deck should begin collapsed with both slide destinations available: %#v", nodes[0])
 	}
-	if got := nodes[0].Children[1]; got.Title != "Failure path" || got.SlideTarget != saga.SlideTarget("test", "failure") || !strings.Contains(got.Href, "?view=slides#") {
-		t.Fatalf("slide destination = %#v", got)
+	if got := nodes[0].Children[1]; got.Title != "Failure path" || got.Slide == nil || got.Slide.Target != saga.SlideTarget("test", "failure") || !strings.Contains(got.Href, "?view=slides#") {
+		t.Fatalf("rendered slide destination = %#v", got)
 	}
 }
 

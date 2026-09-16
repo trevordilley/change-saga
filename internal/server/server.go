@@ -183,18 +183,18 @@ type reviewDecisionView struct {
 // navNodeView is the sidebar documentation tree. It exposes titles, links and a
 // quiet review state only: never counts, never the storage hierarchy.
 type navNodeView struct {
-	Title       string
-	Href        string
-	NodeID      string
-	Icon        string
-	Deck        bool
-	SlideTarget string
-	Active      bool
-	Expanded    bool
-	StateClass  string
-	StateLabel  string
-	StateIcon   string
-	Children    []*navNodeView
+	Title      string
+	Href       string
+	NodeID     string
+	Icon       string
+	Deck       bool
+	Slide      *SlideReferenceView
+	Active     bool
+	Expanded   bool
+	StateClass string
+	StateLabel string
+	StateIcon  string
+	Children   []*navNodeView
 }
 
 type sectionView struct {
@@ -1141,11 +1141,16 @@ func makeDeckNavTree(root *saga.Section) []*navNodeView {
 			if slide.Title == "" {
 				continue
 			}
+			reviewState, _, _, _ := latestReview(slide.Reviews)
 			node.Children = append(node.Children, &navNodeView{
-				Title:       slide.Title,
-				Href:        "?view=slides#" + domID(slide.Target),
-				NodeID:      "nav-" + domID(slide.Target),
-				SlideTarget: slide.Target,
+				Title:  slide.Title,
+				Href:   "?view=slides#" + domID(slide.Target),
+				NodeID: "nav-" + domID(slide.Target),
+				Slide: &SlideReferenceView{
+					ID: slide.ID, Title: slide.Title, Target: slide.Target,
+					Anchor: domID(slide.Target), Href: "?view=slides#" + domID(slide.Target),
+					URL: fragmentAssetURL(slide), MediaType: slide.MediaType, ReviewState: reviewState,
+				},
 			})
 		}
 		nodes = append(nodes, node)

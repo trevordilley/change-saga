@@ -100,7 +100,7 @@ func TestReportSagaRendersEmbeddedDeckAsSeparateSurface(t *testing.T) {
 	}
 	html := rendered.String()
 	slideTarget := saga.SlideTarget("visual", "change")
-	for _, contract := range []string{`id="view-slides"`, `class="sidebar-slide-surface"`, `data-native-slide`, `data-deck-toggle`, `data-slide-nav-target="` + slideTarget + `"`, `#i-deck`, `/f/change/` + assetName} {
+	for _, contract := range []string{`id="view-slides"`, `class="sidebar-slide-surface"`, `data-native-slide`, `data-deck-target=`, `data-deck-toggle`, `class="doc-node doc-slide-thumbnail"`, `data-slide-thumbnail`, `data-slide-target="` + slideTarget + `"`, `#i-deck`, `/f/change/` + assetName} {
 		if !strings.Contains(html, contract) {
 			t.Fatalf("hybrid slide contract %q missing:\n%s", contract, html)
 		}
