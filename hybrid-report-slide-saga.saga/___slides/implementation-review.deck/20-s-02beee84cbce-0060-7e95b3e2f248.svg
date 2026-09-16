@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
   <title id="title">One implementation deck with sectioned slide thumbnails</title>
-  <desc id="desc">A single expandable Implementation review deck contains all slide thumbnails. Architecture and storage, Traceability, and Reviewer experience appear only as subtle dividers. The selected slide fills the main stage and navigation remains inside the deck.</desc>
+  <desc id="desc">A single expandable Implementation review deck contains all slide thumbnails. Architecture and storage, Traceability, and Reviewer experience appear only as subtle dividers. The selected slide fills the main stage, navigation remains inside the deck, and hover changes only the outline so the preview stays visible.</desc>
   <defs>
     <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 10 5 0 10Z" fill="#50d5ea"/></marker>
   </defs>
@@ -29,7 +29,7 @@
     <line x1="224" y1="491" x2="394" y2="491" stroke="#344765"/>
     <rect x="78" y="511" width="142" height="80" rx="7" fill="#edf3ff" stroke="#5f7598"/>
     <rect x="244" y="511" width="142" height="80" rx="7" fill="#edf3ff" stroke="#5f7598"/>
-    <text x="78" y="623" fill="#7f91b4" font-family="system-ui,sans-serif" font-size="12">8 slides · one deck-local sequence</text>
+    <text x="78" y="623" fill="#7f91b4" font-family="system-ui,sans-serif" font-size="12">Hover = outline only · preview remains visible</text>
   </g>
 
   <g id="selected-thumbnail">

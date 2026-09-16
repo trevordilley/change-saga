@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "verification-8563e4ada20d0a4e27b4",
+  "claim": "sidebar-thumbnail-hover",
+  "status": "verified",
+  "method": "test",
+  "summary": "Chromium hovered the full-card sidebar thumbnail button and observed a transparent computed background before navigation.",
+  "command": "./node_modules/.bin/playwright test --project=chromium tests/hybrid-slides.spec.ts",
+  "created_at": "2026-09-16T23:05:11.194438Z"
+}
