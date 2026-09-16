@@ -55,6 +55,16 @@ const appJavaScript = `(() => {
       thumbnail.closest('[data-slide-thumbnail-card]')?.classList.toggle('active', selected);
       if (selected && updateHash) thumbnail.scrollIntoView({block:'nearest'});
     });
+    let activeNav = null;
+    qa('[data-slide-nav-target]').forEach(link => {
+      const selected = link.dataset.slideNavTarget === active.dataset.slideTarget;
+      link.toggleAttribute('aria-current', selected);
+      link.closest('.doc-row')?.classList.toggle('current', selected);
+      if (selected) activeNav = link;
+    });
+    qa('.doc-deck>.doc-row').forEach(row => row.classList.toggle('current', Boolean(activeNav && row.parentElement.contains(activeNav))));
+    const deckChildren = activeNav?.closest('.doc-children');
+    if (deckChildren?.id) setDocNodeExpandedByID(deckChildren.id, true);
     const previous = q('[data-slide-previous]', shell);
     const next = q('[data-slide-next]', shell);
     if (previous) previous.disabled = bounded === 0;
@@ -71,6 +81,8 @@ const appJavaScript = `(() => {
     if (!slides.length) return;
     const id = decodeURIComponent(location.hash.replace(/^#/, ''));
     const requested = id ? document.getElementById(id)?.closest?.('[data-native-slide]') : null;
+    const view = slides[0].closest('[data-view]');
+    if (view && !view.classList.contains('active') && !requested) return;
     activateNativeSlide(requested ? slides.indexOf(requested) : Math.max(0, slides.findIndex(slide => !slide.hidden)));
   }
 
@@ -1188,12 +1200,20 @@ const appJavaScript = `(() => {
     updateLineSelection(rows);
   }
 
-  function toggleDocNode(button) {
-    const children = document.getElementById(button.getAttribute('aria-controls'));
+  function setDocNodeExpandedByID(id, expanded) {
+    const children = document.getElementById(id);
     if (!children) return;
-    const expanded = button.getAttribute('aria-expanded') === 'true';
-    button.setAttribute('aria-expanded', String(!expanded));
-    children.hidden = expanded;
+    children.hidden = !expanded;
+    qa('[aria-controls]').filter(control => control.getAttribute('aria-controls') === id).forEach(control => {
+      control.setAttribute('aria-expanded', String(expanded));
+    });
+  }
+
+  function toggleDocNode(button) {
+    const id = button.getAttribute('aria-controls');
+    const children = document.getElementById(id);
+    if (!children) return;
+    setDocNodeExpandedByID(id, children.hidden);
   }
 
   // Opening a chapter is what fetches it. The disclosure state is applied at
@@ -1573,7 +1593,7 @@ const appJavaScript = `(() => {
     if (!q('[data-view="'+name+'"]')) name = 'saga';
     qa('[data-view]').forEach(view => view.classList.toggle('active', view.dataset.view === name));
     qa('[data-view-tab]').forEach(tab => {
-      const selected = tab.dataset.viewTab === name;
+      const selected = tab.dataset.viewTab === name || (name === 'slides' && tab.dataset.viewTab === 'saga');
       tab.classList.toggle('active', selected);
       tab.setAttribute('aria-selected', String(selected));
       // Roving focus: only the selected tab is in the sequential tab order.
@@ -1583,12 +1603,15 @@ const appJavaScript = `(() => {
     const codeSide = q('.code-side');
     const toolbox = q('.annotation-toolbox');
     const codeMeta = q('.top-meta');
-    if (sagaSide) sagaSide.hidden = name !== 'saga';
+    if (sagaSide) sagaSide.hidden = name !== 'saga' && name !== 'slides';
     if (codeSide) codeSide.hidden = name !== 'code';
     if (toolbox) toolbox.hidden = (name !== 'saga' && name !== 'slides') || !toolbox.dataset.annotationTarget;
     if (codeMeta) codeMeta.hidden = name !== 'code';
     const shell = q('[data-shell]');
-    if (shell) shell.classList.toggle('code-mode', name === 'code');
+    if (shell) {
+      shell.classList.toggle('code-mode', name === 'code');
+      shell.classList.toggle('slide-mode', name === 'slides');
+    }
     qa('[data-slide-sidebar-toggle]').forEach(button => { button.hidden = name !== 'saga'; });
     const slideView = q('[data-view="slides"]') ? 'slides' : 'saga';
     qa('[data-slide-present]').forEach(button => { button.hidden = name !== slideView; });
@@ -3149,6 +3172,17 @@ const appJavaScript = `(() => {
   });
 
   document.addEventListener('click', event => {
+    const slideNav = event.target.closest?.('[data-slide-nav-target]');
+    if (slideNav) {
+      event.preventDefault();
+      const slides = nativeSlides();
+      const index = slides.findIndex(slide => slide.dataset.slideTarget === slideNav.dataset.slideNavTarget);
+      if (index >= 0) {
+        setView('slides');
+        activateNativeSlide(index, true);
+      }
+      return;
+    }
     const slideThumbnail = event.target.closest?.('[data-slide-thumbnail]');
     if (slideThumbnail) {
       const slides = nativeSlides();
@@ -3264,6 +3298,10 @@ const appJavaScript = `(() => {
     if (annotation) { selectAnnotation(annotation); return; }
     const docTwisty = event.target.closest('[data-doc-twisty]');
     if (docTwisty) { toggleDocNode(docTwisty); return; }
+    const deckToggle = event.target.closest('[data-deck-toggle]');
+    if (deckToggle) { toggleDocNode(deckToggle); return; }
+    const reportNav = event.target.closest('[data-report-nav]');
+    if (reportNav && q('[data-view="slides"].active')) setView('saga');
     const chapterToggle = event.target.closest('[data-chapter-toggle]');
     if (chapterToggle) { toggleChapter(chapterToggle); return; }
     const viewTab = event.target.closest('[data-view-tab]');

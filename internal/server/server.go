@@ -183,15 +183,18 @@ type reviewDecisionView struct {
 // navNodeView is the sidebar documentation tree. It exposes titles, links and a
 // quiet review state only: never counts, never the storage hierarchy.
 type navNodeView struct {
-	Title      string
-	Href       string
-	NodeID     string
-	Active     bool
-	Expanded   bool
-	StateClass string
-	StateLabel string
-	StateIcon  string
-	Children   []*navNodeView
+	Title       string
+	Href        string
+	NodeID      string
+	Icon        string
+	Deck        bool
+	SlideTarget string
+	Active      bool
+	Expanded    bool
+	StateClass  string
+	StateLabel  string
+	StateIcon   string
+	Children    []*navNodeView
 }
 
 type sectionView struct {
@@ -988,6 +991,9 @@ func (a *app) page(w http.ResponseWriter, r *http.Request) {
 	data.ReviewDecided, data.ReviewTotal = reviewProgressSummary(data.ReviewItems)
 	data.ActivityCount = reviewActivityCount(document)
 	data.Nav = makeNavTree(reportRoot, threadsByTarget)
+	if data.HybridSlides {
+		data.Nav = append(data.Nav, makeDeckNavTree(slideRoot)...)
+	}
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	if err := a.template.ExecuteTemplate(w, "page", data); err != nil {
 		http.Error(w, "The review page could not be rendered.", http.StatusInternalServerError)
@@ -1110,6 +1116,38 @@ func makeNavTree(root *saga.Section, threads map[string][]*threadView) []*navNod
 			StateLabel: status, StateClass: class, StateIcon: icon,
 		}
 		node.Children = withoutRedundantLead(documentOutline(child), node.Title)
+		nodes = append(nodes, node)
+	}
+	return nodes
+}
+
+// makeDeckNavTree projects embedded review decks into the same sidebar as the
+// living documentation. Decks are disclosure nodes, while their slides are
+// destinations that switch the main pane from report reading to visual review.
+// Standalone v4 Sagas keep their thumbnail navigator and never use this tree.
+func makeDeckNavTree(root *saga.Section) []*navNodeView {
+	if root == nil {
+		return nil
+	}
+	var nodes []*navNodeView
+	for _, deck := range root.Children {
+		if deck.Kind != "deck" {
+			continue
+		}
+		node := &navNodeView{
+			Title: deck.Title, NodeID: "nav-" + domID(deck.Target), Icon: "deck", Deck: true,
+		}
+		for _, slide := range deck.Fragments {
+			if slide.Title == "" {
+				continue
+			}
+			node.Children = append(node.Children, &navNodeView{
+				Title:       slide.Title,
+				Href:        "?view=slides#" + domID(slide.Target),
+				NodeID:      "nav-" + domID(slide.Target),
+				SlideTarget: slide.Target,
+			})
+		}
 		nodes = append(nodes, node)
 	}
 	return nodes

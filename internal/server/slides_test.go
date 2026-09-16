@@ -93,15 +93,20 @@ func TestReportSagaRendersEmbeddedDeckAsSeparateSurface(t *testing.T) {
 	data := pageData{
 		Saga: document, HybridSlides: true,
 		Root: makeSectionView(reportRoot, viewScope{}), SlideRoot: makeSectionView(slideRoot, viewScope{}),
+		Nav: append(makeNavTree(reportRoot, nil), makeDeckNavTree(slideRoot)...),
 	}
 	if err := tmpl.ExecuteTemplate(&rendered, "page", data); err != nil {
 		t.Fatal(err)
 	}
 	html := rendered.String()
-	for _, contract := range []string{`data-view-tab="slides"`, `id="view-slides"`, `class="embedded-slide-surface"`, `data-native-slide`, `data-slide-thumbnail`, `/f/change/` + assetName} {
+	slideTarget := saga.SlideTarget("visual", "change")
+	for _, contract := range []string{`id="view-slides"`, `class="sidebar-slide-surface"`, `data-native-slide`, `data-deck-toggle`, `data-slide-nav-target="` + slideTarget + `"`, `#i-deck`, `/f/change/` + assetName} {
 		if !strings.Contains(html, contract) {
 			t.Fatalf("hybrid slide contract %q missing:\n%s", contract, html)
 		}
+	}
+	if strings.Contains(html, `data-view-tab="slides"`) || strings.Contains(html, `class="embedded-slide-surface"`) {
+		t.Fatalf("hybrid decks should live in the report sidebar instead of a second tab or rail:\n%s", html)
 	}
 	if !strings.Contains(html, "Living overview") || !strings.Contains(html, "Complex flow") {
 		t.Fatalf("report or deck surface disappeared:\n%s", html)

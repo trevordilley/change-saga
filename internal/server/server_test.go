@@ -1579,6 +1579,26 @@ func TestNavigationTreeReadsAsCollapsedDocumentationOutline(t *testing.T) {
 	}
 }
 
+func TestDeckNavigationNamesDecksAndExpandsToSlideDestinations(t *testing.T) {
+	root := &saga.Section{ID: "root", Title: "Slides", Target: saga.SagaTarget("test"), Children: []*saga.Section{
+		{Kind: "deck", ID: "flow", Title: "Request flow", Target: saga.DeckTarget("test", "flow"), Fragments: []*saga.Fragment{
+			{ID: "happy", Title: "Happy path", Target: saga.SlideTarget("test", "happy")},
+			{ID: "failure", Title: "Failure path", Target: saga.SlideTarget("test", "failure")},
+		}},
+	}}
+
+	nodes := makeDeckNavTree(root)
+	if len(nodes) != 1 || nodes[0].Title != "Request flow" || !nodes[0].Deck || nodes[0].Icon != "deck" {
+		t.Fatalf("deck was not projected as a named sidebar disclosure: %#v", nodes)
+	}
+	if nodes[0].Expanded || len(nodes[0].Children) != 2 {
+		t.Fatalf("deck should begin collapsed with both slide destinations available: %#v", nodes[0])
+	}
+	if got := nodes[0].Children[1]; got.Title != "Failure path" || got.SlideTarget != saga.SlideTarget("test", "failure") || !strings.Contains(got.Href, "?view=slides#") {
+		t.Fatalf("slide destination = %#v", got)
+	}
+}
+
 func TestDOMIDIsStableAndCollisionResistantAfterReadablePrefix(t *testing.T) {
 	prefix := "urn:change-saga:test:fragment:" + strings.Repeat("shared-prefix", 10)
 	first := domID(prefix + "-one")
