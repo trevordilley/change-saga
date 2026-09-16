@@ -113,6 +113,7 @@ func TestActiveSlideLoadsItsAggregateDiffSummary(t *testing.T) {
 func TestSlideChromeDoesNotMaskOrIndentContent(t *testing.T) {
 	for _, contract := range []string{
 		`.doc-deck>.doc-children{margin:0 0 8px;padding:7px 0 2px;border-left:0;`,
+		`.slide-thumbnail-hit:hover,.slide-thumbnail-hit:active{background:transparent}`,
 		`.landmark-hotspot:hover,.landmark-hotspot:focus-within,.landmark-hotspot.active{border-color:#d39418;background:transparent}`,
 	} {
 		if !strings.Contains(pageStyles, contract) {

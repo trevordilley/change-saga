@@ -92,6 +92,7 @@ a{color:var(--accent)}
 .slide-thumbnail-status[data-review-state=rejected]{border-color:var(--red);background:var(--reject-bg);color:var(--red)}
 .slide-thumbnail-status[data-review-state=rejected]::before{content:'!'}
 .slide-thumbnail-hit{position:absolute;z-index:2;inset:0;width:100%;padding:0;border:0;border-radius:5px;background:transparent}
+.slide-thumbnail-hit:hover,.slide-thumbnail-hit:active{background:transparent}
 .slide-thumbnail-hit:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .slide-thumbnail-card:hover .slide-thumbnail-preview{border-color:var(--faint)}
 .slide-thumbnail-card.active{color:var(--ink);font-weight:600}

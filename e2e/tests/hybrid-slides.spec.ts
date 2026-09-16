@@ -37,7 +37,10 @@ test("a Report Saga opens several implementation decks without paginating its do
   await expect(requestDeckNode.locator("[data-slide-section]")).toHaveText(["Ingress", "Egress"]);
   await expect(requestDeckNode.locator(":scope > .doc-children")).toHaveCSS("margin-left", "0px");
   await expect(requestDeckNode.locator(":scope > .doc-children")).toHaveCSS("padding-left", "0px");
-  await requestDeckNode.getByRole("button", { name: "Show slide: Request enters" }).click();
+  const requestSlide = requestDeckNode.getByRole("button", { name: "Show slide: Request enters" });
+  await requestSlide.hover();
+  await expect(requestSlide).toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
+  await requestSlide.click();
 
   const slidePanel = page.locator("#view-slides");
   await expect(slidePanel).toBeVisible();
