@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "hybrid-slide-evidence-browser-suite-20260916",
+  "claim": "hybrid-slide-evidence-browser-suite",
+  "status": "verified",
+  "method": "test",
+  "summary": "All 40 Chromium scenarios passed on the final rerun, including the hybrid slide flow.",
+  "command": "cd e2e \u0026\u0026 playwright test --project=chromium",
+  "created_at": "2026-09-16T21:40:40.326419Z"
+}
