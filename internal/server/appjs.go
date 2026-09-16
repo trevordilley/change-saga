@@ -20,8 +20,38 @@ const appJavaScript = `(() => {
   let drawerRestore = null;
   let pinnedBubble = null;
   let bubbleHideTimer = null;
+  const slideDiffPreviewReasons = new WeakMap();
   const noteDefaultColor = '#f2bd4b';
   const slideSidebarKey = 'change-saga-slide-sidebar-collapsed';
+
+  function slideDiffSummaryButton(node) {
+    const button = node?.closest?.('.diff-button');
+    const fragment = button?.closest?.('.fragment');
+    if (!button || !fragment?.closest('[data-native-slide]')) return null;
+    return button.closest('.fragment-head')?.parentElement === fragment ? button : null;
+  }
+
+  function setSlideDiffPreview(button, reason, visible) {
+    const fragment = slideDiffSummaryButton(button)?.closest('.fragment');
+    if (!fragment) return;
+    let reasons = slideDiffPreviewReasons.get(fragment);
+    if (!reasons) {
+      reasons = new Set();
+      slideDiffPreviewReasons.set(fragment, reasons);
+    }
+    if (visible) reasons.add(reason);
+    else reasons.delete(reason);
+    fragment.classList.toggle('preview-linked-items', reasons.size > 0);
+  }
+
+  function landmarkOwnsDiffs(target) {
+    const template = q('[data-landmark-affordance-template]', target);
+    return Boolean(template?.content.querySelector('[data-open-diffs],[data-target-code-href]'));
+  }
+
+  function markLandmarkDiffOwnership(target, visual) {
+    if (visual) visual.dataset.landmarkHasDiffs = String(landmarkOwnsDiffs(target));
+  }
 
   function nativeSlides() { return qa('[data-native-slide]'); }
 
@@ -40,6 +70,7 @@ const appJavaScript = `(() => {
   function activateNativeSlide(index, updateHash = false) {
     const slides = nativeSlides();
     if (!slides.length) return;
+    qa('.fragment.preview-linked-items').forEach(fragment => fragment.classList.remove('preview-linked-items'));
     const bounded = Math.max(0, Math.min(slides.length - 1, index));
     slides.forEach((slide, current) => {
       const active = current === bounded;
@@ -646,6 +677,7 @@ const appJavaScript = `(() => {
     visual.dataset.y = String(region.y);
     visual.dataset.width = String(region.width);
     visual.dataset.height = String(region.height);
+    markLandmarkDiffOwnership(target, visual);
     const affordance = cloneLandmarkAffordance(target);
     if (affordance) visual.append(affordance);
     stage.insertBefore(visual, q('.review-overlay', stage));
@@ -884,6 +916,7 @@ const appJavaScript = `(() => {
       if (target.dataset.landmarkType === 'heading') {
         const heading = document.getElementById(anchor);
         if (!heading) return;
+        markLandmarkDiffOwnership(target, heading);
         heading.querySelector('.heading-permalink')?.remove();
         const affordance = cloneLandmarkAffordance(target);
         if (affordance) heading.append(affordance);
@@ -893,9 +926,11 @@ const appJavaScript = `(() => {
         target.removeAttribute('id');
         mark.id = anchor;
         mark.dataset.landmarkVisual = anchor;
+        markLandmarkDiffOwnership(target, mark);
         const affordance = cloneLandmarkAffordance(target);
         if (affordance) mark.append(affordance);
       }
+      markLandmarkDiffOwnership(target, q('[data-landmark-visual="' + CSS.escape(anchor) + '"]', fragment));
     });
     within(root, '.fragment').forEach(fragment => { void prepareSVGElementHotspots(fragment).catch(() => {}); });
     globalThis.requestAnimationFrame?.(positionFragmentOverlays);
@@ -3169,6 +3204,10 @@ const appJavaScript = `(() => {
   });
 
   document.addEventListener('pointerover', event => {
+    const slideDiffButton = slideDiffSummaryButton(event.target);
+    if (event.pointerType !== 'touch' && slideDiffButton && !(event.relatedTarget instanceof Node && slideDiffButton.contains(event.relatedTarget))) {
+      setSlideDiffPreview(slideDiffButton, 'pointer', true);
+    }
     const fragment = event.target.closest('.fragment');
     if (fragment && !drawing) setActiveFragment(fragment);
     if (event.pointerType !== 'touch' && fragment && !(event.relatedTarget instanceof Node && fragment.contains(event.relatedTarget))) {
@@ -3178,6 +3217,10 @@ const appJavaScript = `(() => {
   });
 
   document.addEventListener('pointerout', event => {
+    const slideDiffButton = slideDiffSummaryButton(event.target);
+    if (event.pointerType !== 'touch' && slideDiffButton && !(event.relatedTarget instanceof Node && slideDiffButton.contains(event.relatedTarget))) {
+      setSlideDiffPreview(slideDiffButton, 'pointer', false);
+    }
     const fragment = event.target.closest('.fragment');
     if (event.pointerType !== 'touch' && fragment && !(event.relatedTarget instanceof Node && fragment.contains(event.relatedTarget))) {
       endFragmentPrefetch(fragment, 'pointer');
@@ -3186,6 +3229,10 @@ const appJavaScript = `(() => {
   });
 
   document.addEventListener('focusin', event => {
+    const slideDiffButton = slideDiffSummaryButton(event.target);
+    if (slideDiffButton && !(event.relatedTarget instanceof Node && slideDiffButton.contains(event.relatedTarget))) {
+      setSlideDiffPreview(slideDiffButton, 'focus', true);
+    }
     const fragment = event.target.closest('.fragment');
     if (fragment) setActiveFragment(fragment);
     if (fragment && !(event.relatedTarget instanceof Node && fragment.contains(event.relatedTarget))) beginFragmentPrefetch(fragment, 'focus');
@@ -3193,6 +3240,10 @@ const appJavaScript = `(() => {
   });
 
   document.addEventListener('focusout', event => {
+    const slideDiffButton = slideDiffSummaryButton(event.target);
+    if (slideDiffButton && !(event.relatedTarget instanceof Node && slideDiffButton.contains(event.relatedTarget))) {
+      setSlideDiffPreview(slideDiffButton, 'focus', false);
+    }
     const fragment = event.target.closest('.fragment');
     if (fragment && !(event.relatedTarget instanceof Node && fragment.contains(event.relatedTarget))) endFragmentPrefetch(fragment, 'focus');
     hideAnnotationBubbleSoon(annotationBubbleAt(event.target));

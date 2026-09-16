@@ -110,11 +110,35 @@ func TestActiveSlideLoadsItsAggregateDiffSummary(t *testing.T) {
 	}
 }
 
+func TestSlideDiffSummaryPreviewsOnlyLinkedItems(t *testing.T) {
+	for _, contract := range []string{
+		"function slideDiffSummaryButton(node)",
+		"function setSlideDiffPreview(button, reason, visible)",
+		"function landmarkOwnsDiffs(target)",
+		"markLandmarkDiffOwnership(target, visual)",
+		"setSlideDiffPreview(slideDiffButton, 'pointer', true)",
+		"setSlideDiffPreview(slideDiffButton, 'pointer', false)",
+		`fragment.classList.toggle('preview-linked-items', reasons.size > 0)`,
+	} {
+		if !strings.Contains(appJavaScript, contract) {
+			t.Errorf("slide diff preview is missing %q", contract)
+		}
+	}
+	for _, contract := range []string{
+		`.fragment.preview-linked-items .landmark-hotspot[data-landmark-has-diffs="true"]`,
+		`.fragment.preview-linked-items .content-landmark-text[data-landmark-has-diffs="true"]`,
+	} {
+		if !strings.Contains(pageStyles, contract) {
+			t.Errorf("slide diff preview styling is missing %q", contract)
+		}
+	}
+}
+
 func TestSlideChromeDoesNotMaskOrIndentContent(t *testing.T) {
 	for _, contract := range []string{
 		`.doc-deck>.doc-children{margin:0 0 8px;padding:7px 0 2px;border-left:0;`,
 		`.slide-thumbnail-hit:hover,.slide-thumbnail-hit:active{background:transparent}`,
-		`.landmark-hotspot:hover,.landmark-hotspot:focus-within,.landmark-hotspot.active{border-color:#d39418;background:transparent}`,
+		`.landmark-hotspot:hover,.landmark-hotspot:focus-within,.landmark-hotspot.active,.fragment.preview-linked-items .landmark-hotspot[data-landmark-has-diffs="true"]{border-color:#d39418;background:transparent}`,
 	} {
 		if !strings.Contains(pageStyles, contract) {
 			t.Errorf("slide chrome regression contract is missing %q", contract)

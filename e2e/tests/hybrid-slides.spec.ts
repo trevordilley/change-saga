@@ -1,3 +1,5 @@
+import { writeFileSync } from "node:fs";
+import { join } from "node:path";
 import { expect, test, waitForSettledSaga } from "../support/test.js";
 import { runCLI } from "../support/fixture-builder.js";
 
@@ -15,9 +17,16 @@ test("a Report Saga opens several implementation decks without paginating its do
     run("add-deck", "--objective", `Explain the complex ${deck.title.toLowerCase()}.`, saga.sagaRoot, deck.id);
     for (const [slide, title, section] of deck.slides) {
       run("add-slide", "--deck", deck.id, "--section", section, "--intent", "explain", "--layout", "diagram", "--title", title, "--takeaway", `${title} is explicit.`, saga.sagaRoot, slide);
-      run("add-item", "--slide", slide, "--kind", "callout", "--id", "surprise", "--element-id", "slide-title", "--description", `The surprising part of ${title.toLowerCase()}.`, "--body", "The implementation follows a non-obvious path.", saga.sagaRoot);
+      if (slide === "request-enters") {
+        const source = join(saga.root, "request-enters.svg");
+        writeFileSync(source, `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720"><rect width="1280" height="720" fill="#f7f7f4"/><g id="linked-node"><rect x="120" y="180" width="420" height="260" rx="32" fill="#dce8ff" stroke="#3867a8" stroke-width="6"/><text x="190" y="325" font-size="44">Linked item</text></g><g id="unlinked-node"><rect x="740" y="180" width="420" height="260" rx="32" fill="#f2f2ee" stroke="#777" stroke-width="6"/><text x="790" y="325" font-size="44">No diff</text></g></svg>`);
+        run("set-slide-content", "--target", slide, "--source", source, saga.sagaRoot);
+      }
+      run("add-item", "--slide", slide, "--kind", "callout", "--id", "surprise", "--element-id", slide === "request-enters" ? "linked-node" : "slide-title", "--description", `The surprising part of ${title.toLowerCase()}.`, "--body", "The implementation follows a non-obvious path.", saga.sagaRoot);
+      if (slide === "request-enters") run("add-item", "--slide", slide, "--kind", "node", "--id", "no-diff", "--element-id", "unlinked-node", "--description", "A nearby element without exact diff evidence.", saga.sagaRoot);
     }
   }
+  run("cover", "--repo", saga.sourceRepo, "--target", "urn:change-saga:wave-one:slide:request-enters:item:surprise", "--path", "src/app.go", "--side", "new", "--lines", "3", "--name", "request-slide-item", saga.sagaRoot);
 
   await page.reload();
   await waitForSettledSaga(page);
@@ -49,6 +58,20 @@ test("a Report Saga opens several implementation decks without paginating its do
   await expect(slidePanel.locator("[data-slide-position]")).toHaveText("1 / 2");
   await expect(page.locator("[data-shell]")).toHaveClass(/slide-mode/);
   await expect(page.getByRole("tab", { name: "Saga" })).toHaveAttribute("aria-selected", "true");
+
+  const activeSlide = slidePanel.locator('[data-native-slide][data-slide-title="Request enters"]');
+  const linkedItem = activeSlide.locator('.landmark-hotspot[data-element-id="linked-node"]');
+  const unlinkedItem = activeSlide.locator('.landmark-hotspot[data-element-id="unlinked-node"]');
+  await expect(linkedItem).toHaveAttribute("data-landmark-has-diffs", "true");
+  await expect(unlinkedItem).toHaveAttribute("data-landmark-has-diffs", "false");
+  const slideDiffs = activeSlide.locator(".fragment > .fragment-head > .fragment-actions > .diff-button").first();
+  await expect(slideDiffs).toHaveAttribute("data-open-diffs", /.+/);
+  await slideDiffs.hover();
+  await expect(linkedItem).toHaveCSS("border-color", "rgb(211, 148, 24)");
+  await expect(linkedItem.locator(".landmark-affordance")).toHaveCSS("opacity", "1");
+  await expect(unlinkedItem).toHaveCSS("border-color", "rgba(0, 0, 0, 0)");
+  await page.locator(".brand").hover();
+  await expect(linkedItem).toHaveCSS("border-color", "rgba(0, 0, 0, 0)");
 
   await slidePanel.getByRole("button", { name: "Next slide" }).click();
   await expect(slidePanel.locator('[data-native-slide][data-slide-title="Response returns"]')).toBeVisible();

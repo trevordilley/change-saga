@@ -418,14 +418,14 @@ section:hover>.section-actions .review-controls,.section:hover>.section-head>.se
 .content-landmark-region.active{fill:#f2bd4b33;stroke:#d39418}
 .content-landmark-active{background:#f2bd4b40;outline:2px solid #d39418}
 .landmark-affordance{display:inline-flex;align-items:center;gap:1px;padding:1px;border-radius:var(--radius);background:var(--landmark-affordance-bg);border:1px solid var(--line);box-shadow:var(--shadow);opacity:0;transition:opacity .12s}
-.fragment-heading:hover>.landmark-affordance,.fragment-heading:focus-within>.landmark-affordance,.content-landmark-text:hover>.landmark-affordance,.content-landmark-text:focus-within>.landmark-affordance{opacity:1}
+.fragment-heading:hover>.landmark-affordance,.fragment-heading:focus-within>.landmark-affordance,.fragment.preview-linked-items .fragment-heading[data-landmark-has-diffs="true"]>.landmark-affordance,.content-landmark-text:hover>.landmark-affordance,.content-landmark-text:focus-within>.landmark-affordance,.fragment.preview-linked-items .content-landmark-text[data-landmark-has-diffs="true"]>.landmark-affordance{opacity:1}
 .content-landmark-text{position:relative;display:inline;border-radius:3px;background:transparent;color:inherit}
 .content-landmark-text>.landmark-affordance{position:absolute;z-index:4;left:calc(100% + 4px);top:50%;transform:translateY(-50%);white-space:nowrap}
-.content-landmark-text.content-landmark-active{background:#f2bd4b40;outline:2px solid #d39418}
+.content-landmark-text.content-landmark-active,.fragment.preview-linked-items .content-landmark-text[data-landmark-has-diffs="true"]{background:#f2bd4b40;outline:2px solid #d39418}
 .landmark-hotspot{position:absolute;z-index:3;border:1px solid transparent;border-radius:4px;pointer-events:auto}
 .landmark-hotspot>.landmark-affordance{position:absolute;right:3px;top:3px}
-.landmark-hotspot:hover,.landmark-hotspot:focus-within,.landmark-hotspot.active{border-color:#d39418;background:transparent}
-.landmark-hotspot:hover>.landmark-affordance,.landmark-hotspot:focus-within>.landmark-affordance,.landmark-hotspot.active>.landmark-affordance{opacity:1}
+.landmark-hotspot:hover,.landmark-hotspot:focus-within,.landmark-hotspot.active,.fragment.preview-linked-items .landmark-hotspot[data-landmark-has-diffs="true"]{border-color:#d39418;background:transparent}
+.landmark-hotspot:hover>.landmark-affordance,.landmark-hotspot:focus-within>.landmark-affordance,.landmark-hotspot.active>.landmark-affordance,.fragment.preview-linked-items .landmark-hotspot[data-landmark-has-diffs="true"]>.landmark-affordance{opacity:1}
 
 /* Annotation overlay ----------------------------------------------------- */
 .review-overlay{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
