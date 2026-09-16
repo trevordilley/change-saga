@@ -298,6 +298,9 @@ func validateSlideManifest(value SlideManifest, path, deckID, deckTarget, target
 	if validFlatRank(value.Rank) != nil || !slideIntents[value.Intent] || !slideLayouts[value.Layout] || !slideMediaTypes[value.MediaType] {
 		addIssue(validation, "error", path, "slide requires a portable rank and supported intent, layout, and visual media_type")
 	}
+	if value.Section != strings.TrimSpace(value.Section) || utf8.RuneCountInString(value.Section) > 80 {
+		addIssue(validation, "error", path, "slide section must be trimmed and at most 80 characters")
+	}
 	if strings.TrimSpace(value.Takeaway) == "" || utf8.RuneCountInString(value.Takeaway) > 180 {
 		addIssue(validation, "error", path, "slide takeaway must contain 1 to 180 characters")
 	}

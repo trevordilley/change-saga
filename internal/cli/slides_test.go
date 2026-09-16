@@ -44,7 +44,7 @@ func TestSlideNativeAuthoringLoopAndCompatibilityRefusal(t *testing.T) {
 	if err := AddSlide(context.Background(), []string{"--deck", "overview", "--intent", "orient", "--layout", "hero", "--entrypoint", "assets/slide.svg", root, "nested-source"}, &output); err == nil || !strings.Contains(err.Error(), "simple filename") {
 		t.Fatalf("nested v4 entrypoint was not refused clearly: %v", err)
 	}
-	if err := AddSlide(context.Background(), []string{"--deck", "overview", "--intent", "orient", "--layout", "hero", "--title", "What changed", "--takeaway", "Validation now happens first.", root, "change-overview"}, &output); err != nil {
+	if err := AddSlide(context.Background(), []string{"--deck", "overview", "--section", "Overview", "--intent", "orient", "--layout", "hero", "--title", "What changed", "--takeaway", "Validation now happens first.", root, "change-overview"}, &output); err != nil {
 		t.Fatal(err)
 	}
 	if err := AddItem(context.Background(), []string{"--slide", "change-overview", "--kind", "callout", "--id", "premise", "--element-id", "slide-title", "--label", "Review premise", "--description", "The high-level behavioral change.", "--body", "Invalid requests never reach persistence.", "--placement", "right", "--leader", "arrow", root}, &output); err != nil {
@@ -64,6 +64,9 @@ func TestSlideNativeAuthoringLoopAndCompatibilityRefusal(t *testing.T) {
 	}
 	if _, err := os.Stat(filepath.Join(root, document.Decks[0].Slides[1].Entrypoint)); err != nil {
 		t.Fatalf("compact slide asset was not written: %v", err)
+	}
+	if document.Decks[0].Slides[0].Section != "Overview" {
+		t.Fatalf("slide section = %q, want Overview", document.Decks[0].Slides[0].Section)
 	}
 	entries, err := os.ReadDir(root)
 	if err != nil {
@@ -113,7 +116,7 @@ func TestSlideNativeAuthoringLoopAndCompatibilityRefusal(t *testing.T) {
 		t.Fatal(err)
 	}
 	data, _ := envelope["data"].(map[string]any)
-	if envelope["schema"] != slideQuerySchema || data["items"] == nil || data["landmarks"] != nil || data["takeaway"] != "Validation now happens first." {
+	if envelope["schema"] != slideQuerySchema || data["items"] == nil || data["landmarks"] != nil || data["section"] != "Overview" || data["takeaway"] != "Validation now happens first." {
 		t.Fatalf("slide query leaked report vocabulary or metadata: %#v", envelope)
 	}
 	queryOutput.Reset()

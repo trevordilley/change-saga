@@ -130,6 +130,7 @@ func AddSlide(_ context.Context, args []string, out io.Writer) error {
 	deckTarget := flags.String("deck", "", "containing deck path, id, or URN")
 	id := flags.String("id", "", "stable slide identifier")
 	title := flags.String("title", "", "slide title")
+	section := flags.String("section", "", "optional section label shown as a subtle divider inside the deck")
 	intent := flags.String("intent", "", "reviewer job: orient, explain, compare, trace, prove, risk, or conclude")
 	layout := flags.String("layout", "", "canvas arrangement, not diagram meaning: hero, diagram, before-after, sequence, evidence, risk, or custom")
 	var rank optionalInt
@@ -161,8 +162,8 @@ func AddSlide(_ context.Context, args []string, out io.Writer) error {
 	if (rank.set && rank.value < 0) || !validIntent[*intent] || !validLayout[*layout] || !validMedia[*mediaType] {
 		return fmt.Errorf("unsupported intent, layout, media type, or negative rank")
 	}
-	if utf8.RuneCountInString(*title) > 100 || utf8.RuneCountInString(*takeaway) > 180 {
-		return fmt.Errorf("slide title/takeaway exceed the 100/180 character density limits")
+	if utf8.RuneCountInString(*title) > 100 || utf8.RuneCountInString(*section) > 80 || utf8.RuneCountInString(*takeaway) > 180 {
+		return fmt.Errorf("slide title/section/takeaway exceed the 100/80/180 character density limits")
 	}
 	if *layout == "custom" && strings.TrimSpace(*rationale) == "" {
 		return fmt.Errorf("--exception-rationale is required for --layout custom")
@@ -222,7 +223,7 @@ func AddSlide(_ context.Context, args []string, out io.Writer) error {
 		if err != nil {
 			return err
 		}
-		manifest := saga.SlideManifest{Version: saga.SlideSagaVersion, ID: *id, DeckID: deck.ID, Title: *title, Rank: chosenRank, Intent: *intent, Layout: *layout, MediaType: *mediaType, Entrypoint: assetName, Takeaway: *takeaway, ReadingOrder: []string{}, ExceptionRationale: *rationale}
+		manifest := saga.SlideManifest{Version: saga.SlideSagaVersion, ID: *id, DeckID: deck.ID, Title: *title, Rank: chosenRank, Section: strings.TrimSpace(*section), Intent: *intent, Layout: *layout, MediaType: *mediaType, Entrypoint: assetName, Takeaway: *takeaway, ReadingOrder: []string{}, ExceptionRationale: *rationale}
 		assetPath := filepath.Join(deck.Directory, assetName)
 		manifestPath := filepath.Join(deck.Directory, filename)
 		if err := store.WriteFile(assetPath, data, 0o644, true); err != nil {

@@ -69,6 +69,7 @@ type SlideManifest struct {
 	DeckID             string   `json:"deck"`
 	Title              string   `json:"title"`
 	Rank               int      `json:"rank"`
+	Section            string   `json:"section,omitempty"`
 	Intent             string   `json:"intent"`
 	Layout             string   `json:"layout"`
 	MediaType          string   `json:"media_type"`

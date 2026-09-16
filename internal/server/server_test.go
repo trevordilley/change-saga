@@ -1582,8 +1582,8 @@ func TestNavigationTreeReadsAsCollapsedDocumentationOutline(t *testing.T) {
 func TestDeckNavigationNamesDecksAndExpandsToRenderedSlideThumbnails(t *testing.T) {
 	root := &saga.Section{ID: "root", Title: "Slides", Target: saga.SagaTarget("test"), Children: []*saga.Section{
 		{Kind: "deck", ID: "flow", Title: "Request flow", Target: saga.DeckTarget("test", "flow"), Fragments: []*saga.Fragment{
-			{ID: "happy", Title: "Happy path", Target: saga.SlideTarget("test", "happy")},
-			{ID: "failure", Title: "Failure path", Target: saga.SlideTarget("test", "failure")},
+			{ID: "happy", Title: "Happy path", Target: saga.SlideTarget("test", "happy"), SlideMeta: &saga.SlideManifest{Section: "Request"}},
+			{ID: "failure", Title: "Failure path", Target: saga.SlideTarget("test", "failure"), SlideMeta: &saga.SlideManifest{Section: "Errors"}},
 		}},
 	}}
 
@@ -1596,6 +1596,9 @@ func TestDeckNavigationNamesDecksAndExpandsToRenderedSlideThumbnails(t *testing.
 	}
 	if got := nodes[0].Children[1]; got.Title != "Failure path" || got.Slide == nil || got.Slide.Target != saga.SlideTarget("test", "failure") || !strings.Contains(got.Href, "?view=slides#") {
 		t.Fatalf("rendered slide destination = %#v", got)
+	}
+	if nodes[0].Children[0].Slide.Section != "Request" || nodes[0].Children[1].Slide.Section != "Errors" {
+		t.Fatalf("slide section boundaries were not retained: %#v", nodes[0].Children)
 	}
 }
 

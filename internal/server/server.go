@@ -230,6 +230,7 @@ type fragmentView struct {
 	Interactive   bool
 	Image         bool
 	AspectRatio   string
+	SectionTitle  string
 	LandmarkViews []*landmarkView
 	ChangeCount   int
 	Attached      *attachedCodeView
@@ -1137,17 +1138,27 @@ func makeDeckNavTree(root *saga.Section) []*navNodeView {
 		node := &navNodeView{
 			Title: deck.Title, NodeID: "nav-" + domID(deck.Target), Icon: "deck", Deck: true,
 		}
+		previousSection := ""
 		for _, slide := range deck.Fragments {
 			if slide.Title == "" {
 				continue
 			}
 			reviewState, _, _, _ := latestReview(slide.Reviews)
+			section := ""
+			if slide.SlideMeta != nil {
+				section = strings.TrimSpace(slide.SlideMeta.Section)
+			}
+			sectionStart := ""
+			if section != "" && section != previousSection {
+				sectionStart = section
+			}
+			previousSection = section
 			node.Children = append(node.Children, &navNodeView{
 				Title:  slide.Title,
 				Href:   "?view=slides#" + domID(slide.Target),
 				NodeID: "nav-" + domID(slide.Target),
 				Slide: &SlideReferenceView{
-					ID: slide.ID, Title: slide.Title, Target: slide.Target,
+					ID: slide.ID, Title: slide.Title, Section: sectionStart, Target: slide.Target,
 					Anchor: domID(slide.Target), Href: "?view=slides#" + domID(slide.Target),
 					URL: fragmentAssetURL(slide), MediaType: slide.MediaType, ReviewState: reviewState,
 				},
@@ -1531,8 +1542,17 @@ func makeSectionView(section *saga.Section, scope viewScope) *sectionView {
 			}
 		}
 	}
+	previousSlideSection := ""
 	for _, fragment := range section.Fragments {
-		view.FragmentViews = append(view.FragmentViews, makeFragmentView(fragment, scope))
+		fragmentView := makeFragmentView(fragment, scope)
+		if fragment.SlideMeta != nil {
+			currentSection := strings.TrimSpace(fragment.SlideMeta.Section)
+			if currentSection != "" && currentSection != previousSlideSection {
+				fragmentView.SectionTitle = currentSection
+			}
+			previousSlideSection = currentSection
+		}
+		view.FragmentViews = append(view.FragmentViews, fragmentView)
 	}
 	for _, child := range section.Children {
 		childScope := scope

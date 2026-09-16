@@ -9,12 +9,12 @@ test("a Report Saga opens several implementation decks without paginating its do
 
   run("upgrade", "--to", "3", saga.sagaRoot);
   for (const deck of [
-    { id: "request-flow", title: "Request flow", slides: [["request-enters", "Request enters"], ["response-returns", "Response returns"]] },
-    { id: "failure-path", title: "Failure path", slides: [["failure-change", "Failure path"]] }
+    { id: "request-flow", title: "Request flow", slides: [["request-enters", "Request enters", "Ingress"], ["response-returns", "Response returns", "Egress"]] },
+    { id: "failure-path", title: "Failure path", slides: [["failure-change", "Failure path", "Errors"]] }
   ] as const) {
     run("add-deck", "--objective", `Explain the complex ${deck.title.toLowerCase()}.`, saga.sagaRoot, deck.id);
-    for (const [slide, title] of deck.slides) {
-      run("add-slide", "--deck", deck.id, "--intent", "explain", "--layout", "diagram", "--title", title, "--takeaway", `${title} is explicit.`, saga.sagaRoot, slide);
+    for (const [slide, title, section] of deck.slides) {
+      run("add-slide", "--deck", deck.id, "--section", section, "--intent", "explain", "--layout", "diagram", "--title", title, "--takeaway", `${title} is explicit.`, saga.sagaRoot, slide);
       run("add-item", "--slide", slide, "--kind", "callout", "--id", "surprise", "--element-id", "slide-title", "--description", `The surprising part of ${title.toLowerCase()}.`, "--body", "The implementation follows a non-obvious path.", saga.sagaRoot);
     }
   }
@@ -34,6 +34,7 @@ test("a Report Saga opens several implementation decks without paginating its do
   const requestDeckNode = requestDeck.locator("xpath=ancestor::div[contains(@class,'doc-deck')]");
   await expect(requestDeckNode.locator("[data-slide-thumbnail]")).toHaveCount(2);
   await expect(requestDeckNode.locator(".slide-thumbnail-preview img")).toHaveCount(2);
+  await expect(requestDeckNode.locator("[data-slide-section]")).toHaveText(["Ingress", "Egress"]);
   await requestDeckNode.getByRole("button", { name: "Show slide: Request enters" }).click();
 
   const slidePanel = page.locator("#view-slides");

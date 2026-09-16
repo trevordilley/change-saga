@@ -100,7 +100,7 @@ func TestReportSagaRendersEmbeddedDeckAsSeparateSurface(t *testing.T) {
 	}
 	html := rendered.String()
 	slideTarget := saga.SlideTarget("visual", "change")
-	for _, contract := range []string{`id="view-slides"`, `class="sidebar-slide-surface"`, `data-native-slide`, `data-deck-target=`, `data-deck-toggle`, `class="doc-node doc-slide-thumbnail"`, `data-slide-thumbnail`, `data-slide-target="` + slideTarget + `"`, `#i-deck`, `/f/change/` + assetName} {
+	for _, contract := range []string{`id="view-slides"`, `class="sidebar-slide-surface"`, `data-native-slide`, `data-deck-target=`, `data-deck-toggle`, `class="doc-node doc-slide-thumbnail"`, `class="slide-section-divider" data-slide-section>Architecture`, `data-slide-thumbnail`, `data-slide-target="` + slideTarget + `"`, `#i-deck`, `/f/change/` + assetName} {
 		if !strings.Contains(html, contract) {
 			t.Fatalf("hybrid slide contract %q missing:\n%s", contract, html)
 		}
@@ -244,7 +244,7 @@ func writeEmbeddedSlideFixture(t *testing.T, root string) string {
 	slideTarget := saga.SlideTarget("visual", "change")
 	slideName, _ := saga.FlatSlideFilename(deckTarget, slideTarget, 0)
 	assetName, _ := saga.FlatSlideAssetFilename(slideName, ".svg")
-	writeServerFile(t, filepath.Join(bundle, slideName), `{"version":4,"id":"change","deck":"flow","title":"Complex flow","rank":0,"intent":"explain","layout":"diagram","media_type":"image/svg+xml","entrypoint":"`+assetName+`","takeaway":"The implementation path is explicit.","reading_order":["premise"]}`)
+	writeServerFile(t, filepath.Join(bundle, slideName), `{"version":4,"id":"change","deck":"flow","title":"Complex flow","rank":0,"section":"Architecture","intent":"explain","layout":"diagram","media_type":"image/svg+xml","entrypoint":"`+assetName+`","takeaway":"The implementation path is explicit.","reading_order":["premise"]}`)
 	writeServerFile(t, filepath.Join(bundle, assetName), `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720"><text id="premise">Complex flow</text></svg>`)
 	itemTarget := saga.ItemTarget("visual", "change", "premise")
 	itemName, _ := saga.FlatItemFilename(slideTarget, itemTarget, 0)

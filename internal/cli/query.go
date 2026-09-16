@@ -423,7 +423,7 @@ func querySchemaFor(operation string) querySchemaDescription {
 		"children":            {"data.children"},
 		"fragment":            {"data.target", "data.content.data", "data.content.next_offset", "data.assets", "data.landmarks"},
 		"fragment-diffs":      {"data.selectors", "data.atoms", "data.stale"},
-		"slide":               {"data.target", "data.intent", "data.layout", "data.takeaway", "data.content.data", "data.assets", "data.items", "data.reading_order"},
+		"slide":               {"data.target", "data.intent", "data.layout", "data.section", "data.takeaway", "data.content.data", "data.assets", "data.items", "data.reading_order"},
 		"slide-diffs":         {"data.selectors", "data.atoms", "data.stale"},
 		"diff-owners":         {"data.atoms"},
 		"reviews":             {"data.items"},

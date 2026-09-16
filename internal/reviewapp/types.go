@@ -236,6 +236,7 @@ type FragmentContent struct {
 	Landmarks    []SemanticLandmark `json:"landmarks"`
 	Intent       string             `json:"intent,omitempty"`
 	Layout       string             `json:"layout,omitempty"`
+	Section      string             `json:"section,omitempty"`
 	Takeaway     string             `json:"takeaway,omitempty"`
 	ReadingOrder []string           `json:"reading_order,omitempty"`
 }
