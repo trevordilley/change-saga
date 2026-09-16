@@ -1,0 +1,12 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/relation.schema.json",
+  "version": 3,
+  "id": "verification-explains-exact-evidence-r5",
+  "type": "explains",
+  "from": "urn:change-saga:hybrid-report-slide-saga:slide:verification-evidence",
+  "to": "urn:change-saga:hybrid-report-slide-saga:story:visual-review:criterion:exact-evidence",
+  "rationale": "The verification slide connects exact evidence ownership and aggregate slide summaries to executable unit and browser checks.",
+  "to_revision": "urn:change-saga:hybrid-report-slide-saga:story:visual-review:revision:r5",
+  "state": "active",
+  "created_at": "2026-09-16T21:35:38.700377Z"
+}
