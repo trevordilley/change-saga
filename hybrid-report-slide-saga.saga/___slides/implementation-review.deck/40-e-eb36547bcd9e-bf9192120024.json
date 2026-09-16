@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "diffs": [
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=13\u0026head=product-3fccf2c0b6a597951c4e45a49361e70631e320e8a79d4e2aa11560c3ed50eef7\u0026path=schema%2Fv4%2Fslide.schema.json\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=13",
+      "note": "Defines the portable optional slide section label used for visual grouping inside a deck."
+    }
+  ]
+}

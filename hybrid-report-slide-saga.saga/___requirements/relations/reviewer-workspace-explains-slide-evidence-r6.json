@@ -7,6 +7,7 @@
   "to": "urn:change-saga:hybrid-report-slide-saga:story:visual-review:criterion:slide-evidence",
   "rationale": "The linked-code drawer shows runtime-computed unique-file totals, repeated-reference deduplication, and expandable full patches.",
   "to_revision": "urn:change-saga:hybrid-report-slide-saga:story:visual-review:revision:r6",
-  "state": "active",
-  "created_at": "2026-09-16T23:03:34.91248Z"
+  "state": "superseded",
+  "created_at": "2026-09-16T23:03:34.91248Z",
+  "superseded_at": "2026-09-16T23:49:56.349828Z"
 }

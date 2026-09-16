@@ -1,0 +1,77 @@
+{
+  "version": 2,
+  "diffs": [
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=80\u0026head=product-3fccf2c0b6a597951c4e45a49361e70631e320e8a79d4e2aa11560c3ed50eef7\u0026path=internal%2Fserver%2Fstyles.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=80",
+      "note": "Styles rendered slide thumbnails and subtle section dividers, retains the full-size stage, and keeps the thumbnail hit target transparent."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=81\u0026head=product-3fccf2c0b6a597951c4e45a49361e70631e320e8a79d4e2aa11560c3ed50eef7\u0026path=internal%2Fserver%2Fstyles.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=81",
+      "note": "Styles rendered slide thumbnails and subtle section dividers, retains the full-size stage, and keeps the thumbnail hit target transparent."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=95\u0026head=product-3fccf2c0b6a597951c4e45a49361e70631e320e8a79d4e2aa11560c3ed50eef7\u0026path=internal%2Fserver%2Fstyles.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=95",
+      "note": "Styles rendered slide thumbnails and subtle section dividers, retains the full-size stage, and keeps the thumbnail hit target transparent."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=101\u0026head=product-3fccf2c0b6a597951c4e45a49361e70631e320e8a79d4e2aa11560c3ed50eef7\u0026path=internal%2Fserver%2Fstyles.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=101",
+      "note": "Styles rendered slide thumbnails and subtle section dividers, retains the full-size stage, and keeps the thumbnail hit target transparent."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=188\u0026head=product-3fccf2c0b6a597951c4e45a49361e70631e320e8a79d4e2aa11560c3ed50eef7\u0026path=internal%2Fserver%2Fstyles.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=188",
+      "note": "Styles rendered slide thumbnails and subtle section dividers, retains the full-size stage, and keeps the thumbnail hit target transparent."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=189\u0026head=product-3fccf2c0b6a597951c4e45a49361e70631e320e8a79d4e2aa11560c3ed50eef7\u0026path=internal%2Fserver%2Fstyles.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=189",
+      "note": "Styles rendered slide thumbnails and subtle section dividers, retains the full-size stage, and keeps the thumbnail hit target transparent."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=190\u0026head=product-3fccf2c0b6a597951c4e45a49361e70631e320e8a79d4e2aa11560c3ed50eef7\u0026path=internal%2Fserver%2Fstyles.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=190",
+      "note": "Styles rendered slide thumbnails and subtle section dividers, retains the full-size stage, and keeps the thumbnail hit target transparent."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=191\u0026head=product-3fccf2c0b6a597951c4e45a49361e70631e320e8a79d4e2aa11560c3ed50eef7\u0026path=internal%2Fserver%2Fstyles.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=191",
+      "note": "Styles rendered slide thumbnails and subtle section dividers, retains the full-size stage, and keeps the thumbnail hit target transparent."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=192\u0026head=product-3fccf2c0b6a597951c4e45a49361e70631e320e8a79d4e2aa11560c3ed50eef7\u0026path=internal%2Fserver%2Fstyles.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=192",
+      "note": "Styles rendered slide thumbnails and subtle section dividers, retains the full-size stage, and keeps the thumbnail hit target transparent."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=193\u0026head=product-3fccf2c0b6a597951c4e45a49361e70631e320e8a79d4e2aa11560c3ed50eef7\u0026path=internal%2Fserver%2Fstyles.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=193",
+      "note": "Styles rendered slide thumbnails and subtle section dividers, retains the full-size stage, and keeps the thumbnail hit target transparent."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=194\u0026head=product-3fccf2c0b6a597951c4e45a49361e70631e320e8a79d4e2aa11560c3ed50eef7\u0026path=internal%2Fserver%2Fstyles.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=194",
+      "note": "Styles rendered slide thumbnails and subtle section dividers, retains the full-size stage, and keeps the thumbnail hit target transparent."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=195\u0026head=product-3fccf2c0b6a597951c4e45a49361e70631e320e8a79d4e2aa11560c3ed50eef7\u0026path=internal%2Fserver%2Fstyles.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=195",
+      "note": "Styles rendered slide thumbnails and subtle section dividers, retains the full-size stage, and keeps the thumbnail hit target transparent."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=196\u0026head=product-3fccf2c0b6a597951c4e45a49361e70631e320e8a79d4e2aa11560c3ed50eef7\u0026path=internal%2Fserver%2Fstyles.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=196",
+      "note": "Styles rendered slide thumbnails and subtle section dividers, retains the full-size stage, and keeps the thumbnail hit target transparent."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=197\u0026head=product-3fccf2c0b6a597951c4e45a49361e70631e320e8a79d4e2aa11560c3ed50eef7\u0026path=internal%2Fserver%2Fstyles.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=197",
+      "note": "Styles rendered slide thumbnails and subtle section dividers, retains the full-size stage, and keeps the thumbnail hit target transparent."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=233\u0026head=product-3fccf2c0b6a597951c4e45a49361e70631e320e8a79d4e2aa11560c3ed50eef7\u0026path=internal%2Fserver%2Fstyles.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=233",
+      "note": "Styles rendered slide thumbnails and subtle section dividers, retains the full-size stage, and keeps the thumbnail hit target transparent."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=234\u0026head=product-3fccf2c0b6a597951c4e45a49361e70631e320e8a79d4e2aa11560c3ed50eef7\u0026path=internal%2Fserver%2Fstyles.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=234",
+      "note": "Styles rendered slide thumbnails and subtle section dividers, retains the full-size stage, and keeps the thumbnail hit target transparent."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=235\u0026head=product-3fccf2c0b6a597951c4e45a49361e70631e320e8a79d4e2aa11560c3ed50eef7\u0026path=internal%2Fserver%2Fstyles.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=235",
+      "note": "Styles rendered slide thumbnails and subtle section dividers, retains the full-size stage, and keeps the thumbnail hit target transparent."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=236\u0026head=product-3fccf2c0b6a597951c4e45a49361e70631e320e8a79d4e2aa11560c3ed50eef7\u0026path=internal%2Fserver%2Fstyles.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=236",
+      "note": "Styles rendered slide thumbnails and subtle section dividers, retains the full-size stage, and keeps the thumbnail hit target transparent."
+    }
+  ]
+}

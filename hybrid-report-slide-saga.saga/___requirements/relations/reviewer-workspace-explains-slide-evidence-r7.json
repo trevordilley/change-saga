@@ -1,0 +1,12 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/relation.schema.json",
+  "version": 3,
+  "id": "reviewer-workspace-explains-slide-evidence-r7",
+  "type": "explains",
+  "from": "urn:change-saga:hybrid-report-slide-saga:slide:reviewer-workspace",
+  "to": "urn:change-saga:hybrid-report-slide-saga:story:visual-review:criterion:slide-evidence",
+  "rationale": "The workspace slide shows the runtime-computed total previewing only evidence-bearing Items before it opens unique referenced files and full patches.",
+  "to_revision": "urn:change-saga:hybrid-report-slide-saga:story:visual-review:revision:r7",
+  "state": "active",
+  "created_at": "2026-09-16T23:49:56.448378Z"
+}
