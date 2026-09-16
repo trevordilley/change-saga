@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "linked-state",
+  "slide": "trace-states",
+  "rank": 20,
+  "kind": "node",
+  "label": "Current path",
+  "description": "The pinned requirement revision and visual source both exist and participate in current traces.",
+  "selector": {
+    "type": "element",
+    "element_id": "linked-state"
+  }
+}

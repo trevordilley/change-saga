@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">The reviewer keeps the living report and implementation decks as separate workspace surfaces</title>
+  <desc id="desc">A reviewer workspace exposes Saga, Decks, Code Diff, and Coverage tabs. The Decks surface includes deck thumbnails, a focused slide, Item hotspots, and a linked code drawer while review records remain append-only.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1"><stop stop-color="#081725"/><stop offset="1" stop-color="#171029"/></linearGradient>
+    <style>.h{font:700 36px system-ui;fill:#f8fafc}.sub{font:500 17px system-ui;fill:#aab9cf}.label{font:700 18px system-ui;fill:#f8fafc}.body{font:500 14px system-ui;fill:#cbd6e7}.tiny{font:600 12px system-ui;fill:#9fb1cb}.frame{fill:#0d1728;stroke:#324765;stroke-width:2}.panel{fill:#121f34;stroke:#2f4668}.active{fill:#25304f;stroke:#8b9cff}.accent{fill:#15343c;stroke:#67e8f9;stroke-width:2}.hot{fill:#ffbf69;fill-opacity:.16;stroke:#ffbf69;stroke-width:2;stroke-dasharray:7 5}</style>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <text class="h" x="64" y="62">Decks are a destination from the report, not pages inside it.</text>
+  <text class="sub" x="64" y="94">The workspace preserves both reading modes and one evidence/review graph.</text>
+
+  <rect class="frame" x="58" y="128" width="1164" height="530" rx="22"/>
+  <rect class="panel" x="58" y="128" width="1164" height="58" rx="22"/>
+  <g id="report-surface"><rect class="panel" x="88" y="145" width="120" height="32" rx="10"/><text class="tiny" x="128" y="166">Saga</text></g>
+  <g id="decks-surface"><rect class="active" x="220" y="145" width="120" height="32" rx="10"/><text class="tiny" x="256" y="166">Decks</text></g>
+  <rect class="panel" x="352" y="145" width="120" height="32" rx="10"/><text class="tiny" x="384" y="166">Code Diff</text>
+  <rect class="panel" x="484" y="145" width="120" height="32" rx="10"/><text class="tiny" x="516" y="166">Coverage</text>
+
+  <g id="deck-navigator"><rect class="panel" x="78" y="206" width="210" height="425" rx="16"/><text class="label" x="102" y="240">Lifecycle model</text><rect class="active" x="102" y="262" width="162" height="92" rx="12"/><rect class="panel" x="102" y="370" width="162" height="92" rx="12"/><text class="label" x="102" y="504">Traceability loop</text><rect class="panel" x="102" y="525" width="162" height="82" rx="12"/></g>
+
+  <g id="slide-review"><rect class="panel" x="308" y="206" width="610" height="425" rx="16"/><text class="label" x="338" y="242">One Saga identity. Two document lifecycles.</text><rect class="accent" x="350" y="288" width="190" height="210" rx="20"/><rect class="active" x="686" y="288" width="190" height="210" rx="20"/><path d="M548 392H676" stroke="#67e8f9" stroke-width="4"/><circle cx="612" cy="392" r="28" fill="#17263e" stroke="#67e8f9"/><text class="tiny" x="585" y="396">explains</text><text class="body" x="356" y="538">Whole-slide approval</text><text class="body" x="680" y="538">Item-level evidence</text></g>
+  <g id="item-hotspot"><rect class="hot" x="690" y="310" width="170" height="75" rx="12"/><text class="tiny" x="720" y="350">focus Item</text></g>
+
+  <g id="code-drawer"><rect class="frame" x="938" y="206" width="264" height="425" rx="16"/><text class="label" x="966" y="244">Linked code</text><text class="tiny" x="966" y="275">internal/saga/slides.go</text><rect x="966" y="300" width="208" height="10" rx="5" fill="#31435f"/><rect x="966" y="325" width="176" height="10" rx="5" fill="#31435f"/><rect x="966" y="350" width="198" height="10" rx="5" fill="#67e8f9"/><rect x="966" y="375" width="160" height="10" rx="5" fill="#31435f"/><text class="body" x="966" y="430">Exact diff opens without</text><text class="body" x="966" y="453">losing the active slide.</text></g>
+  <g id="review-overlay"><rect x="775" y="565" width="120" height="42" rx="12" fill="#352414" stroke="#ffbf69"/><text class="tiny" x="795" y="591">comment Item</text></g>
+</svg>

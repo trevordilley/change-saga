@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Trace from committed code to accepted user intent</title>
+  <desc id="desc">The current committed comparison head resolves to exact diff atoms, Item ownership, a visual review target, a pinned explains relation, and accepted criteria and stories.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="1" y2="0"><stop stop-color="#071927"/><stop offset="1" stop-color="#1b1026"/></linearGradient>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#67e8f9"/></marker>
+    <style>.h{font:700 38px system-ui;fill:#f8fafc}.sub{font:500 18px system-ui;fill:#a8b8cf}.label{font:700 20px system-ui;fill:#f8fafc}.body{font:500 15px system-ui;fill:#c9d4e7}.tiny{font:600 13px ui-monospace,monospace;fill:#9fb2ce}.node{fill:#12243d;stroke:#3b5c82;stroke-width:2}.cyan{fill:#0f3441;stroke:#67e8f9;stroke-width:2}.violet{fill:#291d48;stroke:#a78bfa;stroke-width:2}.green{fill:#13352e;stroke:#6ee7b7;stroke-width:2}.arrow{fill:none;stroke:#67e8f9;stroke-width:4;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <text class="h" x="64" y="70">The trace is a path, not duplicated story text.</text>
+  <text class="sub" x="64" y="104">Follow it forward from intent or reverse it from an exact diff or the current committed head.</text>
+
+  <path class="arrow" d="M175 350H270"/><path class="arrow" d="M390 350H485"/><path class="arrow" d="M605 350H700"/><path class="arrow" d="M820 350H915"/><path class="arrow" d="M1035 350H1110"/>
+
+  <g id="commit-head"><circle class="cyan" cx="115" cy="350" r="76"/><text class="label" x="78" y="342">HEAD</text><text class="tiny" x="71" y="372">commit OID</text></g>
+  <g id="diff-atom"><rect class="node" x="270" y="286" width="120" height="128" rx="22"/><text class="label" x="299" y="334">Diff</text><text class="tiny" x="294" y="363">exact atom</text><text class="tiny" x="292" y="388">saga-diff</text></g>
+  <g id="item-owner"><rect class="violet" x="485" y="286" width="120" height="128" rx="22"/><text class="label" x="514" y="334">Item</text><text class="tiny" x="506" y="363">only evidence</text><text class="tiny" x="519" y="388">owner</text></g>
+  <g id="review-target"><rect class="violet" x="700" y="286" width="120" height="128" rx="22"/><text class="label" x="723" y="334">Slide</text><text class="tiny" x="723" y="363">or deck /</text><text class="tiny" x="736" y="388">Item</text></g>
+  <g id="pinned-relation"><path d="M975 274L1035 350L975 426L915 350Z" fill="#3a2a17" stroke="#ffbf69" stroke-width="2"/><text class="label" x="940" y="343">explains</text><text class="tiny" x="942" y="370">pins r1</text></g>
+  <g id="accepted-story"><rect class="green" x="1110" y="268" width="120" height="164" rx="28"/><text class="label" x="1133" y="318">Story</text><text class="tiny" x="1136" y="348">accepted</text><path d="M1137 372H1203" stroke="#6ee7b7" stroke-width="3"/><text class="tiny" x="1132" y="400">criterion</text></g>
+
+  <g id="reverse-query">
+    <path d="M1170 500C940 620 340 620 115 500" fill="none" stroke="#a78bfa" stroke-width="4" stroke-dasharray="12 10" marker-end="url(#arrow)"/>
+    <rect class="node" x="480" y="528" width="320" height="72" rx="18"/>
+    <text class="label" x="520" y="558">query traceability --diff</text>
+    <text class="tiny" x="545" y="583">or --commit for current HEAD</text>
+  </g>
+</svg>

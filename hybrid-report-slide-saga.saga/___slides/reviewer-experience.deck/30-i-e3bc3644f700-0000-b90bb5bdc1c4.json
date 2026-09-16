@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "report-surface",
+  "slide": "reviewer-workspace",
+  "rank": 0,
+  "kind": "node",
+  "label": "Saga surface",
+  "description": "The living report remains the default reading surface for narrative and product intent.",
+  "selector": {
+    "type": "element",
+    "element_id": "report-surface"
+  }
+}

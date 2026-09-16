@@ -1,0 +1,21 @@
+{
+  "version": 4,
+  "id": "reviewer-workspace",
+  "deck": "reviewer-experience",
+  "title": "A separate Decks workspace",
+  "rank": 0,
+  "intent": "orient",
+  "layout": "hero",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-a15811afbde8-0000-e3bc3644f700.svg",
+  "takeaway": "The reviewer keeps Saga and Decks as distinct surfaces while sharing exact code navigation and append-only review history.",
+  "reading_order": [
+    "report-surface",
+    "decks-surface",
+    "deck-navigator",
+    "slide-review",
+    "item-hotspot",
+    "code-drawer",
+    "review-overlay"
+  ]
+}

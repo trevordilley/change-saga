@@ -1,0 +1,17 @@
+{
+  "version": 4,
+  "id": "review-overlay",
+  "slide": "reviewer-workspace",
+  "rank": 60,
+  "kind": "callout",
+  "label": "Append-only review",
+  "description": "Comments and decisions remain independent overlay records under the parent Saga.",
+  "selector": {
+    "type": "element",
+    "element_id": "review-overlay"
+  },
+  "about": "slide-review",
+  "body": "Embedded slides reuse the flat review overlay, so concurrent feedback adds records instead of rewriting deck content.",
+  "placement": "bottom",
+  "leader": "line"
+}

@@ -1,0 +1,77 @@
+{
+  "version": 2,
+  "diffs": [
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=91\u0026head=product-2aed5338d23cbc732ca3280ac01977133d7b0484e2add7c0dac0c380a223d059\u0026path=internal%2Fserver%2Fserver.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=91",
+      "note": "Splits report and deck projections into separate reviewer surfaces while combining review progress."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=93\u0026head=product-2aed5338d23cbc732ca3280ac01977133d7b0484e2add7c0dac0c380a223d059\u0026path=internal%2Fserver%2Fserver.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=93",
+      "note": "Splits report and deck projections into separate reviewer surfaces while combining review progress."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=933\u0026head=product-2aed5338d23cbc732ca3280ac01977133d7b0484e2add7c0dac0c380a223d059\u0026path=internal%2Fserver%2Fserver.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=933",
+      "note": "Splits report and deck projections into separate reviewer surfaces while combining review progress."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=962\u0026head=product-2aed5338d23cbc732ca3280ac01977133d7b0484e2add7c0dac0c380a223d059\u0026path=internal%2Fserver%2Fserver.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=961",
+      "note": "Splits report and deck projections into separate reviewer surfaces while combining review progress."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=968\u0026head=product-2aed5338d23cbc732ca3280ac01977133d7b0484e2add7c0dac0c380a223d059\u0026path=internal%2Fserver%2Fserver.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=964",
+      "note": "Splits report and deck projections into separate reviewer surfaces while combining review progress."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=973\u0026head=product-2aed5338d23cbc732ca3280ac01977133d7b0484e2add7c0dac0c380a223d059\u0026path=internal%2Fserver%2Fserver.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=973",
+      "note": "Splits report and deck projections into separate reviewer surfaces while combining review progress."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=980\u0026head=product-2aed5338d23cbc732ca3280ac01977133d7b0484e2add7c0dac0c380a223d059\u0026path=internal%2Fserver%2Fserver.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=978",
+      "note": "Splits report and deck projections into separate reviewer surfaces while combining review progress."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=984\u0026head=product-2aed5338d23cbc732ca3280ac01977133d7b0484e2add7c0dac0c380a223d059\u0026path=internal%2Fserver%2Fserver.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=982",
+      "note": "Splits report and deck projections into separate reviewer surfaces while combining review progress."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=986\u0026head=product-2aed5338d23cbc732ca3280ac01977133d7b0484e2add7c0dac0c380a223d059\u0026path=internal%2Fserver%2Fserver.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=986",
+      "note": "Splits report and deck projections into separate reviewer surfaces while combining review progress."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=990\u0026head=product-2aed5338d23cbc732ca3280ac01977133d7b0484e2add7c0dac0c380a223d059\u0026path=internal%2Fserver%2Fserver.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=990",
+      "note": "Splits report and deck projections into separate reviewer surfaces while combining review progress."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=1015\u0026head=product-2aed5338d23cbc732ca3280ac01977133d7b0484e2add7c0dac0c380a223d059\u0026path=internal%2Fserver%2Fserver.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=997",
+      "note": "Splits report and deck projections into separate reviewer surfaces while combining review progress."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=1883\u0026head=product-2aed5338d23cbc732ca3280ac01977133d7b0484e2add7c0dac0c380a223d059\u0026path=internal%2Fserver%2Fserver.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=1882",
+      "note": "Splits report and deck projections into separate reviewer surfaces while combining review progress."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=931\u0026head=product-2aed5338d23cbc732ca3280ac01977133d7b0484e2add7c0dac0c380a223d059\u0026path=internal%2Fserver%2Fserver.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=931",
+      "note": "Splits report and deck projections into separate reviewer surfaces while combining review progress."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=960\u0026head=product-2aed5338d23cbc732ca3280ac01977133d7b0484e2add7c0dac0c380a223d059\u0026path=internal%2Fserver%2Fserver.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=960",
+      "note": "Splits report and deck projections into separate reviewer surfaces while combining review progress."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=962\u0026head=product-2aed5338d23cbc732ca3280ac01977133d7b0484e2add7c0dac0c380a223d059\u0026path=internal%2Fserver%2Fserver.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=962",
+      "note": "Splits report and deck projections into separate reviewer surfaces while combining review progress."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=971\u0026head=product-2aed5338d23cbc732ca3280ac01977133d7b0484e2add7c0dac0c380a223d059\u0026path=internal%2Fserver%2Fserver.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=971",
+      "note": "Splits report and deck projections into separate reviewer surfaces while combining review progress."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=973\u0026head=product-2aed5338d23cbc732ca3280ac01977133d7b0484e2add7c0dac0c380a223d059\u0026path=internal%2Fserver%2Fserver.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=973",
+      "note": "Splits report and deck projections into separate reviewer surfaces while combining review progress."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=977\u0026head=product-2aed5338d23cbc732ca3280ac01977133d7b0484e2add7c0dac0c380a223d059\u0026path=internal%2Fserver%2Fserver.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=977",
+      "note": "Splits report and deck projections into separate reviewer surfaces while combining review progress."
+    }
+  ]
+}

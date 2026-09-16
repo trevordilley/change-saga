@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "link-transition",
+  "slide": "trace-states",
+  "rank": 10,
+  "kind": "transition",
+  "label": "Accept and link",
+  "description": "Acceptance plus an active revision-pinned explains relation closes the story path.",
+  "selector": {
+    "type": "element",
+    "element_id": "link-transition"
+  }
+}

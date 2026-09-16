@@ -1,0 +1,18 @@
+{
+  "version": 4,
+  "id": "verification-evidence",
+  "deck": "reviewer-experience",
+  "title": "Verification follows the feature boundaries",
+  "rank": 10,
+  "intent": "prove",
+  "layout": "evidence",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-a15811afbde8-0010-701a503d025d.svg",
+  "takeaway": "Storage, traceability, and browser tests independently exercise the three contracts that compose the hybrid reviewer experience.",
+  "reading_order": [
+    "storage-tests",
+    "trace-tests",
+    "browser-test",
+    "suite-result"
+  ]
+}

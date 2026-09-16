@@ -1,0 +1,8 @@
+{
+  "version": 4,
+  "id": "traceability-loop",
+  "title": "Traceability loop",
+  "role": "change",
+  "rank": 10,
+  "objective": "Follow exact implementation evidence to accepted user intent and expose gaps or stale links."
+}

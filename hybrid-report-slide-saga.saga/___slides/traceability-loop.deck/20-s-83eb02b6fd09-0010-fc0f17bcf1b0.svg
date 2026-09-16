@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Traceability links move through unlinked, current, and stale states</title>
+  <desc id="desc">Evidence begins unlinked, closes only through an active relation to an accepted story, and becomes stale when the pinned story revision changes or its visual target disappears.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1"><stop stop-color="#111022"/><stop offset="1" stop-color="#071a27"/></linearGradient>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#e5edf9"/></marker>
+    <style>.h{font:700 38px system-ui;fill:#f8fafc}.sub{font:500 18px system-ui;fill:#aebbd0}.label{font:700 22px system-ui;fill:#f8fafc}.body{font:500 16px system-ui;fill:#cbd5e5}.tiny{font:600 14px system-ui;fill:#a8b8d0}.state{stroke-width:3}.arrow{fill:none;stroke:#dbe7f7;stroke-width:4;marker-end:url(#arrow)}.guard{fill:#352414;stroke:#ffbf69;stroke-width:2}</style>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <text class="h" x="64" y="70">Closing the loop is an explicit state transition.</text>
+  <text class="sub" x="64" y="104">A relation to proposed intent is informative, but accepted intent is required to close the evidence gap.</text>
+
+  <g id="unlinked-state"><circle class="state" cx="220" cy="340" r="120" fill="#3a1722" stroke="#fb7185"/><text class="label" x="169" y="328">Unlinked</text><text class="body" x="142" y="360">Item owns exact code</text><text class="body" x="151" y="385">but no accepted path</text></g>
+  <g id="link-transition"><path class="arrow" d="M350 340H514"/><rect x="374" y="273" width="120" height="44" rx="12" fill="#14323a" stroke="#67e8f9"/><text class="tiny" x="390" y="301">accept + link</text></g>
+  <g id="linked-state"><circle class="state" cx="640" cy="340" r="120" fill="#12352e" stroke="#6ee7b7"/><text class="label" x="597" y="328">Current</text><text class="body" x="557" y="360">Pinned story revision</text><text class="body" x="574" y="385">and source exist</text></g>
+  <g id="stale-transition"><path class="arrow" d="M766 340H930"/><rect x="784" y="255" width="132" height="64" rx="12" fill="#352414" stroke="#ffbf69"/><text class="tiny" x="800" y="282">story revised</text><text class="tiny" x="798" y="303">or target missing</text></g>
+  <g id="stale-state"><circle class="state" cx="1060" cy="340" r="120" fill="#392815" stroke="#ffbf69"/><text class="label" x="1029" y="328">Stale</text><text class="body" x="985" y="360">Excluded from current</text><text class="body" x="1007" y="385">trace paths</text></g>
+
+  <g id="worktree-guard"><rect class="guard" x="360" y="550" width="560" height="86" rx="20"/><text class="label" x="397" y="585">Guardrail: WORKTREE is not a commit</text><text class="body" x="397" y="613">Commit lookup rejects a comparison that may include uncommitted content.</text></g>
+</svg>

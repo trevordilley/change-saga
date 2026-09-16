@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "pinned-relation",
+  "slide": "code-to-story",
+  "rank": 40,
+  "kind": "edge",
+  "label": "Pinned relation",
+  "description": "An active explains relation pins the exact requirement revision it claims to cover.",
+  "selector": {
+    "type": "element",
+    "element_id": "pinned-relation"
+  }
+}

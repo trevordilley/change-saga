@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "unlinked-state",
+  "slide": "trace-states",
+  "rank": 0,
+  "kind": "node",
+  "label": "Unlinked evidence",
+  "description": "Exact Item evidence without a current path to an accepted story remains an explicit gap.",
+  "selector": {
+    "type": "element",
+    "element_id": "unlinked-state"
+  }
+}
