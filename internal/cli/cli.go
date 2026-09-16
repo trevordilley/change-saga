@@ -221,7 +221,7 @@ var commandDescription = map[string]string{
 	"citation":                    "Create immutable provenance records for requirements and design decisions.",
 	"citation add":                "Record where a requirement or decision came from: an external URL, issue, document,\nrepository commit, or recorded decision. Provenance is context, not delivery evidence.",
 	"relation":                    "Create or explicitly supersede pinned traceability relations.",
-	"relation add":                "Link stories, criteria, design, work items, and evidence with a typed rationale.\nPin mutable endpoints to their current revision or content digest so later edits go stale.",
+	"relation add":                "Link stories and criteria to design, work items, slide explanations, and verification\nevidence with a typed rationale. Pin mutable requirement endpoints so their links go stale\nafter later edits.",
 	"relation supersede":          "Retire one relation without erasing it. Add its corrected replacement separately;\na pivot is represented by normal requirement, design, plan, and relation revisions.",
 	"design":                      "Develop technical-design chapters, sections, and fragments that trace to user\nstories and acceptance criteria. Design may evolve alongside prototypes and requirements;\nits addressable packages are partitioned for parallel authoring and clean merges.",
 	"design-add-chapter":          "Add one independently authored technical-design concern. Chapters may be developed\nin parallel and should cite the requirements their contained design addresses.",

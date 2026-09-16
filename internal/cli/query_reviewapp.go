@@ -46,7 +46,8 @@ func openReviewAppSession(ctx context.Context, options queryOpenOptions) (queryS
 		if err != nil {
 			return nil, err
 		}
-		session, err := livingapp.Open(ctx, livingapp.OpenOptions{SagaRoot: options.SagaRoot, Snapshot: reviewSession.Snapshot()})
+		headIdentity, headCommit := reviewSession.SourceHead()
+		session, err := livingapp.Open(ctx, livingapp.OpenOptions{SagaRoot: options.SagaRoot, Snapshot: reviewSession.Snapshot(), SourceHeadIdentity: headIdentity, SourceHeadCommit: headCommit})
 		if err != nil {
 			return nil, err
 		}

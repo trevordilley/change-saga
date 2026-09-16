@@ -13,7 +13,11 @@ surface while embedding several focused visual decks for complex implemented
 changes. Each deck is an independently mergeable drill-down; stories,
 requirements, prototypes, design, and work-plan history are not mechanically
 turned into slides. The reviewer opens those breakdowns in a separate **Decks**
-view under the same Saga identity.
+view under the same Saga identity. Revision-pinned `explains` relations connect
+each relevant deck, slide, or Item back to a user story or acceptance criterion,
+while Items retain exact diff ownership. `query traceability --diff` and
+`--commit` expose the reverse path from code evidence or the current committed
+source head to the story.
 
 The slide-native v4 preview treats a review as a sequence of visual arguments,
 not a report split into pages. Start it explicitly with `change-saga init --mode

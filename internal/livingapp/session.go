@@ -19,15 +19,18 @@ import (
 	"github.com/twentyideas/changesaga/internal/livingid"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
+	"github.com/twentyideas/changesaga/internal/sagaref"
 	"github.com/twentyideas/changesaga/internal/workplan"
 )
 
 type session struct {
-	snapshot     string
-	requirements requirements.Document
-	plan         workplan.Plan
-	saga         *saga.Saga
-	adopted      bool
+	snapshot           string
+	sourceHeadIdentity string
+	sourceHeadCommit   string
+	requirements       requirements.Document
+	plan               workplan.Plan
+	saga               *saga.Saga
+	adopted            bool
 }
 
 func Open(_ context.Context, options OpenOptions) (Session, error) {
@@ -63,7 +66,7 @@ func Open(_ context.Context, options OpenOptions) (Session, error) {
 	adopted := doc.Manifest.Version == saga.CurrentSagaVersion && livingRootPresent(root, "___requirements")
 	if doc.Manifest.Version != saga.CurrentSagaVersion {
 		return &session{
-			snapshot: snapshot, saga: doc, adopted: false,
+			snapshot: snapshot, sourceHeadIdentity: options.SourceHeadIdentity, sourceHeadCommit: options.SourceHeadCommit, saga: doc, adopted: false,
 			requirements: requirements.Document{Root: root, SagaID: doc.Manifest.ID, Stories: []requirements.Story{}, Citations: []requirements.Citation{}, Relations: []requirements.Relation{}},
 			plan:         workplan.Plan{Root: root, SagaID: doc.Manifest.ID, Waves: map[string]*workplan.Wave{}, WorkItems: map[string]*workplan.WorkItem{}, Dependencies: map[string]*workplan.Dependency{}, Contracts: map[string]*workplan.Contract{}, Requests: map[string]workplan.RequestRecord{}, Conflicts: []workplan.Conflict{}},
 		}, nil
@@ -92,7 +95,7 @@ func Open(_ context.Context, options OpenOptions) (Session, error) {
 		return nil, appError(CodeInvalidSaga, "the requirements could not be loaded", false, nil, err)
 	}
 	evaluateCrossDomainStaleness(&document, plan, doc, designDigests)
-	return &session{snapshot: snapshot, requirements: document, plan: plan, saga: doc, adopted: adopted}, nil
+	return &session{snapshot: snapshot, sourceHeadIdentity: options.SourceHeadIdentity, sourceHeadCommit: options.SourceHeadCommit, requirements: document, plan: plan, saga: doc, adopted: adopted}, nil
 }
 
 func livingRootPresent(root, name string) bool {
@@ -103,6 +106,7 @@ func livingRootPresent(root, name string) bool {
 // evaluateCrossDomainStaleness completes the projection that requirements
 // cannot compute without importing the work-plan and design domains.
 func evaluateCrossDomainStaleness(document *requirements.Document, plan workplan.Plan, doc *saga.Saga, designDigests map[string]string) {
+	targets := saga.MutationIndexFromDocument(doc).Targets
 	claims := map[string]bool{}
 	for _, claim := range doc.Claims {
 		claims["urn:change-saga:"+document.SagaID+":claim:"+claim.ID] = true
@@ -136,6 +140,15 @@ func evaluateCrossDomainStaleness(document *requirements.Document, plan workplan
 					}
 				}
 				continue
+			}
+			if target, err := sagaref.ParseTarget(endpoint.urn); err == nil {
+				switch target.Kind {
+				case sagaref.TargetDeck, sagaref.TargetSlide, sagaref.TargetItem:
+					if _, exists := targets[endpoint.urn]; !exists {
+						appendStaleReason(relation, endpoint.name+" review target is missing")
+					}
+					continue
+				}
 			}
 			if strings.Contains(endpoint.urn, ":claim:") && !claims[endpoint.urn] {
 				appendStaleReason(relation, endpoint.name+" claim is missing")
@@ -192,8 +205,7 @@ func (s *session) Query(_ context.Context, query Query) (Result, error) {
 		values := s.conflictRows(query.Filters)
 		rows, key = values, "conflicts"
 	case "traceability":
-		values, _ := s.traceRows(query.Filters)
-		rows, key = values, "criteria"
+		return s.traceabilityResult(query)
 	case "readiness":
 		return s.readinessResult(query)
 	default:
@@ -229,8 +241,6 @@ func (s *session) pageRows(query Query, key string, rows any) (Result, error) {
 		data = WorkItemPage{Items: sliced.([]WorkItem)}
 	case "conflicts":
 		data = ConflictPage{Conflicts: sliced.([]Conflict)}
-	case "criteria":
-		data = TraceabilityPage{Criteria: sliced.([]Traceability)}
 	}
 	return Result{Data: data, Page: page}, nil
 }
@@ -243,6 +253,19 @@ func (s *session) readinessResult(query Query) (Result, error) {
 	}
 	pageData.Requirements = all[start:end]
 	return Result{Data: pageData, Page: page}, nil
+}
+
+func (s *session) traceabilityResult(query Query) (Result, error) {
+	if query.Filters.Commit != "" && s.sourceHeadCommit == "" {
+		return Result{}, appError(CodeInvalidArgument, "commit lookup requires a committed source comparison", false, nil, nil)
+	}
+	rows, _ := s.traceRows(query.Filters)
+	unlinked := s.unlinkedReviewEvidence(query.Filters)
+	start, end, page, err := s.page(query.Operation, normalizedQueryKey(query.Filters), query.Cursor, query.Limit, len(rows))
+	if err != nil {
+		return Result{}, err
+	}
+	return Result{Data: TraceabilityPage{Criteria: rows[start:end], UnlinkedCodeEvidence: unlinked}, Page: page}, nil
 }
 
 type cursorToken struct {

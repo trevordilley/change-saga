@@ -45,6 +45,25 @@ owned by Items. The reviewer opens the report first and enters the separate
 Decks surface for the visual breakdown; embedded decks are never rendered as
 report chapters.
 
+Stories and their acceptance criteria are the traceability backbone. An active
+v3 `explains` relation links a deck, slide, or Item source to a story or
+criterion target and pins the exact target story revision in `to_revision`.
+Linking a story applies to every acceptance criterion in that pinned revision;
+linking a criterion is the narrower form. A relation becomes stale when its
+story revision is no longer current or its visual source disappears. The
+relation does not move exact diff ownership away from Items.
+
+`query traceability` returns the complete current paths from each accepted
+criterion through its linked review targets to Item-owned diff URIs. It can be
+filtered in reverse with `--diff` or with `--commit`, where the commit is the
+resolved source-head commit of the active committed comparison. Commit lookup
+is unavailable for `WORKTREE` comparisons because their exact diff may include
+uncommitted content. Its
+`unlinked_code_evidence` collection exposes Item evidence that has no active,
+current `explains` path to an accepted story. Thus a caller can traverse from a
+story to code or from the current head commit/diff back to the story without
+duplicating story text inside slide records.
+
 Prototype persistence remains an internal domain in this release. It is not
 part of this hybrid vertical slice: there is no public prototype CLI, query, or
 reviewer UI yet, and the requirements/prototype root-composition conflict must

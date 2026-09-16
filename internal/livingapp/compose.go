@@ -6,6 +6,7 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/twentyideas/changesaga/internal/diffuri"
 	"github.com/twentyideas/changesaga/internal/livingid"
 	"github.com/twentyideas/changesaga/internal/readiness"
 	"github.com/twentyideas/changesaga/internal/requirements"
@@ -361,6 +362,7 @@ func (s *session) criterionInputs(filters Filters) ([]readiness.Criterion, []Tra
 	}
 	inputs := []readiness.Criterion{}
 	meta := []Traceability{}
+	reviewEvidenceByTarget, _ := s.reviewEvidenceIndex()
 	for _, story := range s.requirements.Stories {
 		if story.CurrentRevision == nil || story.CurrentLifecycle == nil || story.CurrentLifecycle.State != requirements.StateAccepted {
 			continue
@@ -378,7 +380,40 @@ func (s *session) criterionInputs(filters Filters) ([]readiness.Criterion, []Tra
 			design := []string{}
 			work := []string{}
 			evidence := []string{}
+			reviewTargets := []string{}
+			codeEvidence := []string{}
 			paths := [][]string{}
+			for _, r := range active {
+				if r.Type != requirements.RelationExplains || r.To != criterionURN && r.To != storyURN {
+					continue
+				}
+				matchedEvidence := false
+				for _, reviewEvidence := range reviewEvidenceByTarget[r.From] {
+					if !s.reviewEvidenceMatches(reviewEvidence, filters) {
+						continue
+					}
+					matchedEvidence = true
+					codeEvidence = append(codeEvidence, reviewEvidence.URI)
+					prefix := []string{criterionURN}
+					if r.To == storyURN {
+						prefix = append(prefix, storyURN)
+					}
+					paths = append(paths, append(prefix, reviewEvidence.Path...))
+				}
+				if filters.Diff == "" && filters.Commit == "" || matchedEvidence {
+					reviewTargets = append(reviewTargets, r.From)
+					if !matchedEvidence {
+						path := []string{criterionURN}
+						if r.To == storyURN {
+							path = append(path, storyURN)
+						}
+						paths = append(paths, append(path, r.From))
+					}
+				}
+			}
+			if (filters.Diff != "" || filters.Commit != "") && len(codeEvidence) == 0 {
+				continue
+			}
 			for _, r := range active {
 				if r.Type == requirements.RelationAddresses && r.To == criterionURN {
 					design = append(design, r.From)
@@ -440,10 +475,103 @@ func (s *session) criterionInputs(filters Filters) ([]readiness.Criterion, []Tra
 				blockers = append(blockers, readiness.Blocker{Code: "immutable_evidence_missing", Resource: criterionURN, Detail: "progress is not delivery evidence"})
 			}
 			inputs = append(inputs, readiness.Criterion{URN: criterionURN, Designed: len(design) > 0, Planned: len(work) > 0, Evidence: evidence, DirectBlockers: blockers, UpstreamPaths: transitive})
-			meta = append(meta, Traceability{Criterion: criterionURN, Story: storyURN, Revision: revisionURN, Design: uniqueSorted(design), WorkItems: uniqueSorted(work), Paths: uniquePaths(paths)})
+			meta = append(meta, Traceability{Criterion: criterionURN, Story: storyURN, Revision: revisionURN, Design: uniqueSorted(design), WorkItems: uniqueSorted(work), ReviewTargets: uniqueSorted(reviewTargets), CodeEvidence: uniqueSorted(codeEvidence), Paths: uniquePaths(paths)})
 		}
 	}
 	return inputs, meta
+}
+
+type reviewEvidence struct {
+	Key          string
+	Deck         string
+	Slide        string
+	Item         string
+	URI          string
+	EvidenceFile string
+	Path         []string
+}
+
+func (s *session) reviewEvidenceIndex() (map[string][]reviewEvidence, []reviewEvidence) {
+	byTarget := map[string][]reviewEvidence{}
+	all := []reviewEvidence{}
+	for _, deck := range s.saga.Decks {
+		for _, slide := range deck.Slides {
+			for _, item := range slide.Items {
+				for _, file := range item.Diffs {
+					for _, diff := range file.Diffs {
+						value := reviewEvidence{Deck: deck.Target, Slide: slide.Target, Item: item.Target, URI: diff.URI, EvidenceFile: file.Path}
+						value.Key = value.Item + "\x00" + value.EvidenceFile + "\x00" + value.URI
+						all = append(all, value)
+						for target, path := range map[string][]string{
+							deck.Target:  {deck.Target, slide.Target, item.Target, diff.URI},
+							slide.Target: {slide.Target, item.Target, diff.URI},
+							item.Target:  {item.Target, diff.URI},
+						} {
+							copy := value
+							copy.Path = path
+							byTarget[target] = append(byTarget[target], copy)
+						}
+					}
+				}
+			}
+		}
+	}
+	return byTarget, all
+}
+
+func (s *session) reviewEvidenceMatches(value reviewEvidence, filters Filters) bool {
+	if filters.Diff != "" && filters.Diff != value.URI {
+		return false
+	}
+	if filters.Commit != "" {
+		reference, err := diffuri.Parse(value.URI)
+		if err != nil || !strings.EqualFold(s.sourceHeadCommit, filters.Commit) || reference.Head != s.sourceHeadIdentity {
+			return false
+		}
+	}
+	return true
+}
+
+func (s *session) unlinkedReviewEvidence(filters Filters) []UnlinkedCodeEvidence {
+	byTarget, all := s.reviewEvidenceIndex()
+	linked := map[string]bool{}
+	acceptedTargets := map[string]bool{}
+	for _, story := range s.requirements.Stories {
+		if story.CurrentRevision == nil || story.CurrentLifecycle == nil || story.CurrentLifecycle.State != requirements.StateAccepted || len(story.CurrentRevision.AcceptanceCriteria) == 0 {
+			continue
+		}
+		storyURN, _ := livingid.Story(s.requirements.SagaID, story.Identity.ID)
+		acceptedTargets[storyURN] = true
+		for _, criterion := range story.CurrentRevision.AcceptanceCriteria {
+			criterionURN, _ := livingid.Criterion(s.requirements.SagaID, story.Identity.ID, criterion.ID)
+			acceptedTargets[criterionURN] = true
+		}
+	}
+	for _, relation := range s.requirements.Relations {
+		if relation.State != requirements.RelationActive || relation.Stale || relation.Type != requirements.RelationExplains || !acceptedTargets[relation.To] {
+			continue
+		}
+		for _, value := range byTarget[relation.From] {
+			linked[value.Key] = true
+		}
+	}
+	result := []UnlinkedCodeEvidence{}
+	for _, value := range all {
+		if linked[value.Key] || !s.reviewEvidenceMatches(value, filters) {
+			continue
+		}
+		result = append(result, UnlinkedCodeEvidence{Deck: value.Deck, Slide: value.Slide, Item: value.Item, URI: value.URI, EvidenceFile: value.EvidenceFile})
+	}
+	sort.Slice(result, func(i, j int) bool {
+		if result[i].Item == result[j].Item {
+			if result[i].URI == result[j].URI {
+				return result[i].EvidenceFile < result[j].EvidenceFile
+			}
+			return result[i].URI < result[j].URI
+		}
+		return result[i].Item < result[j].Item
+	})
+	return result
 }
 
 func (s *session) transitiveBlockers(start string) []readiness.BlockerPath {

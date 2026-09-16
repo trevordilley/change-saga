@@ -233,7 +233,7 @@ func relationAdd(_ context.Context, args []string, out io.Writer) error {
 	usage := commandUsage[name]
 	flags := commandFlags(name, usage, out)
 	id := flags.String("id", "", "stable relation id")
-	typeName := flags.String("type", "", "refines, addresses, implements, verifies, supersedes, or conflicts_with")
+	typeName := flags.String("type", "", "refines, addresses, implements, explains, verifies, supersedes, or conflicts_with")
 	from := flags.String("from", "", "source endpoint URN")
 	to := flags.String("to", "", "target endpoint URN")
 	rationale := flags.String("rationale", "", "why the endpoints are related")

@@ -42,6 +42,7 @@ type ChangeSet struct {
 	Head        string `json:"head"`
 	BaseOID     string `json:"base_oid"`
 	HeadOID     string `json:"head_oid"`
+	HeadCommit  string `json:"head_commit,omitempty"`
 	Atoms       []Atom `json:"atoms"`
 	SagaChanges []Atom `json:"saga_changes"`
 	// DisplayLines contains bounded unchanged context alongside changed atoms.
@@ -204,7 +205,7 @@ func ReadFile(ctx context.Context, fromDir string, catalog Catalog, file FileSum
 	}
 	return changeSetFromPatch(output, preparedComparison{
 		repository: catalog.Repository, base: catalog.Base, head: catalog.Head,
-		baseOID: catalog.BaseOID, headOID: catalog.HeadOID,
+		baseOID: catalog.BaseOID, headOID: catalog.HeadOID, headCommit: catalog.HeadCommit,
 	})
 }
 
@@ -225,6 +226,9 @@ func changeSetFromPatch(output []byte, prepared preparedComparison) (ChangeSet, 
 	result := ChangeSet{
 		Repository: prepared.repository, Base: prepared.base, Head: prepared.head,
 		BaseOID: prepared.baseOID, HeadOID: prepared.headOID, DisplayLines: displayLines,
+	}
+	if prepared.head != "WORKTREE" {
+		result.HeadCommit = prepared.headCommit
 	}
 	for _, atom := range atoms {
 		reference := diffuri.Reference{Repository: prepared.repository, Base: prepared.baseOID, Head: prepared.headOID, Kind: atom.Kind, Path: atom.Path, Side: atom.Side, Start: atom.Line, End: atom.Line, Event: atom.Event, OldPath: atom.OldPath, NewPath: atom.NewPath}

@@ -27,6 +27,7 @@ type OpenOptions struct {
 
 type Session interface {
 	Snapshot() string
+	SourceHead() (identity string, commit string)
 	Overview(context.Context, OverviewQuery) (Overview, error)
 	Children(context.Context, ChildrenQuery) (ChildrenPage, error)
 	ReadFragment(context.Context, FragmentQuery) (FragmentContent, error)

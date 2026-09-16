@@ -10,6 +10,20 @@ contain several decks; each is an independent `___slides/<id>.deck/` merge
 boundary under the same Saga identity. Never paginate the report or turn user
 stories and prototypes into slides.
 
+Make the report requirements the closing-loop backbone. Every Item with exact
+code evidence must reach a user story through an active `explains` relation on
+the Item itself or one of its containing slide/deck targets. Pin the relation's
+target story revision. Prefer a criterion target when the visual explains one
+acceptance criterion; use a story target only when it genuinely applies to all
+criteria in that revision. Do not repeat the story prose in slide metadata.
+
+Before handoff, query each evidence path in reverse and clear the unlinked list:
+
+```sh
+change-saga query traceability --saga report.saga --diff '<saga-diff URI>'
+change-saga query traceability --saga report.saga --commit '<resolved source-head commit>'
+```
+
 Prototype persistence is currently internal-only and has no supported public
 CLI, query, or reviewer UI. Treat that surface as staged.
 

@@ -113,7 +113,8 @@ saga during both authoring and review. It is deterministic and paginated, never
 starts the server, and never mutates either repository.
 
 The operations are `schema`, `overview`, `children`, `fragment`, `fragment-diffs`, `slide`, `slide-diffs`,
-`diff-owners`, `reviews`, `gaps`, `mappings`, `claims`, and `verifications`. Start at `query overview`, walk one level
+`diff-owners`, `reviews`, `gaps`, `mappings`, `claims`, `verifications`,
+`requirements`, `relations`, and `traceability`. Start at `query overview`, walk one level
 at a time with `query children`, read narrative content through `query
 fragment`, navigate evidence in both directions with `query fragment-diffs` and
 `query diff-owners`, read the review overlay with `query reviews`, and page
@@ -150,6 +151,15 @@ living documentation. Add one or more focused decks with `add-deck` only for
 implemented changes that benefit from a visual breakdown. These decks live
 under the same Saga identity and appear as a separate reviewer surface; never
 turn every report fragment into a slide.
+
+Treat accepted user stories and acceptance criteria as the traceability
+backbone. For each embedded deck, slide, or Item that explains implementation,
+add an `explains` relation to the narrowest applicable story or criterion and
+pin its current story revision with `--to-revision`. A story-level relation
+applies transitively to all criteria in that revision. Keep exact diff evidence
+on Items. Before handoff, page `query traceability`; use `--diff` for exact
+reverse lookup or `--commit` for the resolved head commit of a committed
+comparison, and resolve every entry in `data.unlinked_code_evidence`.
 
 Prototype persistence is currently internal-only. Until public prototype CLI,
 query, and reviewer surfaces exist, state that prototype authoring is staged

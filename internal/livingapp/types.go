@@ -18,7 +18,9 @@ const (
 )
 
 type OpenOptions struct {
-	SagaRoot string
+	SagaRoot           string
+	SourceHeadIdentity string
+	SourceHeadCommit   string
 	// Snapshot binds this composed projection to an enclosing read session.
 	// Transport adapters that already own the established saga/source snapshot
 	// pass it here so all operations expose one public snapshot namespace.
@@ -43,6 +45,8 @@ type Filters struct {
 	Wave        string
 	Item        string
 	Status      string
+	Diff        string
+	Commit      string
 }
 
 type Page struct {
@@ -167,7 +171,8 @@ type Conflict struct {
 }
 
 type TraceabilityPage struct {
-	Criteria []Traceability `json:"criteria"`
+	Criteria             []Traceability         `json:"criteria"`
+	UnlinkedCodeEvidence []UnlinkedCodeEvidence `json:"unlinked_code_evidence"`
 }
 type Traceability struct {
 	Criterion              string                  `json:"criterion"`
@@ -175,11 +180,21 @@ type Traceability struct {
 	Revision               string                  `json:"revision"`
 	Design                 []string                `json:"design"`
 	WorkItems              []string                `json:"work_items"`
+	ReviewTargets          []string                `json:"review_targets"`
+	CodeEvidence           []string                `json:"code_evidence"`
 	Evidence               []string                `json:"evidence"`
 	Paths                  [][]string              `json:"paths"`
 	Blockers               []readiness.Blocker     `json:"blockers"`
 	TransitiveBlockerPaths []readiness.BlockerPath `json:"transitive_blocker_paths"`
 	Delivered              bool                    `json:"delivered"`
+}
+
+type UnlinkedCodeEvidence struct {
+	Deck         string `json:"deck"`
+	Slide        string `json:"slide"`
+	Item         string `json:"item"`
+	URI          string `json:"uri"`
+	EvidenceFile string `json:"evidence_file"`
 }
 
 type ReadinessPage struct {

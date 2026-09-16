@@ -9,6 +9,13 @@ documentation that explains requirements and acceptance criteria, overall
 technical design, and work-plan/wave history. A report may additionally contain
 several focused slide decks for complex implemented code changes.
 
+Accepted user stories and their acceptance criteria are the closing-loop
+backbone. Every Item that owns code evidence should be covered, directly or
+through its slide or deck, by an active `explains` relation to a story or
+criterion. That relation pins the story revision. A story-level link covers all
+acceptance criteria in that revision; a criterion-level link records the more
+precise claim.
+
 This is composition, not conversion. A story, prototype, design document, or
 work-plan event does not become a slide. Review authors add a deck only when a
 visual sequence materially improves a reviewer's understanding of a specific
@@ -44,6 +51,11 @@ deck, and intentionally slide-only semantics.
 - v3 CLI authoring through `add-deck`, `add-slide`, `set-slide-content`, and
   `add-item`, while v2 still requires an explicit upgrade;
 - Item-only exact diff ownership for embedded slides;
+- revision-pinned `explains` relations from decks, slides, or Items to stories
+  and acceptance criteria, without copying requirement prose into slide data;
+- traceability queries that return story-to-slide-to-diff paths, support reverse
+  lookup by exact diff URI or the current committed source head, and report
+  unlinked Item evidence;
 - one overview query that exposes report chapters/fragments and deck summaries,
   plus native `slide` and `slide-diffs` queries;
 - flat slide/Item comment records and per-slide approvals under the parent Saga;
@@ -64,6 +76,10 @@ slides, migrate v2/v3 reports to v4, or machine-judge whether a surprise is
 editorially justified. Surprise remains a callout Item backed by exact diffs
 and reviewer judgment.
 
+The public query/API carries the new story-to-code paths. Reviewer UI badges and
+click-through navigation for those paths are staged rather than implied by this
+slice.
+
 ## Risks and follow-up
 
 - Hybrid page rendering currently loads complete embedded slide content when
@@ -73,7 +89,11 @@ and reviewer judgment.
   additions, but this split must remain explicit in maintenance tooling.
 - The public v3 JSON manifest schema does not enumerate filesystem children;
   runtime validation is the normative gate for `___slides` bundle structure.
-- Requirements, plan readiness, mapping coverage, and slide approval remain
-  separate axes. A future UI must not collapse them into one completion score.
+- Requirements, plan readiness, mapping coverage, story-linked slide evidence,
+  and slide approval remain separate axes. A future UI must not collapse them
+  into one completion score.
+- `--commit` currently means the resolved source-head commit for the active
+  committed comparison. It is unavailable for `WORKTREE` and does not perform
+  commit-history or blame analysis for intermediate commits.
 - Prototype orchestration and central validation of every living subtree remain
   follow-up work.
