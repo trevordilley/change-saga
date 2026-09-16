@@ -1,0 +1,89 @@
+{
+  "version": 2,
+  "diffs": [
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=5\u0026head=product-6a72575173916f6c4237eaa1876dfad6f6d50062229f62ed7f5b232c8dc43f42\u0026path=internal%2Fcli%2Fslides.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=5",
+      "note": "Extends deck, slide, and Item authoring to v3 bundle directories while retaining standalone v4 behavior."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=9\u0026head=product-6a72575173916f6c4237eaa1876dfad6f6d50062229f62ed7f5b232c8dc43f42\u0026path=internal%2Fcli%2Fslides.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=9",
+      "note": "Extends deck, slide, and Item authoring to v3 bundle directories while retaining standalone v4 behavior."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=26\u0026head=product-6a72575173916f6c4237eaa1876dfad6f6d50062229f62ed7f5b232c8dc43f42\u0026path=internal%2Fcli%2Fslides.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=19",
+      "note": "Extends deck, slide, and Item authoring to v3 bundle directories while retaining standalone v4 behavior."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=30\u0026head=product-6a72575173916f6c4237eaa1876dfad6f6d50062229f62ed7f5b232c8dc43f42\u0026path=internal%2Fcli%2Fslides.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=28",
+      "note": "Extends deck, slide, and Item authoring to v3 bundle directories while retaining standalone v4 behavior."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=32\u0026head=product-6a72575173916f6c4237eaa1876dfad6f6d50062229f62ed7f5b232c8dc43f42\u0026path=internal%2Fcli%2Fslides.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=32",
+      "note": "Extends deck, slide, and Item authoring to v3 bundle directories while retaining standalone v4 behavior."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=117\u0026head=product-6a72575173916f6c4237eaa1876dfad6f6d50062229f62ed7f5b232c8dc43f42\u0026path=internal%2Fcli%2Fslides.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=89",
+      "note": "Extends deck, slide, and Item authoring to v3 bundle directories while retaining standalone v4 behavior."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=227\u0026head=product-6a72575173916f6c4237eaa1876dfad6f6d50062229f62ed7f5b232c8dc43f42\u0026path=internal%2Fcli%2Fslides.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=226",
+      "note": "Extends deck, slide, and Item authoring to v3 bundle directories while retaining standalone v4 behavior."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=235\u0026head=product-6a72575173916f6c4237eaa1876dfad6f6d50062229f62ed7f5b232c8dc43f42\u0026path=internal%2Fcli%2Fslides.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=235",
+      "note": "Extends deck, slide, and Item authoring to v3 bundle directories while retaining standalone v4 behavior."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=356\u0026head=product-6a72575173916f6c4237eaa1876dfad6f6d50062229f62ed7f5b232c8dc43f42\u0026path=internal%2Fcli%2Fslides.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=356",
+      "note": "Extends deck, slide, and Item authoring to v3 bundle directories while retaining standalone v4 behavior."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=362\u0026head=product-6a72575173916f6c4237eaa1876dfad6f6d50062229f62ed7f5b232c8dc43f42\u0026path=internal%2Fcli%2Fslides.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=362",
+      "note": "Extends deck, slide, and Item authoring to v3 bundle directories while retaining standalone v4 behavior."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=366\u0026head=product-6a72575173916f6c4237eaa1876dfad6f6d50062229f62ed7f5b232c8dc43f42\u0026path=internal%2Fcli%2Fslides.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=366",
+      "note": "Extends deck, slide, and Item authoring to v3 bundle directories while retaining standalone v4 behavior."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=442\u0026head=product-6a72575173916f6c4237eaa1876dfad6f6d50062229f62ed7f5b232c8dc43f42\u0026path=internal%2Fcli%2Fslides.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=442",
+      "note": "Extends deck, slide, and Item authoring to v3 bundle directories while retaining standalone v4 behavior."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=19\u0026head=product-6a72575173916f6c4237eaa1876dfad6f6d50062229f62ed7f5b232c8dc43f42\u0026path=internal%2Fcli%2Fslides.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=19",
+      "note": "Extends deck, slide, and Item authoring to v3 bundle directories while retaining standalone v4 behavior."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=78\u0026head=product-6a72575173916f6c4237eaa1876dfad6f6d50062229f62ed7f5b232c8dc43f42\u0026path=internal%2Fcli%2Fslides.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=76",
+      "note": "Extends deck, slide, and Item authoring to v3 bundle directories while retaining standalone v4 behavior."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=80\u0026head=product-6a72575173916f6c4237eaa1876dfad6f6d50062229f62ed7f5b232c8dc43f42\u0026path=internal%2Fcli%2Fslides.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=80",
+      "note": "Extends deck, slide, and Item authoring to v3 bundle directories while retaining standalone v4 behavior."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=189\u0026head=product-6a72575173916f6c4237eaa1876dfad6f6d50062229f62ed7f5b232c8dc43f42\u0026path=internal%2Fcli%2Fslides.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=188",
+      "note": "Extends deck, slide, and Item authoring to v3 bundle directories while retaining standalone v4 behavior."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=197\u0026head=product-6a72575173916f6c4237eaa1876dfad6f6d50062229f62ed7f5b232c8dc43f42\u0026path=internal%2Fcli%2Fslides.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=197",
+      "note": "Extends deck, slide, and Item authoring to v3 bundle directories while retaining standalone v4 behavior."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=318\u0026head=product-6a72575173916f6c4237eaa1876dfad6f6d50062229f62ed7f5b232c8dc43f42\u0026path=internal%2Fcli%2Fslides.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=318",
+      "note": "Extends deck, slide, and Item authoring to v3 bundle directories while retaining standalone v4 behavior."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=324\u0026head=product-6a72575173916f6c4237eaa1876dfad6f6d50062229f62ed7f5b232c8dc43f42\u0026path=internal%2Fcli%2Fslides.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=324",
+      "note": "Extends deck, slide, and Item authoring to v3 bundle directories while retaining standalone v4 behavior."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=328\u0026head=product-6a72575173916f6c4237eaa1876dfad6f6d50062229f62ed7f5b232c8dc43f42\u0026path=internal%2Fcli%2Fslides.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=328",
+      "note": "Extends deck, slide, and Item authoring to v3 bundle directories while retaining standalone v4 behavior."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=404\u0026head=product-6a72575173916f6c4237eaa1876dfad6f6d50062229f62ed7f5b232c8dc43f42\u0026path=internal%2Fcli%2Fslides.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=404",
+      "note": "Extends deck, slide, and Item authoring to v3 bundle directories while retaining standalone v4 behavior."
+    }
+  ]
+}

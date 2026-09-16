@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "deck-local-step",
+  "slide": "deck-thumbnail-navigation",
+  "rank": 40,
+  "kind": "transition",
+  "label": "Deck-local navigation",
+  "description": "Previous, next, and arrow-key navigation move through the active deck in authored order.",
+  "selector": {
+    "type": "element",
+    "element_id": "deck-local-step"
+  }
+}

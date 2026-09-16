@@ -16,9 +16,9 @@ deck, slide, or Item covers. Exact code evidence stays on Items.
 
 - **Separate lifecycles, one Saga:** compose report and deck records without
   mechanically turning requirements into slides.
-- **Focused implementation review:** expose named deck disclosures in the Saga
-  sidebar, exact Item evidence, surprise callouts, and per-slide review in the
-  full main area.
+- **Focused implementation review:** expose named deck disclosures that expand
+  into rendered slide thumbnails in the Saga sidebar, exact Item evidence,
+  surprise callouts, and per-slide review in the full main area.
 - **Close the loop to user intent:** traverse from accepted criteria to code and
   from an exact diff or current committed head back to the story.
 
@@ -32,9 +32,9 @@ is more useful than prose.
 1. Read the accepted stories and criteria in the requirements surface.
 2. Open **Lifecycle model** to inspect the document boundary and Git layout.
 3. Open **Traceability loop** to follow code evidence back to accepted intent.
-4. Expand **Reviewer experience** in the Saga sidebar, then open **Decks live
-   in the Saga sidebar** to inspect slide selection and the full main-area
-   review state.
+4. Expand **Reviewer experience** in the Saga sidebar, then open **Decks expand
+   into rendered thumbnails** to inspect real slide previews, deck-local
+   navigation, and the full main-area review state.
 5. Use linked Items to open the exact implementation and tests.
 
 ## Deliberate limits {#deliberate-limits}

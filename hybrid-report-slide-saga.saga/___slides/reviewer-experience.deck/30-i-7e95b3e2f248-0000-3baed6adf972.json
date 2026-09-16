@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "deck-node",
+  "slide": "deck-thumbnail-navigation",
+  "rank": 0,
+  "kind": "node",
+  "label": "Named deck",
+  "description": "The whole deck is a first-class, icon-marked disclosure in the Saga sidebar.",
+  "selector": {
+    "type": "element",
+    "element_id": "deck-node"
+  }
+}
