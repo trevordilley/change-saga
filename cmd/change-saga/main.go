@@ -41,6 +41,8 @@ func run(args []string, stdout, stderr io.Writer) int {
 		err = cli.Upgrade(ctx, args[1:], stdout)
 	case "story":
 		err = cli.Story(ctx, args[1:], stdout)
+	case "criterion":
+		err = cli.Criterion(ctx, args[1:], stdout)
 	case "citation":
 		err = cli.Citation(ctx, args[1:], stdout)
 	case "relation":

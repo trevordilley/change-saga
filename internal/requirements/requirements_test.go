@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"os"
 	"path/filepath"
+	"reflect"
 	"strings"
 	"testing"
 	"time"
@@ -125,6 +126,119 @@ func TestRemovedCriterionIDCannotBeReused(t *testing.T) {
 	})
 	if err == nil || !strings.Contains(err.Error(), "reuses removed criterion") {
 		t.Fatalf("reuse error = %v", err)
+	}
+}
+
+func TestCriterionWrappersCreateCompleteRevisionsAndReturnCurrentHeads(t *testing.T) {
+	root := newSaga(t)
+	input := storyInput("checkout", "r1", "created", []Criterion{{ID: "fast", Statement: "Checkout finishes promptly"}})
+	input.Title = "Checkout"
+	input.Statement = "As a buyer, I can check out"
+	input.Priority = "must"
+	_, err := AddStory(root, "test", input)
+	if err != nil {
+		t.Fatal(err)
+	}
+	story := "urn:change-saga:test:story:checkout"
+	r1 := story + ":revision:r1"
+	added, err := AddCriterion(root, "test", AddCriterionInput{
+		Story: story, Parent: r1, RevisionID: "r2",
+		Criterion: Criterion{ID: "audited", Statement: "The purchase is audited"},
+		CreatedAt: testTime.Add(time.Minute), RequestID: "criterion-add",
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	r2 := story + ":revision:r2"
+	if added.URN != story+":criterion:audited" || !reflect.DeepEqual(added.Created, []string{r2}) || !reflect.DeepEqual(added.CurrentHeads, []string{r2}) {
+		t.Fatalf("add result = %#v", added)
+	}
+	document, err := Load(root, "test")
+	if err != nil {
+		t.Fatal(err)
+	}
+	current := document.Stories[0].CurrentRevision
+	if current == nil || current.Title != input.Title || current.Statement != input.Statement || current.Priority != input.Priority || len(current.AcceptanceCriteria) != 2 {
+		t.Fatalf("criterion add did not preserve the complete story snapshot: %#v", current)
+	}
+
+	criterion := story + ":criterion:audited"
+	revised, err := ReviseCriterion(root, "test", ReviseCriterionInput{
+		Story: story, Criterion: criterion, Parent: r2, RevisionID: "r3",
+		Statement: "Every purchase is audited", CreatedAt: testTime.Add(2 * time.Minute), RequestID: "criterion-revise",
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	r3 := story + ":revision:r3"
+	if revised.URN != criterion || !reflect.DeepEqual(revised.CurrentHeads, []string{r3}) {
+		t.Fatalf("revise result = %#v", revised)
+	}
+	removed, err := RemoveCriterion(root, "test", RemoveCriterionInput{
+		Story: story, Criterion: criterion, Parent: r3, RevisionID: "r4",
+		Reason: "The audit obligation moved to a materially different criterion", CreatedAt: testTime.Add(3 * time.Minute), RequestID: "criterion-remove",
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if removed.Reason == "" || removed.URN != criterion {
+		t.Fatalf("remove result = %#v", removed)
+	}
+	_, err = AddCriterion(root, "test", AddCriterionInput{
+		Story: story, Parent: story + ":revision:r4", RevisionID: "r5",
+		Criterion: Criterion{ID: "audited", Statement: "Reuse the old identity"}, CreatedAt: testTime.Add(4 * time.Minute),
+	})
+	if err == nil || !strings.Contains(err.Error(), "cannot be reused") {
+		t.Fatalf("removed criterion reuse error = %v", err)
+	}
+	if _, statErr := os.Stat(filepath.Join(root, "___requirements", "stories", "checkout.story", "revisions", "r5.json")); !os.IsNotExist(statErr) {
+		t.Fatalf("failed reuse wrote a revision: %v", statErr)
+	}
+}
+
+func TestCriterionWrappersRequireExplicitUniqueCurrentParentAndReplay(t *testing.T) {
+	root := newSaga(t)
+	_, err := AddStory(root, "test", storyInput("checkout", "r1", "created", []Criterion{{ID: "fast", Statement: "Fast"}}))
+	if err != nil {
+		t.Fatal(err)
+	}
+	story := "urn:change-saga:test:story:checkout"
+	r1 := story + ":revision:r1"
+	input := AddCriterionInput{
+		Story: story, Parent: r1, RevisionID: "r2", Criterion: Criterion{ID: "safe", Statement: "Safe"},
+		CreatedAt: testTime.Add(time.Minute), RequestID: "add-safe",
+	}
+	first, err := AddCriterion(root, "test", input)
+	if err != nil {
+		t.Fatal(err)
+	}
+	replay, err := AddCriterion(root, "test", input)
+	if err != nil || !replay.Replayed || replay.URN != first.URN {
+		t.Fatalf("criterion replay = %#v, %v", replay, err)
+	}
+	_, err = AddCriterion(root, "test", AddCriterionInput{
+		Story: story, Parent: r1, RevisionID: "r3", Criterion: Criterion{ID: "clear", Statement: "Clear"},
+	})
+	if err == nil || !strings.Contains(err.Error(), "stale") {
+		t.Fatalf("stale parent error = %v", err)
+	}
+
+	// A concurrent Git merge creates two heads. Criterion conveniences must not
+	// choose a winner; the general story revise command owns reconciliation.
+	concurrent := Revision{
+		Schema: RevisionSchemaURL, Version: Version, ID: "r2-other", Story: story, Parents: []string{r1},
+		Title: "Checkout", Statement: "The story", Priority: "high", Citations: []string{},
+		AcceptanceCriteria: []Criterion{{ID: "fast", Statement: "Fast"}, {ID: "other", Statement: "Other"}}, CreatedAt: testTime.Add(2 * time.Minute),
+	}
+	path := filepath.Join(root, "___requirements", "stories", "checkout.story", "revisions", "r2-other.json")
+	if err := store.WriteJSON(path, concurrent, true); err != nil {
+		t.Fatal(err)
+	}
+	_, err = RemoveCriterion(root, "test", RemoveCriterionInput{
+		Story: story, Criterion: story + ":criterion:fast", Parent: story + ":revision:r2", RevisionID: "r3", Reason: "No longer required",
+	})
+	if err == nil || !strings.Contains(err.Error(), "one current story revision head") {
+		t.Fatalf("multi-head error = %v", err)
 	}
 }
 

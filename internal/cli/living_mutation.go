@@ -6,20 +6,25 @@ import (
 	"fmt"
 	"io"
 	"strings"
+
+	"github.com/twentyideas/changesaga/internal/requirements"
 )
 
 // livingMutationOutput is deliberately small and shared by all living-Saga
 // writers. Domain packages decide what was created; the CLI only adds the
 // operation name and transport status.
 type livingMutationOutput struct {
-	OK        bool     `json:"ok"`
-	Operation string   `json:"operation"`
-	Resource  string   `json:"resource,omitempty"`
-	Path      string   `json:"path,omitempty"`
-	Created   []string `json:"created"`
-	EventIDs  []string `json:"event_ids"`
-	Replayed  bool     `json:"replayed"`
-	Error     *struct {
+	OK           bool     `json:"ok"`
+	Operation    string   `json:"operation"`
+	Resource     string   `json:"resource,omitempty"`
+	Path         string   `json:"path,omitempty"`
+	Paths        []string `json:"paths,omitempty"`
+	Created      []string `json:"created"`
+	EventIDs     []string `json:"event_ids"`
+	CurrentHeads []string `json:"current_heads,omitempty"`
+	Reason       string   `json:"reason,omitempty"`
+	Replayed     bool     `json:"replayed"`
+	Error        *struct {
 		Code    string `json:"code"`
 		Message string `json:"message"`
 	} `json:"error,omitempty"`
@@ -45,6 +50,44 @@ func writeLivingMutation(out io.Writer, operation, resource, path string, create
 	fmt.Fprintf(out, "%s %s\n", verb, resource)
 	if path != "" {
 		fmt.Fprintf(out, "Path: %s\n", path)
+	}
+	return nil
+}
+
+func writeRequirementsMutation(out io.Writer, operation string, result requirements.MutationResult, eventIDs []string, jsonOutput bool) error {
+	created := result.Created
+	if created == nil {
+		created = []string{result.URN}
+	}
+	if eventIDs == nil {
+		eventIDs = []string{}
+	}
+	paths := result.Paths
+	if paths == nil {
+		paths = []string{}
+	}
+	heads := result.CurrentHeads
+	if heads == nil {
+		heads = []string{}
+	}
+	if jsonOutput {
+		return writeJSON(out, livingMutationOutput{
+			OK: true, Operation: operation, Resource: result.URN, Path: result.Path,
+			Paths: paths, Created: created, EventIDs: eventIDs, CurrentHeads: heads,
+			Reason: result.Reason, Replayed: result.Replayed,
+		})
+	}
+	verb := "Created"
+	if result.Replayed {
+		verb = "Replayed"
+	}
+	fmt.Fprintf(out, "%s %s\n", verb, result.URN)
+	if result.Path != "" {
+		fmt.Fprintf(out, "Path: %s\n", result.Path)
+	}
+	if result.Reason != "" {
+		fmt.Fprintf(out, "Reason: %s\n", result.Reason)
+		fmt.Fprintf(out, "Commit guidance: remove criterion %s — %s\n", result.URN, result.Reason)
 	}
 	return nil
 }

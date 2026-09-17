@@ -9,6 +9,7 @@ import (
 	"io"
 	"os"
 	"path/filepath"
+	"reflect"
 	"strings"
 	"testing"
 
@@ -47,6 +48,7 @@ func TestLivingMutationFamilyHelpIsDeterministicAndHasNoPivot(t *testing.T) {
 		want string
 	}{
 		{name: "story", run: Story, want: "add\n  revise\n  set-state"},
+		{name: "criterion", run: Criterion, want: "add\n  revise\n  remove"},
 		{name: "citation", run: Citation, want: "  add"},
 		{name: "relation", run: Relation, want: "add\n  supersede"},
 		{name: "plan", run: Plan, want: "record-merge"},
@@ -78,6 +80,7 @@ func TestLivingMutationFamilyHelpIsDeterministicAndHasNoPivot(t *testing.T) {
 		run       func(context.Context, []string, io.Writer) error
 	}{
 		{"story add", "add", Story}, {"story revise", "revise", Story}, {"story set-state", "set-state", Story},
+		{"criterion add", "add", Criterion}, {"criterion revise", "revise", Criterion}, {"criterion remove", "remove", Criterion},
 		{"citation add", "add", Citation}, {"relation add", "add", Relation}, {"relation supersede", "supersede", Relation},
 	}
 	for _, operation := range planOperations {
@@ -100,6 +103,117 @@ func TestLivingMutationFamilyHelpIsDeterministicAndHasNoPivot(t *testing.T) {
 				t.Fatalf("subcommand help drifted:\n%s\n---\n%s", first.String(), second.String())
 			}
 		})
+	}
+}
+
+func TestCriterionCommandsSupportStructuredInputEditorAndCompleteResults(t *testing.T) {
+	root := newLivingSaga(t)
+	ctx := context.Background()
+	var output bytes.Buffer
+	if err := Story(ctx, []string{
+		"add", root, "--id", "checkout", "--revision", "r1", "--event", "proposed",
+		"--title", "Checkout", "--statement", "As a buyer I can check out", "--priority", "must",
+		"--criterion", "fast=Checkout finishes promptly", "--request-id", "story-request", "--json",
+	}, &output); err != nil {
+		t.Fatal(err)
+	}
+	storyURN := "urn:change-saga:atomic:story:checkout"
+	r1 := storyURN + ":revision:r1"
+	payload := `{"story":"` + storyURN + `","parent":"` + r1 + `","revision":"r2","id":"audited","statement":"The purchase is audited","request_id":"criterion-add"}`
+	output.Reset()
+	if err := criterion(ctx, []string{"add", root, "--from", "-", "--json"}, &output, strings.NewReader(payload)); err != nil {
+		t.Fatalf("structured criterion add: %v\n%s", err, output.String())
+	}
+	added := decodeLivingOutput(t, &output)
+	r2 := storyURN + ":revision:r2"
+	if !added.OK || added.Resource != storyURN+":criterion:audited" || !reflect.DeepEqual(added.Created, []string{r2}) || !reflect.DeepEqual(added.CurrentHeads, []string{r2}) || len(added.Paths) != 1 {
+		t.Fatalf("criterion add result = %#v", added)
+	}
+
+	t.Setenv("EDITOR", "true")
+	output.Reset()
+	if err := Criterion(ctx, []string{
+		"revise", root, "--story", storyURN, "--criterion", added.Resource, "--parent", r2,
+		"--revision", "r3", "--statement", "Every purchase is audited", "--request-id", "criterion-revise", "--edit", "--json",
+	}, &output); err != nil {
+		t.Fatalf("criterion editor revise: %v\n%s", err, output.String())
+	}
+	revised := decodeLivingOutput(t, &output)
+	r3 := storyURN + ":revision:r3"
+	if !reflect.DeepEqual(revised.CurrentHeads, []string{r3}) || revised.Replayed {
+		t.Fatalf("criterion revise result = %#v", revised)
+	}
+
+	output.Reset()
+	if err := Criterion(ctx, []string{
+		"remove", root, "--story", storyURN, "--criterion", added.Resource, "--parent", r3,
+		"--revision", "r4", "--reason", "Replaced by a materially different obligation", "--request-id", "criterion-remove", "--json",
+	}, &output); err != nil {
+		t.Fatalf("criterion remove: %v\n%s", err, output.String())
+	}
+	removed := decodeLivingOutput(t, &output)
+	if removed.Reason == "" || removed.Resource != added.Resource {
+		t.Fatalf("criterion remove result = %#v", removed)
+	}
+	document, err := requirements.Load(root, "atomic")
+	if err != nil {
+		t.Fatal(err)
+	}
+	current := document.Stories[0].CurrentRevision
+	if current == nil || current.ID != "r4" || len(current.AcceptanceCriteria) != 1 || current.AcceptanceCriteria[0].ID != "fast" {
+		t.Fatalf("current full revision = %#v", current)
+	}
+}
+
+func TestStoryStructuredInputAndEditorUseExistingRevisionWriter(t *testing.T) {
+	root := newLivingSaga(t)
+	payload := `{"id":"checkout","revision":"r1","event":"proposed","title":"Checkout","statement":"As a buyer I can check out","priority":"must","acceptance_criteria":[{"id":"fast","statement":"Checkout finishes promptly"}],"created_at":"2026-09-17T18:00:00Z","request_id":"story-from"}`
+	var output bytes.Buffer
+	if err := story(context.Background(), []string{"add", root, "--from", "-", "--json"}, &output, strings.NewReader(payload)); err != nil {
+		t.Fatalf("structured story add: %v\n%s", err, output.String())
+	}
+	added := decodeLivingOutput(t, &output)
+	if len(added.Created) != 3 || added.Created[0] != added.Resource || len(added.Paths) != 3 || len(added.CurrentHeads) != 2 {
+		t.Fatalf("complete story add result = %#v", added)
+	}
+	t.Setenv("EDITOR", "true")
+	output.Reset()
+	if err := Story(context.Background(), []string{
+		"revise", root, "--story", added.Resource, "--revision", "r2", "--parent", added.CurrentHeads[0],
+		"--title", "Checkout clarified", "--edit", "--request-id", "story-edit", "--json",
+	}, &output); err != nil {
+		t.Fatalf("story editor revise: %v\n%s", err, output.String())
+	}
+	revised := decodeLivingOutput(t, &output)
+	if revised.Resource != added.Resource+":revision:r2" || !reflect.DeepEqual(revised.CurrentHeads, []string{revised.Resource}) {
+		t.Fatalf("story editor result = %#v", revised)
+	}
+}
+
+func TestCriterionStructuredInputIsStrictAndFailureWritesNothing(t *testing.T) {
+	root := newLivingSaga(t)
+	var output bytes.Buffer
+	if err := Story(context.Background(), []string{
+		"add", root, "--id", "checkout", "--revision", "r1", "--event", "proposed",
+		"--title", "Checkout", "--statement", "As a buyer I can check out", "--priority", "must",
+		"--criterion", "fast=Checkout finishes promptly",
+	}, &output); err != nil {
+		t.Fatal(err)
+	}
+	payload := `{"story":"urn:change-saga:atomic:story:checkout","parent":"urn:change-saga:atomic:story:checkout:revision:r1","revision":"r2","id":"audited","statement":"Audited","unexpected":true}`
+	output.Reset()
+	err := criterion(context.Background(), []string{"add", root, "--from", "-", "--json"}, &output, strings.NewReader(payload))
+	var status *StatusError
+	if !errors.As(err, &status) || status.Code != 1 {
+		t.Fatalf("strict structured input error = %v\n%s", err, output.String())
+	}
+	result := decodeLivingOutput(t, &output)
+	if result.OK || result.Error == nil || !strings.Contains(result.Error.Message, "unknown field") {
+		t.Fatalf("structured failure = %#v", result)
+	}
+	path := filepath.Join(root, "___requirements", "stories", "checkout.story", "revisions", "r2.json")
+	if _, statErr := os.Stat(path); !os.IsNotExist(statErr) {
+		t.Fatalf("failed structured mutation wrote %s: %v", path, statErr)
 	}
 }
 

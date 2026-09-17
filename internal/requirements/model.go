@@ -203,6 +203,43 @@ type ReviseStoryInput struct {
 	RequestID          string
 }
 
+// AddCriterionInput appends one criterion to the complete current story
+// snapshot. Parent is deliberately singular: criterion conveniences are not a
+// reconciliation surface and therefore refuse a story with multiple heads.
+type AddCriterionInput struct {
+	Story      string
+	Parent     string
+	RevisionID string
+	Criterion  Criterion
+	CreatedAt  time.Time
+	RequestID  string
+}
+
+// ReviseCriterionInput changes the wording of one stable criterion without
+// changing its identity or any other part of the story snapshot.
+type ReviseCriterionInput struct {
+	Story      string
+	Criterion  string
+	Parent     string
+	RevisionID string
+	Statement  string
+	CreatedAt  time.Time
+	RequestID  string
+}
+
+// RemoveCriterionInput omits one criterion from the next complete story
+// snapshot. Reason is returned to the caller as commit guidance; the durable
+// history remains the immutable parent/child revision pair.
+type RemoveCriterionInput struct {
+	Story      string
+	Criterion  string
+	Parent     string
+	RevisionID string
+	Reason     string
+	CreatedAt  time.Time
+	RequestID  string
+}
+
 type SetStoryStateInput struct {
 	Story     string
 	ID        string
@@ -237,7 +274,11 @@ type AddRelationInput struct {
 }
 
 type MutationResult struct {
-	URN      string
-	Path     string
-	Replayed bool
+	URN          string
+	Path         string
+	Created      []string
+	Paths        []string
+	CurrentHeads []string
+	Reason       string
+	Replayed     bool
 }

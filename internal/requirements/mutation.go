@@ -31,6 +31,10 @@ func AddStory(root, sagaID string, input AddStoryInput) (MutationResult, error) 
 		Schema: LifecycleEventSchemaURL, Version: Version, ID: input.EventID, Story: storyID, Parents: []string{},
 		State: StateProposed, CreatedAt: createdAt, RequestID: input.RequestID,
 	}
+	revisionID, _ := revisionURN(sagaID, input.ID, input.RevisionID)
+	eventID, _ := StoryEventURN(sagaID, input.ID, input.EventID)
+	created := []string{storyID, revisionID, eventID}
+	paths := []string{storyPackagePath(input.ID), revisionPath(input.ID, input.RevisionID), eventPath(input.ID, input.EventID)}
 	if err := validateIdentity(identity, input.ID); err != nil {
 		return MutationResult{}, err
 	}
@@ -48,7 +52,8 @@ func AddStory(root, sagaID string, input AddStoryInput) (MutationResult, error) 
 				continue
 			}
 			if input.RequestID != "" && existing.Identity.RequestID == input.RequestID && equalStoryCreation(existing, identity, revision, event) {
-				result = MutationResult{URN: storyID, Path: storyPackagePath(input.ID), Replayed: true}
+				heads := append(copyStrings(existing.RevisionHeads), existing.LifecycleHeads...)
+				result = MutationResult{URN: storyID, Path: storyPackagePath(input.ID), Created: copyStrings(created), Paths: copyStrings(paths), CurrentHeads: heads, Replayed: true}
 				return nil
 			}
 			return fmt.Errorf("story id %q already exists", input.ID)
@@ -85,7 +90,7 @@ func AddStory(root, sagaID string, input AddStoryInput) (MutationResult, error) 
 		} else if err != nil {
 			return err
 		}
-		result = MutationResult{URN: storyID, Path: storyPackagePath(input.ID)}
+		result = MutationResult{URN: storyID, Path: storyPackagePath(input.ID), Created: copyStrings(created), Paths: copyStrings(paths), CurrentHeads: []string{revisionID, eventID}}
 		return nil
 	})
 	return result, err
@@ -116,7 +121,7 @@ func ReviseStory(root, sagaID string, input ReviseStoryInput) (MutationResult, e
 				continue
 			}
 			if input.RequestID != "" && existing.RequestID == input.RequestID && equalRevisionIgnoringTime(existing, revision) {
-				result = MutationResult{URN: revisionID, Path: revisionPath(storyRef.ID, revision.ID), Replayed: true}
+				result = MutationResult{URN: revisionID, Path: revisionPath(storyRef.ID, revision.ID), Created: []string{revisionID}, Paths: []string{revisionPath(storyRef.ID, revision.ID)}, CurrentHeads: copyStrings(story.RevisionHeads), Replayed: true}
 				return nil
 			}
 			return fmt.Errorf("revision id %q already exists", revision.ID)
@@ -145,7 +150,213 @@ func ReviseStory(root, sagaID string, input ReviseStoryInput) (MutationResult, e
 		} else if err != nil {
 			return err
 		}
-		result = MutationResult{URN: revisionID, Path: revisionPath(storyRef.ID, revision.ID)}
+		result = MutationResult{URN: revisionID, Path: revisionPath(storyRef.ID, revision.ID), Created: []string{revisionID}, Paths: []string{revisionPath(storyRef.ID, revision.ID)}, CurrentHeads: []string{revisionID}}
+		return nil
+	})
+	return result, err
+}
+
+// AddCriterion is a single-head convenience over an immutable, complete story
+// revision. It performs the read/modify/write while holding the Saga writer
+// lock, so the caller's explicit parent is an optimistic concurrency check.
+func AddCriterion(root, sagaID string, input AddCriterionInput) (MutationResult, error) {
+	if !livingid.ValidID(input.Criterion.ID) {
+		return MutationResult{}, fmt.Errorf("criterion id is not a stable identifier")
+	}
+	if strings.TrimSpace(input.Criterion.Statement) == "" {
+		return MutationResult{}, fmt.Errorf("criterion %q requires a statement", input.Criterion.ID)
+	}
+	return mutateCriterion(root, sagaID, criterionMutation{
+		kind: criterionAdd, story: input.Story, parent: input.Parent, revisionID: input.RevisionID,
+		criterionID: input.Criterion.ID, statement: input.Criterion.Statement,
+		createdAt: input.CreatedAt, requestID: input.RequestID,
+	})
+}
+
+// ReviseCriterion preserves criterion identity while replacing its wording in
+// a new complete story snapshot.
+func ReviseCriterion(root, sagaID string, input ReviseCriterionInput) (MutationResult, error) {
+	return mutateCriterion(root, sagaID, criterionMutation{
+		kind: criterionRevise, story: input.Story, criterion: input.Criterion,
+		parent: input.Parent, revisionID: input.RevisionID, statement: input.Statement,
+		createdAt: input.CreatedAt, requestID: input.RequestID,
+	})
+}
+
+// RemoveCriterion omits the criterion from a new complete story snapshot. The
+// reason is intentionally output-only: requirements history is represented by
+// immutable revisions, not an additional tombstone record.
+func RemoveCriterion(root, sagaID string, input RemoveCriterionInput) (MutationResult, error) {
+	if strings.TrimSpace(input.Reason) == "" {
+		return MutationResult{}, fmt.Errorf("criterion removal reason is required")
+	}
+	return mutateCriterion(root, sagaID, criterionMutation{
+		kind: criterionRemove, story: input.Story, criterion: input.Criterion,
+		parent: input.Parent, revisionID: input.RevisionID, reason: input.Reason,
+		createdAt: input.CreatedAt, requestID: input.RequestID,
+	})
+}
+
+type criterionMutationKind int
+
+const (
+	criterionAdd criterionMutationKind = iota
+	criterionRevise
+	criterionRemove
+)
+
+type criterionMutation struct {
+	kind        criterionMutationKind
+	story       string
+	criterion   string
+	parent      string
+	revisionID  string
+	criterionID string
+	statement   string
+	reason      string
+	createdAt   time.Time
+	requestID   string
+}
+
+func mutateCriterion(root, sagaID string, input criterionMutation) (MutationResult, error) {
+	storyRef, err := livingid.Parse(input.story)
+	if err != nil || storyRef.Kind != livingid.KindStory || storyRef.SagaID != sagaID {
+		return MutationResult{}, fmt.Errorf("story must be a canonical story URN in saga %q", sagaID)
+	}
+	parentStory, err := parseStoryRevision(input.parent, sagaID)
+	if err != nil || parentStory != storyRef.ID {
+		return MutationResult{}, fmt.Errorf("parent must be a canonical revision URN for story %q", storyRef.ID)
+	}
+	if !livingid.ValidID(input.revisionID) {
+		return MutationResult{}, fmt.Errorf("revision id is not a stable identifier")
+	}
+	criterionID := input.criterionID
+	if input.kind != criterionAdd {
+		criterionRef, parseErr := livingid.Parse(input.criterion)
+		if parseErr != nil || criterionRef.Kind != livingid.KindCriterion || criterionRef.SagaID != sagaID || criterionRef.ParentID != storyRef.ID {
+			return MutationResult{}, fmt.Errorf("criterion must be a canonical criterion URN for story %q", storyRef.ID)
+		}
+		criterionID = criterionRef.ID
+	}
+	if input.kind == criterionRevise && strings.TrimSpace(input.statement) == "" {
+		return MutationResult{}, fmt.Errorf("criterion %q requires a statement", criterionID)
+	}
+	criterionIDURN, _ := criterionURN(sagaID, storyRef.ID, criterionID)
+	revisionIDURN, _ := revisionURN(sagaID, storyRef.ID, input.revisionID)
+	var result MutationResult
+	err = mutate(root, sagaID, func(document *Document) error {
+		story := findStory(document, storyRef.ID)
+		if story == nil {
+			return fmt.Errorf("story %q does not exist", storyRef.ID)
+		}
+		var parent *Revision
+		for index := range story.Revisions {
+			revisionURNValue, _ := revisionURN(sagaID, storyRef.ID, story.Revisions[index].ID)
+			if revisionURNValue == input.parent {
+				parent = &story.Revisions[index]
+				break
+			}
+		}
+		if parent == nil {
+			return fmt.Errorf("parent revision %q does not exist", input.parent)
+		}
+		var existingRevision *Revision
+		for index := range story.Revisions {
+			if story.Revisions[index].ID == input.revisionID {
+				existingRevision = &story.Revisions[index]
+				break
+			}
+		}
+		if existingRevision == nil {
+			if len(story.RevisionHeads) != 1 {
+				return fmt.Errorf("criterion mutation requires one current story revision head; found %v; reconcile with story revise first", story.RevisionHeads)
+			}
+			if story.RevisionHeads[0] != input.parent {
+				return fmt.Errorf("criterion parent is stale (got %q, current head is %q)", input.parent, story.RevisionHeads[0])
+			}
+		}
+		revision := Revision{
+			Schema: RevisionSchemaURL, Version: Version, ID: input.revisionID, Story: input.story,
+			Parents: []string{input.parent}, Title: parent.Title, Statement: parent.Statement,
+			Priority: parent.Priority, Citations: copyStrings(parent.Citations),
+			AcceptanceCriteria: copyCriteria(parent.AcceptanceCriteria), CreatedAt: mutationTime(input.createdAt),
+			RequestID: input.requestID,
+		}
+		found := -1
+		for index := range revision.AcceptanceCriteria {
+			if revision.AcceptanceCriteria[index].ID == criterionID {
+				found = index
+				break
+			}
+		}
+		switch input.kind {
+		case criterionAdd:
+			if found >= 0 {
+				return fmt.Errorf("criterion id %q already exists in the current story revision", criterionID)
+			}
+			revision.AcceptanceCriteria = append(revision.AcceptanceCriteria, Criterion{ID: criterionID, Statement: strings.TrimSpace(input.statement)})
+		case criterionRevise:
+			if found < 0 {
+				return fmt.Errorf("criterion %q is not present in parent revision %q", criterionID, input.parent)
+			}
+			if revision.AcceptanceCriteria[found].Statement == strings.TrimSpace(input.statement) {
+				return fmt.Errorf("criterion %q statement is unchanged", criterionID)
+			}
+			revision.AcceptanceCriteria[found].Statement = strings.TrimSpace(input.statement)
+		case criterionRemove:
+			if found < 0 {
+				return fmt.Errorf("criterion %q is not present in parent revision %q", criterionID, input.parent)
+			}
+			revision.AcceptanceCriteria = append(revision.AcceptanceCriteria[:found:found], revision.AcceptanceCriteria[found+1:]...)
+		}
+		if err := validateRevision(revision, sagaID, storyRef.ID); err != nil {
+			return err
+		}
+		path := revisionPath(storyRef.ID, revision.ID)
+		if existingRevision != nil {
+			if input.requestID != "" && existingRevision.RequestID == input.requestID && equalRevisionIgnoringTime(*existingRevision, revision) {
+				result = MutationResult{
+					URN: criterionIDURN, Path: path, Created: []string{revisionIDURN}, Paths: []string{path},
+					CurrentHeads: copyStrings(story.RevisionHeads), Reason: strings.TrimSpace(input.reason), Replayed: true,
+				}
+				return nil
+			}
+			return fmt.Errorf("revision id %q already exists", revision.ID)
+		}
+		if len(story.Revisions) >= MaxRevisionsPerStory {
+			return fmt.Errorf("revision limit of %d reached", MaxRevisionsPerStory)
+		}
+		if input.kind == criterionAdd {
+			for _, historical := range story.Revisions {
+				for _, criterion := range historical.AcceptanceCriteria {
+					if criterion.ID == criterionID {
+						return fmt.Errorf("criterion id %q was used previously and cannot be reused", criterionID)
+					}
+				}
+			}
+		}
+		if err := requireCitations(document, revision.Citations); err != nil {
+			return err
+		}
+		candidate := *story
+		candidate.Revisions = append(append([]Revision{}, story.Revisions...), revision)
+		citationIDs := map[string]bool{}
+		for _, citation := range document.Citations {
+			citationIDs[citation.ID] = true
+		}
+		if err := validateStoryGraphs(&candidate, sagaID, citationIDs); err != nil {
+			return err
+		}
+		fullPath := filepath.Join(document.Root, filepath.FromSlash(path))
+		if err := store.WriteJSON(fullPath, revision, true); errors.Is(err, fs.ErrExist) {
+			return fmt.Errorf("revision id %q already exists", revision.ID)
+		} else if err != nil {
+			return err
+		}
+		result = MutationResult{
+			URN: criterionIDURN, Path: path, Created: []string{revisionIDURN}, Paths: []string{path},
+			CurrentHeads: []string{revisionIDURN}, Reason: strings.TrimSpace(input.reason),
+		}
 		return nil
 	})
 	return result, err
@@ -175,7 +386,7 @@ func SetStoryState(root, sagaID string, input SetStoryStateInput) (MutationResul
 				continue
 			}
 			if input.RequestID != "" && existing.RequestID == input.RequestID && equalEventIgnoringTime(existing, event) {
-				result = MutationResult{URN: eventURN, Path: eventPath(storyRef.ID, event.ID), Replayed: true}
+				result = MutationResult{URN: eventURN, Path: eventPath(storyRef.ID, event.ID), Created: []string{eventURN}, Paths: []string{eventPath(storyRef.ID, event.ID)}, CurrentHeads: copyStrings(story.LifecycleHeads), Replayed: true}
 				return nil
 			}
 			return fmt.Errorf("lifecycle event id %q already exists", event.ID)
@@ -201,7 +412,7 @@ func SetStoryState(root, sagaID string, input SetStoryStateInput) (MutationResul
 		} else if err != nil {
 			return err
 		}
-		result = MutationResult{URN: eventURN, Path: eventPath(storyRef.ID, event.ID)}
+		result = MutationResult{URN: eventURN, Path: eventPath(storyRef.ID, event.ID), Created: []string{eventURN}, Paths: []string{eventPath(storyRef.ID, event.ID)}, CurrentHeads: []string{eventURN}}
 		return nil
 	})
 	return result, err
