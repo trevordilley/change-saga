@@ -1,0 +1,11 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/saga.schema.json",
+  "version": 3,
+  "id": "requirements-design-quality-lifecycle",
+  "title": "Requirements, Design, and Quality Lifecycle",
+  "source": {
+    "repository": "https://github.com/trevordilley/change-saga.git",
+    "base": "main",
+    "head": "HEAD"
+  }
+}

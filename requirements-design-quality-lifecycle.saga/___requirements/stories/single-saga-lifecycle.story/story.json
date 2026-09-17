@@ -1,0 +1,7 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story.schema.json",
+  "version": 3,
+  "id": "single-saga-lifecycle",
+  "created_at": "2026-09-17T18:52:04.528316Z",
+  "request_id": "story-single-saga-lifecycle-r1"
+}

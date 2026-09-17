@@ -1,0 +1,10 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-event.schema.json",
+  "version": 3,
+  "id": "proposed",
+  "story": "urn:change-saga:requirements-design-quality-lifecycle:story:visual-design-coverage",
+  "parents": [],
+  "state": "proposed",
+  "created_at": "2026-09-17T18:52:04.87599Z",
+  "request_id": "story-visual-design-coverage-r1"
+}
