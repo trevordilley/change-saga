@@ -191,13 +191,22 @@ type navNodeView struct {
 	Icon        string
 	Requirement bool
 	Deck        bool
-	Slide       *SlideReferenceView
-	Active      bool
-	Expanded    bool
-	StateClass  string
-	StateLabel  string
-	StateIcon   string
-	Children    []*navNodeView
+	// Group marks a named place in the stable information architecture rather
+	// than an authored destination: it discloses what it holds instead of
+	// linking anywhere of its own.
+	Group bool
+	// Gap marks a place the architecture reserves that nothing has been
+	// authored into yet. The row stays visible so a reviewer can see what is
+	// missing instead of having to know it should exist.
+	Gap        bool
+	Note       string
+	Slide      *SlideReferenceView
+	Active     bool
+	Expanded   bool
+	StateClass string
+	StateLabel string
+	StateIcon  string
+	Children   []*navNodeView
 }
 
 type sectionView struct {
@@ -1009,16 +1018,16 @@ func (a *app) page(w http.ResponseWriter, r *http.Request) {
 		if requirementsView.Active {
 			clearActiveNav(data.Nav)
 		}
-		if requirementsNav != nil {
-			if len(data.Nav) > 0 {
-				navigation := make([]*navNodeView, 0, len(data.Nav)+1)
-				navigation = append(navigation, data.Nav[0], requirementsNav)
-				navigation = append(navigation, data.Nav[1:]...)
-				data.Nav = navigation
-			} else {
-				data.Nav = []*navNodeView{requirementsNav}
-			}
-		}
+		prototypeNav, prototypeNote := a.prototypeNav(document.Manifest.ID)
+		uxDecks, implementationDecks := splitDeckNavByRole(makeDeckNavTree(slideRoot), document.Decks)
+		data.Nav = spliceProductNav(data.Nav, makeProductNavTree(productNavSources{
+			requirements:   requirementsNav,
+			prototypes:     prototypeNav,
+			prototypeNote:  prototypeNote,
+			uxDecks:        uxDecks,
+			technical:      makeDesignChapterNav(reportRoot, threadsByTarget),
+			implementation: implementationDecks,
+		}))
 	}
 	if data.HybridSlides {
 		data.SlideRoot = makeSectionView(slideRoot, scope)
@@ -1034,9 +1043,6 @@ func (a *app) page(w http.ResponseWriter, r *http.Request) {
 	data.ActivityCount = reviewActivityCount(document)
 	if data.Nav == nil {
 		data.Nav = makeNavTree(reportRoot, threadsByTarget)
-	}
-	if data.HybridSlides {
-		data.Nav = append(data.Nav, makeDeckNavTree(slideRoot)...)
 	}
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	if err := a.template.ExecuteTemplate(w, "page", data); err != nil {
@@ -1197,25 +1203,35 @@ func makeNavTree(root *saga.Section, threads map[string][]*threadView) []*navNod
 	overview.Expanded = len(overview.Children) > 0
 	nodes := []*navNodeView{overview}
 	for _, child := range root.Children {
-		if child.Kind != "chapter" {
+		// Design chapters are navigation too, but they belong under Design >
+		// Technical rather than beside the narrative chapters.
+		if child.Kind != "chapter" || designSection(child) {
 			continue
 		}
-		status, class, icon := reviewProgress(child, threads)
-		node := &navNodeView{
-			Title: child.Title, Href: sagaHref(child.Target),
-			NodeID:     "nav-" + domID(child.Target),
-			StateLabel: status, StateClass: class, StateIcon: icon,
-		}
-		node.Children = withoutRedundantLead(documentOutline(child), node.Title)
-		nodes = append(nodes, node)
+		nodes = append(nodes, makeChapterNav(child, threads))
 	}
 	return nodes
+}
+
+// makeChapterNav is one chapter as a sidebar destination with its collapsed
+// outline beneath it, wherever the architecture places that chapter.
+func makeChapterNav(chapter *saga.Section, threads map[string][]*threadView) *navNodeView {
+	status, class, icon := reviewProgress(chapter, threads)
+	node := &navNodeView{
+		Title: chapter.Title, Href: sagaHref(chapter.Target),
+		NodeID:     "nav-" + domID(chapter.Target),
+		StateLabel: status, StateClass: class, StateIcon: icon,
+	}
+	node.Children = withoutRedundantLead(documentOutline(chapter), node.Title)
+	return node
 }
 
 // makeDeckNavTree projects embedded review decks into the same sidebar as the
 // living documentation. Decks are disclosure nodes, while their slides are
 // destinations that switch the main pane from report reading to visual review.
-// Standalone v4 Sagas keep their thumbnail navigator and never use this tree.
+// splitDeckNavByRole then places each deck in the architecture; the decks no
+// longer occupy a sidebar path of their own. Standalone v4 Sagas keep their
+// thumbnail navigator and never use this tree.
 func makeDeckNavTree(root *saga.Section) []*navNodeView {
 	if root == nil {
 		return nil

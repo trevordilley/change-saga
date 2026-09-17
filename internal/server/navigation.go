@@ -1,0 +1,205 @@
+package server
+
+import (
+	"strings"
+
+	"github.com/twentyideas/changesaga/internal/prototypes"
+	"github.com/twentyideas/changesaga/internal/saga"
+)
+
+// The reviewer sidebar projects one stable information architecture:
+//
+//	Product          Prototypes, then Requirements
+//	Design           UX, UI, Technical (ERD, System, Data Flows)
+//	Quality          Test Cases
+//	Implementation   implementation decks
+//
+// The order is fixed. It is an information architecture, not a phase gate: it
+// never reorders as authoring progresses, so it never implies waterfall.
+// Within Product, Prototypes precedes Requirements because prototype-first is
+// the common discovery path, not because prototypes come due first.
+//
+// A place nothing has been authored into keeps its row and says so. Hiding an
+// empty section would leave a reviewer unable to see what is missing, which is
+// the one question this architecture exists to answer.
+
+// productNavSources is everything the architecture can be filled from. Every
+// field is optional: an empty field becomes a visible gap, never a hidden
+// section. Fields with no producer yet are the seams the remaining domains
+// will be joined through, and their TODOs name what is still missing.
+type productNavSources struct {
+	// requirements is makeRequirementsNav's tree. Requirements is its own
+	// overview and never gains a redundant "Overview" child.
+	requirements *navNodeView
+	prototypes   []*navNodeView
+	// prototypeNote replaces the default empty note when the prototype
+	// packages exist but could not be read.
+	prototypeNote string
+	uxDecks       []*navNodeView
+	// uiDesign is UI references and embeds.
+	// TODO: no UI design resource is recorded yet; nothing fills this.
+	uiDesign []*navNodeView
+	// technical is authored technical-design chapters stored under ___design.
+	technical []*navNodeView
+	// dataFlows is individual flow diagrams.
+	// TODO: no diagram resource is recorded yet; nothing fills this.
+	dataFlows []*navNodeView
+	// testCases is the quality domain's test cases.
+	// TODO: internal/quality loads only format v5 Sagas, and every Saga on
+	// disk is still v3, so the server has no readable source for these.
+	testCases      []*navNodeView
+	implementation []*navNodeView
+}
+
+// makeProductNavTree projects the stable order. It reads only what has already
+// been loaded plus the prototype packages, so building the whole architecture
+// opens no narrative content.
+func makeProductNavTree(sources productNavSources) []*navNodeView {
+	requirements := sources.requirements
+	if requirements == nil {
+		requirements = &navNodeView{
+			Title: "Requirements", Href: "/requirements", NodeID: "nav-requirements",
+			Icon: "requirements", Requirement: true,
+		}
+	}
+	if len(requirements.Children) == 0 {
+		requirements.Gap, requirements.Note = true, "no stories yet"
+	}
+	prototypeNote := sources.prototypeNote
+	if prototypeNote == "" {
+		prototypeNote = "no prototypes yet"
+	}
+
+	product := navPlace("Product", "nav-product", "product", "", []*navNodeView{
+		navPlace("Prototypes", "nav-prototypes", "prototype", prototypeNote, sources.prototypes),
+		requirements,
+	})
+	technical := navPlace("Technical", "nav-technical", "", "", append([]*navNodeView{
+		navPlace("ERD", "nav-technical-erd", "", "not authored yet", nil),
+		navPlace("System", "nav-technical-system", "", "not authored yet", nil),
+		navPlace("Data Flows", "nav-technical-data-flows", "", "no flow diagrams yet", sources.dataFlows),
+	}, sources.technical...))
+	design := navPlace("Design", "nav-design", "design", "", []*navNodeView{
+		navPlace("UX", "nav-design-ux", "", "no flow decks yet", sources.uxDecks),
+		navPlace("UI", "nav-design-ui", "", "no references yet", sources.uiDesign),
+		technical,
+	})
+	quality := navPlace("Quality", "nav-quality", "quality", "", []*navNodeView{
+		navPlace("Test Cases", "nav-test-cases", "", "no test cases yet", sources.testCases),
+	})
+	implementation := navPlace("Implementation", "nav-implementation", "implementation", "no implementation decks yet", sources.implementation)
+	return []*navNodeView{product, design, quality, implementation}
+}
+
+// navPlace is one row of the architecture. It is a disclosure when something
+// fills it and an explicit gap when nothing does. It is never a destination of
+// its own: the architecture names places, and the authored rows beneath them
+// are what a reviewer opens.
+func navPlace(title, id, icon, emptyNote string, children []*navNodeView) *navNodeView {
+	node := &navNodeView{
+		Title: title, NodeID: id, Icon: icon, Group: true,
+		Children: children, Expanded: len(children) > 0,
+	}
+	if len(children) == 0 {
+		node.Gap, node.Note = true, emptyNote
+	}
+	return node
+}
+
+// makePrototypeNav names the prototypes that already exist. The server has no
+// prototype surface yet, so each row is a name rather than a link: a prototype
+// a reviewer cannot even see listed is harder to ask about than one that is
+// listed and not yet openable.
+// TODO: give these rows an href once a prototype review route exists.
+func makePrototypeNav(document prototypes.Document) []*navNodeView {
+	var nodes []*navNodeView
+	for _, prototype := range document.Prototypes {
+		title := prototype.Identity.ID
+		if prototype.CurrentRevision != nil && strings.TrimSpace(prototype.CurrentRevision.Title) != "" {
+			title = strings.TrimSpace(prototype.CurrentRevision.Title)
+		}
+		target, err := prototypes.PrototypeURN(document.SagaID, prototype.Identity.ID)
+		if err != nil {
+			target = prototype.Identity.ID
+		}
+		nodes = append(nodes, &navNodeView{Title: title, NodeID: "nav-" + domID(target), Icon: "prototype"})
+	}
+	return nodes
+}
+
+// designSection reports whether a section was loaded from ___design. The saga
+// loader joins design packages into the report hierarchy, and their retained
+// on-disk path is the only recorded signal that a chapter is technical design
+// rather than narrative.
+func designSection(section *saga.Section) bool {
+	return section.Path == "___design" || strings.HasPrefix(section.Path, "___design/")
+}
+
+// makeDesignChapterNav projects the ___design chapters into Technical. Which
+// of ERD, System, or Data Flows a chapter satisfies is not recorded, so the
+// chapter keeps its authored title and claims none of them.
+func makeDesignChapterNav(root *saga.Section, threads map[string][]*threadView) []*navNodeView {
+	if root == nil {
+		return nil
+	}
+	var nodes []*navNodeView
+	for _, child := range root.Children {
+		if child.Kind != "chapter" || !designSection(child) {
+			continue
+		}
+		nodes = append(nodes, makeChapterNav(child, threads))
+	}
+	return nodes
+}
+
+// splitDeckNavByRole folds the decks that used to occupy their own top-level
+// sidebar path into Design > UX and Implementation.
+//
+// TODO: deck manifests record only the v4 "overview" and "change" roles. The
+// authoring grammar's `add-deck --role ux|implementation` is not stored yet, so
+// a deck without one of those roles is listed under Implementation with its
+// role left unstated rather than guessed at.
+func splitDeckNavByRole(nodes []*navNodeView, decks []*saga.Deck) (ux, implementation []*navNodeView) {
+	roles := make(map[string]string, len(decks))
+	for _, deck := range decks {
+		roles["nav-"+domID(deck.Target)] = deck.Role
+	}
+	for _, node := range nodes {
+		switch roles[node.NodeID] {
+		case "ux":
+			ux = append(ux, node)
+		case "implementation":
+			implementation = append(implementation, node)
+		default:
+			node.Note = "role not recorded"
+			implementation = append(implementation, node)
+		}
+	}
+	return ux, implementation
+}
+
+// spliceProductNav puts the architecture immediately below the report
+// overview, which keeps it at the same four rows on every Saga. Narrative
+// chapters follow it: their number varies with what was written, so anything
+// placed after them would move.
+func spliceProductNav(narrative, product []*navNodeView) []*navNodeView {
+	if len(narrative) == 0 {
+		return product
+	}
+	navigation := make([]*navNodeView, 0, len(narrative)+len(product))
+	navigation = append(navigation, narrative[0])
+	navigation = append(navigation, product...)
+	return append(navigation, narrative[1:]...)
+}
+
+// prototypeNav reads the prototype packages for the sidebar. The packages are
+// a small bounded directory scan that opens no prototype content, and an
+// unreadable one degrades to a stated gap: a broken package is a thing the
+// reviewer should be told about, not a reason the report fails to render.
+func (a *app) prototypeNav(sagaID string) ([]*navNodeView, string) {
+	document, err := prototypes.Load(a.root, sagaID)
+	if err != nil {
+		return nil, "could not be read; run change-saga validate"
+	}
+	return makePrototypeNav(document), ""
+}

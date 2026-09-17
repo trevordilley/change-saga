@@ -210,6 +210,15 @@ body.presentation-mode .slide-native-stage:hover .slide-exit-presentation,body.p
 .doc-tree>.doc-requirement>.doc-row{min-height:32px}
 .doc-tree>.doc-requirement>.doc-row>.doc-link{font-weight:650}
 .doc-requirement .doc-requirement .doc-link .i{width:12px;height:12px;color:var(--faint)}
+.doc-group-link{min-width:0;border:0;background:transparent;text-align:left;font:inherit;cursor:pointer}
+.doc-group>.doc-row>.doc-link{display:flex;align-items:center;gap:6px}
+.doc-group>.doc-row>.doc-link .i{width:14px;height:14px;flex:none;color:var(--muted)}
+.doc-tree>.doc-group>.doc-row{min-height:32px}
+.doc-tree>.doc-group>.doc-row>.doc-link{font-weight:650}
+.doc-static{display:flex;align-items:center;gap:6px;cursor:default}
+.doc-gap>.doc-row>.doc-link{color:var(--faint);font-weight:400}
+.doc-gap>.doc-row>.doc-link .i{color:var(--faint)}
+.doc-note{flex:none;padding:0 8px 0 4px;color:var(--faint);font-size:11px;white-space:nowrap}
 
 /* Changed-file tree ------------------------------------------------------ */
 .tree-tools{display:flex;align-items:center;gap:4px;padding:2px 4px 6px}
