@@ -12,7 +12,7 @@ import (
 //	Product          Prototypes, then Requirements
 //	Design           UX, UI, Technical (ERD, System, Data Flows)
 //	Quality          Test Cases
-//	Implementation   implementation decks
+//	Implementation   the slide deck that explains the change
 //
 // The order is fixed. It is an information architecture, not a phase gate: it
 // never reorders as authoring progresses, so it never implies waterfall.
@@ -155,25 +155,27 @@ func makeDesignChapterNav(root *saga.Section, threads map[string][]*threadView) 
 // splitDeckNavByRole folds the decks that used to occupy their own top-level
 // sidebar path into Design > UX and Implementation.
 //
-// TODO: deck manifests record only the v4 "overview" and "change" roles. The
-// authoring grammar's `add-deck --role ux|implementation` is not stored yet, so
-// a deck without one of those roles is listed under Implementation with its
-// role left unstated rather than guessed at.
+// Implementation is where a deck belongs unless it says otherwise. The slide
+// deck that explains the change is the core artifact of a Change Saga, and an
+// embedded report deck must carry role "change": internal/saga validation
+// rejects any other role, because the report itself is the overview. So a deck
+// arriving here without a design role is not one whose role went unrecorded —
+// it is the implementation deck, named by the only role it is allowed to have.
+//
+// "ux" is the one role that moves a deck out of Implementation, for the UX
+// flows the authoring grammar will add as `add-deck --role ux`. It is accepted
+// ahead of that grammar so the seam is already correct when the role lands.
 func splitDeckNavByRole(nodes []*navNodeView, decks []*saga.Deck) (ux, implementation []*navNodeView) {
 	roles := make(map[string]string, len(decks))
 	for _, deck := range decks {
 		roles["nav-"+domID(deck.Target)] = deck.Role
 	}
 	for _, node := range nodes {
-		switch roles[node.NodeID] {
-		case "ux":
+		if roles[node.NodeID] == "ux" {
 			ux = append(ux, node)
-		case "implementation":
-			implementation = append(implementation, node)
-		default:
-			node.Note = "role not recorded"
-			implementation = append(implementation, node)
+			continue
 		}
+		implementation = append(implementation, node)
 	}
 	return ux, implementation
 }

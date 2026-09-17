@@ -136,12 +136,16 @@ func TestDeckNavigationFoldsIntoDesignAndImplementationByRole(t *testing.T) {
 	root := &saga.Section{ID: "root", Target: saga.SagaTarget("test"), Children: []*saga.Section{
 		{Kind: "deck", ID: "flows", Title: "Checkout flows", Target: saga.DeckTarget("test", "flows")},
 		{Kind: "deck", ID: "build", Title: "Build plan", Target: saga.DeckTarget("test", "build")},
-		{Kind: "deck", ID: "intro", Title: "Change overview", Target: saga.DeckTarget("test", "intro")},
+		{Kind: "deck", ID: "intro", Title: "How the refund changed", Target: saga.DeckTarget("test", "intro")},
 	}}
 	decks := []*saga.Deck{
 		{DeckManifest: saga.DeckManifest{ID: "flows", Role: "ux"}, Target: saga.DeckTarget("test", "flows")},
 		{DeckManifest: saga.DeckManifest{ID: "build", Role: "implementation"}, Target: saga.DeckTarget("test", "build")},
-		{DeckManifest: saga.DeckManifest{ID: "intro", Role: "overview"}, Target: saga.DeckTarget("test", "intro")},
+		// "change" is the only role an embedded report deck is allowed to
+		// carry, and it is the slide deck that explains the change: the core
+		// artifact a Change Saga exists to review. It belongs in Implementation
+		// on its own terms, not as a deck whose role went unrecorded.
+		{DeckManifest: saga.DeckManifest{ID: "intro", Role: "change"}, Target: saga.DeckTarget("test", "intro")},
 	}
 
 	ux, implementation := splitDeckNavByRole(makeDeckNavTree(root), decks)
@@ -151,8 +155,8 @@ func TestDeckNavigationFoldsIntoDesignAndImplementationByRole(t *testing.T) {
 	if len(implementation) != 2 || implementation[0].Title != "Build plan" || implementation[0].Note != "" {
 		t.Fatalf("implementation decks = %#v", implementation)
 	}
-	if implementation[1].Title != "Change overview" || implementation[1].Note == "" {
-		t.Fatalf("a deck with no recorded ux/implementation role must state that: %#v", implementation[1])
+	if implementation[1].Title != "How the refund changed" || implementation[1].Note != "" {
+		t.Fatalf("the change deck is the implementation deck and must carry no caveat: %#v", implementation[1])
 	}
 
 	nodes := makeProductNavTree(productNavSources{uxDecks: ux, implementation: implementation})
