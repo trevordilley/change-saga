@@ -9,7 +9,10 @@
     "$schema": { "const": "https://changesaga.dev/schema/v5/coverage-exception.schema.json" },
     "version": { "const": 5 },
     "id": { "$ref": "#/$defs/id" },
-    "axis": { "enum": ["design", "quality"] },
+    "axis": {
+      "description": "Coverage axis the exception excludes. The six canonical axes are prototype, ux, ui, technical, quality, and implementation. \"design\" is the deprecated pre-six-axis value: readers must keep accepting it and expand it to ux, ui, and technical; writers must not emit it.",
+      "enum": ["design", "implementation", "prototype", "quality", "technical", "ui", "ux"]
+    },
     "criterion": { "$ref": "#/$defs/criterion_urn" },
     "story_revision": { "$ref": "#/$defs/story_revision_urn" },
     "rationale": { "type": "string", "minLength": 1 },
