@@ -39,6 +39,8 @@ func run(args []string, stdout, stderr io.Writer) int {
 		err = cli.Init(ctx, args[1:], stdout)
 	case "upgrade":
 		err = cli.Upgrade(ctx, args[1:], stdout)
+	case "prototype":
+		err = cli.Prototype(ctx, args[1:], stdout)
 	case "story":
 		err = cli.Story(ctx, args[1:], stdout)
 	case "criterion":

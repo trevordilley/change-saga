@@ -532,3 +532,33 @@ func newSaga(t *testing.T) string {
 	}
 	return root
 }
+
+// The prototype capability shares ___requirements so the two roots merge
+// independently. Requirement authoring must keep working beside it, and an
+// unrelated directory must still be refused.
+func TestLoadToleratesTheSiblingPrototypeRootOnly(t *testing.T) {
+	root := newSaga(t)
+	if _, err := AddStory(root, "test", AddStoryInput{
+		ID: "buyer", RevisionID: "r1", EventID: "proposed", Title: "Buyer",
+		Statement: "As a buyer I can check out", Priority: "must",
+		AcceptanceCriteria: []Criterion{{ID: "fast", Statement: "Checkout finishes promptly"}},
+	}); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.MkdirAll(filepath.Join(root, "___requirements", "prototypes", "checkout.prototype"), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	document, err := Load(root, "test")
+	if err != nil {
+		t.Fatalf("prototypes must not break requirement loading: %v", err)
+	}
+	if len(document.Stories) != 1 {
+		t.Fatalf("stories = %#v", document.Stories)
+	}
+	if err := os.Mkdir(filepath.Join(root, "___requirements", "experiments"), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := Load(root, "test"); err == nil || !strings.Contains(err.Error(), "unknown requirements entry") {
+		t.Fatalf("an unknown requirements root error = %v", err)
+	}
+}

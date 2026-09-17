@@ -73,7 +73,7 @@ func LoadWithOptions(root, sagaID string, options LoadOptions) (Document, error)
 	if !present {
 		return document, nil
 	}
-	entries, err := boundedReadDir(requirementsRoot, 3)
+	entries, err := boundedReadDir(requirementsRoot, 4)
 	if err != nil {
 		return Document{}, err
 	}
@@ -84,6 +84,10 @@ func LoadWithOptions(root, sagaID string, options LoadOptions) (Document, error)
 		}
 		switch entry.Name() {
 		case "stories", "citations", "relations":
+		// prototypes is the sibling capability root owned by internal/prototypes.
+		// It shares ___requirements so the two merge independently; this loader
+		// deliberately never reads it.
+		case "prototypes":
 		default:
 			return Document{}, fmt.Errorf("unknown requirements entry %q", entry.Name())
 		}
