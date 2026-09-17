@@ -7,6 +7,7 @@ import (
 	"net/url"
 	"sort"
 	"strings"
+	"time"
 
 	"github.com/twentyideas/changesaga/internal/livingid"
 	"github.com/twentyideas/changesaga/internal/requirements"
@@ -31,21 +32,29 @@ type requirementsPageView struct {
 }
 
 type requirementStoryView struct {
-	Number            int
-	Label             string
-	ID                string
-	Target            string
-	DOMID             string
-	Href              string
-	Title             string
-	Statement         string
-	Priority          string
-	Lifecycle         string
-	Revision          string
-	RevisionTarget    string
-	RevisionConflict  bool
-	LifecycleConflict bool
-	Criteria          []*requirementCriterionView
+	Number             int
+	Label              string
+	ID                 string
+	Target             string
+	DOMID              string
+	Href               string
+	Title              string
+	Statement          string
+	Priority           string
+	CreatedAt          time.Time
+	Lifecycle          string
+	LifecycleReason    string
+	LifecycleAt        time.Time
+	Revision           string
+	RevisionTarget     string
+	RevisionAt         time.Time
+	RevisionConflict   bool
+	LifecycleConflict  bool
+	RevisionHeadCount  int
+	LifecycleHeadCount int
+	Revisions          []requirementHistoryView
+	LifecycleEvents    []requirementHistoryView
+	Criteria           []*requirementCriterionView
 }
 
 type requirementCriterionView struct {
@@ -57,6 +66,16 @@ type requirementCriterionView struct {
 	Href      string
 	Statement string
 	Selected  bool
+}
+
+type requirementHistoryView struct {
+	ID        string
+	Target    string
+	State     string
+	Reason    string
+	CreatedAt time.Time
+	Current   bool
+	Parents   int
 }
 
 func loadRequirementsSurface(root, sagaID string, r *http.Request) (*requirementsPageView, *navNodeView, error) {
@@ -139,15 +158,17 @@ func makeRequirementStoryView(sagaID string, number int, story requirements.Stor
 	view := &requirementStoryView{
 		Number: number, Label: fmt.Sprintf("Story %02d", number), ID: story.Identity.ID,
 		Target: target, DOMID: domID(target), Href: requirementStoryHref(story.Identity.ID),
-		Title: story.Identity.ID, Lifecycle: "unresolved",
+		Title: story.Identity.ID, CreatedAt: story.Identity.CreatedAt, Lifecycle: "unresolved",
 		RevisionConflict: story.RevisionConflict(), LifecycleConflict: story.LifecycleConflict(),
+		RevisionHeadCount: len(story.RevisionHeads), LifecycleHeadCount: len(story.LifecycleHeads),
 	}
 	if story.CurrentRevision != nil {
 		view.Title = story.CurrentRevision.Title
 		view.Statement = story.CurrentRevision.Statement
 		view.Priority = story.CurrentRevision.Priority
 		view.Revision = story.CurrentRevision.ID
-		view.RevisionTarget = "urn:change-saga:" + sagaID + ":story:" + story.Identity.ID + ":revision:" + story.CurrentRevision.ID
+		view.RevisionAt = story.CurrentRevision.CreatedAt
+		view.RevisionTarget, _ = livingid.Revision(sagaID, story.Identity.ID, story.CurrentRevision.ID)
 		for index, criterion := range story.CurrentRevision.AcceptanceCriteria {
 			target, err := livingid.Criterion(sagaID, story.Identity.ID, criterion.ID)
 			if err != nil {
@@ -162,7 +183,26 @@ func makeRequirementStoryView(sagaID string, number int, story requirements.Stor
 	}
 	if story.CurrentLifecycle != nil {
 		view.Lifecycle = string(story.CurrentLifecycle.State)
+		view.LifecycleReason = story.CurrentLifecycle.Reason
+		view.LifecycleAt = story.CurrentLifecycle.CreatedAt
 	}
+	for _, revision := range story.Revisions {
+		target, _ := livingid.Revision(sagaID, story.Identity.ID, revision.ID)
+		view.Revisions = append(view.Revisions, requirementHistoryView{
+			ID: revision.ID, Target: target, CreatedAt: revision.CreatedAt,
+			Current: target == view.RevisionTarget, Parents: len(revision.Parents),
+		})
+	}
+	for _, event := range story.Events {
+		target, _ := requirements.StoryEventURN(sagaID, story.Identity.ID, event.ID)
+		current := story.CurrentLifecycle != nil && story.CurrentLifecycle.ID == event.ID
+		view.LifecycleEvents = append(view.LifecycleEvents, requirementHistoryView{
+			ID: event.ID, Target: target, State: string(event.State), Reason: event.Reason,
+			CreatedAt: event.CreatedAt, Current: current, Parents: len(event.Parents),
+		})
+	}
+	sort.SliceStable(view.Revisions, func(i, j int) bool { return view.Revisions[i].CreatedAt.After(view.Revisions[j].CreatedAt) })
+	sort.SliceStable(view.LifecycleEvents, func(i, j int) bool { return view.LifecycleEvents[i].CreatedAt.After(view.LifecycleEvents[j].CreatedAt) })
 	return view, nil
 }
 

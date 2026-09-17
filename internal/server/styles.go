@@ -316,6 +316,29 @@ body.presentation-mode .slide-native-stage:hover .slide-exit-presentation,body.p
 .requirement-characterization dt{color:var(--faint);font:700 9px var(--ui);letter-spacing:.06em;text-transform:uppercase}
 .requirement-characterization dd{margin:0;color:var(--ink);font:12.5px var(--ui)}
 .requirement-characterization code{font:11px var(--mono)}
+.requirement-history{padding:18px;border:1px solid var(--line);border-radius:11px;background:var(--bg)}
+.requirement-history>header{margin-bottom:12px}
+.requirement-history>header h2{margin:0;font:650 18px/1.3 var(--ui)}
+.requirement-history-current{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.requirement-history-current>article{display:grid;gap:4px;min-width:0;padding:12px;border:1px solid var(--line-soft);border-radius:8px;background:var(--bg-subtle)}
+.requirement-history-current>article>span{color:var(--faint);font:700 9px var(--ui);letter-spacing:.06em;text-transform:uppercase}
+.requirement-history-current>article>strong{font:650 14px var(--ui);text-transform:capitalize}
+.requirement-history-current>article>p,.requirement-history-current>article>small{margin:0;color:var(--muted);font:11px/1.4 var(--ui)}
+.requirement-history-current code{overflow:hidden;text-overflow:ellipsis;color:var(--faint);font:10px var(--mono)}
+.requirement-history-lists{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:9px}
+.requirement-history-lists details{overflow:hidden;border:1px solid var(--line-soft);border-radius:8px;background:var(--bg)}
+.requirement-history-lists summary{display:flex;align-items:center;gap:6px;padding:9px 10px;list-style:none;color:var(--muted);cursor:pointer;font:600 11px var(--ui)}
+.requirement-history-lists summary::-webkit-details-marker{display:none}
+.requirement-history-lists summary .twisty{width:12px;height:12px;transition:transform .12s}
+.requirement-history-lists details[open] summary .twisty{transform:rotate(90deg)}
+.requirement-history-lists summary span{margin-left:auto;font:10px var(--mono)}
+.requirement-history-lists ol{display:grid;gap:1px;margin:0;padding:0 8px 8px;list-style:none}
+.requirement-history-lists li{display:grid;gap:3px;min-width:0;padding:8px;border-radius:6px;background:var(--bg-subtle)}
+.requirement-history-lists li.current{box-shadow:inset 2px 0 var(--accent);background:var(--accent-soft)}
+.requirement-history-lists li strong{font:600 11px var(--ui)}
+.requirement-history-lists li p{margin:0;color:var(--muted);font:11px/1.4 var(--ui)}
+.requirement-history-lists li code{overflow:hidden;text-overflow:ellipsis;color:var(--faint);font:9.5px var(--mono)}
+.requirement-history-lists li time{color:var(--faint);font:9px var(--mono)}
 .requirement-criteria>header{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:10px}
 .requirement-criteria>header>span{color:var(--faint);font:11px var(--mono)}
 .requirement-criteria-list{display:grid;gap:9px}
@@ -329,7 +352,7 @@ body.presentation-mode .slide-native-stage:hover .slide-exit-presentation,body.p
 .requirement-criterion>p{margin:9px 0 12px;font:500 14px/1.55 var(--ui)}
 .requirement-criterion>footer{display:flex;align-items:center;justify-content:space-between;padding-top:8px;border-top:1px solid color-mix(in srgb,var(--line) 72%,transparent);color:var(--faint);font:9.5px var(--ui);letter-spacing:.045em;text-transform:uppercase}
 .requirement-criterion>footer a{color:var(--accent);text-decoration:none}
-@media(max-width:780px){.requirements-hero{grid-template-columns:auto minmax(0,1fr)}.requirements-summary{grid-column:1/-1}.requirement-story-grid{grid-template-columns:1fr}.requirements-criteria-preview li a{grid-template-columns:42px minmax(0,1fr)}.requirements-criteria-preview li code{grid-column:2}}
+@media(max-width:780px){.requirements-hero{grid-template-columns:auto minmax(0,1fr)}.requirements-summary{grid-column:1/-1}.requirement-story-grid,.requirement-history-current,.requirement-history-lists{grid-template-columns:1fr}.requirements-criteria-preview li a{grid-template-columns:42px minmax(0,1fr)}.requirements-criteria-preview li code{grid-column:2}}
 
 /* Chapter list ----------------------------------------------------------- */
 .chapter-index{margin-top:28px;border-top:1px solid var(--line-soft);padding-top:14px}
