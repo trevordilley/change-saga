@@ -3491,6 +3491,8 @@ const appJavaScript = `(() => {
     if (docTwisty) { toggleDocNode(docTwisty); return; }
     const deckToggle = event.target.closest('[data-deck-toggle]');
     if (deckToggle) { toggleDocNode(deckToggle); return; }
+    const docToggle = event.target.closest('[data-doc-toggle]');
+    if (docToggle) { toggleDocNode(docToggle); return; }
     const reportNav = event.target.closest('[data-report-nav]');
     if (reportNav && q('[data-view="slides"].active')) setView('saga');
     const chapterToggle = event.target.closest('[data-chapter-toggle]');

@@ -21,9 +21,15 @@ func TestV3DesignChapterAndFragmentEnterExistingRenderTree(t *testing.T) {
 	if err != nil || !validation.Valid {
 		t.Fatalf("LoadNarrative = valid %v, err %v, issues %#v", validation.Valid, err, validation.Issues)
 	}
+	// A ___design chapter is technical design, not narrative: it leaves the
+	// chapter list and reappears under Design > Technical.
 	nav := makeNavTree(document.Section, nil)
-	if len(nav) != 2 || nav[1].Title != "Technical architecture" || nav[1].Href != sagaHref(saga.ChapterTarget("render-design", "architecture")) {
-		t.Fatalf("design navigation = %#v", nav)
+	if len(nav) != 1 || nav[0].Title != "Overview" {
+		t.Fatalf("narrative navigation still carries the design chapter: %#v", nav)
+	}
+	technical := makeDesignChapterNav(document.Section, nil)
+	if len(technical) != 1 || technical[0].Title != "Technical architecture" || technical[0].Href != sagaHref(saga.ChapterTarget("render-design", "architecture")) {
+		t.Fatalf("design navigation = %#v", technical)
 	}
 	view := makeSectionView(document.Section, viewScope{})
 	if len(view.ChildViews) != 1 || len(view.ChildViews[0].FragmentViews) != 1 {
