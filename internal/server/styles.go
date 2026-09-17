@@ -261,6 +261,9 @@ body.presentation-mode .slide-native-stage:hover .slide-exit-presentation,body.p
 .requirements-page{max-width:940px;margin:0 auto}
 .requirements-header{margin:0 0 20px;padding-bottom:14px;border-bottom:1px solid var(--line)}
 .requirements-header h1,.requirement-story-hero h1{margin:0;color:var(--ink);font:650 28px/1.15 var(--ui);letter-spacing:-.025em}
+.requirements-rationale{max-width:780px;margin:0 0 24px}
+.requirements-rationale h2{margin:0 0 6px;color:var(--muted);font:650 12px/1.3 var(--ui);letter-spacing:.04em;text-transform:uppercase}
+.requirements-rationale p{margin:0;color:var(--ink);font:16px/1.55 var(--ui)}
 .requirements-story-list{display:grid;gap:10px}
 .requirements-story-card{overflow:hidden;border:1px solid var(--line);border-radius:9px;background:var(--bg);transition:border-color .14s}
 .requirements-story-card:hover{border-color:var(--accent-line)}

@@ -4,12 +4,15 @@ Status: implementation-ready plan for the next report-container schema evolution
 
 ## Decision
 
-A feature Change Saga is one durable artifact from inception through completed
-review. Requirements and quality remain report surfaces. Technical design and
-prototypes may use one or more visual slide decks. Implementation evidence stays
-attached to the smallest authored target that explains it, including v4 Items
-inside embedded decks. All resources derive their identity from the one parent
-Saga ID and participate in one queryable graph.
+A feature Change Saga is one durable, version-controlled audit log from
+inception through completed review. Requirements and quality remain report
+surfaces. Prototypes are revisioned interactive HTML experiences or explicitly
+allowed external embeds. UX and implementation use focused visual decks; UI
+design may use pinned references or embeds; technical design uses the diagram
+form appropriate to the relationship. Implementation evidence stays attached
+to the smallest authored target that explains it, including v4 Items inside
+embedded decks. All resources derive their identity from the one parent Saga ID
+and participate in one queryable graph.
 
 The next report-container version should be **v5**. Version 4 is already the
 distinct slide-native format, and adding a new `___quality` reserved root to a
@@ -38,6 +41,7 @@ reused rather than rebuilt:
 | --- | --- | --- |
 | One report identity with embedded decks | A v3 `saga.json` owns report content and `___slides/<deck>.deck/` bundles. | Keep one manifest and one Saga ID. Do not add a design Saga or quality Saga. |
 | Living requirements | `___requirements/stories/<id>.story/` contains an immutable identity, append-only full revisions, and append-only lifecycle events. | Extend the authoring UX and projections; do not introduce a second requirement model. |
+| Interactive prototypes | `internal/prototypes` and the v3 prototype schemas already define HTML, external, and safe embedded sources; immutable revisions; element/text/region/provider selectors; and pinned story annotations. | Expose the existing model through CLI, query, and reviewer surfaces. Do not remodel prototypes as decks. |
 | Acceptance-criterion identity | A criterion ID is stable within a story and its URN is `urn:change-saga:<saga>:story:<story>:criterion:<criterion>`. Removed IDs cannot be reused. | Keep this identity rule and make criterion mutations create story revisions. |
 | Pinned relations | v3 relations have stable IDs, explicit endpoint URNs, revision/content pins, active/superseded state, and stale diagnostics. | Extend the endpoint matrix and source-digest support rather than create ad hoc link arrays. |
 | Visual semantic nodes | v4 Deck -> Slide -> Item is a flat, independently mergeable representation; Items have selectors, reading order, and stable URNs. | Treat Decks, Slides, and Items as eligible visual-design targets. Do not copy requirement prose into them. |
@@ -55,17 +59,54 @@ traceability are CLI-only in the reviewer; and there is no quality domain.
 
 ## Product model and boundaries
 
+The sidebar is a stable information architecture, not a phase gate:
+
+```text
+Product
+  Prototypes
+    <prototype>
+  Requirements
+    <story>
+      <acceptance criterion>
+Design
+  UX
+    <flow deck>
+  UI
+    <reference or embed>
+  Technical
+    ERD
+    System
+    Data Flows
+      <flow diagram>
+Quality
+  Test Cases
+    <test case>
+Implementation
+  <implementation deck>
+```
+
+`Requirements` itself is its overview; it has no redundant `Overview` child.
+The page begins with a concise **Rationale** sourced from the canonical report
+overview, followed by the stories. This keeps one authored explanation of why
+the change exists.
+
+The navigation order is intentionally static even though authoring order is
+not. Prototype-first is the common product-discovery path because interaction
+often sharpens the stories. A Saga may instead begin with stories, and later UX,
+technical-design, quality, or implementation discoveries may create explicit
+new requirement revisions. The changing graph records that feedback without
+reordering the interface or erasing the earlier intent.
+
 The authored and derived flow is:
 
 ```text
-Report requirements                    Report quality
-Story -> acceptance criterion <------ Test case -> ordered steps -> run/evidence
-                    |                         |
-                    | addresses               | verifies
-                    v                         v
-             Visual technical design ----> exact current diffs
-             Deck -> Slide -> Item          (Item-owned implementation diffs,
-                                                test and run evidence)
+Product discovery                       Report quality
+Prototype <----> Story -> criterion <--- Test case -> steps -> run/evidence
+                       |                         |
+                       | addresses               | verifies
+                       v                         v
+            UX / UI / technical design ---> Implementation deck ---> diffs
+                    (Deck, reference, diagram, Slide, or Item)
 ```
 
 The arrows are typed claims, not proof. The engine can prove that endpoints,
@@ -84,6 +125,11 @@ Report and deck presentation remain separate:
   prose does not replace the typed resources.
 - Standalone v4 Sagas remain slide-only and do not gain v5 report roots.
 
+Prototypes may be temporarily unlinked during exploration. They cannot
+contribute to readiness until a current annotation connects them to at least
+one story or criterion. Full readiness ultimately requires accepted stories
+with explicit criteria even when the prototype came first.
+
 ## On-disk layout
 
 The proposed layout keeps merge boundaries per resource and leaves the merged
@@ -94,6 +140,11 @@ checkout-refund.saga/
 |-- saga.json                              # version: 5; the only Saga manifest
 |-- overview.fragment/                     # existing v2 report content
 |-- ___requirements/
+|   |-- prototypes/
+|   |   |-- checkout.prototype/
+|   |   |   |-- prototype.json            # existing v3 stable identity
+|   |   |   `-- revisions/r2.revision/     # immutable HTML experience
+|   |   `-- annotations/                   # pinned prototype -> requirement edges
 |   |-- stories/
 |   |   `-- refund-window.story/
 |   |       |-- story.json                 # existing v3 identity
@@ -690,7 +741,7 @@ link interpreted as intent:
   "$schema": "https://changesaga.dev/schema/v5/coverage-exception.schema.json",
   "version": 5,
   "id": "docs-only-no-visual-design",
-  "axis": "design",
+  "axis": "technical",
   "criterion": "urn:change-saga:checkout-refund:story:refund-window:criterion:support-playbook",
   "story_revision": "urn:change-saga:checkout-refund:story:refund-window:revision:r2",
   "rationale": "The obligation changes only an existing operational playbook template.",
@@ -700,15 +751,17 @@ link interpreted as intent:
 }
 ```
 
-`axis` is `design` or `quality`. There is no delivery exception: an accepted
-criterion that requires no implementation should be modeled and reviewed as an
-operational/documentation requirement, with applicable evidence, rather than
-silently removed from delivery. An exception must pin the current story
-revision, include a rationale and at least one citation, and have a single
-unsuperseded head per criterion/axis. A revision change makes it stale.
+`axis` is one of `prototype`, `ux`, `ui`, `technical`, `quality`, or
+`implementation`. The feature policy requires every axis by default, but an
+axis may be explicitly inapplicable—for example, a repository-schema migration
+may not require UI design. There is no exception from exact changed-source
+accounting: documentation-only work still ends at its documentation diff. An
+exception must pin the current story revision, include a rationale and at least
+one citation, and have a single unsuperseded head per criterion/axis. A revision
+change makes it stale.
 
 ```text
-change-saga coverage-exception add SAGA --axis design --criterion CRITERION \
+change-saga coverage-exception add SAGA --axis technical --criterion CRITERION \
   --story-revision REV --rationale TEXT --citation CITATION
 change-saga coverage-exception supersede SAGA --exception EXCEPTION --with NEW_EXCEPTION
 ```
@@ -724,8 +777,9 @@ or percentage. The v2 response returns every axis and blocker:
 | Gate | Required facts | Not inferred |
 | --- | --- | --- |
 | `requirements_ready` | Every in-scope story has one revision head and lifecycle head; accepted stories have active criteria; no invalid/stale identity graph. | Stakeholder agreement beyond recorded lifecycle. |
-| `design_ready` | Every accepted criterion has current direct/broad design coverage or a current design exception; no invalid/conflicted links. | Design quality or correctness. |
-| `implementation_trace_ready` | For every non-excluded accepted criterion with product implementation, at least one valid current Requirement -> Design -> Item -> Diff path; global diff coverage is separately complete. | That the selected diff implements the criterion correctly. |
+| `product_ready` | Every retained prototype is linked to a current story/criterion; every accepted criterion has required prototype coverage or a current exception. | That prototype behavior is desirable or feasible. |
+| `design_ready` | Every accepted criterion has current UX, UI, and technical coverage or a current exception on each applicable axis; no invalid/conflicted links. | Design quality or correctness. |
+| `implementation_trace_ready` | Every accepted criterion has a valid current path through its required artifacts to an exact Diff; global diff coverage is separately complete. | That the selected diff implements the criterion correctly. |
 | `quality_ready` | Quality is adopted; every accepted criterion has required current test kinds or a current quality exception; required tests have one current passing run with resolved evidence. | Test sufficiency or absence of undiscovered defects. |
 | `ready_for_review` | All preceding configured gates, immutable current evidence, no graph conflicts, and no failed current required run. | Reviewer approval. |
 | `review_complete` | `ready_for_review` plus required current report/slide/test-case review decisions under review policy. | Merge authorization outside Change Saga. |
@@ -748,19 +802,20 @@ replace them with one opaque percentage.
 
 ## Reviewer experience
 
-The report remains the entry point. The sidebar order for a v5 feature Saga is:
-
-1. Overview and existing report chapters.
-2. Requirements (derived report section).
-3. Design decks (the existing Decks surface and thumbnails).
-4. Quality (derived report section).
-5. Existing authored delivery/review chapters.
+The report remains the entry point. The sidebar always projects the stable
+Product, Design, Quality, Implementation order defined above. It does not move
+sections as work progresses and therefore never implies a waterfall. Within
+Product, Prototypes precedes Requirements because prototype-first is the common
+discovery path. Requirements itself is the overview and contains the Rationale;
+there is no extra Overview child.
 
 Requirements view:
 
-- story cards show lifecycle, current revision, criteria, conflicts, and Git
-  provenance;
-- each criterion has separate Design, Implementation, and Quality state chips;
+- the initial view shows only Rationale, story title, description, and criteria;
+- lifecycle, revision, identity, conflicts, and Git provenance remain under a
+  deliberate details disclosure;
+- each criterion has separate Prototype, UX, UI, Technical, Quality, and
+  Implementation state chips;
 - expanding a chip shows concrete paths, stale pins, exclusions, and gaps;
 - a deck/slide/Item target opens the existing slide surface and highlights the
   Item; and
@@ -786,6 +841,41 @@ filters for requirement, design Item, test case, and evidence role. Activity
 includes story/test lifecycle, run, exception, relation, and review events.
 All derived sections and drawers are snapshot-bound; the UI swaps to a complete
 new snapshot instead of combining old relations with new diffs.
+
+## Audit history and AI authoring grammar
+
+Git is the outer audit log: it records every committed Saga change alongside
+the source change. Saga resources add semantic history inside that log:
+immutable identities, append-only revisions and lifecycle events, pinned
+relations with rationales, supersession, evidence, and review decisions. A v5
+revision created after the initial revision adds a nonblank `change_reason`;
+mutation commands expose it as required `--reason TEXT`. Git records the change
+set while the resource records why its semantic meaning changed.
+
+The CLI is also the machine-readable grammar for an authoring agent. Extend the
+existing commands rather than creating parallel ways to write the same record:
+
+```text
+change-saga story ...                 # existing story identity and revisions
+change-saga criterion ...             # existing criterion-safe wrappers
+change-saga prototype add-html|add-external|revise|annotate
+change-saga add-deck --role ux|implementation
+change-saga design ...                # UI references and technical diagrams
+change-saga quality ...               # test cases, policy, evidence, and runs
+change-saga relation ...              # typed, pinned cross-resource edges
+change-saga cover ...                 # exact terminal diff ownership
+change-saga spec --json               # resources, relations, commands, invariants
+change-saga status --json             # blockers and ordered next actions
+change-saga validate
+```
+
+`spec --json` must describe the living v3/v5 resources and legal endpoint
+matrix, not only the legacy report and v4 storage shapes. `status --json`
+returns ordered `next_actions`. A deterministic action includes its valid
+command shape; an action requiring product judgment, external access, or an
+explicit exclusion instead contains one focused question for the author. The
+agent repeats inspect, ask or mutate, validate, and re-evaluate until there are
+no required current gaps. It must never infer correctness from that fixed point.
 
 ## Validation invariants
 

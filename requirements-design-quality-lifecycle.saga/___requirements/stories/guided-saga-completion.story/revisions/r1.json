@@ -1,0 +1,41 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:requirements-design-quality-lifecycle:story:guided-saga-completion",
+  "parents": [],
+  "title": "Guide authors toward complete traceability",
+  "statement": "As a human or AI author, I can discover the Saga grammar, see the highest-value unresolved gaps, and safely advance the artifact until every required intent-to-diff path is reviewable.",
+  "priority": "must",
+  "citations": [
+    "urn:change-saga:requirements-design-quality-lifecycle:citation:lifecycle-plan"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "machine-readable-grammar",
+      "statement": "change-saga spec --json enumerates supported resource kinds, relationships, mutations, invariants, and required arguments rather than only legacy storage shapes."
+    },
+    {
+      "id": "next-actions",
+      "statement": "change-saga status --json returns ordered actionable gaps with the affected story or criterion, the reason, and a valid command shape when the next step is deterministic."
+    },
+    {
+      "id": "ask-for-decisions",
+      "statement": "When the next step requires product judgment, credentials, external evidence, or an explicit exclusion, the result tells the AI what focused question to ask instead of inventing an answer."
+    },
+    {
+      "id": "safe-progress",
+      "statement": "Suggested mutations use stable IDs, explicit current parents, request IDs, validation, and atomic writes so retries and concurrent authors preserve history."
+    },
+    {
+      "id": "coverage-fixed-point",
+      "statement": "The authoring loop repeats inspect, ask or mutate, validate, and re-evaluate until no required current coverage gap remains."
+    },
+    {
+      "id": "no-correctness-claim",
+      "statement": "A complete graph proves traceability and omission coverage, not that the design, code, or tests are correct."
+    }
+  ],
+  "created_at": "2026-09-17T22:30:48.195876Z",
+  "request_id": "story-guided-saga-completion-r1"
+}

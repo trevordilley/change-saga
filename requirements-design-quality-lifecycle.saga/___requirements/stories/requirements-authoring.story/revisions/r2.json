@@ -1,0 +1,51 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r2",
+  "story": "urn:change-saga:requirements-design-quality-lifecycle:story:requirements-authoring",
+  "parents": [
+    "urn:change-saga:requirements-design-quality-lifecycle:story:requirements-authoring:revision:r1"
+  ],
+  "title": "Author living product requirements safely",
+  "statement": "As a product owner or AI collaborator, I can explain why the change matters and create or revise user stories and acceptance criteria while preserving stable identity and explicit decision history.",
+  "priority": "must",
+  "citations": [
+    "urn:change-saga:requirements-design-quality-lifecycle:citation:lifecycle-plan"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "stable-identities",
+      "statement": "Callers choose stable story and criterion IDs; criterion URNs remain stable across wording revisions and removed criterion IDs are never reused."
+    },
+    {
+      "id": "immutable-revisions",
+      "statement": "Adding, revising, or removing one criterion creates a complete immutable story revision that names the exact current parent revision."
+    },
+    {
+      "id": "explicit-lifecycle",
+      "statement": "Story lifecycle is recorded through append-only proposed, accepted, deferred, rejected, and retired events; criteria inherit the current story lifecycle."
+    },
+    {
+      "id": "conflicts-visible",
+      "statement": "Concurrent revision or lifecycle heads remain explicit conflicts until a reconciliation record names every competing head."
+    },
+    {
+      "id": "human-ai-workflows",
+      "statement": "Human editor workflows and structured FILE-or-stdin AI workflows share the same validation, idempotency, atomic-write, and machine-readable result path."
+    },
+    {
+      "id": "no-partial-write",
+      "statement": "Invalid identity, parent, schema, lifecycle, or criterion history leaves the Saga unchanged and returns an actionable error."
+    },
+    {
+      "id": "rationale-first",
+      "statement": "The Requirements page opens directly as its own overview and presents a concise Rationale before the story list, without a redundant Overview child."
+    },
+    {
+      "id": "intentional-change-history",
+      "statement": "Requirement revisions and lifecycle events retain their stated reason so Git history and Saga history together show what changed, when, and why."
+    }
+  ],
+  "created_at": "2026-09-17T22:31:08.149692Z",
+  "request_id": "story-requirements-authoring-r2"
+}

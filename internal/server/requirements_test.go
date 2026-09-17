@@ -40,10 +40,10 @@ func TestRequirementsSurfaceProjectsStoriesAndCriteriaAsStableEntities(t *testin
 	if navigation.Title != "Requirements" || navigation.Icon != "requirements" || !navigation.Expanded {
 		t.Fatalf("requirements root navigation = %#v", navigation)
 	}
-	if len(navigation.Children) != 2 || len(navigation.Children[1].Children) != 2 || !navigation.Children[1].Children[1].Active {
+	if len(navigation.Children) != 1 || len(navigation.Children[0].Children) != 2 || !navigation.Children[0].Children[1].Active {
 		t.Fatalf("requirements hierarchy = %#v", navigation.Children)
 	}
-	if got := navigation.Children[1].Children[1].Title; got != "AC 02 · A successful order has a confirmation." {
+	if got := navigation.Children[0].Children[1].Title; got != "AC 02 · A successful order has a confirmation." {
 		t.Fatalf("criterion navigation title = %q", got)
 	}
 }
@@ -67,11 +67,12 @@ func TestRequirementsTemplatesGiveOverviewAndStoryDistinctPresentations(t *testi
 	if err != nil {
 		t.Fatal(err)
 	}
+	overview.Rationale = "Keep product intent and implementation evidence connected."
 	var rendered bytes.Buffer
 	if err := tmpl.ExecuteTemplate(&rendered, "requirements-page", overview); err != nil {
 		t.Fatal(err)
 	}
-	for _, expected := range []string{"<h1>Requirements</h1>", "requirements-story-card", "1 criterion", "/requirements/checkout"} {
+	for _, expected := range []string{"<h1>Requirements</h1>", "Rationale", overview.Rationale, "requirements-story-card", "1 criterion", "/requirements/checkout"} {
 		if !strings.Contains(rendered.String(), expected) {
 			t.Fatalf("requirements overview missing %q: %s", expected, rendered.String())
 		}
@@ -97,6 +98,13 @@ func TestRequirementsTemplatesGiveOverviewAndStoryDistinctPresentations(t *testi
 	}
 	if strings.Contains(rendered.String(), `<details class="requirement-story-details" open`) {
 		t.Fatalf("story details must be collapsed by default: %s", rendered.String())
+	}
+}
+
+func TestFirstMarkdownParagraphSkipsTheOverviewHeading(t *testing.T) {
+	source := "# Change overview {#overview}\n\nWhy this product change matters.\nIt preserves intent.\n\n## Status\n\n- proposed\n"
+	if got := firstMarkdownParagraph(source); got != "Why this product change matters. It preserves intent." {
+		t.Fatalf("rationale = %q", got)
 	}
 }
 

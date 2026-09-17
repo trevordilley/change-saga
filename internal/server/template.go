@@ -106,6 +106,10 @@ var pageTemplate = `{{define "page"}}<!doctype html>
 {{define "requirements-page"}}<section class="requirements-page" data-requirements-page>{{if .Overview}}<header class="requirements-header">
 <h1>Requirements</h1>
 </header>
+{{if .Rationale}}<section class="requirements-rationale">
+<h2>Rationale</h2>
+<p>{{.Rationale}}</p>
+</section>{{end}}
 <div class="requirements-story-list">{{range .Stories}}<article class="requirements-story-card" data-requirement-target="{{.Target}}">
 <header>
 <div>

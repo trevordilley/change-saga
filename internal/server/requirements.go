@@ -22,6 +22,7 @@ var errRequirementNotFound = errors.New("requirement not found")
 type requirementsPageView struct {
 	Active           bool
 	Overview         bool
+	Rationale        string
 	Stories          []*requirementStoryView
 	Story            *requirementStoryView
 	FocusedCriterion *requirementCriterionView
@@ -209,12 +210,8 @@ func makeRequirementStoryView(sagaID string, number int, story requirements.Stor
 func makeRequirementsNav(page *requirementsPageView) *navNodeView {
 	root := &navNodeView{
 		Title: "Requirements", Href: "/requirements", NodeID: "nav-requirements",
-		Icon: "requirements", Requirement: true, Expanded: page.Active,
+		Icon: "requirements", Requirement: true, Active: page.Overview, Expanded: page.Active,
 	}
-	root.Children = append(root.Children, &navNodeView{
-		Title: "Overview", Href: "/requirements", NodeID: "nav-requirements-overview",
-		Icon: "requirements-overview", Active: page.Overview,
-	})
 	for _, story := range page.Stories {
 		selectedStory := page.Story != nil && page.Story.ID == story.ID
 		node := &navNodeView{

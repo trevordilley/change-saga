@@ -1,0 +1,55 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r2",
+  "story": "urn:change-saga:requirements-design-quality-lifecycle:story:visual-design-coverage",
+  "parents": [
+    "urn:change-saga:requirements-design-quality-lifecycle:story:visual-design-coverage:revision:r1"
+  ],
+  "title": "Trace requirements through UX, UI, and technical design",
+  "statement": "As a designer, architect, or reviewer, I can see exactly which UX flows, UI references, and technical diagrams address each accepted story or acceptance criterion.",
+  "priority": "must",
+  "citations": [
+    "urn:change-saga:requirements-design-quality-lifecycle:citation:lifecycle-plan"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "visual-targets",
+      "statement": "A current typed relation can link a UX deck, UI reference or embed, technical-design target, diagram, Slide, or Item to a story or criterion in the same Saga."
+    },
+    {
+      "id": "pinned-links",
+      "statement": "Each design link pins the target story revision and the current canonical source-content digest so edits become stale instead of silently remaining current."
+    },
+    {
+      "id": "explicit-containment",
+      "statement": "A Deck, Slide, group, or diagram reaches descendant Item evidence only when its relation explicitly declares descendant scope; leaf links remain self-scoped."
+    },
+    {
+      "id": "coverage-states",
+      "statement": "Each accepted criterion reports direct, broad, excluded, gap, stale, invalid, or conflicted design coverage with concrete relations and diagnostics."
+    },
+    {
+      "id": "precision-visible",
+      "statement": "Story-level links remain visibly broad and criterion-level links visibly direct; full coverage and full criterion precision are reported separately."
+    },
+    {
+      "id": "no-score-only",
+      "statement": "The design view exposes targets, paths, exclusions, and stale reasons rather than reducing coverage to an opaque percentage."
+    },
+    {
+      "id": "ux-decks",
+      "statement": "Design \u003e UX contains one or more slide-deck flows whose Slides and Items remain independently addressable."
+    },
+    {
+      "id": "ui-references",
+      "statement": "Design \u003e UI contains current external links or safe embeds such as Figma, with stable identity, revision pins, and fallback links."
+    },
+    {
+      "id": "technical-diagrams",
+      "statement": "Design \u003e Technical contains focused ERD, system, and data-flow diagrams using the visual form that matches the relationship being explained."
+    }
+  ],
+  "created_at": "2026-09-17T22:31:21.67502Z",
+  "request_id": "story-visual-design-coverage-r2"
+}

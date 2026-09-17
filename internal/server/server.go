@@ -1003,6 +1003,7 @@ func (a *app) page(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		data.Requirements = requirementsView
+		data.Requirements.Rationale = requirementsRationale(reportRoot)
 		data.RequirementsMode = requirementsView.Active
 		data.Nav = makeNavTree(reportRoot, threadsByTarget)
 		if requirementsView.Active {
@@ -1041,6 +1042,53 @@ func (a *app) page(w http.ResponseWriter, r *http.Request) {
 	if err := a.template.ExecuteTemplate(w, "page", data); err != nil {
 		http.Error(w, "The review page could not be rendered.", http.StatusInternalServerError)
 	}
+}
+
+// requirementsRationale projects the first authored overview paragraph into
+// the Requirements overview. The canonical report overview remains the single
+// source of this product intent, so the dedicated Requirements surface does
+// not create a second mutable copy.
+func requirementsRationale(root *saga.Section) string {
+	if root == nil {
+		return ""
+	}
+	for _, fragment := range root.Fragments {
+		if fragment.MediaType != "text/markdown" || fragment.Entrypoint == "" {
+			continue
+		}
+		data, err := os.ReadFile(filepath.Join(fragment.Directory, filepath.FromSlash(fragment.Entrypoint)))
+		if err != nil {
+			continue
+		}
+		if paragraph := firstMarkdownParagraph(string(data)); paragraph != "" {
+			return paragraph
+		}
+	}
+	return ""
+}
+
+func firstMarkdownParagraph(source string) string {
+	var lines []string
+	for _, raw := range strings.Split(source, "\n") {
+		line := strings.TrimSpace(raw)
+		if line == "" {
+			if len(lines) > 0 {
+				break
+			}
+			continue
+		}
+		if len(lines) == 0 && strings.HasPrefix(line, "#") {
+			continue
+		}
+		if strings.HasPrefix(line, "#") || strings.HasPrefix(line, "-") {
+			if len(lines) > 0 {
+				break
+			}
+			continue
+		}
+		lines = append(lines, line)
+	}
+	return strings.Join(lines, " ")
 }
 
 func splitReportAndDeckSections(root *saga.Section) (*saga.Section, *saga.Section) {
