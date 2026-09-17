@@ -43,6 +43,9 @@ func TestRequirementsSurfaceProjectsStoriesAndCriteriaAsStableEntities(t *testin
 	if len(navigation.Children) != 2 || len(navigation.Children[1].Children) != 2 || !navigation.Children[1].Children[1].Active {
 		t.Fatalf("requirements hierarchy = %#v", navigation.Children)
 	}
+	if got := navigation.Children[1].Children[1].Title; got != "AC 02 · A successful order has a confirmation." {
+		t.Fatalf("criterion navigation title = %q", got)
+	}
 }
 
 func TestRequirementsTemplatesGiveOverviewAndStoryDistinctPresentations(t *testing.T) {
@@ -68,7 +71,7 @@ func TestRequirementsTemplatesGiveOverviewAndStoryDistinctPresentations(t *testi
 	if err := tmpl.ExecuteTemplate(&rendered, "requirements-page", overview); err != nil {
 		t.Fatal(err)
 	}
-	for _, expected := range []string{"First-class product intent", "requirements-story-card", "acceptance criterion", "/requirements/checkout"} {
+	for _, expected := range []string{"<h1>Requirements</h1>", "requirements-story-card", "1 criterion", "/requirements/checkout"} {
 		if !strings.Contains(rendered.String(), expected) {
 			t.Fatalf("requirements overview missing %q: %s", expected, rendered.String())
 		}
@@ -82,12 +85,12 @@ func TestRequirementsTemplatesGiveOverviewAndStoryDistinctPresentations(t *testi
 	if err := tmpl.ExecuteTemplate(&rendered, "requirements-page", detail); err != nil {
 		t.Fatal(err)
 	}
-	for _, expected := range []string{"Story details", "Characterization", "Acceptance criteria", "requirement-criterion selected", storyURN + ":criterion:fast"} {
+	for _, expected := range []string{"Details", "Lifecycle", "Acceptance criteria", "requirement-criterion selected", storyURN + ":criterion:fast"} {
 		if !strings.Contains(rendered.String(), expected) {
 			t.Fatalf("story detail missing %q: %s", expected, rendered.String())
 		}
 	}
-	for _, excluded := range []string{"requirement-story-id", "requirement-badges", "<footer>"} {
+	for _, excluded := range []string{"First-class product intent", "Immutable record", "Characterization", "requirement-story-id", "requirement-badges", "<footer>"} {
 		if strings.Contains(rendered.String(), excluded) {
 			t.Fatalf("initial story presentation contains extra chrome %q: %s", excluded, rendered.String())
 		}

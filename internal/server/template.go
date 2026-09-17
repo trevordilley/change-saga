@@ -103,13 +103,8 @@ var pageTemplate = `{{define "page"}}<!doctype html>
 
 {{define "manifest-target-file"}}<details class="manifest-target-file"><summary>{{template "twisty"}}{{template "ficon" .Path}}<code>{{.Path}}</code><span class="manifest-file-stats">{{template "diff-counts" .}}{{if .Events}} · {{.Events}} file {{if eq .Events 1}}event{{else}}events{{end}}{{end}}</span></summary><div class="manifest-target-file-detail">{{if .HasDiff}}{{template "manifest-diff-surface" .Path}}{{end}}<div class="manifest-target-links"><span>Linked {{if eq (len .Chunks) 1}}range{{else}}ranges{{end}}</span>{{range .Chunks}}<a href="{{.Href}}">{{.Label}}</a>{{end}}<a class="manifest-full-diff" href="{{.Href}}">Open in Code Diff {{template "icon" "arrow-right"}}</a></div></div></details>{{end}}
 
-{{define "requirements-page"}}<section class="requirements-page" data-requirements-page>{{if .Overview}}<header class="requirements-hero">
-<div class="requirements-hero-icon">{{template "icon" "requirements"}}</div>
-<div>
-<p class="requirements-kicker">First-class product intent</p>
+{{define "requirements-page"}}<section class="requirements-page" data-requirements-page>{{if .Overview}}<header class="requirements-header">
 <h1>Requirements</h1>
-<p>Stories and acceptance criteria are stable, versioned entities. Open a story to review its need and independently addressable criteria.</p>
-</div>
 </header>
 <div class="requirements-story-list">{{range .Stories}}<article class="requirements-story-card" data-requirement-target="{{.Target}}">
 <header>
@@ -121,7 +116,7 @@ var pageTemplate = `{{define "page"}}<!doctype html>
 </header>
 <p class="requirement-story-statement">{{.Statement}}</p>
 <details class="requirements-criteria-preview">
-<summary>{{template "twisty"}}<span>{{len .Criteria}} acceptance {{if eq (len .Criteria) 1}}criterion{{else}}criteria{{end}}</span>
+<summary>{{template "twisty"}}<span>{{len .Criteria}} {{if eq (len .Criteria) 1}}criterion{{else}}criteria{{end}}</span>
 </summary>
 <ol>{{range .Criteria}}<li>
 <a href="{{.Href}}">
@@ -149,14 +144,13 @@ var pageTemplate = `{{define "page"}}<!doctype html>
 <p>{{.Statement}}</p>
 </section>
 <details class="requirement-story-details">
-<summary>{{template "twisty"}}<span>Story details</span><small>Priority, lifecycle, revision, and history</small></summary>
-<div class="requirement-story-grid">
-<aside class="requirement-characterization">
-<h2>Characterization</h2>
+<summary>{{template "twisty"}}<span>Details</span></summary>
+<div class="requirement-story-details-content">
+<div class="requirement-characterization">
 <dl>
 <div>
 <dt>Lifecycle</dt>
-<dd>{{.Lifecycle}}</dd>
+<dd>{{.Lifecycle}}{{if .LifecycleReason}}<small>{{.LifecycleReason}}</small>{{end}}</dd>
 </div>
 <div>
 <dt>Priority</dt>
@@ -181,22 +175,6 @@ var pageTemplate = `{{define "page"}}<!doctype html>
 </dd>
 </div>
 </dl>
-</aside>
-</div>
-<section class="requirement-history" aria-labelledby="requirement-history">
-<header>
-<div>
-<p class="requirements-kicker">Immutable record</p>
-<h2 id="requirement-history">Lifecycle &amp; revision</h2>
-</div>
-</header>
-<div class="requirement-history-current">
-<article>
-<span>Current lifecycle</span>
-<strong>{{.Lifecycle}}</strong>{{if .LifecycleReason}}<p>{{.LifecycleReason}}</p>{{end}}{{if .LifecycleConflict}}<small>{{.LifecycleHeadCount}} competing heads</small>{{end}}</article>
-<article>
-<span>Current revision</span>
-<strong>{{if .Revision}}{{.Revision}}{{else}}Conflicted{{end}}</strong>{{if .RevisionTarget}}<code>{{.RevisionTarget}}</code>{{end}}{{if .RevisionConflict}}<small>{{.RevisionHeadCount}} competing heads</small>{{end}}</article>
 </div>
 <div class="requirement-history-lists">
 <details>
@@ -217,18 +195,15 @@ var pageTemplate = `{{define "page"}}<!doctype html>
 </li>{{end}}</ol>
 </details>
 </div>
-</section>
+</div>
 </details>
 <section class="requirement-criteria">
 <header>
-<div>
 <h2>Acceptance criteria</h2>
-</div>
-<span>{{len .Criteria}} total</span>
 </header>
 <div class="requirement-criteria-list">{{range .Criteria}}<article class="requirement-criterion{{if .Selected}} selected{{end}}" id="{{.DOMID}}" data-requirement-target="{{.Target}}">
 <header>
-<a class="criterion-label" href="{{.Href}}">{{template "icon" "criterion"}}{{.Label}}</a>
+<a class="criterion-label" href="{{.Href}}">{{.Label}}</a>
 </header>
 <p>{{.Statement}}</p>
 </article>{{end}}</div>

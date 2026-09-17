@@ -224,7 +224,7 @@ func makeRequirementsNav(page *requirementsPageView) *navNodeView {
 		}
 		for _, criterion := range story.Criteria {
 			node.Children = append(node.Children, &navNodeView{
-				Title: criterion.Label + " · " + criterion.ID, Href: criterion.Href,
+				Title: criterion.Label + " · " + criterion.Statement, Href: criterion.Href,
 				NodeID: "nav-" + criterion.DOMID, Icon: "criterion", Requirement: true,
 				Active: criterion.Selected,
 			})
