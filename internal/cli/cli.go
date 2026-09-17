@@ -21,6 +21,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/diffuri"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
+	"github.com/twentyideas/changesaga/internal/prototypes"
 	"github.com/twentyideas/changesaga/internal/reviewstore"
 	"github.com/twentyideas/changesaga/internal/saga"
 	reviewserver "github.com/twentyideas/changesaga/internal/server"
@@ -84,7 +85,7 @@ func (e *StatusError) Error() string { return "command reported a non-success st
 // commandUsage is the single source of each command's usage line so the
 // overview, the per-command -h banner, and argument errors cannot drift apart.
 var commandOrder = []string{
-	"init", "upgrade", "story", "criterion", "citation", "relation", "design", "plan", "add-deck", "add-slide", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "cover", "remove-coverage", "replace-coverage", "rebase-evidence", "add-claim", "verify-claim",
+	"init", "upgrade", "prototype", "story", "criterion", "citation", "relation", "design", "plan", "add-deck", "add-slide", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "cover", "remove-coverage", "replace-coverage", "rebase-evidence", "add-claim", "verify-claim",
 	"thread", "reply", "review", "validate", "status", "compare", "query",
 	"serve", "open", "install-skill", "spec",
 }
@@ -92,6 +93,11 @@ var commandOrder = []string{
 var commandUsage = map[string]string{
 	"init":                        "change-saga init [flags] <name.saga>",
 	"upgrade":                     "change-saga upgrade --to 3 [--json] <saga>",
+	"prototype":                   "change-saga prototype <add-html|add-external|revise|annotate> [flags] <saga>",
+	"prototype add-html":          "change-saga prototype add-html --id ID --revision ID --title TEXT --source PATH [--state STATE] [flags] <saga>",
+	"prototype add-external":      "change-saga prototype add-external --id ID --revision ID --title TEXT --url URL [--embed-url URL --provider ID --embed-origin ORIGIN] [flags] <saga>",
+	"prototype revise":            "change-saga prototype revise --prototype URN --revision ID --parent URN... --title TEXT (--source PATH | --url URL) [flags] <saga>",
+	"prototype annotate":          "change-saga prototype annotate --prototype URN --id ID --target URN --rationale TEXT --story-revision URN (--prototype-revision URN | --prototype-content-digest DIGEST) [selector] [flags] <saga>",
 	"story":                       "change-saga story <add|revise|set-state> [flags] <saga>",
 	"story add":                   "change-saga story add --id ID --revision ID --event ID --title TEXT --statement TEXT --priority TEXT [flags] <saga>",
 	"story revise":                "change-saga story revise --story URN --revision ID --parent URN... --title TEXT --statement TEXT --priority TEXT [flags] <saga>",
@@ -218,6 +224,11 @@ func commandFlags(name, usage string, out io.Writer) *flag.FlagSet {
 var commandDescription = map[string]string{
 	"init":                        "Start a reviewer guide or living Saga. Small focused changes may not need a Saga.\nChoose --mode slides for the intentionally incompatible v4 visual review format;\nexisting reports are never silently paginated.",
 	"upgrade":                     "Atomically adopt the v3 Saga container. Existing v2 narrative and review\nrecords are preserved; requirements, design, and work-plan roots remain optional.",
+	"prototype":                   "Author revisioned interactive HTML experiences or explicitly allowed external\nembeds and pin them to the stories and criteria they clarify. A prototype may lead, follow,\nor evolve alongside its requirements.",
+	"prototype add-html":          "Add an interactive HTML prototype and its first immutable revision. The authored\nsource is copied into the revision package, so later edits outside the Saga never change it.",
+	"prototype add-external":      "Add a prototype that lives outside the Saga. A plain --url is a reference; an --embed-url\nrenders inline only with explicit provider, origin, sandbox, and permission allowlisting.",
+	"prototype revise":            "Append a complete immutable prototype revision. Name every current head; an html\nrevision requires a fresh --source so no mutable directory becomes part of the revision.",
+	"prototype annotate":          "Pin one part of a prototype to the story or criterion it means, with a rationale and an\nelement, text, region, or provider selector. A prototype may stay unlinked while exploration\ncontinues; it simply cannot contribute to readiness until a current annotation connects it.",
 	"story":                       "Create and append revisions or lifecycle events to user stories and acceptance\ncriteria. Stories may lead, follow, or evolve alongside prototypes; cite their source\nand revise them as the feature is clarified.",
 	"story add":                   "Add a sourced user story and its first complete acceptance-criteria revision.\nIt may begin from a prototype, precede one, or evolve alongside one.",
 	"story revise":                "Append a complete story revision as requirements or prototypes evolve. Name every\ncurrent parent head when reconciling concurrent edits; prior revisions remain history.",
@@ -803,10 +814,11 @@ func Validate(_ context.Context, args []string, out io.Writer) error {
 		}
 		fixes = applied
 	}
-	_, validation, err := saga.Load(flags.Arg(0))
+	document, validation, err := saga.Load(flags.Arg(0))
 	if err != nil {
 		return err
 	}
+	appendPrototypeIssues(flags.Arg(0), document, &validation)
 	if *jsonOutput {
 		if err := writeJSON(out, validationOutput{Validation: validation, Fixes: fixes}); err != nil {
 			return err
@@ -824,6 +836,27 @@ func Validate(_ context.Context, args []string, out io.Writer) error {
 		return &StatusError{Code: 1}
 	}
 	return nil
+}
+
+// appendPrototypeIssues reports the optional v3 prototype capability through
+// the same validation surface as the rest of the Saga. The prototype loader
+// validates every identity, immutable revision, html digest, and pinned
+// annotation as it reads, so a load failure is the validation result.
+func appendPrototypeIssues(root string, document *saga.Saga, validation *saga.Validation) {
+	if document == nil || document.Manifest.Version != saga.CurrentSagaVersion {
+		return
+	}
+	if _, err := os.Lstat(filepath.Join(root, "___requirements")); err != nil {
+		return
+	}
+	if _, err := prototypes.Load(root, ""); err != nil {
+		for _, message := range strings.Split(err.Error(), "\n") {
+			validation.Issues = append(validation.Issues, saga.Issue{
+				Severity: "error", Path: "___requirements/prototypes", Message: message,
+			})
+		}
+		validation.Valid = false
+	}
 }
 
 // AnchorFix is one heading that --fix gave a stable anchor.
