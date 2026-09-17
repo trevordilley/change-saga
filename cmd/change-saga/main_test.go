@@ -74,7 +74,7 @@ func TestRunDesignHelpUsesNestedDispatcher(t *testing.T) {
 }
 
 func TestRunLivingMutationFamiliesUseTheSupportedJSONContract(t *testing.T) {
-	for _, family := range []string{"story", "citation", "relation", "plan"} {
+	for _, family := range []string{"story", "criterion", "citation", "relation", "plan"} {
 		t.Run(family, func(t *testing.T) {
 			var stdout, stderr bytes.Buffer
 			if got := run([]string{family, "unknown", "--json"}, &stdout, &stderr); got != 1 {
