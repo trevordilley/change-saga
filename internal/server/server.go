@@ -86,23 +86,25 @@ func (w *lockedWriter) Write(data []byte) (int, error) {
 func OpenBrowser(rawURL string) error { return launchBrowser(rawURL) }
 
 type pageData struct {
-	Saga          *saga.Saga
-	SlideNative   bool
-	HybridSlides  bool
-	Root          *sectionView
-	SlideRoot     *sectionView
-	Nav           []*navNodeView
-	ActivityCount int
-	Diagnostic    string
-	Code          *CodeReviewView
-	Manifest      *CoverageManifestView
-	Error         string
-	Files         []*fileDiffView
-	ReviewedFiles int
-	ReviewDecided int
-	ReviewTotal   int
-	ReviewItems   []*reviewProgressItem
-	MutationToken string
+	Saga             *saga.Saga
+	SlideNative      bool
+	HybridSlides     bool
+	RequirementsMode bool
+	Requirements     *requirementsPageView
+	Root             *sectionView
+	SlideRoot        *sectionView
+	Nav              []*navNodeView
+	ActivityCount    int
+	Diagnostic       string
+	Code             *CodeReviewView
+	Manifest         *CoverageManifestView
+	Error            string
+	Files            []*fileDiffView
+	ReviewedFiles    int
+	ReviewDecided    int
+	ReviewTotal      int
+	ReviewItems      []*reviewProgressItem
+	MutationToken    string
 	// CoverageTotals is the audit reduced to the numbers the shell states
 	// outright. The audit itself stays on the Coverage tab.
 	CoverageTotals *coverageTotalsView
@@ -183,18 +185,19 @@ type reviewDecisionView struct {
 // navNodeView is the sidebar documentation tree. It exposes titles, links and a
 // quiet review state only: never counts, never the storage hierarchy.
 type navNodeView struct {
-	Title      string
-	Href       string
-	NodeID     string
-	Icon       string
-	Deck       bool
-	Slide      *SlideReferenceView
-	Active     bool
-	Expanded   bool
-	StateClass string
-	StateLabel string
-	StateIcon  string
-	Children   []*navNodeView
+	Title       string
+	Href        string
+	NodeID      string
+	Icon        string
+	Requirement bool
+	Deck        bool
+	Slide       *SlideReferenceView
+	Active      bool
+	Expanded    bool
+	StateClass  string
+	StateLabel  string
+	StateIcon   string
+	Children    []*navNodeView
 }
 
 type sectionView struct {
@@ -382,6 +385,9 @@ func ListenManaged(ctx context.Context, root, sourceDir, addr string, openBrowse
 
 func newMux(application *app) *http.ServeMux {
 	mux := http.NewServeMux()
+	mux.HandleFunc("GET /requirements/{story}/criteria/{criterion}", application.page)
+	mux.HandleFunc("GET /requirements/{story}", application.page)
+	mux.HandleFunc("GET /requirements", application.page)
 	mux.HandleFunc("GET /chapters/{chapter}", application.page)
 	mux.HandleFunc("GET /", application.page)
 	mux.HandleFunc("GET /app.js", application.javascript)
@@ -942,17 +948,24 @@ func (a *app) page(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	chapterID, chapterRoute := requestedChapter(r)
+	requirementsRoute := isRequirementsPath(r.URL.Path)
 	if r.URL.Path != "/" {
-		if !chapterRoute {
+		if !chapterRoute && !requirementsRoute {
 			http.NotFound(w, r)
 			return
 		}
-		for _, child := range document.Section.Children {
-			if child.Kind == "chapter" && child.ID == chapterID {
-				http.Redirect(w, r, "/#"+domID(child.Target), http.StatusFound)
-				return
+		if chapterRoute {
+			for _, child := range document.Section.Children {
+				if child.Kind == "chapter" && child.ID == chapterID {
+					http.Redirect(w, r, "/#"+domID(child.Target), http.StatusFound)
+					return
+				}
 			}
+			http.NotFound(w, r)
+			return
 		}
+	}
+	if requirementsRoute && document.Manifest.Version != saga.CurrentSagaVersion {
 		http.NotFound(w, r)
 		return
 	}
@@ -979,6 +992,33 @@ func (a *app) page(w http.ResponseWriter, r *http.Request) {
 		MutationToken:  a.mutationToken,
 		CoverageTotals: a.cachedCoverageTotals(),
 	}
+	if document.Manifest.Version == saga.CurrentSagaVersion {
+		requirementsView, requirementsNav, err := loadRequirementsSurface(a.root, document.Manifest.ID, r)
+		if errors.Is(err, errRequirementNotFound) {
+			http.NotFound(w, r)
+			return
+		}
+		if err != nil {
+			http.Error(w, "The requirements could not be loaded. Run change-saga validate for details.", http.StatusInternalServerError)
+			return
+		}
+		data.Requirements = requirementsView
+		data.RequirementsMode = requirementsView.Active
+		data.Nav = makeNavTree(reportRoot, threadsByTarget)
+		if requirementsView.Active {
+			clearActiveNav(data.Nav)
+		}
+		if requirementsNav != nil {
+			if len(data.Nav) > 0 {
+				navigation := make([]*navNodeView, 0, len(data.Nav)+1)
+				navigation = append(navigation, data.Nav[0], requirementsNav)
+				navigation = append(navigation, data.Nav[1:]...)
+				data.Nav = navigation
+			} else {
+				data.Nav = []*navNodeView{requirementsNav}
+			}
+		}
+	}
 	if data.HybridSlides {
 		data.SlideRoot = makeSectionView(slideRoot, scope)
 	}
@@ -991,7 +1031,9 @@ func (a *app) page(w http.ResponseWriter, r *http.Request) {
 	}
 	data.ReviewDecided, data.ReviewTotal = reviewProgressSummary(data.ReviewItems)
 	data.ActivityCount = reviewActivityCount(document)
-	data.Nav = makeNavTree(reportRoot, threadsByTarget)
+	if data.Nav == nil {
+		data.Nav = makeNavTree(reportRoot, threadsByTarget)
+	}
 	if data.HybridSlides {
 		data.Nav = append(data.Nav, makeDeckNavTree(slideRoot)...)
 	}
