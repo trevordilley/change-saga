@@ -27,6 +27,7 @@ type OpenOptions struct {
 
 type Session interface {
 	Snapshot() string
+	SourceHead() (identity string, commit string)
 	Overview(context.Context, OverviewQuery) (Overview, error)
 	Children(context.Context, ChildrenQuery) (ChildrenPage, error)
 	ReadFragment(context.Context, FragmentQuery) (FragmentContent, error)
@@ -235,6 +236,7 @@ type FragmentContent struct {
 	Landmarks    []SemanticLandmark `json:"landmarks"`
 	Intent       string             `json:"intent,omitempty"`
 	Layout       string             `json:"layout,omitempty"`
+	Section      string             `json:"section,omitempty"`
 	Takeaway     string             `json:"takeaway,omitempty"`
 	ReadingOrder []string           `json:"reading_order,omitempty"`
 }

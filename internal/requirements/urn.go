@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/twentyideas/changesaga/internal/livingid"
+	"github.com/twentyideas/changesaga/internal/sagaref"
 )
 
 func storyURN(sagaID, storyID string) (string, error) {
@@ -46,6 +47,9 @@ const (
 	endpointCriterion    endpointKind = "criterion"
 	endpointDesign       endpointKind = "design"
 	endpointWorkItem     endpointKind = "work-item"
+	endpointDeck         endpointKind = "deck"
+	endpointSlide        endpointKind = "slide"
+	endpointItem         endpointKind = "item"
 	endpointClaim        endpointKind = "claim"
 	endpointVerification endpointKind = "verification"
 	endpointCitation     endpointKind = "citation"
@@ -78,6 +82,24 @@ func parseEndpoint(value string) (endpoint, error) {
 			ep.Kind = endpointRelation
 		default:
 			return endpoint{}, fmt.Errorf("unsupported relation endpoint kind %q", ref.Kind)
+		}
+		return ep, nil
+	}
+	if target, err := sagaref.ParseTarget(value); err == nil {
+		ep := endpoint{SagaID: target.SagaID, ID: target.ID}
+		switch target.Kind {
+		case sagaref.TargetDeck:
+			ep.Kind = endpointDeck
+		case sagaref.TargetSlide:
+			ep.Kind = endpointSlide
+		case sagaref.TargetItem:
+			ep.Kind, ep.StoryID = endpointItem, target.ParentID
+		case sagaref.TargetClaim:
+			ep.Kind = endpointClaim
+		case sagaref.TargetVerification:
+			ep.Kind = endpointVerification
+		default:
+			return endpoint{}, fmt.Errorf("unsupported relation endpoint kind %q", target.Kind)
 		}
 		return ep, nil
 	}

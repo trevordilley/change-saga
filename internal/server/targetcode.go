@@ -39,9 +39,10 @@ type evidenceOwnerCache struct {
 	builds int
 }
 
-// targetCode resolves one narrative target into a linked-code summary. The
-// request reads only that target's evidence and the source files named by it;
-// it never constructs the whole coverage graph.
+// targetCode resolves one narrative target into a linked-code summary. A slide
+// deliberately rolls up its Item evidence so reviewers can open every file
+// referenced by that slide without weakening Item-level ownership. The request
+// remains bounded to one target and never constructs the whole coverage graph.
 func (a *app) targetCode(w http.ResponseWriter, r *http.Request) {
 	target := r.URL.Query().Get("target")
 	document := a.narrativeDocument(r.Context())
@@ -76,12 +77,16 @@ func (a *app) targetCode(w http.ResponseWriter, r *http.Request) {
 // entry; an empty path reads each changed file named by this target.
 func (a *app) selectTargetCode(ctx context.Context, document *saga.Saga, target, filePath string) (targetSelection, error) {
 	index := saga.MutationIndexFromDocument(document)
-	evidence, validation, err := saga.LoadTargetDiffs(index, target)
-	if err != nil {
-		return targetSelection{}, err
-	}
-	if !validation.Valid {
-		return targetSelection{}, fmt.Errorf("target evidence is invalid")
+	evidence := make([]saga.DiffFile, 0)
+	for _, evidenceTarget := range narrativeEvidenceTargets(document.Section, target) {
+		loaded, validation, err := saga.LoadTargetDiffs(index, evidenceTarget)
+		if err != nil {
+			return targetSelection{}, err
+		}
+		if !validation.Valid {
+			return targetSelection{}, fmt.Errorf("target evidence is invalid")
+		}
+		evidence = append(evidence, loaded...)
 	}
 	catalog, err := a.sourceCatalog(ctx, document.Manifest)
 	if err != nil {
@@ -118,6 +123,38 @@ func (a *app) selectTargetCode(ctx context.Context, document *saga.Saga, target,
 		catalog: catalog, evidence: evidence, changes: changes,
 		matched: coverage.SelectTarget(evidence, changes),
 	}, nil
+}
+
+// narrativeEvidenceTargets keeps the roll-up narrow: ordinary targets load
+// only their own evidence, while a slide additionally loads each of its Items.
+func narrativeEvidenceTargets(section *saga.Section, target string) []string {
+	if result, ok := findNarrativeEvidenceTargets(section, target); ok {
+		return result
+	}
+	return []string{target}
+}
+
+func findNarrativeEvidenceTargets(section *saga.Section, target string) ([]string, bool) {
+	for _, fragment := range section.Fragments {
+		if fragment.Target != target {
+			continue
+		}
+		result := []string{target}
+		if fragment.SlideMeta != nil {
+			for _, landmark := range fragment.Landmarks {
+				if landmark.ItemMeta != nil {
+					result = append(result, landmark.Target)
+				}
+			}
+		}
+		return result, true
+	}
+	for _, child := range section.Children {
+		if result, ok := findNarrativeEvidenceTargets(child, target); ok {
+			return result, true
+		}
+	}
+	return nil, false
 }
 
 func catalogFilesForEvidence(catalog gitdiff.Catalog, evidence []saga.DiffFile) []gitdiff.FileSummary {

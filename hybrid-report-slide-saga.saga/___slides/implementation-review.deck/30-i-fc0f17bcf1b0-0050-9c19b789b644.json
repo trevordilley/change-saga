@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "worktree-guard",
+  "slide": "trace-states",
+  "rank": 50,
+  "kind": "risk",
+  "label": "WORKTREE guard",
+  "description": "Commit lookup rejects comparisons that may contain uncommitted content.",
+  "selector": {
+    "type": "element",
+    "element_id": "worktree-guard"
+  }
+}

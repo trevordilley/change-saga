@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "storage-tests",
+  "slide": "verification-evidence",
+  "rank": 0,
+  "kind": "region",
+  "label": "Storage tests",
+  "description": "Go tests exercise embedded bundle loading, authoring, exact Item evidence, and flat review overlay behavior.",
+  "selector": {
+    "type": "element",
+    "element_id": "storage-tests"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "version": 4,
+  "id": "code-to-story",
+  "deck": "implementation-review",
+  "title": "From committed code to accepted intent",
+  "rank": 20,
+  "section": "Traceability",
+  "intent": "trace",
+  "layout": "sequence",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-02beee84cbce-0020-9b4b49488abc.svg",
+  "takeaway": "The reverse trace follows the committed comparison through exact diff ownership and a pinned explanation to the accepted story.",
+  "reading_order": [
+    "commit-head",
+    "diff-atom",
+    "item-owner",
+    "review-target",
+    "pinned-relation",
+    "accepted-story",
+    "reverse-query"
+  ]
+}

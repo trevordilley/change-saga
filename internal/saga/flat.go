@@ -12,10 +12,12 @@ import (
 )
 
 const (
-	FlatManifestName = "00-saga.json"
-	FlatMaxBasename  = 64
-	FlatMaxPath      = 240
-	flatMaxRank      = 9999
+	FlatManifestName   = "00-saga.json"
+	FlatMaxBasename    = 64
+	FlatMaxPath        = 240
+	EmbeddedSlidesDir  = "___slides"
+	EmbeddedDeckSuffix = ".deck"
+	flatMaxRank        = 9999
 )
 
 // V4 filenames are a compact, deterministic storage index. Human meaning

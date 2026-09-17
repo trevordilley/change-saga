@@ -9,7 +9,7 @@
     "$schema": { "const": "https://changesaga.dev/schema/v3/relation.schema.json" },
     "version": { "const": 3 },
     "id": { "$ref": "#/$defs/id" },
-    "type": { "enum": ["refines", "addresses", "implements", "verifies", "supersedes", "conflicts_with"] },
+    "type": { "enum": ["refines", "addresses", "implements", "explains", "verifies", "supersedes", "conflicts_with"] },
     "from": { "$ref": "#/$defs/urn" },
     "to": { "$ref": "#/$defs/urn" },
     "rationale": { "type": "string", "minLength": 1 },
@@ -35,9 +35,10 @@
     "urn": {
       "type": "string",
       "oneOf": [
-        { "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:(story|citation|relation|wave|work-item|dependency|contract|chapter|section|fragment|claim|verification):[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+        { "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:(story|citation|relation|wave|work-item|dependency|contract|chapter|section|fragment|deck|slide|claim|verification):[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
         { "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:story:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:criterion:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
-        { "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:fragment:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:landmark:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" }
+        { "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:fragment:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:landmark:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+        { "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:slide:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:item:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" }
       ]
     },
     "revision_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:(story|wave|work-item|contract):[A-Za-z0-9][A-Za-z0-9._-]{0,127}:revision:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },

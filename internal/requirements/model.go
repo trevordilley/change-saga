@@ -105,6 +105,7 @@ const (
 	RelationRefines       RelationType = "refines"
 	RelationAddresses     RelationType = "addresses"
 	RelationImplements    RelationType = "implements"
+	RelationExplains      RelationType = "explains"
 	RelationVerifies      RelationType = "verifies"
 	RelationSupersedes    RelationType = "supersedes"
 	RelationConflictsWith RelationType = "conflicts_with"

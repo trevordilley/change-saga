@@ -1,5 +1,32 @@
 # Authoring a change for review
 
+## Hybrid report/deck composition
+
+Use a v3 Report Saga as the parent when requirements, acceptance criteria,
+standalone prototypes, technical design, or work-plan history must remain
+living documentation. Add focused embedded decks only for complex implemented
+changes whose reviewer questions benefit from a visual sequence. A report can
+contain several decks; each is an independent `___slides/<id>.deck/` merge
+boundary under the same Saga identity. Never paginate the report or turn user
+stories and prototypes into slides.
+
+Make the report requirements the closing-loop backbone. Every Item with exact
+code evidence must reach a user story through an active `explains` relation on
+the Item itself or one of its containing slide/deck targets. Pin the relation's
+target story revision. Prefer a criterion target when the visual explains one
+acceptance criterion; use a story target only when it genuinely applies to all
+criteria in that revision. Do not repeat the story prose in slide metadata.
+
+Before handoff, query each evidence path in reverse and clear the unlinked list:
+
+```sh
+change-saga query traceability --saga report.saga --diff '<saga-diff URI>'
+change-saga query traceability --saga report.saga --commit '<resolved source-head commit>'
+```
+
+Prototype persistence is currently internal-only and has no supported public
+CLI, query, or reviewer UI. Treat that surface as staged.
+
 The saga is the authored proposal that accompanies the code—the successor to a
 flat PR title and description. Build it from the change author's point of view
 so another person can review it. Do not populate the review overlay, invent
@@ -30,12 +57,13 @@ stop and resolve the mismatch. Never put an unverified PR number into
 `saga.json`; a saga with no PR identity is better than one linked to the wrong
 review.
 
-## Legacy v2/v3 report contract
+## V2/v3 report contract
 
 The overview, chapter, landmark, and Markdown-citation guidance in this section
-applies only when maintaining an existing v2/v3 report saga. New review sagas
-use the slide-native v4 contract below and must not translate chapters or
-fragments into pages mechanically.
+applies when maintaining a v2/v3 Report Saga or starting a v3 living Saga.
+Choose the standalone v4 contract below only when the review is intentionally
+slide-native. Neither choice translates chapters or fragments into pages
+mechanically.
 
 ### Overview contract
 

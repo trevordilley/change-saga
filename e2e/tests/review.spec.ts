@@ -1,10 +1,13 @@
 import { readFileSync } from "node:fs";
 import { canonicalLineURI, git, readJSON, relativeToSaga, reviewFiles } from "../support/fixture-builder.js";
-import { expect, test, waitForSettledSaga } from "../support/test.js";
+import { expect, test } from "../support/test.js";
 
-async function submitWithNavigation(page: import("@playwright/test").Page, action: () => Promise<void>): Promise<void> {
-  await Promise.all([page.waitForNavigation(), action()]);
-  await waitForSettledSaga(page);
+async function submitWithoutNavigation(page: import("@playwright/test").Page, path: string, action: () => Promise<void>): Promise<void> {
+  const url = page.url();
+  const saved = page.waitForResponse((response) => new URL(response.url()).pathname === path && response.request().method() === "POST");
+  await action();
+  expect((await saved).status()).toBe(204);
+  expect(page.url()).toBe(url);
 }
 
 test("@critical creates a comment and reply, then resolves and reopens the thread with exact append-only records", async ({ page, saga }) => {
@@ -19,7 +22,7 @@ test("@critical creates a comment and reply, then resolves and reopens the threa
   expect(actionGap).toBeGreaterThanOrEqual(10);
   await expect(composer.getByRole("textbox", { name: "Comment" })).toBeVisible();
   await composer.locator('textarea[name="body"]').fill("Please explain the retry boundary.");
-  await submitWithNavigation(page, () => composer.getByRole("button", { name: "Comment" }).click());
+  await submitWithoutNavigation(page, "/api/thread", () => composer.getByRole("button", { name: "Comment" }).click());
 
   const thread = page.locator("article.thread").filter({ hasText: "Please explain the retry boundary." });
   await expect(thread).toBeVisible();
@@ -41,7 +44,7 @@ test("@critical creates a comment and reply, then resolves and reopens the threa
   expect(readFileSync(bodies[0], "utf8")).toBe("Please explain the retry boundary.\n");
 
   await thread.getByRole("textbox", { name: "Reply" }).fill("The boundary is the repository commit.");
-  await submitWithNavigation(page, () => thread.getByRole("button", { name: "Reply" }).click());
+  await submitWithoutNavigation(page, "/api/reply", () => thread.getByRole("button", { name: "Reply" }).click());
   await expect(page.getByText("The boundary is the repository commit.")).toBeVisible();
   expect(reviewFiles(saga, /\/message\.json$/)).toHaveLength(2);
   expect(reviewFiles(saga, /\/body\.fragment\/content\.md$/).map((path) => readFileSync(path, "utf8")).sort()).toEqual([
@@ -65,9 +68,9 @@ test("@critical creates a comment and reply, then resolves and reopens the threa
   await expect(activityDrawer).toHaveAttribute("aria-hidden", "true");
 
   const reloadedThread = page.locator("article.thread").filter({ hasText: "Please explain the retry boundary." });
-  await submitWithNavigation(page, () => reloadedThread.getByRole("button", { name: "Resolve" }).click());
+  await submitWithoutNavigation(page, "/api/thread-state", () => reloadedThread.getByRole("button", { name: "Resolve" }).click());
   await expect(page.locator("article.thread.resolved")).toContainText("Please explain the retry boundary.");
-  await submitWithNavigation(page, () => page.locator("article.thread.resolved").getByRole("button", { name: "Reopen" }).click());
+  await submitWithoutNavigation(page, "/api/thread-state", () => page.locator("article.thread.resolved").getByRole("button", { name: "Reopen" }).click());
   await expect(page.locator("article.thread.open")).toContainText("Please explain the retry boundary.");
 
   const events = reviewFiles(saga, /\/events\/.*-(resolved|open)\.json$/).map((path) => ({ path: relativeToSaga(saga, path), record: readJSON(path) }));
@@ -114,7 +117,7 @@ test("appends and replaces one human review without erasing other reviewers, upd
   await page.getByRole("tab", { name: "Code Diff" }).click();
   const fileMenu = page.locator('summary[aria-label="Mark this file reviewed"]');
   await fileMenu.click();
-  await submitWithNavigation(page, () => page.getByRole("button", { name: "Mark reviewed" }).click());
+  await submitWithoutNavigation(page, "/api/diff-review", () => page.getByRole("button", { name: "Mark reviewed" }).click());
   await expect(page.getByText(/Reviewed · Local \/ uncommitted/)).toBeVisible();
   const diffReviews = reviewFiles(saga, /\/___review\/diffs\/.*-reviewed\.json$/);
   expect(diffReviews).toHaveLength(1);
@@ -136,7 +139,7 @@ test("@critical keeps saga and source repositories separate and reloads Git-deri
   await overview.getByRole("button", { name: "Comment on Overview" }).click();
   const composer = page.locator("form.annotation-compose");
   await composer.locator('textarea[name="body"]').fill("Committed attribution check.");
-  await submitWithNavigation(page, () => composer.getByRole("button", { name: "Comment" }).click());
+  await submitWithoutNavigation(page, "/api/thread", () => composer.getByRole("button", { name: "Comment" }).click());
   const controls = page.locator('[data-review-controls][data-review-title="Overview"]');
   const reviewResponse = page.waitForResponse((response) => response.url().endsWith("/api/review"));
   await controls.getByRole("button", { name: "Approve Overview" }).click();
@@ -175,7 +178,7 @@ test("@critical comments on a selected diff line and stores this saga's exact li
   const composer = page.locator("form.diff-compose");
   await expect(composer).toHaveClass(/open/);
   await composer.locator('textarea[name="body"]').fill("This line needs a rollback note.");
-  await submitWithNavigation(page, () => composer.getByRole("button", { name: "Add" }).click());
+  await submitWithoutNavigation(page, "/api/thread", () => composer.getByRole("button", { name: "Add" }).click());
   await expect(page.getByText("This line needs a rollback note.")).toBeVisible();
 
   const threads = reviewFiles(saga, /\/thread\.json$/).map((path) => readJSON<{ anchor: { type: string; diff?: { uri: string } } }>(path));

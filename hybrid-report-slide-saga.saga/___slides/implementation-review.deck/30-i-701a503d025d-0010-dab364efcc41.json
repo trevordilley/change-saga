@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "trace-tests",
+  "slide": "verification-evidence",
+  "rank": 10,
+  "kind": "region",
+  "label": "Traceability tests",
+  "description": "Go tests exercise pinned explains relations, accepted-story transitivity, reverse lookup, staleness, and unlinked evidence.",
+  "selector": {
+    "type": "element",
+    "element_id": "trace-tests"
+  }
+}

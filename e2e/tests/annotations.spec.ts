@@ -2,6 +2,12 @@ import { annotationBubble, dragOn, openAnnotationBubble, openAnnotationTools, se
 import { readJSON, reviewFiles } from "../support/fixture-builder.js";
 import { expect, test } from "../support/test.js";
 
+async function submitReviewMutation(page: import("@playwright/test").Page, path: string, action: () => Promise<void>): Promise<void> {
+  const saved = page.waitForResponse((response) => new URL(response.url()).pathname === path && response.request().method() === "POST");
+  await action();
+  expect((await saved).status()).toBe(204);
+}
+
 test("@critical drafts, undoes, redoes, submits, moves, recolors, and deletes visual annotations", async ({ page, saga }) => {
   const overview = page.locator('[data-fragment-title="Overview"]');
   const overlay = overview.locator("svg.review-overlay");
@@ -40,7 +46,7 @@ test("@critical drafts, undoes, redoes, submits, moves, recolors, and deletes vi
   await expect(overlay.locator(".annotation.pending")).toHaveCount(2);
 
   await composer.locator('textarea[name="body"]').fill("Rectangle and freehand review marks.");
-  await Promise.all([page.waitForNavigation(), composer.getByRole("button", { name: "Comment" }).click()]);
+  await submitReviewMutation(page, "/api/thread", () => composer.getByRole("button", { name: "Comment" }).click());
   // The comment now belongs to the mark it was drawn on, so it reads from the
   // bubble rather than from the list under the fragment.
   await expect(openAnnotationBubble(annotationBubble(page, "drawing"))).resolves.toContainText("Rectangle and freehand review marks.");
@@ -62,7 +68,7 @@ test("@critical drafts, undoes, redoes, submits, moves, recolors, and deletes vi
   await selectExactText(page, '[data-fragment-title="Overview"] [data-selectable]', "exact source changes");
   await tools.getByRole("button", { name: "Highlight selected text" }).click();
   await composer.locator('textarea[name="body"]').fill("Highlighted review claim.");
-  await Promise.all([page.waitForNavigation(), composer.getByRole("button", { name: "Comment" }).click()]);
+  await submitReviewMutation(page, "/api/thread", () => composer.getByRole("button", { name: "Comment" }).click());
   await expect(openAnnotationBubble(annotationBubble(page, "text"))).resolves.toContainText("Highlighted review claim.");
   const textThread = reviewFiles(saga, /\/thread\.json$/).map((path) => readJSON<{ anchor: { type: string; text?: { exact: string } } }>(path)).find((record) => record.anchor.type === "text");
   expect(textThread?.anchor.text?.exact).toBe("exact source changes");
@@ -75,7 +81,7 @@ test("@critical drafts, undoes, redoes, submits, moves, recolors, and deletes vi
   if (!overlayBox) throw new Error("sticky surface has no bounding box");
   await page.mouse.click(overlayBox.x + overlayBox.width * 0.7, overlayBox.y + overlayBox.height * 0.65);
   await page.getByRole("textbox", { name: "Sticky note text" }).fill("Sticky persistence check");
-  await Promise.all([page.waitForNavigation(), page.getByRole("button", { name: "Add note" }).click()]);
+  await submitReviewMutation(page, "/api/thread", () => page.getByRole("button", { name: "Add note" }).click());
   await expect(page.getByRole("note", { name: /Sticky note by/ })).toContainText("Sticky persistence check");
   const noteThread = reviewFiles(saga, /\/thread\.json$/).map((path) => readJSON<{ anchor: { type: string; note?: { text: string } } }>(path)).find((record) => record.anchor.type === "note");
   expect(noteThread?.anchor.note?.text).toBe("Sticky persistence check");

@@ -20,14 +20,57 @@ const appJavaScript = `(() => {
   let drawerRestore = null;
   let pinnedBubble = null;
   let bubbleHideTimer = null;
+  const slideDiffPreviewReasons = new WeakMap();
   const noteDefaultColor = '#f2bd4b';
   const slideSidebarKey = 'change-saga-slide-sidebar-collapsed';
 
+  function slideDiffSummaryButton(node) {
+    const button = node?.closest?.('.diff-button');
+    const fragment = button?.closest?.('.fragment');
+    if (!button || !fragment?.closest('[data-native-slide]')) return null;
+    return button.closest('.fragment-head')?.parentElement === fragment ? button : null;
+  }
+
+  function setSlideDiffPreview(button, reason, visible) {
+    const fragment = slideDiffSummaryButton(button)?.closest('.fragment');
+    if (!fragment) return;
+    let reasons = slideDiffPreviewReasons.get(fragment);
+    if (!reasons) {
+      reasons = new Set();
+      slideDiffPreviewReasons.set(fragment, reasons);
+    }
+    if (visible) reasons.add(reason);
+    else reasons.delete(reason);
+    fragment.classList.toggle('preview-linked-items', reasons.size > 0);
+  }
+
+  function landmarkOwnsDiffs(target) {
+    const template = q('[data-landmark-affordance-template]', target);
+    return Boolean(template?.content.querySelector('[data-open-diffs],[data-target-code-href]'));
+  }
+
+  function markLandmarkDiffOwnership(target, visual) {
+    if (visual) visual.dataset.landmarkHasDiffs = String(landmarkOwnsDiffs(target));
+  }
+
   function nativeSlides() { return qa('[data-native-slide]'); }
+
+  function nativeDeckSlides(slide) {
+    const slides = nativeSlides();
+    if (!slide?.dataset.deckTarget) return slides;
+    return slides.filter(candidate => candidate.dataset.deckTarget === slide.dataset.deckTarget);
+  }
+
+  function nativeSlideSurfaceActive() {
+    const surface = q('[data-slide-native]');
+    const view = surface?.closest('[data-view]');
+    return Boolean(surface && (!view || view.classList.contains('active')));
+  }
 
   function activateNativeSlide(index, updateHash = false) {
     const slides = nativeSlides();
     if (!slides.length) return;
+    qa('.fragment.preview-linked-items').forEach(fragment => fragment.classList.remove('preview-linked-items'));
     const bounded = Math.max(0, Math.min(slides.length - 1, index));
     slides.forEach((slide, current) => {
       const active = current === bounded;
@@ -40,24 +83,45 @@ const appJavaScript = `(() => {
     const position = q('[data-slide-position]', shell);
     const deckTitle = q('[data-slide-deck-title]', shell);
     const slideTitle = q('[data-current-slide-title]', shell);
-    if (position) position.textContent = (bounded + 1) + ' / ' + slides.length;
+    const deckSlides = nativeDeckSlides(active);
+    const deckIndex = deckSlides.indexOf(active);
+    if (position) position.textContent = (deckIndex + 1) + ' / ' + deckSlides.length;
     if (deckTitle) deckTitle.textContent = active.dataset.deckTitle || '';
     if (slideTitle) slideTitle.textContent = active.dataset.slideTitle || '';
+    let activeThumbnail = null;
     qa('[data-slide-thumbnail]').forEach(thumbnail => {
       const selected = thumbnail.dataset.slideTarget === active.dataset.slideTarget;
       thumbnail.setAttribute('aria-current', String(selected));
       thumbnail.closest('[data-slide-thumbnail-card]')?.classList.toggle('active', selected);
+      if (selected) activeThumbnail = thumbnail;
       if (selected && updateHash) thumbnail.scrollIntoView({block:'nearest'});
     });
+    qa('.doc-deck>.doc-row').forEach(row => row.classList.toggle('current', Boolean(activeThumbnail && row.parentElement.contains(activeThumbnail))));
+    const deckChildren = activeThumbnail?.closest('.doc-children');
+    if (deckChildren?.id) setDocNodeExpandedByID(deckChildren.id, true);
     const previous = q('[data-slide-previous]', shell);
     const next = q('[data-slide-next]', shell);
-    if (previous) previous.disabled = bounded === 0;
-    if (next) next.disabled = bounded === slides.length - 1;
+    if (previous) previous.disabled = deckIndex === 0;
+    if (next) next.disabled = deckIndex === deckSlides.length - 1;
     if (updateHash) {
       const anchor = q('.fragment', active)?.id;
       if (anchor) history.replaceState(history.state, '', location.pathname + location.search + '#' + encodeURIComponent(anchor));
     }
+    const fragment = q('.fragment', active);
+    const targetCodeButton = q(':scope > .fragment-head [data-target-code-href]', fragment);
+    if (targetCodeButton) void hydrateTargetCodeSummary(targetCodeButton);
     positionFragmentOverlays();
+  }
+
+  function stepNativeSlide(delta) {
+    const slides = nativeSlides();
+    const active = slides.find(slide => !slide.hidden);
+    if (!active) return;
+    const deckSlides = nativeDeckSlides(active);
+    const current = deckSlides.indexOf(active);
+    const target = deckSlides[Math.max(0, Math.min(deckSlides.length - 1, current + delta))];
+    const index = slides.indexOf(target);
+    if (index >= 0) activateNativeSlide(index, true);
   }
 
   function syncNativeSlideForHash() {
@@ -65,6 +129,8 @@ const appJavaScript = `(() => {
     if (!slides.length) return;
     const id = decodeURIComponent(location.hash.replace(/^#/, ''));
     const requested = id ? document.getElementById(id)?.closest?.('[data-native-slide]') : null;
+    const view = slides[0].closest('[data-view]');
+    if (view && !view.classList.contains('active') && !requested) return;
     activateNativeSlide(requested ? slides.indexOf(requested) : Math.max(0, slides.findIndex(slide => !slide.hidden)));
   }
 
@@ -173,20 +239,13 @@ const appJavaScript = `(() => {
   }
 
   function submitReviewForm(action, fields, multipart = false) {
-    const form = document.createElement('form');
-    form.method = 'post';
-    form.action = action;
-    if (multipart) form.enctype = 'multipart/form-data';
-    // form.submit() bypasses the submit listener, so the return path is explicit here.
-    Object.entries({...fields, mutation_token:mutationToken, return_to:location.pathname + location.search + location.hash}).forEach(([name,value]) => {
-      const input = document.createElement('input');
-      input.type = 'hidden';
-      input.name = name;
-      input.value = value;
-      form.append(input);
-    });
-    document.body.append(form);
-    form.submit();
+    const data = new FormData();
+    Object.entries(fields).forEach(([name,value]) => data.set(name, value));
+    const target = String(fields.target || '');
+    const article = reviewMutationFragment(target, annotationDraft?.fragment || selectedAnnotation?.element || null);
+    void persistReviewMutation(action, data, article).then(() => {
+      if (annotationDraft) closeAnnotation();
+    }).catch(error => alert('Could not save this review change: ' + error.message));
   }
 
   function submitThreadState(command, state) {
@@ -443,15 +502,16 @@ const appJavaScript = `(() => {
     } catch (_) {}
   }
 
-  function openReviewComment(control) {
+  function openReviewComment(control, anchor = control) {
     discardAnnotationDraft();
     const form = q('.annotation-compose');
     form.reset();
+    form.reviewOrigin = anchor;
     q('[name=target]', form).value = control.dataset.reviewTarget;
     q('[name=anchor]', form).value = JSON.stringify({type:'target'});
     q('.dialog-head h2', form).textContent = 'Comment on ' + (control.dataset.reviewTitle || 'this item');
     form.classList.add('open');
-    positionAnnotationComposer(control);
+    positionAnnotationComposer(anchor);
     q('[name=body]', form).focus();
     resetTool();
     updateHistoryControls();
@@ -612,6 +672,7 @@ const appJavaScript = `(() => {
     visual.dataset.y = String(region.y);
     visual.dataset.width = String(region.width);
     visual.dataset.height = String(region.height);
+    markLandmarkDiffOwnership(target, visual);
     const affordance = cloneLandmarkAffordance(target);
     if (affordance) visual.append(affordance);
     stage.insertBefore(visual, q('.review-overlay', stage));
@@ -850,6 +911,7 @@ const appJavaScript = `(() => {
       if (target.dataset.landmarkType === 'heading') {
         const heading = document.getElementById(anchor);
         if (!heading) return;
+        markLandmarkDiffOwnership(target, heading);
         heading.querySelector('.heading-permalink')?.remove();
         const affordance = cloneLandmarkAffordance(target);
         if (affordance) heading.append(affordance);
@@ -859,9 +921,11 @@ const appJavaScript = `(() => {
         target.removeAttribute('id');
         mark.id = anchor;
         mark.dataset.landmarkVisual = anchor;
+        markLandmarkDiffOwnership(target, mark);
         const affordance = cloneLandmarkAffordance(target);
         if (affordance) mark.append(affordance);
       }
+      markLandmarkDiffOwnership(target, q('[data-landmark-visual="' + CSS.escape(anchor) + '"]', fragment));
     });
     within(root, '.fragment').forEach(fragment => { void prepareSVGElementHotspots(fragment).catch(() => {}); });
     globalThis.requestAnimationFrame?.(positionFragmentOverlays);
@@ -908,9 +972,8 @@ const appJavaScript = `(() => {
     // The anchor may name something inside a chapter or an explanation that has
     // not been fetched yet, so it is resolved before it is scrolled to.
     const destination = await revealAnchor(id);
-    if (destination?.closest('[data-view="saga"]')) {
-      setView('saga', false);
-    }
+    const destinationView = destination?.closest('[data-view]')?.dataset.view;
+    if (destinationView === 'saga' || destinationView === 'slides') setView(destinationView, false);
     const target = id ? q('[data-landmark-anchor="' + CSS.escape(id) + '"]') : null;
     if (!target) {
       destination?.scrollIntoView({block:'start'});
@@ -1184,12 +1247,20 @@ const appJavaScript = `(() => {
     updateLineSelection(rows);
   }
 
-  function toggleDocNode(button) {
-    const children = document.getElementById(button.getAttribute('aria-controls'));
+  function setDocNodeExpandedByID(id, expanded) {
+    const children = document.getElementById(id);
     if (!children) return;
-    const expanded = button.getAttribute('aria-expanded') === 'true';
-    button.setAttribute('aria-expanded', String(!expanded));
-    children.hidden = expanded;
+    children.hidden = !expanded;
+    qa('[aria-controls]').filter(control => control.getAttribute('aria-controls') === id).forEach(control => {
+      control.setAttribute('aria-expanded', String(expanded));
+    });
+  }
+
+  function toggleDocNode(button) {
+    const id = button.getAttribute('aria-controls');
+    const children = document.getElementById(id);
+    if (!children) return;
+    setDocNodeExpandedByID(id, children.hidden);
   }
 
   // Opening a chapter is what fetches it. The disclosure state is applied at
@@ -1569,7 +1640,7 @@ const appJavaScript = `(() => {
     if (!q('[data-view="'+name+'"]')) name = 'saga';
     qa('[data-view]').forEach(view => view.classList.toggle('active', view.dataset.view === name));
     qa('[data-view-tab]').forEach(tab => {
-      const selected = tab.dataset.viewTab === name;
+      const selected = tab.dataset.viewTab === name || (name === 'slides' && tab.dataset.viewTab === 'saga');
       tab.classList.toggle('active', selected);
       tab.setAttribute('aria-selected', String(selected));
       // Roving focus: only the selected tab is in the sequential tab order.
@@ -1579,16 +1650,21 @@ const appJavaScript = `(() => {
     const codeSide = q('.code-side');
     const toolbox = q('.annotation-toolbox');
     const codeMeta = q('.top-meta');
-    if (sagaSide) sagaSide.hidden = name !== 'saga';
+    if (sagaSide) sagaSide.hidden = name !== 'saga' && name !== 'slides';
     if (codeSide) codeSide.hidden = name !== 'code';
-    if (toolbox) toolbox.hidden = name !== 'saga' || !toolbox.dataset.annotationTarget;
+    if (toolbox) toolbox.hidden = (name !== 'saga' && name !== 'slides') || !toolbox.dataset.annotationTarget;
     if (codeMeta) codeMeta.hidden = name !== 'code';
     const shell = q('[data-shell]');
-    if (shell) shell.classList.toggle('code-mode', name === 'code');
-    qa('[data-slide-sidebar-toggle],[data-slide-present]').forEach(button => { button.hidden = name !== 'saga'; });
+    if (shell) {
+      shell.classList.toggle('code-mode', name === 'code');
+      shell.classList.toggle('slide-mode', name === 'slides');
+    }
+    qa('[data-slide-sidebar-toggle]').forEach(button => { button.hidden = name !== 'saga'; });
+    const slideView = q('[data-view="slides"]') ? 'slides' : 'saga';
+    qa('[data-slide-present]').forEach(button => { button.hidden = name !== slideView; });
     // A hidden view measures as zero, so the bubbles are placed once the saga
     // view is actually on screen.
-    if (name === 'saga') globalThis.requestAnimationFrame?.(positionFragmentOverlays);
+    if (name === 'saga' || name === 'slides') globalThis.requestAnimationFrame?.(positionFragmentOverlays);
     if (updateURL) {
       const url = new URL(location.href);
       if (name === 'saga') url.searchParams.delete('view'); else url.searchParams.set('view', name);
@@ -2101,6 +2177,16 @@ const appJavaScript = `(() => {
     }
   }
 
+  async function hydrateTargetCodeSummary(button) {
+    const href = button?.dataset.targetCodeHref;
+    if (!href) return;
+    try {
+      installTargetCodeResponse(href, await requestTargetCode(href, {priority:20}), button);
+    } catch (_) {
+      button.title = 'Linked code could not be loaded — try again';
+    }
+  }
+
   function installAuxiliaryDiffNext(container, href, cursor) {
     q('[data-aux-file-next]', container)?.remove();
     if (!cursor) return;
@@ -2154,6 +2240,36 @@ const appJavaScript = `(() => {
     }
   }
 
+  function installFragmentContents(article, replacement, preserveLiveDecision = false) {
+    const wasActive = article.classList.contains('active-fragment');
+    const tools = q('[data-annotation-target]');
+    const toolsTarget = tools && !tools.hidden && tools.closest('.fragment') === article ? tools.dataset.annotationTarget : '';
+    if (toolsTarget) document.body.append(tools);
+    if (preserveLiveDecision) {
+      // A decision the reviewer has already made is not undone by content
+      // arriving after it: the live controls move into the rendered explanation
+      // instead of being replaced by the state its snapshot was built from.
+      const live = q(':scope > .fragment-head [data-review-controls]', article);
+      const rendered = q(':scope > .fragment-head [data-review-controls]', replacement);
+      if (live && rendered) rendered.replaceWith(live);
+    }
+    for (const attribute of Array.from(article.attributes)) {
+      if (!replacement.hasAttribute(attribute.name)) article.removeAttribute(attribute.name);
+    }
+    for (const attribute of Array.from(replacement.attributes)) article.setAttribute(attribute.name, attribute.value);
+    if (wasActive) article.classList.add('active-fragment');
+    article.removeAttribute('data-fragment-href');
+    delete article.dataset.fragmentLoading;
+    article.replaceChildren(...Array.from(replacement.childNodes));
+    prepareLandmarks(article);
+    prepareDiffCitations(article);
+    prepareTextHighlights(article);
+    highlightCode(article);
+    positionFragmentOverlays();
+    if (toolsTarget) showAnnotationTools(article, toolsTarget, article.dataset.fragmentTitle || 'this explanation');
+    return article;
+  }
+
   async function hydrateFragment(article) {
     const href = article?.dataset.fragmentHref;
     if (!href) return article || null;
@@ -2162,33 +2278,127 @@ const appJavaScript = `(() => {
     try {
       const replacement = q('.fragment', parseShellHTML(await fetchShell(href)));
       if (!replacement) throw new Error('explanation response was incomplete');
-      // A decision the reviewer has already made is not undone by content
-      // arriving after it: the live controls move into the rendered explanation
-      // instead of being replaced by the state its snapshot was built from.
-      const live = q(':scope > .fragment-head [data-review-controls]', article);
-      const rendered = q(':scope > .fragment-head [data-review-controls]', replacement);
-      if (live && rendered) rendered.replaceWith(live);
       // The article itself is never swapped out. A reviewer can be part way
       // through clicking a descriptor's controls when its content arrives, and
       // replacing the element under the pointer loses that click: the detached
       // node no longer reaches the document that handles it. Filling the article
       // in place keeps its head where it was and every live control attached,
       // and keeps this explanation the active one without re-selecting it.
-      for (const attribute of Array.from(replacement.attributes)) article.setAttribute(attribute.name, attribute.value);
-      article.removeAttribute('data-fragment-href');
-      delete article.dataset.fragmentLoading;
-      article.replaceChildren(...Array.from(replacement.childNodes));
-      prepareLandmarks(article);
-      prepareDiffCitations(article);
-      prepareTextHighlights(article);
-      highlightCode(article);
-      positionFragmentOverlays();
-      return article;
+      return installFragmentContents(article, replacement, true);
     } catch (_) {
       delete article.dataset.fragmentLoading;
       const placeholder = q('[data-fragment-placeholder]', article);
       if (placeholder) placeholder.textContent = 'This explanation could not be loaded. Reload the page to try again.';
       return article;
+    }
+  }
+
+  function reviewMutationFragment(target, origin = null) {
+    const direct = origin?.closest?.('.fragment');
+    if (direct) return direct;
+    return qa('.fragment').find(fragment => fragment.dataset.target === target ||
+      Boolean(q('[data-review-comment="' + CSS.escape(target) + '"]', fragment))) || null;
+  }
+
+  function restoreReviewMutationFocus(article, action, data) {
+    const thread = String(data.get('thread') || '');
+    const target = String(data.get('target') || '');
+    let destination = null;
+    if (thread) {
+      const matching = qa('article.thread', article).find(candidate =>
+        q('input[name="thread"]', candidate)?.value === thread);
+      destination = action.endsWith('/api/reply') ? q('input[name="body"]', matching) : q('.thread-state button', matching);
+    }
+    if (!destination && target) {
+      destination = qa('[data-review-comment]', article).find(button => button.dataset.reviewComment === target) ||
+        qa('[data-review-controls]', article).find(control => control.dataset.reviewTarget === target)?.querySelector('button');
+    }
+    destination?.focus?.({preventScroll:true});
+  }
+
+  async function refreshFragmentReviews(article, action, data) {
+    if (!article?.dataset.target) return false;
+    const scroll = {x:scrollX, y:scrollY};
+    const url = new URL('/api/fragment', location.href);
+    url.searchParams.set('target', article.dataset.target);
+    const response = await fetch(url, {headers:{Accept:'text/html','X-Change-Saga-Async':'true'},credentials:'same-origin',cache:'no-store'});
+    if (!response.ok) throw new Error((await response.text()).trim() || 'updated review could not be loaded');
+    const replacement = q('.fragment', parseShellHTML(await response.text()));
+    if (!replacement) throw new Error('updated review response was incomplete');
+    installFragmentContents(article, replacement);
+    scrollTo(scroll.x, scroll.y);
+    restoreReviewMutationFocus(article, action, data);
+    return true;
+  }
+
+  async function refreshChapterReviews(chapter) {
+    const body = q(':scope > [data-chapter-body]', chapter);
+    const target = q(':scope > .section-head [data-review-controls]', chapter)?.dataset.reviewTarget || '';
+    if (!body || !target) return false;
+    const scroll = {x:scrollX, y:scrollY};
+    const url = new URL('/api/section', location.href);
+    url.searchParams.set('target', target);
+    const response = await fetch(url, {headers:{Accept:'text/html','X-Change-Saga-Async':'true'},credentials:'same-origin',cache:'no-store'});
+    if (!response.ok) throw new Error((await response.text()).trim() || 'updated chapter review could not be loaded');
+    const wrapper = parseShellHTML(await response.text());
+    body.replaceChildren(...Array.from(wrapper.childNodes));
+    chapter.removeAttribute('data-section-href');
+    await observeDeferredFragments(body);
+    scrollTo(scroll.x, scroll.y);
+    return true;
+  }
+
+  async function persistReviewMutation(action, data, origin = null) {
+    const target = String(data.get('target') || '');
+    const article = reviewMutationFragment(target, origin);
+    data.set('mutation_token', mutationToken);
+    data.set('return_to', location.pathname + location.search + location.hash);
+    const multipart = action.endsWith('/api/thread') || action.endsWith('/api/reply');
+    const headers = {'X-Change-Saga-Async':'true','X-Change-Saga-Mutation-Token':mutationToken};
+    let body = data;
+    if (!multipart) {
+      body = new URLSearchParams();
+      for (const [name,value] of data.entries()) if (typeof value === 'string') body.append(name, value);
+      headers['Content-Type'] = 'application/x-www-form-urlencoded';
+    }
+    const response = await fetch(action, {
+      method:'POST',
+      headers,
+      body,
+      credentials:'same-origin'
+    });
+    if (!response.ok) throw new Error((await response.text()).trim() || 'review change could not be saved');
+    if (article) await refreshFragmentReviews(article, action, data);
+    return response;
+  }
+
+  async function submitReviewMutationForm(form, submitter = null) {
+    const buttons = qa('button,input[type="submit"]', form);
+    buttons.forEach(button => button.disabled = true);
+    const action = new URL(form.action, location.href).pathname;
+    const data = new FormData(form);
+    if (submitter?.name) data.set(submitter.name, submitter.value);
+    const annotation = form.matches('.annotation-compose');
+    const origin = form.reviewOrigin || form;
+    const chapter = origin?.closest?.('[data-chapter]') || null;
+    const reviewSurface = form.reviewSurface || form.closest('[data-review-surface]')?.dataset.reviewSurface || '';
+    try {
+      await persistReviewMutation(action, data, origin);
+      if (chapter) await refreshChapterReviews(chapter);
+      if (reviewSurface) {
+        if (reviewSurface === 'code') fileDiffCache.clear();
+        const surface = await hydrateReviewSurface(reviewSurface, {force:true});
+        if (reviewSurface === 'code') {
+          await Promise.all(within(surface, '[data-file-diff-href]').map(file => hydrateReviewFile(file, {force:true})));
+        }
+      }
+      if (annotation) closeAnnotation();
+      if (form.matches('.diff-compose')) form.classList.remove('open');
+      form.reset();
+    } catch (error) {
+      alert('Could not save this review change: ' + error.message);
+    } finally {
+      buttons.forEach(button => button.disabled = false);
     }
   }
 
@@ -2432,6 +2642,8 @@ const appJavaScript = `(() => {
     const form = q('.diff-compose');
     const suggestion = button.dataset.diffAction === 'suggestion';
 	form.reset();
+    form.reviewOrigin = button.origin || null;
+    form.reviewSurface = button.origin?.closest?.('[data-review-surface]')?.dataset.reviewSurface || '';
     form.classList.toggle('suggesting', suggestion);
     form.classList.add('open');
     q('[name=target]', form).value = button.dataset.target;
@@ -2780,6 +2992,7 @@ const appJavaScript = `(() => {
     const form = q('.annotation-compose');
     discardAnnotationDraft();
     form.reset();
+    form.reviewOrigin = fragment;
     q('.dialog-head h2', form).textContent = 'Add a comment';
     annotationDraft = {
       kind:'draft', shapeDraft:true, target:fragment.dataset.target, fragment, body:'',
@@ -2809,6 +3022,7 @@ const appJavaScript = `(() => {
     setActiveFragment(fragment);
     const form = q('.annotation-compose');
     form.reset();
+    form.reviewOrigin = options.anchorElement || fragment;
     q('.dialog-head h2', form).textContent = 'Add a comment';
     q('[name=target]', form).value = fragment.dataset.target;
     q('[name=anchor]', form).value = JSON.stringify(anchor);
@@ -3113,6 +3327,10 @@ const appJavaScript = `(() => {
   });
 
   document.addEventListener('pointerover', event => {
+    const slideDiffButton = slideDiffSummaryButton(event.target);
+    if (event.pointerType !== 'touch' && slideDiffButton && !(event.relatedTarget instanceof Node && slideDiffButton.contains(event.relatedTarget))) {
+      setSlideDiffPreview(slideDiffButton, 'pointer', true);
+    }
     const fragment = event.target.closest('.fragment');
     if (fragment && !drawing) setActiveFragment(fragment);
     if (event.pointerType !== 'touch' && fragment && !(event.relatedTarget instanceof Node && fragment.contains(event.relatedTarget))) {
@@ -3122,6 +3340,10 @@ const appJavaScript = `(() => {
   });
 
   document.addEventListener('pointerout', event => {
+    const slideDiffButton = slideDiffSummaryButton(event.target);
+    if (event.pointerType !== 'touch' && slideDiffButton && !(event.relatedTarget instanceof Node && slideDiffButton.contains(event.relatedTarget))) {
+      setSlideDiffPreview(slideDiffButton, 'pointer', false);
+    }
     const fragment = event.target.closest('.fragment');
     if (event.pointerType !== 'touch' && fragment && !(event.relatedTarget instanceof Node && fragment.contains(event.relatedTarget))) {
       endFragmentPrefetch(fragment, 'pointer');
@@ -3130,6 +3352,10 @@ const appJavaScript = `(() => {
   });
 
   document.addEventListener('focusin', event => {
+    const slideDiffButton = slideDiffSummaryButton(event.target);
+    if (slideDiffButton && !(event.relatedTarget instanceof Node && slideDiffButton.contains(event.relatedTarget))) {
+      setSlideDiffPreview(slideDiffButton, 'focus', true);
+    }
     const fragment = event.target.closest('.fragment');
     if (fragment) setActiveFragment(fragment);
     if (fragment && !(event.relatedTarget instanceof Node && fragment.contains(event.relatedTarget))) beginFragmentPrefetch(fragment, 'focus');
@@ -3137,6 +3363,10 @@ const appJavaScript = `(() => {
   });
 
   document.addEventListener('focusout', event => {
+    const slideDiffButton = slideDiffSummaryButton(event.target);
+    if (slideDiffButton && !(event.relatedTarget instanceof Node && slideDiffButton.contains(event.relatedTarget))) {
+      setSlideDiffPreview(slideDiffButton, 'focus', false);
+    }
     const fragment = event.target.closest('.fragment');
     if (fragment && !(event.relatedTarget instanceof Node && fragment.contains(event.relatedTarget))) endFragmentPrefetch(fragment, 'focus');
     hideAnnotationBubbleSoon(annotationBubbleAt(event.target));
@@ -3147,7 +3377,10 @@ const appJavaScript = `(() => {
     if (slideThumbnail) {
       const slides = nativeSlides();
       const index = slides.findIndex(slide => slide.dataset.slideTarget === slideThumbnail.dataset.slideTarget);
-      if (index >= 0) activateNativeSlide(index, true);
+      if (index >= 0) {
+        if (q('[data-view="slides"]')) setView('slides');
+        activateNativeSlide(index, true);
+      }
       return;
     }
     const slideSidebarToggle = event.target.closest?.('[data-slide-sidebar-toggle]');
@@ -3162,9 +3395,7 @@ const appJavaScript = `(() => {
     }
     const slideDirection = event.target.closest?.('[data-slide-previous],[data-slide-next]');
     if (slideDirection) {
-      const slides = nativeSlides();
-      const current = slides.findIndex(slide => !slide.hidden);
-      activateNativeSlide(current + (slideDirection.matches('[data-slide-next]') ? 1 : -1), true);
+      stepNativeSlide(slideDirection.matches('[data-slide-next]') ? 1 : -1);
       return;
     }
     const retryFile = event.target.closest?.('[data-retry-file]');
@@ -3258,6 +3489,10 @@ const appJavaScript = `(() => {
     if (annotation) { selectAnnotation(annotation); return; }
     const docTwisty = event.target.closest('[data-doc-twisty]');
     if (docTwisty) { toggleDocNode(docTwisty); return; }
+    const deckToggle = event.target.closest('[data-deck-toggle]');
+    if (deckToggle) { toggleDocNode(deckToggle); return; }
+    const reportNav = event.target.closest('[data-report-nav]');
+    if (reportNav && q('[data-view="slides"].active')) setView('saga');
     const chapterToggle = event.target.closest('[data-chapter-toggle]');
     if (chapterToggle) { toggleChapter(chapterToggle); return; }
     const viewTab = event.target.closest('[data-view-tab]');
@@ -3292,7 +3527,7 @@ const appJavaScript = `(() => {
     const selectionAction = event.target.closest('[data-selection-action]');
     if (selectionAction) {
       const toolbar = selectionAction.closest('[data-selection-toolbar]');
-      openDiffComposer({dataset:{diffAction:selectionAction.dataset.selectionAction,diffRef:toolbar.dataset.diffRef,target:toolbar.dataset.target,content:toolbar.dataset.content}});
+      openDiffComposer({dataset:{diffAction:selectionAction.dataset.selectionAction,diffRef:toolbar.dataset.diffRef,target:toolbar.dataset.target,content:toolbar.dataset.content},origin:selectionAction});
       return;
     }
     if (event.target.closest('[data-selection-clear]')) { selectionAnchor = null; updateLineSelection([]); return; }
@@ -3306,12 +3541,12 @@ const appJavaScript = `(() => {
     const reviewDecision = event.target.closest('[data-review-decision]');
     if (reviewDecision) { activateReviewDecision(reviewDecision); return; }
     const reviewComment = event.target.closest('[data-review-comment]');
-    if (reviewComment) { openReviewComment(reviewComment.closest('[data-review-controls]') || {dataset:{reviewTarget:reviewComment.dataset.reviewComment,reviewTitle:reviewComment.dataset.reviewTitle}}); return; }
+    if (reviewComment) { openReviewComment(reviewComment.closest('[data-review-controls]') || {dataset:{reviewTarget:reviewComment.dataset.reviewComment,reviewTitle:reviewComment.dataset.reviewTitle}}, reviewComment); return; }
     const reviewCancel = event.target.closest('[data-review-cancel]');
     if (reviewCancel) { closeReviewComposer(reviewCancel.closest('[data-review-decision-form]')); return; }
     if (event.target.closest('[data-close-annotation]')) { closeAnnotation(); return; }
     const diffAction = event.target.closest('[data-diff-action]');
-    if (diffAction) { openDiffComposer(diffActionContext(diffAction)); return; }
+    if (diffAction) { const context = diffActionContext(diffAction); context.origin = diffAction; openDiffComposer(context); return; }
     if (event.target.closest('[data-close-diff-compose]')) { q('.diff-compose').classList.remove('open'); return; }
     const tool = event.target.closest('[data-tool]');
     if (tool) { void useTool(tool.dataset.tool, tool.closest('.fragment')); return; }
@@ -3344,6 +3579,11 @@ const appJavaScript = `(() => {
     if (form.matches('[data-review-decision-form]')) {
       event.preventDefault();
       submitReviewComposer(form);
+      return;
+    }
+    if (form.matches('.annotation-compose,.diff-compose,.reply,.thread-state,.file-review')) {
+      event.preventDefault();
+      void submitReviewMutationForm(form, event.submitter);
       return;
     }
     if (form.matches('form[action^="/api/"]')) {
@@ -3381,11 +3621,9 @@ const appJavaScript = `(() => {
       syncSlidePresentation();
       return;
     }
-    if ((event.key === 'ArrowLeft' || event.key === 'ArrowRight') && nativeSlides().length && !selectedAnnotation && !annotationDraft && !event.target.matches?.('input,textarea,select,[contenteditable="true"]')) {
-      const slides = nativeSlides();
-      const current = slides.findIndex(slide => !slide.hidden);
+    if ((event.key === 'ArrowLeft' || event.key === 'ArrowRight') && nativeSlideSurfaceActive() && nativeSlides().length && !selectedAnnotation && !annotationDraft && !event.target.matches?.('input,textarea,select,[contenteditable="true"]')) {
       event.preventDefault();
-      activateNativeSlide(current + (event.key === 'ArrowRight' ? 1 : -1), true);
+      stepNativeSlide(event.key === 'ArrowRight' ? 1 : -1);
       return;
     }
     const editingField = event.target.closest?.('.sticky-note-text');
@@ -3673,10 +3911,10 @@ const appJavaScript = `(() => {
   }, {passive:true});
   const requestedView = new URL(location.href).searchParams.get('view');
   const activityRequested = new URL(location.href).searchParams.has('activity') || requestedView === 'activity';
-  const initialView = requestedView === 'code' || requestedView === 'manifest' ? requestedView : 'saga';
+  const initialView = requestedView === 'code' || requestedView === 'manifest' || requestedView === 'slides' ? requestedView : 'saga';
   setView(initialView, false);
   setManifestMode('code');
-  const anchorResolving = initialView === 'saga'
+  const anchorResolving = initialView === 'saga' || initialView === 'slides'
     ? activateLandmark().then(revealHashedAnnotationBubble)
     : hydrateReviewSurface(initialView).then(revealHashedAnnotationBubble);
 	 syncNativeSlideForHash();
@@ -3698,7 +3936,7 @@ const appJavaScript = `(() => {
   addEventListener('popstate', () => {
     const url = new URL(location.href);
     const view = url.searchParams.get('view');
-    setView(view === 'code' || view === 'manifest' ? view : 'saga', false);
+    setView(view === 'code' || view === 'manifest' || view === 'slides' ? view : 'saga', false);
     if (url.searchParams.has('activity') || view === 'activity') void openActivityDrawer(url.toString(), null, false);
     else if (q('.diff-drawer')?.dataset.drawerMode === 'activity') closeDrawer(false);
   });

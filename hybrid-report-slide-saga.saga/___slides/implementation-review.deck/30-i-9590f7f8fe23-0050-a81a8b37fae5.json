@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "linked-code",
+  "slide": "sidebar-deck-review",
+  "rank": 50,
+  "kind": "node",
+  "label": "Linked code",
+  "description": "Item evidence still opens exact diffs without replacing the active slide context.",
+  "selector": {
+    "type": "element",
+    "element_id": "linked-code"
+  }
+}

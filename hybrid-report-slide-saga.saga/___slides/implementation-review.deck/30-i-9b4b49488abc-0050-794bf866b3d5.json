@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "accepted-story",
+  "slide": "code-to-story",
+  "rank": 50,
+  "kind": "node",
+  "label": "Accepted story",
+  "description": "The accepted user story and criterion that close the implementation trace.",
+  "selector": {
+    "type": "element",
+    "element_id": "accepted-story"
+  }
+}

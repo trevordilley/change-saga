@@ -429,7 +429,7 @@ func TestCommittedAndWorktreeComparisonsUseActualMergeBase(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if committed.BaseOID != root || hasAtomPath(committed.Atoms, "advanced-base.txt") || !hasAtomPath(committed.Atoms, "feature.txt") {
+	if committed.BaseOID != root || committed.HeadCommit != feature || hasAtomPath(committed.Atoms, "advanced-base.txt") || !hasAtomPath(committed.Atoms, "feature.txt") {
 		t.Fatalf("committed comparison did not use merge base %s: %#v", root, committed)
 	}
 
@@ -441,7 +441,7 @@ func TestCommittedAndWorktreeComparisonsUseActualMergeBase(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if worktree.BaseOID != root || hasAtomPath(worktree.Atoms, "advanced-base.txt") || hasAtomPath(worktree.Atoms, "untracked.txt") || !hasAtomPath(worktree.Atoms, "feature.txt") || !hasAtomPath(worktree.Atoms, "worktree.txt") {
+	if worktree.BaseOID != root || worktree.HeadCommit != "" || hasAtomPath(worktree.Atoms, "advanced-base.txt") || hasAtomPath(worktree.Atoms, "untracked.txt") || !hasAtomPath(worktree.Atoms, "feature.txt") || !hasAtomPath(worktree.Atoms, "worktree.txt") {
 		t.Fatalf("worktree comparison did not diff merge-base tree to worktree: %#v", worktree)
 	}
 	gitTest(t, repo, "commit", "-m", "worktree committed")

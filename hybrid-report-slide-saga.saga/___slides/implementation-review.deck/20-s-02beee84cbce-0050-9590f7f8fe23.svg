@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Decks expand inside the Saga sidebar and the selected slide owns the main review area</title>
+  <desc id="desc">A reviewer shell keeps Saga, Code Diff, and Coverage as workspace tabs. The Saga sidebar contains report documentation followed by named deck disclosures. An expanded deck reveals slide destinations, and the selected slide flows into the full main canvas while linked code remains available.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1"><stop stop-color="#081725"/><stop offset="1" stop-color="#171029"/></linearGradient>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 10 5 0 10z" fill="#67e8f9"/></marker>
+    <style>
+      .h{font:700 34px system-ui;fill:#f8fafc}.sub{font:500 16px system-ui;fill:#aab9cf}.label{font:700 17px system-ui;fill:#f8fafc}.body{font:500 14px system-ui;fill:#cbd6e7}.tiny{font:600 12px system-ui;fill:#9fb1cb}.frame{fill:#0d1728;stroke:#324765;stroke-width:2}.panel{fill:#121f34;stroke:#2f4668}.active{fill:#25304f;stroke:#8b9cff;stroke-width:2}.selected{fill:#15343c;stroke:#67e8f9;stroke-width:2}.muted{fill:#17263e;stroke:#31435f}.line{stroke:#67e8f9;stroke-width:4;fill:none;marker-end:url(#arrow)}
+    </style>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <text class="h" x="60" y="58">Decks are navigation inside the Saga—not another workspace.</text>
+  <text class="sub" x="60" y="89">The document tree stays durable; selecting a slide temporarily gives the visual review the whole main pane.</text>
+
+  <rect class="frame" x="54" y="122" width="1172" height="548" rx="22"/>
+  <g id="saga-tab-context">
+    <rect class="panel" x="54" y="122" width="1172" height="58" rx="22"/>
+    <rect class="active" x="80" y="138" width="118" height="30" rx="9"/>
+    <text class="tiny" x="116" y="158">☷  Saga</text>
+    <text class="tiny" x="228" y="158">Code Diff</text>
+    <text class="tiny" x="330" y="158">Coverage</text>
+  </g>
+
+  <g id="report-nav">
+    <rect class="panel" x="74" y="198" width="270" height="448" rx="16"/>
+    <text class="label" x="98" y="231">Hybrid Report + Slide Sagas</text>
+    <text class="body" x="101" y="270">⌄  Overview</text>
+    <text class="body" x="125" y="302">Requirements</text>
+    <text class="body" x="125" y="331">Acceptance criteria</text>
+  </g>
+
+  <g id="deck-disclosure">
+    <rect class="selected" x="92" y="362" width="234" height="42" rx="10"/>
+    <text class="label" x="109" y="389">⌄  ▱  Reviewer experience</text>
+    <path d="M113 404v112" stroke="#47607e" stroke-width="2"/>
+  </g>
+  <g id="slide-destination">
+    <text class="body" x="132" y="435">Before: separate workspace</text>
+    <rect class="active" x="121" y="451" width="193" height="39" rx="9"/>
+    <text class="body" x="137" y="476">Decks live in the sidebar</text>
+    <text class="body" x="132" y="520">Verification evidence</text>
+  </g>
+
+  <path class="line" d="M322 470 C382 470 390 407 438 407"/>
+  <g id="active-slide-stage">
+    <rect class="frame" x="422" y="208" width="766" height="430" rx="16"/>
+    <rect x="447" y="232" width="716" height="380" rx="12" fill="#f8fafc"/>
+    <text x="481" y="278" font-family="system-ui" font-size="25" font-weight="700" fill="#111827">Decks live in the Saga sidebar</text>
+    <rect x="482" y="313" width="168" height="245" rx="14" fill="#e8eef8" stroke="#94a3b8"/>
+    <rect x="676" y="313" width="451" height="245" rx="14" fill="#dfe8ff" stroke="#667eea" stroke-width="2"/>
+    <text x="506" y="350" font-family="system-ui" font-size="15" font-weight="700" fill="#334155">named deck</text>
+    <text x="506" y="385" font-family="system-ui" font-size="13" fill="#475569">↳ slide</text>
+    <text x="506" y="414" font-family="system-ui" font-size="13" fill="#475569">↳ active slide</text>
+    <text x="710" y="350" font-family="system-ui" font-size="15" font-weight="700" fill="#334155">full main review area</text>
+    <path d="M710 390h368M710 420h310M710 450h344" stroke="#94a3b8" stroke-width="10" stroke-linecap="round"/>
+  </g>
+
+  <g id="linked-code">
+    <rect x="947" y="528" width="190" height="62" rx="12" fill="#352414" stroke="#ffbf69"/>
+    <text class="tiny" x="969" y="553">Item → exact diff</text>
+    <text class="tiny" x="969" y="574">without leaving slide</text>
+  </g>
+  <g id="sidebar-surprise">
+    <rect x="74" y="592" width="270" height="54" rx="12" fill="#352414" stroke="#ffbf69" stroke-width="2"/>
+    <text class="tiny" x="94" y="615">SURPRISE</text>
+    <text class="body" x="94" y="636">Deck identity belongs in the doc tree.</text>
+  </g>
+</svg>

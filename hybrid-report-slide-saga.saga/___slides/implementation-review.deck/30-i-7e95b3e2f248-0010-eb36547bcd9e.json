@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "thumbnail-stack",
+  "slide": "deck-thumbnail-navigation",
+  "rank": 10,
+  "kind": "region",
+  "label": "Rendered slide stack",
+  "description": "Expanding the deck shows miniature renders of its actual slides rather than text links.",
+  "selector": {
+    "type": "element",
+    "element_id": "thumbnail-stack"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "living-records",
+  "slide": "storage-boundaries",
+  "rank": 10,
+  "kind": "node",
+  "label": "Living records",
+  "description": "Report, requirements, design, and work-plan records keep their established packages and histories.",
+  "selector": {
+    "type": "element",
+    "element_id": "living-records"
+  }
+}

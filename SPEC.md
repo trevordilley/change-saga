@@ -1,5 +1,74 @@
 # Change Saga formats
 
+## Report-owned slide decks (v3 hybrid composition)
+
+A v3 Report Saga may contain zero or more focused slide decks beneath
+`___slides/<deck-id>.deck/`. The v3 `saga.json` remains the only container
+manifest and the only Saga identity. Stories, acceptance criteria, technical
+design, work-plan history, prototypes, chapters, and ordinary fragments are not
+converted into slides. A deck is an optional visual drill-down for a complex
+implemented code change.
+
+Each deck bundle is flat and independently mergeable. It contains exactly one
+byte-compatible v4 deck record plus its v4 slide, Item, asset, and `40-e`
+evidence records. The directory basename must equal the deck ID and the deck
+uses `role: "change"`; the parent report supplies the overview. Deck, slide,
+and Item URNs all use the parent v3 Saga ID:
+
+```text
+checkout.saga/
+  saga.json
+  overview.fragment/
+  requirements.chapter/
+  ___design/
+  ___requirements/
+  ___workplan/
+  ___slides/
+    validation-flow.deck/
+      10-d-....json
+      20-s-....json
+      20-s-....svg
+      30-i-....json
+      40-e-....json
+```
+
+`add-deck`, `add-slide`, `set-slide-content`, and `add-item` author the embedded
+surface directly. V2 continues to refuse decks until it is explicitly upgraded
+to v3. V4 remains a flat, slide-only root and continues to refuse report
+chapters and fragments.
+
+The v1 `overview` query for a v3 parent returns both report collections and a
+`decks` collection. `fragment`/`fragment-diffs` remain report operations;
+`slide`/`slide-diffs` return the v2 slide contract for embedded decks. Coverage
+is one bidirectional graph across both surfaces, but slide evidence may only be
+owned by Items. The reviewer opens the report first and enters the separate
+Decks surface for the visual breakdown; embedded decks are never rendered as
+report chapters.
+
+Stories and their acceptance criteria are the traceability backbone. An active
+v3 `explains` relation links a deck, slide, or Item source to a story or
+criterion target and pins the exact target story revision in `to_revision`.
+Linking a story applies to every acceptance criterion in that pinned revision;
+linking a criterion is the narrower form. A relation becomes stale when its
+story revision is no longer current or its visual source disappears. The
+relation does not move exact diff ownership away from Items.
+
+`query traceability` returns the complete current paths from each accepted
+criterion through its linked review targets to Item-owned diff URIs. It can be
+filtered in reverse with `--diff` or with `--commit`, where the commit is the
+resolved source-head commit of the active committed comparison. Commit lookup
+is unavailable for `WORKTREE` comparisons because their exact diff may include
+uncommitted content. Its
+`unlinked_code_evidence` collection exposes Item evidence that has no active,
+current `explains` path to an accepted story. Thus a caller can traverse from a
+story to code or from the current head commit/diff back to the story without
+duplicating story text inside slide records.
+
+Prototype persistence remains an internal domain in this release. It is not
+part of this hybrid vertical slice: there is no public prototype CLI, query, or
+reviewer UI yet, and the requirements/prototype root-composition conflict must
+be resolved before that surface is exposed.
+
 ## Slide-native v4 preview
 
 Saga v4 is a distinct, intentionally incompatible document mode declared by
@@ -618,7 +687,10 @@ which combination of approvals permits merging.
 
 `___diffs` and `___approvals` are reserved on saga/chapter/section/fragment targets.
 `___landmarks` is reserved inside fragments.
-`___review`, `___claims`, and `___verifications` are reserved at the saga root. Reserved metadata directories must be
+`___review`, `___claims`, and `___verifications` are reserved at the saga root.
+V3 additionally reserves `___requirements`, `___design`, `___workplan`, and
+`___slides`; the last contains only real `<deck-id>.deck` directories.
+Reserved metadata directories must be
 real directories, not symlinks. So must every entity package: a `.chapter`,
 `.fragment`, `.landmark`, `.thread`, or `.message` entry that is a symlink or a
 regular file is invalid rather than ignored, because silently skipping it would

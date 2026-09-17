@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "saga-tab-context",
+  "slide": "sidebar-deck-review",
+  "rank": 0,
+  "kind": "node",
+  "label": "Saga context",
+  "description": "Slide review remains inside the Saga workspace rather than becoming a peer top-level tab.",
+  "selector": {
+    "type": "element",
+    "element_id": "saga-tab-context"
+  }
+}

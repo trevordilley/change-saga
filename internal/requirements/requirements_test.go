@@ -286,6 +286,29 @@ func TestIdentityRelationAllowsOptionalPins(t *testing.T) {
 	}
 }
 
+func TestExplainsRelationLinksSlideToPinnedCriterion(t *testing.T) {
+	root := newSaga(t)
+	_, err := AddStory(root, "test", storyInput("checkout", "r1", "created", []Criterion{{ID: "safe", Statement: "Preserves validated state"}}))
+	if err != nil {
+		t.Fatal(err)
+	}
+	slide := "urn:change-saga:test:slide:checkout-flow"
+	criterion := "urn:change-saga:test:story:checkout:criterion:safe"
+	revision := "urn:change-saga:test:story:checkout:revision:r1"
+	if _, err := AddRelation(root, "test", AddRelationInput{
+		ID: "checkout-flow-explains-safe", Type: RelationExplains, From: slide, To: criterion,
+		ToRevision: revision, Rationale: "The slide explains the acceptance path.", CreatedAt: testTime,
+	}); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := AddRelation(root, "test", AddRelationInput{
+		ID: "missing-pin", Type: RelationExplains, From: slide, To: criterion,
+		Rationale: "An unpinned criterion link is ambiguous.", CreatedAt: testTime,
+	}); err == nil || !strings.Contains(err.Error(), "target story revision pin") {
+		t.Fatalf("missing requirement pin error = %v", err)
+	}
+}
+
 func TestRelationToRemovedCriterionIsStale(t *testing.T) {
 	root := newSaga(t)
 	_, err := AddStory(root, "test", storyInput("checkout", "r1", "created", []Criterion{{ID: "fast", Statement: "Fast"}}))

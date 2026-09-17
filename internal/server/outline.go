@@ -120,7 +120,13 @@ func skipOutlineDirectory(rel, base string) bool {
 
 func outlineFile(rel, base string) bool {
 	switch base {
-	case "saga.json", "chapter.json", "section.json", "fragment.json", "thread.json":
+	case "saga.json", "00-saga.json", "chapter.json", "section.json", "fragment.json", "thread.json":
+		return true
+	}
+	if strings.HasPrefix(rel, saga.EmbeddedSlidesDir+"/") && strings.HasSuffix(base, ".json") {
+		return strings.HasPrefix(base, "10-d-") || strings.HasPrefix(base, "20-s-") || strings.HasPrefix(base, "30-i-")
+	}
+	if saga.IsFlatReviewRecord(base) {
 		return true
 	}
 	return strings.Contains(rel, "/___approvals/") || strings.Contains(rel, "/events/")

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Verification spans storage, traceability, and browser behavior</title>
+  <desc id="desc">Three evidence layers verify embedded storage and authoring, requirements traceability, and the reviewer journey through the separate Decks workspace.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="1" y2="0"><stop stop-color="#071927"/><stop offset="1" stop-color="#18102b"/></linearGradient>
+    <style>.h{font:700 38px system-ui;fill:#f8fafc}.sub{font:500 18px system-ui;fill:#a8b8cf}.label{font:700 22px system-ui;fill:#f8fafc}.body{font:500 16px system-ui;fill:#cbd7e8}.tiny{font:600 14px ui-monospace,monospace;fill:#a5b7d0}.layer{stroke-width:2}</style>
+  </defs>
+  <rect width="1280" height="720" fill="url(#bg)"/>
+  <text class="h" x="64" y="70">Proof follows the same boundaries as the feature.</text>
+  <text class="sub" x="64" y="104">Narrow domain contracts build into one browser-visible reviewer journey.</text>
+  <g id="storage-tests"><path class="layer" d="M170 555H1110L1000 430H280Z" fill="#13343a" stroke="#67e8f9"/><text class="label" x="490" y="500">Storage + authoring contracts</text><text class="body" x="430" y="532">bundle loading · mutation index · Item evidence · review overlay</text></g>
+  <g id="trace-tests"><path class="layer" d="M280 420H1000L890 295H390Z" fill="#282048" stroke="#a78bfa"/><text class="label" x="512" y="365">Traceability contracts</text><text class="body" x="438" y="397">pinned explains links · reverse lookup · staleness · gap projection</text></g>
+  <g id="browser-test"><path class="layer" d="M390 285H890L790 160H490Z" fill="#392817" stroke="#ffbf69"/><text class="label" x="524" y="226">Reviewer journey</text><text class="body" x="466" y="258">Saga → Decks → slide navigation without hidden-state leakage</text></g>
+  <g id="suite-result"><rect x="410" y="602" width="460" height="62" rx="18" fill="#10243c" stroke="#6ee7b7" stroke-width="2"/><text class="label" x="470" y="630">go test ./... -count=1</text><text class="tiny" x="526" y="653">all packages pass</text></g>
+</svg>

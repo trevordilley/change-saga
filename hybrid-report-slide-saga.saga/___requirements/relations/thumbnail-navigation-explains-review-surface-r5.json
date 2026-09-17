@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/relation.schema.json",
+  "version": 3,
+  "id": "thumbnail-navigation-explains-review-surface-r5",
+  "type": "explains",
+  "from": "urn:change-saga:hybrid-report-slide-saga:slide:deck-thumbnail-navigation",
+  "to": "urn:change-saga:hybrid-report-slide-saga:story:visual-review:criterion:review-surface",
+  "rationale": "The interaction slide shows one deck disclosure expanding into flush sectioned thumbnails, a selected full-size slide, and deck-local navigation.",
+  "to_revision": "urn:change-saga:hybrid-report-slide-saga:story:visual-review:revision:r5",
+  "state": "superseded",
+  "created_at": "2026-09-16T21:35:38.675533Z",
+  "superseded_at": "2026-09-16T23:03:34.849371Z"
+}

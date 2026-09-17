@@ -1,0 +1,32 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r5",
+  "story": "urn:change-saga:hybrid-report-slide-saga:story:visual-review",
+  "parents": [
+    "urn:change-saga:hybrid-report-slide-saga:story:visual-review:revision:r4"
+  ],
+  "title": "Focused implementation review",
+  "statement": "As a reviewer, I can expand one named implementation deck in the Report Saga sidebar, scan its sectioned slide thumbnails, and inspect the exact code behind each explanation.",
+  "priority": "high",
+  "citations": [],
+  "acceptance_criteria": [
+    {
+      "id": "focused-decks",
+      "statement": "A report can expose several optional decks without rendering user stories or ordinary report fragments as slides; each authored deck is one sidebar disclosure."
+    },
+    {
+      "id": "exact-evidence",
+      "statement": "Only semantic Items own exact diff evidence, including contextual surprise callouts."
+    },
+    {
+      "id": "review-surface",
+      "statement": "Expanding one deck renders flush slide thumbnails under that single deck node, optional section labels appear only as subtle dividers, selecting a slide gives it the full main review area, deck-local navigation is preserved, and Item hover affordances never obscure slide content."
+    },
+    {
+      "id": "slide-evidence",
+      "statement": "Each active slide derives added and removed totals from the unique changed files referenced by its Item evidence; activating the total opens those files in a linked-code drawer with exact linked lines highlighted."
+    }
+  ],
+  "created_at": "2026-09-16T21:34:00.302116Z"
+}

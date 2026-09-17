@@ -140,6 +140,11 @@ func Open(ctx context.Context, options OpenOptions) (Session, error) {
 
 func (s *session) Snapshot() string { return s.snapshot }
 
+// SourceHead returns the content-addressed comparison identity and, for a
+// committed comparison, its resolved head commit. WORKTREE comparisons have no
+// commit because their product may contain uncommitted content.
+func (s *session) SourceHead() (string, string) { return s.changes.HeadOID, s.changes.HeadCommit }
+
 func (s *session) build(ctx context.Context) error {
 	s.indexSection(s.document.Section, "")
 	s.resolveReviewIdentities(ctx)
@@ -553,6 +558,7 @@ func (s *session) ReadFragment(ctx context.Context, query FragmentQuery) (Fragme
 	if entry.fragment.SlideMeta != nil {
 		result.Intent = entry.fragment.SlideMeta.Intent
 		result.Layout = entry.fragment.SlideMeta.Layout
+		result.Section = entry.fragment.SlideMeta.Section
 		result.Takeaway = entry.fragment.SlideMeta.Takeaway
 		result.ReadingOrder = append([]string(nil), entry.fragment.SlideMeta.ReadingOrder...)
 	}

@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "aggregate-slide-diffs-20260916",
+  "claim": "aggregate-slide-diffs",
+  "status": "verified",
+  "method": "test",
+  "summary": "The integration fixture repeats one app.go atom across two Items and still reports +6 and -0 once across app.go and guide.md.",
+  "command": "go test ./internal/server -run TestSlideTargetCodeRollsUpItemFiles",
+  "created_at": "2026-09-16T21:38:49.564806Z"
+}

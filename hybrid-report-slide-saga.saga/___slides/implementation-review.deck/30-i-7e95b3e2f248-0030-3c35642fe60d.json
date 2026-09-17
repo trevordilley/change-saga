@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "full-stage",
+  "slide": "deck-thumbnail-navigation",
+  "rank": 30,
+  "kind": "region",
+  "label": "Full slide stage",
+  "description": "The selected slide renders at review scale across the available main pane.",
+  "selector": {
+    "type": "element",
+    "element_id": "full-stage"
+  }
+}

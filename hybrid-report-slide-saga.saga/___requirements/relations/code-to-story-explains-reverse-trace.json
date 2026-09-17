@@ -1,0 +1,12 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/relation.schema.json",
+  "version": 3,
+  "id": "code-to-story-explains-reverse-trace",
+  "type": "explains",
+  "from": "urn:change-saga:hybrid-report-slide-saga:slide:code-to-story",
+  "to": "urn:change-saga:hybrid-report-slide-saga:story:story-traceability:criterion:reverse-trace",
+  "rationale": "This sequence is the implemented reverse path from exact code evidence to accepted intent.",
+  "to_revision": "urn:change-saga:hybrid-report-slide-saga:story:story-traceability:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-16T19:15:55.578087Z"
+}

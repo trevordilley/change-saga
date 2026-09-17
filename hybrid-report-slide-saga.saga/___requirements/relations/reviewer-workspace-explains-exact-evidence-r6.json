@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/relation.schema.json",
+  "version": 3,
+  "id": "reviewer-workspace-explains-exact-evidence-r6",
+  "type": "explains",
+  "from": "urn:change-saga:hybrid-report-slide-saga:slide:reviewer-workspace",
+  "to": "urn:change-saga:hybrid-report-slide-saga:story:visual-review:criterion:exact-evidence",
+  "rationale": "The workspace slide keeps exact ownership on Items while presenting their code in slide context.",
+  "to_revision": "urn:change-saga:hybrid-report-slide-saga:story:visual-review:revision:r6",
+  "state": "superseded",
+  "created_at": "2026-09-16T23:03:34.890656Z",
+  "superseded_at": "2026-09-16T23:49:56.324688Z"
+}

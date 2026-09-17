@@ -252,6 +252,10 @@ func validateRelationMatrix(problems *validationErrors, relation Relation, from,
 		} else {
 			require(relation.ToRevision != "", "a target criterion revision pin")
 		}
+	case RelationExplains:
+		reviewTarget := from.Kind == endpointDeck || from.Kind == endpointSlide || from.Kind == endpointItem
+		require(reviewTarget && requirement(to.Kind), "a deck, slide, or Item source and story or criterion target")
+		require(relation.ToRevision != "", "a target story revision pin")
 	case RelationVerifies:
 		require((from.Kind == endpointClaim || from.Kind == endpointVerification) && to.Kind == endpointCriterion, "a claim or verification source and criterion target")
 		require(relation.ToRevision != "", "a target criterion revision pin")
@@ -292,9 +296,9 @@ func validateEndpointPins(problems *validationErrors, side string, endpoint endp
 		if digest != "" {
 			problems.add("%s work-item endpoint cannot use a content digest", side)
 		}
-	case endpointClaim, endpointVerification, endpointCitation, endpointRelation:
+	case endpointDeck, endpointSlide, endpointItem, endpointClaim, endpointVerification, endpointCitation, endpointRelation:
 		if revision != "" || digest != "" {
-			problems.add("%s immutable endpoint cannot carry a revision or content digest pin", side)
+			problems.add("%s endpoint kind cannot carry a revision or content digest pin", side)
 		}
 	}
 }
@@ -645,7 +649,7 @@ func validCitationKind(value CitationKind) bool {
 
 func validRelationType(value RelationType) bool {
 	switch value {
-	case RelationRefines, RelationAddresses, RelationImplements, RelationVerifies, RelationSupersedes, RelationConflictsWith:
+	case RelationRefines, RelationAddresses, RelationImplements, RelationExplains, RelationVerifies, RelationSupersedes, RelationConflictsWith:
 		return true
 	default:
 		return false

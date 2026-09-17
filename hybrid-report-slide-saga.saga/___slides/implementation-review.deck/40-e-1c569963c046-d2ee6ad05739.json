@@ -1,0 +1,73 @@
+{
+  "version": 2,
+  "diffs": [
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=43\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=43",
+      "note": "Activates clicked sidebar thumbnails, highlights and expands their deck, reports deck-local position, and prevents previous/next or arrow navigation from crossing deck boundaries."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=55\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=54",
+      "note": "Activates clicked sidebar thumbnails, highlights and expands their deck, reports deck-local position, and prevents previous/next or arrow navigation from crossing deck boundaries."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=912\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=910",
+      "note": "Activates clicked sidebar thumbnails, highlights and expands their deck, reports deck-local position, and prevents previous/next or arrow navigation from crossing deck boundaries."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=1187\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=1187",
+      "note": "Activates clicked sidebar thumbnails, highlights and expands their deck, reports deck-local position, and prevents previous/next or arrow navigation from crossing deck boundaries."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=1191\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=1189",
+      "note": "Activates clicked sidebar thumbnails, highlights and expands their deck, reports deck-local position, and prevents previous/next or arrow navigation from crossing deck boundaries."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=1571\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=1571",
+      "note": "Activates clicked sidebar thumbnails, highlights and expands their deck, reports deck-local position, and prevents previous/next or arrow navigation from crossing deck boundaries."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=1581\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=1581",
+      "note": "Activates clicked sidebar thumbnails, highlights and expands their deck, reports deck-local position, and prevents previous/next or arrow navigation from crossing deck boundaries."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=1583\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=1583",
+      "note": "Activates clicked sidebar thumbnails, highlights and expands their deck, reports deck-local position, and prevents previous/next or arrow navigation from crossing deck boundaries."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=1587\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=1586",
+      "note": "Activates clicked sidebar thumbnails, highlights and expands their deck, reports deck-local position, and prevents previous/next or arrow navigation from crossing deck boundaries."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=1590\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=1590",
+      "note": "Activates clicked sidebar thumbnails, highlights and expands their deck, reports deck-local position, and prevents previous/next or arrow navigation from crossing deck boundaries."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=3149\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=3149",
+      "note": "Activates clicked sidebar thumbnails, highlights and expands their deck, reports deck-local position, and prevents previous/next or arrow navigation from crossing deck boundaries."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=3166\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=3164",
+      "note": "Activates clicked sidebar thumbnails, highlights and expands their deck, reports deck-local position, and prevents previous/next or arrow navigation from crossing deck boundaries."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=3385\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=3383",
+      "note": "Activates clicked sidebar thumbnails, highlights and expands their deck, reports deck-local position, and prevents previous/next or arrow navigation from crossing deck boundaries."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=3387\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=3387",
+      "note": "Activates clicked sidebar thumbnails, highlights and expands their deck, reports deck-local position, and prevents previous/next or arrow navigation from crossing deck boundaries."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=3675\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=3675",
+      "note": "Activates clicked sidebar thumbnails, highlights and expands their deck, reports deck-local position, and prevents previous/next or arrow navigation from crossing deck boundaries."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=3678\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=3678",
+      "note": "Activates clicked sidebar thumbnails, highlights and expands their deck, reports deck-local position, and prevents previous/next or arrow navigation from crossing deck boundaries."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=3700\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=3700",
+      "note": "Activates clicked sidebar thumbnails, highlights and expands their deck, reports deck-local position, and prevents previous/next or arrow navigation from crossing deck boundaries."
+    }
+  ]
+}

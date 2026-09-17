@@ -1,0 +1,17 @@
+{
+  "version": 2,
+  "diffs": [
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=27\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fserver%2Ftemplate.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=27",
+      "note": "Renders section boundaries and each slide as a miniature image or iframe inside one deck disclosure, while carrying deck identity onto the full-size slide."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=105\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fserver%2Ftemplate.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=105",
+      "note": "Renders section boundaries and each slide as a miniature image or iframe inside one deck disclosure, while carrying deck identity onto the full-size slide."
+    },
+    {
+      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=121\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fserver%2Ftemplate.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=120",
+      "note": "Renders section boundaries and each slide as a miniature image or iframe inside one deck disclosure, while carrying deck identity onto the full-size slide."
+    }
+  ]
+}

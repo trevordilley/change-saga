@@ -1,0 +1,17 @@
+{
+  "version": 4,
+  "id": "sidebar-surprise",
+  "slide": "sidebar-deck-review",
+  "rank": 60,
+  "kind": "callout",
+  "label": "Deck identity belongs in navigation",
+  "description": "The design removes the redundant Decks tab and thumbnail rail.",
+  "selector": {
+    "type": "element",
+    "element_id": "sidebar-surprise"
+  },
+  "about": "deck-disclosure",
+  "body": "Hybrid decks are children of the report navigation even though their slide review lifecycle stays independent.",
+  "placement": "bottom",
+  "leader": "line"
+}

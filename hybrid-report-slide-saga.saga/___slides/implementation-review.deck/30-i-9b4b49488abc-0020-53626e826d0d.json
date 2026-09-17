@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "item-owner",
+  "slide": "code-to-story",
+  "rank": 20,
+  "kind": "node",
+  "label": "Item owner",
+  "description": "The semantic visual Item that exclusively owns the exact implementation evidence.",
+  "selector": {
+    "type": "element",
+    "element_id": "item-owner"
+  }
+}

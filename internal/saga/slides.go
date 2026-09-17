@@ -30,7 +30,56 @@ var slideMediaTypes = map[string]bool{
 }
 
 func loadDecks(root string, manifest Manifest, options loadOptions, validation *Validation) ([]*Deck, error) {
-	entries, err := os.ReadDir(root)
+	return loadDeckRecords(root, root, manifest, options, validation, false)
+}
+
+// loadEmbeddedDecks discovers independently mergeable flat deck bundles inside
+// a v3 Report Saga. The parent manifest remains the only Saga identity; deck,
+// slide, and Item URNs are derived from that ID exactly as they are in v4.
+func loadEmbeddedDecks(root string, manifest Manifest, options loadOptions, validation *Validation) ([]*Deck, error) {
+	dir := filepath.Join(root, EmbeddedSlidesDir)
+	entries, err := os.ReadDir(dir)
+	if os.IsNotExist(err) {
+		return nil, nil
+	}
+	if err != nil {
+		return nil, err
+	}
+	var result []*Deck
+	for _, entry := range entries {
+		path := filepath.Join(dir, entry.Name())
+		if entry.Type()&os.ModeSymlink != 0 || !entry.IsDir() || !strings.HasSuffix(entry.Name(), EmbeddedDeckSuffix) {
+			addIssue(validation, "error", relativePath(root, path), "embedded slide decks must be real <id>.deck directories")
+			continue
+		}
+		decks, loadErr := loadDeckRecords(root, path, manifest, options, validation, true)
+		if loadErr != nil {
+			return nil, loadErr
+		}
+		if len(decks) != 1 {
+			addIssue(validation, "error", relativePath(root, path), "an embedded deck bundle must contain exactly one deck record")
+			continue
+		}
+		deck := decks[0]
+		if deck.Role != "change" {
+			addIssue(validation, "error", deck.Path, "embedded Report Saga decks must use role change; the report is the overview")
+		}
+		if strings.TrimSuffix(entry.Name(), EmbeddedDeckSuffix) != deck.ID {
+			addIssue(validation, "error", deck.Path, "embedded deck directory must match the deck id")
+		}
+		result = append(result, deck)
+	}
+	sort.Slice(result, func(i, j int) bool {
+		if result[i].Rank == result[j].Rank {
+			return result[i].Path < result[j].Path
+		}
+		return result[i].Rank < result[j].Rank
+	})
+	return result, nil
+}
+
+func loadDeckRecords(root, recordRoot string, manifest Manifest, options loadOptions, validation *Validation, embedded bool) ([]*Deck, error) {
+	entries, err := os.ReadDir(recordRoot)
 	if err != nil {
 		return nil, err
 	}
@@ -42,12 +91,17 @@ func loadDecks(root string, manifest Manifest, options loadOptions, validation *
 	regular := map[string]bool{}
 	for _, entry := range entries {
 		name := entry.Name()
-		path := filepath.Join(root, name)
-		if issue := flatPathIssue(root, name); issue != "" {
-			addIssue(validation, "error", name, issue)
+		path := filepath.Join(recordRoot, name)
+		diagnostic := relativePath(root, path)
+		if issue := flatPathIssue(recordRoot, name); issue != "" {
+			addIssue(validation, "error", diagnostic, issue)
 		}
 		if !flatRegular(entry) {
-			addIssue(validation, "error", name, "v4 is flat and permits only regular files at the Saga root; migrate nested packages explicitly")
+			message := "v4 is flat and permits only regular files at the Saga root; migrate nested packages explicitly"
+			if embedded {
+				message = "slide storage permits only regular files inside a deck bundle"
+			}
+			addIssue(validation, "error", diagnostic, message)
 			continue
 		}
 		regular[name] = true
@@ -60,7 +114,7 @@ func loadDecks(root string, manifest Manifest, options loadOptions, validation *
 			addIssue(validation, "error", name, err.Error())
 			continue
 		}
-		deck := &Deck{Path: name, Directory: root, DeckManifest: value, Target: DeckTarget(manifest.ID, value.ID)}
+		deck := &Deck{Path: diagnostic, Directory: recordRoot, DeckManifest: value, Target: DeckTarget(manifest.ID, value.ID)}
 		validateDeckManifest(value, name, deck.Target, validation)
 		key := FlatTargetKey(deck.Target)
 		if matches[2] != key {
@@ -79,7 +133,7 @@ func loadDecks(root string, manifest Manifest, options loadOptions, validation *
 		if matches == nil || !regular[name] {
 			continue
 		}
-		path := filepath.Join(root, name)
+		path := filepath.Join(recordRoot, name)
 		var value SlideManifest
 		if err := readJSON(path, &value); err != nil {
 			addIssue(validation, "error", name, err.Error())
@@ -90,8 +144,8 @@ func loadDecks(root string, manifest Manifest, options loadOptions, validation *
 			addIssue(validation, "error", name, "slide filename references an unknown deck key")
 			continue
 		}
-		slide := &Slide{Path: name, Directory: root, SlideManifest: value, Target: SlideTarget(manifest.ID, value.ID)}
-		validateSlideManifest(value, name, deck.ID, deck.Target, slide.Target, root, options.outline, validation)
+		slide := &Slide{Path: relativePath(root, path), Directory: recordRoot, SlideManifest: value, Target: SlideTarget(manifest.ID, value.ID)}
+		validateSlideManifest(value, name, deck.ID, deck.Target, slide.Target, recordRoot, options.outline, validation)
 		key := FlatTargetKey(slide.Target)
 		if matches[3] != key {
 			addIssue(validation, "error", name, "slide filename key does not match its stable target")
@@ -113,7 +167,7 @@ func loadDecks(root string, manifest Manifest, options loadOptions, validation *
 		if matches == nil || !regular[name] {
 			continue
 		}
-		path := filepath.Join(root, name)
+		path := filepath.Join(recordRoot, name)
 		var value ItemManifest
 		if err := readJSON(path, &value); err != nil {
 			addIssue(validation, "error", name, err.Error())
@@ -124,7 +178,7 @@ func loadDecks(root string, manifest Manifest, options loadOptions, validation *
 			addIssue(validation, "error", name, "item filename references an unknown slide key")
 			continue
 		}
-		item := &Item{Path: name, Directory: root, ItemManifest: value, Target: ItemTarget(manifest.ID, slide.ID, value.ID)}
+		item := &Item{Path: relativePath(root, path), Directory: recordRoot, ItemManifest: value, Target: ItemTarget(manifest.ID, slide.ID, value.ID)}
 		validateItem(item, slide, validation)
 		expected, nameErr := FlatItemFilename(slide.Target, item.Target, value.Rank)
 		if nameErr != nil || expected != name {
@@ -155,21 +209,25 @@ func loadDecks(root string, manifest Manifest, options loadOptions, validation *
 				continue
 			}
 			var value DiffFile
-			if err := readJSON(filepath.Join(root, name), &value); err != nil {
+			if err := readJSON(filepath.Join(recordRoot, name), &value); err != nil {
 				addIssue(validation, "error", name, err.Error())
 				continue
 			}
-			value.Path = name
+			value.Path = relativePath(root, filepath.Join(recordRoot, name))
 			validateDiff(value, validation)
 			item.Diffs = append(item.Diffs, value)
 		}
 	}
 
 	knownRecord := func(name string) bool {
-		return name == FlatManifestName || name == "01-readme.md" || name == ".change-saga.lock" || allowedAssets[name] ||
-			flatDeckName.MatchString(name) || flatSlideName.MatchString(name) || flatItemName.MatchString(name) ||
-			flatEvidenceName.MatchString(name) || flatClaimName.MatchString(name) || flatVerificationName.MatchString(name) ||
-			flatThreadName.MatchString(name) || flatMessageName.MatchString(name) || flatAttachmentName.MatchString(name) || flatAttachmentAsset.MatchString(name) ||
+		contentRecord := allowedAssets[name] || flatDeckName.MatchString(name) || flatSlideName.MatchString(name) ||
+			flatItemName.MatchString(name) || flatEvidenceName.MatchString(name)
+		if embedded {
+			return contentRecord || strings.HasPrefix(name, ".change-saga-stage-") || strings.HasPrefix(name, ".change-saga-write-")
+		}
+		return name == FlatManifestName || name == "01-readme.md" || name == ".change-saga.lock" || contentRecord ||
+			flatClaimName.MatchString(name) || flatVerificationName.MatchString(name) || flatThreadName.MatchString(name) ||
+			flatMessageName.MatchString(name) || flatAttachmentName.MatchString(name) || flatAttachmentAsset.MatchString(name) ||
 			flatThreadEventName.MatchString(name) || flatReviewName.MatchString(name) || flatDiffReviewName.MatchString(name) ||
 			strings.HasPrefix(name, ".change-saga-stage-") || strings.HasPrefix(name, ".change-saga-write-")
 	}
@@ -204,7 +262,9 @@ func loadDecks(root string, manifest Manifest, options loadOptions, validation *
 			}
 		}
 	}
-	validateDeckSet(manifest, decks, validation)
+	if !embedded {
+		validateDeckSet(manifest, decks, validation)
+	}
 	return decks, nil
 }
 
@@ -237,6 +297,9 @@ func validateSlideManifest(value SlideManifest, path, deckID, deckTarget, target
 	}
 	if validFlatRank(value.Rank) != nil || !slideIntents[value.Intent] || !slideLayouts[value.Layout] || !slideMediaTypes[value.MediaType] {
 		addIssue(validation, "error", path, "slide requires a portable rank and supported intent, layout, and visual media_type")
+	}
+	if value.Section != strings.TrimSpace(value.Section) || utf8.RuneCountInString(value.Section) > 80 {
+		addIssue(validation, "error", path, "slide section must be trimmed and at most 80 characters")
 	}
 	if strings.TrimSpace(value.Takeaway) == "" || utf8.RuneCountInString(value.Takeaway) > 180 {
 		addIssue(validation, "error", path, "slide takeaway must contain 1 to 180 characters")
@@ -376,6 +439,7 @@ func projectDecks(manifest Manifest, decks []*Deck) *Section {
 			for _, item := range slide.Items {
 				meta := item.ItemManifest
 				fragment.Landmarks = append(fragment.Landmarks, Landmark{Path: item.Path, Directory: item.Directory, Version: item.Version, ID: item.ID, Label: item.Label, Description: item.Description, Selector: item.Selector, Hotspot: item.Hotspot, Target: item.Target, Diffs: item.Diffs, HasDiffs: item.HasDiffs, ItemMeta: &meta, Reviews: item.Reviews})
+				fragment.HasDiffs = fragment.HasDiffs || item.HasDiffs
 			}
 			section.Fragments = append(section.Fragments, fragment)
 		}

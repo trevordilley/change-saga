@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "stale-transition",
+  "slide": "trace-states",
+  "rank": 30,
+  "kind": "transition",
+  "label": "Staleness trigger",
+  "description": "A changed story revision or deleted visual target makes the relation stale.",
+  "selector": {
+    "type": "element",
+    "element_id": "stale-transition"
+  }
+}

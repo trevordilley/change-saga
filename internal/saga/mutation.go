@@ -19,6 +19,9 @@ type MutationIndex struct {
 	Manifest      Manifest
 	Targets       map[string]string
 	ReviewTargets map[string]string
+	// FlatTargets marks embedded or standalone slide records whose mutable
+	// review overlay is stored as flat root-level records.
+	FlatTargets map[string]bool
 }
 
 // ReviewState is the mutable overlay stored independently from source and
@@ -36,6 +39,7 @@ func MutationIndexFromDocument(document *Saga) MutationIndex {
 		Root: document.Root, Manifest: document.Manifest,
 		Targets:       map[string]string{},
 		ReviewTargets: map[string]string{},
+		FlatTargets:   map[string]bool{},
 	}
 	var walk func(*Section)
 	walk = func(section *Section) {
@@ -44,17 +48,25 @@ func MutationIndexFromDocument(document *Saga) MutationIndex {
 			dir = filepath.Join(document.Root, filepath.FromSlash(section.Path))
 		}
 		index.Targets[section.Target] = dir
-		if document.Manifest.Version != SlideSagaVersion {
+		if section.Kind == "deck" {
+			index.FlatTargets[section.Target] = true
+		} else if document.Manifest.Version != SlideSagaVersion {
 			index.ReviewTargets[section.Target] = dir
 		}
 		for _, fragment := range section.Fragments {
 			index.Targets[fragment.Target] = fragment.Directory
-			if document.Manifest.Version != SlideSagaVersion || fragment.SlideMeta != nil {
+			if fragment.SlideMeta != nil {
+				index.FlatTargets[fragment.Target] = true
+				index.ReviewTargets[fragment.Target] = fragment.Directory
+			} else if document.Manifest.Version != SlideSagaVersion {
 				index.ReviewTargets[fragment.Target] = fragment.Directory
 			}
 			for landmarkIndex := range fragment.Landmarks {
 				landmark := &fragment.Landmarks[landmarkIndex]
 				index.Targets[landmark.Target] = landmark.Directory
+				if landmark.ItemMeta != nil {
+					index.FlatTargets[landmark.Target] = true
+				}
 			}
 		}
 		for _, child := range section.Children {
@@ -100,10 +112,20 @@ func LoadMutationIndex(root string) (MutationIndex, Validation, error) {
 		}
 		return MutationIndexFromDocument(document), loadedValidation, nil
 	}
+	if manifest.Version == CurrentSagaVersion {
+		if info, statErr := os.Lstat(filepath.Join(abs, EmbeddedSlidesDir)); statErr == nil && info.IsDir() && info.Mode()&os.ModeSymlink == 0 {
+			document, loadedValidation, loadErr := load(abs, loadOptions{skipCoverage: true, skipReviews: true})
+			if loadErr != nil {
+				return MutationIndex{}, loadedValidation, loadErr
+			}
+			return MutationIndexFromDocument(document), loadedValidation, nil
+		}
+	}
 	index := MutationIndex{
 		Root: abs, Manifest: manifest,
 		Targets:       map[string]string{SagaTarget(manifest.ID): abs},
 		ReviewTargets: map[string]string{SagaTarget(manifest.ID): abs},
+		FlatTargets:   map[string]bool{},
 	}
 	ids := map[string]string{}
 	if err := scanMutationSection(abs, abs, sagaHierarchy, manifest.ID, manifest.Version, &index, ids, &validation); err != nil {

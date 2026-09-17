@@ -129,6 +129,7 @@ type RelatedSagaFragmentView struct {
 type SlideReferenceView struct {
 	ID          string
 	Title       string
+	Section     string
 	Target      string
 	Anchor      string
 	Href        string

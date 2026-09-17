@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "id": "aggregate-slide-diffs",
+  "target": "urn:change-saga:hybrid-report-slide-saga:slide:reviewer-workspace:item:code-drawer",
+  "kind": "behavior",
+  "statement": "An active slide computes one added/deleted total across its unique referenced files, so duplicate Item references do not inflate the count, and opens those files in the linked-code drawer.",
+  "evidence": [
+    "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=42\u0026head=product-657c4691f91bb26a29aa2c1dbeda396491930666578e4ac2468872f6b6c335fd\u0026path=internal%2Fserver%2Ftargetcode.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=42",
+    "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=1405\u0026head=product-657c4691f91bb26a29aa2c1dbeda396491930666578e4ac2468872f6b6c335fd\u0026path=internal%2Fserver%2Fserver_test.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=1405"
+  ],
+  "created_at": "2026-09-16T21:38:49.534276Z"
+}

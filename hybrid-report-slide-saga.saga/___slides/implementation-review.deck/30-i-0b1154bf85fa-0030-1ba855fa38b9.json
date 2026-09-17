@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "legacy-readers",
+  "slide": "storage-boundaries",
+  "rank": 30,
+  "kind": "edge",
+  "label": "Legacy compatibility",
+  "description": "Existing version 2 and version 3 report reading remains valid when no decks are present.",
+  "selector": {
+    "type": "element",
+    "element_id": "legacy-readers"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "v3-root",
+  "slide": "storage-boundaries",
+  "rank": 0,
+  "kind": "node",
+  "label": "V3 root",
+  "description": "The parent report manifest remains the only Saga container identity.",
+  "selector": {
+    "type": "element",
+    "element_id": "v3-root"
+  }
+}

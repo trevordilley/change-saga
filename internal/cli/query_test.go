@@ -159,7 +159,7 @@ func TestQueryDispatchesEveryOperationAndPreservesArguments(t *testing.T) {
 		{"work-items", []string{"--item", "item-1", "--wave", "wave-1", "--status", "blocked", "--cursor", "c14", "--limit", "30"}, livingQuery{Operation: "work-items", Filters: livingapp.Filters{Status: "blocked", Wave: "wave-1", Item: "item-1"}, Cursor: "c14", Limit: 30}},
 		{"work-events", []string{"--item", "item-1", "--kind", "merge", "--cursor", "c15", "--limit", "31"}, livingQuery{Operation: "work-events", Filters: livingapp.Filters{Kind: "merge", Item: "item-1"}, Cursor: "c15", Limit: 31}},
 		{"work-conflicts", []string{"--item", "item-1", "--wave", "wave-1", "--kind", "progress_heads", "--cursor", "c16", "--limit", "32"}, livingQuery{Operation: "work-conflicts", Filters: livingapp.Filters{Kind: "progress_heads", Wave: "wave-1", Item: "item-1"}, Cursor: "c16", Limit: 32}},
-		{"traceability", []string{"--requirement", "story-1", "--criterion", "criterion-1", "--cursor", "c17", "--limit", "33"}, livingQuery{Operation: "traceability", Filters: livingapp.Filters{Requirement: "story-1", Kind: "criterion-1"}, Cursor: "c17", Limit: 33}},
+		{"traceability", []string{"--requirement", "story-1", "--criterion", "criterion-1", "--commit", "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "--cursor", "c17", "--limit", "33"}, livingQuery{Operation: "traceability", Filters: livingapp.Filters{Requirement: "story-1", Kind: "criterion-1", Commit: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}, Cursor: "c17", Limit: 33}},
 		{"readiness", []string{"--requirement", "story-1", "--status", "blocked", "--cursor", "c18", "--limit", "34"}, livingQuery{Operation: "readiness", Filters: livingapp.Filters{Requirement: "story-1", Status: "blocked"}, Cursor: "c18", Limit: 34}},
 	}
 
@@ -250,6 +250,9 @@ func TestQueryRejectsAdversarialArgumentsBeforeOpening(t *testing.T) {
 		{"missing requirement history target", []string{"requirement-history", "--saga", "x"}},
 		{"bad requirement state", []string{"requirements", "--saga", "x", "--state", "done"}},
 		{"bad relation state", []string{"relations", "--saga", "x", "--state", "fresh"}},
+		{"bad traceability diff", []string{"traceability", "--saga", "x", "--diff", "not-a-diff-uri"}},
+		{"bad traceability commit", []string{"traceability", "--saga", "x", "--commit", "abc123"}},
+		{"ambiguous traceability evidence", []string{"traceability", "--saga", "x", "--diff", "saga-diff://v1/file?x", "--commit", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"}},
 		{"bad work event kind", []string{"work-events", "--saga", "x", "--kind", "proof"}},
 		{"bad readiness status", []string{"readiness", "--saga", "x", "--status", "approved"}},
 	}

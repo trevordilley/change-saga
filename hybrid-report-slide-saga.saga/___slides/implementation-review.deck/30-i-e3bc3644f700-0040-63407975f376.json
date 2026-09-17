@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "item-hotspot",
+  "slide": "reviewer-workspace",
+  "rank": 40,
+  "kind": "region",
+  "label": "Item hotspot",
+  "description": "A semantic Item can be focused directly within the visual composition.",
+  "selector": {
+    "type": "element",
+    "element_id": "item-hotspot"
+  }
+}

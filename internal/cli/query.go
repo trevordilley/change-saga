@@ -2,6 +2,7 @@ package cli
 
 import (
 	"context"
+	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"flag"
@@ -10,6 +11,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/twentyideas/changesaga/internal/diffuri"
 	"github.com/twentyideas/changesaga/internal/livingapp"
 	"github.com/twentyideas/changesaga/internal/reviewapp"
 	"github.com/twentyideas/changesaga/internal/saga"
@@ -241,7 +243,7 @@ var queryPurpose = map[string]string{
 	"work-items":          "current work-item definitions, progress, explicit dependency blockers, workspaces, and merge evidence",
 	"work-events":         "normalized append-only progress, workspace, merge, and contract events",
 	"work-conflicts":      "deterministically identified work-plan conflicts and competing heads",
-	"traceability":        "current requirement-to-design-to-work-to-evidence paths and transitive blockers",
+	"traceability":        "current story-to-design/work/review/code paths, reverse diff/commit lookup, and transitive blockers",
 	"readiness":           "independent requirement, plan, and delivery coverage axes; only immutable delivery evidence gates peer-review readiness",
 }
 
@@ -268,7 +270,7 @@ var queryUsage = map[string]string{
 	"work-items":          "change-saga query work-items --saga PATH [--item ID|URN] [--wave ID|URN] [--status STATE] [--cursor TOKEN] [--limit N]",
 	"work-events":         "change-saga query work-events --saga PATH [--item ID|URN] [--kind KIND] [--cursor TOKEN] [--limit N]",
 	"work-conflicts":      "change-saga query work-conflicts --saga PATH [--item ID|URN] [--wave ID|URN] [--kind KIND] [--cursor TOKEN] [--limit N]",
-	"traceability":        "change-saga query traceability --saga PATH [--requirement ID|URN] [--criterion ID|URN] [--cursor TOKEN] [--limit N]",
+	"traceability":        "change-saga query traceability --saga PATH [--requirement ID|URN] [--criterion ID|URN] [--diff URI | --commit OID] [--cursor TOKEN] [--limit N]",
 	"readiness":           "change-saga query readiness --saga PATH [--requirement ID|URN] [--status ready|blocked] [--cursor TOKEN] [--limit N]",
 }
 
@@ -317,8 +319,8 @@ func queryWithOpener(ctx context.Context, args []string, out io.Writer, open que
 		if manifestErr != nil && (operation == "slide" || operation == "slide-diffs") {
 			return writeQueryOperationFailure(out, operation, normalizeQueryError(manifestErr))
 		}
-		if manifestErr == nil && (operation == "slide" || operation == "slide-diffs") && manifest.Version != saga.SlideSagaVersion {
-			return writeQueryOperationFailure(out, operation, &queryError{Code: "invalid_argument", Message: "slide queries require a v4 slide-native Saga"})
+		if manifestErr == nil && (operation == "slide" || operation == "slide-diffs") && manifest.Version != saga.SlideSagaVersion && manifest.Version != saga.CurrentSagaVersion {
+			return writeQueryOperationFailure(out, operation, &queryError{Code: "invalid_argument", Message: "slide queries require a v3 Report Saga with embedded decks or a v4 slide-native Saga"})
 		}
 		if manifestErr == nil && (operation == "fragment" || operation == "fragment-diffs") && manifest.Version == saga.SlideSagaVersion {
 			return writeQueryOperationFailure(out, operation, &queryError{Code: "invalid_argument", Message: "v4 does not expose slides as fragments; use slide or slide-diffs"})
@@ -417,11 +419,11 @@ func queryHelpFor(operation string) queryHelp {
 
 func querySchemaFor(operation string) querySchemaDescription {
 	paths := map[string][]string{
-		"overview":            {"data.saga", "data.source", "data.root", "data.overview_fragments", "data.chapters", "data.coverage"},
+		"overview":            {"data.saga", "data.source", "data.root", "data.overview_fragments", "data.chapters", "data.decks", "data.coverage"},
 		"children":            {"data.children"},
 		"fragment":            {"data.target", "data.content.data", "data.content.next_offset", "data.assets", "data.landmarks"},
 		"fragment-diffs":      {"data.selectors", "data.atoms", "data.stale"},
-		"slide":               {"data.target", "data.intent", "data.layout", "data.takeaway", "data.content.data", "data.assets", "data.items", "data.reading_order"},
+		"slide":               {"data.target", "data.intent", "data.layout", "data.section", "data.takeaway", "data.content.data", "data.assets", "data.items", "data.reading_order"},
 		"slide-diffs":         {"data.selectors", "data.atoms", "data.stale"},
 		"diff-owners":         {"data.atoms"},
 		"reviews":             {"data.items"},
@@ -437,7 +439,7 @@ func querySchemaFor(operation string) querySchemaDescription {
 		"work-items":          {"data.items"},
 		"work-events":         {"data.events"},
 		"work-conflicts":      {"data.conflicts"},
-		"traceability":        {"data.criteria"},
+		"traceability":        {"data.criteria", "data.unlinked_code_evidence"},
 		"readiness":           {"data.summary", "data.requirements"},
 	}
 	countedPaths := map[string]string{
@@ -483,7 +485,7 @@ func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, e
 	sourceDir := flags.String("repo", "", "source repository checkout")
 
 	var parent, target, diff, cursor, thread, state, kind, sortOrder, claim string
-	var requirement, citation, relation, from, to, wave, item, criterion string
+	var requirement, citation, relation, from, to, wave, item, criterion, commit string
 	var offset int64
 	var limit optionalInt
 	var minimumScore optionalInt
@@ -576,6 +578,8 @@ func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, e
 	case "traceability":
 		flags.StringVar(&requirement, "requirement", "", "optional requirement ID or URN")
 		flags.StringVar(&criterion, "criterion", "", "optional criterion ID or URN")
+		flags.StringVar(&diff, "diff", "", "optional exact diff atom URI")
+		flags.StringVar(&commit, "commit", "", "optional resolved source-head Git commit")
 		flags.StringVar(&cursor, "cursor", "", "pagination cursor")
 		flags.Var(&limit, "limit", "page size")
 	case "readiness":
@@ -646,6 +650,23 @@ func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, e
 	if operation == "relations" && state != "" && state != "active" && state != "superseded" && state != "stale" && state != "current" {
 		return nil, queryOpenOptions{}, false, errors.New("--state must be active, superseded, stale, or current")
 	}
+	if operation == "traceability" {
+		if diff != "" && commit != "" {
+			return nil, queryOpenOptions{}, false, fmt.Errorf("--diff and --commit are mutually exclusive")
+		}
+		if diff != "" {
+			if _, parseErr := diffuri.Parse(diff); parseErr != nil {
+				return nil, queryOpenOptions{}, false, fmt.Errorf("--diff must be a canonical diff atom URI")
+			}
+		}
+		if commit != "" {
+			decoded, decodeErr := hex.DecodeString(commit)
+			if decodeErr != nil || len(decoded) != 20 && len(decoded) != 32 {
+				return nil, queryOpenOptions{}, false, fmt.Errorf("--commit must be a 40- or 64-character hexadecimal Git object ID")
+			}
+			commit = strings.ToLower(commit)
+		}
+	}
 	if operation == "work-items" && state != "" && state != "planned" && state != "ready" && state != "in_progress" && state != "blocked" && state != "done" && state != "cancelled" && state != "conflicted" {
 		return nil, queryOpenOptions{}, false, errors.New("--status is not a valid progress state")
 	}
@@ -681,7 +702,7 @@ func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, e
 	case "requirements", "requirement-history", "citations", "relations", "waves", "work-items", "work-events", "work-conflicts", "traceability", "readiness":
 		filters := livingapp.Filters{
 			Requirement: requirement, Kind: firstNonempty(kind, criterion), Citation: citation,
-			Relation: relation, From: from, To: to, Wave: wave, Item: item,
+			Relation: relation, From: from, To: to, Wave: wave, Item: item, Diff: diff, Commit: commit,
 		}
 		if operation == "requirements" || operation == "relations" {
 			filters.State = state

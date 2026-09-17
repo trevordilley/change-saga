@@ -2,9 +2,11 @@ package cli
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"html"
 	"io"
+	"io/fs"
 	"os"
 	"path/filepath"
 	"strings"
@@ -14,9 +16,20 @@ import (
 	"github.com/twentyideas/changesaga/internal/store"
 )
 
+func relativePathForOutput(root, path string) string {
+	relative, err := filepath.Rel(root, path)
+	if err != nil {
+		return filepath.ToSlash(path)
+	}
+	return filepath.ToSlash(relative)
+}
+
 func requireSlideSaga(document *saga.Saga, command string) error {
+	if document.Manifest.Version == saga.CurrentSagaVersion {
+		return nil
+	}
 	if document.Manifest.Version != saga.SlideSagaVersion || document.Manifest.Presentation == nil || document.Manifest.Presentation.Mode != "slides" {
-		return fmt.Errorf("%s requires a v4 slide-native Saga; report Sagas are not silently paginated", command)
+		return fmt.Errorf("%s requires a v3 Report Saga or v4 slide-native Saga; reports are never silently paginated", command)
 	}
 	return nil
 }
@@ -73,11 +86,36 @@ func AddDeck(_ context.Context, args []string, out io.Writer) error {
 		if err != nil {
 			return err
 		}
-		path := filepath.Join(document.Root, filename)
-		if err := store.WriteJSON(path, manifest, true); err != nil {
-			return err
+		if document.Manifest.Version == saga.CurrentSagaVersion {
+			slidesRoot := filepath.Join(document.Root, saga.EmbeddedSlidesDir)
+			if info, statErr := os.Lstat(slidesRoot); statErr == nil && (!info.IsDir() || info.Mode()&os.ModeSymlink != 0) {
+				return fmt.Errorf("%s must be a real directory", saga.EmbeddedSlidesDir)
+			} else if statErr != nil && !os.IsNotExist(statErr) {
+				return statErr
+			}
+			bundle := filepath.Join(slidesRoot, *id+saga.EmbeddedDeckSuffix)
+			if len(filepath.Join(bundle, strings.Repeat("x", saga.FlatMaxBasename))) > saga.FlatMaxPath {
+				return fmt.Errorf("embedded deck path exceeds the portable %d-character budget; choose a shorter Saga location or deck id", saga.FlatMaxPath)
+			}
+			if err := os.MkdirAll(slidesRoot, 0o755); err != nil {
+				return err
+			}
+			if err := store.CommitDir(document.Root, bundle, func(stage string) error {
+				return store.WriteJSON(filepath.Join(stage, filename), manifest, true)
+			}); err != nil {
+				if errors.Is(err, fs.ErrExist) {
+					return fmt.Errorf("embedded deck %q already exists", *id)
+				}
+				return err
+			}
+			created = relativePathForOutput(document.Root, filepath.Join(bundle, filename))
+		} else {
+			path := filepath.Join(document.Root, filename)
+			if err := store.WriteJSON(path, manifest, true); err != nil {
+				return err
+			}
+			created = filename
 		}
-		created = filename
 		return nil
 	})
 	if err != nil {
@@ -92,6 +130,7 @@ func AddSlide(_ context.Context, args []string, out io.Writer) error {
 	deckTarget := flags.String("deck", "", "containing deck path, id, or URN")
 	id := flags.String("id", "", "stable slide identifier")
 	title := flags.String("title", "", "slide title")
+	section := flags.String("section", "", "optional section label shown as a subtle divider inside the deck")
 	intent := flags.String("intent", "", "reviewer job: orient, explain, compare, trace, prove, risk, or conclude")
 	layout := flags.String("layout", "", "canvas arrangement, not diagram meaning: hero, diagram, before-after, sequence, evidence, risk, or custom")
 	var rank optionalInt
@@ -123,8 +162,8 @@ func AddSlide(_ context.Context, args []string, out io.Writer) error {
 	if (rank.set && rank.value < 0) || !validIntent[*intent] || !validLayout[*layout] || !validMedia[*mediaType] {
 		return fmt.Errorf("unsupported intent, layout, media type, or negative rank")
 	}
-	if utf8.RuneCountInString(*title) > 100 || utf8.RuneCountInString(*takeaway) > 180 {
-		return fmt.Errorf("slide title/takeaway exceed the 100/180 character density limits")
+	if utf8.RuneCountInString(*title) > 100 || utf8.RuneCountInString(*section) > 80 || utf8.RuneCountInString(*takeaway) > 180 {
+		return fmt.Errorf("slide title/section/takeaway exceed the 100/80/180 character density limits")
 	}
 	if *layout == "custom" && strings.TrimSpace(*rationale) == "" {
 		return fmt.Errorf("--exception-rationale is required for --layout custom")
@@ -184,9 +223,9 @@ func AddSlide(_ context.Context, args []string, out io.Writer) error {
 		if err != nil {
 			return err
 		}
-		manifest := saga.SlideManifest{Version: saga.SlideSagaVersion, ID: *id, DeckID: deck.ID, Title: *title, Rank: chosenRank, Intent: *intent, Layout: *layout, MediaType: *mediaType, Entrypoint: assetName, Takeaway: *takeaway, ReadingOrder: []string{}, ExceptionRationale: *rationale}
-		assetPath := filepath.Join(document.Root, assetName)
-		manifestPath := filepath.Join(document.Root, filename)
+		manifest := saga.SlideManifest{Version: saga.SlideSagaVersion, ID: *id, DeckID: deck.ID, Title: *title, Rank: chosenRank, Section: strings.TrimSpace(*section), Intent: *intent, Layout: *layout, MediaType: *mediaType, Entrypoint: assetName, Takeaway: *takeaway, ReadingOrder: []string{}, ExceptionRationale: *rationale}
+		assetPath := filepath.Join(deck.Directory, assetName)
+		manifestPath := filepath.Join(deck.Directory, filename)
 		if err := store.WriteFile(assetPath, data, 0o644, true); err != nil {
 			return err
 		}
@@ -194,7 +233,7 @@ func AddSlide(_ context.Context, args []string, out io.Writer) error {
 			_ = os.Remove(assetPath)
 			return err
 		}
-		created = filename
+		created = relativePathForOutput(document.Root, manifestPath)
 		return nil
 	})
 	if err != nil {
@@ -315,17 +354,17 @@ func AddItem(_ context.Context, args []string, out io.Writer) error {
 		if err != nil {
 			return err
 		}
-		path := filepath.Join(document.Root, filename)
+		path := filepath.Join(slide.Directory, filename)
 		manifest := saga.ItemManifest{Version: saga.SlideSagaVersion, ID: *id, SlideID: slide.ID, Rank: chosenRank, Kind: *kind, Label: *label, Description: strings.TrimSpace(*description), Selector: selector, Hotspot: hotspotRegion, About: *about, Body: *body, Placement: *placement, Leader: *leader}
 		if err := store.WriteJSON(path, manifest, true); err != nil {
 			return err
 		}
 		slide.ReadingOrder = append(slide.ReadingOrder, *id)
-		if err := store.WriteJSON(filepath.Join(document.Root, filepath.FromSlash(slide.Path)), slide.SlideManifest, false); err != nil {
+		if err := store.WriteJSON(filepath.Join(slide.Directory, filepath.Base(filepath.FromSlash(slide.Path))), slide.SlideManifest, false); err != nil {
 			_ = os.Remove(path)
 			return err
 		}
-		created = filename
+		created = relativePathForOutput(document.Root, path)
 		return nil
 	})
 	if err != nil {
@@ -401,7 +440,7 @@ func findDeck(document *saga.Saga, value string) *saga.Deck {
 func findSlide(document *saga.Saga, value string) *saga.Slide {
 	for _, deck := range document.Decks {
 		for _, slide := range deck.Slides {
-			if value == slide.ID || value == slide.Target || filepath.Clean(value) == filepath.Clean(slide.Path) || document.Manifest.Version != saga.SlideSagaVersion && filepath.Clean(value) == filepath.Clean(slide.Directory) {
+			if value == slide.ID || value == slide.Target || filepath.Clean(value) == filepath.Clean(slide.Path) {
 				return slide
 			}
 		}

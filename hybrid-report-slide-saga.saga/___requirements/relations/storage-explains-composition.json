@@ -1,0 +1,12 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/relation.schema.json",
+  "version": 3,
+  "id": "storage-explains-composition",
+  "type": "explains",
+  "from": "urn:change-saga:hybrid-report-slide-saga:slide:storage-boundaries",
+  "to": "urn:change-saga:hybrid-report-slide-saga:story:composition",
+  "rationale": "The storage diagram covers the independent-record and compatibility criteria across the composition story.",
+  "to_revision": "urn:change-saga:hybrid-report-slide-saga:story:composition:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-16T19:15:55.561045Z"
+}

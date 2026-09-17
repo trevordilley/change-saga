@@ -1,0 +1,26 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:hybrid-report-slide-saga:story:composition",
+  "parents": [],
+  "title": "Separate lifecycles, one Saga",
+  "statement": "As a change author, I can keep living product requirements and implementation review decks under one Saga identity without conflating their lifecycles.",
+  "priority": "high",
+  "citations": [],
+  "acceptance_criteria": [
+    {
+      "id": "one-identity",
+      "statement": "A v3 Report Saga can contain zero or more focused decks whose targets derive from the parent Saga identity."
+    },
+    {
+      "id": "independent-records",
+      "statement": "Each deck bundle, requirement record, relation, and review event remains an independently mergeable record."
+    },
+    {
+      "id": "compatibility",
+      "statement": "Existing v2 and v3 reports and standalone v4 slide Sagas retain their established reading behavior."
+    }
+  ],
+  "created_at": "2026-09-16T19:09:10.948141Z"
+}

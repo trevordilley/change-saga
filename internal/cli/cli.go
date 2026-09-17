@@ -221,7 +221,7 @@ var commandDescription = map[string]string{
 	"citation":                    "Create immutable provenance records for requirements and design decisions.",
 	"citation add":                "Record where a requirement or decision came from: an external URL, issue, document,\nrepository commit, or recorded decision. Provenance is context, not delivery evidence.",
 	"relation":                    "Create or explicitly supersede pinned traceability relations.",
-	"relation add":                "Link stories, criteria, design, work items, and evidence with a typed rationale.\nPin mutable endpoints to their current revision or content digest so later edits go stale.",
+	"relation add":                "Link stories and criteria to design, work items, slide explanations, and verification\nevidence with a typed rationale. Pin mutable requirement endpoints so their links go stale\nafter later edits.",
 	"relation supersede":          "Retire one relation without erasing it. Add its corrected replacement separately;\na pivot is represented by normal requirement, design, plan, and relation revisions.",
 	"design":                      "Develop technical-design chapters, sections, and fragments that trace to user\nstories and acceptance criteria. Design may evolve alongside prototypes and requirements;\nits addressable packages are partitioned for parallel authoring and clean merges.",
 	"design-add-chapter":          "Add one independently authored technical-design concern. Chapters may be developed\nin parallel and should cite the requirements their contained design addresses.",
@@ -238,12 +238,12 @@ var commandDescription = map[string]string{
 	"plan assign":                 "Bind a work item to a concrete workspace and branch so progress can be shown in the\nlive Saga. Assignment is coordination state, not evidence of implementation.",
 	"plan progress":               "Append explicit workspace progress against the item. Progress helps coordination but\nnever proves correctness, acceptance-criterion coverage, or delivery.",
 	"plan record-merge":           "Append merge evidence for a declared merge unit. A merged state contributes delivery\nevidence only when its immutable commit and diff links resolve.",
-	"add-deck":                    "Add an independently reviewable deck to a v4 slide-native Saga. Exactly one deck is\nthe overview; change decks organize one coherent reviewer concern.",
-	"add-slide":                   "Add one visual argument to a v4 deck. Intent names the reviewer job; layout names\ngeometry, not meaning. Establish the system model, then foreground consequential\ntradeoffs, hidden coupling, and deviations that may surprise a reviewer.",
+	"add-deck":                    "Add an independently reviewable visual deck. In a v3 Report Saga each deck is an\noptional drill-down for one complex implementation concern; v4 remains wholly slide-native.",
+	"add-slide":                   "Add one visual argument to a standalone or report-embedded deck. Intent names the\nreviewer job; layout names geometry, not meaning. Establish the system model, then\nforeground consequential tradeoffs, hidden coupling, and deviations that may surprise a reviewer.",
 	"set-slide-content":           "Replace a slide's visual entrypoint while preserving its stable target and items.",
 	"add-item":                    "Add one semantic visual item, including an evidence-bearing callout overlay, and append\nit to the slide reading order. Exact diff evidence attaches here.",
 	"set-fragment-content":        "Replace a fragment entrypoint through the supported authoring API. Use --source -\nto read content from standard input; the fragment media type and metadata are preserved.",
-	"add-chapter":                 "Add one independently reviewable chapter to a legacy v2/v3 report Saga. New visual\npresentations use add-deck in the intentionally separate v4 format.",
+	"add-chapter":                 "Add one independently reviewable chapter to a v2/v3 Report Saga. A v3 report may\nalso embed focused visual decks without converting its documentation into slides.",
 	"add-section":                 "Group related narrative content inside a legacy report chapter.",
 	"add-fragment":                "Add a narrative artifact to a legacy v2/v3 report Saga. New slide-native Sagas use\nadd-slide with a visual entrypoint and semantic evidence-bearing Items.",
 	"add-landmark":                "Create a coverable target for one Markdown heading, exact text span, HTML/SVG\nelement, or normalized image region inside a fragment. An SVG --element-id is\nmeasured into an on-canvas link automatically; --hotspot overrides its bounds.\nHTML elements need --hotspot for an on-canvas link. Visual landmarks require a\nsemantic --description for non-visual consumers.",
@@ -763,8 +763,9 @@ func Review(_ context.Context, args []string, out io.Writer) error {
 		return err
 	}
 	reviewTarget := targetDir
-	if document.Manifest.Version == saga.SlideSagaVersion {
-		if _, ok := saga.MutationIndexFromDocument(document).ReviewTargets[resolvedTarget]; !ok {
+	mutationIndex := saga.MutationIndexFromDocument(document)
+	if document.Manifest.Version == saga.SlideSagaVersion || mutationIndex.FlatTargets[resolvedTarget] {
+		if _, ok := mutationIndex.ReviewTargets[resolvedTarget]; !ok {
 			return fmt.Errorf("v4 approval decisions must target a slide; use a thread to comment on an Item")
 		}
 		reviewTarget = resolvedTarget

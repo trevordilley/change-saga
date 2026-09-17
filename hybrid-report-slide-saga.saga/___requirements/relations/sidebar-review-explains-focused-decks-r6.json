@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/relation.schema.json",
+  "version": 3,
+  "id": "sidebar-review-explains-focused-decks-r6",
+  "type": "explains",
+  "from": "urn:change-saga:hybrid-report-slide-saga:slide:sidebar-deck-review",
+  "to": "urn:change-saga:hybrid-report-slide-saga:story:visual-review:criterion:focused-decks",
+  "rationale": "The overview slide explains how optional deck disclosures coexist with report chapters without converting those chapters into slides.",
+  "to_revision": "urn:change-saga:hybrid-report-slide-saga:story:visual-review:revision:r6",
+  "state": "superseded",
+  "created_at": "2026-09-16T23:03:34.933934Z",
+  "superseded_at": "2026-09-16T23:49:56.372163Z"
+}
