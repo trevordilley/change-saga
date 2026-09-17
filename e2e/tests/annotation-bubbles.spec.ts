@@ -17,6 +17,12 @@ import { expect, expectNoSeriousAccessibilityViolations, test } from "../support
 
 const overviewSelector = '[data-fragment-title="Overview"]';
 
+async function submitReviewMutation(page: import("@playwright/test").Page, path: string, action: () => Promise<void>): Promise<void> {
+  const saved = page.waitForResponse((response) => new URL(response.url()).pathname === path && response.request().method() === "POST");
+  await action();
+  expect((await saved).status()).toBe(204);
+}
+
 test("@critical pins a drawn comment to its mark, reveals it on hover and focus, and replies inside the bubble", async ({ page, saga }) => {
   const overview = page.locator(overviewSelector);
   await addRectangleComment(page, overview, "The rectangle marks the retry boundary.");
@@ -68,7 +74,7 @@ test("@critical pins a drawn comment to its mark, reveals it on hover and focus,
   // A reply written inside the bubble is an ordinary reply on the same thread.
   const thread = panel.locator("article.thread");
   await thread.getByRole("textbox", { name: "Reply" }).fill("Agreed, the boundary is the commit.");
-  await Promise.all([page.waitForNavigation(), thread.getByRole("button", { name: "Reply" }).click()]);
+  await submitReviewMutation(page, "/api/reply", () => thread.getByRole("button", { name: "Reply" }).click());
   expect(reviewFiles(saga, /\/message\.json$/)).toHaveLength(2);
   expect(reviewFiles(saga, /\/body\.fragment\/content\.md$/).map((path) => readFileSync(path, "utf8")).sort()).toEqual([
     "Agreed, the boundary is the commit.\n",
@@ -143,7 +149,7 @@ test("@critical leaves comments that were not drawn on the content in the list b
   await overview.getByRole("button", { name: "Comment on Overview" }).click();
   const composer = page.locator("form.annotation-compose");
   await composer.locator('textarea[name="body"]').fill("A comment on the whole explanation.");
-  await Promise.all([page.waitForNavigation(), composer.getByRole("button", { name: "Comment" }).click()]);
+  await submitReviewMutation(page, "/api/thread", () => composer.getByRole("button", { name: "Comment" }).click());
 
   // Visible with no hover, no focus, and no bubble anywhere on the page.
   const fragmentThread = overview.locator("> .threads article.thread");
@@ -159,7 +165,7 @@ test("@critical leaves comments that were not drawn on the content in the list b
   await chapter.getByRole("button", { name: "Open Architecture" }).click();
   await chapter.getByRole("button", { name: "Comment on Architecture" }).first().click();
   await composer.locator('textarea[name="body"]').fill("A comment on the whole chapter.");
-  await Promise.all([page.waitForNavigation(), composer.getByRole("button", { name: "Comment" }).click()]);
+  await submitReviewMutation(page, "/api/thread", () => composer.getByRole("button", { name: "Comment" }).click());
 
   // Navigating to the chapter opens it, which is what reading anything inside
   // it has always meant; the page now fetches the body at the same moment.
@@ -204,10 +210,7 @@ test("@critical keeps an annotated comment's mark selectable, movable, and remov
   expect(readJSON<{ anchor: { note: { x: number } } }>(reviewFiles(saga, /\/thread\.json$/)[0]).anchor.note.x).toBe(placed);
 
   // Deleting the mark withdraws its comment, so the bubble goes with it.
-  await Promise.all([
-    page.waitForNavigation(),
-    page.getByRole("button", { name: "Delete selected annotation" }).click()
-  ]);
+  await submitReviewMutation(page, "/api/thread-state", () => page.getByRole("button", { name: "Delete selected annotation" }).click());
   await expect(note).toHaveCount(0);
   await expect(page.locator("[data-annotation-bubble]")).toHaveCount(0);
   await expect(page.getByText("Movable sticky")).toHaveCount(0);

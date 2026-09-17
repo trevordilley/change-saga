@@ -238,20 +238,13 @@ const appJavaScript = `(() => {
   }
 
   function submitReviewForm(action, fields, multipart = false) {
-    const form = document.createElement('form');
-    form.method = 'post';
-    form.action = action;
-    if (multipart) form.enctype = 'multipart/form-data';
-    // form.submit() bypasses the submit listener, so the return path is explicit here.
-    Object.entries({...fields, mutation_token:mutationToken, return_to:location.pathname + location.search + location.hash}).forEach(([name,value]) => {
-      const input = document.createElement('input');
-      input.type = 'hidden';
-      input.name = name;
-      input.value = value;
-      form.append(input);
-    });
-    document.body.append(form);
-    form.submit();
+    const data = new FormData();
+    Object.entries(fields).forEach(([name,value]) => data.set(name, value));
+    const target = String(fields.target || '');
+    const article = reviewMutationFragment(target, annotationDraft?.fragment || selectedAnnotation?.element || null);
+    void persistReviewMutation(action, data, article).then(() => {
+      if (annotationDraft) closeAnnotation();
+    }).catch(error => alert('Could not save this review change: ' + error.message));
   }
 
   function submitThreadState(command, state) {
@@ -508,15 +501,16 @@ const appJavaScript = `(() => {
     } catch (_) {}
   }
 
-  function openReviewComment(control) {
+  function openReviewComment(control, anchor = control) {
     discardAnnotationDraft();
     const form = q('.annotation-compose');
     form.reset();
+    form.reviewOrigin = anchor;
     q('[name=target]', form).value = control.dataset.reviewTarget;
     q('[name=anchor]', form).value = JSON.stringify({type:'target'});
     q('.dialog-head h2', form).textContent = 'Comment on ' + (control.dataset.reviewTitle || 'this item');
     form.classList.add('open');
-    positionAnnotationComposer(control);
+    positionAnnotationComposer(anchor);
     q('[name=body]', form).focus();
     resetTool();
     updateHistoryControls();
@@ -2245,6 +2239,36 @@ const appJavaScript = `(() => {
     }
   }
 
+  function installFragmentContents(article, replacement, preserveLiveDecision = false) {
+    const wasActive = article.classList.contains('active-fragment');
+    const tools = q('[data-annotation-target]');
+    const toolsTarget = tools && !tools.hidden && tools.closest('.fragment') === article ? tools.dataset.annotationTarget : '';
+    if (toolsTarget) document.body.append(tools);
+    if (preserveLiveDecision) {
+      // A decision the reviewer has already made is not undone by content
+      // arriving after it: the live controls move into the rendered explanation
+      // instead of being replaced by the state its snapshot was built from.
+      const live = q(':scope > .fragment-head [data-review-controls]', article);
+      const rendered = q(':scope > .fragment-head [data-review-controls]', replacement);
+      if (live && rendered) rendered.replaceWith(live);
+    }
+    for (const attribute of Array.from(article.attributes)) {
+      if (!replacement.hasAttribute(attribute.name)) article.removeAttribute(attribute.name);
+    }
+    for (const attribute of Array.from(replacement.attributes)) article.setAttribute(attribute.name, attribute.value);
+    if (wasActive) article.classList.add('active-fragment');
+    article.removeAttribute('data-fragment-href');
+    delete article.dataset.fragmentLoading;
+    article.replaceChildren(...Array.from(replacement.childNodes));
+    prepareLandmarks(article);
+    prepareDiffCitations(article);
+    prepareTextHighlights(article);
+    highlightCode(article);
+    positionFragmentOverlays();
+    if (toolsTarget) showAnnotationTools(article, toolsTarget, article.dataset.fragmentTitle || 'this explanation');
+    return article;
+  }
+
   async function hydrateFragment(article) {
     const href = article?.dataset.fragmentHref;
     if (!href) return article || null;
@@ -2253,33 +2277,127 @@ const appJavaScript = `(() => {
     try {
       const replacement = q('.fragment', parseShellHTML(await fetchShell(href)));
       if (!replacement) throw new Error('explanation response was incomplete');
-      // A decision the reviewer has already made is not undone by content
-      // arriving after it: the live controls move into the rendered explanation
-      // instead of being replaced by the state its snapshot was built from.
-      const live = q(':scope > .fragment-head [data-review-controls]', article);
-      const rendered = q(':scope > .fragment-head [data-review-controls]', replacement);
-      if (live && rendered) rendered.replaceWith(live);
       // The article itself is never swapped out. A reviewer can be part way
       // through clicking a descriptor's controls when its content arrives, and
       // replacing the element under the pointer loses that click: the detached
       // node no longer reaches the document that handles it. Filling the article
       // in place keeps its head where it was and every live control attached,
       // and keeps this explanation the active one without re-selecting it.
-      for (const attribute of Array.from(replacement.attributes)) article.setAttribute(attribute.name, attribute.value);
-      article.removeAttribute('data-fragment-href');
-      delete article.dataset.fragmentLoading;
-      article.replaceChildren(...Array.from(replacement.childNodes));
-      prepareLandmarks(article);
-      prepareDiffCitations(article);
-      prepareTextHighlights(article);
-      highlightCode(article);
-      positionFragmentOverlays();
-      return article;
+      return installFragmentContents(article, replacement, true);
     } catch (_) {
       delete article.dataset.fragmentLoading;
       const placeholder = q('[data-fragment-placeholder]', article);
       if (placeholder) placeholder.textContent = 'This explanation could not be loaded. Reload the page to try again.';
       return article;
+    }
+  }
+
+  function reviewMutationFragment(target, origin = null) {
+    const direct = origin?.closest?.('.fragment');
+    if (direct) return direct;
+    return qa('.fragment').find(fragment => fragment.dataset.target === target ||
+      Boolean(q('[data-review-comment="' + CSS.escape(target) + '"]', fragment))) || null;
+  }
+
+  function restoreReviewMutationFocus(article, action, data) {
+    const thread = String(data.get('thread') || '');
+    const target = String(data.get('target') || '');
+    let destination = null;
+    if (thread) {
+      const matching = qa('article.thread', article).find(candidate =>
+        q('input[name="thread"]', candidate)?.value === thread);
+      destination = action.endsWith('/api/reply') ? q('input[name="body"]', matching) : q('.thread-state button', matching);
+    }
+    if (!destination && target) {
+      destination = qa('[data-review-comment]', article).find(button => button.dataset.reviewComment === target) ||
+        qa('[data-review-controls]', article).find(control => control.dataset.reviewTarget === target)?.querySelector('button');
+    }
+    destination?.focus?.({preventScroll:true});
+  }
+
+  async function refreshFragmentReviews(article, action, data) {
+    if (!article?.dataset.target) return false;
+    const scroll = {x:scrollX, y:scrollY};
+    const url = new URL('/api/fragment', location.href);
+    url.searchParams.set('target', article.dataset.target);
+    const response = await fetch(url, {headers:{Accept:'text/html','X-Change-Saga-Async':'true'},credentials:'same-origin',cache:'no-store'});
+    if (!response.ok) throw new Error((await response.text()).trim() || 'updated review could not be loaded');
+    const replacement = q('.fragment', parseShellHTML(await response.text()));
+    if (!replacement) throw new Error('updated review response was incomplete');
+    installFragmentContents(article, replacement);
+    scrollTo(scroll.x, scroll.y);
+    restoreReviewMutationFocus(article, action, data);
+    return true;
+  }
+
+  async function refreshChapterReviews(chapter) {
+    const body = q(':scope > [data-chapter-body]', chapter);
+    const target = q(':scope > .section-head [data-review-controls]', chapter)?.dataset.reviewTarget || '';
+    if (!body || !target) return false;
+    const scroll = {x:scrollX, y:scrollY};
+    const url = new URL('/api/section', location.href);
+    url.searchParams.set('target', target);
+    const response = await fetch(url, {headers:{Accept:'text/html','X-Change-Saga-Async':'true'},credentials:'same-origin',cache:'no-store'});
+    if (!response.ok) throw new Error((await response.text()).trim() || 'updated chapter review could not be loaded');
+    const wrapper = parseShellHTML(await response.text());
+    body.replaceChildren(...Array.from(wrapper.childNodes));
+    chapter.removeAttribute('data-section-href');
+    await observeDeferredFragments(body);
+    scrollTo(scroll.x, scroll.y);
+    return true;
+  }
+
+  async function persistReviewMutation(action, data, origin = null) {
+    const target = String(data.get('target') || '');
+    const article = reviewMutationFragment(target, origin);
+    data.set('mutation_token', mutationToken);
+    data.set('return_to', location.pathname + location.search + location.hash);
+    const multipart = action.endsWith('/api/thread') || action.endsWith('/api/reply');
+    const headers = {'X-Change-Saga-Async':'true','X-Change-Saga-Mutation-Token':mutationToken};
+    let body = data;
+    if (!multipart) {
+      body = new URLSearchParams();
+      for (const [name,value] of data.entries()) if (typeof value === 'string') body.append(name, value);
+      headers['Content-Type'] = 'application/x-www-form-urlencoded';
+    }
+    const response = await fetch(action, {
+      method:'POST',
+      headers,
+      body,
+      credentials:'same-origin'
+    });
+    if (!response.ok) throw new Error((await response.text()).trim() || 'review change could not be saved');
+    if (article) await refreshFragmentReviews(article, action, data);
+    return response;
+  }
+
+  async function submitReviewMutationForm(form, submitter = null) {
+    const buttons = qa('button,input[type="submit"]', form);
+    buttons.forEach(button => button.disabled = true);
+    const action = new URL(form.action, location.href).pathname;
+    const data = new FormData(form);
+    if (submitter?.name) data.set(submitter.name, submitter.value);
+    const annotation = form.matches('.annotation-compose');
+    const origin = form.reviewOrigin || form;
+    const chapter = origin?.closest?.('[data-chapter]') || null;
+    const reviewSurface = form.reviewSurface || form.closest('[data-review-surface]')?.dataset.reviewSurface || '';
+    try {
+      await persistReviewMutation(action, data, origin);
+      if (chapter) await refreshChapterReviews(chapter);
+      if (reviewSurface) {
+        if (reviewSurface === 'code') fileDiffCache.clear();
+        const surface = await hydrateReviewSurface(reviewSurface, {force:true});
+        if (reviewSurface === 'code') {
+          await Promise.all(within(surface, '[data-file-diff-href]').map(file => hydrateReviewFile(file, {force:true})));
+        }
+      }
+      if (annotation) closeAnnotation();
+      if (form.matches('.diff-compose')) form.classList.remove('open');
+      form.reset();
+    } catch (error) {
+      alert('Could not save this review change: ' + error.message);
+    } finally {
+      buttons.forEach(button => button.disabled = false);
     }
   }
 
@@ -2523,6 +2641,8 @@ const appJavaScript = `(() => {
     const form = q('.diff-compose');
     const suggestion = button.dataset.diffAction === 'suggestion';
 	form.reset();
+    form.reviewOrigin = button.origin || null;
+    form.reviewSurface = button.origin?.closest?.('[data-review-surface]')?.dataset.reviewSurface || '';
     form.classList.toggle('suggesting', suggestion);
     form.classList.add('open');
     q('[name=target]', form).value = button.dataset.target;
@@ -2871,6 +2991,7 @@ const appJavaScript = `(() => {
     const form = q('.annotation-compose');
     discardAnnotationDraft();
     form.reset();
+    form.reviewOrigin = fragment;
     q('.dialog-head h2', form).textContent = 'Add a comment';
     annotationDraft = {
       kind:'draft', shapeDraft:true, target:fragment.dataset.target, fragment, body:'',
@@ -2900,6 +3021,7 @@ const appJavaScript = `(() => {
     setActiveFragment(fragment);
     const form = q('.annotation-compose');
     form.reset();
+    form.reviewOrigin = options.anchorElement || fragment;
     q('.dialog-head h2', form).textContent = 'Add a comment';
     q('[name=target]', form).value = fragment.dataset.target;
     q('[name=anchor]', form).value = JSON.stringify(anchor);
@@ -3404,7 +3526,7 @@ const appJavaScript = `(() => {
     const selectionAction = event.target.closest('[data-selection-action]');
     if (selectionAction) {
       const toolbar = selectionAction.closest('[data-selection-toolbar]');
-      openDiffComposer({dataset:{diffAction:selectionAction.dataset.selectionAction,diffRef:toolbar.dataset.diffRef,target:toolbar.dataset.target,content:toolbar.dataset.content}});
+      openDiffComposer({dataset:{diffAction:selectionAction.dataset.selectionAction,diffRef:toolbar.dataset.diffRef,target:toolbar.dataset.target,content:toolbar.dataset.content},origin:selectionAction});
       return;
     }
     if (event.target.closest('[data-selection-clear]')) { selectionAnchor = null; updateLineSelection([]); return; }
@@ -3418,12 +3540,12 @@ const appJavaScript = `(() => {
     const reviewDecision = event.target.closest('[data-review-decision]');
     if (reviewDecision) { activateReviewDecision(reviewDecision); return; }
     const reviewComment = event.target.closest('[data-review-comment]');
-    if (reviewComment) { openReviewComment(reviewComment.closest('[data-review-controls]') || {dataset:{reviewTarget:reviewComment.dataset.reviewComment,reviewTitle:reviewComment.dataset.reviewTitle}}); return; }
+    if (reviewComment) { openReviewComment(reviewComment.closest('[data-review-controls]') || {dataset:{reviewTarget:reviewComment.dataset.reviewComment,reviewTitle:reviewComment.dataset.reviewTitle}}, reviewComment); return; }
     const reviewCancel = event.target.closest('[data-review-cancel]');
     if (reviewCancel) { closeReviewComposer(reviewCancel.closest('[data-review-decision-form]')); return; }
     if (event.target.closest('[data-close-annotation]')) { closeAnnotation(); return; }
     const diffAction = event.target.closest('[data-diff-action]');
-    if (diffAction) { openDiffComposer(diffActionContext(diffAction)); return; }
+    if (diffAction) { const context = diffActionContext(diffAction); context.origin = diffAction; openDiffComposer(context); return; }
     if (event.target.closest('[data-close-diff-compose]')) { q('.diff-compose').classList.remove('open'); return; }
     const tool = event.target.closest('[data-tool]');
     if (tool) { void useTool(tool.dataset.tool, tool.closest('.fragment')); return; }
@@ -3456,6 +3578,11 @@ const appJavaScript = `(() => {
     if (form.matches('[data-review-decision-form]')) {
       event.preventDefault();
       submitReviewComposer(form);
+      return;
+    }
+    if (form.matches('.annotation-compose,.diff-compose,.reply,.thread-state,.file-review')) {
+      event.preventDefault();
+      void submitReviewMutationForm(form, event.submitter);
       return;
     }
     if (form.matches('form[action^="/api/"]')) {

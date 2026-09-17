@@ -2034,6 +2034,10 @@ func (a *app) createThread(w http.ResponseWriter, r *http.Request) {
 	if !a.publishReviewsAfterMutation(r.Context()) {
 		w.Header().Set("X-Change-Saga-Review-State", "reload-pending")
 	}
+	if r.Header.Get("X-Change-Saga-Async") == "true" {
+		w.WriteHeader(http.StatusNoContent)
+		return
+	}
 	redirectAfterReview(w, r, "/#"+domID(target))
 }
 
@@ -2055,6 +2059,10 @@ func (a *app) reply(w http.ResponseWriter, r *http.Request) {
 	if !a.publishReviewsAfterMutation(r.Context()) {
 		w.Header().Set("X-Change-Saga-Review-State", "reload-pending")
 	}
+	if r.Header.Get("X-Change-Saga-Async") == "true" {
+		w.WriteHeader(http.StatusNoContent)
+		return
+	}
 	redirectAfterReview(w, r, "/#"+domID(r.FormValue("target")))
 }
 
@@ -2073,6 +2081,10 @@ func (a *app) threadState(w http.ResponseWriter, r *http.Request) {
 	}
 	if !a.publishReviewsAfterMutation(r.Context()) {
 		w.Header().Set("X-Change-Saga-Review-State", "reload-pending")
+	}
+	if r.Header.Get("X-Change-Saga-Async") == "true" {
+		w.WriteHeader(http.StatusNoContent)
+		return
 	}
 	redirectAfterReview(w, r, "/#"+domID(r.FormValue("target")))
 }
@@ -2122,7 +2134,7 @@ func (a *app) review(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	reviewTarget := dir
-	if index.Manifest.Version == saga.SlideSagaVersion {
+	if index.Manifest.Version == saga.SlideSagaVersion || index.FlatTargets[target] {
 		reviewTarget = target
 	}
 	if err := reviewstore.AddReview(a.root, reviewTarget, r.FormValue("state"), r.FormValue("body"), saga.ReviewerIdentity{Kind: "human"}); err != nil {
@@ -2154,6 +2166,10 @@ func (a *app) diffReview(w http.ResponseWriter, r *http.Request) {
 	}
 	if !a.publishReviewsAfterMutation(r.Context()) {
 		w.Header().Set("X-Change-Saga-Review-State", "reload-pending")
+	}
+	if r.Header.Get("X-Change-Saga-Async") == "true" {
+		w.WriteHeader(http.StatusNoContent)
+		return
 	}
 	fallback := "/?view=code#" + url.PathEscape(r.FormValue("file"))
 	if reference, err := diffuri.Parse(r.FormValue("uri")); err == nil && reference.Kind == "file" {

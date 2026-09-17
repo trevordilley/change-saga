@@ -124,7 +124,7 @@ func TestMutationTokensAreRandomAndPlumbedIntoBrowserRequests(t *testing.T) {
 	if first == second || len(first) < 40 {
 		t.Fatalf("mutation tokens are not independent 256-bit values: %q %q", first, second)
 	}
-	if !strings.Contains(pageTemplate, `name="change-saga-mutation-token"`) || !strings.Contains(appJavaScript, `X-Change-Saga-Mutation-Token`) || !strings.Contains(appJavaScript, `mutation_token:mutationToken`) {
+	if !strings.Contains(pageTemplate, `name="change-saga-mutation-token"`) || !strings.Contains(appJavaScript, `X-Change-Saga-Mutation-Token`) || !strings.Contains(appJavaScript, `data.set('mutation_token', mutationToken)`) {
 		t.Fatal("browser mutation token plumbing is incomplete")
 	}
 }

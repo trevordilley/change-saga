@@ -1,7 +1,7 @@
-import { writeFileSync } from "node:fs";
+import { existsSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { expect, test, waitForSettledSaga } from "../support/test.js";
-import { runCLI } from "../support/fixture-builder.js";
+import { reviewFiles, runCLI } from "../support/fixture-builder.js";
 
 test("a Report Saga opens several implementation decks without paginating its documentation", async ({ page, saga }) => {
   const run = (...args: string[]): void => {
@@ -72,6 +72,60 @@ test("a Report Saga opens several implementation decks without paginating its do
   await expect(unlinkedItem).toHaveCSS("border-color", "rgba(0, 0, 0, 0)");
   await page.locator(".brand").hover();
   await expect(linkedItem).toHaveCSS("border-color", "rgba(0, 0, 0, 0)");
+
+  // Review edits stay on the active slide. Item comments use the same flat
+  // overlay as the embedded deck, refresh only this slide, and keep the
+  // reviewer's URL, scroll position, and deck context intact.
+  const reviewURL = page.url();
+  const reviewScroll = await page.evaluate(() => ({ x: scrollX, y: scrollY }));
+  const navigations: string[] = [];
+  page.on("framenavigated", (frame) => { if (frame === page.mainFrame()) navigations.push(frame.url()); });
+  const itemComment = linkedItem.locator("[data-review-comment]");
+  const itemCommentBox = await itemComment.boundingBox();
+  await itemComment.click();
+  const composer = page.locator("form.annotation-compose.open");
+  await expect(composer).toHaveClass(/anchored/);
+  const composerBox = await composer.boundingBox();
+  expect(itemCommentBox).not.toBeNull();
+  expect(composerBox).not.toBeNull();
+  expect(Math.abs(composerBox!.y - itemCommentBox!.y)).toBeLessThan(300);
+  await composer.getByRole("textbox", { name: "Comment" }).fill("Keep this implementation link visible.");
+  const commented = page.waitForResponse((response) => new URL(response.url()).pathname === "/api/thread" && response.request().method() === "POST");
+  await composer.getByRole("button", { name: "Comment" }).click();
+  expect((await commented).status()).toBe(204);
+  await expect(activeSlide.getByText("Keep this implementation link visible.", { exact: true })).toHaveCount(1);
+  await expect(linkedItem.locator(".landmark-comment-count")).toHaveText("1");
+  expect(page.url()).toBe(reviewURL);
+  expect(await page.evaluate(() => ({ x: scrollX, y: scrollY }))).toEqual(reviewScroll);
+  expect(navigations).toEqual([]);
+
+  let thread = activeSlide.locator("article.thread").filter({ hasText: "Keep this implementation link visible." });
+  await thread.getByRole("textbox", { name: "Reply" }).fill("Confirmed without leaving the slide.");
+  const replied = page.waitForResponse((response) => new URL(response.url()).pathname === "/api/reply" && response.request().method() === "POST");
+  await thread.getByRole("button", { name: "Reply" }).click();
+  expect((await replied).status()).toBe(204);
+  await expect(activeSlide.getByText("Confirmed without leaving the slide.", { exact: true })).toHaveCount(1);
+  thread = activeSlide.locator("article.thread").filter({ hasText: "Keep this implementation link visible." });
+  const resolved = page.waitForResponse((response) => new URL(response.url()).pathname === "/api/thread-state" && response.request().method() === "POST");
+  await thread.getByRole("button", { name: "Resolve" }).click();
+  expect((await resolved).status()).toBe(204);
+  await expect(activeSlide.locator("article.thread.resolved").filter({ hasText: "Keep this implementation link visible." })).toHaveCount(1);
+
+  const slideControls = activeSlide.locator(".fragment-head [data-review-controls]").first();
+  const approved = page.waitForResponse((response) => new URL(response.url()).pathname === "/api/review" && response.request().method() === "POST");
+  await slideControls.getByRole("button", { name: "Approve Request enters" }).click();
+  expect((await approved).status()).toBe(204);
+  await expect(slideControls.getByRole("button", { name: /Approval recorded for Request enters/ })).toHaveAttribute("aria-pressed", "true");
+  expect(page.url()).toBe(reviewURL);
+  expect(navigations).toEqual([]);
+  expect(reviewFiles(saga, /\/84-r-.*\.json$/)).toHaveLength(1);
+  expect(existsSync(join(saga.sagaRoot, "___slides", "request-flow.deck", "___approvals"))).toBe(false);
+  run("validate", saga.sagaRoot);
+
+  const reload = await page.reload();
+  expect(reload?.status()).toBe(200);
+  await waitForSettledSaga(page);
+  await expect(slidePanel.locator('[data-native-slide][data-slide-title="Request enters"]')).toBeVisible();
 
   await slidePanel.getByRole("button", { name: "Next slide" }).click();
   await expect(slidePanel.locator('[data-native-slide][data-slide-title="Response returns"]')).toBeVisible();

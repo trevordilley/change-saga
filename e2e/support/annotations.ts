@@ -1,5 +1,4 @@
 import { expect, type Locator, type Page } from "@playwright/test";
-import { waitForSettledSaga } from "./test.js";
 
 /** Drags across a locator in fractions of its own box, the way a reviewer draws. */
 export async function dragOn(page: Page, locator: Locator, from: [number, number], to: [number, number], steps = 8): Promise<void> {
@@ -34,15 +33,17 @@ export async function selectExactText(page: Page, selector: string, exact: strin
 async function submitComposer(page: Page, body: string): Promise<void> {
   const composer = page.locator("form.annotation-compose");
   await composer.locator('textarea[name="body"]').fill(body);
-  await Promise.all([page.waitForNavigation(), composer.getByRole("button", { name: "Comment" }).click()]);
-  await waitForSettledSaga(page);
+  const saved = page.waitForResponse((response) => new URL(response.url()).pathname === "/api/thread" && response.request().method() === "POST");
+  await composer.getByRole("button", { name: "Comment" }).click();
+  expect((await saved).status()).toBe(204);
+  await expect(composer).not.toHaveClass(/open/);
 }
 
 /** Opens the one annotation palette from a fragment's own header target. */
 export async function openAnnotationTools(fragment: Locator): Promise<Locator> {
   const title = await fragment.getAttribute("data-fragment-title");
   if (!title) throw new Error("fragment has no annotation title");
-  const toggle = fragment.getByRole("button", { name: `Show annotation tools for ${title}` });
+  const toggle = fragment.locator("[data-annotation-tools]");
   if (await toggle.getAttribute("aria-expanded") !== "true") await toggle.click();
   const toolbar = fragment.getByRole("toolbar", { name: `Annotation tools for ${title}` });
   await expect(toolbar).toBeVisible();
@@ -83,8 +84,10 @@ export async function addStickyNoteComment(page: Page, fragment: Locator, text: 
   if (!box) throw new Error("sticky surface has no bounding box");
   await page.mouse.click(box.x + box.width * at[0], box.y + box.height * at[1]);
   await page.getByRole("textbox", { name: "Sticky note text" }).fill(text);
-  await Promise.all([page.waitForNavigation(), page.getByRole("button", { name: "Add note" }).click()]);
-  await waitForSettledSaga(page);
+  const saved = page.waitForResponse((response) => new URL(response.url()).pathname === "/api/thread" && response.request().method() === "POST");
+  await page.getByRole("button", { name: "Add note" }).click();
+  expect((await saved).status()).toBe(204);
+  await expect(page.getByRole("note", { name: /Sticky note by/ })).toContainText(text);
 }
 
 /**

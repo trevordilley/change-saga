@@ -341,6 +341,8 @@ section:hover>.section-actions .review-controls,.section:hover>.section-head>.se
 .review-decision-tooltip-note{display:block;margin-top:5px;padding-top:5px;border-top:1px solid #ffffff24;white-space:pre-wrap;overflow-wrap:anywhere;color:#ffffffeb}
 .review-decision-tooltip-action{display:block;margin-top:5px;color:#ffffff8f;font-size:10.5px}
 .review-comment{color:var(--faint)}
+.landmark-comment-count{display:inline-flex;align-items:center;gap:2px;padding:2px 5px;border:1px solid var(--line);border-radius:999px;background:var(--bg);color:var(--muted);font:600 10px var(--ui);box-shadow:0 1px 2px #1f23281f}
+.landmark-comment-count .i{width:12px;height:12px}
 .section-actions>.review-comment{opacity:.5;transition:opacity .14s}
 .section:hover>.section-head>.section-actions>.review-comment,.section-head:focus-within>.section-actions>.review-comment{opacity:1}
 .review-controls.decision-changed .review-decision[aria-pressed=true]{animation:review-pop .5s cubic-bezier(.2,.85,.25,1.35)}
