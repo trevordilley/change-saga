@@ -1,5 +1,10 @@
-// Package readiness computes living-Saga delivery projections from an already
-// validated graph. It deliberately has no filesystem or transport dependency.
+// Package readiness computes living-Saga delivery projections and the v5
+// readiness gate table from an already validated graph. It reads the six-axis
+// coverage vocabulary from internal/coverage but still performs no filesystem
+// or transport access of its own: every input is a fact a loader established.
+//
+// Evaluate is the existing v2/v3/v4 peer-review projection and is unchanged.
+// EvaluateGates in gates.go adds the v5 gate table on top of it.
 package readiness
 
 import "sort"

@@ -54,7 +54,7 @@ MiB, collection limits are enforced at runtime, and every ID uses
 | --- | --- | --- | --- |
 | Manifest | `v5/saga.schema.json` | v3 manifest fields, `version: 5` | canonical repository identity; report-only root composition |
 | Relation | `v5/relation.schema.json` | endpoints, type, scope, pins required by the matrix, rationale, state, time | same Saga, no self-edge, canonical conflict ordering, graph acyclicity/currentness |
-| Coverage exception | `v5/coverage-exception.schema.json` | axis, criterion/revision pin, rationale, citation, supersession set | current revision, resolved citations, one unsuperseded head |
+| Coverage exception | `v5/coverage-exception.schema.json` | one of six axes, criterion/revision pin, rationale, citation, supersession set | current revision, resolved citations, one unsuperseded head per criterion/axis |
 | Test-case identity | `v5/test-case.schema.json` | immutable ID and creation time | filename/package match and one identity per package |
 | Test-case revision | `v5/test-case-revision.schema.json` | full definition, parents, kinds, automation, ordered steps | one root, reachable acyclic graph, unique/non-reused step IDs |
 | Test lifecycle | `v5/test-case-event.schema.json` | parents and proposed/active/deprecated/retired state | one root, reachable acyclic graph, explicit multi-head conflicts |
@@ -116,9 +116,15 @@ inventing a shell command. Reads MUST NOT execute it.
 Policies are immutable per-criterion decisions. `required_kinds` and
 `allowed_automation` are non-empty unique sets. In the absence of a policy the
 quality projection requires `positive`; a policy can additionally require
-`negative` and/or `edge`. Coverage exceptions use axis `design` or `quality`,
-pin one story revision, and require a nonblank rationale plus at least one
-resolved citation. There is no delivery exception.
+`negative` and/or `edge`. Coverage exceptions use one of the six axes
+`prototype`, `ux`, `ui`, `technical`, `quality`, or `implementation`, pin one
+story revision, and require a nonblank rationale plus at least one resolved
+citation. The feature policy requires every axis; an exception is the only way
+to declare an axis inapplicable, and there is one unsuperseded head per
+criterion/axis. The deprecated pre-six-axis value `design` still loads and
+expands to `ux`, `ui`, and `technical`; writers must not emit it. There is no
+exception from exact changed-source accounting: documentation-only work still
+ends at its documentation diff.
 
 ### V5 relation matrix
 
@@ -194,8 +200,12 @@ Design coverage states are `covered_direct`, `covered_broad`, `excluded`,
 `gap`, `stale`, `invalid`, and `conflicted`. Quality states are `covered`,
 `missing_kind`, `not_run`, `failed`, `blocked`, `stale`, `excluded`, `invalid`,
 and `conflicted`. Readiness reports independent `requirements_ready`,
-`design_ready`, `implementation_trace_ready`, `quality_ready`,
-`ready_for_review`, and `review_complete` gates with their blocker paths.
+`product_ready`, `design_ready`, `implementation_trace_ready`, `quality_ready`,
+`ready_for_review`, and `review_complete` gates with their required facts,
+explicitly not-inferred judgments, and blocker paths. `design_ready` is
+per-axis: it requires current `ux`, `ui`, and `technical` coverage or a current
+exception on each applicable axis. Every criterion/axis cell is exactly one of a
+current link, an explicit exclusion, or a visible gap.
 
 Schema validation cannot establish same-Saga equality, graph rules, current
 Git identity, exact selector resolution, or canonical URI equivalence. Runtime
