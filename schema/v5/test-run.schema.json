@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://changesaga.dev/schema/v5/test-run.schema.json",
+  "title": "Change Saga v5 immutable test run",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "version", "id", "test_case", "test_revision", "parents", "source", "result", "summary", "evidence", "executed_at"],
+  "properties": {
+    "$schema": { "const": "https://changesaga.dev/schema/v5/test-run.schema.json" },
+    "version": { "const": 5 },
+    "id": { "$ref": "#/$defs/id" },
+    "test_case": { "$ref": "#/$defs/test_case_urn" },
+    "test_revision": { "$ref": "#/$defs/revision_urn" },
+    "parents": {
+      "type": "array",
+      "maxItems": 10000,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/run_urn" }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repository", "base", "head"],
+      "properties": {
+        "repository": {
+          "type": "string",
+          "format": "uri",
+          "not": { "pattern": "^[A-Za-z][A-Za-z0-9+.-]*://[^/?#]*@" }
+        },
+        "base": { "type": "string", "minLength": 1 },
+        "head": { "type": "string", "minLength": 1 }
+      }
+    },
+    "result": { "enum": ["passed", "failed", "blocked", "skipped"] },
+    "summary": { "type": "string", "minLength": 1 },
+    "command": { "type": "string", "minLength": 1 },
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 20000,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/evidence_urn" }
+    },
+    "executed_at": { "type": "string", "format": "date-time" },
+    "request_id": { "$ref": "#/$defs/id" }
+  },
+  "$defs": {
+    "id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "test_case_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:test-case:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "revision_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:test-case:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:revision:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "run_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:test-case:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:run:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "evidence_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:test-case:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:evidence:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" }
+  }
+}

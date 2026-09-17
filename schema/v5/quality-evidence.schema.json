@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "title": "Change Saga v5 quality evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "version", "id", "test_case", "test_revision", "role", "diffs", "verifications", "citations", "supersedes", "created_at"],
+  "properties": {
+    "$schema": { "const": "https://changesaga.dev/schema/v5/quality-evidence.schema.json" },
+    "version": { "const": 5 },
+    "id": { "$ref": "#/$defs/id" },
+    "test_case": { "$ref": "#/$defs/test_case_urn" },
+    "test_revision": { "$ref": "#/$defs/revision_urn" },
+    "role": { "enum": ["test_implementation", "implementation_under_test", "execution_artifact"] },
+    "diffs": {
+      "type": "array",
+      "maxItems": 20000,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/diff_urn" }
+    },
+    "verifications": {
+      "type": "array",
+      "maxItems": 20000,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/verification_urn" }
+    },
+    "citations": {
+      "type": "array",
+      "maxItems": 20000,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/citation_urn" }
+    },
+    "supersedes": {
+      "type": "array",
+      "maxItems": 10000,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/evidence_urn" }
+    },
+    "created_at": { "type": "string", "format": "date-time" },
+    "request_id": { "$ref": "#/$defs/id" }
+  },
+  "anyOf": [
+    { "properties": { "diffs": { "minItems": 1 } } },
+    { "properties": { "verifications": { "minItems": 1 } } },
+    { "properties": { "citations": { "minItems": 1 } } }
+  ],
+  "allOf": [
+    {
+      "if": { "properties": { "role": { "enum": ["test_implementation", "implementation_under_test"] } }, "required": ["role"] },
+      "then": { "properties": { "diffs": { "minItems": 1 } } }
+    },
+    {
+      "if": { "properties": { "role": { "const": "execution_artifact" } }, "required": ["role"] },
+      "then": {
+        "properties": { "diffs": { "maxItems": 0 } },
+        "anyOf": [
+          { "properties": { "verifications": { "minItems": 1 } } },
+          { "properties": { "citations": { "minItems": 1 } } }
+        ]
+      }
+    }
+  ],
+  "$defs": {
+    "id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "test_case_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:test-case:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "revision_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:test-case:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:revision:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "evidence_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:test-case:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:evidence:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "verification_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:verification:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "citation_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:citation:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "diff_urn": { "type": "string", "pattern": "^saga-diff://v1/(line|event)\\?" }
+  }
+}

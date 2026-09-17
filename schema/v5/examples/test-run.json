@@ -1,0 +1,18 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-run.schema.json",
+  "version": 5,
+  "id": "ci-20260917-1",
+  "test_case": "urn:change-saga:checkout-refund:test-case:refund-at-deadline",
+  "test_revision": "urn:change-saga:checkout-refund:test-case:refund-at-deadline:revision:r1",
+  "parents": [],
+  "source": {
+    "repository": "https://github.com/acme/checkout.git",
+    "base": "0123456789abcdef0123456789abcdef01234567",
+    "head": "product-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "result": "passed",
+  "summary": "Boundary case passed in CI on Linux.",
+  "command": "go test ./internal/refund -run TestRefundAtDeadline",
+  "evidence": ["urn:change-saga:checkout-refund:test-case:refund-at-deadline:evidence:deadline-test-code"],
+  "executed_at": "2026-09-17T21:10:00Z"
+}

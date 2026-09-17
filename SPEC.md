@@ -1,5 +1,208 @@
 # Change Saga formats
 
+## Report format v5 contract
+
+Version 5 is the report-container evolution for requirements, visual technical
+design, implementation evidence, and quality. It is not a successor to the
+slide-native v4 mode. A v5 Saga has one `saga.json`, one Saga ID, ordinary v2
+report components, v3 requirement/work-plan components, and optional embedded
+byte-compatible v4 deck bundles under `___slides/`. It MUST NOT contain the v4
+root `00-saga.json` or the v4 `presentation` member.
+
+The normative schemas are under [`schema/v5`](schema/v5). They are published
+before runtime support intentionally: production readers and mutation commands
+MUST continue to reject version 5 until the corresponding read and write phases
+are enabled. In particular, no existing command may silently upgrade a v2, v3,
+or v4 document or emit a v5 record.
+
+### Container and component compatibility
+
+The v5 manifest has exactly the v3 report-manifest field contract with
+`version: 5` and the v5 schema identifier. It adds no aggregate quality,
+coverage, relation, or deck fields. The root layout is:
+
+```text
+<id>.saga/
+  saga.json
+  <v2 report content>
+  ___requirements/
+    <v3 stories and citations>
+    relations/                 # mixed v3 history and v5 relations
+    coverage-exceptions/       # v5 immutable decisions
+  ___slides/                   # optional embedded v4 deck bundles
+  ___workplan/                 # optional v3 work plan
+  ___quality/                  # absent until quality is adopted
+    policies/
+    test-cases/<id>.test/
+      test-case.json
+      revisions/
+      events/
+      evidence/
+      runs/
+  ___claims/                   # v2
+  ___verifications/            # v2
+  ___review/                   # existing review overlay
+```
+
+Every retained v2, v3, or v4 component is interpreted by its original schema
+and remains byte-compatible. V5 introduces only the v5 records in the table
+below. Every listed object boundary is closed; record files are bounded to one
+MiB, collection limits are enforced at runtime, and every ID uses
+`[A-Za-z0-9][A-Za-z0-9._-]{0,127}`.
+
+| Record | Schema | Required semantic fields | Runtime-only checks |
+| --- | --- | --- | --- |
+| Manifest | `v5/saga.schema.json` | v3 manifest fields, `version: 5` | canonical repository identity; report-only root composition |
+| Relation | `v5/relation.schema.json` | endpoints, type, scope, pins required by the matrix, rationale, state, time | same Saga, no self-edge, canonical conflict ordering, graph acyclicity/currentness |
+| Coverage exception | `v5/coverage-exception.schema.json` | axis, criterion/revision pin, rationale, citation, supersession set | current revision, resolved citations, one unsuperseded head |
+| Test-case identity | `v5/test-case.schema.json` | immutable ID and creation time | filename/package match and one identity per package |
+| Test-case revision | `v5/test-case-revision.schema.json` | full definition, parents, kinds, automation, ordered steps | one root, reachable acyclic graph, unique/non-reused step IDs |
+| Test lifecycle | `v5/test-case-event.schema.json` | parents and proposed/active/deprecated/retired state | one root, reachable acyclic graph, explicit multi-head conflicts |
+| Quality evidence | `v5/quality-evidence.schema.json` | test revision, role, at least one locator, supersession set | canonical/current diff URIs, resolved local URNs, acyclic supersession |
+| Test run | `v5/test-run.schema.json` | test revision, parents, exact source identity, result, evidence, execution time | current source/revision/evidence, one root, acyclic graph, visible multi-head conflicts |
+| Quality policy | `v5/quality-policy.schema.json` | criterion/revision, required kinds, allowed automation, rationale | resolved current criterion, acyclic supersession, one policy head |
+
+`___quality` absent means `not_adopted`; an existing quality root with no test
+case packages means `adopted_empty`. Neither state is equivalent to successful
+quality coverage.
+
+### V5 identities and quality records
+
+Quality URNs are canonical and local to the manifest Saga ID:
+
+```text
+urn:change-saga:<saga>:test-case:<test>
+urn:change-saga:<saga>:test-case:<test>:revision:<revision>
+urn:change-saga:<saga>:test-case:<test>:step:<step>
+urn:change-saga:<saga>:test-case:<test>:event:<event>
+urn:change-saga:<saga>:test-case:<test>:evidence:<evidence>
+urn:change-saga:<saga>:test-case:<test>:run:<run>
+urn:change-saga:<saga>:quality-policy:<policy>
+urn:change-saga:<saga>:coverage-exception:<exception>
+```
+
+A test identity is immutable. Revisions are append-only complete snapshots;
+their `steps` array is execution order. `coverage_kinds` is a non-empty unique
+subset of `positive`, `negative`, and `edge`; `automation` is `manual`,
+`automated`, or `hybrid`. Lifecycle is a separate append-only event graph with
+states `proposed`, `active`, `deprecated`, and `retired`. Definition state does
+not imply a run result. An active test can satisfy coverage only when its
+current revision contains at least one step and a current direct `verifies`
+relation.
+
+The unique lifecycle root MUST be `proposed`. For a single-parent event, the
+allowed transitions are `proposed -> active|deprecated|retired`,
+`active -> deprecated|retired`, and `deprecated -> active|retired`; `retired`
+is terminal. A multi-parent event is an explicit head reconciliation and may
+choose any lifecycle state. Duplicate or missing parents, multiple roots, and
+cycles are invalid. Multiple heads remain a loadable, blocking conflict rather
+than being ordered by timestamp.
+
+Quality evidence roles are `test_implementation`,
+`implementation_under_test`, and `execution_artifact`. The first two require
+one or more exact line/event diff URIs. Execution artifacts forbid diff URIs
+and require a verification or citation. Every evidence record contains the
+four explicit arrays `diffs`, `verifications`, `citations`, and `supersedes`;
+projection uses the supersession graph, never timestamps, to choose current
+heads.
+
+Runs are immutable graph events with results `passed`, `failed`, `blocked`, or
+`skipped`. A passing literal is current only when the run is the unique head,
+pins the unique current test revision, repeats the Saga's current canonical
+repository/base/product-head identity, and resolves all referenced current
+evidence. A command is optional so manual tests can record an execution without
+inventing a shell command. Reads MUST NOT execute it.
+
+Policies are immutable per-criterion decisions. `required_kinds` and
+`allowed_automation` are non-empty unique sets. In the absence of a policy the
+quality projection requires `positive`; a policy can additionally require
+`negative` and/or `edge`. Coverage exceptions use axis `design` or `quality`,
+pin one story revision, and require a nonblank rationale plus at least one
+resolved citation. There is no delivery exception.
+
+### V5 relation matrix
+
+Every v5 relation carries `scope`. `self` applies only to the named source;
+`descendants` is valid only for a Deck or Slide source on an `addresses` or
+`explains` relation. An Item and every report-design source MUST use `self`.
+Every digest is lowercase `sha256:` followed by 64 hexadecimal digits.
+
+| Type | Source | Target | Required pins |
+| --- | --- | --- | --- |
+| `refines` | story or criterion | story or criterion | source and target story revisions |
+| `addresses` | report design, Deck, Slide, or Item | story or criterion | source content digest and target story revision |
+| `implements` | work item | report design or criterion | work-item revision; target design digest or target story revision |
+| `explains` | Deck, Slide, or Item | story or criterion | target story revision; source digest is recommended |
+| `verifies` | claim, verification, or test case | criterion | target story revision; test cases also pin their revision |
+| `supersedes` | resource | same resource kind | pins applicable to each mutable endpoint |
+| `conflicts_with` | story or criterion | story or criterion | both story revisions |
+
+All endpoints MUST use the same Saga ID. Self-relations are invalid. Active
+`refines` and `supersedes` graphs are acyclic. A `conflicts_with` edge is stored
+once with endpoints in lexical order and is interpreted symmetrically. V3
+relations remain valid history in a v5 container; their existing meaning and
+bytes do not change. In particular, a v3 `explains` relation is a legacy review
+explanation and never becomes design coverage.
+
+### Canonical visual content digests
+
+Visual digests use the following `visual-v1` algorithm. It is deliberately
+independent of filesystem record names and excludes diffs, claims,
+verifications, comments, approvals, and every other overlay.
+
+1. Parse each v4 manifest with strict JSON (duplicate keys and trailing data
+   are invalid), then serialize its semantic JSON value with RFC 8785 JSON
+   Canonicalization Scheme (JCS). The original `$schema`, if present, is part
+   of the value. Storage filenames and filesystem metadata are not.
+2. A framed value is `uint64-big-endian(byte-length) || bytes`. Hash input is a
+   UTF-8 domain string followed by NUL, then each stated value as one frame.
+3. Item manifest digest is SHA-256 over domain
+   `change-saga-visual-item-manifest-v1` and the canonical Item manifest.
+4. Item content digest is SHA-256 over domain `change-saga-visual-item-v1`, the
+   canonical Item manifest, and the raw bytes of its Slide's validated
+   entrypoint asset.
+5. Slide content digest is SHA-256 over domain `change-saga-visual-slide-v1`,
+   the canonical Slide manifest, the raw entrypoint bytes, then every Item
+   manifest digest ordered by `(rank, id)` as lowercase ASCII
+   `sha256:<64-hex>`.
+6. Deck content digest is SHA-256 over domain `change-saga-visual-deck-v1`, the
+   canonical Deck manifest, then every Slide content digest ordered by
+   `(rank, id)` in the same ASCII form.
+7. The externally stored result is lowercase `sha256:<64-hex>`.
+
+Thus a selector, Item, Slide asset, Slide manifest, or Deck manifest edit
+invalidates the relevant relation; adding or changing an overlay does not.
+Deck/Slide containment is traversed only after validating exact parent IDs and
+only when the relation explicitly says `scope: descendants`.
+
+### Query API v2 contract
+
+The closed response contract is
+[`schema/v5/query-v2.schema.json`](schema/v5/query-v2.schema.json). V2 uses the
+existing query envelope with `schema: "change-saga.ai/v2"`, snapshot-bound
+cursor pagination, deterministic ordering, and operation-specific closed
+`data`. V1 responses remain byte-compatible.
+
+Every transitive path is an ordered array of typed hops. Hop types are
+`relation`, `contains`, `owns_diff`, `has_quality_evidence`, and
+`matches_item_diff`; each carries `from`, `to`, and an independently reported
+`current`, `stale`, `invalid`, or `conflicted` status. A path separately reports
+`precision`, relation/evidence provenance, shared-diff state, and diagnostics.
+No score or percentage substitutes for the per-axis facts.
+
+Design coverage states are `covered_direct`, `covered_broad`, `excluded`,
+`gap`, `stale`, `invalid`, and `conflicted`. Quality states are `covered`,
+`missing_kind`, `not_run`, `failed`, `blocked`, `stale`, `excluded`, `invalid`,
+and `conflicted`. Readiness reports independent `requirements_ready`,
+`design_ready`, `implementation_trace_ready`, `quality_ready`,
+`ready_for_review`, and `review_complete` gates with their blocker paths.
+
+Schema validation cannot establish same-Saga equality, graph rules, current
+Git identity, exact selector resolution, or canonical URI equivalence. Runtime
+validation MUST enforce those checks before returning a current path or a ready
+gate. Reads do not write files, execute commands, fetch URLs, or resolve
+external content.
+
 ## Report-owned slide decks (v3 hybrid composition)
 
 A v3 Report Saga may contain zero or more focused slide decks beneath

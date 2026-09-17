@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://changesaga.dev/schema/v5/quality-policy.schema.json",
+  "title": "Change Saga v5 criterion quality policy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "version", "id", "criterion", "story_revision", "required_kinds", "allowed_automation", "supersedes", "rationale", "created_at"],
+  "properties": {
+    "$schema": { "const": "https://changesaga.dev/schema/v5/quality-policy.schema.json" },
+    "version": { "const": 5 },
+    "id": { "$ref": "#/$defs/id" },
+    "criterion": { "$ref": "#/$defs/criterion_urn" },
+    "story_revision": { "$ref": "#/$defs/story_revision_urn" },
+    "required_kinds": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 3,
+      "uniqueItems": true,
+      "items": { "enum": ["positive", "negative", "edge"] }
+    },
+    "allowed_automation": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 3,
+      "uniqueItems": true,
+      "items": { "enum": ["manual", "automated", "hybrid"] }
+    },
+    "supersedes": {
+      "type": "array",
+      "maxItems": 10000,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/policy_urn" }
+    },
+    "rationale": { "type": "string", "minLength": 1 },
+    "created_at": { "type": "string", "format": "date-time" },
+    "request_id": { "$ref": "#/$defs/id" }
+  },
+  "$defs": {
+    "id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "criterion_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:story:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:criterion:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "story_revision_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:story:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:revision:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "policy_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:quality-policy:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" }
+  }
+}

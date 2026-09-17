@@ -1,0 +1,237 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://changesaga.dev/schema/v5/query-v2.schema.json",
+  "title": "Change Saga v5 query API v2 response",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "ok", "data", "page"],
+  "properties": {
+    "schema": { "const": "change-saga.ai/v2" },
+    "ok": { "const": true },
+    "data": {
+      "oneOf": [
+        { "$ref": "#/$defs/design_coverage" },
+        { "$ref": "#/$defs/traceability" },
+        { "$ref": "#/$defs/quality_coverage" },
+        { "$ref": "#/$defs/coverage_comparison" },
+        { "$ref": "#/$defs/readiness" }
+      ]
+    },
+    "page": { "$ref": "#/$defs/page" },
+    "snapshot": { "type": "string", "minLength": 1 }
+  },
+  "$defs": {
+    "page": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["total", "returned", "has_more", "next_cursor"],
+      "properties": {
+        "total": { "type": "integer", "minimum": 0 },
+        "returned": { "type": "integer", "minimum": 0 },
+        "has_more": { "type": "boolean" },
+        "next_cursor": { "type": ["string", "null"] }
+      }
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["covered_direct", "covered_broad", "excluded", "gap", "stale", "invalid", "conflicted"],
+      "properties": {
+        "covered_direct": { "type": "integer", "minimum": 0 },
+        "covered_broad": { "type": "integer", "minimum": 0 },
+        "excluded": { "type": "integer", "minimum": 0 },
+        "gap": { "type": "integer", "minimum": 0 },
+        "stale": { "type": "integer", "minimum": 0 },
+        "invalid": { "type": "integer", "minimum": 0 },
+        "conflicted": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "diagnostic": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "message"],
+      "properties": {
+        "code": { "type": "string", "minLength": 1 },
+        "message": { "type": "string", "minLength": 1 },
+        "resource": { "type": "string", "minLength": 1 }
+      }
+    },
+    "hop": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "from", "to", "status"],
+      "properties": {
+        "type": { "enum": ["relation", "contains", "owns_diff", "has_quality_evidence", "matches_item_diff"] },
+        "from": { "type": "string", "minLength": 1 },
+        "to": { "type": "string", "minLength": 1 },
+        "status": { "enum": ["current", "stale", "invalid", "conflicted"] },
+        "relation": { "type": "string", "minLength": 1 },
+        "evidence_file": { "type": "string", "minLength": 1 },
+        "diagnostics": { "type": "array", "items": { "$ref": "#/$defs/diagnostic" } }
+      }
+    },
+    "path": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "precision", "hops", "diagnostics"],
+      "properties": {
+        "status": { "enum": ["current", "stale", "invalid", "conflicted"] },
+        "precision": { "enum": ["direct", "broad", "none"] },
+        "relation": { "type": "string", "minLength": 1 },
+        "evidence_file": { "type": "string", "minLength": 1 },
+        "shared_diff": { "type": "boolean" },
+        "hops": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/hop" } },
+        "diagnostics": { "type": "array", "items": { "$ref": "#/$defs/diagnostic" } }
+      }
+    },
+    "design_criterion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["criterion", "story_revision", "status", "precision", "targets", "paths", "diagnostics"],
+      "properties": {
+        "criterion": { "type": "string", "minLength": 1 },
+        "story_revision": { "type": "string", "minLength": 1 },
+        "status": { "enum": ["covered_direct", "covered_broad", "excluded", "gap", "stale", "invalid", "conflicted"] },
+        "precision": { "enum": ["direct", "broad", "none"] },
+        "targets": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+        "exception": { "type": "string", "minLength": 1 },
+        "paths": { "type": "array", "items": { "$ref": "#/$defs/path" } },
+        "diagnostics": { "type": "array", "items": { "$ref": "#/$defs/diagnostic" } }
+      }
+    },
+    "design_coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["axis", "counts", "criteria"],
+      "properties": {
+        "axis": { "const": "design" },
+        "counts": { "$ref": "#/$defs/counts" },
+        "criteria": { "type": "array", "maxItems": 1000, "items": { "$ref": "#/$defs/design_criterion" } }
+      }
+    },
+    "traceability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["axis", "paths", "unlinked_code_evidence"],
+      "properties": {
+        "axis": { "const": "design-delivery" },
+        "paths": { "type": "array", "maxItems": 1000, "items": { "$ref": "#/$defs/path" } },
+        "unlinked_code_evidence": {
+          "type": "array",
+          "maxItems": 1000,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["item", "diff", "evidence_file"],
+            "properties": {
+              "item": { "type": "string", "minLength": 1 },
+              "diff": { "type": "string", "minLength": 1 },
+              "evidence_file": { "type": "string", "minLength": 1 }
+            }
+          }
+        }
+      }
+    },
+    "quality_kind": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "required", "status", "tests", "paths", "diagnostics"],
+      "properties": {
+        "kind": { "enum": ["positive", "negative", "edge"] },
+        "required": { "type": "boolean" },
+        "status": { "enum": ["covered", "missing_kind", "not_run", "failed", "blocked", "stale", "excluded", "invalid", "conflicted"] },
+        "tests": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+        "paths": { "type": "array", "items": { "$ref": "#/$defs/path" } },
+        "diagnostics": { "type": "array", "items": { "$ref": "#/$defs/diagnostic" } }
+      }
+    },
+    "quality_criterion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["criterion", "story_revision", "required_kinds", "observed_kinds", "kinds"],
+      "properties": {
+        "criterion": { "type": "string", "minLength": 1 },
+        "story_revision": { "type": "string", "minLength": 1 },
+        "required_kinds": { "type": "array", "uniqueItems": true, "items": { "enum": ["positive", "negative", "edge"] } },
+        "observed_kinds": { "type": "array", "uniqueItems": true, "items": { "enum": ["positive", "negative", "edge"] } },
+        "kinds": { "type": "array", "items": { "$ref": "#/$defs/quality_kind" } }
+      }
+    },
+    "quality_coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["axis", "capability", "criteria"],
+      "properties": {
+        "axis": { "const": "quality" },
+        "capability": { "enum": ["not_adopted", "adopted_empty", "adopted"] },
+        "criteria": { "type": "array", "maxItems": 1000, "items": { "$ref": "#/$defs/quality_criterion" } }
+      }
+    },
+    "design_comparison": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "targets"],
+      "properties": {
+        "status": { "type": "string", "minLength": 1 },
+        "targets": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } }
+      }
+    },
+    "implementation_comparison": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "diffs"],
+      "properties": {
+        "status": { "type": "string", "minLength": 1 },
+        "diffs": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } }
+      }
+    },
+    "quality_comparison": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "required_kinds", "observed_kinds", "tests"],
+      "properties": {
+        "status": { "type": "string", "minLength": 1 },
+        "required_kinds": { "type": "array", "uniqueItems": true, "items": { "enum": ["positive", "negative", "edge"] } },
+        "observed_kinds": { "type": "array", "uniqueItems": true, "items": { "enum": ["positive", "negative", "edge"] } },
+        "tests": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } }
+      }
+    },
+    "coverage_comparison": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["criterion", "design", "implementation", "quality", "diagnostics"],
+      "properties": {
+        "criterion": { "type": "string", "minLength": 1 },
+        "design": { "$ref": "#/$defs/design_comparison" },
+        "implementation": { "$ref": "#/$defs/implementation_comparison" },
+        "quality": { "$ref": "#/$defs/quality_comparison" },
+        "diagnostics": { "type": "array", "items": { "$ref": "#/$defs/diagnostic" } }
+      }
+    },
+    "gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "blockers"],
+      "properties": {
+        "status": { "enum": ["ready", "blocked", "not_applicable"] },
+        "blockers": { "type": "array", "items": { "$ref": "#/$defs/path" } }
+      }
+    },
+    "readiness": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["policy", "requirements_ready", "design_ready", "implementation_trace_ready", "quality_ready", "ready_for_review", "review_complete", "counts", "criteria"],
+      "properties": {
+        "policy": { "type": "string", "minLength": 1 },
+        "requirements_ready": { "$ref": "#/$defs/gate" },
+        "design_ready": { "$ref": "#/$defs/gate" },
+        "implementation_trace_ready": { "$ref": "#/$defs/gate" },
+        "quality_ready": { "$ref": "#/$defs/gate" },
+        "ready_for_review": { "$ref": "#/$defs/gate" },
+        "review_complete": { "$ref": "#/$defs/gate" },
+        "counts": { "$ref": "#/$defs/counts" },
+        "criteria": { "type": "array", "maxItems": 1000, "items": { "$ref": "#/$defs/coverage_comparison" } }
+      }
+    }
+  }
+}
