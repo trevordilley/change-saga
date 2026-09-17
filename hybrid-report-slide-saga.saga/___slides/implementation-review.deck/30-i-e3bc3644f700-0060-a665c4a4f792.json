@@ -4,14 +4,14 @@
   "slide": "reviewer-workspace",
   "rank": 60,
   "kind": "callout",
-  "label": "Append-only review",
-  "description": "Comments and decisions remain independent overlay records under the parent Saga.",
+  "label": "Review stays in place",
+  "description": "Comments, replies, thread state, file review, and slide decisions update in place without reloading or changing the active slide context.",
   "selector": {
     "type": "element",
     "element_id": "review-overlay"
   },
   "about": "slide-review",
-  "body": "Embedded slides reuse the flat review overlay, so concurrent feedback adds records instead of rewriting deck content.",
+  "body": "Embedded slides reuse the flat review overlay, so concurrent feedback adds records and refreshes only the affected review surface.",
   "placement": "bottom",
   "leader": "line"
 }
