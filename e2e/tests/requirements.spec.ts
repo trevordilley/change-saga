@@ -42,9 +42,13 @@ test("requirements remain canonical while stories and criteria get dedicated rev
   await expect(page).toHaveURL(/\/requirements\/canonical-review\/criteria\/stable-targets$/);
   await expect(page.getByRole("heading", { name: "Review canonical requirements", level: 1 })).toBeVisible();
   await expect(page.getByText(statement)).toBeVisible();
+  const storyDetails = page.locator("details.requirement-story-details");
+  await expect(storyDetails).not.toHaveAttribute("open", "");
+  await expect(storyDetails.getByRole("heading", { name: "Characterization" })).not.toBeVisible();
   await expectNoSeriousAccessibilityViolations(page);
   const criterion = page.locator('[data-requirement-target="urn:change-saga:wave-one:story:canonical-review:criterion:stable-targets"]');
   await expect(criterion).toBeVisible();
   await expect(criterion).toHaveClass(/selected/);
-  await expect(criterion.getByRole("link", { name: "Open AC 01 as an addressable requirement" })).toBeVisible();
+  await storyDetails.getByText("Story details", { exact: true }).click();
+  await expect(storyDetails.getByRole("heading", { name: "Characterization" })).toBeVisible();
 });

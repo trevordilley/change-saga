@@ -82,10 +82,18 @@ func TestRequirementsTemplatesGiveOverviewAndStoryDistinctPresentations(t *testi
 	if err := tmpl.ExecuteTemplate(&rendered, "requirements-page", detail); err != nil {
 		t.Fatal(err)
 	}
-	for _, expected := range []string{"User story", "Characterization", "Testable obligations", "requirement-criterion selected", storyURN + ":criterion:fast"} {
+	for _, expected := range []string{"Story details", "Characterization", "Acceptance criteria", "requirement-criterion selected", storyURN + ":criterion:fast"} {
 		if !strings.Contains(rendered.String(), expected) {
 			t.Fatalf("story detail missing %q: %s", expected, rendered.String())
 		}
+	}
+	for _, excluded := range []string{"requirement-story-id", "requirement-badges", "<footer>"} {
+		if strings.Contains(rendered.String(), excluded) {
+			t.Fatalf("initial story presentation contains extra chrome %q: %s", excluded, rendered.String())
+		}
+	}
+	if strings.Contains(rendered.String(), `<details class="requirement-story-details" open`) {
+		t.Fatalf("story details must be collapsed by default: %s", rendered.String())
 	}
 }
 
