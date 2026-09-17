@@ -1,0 +1,10 @@
+{
+  "item_manifest": "{\"body\":\"Reject at the exact cutoff.\",\"description\":\"Rejects exact cutoff.\",\"id\":\"deadline-guard\",\"kind\":\"callout\",\"label\":\"Deadline guard\",\"rank\":20,\"selector\":{\"element_id\":\"deadline-guard\",\"type\":\"element\"},\"slide\":\"decision-flow\",\"version\":4}",
+  "slide_manifest": "{\"deck\":\"refund-architecture\",\"entrypoint\":\"slide.svg\",\"id\":\"decision-flow\",\"intent\":\"explain\",\"layout\":\"diagram\",\"media_type\":\"image/svg+xml\",\"rank\":10,\"reading_order\":[\"deadline-guard\"],\"takeaway\":\"Deadline is inclusive.\",\"title\":\"Decision flow\",\"version\":4}",
+  "deck_manifest": "{\"id\":\"refund-architecture\",\"objective\":\"Explain the refund boundary.\",\"rank\":10,\"role\":\"change\",\"title\":\"Refund architecture\",\"version\":4}",
+  "asset": "<svg viewBox=\"0 0 10 10\"><g id=\"deadline-guard\"/></svg>\n",
+  "item_manifest_digest": "sha256:e926b609dcda9a8b4fbbeeed099bac9192ce19f7525be15c30d39ffba78ec0c2",
+  "item_content_digest": "sha256:68d618c70f941acf625bc62ab2d1eebeea7e0203d32df194a2bafed75e08a28d",
+  "slide_content_digest": "sha256:282d2dd17e656ccbc4e2baf4c5a43883a9f14fc54a630c9be2667a155ab15174",
+  "deck_content_digest": "sha256:45196a7fdd1ab1db919e89758ad73af1fab328dbc3a2c4dbf83adc172e0e0836"
+}

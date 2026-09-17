@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "refund-at-deadline-verifies-cutoff",
+  "type": "verifies",
+  "from": "urn:change-saga:checkout-refund:test-case:refund-at-deadline",
+  "to": "urn:change-saga:checkout-refund:story:refund-window:criterion:at-or-after-deadline",
+  "scope": "self",
+  "from_revision": "urn:change-saga:checkout-refund:test-case:refund-at-deadline:revision:r1",
+  "to_revision": "urn:change-saga:checkout-refund:story:refund-window:revision:r2",
+  "rationale": "The case checks the inclusive rejection boundary and reason.",
+  "state": "active",
+  "created_at": "2026-09-17T20:05:00Z"
+}

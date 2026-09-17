@@ -1,0 +1,12 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/coverage-exception.schema.json",
+  "version": 5,
+  "id": "docs-only-no-visual-design",
+  "axis": "design",
+  "criterion": "urn:change-saga:checkout-refund:story:refund-window:criterion:support-playbook",
+  "story_revision": "urn:change-saga:checkout-refund:story:refund-window:revision:r2",
+  "rationale": "The obligation changes only an existing operational playbook template.",
+  "citations": ["urn:change-saga:checkout-refund:citation:support-policy"],
+  "supersedes": [],
+  "created_at": "2026-09-17T20:30:00Z"
+}

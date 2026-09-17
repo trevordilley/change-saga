@@ -1,0 +1,200 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "title": "Change Saga v5 typed relation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "version", "id", "type", "from", "to", "scope", "rationale", "state", "created_at"],
+  "properties": {
+    "$schema": { "const": "https://changesaga.dev/schema/v5/relation.schema.json" },
+    "version": { "const": 5 },
+    "id": { "$ref": "#/$defs/id" },
+    "type": { "enum": ["refines", "addresses", "implements", "explains", "verifies", "supersedes", "conflicts_with"] },
+    "from": { "$ref": "#/$defs/endpoint_urn" },
+    "to": { "$ref": "#/$defs/endpoint_urn" },
+    "scope": { "enum": ["self", "descendants"] },
+    "rationale": { "type": "string", "minLength": 1 },
+    "from_revision": { "$ref": "#/$defs/revision_urn" },
+    "to_revision": { "$ref": "#/$defs/revision_urn" },
+    "from_content_digest": { "$ref": "#/$defs/digest" },
+    "to_content_digest": { "$ref": "#/$defs/digest" },
+    "state": { "enum": ["active", "superseded"] },
+    "created_at": { "type": "string", "format": "date-time" },
+    "request_id": { "$ref": "#/$defs/id" },
+    "superseded_at": { "type": "string", "format": "date-time" },
+    "supersede_request_id": { "$ref": "#/$defs/id" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "state": { "const": "superseded" } }, "required": ["state"] },
+      "then": { "required": ["superseded_at"] },
+      "else": { "not": { "anyOf": [{ "required": ["superseded_at"] }, { "required": ["supersede_request_id"] }] } }
+    },
+    {
+      "if": { "properties": { "scope": { "const": "descendants" } }, "required": ["scope"] },
+      "then": {
+        "properties": {
+          "from": { "$ref": "#/$defs/deck_or_slide_urn" },
+          "type": { "enum": ["addresses", "explains"] }
+        }
+      }
+    },
+    {
+      "if": { "properties": { "type": { "const": "refines" } }, "required": ["type"] },
+      "then": {
+        "properties": { "from": { "$ref": "#/$defs/requirement_urn" }, "to": { "$ref": "#/$defs/requirement_urn" }, "scope": { "const": "self" } },
+        "required": ["from_revision", "to_revision"]
+      }
+    },
+    {
+      "if": { "properties": { "type": { "const": "addresses" } }, "required": ["type"] },
+      "then": {
+        "properties": { "from": { "$ref": "#/$defs/design_urn" }, "to": { "$ref": "#/$defs/requirement_urn" } },
+        "required": ["from_content_digest", "to_revision"]
+      }
+    },
+    {
+      "if": { "properties": { "type": { "const": "implements" } }, "required": ["type"] },
+      "then": {
+        "properties": { "from": { "$ref": "#/$defs/work_item_urn" }, "to": { "$ref": "#/$defs/design_or_criterion_urn" }, "scope": { "const": "self" } },
+        "required": ["from_revision"],
+        "oneOf": [
+          { "properties": { "to": { "$ref": "#/$defs/criterion_urn" } }, "required": ["to_revision"] },
+          { "properties": { "to": { "$ref": "#/$defs/report_design_urn" } }, "required": ["to_content_digest"] }
+        ]
+      }
+    },
+    {
+      "if": { "properties": { "type": { "const": "explains" } }, "required": ["type"] },
+      "then": {
+        "properties": { "from": { "$ref": "#/$defs/visual_urn" }, "to": { "$ref": "#/$defs/requirement_urn" } },
+        "required": ["to_revision"]
+      }
+    },
+    {
+      "if": { "properties": { "type": { "const": "verifies" } }, "required": ["type"] },
+      "then": {
+        "properties": { "from": { "$ref": "#/$defs/verifier_urn" }, "to": { "$ref": "#/$defs/criterion_urn" }, "scope": { "const": "self" } },
+        "required": ["to_revision"]
+      }
+    },
+    {
+      "if": { "properties": { "type": { "const": "verifies" }, "from": { "$ref": "#/$defs/test_case_urn" } }, "required": ["type", "from"] },
+      "then": { "required": ["from_revision"] }
+    },
+    {
+      "if": { "properties": { "type": { "enum": ["supersedes", "conflicts_with"] } }, "required": ["type"] },
+      "then": { "properties": { "scope": { "const": "self" } } }
+    },
+    {
+      "if": { "properties": { "type": { "const": "supersedes" } }, "required": ["type"] },
+      "then": {
+        "oneOf": [
+          { "properties": { "from": { "$ref": "#/$defs/story_urn" }, "to": { "$ref": "#/$defs/story_urn" } } },
+          { "properties": { "from": { "$ref": "#/$defs/criterion_urn" }, "to": { "$ref": "#/$defs/criterion_urn" } } },
+          { "properties": { "from": { "$ref": "#/$defs/chapter_urn" }, "to": { "$ref": "#/$defs/chapter_urn" } } },
+          { "properties": { "from": { "$ref": "#/$defs/section_urn" }, "to": { "$ref": "#/$defs/section_urn" } } },
+          { "properties": { "from": { "$ref": "#/$defs/fragment_urn" }, "to": { "$ref": "#/$defs/fragment_urn" } } },
+          { "properties": { "from": { "$ref": "#/$defs/landmark_urn" }, "to": { "$ref": "#/$defs/landmark_urn" } } },
+          { "properties": { "from": { "$ref": "#/$defs/deck_urn" }, "to": { "$ref": "#/$defs/deck_urn" } } },
+          { "properties": { "from": { "$ref": "#/$defs/slide_urn" }, "to": { "$ref": "#/$defs/slide_urn" } } },
+          { "properties": { "from": { "$ref": "#/$defs/item_urn" }, "to": { "$ref": "#/$defs/item_urn" } } },
+          { "properties": { "from": { "$ref": "#/$defs/work_item_urn" }, "to": { "$ref": "#/$defs/work_item_urn" } } },
+          { "properties": { "from": { "$ref": "#/$defs/test_case_urn" }, "to": { "$ref": "#/$defs/test_case_urn" } } },
+          { "properties": { "from": { "$ref": "#/$defs/claim_urn" }, "to": { "$ref": "#/$defs/claim_urn" } } },
+          { "properties": { "from": { "$ref": "#/$defs/verification_urn" }, "to": { "$ref": "#/$defs/verification_urn" } } },
+          { "properties": { "from": { "$ref": "#/$defs/citation_urn" }, "to": { "$ref": "#/$defs/citation_urn" } } },
+          { "properties": { "from": { "$ref": "#/$defs/relation_urn" }, "to": { "$ref": "#/$defs/relation_urn" } } },
+          { "properties": { "from": { "$ref": "#/$defs/wave_urn" }, "to": { "$ref": "#/$defs/wave_urn" } } },
+          { "properties": { "from": { "$ref": "#/$defs/dependency_urn" }, "to": { "$ref": "#/$defs/dependency_urn" } } },
+          { "properties": { "from": { "$ref": "#/$defs/contract_urn" }, "to": { "$ref": "#/$defs/contract_urn" } } },
+          { "properties": { "from": { "$ref": "#/$defs/quality_policy_urn" }, "to": { "$ref": "#/$defs/quality_policy_urn" } } },
+          { "properties": { "from": { "$ref": "#/$defs/coverage_exception_urn" }, "to": { "$ref": "#/$defs/coverage_exception_urn" } } }
+        ]
+      }
+    },
+    {
+      "if": { "properties": { "type": { "const": "conflicts_with" } }, "required": ["type"] },
+      "then": {
+        "properties": { "from": { "$ref": "#/$defs/requirement_urn" }, "to": { "$ref": "#/$defs/requirement_urn" } },
+        "required": ["from_revision", "to_revision"]
+      }
+    },
+    {
+      "if": { "properties": { "from": { "$ref": "#/$defs/design_urn" } }, "required": ["from"] },
+      "then": { "not": { "required": ["from_revision"] } }
+    },
+    {
+      "if": { "properties": { "to": { "$ref": "#/$defs/design_urn" } }, "required": ["to"] },
+      "then": { "not": { "required": ["to_revision"] } }
+    },
+    {
+      "if": { "properties": { "from": { "$ref": "#/$defs/revision_only_urn" } }, "required": ["from"] },
+      "then": { "not": { "required": ["from_content_digest"] } }
+    },
+    {
+      "if": { "properties": { "to": { "$ref": "#/$defs/revision_only_urn" } }, "required": ["to"] },
+      "then": { "not": { "required": ["to_content_digest"] } }
+    },
+    {
+      "if": { "properties": { "from": { "$ref": "#/$defs/immutable_urn" } }, "required": ["from"] },
+      "then": { "not": { "anyOf": [{ "required": ["from_revision"] }, { "required": ["from_content_digest"] }] } }
+    },
+    {
+      "if": { "properties": { "to": { "$ref": "#/$defs/immutable_urn" } }, "required": ["to"] },
+      "then": { "not": { "anyOf": [{ "required": ["to_revision"] }, { "required": ["to_content_digest"] }] } }
+    }
+  ],
+  "$defs": {
+    "id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+    "story_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:story:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "criterion_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:story:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:criterion:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "requirement_urn": { "oneOf": [{ "$ref": "#/$defs/story_urn" }, { "$ref": "#/$defs/criterion_urn" }] },
+    "chapter_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:chapter:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "section_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:section:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "fragment_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:fragment:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "landmark_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:fragment:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:landmark:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "report_design_urn": { "oneOf": [{ "$ref": "#/$defs/chapter_urn" }, { "$ref": "#/$defs/section_urn" }, { "$ref": "#/$defs/fragment_urn" }, { "$ref": "#/$defs/landmark_urn" }] },
+    "deck_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:deck:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "slide_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:slide:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "deck_or_slide_urn": { "oneOf": [{ "$ref": "#/$defs/deck_urn" }, { "$ref": "#/$defs/slide_urn" }] },
+    "item_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:slide:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:item:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "visual_urn": { "oneOf": [{ "$ref": "#/$defs/deck_or_slide_urn" }, { "$ref": "#/$defs/item_urn" }] },
+    "design_urn": { "oneOf": [{ "$ref": "#/$defs/report_design_urn" }, { "$ref": "#/$defs/visual_urn" }] },
+    "design_or_criterion_urn": { "oneOf": [{ "$ref": "#/$defs/report_design_urn" }, { "$ref": "#/$defs/criterion_urn" }] },
+    "work_item_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:work-item:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "test_case_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:test-case:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "claim_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:claim:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "verification_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:verification:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "citation_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:citation:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "relation_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:relation:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "wave_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:wave:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "dependency_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:dependency:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "contract_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:contract:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "quality_policy_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:quality-policy:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "coverage_exception_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:coverage-exception:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "verifier_urn": { "oneOf": [{ "$ref": "#/$defs/claim_urn" }, { "$ref": "#/$defs/verification_urn" }, { "$ref": "#/$defs/test_case_urn" }] },
+    "revision_only_urn": { "oneOf": [{ "$ref": "#/$defs/requirement_urn" }, { "$ref": "#/$defs/work_item_urn" }, { "$ref": "#/$defs/test_case_urn" }, { "$ref": "#/$defs/wave_urn" }, { "$ref": "#/$defs/contract_urn" }] },
+    "immutable_urn": { "oneOf": [{ "$ref": "#/$defs/claim_urn" }, { "$ref": "#/$defs/verification_urn" }, { "$ref": "#/$defs/citation_urn" }, { "$ref": "#/$defs/relation_urn" }, { "$ref": "#/$defs/dependency_urn" }, { "$ref": "#/$defs/quality_policy_urn" }, { "$ref": "#/$defs/coverage_exception_urn" }] },
+    "endpoint_urn": {
+      "oneOf": [
+        { "$ref": "#/$defs/requirement_urn" },
+        { "$ref": "#/$defs/design_urn" },
+        { "$ref": "#/$defs/work_item_urn" },
+        { "$ref": "#/$defs/verifier_urn" },
+        { "$ref": "#/$defs/citation_urn" },
+        { "$ref": "#/$defs/relation_urn" },
+        { "$ref": "#/$defs/wave_urn" },
+        { "$ref": "#/$defs/dependency_urn" },
+        { "$ref": "#/$defs/contract_urn" },
+        { "$ref": "#/$defs/quality_policy_urn" },
+        { "$ref": "#/$defs/coverage_exception_urn" }
+      ]
+    },
+    "revision_urn": {
+      "type": "string",
+      "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:(story|wave|work-item|contract|test-case):[A-Za-z0-9][A-Za-z0-9._-]{0,127}:revision:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "schema": "change-saga.ai/v2",
+  "ok": true,
+  "data": {
+    "axis": "design",
+    "counts": {
+      "covered_direct": 1,
+      "covered_broad": 0,
+      "excluded": 0,
+      "gap": 0,
+      "stale": 0,
+      "invalid": 0,
+      "conflicted": 0
+    },
+    "criteria": [
+      {
+        "criterion": "urn:change-saga:checkout-refund:story:refund-window:criterion:at-or-after-deadline",
+        "story_revision": "urn:change-saga:checkout-refund:story:refund-window:revision:r2",
+        "status": "covered_direct",
+        "precision": "direct",
+        "targets": ["urn:change-saga:checkout-refund:slide:decision-flow:item:deadline-guard"],
+        "paths": [],
+        "diagnostics": []
+      }
+    ]
+  },
+  "page": {
+    "total": 1,
+    "returned": 1,
+    "has_more": false,
+    "next_cursor": null
+  }
+}
