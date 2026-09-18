@@ -93,6 +93,22 @@ type Story struct {
 // agreement beyond that record is never inferred.
 func (story Story) Accepted() bool { return story.State == "accepted" }
 
+// Persona is one persona's coverage input. An active persona must be served
+// by at least one accepted story; a retired persona needs none.
+type Persona struct {
+	URN        string
+	Active     bool
+	Conflicted bool
+	ServedBy   []string
+}
+
+// PersonaOrphans is the stories that serve only retired personas. They are one
+// question for the author, retire them or reassign them, not one error each.
+type PersonaOrphans struct {
+	Personas []string
+	Stories  []string
+}
+
 // Prototype is the product-discovery input for product_ready. A prototype may
 // be temporarily unlinked during exploration; it simply cannot contribute to
 // readiness until a current annotation connects it to a story or criterion.
@@ -143,6 +159,10 @@ type ReviewDecision struct {
 // fact a loader established.
 type GateInputs struct {
 	Stories       []Story
+	// Personas and PersonaOrphans carry persona coverage: the persona ->
+	// story link of the persona -> story -> design -> code chain.
+	Personas       []Persona
+	PersonaOrphans []PersonaOrphans
 	Prototypes    []Prototype
 	Coverage      coverage.AxisProjection
 	QualityFacts  []QualityFact
@@ -215,6 +235,28 @@ func requirementsGate(inputs GateInputs) Gate {
 		Code: "accepted_story_present", Satisfied: accepted > 0,
 		Detail: countDetail(accepted, "accepted story", "accepted stories"),
 	})
+	personas := append([]Persona(nil), inputs.Personas...)
+	sort.Slice(personas, func(i, j int) bool { return personas[i].URN < personas[j].URN })
+	for _, persona := range personas {
+		if persona.Conflicted {
+			gate.fact(Fact{Code: "persona_lifecycle_head", Resource: persona.URN, Detail: "persona has competing lifecycle heads"})
+			continue
+		}
+		if !persona.Active {
+			continue
+		}
+		fact := Fact{
+			Code: "active_persona_served", Resource: persona.URN, Satisfied: len(persona.ServedBy) > 0,
+			Detail: countDetail(len(persona.ServedBy), "accepted story serves it", "accepted stories serve it"),
+		}
+		gate.fact(fact)
+	}
+	for _, group := range inputs.PersonaOrphans {
+		gate.fact(Fact{
+			Code: "retired_persona_stories_decided", Resource: strings.Join(group.Personas, ", "),
+			Detail: countDetail(len(group.Stories), "story serves", "stories serve") + " only retired personas: " + strings.Join(group.Stories, ", ") + "; retire them or reassign them",
+		})
+	}
 	return gate
 }
 

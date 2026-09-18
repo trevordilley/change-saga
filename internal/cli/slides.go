@@ -12,6 +12,8 @@ import (
 	"strings"
 	"unicode/utf8"
 
+	"github.com/twentyideas/changesaga/internal/applayout"
+	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
 	"github.com/twentyideas/changesaga/internal/store"
 )
@@ -28,7 +30,8 @@ func AddDeck(_ context.Context, args []string, out io.Writer) error {
 	flags := commandFlags("add-deck", commandUsage["add-deck"], out)
 	id := flags.String("id", "", "stable deck identifier")
 	title := flags.String("title", "", "deck title")
-	role := flags.String("role", "change", "deck role; implementation decks use change")
+	role := flags.String("role", "change", "deck role: change for an epic's implementation deck, onboarding for the app's onboarding deck")
+	epic := epicFlag(flags)
 	var rank optionalInt
 	flags.Var(&rank, "rank", "non-negative review order; defaults after the last deck")
 	objective := flags.String("objective", "", "one concise reviewer objective")
@@ -56,12 +59,32 @@ func AddDeck(_ context.Context, args []string, out io.Writer) error {
 		if !saga.ValidID(*id) || targetIDExists(document, *id) {
 			return fmt.Errorf("deck id %q is invalid or already used", *id)
 		}
-		if *role != "change" {
-			return fmt.Errorf("--role must be change")
+		var slidesRoot string
+		var peers []*saga.Deck
+		switch *role {
+		case saga.DeckRoleChange:
+			target, err := requireEpic(document.Root, *epic)
+			if err != nil {
+				return err
+			}
+			slidesRoot = filepath.Join(target.Dir, saga.EmbeddedSlidesDir)
+			if found := document.FindEpic(target.ID); found != nil {
+				peers = found.Decks
+			}
+		case saga.DeckRoleOnboarding:
+			if *epic != "" {
+				return fmt.Errorf("the onboarding deck belongs to the app, not an epic; omit --epic")
+			}
+			if len(document.Onboarding) > 0 {
+				return fmt.Errorf("the app already has onboarding deck %q", document.Onboarding[0].ID)
+			}
+			slidesRoot = filepath.Join(document.Root, applayout.OnboardingDir)
+		default:
+			return fmt.Errorf("--role must be change or onboarding")
 		}
 		chosenRank := rank.value
 		if !rank.set {
-			for _, deck := range document.Decks {
+			for _, deck := range peers {
 				if deck.Rank >= chosenRank {
 					chosenRank = deck.Rank + 10
 				}
@@ -73,9 +96,8 @@ func AddDeck(_ context.Context, args []string, out io.Writer) error {
 		if err != nil {
 			return err
 		}
-		slidesRoot := filepath.Join(document.Root, saga.EmbeddedSlidesDir)
 		if info, statErr := os.Lstat(slidesRoot); statErr == nil && (!info.IsDir() || info.Mode()&os.ModeSymlink != 0) {
-			return fmt.Errorf("%s must be a real directory", saga.EmbeddedSlidesDir)
+			return fmt.Errorf("%s must be a real directory", filepath.Base(slidesRoot))
 		} else if statErr != nil && !os.IsNotExist(statErr) {
 			return statErr
 		}
@@ -119,6 +141,7 @@ func AddSlide(_ context.Context, args []string, out io.Writer) error {
 	source := flags.String("source", "", "SVG, image, or self-contained HTML source")
 	mediaType := flags.String("media-type", "image/svg+xml", "visual media type")
 	entrypoint := flags.String("entrypoint", "slide.svg", "simple filename whose extension selects the compact slide asset name")
+	epic := epicFlag(flags)
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -175,6 +198,11 @@ func AddSlide(_ context.Context, args []string, out io.Writer) error {
 	var created, target string
 	err = authorMutation(flags.Arg(0), func(document *saga.Saga) error {
 		deck := findDeck(document, *deckTarget)
+		if deck != nil {
+			if err := assertDeckEpic(document, *epic, deck.Path, deck.Target); err != nil {
+				return err
+			}
+		}
 		if deck == nil {
 			return fmt.Errorf("--deck must identify an existing deck")
 		}
@@ -233,6 +261,8 @@ func AddItem(_ context.Context, args []string, out io.Writer) error {
 	body := flags.String("body", "", "required concise callout body")
 	placement := flags.String("placement", "", "top, right, bottom, left, or overlay")
 	leader := flags.String("leader", "", "none, line, or arrow")
+	record := flags.String("record", "", "onboarding items only: the persona, epic, or story URN the item explains")
+	epic := epicFlag(flags)
 	var rank optionalInt
 	flags.Var(&rank, "rank", "non-negative item order; defaults after the last item")
 	if err := flags.Parse(args); err != nil {
@@ -294,6 +324,12 @@ func AddItem(_ context.Context, args []string, out io.Writer) error {
 		if slide == nil {
 			return fmt.Errorf("--slide must identify an existing slide")
 		}
+		if err := assertDeckEpic(document, *epic, slide.Path, slide.Target); err != nil {
+			return err
+		}
+		if err := checkItemRecord(document, slide, *record); err != nil {
+			return err
+		}
 		if len(slide.Items) >= 7 && slide.Layout != "custom" {
 			return fmt.Errorf("standard layouts allow at most 7 semantic Items; split the slide")
 		}
@@ -328,7 +364,7 @@ func AddItem(_ context.Context, args []string, out io.Writer) error {
 			return err
 		}
 		path := filepath.Join(slide.Directory, filename)
-		manifest := saga.ItemManifest{Version: saga.DeckRecordVersion, ID: *id, SlideID: slide.ID, Rank: chosenRank, Kind: *kind, Label: *label, Description: strings.TrimSpace(*description), Selector: selector, Hotspot: hotspotRegion, About: *about, Body: *body, Placement: *placement, Leader: *leader}
+		manifest := saga.ItemManifest{Version: saga.DeckRecordVersion, ID: *id, SlideID: slide.ID, Rank: chosenRank, Kind: *kind, Label: *label, Description: strings.TrimSpace(*description), Selector: selector, Hotspot: hotspotRegion, About: *about, Body: *body, Placement: *placement, Leader: *leader, Record: *record}
 		if err := store.WriteJSON(path, manifest, true); err != nil {
 			return err
 		}
@@ -343,6 +379,10 @@ func AddItem(_ context.Context, args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
+	if *record != "" {
+		fmt.Fprintf(out, "Added item %s\nTarget: %s\nRecord: %s\n", filepath.ToSlash(created), target, *record)
+		return nil
+	}
 	fmt.Fprintf(out, "Added item %s\nTarget: %s\nNext: change-saga cover --target %s ... %s\n", filepath.ToSlash(created), target, target, flags.Arg(0))
 	return nil
 }
@@ -353,6 +393,7 @@ func SetSlideContent(_ context.Context, args []string, out io.Writer) error {
 	source := flags.String("source", "", "content file, or - for standard input")
 	jsonOutput := flags.Bool("json", false, "emit one machine-readable JSON result")
 	quiet := flags.Bool("quiet", false, "suppress successful output")
+	epic := epicFlag(flags)
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -378,6 +419,9 @@ func SetSlideContent(_ context.Context, args []string, out io.Writer) error {
 		if slide == nil {
 			return fmt.Errorf("--target must identify a slide")
 		}
+		if err := assertDeckEpic(document, *epic, slide.Path, slide.Target); err != nil {
+			return err
+		}
 		entrypoint := filepath.Join(slide.Directory, filepath.FromSlash(slide.Entrypoint))
 		if err := store.WriteFile(entrypoint, data, 0o644, false); err != nil {
 			return err
@@ -398,8 +442,74 @@ func SetSlideContent(_ context.Context, args []string, out io.Writer) error {
 	return nil
 }
 
+// allDecks is every epic's implementation decks plus the onboarding deck.
+func allDecks(document *saga.Saga) []*saga.Deck {
+	return append(append([]*saga.Deck{}, document.Decks...), document.Onboarding...)
+}
+
+// assertDeckEpic checks an optional --epic against the epic holding a deck
+// record. The onboarding deck belongs to the app, so it takes no --epic.
+func assertDeckEpic(document *saga.Saga, epic, path, target string) error {
+	if strings.TrimSpace(epic) == "" {
+		return nil
+	}
+	holding := saga.EpicOf(path)
+	if holding == "" {
+		return fmt.Errorf("%s belongs to the app's onboarding deck, not an epic; omit --epic", target)
+	}
+	return assertEpic(document.Root, epic, target, holding)
+}
+
+// checkItemRecord enforces what an Item may point at: onboarding Items
+// explain a persona, epic, or story record; implementation Items explain code.
+func checkItemRecord(document *saga.Saga, slide *saga.Slide, record string) error {
+	onboarding := saga.EpicOf(slide.Path) == ""
+	if !onboarding {
+		if record != "" {
+			return fmt.Errorf("--record is for onboarding items; implementation items explain code")
+		}
+		return nil
+	}
+	if record == "" {
+		return fmt.Errorf("--record is required: an onboarding item explains a persona, epic, or story URN")
+	}
+	return requireAppRecord(document.Root, document.Manifest.ID, record)
+}
+
+// requireAppRecord checks that a persona, epic, or story URN names an
+// existing record.
+func requireAppRecord(root, sagaID, record string) error {
+	if id, ok := strings.CutPrefix(record, "urn:change-saga:"+sagaID+":epic:"); ok {
+		epics, err := applayout.Epics(root)
+		if err != nil {
+			return err
+		}
+		if _, found := applayout.Find(epics, id); !found {
+			return fmt.Errorf("epic %q does not exist", record)
+		}
+		return nil
+	}
+	document, err := requirements.Load(root, sagaID)
+	if err != nil {
+		return err
+	}
+	if id, err := requirements.ParsePersonaURN(sagaID, record); err == nil {
+		if document.FindPersona(id) == nil {
+			return fmt.Errorf("persona %q does not exist", record)
+		}
+		return nil
+	}
+	if id, ok := strings.CutPrefix(record, "urn:change-saga:"+sagaID+":story:"); ok && applayout.ValidID(id) {
+		if document.FindStory(id) == nil {
+			return fmt.Errorf("story %q does not exist", record)
+		}
+		return nil
+	}
+	return fmt.Errorf("record %q must be a canonical persona, epic, or story URN of this Saga", record)
+}
+
 func findDeck(document *saga.Saga, value string) *saga.Deck {
-	for _, deck := range document.Decks {
+	for _, deck := range allDecks(document) {
 		if value == deck.ID || value == deck.Target || filepath.Clean(value) == filepath.Clean(deck.Path) || filepath.Clean(value) == filepath.Clean(deck.Directory) {
 			return deck
 		}
@@ -408,7 +518,7 @@ func findDeck(document *saga.Saga, value string) *saga.Deck {
 }
 
 func findSlide(document *saga.Saga, value string) *saga.Slide {
-	for _, deck := range document.Decks {
+	for _, deck := range allDecks(document) {
 		for _, slide := range deck.Slides {
 			if value == slide.ID || value == slide.Target || filepath.Clean(value) == filepath.Clean(slide.Path) {
 				return slide

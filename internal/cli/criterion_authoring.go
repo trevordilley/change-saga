@@ -67,6 +67,7 @@ func criterionMutate(ctx context.Context, operation string, args []string, out i
 	requestID := flags.String("request-id", "", "idempotency key")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
 	edit := flags.Bool("edit", false, "edit the complete proposed story revision with $EDITOR")
+	epic := epicFlag(flags)
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
 	}
@@ -103,6 +104,9 @@ func criterionMutate(ctx context.Context, operation string, args []string, out i
 	root := flags.Arg(0)
 	sagaID, err := requirementSagaID(root)
 	if err != nil {
+		return err
+	}
+	if err := assertRecordEpic(root, *epic, request.Story); err != nil {
 		return err
 	}
 	if *edit {

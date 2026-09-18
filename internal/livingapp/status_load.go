@@ -14,6 +14,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/twentyideas/changesaga/internal/applayout"
 	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/livingid"
@@ -72,6 +73,10 @@ func LoadStatusInputs(options StatusOptions) (StatusInputs, error) {
 		Exceptions: []coverage.Exception{}, Report: options.Report, Changes: options.Changes, Diagnostics: []Diagnostic{},
 		Quality: quality.Document{SagaID: doc.Manifest.ID, TestCases: []quality.TestCase{}, Policies: []quality.Policy{}, PolicySets: []quality.PolicySet{}},
 	}
+	inputs.Epics, err = applayout.Epics(root)
+	if err != nil {
+		return StatusInputs{}, err
+	}
 	inputs.Quality, err = quality.Load(root)
 	if err != nil {
 		return StatusInputs{}, fmt.Errorf("load quality: %w", err)
@@ -80,7 +85,7 @@ func LoadStatusInputs(options StatusOptions) (StatusInputs, error) {
 	if err != nil {
 		return StatusInputs{}, err
 	}
-	if livingRootPresent(root, "___requirements") {
+	if requirementsAdopted(root) {
 		heads := map[string][]string{}
 		for _, testCase := range inputs.Quality.TestCases {
 			heads[testCase.Identity.ID] = copyStrings(testCase.RevisionHeads)
@@ -91,6 +96,9 @@ func LoadStatusInputs(options StatusOptions) (StatusInputs, error) {
 		}
 		inputs.Stories = graph.requirements.Stories
 		inputs.Citations = graph.requirements.Citations
+		inputs.Personas = graph.requirements.Personas
+		inputs.Flags = graph.requirements.Flags
+		inputs.Gates = graph.requirements.Gates()
 		inputs.DesignDigests = graph.designDigests
 		inputs.Links = LinksFromCurrency(graph.requirements, graph.currency)
 		inputs.Prototypes, err = prototypes.Load(root, doc.Manifest.ID)
@@ -212,13 +220,39 @@ type coverageExceptionRecord struct {
 	RequestID  string    `json:"request_id,omitempty"`
 }
 
-// LoadCoverageExceptions strictly reads ___requirements/coverage-exceptions.
+// LoadCoverageExceptions strictly reads every epic's
+// ___requirements/coverage-exceptions. Exception IDs are unique across the app.
 // Structural errors fail the load. An unknown axis, blank rationale, missing or
 // unresolved citation, stale pin, supersession, or competing head is projected
 // by coverage.ProjectAxes as a visible cell state instead, so the author sees
 // why a recorded decision did not take.
 func LoadCoverageExceptions(root, sagaID string) ([]coverage.Exception, error) {
-	dir := filepath.Join(root, "___requirements", coverageExceptionsDir)
+	epics, err := applayout.Epics(root)
+	if err != nil {
+		return nil, err
+	}
+	ids := applayout.NewUniqueIDs("coverage exception")
+	result := []coverage.Exception{}
+	for _, epic := range epics {
+		loaded, err := loadEpicCoverageExceptions(filepath.Join(epic.Dir, applayout.RequirementsDir, coverageExceptionsDir), sagaID)
+		if err != nil {
+			return nil, fmt.Errorf("%s: %w", epic.Rel, err)
+		}
+		for _, exception := range loaded {
+			if err := ids.Claim(exception.URN, epic.ID); err != nil {
+				return nil, err
+			}
+		}
+		result = append(result, loaded...)
+		if len(result) > maxCoverageExceptions {
+			return nil, fmt.Errorf("coverage exceptions exceed %d records", maxCoverageExceptions)
+		}
+	}
+	sort.Slice(result, func(i, j int) bool { return result[i].URN < result[j].URN })
+	return result, nil
+}
+
+func loadEpicCoverageExceptions(dir, sagaID string) ([]coverage.Exception, error) {
 	info, err := os.Lstat(dir)
 	if errors.Is(err, fs.ErrNotExist) {
 		return []coverage.Exception{}, nil
@@ -255,8 +289,27 @@ func LoadCoverageExceptions(root, sagaID string) ([]coverage.Exception, error) {
 			Rationale: record.Rationale, Citations: copyStrings(record.Citations), Supersedes: copyStrings(record.Supersedes), CreatedAt: record.CreatedAt,
 		})
 	}
-	sort.Slice(result, func(i, j int) bool { return result[i].URN < result[j].URN })
 	return result, nil
+}
+
+// requirementsAdopted reports whether the app records any requirements: a
+// persona, or a ___requirements root in any epic.
+func requirementsAdopted(root string) bool {
+	if livingRootPresent(root, applayout.PersonasDir) {
+		return true
+	}
+	epics, err := applayout.Epics(root)
+	if err != nil {
+		// A broken epic list must surface through the loaders, not be
+		// mistaken for an app without requirements.
+		return true
+	}
+	for _, epic := range epics {
+		if livingRootPresent(epic.Dir, applayout.RequirementsDir) {
+			return true
+		}
+	}
+	return false
 }
 
 func readCoverageException(path string) (coverageExceptionRecord, error) {

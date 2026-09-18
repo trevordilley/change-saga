@@ -442,7 +442,7 @@ func MoveStory(root, sagaID string, input MoveStoryInput) (MutationResult, error
 		if err := os.Rename(filepath.Join(document.Root, filepath.FromSlash(from)), final); err != nil {
 			return err
 		}
-		result = MutationResult{URN: input.Story, Path: to, Paths: []string{from, to}, Reason: "moved from epic " + story.Epic + " to epic " + target.ID}
+		result = MutationResult{URN: input.Story, Path: to, Paths: []string{from, to}}
 		return nil
 	})
 	return result, err

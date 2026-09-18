@@ -76,6 +76,8 @@ type Invocation struct {
 	Arguments []Argument `json:"arguments"`
 	Inputs    []Argument `json:"inputs"`
 	Argv      []string   `json:"argv"`
+
+	sagaPath string
 }
 
 // Value is a known flag value supplied to Invoke. Repeated names are kept in
@@ -132,7 +134,7 @@ func Invoke(name, sagaPath string, values ...Value) (Invocation, error) {
 		}
 		known[value.Flag] = true
 	}
-	invocation := Invocation{Command: command.Name, Status: command.Status, Usage: command.Usage, Arguments: []Argument{}, Inputs: []Argument{}}
+	invocation := Invocation{Command: command.Name, Status: command.Status, Usage: command.Usage, Arguments: []Argument{}, Inputs: []Argument{}, sagaPath: sagaPath}
 	invocation.Argv = append([]string{"change-saga"}, strings.Fields(command.Name)...)
 	for _, flag := range command.Flags {
 		supplied := false
@@ -165,6 +167,38 @@ func Invoke(name, sagaPath string, values ...Value) (Invocation, error) {
 		invocation.Argv = append(invocation.Argv, positional)
 	}
 	return invocation, nil
+}
+
+// With returns the invocation with one more known flag value. It changes
+// nothing when the command does not declare the flag or the flag already has
+// a known value, so a caller can supply context such as the epic an action
+// concerns to every shape it suggests.
+func (invocation Invocation) With(flag, value string) Invocation {
+	command, ok := Lookup(invocation.Command)
+	if !ok || value == "" {
+		return invocation
+	}
+	if _, declared := command.Flag(flag); !declared {
+		return invocation
+	}
+	values := []Value{}
+	for _, argument := range invocation.Arguments {
+		if argument.Flag == flag {
+			return invocation
+		}
+		values = append(values, V(argument.Flag, argument.Value))
+	}
+	for _, input := range invocation.Inputs {
+		if input.Flag != flag {
+			values = append(values, V(input.Flag, ""))
+		}
+	}
+	values = append(values, V(flag, value))
+	updated, err := Invoke(invocation.Command, invocation.sagaPath, values...)
+	if err != nil {
+		return invocation
+	}
+	return updated
 }
 
 // MustInvoke is Invoke for shapes fixed at compile time. The grammar tests
