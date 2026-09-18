@@ -326,6 +326,19 @@ func LoadReviewState(index MutationIndex) (ReviewState, Validation, error) {
 			state.DiffReviews = reviews
 		}
 	}
+	// Deck, slide, and Item review records are flat files at the Saga root.
+	if len(index.FlatTargets) > 0 {
+		flat, flatValidation, err := loadFlatReviewState(index, false)
+		if err != nil {
+			return ReviewState{}, validation, err
+		}
+		validation.Issues = append(validation.Issues, flatValidation.Issues...)
+		state.Threads = append(flat.Threads, state.Threads...)
+		state.DiffReviews = append(flat.DiffReviews, state.DiffReviews...)
+		for target, reviews := range flat.ByTarget {
+			state.ByTarget[target] = append(state.ByTarget[target], reviews...)
+		}
+	}
 	repository, _ := diffuri.CanonicalRepository(index.Manifest.Source.Repository)
 	for _, thread := range state.Threads {
 		path := thread.Path

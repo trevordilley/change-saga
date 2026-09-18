@@ -177,10 +177,6 @@ func TestEmbeddedDeckCoverageAndActivityUseTheFlatReviewOverlay(t *testing.T) {
 		t.Fatalf("slide approval did not reach progress and thumbnail state: status=%d body=%s", page.Code, page.Body.String())
 	}
 
-	// Known gap: saga.LoadReviewState reads only ___approvals and ___review,
-	// never the root-level flat review records that embedded deck targets use,
-	// so /api/activity omits slide and Item decisions and threads.
-	t.Skip("activity omits embedded-deck flat review records: saga.LoadReviewState ignores them")
 	activity := httptest.NewRecorder()
 	handler.ServeHTTP(activity, httptest.NewRequest(http.MethodGet, "/api/activity", nil))
 	if activity.Code != http.StatusOK {
