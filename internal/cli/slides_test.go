@@ -32,10 +32,11 @@ func TestImplementationDeckAuthoringLoop(t *testing.T) {
 	if err := Init(context.Background(), []string{"--repo", repo, "--base", "main", "--head", "HEAD", "--title", "Visual", root}, &output); err != nil {
 		t.Fatal(err)
 	}
-	if err := AddDeck(context.Background(), []string{"--role", "overview", "--objective", "Explain the change.", root, "implementation"}, &output); err == nil || !strings.Contains(err.Error(), "--role must be change") {
+	addTestApp(t, root)
+	if err := AddDeck(context.Background(), []string{"--epic", testEpic, "--role", "overview", "--objective", "Explain the change.", root, "implementation"}, &output); err == nil || !strings.Contains(err.Error(), "--role must be change") {
 		t.Fatalf("overview deck role was not refused: %v", err)
 	}
-	if err := AddDeck(context.Background(), []string{"--objective", "Explain the change.", root, "implementation"}, &output); err != nil {
+	if err := AddDeck(context.Background(), []string{"--epic", testEpic, "--objective", "Explain the change.", root, "implementation"}, &output); err != nil {
 		t.Fatal(err)
 	}
 	if err := AddSlide(context.Background(), []string{"--deck", "implementation", "--intent", "orient", "--layout", "hero", "--entrypoint", "assets/slide.svg", root, "nested-source"}, &output); err == nil || !strings.Contains(err.Error(), "simple filename") {
@@ -140,8 +141,9 @@ func TestSagaEmbedsSeveralIndependentSlideDecks(t *testing.T) {
 	if err := Init(context.Background(), []string{"--repo", repo, "--base", "main", "--head", "HEAD", "--title", "Decks", root}, &output); err != nil {
 		t.Fatal(err)
 	}
+	personaURN := addTestApp(t, root)
 	for _, deck := range []string{"flow", "failure-path"} {
-		if err := AddDeck(context.Background(), []string{"--objective", "Explain " + deck + " to reviewers.", root, deck}, &output); err != nil {
+		if err := AddDeck(context.Background(), []string{"--epic", testEpic, "--objective", "Explain " + deck + " to reviewers.", root, deck}, &output); err != nil {
 			t.Fatalf("add embedded deck %s: %v", deck, err)
 		}
 		if err := AddSlide(context.Background(), []string{"--deck", deck, "--intent", "explain", "--layout", "diagram", "--title", deck, "--takeaway", "The complex behavior is explicit.", root, deck + "-change"}, &output); err != nil {
@@ -160,7 +162,7 @@ func TestSagaEmbedsSeveralIndependentSlideDecks(t *testing.T) {
 		t.Fatalf("report and deck surfaces did not coexist: manifest=%#v decks=%d overview=%d", document.Manifest, len(document.Decks), len(document.Section.Fragments))
 	}
 	for _, deck := range document.Decks {
-		if !strings.HasPrefix(deck.Path, saga.EmbeddedSlidesDir+"/") || deck.Target != saga.DeckTarget(document.Manifest.ID, deck.ID) {
+		if !strings.HasPrefix(deck.Path, testEpicRel+"/"+saga.EmbeddedSlidesDir+"/") || deck.Target != saga.DeckTarget(document.Manifest.ID, deck.ID) {
 			t.Fatalf("embedded deck lost parent identity or independent path: %#v", deck)
 		}
 	}
@@ -186,7 +188,7 @@ func TestSagaEmbedsSeveralIndependentSlideDecks(t *testing.T) {
 	if err := Query(context.Background(), []string{"traceability", "--saga", root, "--repo", repo, "--diff", uri}, &traceOutput); err != nil || !strings.Contains(traceOutput.String(), `"unlinked_code_evidence":[{"deck":`) {
 		t.Fatalf("unlinked embedded evidence was not exposed: err=%v\n%s", err, traceOutput.String())
 	}
-	if err := Story(context.Background(), []string{"add", "--id", "checkout", "--revision", "r1", "--event", "proposed", "--title", "Checkout", "--statement", "As a buyer I can complete checkout", "--priority", "high", "--criterion", "safe=Checkout preserves the validated state", "--criterion", "fast=Checkout does not add a retry delay", root}, &output); err != nil {
+	if err := Story(context.Background(), []string{"add", "--epic", testEpic, "--persona", personaURN, "--id", "checkout", "--revision", "r1", "--event", "proposed", "--title", "Checkout", "--statement", "As a buyer I can complete checkout", "--priority", "high", "--criterion", "safe=Checkout preserves the validated state", "--criterion", "fast=Checkout does not add a retry delay", root}, &output); err != nil {
 		t.Fatalf("add linked story: %v", err)
 	}
 	storyURN, _ := livingid.Story("decks", "checkout")
@@ -194,7 +196,7 @@ func TestSagaEmbedsSeveralIndependentSlideDecks(t *testing.T) {
 	secondCriterionURN, _ := livingid.Criterion("decks", "checkout", "fast")
 	revisionURN, _ := livingid.Revision("decks", "checkout", "r1")
 	proposedURN, _ := requirements.StoryEventURN("decks", "checkout", "proposed")
-	if err := Relation(context.Background(), []string{"add", "--id", "flow-explains-checkout", "--type", "explains", "--from", document.Decks[0].Slides[0].Target, "--to", storyURN, "--to-revision", revisionURN, "--rationale", "The visual implementation breakdown demonstrates this user story.", root}, &output); err != nil {
+	if err := Relation(context.Background(), []string{"add", "--epic", testEpic, "--id", "flow-explains-checkout", "--type", "explains", "--from", document.Decks[0].Slides[0].Target, "--to", storyURN, "--to-revision", revisionURN, "--rationale", "The visual implementation breakdown demonstrates this user story.", root}, &output); err != nil {
 		t.Fatalf("link slide to story: %v", err)
 	}
 	traceOutput.Reset()

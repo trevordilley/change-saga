@@ -29,7 +29,7 @@ func TestQueryCLIRealSeparateRepositoriesAllOperations(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	fixture.WriteSaga("overview.fragment/___diffs/coverage.json", string(evidence))
+	fixture.WriteEpic("overview.fragment/___diffs/coverage.json", string(evidence))
 	claim, err := json.Marshal(saga.Claim{
 		Version: saga.CurrentVersion, ID: "secure-default", Target: querytest.OverviewTarget, Kind: "security",
 		Statement: "The secure default is enabled.", Evidence: []string{changes.Atoms[0].URI}, CreatedAt: time.Date(2026, 8, 21, 10, 0, 0, 0, time.UTC),

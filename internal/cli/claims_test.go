@@ -23,7 +23,7 @@ func TestClaimsAndVerificationsAreIndependentAppendOnlyRecords(t *testing.T) {
 	}
 	var output bytes.Buffer
 	if err := AddClaim(context.Background(), []string{
-		"--id", "single-flight", "--target", "overview.fragment", "--kind", "invariant",
+		"--id", "single-flight", "--target", "___overview/overview.fragment", "--kind", "invariant",
 		"--statement", "Only one sampler can run at a time.", "--diff", uri, root,
 	}, &output); err != nil {
 		t.Fatal(err)
@@ -67,7 +67,7 @@ func TestClaimFailuresDoNotWriteRecords(t *testing.T) {
 	root := newAuthoredSaga(t)
 	var output bytes.Buffer
 	err := AddClaim(context.Background(), []string{
-		"--id", "bad", "--target", "overview.fragment", "--kind", "behavior",
+		"--id", "bad", "--target", "___overview/overview.fragment", "--kind", "behavior",
 		"--statement", "This should not be written.", "--diff", "not-a-uri", root,
 	}, &output)
 	if err == nil || !strings.Contains(err.Error(), "invalid --diff") {

@@ -1348,9 +1348,13 @@ func resolveTarget(document *saga.Saga, value string, allowFragment bool) (strin
 	if directTarget != "" {
 		return candidateAbs, directTarget, nil
 	}
+	targetKinds := map[bool]string{true: "chapter, section, fragment, or landmark", false: "chapter or section"}[allowFragment]
 	dir, err := store.ResolveSection(document.Root, value)
 	if err != nil {
-		return "", "", err
+		// Report content lives beneath reserved roots (___epics, ___overview),
+		// so a missing path there fails section resolution; still point the
+		// author at the query API rather than only at the path rule.
+		return "", "", fmt.Errorf("target %q is not a valid %s: %v%s", value, targetKinds, err, targetHint(document, allowFragment))
 	}
 	abs, _ := filepath.Abs(dir)
 	if abs == document.Root {
@@ -1365,7 +1369,7 @@ func resolveTarget(document *saga.Saga, value string, allowFragment bool) (strin
 		}
 	})
 	if foundTarget == "" || isFragment && !allowFragment {
-		return "", "", fmt.Errorf("target %q is not a valid %s%s", value, map[bool]string{true: "chapter, section, fragment, or landmark", false: "chapter or section"}[allowFragment], targetHint(document, allowFragment))
+		return "", "", fmt.Errorf("target %q is not a valid %s%s", value, targetKinds, targetHint(document, allowFragment))
 	}
 	return abs, foundTarget, nil
 }

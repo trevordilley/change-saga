@@ -19,10 +19,10 @@ func landmarkSaga(t *testing.T) (root, repo string) {
 	t.Helper()
 	root, repo = coveredSaga(t)
 	var output bytes.Buffer
-	if err := AddChapter(context.Background(), []string{"--title", "Service", root, "service"}, &output); err != nil {
+	if err := AddChapter(context.Background(), []string{"--epic", testEpic, "--title", "Service", root, "service"}, &output); err != nil {
 		t.Fatal(err)
 	}
-	fragment := filepath.Join(root, "service.chapter", "overview.fragment")
+	fragment := filepath.Join(testEpicDir(root), "service.chapter", "overview.fragment")
 	writeFile(t, filepath.Join(fragment, "content.md"), "# Service {#service-intro}\n\nProse.\n\n## Submit action {#submit-action}\n\nMore.\n")
 	writeFile(t, filepath.Join(fragment, "___landmarks", "submit-action.landmark", "landmark.json"),
 		`{"version":2,"id":"submit-action","label":"Submit action","selector":{"type":"heading","heading_id":"submit-action"}}`+"\n")
@@ -36,11 +36,11 @@ func landmarkSaga(t *testing.T) (root, repo string) {
 func TestCoverResolvesLandmarkShorthand(t *testing.T) {
 	root, repo := landmarkSaga(t)
 	if output, err := runCover(t, "", "--repo", repo,
-		"--target", "service.chapter/overview.fragment#submit-action",
+		"--target", testEpicRel+"/service.chapter/overview.fragment#submit-action",
 		"--path", "internal/service/handler.go", "--side", "new", "--lines", "3", "--name", "submit", root); err != nil {
 		t.Fatalf("landmark shorthand: %v\n%s", err, output)
 	}
-	recorded := filepath.Join(root, "service.chapter", "overview.fragment", "___landmarks", "submit-action.landmark", "___diffs", "submit.json")
+	recorded := filepath.Join(testEpicDir(root), "service.chapter", "overview.fragment", "___landmarks", "submit-action.landmark", "___diffs", "submit.json")
 	if _, err := os.Stat(recorded); err != nil {
 		t.Fatalf("evidence was not attached to the landmark: %v", err)
 	}
@@ -58,7 +58,7 @@ func TestCoverResolvesLandmarkShorthand(t *testing.T) {
 func TestCoverLandmarkErrorsNameTheAvailableLandmarks(t *testing.T) {
 	root, repo := landmarkSaga(t)
 	_, err := runCover(t, "", "--repo", repo,
-		"--target", "service.chapter/overview.fragment#no-such-landmark",
+		"--target", testEpicRel+"/service.chapter/overview.fragment#no-such-landmark",
 		"--path", "internal/service/handler.go", "--side", "new", "--lines", "3", root)
 	if err == nil {
 		t.Fatal("an unknown landmark must fail")
@@ -70,7 +70,7 @@ func TestCoverLandmarkErrorsNameTheAvailableLandmarks(t *testing.T) {
 	// A fragment with no landmarks at all should say where to create one rather
 	// than leaving the author to guess the directory layout.
 	_, err = runCover(t, "", "--repo", repo,
-		"--target", "overview.fragment#anything",
+		"--target", "___overview/overview.fragment#anything",
 		"--path", "internal/service/handler.go", "--side", "new", "--lines", "3", root)
 	if err == nil || !strings.Contains(err.Error(), "___landmarks/anything.landmark/landmark.json") {
 		t.Fatalf("error %q does not explain how to declare the landmark", err)
@@ -85,7 +85,7 @@ func TestResolveTargetErrorPointsAtTheQueryAPI(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	_, _, err = resolveTarget(document, "service.chapter/missing", true)
+	_, _, err = resolveTarget(document, testEpicRel+"/service.chapter/missing", true)
 	if err == nil {
 		t.Fatal("expected an unresolvable target to fail")
 	}
@@ -259,7 +259,7 @@ func TestLivingCommandHelpExplainsParallelWorkflow(t *testing.T) {
 			var output bytes.Buffer
 			_ = Init(context.Background(), []string{"-h"}, &output)
 			return output.String()
-		}, want: []string{"big change", "stories", "prototypes"}},
+		}, want: []string{"app Saga", "___overview", "personas", "epics", "stories", "prototypes"}},
 		{name: "story add", run: func() string {
 			var output bytes.Buffer
 			_ = Story(context.Background(), []string{"add", "-h"}, &output)
@@ -325,7 +325,7 @@ func TestInstallSkillRoutesAgentsThroughTheQueryAPI(t *testing.T) {
 
 func TestValidateFixAddsMissingHeadingAnchors(t *testing.T) {
 	root, _ := coveredSaga(t)
-	fragment := filepath.Join(root, "overview.fragment")
+	fragment := overviewFragment(root)
 	writeFile(t, filepath.Join(fragment, "content.md"), "# Overview\n\nProse.\n\n## Risks\n")
 
 	var before bytes.Buffer
@@ -351,7 +351,7 @@ func TestValidateFixAddsMissingHeadingAnchors(t *testing.T) {
 	if len(result.Fixes) != 2 {
 		t.Fatalf("expected two anchors to be added: %#v", result.Fixes)
 	}
-	if result.Fixes[0].Path != "overview.fragment/content.md" || result.Fixes[0].Anchor != "overview" {
+	if result.Fixes[0].Path != "___overview/overview.fragment/content.md" || result.Fixes[0].Anchor != "overview" {
 		t.Fatalf("unexpected fix record: %#v", result.Fixes[0])
 	}
 	for _, issue := range result.Issues {
@@ -373,7 +373,7 @@ func TestValidateFixAddsMissingHeadingAnchors(t *testing.T) {
 // loop or a pre-handoff check without generating churn.
 func TestValidateFixIsANoOpWhenNothingIsMissing(t *testing.T) {
 	root, _ := coveredSaga(t)
-	writeFile(t, filepath.Join(root, "overview.fragment", "content.md"), "# Overview {#overview}\n")
+	writeFile(t, filepath.Join(overviewFragment(root), "content.md"), "# Overview {#overview}\n")
 	var output bytes.Buffer
 	if err := Validate(context.Background(), []string{"--fix", "--json", root}, &output); err != nil {
 		t.Fatal(err)

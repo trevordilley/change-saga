@@ -461,6 +461,19 @@ func recordEpic(root, urn string) (string, error) {
 			return plan.Contracts[id].Epic, nil
 		}
 		return "", missing
+	case "claim":
+		// A claim is an app-level overlay record; it belongs to the epic
+		// holding the report content it makes a claim about.
+		document, _, err := saga.Load(root)
+		if err != nil {
+			return "", err
+		}
+		for _, claim := range document.Claims {
+			if claim.ID == id {
+				return recordEpic(root, claim.Target)
+			}
+		}
+		return "", missing
 	}
 	document, _, err := saga.LoadOutline(root)
 	if err != nil {

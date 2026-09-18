@@ -14,7 +14,7 @@ func TestSetFragmentContentSupportsStdinAndJSON(t *testing.T) {
 	root := newAuthoredSaga(t)
 	var output bytes.Buffer
 	content := "# New overview {#new-overview}\n\nAuthored through the CLI.\n"
-	if err := setFragmentContent(context.Background(), []string{"--target", "overview.fragment", "--source", "-", "--json", root}, &output, strings.NewReader(content)); err != nil {
+	if err := setFragmentContent(context.Background(), []string{"--app", "overview", "--target", "overview.fragment", "--source", "-", "--json", root}, &output, strings.NewReader(content)); err != nil {
 		t.Fatal(err)
 	}
 	var result fragmentContentOutput
@@ -24,7 +24,7 @@ func TestSetFragmentContentSupportsStdinAndJSON(t *testing.T) {
 	if !result.OK || result.Bytes != len(content) || result.MediaType != "text/markdown" {
 		t.Fatalf("unexpected result: %#v", result)
 	}
-	written, err := os.ReadFile(filepath.Join(root, "overview.fragment", "content.md"))
+	written, err := os.ReadFile(filepath.Join(overviewFragment(root), "content.md"))
 	if err != nil || string(written) != content {
 		t.Fatalf("entrypoint = %q, %v", written, err)
 	}
@@ -34,7 +34,7 @@ func TestSetFragmentContentSupportsStdinAndJSON(t *testing.T) {
 func TestStableIDsResolveAcrossHierarchyCommands(t *testing.T) {
 	root := newAuthoredSaga(t)
 	var output bytes.Buffer
-	if err := AddChapter(context.Background(), []string{"--id", "architecture", root, "backend"}, &output); err != nil {
+	if err := AddChapter(context.Background(), []string{"--epic", testEpic, "--id", "architecture", root, "backend"}, &output); err != nil {
 		t.Fatal(err)
 	}
 	output.Reset()
@@ -45,7 +45,7 @@ func TestStableIDsResolveAcrossHierarchyCommands(t *testing.T) {
 	if err := AddFragment(context.Background(), []string{"--section", "request-flow", "--name", "example", "--title", "Example", root}, &output); err != nil {
 		t.Fatalf("add fragment by section ID: %v", err)
 	}
-	if _, err := os.Stat(filepath.Join(root, "backend.chapter", "request-flow", "example.fragment", "content.md")); err != nil {
+	if _, err := os.Stat(filepath.Join(testEpicDir(root), "backend.chapter", "request-flow", "example.fragment", "content.md")); err != nil {
 		t.Fatalf("fragment was not created under ID-resolved hierarchy: %v", err)
 	}
 	assertValid(t, root)

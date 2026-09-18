@@ -15,17 +15,17 @@ func TestDesignAuthoringReusesHierarchyMutations(t *testing.T) {
 	root := newAuthoredSaga(t)
 
 	var output bytes.Buffer
-	if err := Design(context.Background(), []string{"add-fragment", "--id", "system-map", "--name", "system-map", "--title", "System map", root}, &output); err != nil {
+	if err := Design(context.Background(), []string{"add-fragment", "--epic", testEpic, "--id", "system-map", "--name", "system-map", "--title", "System map", root}, &output); err != nil {
 		t.Fatalf("add root design fragment: %v", err)
 	}
-	if !strings.Contains(output.String(), "___design/system-map.fragment") {
+	if !strings.Contains(output.String(), testEpicRel+"/___design/system-map.fragment") {
 		t.Fatalf("root design fragment output = %q", output.String())
 	}
 	output.Reset()
-	if err := Design(context.Background(), []string{"add-chapter", "--id", "architecture", "--title", "Architecture", root, "architecture"}, &output); err != nil {
+	if err := Design(context.Background(), []string{"add-chapter", "--epic", testEpic, "--id", "architecture", "--title", "Architecture", root, "architecture"}, &output); err != nil {
 		t.Fatal(err)
 	}
-	if !strings.Contains(output.String(), "___design/architecture.chapter") || !strings.Contains(output.String(), "change-saga design add-section") {
+	if !strings.Contains(output.String(), testEpicRel+"/___design/architecture.chapter") || !strings.Contains(output.String(), "change-saga design add-section --title \"Section title\" --epic "+testEpic+" ") {
 		t.Fatalf("design chapter output = %q", output.String())
 	}
 	output.Reset()
@@ -33,10 +33,10 @@ func TestDesignAuthoringReusesHierarchyMutations(t *testing.T) {
 		t.Fatal(err)
 	}
 	output.Reset()
-	if err := Design(context.Background(), []string{"add-fragment", "--section", "architecture.chapter/request-flow", "--id", "sequence", "--name", "sequence", "--title", "Sequence", root}, &output); err != nil {
+	if err := Design(context.Background(), []string{"add-fragment", "--epic", testEpic, "--section", "architecture.chapter/request-flow", "--id", "sequence", "--name", "sequence", "--title", "Sequence", root}, &output); err != nil {
 		t.Fatal(err)
 	}
-	if !strings.Contains(output.String(), "___design/architecture.chapter/request-flow/sequence.fragment") || !strings.Contains(output.String(), "change-saga design set-fragment-content") {
+	if !strings.Contains(output.String(), testEpicRel+"/___design/architecture.chapter/request-flow/sequence.fragment") || !strings.Contains(output.String(), "change-saga design set-fragment-content") {
 		t.Fatalf("design fragment output = %q", output.String())
 	}
 
@@ -45,7 +45,7 @@ func TestDesignAuthoringReusesHierarchyMutations(t *testing.T) {
 	if err := setFragmentContentScoped(context.Background(), []string{"--target", "sequence", "--source", "-", "--json", root}, &output, strings.NewReader(content), designAuthoring); err != nil {
 		t.Fatal(err)
 	}
-	if written, err := os.ReadFile(filepath.Join(root, "___design", "architecture.chapter", "request-flow", "sequence.fragment", "content.md")); err != nil || string(written) != content {
+	if written, err := os.ReadFile(filepath.Join(testEpicDir(root), "___design", "architecture.chapter", "request-flow", "sequence.fragment", "content.md")); err != nil || string(written) != content {
 		t.Fatalf("design fragment content = %q, %v", written, err)
 	}
 
@@ -60,7 +60,7 @@ func TestDesignAuthoringReusesHierarchyMutations(t *testing.T) {
 	for _, current := range document.Section.Fragments {
 		fragments[current.ID] = current.Path
 	}
-	if fragments["atomic-overview"] != "overview.fragment" || fragments["system-map"] != "___design/system-map.fragment" {
+	if fragments["atomic-overview"] != "___overview/overview.fragment" || fragments["system-map"] != testEpicRel+"/___design/system-map.fragment" {
 		t.Fatalf("root narrative/design fragments = %#v", fragments)
 	}
 	chapter := document.Section.Children[0]
@@ -72,17 +72,27 @@ func TestDesignAuthoringReusesHierarchyMutations(t *testing.T) {
 
 func TestDesignScopedMutationsRejectNarrativeTargets(t *testing.T) {
 	root := newAuthoredSaga(t)
-	before, err := os.ReadFile(filepath.Join(root, "overview.fragment", "content.md"))
-	if err != nil {
+	var output bytes.Buffer
+	if err := AddFragment(context.Background(), []string{"--epic", testEpic, "--name", "notes", "--title", "Notes", root}, &output); err != nil {
 		t.Fatal(err)
 	}
-	err = setFragmentContentScoped(context.Background(), []string{"--target", "overview.fragment", "--source", "-", root}, &bytes.Buffer{}, strings.NewReader("must not be written\n"), designAuthoring)
-	if err == nil {
-		t.Fatal("design content mutation accepted a root narrative fragment")
-	}
-	after, readErr := os.ReadFile(filepath.Join(root, "overview.fragment", "content.md"))
-	if readErr != nil || !bytes.Equal(after, before) {
-		t.Fatalf("narrative fragment changed: equal=%v err=%v", bytes.Equal(after, before), readErr)
+	// Neither the app overview nor an epic's own narrative is technical design.
+	for _, fragment := range []struct{ dir, target string }{
+		{overviewFragment(root), "___overview/overview.fragment"},
+		{filepath.Join(testEpicDir(root), "notes.fragment"), testEpicRel + "/notes.fragment"},
+	} {
+		before, err := os.ReadFile(filepath.Join(fragment.dir, "content.md"))
+		if err != nil {
+			t.Fatal(err)
+		}
+		err = setFragmentContentScoped(context.Background(), []string{"--target", fragment.target, "--source", "-", root}, &bytes.Buffer{}, strings.NewReader("must not be written\n"), designAuthoring)
+		if err == nil {
+			t.Fatalf("design content mutation accepted narrative fragment %s", fragment.target)
+		}
+		after, readErr := os.ReadFile(filepath.Join(fragment.dir, "content.md"))
+		if readErr != nil || !bytes.Equal(after, before) {
+			t.Fatalf("narrative fragment %s changed: equal=%v err=%v", fragment.target, bytes.Equal(after, before), readErr)
+		}
 	}
 }
 
