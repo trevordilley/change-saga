@@ -10,7 +10,7 @@ import (
 	"sort"
 	"sync"
 
-	"github.com/twentyideas/changesaga/internal/diffuri"
+	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
@@ -61,15 +61,12 @@ func sourceCatalogIdentity(catalog gitdiff.Catalog) string {
 
 func selectedCatalogPath(catalog gitdiff.Catalog, r *http.Request) (string, error) {
 	filePath := r.URL.Query().Get("file")
-	if raw := r.URL.Query().Get("diff"); raw != "" {
-		reference, err := diffuri.Parse(raw)
-		if err != nil || reference.Repository != catalog.Repository || reference.Base != catalog.BaseOID || reference.Head != catalog.HeadOID {
-			return "", fmt.Errorf("invalid selected diff URI")
+	if raw := r.URL.Query().Get("ref"); raw != "" {
+		location, err := coderef.ParseLocation(raw)
+		if err != nil || location.Commit != catalog.BaseOID && location.Commit != catalog.HeadOID {
+			return "", fmt.Errorf("invalid selected code location")
 		}
-		fromDiff := reference.Path
-		if reference.NewPath != "" {
-			fromDiff = reference.NewPath
-		}
+		fromDiff := catalogPathFor(catalog, location.Path)
 		if filePath == "" {
 			filePath = fromDiff
 		} else if fromDiff != "" && filePath != fromDiff {
@@ -96,18 +93,8 @@ func catalogFile(catalog gitdiff.Catalog, filePath string) (gitdiff.FileSummary,
 	return catalog.Files[index], true
 }
 
-func latestCatalogReviews(document *saga.Saga, catalog gitdiff.Catalog) (map[string]saga.DiffReview, int) {
-	latest := map[string]saga.DiffReview{}
-	for _, review := range document.DiffReviews {
-		reference, err := diffuri.Parse(review.URI)
-		if err != nil || reference.Kind != "file" || reference.Repository != catalog.Repository || reference.Base != catalog.BaseOID || reference.Head != catalog.HeadOID {
-			continue
-		}
-		previous, ok := latest[reference.Path]
-		if !ok || previous.CreatedAt.Before(review.CreatedAt) || previous.CreatedAt.Equal(review.CreatedAt) && previous.ID < review.ID {
-			latest[reference.Path] = review
-		}
-	}
+func latestCatalogReviews(document *saga.Saga, catalog gitdiff.Catalog) (map[string]saga.FileReview, int) {
+	latest := latestFileReviews(document.FileReviews)
 	reviewed := 0
 	for _, review := range latest {
 		if review.State == "reviewed" {
@@ -117,23 +104,31 @@ func latestCatalogReviews(document *saga.Saga, catalog gitdiff.Catalog) (map[str
 	return latest, reviewed
 }
 
-func latestReviewForCatalogFile(document *saga.Saga, catalog gitdiff.Catalog, filePath string) saga.DiffReview {
+func latestReviewForCatalogFile(document *saga.Saga, catalog gitdiff.Catalog, filePath string) saga.FileReview {
 	reviews, _ := latestCatalogReviews(document, catalog)
 	return reviews[filePath]
 }
 
-func catalogFileView(catalog gitdiff.Catalog, file gitdiff.FileSummary, review saga.DiffReview) *FileDiffView {
-	uri, _ := diffuri.Build(diffuri.Reference{
-		Repository: catalog.Repository, Base: catalog.BaseOID, Head: catalog.HeadOID,
-		Kind: "file", Path: file.Path,
-	})
+func catalogFileView(catalog gitdiff.Catalog, file gitdiff.FileSummary, review saga.FileReview) *FileDiffView {
 	digest := sha256.Sum256([]byte(file.Path))
+	// The catalog cannot tell a deleted file from an edited one, so the file is
+	// named at the head; reviewing a deleted file falls back to the merge-base.
 	view := &FileDiffView{
 		ID: fmt.Sprintf("diff-%x", digest[:8]), Name: path.Base(file.Path), Path: file.Path,
-		URI: uri, Href: CodeDiffURL(file.Path, ""), Added: file.Added, Deleted: file.Deleted,
+		Ref: fileLocation(catalog.BaseOID, catalog.HeadOID, file.Path, false), Href: CodeDiffURL(file.Path, ""), Added: file.Added, Deleted: file.Deleted,
 	}
 	if review.ID != "" {
 		view.Reviewed, view.Reviewer, view.ReviewerDetail = review.State == "reviewed", review.Author, review.AttributionDetail
 	}
 	return view
+}
+
+// catalogPathFor maps a path on either side of a rename to the catalog path.
+func catalogPathFor(catalog gitdiff.Catalog, value string) string {
+	for _, file := range catalog.Files {
+		if file.OldPath == value {
+			return file.Path
+		}
+	}
+	return value
 }

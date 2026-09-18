@@ -38,8 +38,7 @@ func openReviewAppSession(ctx context.Context, options queryOpenOptions) (queryS
 		if err != nil {
 			return nil, err
 		}
-		headIdentity, headCommit := reviewSession.SourceHead()
-		session, err := livingapp.Open(ctx, livingapp.OpenOptions{SagaRoot: options.SagaRoot, Snapshot: reviewSession.Snapshot(), SourceHeadIdentity: headIdentity, SourceHeadCommit: headCommit})
+		session, err := livingapp.Open(ctx, livingapp.OpenOptions{SagaRoot: options.SagaRoot, Snapshot: reviewSession.Snapshot()})
 		if err != nil {
 			return nil, err
 		}
@@ -97,7 +96,7 @@ func (s *reviewAppQuerySession) FragmentDiffs(ctx context.Context, query fragmen
 }
 
 func (s *reviewAppQuerySession) DiffOwners(ctx context.Context, query diffOwnerQuery) (queryPage, error) {
-	value, err := s.session.DiffOwners(ctx, reviewapp.DiffOwnerQuery{Diff: query.Diff, Cursor: query.Cursor, Limit: query.Limit})
+	value, err := s.session.DiffOwners(ctx, reviewapp.DiffOwnerQuery{Ref: query.Ref, Cursor: query.Cursor, Limit: query.Limit})
 	return queryPage{Data: value, Page: queryPageFromApplication(value.Page)}, err
 }
 

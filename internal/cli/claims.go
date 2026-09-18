@@ -12,23 +12,25 @@ import (
 	"strings"
 	"time"
 
-	"github.com/twentyideas/changesaga/internal/diffuri"
+	"github.com/twentyideas/changesaga/internal/coderef"
+	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/saga"
 	"github.com/twentyideas/changesaga/internal/store"
 )
 
 // AddClaim records one falsifiable assertion without changing coverage. The
 // evidence is intentionally repeated here as an assertion boundary: query can
-// then prove whether those exact atoms are current and already mapped to the
+// then prove whether the referenced code is current and already mapped to the
 // claim's narrative target.
-func AddClaim(_ context.Context, args []string, out io.Writer) error {
+func AddClaim(ctx context.Context, args []string, out io.Writer) error {
 	flags := commandFlags("add-claim", commandUsage["add-claim"], out)
 	id := flags.String("id", "", "stable claim id; generated when omitted")
 	target := flags.String("target", "", "saga, chapter, section, fragment, or landmark target")
 	kind := flags.String("kind", "behavior", "behavior, invariant, performance, compatibility, security, data, ux, or test")
 	statement := flags.String("statement", "", "falsifiable assertion made by the change author")
+	repoDir := flags.String("repo", "", "source repository checkout; required when separate")
 	var evidence stringList
-	flags.Var(&evidence, "diff", "exact supporting line or event diff URI; repeatable")
+	flags.Var(&evidence, "ref", "supporting code location <commit>:<path>[#L<start>[-L<end>]]; repeatable")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -49,29 +51,15 @@ func AddClaim(_ context.Context, args []string, out io.Writer) error {
 		return fmt.Errorf("--kind must be behavior, invariant, performance, compatibility, security, data, ux, or test")
 	}
 
+	references, err := authorLocations(ctx, firstNonEmpty(*repoDir, flags.Arg(0)), evidence, "--ref")
+	if err != nil {
+		return err
+	}
 	var created string
-	err := authorMutation(flags.Arg(0), func(document *saga.Saga) error {
+	err = authorMutation(flags.Arg(0), func(document *saga.Saga) error {
 		_, resolvedTarget, err := resolveTarget(document, *target, true)
 		if err != nil {
 			return err
-		}
-		repository, err := diffuri.CanonicalRepository(document.Manifest.Source.Repository)
-		if err != nil {
-			return fmt.Errorf("invalid declared source repository: %w", err)
-		}
-		seen := map[string]bool{}
-		for index, uri := range evidence {
-			reference, parseErr := diffuri.Parse(uri)
-			if parseErr != nil || reference.Kind == "file" {
-				return fmt.Errorf("invalid --diff %d: expected a canonical line or event diff URI", index+1)
-			}
-			if reference.Repository != repository {
-				return fmt.Errorf("invalid --diff %d: repository does not match the saga source", index+1)
-			}
-			if seen[uri] {
-				return fmt.Errorf("--diff %d duplicates an earlier URI", index+1)
-			}
-			seen[uri] = true
 		}
 		for _, existing := range document.Claims {
 			if existing.ID == *id {
@@ -85,7 +73,7 @@ func AddClaim(_ context.Context, args []string, out io.Writer) error {
 		path := filepath.Join(dir, *id+".json")
 		value := saga.Claim{
 			Version: saga.CurrentVersion, ID: *id, Target: resolvedTarget, Kind: *kind,
-			Statement: strings.TrimSpace(*statement), Evidence: append([]string{}, evidence...), CreatedAt: time.Now().UTC(),
+			Statement: strings.TrimSpace(*statement), Evidence: references, CreatedAt: time.Now().UTC(),
 		}
 		if err := store.WriteJSON(path, value, true); errors.Is(err, fs.ErrExist) {
 			return fmt.Errorf("claim id %q already exists", *id)
@@ -183,4 +171,35 @@ func generatedRecordID(prefix string) (string, error) {
 		return "", fmt.Errorf("generate %s id: %w", prefix, err)
 	}
 	return prefix + "-" + hex.EncodeToString(entropy[:]), nil
+}
+
+// authorLocations parses code locations and reads each one's content digest
+// from the repository containing dir. Duplicates are refused.
+func authorLocations(ctx context.Context, dir string, values []string, flag string) ([]coderef.Reference, error) {
+	if len(values) == 0 {
+		return nil, nil
+	}
+	resolver, err := coderesolve.New(ctx, dir)
+	if err != nil {
+		return nil, fmt.Errorf("open source repository (use --repo for a separate saga repository): %w", err)
+	}
+	defer resolver.Close()
+	seen := map[string]bool{}
+	references := make([]coderef.Reference, 0, len(values))
+	for index, value := range values {
+		location, err := coderef.ParseLocation(value)
+		if err != nil {
+			return nil, fmt.Errorf("invalid %s %d: %w", flag, index+1, err)
+		}
+		if seen[location.String()] {
+			return nil, fmt.Errorf("%s %d duplicates an earlier location", flag, index+1)
+		}
+		seen[location.String()] = true
+		reference, err := resolver.Author(ctx, location, "")
+		if err != nil {
+			return nil, fmt.Errorf("invalid %s %d: %w", flag, index+1, err)
+		}
+		references = append(references, reference)
+	}
+	return references, nil
 }

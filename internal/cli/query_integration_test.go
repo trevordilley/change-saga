@@ -25,14 +25,14 @@ func TestQueryCLIRealSeparateRepositoriesAllOperations(t *testing.T) {
 	if err != nil || len(changes.Atoms) == 0 {
 		t.Fatalf("read fixture comparison: atoms=%d err=%v", len(changes.Atoms), err)
 	}
-	evidence, err := json.Marshal(saga.DiffFile{Version: saga.CurrentVersion, Diffs: []saga.DiffReference{{URI: changes.Atoms[0].URI, Note: "query integration"}}})
+	evidence, err := json.Marshal(saga.CodeFile{Version: saga.CurrentVersion, References: []saga.DiffReference{{URI: changes.Atoms[0].Ref, Note: "query integration"}}})
 	if err != nil {
 		t.Fatal(err)
 	}
-	fixture.WriteSaga("overview.fragment/___diffs/coverage.json", string(evidence))
+	fixture.WriteSaga("overview.fragment/___code/coverage.json", string(evidence))
 	claim, err := json.Marshal(saga.Claim{
 		Version: saga.CurrentVersion, ID: "secure-default", Target: querytest.OverviewTarget, Kind: "security",
-		Statement: "The secure default is enabled.", Evidence: []string{changes.Atoms[0].URI}, CreatedAt: time.Date(2026, 8, 21, 10, 0, 0, 0, time.UTC),
+		Statement: "The secure default is enabled.", Evidence: []string{changes.Atoms[0].Ref}, CreatedAt: time.Date(2026, 8, 21, 10, 0, 0, 0, time.UTC),
 	})
 	if err != nil {
 		t.Fatal(err)
@@ -64,7 +64,7 @@ func TestQueryCLIRealSeparateRepositoriesAllOperations(t *testing.T) {
 		{name: "children", args: []string{"children", "--parent", saga.SagaTarget("security"), "--limit", "2"}},
 		{name: "fragment", args: []string{"fragment", "--target", querytest.OverviewTarget, "--limit", "8"}},
 		{name: "fragment-diffs", args: []string{"fragment-diffs", "--target", querytest.OverviewTarget}},
-		{name: "diff-owners-atom", args: []string{"diff-owners", "--diff", changes.Atoms[0].URI}},
+		{name: "diff-owners-atom", args: []string{"diff-owners", "--diff", changes.Atoms[0].Ref}},
 		{name: "diff-owners-file", args: []string{"diff-owners", "--diff", fileURI}},
 		{name: "reviews", args: []string{"reviews"}},
 		{name: "gaps", args: []string{"gaps", "--kind", "uncovered"}},

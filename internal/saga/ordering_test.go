@@ -101,7 +101,7 @@ func TestApprovalsAndDiffReviewsAreOrderedDeterministically(t *testing.T) {
 		if len(reviews) != 2 || reviews[0].ID != "aa-first" || reviews[1].ID != "zz-second" {
 			t.Fatalf("case %d: approvals ordered %v", i, reviews)
 		}
-		diffReviews := document.DiffReviews
+		diffReviews := document.FileReviews
 		if len(diffReviews) != 2 || diffReviews[0].ID != "aa-first" || diffReviews[1].ID != "zz-second" {
 			t.Fatalf("case %d: diff reviews ordered %v", i, diffReviews)
 		}

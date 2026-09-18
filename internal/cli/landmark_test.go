@@ -56,7 +56,7 @@ func TestAddLandmarkMakesDiagramElementsCoverable(t *testing.T) {
 	if fragment.ID != "atomic-system-map" {
 		fragment = document.Section.Fragments[0]
 	}
-	if len(fragment.Landmarks) != 1 || fragment.Landmarks[0].Selector.ElementID != "worker-pool" || fragment.Landmarks[0].Description == "" || len(fragment.Landmarks[0].Diffs) != 1 {
+	if len(fragment.Landmarks) != 1 || fragment.Landmarks[0].Selector.ElementID != "worker-pool" || fragment.Landmarks[0].Description == "" || len(fragment.Landmarks[0].Code) != 1 {
 		t.Fatalf("landmark was not addressable coverage: %#v", fragment.Landmarks)
 	}
 }

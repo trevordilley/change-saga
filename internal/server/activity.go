@@ -94,7 +94,7 @@ func (a *app) reviewActivityDocument(ctx context.Context) (*saga.Saga, error) {
 		return nil, fmt.Errorf("review state is invalid")
 	}
 	document := composeReviewDocument(outline, reviewState{
-		threads: loaded.Threads, diffReviews: loaded.DiffReviews, byTarget: loaded.ByTarget,
+		threads: loaded.Threads, diffReviews: loaded.FileReviews, byTarget: loaded.ByTarget,
 	})
 	applyGitAttribution(ctx, gitattribution.New(ctx, a.root), document)
 	return document, nil
@@ -337,8 +337,8 @@ func reviewActivityThreadState(state string) string {
 
 func reviewActivityThreadHref(thread *saga.Thread) string {
 	anchor := domID("thread:" + thread.ID)
-	if thread.Anchor.Type == "diff" && thread.Anchor.Diff != nil && thread.Anchor.Diff.URI != "" {
-		return "/?view=code&diff=" + url.QueryEscape(thread.Anchor.Diff.URI) + "#" + anchor
+	if thread.Anchor.Type == "code" && thread.Anchor.Code != nil {
+		return "/?view=code&file=" + url.QueryEscape(thread.Anchor.Code.Path) + "&ref=" + url.QueryEscape(thread.Anchor.Code.Location().String()) + "#" + anchor
 	}
 	return "#" + anchor
 }

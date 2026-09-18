@@ -12,20 +12,20 @@ import (
 
 // generatedCoverageName is a stable name for one logical coverage assertion.
 // Notes are deliberately excluded: two branches that attach different prose
-// to the same selectors must write the same path so Git exposes the semantic
+// to the same references must write the same path so Git exposes the semantic
 // disagreement instead of silently retaining both records as an overlap.
-func stableGeneratedCoverageName(record coverRecord, file saga.DiffFile) string {
-	prefix := store.Slug(firstNonEmpty(record.Path, record.Event, "diff"))
+func stableGeneratedCoverageName(record coverRecord, file saga.CodeFile) string {
+	prefix := store.Slug(firstNonEmpty(record.Path, firstReferencePath(file), "code"))
 	if len(prefix) > 36 {
 		prefix = strings.Trim(prefix[:36], "-")
 	}
 	if prefix == "" {
-		prefix = "diff"
+		prefix = "code"
 	}
 
-	selectors := make([]string, len(file.Diffs))
-	for i, reference := range file.Diffs {
-		selectors[i] = reference.URI
+	selectors := make([]string, len(file.References))
+	for i, reference := range file.References {
+		selectors[i] = reference.Key()
 	}
 	sort.Strings(selectors)
 	hash := sha256.New()
@@ -35,4 +35,11 @@ func stableGeneratedCoverageName(record coverRecord, file saga.DiffFile) string 
 	}
 	digest := hash.Sum(nil)
 	return prefix + "-" + hex.EncodeToString(digest[:8])
+}
+
+func firstReferencePath(file saga.CodeFile) string {
+	if len(file.References) == 0 {
+		return ""
+	}
+	return file.References[0].Path
 }

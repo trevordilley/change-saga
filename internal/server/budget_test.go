@@ -355,7 +355,7 @@ func TestReviewMutationAdvancesOnlyTheOverlayGeneration(t *testing.T) {
 		t.Fatal("the page served after a review decision did not contain it")
 	}
 	current := application.snapshot(context.Background())
-	initialDiffReviews := len(current.document.DiffReviews)
+	initialDiffReviews := len(current.document.FileReviews)
 	filePath := effectiveAtomPath(current.changes.Atoms[0])
 	fileURI, err := diffuri.Build(diffuri.Reference{
 		Repository: current.changes.Repository, Base: current.changes.BaseOID, Head: current.changes.HeadOID,
@@ -370,8 +370,8 @@ func TestReviewMutationAdvancesOnlyTheOverlayGeneration(t *testing.T) {
 	diffResult := httptest.NewRecorder()
 	handler.ServeHTTP(diffResult, diffRequest)
 	current = application.snapshot(context.Background())
-	if diffResult.Code != http.StatusSeeOther || application.cache.builds != 1 || len(current.document.DiffReviews) != initialDiffReviews+1 {
-		t.Fatalf("diff-review mutation crossed the structural boundary: status=%d builds=%d reviews=%d", diffResult.Code, application.cache.builds, len(current.document.DiffReviews))
+	if diffResult.Code != http.StatusSeeOther || application.cache.builds != 1 || len(current.document.FileReviews) != initialDiffReviews+1 {
+		t.Fatalf("diff-review mutation crossed the structural boundary: status=%d builds=%d reviews=%d", diffResult.Code, application.cache.builds, len(current.document.FileReviews))
 	}
 
 	initialThreadCount := len(application.snapshot(context.Background()).document.Threads)

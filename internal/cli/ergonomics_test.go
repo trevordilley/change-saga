@@ -40,7 +40,7 @@ func TestCoverResolvesLandmarkShorthand(t *testing.T) {
 		"--path", "internal/service/handler.go", "--side", "new", "--lines", "3", "--name", "submit", root); err != nil {
 		t.Fatalf("landmark shorthand: %v\n%s", err, output)
 	}
-	recorded := filepath.Join(root, "service.chapter", "overview.fragment", "___landmarks", "submit-action.landmark", "___diffs", "submit.json")
+	recorded := filepath.Join(root, "service.chapter", "overview.fragment", "___landmarks", "submit-action.landmark", saga.CodeDirName, "submit.json")
 	if _, err := os.Stat(recorded); err != nil {
 		t.Fatalf("evidence was not attached to the landmark: %v", err)
 	}

@@ -19,8 +19,9 @@ import (
 	"time"
 	"unicode/utf8"
 
+	"github.com/twentyideas/changesaga/internal/coderef"
+	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/coverage"
-	"github.com/twentyideas/changesaga/internal/diffuri"
 	"github.com/twentyideas/changesaga/internal/gitattribution"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/saga"
@@ -29,24 +30,24 @@ import (
 type targetEntry struct {
 	node     Node
 	children []string
-	diffs    []saga.DiffFile
+	diffs    []saga.CodeFile
 	reviews  []saga.Review
 	fragment *saga.Fragment
 }
 
 type selectorEntry struct {
-	selector ResolvedSelector
-	stale    *StaleSelector
-	diff     int
+	selector  ResolvedSelector
+	stale     *StaleSelector
+	reference int
 }
 
-// selectorKey is the identity coverage assigns to one persisted diff reference:
+// selectorKey is the identity coverage assigns to one persisted code reference:
 // the owning target, its evidence file, and the 1-based position of the
 // reference within that file.
 type selectorKey struct {
 	target       string
 	evidenceFile string
-	diff         int
+	reference    int
 }
 
 type fragmentValue struct {
@@ -62,11 +63,11 @@ type session struct {
 	targets         map[string]*targetEntry
 	selectors       map[string][]selectorEntry
 	selectorsByAtom map[string][]DiffOwner
-	atomByURI       map[string]int
 	fragments       map[string]fragmentValue
 	reviewItems     []ReviewItem
 	threads         map[string]ReviewThread
-	threadsByDiff   map[string][]ReviewThread
+	threadsByAtom   map[string][]ReviewThread
+	sourceDir       string
 	summaryOnly     bool
 	directCurrent   map[string]int
 	directStale     map[string]int
@@ -105,34 +106,37 @@ func Open(ctx context.Context, options OpenOptions) (Session, error) {
 	if err != nil {
 		return nil, newError(CodeSourceUnavailable, "the source comparison is unavailable", true, nil, err)
 	}
+	resolver, err := coderesolve.New(ctx, sourceDir)
+	if err != nil {
+		return nil, newError(CodeSourceUnavailable, "the source repository is unavailable", true, nil, err)
+	}
+	defer resolver.Close()
 	var report coverage.Report
 	if options.SummaryOnly {
-		report = coverage.EvaluateSummary(document, validation, changes)
+		report = coverage.EvaluateSummary(ctx, document, validation, changes, resolver)
 	} else {
-		report = coverage.Evaluate(document, validation, changes)
+		report = coverage.Evaluate(ctx, document, validation, changes, resolver)
 	}
 	snapshot, err := buildSnapshot(ctx, document.Root, changes)
 	if err != nil {
 		return nil, newError(CodeInternal, "the session snapshot could not be created", false, nil, err)
 	}
-	atomCapacity := len(changes.Atoms)
 	if options.SummaryOnly {
 		// The aggregate report and snapshot have consumed the atom data. Keeping
-		// it (or preallocating its reverse lookup) cannot serve either operation
+		// it cannot serve either operation
 		// allowed to use this session mode.
 		changes.Atoms = nil
 		changes.SagaChanges = nil
 		changes.DisplayLines = nil
-		atomCapacity = 0
 	}
 	s := &session{
 		snapshot: snapshot, document: document, changes: changes, report: report,
 		targets: map[string]*targetEntry{}, selectors: map[string][]selectorEntry{},
-		selectorsByAtom: make(map[string][]DiffOwner, len(report.Ownership)), atomByURI: make(map[string]int, atomCapacity),
-		fragments: map[string]fragmentValue{}, threads: map[string]ReviewThread{}, threadsByDiff: map[string][]ReviewThread{},
+		selectorsByAtom: make(map[string][]DiffOwner, len(report.Ownership)), sourceDir: sourceDir,
+		fragments: map[string]fragmentValue{}, threads: map[string]ReviewThread{}, threadsByAtom: map[string][]ReviewThread{},
 		summaryOnly: options.SummaryOnly, directCurrent: map[string]int{}, directStale: map[string]int{},
 	}
-	if err := s.build(ctx); err != nil {
+	if err := s.build(ctx, resolver); err != nil {
 		return nil, err
 	}
 	return s, nil
@@ -140,22 +144,17 @@ func Open(ctx context.Context, options OpenOptions) (Session, error) {
 
 func (s *session) Snapshot() string { return s.snapshot }
 
-// SourceHead returns the content-addressed comparison identity and, for a
-// committed comparison, its resolved head commit. WORKTREE comparisons have no
-// commit because their product may contain uncommitted content.
-func (s *session) SourceHead() (string, string) { return s.changes.HeadOID, s.changes.HeadCommit }
-
-func (s *session) build(ctx context.Context) error {
+func (s *session) build(ctx context.Context, resolver coverage.Resolver) error {
 	s.indexSection(s.document.Section, "")
 	s.resolveReviewIdentities(ctx)
 	if s.summaryOnly {
 		for _, target := range s.report.Targets {
 			s.directCurrent[target.Target] = target.Covered
 		}
-		for _, orphan := range s.report.Orphans {
-			s.directStale[orphan.Assignment.Target]++
+		for _, stale := range s.report.StaleReferences {
+			s.directStale[stale.Assignment.Target]++
 		}
-		s.report.Orphans = nil
+		s.report.StaleReferences = nil
 		s.report.Targets = nil
 		s.report.SagaChanges = nil
 		return nil
@@ -166,7 +165,7 @@ func (s *session) build(ctx context.Context) error {
 	s.linkOwnership()
 	s.resolveStaleSelectors()
 	s.sortAtomOwners()
-	s.indexReviewItems(ctx)
+	s.indexReviewItems(ctx, resolver)
 	return nil
 }
 
@@ -204,7 +203,7 @@ func (s *session) sortAtomOwners() {
 			if left.EvidenceFile != right.EvidenceFile {
 				return left.EvidenceFile < right.EvidenceFile
 			}
-			return left.Selector < right.Selector
+			return left.Reference < right.Reference
 		})
 	}
 }
@@ -221,7 +220,7 @@ func (s *session) selectorIndex() map[selectorKey]*selectorEntry {
 	index := make(map[selectorKey]*selectorEntry, total)
 	for target, entries := range s.selectors {
 		for i := range entries {
-			key := selectorKey{target: target, evidenceFile: entries[i].selector.EvidenceFile, diff: entries[i].diff}
+			key := selectorKey{target: target, evidenceFile: entries[i].selector.EvidenceFile, reference: entries[i].reference}
 			// Two evidence files under one target can normalize to the same path.
 			// The scan this index replaced stopped at the first such entry, so
 			// duplicate identities keep resolving to the first one.
@@ -243,51 +242,46 @@ func (s *session) linkOwnership() {
 	normalized := map[string]string{}
 	for i := range s.changes.Atoms {
 		atom := &s.changes.Atoms[i]
-		s.atomByURI[atom.URI] = i
 		for _, assignment := range s.report.Ownership[atom.Key] {
-			evidenceFile, known := normalized[assignment.DiffFile]
+			evidenceFile, known := normalized[assignment.EvidenceFile]
 			if !known {
-				evidenceFile = cleanDiagnosticPath(assignment.DiffFile)
-				normalized[assignment.DiffFile] = evidenceFile
+				evidenceFile = cleanDiagnosticPath(assignment.EvidenceFile)
+				normalized[assignment.EvidenceFile] = evidenceFile
 			}
-			entry := index[selectorKey{target: assignment.Target, evidenceFile: evidenceFile, diff: assignment.Diff}]
+			entry := index[selectorKey{target: assignment.Target, evidenceFile: evidenceFile, reference: assignment.Reference}]
 			if entry == nil {
 				continue
 			}
 			entry.selector.Atoms = append(entry.selector.Atoms, *atom)
-			s.selectorsByAtom[atom.URI] = append(s.selectorsByAtom[atom.URI], DiffOwner{
-				Target: assignment.Target, Selector: entry.selector.URI, Note: entry.selector.Note, EvidenceFile: entry.selector.EvidenceFile,
+			s.selectorsByAtom[atom.Key] = append(s.selectorsByAtom[atom.Key], DiffOwner{
+				Target: assignment.Target, Reference: entry.selector.Reference.Location().String(), Note: entry.selector.Reference.Note, EvidenceFile: entry.selector.EvidenceFile,
 			})
 		}
 	}
 }
 
-// resolveStaleSelectors marks every selector coverage left unmatched, reusing
-// the orphan's own reason when coverage recorded one.
+// resolveStaleSelectors marks every reference coverage reported stale, with
+// coverage's reason. Every other reference is current, including one that
+// holds no changed atom because it explains unchanged code.
 func (s *session) resolveStaleSelectors() {
-	reasons := make(map[selectorKey]string, len(s.report.Orphans))
-	for i := range s.report.Orphans {
-		orphan := &s.report.Orphans[i]
-		// The orphan carries the evidence path exactly as it was stored, which is
-		// how the previous scan compared it, so it is keyed unnormalized here.
-		key := selectorKey{target: orphan.Assignment.Target, evidenceFile: orphan.Assignment.DiffFile, diff: orphan.Assignment.Diff}
+	reasons := make(map[selectorKey]string, len(s.report.StaleReferences))
+	for i := range s.report.StaleReferences {
+		stale := &s.report.StaleReferences[i]
+		key := selectorKey{target: stale.Assignment.Target, evidenceFile: cleanDiagnosticPath(stale.Assignment.EvidenceFile), reference: stale.Assignment.Reference}
 		if _, taken := reasons[key]; !taken {
-			reasons[key] = orphan.Reason
+			reasons[key] = stale.Reason
 		}
 	}
 	for target, entries := range s.selectors {
 		for i := range entries {
 			entry := &entries[i]
-			if len(entry.selector.Atoms) > 0 {
+			reason, stale := reasons[selectorKey{target: target, evidenceFile: entry.selector.EvidenceFile, reference: entry.reference}]
+			if !stale {
 				entry.selector.Status = "current"
 				continue
 			}
 			entry.selector.Status = "stale"
-			reason := "diff URI does not match the current source comparison"
-			if recorded, ok := reasons[selectorKey{target: target, evidenceFile: entry.selector.EvidenceFile, diff: entry.diff}]; ok {
-				reason = recorded
-			}
-			entry.stale = &StaleSelector{URI: entry.selector.URI, Note: entry.selector.Note, Target: target, EvidenceFile: entry.selector.EvidenceFile, Reason: reason}
+			entry.stale = &StaleSelector{Reference: entry.selector.Reference, Target: target, EvidenceFile: entry.selector.EvidenceFile, Reason: reason}
 		}
 	}
 }
@@ -295,11 +289,11 @@ func (s *session) resolveStaleSelectors() {
 func (s *session) indexSection(section *saga.Section, parent string) {
 	entry := &targetEntry{
 		node:  Node{Kind: section.Kind, Target: section.Target, Parent: parent, ID: section.ID, Title: section.Title, Order: section.Order},
-		diffs: section.Diffs, reviews: section.Reviews,
+		diffs: section.Code, reviews: section.Reviews,
 	}
 	s.targets[section.Target] = entry
 	if !s.summaryOnly {
-		s.indexDiffs(section.Target, section.Diffs)
+		s.indexDiffs(section.Target, section.Code)
 	}
 	for _, fragment := range section.Fragments {
 		fragmentKind := "fragment"
@@ -308,7 +302,7 @@ func (s *session) indexSection(section *saga.Section, parent string) {
 		}
 		fragmentEntry := &targetEntry{
 			node:  Node{Kind: fragmentKind, Target: fragment.Target, Parent: section.Target, ID: fragment.ID, Title: fragment.Title, Order: fragment.Order, MediaType: fragment.MediaType},
-			diffs: fragment.Diffs, reviews: fragment.Reviews, fragment: fragment,
+			diffs: fragment.Code, reviews: fragment.Reviews, fragment: fragment,
 		}
 		if fragmentEntry.node.Title == "" {
 			fragmentEntry.node.Title = fragment.ID
@@ -322,7 +316,7 @@ func (s *session) indexSection(section *saga.Section, parent string) {
 		}
 		s.targets[fragment.Target] = fragmentEntry
 		if !s.summaryOnly {
-			s.indexDiffs(fragment.Target, fragment.Diffs)
+			s.indexDiffs(fragment.Target, fragment.Code)
 		}
 		entry.children = append(entry.children, fragment.Target)
 		for i := range fragment.Landmarks {
@@ -334,7 +328,7 @@ func (s *session) indexSection(section *saga.Section, parent string) {
 			landmarkEntry := &targetEntry{node: Node{
 				Kind: landmarkKind, Target: landmark.Target, Parent: fragment.Target, ID: landmark.ID, Title: landmark.Label,
 				Description: landmark.Description, Selector: landmarkValue(landmark.Selector),
-			}, diffs: landmark.Diffs, reviews: landmark.Reviews}
+			}, diffs: landmark.Code, reviews: landmark.Reviews}
 			if landmark.ItemMeta != nil {
 				landmarkEntry.node.ItemKind = landmark.ItemMeta.Kind
 				landmarkEntry.node.About = landmark.ItemMeta.About
@@ -344,7 +338,7 @@ func (s *session) indexSection(section *saga.Section, parent string) {
 			}
 			s.targets[landmark.Target] = landmarkEntry
 			if !s.summaryOnly {
-				s.indexDiffs(landmark.Target, landmark.Diffs)
+				s.indexDiffs(landmark.Target, landmark.Code)
 			}
 			fragmentEntry.children = append(fragmentEntry.children, landmark.Target)
 		}
@@ -364,12 +358,12 @@ func (s *session) indexSection(section *saga.Section, parent string) {
 	entry.node.HasChildren = len(entry.children) > 0
 }
 
-func (s *session) indexDiffs(target string, files []saga.DiffFile) {
+func (s *session) indexDiffs(target string, files []saga.CodeFile) {
 	for _, file := range files {
-		for index, reference := range file.Diffs {
+		for index, reference := range file.References {
 			s.selectors[target] = append(s.selectors[target], selectorEntry{selector: ResolvedSelector{
-				URI: reference.URI, Note: reference.Note, Target: target, EvidenceFile: cleanDiagnosticPath(file.Path),
-			}, diff: index + 1})
+				Reference: reference, Target: target, EvidenceFile: cleanDiagnosticPath(file.Path),
+			}, reference: index + 1})
 		}
 	}
 }
@@ -439,7 +433,7 @@ func (s *session) Overview(ctx context.Context, _ OverviewQuery) (Overview, erro
 		OverviewFragments: []Node{},
 		Chapters:          []ChapterSummary{},
 		Coverage: CoverageSummary{Complete: s.report.Complete, Scope: "mapping_only", Total: s.report.Summary.Total, Covered: s.report.Summary.Covered,
-			Uncovered: s.report.Summary.Uncovered, Overlapping: s.report.Summary.Overlapping, Stale: s.report.Summary.Orphaned},
+			Uncovered: s.report.Summary.Uncovered, Overlapping: s.report.Summary.Overlapping, Stale: s.report.Summary.Stale},
 	}
 	for _, fragment := range root.Fragments {
 		result.OverviewFragments = append(result.OverviewFragments, s.finishNode(fragment.Target, false))
@@ -588,9 +582,9 @@ func (s *session) FragmentDiffs(ctx context.Context, query FragmentDiffQuery) (F
 			result.Stale = append(result.Stale, *entry.stale)
 		}
 		for _, atom := range entry.selector.Atoms {
-			if !seen[atom.URI] {
+			if !seen[atom.Key] {
 				result.Atoms = append(result.Atoms, atom)
-				seen[atom.URI] = true
+				seen[atom.Key] = true
 			}
 		}
 	}
@@ -602,42 +596,42 @@ func (s *session) DiffOwners(ctx context.Context, query DiffOwnerQuery) (DiffOwn
 	if err := ctx.Err(); err != nil {
 		return DiffOwnership{}, err
 	}
-	reference, err := diffuri.Parse(query.Diff)
+	location, err := coderef.ParseLocation(query.Ref)
 	if err != nil {
-		return DiffOwnership{}, invalidArgument("diff must be a canonical atom, event, or file URI")
+		return DiffOwnership{}, invalidArgument("ref must be a code location <commit>:<path>[#L<start>[-L<end>]]")
 	}
-	if reference.Repository != s.changes.Repository || reference.Base != s.changes.BaseOID || reference.Head != s.changes.HeadOID {
-		return DiffOwnership{}, notFound("diff", query.Diff)
+	if location.Commit != s.changes.BaseOID && location.Commit != s.changes.HeadOID {
+		return DiffOwnership{}, notFound("ref", query.Ref)
 	}
 	var atoms []gitdiff.Atom
-	if reference.Kind == "file" {
-		for _, atom := range s.changes.Atoms {
-			if atomFilePath(atom) == reference.Path {
-				atoms = append(atoms, atom)
-			}
+	for _, atom := range s.changes.Atoms {
+		if location.Contains(s.changes.Location(atom)) {
+			atoms = append(atoms, atom)
 		}
-	} else if index, ok := s.atomByURI[query.Diff]; ok {
-		atoms = append(atoms, s.changes.Atoms[index])
 	}
 	if len(atoms) == 0 {
-		return DiffOwnership{}, notFound("diff", query.Diff)
+		return DiffOwnership{}, notFound("ref", query.Ref)
 	}
 	sortAtoms(atoms)
-	start, end, page, pageErr := s.page("diff-owners", query.Diff, query.Cursor, query.Limit, len(atoms))
+	start, end, page, pageErr := s.page("diff-owners", query.Ref, query.Cursor, query.Limit, len(atoms))
 	if pageErr != nil {
 		return DiffOwnership{}, pageErr
 	}
-	result := DiffOwnership{Diff: query.Diff, Kind: reference.Kind, Atoms: []OwnedAtom{}, Page: page}
+	kind := "line"
+	if location.WholeFile() {
+		kind = "file"
+	}
+	result := DiffOwnership{Ref: query.Ref, Kind: kind, Atoms: []OwnedAtom{}, Page: page}
 	signals := s.mappingSignalIndex()
 	for _, atom := range atoms[start:end] {
-		owners := append([]DiffOwner{}, s.selectorsByAtom[atom.URI]...)
+		owners := append([]DiffOwner{}, s.selectorsByAtom[atom.Key]...)
 		for index := range owners {
 			if signal, ok := signals[owners[index].Target+"\x00"+owners[index].EvidenceFile]; ok {
 				copy := signal
 				owners[index].Mapping = &copy
 			}
 		}
-		owned := OwnedAtom{Atom: atom, Owners: owners, Threads: append([]ReviewThread{}, s.threadsByDiff[atom.URI]...)}
+		owned := OwnedAtom{Atom: atom, Owners: owners, Threads: append([]ReviewThread{}, s.threadsByAtom[atom.Key]...)}
 		result.Atoms = append(result.Atoms, owned)
 	}
 	return result, nil
@@ -711,7 +705,7 @@ func (s *session) Gaps(ctx context.Context, query GapQuery) (GapPage, error) {
 			if stale[i].EvidenceFile != stale[j].EvidenceFile {
 				return stale[i].EvidenceFile < stale[j].EvidenceFile
 			}
-			return stale[i].URI < stale[j].URI
+			return stale[i].Reference.Key() < stale[j].Reference.Key()
 		})
 		for i := range stale {
 			value := stale[i]
@@ -722,7 +716,7 @@ func (s *session) Gaps(ctx context.Context, query GapQuery) (GapPage, error) {
 		overlaps := append([]coverage.Overlap(nil), s.report.Overlaps...)
 		sort.SliceStable(overlaps, func(i, j int) bool { return atomLess(overlaps[i].Atom, overlaps[j].Atom) })
 		for _, overlap := range overlaps {
-			owners := append([]DiffOwner(nil), s.selectorsByAtom[overlap.Atom.URI]...)
+			owners := append([]DiffOwner(nil), s.selectorsByAtom[overlap.Atom.Key]...)
 			gaps = append(gaps, Gap{Kind: "overlap", Overlap: &OverlapGap{Atom: overlap.Atom, Owners: owners}})
 		}
 	}
@@ -806,7 +800,7 @@ func atomLess(left, right gitdiff.Atom) bool {
 	if left.Line != right.Line {
 		return left.Line < right.Line
 	}
-	return left.URI < right.URI
+	return left.Key < right.Key
 }
 
 func readContainedFile(root, name string) ([]byte, error) {

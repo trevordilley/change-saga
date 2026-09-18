@@ -125,7 +125,7 @@ func newV5QualitySaga(t *testing.T, specs []testCaseSpec, policies []quality.Pol
 		writeStatusJSON(t, filepath.Join(dir, "evidence", "code.json"), quality.Evidence{
 			Schema: quality.EvidenceSchemaURL, Version: quality.Version, ID: "code", TestCase: testURN(spec.id),
 			TestRevision: testRevisionURN(spec.id, spec.runRevision), Role: quality.EvidenceTestImplementation,
-			Diffs: []string{selector(t, "internal/refund_test.go", 1, 5)}, Verifications: []string{}, Citations: []string{}, Supersedes: []string{}, CreatedAt: statusFixtureTime,
+			Code: []string{selector(t, "internal/refund_test.go", 1, 5)}, Verifications: []string{}, Citations: []string{}, Supersedes: []string{}, CreatedAt: statusFixtureTime,
 		})
 		writeStatusJSON(t, filepath.Join(dir, "runs", "ci-1.json"), quality.Run{
 			Schema: quality.RunSchemaURL, Version: quality.Version, ID: "ci-1", TestCase: testURN(spec.id),
@@ -181,7 +181,7 @@ func testAtoms(t *testing.T) gitdiff.ChangeSet {
 	changes := gitdiff.ChangeSet{Repository: fixtureRepo, Base: "base", Head: "head", BaseOID: "base", HeadOID: "head"}
 	add := func(path string, line int) {
 		uri := selector(t, path, line, line)
-		changes.Atoms = append(changes.Atoms, gitdiff.Atom{Key: uri, URI: uri, Kind: "line", Path: path, Side: "new", Line: line, Content: "x"})
+		changes.Atoms = append(changes.Atoms, gitdiff.Atom{Key: uri, Ref: uri, Kind: "line", Path: path, Side: "new", Line: line, Content: "x"})
 	}
 	for line := 1; line <= 5; line++ {
 		add("internal/refund_test.go", line)
@@ -211,8 +211,8 @@ func qualityFixture(t *testing.T) StatusInputs {
 	if err != nil {
 		t.Fatalf("hand-authored v5 fixture must load: %v", err)
 	}
-	item := &saga.Item{Target: "urn:change-saga:checkout:slide:guard:item:deadline", Diffs: []saga.DiffFile{{
-		Path: "___slides/implementation.deck/40-e-guard.json", Diffs: []saga.DiffReference{{URI: selector(t, "internal/refund.go", 10, 10)}},
+	item := &saga.Item{Target: "urn:change-saga:checkout:slide:guard:item:deadline", Code: []saga.CodeFile{{
+		Path: "___slides/implementation.deck/40-e-guard.json", References: []saga.DiffReference{{URI: selector(t, "internal/refund.go", 10, 10)}},
 	}}}
 	deck := &saga.Deck{DeckManifest: saga.DeckManifest{ID: "implementation", Role: "change"}, Target: "urn:change-saga:checkout:deck:implementation",
 		Slides: []*saga.Slide{{Target: "urn:change-saga:checkout:slide:guard", Items: []*saga.Item{item}}}}
@@ -388,7 +388,7 @@ func TestChangedSourceAccountingIsSeparateAndCreditsOnlyTestEvidence(t *testing.
 	if !blockedBy(gate, "changed_source_accounting_complete") {
 		t.Fatalf("implementation_trace_ready keeps the omission invariant as its own fact: %#v", gate.Blockers)
 	}
-	if got := cell(t, status, "positive-path", coverage.AxisImplementation); got.State != coverage.StateCoveredDirect || len(got.Links[0].Link.Diffs) != 1 {
+	if got := cell(t, status, "positive-path", coverage.AxisImplementation); got.State != coverage.StateCoveredDirect || len(got.Links[0].Link.Code) != 1 {
 		t.Fatalf("criterion <- addresses - Item -> exact current diff covers implementation: %#v", got)
 	}
 	if got := cell(t, status, "cutoff", coverage.AxisImplementation); got.State != coverage.StateGap {
@@ -400,8 +400,8 @@ func TestImplementationPathWithOrphanedDiffIsStaleSourceHistory(t *testing.T) {
 	inputs := qualityFixture(t)
 	item := inputs.Decks[0].Slides[0].Items[0]
 	inputs.Report.Orphans = []coverage.Orphan{{
-		Assignment: coverage.Assignment{Target: item.Target, DiffFile: item.Diffs[0].Path, Diff: 1},
-		Reference:  item.Diffs[0].Diffs[0], Reason: "diff URI does not match the current source comparison",
+		Assignment: coverage.Assignment{Target: item.Target, DiffFile: item.Code[0].Path, Diff: 1},
+		Reference:  item.Code[0].References[0], Reason: "diff URI does not match the current source comparison",
 	}}
 	status := Assemble(inputs)
 	if got := cell(t, status, "positive-path", coverage.AxisImplementation); got.State != coverage.StateStale {

@@ -14,7 +14,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/twentyideas/changesaga/internal/diffuri"
+	"github.com/twentyideas/changesaga/internal/coderef"
 )
 
 type loadOptions struct {
@@ -150,7 +150,7 @@ func load(root string, options loadOptions) (*Saga, Validation, error) {
 			return nil, validation, reviewErr
 		}
 		validation.Issues = append(validation.Issues, reviewValidation.Issues...)
-		document.Threads, document.DiffReviews = state.Threads, state.DiffReviews
+		document.Threads, document.FileReviews = state.Threads, state.FileReviews
 		applyFlatReviews(document.Section, state.ByTarget)
 		for _, deck := range document.Decks {
 			deck.Reviews = state.ByTarget[deck.Target]
@@ -175,6 +175,12 @@ func load(root string, options loadOptions) (*Saga, Validation, error) {
 				return nil, validation, err
 			}
 		}
+		if metadataDirectorySafe(abs, abs, MergesDir, &validation) {
+			document.Merges, err = loadMerges(abs, &validation)
+			if err != nil {
+				return nil, validation, err
+			}
+		}
 	}
 	if metadataDirectorySafe(abs, abs, "___review", &validation) {
 		reviewDir := filepath.Join(abs, "___review")
@@ -192,10 +198,10 @@ func load(root string, options loadOptions) (*Saga, Validation, error) {
 				return nil, validation, err
 			}
 		}
-		if !options.skipCoverage && metadataDirectorySafe(abs, reviewDir, "diffs", &validation) {
-			var reviews []DiffReview
-			reviews, err = loadDiffReviews(abs, &validation)
-			document.DiffReviews = append(document.DiffReviews, reviews...)
+		if !options.skipCoverage && metadataDirectorySafe(abs, reviewDir, FileReviewDir, &validation) {
+			var reviews []FileReview
+			reviews, err = loadFileReviews(abs, &validation)
+			document.FileReviews = append(document.FileReviews, reviews...)
 			if err != nil {
 				return nil, validation, err
 			}
@@ -260,8 +266,8 @@ func loadSection(root, dir string, manifest Manifest, hierarchy hierarchyRoot, o
 		}
 	}
 
-	if !options.skipCoverage && metadataDirectorySafe(root, dir, "___diffs", validation) {
-		section.Diffs, err = loadDiffs(root, filepath.Join(dir, "___diffs"), validation)
+	if !options.skipCoverage && metadataDirectorySafe(root, dir, CodeDirName, validation) {
+		section.Code, err = loadCode(root, filepath.Join(dir, CodeDirName), validation)
 		if err != nil {
 			return nil, err
 		}
@@ -283,8 +289,8 @@ func loadSection(root, dir string, manifest Manifest, hierarchy hierarchyRoot, o
 			if entry.Type()&fs.ModeSymlink != 0 || !entry.IsDir() {
 				addIssue(validation, "error", displayPath(rel, name), "reserved metadata path must be a real directory")
 			} else {
-				if name == "___diffs" {
-					section.HasDiffs = true
+				if name == CodeDirName {
+					section.HasCode = true
 				}
 				if !knownReservedDirectory(name, hierarchy == sagaHierarchy) {
 					addIssue(validation, "error", displayPath(rel, name), "unknown reserved directory")
@@ -361,9 +367,9 @@ func loadFragment(root, dir, sagaID string, options loadOptions, validation *Val
 	} else {
 		validateFragmentManifest(value, relativePath(root, manifestPath), dir, validation)
 	}
-	if !options.skipCoverage && metadataDirectorySafe(root, dir, "___diffs", validation) {
+	if !options.skipCoverage && metadataDirectorySafe(root, dir, CodeDirName, validation) {
 		var err error
-		fragment.Diffs, err = loadDiffs(root, filepath.Join(dir, "___diffs"), validation)
+		fragment.Code, err = loadCode(root, filepath.Join(dir, CodeDirName), validation)
 		if err != nil {
 			return nil, err
 		}
@@ -387,10 +393,10 @@ func loadFragment(root, dir, sagaID string, options loadOptions, validation *Val
 		return nil, err
 	}
 	for _, entry := range entries {
-		if entry.IsDir() && entry.Name() == "___diffs" {
-			fragment.HasDiffs = true
+		if entry.IsDir() && entry.Name() == CodeDirName {
+			fragment.HasCode = true
 		}
-		if entry.IsDir() && strings.HasPrefix(entry.Name(), "___") && entry.Name() != "___diffs" && entry.Name() != "___landmarks" && entry.Name() != "___approvals" {
+		if entry.IsDir() && strings.HasPrefix(entry.Name(), "___") && entry.Name() != CodeDirName && entry.Name() != "___landmarks" && entry.Name() != "___approvals" {
 			addIssue(validation, "error", relativePath(root, filepath.Join(dir, entry.Name())), "unknown reserved directory in fragment")
 		}
 	}
@@ -442,8 +448,8 @@ func loadLandmarks(root, dir, sagaID string, fragment *Fragment, options loadOpt
 			addIssue(validation, "error", value.Path, fmt.Sprintf("landmark id %q conflicts with a Markdown heading in %s", value.ID, headingPath))
 		}
 		seen[value.ID] = value.Path
-		if !options.skipCoverage && metadataDirectorySafe(root, entryPath, "___diffs", validation) {
-			value.Diffs, err = loadDiffs(root, filepath.Join(entryPath, "___diffs"), validation)
+		if !options.skipCoverage && metadataDirectorySafe(root, entryPath, CodeDirName, validation) {
+			value.Code, err = loadCode(root, filepath.Join(entryPath, CodeDirName), validation)
 			if err != nil {
 				return nil, err
 			}
@@ -453,10 +459,10 @@ func loadLandmarks(root, dir, sagaID string, fragment *Fragment, options loadOpt
 			return nil, readErr
 		}
 		for _, landmarkEntry := range landmarkEntries {
-			if landmarkEntry.IsDir() && landmarkEntry.Name() == "___diffs" {
-				value.HasDiffs = true
+			if landmarkEntry.IsDir() && landmarkEntry.Name() == CodeDirName {
+				value.HasCode = true
 			}
-			if landmarkEntry.IsDir() && strings.HasPrefix(landmarkEntry.Name(), "___") && landmarkEntry.Name() != "___diffs" {
+			if landmarkEntry.IsDir() && strings.HasPrefix(landmarkEntry.Name(), "___") && landmarkEntry.Name() != CodeDirName {
 				addIssue(validation, "error", relativePath(root, filepath.Join(entryPath, landmarkEntry.Name())), "unknown reserved directory in landmark")
 			}
 		}
@@ -471,7 +477,7 @@ func loadLandmarks(root, dir, sagaID string, fragment *Fragment, options loadOpt
 	return result, nil
 }
 
-func loadDiffs(root, dir string, validation *Validation) ([]DiffFile, error) {
+func loadCode(root, dir string, validation *Validation) ([]CodeFile, error) {
 	entries, err := os.ReadDir(dir)
 	if errors.Is(err, fs.ErrNotExist) {
 		return nil, nil
@@ -479,29 +485,29 @@ func loadDiffs(root, dir string, validation *Validation) ([]DiffFile, error) {
 	if err != nil {
 		return nil, err
 	}
-	var result []DiffFile
+	var result []CodeFile
 	for _, entry := range entries {
 		if entry.IsDir() || filepath.Ext(entry.Name()) != ".json" {
 			continue
 		}
 		path := filepath.Join(dir, entry.Name())
-		var value DiffFile
+		var value CodeFile
 		if err := readJSON(path, &value); err != nil {
 			addIssue(validation, "error", relativePath(root, path), err.Error())
 			continue
 		}
 		value.Path = relativePath(root, path)
-		validateDiff(value, validation)
+		validateCodeFile(value, validation)
 		result = append(result, value)
 	}
 	sort.Slice(result, func(i, j int) bool { return result[i].Path < result[j].Path })
 	return result, nil
 }
 
-// LoadTargetDiffs reads only one validated narrative target's authored
+// LoadTargetCode reads only one validated narrative target's authored
 // evidence. It is the bounded mapping seam used by linked-code requests: no
-// sibling target's ___diffs directory is opened.
-func LoadTargetDiffs(index MutationIndex, target string) ([]DiffFile, Validation, error) {
+// sibling target's ___code directory is opened.
+func LoadTargetCode(index MutationIndex, target string) ([]CodeFile, Validation, error) {
 	validation := Validation{Valid: true, Issues: []Issue{}}
 	dir, ok := index.Targets[target]
 	if !ok {
@@ -516,29 +522,29 @@ func LoadTargetDiffs(index MutationIndex, target string) ([]DiffFile, Validation
 		if err != nil {
 			return nil, validation, err
 		}
-		var diffs []DiffFile
+		var diffs []CodeFile
 		for _, entry := range entries {
 			if entry.IsDir() || !strings.HasPrefix(entry.Name(), prefix) || !flatEvidenceName.MatchString(entry.Name()) {
 				continue
 			}
-			var value DiffFile
+			var value CodeFile
 			if err := readJSON(filepath.Join(recordRoot, entry.Name()), &value); err != nil {
 				addIssue(&validation, "error", entry.Name(), err.Error())
 				continue
 			}
 			value.Path = relativePath(index.Root, filepath.Join(recordRoot, entry.Name()))
-			validateDiff(value, &validation)
+			validateCodeFile(value, &validation)
 			diffs = append(diffs, value)
 		}
 		sort.Slice(diffs, func(i, j int) bool { return diffs[i].Path < diffs[j].Path })
 		validation.Valid = !hasErrors(validation.Issues)
 		return diffs, validation, nil
 	}
-	if !metadataDirectorySafe(index.Root, dir, "___diffs", &validation) {
+	if !metadataDirectorySafe(index.Root, dir, CodeDirName, &validation) {
 		validation.Valid = false
 		return nil, validation, nil
 	}
-	diffs, err := loadDiffs(index.Root, filepath.Join(dir, "___diffs"), &validation)
+	diffs, err := loadCode(index.Root, filepath.Join(dir, CodeDirName), &validation)
 	validation.Valid = !hasErrors(validation.Issues)
 	return diffs, validation, err
 }
@@ -755,18 +761,17 @@ func loadThreadSummaries(root, sagaID string, validation *Validation) ([]*Thread
 	return threads, nil
 }
 
-func loadDiffReviews(root string, validation *Validation) ([]DiffReview, error) {
-	var reviews []DiffReview
-	err := loadMetaJSON(filepath.Join(root, "___review", "diffs"), func(path string) {
-		var value DiffReview
+func loadFileReviews(root string, validation *Validation) ([]FileReview, error) {
+	var reviews []FileReview
+	err := loadMetaJSON(filepath.Join(root, "___review", FileReviewDir), func(path string) {
+		var value FileReview
 		if err := readJSON(path, &value); err != nil {
 			addIssue(validation, "error", relativePath(root, path), err.Error())
 			return
 		}
-		reference, uriErr := diffuri.Parse(value.URI)
 		value.Path = path
-		if value.Version != CurrentVersion || !stableID.MatchString(value.ID) || value.CreatedAt.IsZero() || value.State != "reviewed" && value.State != "unreviewed" || uriErr != nil || reference.Kind != "file" {
-			addIssue(validation, "error", relativePath(root, path), "diff review requires version 2, id, created_at, reviewed/unreviewed state, and a file diff URI")
+		if !validFileReview(value) {
+			addIssue(validation, "error", relativePath(root, path), "file review requires version 2, id, created_at, reviewed/unreviewed state, and a whole-file code reference")
 		}
 		reviews = append(reviews, value)
 	})
@@ -868,6 +873,39 @@ func loadThreadEvents(root, threadDir string, validation *Validation) ([]ThreadE
 	return events, err
 }
 
+func loadMerges(root string, validation *Validation) ([]Merge, error) {
+	var merges []Merge
+	err := loadMetaJSON(filepath.Join(root, MergesDir), func(path string) {
+		var value Merge
+		if err := readJSON(path, &value); err != nil {
+			addIssue(validation, "error", relativePath(root, path), err.Error())
+			return
+		}
+		value.Path = path
+		if err := validateMerge(value, filepath.Base(path)); err != nil {
+			addIssue(validation, "error", relativePath(root, path), err.Error())
+		}
+		merges = append(merges, value)
+	})
+	sort.Slice(merges, func(i, j int) bool { return merges[i].PinnedAt.Before(merges[j].PinnedAt) })
+	return merges, err
+}
+
+func validateMerge(value Merge, name string) error {
+	if value.Version != CurrentVersion || value.PinnedAt.IsZero() {
+		return fmt.Errorf("merge record requires version %d and pinned_at", CurrentVersion)
+	}
+	if !coderef.ValidCommit(value.Commit) || name != MergeFilename(value.Commit) {
+		return fmt.Errorf("merge record must be named <commit>.json for its full landed commit")
+	}
+	for index, commit := range value.Commits {
+		if !coderef.ValidCommit(commit.Commit) || strings.TrimSpace(commit.Subject) == "" || commit.Date.IsZero() {
+			return fmt.Errorf("merged commit %d requires a full commit, a date, and a subject", index+1)
+		}
+	}
+	return nil
+}
+
 func loadMetaJSON(dir string, fn func(string)) error {
 	entries, err := os.ReadDir(dir)
 	if errors.Is(err, fs.ErrNotExist) {
@@ -937,14 +975,14 @@ func structuralEntry(entry fs.DirEntry, suffix string) (matches bool, problem st
 }
 
 func knownReservedDirectory(name string, root bool) bool {
-	if name == "___diffs" || name == "___approvals" {
+	if name == CodeDirName || name == "___approvals" {
 		return true
 	}
 	if !root {
 		return false
 	}
 	switch name {
-	case "___review", "___claims", "___verifications", EmbeddedSlidesDir, QualityRootDir, "___requirements", "___design", "___workplan":
+	case "___review", "___claims", "___verifications", MergesDir, EmbeddedSlidesDir, QualityRootDir, "___requirements", "___design", "___workplan":
 		return true
 	}
 	return false
@@ -967,23 +1005,34 @@ func metadataDirectorySafe(root, sectionDir, name string, validation *Validation
 	return true
 }
 
-func validateDiff(value DiffFile, validation *Validation) {
+func validateCodeFile(value CodeFile, validation *Validation) {
 	if value.Version != CurrentVersion {
 		addIssue(validation, "error", value.Path, fmt.Sprintf("unsupported version %d; expected %d", value.Version, CurrentVersion))
 	}
-	if len(value.Diffs) == 0 {
-		// schema/v2/diff.schema.json requires diffs with minItems 1: an
-		// evidence file that selects nothing is not a valid record.
-		addIssue(validation, "error", value.Path, "diff file must contain at least one diff reference")
+	if len(value.References) == 0 {
+		// schema/v5/code.schema.json requires references with minItems 1: an
+		// evidence file that references nothing is not a valid record.
+		addIssue(validation, "error", value.Path, "code evidence must contain at least one code reference")
 	}
-	for i, reference := range value.Diffs {
-		parsed, err := diffuri.Parse(reference.URI)
-		if err != nil {
-			addIssue(validation, "error", value.Path, fmt.Sprintf("diff %d: %v", i+1, err))
-		} else if parsed.Kind == "file" {
-			addIssue(validation, "error", value.Path, fmt.Sprintf("diff %d: coverage links must address lines or events, not files", i+1))
+	seen := map[string]bool{}
+	for i, reference := range value.References {
+		if err := coderef.Validate(reference); err != nil {
+			addIssue(validation, "error", value.Path, fmt.Sprintf("reference %d: %v", i+1, err))
 		}
+		if seen[reference.Key()] {
+			addIssue(validation, "error", value.Path, fmt.Sprintf("reference %d duplicates an earlier reference", i+1))
+		}
+		seen[reference.Key()] = true
 	}
+}
+
+// validFileReview accepts a reviewed/unreviewed mark on a whole file. The
+// reference pins the file's content, so the mark stops applying once the file
+// changes.
+func validFileReview(value FileReview) bool {
+	return value.Version == CurrentVersion && stableID.MatchString(value.ID) && !value.CreatedAt.IsZero() &&
+		(value.State == "reviewed" || value.State == "unreviewed") &&
+		coderef.Validate(value.Code) == nil && value.Code.WholeFile() && value.Code.Note == ""
 }
 
 // earlierRecord defines the total order the format uses for append-only review

@@ -77,8 +77,10 @@ func run(args []string, stdout, stderr io.Writer) int {
 		err = cli.RemoveCoverage(ctx, args[1:], stdout)
 	case "replace-coverage":
 		err = cli.ReplaceCoverage(ctx, args[1:], stdout)
-	case "rebase-evidence":
-		err = cli.RebaseEvidence(ctx, args[1:], stdout)
+	case "references":
+		err = cli.References(ctx, args[1:], stdout)
+	case "repin":
+		err = cli.Repin(ctx, args[1:], stdout)
 	case "add-claim":
 		err = cli.AddClaim(ctx, args[1:], stdout)
 	case "verify-claim":

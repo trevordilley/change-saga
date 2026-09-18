@@ -66,24 +66,28 @@ func makeFileDiffPage(current *reviewSnapshot, filePath, owner, linkedTarget str
 	}
 	needed := map[string]bool{}
 	for _, line := range lines {
-		if index, ok := current.atomByKey[line.AtomKey]; ok {
-			needed[current.changes.Atoms[index].URI] = true
+		if _, ok := current.atomByKey[line.AtomKey]; ok {
+			needed[line.AtomKey] = true
 		}
 	}
 	threads := map[string][]*threadView{}
 	if !manifest {
 		for _, thread := range current.document.Threads {
-			if thread.State == "withdrawn" || thread.Anchor.Type != "diff" || thread.Anchor.Diff == nil || !needed[thread.Anchor.Diff.URI] {
+			if thread.State == "withdrawn" || thread.Anchor.Type != "code" {
 				continue
 			}
-			threads[thread.Anchor.Diff.URI] = append(threads[thread.Anchor.Diff.URI], makeThreadView(thread))
+			for _, key := range codeThreadKeys(thread.Anchor.Code, current.changes.BaseOID) {
+				if needed[key] {
+					threads[key] = append(threads[key], makeThreadView(thread))
+				}
+			}
 		}
 	}
 	for _, line := range lines {
 		view := &DiffLineView{Kind: line.Kind, Path: filePath, OldLine: line.OldLine, NewLine: line.NewLine, Content: line.Content, Event: line.Event, OldPath: line.OldPath, NewPath: line.NewPath}
 		if index, ok := current.atomByKey[line.AtomKey]; ok {
 			atom := &current.changes.Atoms[index]
-			view.Atom = &diffAtomView{Atom: *atom, Threads: threads[atom.URI], Target: owner}
+			view.Atom = &diffAtomView{Atom: *atom, Threads: threads[atom.Key], Target: owner}
 			if linkedTarget != "" {
 				for _, assignment := range current.report.Ownership[atom.Key] {
 					if assignment.Target == linkedTarget {
@@ -315,7 +319,7 @@ func (a *app) coveragePage(w http.ResponseWriter, r *http.Request) {
 	}
 	total := len(current.fileOrder)
 	if mode == "saga" {
-		total = len(current.targetOrder) + len(current.report.Orphans)
+		total = len(current.targetOrder) + len(current.report.StaleReferences)
 	}
 	window, err := pageRequest(r, "coverage\x00"+current.identity+"\x00"+mode, total, defaultSurfacePageLimit, maxSurfacePageLimit)
 	if err != nil {
@@ -325,7 +329,7 @@ func (a *app) coveragePage(w http.ResponseWriter, r *http.Request) {
 	result := coveragePageView{Mode: mode, Summary: coverageTotalsView{
 		Files: len(current.fileOrder), Total: current.report.Summary.Total, Covered: current.report.Summary.Covered,
 		Uncovered: current.report.Summary.Uncovered, Overlapping: current.report.Summary.Overlapping,
-		Orphaned: current.report.Summary.Orphaned, Complete: current.report.Complete,
+		Orphaned: current.report.Summary.Stale, Complete: current.report.Complete,
 	}, NextCursor: window.next, HasMore: window.hasMore(), Returned: window.end - window.start}
 	locations := current.locations
 	if mode == "code" {
@@ -348,12 +352,12 @@ func (a *app) coveragePage(w http.ResponseWriter, r *http.Request) {
 			orphanStart = 0
 		}
 		orphanEnd := window.end - targetTotal
-		if orphanEnd > len(current.report.Orphans) {
-			orphanEnd = len(current.report.Orphans)
+		if orphanEnd > len(current.report.StaleReferences) {
+			orphanEnd = len(current.report.StaleReferences)
 		}
 		for index := orphanStart; index < orphanEnd; index++ {
-			orphan := current.report.Orphans[index]
-			result.Orphans = append(result.Orphans, &ManifestOrphanView{Owner: manifestOwner(orphan.Assignment.Target, locations), URI: orphan.Reference.URI, Reason: orphan.Reason})
+			stale := current.report.StaleReferences[index]
+			result.Orphans = append(result.Orphans, &ManifestOrphanView{Owner: manifestOwner(stale.Assignment.Target, locations), URI: stale.Reference.Location().String(), Reason: stale.Reason})
 		}
 	}
 	writeIncrementalHeaders(w, "text/html; charset=utf-8")

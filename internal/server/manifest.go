@@ -8,8 +8,8 @@ import (
 	"unicode"
 	"unicode/utf8"
 
+	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coverage"
-	"github.com/twentyideas/changesaga/internal/diffuri"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
@@ -118,7 +118,7 @@ type manifestTargetLocation struct {
 func makeCoverageManifestView(document *saga.Saga, changes gitdiff.ChangeSet, report coverage.Report) *CoverageManifestView {
 	view := &CoverageManifestView{
 		Complete: report.Complete, Total: report.Summary.Total, Covered: report.Summary.Covered,
-		Uncovered: report.Summary.Uncovered, Overlapping: report.Summary.Overlapping, Orphaned: report.Summary.Orphaned,
+		Uncovered: report.Summary.Uncovered, Overlapping: report.Summary.Overlapping, Orphaned: report.Summary.Stale,
 	}
 	locations := indexManifestTargets(document)
 	// Only which paths have a renderable body is needed here; building the
@@ -191,9 +191,9 @@ func makeCoverageManifestView(document *saga.Saga, changes gitdiff.ChangeSet, re
 			Chunks: chunks, Files: makeManifestTargetFiles(atoms, locations, diffPaths),
 		})
 	}
-	for _, orphan := range report.Orphans {
+	for _, stale := range report.StaleReferences {
 		view.Orphans = append(view.Orphans, &ManifestOrphanView{
-			Owner: manifestOwner(orphan.Assignment.Target, locations), URI: orphan.Reference.URI, Reason: orphan.Reason,
+			Owner: manifestOwner(stale.Assignment.Target, locations), URI: stale.Reference.Location().String(), Reason: stale.Reason,
 		})
 	}
 	return view
@@ -321,14 +321,14 @@ func makeManifestChunks(atoms []gitdiff.Atom, ownership map[string][]coverage.As
 		}
 		chunk := &ManifestChunkView{
 			Kind: atom.Kind, Side: atom.Side, Path: effectiveAtomPath(atom), AtomCount: 1, Owners: owners, Covered: !includeOwners || len(owners) > 0,
-			Excerpt: manifestExcerpt(atom), Href: CodeDiffURL(effectiveAtomPath(atom), atom.URI), ownerKey: ownerKey, startLine: atom.Line,
+			Excerpt: manifestExcerpt(atom), Href: CodeDiffURL(effectiveAtomPath(atom), atom.Ref), ownerKey: ownerKey, startLine: atom.Line,
 		}
 		if atom.Kind == "event" {
 			chunk.Label = manifestEventLabel(atom.Event)
 		}
 		result = append(result, chunk)
 	}
-	// Range grouping only needs the first atom's exact URI while the scan is in
+	// Range grouping only needs the first atom's location while the scan is in
 	// progress. Finalizing once per chunk avoids reparsing and rebuilding the
 	// same deep link for every line in a long contiguous range.
 	for _, chunk := range result {
@@ -365,18 +365,13 @@ func manifestRangeHref(existing string, end int) string {
 	if err != nil {
 		return existing
 	}
-	value := parsed.Query().Get("diff")
-	reference, err := diffuri.Parse(value)
-	if err != nil {
+	location, err := coderef.ParseLocation(parsed.Query().Get("ref"))
+	if err != nil || location.WholeFile() {
 		return existing
 	}
-	reference.End = end
-	value, err = diffuri.Build(reference)
-	if err != nil {
-		return existing
-	}
+	location.End = end
 	query := parsed.Query()
-	query.Set("diff", value)
+	query.Set("ref", location.String())
 	parsed.RawQuery = query.Encode()
 	return parsed.String()
 }

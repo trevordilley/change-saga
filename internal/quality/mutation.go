@@ -12,7 +12,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/twentyideas/changesaga/internal/diffuri"
+	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/livingid"
 	"github.com/twentyideas/changesaga/internal/qualityid"
 	"github.com/twentyideas/changesaga/internal/store"
@@ -85,7 +85,7 @@ type AddEvidenceInput struct {
 	TestCase      string
 	TestRevision  string
 	Role          EvidenceRole
-	Diffs         []string
+	Code          []coderef.Reference
 	Verifications []string
 	Citations     []string
 	Supersedes    []string
@@ -388,7 +388,7 @@ func AddEvidenceBatch(root string, inputs []AddEvidenceInput) ([]MutationResult,
 			candidate := candidates[testCaseID]
 			value := Evidence{
 				Schema: EvidenceSchemaURL, Version: Version, ID: input.ID, TestCase: input.TestCase,
-				TestRevision: input.TestRevision, Role: input.Role, Diffs: copyStrings(input.Diffs),
+				TestRevision: input.TestRevision, Role: input.Role, Code: append([]coderef.Reference{}, input.Code...),
 				Verifications: copyStrings(input.Verifications), Citations: copyStrings(input.Citations),
 				Supersedes: copyStrings(input.Supersedes), CreatedAt: mutationTime(input.CreatedAt), RequestID: input.RequestID,
 			}
@@ -416,12 +416,6 @@ func AddEvidenceBatch(root string, inputs []AddEvidenceInput) ([]MutationResult,
 			}
 			if !contains(testCase.RevisionHeads, value.TestRevision) {
 				return fmt.Errorf("%s: test_revision must be a current revision head %v", label, testCase.RevisionHeads)
-			}
-			for _, selector := range value.Diffs {
-				ref, _ := diffuri.Parse(selector)
-				if ref.Repository != document.Source.Repository || ref.Base != document.Source.Base || ref.Head != document.Source.Head {
-					return fmt.Errorf("%s: diff %q does not use the Saga's current source comparison", label, selector)
-				}
 			}
 			for _, superseded := range value.Supersedes {
 				if !contains(candidateEvidenceHeads(candidate, sagaID), superseded) {

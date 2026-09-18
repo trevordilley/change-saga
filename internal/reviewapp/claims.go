@@ -5,7 +5,9 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/twentyideas/changesaga/internal/diffuri"
+	"github.com/twentyideas/changesaga/internal/coderef"
+	"github.com/twentyideas/changesaga/internal/coderesolve"
+	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/gitattribution"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/saga"
@@ -28,6 +30,11 @@ func (s *session) Claims(ctx context.Context, query ClaimQuery) (ClaimPage, erro
 	}
 	resolver := gitattribution.New(ctx, s.document.Root)
 	latest := s.latestVerifications(ctx, resolver)
+	code, err := coderesolve.New(ctx, s.sourceDir)
+	if err != nil {
+		return ClaimPage{}, newError(CodeSourceUnavailable, "the source repository is unavailable", true, nil, err)
+	}
+	defer code.Close()
 	items := []ClaimRecord{}
 	for _, stored := range s.document.Claims {
 		if query.Target != "" && stored.Target != query.Target {
@@ -45,8 +52,8 @@ func (s *session) Claims(ctx context.Context, query ClaimQuery) (ClaimPage, erro
 		if query.Status != "" && item.VerificationStatus != query.Status {
 			continue
 		}
-		for _, uri := range stored.Evidence {
-			item.Evidence = append(item.Evidence, s.resolveClaimEvidence(uri, stored.Target))
+		for _, reference := range stored.Evidence {
+			item.Evidence = append(item.Evidence, s.resolveClaimEvidence(ctx, code, reference, stored.Target))
 		}
 		items = append(items, item)
 	}
@@ -99,26 +106,20 @@ func (s *session) Verifications(ctx context.Context, query VerificationQuery) (V
 	return VerificationPage{Verifications: append([]VerificationRecord{}, items[start:end]...), Page: page}, nil
 }
 
-func (s *session) resolveClaimEvidence(uri, target string) ClaimEvidence {
-	result := ClaimEvidence{URI: uri, Status: "stale", Atoms: []gitdiff.Atom{}}
-	selector, err := diffuri.Parse(uri)
-	if err != nil {
-		return result
-	}
-	for _, atom := range s.changes.Atoms {
-		atomReference, parseErr := diffuri.Parse(atom.URI)
-		if parseErr == nil && diffuri.Matches(selector, atomReference) {
-			result.Atoms = append(result.Atoms, atom)
-		}
-	}
-	if len(result.Atoms) == 0 {
+// resolveClaimEvidence views one claim reference in the comparison. It is
+// current when its code is unchanged at either side, and mapped to the claim's
+// target when every changed atom it holds is also owned by that target.
+func (s *session) resolveClaimEvidence(ctx context.Context, code coverage.Resolver, reference coderef.Reference, target string) ClaimEvidence {
+	result := ClaimEvidence{Reference: reference, Status: "stale", Atoms: []gitdiff.Atom{}}
+	if current, _ := coverage.Sides(ctx, reference, s.changes, code); len(current) == 0 {
 		return result
 	}
 	result.Status = "current"
+	result.Atoms = append(result.Atoms, s.atomsWithin(ctx, code, reference)...)
 	result.MappedToTarget = true
 	for _, atom := range result.Atoms {
 		mapped := false
-		for _, owner := range s.selectorsByAtom[atom.URI] {
+		for _, owner := range s.selectorsByAtom[atom.Key] {
 			mapped = mapped || owner.Target == target
 		}
 		if !mapped {

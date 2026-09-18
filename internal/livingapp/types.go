@@ -18,9 +18,7 @@ const (
 )
 
 type OpenOptions struct {
-	SagaRoot           string
-	SourceHeadIdentity string
-	SourceHeadCommit   string
+	SagaRoot string
 	// Snapshot binds this composed projection to an enclosing read session.
 	// Transport adapters that already own the established saga/source snapshot
 	// pass it here so all operations expose one public snapshot namespace.
@@ -45,8 +43,10 @@ type Filters struct {
 	Wave        string
 	Item        string
 	Status      string
-	Diff        string
-	Commit      string
+	// Ref selects code evidence whose pinned location overlaps this code
+	// location; Commit selects evidence pinned at this commit.
+	Ref    string
+	Commit string
 }
 
 type Page struct {
@@ -193,7 +193,7 @@ type UnlinkedCodeEvidence struct {
 	Deck         string `json:"deck"`
 	Slide        string `json:"slide"`
 	Item         string `json:"item"`
-	URI          string `json:"uri"`
+	Reference    string `json:"reference"`
 	EvidenceFile string `json:"evidence_file"`
 }
 

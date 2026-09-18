@@ -27,7 +27,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/twentyideas/changesaga/internal/diffuri"
+	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/gitattribution"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/reviewstore"
@@ -475,9 +475,9 @@ func (a *app) fileDiffFragment(w http.ResponseWriter, r *http.Request) {
 	manifestView := r.URL.Query().Get("view") == "manifest"
 	var threads map[string][]*threadView
 	if !manifestView {
-		_, threads = threadViews(document)
+		_, threads = threadViews(document, catalog.BaseOID)
 	}
-	files := makeFileViews(changes, saga.SagaTarget(document.Manifest.ID), document.DiffReviews, threads)
+	files := makeFileViews(changes, saga.SagaTarget(document.Manifest.ID), document.FileReviews, threads)
 	var selected *FileDiffView
 	for _, candidate := range files {
 		if candidate.Path == filePath {
@@ -527,8 +527,8 @@ func (a *app) mappedFileDiffFragment(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "The linked file diff could not be loaded.", http.StatusInternalServerError)
 		return
 	}
-	_, diffThreads := threadViews(document)
-	files := makeFileViews(selection.changes, target, document.DiffReviews, diffThreads)
+	_, diffThreads := threadViews(document, selection.catalog.BaseOID)
+	files := makeFileViews(selection.changes, target, document.FileReviews, diffThreads)
 	var selected *FileDiffView
 	for _, candidate := range files {
 		if candidate.Path == filePath {
@@ -546,10 +546,10 @@ func (a *app) mappedFileDiffFragment(w http.ResponseWriter, r *http.Request) {
 	}
 	linked := make(map[string]bool, len(selection.matched))
 	for _, atom := range selection.matched {
-		linked[atom.URI] = true
+		linked[atom.Ref] = true
 	}
 	for _, line := range selected.Lines {
-		line.Linked = line.Atom != nil && linked[line.Atom.URI]
+		line.Linked = line.Atom != nil && linked[line.Atom.Ref]
 	}
 	total := len(selected.Lines)
 	window, err := pageRequest(r, "file-diff\x00"+sourceCatalogIdentity(selection.catalog)+"\x00"+filePath+"\x00"+target+"\x00"+r.URL.Query().Get("view"), total, defaultDiffPageLimit, maxDiffPageLimit)
@@ -574,15 +574,20 @@ func (a *app) mappedFileDiffFragment(w http.ResponseWriter, r *http.Request) {
 // the narrative target they belong to, and by the diff line they were written
 // on. The page and the incremental endpoints share it so a comment reads the
 // same whether it arrives on first load or with the chapter it lives in.
-func threadViews(document *saga.Saga) (byTarget, byDiff map[string][]*threadView) {
+//
+// Code-anchored threads are keyed by the comparison atom they sit on, which
+// needs the comparison's merge-base; callers that render no code pass "".
+func threadViews(document *saga.Saga, baseOID string) (byTarget, byDiff map[string][]*threadView) {
 	byTarget, byDiff = map[string][]*threadView{}, map[string][]*threadView{}
 	for _, thread := range document.Threads {
 		if thread.State == "withdrawn" {
 			continue
 		}
 		view := makeThreadView(thread)
-		if thread.Anchor.Type == "diff" && thread.Anchor.Diff != nil {
-			byDiff[thread.Anchor.Diff.URI] = append(byDiff[thread.Anchor.Diff.URI], view)
+		if thread.Anchor.Type == "code" && thread.Anchor.Code != nil {
+			for _, key := range codeThreadKeys(thread.Anchor.Code, baseOID) {
+				byDiff[key] = append(byDiff[key], view)
+			}
 		} else {
 			byTarget[thread.Target] = append(byTarget[thread.Target], view)
 		}
@@ -605,7 +610,7 @@ func (a *app) sectionBody(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "unknown section", http.StatusNotFound)
 		return
 	}
-	threadsByTarget, _ := threadViews(document)
+	threadsByTarget, _ := threadViews(document, "")
 	scope := viewScope{threads: threadsByTarget}.shell()
 	// The chapter response owns the one set of decision controls for everything
 	// inside it. Fragment bodies can then stay focused on the authored material.
@@ -631,7 +636,7 @@ func (a *app) fragmentContent(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "unknown fragment", http.StatusNotFound)
 		return
 	}
-	threadsByTarget, threadsByDiff := threadViews(document)
+	threadsByTarget, threadsByDiff := threadViews(document, "")
 	scope := viewScope{threads: threadsByTarget, diffThreads: threadsByDiff, directoryManaged: targetBelongsToChapter(document.Section, fragment.Target)}
 	writeIncrementalHeaders(w, "text/html; charset=utf-8")
 	if err := a.template.ExecuteTemplate(w, "fragment", makeFragmentView(fragment, scope)); err != nil {
@@ -973,7 +978,7 @@ func (a *app) page(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	threadsByTarget, _ := threadViews(document)
+	threadsByTarget, _ := threadViews(document, "")
 	// The saga view is a shell: identity, coverage totals, the overview's
 	// fragments as descriptors, one summary per chapter, and the navigation
 	// outline. Everything below that arrives from /api/section and
@@ -1115,7 +1120,7 @@ func (a *app) sourceReviewDocument(ctx context.Context) *saga.Saga {
 	if err != nil || !reviewValidation.Valid {
 		return nil
 	}
-	document.DiffReviews = state.DiffReviews
+	document.FileReviews = state.FileReviews
 	applyGitAttribution(ctx, gitattribution.New(ctx, a.root), document)
 	return document
 }
@@ -1604,8 +1609,8 @@ func (scope viewScope) shell() viewScope {
 }
 
 func makeSectionView(section *saga.Section, scope viewScope) *sectionView {
-	changeCount, attached := scopedAttachedCode(scope, section.Title, section.Target, section.Diffs)
-	changeCount = lazyChangeCount(section.HasDiffs, changeCount)
+	changeCount, attached := scopedAttachedCode(scope, section.Title, section.Target, section.Code)
+	changeCount = lazyChangeCount(section.HasCode, changeCount)
 	view := &sectionView{
 		Section: section, DOMID: domID(section.Target), ChangeCount: changeCount,
 		Attached: attached, Threads: scope.threads[section.Target], DirectoryManaged: scope.directoryManaged,
@@ -1661,8 +1666,8 @@ func makeFragmentView(fragment *saga.Fragment, scope viewScope) *fragmentView {
 		return view
 	}
 	threads := scope.threads[fragment.Target]
-	view.ChangeCount, view.Attached = scopedAttachedCode(scope, title, fragment.Target, fragment.Diffs)
-	view.ChangeCount = lazyChangeCount(fragment.HasDiffs, view.ChangeCount)
+	view.ChangeCount, view.Attached = scopedAttachedCode(scope, title, fragment.Target, fragment.Code)
+	view.ChangeCount = lazyChangeCount(fragment.HasCode, view.ChangeCount)
 	for _, thread := range threads {
 		if annotationAnchor(thread.Anchor.Type) {
 			view.AnnotationThreads = append(view.AnnotationThreads, makeAnnotationThreadView(thread))
@@ -1675,8 +1680,8 @@ func makeFragmentView(fragment *saga.Fragment, scope viewScope) *fragmentView {
 		if region == nil && landmark.Selector.Type == "region" {
 			region = &saga.LandmarkRegion{X: landmark.Selector.X, Y: landmark.Selector.Y, Width: landmark.Selector.Width, Height: landmark.Selector.Height}
 		}
-		changeCount, attached := scopedAttachedCode(scope, landmark.Label, landmark.Target, landmark.Diffs)
-		changeCount = lazyChangeCount(landmark.HasDiffs, changeCount)
+		changeCount, attached := scopedAttachedCode(scope, landmark.Label, landmark.Target, landmark.Code)
+		changeCount = lazyChangeCount(landmark.HasCode, changeCount)
 		landmarkView := &landmarkView{
 			Landmark: landmark, DOMID: view.DOMID + "--" + landmark.ID, Title: landmark.Label,
 			ChangeCount: changeCount,
@@ -1724,7 +1729,7 @@ func lazyChangeCount(hasDiffs bool, count int) int {
 	return count
 }
 
-func scopedAttachedCode(scope viewScope, title, target string, evidence []saga.DiffFile) (int, *attachedCodeView) {
+func scopedAttachedCode(scope viewScope, title, target string, evidence []saga.CodeFile) (int, *attachedCodeView) {
 	if scope.snapshot != nil {
 		indexes := scope.snapshot.targetAtoms[target]
 		attached := makeAttachedCodeViewIndexed(title, target, scope.snapshot, indexes, evidence)
@@ -1778,7 +1783,7 @@ func makeThreadView(thread *saga.Thread) *threadView {
 	return view
 }
 
-func makeFileViews(changes gitdiff.ChangeSet, target string, reviews []saga.DiffReview, threads map[string][]*threadView) []*fileDiffView {
+func makeFileViews(changes gitdiff.ChangeSet, target string, reviews []saga.FileReview, threads map[string][]*threadView) []*fileDiffView {
 	byPath := map[string]*fileDiffView{}
 	renameTo := map[string]string{}
 	for _, atom := range changes.Atoms {
@@ -1786,13 +1791,11 @@ func makeFileViews(changes gitdiff.ChangeSet, target string, reviews []saga.Diff
 			renameTo[atom.OldPath] = atom.NewPath
 		}
 	}
-	latest := map[string]saga.DiffReview{}
-	for _, review := range reviews {
-		// Ties on created_at resolve by id so the current reviewed state of a
-		// file does not depend on directory listing order.
-		if previous, ok := latest[review.URI]; !ok || previous.CreatedAt.Before(review.CreatedAt) ||
-			previous.CreatedAt.Equal(review.CreatedAt) && previous.ID < review.ID {
-			latest[review.URI] = review
+	latest := latestFileReviews(reviews)
+	deleted := map[string]bool{}
+	for _, atom := range changes.Atoms {
+		if atom.Kind == "event" && atom.Event == "delete" {
+			deleted[atom.Path] = true
 		}
 	}
 	for _, atom := range changes.Atoms {
@@ -1805,15 +1808,14 @@ func makeFileViews(changes gitdiff.ChangeSet, target string, reviews []saga.Diff
 		}
 		file := byPath[path]
 		if file == nil {
-			uri, _ := diffuri.Build(diffuri.Reference{Repository: changes.Repository, Base: changes.BaseOID, Head: changes.HeadOID, Kind: "file", Path: path})
 			digest := sha256.Sum256([]byte(path))
-			file = &fileDiffView{ID: fmt.Sprintf("diff-%x", digest[:8]), Path: path, URI: uri}
-			if review, ok := latest[uri]; ok {
+			file = &fileDiffView{ID: fmt.Sprintf("diff-%x", digest[:8]), Path: path, Ref: fileLocation(changes.BaseOID, changes.HeadOID, path, deleted[path])}
+			if review, ok := latest[path]; ok {
 				file.Reviewed, file.Reviewer, file.ReviewerDetail = review.State == "reviewed", review.Author, review.AttributionDetail
 			}
 			byPath[path] = file
 		}
-		file.Atoms = append(file.Atoms, &diffAtomView{Atom: atom, Threads: threads[atom.URI], Target: target})
+		file.Atoms = append(file.Atoms, &diffAtomView{Atom: atom, Threads: threads[atom.Key], Target: target})
 		if atom.Side == "new" {
 			file.Added++
 		} else if atom.Side == "old" {
@@ -1972,8 +1974,8 @@ func applyGitAttribution(ctx context.Context, resolver *gitattribution.Resolver,
 			collect(event.Path, &event.Author, &event.AttributionDetail)
 		}
 	}
-	for index := range document.DiffReviews {
-		review := &document.DiffReviews[index]
+	for index := range document.FileReviews {
+		review := &document.FileReviews[index]
 		collect(review.Path, &review.Author, &review.AttributionDetail)
 	}
 	paths := make([]string, len(targets))
@@ -2107,6 +2109,10 @@ func (a *app) createThread(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "invalid annotation anchor", http.StatusBadRequest)
 		return
 	}
+	if err := a.authorAnchor(r.Context(), &anchor); err != nil {
+		http.Error(w, "invalid code anchor", http.StatusBadRequest)
+		return
+	}
 	if _, err := reviewstore.AddThread(a.root, target, r.FormValue("body"), anchor, r.FormValue("kind"), r.FormValue("replacement"), attachments); err != nil {
 		writeMutationError(w)
 		return
@@ -2183,6 +2189,10 @@ func (a *app) threadAnchor(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "invalid annotation anchor", http.StatusBadRequest)
 		return
 	}
+	if err := a.authorAnchor(r.Context(), &anchor); err != nil {
+		http.Error(w, "invalid code anchor", http.StatusBadRequest)
+		return
+	}
 	if err := reviewstore.SetAnchor(a.root, r.FormValue("thread"), anchor); err != nil {
 		writeMutationError(w)
 		return
@@ -2240,7 +2250,25 @@ func (a *app) diffReview(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Missing or invalid mutation token.", http.StatusForbidden)
 		return
 	}
-	if err := reviewstore.AddDiffReview(a.root, r.FormValue("uri"), r.FormValue("state")); err != nil {
+	location, err := coderef.ParseLocation(r.FormValue("ref"))
+	if err != nil || !location.WholeFile() {
+		http.Error(w, "file review requires a whole-file code location", http.StatusBadRequest)
+		return
+	}
+	reference, err := a.authorCode(r.Context(), location)
+	if err != nil {
+		// A deleted file exists only at the comparison's merge-base.
+		if document := a.sourceReviewDocument(r.Context()); document != nil {
+			if catalog, catalogErr := a.sourceCatalog(r.Context(), document.Manifest); catalogErr == nil && location.Commit != catalog.BaseOID {
+				reference, err = a.authorCode(r.Context(), coderef.Location{Commit: catalog.BaseOID, Path: location.Path})
+			}
+		}
+	}
+	if err != nil {
+		writeMutationError(w)
+		return
+	}
+	if err := reviewstore.AddFileReview(a.root, reference, r.FormValue("state")); err != nil {
 		writeMutationError(w)
 		return
 	}
@@ -2251,10 +2279,7 @@ func (a *app) diffReview(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNoContent)
 		return
 	}
-	fallback := "/?view=code#" + url.PathEscape(r.FormValue("file"))
-	if reference, err := diffuri.Parse(r.FormValue("uri")); err == nil && reference.Kind == "file" {
-		fallback = CodeDiffURL(reference.Path, "")
-	}
+	fallback := CodeDiffURL(location.Path, "")
 	redirectAfterReview(w, r, fallback)
 }
 

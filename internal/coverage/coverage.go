@@ -1,27 +1,38 @@
 package coverage
 
 import (
+	"context"
 	"fmt"
 	"sort"
 
-	"github.com/twentyideas/changesaga/internal/diffuri"
+	"github.com/twentyideas/changesaga/internal/coderef"
+	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
+
+// Resolver views a code reference at a commit. *coderesolve.Resolver is the
+// production implementation.
+type Resolver interface {
+	Resolve(ctx context.Context, reference coderef.Reference, view string) coderesolve.Resolution
+}
 
 type Summary struct {
 	Total       int `json:"total"`
 	Covered     int `json:"covered"`
 	Uncovered   int `json:"uncovered"`
 	Overlapping int `json:"overlapping"`
-	Orphaned    int `json:"orphaned"`
+	Stale       int `json:"stale"`
+	Remapped    int `json:"remapped"`
 	SagaChanges int `json:"saga_changes"`
 }
 
+// Assignment names one reference: the target that owns it, its evidence
+// record, and its 1-based position in that record.
 type Assignment struct {
-	Target   string `json:"target"`
-	DiffFile string `json:"diff_file"`
-	Diff     int    `json:"diff"`
+	Target       string `json:"target"`
+	EvidenceFile string `json:"evidence_file"`
+	Reference    int    `json:"reference"`
 }
 
 type Overlap struct {
@@ -29,10 +40,13 @@ type Overlap struct {
 	CoveredBy []Assignment `json:"covered_by"`
 }
 
-type Orphan struct {
-	Assignment Assignment         `json:"assignment"`
-	Reference  saga.DiffReference `json:"reference"`
-	Reason     string             `json:"reason"`
+// StaleReference is a reference that is current at neither side of the
+// comparison: its content changed, disappeared, or failed verification. It
+// accounts for nothing until it is re-authored.
+type StaleReference struct {
+	Assignment Assignment        `json:"assignment"`
+	Reference  coderef.Reference `json:"reference"`
+	Reason     string            `json:"reason"`
 }
 
 type TargetSummary struct {
@@ -44,28 +58,28 @@ type TargetSummary struct {
 // present and never null, so an agent can index into it without first testing
 // for a missing key: a complete saga reports "uncovered": [] rather than
 // omitting the field or emitting null.
+//
+// Coverage is computed per comparison and never stored: every changed atom of
+// BaseOID..HeadOID must lie inside a reference that is current at the side the
+// atom lives on. Added lines are matched at the head commit, deleted lines at
+// the merge-base, and file events by whole-file references.
 type Report struct {
-	Complete      bool                    `json:"complete"`
-	CoverageScope string                  `json:"coverage_scope"`
-	Summary       Summary                 `json:"summary"`
-	Uncovered     []gitdiff.Atom          `json:"uncovered"`
-	Overlaps      []Overlap               `json:"overlaps"`
-	Orphans       []Orphan                `json:"orphans"`
-	Targets       []TargetSummary         `json:"targets"`
-	SagaChanges   []gitdiff.Atom          `json:"saga_changes"`
-	Repository    string                  `json:"repository"`
-	Base          string                  `json:"base"`
-	Head          string                  `json:"head"`
-	BaseOID       string                  `json:"base_oid"`
-	HeadOID       string                  `json:"head_oid"`
-	SchemaValid   bool                    `json:"schema_valid"`
-	SchemaIssues  []saga.Issue            `json:"schema_issues"`
-	Ownership     map[string][]Assignment `json:"-"`
-}
-
-type indexedAtom struct {
-	index     int
-	reference diffuri.Reference
+	Complete        bool                    `json:"complete"`
+	CoverageScope   string                  `json:"coverage_scope"`
+	Summary         Summary                 `json:"summary"`
+	Uncovered       []gitdiff.Atom          `json:"uncovered"`
+	Overlaps        []Overlap               `json:"overlaps"`
+	StaleReferences []StaleReference        `json:"stale_references"`
+	Targets         []TargetSummary         `json:"targets"`
+	SagaChanges     []gitdiff.Atom          `json:"saga_changes"`
+	Repository      string                  `json:"repository"`
+	Base            string                  `json:"base"`
+	Head            string                  `json:"head"`
+	BaseOID         string                  `json:"base_oid"`
+	HeadOID         string                  `json:"head_oid"`
+	SchemaValid     bool                    `json:"schema_valid"`
+	SchemaIssues    []saga.Issue            `json:"schema_issues"`
+	Ownership       map[string][]Assignment `json:"-"`
 }
 
 type summaryAssignment struct {
@@ -73,18 +87,23 @@ type summaryAssignment struct {
 	firstTarget string
 }
 
+// atomIndex finds the atoms inside a resolved location without scanning the
+// comparison: line atoms by commit and path sorted by line, and event atoms by
+// their whole-file location.
 type atomIndex struct {
-	lines  map[string][]indexedAtom
-	events []indexedAtom
-	sorted map[string]bool
+	lines  map[string][]int
+	events map[string][]int
+	atoms  []gitdiff.Atom
 }
 
-func Evaluate(document *saga.Saga, validation saga.Validation, changes gitdiff.ChangeSet) Report {
+func Evaluate(ctx context.Context, document *saga.Saga, validation saga.Validation, changes gitdiff.ChangeSet, resolver Resolver) Report {
 	report := newReport(validation, changes)
 	assignments := make([][]Assignment, len(changes.Atoms))
 	index := buildIndex(changes)
-	walkDocumentDiffs(document, func(target string, files []saga.DiffFile) {
-		visitDiffs(target, files, index, assignments, &report)
+	WalkDocumentCode(document, func(target string, files []saga.CodeFile) {
+		visitReferences(ctx, target, files, index, changes, resolver, &report, func(atom int, assignment Assignment) {
+			assignments[atom] = append(assignments[atom], assignment)
+		})
 	})
 
 	targetCounts := map[string]int{}
@@ -115,18 +134,19 @@ func Evaluate(document *saga.Saga, validation saga.Validation, changes gitdiff.C
 	return report
 }
 
-// SelectTarget returns the changed atoms matched by one narrative target's
-// evidence. It reuses the coverage evaluator's indexed selector semantics but
-// does not construct ownership for any sibling target or retain a whole-report
-// graph. Lazy linked-code endpoints use it after reading only the source files
-// named by that target.
-func SelectTarget(files []saga.DiffFile, changes gitdiff.ChangeSet) []gitdiff.Atom {
-	assignments := make([][]Assignment, len(changes.Atoms))
-	report := Report{Orphans: []Orphan{}}
-	visitDiffs("", files, buildIndex(changes), assignments, &report)
+// SelectTarget returns the changed atoms inside one narrative target's
+// references. It does not construct ownership for any sibling target. Lazy
+// linked-code endpoints use it after reading only the source files named by
+// that target.
+func SelectTarget(ctx context.Context, files []saga.CodeFile, changes gitdiff.ChangeSet, resolver Resolver) []gitdiff.Atom {
+	selected := make([]bool, len(changes.Atoms))
+	report := Report{StaleReferences: []StaleReference{}}
+	visitReferences(ctx, "", files, buildIndex(changes), changes, resolver, &report, func(atom int, _ Assignment) {
+		selected[atom] = true
+	})
 	matched := make([]gitdiff.Atom, 0)
-	for index, owners := range assignments {
-		if len(owners) > 0 {
+	for index, ok := range selected {
+		if ok {
 			matched = append(matched, changes.Atoms[index])
 		}
 	}
@@ -136,14 +156,16 @@ func SelectTarget(files []saga.DiffFile, changes gitdiff.ChangeSet) []gitdiff.At
 // EvaluateSummary computes coverage verdicts and per-target rollups without
 // retaining atom-level ownership, uncovered, or overlap details. Overview-style
 // queries use it because their bounded response needs counts, not the complete
-// reverse indexes that gap, fragment, and diff-owner queries traverse.
-func EvaluateSummary(document *saga.Saga, validation saga.Validation, changes gitdiff.ChangeSet) Report {
+// reverse indexes that gap, fragment, and atom-owner queries traverse.
+func EvaluateSummary(ctx context.Context, document *saga.Saga, validation saga.Validation, changes gitdiff.ChangeSet, resolver Resolver) Report {
 	report := newReport(validation, changes)
 	assignments := make([]summaryAssignment, len(changes.Atoms))
 	otherTargets := map[int][]string{}
 	index := buildIndex(changes)
-	walkDocumentDiffs(document, func(target string, files []saga.DiffFile) {
-		visitDiffsSummary(target, files, index, assignments, otherTargets, &report)
+	WalkDocumentCode(document, func(target string, files []saga.CodeFile) {
+		visitReferences(ctx, target, files, index, changes, resolver, &report, func(atom int, _ Assignment) {
+			addSummaryAssignment(assignments, otherTargets, atom, target)
+		})
 	})
 
 	targetCounts := map[string]int{}
@@ -170,7 +192,7 @@ func newReport(validation saga.Validation, changes gitdiff.ChangeSet) Report {
 		CoverageScope: "mapping_only",
 		Repository:    changes.Repository, Base: changes.Base, Head: changes.Head, BaseOID: changes.BaseOID, HeadOID: changes.HeadOID,
 		SchemaValid: validation.Valid, SchemaIssues: nonNil(validation.Issues), SagaChanges: nonNil(changes.SagaChanges),
-		Uncovered: []gitdiff.Atom{}, Overlaps: []Overlap{}, Orphans: []Orphan{}, Targets: []TargetSummary{},
+		Uncovered: []gitdiff.Atom{}, Overlaps: []Overlap{}, StaleReferences: []StaleReference{}, Targets: []TargetSummary{},
 		Ownership: make(map[string][]Assignment),
 	}
 }
@@ -180,11 +202,9 @@ func finishReport(report *Report, targetCounts map[string]int, total, uncovered,
 		report.Targets = append(report.Targets, TargetSummary{Target: target, Covered: count})
 	}
 	sort.Slice(report.Targets, func(i, j int) bool { return report.Targets[i].Target < report.Targets[j].Target })
-	report.Summary = Summary{
-		Total: total, Covered: total - uncovered, Uncovered: uncovered,
-		Overlapping: overlapping, Orphaned: len(report.Orphans), SagaChanges: sagaChanges,
-	}
-	report.Complete = report.SchemaValid && uncovered == 0 && len(report.Orphans) == 0
+	report.Summary.Total, report.Summary.Covered, report.Summary.Uncovered = total, total-uncovered, uncovered
+	report.Summary.Overlapping, report.Summary.Stale, report.Summary.SagaChanges = overlapping, len(report.StaleReferences), sagaChanges
+	report.Complete = report.SchemaValid && uncovered == 0 && len(report.StaleReferences) == 0
 }
 
 // nonNil keeps an empty collection encodable as [] instead of null. A nil Go
@@ -197,55 +217,46 @@ func nonNil[T any](values []T) []T {
 	return values
 }
 
-func visitDiffs(target string, files []saga.DiffFile, index atomIndex, assignments [][]Assignment, report *Report) {
-	for _, file := range files {
-		for i, reference := range file.Diffs {
-			assignment := Assignment{Target: target, DiffFile: file.Path, Diff: i + 1}
-			selector, err := diffuri.Parse(reference.URI)
-			if err != nil {
-				report.Orphans = append(report.Orphans, Orphan{Assignment: assignment, Reference: reference, Reason: err.Error()})
-				continue
-			}
-			matched := 0
-			candidates := index.events
-			if selector.Kind == "line" {
-				candidates = index.lineCandidates(selector)
-			}
-			for _, candidate := range candidates {
-				if diffuri.Matches(selector, candidate.reference) {
-					assignments[candidate.index] = append(assignments[candidate.index], assignment)
-					matched++
-				}
-			}
-			if matched == 0 {
-				report.Orphans = append(report.Orphans, Orphan{Assignment: assignment, Reference: reference, Reason: "diff URI does not match the current source comparison"})
-			}
+// Sides resolves reference at both sides of the comparison and returns the
+// locations where it is current, deduplicated. The second result is the
+// reason it is current at neither.
+func Sides(ctx context.Context, reference coderef.Reference, changes gitdiff.ChangeSet, resolver Resolver) ([]coderesolve.Resolution, string) {
+	head := resolver.Resolve(ctx, reference, changes.HeadOID)
+	var current []coderesolve.Resolution
+	if head.Current() {
+		current = append(current, head)
+	}
+	if changes.BaseOID != changes.HeadOID {
+		base := resolver.Resolve(ctx, reference, changes.BaseOID)
+		if base.Current() {
+			current = append(current, base)
 		}
 	}
+	if len(current) == 0 {
+		return nil, head.Reason
+	}
+	return current, ""
 }
 
-func visitDiffsSummary(target string, files []saga.DiffFile, index atomIndex, assignments []summaryAssignment, otherTargets map[int][]string, report *Report) {
+func visitReferences(ctx context.Context, target string, files []saga.CodeFile, index atomIndex, changes gitdiff.ChangeSet, resolver Resolver, report *Report, match func(int, Assignment)) {
 	for _, file := range files {
-		for i, reference := range file.Diffs {
-			assignment := Assignment{Target: target, DiffFile: file.Path, Diff: i + 1}
-			selector, err := diffuri.Parse(reference.URI)
-			if err != nil {
-				report.Orphans = append(report.Orphans, Orphan{Assignment: assignment, Reference: reference, Reason: err.Error()})
+		for i, reference := range file.References {
+			assignment := Assignment{Target: target, EvidenceFile: file.Path, Reference: i + 1}
+			current, reason := Sides(ctx, reference, changes, resolver)
+			if len(current) == 0 {
+				report.StaleReferences = append(report.StaleReferences, StaleReference{Assignment: assignment, Reference: reference, Reason: reason})
 				continue
 			}
-			matched := 0
-			candidates := index.events
-			if selector.Kind == "line" {
-				candidates = index.lineCandidates(selector)
-			}
-			for _, candidate := range candidates {
-				if diffuri.Matches(selector, candidate.reference) {
-					addSummaryAssignment(assignments, otherTargets, candidate.index, target)
-					matched++
+			for _, resolution := range current {
+				if resolution.Moved {
+					report.Summary.Remapped++
+					break
 				}
 			}
-			if matched == 0 {
-				report.Orphans = append(report.Orphans, Orphan{Assignment: assignment, Reference: reference, Reason: "diff URI does not match the current source comparison"})
+			for _, resolution := range current {
+				for _, atom := range index.within(resolution.Location) {
+					match(atom, assignment)
+				}
 			}
 		}
 	}
@@ -270,74 +281,51 @@ func addSummaryAssignment(assignments []summaryAssignment, otherTargets map[int]
 }
 
 func buildIndex(changes gitdiff.ChangeSet) atomIndex {
-	index := atomIndex{lines: map[string][]indexedAtom{}, sorted: map[string]bool{}}
+	index := atomIndex{lines: map[string][]int{}, events: map[string][]int{}, atoms: changes.Atoms}
 	for atomIndex := range changes.Atoms {
-		atom := &changes.Atoms[atomIndex]
-		reference := diffuri.Reference{
-			Repository: changes.Repository, Base: changes.BaseOID, Head: changes.HeadOID,
-			Kind: atom.Kind, Path: atom.Path, Side: atom.Side, Start: atom.Line, End: atom.Line,
-			Event: atom.Event, OldPath: atom.OldPath, NewPath: atom.NewPath,
-		}
-		if atom.Kind == "event" && atom.Event == "rename" {
-			reference.Path = ""
-		}
-		// Hand-built ChangeSets used by package clients may omit the shared
-		// comparison identity. Production gitdiff.Read results always carry it,
-		// avoiding one long-URI parse and its allocations per atom.
-		if reference.Repository == "" || reference.Base == "" || reference.Head == "" {
-			var err error
-			reference, err = diffuri.Parse(atom.URI)
-			if err != nil {
-				continue
-			}
-		}
-		value := indexedAtom{index: atomIndex, reference: reference}
-		if reference.Kind == "line" {
-			key := lineIndexKey(reference)
-			index.lines[key] = append(index.lines[key], value)
+		location := changes.Location(changes.Atoms[atomIndex])
+		key := location.Commit + "\x00" + location.Path
+		if changes.Atoms[atomIndex].Kind == "line" {
+			index.lines[key] = append(index.lines[key], atomIndex)
 		} else {
-			index.events = append(index.events, value)
+			index.events[key] = append(index.events[key], atomIndex)
 		}
+	}
+	for key, values := range index.lines {
+		sort.SliceStable(values, func(i, j int) bool { return changes.Atoms[values[i]].Line < changes.Atoms[values[j]].Line })
+		index.lines[key] = values
 	}
 	return index
 }
 
-func walkDocumentDiffs(document *saga.Saga, visit func(string, []saga.DiffFile)) {
-	visit(document.Section.Target, document.Section.Diffs)
-	walkSections(document.Section, func(section *saga.Section) {
-		if section != document.Section {
-			visit(section.Target, section.Diffs)
-		}
-		for _, fragment := range section.Fragments {
-			visit(fragment.Target, fragment.Diffs)
-			for landmarkIndex := range fragment.Landmarks {
-				landmark := &fragment.Landmarks[landmarkIndex]
-				visit(landmark.Target, landmark.Diffs)
-			}
-		}
-	})
-}
-
-func (index atomIndex) lineCandidates(selector diffuri.Reference) []indexedAtom {
-	key := lineIndexKey(selector)
+// within returns the atoms inside location: the lines of its range, or, for a
+// whole file, every line of the file on that side and the file's own events.
+func (index atomIndex) within(location coderef.Location) []int {
+	key := location.Commit + "\x00" + location.Path
 	values := index.lines[key]
-	if !index.sorted[key] {
-		sort.SliceStable(values, func(i, j int) bool {
-			return values[i].reference.Start < values[j].reference.Start
-		})
-		index.sorted[key] = true
+	if location.WholeFile() {
+		return append(append([]int(nil), values...), index.events[key]...)
 	}
-	start := sort.Search(len(values), func(i int) bool {
-		return values[i].reference.Start >= selector.Start
-	})
-	end := sort.Search(len(values), func(i int) bool {
-		return values[i].reference.Start > selector.End
-	})
+	start := sort.Search(len(values), func(i int) bool { return index.atoms[values[i]].Line >= location.Start })
+	end := sort.Search(len(values), func(i int) bool { return index.atoms[values[i]].Line > location.End })
 	return values[start:end]
 }
 
-func lineIndexKey(reference diffuri.Reference) string {
-	return reference.Repository + "\x00" + reference.Base + "\x00" + reference.Head + "\x00" + reference.Path + "\x00" + reference.Side
+// WalkDocumentCode visits every narrative target's evidence records.
+func WalkDocumentCode(document *saga.Saga, visit func(string, []saga.CodeFile)) {
+	visit(document.Section.Target, document.Section.Code)
+	walkSections(document.Section, func(section *saga.Section) {
+		if section != document.Section {
+			visit(section.Target, section.Code)
+		}
+		for _, fragment := range section.Fragments {
+			visit(fragment.Target, fragment.Code)
+			for landmarkIndex := range fragment.Landmarks {
+				landmark := &fragment.Landmarks[landmarkIndex]
+				visit(landmark.Target, landmark.Code)
+			}
+		}
+	})
 }
 
 func walkSections(section *saga.Section, fn func(*saga.Section)) {
@@ -355,4 +343,40 @@ func DescribeAtom(atom gitdiff.Atom) string {
 		return fmt.Sprintf("%s %s", atom.Event, atom.Path)
 	}
 	return fmt.Sprintf("%s:%d (%s)", atom.Path, atom.Line, atom.Side)
+}
+
+// SelectLocations returns the changed atoms inside any of the given locations,
+// which must already be resolved to the comparison's commits.
+func SelectLocations(changes gitdiff.ChangeSet, locations []coderef.Location) []gitdiff.Atom {
+	index := buildIndex(changes)
+	selected := make([]bool, len(changes.Atoms))
+	for _, location := range locations {
+		for _, atom := range index.within(location) {
+			selected[atom] = true
+		}
+	}
+	matched := make([]gitdiff.Atom, 0)
+	for atom, ok := range selected {
+		if ok {
+			matched = append(matched, changes.Atoms[atom])
+		}
+	}
+	return matched
+}
+
+// ResolvedCode is one reference viewed in a comparison: the locations where it
+// is current, or, when there are none, why it is stale.
+type ResolvedCode struct {
+	Current []coderef.Location `json:"current"`
+	Reason  string             `json:"reason,omitempty"`
+}
+
+// Resolve views reference at both sides of the comparison.
+func Resolve(ctx context.Context, reference coderef.Reference, changes gitdiff.ChangeSet, resolver Resolver) ResolvedCode {
+	current, reason := Sides(ctx, reference, changes, resolver)
+	result := ResolvedCode{Reason: reason}
+	for _, resolution := range current {
+		result.Current = append(result.Current, resolution.Location)
+	}
+	return result
 }

@@ -4,6 +4,7 @@ package reviewapp
 
 import (
 	"context"
+	"github.com/twentyideas/changesaga/internal/coderef"
 	"time"
 
 	"github.com/twentyideas/changesaga/internal/gitdiff"
@@ -27,7 +28,6 @@ type OpenOptions struct {
 
 type Session interface {
 	Snapshot() string
-	SourceHead() (identity string, commit string)
 	Overview(context.Context, OverviewQuery) (Overview, error)
 	Children(context.Context, ChildrenQuery) (ChildrenPage, error)
 	ReadFragment(context.Context, FragmentQuery) (FragmentContent, error)
@@ -60,8 +60,11 @@ type FragmentDiffQuery struct {
 	Limit  int    `json:"limit,omitempty"`
 }
 
+// DiffOwnerQuery names a code location in the comparison, spelled
+// <commit>:<path>[#L<start>[-L<end>]]: a line range selects the changed lines
+// inside it and a whole file selects every changed atom of that file.
 type DiffOwnerQuery struct {
-	Diff   string `json:"diff"`
+	Ref    string `json:"ref"`
 	Cursor string `json:"cursor,omitempty"`
 	Limit  int    `json:"limit,omitempty"`
 }
@@ -255,21 +258,22 @@ type SemanticLandmark struct {
 	Leader      string         `json:"leader,omitempty"`
 }
 
+// ResolvedSelector is one persisted code reference viewed in the comparison.
+// Status is stale when the reference is current at neither side; a current
+// reference may still hold no changed atoms when it explains unchanged code.
 type ResolvedSelector struct {
-	URI          string         `json:"uri"`
-	Note         string         `json:"note,omitempty"`
-	Status       string         `json:"status"`
-	Target       string         `json:"target"`
-	EvidenceFile string         `json:"evidence_file,omitempty"`
-	Atoms        []gitdiff.Atom `json:"atoms,omitempty"`
+	Reference    coderef.Reference `json:"reference"`
+	Status       string            `json:"status"`
+	Target       string            `json:"target"`
+	EvidenceFile string            `json:"evidence_file,omitempty"`
+	Atoms        []gitdiff.Atom    `json:"atoms,omitempty"`
 }
 
 type StaleSelector struct {
-	URI          string `json:"uri"`
-	Note         string `json:"note,omitempty"`
-	Target       string `json:"target"`
-	EvidenceFile string `json:"evidence_file,omitempty"`
-	Reason       string `json:"reason"`
+	Reference    coderef.Reference `json:"reference"`
+	Target       string            `json:"target"`
+	EvidenceFile string            `json:"evidence_file,omitempty"`
+	Reason       string            `json:"reason"`
 }
 
 type FragmentDiffs struct {
@@ -282,7 +286,7 @@ type FragmentDiffs struct {
 
 type DiffOwner struct {
 	Target       string         `json:"target"`
-	Selector     string         `json:"selector"`
+	Reference    string         `json:"reference"`
 	Note         string         `json:"note,omitempty"`
 	EvidenceFile string         `json:"evidence_file,omitempty"`
 	Mapping      *MappingSignal `json:"mapping,omitempty"`
@@ -331,10 +335,10 @@ type MappingPage struct {
 }
 
 type ClaimEvidence struct {
-	URI            string         `json:"uri"`
-	Status         string         `json:"status"`
-	MappedToTarget bool           `json:"mapped_to_target"`
-	Atoms          []gitdiff.Atom `json:"atoms"`
+	Reference      coderef.Reference `json:"reference"`
+	Status         string            `json:"status"`
+	MappedToTarget bool              `json:"mapped_to_target"`
+	Atoms          []gitdiff.Atom    `json:"atoms"`
 }
 
 type VerificationRecord struct {
@@ -377,7 +381,7 @@ type OwnedAtom struct {
 }
 
 type DiffOwnership struct {
-	Diff  string      `json:"diff"`
+	Ref   string      `json:"ref"`
 	Kind  string      `json:"kind"`
 	Atoms []OwnedAtom `json:"atoms"`
 	Page  Page        `json:"-"`
@@ -418,7 +422,7 @@ type ReviewEvent struct {
 	ID                  string                 `json:"id"`
 	Kind                string                 `json:"kind"`
 	Target              string                 `json:"target,omitempty"`
-	Diff                string                 `json:"diff,omitempty"`
+	Code                *coderef.Reference     `json:"code,omitempty"`
 	State               string                 `json:"state,omitempty"`
 	Body                string                 `json:"body,omitempty"`
 	Anchor              *saga.Anchor           `json:"anchor,omitempty"`

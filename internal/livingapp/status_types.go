@@ -3,6 +3,7 @@ package livingapp
 import (
 	"strings"
 
+	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/prototypes"
@@ -95,6 +96,9 @@ type StatusInputs struct {
 
 	Report  coverage.Report
 	Changes gitdiff.ChangeSet
+	// QualityCode is every quality-evidence code reference viewed in Changes,
+	// keyed by coderef.Reference.Key.
+	QualityCode map[string]coverage.ResolvedCode
 
 	Diagnostics []Diagnostic
 }
@@ -277,14 +281,14 @@ type ChangedSource struct {
 	Atoms       int  `json:"atoms"`
 	// Uncovered groups unowned atoms by path; the exact atoms are the version 1
 	// top-level "uncovered" list, minus any listed under TestOwned.
-	Uncovered      []UncoveredPath `json:"uncovered"`
-	UncoveredAtoms int             `json:"uncovered_atoms"`
-	Orphans        []OrphanRef     `json:"orphans"`
-	TestOwned      []TestOwned     `json:"test_owned"`
-	Implicated     []Implicated    `json:"implicated"`
-	Note           string          `json:"note"`
+	Uncovered      []UncoveredPath  `json:"uncovered"`
+	UncoveredAtoms int              `json:"uncovered_atoms"`
+	Stale          []StaleReference `json:"stale"`
+	TestOwned      []TestOwned      `json:"test_owned"`
+	Implicated     []Implicated     `json:"implicated"`
+	Note           string           `json:"note"`
 
-	uncoveredURIs []string
+	uncoveredRefs []string
 }
 
 // UncoveredPath is one changed path with atoms no target owns.
@@ -293,15 +297,15 @@ type UncoveredPath struct {
 	Atoms int    `json:"atoms"`
 }
 
-// OrphanRef is one diff selector that no longer matches the current source
-// comparison, with the criteria reached through its owner.
-type OrphanRef struct {
-	Target   string   `json:"target"`
-	DiffFile string   `json:"diff_file"`
-	Diff     int      `json:"diff"`
-	URI      string   `json:"uri,omitempty"`
-	Reason   string   `json:"reason"`
-	Affects  []string `json:"affects"`
+// StaleReference is one code reference that is current at neither side of
+// the comparison, with the criteria reached through its owner.
+type StaleReference struct {
+	Target       string            `json:"target"`
+	EvidenceFile string            `json:"evidence_file"`
+	Reference    int               `json:"reference"`
+	Code         coderef.Reference `json:"code"`
+	Reason       string            `json:"reason"`
+	Affects      []string          `json:"affects"`
 }
 
 // TestOwned is a changed atom accounted for only by current test-code evidence.

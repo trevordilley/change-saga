@@ -185,7 +185,7 @@ func TestNodeDiffsSeparateDirectAndDescendantCoverage(t *testing.T) {
 			landmark: {node: Node{Kind: "landmark", Target: landmark}},
 		},
 		selectors: map[string][]selectorEntry{
-			landmark: {{selector: ResolvedSelector{Status: "current", Atoms: []gitdiff.Atom{{URI: "atom-1"}, {URI: "atom-2"}}}}},
+			landmark: {{selector: ResolvedSelector{Status: "current", Atoms: []gitdiff.Atom{{Ref: "atom-1"}, {Ref: "atom-2"}}}}},
 		},
 	}
 	node := service.finishNode(fragment, false)
@@ -349,7 +349,7 @@ func newServiceFixture(t *testing.T) serviceFixture {
 		Schema: saga.SagaSchemaURL, Version: saga.SagaVersion, ID: "query-test", Title: "Query test",
 		Source: saga.Source{Repository: comparison.Repository, Base: base, Head: "HEAD"},
 	})
-	writeJSON(t, filepath.Join(root, "___diffs", "root.json"), saga.DiffFile{Version: 2, Diffs: []saga.DiffReference{{URI: current.URI, Note: "root ownership"}}})
+	writeJSON(t, filepath.Join(root, saga.CodeDirName, "root.json"), saga.CodeFile{Version: 2, References: []saga.DiffReference{{URI: current.Ref, Note: "root ownership"}}})
 	writeJSON(t, filepath.Join(root, "overview.fragment", "fragment.json"), saga.FragmentManifest{Version: 2, ID: "overview", Title: "Overview", MediaType: "text/markdown", Entrypoint: "content.md", Order: 1})
 	writeFile(t, filepath.Join(root, "overview.fragment", "content.md"), "A café explains the change.\n")
 	writeJSON(t, filepath.Join(root, "overview.fragment", "___landmarks", "readiness.landmark", "landmark.json"), saga.Landmark{
@@ -358,25 +358,25 @@ func newServiceFixture(t *testing.T) serviceFixture {
 	})
 	asset := filepath.Join(root, "overview.fragment", "diagram.png")
 	writeFile(t, asset, "not-executed-image-bytes")
-	writeJSON(t, filepath.Join(root, "overview.fragment", "___diffs", "coverage.json"), saga.DiffFile{Version: 2, Diffs: []saga.DiffReference{{URI: current.URI, Note: "fragment ownership"}, {URI: stale, Note: "needs repair"}}})
+	writeJSON(t, filepath.Join(root, "overview.fragment", saga.CodeDirName, "coverage.json"), saga.CodeFile{Version: 2, References: []saga.DiffReference{{URI: current.Ref, Note: "fragment ownership"}, {URI: stale, Note: "needs repair"}}})
 	writeJSON(t, filepath.Join(root, "overview.fragment", "___approvals", "review.json"), saga.Review{Version: 2, ID: "review-1", Reviewer: &saga.ReviewerIdentity{Kind: "ai", Name: "Codex 1", Agent: "codex", Model: "gpt-5.6-sol"}, State: "approved", Body: "Looks good.", CreatedAt: mustTime("2026-08-20T10:02:00Z")})
 	writeJSON(t, filepath.Join(root, "details.chapter", "chapter.json"), saga.ChapterManifest{Version: 2, ID: "details", Title: "Details", Order: 2})
 	writeJSON(t, filepath.Join(root, "details.chapter", "details.fragment", "fragment.json"), saga.FragmentManifest{Version: 2, ID: "details-body", Title: "Details body", MediaType: "text/plain", Entrypoint: "content.txt"})
 	writeFile(t, filepath.Join(root, "details.chapter", "details.fragment", "content.txt"), "Details.\n")
 	threadDir := filepath.Join(root, "___review", "threads", "thread-1.thread")
-	writeJSON(t, filepath.Join(threadDir, "thread.json"), saga.ThreadManifest{Version: 2, ID: "thread-1", Target: fragmentTarget, Kind: "comment", Anchor: saga.Anchor{Type: "diff", Diff: &saga.DiffSelector{URI: current.URI}}, CreatedAt: mustTime("2026-08-20T10:00:00Z")})
+	writeJSON(t, filepath.Join(threadDir, "thread.json"), saga.ThreadManifest{Version: 2, ID: "thread-1", Target: fragmentTarget, Kind: "comment", Anchor: saga.Anchor{Type: "diff", Code: &saga.DiffSelector{URI: current.Ref}}, CreatedAt: mustTime("2026-08-20T10:00:00Z")})
 	messageDir := filepath.Join(threadDir, "messages", "message-1.message")
 	writeJSON(t, filepath.Join(messageDir, "message.json"), saga.MessageManifest{Version: 2, ID: "message-1", CreatedAt: mustTime("2026-08-20T10:00:00Z")})
 	writeJSON(t, filepath.Join(messageDir, "body.fragment", "fragment.json"), saga.FragmentManifest{Version: 2, ID: "message-body", MediaType: "text/markdown", Entrypoint: "content.md"})
 	writeFile(t, filepath.Join(messageDir, "body.fragment", "content.md"), "Please clarify.\n")
-	writeJSON(t, filepath.Join(root, "___review", "diffs", "file-review.json"), saga.DiffReview{Version: 2, ID: "file-review-1", URI: fileURI, State: "reviewed", CreatedAt: mustTime("2026-08-20T10:03:00Z")})
+	writeJSON(t, filepath.Join(root, "___review", "diffs", "file-review.json"), saga.FileReview{Version: 2, ID: "file-review-1", URI: fileURI, State: "reviewed", CreatedAt: mustTime("2026-08-20T10:03:00Z")})
 	writeJSON(t, filepath.Join(root, "___claims", "ready-claim.json"), saga.Claim{
 		Version: 2, ID: "ready-claim", Target: fragmentTarget, Kind: "behavior", Statement: "The readiness constant becomes true.",
-		Evidence: []string{current.URI}, CreatedAt: mustTime("2026-08-20T10:04:00Z"),
+		Evidence: []string{current.Ref}, CreatedAt: mustTime("2026-08-20T10:04:00Z"),
 	})
 	writeJSON(t, filepath.Join(root, "___claims", "mode-claim.json"), saga.Claim{
 		Version: 2, ID: "mode-claim", Target: fragmentTarget, Kind: "behavior", Statement: "The query mode is reported.",
-		Evidence: []string{comparison.Atoms[1].URI}, CreatedAt: mustTime("2026-08-20T10:04:30Z"),
+		Evidence: []string{comparison.Atoms[1].Ref}, CreatedAt: mustTime("2026-08-20T10:04:30Z"),
 	})
 	writeJSON(t, filepath.Join(root, "___verifications", "ready-check.json"), saga.Verification{
 		Version: 2, ID: "ready-check", Claim: "ready-claim", Status: "verified", Method: "inspection",
@@ -389,7 +389,7 @@ func newServiceFixture(t *testing.T) serviceFixture {
 	if err != nil {
 		t.Fatal(err)
 	}
-	return serviceFixture{repo: repo, root: root, fragment: fragmentTarget, atomURI: current.URI, fileURI: fileURI, asset: asset, session: opened, comparison: comparison}
+	return serviceFixture{repo: repo, root: root, fragment: fragmentTarget, atomURI: current.Ref, fileURI: fileURI, asset: asset, session: opened, comparison: comparison}
 }
 
 func assertCode(t *testing.T, err error, want ErrorCode) {

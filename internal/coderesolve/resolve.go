@@ -47,15 +47,17 @@ func (resolution Resolution) Current() bool { return resolution.State == Current
 type Resolver struct {
 	repo string
 
-	mu      sync.Mutex
-	objects *catFile
-	blobs   map[string]blobResult
-	commits map[string]bool
-	changes map[[2]string]changeSet
+	mu       sync.Mutex
+	objects  *catFile
+	blobs    map[string]blobResult
+	commits  map[string]bool
+	verified map[string]string
+	changes  map[[2]string]changeSet
 }
 
 type blobResult struct {
 	content []byte
+	lines   [][]byte
 	found   bool
 }
 
@@ -72,7 +74,7 @@ func New(ctx context.Context, dir string) (*Resolver, error) {
 	}
 	return &Resolver{
 		repo: strings.TrimSpace(string(output)), blobs: map[string]blobResult{},
-		commits: map[string]bool{}, changes: map[[2]string]changeSet{},
+		commits: map[string]bool{}, changes: map[[2]string]changeSet{}, verified: map[string]string{},
 	}, nil
 }
 
@@ -126,15 +128,8 @@ func (resolver *Resolver) Resolve(ctx context.Context, reference coderef.Referen
 		}
 		return stale("pinned commit %s is not in this repository and the referenced content was not found at %s", short(reference.Commit), short(view))
 	}
-	content, found, err := resolver.Blob(ctx, reference.Commit, reference.Path)
-	if err != nil {
-		return stale("%v", err)
-	}
-	if !found {
-		return stale("%s does not exist at pinned commit %s", reference.Path, short(reference.Commit))
-	}
-	if digest, err := coderef.DigestRange(content, reference.Start, reference.End); err != nil || digest != reference.Digest {
-		return stale("content digest does not match %s", pinned)
+	if reason := resolver.verify(ctx, reference); reason != "" {
+		return stale("%s", reason)
 	}
 	if view == reference.Commit {
 		return Resolution{State: Current, Location: pinned}
@@ -217,19 +212,53 @@ func (resolver *Resolver) Find(ctx context.Context, reference coderef.Reference,
 	return resolver.findByDigest(ctx, reference, commit)
 }
 
+// verify checks the reference against its own pin and returns why it fails.
+func (resolver *Resolver) verify(ctx context.Context, reference coderef.Reference) string {
+	key := reference.Key()
+	resolver.mu.Lock()
+	reason, ok := resolver.verified[key]
+	resolver.mu.Unlock()
+	if ok {
+		return reason
+	}
+	blob, err := resolver.blob(ctx, reference.Commit, reference.Path)
+	switch {
+	case err != nil:
+		reason = err.Error()
+	case !blob.found:
+		reason = fmt.Sprintf("%s does not exist at pinned commit %s", reference.Path, short(reference.Commit))
+	default:
+		digest, digestErr := resolver.digest(blob, reference.Start, reference.End)
+		if digestErr != nil || digest != reference.Digest {
+			reason = fmt.Sprintf("content digest does not match %s", reference.Location())
+		}
+	}
+	resolver.mu.Lock()
+	resolver.verified[key] = reason
+	resolver.mu.Unlock()
+	return reason
+}
+
+func (resolver *Resolver) digest(blob blobResult, start, end int) (string, error) {
+	if start == 0 && end == 0 {
+		return coderef.DigestBytes(blob.content), nil
+	}
+	return coderef.DigestLines(blob.lines, start, end)
+}
+
 func (resolver *Resolver) findByDigest(ctx context.Context, reference coderef.Reference, view string) (Resolution, bool) {
-	content, found, err := resolver.Blob(ctx, view, reference.Path)
-	if err != nil || !found {
+	blob, err := resolver.blob(ctx, view, reference.Path)
+	if err != nil || !blob.found {
 		return Resolution{}, false
 	}
 	if reference.WholeFile() {
-		if coderef.DigestBytes(content) != reference.Digest {
+		if coderef.DigestBytes(blob.content) != reference.Digest {
 			return Resolution{}, false
 		}
 		return Resolution{State: Current, Location: coderef.Location{Commit: view, Path: reference.Path}, Moved: view != reference.Commit}, true
 	}
 	width := reference.End - reference.Start + 1
-	matches := coderef.FindDigest(content, width, reference.Digest)
+	matches := coderef.FindDigestLines(blob.lines, width, reference.Digest)
 	if len(matches) != 1 {
 		return Resolution{}, false
 	}
@@ -254,22 +283,30 @@ func (resolver *Resolver) CommitExists(ctx context.Context, commit string) (bool
 
 // Blob reads path at commit. found is false when the path is absent there.
 func (resolver *Resolver) Blob(ctx context.Context, commit, path string) ([]byte, bool, error) {
+	blob, err := resolver.blob(ctx, commit, path)
+	return blob.content, blob.found, err
+}
+
+func (resolver *Resolver) blob(ctx context.Context, commit, path string) (blobResult, error) {
 	if strings.ContainsAny(path, "\n\r") {
-		return nil, false, fmt.Errorf("path %q cannot be read", path)
+		return blobResult{}, fmt.Errorf("path %q cannot be read", path)
 	}
 	key := commit + ":" + path
 	resolver.mu.Lock()
 	defer resolver.mu.Unlock()
 	if cached, ok := resolver.blobs[key]; ok {
-		return cached.content, cached.found, nil
+		return cached, nil
 	}
 	objectType, content, err := resolver.readObject(ctx, key)
 	if err != nil {
-		return nil, false, err
+		return blobResult{}, err
 	}
 	result := blobResult{content: content, found: objectType == "blob"}
+	if result.found {
+		result.lines = coderef.Lines(content)
+	}
 	resolver.blobs[key] = result
-	return result.content, result.found, nil
+	return result, nil
 }
 
 func (resolver *Resolver) treeChanges(ctx context.Context, from, to string) (map[string]gitdiff.FileChange, error) {
@@ -369,4 +406,16 @@ func short(commit string) string {
 		return commit[:12]
 	}
 	return commit
+}
+
+// Pinned resolves without a repository: a reference is current exactly at its
+// own commit and stale everywhere else. It suits callers whose comparisons are
+// constructed rather than read from Git, such as tests.
+type Pinned struct{}
+
+func (Pinned) Resolve(_ context.Context, reference coderef.Reference, view string) Resolution {
+	if reference.Commit == view {
+		return Resolution{State: Current, Location: reference.Location()}
+	}
+	return Resolution{State: Stale, Location: reference.Location(), Reason: fmt.Sprintf("pinned at %s, viewed at %s", short(reference.Commit), short(view))}
 }

@@ -149,7 +149,7 @@ func TestProductIdentityIgnoresSagaOnlyCommits(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if before.HeadOID != after.HeadOID || len(before.Atoms) != 2 || len(after.Atoms) != 2 || before.Atoms[0].URI != after.Atoms[0].URI || before.Atoms[1].URI != after.Atoms[1].URI {
+	if before.HeadOID != after.HeadOID || len(before.Atoms) != 2 || len(after.Atoms) != 2 || before.Atoms[0].Ref != after.Atoms[0].Ref || before.Atoms[1].Ref != after.Atoms[1].Ref {
 		t.Fatalf("saga-only commit changed product identity: before=%#v after=%#v", before, after)
 	}
 	if len(after.SagaChanges) != 2 {
@@ -335,7 +335,7 @@ func TestAdversarialGitFixtureCorpus(t *testing.T) {
 		paths[atom.Path] = true
 		paths[atom.OldPath] = true
 		paths[atom.NewPath] = true
-		if _, err := diffuri.Parse(atom.URI); err != nil {
+		if _, err := diffuri.Parse(atom.Ref); err != nil {
 			t.Errorf("atom %q has invalid canonical URI: %v", atom.Key, err)
 		}
 	}

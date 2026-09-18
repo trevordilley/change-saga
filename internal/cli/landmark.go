@@ -126,7 +126,7 @@ func AddLandmark(_ context.Context, args []string, out io.Writer) error {
 			if err := os.Chmod(stage, 0o755); err != nil {
 				return err
 			}
-			if err := os.Mkdir(filepath.Join(stage, "___diffs"), 0o755); err != nil {
+			if err := os.Mkdir(filepath.Join(stage, saga.CodeDirName), 0o755); err != nil {
 				return err
 			}
 			return store.WriteJSON(filepath.Join(stage, "landmark.json"), manifest, true)

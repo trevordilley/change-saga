@@ -760,8 +760,8 @@ func TestCreateDiffSuggestionAndMarkFileReviewed(t *testing.T) {
 	if err != nil || !validation.Valid {
 		t.Fatalf("review data should validate: validation=%#v err=%v", validation, err)
 	}
-	if len(document.Threads) != 1 || document.Threads[0].Kind != "suggestion" || document.Threads[0].Suggestion == nil || len(document.DiffReviews) != 1 || document.DiffReviews[0].State != "reviewed" {
-		t.Fatalf("unexpected persisted diff review: threads=%#v reviews=%#v", document.Threads, document.DiffReviews)
+	if len(document.Threads) != 1 || document.Threads[0].Kind != "suggestion" || document.Threads[0].Suggestion == nil || len(document.FileReviews) != 1 || document.FileReviews[0].State != "reviewed" {
+		t.Fatalf("unexpected persisted diff review: threads=%#v reviews=%#v", document.Threads, document.FileReviews)
 	}
 }
 
@@ -925,7 +925,7 @@ func TestUnavailableHistoryNeverFallsBackToPayloadIdentityOrChangesEventTime(t *
 			Messages: []*saga.Message{{Path: path, Author: "Payload Reply", CreatedAt: eventTime}},
 			Events:   []saga.ThreadEvent{{Path: path, Author: "Payload State", CreatedAt: eventTime}},
 		}},
-		DiffReviews: []saga.DiffReview{{Path: path, Author: "Payload Diff", CreatedAt: eventTime}},
+		FileReviews: []saga.FileReview{{Path: path, Author: "Payload Diff", CreatedAt: eventTime}},
 	}
 	applyGitAttribution(t.Context(), gitattribution.New(t.Context(), root), document)
 	authors := []string{
@@ -933,14 +933,14 @@ func TestUnavailableHistoryNeverFallsBackToPayloadIdentityOrChangesEventTime(t *
 		document.Threads[0].CreatedBy,
 		document.Threads[0].Messages[0].Author,
 		document.Threads[0].Events[0].Author,
-		document.DiffReviews[0].Author,
+		document.FileReviews[0].Author,
 	}
 	for _, author := range authors {
 		if author != "Git history unavailable" {
 			t.Fatalf("unavailable history trusted payload identity: %q", author)
 		}
 	}
-	if !document.Section.Reviews[0].CreatedAt.Equal(eventTime) || !document.Threads[0].CreatedAt.Equal(eventTime) || !document.DiffReviews[0].CreatedAt.Equal(eventTime) {
+	if !document.Section.Reviews[0].CreatedAt.Equal(eventTime) || !document.Threads[0].CreatedAt.Equal(eventTime) || !document.FileReviews[0].CreatedAt.Equal(eventTime) {
 		t.Fatal("attribution changed event ordering timestamps")
 	}
 }
@@ -997,7 +997,7 @@ func TestPageTemplateAndMarkdown(t *testing.T) {
 	section := &saga.Section{Kind: "chapter", ID: "root", Title: "Test", Target: "urn:change-saga:test:saga", Path: "private/root.chapter", Fragments: []*saga.Fragment{fragment, emptyFragment}}
 	thread := &saga.Thread{ID: "thread", Target: fragment.Target, Anchor: saga.Anchor{Type: "region", Coordinate: "normalized", Shapes: []saga.Shape{{Type: "rect", X: .1, Y: .2, Width: .3, Height: .4, Color: "#336699"}}}, State: "open", Messages: []*saga.Message{{ID: "message", CreatedAt: time.Date(2026, 8, 19, 12, 0, 0, 0, time.UTC)}}}
 	lineURI := "saga-diff://v1/line?base=aaa&end=1&head=product-bbb&path=app.go&repository=https%3A%2F%2Fexample.test%2Fa.git&side=new&start=1"
-	fragment.Diffs = []saga.DiffFile{{Version: 2, Diffs: []saga.DiffReference{{URI: lineURI, Note: "Adds the package entrypoint so the example compiles."}}}}
+	fragment.Code = []saga.CodeFile{{Version: 2, References: []saga.DiffReference{{URI: lineURI, Note: "Adds the package entrypoint so the example compiles."}}}}
 	manifestFiles := []*ManifestFileView{{Path: "internal/app.go", AtomCount: 1, Added: 1, Covered: 1, HasDiff: true, Chunks: []*ManifestChunkView{{Label: "+1", Path: "internal/app.go", AtomCount: 1, Excerpt: "package app", Href: CodeDiffURL("internal/app.go", lineURI), Covered: true, Owners: []*ManifestOwnerView{{Title: "Overview", Kind: "Fragment", Chapter: "Test", Href: "#overview"}}}}}}
 	manifestFixture := &CoverageManifestView{
 		Complete: true, Total: 1, Covered: 1, MappingCount: 1, Files: manifestFiles, Tree: makeManifestTree(manifestFiles),
@@ -1007,8 +1007,8 @@ func TestPageTemplateAndMarkdown(t *testing.T) {
 		Saga: &saga.Saga{Manifest: saga.Manifest{ID: "test", Title: "Test", Source: saga.Source{Repository: "https://example.test/a.git", Base: "main", Head: "HEAD"}}, Section: section},
 		Root: makeSectionView(section, viewScope{
 			changes: map[string][]gitdiff.Atom{
-				fragment.Target: {{Kind: "line", URI: lineURI, Path: "app.go", Side: "new", Line: 1, Content: "package app"}},
-				landmarkTarget:  {{Kind: "line", URI: lineURI, Path: "app.go", Side: "new", Line: 1, Content: "package app"}},
+				fragment.Target: {{Kind: "line", Ref: lineURI, Path: "app.go", Side: "new", Line: 1, Content: "package app"}},
+				landmarkTarget:  {{Kind: "line", Ref: lineURI, Path: "app.go", Side: "new", Line: 1, Content: "package app"}},
 			},
 			threads: map[string][]*threadView{fragment.Target: {makeThreadView(thread)}},
 		}),
@@ -1317,7 +1317,7 @@ func TestPageHandlerRendersRealGitComparison(t *testing.T) {
 	var selectedURI string
 	for _, atom := range changes.Atoms {
 		if atom.Path == "web/view.js" {
-			selectedURI = atom.URI
+			selectedURI = atom.Ref
 			break
 		}
 	}
@@ -1362,7 +1362,7 @@ func TestTargetCodeLoadsOneNarrativeMappingWithoutGlobalSnapshot(t *testing.T) {
 	var appURI string
 	for _, atom := range changes.Atoms {
 		if atom.Path == "app.go" && atom.Kind == "line" {
-			appURI = atom.URI
+			appURI = atom.Ref
 			break
 		}
 	}
@@ -1374,7 +1374,7 @@ func TestTargetCodeLoadsOneNarrativeMappingWithoutGlobalSnapshot(t *testing.T) {
 	writeServerFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"linked","title":"Linked","source":{"repository":"`+repository+`","base":"`+base+`","head":"HEAD"}}`)
 	writeServerFile(t, filepath.Join(root, "story.fragment", "fragment.json"), `{"version":2,"id":"story","title":"Story","media_type":"text/markdown","entrypoint":"content.md"}`)
 	writeServerFile(t, filepath.Join(root, "story.fragment", "content.md"), "# Story\n")
-	writeServerFile(t, filepath.Join(root, "story.fragment", "___diffs", "app.json"), fmt.Sprintf(`{"version":2,"diffs":[{"uri":%q,"note":"Implements the ready path."}]}`, appURI))
+	writeServerFile(t, filepath.Join(root, "story.fragment", saga.CodeDirName, "app.json"), fmt.Sprintf(`{"version":2,"diffs":[{"uri":%q,"note":"Implements the ready path."}]}`, appURI))
 	target := saga.FragmentTarget("linked", "story")
 	application := &app{root: root, sourceDir: repo, template: serverTemplate(t)}
 	application.comparisonLoader = func(context.Context) (*reviewSnapshot, error) {
@@ -1426,7 +1426,7 @@ func TestSlideTargetCodeRollsUpItemFiles(t *testing.T) {
 	uriByPath := map[string]string{}
 	for _, atom := range changes.Atoms {
 		if atom.Kind == "line" && uriByPath[atom.Path] == "" {
-			uriByPath[atom.Path] = atom.URI
+			uriByPath[atom.Path] = atom.Ref
 		}
 	}
 

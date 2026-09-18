@@ -11,7 +11,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/twentyideas/changesaga/internal/diffuri"
+	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/livingapp"
 	"github.com/twentyideas/changesaga/internal/reviewapp"
 	"github.com/twentyideas/changesaga/internal/saga"
@@ -56,7 +56,7 @@ type fragmentDiffQuery struct {
 }
 
 type diffOwnerQuery struct {
-	Diff   string
+	Ref    string
 	Cursor string
 	Limit  int
 }
@@ -228,7 +228,7 @@ var queryPurpose = map[string]string{
 	"fragment-diffs":      "the diff atoms a saga, chapter, section, fragment, or landmark owns",
 	"slide":               "bounded visual slide content and its ordered semantic Items",
 	"slide-diffs":         "the exact diff atoms owned by a slide Item",
-	"diff-owners":         "the narrative targets that own a given diff atom, event, or file",
+	"diff-owners":         "the narrative targets whose code references hold the changed lines or file at a code location",
 	"reviews":             "the normalized review overlay: threads, messages, events, and approvals",
 	"gaps":                "uncovered atoms, stale selectors, and overlapping coverage",
 	"mappings":            "coverage records ranked by breadth and justification signals so scrutiny starts at the weakest mappings",
@@ -242,7 +242,7 @@ var queryPurpose = map[string]string{
 	"work-items":          "current work-item definitions, progress, explicit dependency blockers, workspaces, and merge evidence",
 	"work-events":         "normalized append-only progress, workspace, merge, and contract events",
 	"work-conflicts":      "deterministically identified work-plan conflicts and competing heads",
-	"traceability":        "current story-to-design/work/review/code paths, reverse diff/commit lookup, and transitive blockers",
+	"traceability":        "current story-to-design/work/review/code paths, reverse code-location/commit lookup, and transitive blockers",
 	"readiness":           "independent requirement, plan, and delivery coverage axes; only immutable delivery evidence gates peer-review readiness",
 }
 
@@ -255,7 +255,7 @@ var queryUsage = map[string]string{
 	"fragment-diffs":      "change-saga query fragment-diffs --saga PATH --target TARGET [--cursor TOKEN] [--limit N] [--repo PATH]",
 	"slide":               "change-saga query slide --saga PATH --target SLIDE [--offset N] [--limit N] [--repo PATH]",
 	"slide-diffs":         "change-saga query slide-diffs --saga PATH --target ITEM [--cursor TOKEN] [--limit N] [--repo PATH]",
-	"diff-owners":         "change-saga query diff-owners --saga PATH --diff URI [--cursor TOKEN] [--limit N] [--repo PATH]",
+	"diff-owners":         "change-saga query diff-owners --saga PATH --ref LOCATION [--cursor TOKEN] [--limit N] [--repo PATH]",
 	"reviews":             "change-saga query reviews --saga PATH [--target TARGET] [--thread ID] [--state STATE] [--cursor TOKEN] [--limit N] [--repo PATH]",
 	"gaps":                "change-saga query gaps --saga PATH [--kind uncovered|stale|overlap] [--cursor TOKEN] [--limit N] [--repo PATH]",
 	"mappings":            "change-saga query mappings --saga PATH [--target TARGET] [--sort scrutiny|target|path] [--minimum-score N] [--cursor TOKEN] [--limit N] [--repo PATH]",
@@ -269,7 +269,7 @@ var queryUsage = map[string]string{
 	"work-items":          "change-saga query work-items --saga PATH [--item ID|URN] [--wave ID|URN] [--status STATE] [--cursor TOKEN] [--limit N]",
 	"work-events":         "change-saga query work-events --saga PATH [--item ID|URN] [--kind KIND] [--cursor TOKEN] [--limit N]",
 	"work-conflicts":      "change-saga query work-conflicts --saga PATH [--item ID|URN] [--wave ID|URN] [--kind KIND] [--cursor TOKEN] [--limit N]",
-	"traceability":        "change-saga query traceability --saga PATH [--requirement ID|URN] [--criterion ID|URN] [--diff URI | --commit OID] [--cursor TOKEN] [--limit N]",
+	"traceability":        "change-saga query traceability --saga PATH [--requirement ID|URN] [--criterion ID|URN] [--ref LOCATION | --commit OID] [--cursor TOKEN] [--limit N]",
 	"readiness":           "change-saga query readiness --saga PATH [--requirement ID|URN] [--status ready|blocked] [--cursor TOKEN] [--limit N]",
 }
 
@@ -473,7 +473,7 @@ func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, e
 	sagaRoot := flags.String("saga", "", "saga root")
 	sourceDir := flags.String("repo", "", "source repository checkout")
 
-	var parent, target, diff, cursor, thread, state, kind, sortOrder, claim string
+	var parent, target, ref, cursor, thread, state, kind, sortOrder, claim string
 	var requirement, citation, relation, from, to, wave, item, criterion, commit string
 	var offset int64
 	var limit optionalInt
@@ -492,7 +492,7 @@ func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, e
 		flags.StringVar(&cursor, "cursor", "", "pagination cursor")
 		flags.Var(&limit, "limit", "page size")
 	case "diff-owners":
-		flags.StringVar(&diff, "diff", "", "diff atom, event, or file URI")
+		flags.StringVar(&ref, "ref", "", "code location in the comparison: <commit>:<path>[#L<start>[-L<end>]]")
 		flags.StringVar(&cursor, "cursor", "", "pagination cursor")
 		flags.Var(&limit, "limit", "page size")
 	case "reviews":
@@ -567,8 +567,8 @@ func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, e
 	case "traceability":
 		flags.StringVar(&requirement, "requirement", "", "optional requirement ID or URN")
 		flags.StringVar(&criterion, "criterion", "", "optional criterion ID or URN")
-		flags.StringVar(&diff, "diff", "", "optional exact diff atom URI")
-		flags.StringVar(&commit, "commit", "", "optional resolved source-head Git commit")
+		flags.StringVar(&ref, "ref", "", "optional code location; selects evidence whose pinned location overlaps it")
+		flags.StringVar(&commit, "commit", "", "optional Git commit; selects evidence pinned at it")
 		flags.StringVar(&cursor, "cursor", "", "pagination cursor")
 		flags.Var(&limit, "limit", "page size")
 	case "readiness":
@@ -618,8 +618,8 @@ func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, e
 	if (operation == "fragment" || operation == "fragment-diffs" || operation == "slide" || operation == "slide-diffs") && strings.TrimSpace(target) == "" {
 		return nil, queryOpenOptions{}, false, errors.New("--target is required")
 	}
-	if operation == "diff-owners" && strings.TrimSpace(diff) == "" {
-		return nil, queryOpenOptions{}, false, errors.New("--diff is required")
+	if operation == "diff-owners" && strings.TrimSpace(ref) == "" {
+		return nil, queryOpenOptions{}, false, errors.New("--ref is required")
 	}
 	if operation == "requirement-history" && strings.TrimSpace(requirement) == "" {
 		return nil, queryOpenOptions{}, false, errors.New("--requirement is required")
@@ -640,12 +640,12 @@ func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, e
 		return nil, queryOpenOptions{}, false, errors.New("--state must be active, superseded, stale, or current")
 	}
 	if operation == "traceability" {
-		if diff != "" && commit != "" {
-			return nil, queryOpenOptions{}, false, fmt.Errorf("--diff and --commit are mutually exclusive")
+		if ref != "" && commit != "" {
+			return nil, queryOpenOptions{}, false, fmt.Errorf("--ref and --commit are mutually exclusive")
 		}
-		if diff != "" {
-			if _, parseErr := diffuri.Parse(diff); parseErr != nil {
-				return nil, queryOpenOptions{}, false, fmt.Errorf("--diff must be a canonical diff atom URI")
+		if ref != "" {
+			if _, parseErr := coderef.ParseLocation(ref); parseErr != nil {
+				return nil, queryOpenOptions{}, false, fmt.Errorf("--ref must be a code location <commit>:<path>[#L<start>[-L<end>]]")
 			}
 		}
 		if commit != "" {
@@ -677,7 +677,7 @@ func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, e
 	case "fragment-diffs", "slide-diffs":
 		return fragmentDiffQuery{Target: target, Cursor: cursor, Limit: limit.value}, options, false, nil
 	case "diff-owners":
-		return diffOwnerQuery{Diff: diff, Cursor: cursor, Limit: limit.value}, options, false, nil
+		return diffOwnerQuery{Ref: ref, Cursor: cursor, Limit: limit.value}, options, false, nil
 	case "reviews":
 		return reviewQuery{Target: target, Thread: thread, State: state, Cursor: cursor, Limit: limit.value}, options, false, nil
 	case "gaps":
@@ -691,7 +691,7 @@ func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, e
 	case "requirements", "requirement-history", "citations", "relations", "waves", "work-items", "work-events", "work-conflicts", "traceability", "readiness":
 		filters := livingapp.Filters{
 			Requirement: requirement, Kind: firstNonempty(kind, criterion), Citation: citation,
-			Relation: relation, From: from, To: to, Wave: wave, Item: item, Diff: diff, Commit: commit,
+			Relation: relation, From: from, To: to, Wave: wave, Item: item, Ref: ref, Commit: commit,
 		}
 		if operation == "requirements" || operation == "relations" {
 			filters.State = state

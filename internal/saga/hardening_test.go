@@ -135,7 +135,7 @@ func TestLoadRejectsMalformedMetadata(t *testing.T) {
 		want:  "inside its fragment package",
 	}, {
 		name:  "entrypoint addresses reserved metadata",
-		files: map[string]string{"overview.fragment/fragment.json": `{"version":2,"id":"overview","title":"O","media_type":"text/markdown","entrypoint":"___diffs/a.json"}`},
+		files: map[string]string{"overview.fragment/fragment.json": `{"version":2,"id":"overview","title":"O","media_type":"text/markdown","entrypoint":"___code/a.json"}`},
 		want:  "reserved fragment path",
 	}, {
 		name:  "entrypoint names the fragment manifest",
@@ -143,7 +143,7 @@ func TestLoadRejectsMalformedMetadata(t *testing.T) {
 		want:  "reserved fragment path",
 	}, {
 		name:  "evidence file selects nothing",
-		files: map[string]string{"___diffs/empty.json": `{"version":2,"diffs":[]}`},
+		files: map[string]string{"___code/empty.json": `{"version":2,"diffs":[]}`},
 		want:  "at least one diff reference",
 	}, {
 		name: "thread id disagrees with its directory",

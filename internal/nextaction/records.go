@@ -154,16 +154,16 @@ func testCaseOf(urn string) string {
 func (b *builder) changedSource() {
 	source := b.status.ChangedSource
 	gates := []string{"implementation_trace_ready", "ready_for_review"}
-	if len(source.Orphans) > 0 {
+	if len(source.Stale) > 0 {
 		affected := []string{}
-		for _, orphan := range source.Orphans {
-			affected = append(affected, orphan.Affects...)
+		for _, stale := range source.Stale {
+			affected = append(affected, stale.Affects...)
 		}
 		b.add(Action{
-			ID: "source:orphans", Kind: KindCommand, Category: CategorySource, Gates: gates,
-			Reason: itoa(len(source.Orphans)) + " diff selectors no longer match the current source comparison" + affectsSummary(unique(affected)) +
-				"; prove equivalence first with --dry-run, and re-author any selector it cannot carry",
-			Command: ptr(b.invoke("rebase-evidence", grammar.V("dry-run", "true"), grammar.V("json", "true"))),
+			ID: "source:stale", Kind: KindCommand, Category: CategorySource, Gates: gates,
+			Reason: itoa(len(source.Stale)) + " code references are stale because their code changed since they were pinned" + affectsSummary(unique(affected)) +
+				"; read what changed, then re-author each one with replace-coverage",
+			Command: ptr(b.invoke("references", grammar.V("stale", "true"), grammar.V("diff", "true"), grammar.V("json", "true"))),
 		})
 	}
 	for _, uncovered := range source.Uncovered {

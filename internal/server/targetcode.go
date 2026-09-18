@@ -7,8 +7,8 @@ import (
 	"sort"
 	"sync"
 
+	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/coverage"
-	"github.com/twentyideas/changesaga/internal/diffuri"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
@@ -23,7 +23,7 @@ type targetCodeView struct {
 
 type targetSelection struct {
 	catalog  gitdiff.Catalog
-	evidence []saga.DiffFile
+	evidence []saga.CodeFile
 	changes  gitdiff.ChangeSet
 	matched  []gitdiff.Atom
 }
@@ -77,9 +77,9 @@ func (a *app) targetCode(w http.ResponseWriter, r *http.Request) {
 // entry; an empty path reads each changed file named by this target.
 func (a *app) selectTargetCode(ctx context.Context, document *saga.Saga, target, filePath string) (targetSelection, error) {
 	index := saga.MutationIndexFromDocument(document)
-	evidence := make([]saga.DiffFile, 0)
+	evidence := make([]saga.CodeFile, 0)
 	for _, evidenceTarget := range narrativeEvidenceTargets(document.Section, target) {
-		loaded, validation, err := saga.LoadTargetDiffs(index, evidenceTarget)
+		loaded, validation, err := saga.LoadTargetCode(index, evidenceTarget)
 		if err != nil {
 			return targetSelection{}, err
 		}
@@ -119,9 +119,14 @@ func (a *app) selectTargetCode(ctx context.Context, document *saga.Saga, target,
 		changes.SagaChanges = append(changes.SagaChanges, part.SagaChanges...)
 		changes.DisplayLines = append(changes.DisplayLines, part.DisplayLines...)
 	}
+	resolver, err := coderesolve.New(ctx, a.sourceDir)
+	if err != nil {
+		return targetSelection{}, err
+	}
+	defer resolver.Close()
 	return targetSelection{
 		catalog: catalog, evidence: evidence, changes: changes,
-		matched: coverage.SelectTarget(evidence, changes),
+		matched: coverage.SelectTarget(ctx, evidence, changes, resolver),
 	}, nil
 }
 
@@ -157,19 +162,13 @@ func findNarrativeEvidenceTargets(section *saga.Section, target string) ([]strin
 	return nil, false
 }
 
-func catalogFilesForEvidence(catalog gitdiff.Catalog, evidence []saga.DiffFile) []gitdiff.FileSummary {
+func catalogFilesForEvidence(catalog gitdiff.Catalog, evidence []saga.CodeFile) []gitdiff.FileSummary {
 	paths := map[string]bool{}
 	for _, file := range evidence {
-		for _, value := range file.Diffs {
-			reference, err := diffuri.Parse(value.URI)
-			if err != nil || reference.Repository != catalog.Repository || reference.Base != catalog.BaseOID || reference.Head != catalog.HeadOID {
-				continue
-			}
-			for _, candidate := range []string{reference.Path, reference.OldPath, reference.NewPath} {
-				if candidate != "" {
-					paths[candidate] = true
-				}
-			}
+		// A reference names the path it was pinned at. A later rename is not
+		// followed here; this only bounds which changed files are read.
+		for _, value := range file.References {
+			paths[value.Path] = true
 		}
 	}
 	result := make([]gitdiff.FileSummary, 0)
@@ -221,7 +220,7 @@ func (a *app) catalogFileNarrativeOwners(document *saga.Saga, catalog gitdiff.Ca
 
 type targetEvidenceResult struct {
 	target   string
-	evidence []saga.DiffFile
+	evidence []saga.CodeFile
 	err      error
 }
 
@@ -255,7 +254,7 @@ func (a *app) evidenceOwnersByPath(document *saga.Saga, catalog gitdiff.Catalog,
 		go func() {
 			defer wait.Done()
 			for location := range jobs {
-				evidence, validation, err := saga.LoadTargetDiffs(index, location.target)
+				evidence, validation, err := saga.LoadTargetCode(index, location.target)
 				if err == nil && !validation.Valid {
 					err = fmt.Errorf("target evidence is invalid")
 				}
@@ -283,19 +282,11 @@ func (a *app) evidenceOwnersByPath(document *saga.Saga, catalog gitdiff.Catalog,
 	return byPath, nil
 }
 
-func evidenceCatalogPaths(evidence []saga.DiffFile, catalog gitdiff.Catalog) []string {
+func evidenceCatalogPaths(evidence []saga.CodeFile, catalog gitdiff.Catalog) []string {
 	paths := map[string]bool{}
 	for _, file := range evidence {
-		for _, value := range file.Diffs {
-			reference, err := diffuri.Parse(value.URI)
-			if err != nil || reference.Repository != catalog.Repository || reference.Base != catalog.BaseOID || reference.Head != catalog.HeadOID {
-				continue
-			}
-			for _, path := range []string{reference.Path, reference.OldPath, reference.NewPath} {
-				if path != "" {
-					paths[path] = true
-				}
-			}
+		for _, value := range file.References {
+			paths[value.Path] = true
 		}
 	}
 	result := make([]string, 0, len(paths))

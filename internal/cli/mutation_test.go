@@ -105,7 +105,7 @@ func TestFailedAddFragmentLeavesNoPartialPackage(t *testing.T) {
 
 func TestAddFragmentRejectsUnusableEntrypoints(t *testing.T) {
 	root := newAuthoredSaga(t)
-	cases := []string{"../escape.html", "/etc/passwd", `sub\index.html`, "___diffs/a.json", "fragment.json", "C:/windows/win.ini"}
+	cases := []string{"../escape.html", "/etc/passwd", `sub\index.html`, "___code/a.json", "fragment.json", "C:/windows/win.ini"}
 	for i, entrypoint := range cases {
 		var output bytes.Buffer
 		name := fmt.Sprintf("case-%d", i)

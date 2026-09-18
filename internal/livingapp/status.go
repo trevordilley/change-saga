@@ -48,7 +48,7 @@ type assembler struct {
 	criteria       []criterionFrame
 	byCriterion    map[string]*criterionFrame
 	visual         map[string]visualTarget
-	orphans        map[string]string
+	staleRefs      map[string]string
 	testCases      map[string]*quality.TestCase
 	currentRevs    map[string]string
 	evidenceStale  map[string][]string
@@ -66,7 +66,7 @@ func Assemble(in StatusInputs) Status {
 	in.Exceptions = append([]coverage.Exception(nil), in.Exceptions...)
 	a := &assembler{
 		in: in, storyRevision: map[string]string{}, byCriterion: map[string]*criterionFrame{},
-		visual: map[string]visualTarget{}, orphans: map[string]string{}, testCases: map[string]*quality.TestCase{},
+		visual: map[string]visualTarget{}, staleRefs: map[string]string{}, testCases: map[string]*quality.TestCase{},
 		currentRevs: map[string]string{}, evidenceStale: map[string][]string{}, stale: map[string]*StaleRecord{},
 		affects: map[string]map[string]bool{}, implicatedBy: map[string]map[string]bool{}, implicatedKind: map[string]string{},
 	}
@@ -76,7 +76,7 @@ func Assemble(in StatusInputs) Status {
 	}
 	status.Stories = a.indexStories()
 	a.indexVisual()
-	a.indexOrphans()
+	a.indexStale()
 	a.indexQuality()
 
 	links := a.linksByCriterion()
@@ -127,13 +127,13 @@ func Assemble(in StatusInputs) Status {
 			RunHeads: copyStrings(fact.RunHeads), EvidenceResolved: fact.EvidenceResolved, StaleReasons: copyStrings(fact.StaleReasons),
 		})
 	}
-	uncoveredOrphans := make([]string, 0, len(status.ChangedSource.Orphans))
-	for _, orphan := range status.ChangedSource.Orphans {
-		uncoveredOrphans = append(uncoveredOrphans, orphan.DiffFile+"#"+itoa(orphan.Diff))
+	staleReferences := make([]string, 0, len(status.ChangedSource.Stale))
+	for _, stale := range status.ChangedSource.Stale {
+		staleReferences = append(staleReferences, stale.EvidenceFile+"#"+itoa(stale.Reference))
 	}
 	status.Readiness = readiness.EvaluateGates(readiness.GateInputs{
 		Stories: stories, Prototypes: protoInputs, Coverage: status.Axes, QualityFacts: facts,
-		ChangedSource: readiness.ChangedSourceAccounting{Complete: status.ChangedSource.Complete, Uncovered: status.ChangedSource.uncoveredURIs, Orphans: uncoveredOrphans},
+		ChangedSource: readiness.ChangedSourceAccounting{Complete: status.ChangedSource.Complete, Uncovered: status.ChangedSource.uncoveredRefs, Stale: staleReferences},
 	})
 	status.Stale = a.staleRecords()
 	return status
@@ -216,13 +216,13 @@ func (a *assembler) indexVisual() {
 	}
 }
 
-func (a *assembler) indexOrphans() {
-	for _, orphan := range a.in.Report.Orphans {
-		a.orphans[orphanKey(orphan.Assignment.Target, orphan.Assignment.DiffFile, orphan.Assignment.Diff)] = orphan.Reason
+func (a *assembler) indexStale() {
+	for _, stale := range a.in.Report.StaleReferences {
+		a.staleRefs[staleKey(stale.Assignment.Target, stale.Assignment.EvidenceFile, stale.Assignment.Reference)] = stale.Reason
 	}
 }
 
-func orphanKey(target, file string, index int) string {
+func staleKey(target, file string, index int) string {
 	return target + "\x00" + file + "\x00" + itoa(index)
 }
 
@@ -318,7 +318,7 @@ func (a *assembler) linksByCriterion() map[string][]coverage.AxisLink {
 func (a *assembler) implementationLink(link Link, visual visualTarget, criterion, story string, broad bool, stale []string) coverage.AxisLink {
 	value := coverage.AxisLink{
 		Axis: coverage.AxisImplementation, Relation: link.URN, Source: link.From, Broad: broad, PinnedRevision: link.ToRevision,
-		Paths: [][]string{}, Diffs: []string{}, StaleReasons: copyStrings(stale),
+		Paths: [][]string{}, Code: []string{}, StaleReasons: copyStrings(stale),
 	}
 	scope := link.Scope
 	if scope == "" {
@@ -329,28 +329,29 @@ func (a *assembler) implementationLink(link Link, visual visualTarget, criterion
 		value.Unsatisfied = append(value.Unsatisfied, "scope self on a "+string(visual.kind)+" does not reach contained Items; relate the Item or use scope descendants")
 		return value
 	}
-	owned, orphaned := 0, 0
+	owned, staleCount := 0, 0
 	for _, item := range items {
-		for _, file := range item.Diffs {
-			for index, diff := range file.Diffs {
+		for _, file := range item.Code {
+			for index, reference := range file.References {
 				owned++
-				if reason, ok := a.orphans[orphanKey(item.Target, file.Path, index+1)]; ok {
-					orphaned++
-					a.addImplicated(criterion, "criterion", item.Target+" "+diff.URI+": "+reason)
+				location := reference.Location().String()
+				if reason, ok := a.staleRefs[staleKey(item.Target, file.Path, index+1)]; ok {
+					staleCount++
+					a.addImplicated(criterion, "criterion", item.Target+" "+location+": "+reason)
 					continue
 				}
-				value.Diffs = append(value.Diffs, diff.URI)
-				value.Paths = append(value.Paths, hops(criterion, story, broad, append(a.itemPath(link.From, item), diff.URI)...))
+				value.Code = append(value.Code, location)
+				value.Paths = append(value.Paths, hops(criterion, story, broad, append(a.itemPath(link.From, item), location)...))
 			}
 		}
 	}
-	value.Diffs = uniqueSorted(value.Diffs)
+	value.Code = uniqueSorted(value.Code)
 	value.Paths = uniquePaths(value.Paths)
 	switch {
 	case owned == 0:
-		value.Unsatisfied = append(value.Unsatisfied, "no Item on this path owns an exact diff")
-	case len(value.Diffs) == 0:
-		value.StaleReasons = append(value.StaleReasons, itoa(orphaned)+" Item diff selectors do not match the current source comparison")
+		value.Unsatisfied = append(value.Unsatisfied, "no Item on this path references code")
+	case len(value.Code) == 0:
+		value.StaleReasons = append(value.StaleReasons, itoa(staleCount)+" Item code references are stale")
 	}
 	return value
 }
@@ -556,7 +557,7 @@ func (a *assembler) addImplicated(resource, kind, via string) {
 func (a *assembler) changedSource() ChangedSource {
 	report := a.in.Report
 	result := ChangedSource{
-		SchemaValid: report.SchemaValid, Atoms: len(a.in.Changes.Atoms), Uncovered: []UncoveredPath{}, Orphans: []OrphanRef{},
+		SchemaValid: report.SchemaValid, Atoms: len(a.in.Changes.Atoms), Uncovered: []UncoveredPath{}, Stale: []StaleReference{},
 		TestOwned: []TestOwned{}, Implicated: []Implicated{},
 		Note: "Transitivity proves accepted criteria reach code; it cannot prove nothing else changed. Every changed atom must be owned by some target, and no coverage exception applies here.",
 	}
@@ -564,34 +565,34 @@ func (a *assembler) changedSource() ChangedSource {
 	byPath := map[string]int{}
 	for _, atom := range report.Uncovered {
 		if owner, ok := testOwned[atom.Key]; ok {
-			owner.Atom = atom.URI
+			owner.Atom = atom.Ref
 			result.TestOwned = append(result.TestOwned, owner)
 			continue
 		}
-		result.uncoveredURIs = append(result.uncoveredURIs, atom.URI)
+		result.uncoveredRefs = append(result.uncoveredRefs, atom.Ref)
 		byPath[firstNonEmpty(atom.Path, atom.NewPath, atom.OldPath)]++
 	}
 	for path, count := range byPath {
 		result.Uncovered = append(result.Uncovered, UncoveredPath{Path: path, Atoms: count})
 	}
 	sort.Slice(result.Uncovered, func(i, j int) bool { return result.Uncovered[i].Path < result.Uncovered[j].Path })
-	result.UncoveredAtoms = len(result.uncoveredURIs)
+	result.UncoveredAtoms = len(result.uncoveredRefs)
 	affects := a.targetCriteria()
-	for _, orphan := range report.Orphans {
-		ref := OrphanRef{
-			Target: orphan.Assignment.Target, DiffFile: orphan.Assignment.DiffFile, Diff: orphan.Assignment.Diff,
-			URI: orphan.Reference.URI, Reason: orphan.Reason, Affects: uniqueSorted(affects[orphan.Assignment.Target]),
+	for _, stale := range report.StaleReferences {
+		ref := StaleReference{
+			Target: stale.Assignment.Target, EvidenceFile: stale.Assignment.EvidenceFile, Reference: stale.Assignment.Reference,
+			Code: stale.Reference, Reason: stale.Reason, Affects: uniqueSorted(affects[stale.Assignment.Target]),
 		}
-		result.Orphans = append(result.Orphans, ref)
-		a.markStale(orphan.Assignment.DiffFile+"#"+itoa(orphan.Assignment.Diff), "diff_selector", historySource, []string{orphan.Reason},
-			[]Pin{{Field: "uri", Pinned: orphan.Reference.URI}}, ref.Affects)
+		result.Stale = append(result.Stale, ref)
+		a.markStale(stale.Assignment.EvidenceFile+"#"+itoa(stale.Assignment.Reference), "code_reference", historySource, []string{stale.Reason},
+			[]Pin{{Field: "code", Pinned: stale.Reference.Location().String()}}, ref.Affects)
 	}
 	for resource, via := range a.implicatedBy {
 		result.Implicated = append(result.Implicated, Implicated{Resource: resource, Kind: a.implicatedKind[resource], Via: uniqueSorted(mapKeysBool(via))})
 	}
 	sort.Slice(result.Implicated, func(i, j int) bool { return result.Implicated[i].Resource < result.Implicated[j].Resource })
 	sort.Slice(result.TestOwned, func(i, j int) bool { return result.TestOwned[i].Atom < result.TestOwned[j].Atom })
-	result.Complete = report.SchemaValid && result.UncoveredAtoms == 0 && len(result.Orphans) == 0
+	result.Complete = report.SchemaValid && result.UncoveredAtoms == 0 && len(result.Stale) == 0
 	return result
 }
 

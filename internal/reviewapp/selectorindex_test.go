@@ -29,26 +29,26 @@ func linkedSession(document *saga.Saga, changes gitdiff.ChangeSet, report covera
 	return service
 }
 
-func sagaWithDiffs(target string, files ...saga.DiffFile) *saga.Saga {
-	return &saga.Saga{Section: &saga.Section{Kind: "saga", ID: "scale", Target: target, Diffs: files}}
+func sagaWithDiffs(target string, files ...saga.CodeFile) *saga.Saga {
+	return &saga.Saga{Section: &saga.Section{Kind: "saga", ID: "scale", Target: target, Code: files}}
 }
 
 func atomFor(index int) gitdiff.Atom {
 	suffix := strconv.Itoa(index)
-	return gitdiff.Atom{Key: "key-" + suffix, URI: "uri-" + suffix, Kind: "line", Path: "app.go", Side: "new", Line: index + 1, Content: "line " + suffix}
+	return gitdiff.Atom{Key: "key-" + suffix, Ref: "uri-" + suffix, Kind: "line", Path: "app.go", Side: "new", Line: index + 1, Content: "line " + suffix}
 }
 
 func TestSelectorIdentityResolvesEveryAssignment(t *testing.T) {
-	first := saga.DiffFile{Version: 2, Path: "___diffs/root.json", Diffs: []saga.DiffReference{
+	first := saga.CodeFile{Version: 2, Path: "___code/root.json", References: []saga.DiffReference{
 		{URI: "uri-0", Note: "first"}, {URI: "uri-1", Note: "second"}, {URI: "uri-2", Note: "third"},
 	}}
-	second := saga.DiffFile{Version: 2, Path: "___diffs/extra.json", Diffs: []saga.DiffReference{{URI: "uri-1", Note: "extra"}}}
+	second := saga.CodeFile{Version: 2, Path: "___code/extra.json", References: []saga.DiffReference{{URI: "uri-1", Note: "extra"}}}
 	atoms := []gitdiff.Atom{atomFor(0), atomFor(1), atomFor(2)}
 	report := coverage.Report{Ownership: map[string][]coverage.Assignment{
-		"key-0": {{Target: scaleTarget, DiffFile: "___diffs/root.json", Diff: 1}},
+		"key-0": {{Target: scaleTarget, DiffFile: "___code/root.json", Diff: 1}},
 		// The unnormalized path must still resolve to the stored evidence file.
-		"key-1": {{Target: scaleTarget, DiffFile: "___diffs/../___diffs/root.json", Diff: 2}, {Target: scaleTarget, DiffFile: "___diffs/extra.json", Diff: 1}},
-		"key-2": {{Target: scaleTarget, DiffFile: "___diffs/root.json", Diff: 3}},
+		"key-1": {{Target: scaleTarget, DiffFile: "___code/../___code/root.json", Diff: 2}, {Target: scaleTarget, DiffFile: "___code/extra.json", Diff: 1}},
+		"key-2": {{Target: scaleTarget, DiffFile: "___code/root.json", Diff: 3}},
 	}}
 	service := linkedSession(sagaWithDiffs(scaleTarget, first, second), gitdiff.ChangeSet{Atoms: atoms}, report)
 
@@ -61,15 +61,15 @@ func TestSelectorIdentityResolvesEveryAssignment(t *testing.T) {
 		if len(entry.selector.Atoms) != 1 || entry.selector.Status != "current" {
 			t.Fatalf("selector %d (%s) = %#v, want exactly one current atom", index, want, entry.selector)
 		}
-		if entry.selector.Atoms[0].URI != want {
-			t.Fatalf("selector %d owns %q, want %q", index, entry.selector.Atoms[0].URI, want)
+		if entry.selector.Atoms[0].Ref != want {
+			t.Fatalf("selector %d owns %q, want %q", index, entry.selector.Atoms[0].Ref, want)
 		}
 	}
 	owners := service.selectorsByAtom["uri-1"]
-	if len(owners) != 2 || owners[0].EvidenceFile != "___diffs/extra.json" || owners[0].Note != "extra" {
+	if len(owners) != 2 || owners[0].EvidenceFile != "___code/extra.json" || owners[0].Note != "extra" {
 		t.Fatalf("owners of uri-1 = %#v, want the extra evidence file sorted first", owners)
 	}
-	if owners[1].EvidenceFile != "___diffs/root.json" || owners[1].Note != "second" {
+	if owners[1].EvidenceFile != "___code/root.json" || owners[1].Note != "second" {
 		t.Fatalf("second owner of uri-1 = %#v, want the root evidence file note", owners[1])
 	}
 	if stored, ok := service.atomByURI["uri-2"]; !ok || service.changes.Atoms[stored].Key != "key-2" {
@@ -81,8 +81,8 @@ func TestSelectorIdentityKeepsFirstEntryForDuplicateEvidencePaths(t *testing.T) 
 	// Absolute evidence paths are redacted to the empty string, so two files
 	// under one target can share a selector identity. The scan the index
 	// replaced stopped at the first match, and that must not change.
-	first := saga.DiffFile{Version: 2, Path: "/private/one.json", Diffs: []saga.DiffReference{{URI: "uri-0", Note: "first file"}}}
-	second := saga.DiffFile{Version: 2, Path: "/private/two.json", Diffs: []saga.DiffReference{{URI: "uri-1", Note: "second file"}}}
+	first := saga.CodeFile{Version: 2, Path: "/private/one.json", References: []saga.DiffReference{{URI: "uri-0", Note: "first file"}}}
+	second := saga.CodeFile{Version: 2, Path: "/private/two.json", References: []saga.DiffReference{{URI: "uri-1", Note: "second file"}}}
 	report := coverage.Report{Ownership: map[string][]coverage.Assignment{
 		"key-0": {{Target: scaleTarget, DiffFile: "/private/two.json", Diff: 1}},
 	}}
@@ -114,14 +114,14 @@ func TestCleanDiagnosticPathRedactsPortableAbsolutePaths(t *testing.T) {
 }
 
 func TestStaleSelectorsReuseCoverageOrphanReasons(t *testing.T) {
-	file := saga.DiffFile{Version: 2, Path: "___diffs/root.json", Diffs: []saga.DiffReference{
+	file := saga.CodeFile{Version: 2, Path: "___code/root.json", References: []saga.DiffReference{
 		{URI: "uri-0", Note: "matched"}, {URI: "broken", Note: "unparsable"}, {URI: "uri-missing", Note: "no orphan record"},
 	}}
 	report := coverage.Report{
-		Ownership: map[string][]coverage.Assignment{"key-0": {{Target: scaleTarget, DiffFile: "___diffs/root.json", Diff: 1}}},
+		Ownership: map[string][]coverage.Assignment{"key-0": {{Target: scaleTarget, DiffFile: "___code/root.json", Diff: 1}}},
 		Orphans: []coverage.Orphan{
-			{Assignment: coverage.Assignment{Target: "urn:change-saga:scale:other", DiffFile: "___diffs/root.json", Diff: 2}, Reason: "wrong target"},
-			{Assignment: coverage.Assignment{Target: scaleTarget, DiffFile: "___diffs/root.json", Diff: 2}, Reason: "diff URI is not a Change Saga diff URI"},
+			{Assignment: coverage.Assignment{Target: "urn:change-saga:scale:other", DiffFile: "___code/root.json", Diff: 2}, Reason: "wrong target"},
+			{Assignment: coverage.Assignment{Target: scaleTarget, DiffFile: "___code/root.json", Diff: 2}, Reason: "diff URI is not a Change Saga diff URI"},
 		},
 	}
 	service := linkedSession(sagaWithDiffs(scaleTarget, file), gitdiff.ChangeSet{Atoms: []gitdiff.Atom{atomFor(0)}}, report)
@@ -133,7 +133,7 @@ func TestStaleSelectorsReuseCoverageOrphanReasons(t *testing.T) {
 	if selectors[1].stale == nil || selectors[1].stale.Reason != "diff URI is not a Change Saga diff URI" {
 		t.Fatalf("orphan reason = %#v, want the reason coverage recorded", selectors[1].stale)
 	}
-	if selectors[1].stale.Target != scaleTarget || selectors[1].stale.URI != "broken" || selectors[1].stale.EvidenceFile != "___diffs/root.json" {
+	if selectors[1].stale.Target != scaleTarget || selectors[1].stale.URI != "broken" || selectors[1].stale.EvidenceFile != "___code/root.json" {
 		t.Fatalf("stale projection = %#v", selectors[1].stale)
 	}
 	if selectors[2].stale == nil || selectors[2].stale.Reason != "diff URI does not match the current source comparison" {
@@ -152,19 +152,19 @@ type scaleFixture struct {
 }
 
 func newScaleFixture(size int) scaleFixture {
-	file := saga.DiffFile{Version: 2, Path: "___diffs/root.json", Diffs: make([]saga.DiffReference, 0, 2*size)}
+	file := saga.CodeFile{Version: 2, Path: "___code/root.json", References: make([]saga.DiffReference, 0, 2*size)}
 	atoms := make([]gitdiff.Atom, 0, size)
 	ownership := make(map[string][]coverage.Assignment, size)
 	orphans := make([]coverage.Orphan, 0, size)
 	for index := 0; index < size; index++ {
 		atom := atomFor(index)
-		file.Diffs = append(file.Diffs, saga.DiffReference{URI: atom.URI, Note: "note " + strconv.Itoa(index)})
+		file.References = append(file.References, saga.DiffReference{URI: atom.Ref, Note: "note " + strconv.Itoa(index)})
 		atoms = append(atoms, atom)
 		ownership[atom.Key] = []coverage.Assignment{{Target: scaleTarget, DiffFile: file.Path, Diff: index + 1}}
 	}
 	for index := 0; index < size; index++ {
 		suffix := strconv.Itoa(index)
-		file.Diffs = append(file.Diffs, saga.DiffReference{URI: "stale-" + suffix, Note: "stale " + suffix})
+		file.References = append(file.References, saga.DiffReference{URI: "stale-" + suffix, Note: "stale " + suffix})
 		orphans = append(orphans, coverage.Orphan{
 			Assignment: coverage.Assignment{Target: scaleTarget, DiffFile: file.Path, Diff: size + index + 1},
 			Reason:     "diff URI does not match the current source comparison",
@@ -188,7 +188,7 @@ func TestScaleFixtureResolvesEverySelector(t *testing.T) {
 			stale++
 			continue
 		}
-		if len(entry.selector.Atoms) != 1 || entry.selector.Atoms[0].URI != entry.selector.URI {
+		if len(entry.selector.Atoms) != 1 || entry.selector.Atoms[0].Ref != entry.selector.URI {
 			t.Fatalf("selector %q owns %#v, want its own atom", entry.selector.URI, entry.selector.Atoms)
 		}
 		current++

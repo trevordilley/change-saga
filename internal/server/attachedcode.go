@@ -4,7 +4,6 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/twentyideas/changesaga/internal/diffuri"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
@@ -38,7 +37,7 @@ type attachedCodeFileView struct {
 	LinkedEvents   int
 }
 
-func makeAttachedCodeView(title, target string, linked, full []gitdiff.Atom, evidence []saga.DiffFile) *attachedCodeView {
+func makeAttachedCodeView(title, target string, linked, full []gitdiff.Atom, evidence []saga.CodeFile) *attachedCodeView {
 	return makeAttachedCodeViewFromAtoms(
 		title, target,
 		len(linked), func(index int) gitdiff.Atom { return linked[index] },
@@ -47,7 +46,7 @@ func makeAttachedCodeView(title, target string, linked, full []gitdiff.Atom, evi
 	)
 }
 
-func makeAttachedCodeViewIndexed(title, target string, snapshot *reviewSnapshot, indexes []int, evidence []saga.DiffFile) *attachedCodeView {
+func makeAttachedCodeViewIndexed(title, target string, snapshot *reviewSnapshot, indexes []int, evidence []saga.CodeFile) *attachedCodeView {
 	fullIndexes := make([]int, 0)
 	for _, path := range snapshot.targetFiles[target] {
 		fullIndexes = append(fullIndexes, snapshot.fileAtoms[path]...)
@@ -60,7 +59,7 @@ func makeAttachedCodeViewIndexed(title, target string, snapshot *reviewSnapshot,
 	)
 }
 
-func makeAttachedCodeViewFromAtoms(title, target string, linkedCount int, linkedAt func(int) gitdiff.Atom, fullCount int, fullAt func(int) gitdiff.Atom, evidence []saga.DiffFile) *attachedCodeView {
+func makeAttachedCodeViewFromAtoms(title, target string, linkedCount int, linkedAt func(int) gitdiff.Atom, fullCount int, fullAt func(int) gitdiff.Atom, evidence []saga.CodeFile) *attachedCodeView {
 	if linkedCount == 0 {
 		return nil
 	}
@@ -126,89 +125,40 @@ func makeAttachedCodeViewFromAtoms(title, target string, linkedCount int, linked
 }
 
 // attachedFileNotes collects the authored notes that apply to each changed
-// file. A reference selects atoms only when it agrees on kind and path, so
-// candidates are bucketed by that pair and a selector is compared against its
-// own bucket. Comparing every reference against every atom instead made the
-// page quadratic in the size of a well-covered target: the codebase saga has
-// one exact reference per changed line, so the two loops grew together.
-func attachedFileNotes(atoms []gitdiff.Atom, evidence []saga.DiffFile) map[string][]string {
+// file: a note applies to the file its reference names when that file holds a
+// linked atom. The linked atoms were already selected by resolving the same
+// references, so this pass only groups notes and never re-resolves them.
+func attachedFileNotes(atoms []gitdiff.Atom, evidence []saga.CodeFile) map[string][]string {
 	return attachedFileNotesFromAtoms(len(atoms), func(index int) gitdiff.Atom { return atoms[index] }, evidence)
 }
 
-func attachedFileNotesFromAtoms(atomCount int, atomAt func(int) gitdiff.Atom, evidence []saga.DiffFile) map[string][]string {
+func attachedFileNotesFromAtoms(atomCount int, atomAt func(int) gitdiff.Atom, evidence []saga.CodeFile) map[string][]string {
 	notes := map[string][]string{}
-	type candidate struct {
-		path      string
-		reference diffuri.Reference
-	}
-	var buckets map[string][]candidate
-	prepared := false
-	for _, diffFile := range evidence {
-		for _, reference := range diffFile.Diffs {
+	var linked map[string]string
+	for _, file := range evidence {
+		for _, reference := range file.References {
 			note := strings.TrimSpace(reference.Note)
 			if note == "" {
 				continue
 			}
-			selector, err := diffuri.Parse(reference.URI)
-			if err != nil {
-				continue
-			}
-			// Evidence without authored notes keeps its zero-parse fast path:
-			// the index is only built once a note actually needs matching.
-			if buckets == nil {
-				buckets = make(map[string][]candidate, atomCount)
+			// Evidence without authored notes never builds the path index.
+			if linked == nil {
+				linked = make(map[string]string, atomCount)
 				for index := 0; index < atomCount; index++ {
 					atom := atomAt(index)
-					parsed, err := diffuri.Parse(atom.URI)
-					if err != nil {
-						continue
-					}
-					key := selectorBucket(parsed)
-					buckets[key] = append(buckets[key], candidate{path: effectiveAtomPath(atom), reference: parsed})
-				}
-			}
-			if !prepared {
-				for key := range buckets {
-					if strings.HasPrefix(key, "line\x00") {
-						sort.SliceStable(buckets[key], func(left, right int) bool {
-							return buckets[key][left].reference.Start < buckets[key][right].reference.Start
-						})
+					path := effectiveAtomPath(atom)
+					for _, candidate := range []string{atom.Path, atom.OldPath, atom.NewPath} {
+						if candidate != "" {
+							linked[candidate] = path
+						}
 					}
 				}
-				prepared = true
 			}
-			candidates := buckets[selectorBucket(selector)]
-			if selector.Kind == "line" {
-				start := sort.Search(len(candidates), func(index int) bool {
-					return candidates[index].reference.Start >= selector.Start
-				})
-				end := sort.Search(len(candidates), func(index int) bool {
-					return candidates[index].reference.Start > selector.End
-				})
-				candidates = candidates[start:end]
-			}
-			for _, entry := range candidates {
-				if !diffuri.Matches(selector, entry.reference) {
-					continue
-				}
-				if !contains(notes[entry.path], note) {
-					notes[entry.path] = append(notes[entry.path], note)
-				}
+			path, ok := linked[reference.Path]
+			if ok && !contains(notes[path], note) {
+				notes[path] = append(notes[path], note)
 			}
 		}
 	}
 	return notes
-}
-
-// selectorBucket is the coarsest key on which diffuri.Matches can still
-// succeed. Two references that disagree on it can never match, and every
-// reference that agrees on it is still compared exactly.
-func selectorBucket(reference diffuri.Reference) string {
-	if reference.Kind == "line" {
-		return "line\x00" + reference.Path + "\x00" + reference.Side
-	}
-	if reference.Kind == "event" && reference.Event == "rename" {
-		return "event\x00rename\x00" + reference.OldPath + "\x00" + reference.NewPath
-	}
-	return reference.Kind + "\x00" + reference.Path
 }

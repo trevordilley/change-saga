@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"bytes"
 	"context"
-	"crypto/sha256"
 	"fmt"
 	"net/url"
 	"os"
@@ -15,7 +14,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/twentyideas/changesaga/internal/diffuri"
+	"github.com/twentyideas/changesaga/internal/coderef"
 )
 
 // Atom is the smallest independently coverable unit of a comparison. Kind
@@ -23,9 +22,13 @@ import (
 // content; an "event" atom always carries event. Content is emitted even when
 // the changed line is empty, so a consumer can read it unconditionally instead
 // of having to distinguish a blank line from an absent field.
+//
+// Ref is the atom's code location: an added line at the head commit, a
+// deleted line at the merge-base, and a file event as the whole file on the
+// side where it exists. Coverage asks whether some reference contains it.
 type Atom struct {
 	Key     string `json:"key"`
-	URI     string `json:"uri"`
+	Ref     string `json:"ref"`
 	Kind    string `json:"kind"`
 	Path    string `json:"path,omitempty"`
 	Side    string `json:"side,omitempty"`
@@ -36,13 +39,15 @@ type Atom struct {
 	NewPath string `json:"new_path,omitempty"`
 }
 
+// ChangeSet is a comparison of two commits' product code. BaseOID is the
+// merge-base of the declared base and head, and HeadOID the head commit; the
+// comparison is BaseOID..HeadOID excluding every .saga directory.
 type ChangeSet struct {
 	Repository  string `json:"repository"`
 	Base        string `json:"base"`
 	Head        string `json:"head"`
 	BaseOID     string `json:"base_oid"`
 	HeadOID     string `json:"head_oid"`
-	HeadCommit  string `json:"head_commit,omitempty"`
 	Atoms       []Atom `json:"atoms"`
 	SagaChanges []Atom `json:"saga_changes"`
 	// DisplayLines contains bounded unchanged context alongside changed atoms.
@@ -77,7 +82,6 @@ type Catalog struct {
 	Head       string        `json:"head"`
 	BaseOID    string        `json:"base_oid"`
 	HeadOID    string        `json:"head_oid"`
-	HeadCommit string        `json:"head_commit"`
 	Files      []FileSummary `json:"files"`
 }
 
@@ -94,8 +98,8 @@ type FileSummary struct {
 }
 
 type preparedComparison struct {
-	repo, repository, base, head             string
-	baseOID, headOID, headCommit, comparison string
+	repo, repository, base, head string
+	baseOID, headOID, comparison string
 }
 
 func Read(ctx context.Context, fromDir, repositoryURI, base, head string) (ChangeSet, error) {
@@ -156,7 +160,7 @@ func ReadCatalogWithOptions(ctx context.Context, fromDir, repositoryURI, base, h
 	sort.Slice(product, func(i, j int) bool { return product[i].Path < product[j].Path })
 	return Catalog{
 		Repository: prepared.repository, Base: prepared.base, Head: prepared.head,
-		BaseOID: prepared.baseOID, HeadOID: prepared.headOID, HeadCommit: prepared.headCommit, Files: product,
+		BaseOID: prepared.baseOID, HeadOID: prepared.headOID, Files: product,
 	}, nil
 }
 
@@ -182,13 +186,7 @@ func ReadFile(ctx context.Context, fromDir string, catalog Catalog, file FileSum
 	if err := VerifyRepository(ctx, repo, catalog.Repository); err != nil {
 		return ChangeSet{}, err
 	}
-	comparison := catalog.BaseOID
-	if catalog.Head != "WORKTREE" {
-		if catalog.HeadCommit == "" {
-			return ChangeSet{}, fmt.Errorf("read file diff: source catalog has no resolved head commit")
-		}
-		comparison += ".." + catalog.HeadCommit
-	}
+	comparison := catalog.BaseOID + ".." + catalog.HeadOID
 	paths := make([]string, 0, 2)
 	for _, candidate := range []string{file.OldPath, file.NewPath, file.Path} {
 		if candidate != "" && !containsString(paths, candidate) {
@@ -205,7 +203,7 @@ func ReadFile(ctx context.Context, fromDir string, catalog Catalog, file FileSum
 	}
 	return changeSetFromPatch(output, preparedComparison{
 		repository: catalog.Repository, base: catalog.Base, head: catalog.Head,
-		baseOID: catalog.BaseOID, headOID: catalog.HeadOID, headCommit: catalog.HeadCommit,
+		baseOID: catalog.BaseOID, headOID: catalog.HeadOID,
 	})
 }
 
@@ -227,18 +225,8 @@ func changeSetFromPatch(output []byte, prepared preparedComparison) (ChangeSet, 
 		Repository: prepared.repository, Base: prepared.base, Head: prepared.head,
 		BaseOID: prepared.baseOID, HeadOID: prepared.headOID, DisplayLines: displayLines,
 	}
-	if prepared.head != "WORKTREE" {
-		result.HeadCommit = prepared.headCommit
-	}
 	for _, atom := range atoms {
-		reference := diffuri.Reference{Repository: prepared.repository, Base: prepared.baseOID, Head: prepared.headOID, Kind: atom.Kind, Path: atom.Path, Side: atom.Side, Start: atom.Line, End: atom.Line, Event: atom.Event, OldPath: atom.OldPath, NewPath: atom.NewPath}
-		if atom.Kind == "event" && atom.Event == "rename" {
-			reference.Path = ""
-		}
-		atom.URI, err = diffuri.Build(reference)
-		if err != nil {
-			return ChangeSet{}, fmt.Errorf("build diff URI for %s: %w", atom.Key, err)
-		}
+		atom.Ref = result.Location(atom).String()
 		hasSagaPath, hasProductPath := classifyAtomPaths(atom)
 		if hasSagaPath {
 			result.SagaChanges = append(result.SagaChanges, atom)
@@ -256,7 +244,7 @@ func prepareComparison(ctx context.Context, fromDir, repositoryURI, base, head s
 		return preparedComparison{}, fmt.Errorf("locate Git repository: %w", err)
 	}
 	repo := strings.TrimSpace(string(repoOut))
-	repositoryURI, err = diffuri.CanonicalRepository(repositoryURI)
+	repositoryURI, err = coderef.CanonicalRepository(repositoryURI)
 	if err != nil {
 		return preparedComparison{}, fmt.Errorf("canonicalize declared repository: %w", err)
 	}
@@ -269,13 +257,10 @@ func prepareComparison(ctx context.Context, fromDir, repositoryURI, base, head s
 	if err != nil {
 		return preparedComparison{}, err
 	}
-
-	var headCommit string
 	if head == "WORKTREE" {
-		headCommit, err = resolveRevision(ctx, repo, "HEAD")
-	} else {
-		headCommit, err = resolveRevision(ctx, repo, head)
+		return preparedComparison{}, fmt.Errorf("head WORKTREE is not supported: code references pin commits, so commit the work and compare HEAD")
 	}
+	headCommit, err := resolveRevision(ctx, repo, head)
 	if err != nil {
 		return preparedComparison{}, err
 	}
@@ -283,34 +268,27 @@ func prepareComparison(ctx context.Context, fromDir, repositoryURI, base, head s
 	if err != nil {
 		return preparedComparison{}, err
 	}
-	comparison := mergeBase
-	if head != "WORKTREE" {
-		comparison += ".." + headCommit
-	}
-	productArgs := canonicalDiffArgs(repo, "--binary", "--full-index", "--unified=3", comparison, "--", ".", ":(exclude,glob)**/*.saga/**")
-	digest, err := hashGitOutput(ctx, productArgs)
-	if err != nil {
-		return preparedComparison{}, fmt.Errorf("build product diff identity: %w", err)
-	}
 	return preparedComparison{
 		repo: repo, repository: repositoryURI, base: base, head: head,
-		baseOID: mergeBase, headOID: "product-" + fmt.Sprintf("%x", digest), headCommit: headCommit, comparison: comparison,
+		baseOID: mergeBase, headOID: headCommit, comparison: mergeBase + ".." + headCommit,
 	}, nil
 }
 
-func hashGitOutput(ctx context.Context, args []string) ([]byte, error) {
-	digest := sha256.New()
-	cmd := exec.CommandContext(ctx, "git", args...)
-	cmd.Stdout = digest
-	var stderr strings.Builder
-	cmd.Stderr = &stderr
-	if err := cmd.Run(); err != nil {
-		if detail := strings.TrimSpace(stderr.String()); detail != "" {
-			return nil, fmt.Errorf("git diff: %s", detail)
+// Location is the code location an atom occupies in the comparison: added
+// lines and surviving files at the head commit, deleted lines and deleted
+// files at the merge-base.
+func (changes ChangeSet) Location(atom Atom) coderef.Location {
+	if atom.Kind == "line" {
+		commit := changes.HeadOID
+		if atom.Side == "old" {
+			commit = changes.BaseOID
 		}
-		return nil, fmt.Errorf("git diff: %w", err)
+		return coderef.Location{Commit: commit, Path: atom.Path, Start: atom.Line, End: atom.Line}
 	}
-	return digest.Sum(nil), nil
+	if atom.Event == "delete" {
+		return coderef.Location{Commit: changes.BaseOID, Path: atom.Path}
+	}
+	return coderef.Location{Commit: changes.HeadOID, Path: preferredPath(atom.NewPath, atom.Path)}
 }
 
 func parseNumstat(output []byte) ([]FileSummary, error) {
@@ -430,7 +408,7 @@ func resolveMergeBase(ctx context.Context, repo, base, head string) (string, err
 func VerifyRepository(ctx context.Context, repo, declared string) error {
 	declaredURL, _ := url.Parse(declared)
 	if declaredURL.Scheme == "file" {
-		declaredLocal, err := diffuri.RepositoryFilePath(declared)
+		declaredLocal, err := coderef.RepositoryFilePath(declared)
 		if err != nil {
 			return fmt.Errorf("resolve declared file repository: %w", err)
 		}
@@ -469,7 +447,7 @@ func normalizeRemote(value, repo string) (string, error) {
 		}
 	}
 	if parsed, err := url.Parse(value); err == nil && parsed.IsAbs() {
-		return diffuri.CanonicalRepository(value)
+		return coderef.CanonicalRepository(value)
 	}
 	if !filepath.IsAbs(value) {
 		value = filepath.Join(repo, value)
@@ -478,7 +456,7 @@ func normalizeRemote(value, repo string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return diffuri.FileRepository(abs)
+	return coderef.FileRepository(abs)
 }
 
 func sameRepository(left, right string) bool {

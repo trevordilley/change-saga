@@ -3,6 +3,7 @@ package cli
 import (
 	"context"
 	"fmt"
+	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"io"
 	"sort"
 
@@ -85,15 +86,20 @@ func Compare(ctx context.Context, args []string, out io.Writer) error {
 	if err != nil {
 		return fmt.Errorf("reconstruct maintained Saga at incoming base: %w", err)
 	}
-	report := coverage.Evaluate(document, validation, baseline)
+	resolver, err := coderesolve.New(ctx, checkout)
+	if err != nil {
+		return fmt.Errorf("open source repository: %w", err)
+	}
+	defer resolver.Close()
+	report := coverage.Evaluate(ctx, document, validation, baseline, resolver)
 	// The review-repository graph carries the source change back to the stories,
 	// criteria, and test cases whose recorded evidence it touches.
 	graph := impact.Graph{}
-	inputs, graphErr := livingapp.LoadStatusInputs(livingapp.StatusOptions{SagaRoot: root, Document: document})
+	inputs, graphErr := livingapp.LoadStatusInputs(ctx, livingapp.StatusOptions{SagaRoot: root, Document: document, Changes: baseline, Resolver: resolver})
 	if graphErr == nil {
 		graph = livingapp.ImpactGraph(inputs)
 	}
-	result := impact.AnalyzeGraph(document, baseline, report, incoming, mode, incomingDocument, graph)
+	result := impact.AnalyzeGraph(ctx, document, baseline, report, incoming, mode, incomingDocument, graph, resolver)
 	if graphErr != nil {
 		result.Diagnostics = append(result.Diagnostics, impact.Diagnostic{Code: "review_graph_unavailable", Message: "requirements and test cases were not projected: " + graphErr.Error()})
 	}
@@ -168,7 +174,7 @@ func printImpact(out io.Writer, result impact.Result) {
 	if len(result.NewContent) > 0 {
 		fmt.Fprintln(out, "\nNew content required:")
 		values := append([]impact.UnownedChange(nil), result.NewContent...)
-		sort.SliceStable(values, func(i, j int) bool { return values[i].Atom.URI < values[j].Atom.URI })
+		sort.SliceStable(values, func(i, j int) bool { return values[i].Atom.Ref < values[j].Atom.Ref })
 		for _, change := range values {
 			fmt.Fprintf(out, "  %s\n    %s\n", coverage.DescribeAtom(change.Atom), change.Reason)
 		}

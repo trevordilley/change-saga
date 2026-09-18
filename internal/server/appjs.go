@@ -1188,13 +1188,26 @@ const appJavaScript = `(() => {
     if (empty) empty.hidden = files.some(file => !file.hidden);
   }
 
-  function selectedRangeURI(rows) {
+  // A code location is <commit>:<path>#L<start>[-L<end>]; the range suffix is
+  // anchored at the end, so the path can contain any character.
+  function parseCodeLocation(value) {
+    const match = /^([0-9a-f]{40}(?:[0-9a-f]{24})?):(.+?)(?:#L(\d+)(?:-L(\d+))?)?$/.exec(value || '');
+    if (!match) return null;
+    const location = {commit: match[1], path: match[2]};
+    if (match[3]) {
+      location.start = Number(match[3]);
+      location.end = Number(match[4] || match[3]);
+    }
+    return location;
+  }
+
+  function selectedRangeRef(rows) {
     if (!rows.length) return '';
     const numbers = rows.map(row => Number(row.dataset.line));
-    const uri = new URL(rows[0].dataset.diffRef);
-    uri.searchParams.set('start', String(Math.min(...numbers)));
-    uri.searchParams.set('end', String(Math.max(...numbers)));
-    return uri.toString();
+    const location = parseCodeLocation(rows[0].dataset.diffRef);
+    if (!location) return rows[0].dataset.diffRef;
+    const start = Math.min(...numbers), end = Math.max(...numbers);
+    return location.commit + ':' + location.path + '#L' + start + (end === start ? '' : '-L' + end);
   }
 
   function updateLineSelection(rows) {
@@ -1208,7 +1221,7 @@ const appJavaScript = `(() => {
     if (!toolbar) return;
     toolbar.classList.toggle('open', rows.length > 0);
     if (!rows.length) { delete toolbar.dataset.diffRef; return; }
-    toolbar.dataset.diffRef = selectedRangeURI(rows);
+    toolbar.dataset.diffRef = selectedRangeRef(rows);
     toolbar.dataset.target = rows[0].dataset.target;
     toolbar.dataset.content = rows.map(row => q('[data-code]', row)?.textContent || '').join('\n');
     q('[data-selection-label]', toolbar).textContent = rows.length === 1 ? '1 line selected' : rows.length + ' lines selected';
@@ -1281,7 +1294,7 @@ const appJavaScript = `(() => {
     const url = new URL(explicitHref || surface?.dataset.surfaceHref || '', location.href);
     if (!explicitHref) {
       const current = new URL(location.href);
-      const carried = ['file', 'diff', 'mode'];
+      const carried = ['file', 'ref', 'mode'];
       if (name === 'activity') carried.push('target');
       carried.forEach(key => {
         if (current.searchParams.has(key)) url.searchParams.set(key, current.searchParams.get(key));
@@ -2603,7 +2616,7 @@ const appJavaScript = `(() => {
     }
   }
 
-  // A diff row already carries the change it is: its exact diff URI, the
+  // A diff row already carries the change it is: its code location, the
   // narrative target a comment on it belongs to, and its content. The per-line
   // buttons used to repeat all three, which cost more than the code itself in a
   // large file, so they now read the row they sit in.
@@ -2626,7 +2639,8 @@ const appJavaScript = `(() => {
     form.classList.toggle('suggesting', suggestion);
     form.classList.add('open');
     q('[name=target]', form).value = button.dataset.target;
-    q('[name=anchor]', form).value = JSON.stringify({type:'diff', diff:{uri:button.dataset.diffRef}});
+    // The server reads the referenced content and records its digest.
+    q('[name=anchor]', form).value = JSON.stringify({type:'code', code:parseCodeLocation(button.dataset.diffRef)});
     q('[name=kind]', form).value = suggestion ? 'suggestion' : 'comment';
     q('.diff-compose-head strong', form).textContent = suggestion ? 'Suggest a replacement' : 'Comment on this change';
     q('[name=replacement]', form).value = suggestion ? (button.dataset.content || '') : '';

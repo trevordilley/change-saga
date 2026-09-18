@@ -28,7 +28,7 @@ func link(axis coverage.Axis, diffs ...string) coverage.AxisLink {
 		Axis: axis, Relation: "urn:change-saga:s:relation:" + string(axis),
 		Source: "urn:change-saga:s:slide:decision:item:" + string(axis),
 		Paths:  [][]string{{criterionURN, "addresses", "item", "owns_diff"}},
-		Diffs:  diffs,
+		Code:  diffs,
 	}
 }
 

@@ -33,7 +33,7 @@ func lineAtom(t *testing.T, reference diffuri.Reference, line int) gitdiff.Atom 
 	if err != nil {
 		t.Fatalf("build line URI: %v", err)
 	}
-	return gitdiff.Atom{Kind: "line", Path: reference.Path, Side: reference.Side, Line: line, URI: uri}
+	return gitdiff.Atom{Kind: "line", Path: reference.Path, Side: reference.Side, Line: line, Ref: uri}
 }
 
 func newLine(t *testing.T, path string, line int) gitdiff.Atom {
@@ -52,7 +52,7 @@ func eventAtom(t *testing.T, event, path string) gitdiff.Atom {
 	if err != nil {
 		t.Fatalf("build event URI: %v", err)
 	}
-	return gitdiff.Atom{Kind: "event", Event: event, Path: path, URI: uri}
+	return gitdiff.Atom{Kind: "event", Event: event, Path: path, Ref: uri}
 }
 
 // describeSelectors renders emitted URIs as a compact, order-preserving shape so
@@ -219,7 +219,7 @@ func TestChangedLineSelectorsPreserveExactAtomIdentity(t *testing.T) {
 	}
 	verbatim := make([]string, 0, len(atoms))
 	for _, atom := range atoms {
-		verbatim = append(verbatim, atom.URI)
+		verbatim = append(verbatim, atom.Ref)
 	}
 	got := strings.Join(expandSelectors(t, uris), "\n")
 	want := strings.Join(expandSelectors(t, verbatim), "\n")
@@ -301,7 +301,7 @@ func TestCoverChangedLinesEmitsCanonicalRangesWithGaps(t *testing.T) {
 	if err := json.Unmarshal([]byte(output), &result); err != nil {
 		t.Fatalf("decode output: %v\n%s", err, output)
 	}
-	references := readDiffFile(t, filepath.Join(root, "___diffs", "handler.json"))
+	references := readDiffFile(t, filepath.Join(root, saga.CodeDirName, "handler.json"))
 	got := describeSelectors(t, urisOf(references))
 	// Each identity is emitted once, at the position of its first atom, with its
 	// dense runs ascending: the two separated edits stay two ranges per side.
@@ -329,7 +329,7 @@ func TestCoverChangedLinesRespectsSideFilter(t *testing.T) {
 			if output, err := runCover(t, "", "--repo", repo, "--path", "internal/service/handler.go", "--changed-lines", "--side", side, "--name", "handler", root); err != nil {
 				t.Fatalf("changed-lines cover: %v\n%s", err, output)
 			}
-			references := readDiffFile(t, filepath.Join(root, "___diffs", "handler.json"))
+			references := readDiffFile(t, filepath.Join(root, saga.CodeDirName, "handler.json"))
 			got := describeSelectors(t, urisOf(references))
 			want := []string{
 				fmt.Sprintf("line internal/service/handler.go %s 3-4", side),
@@ -355,11 +355,11 @@ func TestCoverChangedLinesKeepsEventsSeparateAndCoverageExact(t *testing.T) {
 		t.Fatalf("batch changed-lines cover: %v\n%s", err, output)
 	}
 
-	added := describeSelectors(t, urisOf(readDiffFile(t, filepath.Join(root, "___diffs", "added.json"))))
+	added := describeSelectors(t, urisOf(readDiffFile(t, filepath.Join(root, saga.CodeDirName, "added.json"))))
 	if strings.Join(added, "; ") != "event add internal/service/added.go; line internal/service/added.go new 1-3" {
 		t.Fatalf("added file selectors = %v", added)
 	}
-	deleted := describeSelectors(t, urisOf(readDiffFile(t, filepath.Join(root, "___diffs", "legacy.json"))))
+	deleted := describeSelectors(t, urisOf(readDiffFile(t, filepath.Join(root, saga.CodeDirName, "legacy.json"))))
 	if strings.Join(deleted, "; ") != "event delete internal/service/legacy.go; line internal/service/legacy.go old 1-3" {
 		t.Fatalf("deleted file selectors = %v", deleted)
 	}

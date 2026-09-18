@@ -19,7 +19,7 @@ import (
 	"strings"
 
 	"github.com/twentyideas/changesaga/internal/coverage"
-	"github.com/twentyideas/changesaga/internal/diffuri"
+	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/prototypes"
 	"github.com/twentyideas/changesaga/internal/quality"
@@ -86,7 +86,7 @@ func (e *StatusError) Error() string { return "command reported a non-success st
 // commandUsage is the single source of each command's usage line so the
 // overview, the per-command -h banner, and argument errors cannot drift apart.
 var commandOrder = []string{
-	"init", "prototype", "story", "criterion", "citation", "relation", "design", "plan", "quality", "add-deck", "add-slide", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "cover", "remove-coverage", "replace-coverage", "rebase-evidence", "add-claim", "verify-claim",
+	"init", "prototype", "story", "criterion", "citation", "relation", "design", "plan", "quality", "add-deck", "add-slide", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "cover", "remove-coverage", "replace-coverage", "references", "repin", "add-claim", "verify-claim",
 	"thread", "reply", "review", "validate", "status", "compare", "query",
 	"serve", "open", "install-skill", "spec",
 }
@@ -135,7 +135,7 @@ var commandUsage = map[string]string{
 	"quality policy":              "change-saga quality policy set [flags] <saga>",
 	"quality policy set":          "change-saga quality policy set --criterion URN --story-revision URN --require KIND... --rationale TEXT [--allow MODE...] [--supersedes POLICY...] [--id ID] [flags] <saga>",
 	"quality evidence":            "change-saga quality evidence add [flags] <saga>",
-	"quality evidence add":        "change-saga quality evidence add --test URN --role ROLE (--diff URI... | --verification URN... | --citation URN...) [--test-revision URN] [--supersedes EVIDENCE...] [--id ID] [--batch FILE|-] [flags] <saga>",
+	"quality evidence add":        "change-saga quality evidence add --test URN --role ROLE (--code LOCATION... | --verification URN... | --citation URN...) [--test-revision URN] [--supersedes EVIDENCE...] [--id ID] [--batch FILE|-] [flags] <saga>",
 	"quality run":                 "change-saga quality run record [flags] <saga>",
 	"quality run record":          "change-saga quality run record --test URN --result RESULT --summary TEXT --evidence URN... [--parent RUN...] [--test-revision URN] [--command TEXT] [--id ID] [flags] <saga>",
 	"add-deck":                    "change-saga add-deck [flags] <saga> <name>",
@@ -150,8 +150,9 @@ var commandUsage = map[string]string{
 	"cover":                       "change-saga cover [flags] [--batch FILE|-] [--dry-run] <saga>",
 	"remove-coverage":             "change-saga remove-coverage --record PATH [--dry-run] [--json|--quiet] <saga>",
 	"replace-coverage":            "change-saga replace-coverage --record PATH [coverage flags] [--batch FILE|-] [--dry-run] <saga>",
-	"rebase-evidence":             "change-saga rebase-evidence [--repo PATH] [--carry-verifications] [--dry-run] [--json|--quiet] <saga>",
-	"add-claim":                   "change-saga add-claim --target TARGET --kind KIND --statement TEXT --diff URI [--diff URI...] <saga>",
+	"references":                  "change-saga references [--stale] [--diff] [--json] [--repo PATH] <saga>",
+	"repin":                       "change-saga repin --onto REV [--branch REV] [--dry-run] [--json] [--repo PATH] <saga>",
+	"add-claim":                   "change-saga add-claim --target TARGET --kind KIND --statement TEXT --ref LOCATION [--ref LOCATION...] <saga>",
 	"verify-claim":                "change-saga verify-claim --claim ID --status STATUS --summary TEXT [flags] <saga>",
 	"thread":                      "change-saga thread [flags] <saga>",
 	"reply":                       "change-saga reply [flags] <saga>",
@@ -167,7 +168,7 @@ var commandUsage = map[string]string{
 }
 
 func PrintHelp(out io.Writer) {
-	fmt.Fprint(out, `Change Saga — capture a big change from its first prototype to its exact diffs
+	fmt.Fprint(out, `Change Saga — capture a big change from its first prototype to the code it changed
 
 A Change Saga is for a big change: one that needs product requirements, UX/UI,
 technical design, quality, and an implementation deck. It starts with the big
@@ -185,7 +186,7 @@ The workflow:
   4. Implementation: explain the delivered change as the implementation deck
      ("add-deck", "add-slide", "add-item"). Every meaningful node, edge,
      region, and callout is an Item.
-  5. Exact diffs: attach every changed line to the Item that explains it
+  5. Code: reference every changed line from the Item that explains it
      ("cover"), then "validate", check "status", and "serve" the Saga for review.
 
 Stories, prototypes, design, test cases, and deck bundles are Git-native
@@ -244,7 +245,7 @@ var commandDescription = map[string]string{
 	"quality policy":              "Declare which coverage kinds a criterion requires at an exact story revision.",
 	"quality policy set":          "Record an immutable policy for one criterion and story revision. Without a policy only\npositive is required. Supersede every current head for the same pin so exactly one remains.",
 	"quality evidence":            "Map a test revision to exact test code, implementation under test, or execution artifacts.",
-	"quality evidence add":        "Record immutable evidence. test_implementation diffs join global changed-source accounting;\nimplementation_under_test diffs must match Item-owned evidence exactly; execution_artifact cites\nverifications or citations. --batch validates the whole set before the first write.",
+	"quality evidence add":        "Record immutable evidence. test_implementation code references join global changed-source\naccounting; implementation_under_test references name the code the test exercises;\nexecution_artifact cites verifications or citations. --batch validates the whole set before the\nfirst write.",
 	"quality run":                 "Record what executed and what happened.",
 	"quality run record":          "Append an immutable run/result event pinned to a test revision, source identity, and evidence.\nName every current run head: a failed or concurrent run stays visible and is only succeeded by a\nlater run. The command is recorded, never executed.",
 	"story":                       "Create and append revisions or lifecycle events to user stories and acceptance\ncriteria. Stories may lead, follow, or evolve alongside prototypes; cite their source\nand revise them as the feature is clarified.",
@@ -279,23 +280,27 @@ var commandDescription = map[string]string{
 	"add-deck":                    "Add an implementation deck. The implementation decks are the Saga's Implementation\nsection; split the delivered change into decks only where a concern warrants its own review.",
 	"add-slide":                   "Add one visual argument to an implementation deck. Intent names the\nreviewer job; layout names geometry, not meaning. Establish the system model, then\nforeground consequential tradeoffs, hidden coupling, and deviations that may surprise a reviewer.",
 	"set-slide-content":           "Replace a slide's visual entrypoint while preserving its stable target and items.",
-	"add-item":                    "Add one semantic visual item, including an evidence-bearing callout overlay, and append\nit to the slide reading order. Exact diff evidence attaches here.",
+	"add-item":                    "Add one semantic visual item, including an evidence-bearing callout overlay, and append\nit to the slide reading order. Code references attach here.",
 	"set-fragment-content":        "Replace a fragment entrypoint through the supported authoring API. Use --source -\nto read content from standard input; the fragment media type and metadata are preserved.",
 	"add-chapter":                 "Add one independently reviewable narrative chapter to the Saga.",
 	"add-section":                 "Group related narrative content inside a chapter.",
 	"add-fragment":                "Add a narrative artifact to a chapter or section. Implementation evidence belongs on\ndeck Items; use add-slide and add-item for the implementation deck.",
 	"add-landmark":                "Create a coverable target for one Markdown heading, exact text span, HTML/SVG\nelement, or normalized image region inside a fragment. An SVG --element-id is\nmeasured into an on-canvas link automatically; --hotspot overrides its bounds.\nHTML elements need --hotspot for an on-canvas link. Visual landmarks require a\nsemantic --description for non-visual consumers.",
-	"cover": `Attach the exact diff atoms a review target explains. In the implementation deck
+	"cover": `Reference the code a review target explains, pinned at a commit with a digest of
+its content. --side new pins the comparison's head and --side old its merge-base (for
+deleted lines); --commit pins any revision; --ref names a location directly. --file
+references a whole file (renames, mode and binary changes). In the implementation deck
 the target is an Item. Narrative targets are section/fragment paths, target URNs, and
 <fragment-path>#<landmark-id>.
---batch reads newline-delimited JSON records (or one JSON array) with the
-per-record fields target, path, side, lines, changed_lines, event, old_path,
-new_path, note, name, and uris; the whole batch is resolved before anything is written, and a
-failing record leaves the saga untouched.`,
+--batch reads newline-delimited JSON records (or one JSON array) with the per-record
+fields target, path, side, lines, changed_lines, file, commit, refs, note, and name; the
+whole batch is resolved before anything is written, and a failing record leaves the saga
+untouched.`,
 	"remove-coverage":  "Delete one exact coverage record named by query mappings or fragment-diffs.",
 	"replace-coverage": "Atomically replace one coverage record with one or more newly resolved records.\nUse --batch to split or retarget broad evidence without leaving partial coverage.",
-	"rebase-evidence":  "Refresh exact evidence after the Saga's declared base moves while the product diff is\nbyte-for-byte identical. The command refuses changed product identity, previews with\n--dry-run, rolls immutable claims forward, and only carries verification when requested.",
-	"add-claim":        "Record one falsifiable author assertion and its exact supporting diff evidence.\nClaims do not count toward coverage and are independently verified.",
+	"references":       "List every code reference viewed in the comparison: current (remapped when its lines only\nmoved), or stale with the reason its code changed. --diff adds the patch since the pin.",
+	"repin":            "After a change lands, re-pin evidence references to the landed commit (following moved\nlines, or the content digest when the branch commit is gone) and record the branch's commit\nmessages in ___merges/<commit>.json so a squash merge keeps its reasoning.",
+	"add-claim":        "Record one falsifiable author assertion and the code that supports it. Claims do not\ncount toward coverage and are independently verified.",
 	"verify-claim":     "Append an independent verification result without rewriting the claim or prior results.",
 	"open":             "Start a managed loopback reviewer, open it in a browser, and return after\nprinting the PID and active URL.",
 	"serve":            "Serve the saga on loopback for review. Detached instances are managed with\nchange-saga serve status [SAGA] and change-saga serve stop [SAGA].",
@@ -392,7 +397,7 @@ func Init(ctx context.Context, args []string, out io.Writer) error {
 		if err := os.Chmod(stage, 0o755); err != nil {
 			return err
 		}
-		reservedDirs := []string{"___approvals", "___claims", "___verifications", filepath.Join("___review", "threads"), filepath.Join("___review", "diffs"), "___diffs"}
+		reservedDirs := []string{"___approvals", "___claims", "___verifications", filepath.Join("___review", "threads"), filepath.Join("___review", saga.FileReviewDir), saga.CodeDirName}
 		for _, dir := range reservedDirs {
 			if err := os.MkdirAll(filepath.Join(stage, dir), 0o755); err != nil {
 				return err
@@ -463,7 +468,7 @@ func addChapter(_ context.Context, args []string, out io.Writer, scope authoring
 			if err := os.Chmod(stage, 0o755); err != nil {
 				return err
 			}
-			for _, reserved := range []string{"___diffs", "___approvals"} {
+			for _, reserved := range []string{saga.CodeDirName, "___approvals"} {
 				if err := os.Mkdir(filepath.Join(stage, reserved), 0o755); err != nil {
 					return err
 				}
@@ -534,7 +539,7 @@ func addSection(_ context.Context, args []string, out io.Writer, scope authoring
 			if err := os.Chmod(stage, 0o755); err != nil {
 				return err
 			}
-			for _, reserved := range []string{"___diffs", "___approvals"} {
+			for _, reserved := range []string{saga.CodeDirName, "___approvals"} {
 				if err := os.Mkdir(filepath.Join(stage, reserved), 0o755); err != nil {
 					return err
 				}
@@ -962,7 +967,7 @@ func printReport(out io.Writer, report coverage.Report, maxItems int) {
 	}
 	fmt.Fprintf(out, "%s — %d/%d product changes mapped\n", state, report.Summary.Covered, report.Summary.Total)
 	fmt.Fprintln(out, "Mapping detects omissions; it does not establish explanation quality or correctness.")
-	fmt.Fprintf(out, "Uncovered: %d  Overlapping: %d  Stale URIs: %d  Saga-only changes: %d\n", report.Summary.Uncovered, report.Summary.Overlapping, report.Summary.Orphaned, report.Summary.SagaChanges)
+	fmt.Fprintf(out, "Uncovered: %d  Overlapping: %d  Stale references: %d  Remapped: %d  Saga-only changes: %d\n", report.Summary.Uncovered, report.Summary.Overlapping, report.Summary.Stale, report.Summary.Remapped, report.Summary.SagaChanges)
 	if len(report.SchemaIssues) > 0 {
 		fmt.Fprintln(out, "\nSchema issues:")
 		for _, issue := range report.SchemaIssues {
@@ -976,16 +981,16 @@ func printReport(out io.Writer, report coverage.Report, maxItems int) {
 			limit = maxItems
 		}
 		for _, atom := range report.Uncovered[:limit] {
-			fmt.Fprintf(out, "  %s\n    %s\n", coverage.DescribeAtom(atom), atom.URI)
+			fmt.Fprintf(out, "  %s\n    %s\n", coverage.DescribeAtom(atom), atom.Ref)
 		}
 		if limit < len(report.Uncovered) {
 			fmt.Fprintf(out, "  … and %d more (use --max 0 or --json)\n", len(report.Uncovered)-limit)
 		}
 	}
-	if len(report.Orphans) > 0 {
-		fmt.Fprintln(out, "\nStale diff URIs:")
-		for _, orphan := range report.Orphans {
-			fmt.Fprintf(out, "  %s diff %d: %s\n", orphan.Assignment.DiffFile, orphan.Assignment.Diff, orphan.Reason)
+	if len(report.StaleReferences) > 0 {
+		fmt.Fprintln(out, "\nStale code references:")
+		for _, stale := range report.StaleReferences {
+			fmt.Fprintf(out, "  %s reference %d (%s): %s\n", stale.Assignment.EvidenceFile, stale.Assignment.Reference, stale.Reference.Location(), stale.Reason)
 		}
 	}
 }
@@ -1083,11 +1088,12 @@ func Spec(args []string, out io.Writer) error {
 			"version": saga.SagaVersion, "manifest": saga.ManifestName, "component_version": saga.ComponentVersion, "chapter_suffix": ".chapter", "chapter_manifest": "chapter.json", "fragment_suffix": ".fragment", "fragment_manifest": "fragment.json",
 			"hierarchy":     []string{"overview", "chapter", "section", "fragment"},
 			"media_types":   []string{"text/markdown", "text/html", "text/plain", "image/svg+xml", "image/*"},
-			"target_scheme": "urn:change-saga", "diff_scheme": "saga-diff://v1",
-			"anchors":              []string{"target", "region", "drawing", "text", "note", "diff"},
+			"target_scheme": "urn:change-saga",
+			"code_reference":       map[string]any{"fields": []string{"commit", "path", "start", "end", "digest"}, "location": "<commit>:<path>[#L<start>[-L<end>]]", "digest": coderef.DigestPrefix + "<hex>"},
+			"anchors":              []string{"target", "region", "drawing", "text", "note", "code"},
 			"thread_kinds":         []string{"comment", "suggestion"},
 			"reviewer_bootstrap":   "README.md",
-			"reserved_directories": []string{"___diffs", "___approvals", "___claims", "___verifications", "___review"},
+			"reserved_directories": []string{saga.CodeDirName, "___approvals", "___claims", "___verifications", saga.MergesDir, "___review"},
 			"author_assertions":    "one claim per ___claims/*.json; one append-only result per ___verifications/*.json",
 			"review_storage":       "append-only; one thread, message, or event record per path",
 			"implementation_deck": map[string]any{
@@ -1188,7 +1194,7 @@ func discoverRepository(ctx context.Context, repoDir, explicit string, options .
 	}
 	root := strings.TrimSpace(string(rootOutput))
 	if explicit != "" {
-		canonical, err := diffuri.CanonicalRepository(explicit)
+		canonical, err := coderef.CanonicalRepository(explicit)
 		if err != nil {
 			return "", "", fmt.Errorf("--repository: %w", err)
 		}
@@ -1215,7 +1221,7 @@ func discoverRepository(ctx context.Context, repoDir, explicit string, options .
 	if !allowLocal {
 		return "", "", fmt.Errorf("origin is unavailable; provide a portable --repository URI or explicitly opt in with --allow-local-repository")
 	}
-	canonical, err := diffuri.FileRepository(root)
+	canonical, err := coderef.FileRepository(root)
 	return canonical, root, err
 }
 
@@ -1228,15 +1234,15 @@ func normalizeRepositoryURI(value, root string) (string, error) {
 	// On Windows, url.Parse interprets the drive letter in C:\repo as a URI
 	// scheme. Recognize native absolute paths before parsing portable URIs.
 	if filepath.IsAbs(value) {
-		return diffuri.FileRepository(value)
+		return coderef.FileRepository(value)
 	}
 	if parsed, err := url.Parse(value); err == nil && parsed.IsAbs() {
-		return diffuri.CanonicalRepository(parsed.String())
+		return coderef.CanonicalRepository(parsed.String())
 	}
 	if at := strings.LastIndex(value, "@"); at >= 0 {
 		if colon := strings.Index(value[at:], ":"); colon > 0 {
 			colon += at
-			return diffuri.CanonicalRepository("ssh://" + value[at+1:colon] + "/" + value[colon+1:])
+			return coderef.CanonicalRepository("ssh://" + value[at+1:colon] + "/" + value[colon+1:])
 		}
 	}
 	if !filepath.IsAbs(value) {
@@ -1246,7 +1252,7 @@ func normalizeRepositoryURI(value, root string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return diffuri.FileRepository(abs)
+	return coderef.FileRepository(abs)
 }
 
 func resolveTarget(document *saga.Saga, value string, allowFragment bool) (string, string, error) {
@@ -1728,8 +1734,8 @@ Deck → Slide → Item. Author with ` + "`add-deck`" + `, ` + "`add-slide`" + `
 Each slide is one 16:9 visual argument with one takeaway and no more than seven
 semantic Items in a standard layout. Nodes, edges, regions, transitions,
 examples, risks, metrics, statements, and overlaid callouts are all Items. A
-callout may name another Item and may own its own exact diff evidence. Attach
-every product diff atom in the deck to the narrowest Item; deck- and
+callout may name another Item and may own its own code references. Reference
+every changed line in the deck from the narrowest Item; deck- and
 slide-level coverage is refused. Read it with the ` + "`slide`" + ` and ` + "`slide-diffs`" + ` query
 operations.
 
@@ -1823,8 +1829,8 @@ four parts, in the same order:
 - **Product**: prototypes, and user stories with acceptance criteria;
 - **Design**: UX flows, UI references, and technical design;
 - **Quality**: test cases that verify the acceptance criteria;
-- **Implementation**: the deck that explains the change, whose Items own the
-  exact diffs.
+- **Implementation**: the deck that explains the change, whose Items reference
+  the code.
 
 The only hard requirement is that code maps back to user stories. Designs,
 specifications, and test cases map to stories, so code reaches a story
@@ -1946,26 +1952,29 @@ Use this authoring loop, consulting each command's "-h" output for exact flags:
    only to override awkward geometry.
    Apply the same completion rule to prose citations and visual nodes: a
    footnote marker and definition are not linked until the definition is an
-   exact-text landmark with focused diffs. Repair every per-footnote validation
+   exact-text landmark with focused code references. Repair every per-footnote validation
    warning before handoff. Requirements provenance from "citation add" records
    source context and does not replace implementation evidence.
-5. "change-saga cover" connects a focused fragment or landmark to the exact diff atoms
-   it explains and includes a concise what-and-why note. "--target" accepts a
-   path, a target URN, or the "<fragment-path>#<landmark-id>" shorthand. Use
-   "--dry-run" to see exactly which records an invocation would write before
-   writing them. When every changed atom in one file genuinely belongs to the
-   same target, "--path FILE --changed-lines" derives its exact old/new line
-   atoms, coalesces gapless lines into canonical dense ranges, and includes file
-   events such as "add" automatically. Never use it to hide multiple concerns
-   in one broad record. Generated evidence paths identify their selector set,
-   so a second explanation for the same selectors requires "replace-coverage"
+5. "change-saga cover" references the code a focused fragment or landmark
+   explains, pinned at a commit with a digest of its content, and includes a
+   concise what-and-why note. "--side new --lines" pins added lines at the
+   comparison's head; "--side old --lines" pins deleted lines at its
+   merge-base; "--file" references a whole file for renames, mode and binary
+   changes. "--target" accepts a path, a target URN, or the
+   "<fragment-path>#<landmark-id>" shorthand. Use "--dry-run" to see exactly
+   which records an invocation would write before writing them. When every
+   changed line in one file genuinely belongs to the same target, "--path FILE
+   --changed-lines" references exactly those lines in dense ranges, and whole
+   files for file events such as "add". Never use it to hide multiple concerns
+   in one broad record. Generated evidence paths identify their reference set,
+   so a second explanation for the same references requires "replace-coverage"
    rather than creating a duplicate record.
-6. When attaching many selectors, pipe newline-delimited JSON records to
+6. When referencing many ranges, pipe newline-delimited JSON records to
    "change-saga cover --batch -". Each record carries its own "target", "path",
-   "side", "lines", "changed_lines", "event", "old_path", "new_path", "note", and "name". The
-   whole batch is resolved before anything is written and a failing record
-   leaves the saga untouched, so a batch is a delivery optimization only: every
-   record still maps the exact atoms it explains, never a widened range.
+   "side", "lines", "changed_lines", "file", "commit", "refs", "note", and
+   "name". The whole batch is resolved before anything is written and a failing
+   record leaves the saga untouched, so a batch is a delivery optimization only:
+   every record still references exactly the code it explains.
 7. Run "change-saga query mappings --sort scrutiny" and use each
    "evidence_file" as the stable repair handle. "change-saga replace-coverage
    --record PATH --batch -" atomically splits, retargets, or rewrites a record;
@@ -1976,11 +1985,12 @@ Use this authoring loop, consulting each command's "-h" output for exact flags:
    substantive fragment. Move direct fragment-level evidence to citations,
    headings, SVG nodes, or SVG edges whenever the authored content identifies
    that narrower target.
-   If a merged base refresh makes otherwise unchanged mappings stale, run
-   "change-saga rebase-evidence --repo PATH --dry-run" and inspect the exact
-   old/new base, product identity, atom count, selector count, and claim impact.
-   Apply only when the product patch is unchanged; the command refuses real
-   product changes and rolls immutable claims forward.
+   References follow their code: when later commits only move the referenced
+   lines they are remapped automatically. When the lines themselves change the
+   reference is stale; "change-saga references --stale --diff" shows why, and
+   "replace-coverage" re-authors it. After the change lands, "change-saga repin
+   --onto <landed commit>" re-pins evidence to that commit and records the
+   branch's commit messages.
 8. Record falsifiable assertions with "change-saga add-claim" and append an
    explicit result with "change-saga verify-claim". Claims never contribute to
    coverage. Use "unverified" when an assertion has not actually been checked;
@@ -2010,8 +2020,8 @@ failure paths, compatibility, and observable outcomes. Give meaningful diagram
 nodes, edges, and interactive elements stable landmarks with "change-saga
 add-landmark" so they can link to the exact code that realizes them. In prose,
 use Markdown footnote citations for every concrete implementation claim and map
-the exact-text reference definition to its supporting diff atoms; the renderer
-makes both the inline marker and reference entry open those diffs. A
+the exact-text reference definition to the code it cites; the renderer makes
+both the inline marker and reference entry open that code. A
 citation-free implementation narrative is unfinished even when status reports
 complete coverage. Audit every visual before moving on: enumerate its
 meaningful nodes and edges and attach focused evidence to each code-bearing
@@ -2024,7 +2034,7 @@ orient and connect visual artifacts, not as the default container for the whole
 explanation.
 
 Run "change-saga query gaps --kind uncovered --saga <name>.saga" as the coverage
-work queue. Attach only the exact diff atoms a fragment or landmark explains, with
+work queue. Reference only the code a fragment or landmark explains, with
 concise notes saying what changed and why that content owns it. Never widen
 mappings only to reach 100 percent. Iterate until every product change is
 mapped and no mapping is stale, then inspect "query mappings --sort scrutiny".
@@ -2108,7 +2118,7 @@ Report components
 
 A saga root includes a reviewer-facing README.md with safe installation,
 opening, and structured-query guidance. The file is informational bootstrap
-material rather than authored narrative or diff evidence.
+material rather than authored narrative or code evidence.
 
 A saga begins with its overview and direct *.chapter directories. Chapters are
 independently reviewable boundaries roughly corresponding to the PRs one might
@@ -2117,15 +2127,20 @@ contain directory-backed fragments. Each *.fragment has fragment.json and an
 entrypoint. Markdown, HTML, SVG, text, and raster images are supported. HTML and SVG may bundle JavaScript
 and assets; the reference viewer executes them in sandboxed frames.
 
-Any saga, chapter, section, or fragment may own ___diffs/*.json evidence. Every
-evidence entry is an absolute saga-diff://v1 URI containing repository URI, immutable
-base/head identities, and a line range or file event.
+Any saga, chapter, section, or fragment may own ___code/*.json evidence. Every
+evidence entry is a code reference: a commit, a repository path, an optional
+inclusive line range (absent for a whole file), and a sha256 digest of the
+referenced content. The repository is the Saga's declared source repository.
+A diff is never stored. Coverage is computed per comparison: every changed line
+must lie inside a reference that is current where the line lives, added lines
+at the head commit and deleted lines at the merge-base, and file events inside
+a whole-file reference. A reference whose lines only moved is remapped; one
+whose lines changed is stale until it is re-authored.
 
-When a declared base advances but the exact product patch does not,
-change-saga rebase-evidence proves the base-independent product identity before
-rewriting only selector base identities. It refuses product changes. Affected
-claims are replaced through supersedes relations and verification carry-forward
-is explicit rather than automatic.
+When a change lands, change-saga repin --onto <commit> re-pins evidence
+references to the landed commit, following moved lines or the content digest
+when a squash merge left the branch commit unreachable, and records the
+branch's commit messages in ___merges/<commit>.json.
 
 Addressable Markdown headings, exact text, HTML/SVG elements, and image regions
 live in independent ___landmarks/<id>.landmark packages beneath a fragment.
@@ -2139,24 +2154,24 @@ Meaningful visual landmarks include a semantic description so query clients can
 understand their role without interpreting SVG or HTML geometry.
 Markdown footnotes are the prose citation convention. When a footnote
 definition is an exact-text landmark with evidence, the renderer turns both its
-inline reference and footer entry into controls that open the linked diffs.
+inline reference and footer entry into controls that open the linked code.
 A prose citation and a code-bearing visual node have the same completion rule:
-each needs a stable landmark with focused diff evidence. A rendered footnote
+each needs a stable landmark with focused code references. A rendered footnote
 without that association is incomplete. Requirements provenance citations are
 separate and do not prove implementation.
 
 Falsifiable author assertions live as independent ___claims/<id>.json records.
 Append-only ___verifications/<id>.json records mark them unverified, verified,
 failed, or inconclusive and preserve the method and reproducible command. Claim
-evidence never contributes to diff coverage. Git history supplies attribution.
+evidence never contributes to coverage. Git history supplies attribution.
 
 Review threads live under ___review/threads. They target stable
 urn:change-saga:* identifiers and anchor to a whole fragment, normalized shapes,
-freehand drawings, quoted text, a placed sticky note, or an absolute diff URI.
+freehand drawings, quoted text, a placed sticky note, or a code reference.
 A sticky note carries its visible text, a normalized centre point, and an
 optional color; moving, rewording, or recoloring it appends an anchor event. Thread messages contain
 fragments, so replies may include Markdown, HTML, SVG, and images. Suggestion
-threads include replacement code. Append-only file URI events track reviewed
+threads include replacement code. Append-only whole-file reference events track reviewed
 state, and approvals may target the saga, a chapter, a section, or a fragment.
 Every comment owns a thread directory, every reply owns a message directory, and
 each state transition is a new file; review operations never update shared arrays.

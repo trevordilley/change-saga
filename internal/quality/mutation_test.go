@@ -205,7 +205,7 @@ func TestEvidenceRequiresCurrentPinsAndSupportsManualArtifacts(t *testing.T) {
 	root := newQualitySaga(t, false)
 	addDeadline(t, root)
 	selector := currentSelector(t, "internal/refund_test.go")
-	result, err := AddEvidence(root, AddEvidenceInput{TestCase: deadlineURN, Role: EvidenceTestImplementation, Diffs: []string{selector}})
+	result, err := AddEvidence(root, AddEvidenceInput{TestCase: deadlineURN, Role: EvidenceTestImplementation, Code: []string{selector}})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -213,10 +213,10 @@ func TestEvidenceRequiresCurrentPinsAndSupportsManualArtifacts(t *testing.T) {
 		t.Fatalf("generated evidence urn = %s", result.URN)
 	}
 	stale, _ := diffuri.Build(diffuri.Reference{Repository: "https://example.com/repo.git", Base: "base", Head: "older", Kind: "line", Path: "a.go", Side: "new", Start: 1, End: 2})
-	if _, err := AddEvidence(root, AddEvidenceInput{ID: "stale", TestCase: deadlineURN, Role: EvidenceTestImplementation, Diffs: []string{stale}}); err == nil || !strings.Contains(err.Error(), "current source comparison") {
+	if _, err := AddEvidence(root, AddEvidenceInput{ID: "stale", TestCase: deadlineURN, Role: EvidenceTestImplementation, Code: []string{stale}}); err == nil || !strings.Contains(err.Error(), "current source comparison") {
 		t.Fatalf("stale source error = %v", err)
 	}
-	if _, err := AddEvidence(root, AddEvidenceInput{ID: "artifact", TestCase: deadlineURN, Role: EvidenceExecutionArtifact, Diffs: []string{selector}}); err == nil {
+	if _, err := AddEvidence(root, AddEvidenceInput{ID: "artifact", TestCase: deadlineURN, Role: EvidenceExecutionArtifact, Code: []string{selector}}); err == nil {
 		t.Fatal("execution artifact accepted a diff")
 	}
 	if _, err := AddEvidence(root, AddEvidenceInput{
@@ -226,7 +226,7 @@ func TestEvidenceRequiresCurrentPinsAndSupportsManualArtifacts(t *testing.T) {
 		t.Fatal(err)
 	}
 	replacement, err := AddEvidence(root, AddEvidenceInput{
-		ID: "test-code-2", TestCase: deadlineURN, Role: EvidenceTestImplementation, Diffs: []string{currentSelector(t, "internal/refund2_test.go")},
+		ID: "test-code-2", TestCase: deadlineURN, Role: EvidenceTestImplementation, Code: []string{currentSelector(t, "internal/refund2_test.go")},
 		Supersedes: []string{result.URN},
 	})
 	if err != nil {
@@ -235,7 +235,7 @@ func TestEvidenceRequiresCurrentPinsAndSupportsManualArtifacts(t *testing.T) {
 	if contains(replacement.CurrentHeads, result.URN) || !contains(replacement.CurrentHeads, replacement.URN) {
 		t.Fatalf("supersession heads = %v", replacement.CurrentHeads)
 	}
-	if _, err := AddEvidence(root, AddEvidenceInput{ID: "again", TestCase: deadlineURN, Role: EvidenceTestImplementation, Diffs: []string{selector}, Supersedes: []string{result.URN}}); err == nil {
+	if _, err := AddEvidence(root, AddEvidenceInput{ID: "again", TestCase: deadlineURN, Role: EvidenceTestImplementation, Code: []string{selector}, Supersedes: []string{result.URN}}); err == nil {
 		t.Fatal("superseded evidence was superseded twice")
 	}
 }
@@ -245,7 +245,7 @@ func TestEvidenceBatchIsAllOrNothing(t *testing.T) {
 	addDeadline(t, root)
 	before := snapshotPaths(t, root)
 	_, err := AddEvidenceBatch(root, []AddEvidenceInput{
-		{ID: "one", TestCase: deadlineURN, Role: EvidenceTestImplementation, Diffs: []string{currentSelector(t, "a_test.go")}},
+		{ID: "one", TestCase: deadlineURN, Role: EvidenceTestImplementation, Code: []string{currentSelector(t, "a_test.go")}},
 		{ID: "two", TestCase: deadlineURN, Role: EvidenceImplementationUnderTest},
 	})
 	if err == nil || !strings.Contains(err.Error(), "evidence 2") {
@@ -267,8 +267,8 @@ func TestEvidenceBatchIsAllOrNothing(t *testing.T) {
 	t.Cleanup(func() { _ = os.Chmod(locked, 0o755) })
 	before = snapshotPaths(t, root)
 	_, err = AddEvidenceBatch(root, []AddEvidenceInput{
-		{ID: "one", TestCase: deadlineURN, Role: EvidenceTestImplementation, Diffs: []string{currentSelector(t, "a_test.go")}},
-		{ID: "one", TestCase: "urn:change-saga:checkout:test-case:other", Role: EvidenceTestImplementation, Diffs: []string{currentSelector(t, "a_test.go")}},
+		{ID: "one", TestCase: deadlineURN, Role: EvidenceTestImplementation, Code: []string{currentSelector(t, "a_test.go")}},
+		{ID: "one", TestCase: "urn:change-saga:checkout:test-case:other", Role: EvidenceTestImplementation, Code: []string{currentSelector(t, "a_test.go")}},
 	})
 	if err == nil {
 		t.Fatal("write into a read-only directory succeeded")
@@ -281,7 +281,7 @@ func TestEvidenceBatchIsAllOrNothing(t *testing.T) {
 func TestRunsAreImmutableEventsAndFailuresStayVisible(t *testing.T) {
 	root := newQualitySaga(t, false)
 	addDeadline(t, root)
-	evidence, err := AddEvidence(root, AddEvidenceInput{ID: "test-code", TestCase: deadlineURN, Role: EvidenceTestImplementation, Diffs: []string{currentSelector(t, "a_test.go")}})
+	evidence, err := AddEvidence(root, AddEvidenceInput{ID: "test-code", TestCase: deadlineURN, Role: EvidenceTestImplementation, Code: []string{currentSelector(t, "a_test.go")}})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -334,7 +334,7 @@ func TestRunsAreImmutableEventsAndFailuresStayVisible(t *testing.T) {
 func TestRevisingATestMakesItsPassingRunStale(t *testing.T) {
 	root := newQualitySaga(t, false)
 	addDeadline(t, root)
-	evidence, err := AddEvidence(root, AddEvidenceInput{ID: "test-code", TestCase: deadlineURN, Role: EvidenceTestImplementation, Diffs: []string{currentSelector(t, "a_test.go")}})
+	evidence, err := AddEvidence(root, AddEvidenceInput{ID: "test-code", TestCase: deadlineURN, Role: EvidenceTestImplementation, Code: []string{currentSelector(t, "a_test.go")}})
 	if err != nil {
 		t.Fatal(err)
 	}

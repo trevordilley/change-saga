@@ -43,14 +43,14 @@ func TestLoadEmbeddedDeckItemEvidence(t *testing.T) {
 		t.Fatalf("embedded deck hierarchy not loaded: %#v", document.Decks)
 	}
 	item := document.Decks[0].Slides[0].Items[1]
-	if item.Kind != "callout" || len(item.Diffs) != 1 || item.Target != ItemTarget("visual", "change", "why") {
+	if item.Kind != "callout" || len(item.Code) != 1 || item.Target != ItemTarget("visual", "change", "why") {
 		t.Fatalf("callout evidence not preserved: %#v", item)
 	}
 	projected := document.Section.Children[0].Fragments[0].Landmarks[1]
-	if projected.Target != item.Target || len(projected.Diffs) != 1 {
+	if projected.Target != item.Target || len(projected.Code) != 1 {
 		t.Fatalf("review projection lost Item identity or evidence: %#v", projected)
 	}
-	if !document.Section.Children[0].Fragments[0].HasDiffs {
+	if !document.Section.Children[0].Fragments[0].HasCode {
 		t.Fatal("slide projection did not advertise its Item evidence")
 	}
 	index := MutationIndexFromDocument(document)

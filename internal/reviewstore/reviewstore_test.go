@@ -284,7 +284,7 @@ func TestMutationRefusesForeignRepositoryDiffIdentityWithoutSideEffect(t *testin
 	}
 	before := treeSnapshot(t, root)
 
-	foreignAnchor := saga.Anchor{Type: "diff", Diff: &saga.DiffSelector{URI: foreign("line", "app.go", 4)}}
+	foreignAnchor := saga.Anchor{Type: "diff", Code: &saga.DiffSelector{URI: foreign("line", "app.go", 4)}}
 	if err := AddDiffReview(root, foreign("file", "app.go", 0), "reviewed"); err == nil || !strings.Contains(err.Error(), "does not match the saga source repository") {
 		t.Fatalf("foreign diff review error = %v, want repository mismatch", err)
 	}
@@ -329,10 +329,10 @@ func TestMutationValidationDoesNotParseCoverageMappings(t *testing.T) {
 	// This file is deliberately not valid coverage JSON. Review mutations are
 	// guarded by the manifest/package skeleton and review-only state; parsing
 	// every mapping here would put a 529k-record saga back on the comment path.
-	if err := os.MkdirAll(filepath.Join(root, "overview.fragment", "___diffs"), 0o755); err != nil {
+	if err := os.MkdirAll(filepath.Join(root, "overview.fragment", saga.CodeDirName), 0o755); err != nil {
 		t.Fatal(err)
 	}
-	if err := os.WriteFile(filepath.Join(root, "overview.fragment", "___diffs", "large.json"), []byte("not parsed by review mutation\n"), 0o644); err != nil {
+	if err := os.WriteFile(filepath.Join(root, "overview.fragment", saga.CodeDirName, "large.json"), []byte("not parsed by review mutation\n"), 0o644); err != nil {
 		t.Fatal(err)
 	}
 	if err := AddReview(root, root, "approved", "Review state is independent.", saga.ReviewerIdentity{Kind: "human"}); err != nil {

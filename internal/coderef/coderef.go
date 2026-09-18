@@ -57,6 +57,9 @@ var (
 	rangeSuffix   = regexp.MustCompile(`#L([1-9][0-9]*)(?:-L([1-9][0-9]*))?$`)
 )
 
+// ValidCommit reports whether value is a full lowercase Git object name.
+func ValidCommit(value string) bool { return commitPattern.MatchString(value) }
+
 // Validate checks the persisted shape. It needs no repository: whether the
 // commit exists and the digest matches is decided by a Resolver.
 func Validate(reference Reference) error {
@@ -187,7 +190,11 @@ func DigestRange(content []byte, start, end int) (string, error) {
 	if start == 0 && end == 0 {
 		return DigestBytes(content), nil
 	}
-	lines := Lines(content)
+	return DigestLines(Lines(content), start, end)
+}
+
+// DigestLines digests lines start..end of a file already split by Lines.
+func DigestLines(lines [][]byte, start, end int) (string, error) {
 	if start < 1 || end < start || end > len(lines) {
 		return "", fmt.Errorf("line range %d-%d is outside the file's %d lines", start, end, len(lines))
 	}
@@ -201,7 +208,11 @@ func DigestRange(content []byte, start, end int) (string, error) {
 // FindDigest returns every start line at which a window of width lines has the
 // given digest. It is the fallback that finds the same lines in any commit.
 func FindDigest(content []byte, width int, digest string) []int {
-	lines := Lines(content)
+	return FindDigestLines(Lines(content), width, digest)
+}
+
+// FindDigestLines is FindDigest over a file already split by Lines.
+func FindDigestLines(lines [][]byte, width int, digest string) []int {
 	var matches []int
 	for start := 0; width > 0 && start+width <= len(lines); start++ {
 		hash := sha256.New()

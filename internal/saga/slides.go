@@ -193,18 +193,18 @@ func loadDeckRecords(root, recordRoot string, manifest Manifest, options loadOpt
 				addIssue(validation, "error", name, "evidence filename references an unknown Item key")
 				continue
 			}
-			item.HasDiffs = true
+			item.HasCode = true
 			if options.skipCoverage {
 				continue
 			}
-			var value DiffFile
+			var value CodeFile
 			if err := readJSON(filepath.Join(recordRoot, name), &value); err != nil {
 				addIssue(validation, "error", name, err.Error())
 				continue
 			}
 			value.Path = relativePath(root, filepath.Join(recordRoot, name))
-			validateDiff(value, validation)
-			item.Diffs = append(item.Diffs, value)
+			validateCodeFile(value, validation)
+			item.Code = append(item.Code, value)
 		}
 	}
 
@@ -380,8 +380,8 @@ func projectDecks(manifest Manifest, decks []*Deck) *Section {
 			fragment := &Fragment{Path: slide.Path, Directory: slide.Directory, ID: slide.ID, Title: slide.Title, MediaType: slide.MediaType, Entrypoint: slide.Entrypoint, Order: slide.Rank, Target: slide.Target, Reviews: slide.Reviews, SlideMeta: &meta}
 			for _, item := range slide.Items {
 				meta := item.ItemManifest
-				fragment.Landmarks = append(fragment.Landmarks, Landmark{Path: item.Path, Directory: item.Directory, Version: item.Version, ID: item.ID, Label: item.Label, Description: item.Description, Selector: item.Selector, Hotspot: item.Hotspot, Target: item.Target, Diffs: item.Diffs, HasDiffs: item.HasDiffs, ItemMeta: &meta, Reviews: item.Reviews})
-				fragment.HasDiffs = fragment.HasDiffs || item.HasDiffs
+				fragment.Landmarks = append(fragment.Landmarks, Landmark{Path: item.Path, Directory: item.Directory, Version: item.Version, ID: item.ID, Label: item.Label, Description: item.Description, Selector: item.Selector, Hotspot: item.Hotspot, Target: item.Target, Code: item.Code, HasCode: item.HasCode, ItemMeta: &meta, Reviews: item.Reviews})
+				fragment.HasCode = fragment.HasCode || item.HasCode
 			}
 			section.Fragments = append(section.Fragments, fragment)
 		}

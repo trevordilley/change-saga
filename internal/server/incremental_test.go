@@ -75,7 +75,7 @@ func TestRootNeverCallsTheComparisonLoaderOrFingerprintsEvidence(t *testing.T) {
 
 	var diffDir string
 	err := filepath.WalkDir(fixture.Root, func(path string, entry os.DirEntry, err error) error {
-		if err == nil && entry.IsDir() && entry.Name() == "___diffs" && diffDir == "" {
+		if err == nil && entry.IsDir() && entry.Name() == saga.CodeDirName && diffDir == "" {
 			diffDir = path
 			return filepath.SkipDir
 		}
@@ -129,7 +129,7 @@ func TestCodeCatalogNeverCallsTheFullComparisonLoader(t *testing.T) {
 		t.Fatalf("selected path %q was absent from its catalog", filePath)
 	}
 	reviewValues := url.Values{
-		"uri":   {catalogFileView(application.catalog.value, reviewFile, saga.DiffReview{}).URI},
+		"uri":   {catalogFileView(application.catalog.value, reviewFile, saga.FileReview{}).Ref},
 		"state": {"reviewed"},
 		"file":  {filePath},
 	}

@@ -14,8 +14,8 @@ import (
 	"strings"
 	"unicode/utf8"
 
+	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coverage"
-	"github.com/twentyideas/changesaga/internal/diffuri"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
@@ -29,7 +29,7 @@ type CodeReviewView struct {
 	SelectedFile       *FileDiffView
 	SelectedDiff       *diffAtomView
 	SelectedDiffs      []*diffAtomView
-	SelectedDiffURI    string
+	SelectedRef        string
 	RelatedSaga        []*RelatedSagaChapterView
 	RelatedEmpty       string
 	NarrativeOwnership []*FragmentOwnershipView
@@ -40,7 +40,7 @@ type FileDiffView struct {
 	ID             string
 	Name           string
 	Path           string
-	URI            string
+	Ref            string
 	Href           string
 	Atoms          []*diffAtomView
 	Lines          []*DiffLineView
@@ -113,14 +113,14 @@ type RelatedSagaChapterView struct {
 }
 
 type RelatedSagaFragmentView struct {
-	ID       string
-	Title    string
-	Target   string
-	Excerpt  string
-	Anchor   string
-	Href     string
-	DiffURIs []string
-	Slide    *SlideReferenceView
+	ID      string
+	Title   string
+	Target  string
+	Excerpt string
+	Anchor  string
+	Href    string
+	Refs    []string
+	Slide   *SlideReferenceView
 }
 
 // SlideReferenceView is the common visual language for a slide referenced
@@ -153,18 +153,18 @@ type FragmentOwnershipView struct {
 }
 
 type NarrativeDiffView struct {
-	URI         string
+	Ref         string
 	Note        string
 	Available   bool
 	Reason      string
 	FilePath    string
 	Href        string
-	MatchedURIs []string
+	MatchedRefs []string
 }
 
 type codeSelection struct {
 	filePath string
-	diffURI  string
+	ref      string
 }
 
 type selectionError struct {
@@ -175,16 +175,16 @@ type selectionError struct {
 func (e *selectionError) Error() string { return e.message }
 
 func codeSelectionFromRequest(r *http.Request) codeSelection {
-	return codeSelection{filePath: r.URL.Query().Get("file"), diffURI: r.URL.Query().Get("diff")}
+	return codeSelection{filePath: r.URL.Query().Get("file"), ref: r.URL.Query().Get("ref")}
 }
 
-// CodeDiffURL creates a stable, escaped URL for a focused file and optional
-// exact/range diff selection. Paths and saga-diff URIs are never shortened.
-func CodeDiffURL(filePath, diffURI string) string {
-	return codeDiffURLAt("/", filePath, diffURI)
+// CodeDiffURL creates a stable, escaped URL for a focused file and an optional
+// code-location selection. Paths and locations are never shortened.
+func CodeDiffURL(filePath, ref string) string {
+	return codeDiffURLAt("/", filePath, ref)
 }
 
-func codeDiffURLAt(basePath, filePath, diffURI string) string {
+func codeDiffURLAt(basePath, filePath, ref string) string {
 	if basePath == "" || !strings.HasPrefix(basePath, "/") {
 		basePath = "/"
 	}
@@ -192,8 +192,8 @@ func codeDiffURLAt(basePath, filePath, diffURI string) string {
 	if filePath != "" {
 		query.Set("file", filePath)
 	}
-	if diffURI != "" {
-		query.Set("diff", diffURI)
+	if ref != "" {
+		query.Set("ref", ref)
 	}
 	return strings.TrimSuffix(basePath, "?") + "?" + query.Encode()
 }
@@ -205,14 +205,14 @@ func rebaseCodeReviewURLs(view *CodeReviewView, basePath string) {
 	for _, ownership := range view.NarrativeOwnership {
 		for _, diff := range ownership.Diffs {
 			if diff.Available {
-				diff.Href = codeDiffURLAt(basePath, diff.FilePath, diff.URI)
+				diff.Href = codeDiffURLAt(basePath, diff.FilePath, diff.Ref)
 			}
 		}
 	}
 }
 
 func makeCodeReviewView(document *saga.Saga, changes gitdiff.ChangeSet, report coverage.Report, threads map[string][]*threadView, selection codeSelection) (*CodeReviewView, *selectionError) {
-	files := makeFileViews(changes, saga.SagaTarget(document.Manifest.ID), document.DiffReviews, threads)
+	files := makeFileViews(changes, saga.SagaTarget(document.Manifest.ID), document.FileReviews, threads)
 	view := &CodeReviewView{Files: files}
 	for _, file := range files {
 		file.Name = path.Base(file.Path)
@@ -227,7 +227,7 @@ func makeCodeReviewView(document *saga.Saga, changes gitdiff.ChangeSet, report c
 		return nil, err
 	}
 	view.SelectedFile = selected
-	view.SelectedDiffURI = selection.diffURI
+	view.SelectedRef = selection.ref
 	view.SelectedDiffs = selectedAtoms
 	for _, atom := range selectedAtoms {
 		atom.Selected = true
@@ -244,7 +244,7 @@ func makeCodeReviewView(document *saga.Saga, changes gitdiff.ChangeSet, report c
 	view.NarrativeOwnership = makeFragmentOwnershipViews(locations, changes, report)
 	if selected != nil {
 		scope := selected.Atoms
-		if selection.diffURI != "" {
+		if selection.ref != "" {
 			scope = selectedAtoms
 		}
 		view.RelatedSaga = makeRelatedSagaViews(locations, scope, report.Ownership)
@@ -269,16 +269,16 @@ func resolveCodeSelection(files []*FileDiffView, selection codeSelection) (*File
 		}
 	}
 
-	var selector diffuri.Reference
-	if selection.diffURI != "" {
+	var selector coderef.Location
+	if selection.ref != "" {
 		var err error
-		selector, err = diffuri.Parse(selection.diffURI)
+		selector, err = coderef.ParseLocation(selection.ref)
 		if err != nil {
-			return nil, nil, &selectionError{status: http.StatusBadRequest, message: "invalid selected diff URI"}
+			return nil, nil, &selectionError{status: http.StatusBadRequest, message: "invalid selected code location"}
 		}
 		if selected == nil {
 			for _, file := range files {
-				if selector.Path == file.Path || selector.NewPath == file.Path || selector.OldPath == file.Path {
+				if fileHasPath(file, selector.Path) {
 					selected = file
 					break
 				}
@@ -288,24 +288,21 @@ func resolveCodeSelection(files []*FileDiffView, selection codeSelection) (*File
 	if selected == nil && len(files) > 0 {
 		selected = files[0]
 	}
-	if selection.diffURI == "" {
+	if selection.ref == "" {
 		return selected, nil, nil
 	}
 	if selected == nil {
 		return nil, nil, &selectionError{status: http.StatusNotFound, message: "selected diff is not part of the comparison"}
 	}
-	if selector.Kind == "file" {
-		fileReference, err := diffuri.Parse(selected.URI)
-		if err != nil || !diffuri.Matches(selector, fileReference) {
+	if selector.WholeFile() {
+		if !fileHasPath(selected, selector.Path) {
 			return nil, nil, &selectionError{status: http.StatusNotFound, message: "selected diff is not part of the changed file"}
 		}
 		return selected, selected.Atoms, nil
 	}
-
 	var atoms []*diffAtomView
 	for _, atom := range selected.Atoms {
-		atomReference, err := diffuri.Parse(atom.URI)
-		if err == nil && diffuri.Matches(selector, atomReference) {
+		if location, err := coderef.ParseLocation(atom.Ref); err == nil && selector.Contains(location) {
 			atoms = append(atoms, atom)
 		}
 	}
@@ -378,7 +375,7 @@ type narrativeLocation struct {
 	target           string
 	itemID           string
 	title            string
-	diffs            []saga.DiffFile
+	diffs            []saga.CodeFile
 	hasDiffs         bool
 	chapterID        string
 	chapterTitle     string
@@ -415,7 +412,7 @@ func indexNarrativeFragments(document *saga.Saga) []narrativeLocation {
 				location.chapterTitle, location.chapterTarget, location.chapterHref = "Overview", document.Section.Target, sagaHref(document.Section.Target)
 			}
 			location.fragment = fragment
-			location.target, location.itemID, location.title, location.diffs, location.hasDiffs = fragment.Target, fragment.ID, fragment.Title, fragment.Diffs, fragment.HasDiffs
+			location.target, location.itemID, location.title, location.diffs, location.hasDiffs = fragment.Target, fragment.ID, fragment.Title, fragment.Code, fragment.HasCode
 			location.fragmentHref = sagaHref(fragment.Target)
 			if fragment.SlideMeta != nil {
 				location.slideID, location.slideTitle, location.slideTarget = fragment.ID, fragment.Title, fragment.Target
@@ -428,7 +425,7 @@ func indexNarrativeFragments(document *saga.Saga) []narrativeLocation {
 			for index := range fragment.Landmarks {
 				landmark := &fragment.Landmarks[index]
 				landmarkLocation := location
-				landmarkLocation.target, landmarkLocation.itemID, landmarkLocation.title, landmarkLocation.diffs, landmarkLocation.hasDiffs = landmark.Target, landmark.ID, landmark.Label, landmark.Diffs, landmark.HasDiffs
+				landmarkLocation.target, landmarkLocation.itemID, landmarkLocation.title, landmarkLocation.diffs, landmarkLocation.hasDiffs = landmark.Target, landmark.ID, landmark.Label, landmark.Code, landmark.HasCode
 				landmarkLocation.fragmentHref = sagaHref(fragment.Target) + "--" + landmark.ID
 				result = append(result, landmarkLocation)
 			}
@@ -446,8 +443,8 @@ func makeRelatedSagaViews(locations []narrativeLocation, atoms []*diffAtomView, 
 	for _, atom := range atoms {
 		for _, assignment := range ownership[atom.Key] {
 			uris := ownedURIs[assignment.Target]
-			if !contains(uris, atom.URI) {
-				ownedURIs[assignment.Target] = append(uris, atom.URI)
+			if !contains(uris, atom.Ref) {
+				ownedURIs[assignment.Target] = append(uris, atom.Ref)
 			}
 		}
 	}
@@ -492,8 +489,8 @@ func makeRelatedSagaViewsForTargets(locations []narrativeLocation, ownedURIs map
 				group.Fragments = append(group.Fragments, view)
 			}
 			for _, uri := range uris {
-				if !contains(view.DiffURIs, uri) {
-					view.DiffURIs = append(view.DiffURIs, uri)
+				if !contains(view.Refs, uri) {
+					view.Refs = append(view.Refs, uri)
 				}
 			}
 			if location.target != location.slideTarget {
@@ -507,17 +504,17 @@ func makeRelatedSagaViewsForTargets(locations []narrativeLocation, ownedURIs map
 		}
 		group.Fragments = append(group.Fragments, &RelatedSagaFragmentView{
 			ID: location.itemID, Title: title, Target: location.target,
-			Excerpt: fragmentExcerpt(location.fragment), Anchor: strings.TrimPrefix(location.fragmentHref, "#"), Href: location.fragmentHref, DiffURIs: uris,
+			Excerpt: fragmentExcerpt(location.fragment), Anchor: strings.TrimPrefix(location.fragmentHref, "#"), Href: location.fragmentHref, Refs: uris,
 		})
 	}
 	return result
 }
 
 func makeFragmentOwnershipViews(locations []narrativeLocation, changes gitdiff.ChangeSet, report coverage.Report) []*FragmentOwnershipView {
-	orphans := map[ownershipReferenceID]coverage.Orphan{}
-	for _, orphan := range report.Orphans {
-		key := ownershipReferenceKey(orphan.Assignment.Target, orphan.Assignment.DiffFile, orphan.Assignment.Diff)
-		orphans[key] = orphan
+	stale := map[ownershipReferenceID]coverage.StaleReference{}
+	for _, value := range report.StaleReferences {
+		key := ownershipReferenceKey(value.Assignment.Target, value.Assignment.EvidenceFile, value.Assignment.Reference)
+		stale[key] = value
 	}
 	// Coverage has already parsed every selector and recorded its exact
 	// target/file/index assignment. Index those results once instead of
@@ -526,7 +523,7 @@ func makeFragmentOwnershipViews(locations []narrativeLocation, changes gitdiff.C
 	for atomIndex := range changes.Atoms {
 		atom := &changes.Atoms[atomIndex]
 		for _, assignment := range report.Ownership[atom.Key] {
-			key := ownershipReferenceKey(assignment.Target, assignment.DiffFile, assignment.Diff)
+			key := ownershipReferenceKey(assignment.Target, assignment.EvidenceFile, assignment.Reference)
 			matchedAtoms[key] = append(matchedAtoms[key], atom)
 		}
 	}
@@ -538,29 +535,24 @@ func makeFragmentOwnershipViews(locations []narrativeLocation, changes gitdiff.C
 			Target: location.target, Anchor: domID(location.target), Href: location.fragmentHref,
 		}
 		for _, diffFile := range location.diffs {
-			for index, reference := range diffFile.Diffs {
-				link := &NarrativeDiffView{URI: reference.URI, Note: reference.Note}
+			for index, reference := range diffFile.References {
+				link := &NarrativeDiffView{Ref: reference.Location().String(), Note: reference.Note}
 				key := ownershipReferenceKey(location.target, diffFile.Path, index+1)
-				if orphan, ok := orphans[key]; ok {
-					link.Reason = orphan.Reason
+				if value, ok := stale[key]; ok {
+					link.Reason = value.Reason
 					view.Diffs = append(view.Diffs, link)
 					continue
 				}
-				if _, err := diffuri.Parse(reference.URI); err != nil {
-					link.Reason = err.Error()
-					view.Diffs = append(view.Diffs, link)
-					continue
-				}
-				for _, atom := range matchedAtoms[key] {
+				matched := matchedAtoms[key]
+				for _, atom := range matched {
 					link.Available = true
-					link.MatchedURIs = append(link.MatchedURIs, atom.URI)
-					if link.FilePath == "" {
-						link.FilePath = effectiveAtomPath(*atom)
-						link.Href = CodeDiffURL(link.FilePath, reference.URI)
-					}
+					link.MatchedRefs = append(link.MatchedRefs, atom.Ref)
 				}
-				if !link.Available && link.Reason == "" {
-					link.Reason = "diff URI does not match the current source comparison"
+				if link.Available {
+					link.FilePath = effectiveAtomPath(*matched[0])
+					link.Href = CodeDiffURL(link.FilePath, spanningLocation(changes, matched))
+				} else {
+					link.Reason = "the referenced code is unchanged in this comparison"
 				}
 				view.Diffs = append(view.Diffs, link)
 			}
@@ -681,4 +673,41 @@ func truncateExcerpt(value string, limit int) string {
 		cut = limit
 	}
 	return strings.TrimSpace(string(runes[:cut])) + "…"
+}
+
+// fileHasPath reports whether a changed file is known by path on either side.
+func fileHasPath(file *FileDiffView, value string) bool {
+	if file.Path == value {
+		return true
+	}
+	for _, atom := range file.Atoms {
+		if atom.Path == value || atom.OldPath == value || atom.NewPath == value {
+			return true
+		}
+	}
+	return false
+}
+
+// spanningLocation is the smallest comparison location holding the first
+// matched atom's side of the file: a line range when the atoms are lines on
+// one side, and the whole file otherwise.
+func spanningLocation(changes gitdiff.ChangeSet, atoms []*gitdiff.Atom) string {
+	first := changes.Location(*atoms[0])
+	if first.WholeFile() {
+		return first.String()
+	}
+	span := first
+	for _, atom := range atoms[1:] {
+		location := changes.Location(*atom)
+		if location.Commit != span.Commit || location.Path != span.Path || location.WholeFile() {
+			continue
+		}
+		if location.Start < span.Start {
+			span.Start = location.Start
+		}
+		if location.End > span.End {
+			span.End = location.End
+		}
+	}
+	return span.String()
 }

@@ -7,7 +7,6 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/twentyideas/changesaga/internal/diffuri"
 )
 
 func loadFlatReviewState(index MutationIndex, outline bool) (ReviewState, Validation, error) {
@@ -144,17 +143,16 @@ func loadFlatReviewState(index MutationIndex, outline bool) (ReviewState, Valida
 			}
 			state.ByTarget[target] = append(state.ByTarget[target], review)
 		} else if flatDiffReviewName.MatchString(entry.Name()) && flatRegular(entry) {
-			var review DiffReview
+			var review FileReview
 			if err := readJSON(filepath.Join(index.Root, entry.Name()), &review); err != nil {
 				addIssue(&validation, "error", entry.Name(), err.Error())
 				continue
 			}
-			reference, uriErr := diffuri.Parse(review.URI)
 			review.Path = filepath.Join(index.Root, entry.Name())
-			if FlatDiffReviewFilename(review.ID) != entry.Name() || review.Version != CurrentVersion || !stableID.MatchString(review.ID) || review.CreatedAt.IsZero() || review.State != "reviewed" && review.State != "unreviewed" || uriErr != nil || reference.Kind != "file" {
-				addIssue(&validation, "error", entry.Name(), "diff review filename and record must match a valid file decision")
+			if FlatDiffReviewFilename(review.ID) != entry.Name() || !validFileReview(review) {
+				addIssue(&validation, "error", entry.Name(), "file review filename and record must match a valid file decision on a whole-file code reference")
 			}
-			state.DiffReviews = append(state.DiffReviews, review)
+			state.FileReviews = append(state.FileReviews, review)
 		}
 	}
 
@@ -177,13 +175,6 @@ func loadFlatReviewState(index MutationIndex, outline bool) (ReviewState, Valida
 			}
 			if event.Anchor != nil {
 				thread.Anchor = *event.Anchor
-			}
-		}
-		if thread.Anchor.Type == "diff" && thread.Anchor.Diff != nil {
-			reference, parseErr := diffuri.Parse(thread.Anchor.Diff.URI)
-			repository, repositoryErr := diffuri.CanonicalRepository(index.Manifest.Source.Repository)
-			if parseErr == nil && repositoryErr == nil && reference.Repository != repository {
-				addIssue(&validation, "error", filepath.Base(thread.Path), "thread diff anchor belongs to a different source repository")
 			}
 		}
 	}

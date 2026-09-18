@@ -120,12 +120,12 @@ type QualityFact struct {
 // ChangedSourceAccounting is the global omission invariant, kept separate from
 // every per-criterion axis on purpose. There is no exception from exact
 // changed-source accounting: a coverage exception can declare an axis
-// inapplicable, but documentation-only work still ends at its documentation
-// diff, so no exception is consulted here.
+// inapplicable, but documentation-only work still ends at a reference to its
+// documentation, so no exception is consulted here.
 type ChangedSourceAccounting struct {
 	Complete  bool
 	Uncovered []string
-	Orphans   []string
+	Stale     []string
 }
 
 // ReviewDecision is one required review target under the review policy.
@@ -254,21 +254,21 @@ func implementationTraceGate(inputs GateInputs) Gate {
 		if !ok || cell.Resolution != coverage.ResolutionLinked {
 			continue
 		}
-		paths, diffs := currentPaths(cell)
+		paths, references := currentPaths(cell)
 		gate.fact(Fact{
-			Code: "implementation_path_ends_at_diff", Resource: criterion.Criterion,
-			Axis: coverage.AxisImplementation, Satisfied: diffs > 0, Paths: paths,
-			Detail: countDetail(diffs, "exact diff", "exact diffs"),
+			Code: "implementation_path_ends_at_code", Resource: criterion.Criterion,
+			Axis: coverage.AxisImplementation, Satisfied: references > 0, Paths: paths,
+			Detail: countDetail(references, "code reference", "code references"),
 		})
 	}
 	// The global omission invariant is a separate required fact. An exception can
 	// declare an axis inapplicable; it can never excuse an unaccounted changed
-	// atom or an orphaned diff reference.
+	// atom or a stale code reference.
 	gate.fact(Fact{
 		Code:      "changed_source_accounting_complete",
-		Satisfied: inputs.ChangedSource.Complete && len(inputs.ChangedSource.Uncovered) == 0 && len(inputs.ChangedSource.Orphans) == 0,
+		Satisfied: inputs.ChangedSource.Complete && len(inputs.ChangedSource.Uncovered) == 0 && len(inputs.ChangedSource.Stale) == 0,
 		Detail: countDetail(len(inputs.ChangedSource.Uncovered), "unaccounted changed atom", "unaccounted changed atoms") +
-			", " + countDetail(len(inputs.ChangedSource.Orphans), "orphaned diff reference", "orphaned diff references"),
+			", " + countDetail(len(inputs.ChangedSource.Stale), "stale code reference", "stale code references"),
 	})
 	return gate
 }
@@ -327,7 +327,7 @@ func reviewGate(inputs GateInputs, preceding []Gate) Gate {
 		Detail: strings.Join(conflicts, "; "),
 	})
 
-	orphans := len(inputs.ChangedSource.Orphans)
+	stale := len(inputs.ChangedSource.Stale)
 	unresolved := []string{}
 	failed := []string{}
 	for _, fact := range inputs.QualityFacts {
@@ -342,8 +342,8 @@ func reviewGate(inputs GateInputs, preceding []Gate) Gate {
 		}
 	}
 	gate.fact(Fact{
-		Code: "immutable_current_evidence", Satisfied: orphans == 0 && len(unresolved) == 0,
-		Detail: countDetail(orphans, "orphaned diff reference", "orphaned diff references") +
+		Code: "immutable_current_evidence", Satisfied: stale == 0 && len(unresolved) == 0,
+		Detail: countDetail(stale, "stale code reference", "stale code references") +
 			", unresolved quality evidence: " + orNone(uniqueSorted(unresolved)),
 	})
 	gate.fact(Fact{
@@ -487,15 +487,15 @@ func axisDetail(cell coverage.AxisCoverage) string {
 
 func currentPaths(cell coverage.AxisCoverage) ([][]string, int) {
 	paths := [][]string{}
-	diffs := 0
+	references := 0
 	for _, link := range cell.Links {
 		if !link.Current {
 			continue
 		}
 		paths = append(paths, link.Link.Paths...)
-		diffs += len(link.Link.Diffs)
+		references += len(link.Link.Code)
 	}
-	return paths, diffs
+	return paths, references
 }
 
 // finishGate derives the verdict and the blocker list from the facts. A gate is

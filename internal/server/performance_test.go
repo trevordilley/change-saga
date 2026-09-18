@@ -134,19 +134,19 @@ func benchmarkCoverageFixture() (*saga.Saga, gitdiff.ChangeSet, coverage.Report,
 			end := start + benchmarkCoverageLinesPerFragment - 1
 			fragment := &saga.Fragment{
 				ID: fragmentID, Title: "Fragment " + fragmentID, Target: target, MediaType: "text/html", Entrypoint: "index.html",
-				Diffs: []saga.DiffFile{{}},
+				Code: []saga.CodeFile{{}},
 			}
 			chapter.Fragments = append(chapter.Fragments, fragment)
 			for line := start; line <= end; line++ {
 				uri := benchmarkDiffURI(diffuri.Reference{
 					Repository: repository, Base: base, Head: head, Kind: "line", Path: path, Side: "new", Start: line, End: line,
 				})
-				atom := gitdiff.Atom{Kind: "line", Path: path, Side: "new", Line: line, Content: fmt.Sprintf("value_%04d := %d", len(changes.Atoms), line), URI: uri}
+				atom := gitdiff.Atom{Kind: "line", Path: path, Side: "new", Line: line, Content: fmt.Sprintf("value_%04d := %d", len(changes.Atoms), line), Ref: uri}
 				atom.Key = gitdiff.Key(atom)
 				changes.Atoms = append(changes.Atoms, atom)
 				changesByTarget[target] = append(changesByTarget[target], atom)
 				report.Ownership[atom.Key] = []coverage.Assignment{{Target: target}}
-				fragment.Diffs[0].Diffs = append(fragment.Diffs[0].Diffs, saga.DiffReference{URI: uri, Note: "Explains " + fragmentID})
+				fragment.Code[0].References = append(fragment.Code[0].References, saga.DiffReference{URI: uri, Note: "Explains " + fragmentID})
 			}
 			targetIndex++
 		}

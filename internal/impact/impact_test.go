@@ -19,24 +19,24 @@ func TestAnalyzeProjectsReplacementAdditionsAndNewFilesWithoutReadingContent(t *
 		}}},
 	}
 	baseline := gitdiff.ChangeSet{Repository: document.Manifest.Source.Repository, Base: "root", Head: "incoming-base", BaseOID: "root-oid", HeadOID: "baseline-patch", Atoms: []gitdiff.Atom{
-		{Key: "base-1", URI: "base-1", Kind: "line", Path: "app.go", Side: "new", Line: 1, Content: "package app"},
-		{Key: "base-2", URI: "base-2", Kind: "line", Path: "app.go", Side: "new", Line: 2, Content: "const Mode = \"old\""},
-		{Key: "base-10", URI: "base-10", Kind: "line", Path: "app.go", Side: "new", Line: 10, Content: "func Guard() {}"},
+		{Key: "base-1", Ref: "base-1", Kind: "line", Path: "app.go", Side: "new", Line: 1, Content: "package app"},
+		{Key: "base-2", Ref: "base-2", Kind: "line", Path: "app.go", Side: "new", Line: 2, Content: "const Mode = \"old\""},
+		{Key: "base-10", Ref: "base-10", Kind: "line", Path: "app.go", Side: "new", Line: 10, Content: "func Guard() {}"},
 	}}
 	report := coverage.Report{
 		Complete: true, Summary: coverage.Summary{Total: 3, Covered: 3},
 		Ownership: map[string][]coverage.Assignment{
-			"base-1":  {{Target: flowTarget, DiffFile: "flow.fragment/___diffs/package.json", Diff: 1}},
-			"base-2":  {{Target: flowTarget, DiffFile: "flow.fragment/___diffs/mode.json", Diff: 1}},
-			"base-10": {{Target: guardTarget, DiffFile: "flow.fragment/___landmarks/guard.landmark/___diffs/guard.json", Diff: 1}},
+			"base-1":  {{Target: flowTarget, DiffFile: "flow.fragment/___code/package.json", Diff: 1}},
+			"base-2":  {{Target: flowTarget, DiffFile: "flow.fragment/___code/mode.json", Diff: 1}},
+			"base-10": {{Target: guardTarget, DiffFile: "flow.fragment/___landmarks/guard.landmark/___code/guard.json", Diff: 1}},
 		},
 	}
 	incoming := gitdiff.ChangeSet{Repository: baseline.Repository, Base: "incoming-base", Head: "feature", BaseOID: "incoming-base-oid", HeadOID: "incoming-patch", Atoms: []gitdiff.Atom{
-		{Key: "old-mode", URI: "old-mode", Kind: "line", Path: "app.go", Side: "old", Line: 2, Content: "const Mode = \"old\""},
-		{Key: "new-mode", URI: "new-mode", Kind: "line", Path: "app.go", Side: "new", Line: 2, Content: "const Mode = \"new\""},
-		{Key: "new-guard-line", URI: "new-guard-line", Kind: "line", Path: "app.go", Side: "new", Line: 11, Content: "// guarded"},
-		{Key: "new-file-event", URI: "new-file-event", Kind: "event", Path: "new.go", Event: "add", Content: ""},
-		{Key: "new-file-line", URI: "new-file-line", Kind: "line", Path: "new.go", Side: "new", Line: 1, Content: "package new"},
+		{Key: "old-mode", Ref: "old-mode", Kind: "line", Path: "app.go", Side: "old", Line: 2, Content: "const Mode = \"old\""},
+		{Key: "new-mode", Ref: "new-mode", Kind: "line", Path: "app.go", Side: "new", Line: 2, Content: "const Mode = \"new\""},
+		{Key: "new-guard-line", Ref: "new-guard-line", Kind: "line", Path: "app.go", Side: "new", Line: 11, Content: "// guarded"},
+		{Key: "new-file-event", Ref: "new-file-event", Kind: "event", Path: "new.go", Event: "add", Content: ""},
+		{Key: "new-file-line", Ref: "new-file-line", Kind: "line", Path: "new.go", Side: "new", Line: 1, Content: "package new"},
 	}, DisplayLines: []gitdiff.DisplayLine{
 		{Kind: "context", Path: "app.go", OldLine: 1, NewLine: 1, Content: "package app"},
 		{Kind: "old", Path: "app.go", OldLine: 2, AtomKey: "old-mode"},
@@ -82,15 +82,15 @@ func TestAnalyzeGraphImplicatesTestCasesAndRequirements(t *testing.T) {
 	document := &saga.Saga{Manifest: saga.Manifest{ID: "codebase", Title: "Codebase"}, Section: &saga.Section{Target: saga.SagaTarget("codebase")}}
 	testLine := "saga-diff://v1/line?base=root-oid&end=3&head=baseline-patch&path=app_test.go&repository=https%3A%2F%2Fexample.test%2Facme%2Fapp.git&side=new&start=1"
 	baseline := gitdiff.ChangeSet{Repository: "https://example.test/acme/app.git", Base: "root", BaseOID: "root-oid", HeadOID: "baseline-patch", Atoms: []gitdiff.Atom{
-		{Key: "code-10", URI: "code-10", Kind: "line", Path: "app.go", Side: "new", Line: 10, Content: "func Guard() {}"},
-		{Key: "test-2", URI: "test-2", Kind: "line", Path: "app_test.go", Side: "new", Line: 2, Content: "func TestGuard() {}"},
+		{Key: "code-10", Ref: "code-10", Kind: "line", Path: "app.go", Side: "new", Line: 10, Content: "func Guard() {}"},
+		{Key: "test-2", Ref: "test-2", Kind: "line", Path: "app_test.go", Side: "new", Line: 2, Content: "func TestGuard() {}"},
 	}}
 	report := coverage.Report{Complete: true, Ownership: map[string][]coverage.Assignment{
 		"code-10": {{Target: item, DiffFile: "___slides/review.deck/40-e-guard.json", Diff: 1}},
 	}}
 	incoming := gitdiff.ChangeSet{Repository: baseline.Repository, Atoms: []gitdiff.Atom{
-		{Key: "old-code", URI: "old-code", Kind: "line", Path: "app.go", Side: "old", Line: 10, Content: "func Guard() {}"},
-		{Key: "old-test", URI: "old-test", Kind: "line", Path: "app_test.go", Side: "old", Line: 2, Content: "func TestGuard() {}"},
+		{Key: "old-code", Ref: "old-code", Kind: "line", Path: "app.go", Side: "old", Line: 10, Content: "func Guard() {}"},
+		{Key: "old-test", Ref: "old-test", Kind: "line", Path: "app_test.go", Side: "old", Line: 2, Content: "func TestGuard() {}"},
 	}}
 	criterion := "urn:change-saga:codebase:story:refund:criterion:deadline"
 	graph := Graph{

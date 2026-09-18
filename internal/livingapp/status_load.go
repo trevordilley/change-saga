@@ -40,12 +40,15 @@ type StatusOptions struct {
 	Document *saga.Saga
 	Report   coverage.Report
 	Changes  gitdiff.ChangeSet
+	// Resolver views quality-evidence code references in Changes. Without it
+	// every such reference is reported stale.
+	Resolver coverage.Resolver
 }
 
 // LoadStatus reads every living record strictly and read-only, then assembles
 // the status projection. It never writes, executes a test, or fetches a URL.
-func LoadStatus(_ context.Context, options StatusOptions) (Status, error) {
-	inputs, err := LoadStatusInputs(options)
+func LoadStatus(ctx context.Context, options StatusOptions) (Status, error) {
+	inputs, err := LoadStatusInputs(ctx, options)
 	if err != nil {
 		return Status{}, err
 	}
@@ -53,7 +56,7 @@ func LoadStatus(_ context.Context, options StatusOptions) (Status, error) {
 }
 
 // LoadStatusInputs loads the records Assemble reads.
-func LoadStatusInputs(options StatusOptions) (StatusInputs, error) {
+func LoadStatusInputs(ctx context.Context, options StatusOptions) (StatusInputs, error) {
 	root, err := filepath.Abs(options.SagaRoot)
 	if err != nil {
 		return StatusInputs{}, err
@@ -75,6 +78,18 @@ func LoadStatusInputs(options StatusOptions) (StatusInputs, error) {
 	inputs.Quality, err = quality.Load(root)
 	if err != nil {
 		return StatusInputs{}, fmt.Errorf("load quality: %w", err)
+	}
+	inputs.QualityCode = map[string]coverage.ResolvedCode{}
+	for _, testCase := range inputs.Quality.TestCases {
+		for _, evidence := range testCase.Evidence {
+			for _, reference := range evidence.Code {
+				if options.Resolver == nil {
+					inputs.QualityCode[reference.Key()] = coverage.ResolvedCode{Reason: "no source repository is available to resolve the reference"}
+					continue
+				}
+				inputs.QualityCode[reference.Key()] = coverage.Resolve(ctx, reference, options.Changes, options.Resolver)
+			}
+		}
 	}
 	inputs.Exceptions, err = LoadCoverageExceptions(root, doc.Manifest.ID)
 	if err != nil {

@@ -172,7 +172,7 @@ func TestSagaEmbedsSeveralIndependentSlideDecks(t *testing.T) {
 	uri := ""
 	for _, atom := range changes.Atoms {
 		if atom.Path == "README.md" && atom.Side == "new" {
-			uri = atom.URI
+			uri = atom.Ref
 			break
 		}
 	}
@@ -225,10 +225,10 @@ func TestSagaEmbedsSeveralIndependentSlideDecks(t *testing.T) {
 		t.Fatalf("embedded Item thread failed: %v", err)
 	}
 	document, validation, err = saga.Load(root)
-	if err != nil || !validation.Valid || len(document.Decks[0].Slides[0].Items[0].Diffs) != 1 || len(document.Decks[0].Slides[0].Reviews) != 1 || len(document.Threads) != 1 {
+	if err != nil || !validation.Valid || len(document.Decks[0].Slides[0].Items[0].Code) != 1 || len(document.Decks[0].Slides[0].Reviews) != 1 || len(document.Threads) != 1 {
 		t.Fatalf("embedded Item evidence/review did not round-trip: valid=%v err=%v", validation.Valid, err)
 	}
-	if loadedURI := document.Decks[0].Slides[0].Items[0].Diffs[0].Diffs[0].URI; loadedURI != uri {
+	if loadedURI := document.Decks[0].Slides[0].Items[0].Code[0].References[0].URI; loadedURI != uri {
 		t.Fatalf("embedded Item evidence changed identity: got %q want %q", loadedURI, uri)
 	}
 	if report := coverage.Evaluate(document, validation, changes); len(report.Orphans) != 0 {

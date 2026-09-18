@@ -130,7 +130,7 @@ func TestValidateVisualMappingsReportsMissingLandmarksAndEvidence(t *testing.T) 
 	if len(result.Issues) != 2 || result.Issues[0].Severity != "warning" || result.Issues[1].Severity != "warning" {
 		t.Fatalf("visual mapping issues = %#v", result.Issues)
 	}
-	fragment.Landmarks = []Landmark{{ID: "worker", Description: "The worker executes one queued job.", Diffs: []DiffFile{{Version: 2}}}}
+	fragment.Landmarks = []Landmark{{ID: "worker", Description: "The worker executes one queued job.", Code: []CodeFile{{Version: 2}}}}
 	result = Validation{}
 	validateVisualMappings(fragment, &result)
 	if len(result.Issues) != 0 {
@@ -145,7 +145,7 @@ func TestValidateVisualMappingsWarnsWhenMappedElementCannotAppearOnCanvas(t *tes
 	}
 	fragment := &Fragment{
 		Path: "map.fragment/fragment.json", Directory: directory, Entrypoint: "diagram.svg", MediaType: "image/svg+xml",
-		Landmarks: []Landmark{{ID: "worker", Path: "map.fragment/___landmarks/worker.landmark/landmark.json", Description: "Worker", Selector: LandmarkSelector{Type: "element", ElementID: "worker"}, Diffs: []DiffFile{{Version: 2}}}},
+		Landmarks: []Landmark{{ID: "worker", Path: "map.fragment/___landmarks/worker.landmark/landmark.json", Description: "Worker", Selector: LandmarkSelector{Type: "element", ElementID: "worker"}, Code: []CodeFile{{Version: 2}}}},
 	}
 	result := Validation{}
 	validateVisualMappings(fragment, &result)
@@ -165,14 +165,14 @@ func TestValidateVisualMappingsWarnsWhenMappedElementCannotAppearOnCanvas(t *tes
 func TestValidateNarrativeMappingsWarnsAboutCitationFreeFragmentCoverage(t *testing.T) {
 	fragment := &Fragment{
 		Path: "overview.fragment/fragment.json", MediaType: "text/markdown",
-		Diffs: []DiffFile{{Version: 2}},
+		Code: []CodeFile{{Version: 2}},
 	}
 	result := Validation{}
 	validateNarrativeMappings(fragment, &result)
 	if len(result.Issues) != 1 || !strings.Contains(result.Issues[0].Message, "evidence-bearing footnotes") {
 		t.Fatalf("citation-free narrative issues = %#v", result.Issues)
 	}
-	fragment.Landmarks = []Landmark{{Selector: LandmarkSelector{Type: "text", Exact: "Focused implementation statement."}, Diffs: []DiffFile{{Version: 2}}}}
+	fragment.Landmarks = []Landmark{{Selector: LandmarkSelector{Type: "text", Exact: "Focused implementation statement."}, Code: []CodeFile{{Version: 2}}}}
 	result = Validation{}
 	validateNarrativeMappings(fragment, &result)
 	if len(result.Issues) != 0 {
@@ -205,7 +205,7 @@ func TestValidateNarrativeMappingsRequiresDiffEvidenceForEveryFootnote(t *testin
 		t.Fatalf("evidence-free citation issues = %#v", result.Issues)
 	}
 
-	fragment.Landmarks[0].Diffs = []DiffFile{{Version: CurrentVersion}}
+	fragment.Landmarks[0].Code = []CodeFile{{Version: CurrentVersion}}
 	result = Validation{}
 	validateNarrativeMappings(fragment, &result)
 	if len(result.Issues) != 0 {

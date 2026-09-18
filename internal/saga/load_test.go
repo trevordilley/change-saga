@@ -25,8 +25,8 @@ func TestLoadRecursiveFragmentsAndReviewOverlay(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	writeTestFile(t, filepath.Join(root, "backend.chapter", "request-flow", "flow.fragment", "___diffs", "api.json"), fmt.Sprintf(`{"version":2,"diffs":[{"uri":%q}]}`, diff))
-	writeTestFile(t, filepath.Join(root, "backend.chapter", "request-flow", "flow.fragment", "___landmarks", "try-flow.landmark", "___diffs", "api.json"), fmt.Sprintf(`{"version":2,"diffs":[{"uri":%q}]}`, diff))
+	writeTestFile(t, filepath.Join(root, "backend.chapter", "request-flow", "flow.fragment", CodeDirName, "api.json"), fmt.Sprintf(`{"version":2,"diffs":[{"uri":%q}]}`, diff))
+	writeTestFile(t, filepath.Join(root, "backend.chapter", "request-flow", "flow.fragment", "___landmarks", "try-flow.landmark", CodeDirName, "api.json"), fmt.Sprintf(`{"version":2,"diffs":[{"uri":%q}]}`, diff))
 	writeTestFile(t, filepath.Join(root, "___review", "threads", "thread-1.thread", "thread.json"), `{"version":2,"id":"thread-1","target":"urn:change-saga:test:fragment:flow","anchor":{"type":"region","coordinate_space":"normalized","shapes":[{"type":"rect","x":0.1,"y":0.2,"width":0.3,"height":0.4}]},"created_by":"Ada","created_at":"2026-08-19T12:00:00Z"}`)
 	writeTestFile(t, filepath.Join(root, "___review", "threads", "thread-1.thread", "messages", "message-1.message", "message.json"), `{"version":2,"id":"message-1","author":"Ada","created_at":"2026-08-19T12:00:00Z"}`)
 	writeTestFile(t, filepath.Join(root, "___review", "threads", "thread-1.thread", "messages", "message-1.message", "body.fragment", "fragment.json"), `{"version":2,"id":"message-body","media_type":"text/markdown","entrypoint":"content.md"}`)
@@ -49,7 +49,7 @@ func TestLoadRecursiveFragmentsAndReviewOverlay(t *testing.T) {
 		t.Fatalf("chapter was not loaded as a review boundary: %#v", chapter)
 	}
 	flow := chapter.Children[0].Fragments[0]
-	if flow.MediaType != "text/html" || len(flow.Diffs) != 1 || len(flow.Landmarks) != 1 || flow.Landmarks[0].Selector.ElementID != "try-flow" || flow.Landmarks[0].Target != LandmarkTarget("test", "flow", "try-flow") || len(flow.Landmarks[0].Diffs) != 1 {
+	if flow.MediaType != "text/html" || len(flow.Code) != 1 || len(flow.Landmarks) != 1 || flow.Landmarks[0].Selector.ElementID != "try-flow" || flow.Landmarks[0].Target != LandmarkTarget("test", "flow", "try-flow") || len(flow.Landmarks[0].Code) != 1 {
 		t.Fatalf("interactive fragment was not loaded: %#v", flow)
 	}
 	if len(document.Threads) != 1 || len(document.Threads[0].Messages) != 1 || document.Threads[0].Target != flow.Target || document.Threads[0].State != "withdrawn" || document.Threads[0].Anchor.Shapes[0].X != .2 {
@@ -62,7 +62,7 @@ func TestLoadOutlineDoesNotOpenCoverageOrContentTrees(t *testing.T) {
 	writeTestFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"outline","title":"Outline","source":{"repository":"https://example.test/acme/app.git","base":"main","head":"HEAD"}}`)
 	writeTestFile(t, filepath.Join(root, "overview.fragment", "fragment.json"), `{"version":2,"id":"overview","title":"Overview","media_type":"text/markdown","entrypoint":"content.md"}`)
 	writeTestFile(t, filepath.Join(root, "overview.fragment", "content.md"), strings.Repeat("large narrative body\n", 1024))
-	writeTestFile(t, filepath.Join(root, "overview.fragment", "___diffs", "broken.json"), `{this is deliberately not JSON`)
+	writeTestFile(t, filepath.Join(root, "overview.fragment", CodeDirName, "broken.json"), `{this is deliberately not JSON`)
 	writeTestFile(t, filepath.Join(root, "overview.fragment", "___landmarks", "broken.landmark", "landmark.json"), `{this is deliberately not JSON`)
 
 	document, validation, err := LoadOutline(root)
@@ -70,8 +70,8 @@ func TestLoadOutlineDoesNotOpenCoverageOrContentTrees(t *testing.T) {
 		t.Fatalf("outline load = valid %v, err %v, issues %#v", validation.Valid, err, validation.Issues)
 	}
 	fragment := document.Section.Fragments[0]
-	if len(fragment.Diffs) != 0 || len(fragment.Landmarks) != 0 {
-		t.Fatalf("outline materialized deferred metadata: diffs=%d landmarks=%d", len(fragment.Diffs), len(fragment.Landmarks))
+	if len(fragment.Code) != 0 || len(fragment.Landmarks) != 0 {
+		t.Fatalf("outline materialized deferred metadata: diffs=%d landmarks=%d", len(fragment.Code), len(fragment.Landmarks))
 	}
 	if _, full, err := Load(root); err != nil || full.Valid {
 		t.Fatalf("full load did not observe malformed deferred metadata: valid=%v err=%v", full.Valid, err)
@@ -87,18 +87,18 @@ func TestLoadNarrativeAdvertisesTargetEvidenceWithoutMaterializingIt(t *testing.
 	if err != nil {
 		t.Fatal(err)
 	}
-	writeTestFile(t, filepath.Join(root, "story.fragment", "___diffs", "app.json"), fmt.Sprintf(`{"version":2,"diffs":[{"uri":%q,"note":"Implements the story."}]}`, uri))
+	writeTestFile(t, filepath.Join(root, "story.fragment", CodeDirName, "app.json"), fmt.Sprintf(`{"version":2,"diffs":[{"uri":%q,"note":"Implements the story."}]}`, uri))
 
 	document, validation, err := LoadNarrative(root)
 	if err != nil || !validation.Valid {
 		t.Fatalf("narrative load = valid %v, err %v, issues %#v", validation.Valid, err, validation.Issues)
 	}
 	fragment := document.Section.Fragments[0]
-	if !fragment.HasDiffs || len(fragment.Diffs) != 0 {
-		t.Fatalf("narrative evidence state = has %v, materialized %d", fragment.HasDiffs, len(fragment.Diffs))
+	if !fragment.HasCode || len(fragment.Code) != 0 {
+		t.Fatalf("narrative evidence state = has %v, materialized %d", fragment.HasCode, len(fragment.Code))
 	}
-	diffs, targetValidation, err := LoadTargetDiffs(MutationIndexFromDocument(document), fragment.Target)
-	if err != nil || !targetValidation.Valid || len(diffs) != 1 || len(diffs[0].Diffs) != 1 || diffs[0].Diffs[0].URI != uri {
+	diffs, targetValidation, err := LoadTargetCode(MutationIndexFromDocument(document), fragment.Target)
+	if err != nil || !targetValidation.Valid || len(diffs) != 1 || len(diffs[0].References) != 1 || diffs[0].References[0].URI != uri {
 		t.Fatalf("target evidence = %#v, valid %v, err %v, issues %#v", diffs, targetValidation.Valid, err, targetValidation.Issues)
 	}
 }

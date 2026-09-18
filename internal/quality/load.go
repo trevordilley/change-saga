@@ -13,7 +13,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/twentyideas/changesaga/internal/diffuri"
+	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/qualityid"
 )
 
@@ -258,7 +258,7 @@ func loadEvidence(root, sagaID, testCaseID, dir string) ([]Evidence, error) {
 		if err := readStrictJSON(path, &value); err != nil {
 			return value, err
 		}
-		if err := requireJSONFields(path, "$schema", "version", "id", "test_case", "test_revision", "role", "diffs", "verifications", "citations", "supersedes", "created_at"); err != nil {
+		if err := requireJSONFields(path, "$schema", "version", "id", "test_case", "test_revision", "role", "code", "verifications", "citations", "supersedes", "created_at"); err != nil {
 			return value, err
 		}
 		if value.ID != filenameID {
@@ -342,7 +342,7 @@ func validateManifest(value manifest) error {
 	if strings.TrimSpace(value.Title) == "" {
 		problems.add("title is required")
 	}
-	if canonical, err := diffuri.CanonicalRepository(value.Source.Repository); err != nil || canonical != value.Source.Repository {
+	if canonical, err := coderef.CanonicalRepository(value.Source.Repository); err != nil || canonical != value.Source.Repository {
 		problems.add("source.repository must be a canonical absolute repository URI")
 	}
 	if strings.TrimSpace(value.Source.Base) == "" || strings.TrimSpace(value.Source.Head) == "" {
