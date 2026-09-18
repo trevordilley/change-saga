@@ -101,10 +101,13 @@ test("@critical exposes mapping scrutiny, claims, and verification as an AI revi
   const ownerEnvelope = JSON.parse(owners.stdout) as { data: { atoms: Array<{ owners: Array<{ mapping?: { scrutiny_score: number } }> }> } };
   expect(ownerEnvelope.data.atoms.flatMap((atom) => atom.owners).some((owner) => typeof owner.mapping?.scrutiny_score === "number")).toBe(true);
 
+  // Mapping every changed line is necessary but not sufficient: this Saga has
+  // no accepted stories, so it is not ready for review, and status says why.
   const status = runCLI(sagaRepositories, ["status", "--repo", sourceRepo, sagaRoot]);
-  expect(status.status, status.stderr).toBe(0);
+  expect(status.status, status.stderr).toBe(3);
   expect(status.stdout).toContain("ALL ATOMS MAPPED");
   expect(status.stdout).toContain("does not establish explanation quality or correctness");
+  expect(status.stdout).toMatch(/ready_for_review\s+blocked/);
 });
 
 test("@critical refuses to mutate or serve a structurally invalid saga with zero side effects", async ({ sagaRepositories }) => {
