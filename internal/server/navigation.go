@@ -87,8 +87,22 @@ func makeProductNavTree(sources productNavSources) []*navNodeView {
 	quality := navPlace("Quality", "nav-quality", "quality", "", []*navNodeView{
 		navPlace("Test Cases", "nav-test-cases", "", "no test cases yet", sources.testCases),
 	})
+	// Implementation is the one place that opens on arrival, and it opens all
+	// the way to the slides. The deck that explains the change is what a
+	// reviewer came for, so the sidebar shows what is actually there instead of
+	// a row to click first. Everything else stays shut: four short rows read as
+	// one architecture, where four open ones read as a wall.
 	implementation := navPlace("Implementation", "nav-implementation", "implementation", "no implementation decks yet", sources.implementation)
-	return []*navNodeView{product, design, quality, implementation}
+	implementation.Expanded = len(implementation.Children) > 0
+	for _, deck := range implementation.Children {
+		deck.Expanded = len(deck.Children) > 0
+	}
+
+	navigation := []*navNodeView{product, design, quality, implementation}
+	for _, node := range navigation {
+		revealActive(node)
+	}
+	return navigation
 }
 
 // navPlace is one row of the architecture. It is a disclosure when something
@@ -98,12 +112,28 @@ func makeProductNavTree(sources productNavSources) []*navNodeView {
 func navPlace(title, id, icon, emptyNote string, children []*navNodeView) *navNodeView {
 	node := &navNodeView{
 		Title: title, NodeID: id, Icon: icon, Group: true,
-		Children: children, Expanded: len(children) > 0,
+		Children: children,
 	}
 	if len(children) == 0 {
 		node.Gap, node.Note = true, emptyNote
 	}
 	return node
+}
+
+// revealActive opens the places containing the current page. A collapsed place
+// hides its children outright, so without this, opening a story would collapse
+// the sidebar around the very row the reader is on.
+func revealActive(node *navNodeView) bool {
+	revealed := node.Active
+	for _, child := range node.Children {
+		if revealActive(child) {
+			revealed = true
+		}
+	}
+	if revealed {
+		node.Expanded = true
+	}
+	return revealed
 }
 
 // makePrototypeNav names the prototypes that already exist. The server has no

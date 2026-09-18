@@ -130,8 +130,8 @@ func TestRequirementsWithoutStoriesStaysVisibleAsAGap(t *testing.T) {
 }
 
 // Decks used to occupy their own top-level sidebar path. They now fold into
-// the architecture by role, and a deck whose role the format does not record
-// says so instead of being assigned one.
+// the architecture by role: Implementation is where a deck belongs unless it
+// says otherwise, and "ux" is the one role that moves it out.
 func TestDeckNavigationFoldsIntoDesignAndImplementationByRole(t *testing.T) {
 	root := &saga.Section{ID: "root", Target: saga.SagaTarget("test"), Children: []*saga.Section{
 		{Kind: "deck", ID: "flows", Title: "Checkout flows", Target: saga.DeckTarget("test", "flows")},
@@ -259,5 +259,52 @@ func TestGapRowsRenderAsVisibleNonNavigableText(t *testing.T) {
 	}
 	if !strings.Contains(html, "data-doc-toggle") {
 		t.Fatalf("a filled place must disclose its children: %s", html)
+	}
+}
+
+// Implementation opens on arrival and the rest stays shut. A sidebar that
+// opened every filled place would bury the deck a reviewer came to read under
+// rows they did not ask for.
+func TestOnlyImplementationOpensOnArrival(t *testing.T) {
+	deck := &navNodeView{Title: "Implementation review", NodeID: "nav-deck", Deck: true,
+		Children: []*navNodeView{{Title: "Architecture and storage", NodeID: "nav-slide"}}}
+	nodes := makeProductNavTree(productNavSources{
+		requirements:   &navNodeView{Title: "Requirements", Children: []*navNodeView{{Title: "Story 01 · Refund window"}}},
+		prototypes:     []*navNodeView{{Title: "Checkout flow"}},
+		technical:      []*navNodeView{{Title: "Storage model"}},
+		implementation: []*navNodeView{deck},
+	})
+
+	if implementation := findNav(t, nodes, "Implementation"); !implementation.Expanded {
+		t.Fatal("Implementation must open on arrival")
+	}
+	if !deck.Expanded {
+		t.Fatal("the implementation deck must open to its slides, not to a row to click first")
+	}
+	for _, title := range []string{"Product", "Design", "Quality"} {
+		if findNav(t, nodes, title).Expanded {
+			t.Fatalf("%s must stay collapsed on arrival", title)
+		}
+	}
+}
+
+// A collapsed place hides its children outright, so the places containing the
+// current page have to open or the reader loses the row they are standing on.
+func TestActivePageOpensThePlacesThatContainIt(t *testing.T) {
+	story := &navNodeView{Title: "Story 01 · Refund window", Active: true}
+	nodes := makeProductNavTree(productNavSources{
+		requirements: &navNodeView{Title: "Requirements", Children: []*navNodeView{
+			story, {Title: "Story 02 · Refund limits"},
+		}},
+	})
+
+	if product := findNav(t, nodes, "Product"); !product.Expanded {
+		t.Fatal("Product must open around the active story")
+	}
+	if requirements := findNav(t, nodes, "Product", "Requirements"); !requirements.Expanded {
+		t.Fatal("Requirements must open around the active story")
+	}
+	if findNav(t, nodes, "Design").Expanded || findNav(t, nodes, "Quality").Expanded {
+		t.Fatal("a place that does not contain the current page must stay collapsed")
 	}
 }
