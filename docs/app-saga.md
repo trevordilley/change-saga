@@ -160,6 +160,31 @@ In compare mode, every changed line must fall inside some reference's range.
 This is computed from references, not stored. The app does not require every
 line of the codebase to be owned: ownership accumulates as changes land.
 
+### 9. Adoption is incremental
+
+The first time someone tries Change Saga on a 30-file pull request, the first
+thing that happens is not "define the personas of this app".
+
+- **The only requirement is that the implementation covers the change.** Every
+  changed line is referenced by the implementation deck. Personas, stories,
+  design, and test cases are not required up front.
+- **Everything else is growth, not debt.** Missing personas, stories, design, and
+  quality are reported as opportunities. They never block a change, and
+  readiness passing with nothing defined is correct: absence is not failure.
+- **What exists must stay healthy.** Once a story is accepted or a design
+  references code, a change that makes that link stale or leaves its code
+  uncovered is flagged. Coverage only ratchets up.
+- **Nothing is locked in.** The first change's deck goes into an epic the author
+  names, defaulting to the pull request's title. Story, deck, and slide URNs
+  carry no epic, so reorganizing later breaks nothing.
+- **The app Saga lives in the repository by default.** Compare mode relies on one
+  Git comparison covering both the Saga and the code. A companion repository is
+  possible but second-class, because its commits have to be correlated with the
+  code's.
+- **The first run is: initialize, cover the change, done.** After that, the
+  authoring agent offers, and never requires, to capture the stories the change
+  implies.
+
 ### Kept from the current design
 
 One format and no backwards compatibility. Staleness derived only from pins.
@@ -190,8 +215,9 @@ reconstructs it.
 
 1. Do feature flags gate stories, epics, or both?
 2. Are retired stories shown in the app view, or only in history?
-3. Should `product_ready`, `design_ready`, and `quality_ready` block while no
-   story is accepted, instead of passing trivially?
+3. When a change breaks a link on an existing record (a stale story link, or
+   uncovered code under an existing design), does that block the change or only
+   warn? Absence of records never blocks (goal 9).
 4. What is the app-level sidebar above the epics?
 5. Onboarding deck Items point at records (personas, epics, stories) rather than
    code. Confirm that this is its only kind of evidence.
@@ -222,3 +248,10 @@ open decision 4.
 **Phase 5 — This repository.** Fold its Sagas into one `app.saga` as epics. If
 the fold is awkward, the model is wrong, so this is the model's acceptance test.
 It also decides whether decision records are needed.
+
+**Phase 6 — Adoption.** Split readiness into the one requirement
+(implementation covers the change) and growth; the ratchet on existing
+records; `init` and first-run next actions that start with coverage; the
+default epic; and the skill, README, and help rewritten for incremental
+adoption. The first-run experience on a real 30-file pull request is its
+acceptance test.
