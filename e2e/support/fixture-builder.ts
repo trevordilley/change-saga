@@ -105,11 +105,11 @@ function addCoverage(sourceRepo: string, sagaRoot: string): DiffIdentity {
   const edgeAtom = architecture.find((atom) => atom.path === "assets/ui/theme.css" && atom.line !== undefined);
   if (!diagramAtom || !edgeAtom) throw new Error("fixture has too few changed atoms for its SVG landmarks");
   for (const [target, name, atoms] of [
-    ["overview.fragment", "overview-linked", overviewRemainder],
-    ["overview.fragment/___landmarks/greeting-input.landmark", "greeting-citation", [citation]],
-    ["diagram.fragment/___landmarks/render-boundary.landmark", "diagram-node", [diagramAtom]],
-    ["diagram.fragment/___landmarks/evidence-handoff.landmark", "diagram-edge", [edgeAtom]],
-    ["architecture.chapter/overview.fragment", "architecture-linked", architecture.filter((atom) => atom !== diagramAtom && atom !== edgeAtom)]
+    ["___overview/overview.fragment", "overview-linked", overviewRemainder],
+    ["___overview/overview.fragment/___landmarks/greeting-input.landmark", "greeting-citation", [citation]],
+    ["___overview/diagram.fragment/___landmarks/render-boundary.landmark", "diagram-node", [diagramAtom]],
+    ["___overview/diagram.fragment/___landmarks/evidence-handoff.landmark", "diagram-edge", [edgeAtom]],
+    ["___epics/wave-one.epic/architecture.chapter/overview.fragment", "architecture-linked", architecture.filter((atom) => atom !== diagramAtom && atom !== edgeAtom)]
   ] as const) {
     if (atoms.length === 0) throw new Error(`fixture has no atoms for ${target}`);
     runSaga([
@@ -160,10 +160,13 @@ function buildSagaRepository(root: string, source: { sourceRepo: string; base: s
     "init", "--repo", source.sourceRepo, "--repository", declaredRepository,
     "--base", source.base, "--head", source.head, "--id", "wave-one", "--title", "Wave One Review", sagaRoot
   ], sagaRepo);
-  write(join(sagaRoot, "overview.fragment", "content.md"), `# Review overview {#review-overview}\n\nWave 1 connects the story to the exact source changes. The greeting accepts a caller-provided name.[^greeting-input]\n\n## Reviewer path {#reviewer-path}\n\nStart with **the behavior**, then follow the \`linked code\`.\n\n| Before | After |\n| --- | --- |\n| Flat prose | Linked narrative |\n\n1. Read the story.\n2. Inspect its code.\n\n[^greeting-input]: The function signature and returned greeting now use the supplied name.\n`);
-  runSaga(["add-landmark", "--target", "overview.fragment", "--id", "greeting-input", "--text", "The function signature and returned greeting now use the supplied name.", "--label", "Greeting input evidence", sagaRoot], sagaRepo);
-  runSaga(["add-chapter", "--id", "architecture", "--title", "Architecture", sagaRoot, "architecture"], sagaRepo);
-  write(join(sagaRoot, "architecture.chapter", "overview.fragment", "content.md"), `# Architecture path {#architecture-path}\n\nThe renderer and persistence boundary stay independent.\n`);
+  // The app overview carries the review narrative; the architecture chapter
+  // belongs to the one epic this change touches.
+  runSaga(["epic", "add", "--id", "wave-one", "--title", "Wave One", sagaRoot], sagaRepo);
+  write(join(sagaRoot, "___overview", "overview.fragment", "content.md"), `# Review overview {#review-overview}\n\nWave 1 connects the story to the exact source changes. The greeting accepts a caller-provided name.[^greeting-input]\n\n## Reviewer path {#reviewer-path}\n\nStart with **the behavior**, then follow the \`linked code\`.\n\n| Before | After |\n| --- | --- |\n| Flat prose | Linked narrative |\n\n1. Read the story.\n2. Inspect its code.\n\n[^greeting-input]: The function signature and returned greeting now use the supplied name.\n`);
+  runSaga(["add-landmark", "--target", "___overview/overview.fragment", "--id", "greeting-input", "--text", "The function signature and returned greeting now use the supplied name.", "--label", "Greeting input evidence", sagaRoot], sagaRepo);
+  runSaga(["add-chapter", "--epic", "wave-one", "--id", "architecture", "--title", "Architecture", sagaRoot, "architecture"], sagaRepo);
+  write(join(sagaRoot, "___epics", "wave-one.epic", "architecture.chapter", "overview.fragment", "content.md"), `# Architecture path {#architecture-path}\n\nThe renderer and persistence boundary stay independent.\n`);
 
   const mediaRoot = join(root, "media");
   const interactiveRoot = join(mediaRoot, "interactive");
@@ -171,11 +174,11 @@ function buildSagaRepository(root: string, source: { sourceRepo: string; base: s
   write(join(mediaRoot, "pixel.png"), Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=", "base64"));
   write(join(interactiveRoot, "index.html"), `<!doctype html><button id="run">Run demo</button><output id="result">idle</output><script src="app.js"></script>\n`);
   write(join(interactiveRoot, "app.js"), `document.querySelector('#run').addEventListener('click', () => { document.querySelector('#result').textContent = 'interactive ready'; });\n`);
-  runSaga(["add-fragment", "--section", ".", "--type", "svg", "--name", "diagram", "--id", "diagram", "--title", "Architecture Diagram", "--source", join(mediaRoot, "diagram.svg"), sagaRoot], sagaRepo);
-  runSaga(["add-landmark", "--target", "diagram.fragment", "--element-id", "render-boundary", "--label", "Render boundary", "--description", "The renderer connects authored explanation to its exact source evidence.", sagaRoot], sagaRepo);
-  runSaga(["add-landmark", "--target", "diagram.fragment", "--element-id", "evidence-handoff", "--label", "Evidence handoff", "--description", "The diagram edge carries a focused explanation into its exact source evidence.", sagaRoot], sagaRepo);
-  runSaga(["add-fragment", "--section", ".", "--type", "image", "--name", "pixel", "--id", "pixel", "--title", "Raster Preview", "--source", join(mediaRoot, "pixel.png"), sagaRoot], sagaRepo);
-  runSaga(["add-fragment", "--section", ".", "--type", "html", "--name", "interactive", "--id", "interactive", "--title", "Interactive Demo", "--source", interactiveRoot, sagaRoot], sagaRepo);
+  runSaga(["add-fragment", "--app", "overview", "--section", ".", "--type", "svg", "--name", "diagram", "--id", "diagram", "--title", "Architecture Diagram", "--source", join(mediaRoot, "diagram.svg"), sagaRoot], sagaRepo);
+  runSaga(["add-landmark", "--target", "___overview/diagram.fragment", "--element-id", "render-boundary", "--label", "Render boundary", "--description", "The renderer connects authored explanation to its exact source evidence.", sagaRoot], sagaRepo);
+  runSaga(["add-landmark", "--target", "___overview/diagram.fragment", "--element-id", "evidence-handoff", "--label", "Evidence handoff", "--description", "The diagram edge carries a focused explanation into its exact source evidence.", sagaRoot], sagaRepo);
+  runSaga(["add-fragment", "--app", "overview", "--section", ".", "--type", "image", "--name", "pixel", "--id", "pixel", "--title", "Raster Preview", "--source", join(mediaRoot, "pixel.png"), sagaRoot], sagaRepo);
+  runSaga(["add-fragment", "--app", "overview", "--section", ".", "--type", "html", "--name", "interactive", "--id", "interactive", "--title", "Interactive Demo", "--source", interactiveRoot, sagaRoot], sagaRepo);
 
   const identity = addCoverage(source.sourceRepo, sagaRoot);
   git(sagaRepo, "add", ".");
@@ -219,7 +222,7 @@ export async function startSagaServer(repositories: SagaRepositories, extraArgs:
 
 /** Builds both Git repositories without starting a server or a browser page. */
 export function createSagaRepositories(testInfo: TestInfo): SagaRepositories {
-  const safeTitle = testInfo.title.replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "").slice(0, 48).toLowerCase() || "test";
+  const safeTitle = testInfo.title.replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "").slice(0, 24).toLowerCase() || "test";
   const root = mkdtempSync(join(tmpdir(), `change-saga-e2e-${testInfo.workerIndex}-${safeTitle}-`));
   try {
     const tempDir = join(root, "server-tmp");
@@ -509,23 +512,24 @@ function buildLargeSagaRepository(root: string, source: { sourceRepo: string; ba
     "init", "--repo", source.sourceRepo, "--repository", declaredRepository,
     "--base", source.base, "--head", source.head, "--id", "large", "--title", "Large Saga", sagaRoot
   ], sagaRepo);
-  write(join(sagaRoot, "overview.fragment", "content.md"), "# Large change overview {#large-overview}\n\nThis change rewrites every component module.\n");
+  runSaga(["epic", "add", "--id", "large", "--title", "Large change", sagaRoot], sagaRepo);
+  write(join(sagaRoot, "___overview", "overview.fragment", "content.md"), "# Large change overview {#large-overview}\n\nThis change rewrites every component module.\n");
 
   const records: Array<Record<string, unknown>> = [];
   let file = 0;
   for (let chapter = 0; chapter < largeSagaScale.chapters; chapter += 1) {
     const chapterID = `chapter-${String(chapter).padStart(2, "0")}`;
-    runSaga(["add-chapter", "--id", chapterID, "--title", `Chapter ${chapter}`, "--order", String(chapter), sagaRoot, chapterID], sagaRepo);
+    runSaga(["add-chapter", "--epic", "large", "--id", chapterID, "--title", `Chapter ${chapter}`, "--order", String(chapter), sagaRoot, chapterID], sagaRepo);
     for (let index = 0; index < largeSagaScale.fragmentsPerChapter; index += 1) {
       const fragmentID = `${chapterID}-part-${index}`;
       const section = `${chapterID}.chapter`;
       runSaga([
-        "add-fragment", "--section", section, "--type", "markdown", "--name", fragmentID,
+        "add-fragment", "--epic", "large", "--section", section, "--type", "markdown", "--name", fragmentID,
         "--id", fragmentID, "--title", `Part ${chapter}.${index}`, "--order", String(index), sagaRoot
       ], sagaRepo);
-      write(join(sagaRoot, section, `${fragmentID}.fragment`, "content.md"), `# Part ${chapter}.${index} {#part-${chapter}-${index}}\n\nThis part explains its own component modules.\n`);
+      write(join(sagaRoot, "___epics", "large.epic", section, `${fragmentID}.fragment`, "content.md"), `# Part ${chapter}.${index} {#part-${chapter}-${index}}\n\nThis part explains its own component modules.\n`);
       records.push({
-        target: `${section}/${fragmentID}.fragment`,
+        target: `___epics/large.epic/${section}/${fragmentID}.fragment`,
         path: largeSourcePath(file % largeSagaScale.sourceFiles),
         changed_lines: true,
         note: `Part ${chapter}.${index} rewrites this module.`,
@@ -538,7 +542,7 @@ function buildLargeSagaRepository(root: string, source: { sourceRepo: string; ba
   // comparison is fully accounted for and Coverage has no gaps to report.
   for (; file < largeSagaScale.sourceFiles; file += 1) {
     records.push({
-      target: "overview.fragment",
+      target: "___overview/overview.fragment",
       path: largeSourcePath(file),
       changed_lines: true,
       note: "The overview accounts for the remaining modules.",
