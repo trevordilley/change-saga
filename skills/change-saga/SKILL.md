@@ -1,6 +1,6 @@
 ---
 name: change-saga
-description: 'Author, update, validate, and open a Git-native Change Saga for a large PR number, URL, branch, commit range, or working-tree change. Use chapter-like living documentation for requirements, design, prototypes, and work-plan history; use focused visual decks and slides for complex implemented changes, with purpose-fit diagrams, worked examples, surprise callouts, and fully accounted diff URIs. The primary purpose is to create the artifact submitted for human review, not to perform the review; only conduct review actions when explicitly requested.'
+description: 'Author, update, validate, and open the Change Saga for a big change: one Git-native record that carries prototypes, user stories and acceptance criteria, UX/UI and technical design, test cases, and the implementation deck, from the first prototype to exact, fully accounted diff URIs. Drive the work with status --json next actions. The primary purpose is to create the artifact submitted for human review, not to perform the review; only conduct review actions when explicitly requested.'
 ---
 
 # Change Saga
@@ -57,40 +57,57 @@ work into shared files; merge the lanes before the final coverage and validation
 passes. This localizes Git conflicts but does not make parallel edits
 conflict-free.
 
-## Choose the workflow before authoring
+## One Saga, from the big work to the big work
 
-First determine whether the user is documenting an existing implementation or
-starting a new body of work.
+A Change Saga is the record of one big change: the kind that warrants product
+requirements, UX and UI design, technical design, quality verification, and an
+implementation walkthrough. There is one kind of Saga. It always has the same
+four parts, in the same order:
 
-For an existing PR, branch, or focused changeset, decide whether the change is
-large enough to benefit from a guided review. Size means review complexity—not
-just line count—including multiple behaviors, risks, systems, or workstreams.
-A small focused change may be better served by the repository's normal PR
-process. For a large change with no existing saga, author the saga from the
-completed implementation and exact diff as the review guide. Requirements,
-prototypes, technical design, and a work plan remain optional historical
-context; do not invent them after the fact merely to fill every surface.
+- **Product**: prototypes, and user stories with acceptance criteria;
+- **Design**: UX flows, UI references, and technical design;
+- **Quality**: test cases that verify the acceptance criteria;
+- **Implementation**: the deck that explains the change, whose Items own the
+  exact diffs.
 
-For a new feature or exploration, begin a living saga early. A common
-progression is:
+The only hard requirement is that code maps back to user stories. Designs,
+specifications, and test cases map to stories, so code reaches a story
+transitively through them. Do not author code-to-story links by hand when a
+design or test case can carry the path. Every relation pins the revision it
+relied on, so a story revision makes its dependents visibly stale.
 
-1. prototype the UX and UI aesthetic;
-2. draft sourced user stories and acceptance criteria;
-3. develop a technical design that traces to those requirements; and
-4. organize delivery into dependency-aware waves, parallel workspace lanes,
-   and explicit convergence points.
+This is not a waterfall. Prototypes and stories may come in either order and
+iterate together; design starts while they mature; a discovery during
+implementation becomes an explicit new revision of the story it changes,
+preserving history rather than rewriting it. When the implementation already
+exists, build the Saga the same way: the product intent and design are what the
+reviewer needs in order to judge the code, so recover them from the source
+material and the user rather than skipping them.
 
-This progression is not a waterfall. Prototypes and stories may be created in
-either order and iterated together. Design can proceed while they mature, and
-work-plan drafting can overlap design. Treat revisions as normal living
-changes, preserving their history and refreshing stale downstream links.
+Parallel authoring is a core property of the document. Partition ownership by
+stable stories, prototypes, design fragments, test cases, work items, and deck
+bundles so agents can fan out and merge their Saga changes alongside the code.
+Consolidate the lanes before the final status and validation passes.
 
-Parallel authoring is a core property of the document, not just of the code
-change. Partition ownership by stable stories, prototype packages, design
-fragments, and work items so agents can fan out and merge their Saga changes as
-well as their implementation. Before peer review, consolidate the lanes and
-connect the delivered commits and exact diffs through the acceptance criteria,
-design, and work plan that explain them.
+## Drive the work with status
+
+`change-saga status --json <saga>` is the work queue. It reports the readiness
+gates, each accepted criterion's coverage on the prototype, UX, UI, technical,
+quality, and implementation axes, the stale set with pinned and current
+revisions, changed-source accounting, and ordered `next_actions`. Loop:
+
+1. run `change-saga spec --json` once to learn the resources, legal relations,
+   and command shapes;
+2. run `status --json` and take the first next action;
+3. a `command` action carries a valid command shape: fill in its author inputs
+   and run it; a `question` action needs product judgment, external access, or
+   an explicit exclusion: ask the user its one question and run the command for
+   their answer;
+4. run `validate`, then repeat from step 2.
+
+Stop when no required gap remains. A clean status proves nothing is missing or
+stale; it never proves the Saga is good. Status never reduces coverage to a
+score, and neither should you.
 
 ## Locate the CLI
 
@@ -145,46 +162,33 @@ children.
 
 ## Author a saga
 
-Prefer a v3 Report Saga as the durable parent when requirements, acceptance
-criteria, prototypes, technical design, or work-plan history need to remain
-living documentation. Add one or more focused decks with `add-deck` only for
-implemented changes that benefit from a visual breakdown. These decks live
-under the same Saga identity and appear as a separate reviewer surface; never
-turn every report fragment into a slide.
+Build the Product first, since everything else traces to it. Use `prototype
+add-html` or `prototype add-external` for interactive prototypes and
+`prototype annotate` to pin them to the stories and criteria they clarify.
+Use `story add`, `story revise`, and the `criterion` commands for sourced user
+stories with explicit acceptance criteria, and `citation add` to record where a
+story or decision came from. Develop technical design with the `design`
+commands, test cases with the `quality` commands, and connect resources with
+`relation add`: a test case `verifies` a criterion, and a design or deck target
+addresses or explains one. Pin the current revision on every relation.
 
-Treat accepted user stories and acceptance criteria as the traceability
-backbone. For each embedded deck, slide, or Item that explains implementation,
-add an `explains` relation to the narrowest applicable story or criterion and
-pin its current story revision with `--to-revision`. A story-level relation
-applies transitively to all criteria in that revision. Keep exact diff evidence
-on Items. Before handoff, page `query traceability`; use `--diff` for exact
-reverse lookup or `--commit` for the resolved head commit of a committed
-comparison, and resolve every entry in `data.unlinked_code_evidence`.
+The implementation deck is the core of the Saga. Its authoring spine is `Deck →
+Slide → Item`: use `add-deck`, `add-slide`, `set-slide-content`, and `add-item`.
+Never turn report fragments, stories, or design into slides; the deck explains
+the implemented change. A slide is one 16:9 visual composition with one
+takeaway. An Item is a meaningful node, edge, region, transition, statement,
+risk, metric, example, or callout. A callout may point at another Item with
+`--about`, and it may own diff evidence itself. Put every non-decorative Item
+in `reading_order`; `add-item` does this automatically. Attach every exact diff
+atom to the narrowest Item; slide evidence is owned only by Items. Use `query
+slide` and `query slide-diffs` to read it back. Approval is deliberately
+coarser than evidence: approve or reject the complete slide, while using
+Item-targeted threads and annotations for precise feedback. Do not create
+approval records for the Saga, a deck, or an Item.
 
-Prototype persistence is currently internal-only. Until public prototype CLI,
-query, and reviewer surfaces exist, state that prototype authoring is staged
-instead of claiming the living workflow is end-to-end.
-
-For a wholly visual review artifact with no living report surface, choose the
-intentionally incompatible v4 mode:
-
-```sh
-change-saga init --mode slides --base <base> --head <head> --title "<title>" <name>.saga
-```
-
-Do not convert an existing report by changing its version or laying its prose
-out on pages. Rewrite it as a deck. The authoring spine is `Saga → Deck → Slide
-→ Item`: use `add-deck`, `add-slide`, `set-slide-content`, and `add-item`. A
-slide is one 16:9 visual composition with one takeaway. An Item is a meaningful
-node, edge, region, transition, statement, risk, metric, example, or callout.
-A callout may point at another Item with `--about`, and it may own diff evidence
-itself. Put every non-decorative Item in `reading_order`; `add-item` does this
-automatically. Attach every exact diff atom to the narrowest Item. v4 refuses
-Saga-, deck-, and slide-level coverage. Use `query slide` and `query
-slide-diffs`; v4 deliberately refuses the report-oriented fragment queries.
-Approval is deliberately coarser than evidence: approve or reject the complete
-slide, while using Item-targeted threads and annotations for precise feedback.
-Do not create approval records for the Saga, a deck, or an Item.
+Before handoff, page `query traceability`; use `--diff` for exact reverse
+lookup or `--commit` for the resolved head commit of a committed comparison,
+and resolve every entry in `data.unlinked_code_evidence`.
 
 Apply the density and composition checks in
 [references/authoring.md](references/authoring.md). If the change cannot be
@@ -201,30 +205,30 @@ it.
    the default branch when PR metadata is available.
 2. Inspect the PR description, commit/file summary, full diff, tests, and any
    existing `.saga`. Do not modify product code while authoring unless asked.
-3. Initialize the saga in slide-native mode when none exists:
+3. Initialize the saga when none exists:
 
    ```sh
-   change-saga init --mode slides --base <base> --head <head> --title "<title>" \
+   change-saga init --base <base> --head <head> --title "<title>" \
      [--pr <number> --pr-url <url>] <name>.saga
    ```
 
    Use `WORKTREE` as the head only for tracked in-progress changes. Warn that the
-   current engine does not account for untracked files. Never change a v2/v3
-   manifest version to simulate this step; legacy reports require a semantic
-   rewrite into a separate v4 saga.
+   current engine does not account for untracked files. Then build the Product,
+   Design, and Quality parts, following status next actions, before
+   storyboarding the deck.
 4. Page `change-saga query gaps --kind uncovered --saga <name>.saga` as the
    coverage work queue. Query `gaps --kind stale` for reconciliation work and
    `gaps --kind overlap` for mappings that need justification. Preserve the
    returned snapshot across the loop and restart if it changes unexpectedly.
-5. Read the relevant code and diff context. Storyboard an overview deck plus a
-   small set of change decks grouped by reviewer intent—architecture, request
+5. Read the relevant code and diff context. Storyboard the implementation deck as
+   a sequence of slides grouped by reviewer intent—architecture, request
    flow, state transition, migration, operational risk, or proof—not by source
    directory. For every planned slide, write one intent and one takeaway before
    choosing its visual grammar. Build a surprise inventory first: note what a
    reasonable reviewer would expect from nearby code or documented behavior,
    where this change differs, why it differs, and what that choice costs or
    enables. Use system-model slides to make those deviations intelligible.
-6. Create decks with `add-deck` and slides with `add-slide`. Choose a purpose-fit
+6. Create the deck with `add-deck` and slides with `add-slide`. Choose a purpose-fit
    system-context, architecture, data-flow, sequence, state, entity,
    decision-logic, comparison, failure, or evidence composition. Use
    `set-slide-content` to install a self-contained SVG, raster image, or
@@ -240,7 +244,7 @@ it.
    deletions and `new` for additions, cover rename/mode/binary events explicitly,
    and prefer the absolute URIs returned by `query gaps`. Batch authoring may
    reduce calls, but it never justifies widened selectors or slide-level
-   ownership; v4 rejects Saga-, deck-, and slide-level coverage.
+   ownership.
 9. Run `query mappings --sort scrutiny` and use `replace-coverage` or
    `remove-coverage` to repair broad or misplaced ownership. If mappings became
    stale only because an incorporated base advanced while product identity
