@@ -183,10 +183,11 @@ thing that happens is not "define the personas of this app".
 - **Nothing is locked in.** The first change's deck goes into an epic the author
   names, defaulting to the pull request's title. Story, deck, and slide URNs
   carry no epic, so reorganizing later breaks nothing.
-- **The app Saga lives in the repository by default.** Compare mode relies on one
-  Git comparison covering both the Saga and the code. A companion repository is
-  possible but second-class, because its commits have to be correlated with the
-  code's.
+- **The Saga can live in the code repository or in a companion repository, and
+  both are first-class.** A companion repository lets a team document a
+  codebase, such as a client's, without landing a large documentation change in
+  it first; the Saga can move into the code repository later without rewriting
+  anything, because references name their repository.
 - **The first run is: initialize, cover the change, done.** After that, the
   authoring agent offers, and never requires, to capture the stories the change
   implies.
@@ -200,6 +201,27 @@ thing that happens is not "define the personas of this app".
   opportunities separately from the one requirement, ordered by value to the
   current change, so an author can grow the Saga a step at a time or ignore it
   entirely.
+
+### 10. Companion repositories
+
+When the Saga lives in its own repository:
+
+- Code references resolve against a checkout of the code repository passed with
+  `--repo`, which is verified against the repository the Saga declares.
+  Staleness and remapping use the code repository's history, never the Saga's.
+- The Saga records a **sync cursor**: the code commit it currently documents.
+  Every Saga commit that updates the documentation moves the cursor. In compare
+  mode the code delta comes from the code repository, and the Saga delta from
+  the Saga commit whose cursor matched the base. In the code repository the
+  cursor is implicit, so both setups share one model.
+- Documenting existing code needs no change at all: observe mode, with references
+  pinned at the current code commit. Per-change coverage does not apply because
+  there is no change; ownership of the existing code accumulates.
+- Scale is the risk to measure. A whole-codebase Saga reached 230 MB and 17
+  minutes under per-line diff evidence (see
+  [large-saga-diagnosis.md](large-saga-diagnosis.md)). References are ranges,
+  which should be far smaller, but a 400k-line codebase must be measured before
+  it is promised.
 
 ### Kept from the current design
 
@@ -261,6 +283,9 @@ open decision 4.
 **Phase 5 — This repository.** Fold its Sagas into one `app.saga` as epics. If
 the fold is awkward, the model is wrong, so this is the model's acceptance test.
 It also decides whether decision records are needed.
+
+Phase 2 also includes the sync cursor and compare mode for companion
+repositories (goal 10).
 
 **Phase 6 — Adoption.** Split readiness into the one default requirement
 (implementation covers the change) and growth; named opt-in gates via
