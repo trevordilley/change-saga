@@ -56,7 +56,7 @@ func Citation(ctx context.Context, args []string, out io.Writer) error {
 
 func Relation(ctx context.Context, args []string, out io.Writer) error {
 	if len(args) == 0 || args[0] == "-h" || args[0] == "--help" {
-		return livingFamilyHelp("relation", []string{"add", "supersede"}, out)
+		return livingFamilyHelp("relation", []string{"add", "supersede", "status"}, out)
 	}
 	operation := "relation " + args[0]
 	var err error
@@ -65,6 +65,8 @@ func Relation(ctx context.Context, args []string, out io.Writer) error {
 		err = relationAdd(ctx, args[1:], out)
 	case "supersede":
 		err = relationSupersede(ctx, args[1:], out)
+	case "status":
+		err = relationStatus(ctx, args[1:], out)
 	default:
 		err = fmt.Errorf("usage: %s", commandUsage["relation"])
 	}
@@ -326,10 +328,11 @@ func relationAdd(_ context.Context, args []string, out io.Writer) error {
 	from := flags.String("from", "", "source endpoint URN")
 	to := flags.String("to", "", "target endpoint URN")
 	rationale := flags.String("rationale", "", "why the endpoints are related")
-	fromRevision := flags.String("from-revision", "", "exact source definition revision URN")
-	toRevision := flags.String("to-revision", "", "exact target definition revision URN")
+	fromRevision := flags.String("from-revision", "", "exact source definition revision URN (v5: defaults to the unique current head)")
+	toRevision := flags.String("to-revision", "", "exact target definition revision URN (v5: defaults to the unique current head)")
 	fromDigest := flags.String("from-content-digest", "", "exact source design content digest")
 	toDigest := flags.String("to-content-digest", "", "exact target design content digest")
+	scope := flags.String("scope", "", "v5 only: self (default) or descendants for a Deck/Slide addresses or explains source")
 	requestID := flags.String("request-id", "", "idempotency key")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
@@ -339,19 +342,88 @@ func relationAdd(_ context.Context, args []string, out io.Writer) error {
 		return err
 	}
 	root := flags.Arg(0)
-	sagaID, err := requirementSagaID(root)
+	document, err := requirements.Load(root, "")
 	if err != nil {
 		return err
 	}
-	result, err := requirements.AddRelation(root, sagaID, requirements.AddRelationInput{
+	input := requirements.AddRelationInput{
 		ID: *id, Type: requirements.RelationType(*typeName), From: *from, To: *to, Rationale: *rationale,
 		FromRevision: *fromRevision, ToRevision: *toRevision, FromContentDigest: *fromDigest,
-		ToContentDigest: *toDigest, RequestID: *requestID,
-	})
+		ToContentDigest: *toDigest, Scope: requirements.RelationScope(*scope), RequestID: *requestID,
+	}
+	var defaulted []string
+	if document.SagaVersion == requirements.V5RelationVersion {
+		defaulted, err = defaultV5RelationPins(root, &input)
+		if err != nil {
+			return err
+		}
+	}
+	result, err := requirements.AddRelation(root, document.SagaID, input)
 	if err != nil {
 		return err
 	}
-	return writeLivingMutation(out, name, result.URN, result.Path, []string{result.URN}, nil, result.Replayed, *jsonOutput)
+	if len(defaulted) == 0 {
+		return writeLivingMutation(out, name, result.URN, result.Path, []string{result.URN}, nil, result.Replayed, *jsonOutput)
+	}
+	if *jsonOutput {
+		return writeJSON(out, relationAddOutput{
+			livingMutationOutput: livingMutationOutput{OK: true, Operation: name, Resource: result.URN, Path: result.Path, Created: []string{result.URN}, EventIDs: []string{}, Replayed: result.Replayed},
+			DefaultedPins:        defaulted,
+		})
+	}
+	if err := writeLivingMutation(out, name, result.URN, result.Path, []string{result.URN}, nil, result.Replayed, false); err != nil {
+		return err
+	}
+	for _, note := range defaulted {
+		fmt.Fprintf(out, "Pinned %s\n", note)
+	}
+	return nil
+}
+
+// relationAddOutput extends the shared mutation output only when a v5 pin was
+// defaulted, so the reported bytes for explicit pins and v3 Sagas are unchanged.
+type relationAddOutput struct {
+	livingMutationOutput
+	DefaultedPins []string `json:"defaulted_pins"`
+}
+
+// defaultV5RelationPins fills each omitted revision pin of a revision-bearing
+// endpoint (story, criterion, work item, test case) with its unique current
+// head, and reports each default so the author sees exactly what was pinned.
+// supersedes never defaults: its pins are optional history, not currency.
+func defaultV5RelationPins(root string, input *requirements.AddRelationInput) ([]string, error) {
+	heads, err := loadRelationHeads(root)
+	if err != nil {
+		return nil, err
+	}
+	var defaulted []string
+	if input.Type != requirements.RelationSupersedes {
+		for _, side := range []struct {
+			name     string
+			endpoint string
+			pin      *string
+		}{{"from_revision", input.From, &input.FromRevision}, {"to_revision", input.To, &input.ToRevision}} {
+			if *side.pin != "" {
+				continue
+			}
+			head, revisionBearing, err := heads.currentRevisionHead(side.endpoint)
+			if !revisionBearing {
+				continue
+			}
+			if err != nil {
+				return nil, fmt.Errorf("cannot default %s: %w", side.name, err)
+			}
+			*side.pin = head
+			defaulted = append(defaulted, fmt.Sprintf("%s to current head %s", side.name, head))
+		}
+	}
+	if err := heads.checkTestCasePin(input.From, input.FromRevision); err != nil {
+		return nil, err
+	}
+	if err := heads.checkTestCasePin(input.To, input.ToRevision); err != nil {
+		return nil, err
+	}
+	return defaulted, nil
 }
 
 func relationSupersede(_ context.Context, args []string, out io.Writer) error {

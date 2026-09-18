@@ -166,7 +166,13 @@ func validateCitation(value Citation, sagaID, expectedID string) error {
 	return problems.err()
 }
 
+// validateRelation checks one record against the rules of its own version: a
+// v3 record keeps exactly its original contract, and a v5 record follows the
+// frozen v5 matrix in schema/v5/relation.schema.json.
 func validateRelation(value Relation, sagaID, expectedID string) error {
+	if value.Version == V5RelationVersion || value.Schema == V5RelationSchemaURL {
+		return validateV5Relation(value, sagaID, expectedID)
+	}
 	var problems validationErrors
 	if value.Schema != RelationSchemaURL {
 		problems.add("$schema must be %q", RelationSchemaURL)
@@ -174,14 +180,37 @@ func validateRelation(value Relation, sagaID, expectedID string) error {
 	if value.Version != Version {
 		problems.add("version must be %d", Version)
 	}
+	if value.Scope != "" {
+		problems.add("scope is valid only on a v5 relation")
+	}
+	from, fromErr := parseEndpoint(value.From)
+	to, toErr := parseEndpoint(value.To)
+	if fromErr == nil && !from.Kind.v3() {
+		fromErr = fmt.Errorf("unsupported relation endpoint kind %q", from.Kind)
+	}
+	if toErr == nil && !to.Kind.v3() {
+		toErr = fmt.Errorf("unsupported relation endpoint kind %q", to.Kind)
+	}
+	validateRelationCommon(&problems, value, sagaID, expectedID, from, to, fromErr, toErr)
+	if fromErr == nil && toErr == nil {
+		if value.Type == RelationConflictsWith && value.To < value.From {
+			problems.add("conflicts_with endpoints must use canonical lexical order")
+		}
+		validateRelationMatrix(&problems, value, from, to)
+		validateEndpointPins(&problems, "from", from, value.FromRevision, value.FromContentDigest)
+		validateEndpointPins(&problems, "to", to, value.ToRevision, value.ToContentDigest)
+	}
+	return problems.err()
+}
+
+// validateRelationCommon holds the checks shared verbatim by v3 and v5.
+func validateRelationCommon(problems *validationErrors, value Relation, sagaID, expectedID string, from, to endpoint, fromErr, toErr error) {
 	if !livingid.ValidID(value.ID) || value.ID != expectedID {
 		problems.add("relation id must be stable and match its filename")
 	}
 	if !validRelationType(value.Type) {
 		problems.add("relation type is invalid")
 	}
-	from, fromErr := parseEndpoint(value.From)
-	to, toErr := parseEndpoint(value.To)
 	if fromErr != nil {
 		problems.add("from endpoint: %v", fromErr)
 	}
@@ -210,25 +239,16 @@ func validateRelation(value Relation, sagaID, expectedID string) error {
 		problems.add("superseded relation requires superseded_at")
 	}
 	if value.SupersededAt != nil {
-		validateTime(&problems, *value.SupersededAt)
+		validateTime(problems, *value.SupersededAt)
 	}
-	validateTime(&problems, value.CreatedAt)
-	validateRequestID(&problems, value.RequestID)
-	validateRequestID(&problems, value.SupersedeRequestID)
+	validateTime(problems, value.CreatedAt)
+	validateRequestID(problems, value.RequestID)
+	validateRequestID(problems, value.SupersedeRequestID)
 	for name, digest := range map[string]string{"from_content_digest": value.FromContentDigest, "to_content_digest": value.ToContentDigest} {
 		if digest != "" && !contentDigestPattern.MatchString(digest) {
 			problems.add("%s must use sha256:<64 lowercase hex>", name)
 		}
 	}
-	if fromErr == nil && toErr == nil {
-		if value.Type == RelationConflictsWith && value.To < value.From {
-			problems.add("conflicts_with endpoints must use canonical lexical order")
-		}
-		validateRelationMatrix(&problems, value, from, to)
-		validateEndpointPins(&problems, "from", from, value.FromRevision, value.FromContentDigest)
-		validateEndpointPins(&problems, "to", to, value.ToRevision, value.ToContentDigest)
-	}
-	return problems.err()
 }
 
 func validateRelationMatrix(problems *validationErrors, relation Relation, from, to endpoint) {

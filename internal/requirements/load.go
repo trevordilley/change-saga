@@ -69,7 +69,7 @@ func LoadWithOptions(root, sagaID string, options LoadOptions) (Document, error)
 	if sagaID != identity.ID {
 		return Document{}, fmt.Errorf("requested saga id %q does not match saga.json id %q", sagaID, identity.ID)
 	}
-	document := Document{Root: abs, SagaID: sagaID, Stories: []Story{}, Citations: []Citation{}, Relations: []Relation{}}
+	document := Document{Root: abs, SagaID: sagaID, SagaVersion: identity.Version, Stories: []Story{}, Citations: []Citation{}, Relations: []Relation{}}
 	requirementsRoot := filepath.Join(abs, "___requirements")
 	present, err := realDirectory(requirementsRoot)
 	if err != nil {
@@ -332,48 +332,19 @@ func loadRelations(document *Document) error {
 		if err := validateRelation(value, document.SagaID, expectedID); err != nil {
 			return fmt.Errorf("%s: %w", relative(document.Root, path), err)
 		}
+		if value.Version == V5RelationVersion && document.SagaVersion != reportV5SagaVersion {
+			return fmt.Errorf("%s: a v5 relation requires a format v5 saga", relative(document.Root, path))
+		}
 		document.Relations = append(document.Relations, value)
 	}
 	sort.Slice(document.Relations, func(i, j int) bool { return document.Relations[i].ID < document.Relations[j].ID })
 	return nil
 }
 
+// evaluateStaleness projects each relation's currency onto its legacy
+// Stale/StaleReasons fields. The comparison itself lives in EvaluateRelation.
 func evaluateStaleness(document *Document, inputs StaleInputs) {
-	currentRevisions := map[string]string{}
-	for key, value := range inputs.CurrentRevisions {
-		currentRevisions[key] = value
-	}
-	conflicted := map[string]bool{}
-	removed := map[string]bool{}
-	for _, story := range document.Stories {
-		storyID, _ := storyURN(document.SagaID, story.Identity.ID)
-		if story.CurrentRevision == nil {
-			conflicted[storyID] = true
-			for _, revision := range story.Revisions {
-				for _, criterion := range revision.AcceptanceCriteria {
-					id, _ := criterionURN(document.SagaID, story.Identity.ID, criterion.ID)
-					conflicted[id] = true
-				}
-			}
-			continue
-		}
-		revisionID, _ := revisionURN(document.SagaID, story.Identity.ID, story.CurrentRevision.ID)
-		currentRevisions[storyID] = revisionID
-		currentCriteria := map[string]bool{}
-		for _, criterion := range story.CurrentRevision.AcceptanceCriteria {
-			id, _ := criterionURN(document.SagaID, story.Identity.ID, criterion.ID)
-			currentRevisions[id] = revisionID
-			currentCriteria[id] = true
-		}
-		for _, revision := range story.Revisions {
-			for _, criterion := range revision.AcceptanceCriteria {
-				id, _ := criterionURN(document.SagaID, story.Identity.ID, criterion.ID)
-				if !currentCriteria[id] {
-					removed[id] = true
-				}
-			}
-		}
-	}
+	heads := newCurrencyHeads(*document, inputs)
 	for index := range document.Relations {
 		relation := &document.Relations[index]
 		if relation.State != RelationActive {
@@ -381,26 +352,10 @@ func evaluateStaleness(document *Document, inputs StaleInputs) {
 			relation.StaleReasons = nil
 			continue
 		}
-		reasons := []string{}
-		for _, pin := range []struct {
-			name, endpoint, revision, digest string
-		}{
-			{"from", relation.From, relation.FromRevision, relation.FromContentDigest},
-			{"to", relation.To, relation.ToRevision, relation.ToContentDigest},
-		} {
-			if inputs.Missing[pin.endpoint] {
-				reasons = append(reasons, pin.name+" endpoint is missing")
-			} else if removed[pin.endpoint] {
-				reasons = append(reasons, pin.name+" criterion is absent from the current revision")
-			}
-			if conflicted[pin.endpoint] && pin.revision != "" {
-				reasons = append(reasons, pin.name+" endpoint has multiple revision heads")
-			} else if current, known := currentRevisions[pin.endpoint]; known && pin.revision != "" && current != pin.revision {
-				reasons = append(reasons, pin.name+" revision changed")
-			}
-			if current, known := inputs.CurrentContentDigests[pin.endpoint]; known && pin.digest != "" && current != pin.digest {
-				reasons = append(reasons, pin.name+" content digest changed")
-			}
+		currency := heads.evaluate(*relation)
+		reasons := make([]string, 0, len(currency.Reasons))
+		for _, reason := range currency.Reasons {
+			reasons = append(reasons, reason.Message)
 		}
 		relation.StaleReasons = reasons
 		relation.Stale = len(reasons) > 0

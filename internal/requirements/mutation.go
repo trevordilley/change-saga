@@ -472,12 +472,29 @@ func AddRelation(root, sagaID string, input AddRelationInput) (MutationResult, e
 		FromContentDigest: input.FromContentDigest, ToContentDigest: input.ToContentDigest,
 		State: RelationActive, CreatedAt: mutationTime(input.CreatedAt), RequestID: input.RequestID,
 	}
+	// The container decides the record version: a v3 Saga keeps writing
+	// exactly the v3 record, and only a v5 Saga receives v5 relations.
+	current, err := Load(root, sagaID)
+	if err != nil {
+		return MutationResult{}, fmt.Errorf("cannot mutate requirements: %w", err)
+	}
+	if current.SagaVersion == reportV5SagaVersion {
+		value.Schema, value.Version, value.Scope = V5RelationSchemaURL, V5RelationVersion, input.Scope
+		if value.Scope == "" {
+			value.Scope = ScopeSelf
+		}
+	} else if input.Scope != "" {
+		return MutationResult{}, fmt.Errorf("relation scope requires a format v5 saga; run change-saga upgrade --to 5 first")
+	}
 	if err := validateRelation(value, sagaID, input.ID); err != nil {
 		return MutationResult{}, err
 	}
 	urn, _ := relationURN(sagaID, input.ID)
 	var result MutationResult
-	err := mutate(root, sagaID, func(document *Document) error {
+	err = mutate(root, sagaID, func(document *Document) error {
+		if document.SagaVersion != current.SagaVersion {
+			return fmt.Errorf("saga format changed while adding relation %q", input.ID)
+		}
 		for _, existing := range document.Relations {
 			if existing.ID != input.ID {
 				continue

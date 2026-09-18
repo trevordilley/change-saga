@@ -5,6 +5,7 @@ import (
 	"strings"
 
 	"github.com/twentyideas/changesaga/internal/livingid"
+	"github.com/twentyideas/changesaga/internal/qualityid"
 	"github.com/twentyideas/changesaga/internal/sagaref"
 )
 
@@ -26,6 +27,10 @@ func citationURN(sagaID, citationID string) (string, error) {
 
 func relationURN(sagaID, relationID string) (string, error) {
 	return livingid.Relation(sagaID, relationID)
+}
+
+func testCaseURN(sagaID, testCaseID string) (string, error) {
+	return qualityid.TestCase(sagaID, testCaseID)
 }
 
 // StoryEventURN returns the canonical name of an immutable lifecycle event.
@@ -54,7 +59,25 @@ const (
 	endpointVerification endpointKind = "verification"
 	endpointCitation     endpointKind = "citation"
 	endpointRelation     endpointKind = "relation"
+
+	// The remaining kinds are legal only on v5 relations.
+	endpointTestCase          endpointKind = "test-case"
+	endpointWave              endpointKind = "wave"
+	endpointDependency        endpointKind = "dependency"
+	endpointContract          endpointKind = "contract"
+	endpointQualityPolicy     endpointKind = "quality-policy"
+	endpointCoverageException endpointKind = "coverage-exception"
 )
+
+// v3 reports whether a v3 relation record may name this endpoint kind.
+func (kind endpointKind) v3() bool {
+	switch kind {
+	case endpointTestCase, endpointWave, endpointDependency, endpointContract, endpointQualityPolicy, endpointCoverageException:
+		return false
+	default:
+		return true
+	}
+}
 
 type endpoint struct {
 	Kind       endpointKind
@@ -80,6 +103,12 @@ func parseEndpoint(value string) (endpoint, error) {
 			ep.Kind = endpointCitation
 		case livingid.KindRelation:
 			ep.Kind = endpointRelation
+		case livingid.KindWave:
+			ep.Kind = endpointWave
+		case livingid.KindDependency:
+			ep.Kind = endpointDependency
+		case livingid.KindContract:
+			ep.Kind = endpointContract
 		default:
 			return endpoint{}, fmt.Errorf("unsupported relation endpoint kind %q", ref.Kind)
 		}
@@ -100,6 +129,21 @@ func parseEndpoint(value string) (endpoint, error) {
 			ep.Kind = endpointVerification
 		default:
 			return endpoint{}, fmt.Errorf("unsupported relation endpoint kind %q", target.Kind)
+		}
+		return ep, nil
+	}
+
+	if ref, err := qualityid.Parse(value); err == nil {
+		ep := endpoint{SagaID: ref.SagaID, ID: ref.ID}
+		switch ref.Kind {
+		case qualityid.KindTestCase:
+			ep.Kind = endpointTestCase
+		case qualityid.KindQualityPolicy:
+			ep.Kind = endpointQualityPolicy
+		case qualityid.KindCoverageException:
+			ep.Kind = endpointCoverageException
+		default:
+			return endpoint{}, fmt.Errorf("unsupported relation endpoint kind %q", ref.Kind)
 		}
 		return ep, nil
 	}
