@@ -1,31 +1,28 @@
 # Authoring a change for review
 
-## Hybrid report/deck composition
+## The Saga and its deck
 
-Use a v3 Report Saga as the parent when requirements, acceptance criteria,
-standalone prototypes, technical design, or work-plan history must remain
-living documentation. Add focused embedded decks only for complex implemented
-changes whose reviewer questions benefit from a visual sequence. A report can
-contain several decks; each is an independent `___slides/<id>.deck/` merge
-boundary under the same Saga identity. Never paginate the report or turn user
-stories and prototypes into slides.
+A Saga keeps requirements, acceptance criteria, prototypes, technical design,
+test cases, and work-plan history as living documentation, and explains the
+implemented change in its deck. Never paginate the report or turn user stories,
+prototypes, or design into slides. A Saga normally has one deck; each deck is
+an independent `___slides/<id>.deck/` merge boundary under the same Saga
+identity.
 
-Make the report requirements the closing-loop backbone. Every Item with exact
-code evidence must reach a user story through an active `explains` relation on
-the Item itself or one of its containing slide/deck targets. Pin the relation's
-target story revision. Prefer a criterion target when the visual explains one
-acceptance criterion; use a story target only when it genuinely applies to all
-criteria in that revision. Do not repeat the story prose in slide metadata.
+Make the requirements the closing-loop backbone. Every Item with exact code
+evidence must reach a user story through an active relation on the Item itself
+or one of its containing slide/deck targets, or transitively through the design
+or test case it implements. Pin the relation's target story revision. Prefer a
+criterion target when the visual explains one acceptance criterion; use a story
+target only when it genuinely applies to all criteria in that revision. Do not
+repeat the story prose in slide metadata.
 
 Before handoff, query each evidence path in reverse and clear the unlinked list:
 
 ```sh
-change-saga query traceability --saga report.saga --diff '<saga-diff URI>'
-change-saga query traceability --saga report.saga --commit '<resolved source-head commit>'
+change-saga query traceability --saga checkout.saga --diff '<saga-diff URI>'
+change-saga query traceability --saga checkout.saga --commit '<resolved source-head commit>'
 ```
-
-Prototype persistence is currently internal-only and has no supported public
-CLI, query, or reviewer UI. Treat that surface as staged.
 
 The saga is the authored proposal that accompanies the code—the successor to a
 flat PR title and description. Build it from the change author's point of view
@@ -57,12 +54,10 @@ stop and resolve the mismatch. Never put an unverified PR number into
 `saga.json`; a saga with no PR identity is better than one linked to the wrong
 review.
 
-## V2/v3 report contract
+## Report contract
 
 The overview, chapter, landmark, and Markdown-citation guidance in this section
-applies when maintaining a v2/v3 Report Saga or starting a v3 living Saga.
-Choose the standalone v4 contract below only when the review is intentionally
-slide-native. Neither choice translates chapters or fragments into pages
+applies to the Saga's report content. None of it is translated into slides
 mechanically.
 
 ### Overview contract
@@ -75,16 +70,17 @@ The root overview should let a reviewer answer these before opening code:
 4. Why is this implementation shaped this way?
 5. What are the major risks, rollout/compatibility concerns, and verification
    signals?
-6. What chapters follow, in what order, and which can be reviewed independently?
+6. How are Product, Design, Quality, and the implementation deck organized, and
+   which parts can be reviewed independently?
 
 Lead with a system/change map before the detailed prose. For a large change, the
 overview must visually establish the affected components, primary workflows,
 boundaries, and chapter structure. Add a before/after view when the behavioral
 shift is otherwise easy to miss.
 
-## Slide-native v4 contract
+## Implementation deck contract
 
-Slide-native review is a visual argument, not a report broken into pages. Each
+The implementation deck is a visual argument, not a report broken into pages. Each
 slide has one intent, one takeaway of at most 180 characters, and one bounded
 layout. Use 1–7 semantic Items and put every non-decorative node, edge, region,
 transition, example, risk, metric, statement, and callout in `reading_order`.
@@ -181,7 +177,7 @@ name the system model, the most consequential deviation from their likely
 expectation, why it exists, and the tradeoff it creates? If not, the deck is
 complete as an inventory but incomplete as an explanation.
 
-## Legacy v2/v3 chapter and evidence contract
+## Chapter and evidence contract
 
 ### Chapter contract
 
