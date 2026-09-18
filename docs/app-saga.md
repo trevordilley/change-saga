@@ -186,6 +186,23 @@ thing that happens is not "define the personas of this app".
   writes that rule over the JSON in its own CI, and the docs teach common rules
   as recipes rather than flags. The JSON shape is therefore a contract. Counts
   and lists, never one blended score.
+- **Asking a question is one command.** `change-saga check --against main
+  --covers implementation,stories app.saga` answers whether the named areas are
+  fully covered: exit zero if they are, non-zero with only those areas' gaps if
+  not. Nothing is required unless someone asks. The areas follow the chain, so
+  each is one more link:
+
+  | Area | Covered when |
+  | --- | --- |
+  | `implementation` | every changed line is referenced by the deck |
+  | `stories` | every changed line reaches a story through the chain |
+  | `personas` | every changed line reaches a persona |
+  | `design` | every story in scope has design |
+  | `quality` | every acceptance criterion in scope has a test |
+  | `health` | nothing that already existed went stale or broke |
+
+  With `--against`, the scope is the change: what it changed and what it
+  affected. Without it, the scope is the whole app. `--epic` narrows either.
 - **Nothing is locked in.** The first change's deck goes into an epic the author
   names, defaulting to the pull request's title. Story, deck, and slide URNs
   carry no epic, so reorganizing later breaks nothing.
@@ -297,7 +314,7 @@ repositories (goal 10).
 verdict: `status` exits zero whenever it can report, and non-zero only when the
 Saga is broken; the report covers implementation, the ratchet on existing
 records, and every growth area as stable JSON teams can script their own rules
-over, with documented CI recipes; `init` and first-run next actions that start with coverage; the
+over, with documented CI recipes; `check --covers` for yes/no questions; `init` and first-run next actions that start with coverage; the
 default epic; contextual growth suggestions that teach the practices; and the
 skill, README, and help rewritten for incremental adoption. The first-run experience on a real 30-file pull request is its
 acceptance test.
