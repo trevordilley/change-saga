@@ -2,15 +2,14 @@ package server
 
 import (
 	"net/url"
-	"strings"
 	"testing"
 
 	"github.com/twentyideas/changesaga/internal/coverage"
 )
 
 func TestCoverageManifestProvesBothMappingDirections(t *testing.T) {
-	document, changes, report, _, staleURI := codeViewFixture(t)
-	report.Summary = coverage.Summary{Total: 3, Covered: 2, Uncovered: 1, Overlapping: 1, Orphaned: 1}
+	document, changes, report, _, staleRef := codeViewFixture(t)
+	report.Summary = coverage.Summary{Total: 3, Covered: 2, Uncovered: 1, Overlapping: 1, Stale: 1}
 	report.Complete = false
 
 	view := makeCoverageManifestView(document, changes, report)
@@ -46,10 +45,10 @@ func TestCoverageManifestProvesBothMappingDirections(t *testing.T) {
 		t.Fatalf("reverse mapping did not retain an expandable file diff: %#v", flow.Files)
 	}
 	parsed, err := url.Parse(flow.Chunks[0].Href)
-	if err != nil || parsed.Query().Get("view") != "code" || !strings.Contains(parsed.Query().Get("diff"), "end=11") {
+	if err != nil || parsed.Query().Get("view") != "code" || parsed.Query().Get("ref") != testLocation(changes.HeadOID, "src/api/handler.go", 10, 11) {
 		t.Fatalf("reverse mapping did not deep-link to the full code range: %q (%v)", flow.Chunks[0].Href, err)
 	}
-	if len(view.Orphans) != 1 || view.Orphans[0].URI != staleURI || view.Orphans[0].Owner.Title != "Request flow" {
+	if len(view.Orphans) != 1 || view.Orphans[0].URI != staleRef || view.Orphans[0].Owner.Title != "Request flow" || view.Orphans[0].Reason != staleCodeReason {
 		t.Fatalf("stale narrative evidence was not auditable: %#v", view.Orphans)
 	}
 }

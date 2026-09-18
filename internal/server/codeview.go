@@ -222,7 +222,7 @@ func makeCodeReviewView(document *saga.Saga, changes gitdiff.ChangeSet, report c
 		}
 	}
 
-	selected, selectedAtoms, err := resolveCodeSelection(files, selection)
+	selected, selectedAtoms, err := resolveCodeSelection(files, selection, changes.BaseOID, changes.HeadOID)
 	if err != nil {
 		return nil, err
 	}
@@ -255,7 +255,7 @@ func makeCodeReviewView(document *saga.Saga, changes gitdiff.ChangeSet, report c
 	return view, nil
 }
 
-func resolveCodeSelection(files []*FileDiffView, selection codeSelection) (*FileDiffView, []*diffAtomView, *selectionError) {
+func resolveCodeSelection(files []*FileDiffView, selection codeSelection, baseOID, headOID string) (*FileDiffView, []*diffAtomView, *selectionError) {
 	var selected *FileDiffView
 	if selection.filePath != "" {
 		for _, file := range files {
@@ -275,6 +275,9 @@ func resolveCodeSelection(files []*FileDiffView, selection codeSelection) (*File
 		selector, err = coderef.ParseLocation(selection.ref)
 		if err != nil {
 			return nil, nil, &selectionError{status: http.StatusBadRequest, message: "invalid selected code location"}
+		}
+		if selector.Commit != baseOID && selector.Commit != headOID {
+			return nil, nil, &selectionError{status: http.StatusNotFound, message: "selected code is not part of the comparison"}
 		}
 		if selected == nil {
 			for _, file := range files {

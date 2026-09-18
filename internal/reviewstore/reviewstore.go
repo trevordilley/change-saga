@@ -28,8 +28,8 @@ func AddThread(root, target, body string, anchor saga.Anchor, kind, replacement 
 	if kind != "comment" && kind != "suggestion" {
 		return "", fmt.Errorf("thread kind must be comment or suggestion")
 	}
-	if kind == "suggestion" && (anchor.Type != "diff" || strings.TrimSpace(replacement) == "") {
-		return "", fmt.Errorf("suggestions require a diff anchor and replacement content")
+	if kind == "suggestion" && (anchor.Type != "code" || strings.TrimSpace(replacement) == "") {
+		return "", fmt.Errorf("suggestions require a code anchor and replacement content")
 	}
 	if kind != "suggestion" && strings.TrimSpace(replacement) != "" {
 		return "", fmt.Errorf("replacement content is only valid for suggestions")

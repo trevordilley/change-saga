@@ -22,9 +22,9 @@ func TestDiffCountsHaveOneSharedRenderer(t *testing.T) {
 
 func TestFocusedCodeRendererIncludesAccessibleLocalDiffControls(t *testing.T) {
 	tmpl := serverTemplate(t)
-	old := &diffAtomView{Atom: gitdiff.Atom{Kind: "line", Key: "old", Ref: "saga-diff://v1/line?base=a&end=7&head=b&path=src/app.go&repository=https%3A%2F%2Fexample.test%2Fa.git&side=old&start=7", Path: "src/app.go", Side: "old", Line: 7, Content: "return old"}, Target: "urn:change-saga:test:saga"}
-	added := &diffAtomView{Atom: gitdiff.Atom{Kind: "line", Key: "new", Ref: "saga-diff://v1/line?base=a&end=7&head=b&path=src/app.go&repository=https%3A%2F%2Fexample.test%2Fa.git&side=new&start=7", Path: "src/app.go", Side: "new", Line: 7, Content: "return fresh"}, Target: "urn:change-saga:test:saga", Selected: true}
-	file := &FileDiffView{ID: "diff-app", Name: "app.go", Path: "src/app.go", Ref: "file-uri", Added: 1, Deleted: 1, Selected: true, Atoms: []*diffAtomView{old, added}, Lines: []*DiffLineView{
+	old := &diffAtomView{Atom: gitdiff.Atom{Kind: "line", Key: "old", Ref: testLocation(testBaseCommit, "src/app.go", 7, 7), Path: "src/app.go", Side: "old", Line: 7, Content: "return old"}, Target: "urn:change-saga:test:saga"}
+	added := &diffAtomView{Atom: gitdiff.Atom{Kind: "line", Key: "new", Ref: testLocation(testHeadCommit, "src/app.go", 7, 7), Path: "src/app.go", Side: "new", Line: 7, Content: "return fresh"}, Target: "urn:change-saga:test:saga", Selected: true}
+	file := &FileDiffView{ID: "diff-app", Name: "app.go", Path: "src/app.go", Ref: testLocation(testHeadCommit, "src/app.go", 0, 0), Added: 1, Deleted: 1, Selected: true, Atoms: []*diffAtomView{old, added}, Lines: []*DiffLineView{
 		{Kind: "context", Path: "src/app.go", OldLine: 6, NewLine: 6, Content: "func value() string {"},
 		{Kind: "old", Path: "src/app.go", OldLine: 7, Content: old.Content, Atom: old},
 		{Kind: "new", Path: "src/app.go", NewLine: 7, Content: added.Content, Atom: added},
@@ -50,6 +50,7 @@ func TestFocusedCodeRendererIncludesAccessibleLocalDiffControls(t *testing.T) {
 		`aria-label="Removed old line 7"`, `aria-label="Added new line 7"`,
 		`data-selection-action="comment"`, `data-selection-action="suggestion"`, `data-selection-clear`,
 		`class="diff-row new selected"`, `href="#target-flow"`, `class="diff-counts"`,
+		`data-diff-ref="` + old.Ref + `"`, `data-diff-ref="` + added.Ref + `"`,
 	} {
 		if !strings.Contains(body, expected) {
 			t.Errorf("renderer omitted %q", expected)

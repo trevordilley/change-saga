@@ -3438,7 +3438,7 @@ const appJavaScript = `(() => {
 	  event.preventDefault();
       const id = decodeURIComponent(sagaLink.getAttribute('href').slice(1));
 	  const sagaURL = new URL(location.href);
-	  ['view', 'file', 'diff', 'mode', 'activity', 'target'].forEach(key => sagaURL.searchParams.delete(key));
+	  ['view', 'file', 'ref', 'mode', 'activity', 'target'].forEach(key => sagaURL.searchParams.delete(key));
 	  sagaURL.hash = id;
 	  history.pushState({view:'saga'}, '', sagaURL);
 	  if (sagaLink.closest('.diff-drawer.open')) closeDrawer(false);

@@ -13,7 +13,7 @@ func TestAppJavaScriptSyntaxAndRangeSelectionContract(t *testing.T) {
 	if err != nil {
 		t.Skip("node is not installed")
 	}
-	source := strings.Replace(appJavaScript, "})();", "globalThis.changeSagaTest = {languageForPath, selectedRangeURI, normalizedAnnotationColor, colorWithAlpha, shortcutDirection, annotationDeleteShortcut, translateShape, stepShapeDraftHistory, clampNormalized, stickyNoteAnchor, translateNote, annotationLabel};})();", 1)
+	source := strings.Replace(appJavaScript, "})();", "globalThis.changeSagaTest = {languageForPath, parseCodeLocation, selectedRangeRef, normalizedAnnotationColor, colorWithAlpha, shortcutDirection, annotationDeleteShortcut, translateShape, stepShapeDraftHistory, clampNormalized, stickyNoteAnchor, translateNote, annotationLabel};})();", 1)
 	prelude := `globalThis.document={querySelector:()=>null,querySelectorAll:()=>[],addEventListener:()=>{},body:{dataset:{}}};
 globalThis.location={href:'http://127.0.0.1/?view=code',pathname:'/',search:'?view=code',hash:''};
 globalThis.history={pushState:()=>{}};globalThis.addEventListener=()=>{};globalThis.innerWidth=1400;
@@ -24,8 +24,15 @@ if(changeSagaTest.languageForPath('web/view.tsx')!=='javascript')throw new Error
 for(const prose of ['README.md','docs/guide.mdx','notes.txt','LICENSE','skills/x/SKILL.md'])
   if(changeSagaTest.languageForPath(prose)!=='prose')throw new Error('prose file was treated as code: '+prose);
 if(changeSagaTest.languageForPath('config/app.json')!=='json')throw new Error('JSON language detection failed');
-const rows=[{dataset:{line:'11',diffRef:'saga-diff://v1/line?base=a&end=11&head=b&path=app.go&repository=https%3A%2F%2Fe.test%2Fa.git&side=new&start=11'}},{dataset:{line:'13'}}];
-const range=changeSagaTest.selectedRangeURI(rows);if(!range.includes('start=11')||!range.includes('end=13')||!range.includes('side=new'))throw new Error('qualified range selection failed');
+const commit='b'.repeat(40);
+const rows=[{dataset:{line:'11',diffRef:commit+':web/app.go#L11'}},{dataset:{line:'13'}}];
+if(changeSagaTest.selectedRangeRef(rows)!==commit+':web/app.go#L11-L13')throw new Error('code range selection failed');
+if(changeSagaTest.selectedRangeRef(rows.slice(0,1))!==commit+':web/app.go#L11')throw new Error('single-line selection must use the canonical #L<n> form');
+const line=changeSagaTest.parseCodeLocation(commit+':web/app.go#L4-L9');
+if(!line||line.commit!==commit||line.path!=='web/app.go'||line.start!==4||line.end!==9)throw new Error('code location parse failed');
+const whole=changeSagaTest.parseCodeLocation(commit+':web/app.go');
+if(!whole||whole.path!=='web/app.go'||'start' in whole||'end' in whole)throw new Error('whole-file location parse failed');
+if(changeSagaTest.parseCodeLocation('saga-diff://v1/line?path=app.go')!==null||changeSagaTest.parseCodeLocation('abc:app.go')!==null)throw new Error('non-canonical locations must not parse');
 if(changeSagaTest.normalizedAnnotationColor('#A1b2C3')!=='#a1b2c3')throw new Error('annotation color normalization failed');
 if(changeSagaTest.normalizedAnnotationColor('red')!=='#d04832')throw new Error('unsafe annotation color fallback failed');
 if(changeSagaTest.colorWithAlpha('#112233')!=='#11223355')throw new Error('highlight alpha failed');

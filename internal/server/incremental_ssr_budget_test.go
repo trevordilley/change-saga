@@ -15,6 +15,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/twentyideas/changesaga/internal/saga"
 	"github.com/twentyideas/changesaga/internal/testfixture"
 )
 
@@ -248,7 +249,7 @@ func TestAsyncPageConstructionIsInvariantToComparisonScale(t *testing.T) {
 // This is the scale half of TestRootShellDoesNotConstructTheSourceComparison.
 // Both fixtures have the same saga title, four chapter summaries, four fragment
 // descriptors, review state, source comparison, and coverage totals. The large
-// fixture merely repeats one valid DiffReference in independent ___code files.
+// fixture merely repeats one valid code reference in independent ___code files.
 // Root construction is therefore O(chapters + summary metadata) only when its
 // response and allocations stay invariant to that multiplication.
 //

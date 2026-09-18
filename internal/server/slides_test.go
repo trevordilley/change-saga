@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/twentyideas/changesaga/internal/diffuri"
+	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/reviewstore"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
@@ -112,7 +112,7 @@ func TestEmbeddedDeckCoverageAndActivityUseTheFlatReviewOverlay(t *testing.T) {
 
 	root := filepath.Join(repo, "visual.saga")
 	writeEmbeddedSlideFixture(t, root)
-	repository, err := diffuri.FileRepository(repo)
+	repository, err := coderef.FileRepository(repo)
 	if err != nil {
 		t.Fatal(err)
 	}

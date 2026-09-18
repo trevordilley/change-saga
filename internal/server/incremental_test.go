@@ -129,7 +129,7 @@ func TestCodeCatalogNeverCallsTheFullComparisonLoader(t *testing.T) {
 		t.Fatalf("selected path %q was absent from its catalog", filePath)
 	}
 	reviewValues := url.Values{
-		"uri":   {catalogFileView(application.catalog.value, reviewFile, saga.FileReview{}).Ref},
+		"ref":   {catalogFileView(application.catalog.value, reviewFile, saga.FileReview{}).Ref},
 		"state": {"reviewed"},
 		"file":  {filePath},
 	}

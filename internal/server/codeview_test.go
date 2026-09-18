@@ -11,8 +11,8 @@ import (
 	"time"
 	"unicode/utf8"
 
+	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coverage"
-	"github.com/twentyideas/changesaga/internal/diffuri"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
@@ -32,17 +32,14 @@ func BenchmarkMakeCodeReviewViewLargeSaga(b *testing.B) {
 	}
 }
 
-func TestCodeDiffURLPreservesPathAndQualifiedDiffURI(t *testing.T) {
-	diffURI := mustDiffURI(t, diffuri.Reference{
-		Repository: "https://example.test/org/repo.git", Base: "aaa", Head: "product-bbb",
-		Kind: "line", Path: "dir/a b&c.go", Side: "new", Start: 7, End: 9,
-	})
-	href := CodeDiffURL("dir/a b&c.go", diffURI)
+func TestCodeDiffURLPreservesPathAndExactCodeLocation(t *testing.T) {
+	ref := testLocation(testHeadCommit, "dir/a b&c.go", 7, 9)
+	href := CodeDiffURL("dir/a b&c.go", ref)
 	parsed, err := url.Parse(href)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if parsed.Query().Get("view") != "code" || parsed.Query().Get("file") != "dir/a b&c.go" || parsed.Query().Get("diff") != diffURI {
+	if parsed.Query().Get("view") != "code" || parsed.Query().Get("file") != "dir/a b&c.go" || parsed.Query().Get("ref") != ref {
 		t.Fatalf("URL did not round trip selection: %s", href)
 	}
 }
@@ -71,7 +68,7 @@ func TestChangedFileTreeIsNestedAndAggregatesReviewState(t *testing.T) {
 }
 
 func TestCodeReviewViewScopesReverseOwnershipAndKeepsForwardLinks(t *testing.T) {
-	document, changes, report, secondURI, staleURI := codeViewFixture(t)
+	document, changes, report, secondRef, staleRef := codeViewFixture(t)
 	view, selectionErr := makeCodeReviewView(document, changes, report, nil, codeSelection{filePath: "src/api/handler.go"})
 	if selectionErr != nil {
 		t.Fatal(selectionErr)
@@ -90,11 +87,11 @@ func TestCodeReviewViewScopesReverseOwnershipAndKeepsForwardLinks(t *testing.T) 
 		t.Fatalf("fragment reverse link is not exact: %#v", flow)
 	}
 
-	view, selectionErr = makeCodeReviewView(document, changes, report, nil, codeSelection{ref: secondURI})
+	view, selectionErr = makeCodeReviewView(document, changes, report, nil, codeSelection{ref: secondRef})
 	if selectionErr != nil {
 		t.Fatal(selectionErr)
 	}
-	if view.SelectedDiff == nil || view.SelectedDiff.Ref != secondURI || len(view.RelatedSaga) != 1 || view.RelatedSaga[0].Title != "Backend" {
+	if view.SelectedDiff == nil || view.SelectedDiff.Ref != secondRef || len(view.RelatedSaga) != 1 || view.RelatedSaga[0].Title != "Backend" {
 		t.Fatalf("exact diff selection did not narrow reverse ownership: %#v", view.RelatedSaga)
 	}
 
@@ -111,21 +108,18 @@ func TestCodeReviewViewScopesReverseOwnershipAndKeepsForwardLinks(t *testing.T) 
 	if err != nil {
 		t.Fatal(err)
 	}
-	if forwardURL.Query().Get("file") != "src/api/handler.go" || forwardURL.Query().Get("diff") != flowOwnership.Diffs[0].Ref {
+	if forwardURL.Query().Get("file") != "src/api/handler.go" || forwardURL.Query().Get("ref") != flowOwnership.Diffs[0].Ref {
 		t.Fatalf("forward ownership deep link lost its exact selection: %s", flowOwnership.Diffs[0].Href)
 	}
-	if flowOwnership.Diffs[1].Available || flowOwnership.Diffs[1].Ref != staleURI || flowOwnership.Diffs[1].Reason != "diff URI does not match the current source comparison" {
+	if flowOwnership.Diffs[1].Available || flowOwnership.Diffs[1].Ref != staleRef || flowOwnership.Diffs[1].Reason != staleCodeReason {
 		t.Fatalf("missing fully-qualified stale ownership: %#v", flowOwnership.Diffs[1])
 	}
 }
 
 func TestCodeReviewSelectionRejectsUnknownOrMismatchedValues(t *testing.T) {
 	document, changes, report, _, _ := codeViewFixture(t)
-	fileURI := mustDiffURI(t, diffuri.Reference{
-		Repository: changes.Repository, Base: changes.BaseOID, Head: changes.HeadOID,
-		Kind: "file", Path: "src/api/handler.go",
-	})
-	view, selectionErr := makeCodeReviewView(document, changes, report, nil, codeSelection{ref: fileURI})
+	fileRef := testLocation(changes.HeadOID, "src/api/handler.go", 0, 0)
+	view, selectionErr := makeCodeReviewView(document, changes, report, nil, codeSelection{ref: fileRef})
 	if selectionErr != nil || view.SelectedFile.Path != "src/api/handler.go" || len(view.SelectedDiffs) != 2 || len(view.RelatedSaga) != 2 {
 		t.Fatalf("qualified file selection failed: view=%#v error=%v", view, selectionErr)
 	}
@@ -137,24 +131,31 @@ func TestCodeReviewSelectionRejectsUnknownOrMismatchedValues(t *testing.T) {
 	if selectionErr == nil || selectionErr.status != http.StatusBadRequest {
 		t.Fatalf("malformed diff error = %#v", selectionErr)
 	}
-	foreign := mustDiffURI(t, diffuri.Reference{
-		Repository: "https://elsewhere.test/repo.git", Base: "aaa", Head: "product-bbb",
-		Kind: "line", Path: "src/api/handler.go", Side: "new", Start: 11, End: 11,
-	})
+	// The changed line exists at the head commit; the same line number at a
+	// commit outside the comparison is a different line.
+	foreign := testLocation(testForeignCommit, "src/api/handler.go", 11, 11)
 	_, selectionErr = makeCodeReviewView(document, changes, report, nil, codeSelection{ref: foreign})
 	if selectionErr == nil || selectionErr.status != http.StatusNotFound {
 		t.Fatalf("foreign diff error = %#v", selectionErr)
 	}
-	foreignFile := mustDiffURI(t, diffuri.Reference{
-		Repository: "https://elsewhere.test/repo.git", Base: "aaa", Head: "product-bbb",
-		Kind: "file", Path: "src/api/handler.go",
-	})
+	// The added line lives at the head commit, not at the merge-base.
+	wrongSide := testLocation(changes.BaseOID, "src/api/handler.go", 11, 11)
+	_, selectionErr = makeCodeReviewView(document, changes, report, nil, codeSelection{ref: wrongSide})
+	if selectionErr == nil || selectionErr.status != http.StatusNotFound {
+		t.Fatalf("wrong-side diff error = %#v", selectionErr)
+	}
+	foreignFile := testLocation(testForeignCommit, "src/api/handler.go", 0, 0)
 	_, selectionErr = makeCodeReviewView(document, changes, report, nil, codeSelection{ref: foreignFile})
 	if selectionErr == nil || selectionErr.status != http.StatusNotFound {
-		t.Fatalf("foreign file diff error = %#v", selectionErr)
+		t.Fatalf("foreign whole-file error = %#v", selectionErr)
+	}
+	unchangedFile := testLocation(changes.HeadOID, "src/api/unchanged.go", 0, 0)
+	_, selectionErr = makeCodeReviewView(document, changes, report, nil, codeSelection{filePath: "src/api/handler.go", ref: unchangedFile})
+	if selectionErr == nil || selectionErr.status != http.StatusNotFound {
+		t.Fatalf("unchanged file diff error = %#v", selectionErr)
 	}
 	emptyDocument := &saga.Saga{Manifest: saga.Manifest{ID: "empty"}, Section: &saga.Section{Target: saga.SagaTarget("empty")}}
-	_, selectionErr = makeCodeReviewView(emptyDocument, gitdiff.ChangeSet{}, coverage.Report{}, nil, codeSelection{ref: fileURI})
+	_, selectionErr = makeCodeReviewView(emptyDocument, gitdiff.ChangeSet{}, coverage.Report{}, nil, codeSelection{ref: fileRef})
 	if selectionErr == nil || selectionErr.status != http.StatusNotFound {
 		t.Fatalf("diff against empty comparison error = %#v", selectionErr)
 	}
@@ -179,7 +180,7 @@ func TestRelatedSagaLinksBackToExactLandmark(t *testing.T) {
 		chapterID: "backend", chapterTitle: "Backend", chapterTarget: saga.ChapterTarget("test", "backend"),
 		chapterHref: sagaHref(saga.ChapterTarget("test", "backend")), fragmentHref: sagaHref(fragment.Target) + "--submit-action",
 	}
-	atom := &diffAtomView{Atom: gitdiff.Atom{Key: "changed", Ref: "saga-diff://example"}}
+	atom := &diffAtomView{Atom: gitdiff.Atom{Key: "changed", Ref: testLocation(testHeadCommit, "app.go", 1, 1)}}
 	result := makeRelatedSagaViews([]narrativeLocation{location}, []*diffAtomView{atom}, map[string][]coverage.Assignment{
 		"changed": {{Target: landmarkTarget}},
 	})
@@ -214,9 +215,9 @@ func TestRelatedSagaRollsItemOwnersUpToSlidesAndGroupsByDeck(t *testing.T) {
 	}
 	locations := indexNarrativeFragments(document)
 	atoms := []*diffAtomView{
-		{Atom: gitdiff.Atom{Key: "client", Ref: "diff://client"}},
-		{Atom: gitdiff.Atom{Key: "server", Ref: "diff://server"}},
-		{Atom: gitdiff.Atom{Key: "timeout", Ref: "diff://timeout"}},
+		{Atom: gitdiff.Atom{Key: "client", Ref: testLocation(testHeadCommit, "web/client.js", 1, 1)}},
+		{Atom: gitdiff.Atom{Key: "server", Ref: testLocation(testHeadCommit, "api/server.go", 1, 1)}},
+		{Atom: gitdiff.Atom{Key: "timeout", Ref: testLocation(testHeadCommit, "api/server.go", 2, 2)}},
 	}
 	result := makeRelatedSagaViews(locations, atoms, map[string][]coverage.Assignment{
 		"client":  {{Target: first.Landmarks[0].Target}},
@@ -324,66 +325,51 @@ func codeViewFixture(t *testing.T) (*saga.Saga, gitdiff.ChangeSet, coverage.Repo
 	writeServerFile(t, filepath.Join(overviewDir, "content.md"), "# Overview\nA concise overview.\n")
 	writeServerFile(t, filepath.Join(flowDir, "index.html"), `<script>alert("not excerpted")</script><p>Visible explanation of the request flow.</p>`)
 
-	firstURI := mustDiffURI(t, diffuri.Reference{
-		Repository: "https://example.test/repo.git", Base: "aaa", Head: "product-bbb",
-		Kind: "line", Path: "src/api/handler.go", Side: "new", Start: 10, End: 10,
-	})
-	secondURI := mustDiffURI(t, diffuri.Reference{
-		Repository: "https://example.test/repo.git", Base: "aaa", Head: "product-bbb",
-		Kind: "line", Path: "src/api/handler.go", Side: "new", Start: 11, End: 11,
-	})
-	rangeURI := mustDiffURI(t, diffuri.Reference{
-		Repository: "https://example.test/repo.git", Base: "aaa", Head: "product-bbb",
-		Kind: "line", Path: "src/api/handler.go", Side: "new", Start: 10, End: 11,
-	})
-	staleURI := mustDiffURI(t, diffuri.Reference{
-		Repository: "https://example.test/repo.git", Base: "aaa", Head: "product-bbb",
-		Kind: "line", Path: "src/api/handler.go", Side: "new", Start: 99, End: 99,
-	})
-	first := gitdiff.Atom{Kind: "line", Path: "src/api/handler.go", Side: "new", Line: 10, Content: "first", Ref: firstURI}
+	firstRef := testLocation(testHeadCommit, "src/api/handler.go", 10, 10)
+	secondRef := testLocation(testHeadCommit, "src/api/handler.go", 11, 11)
+	rangeReference := testReference(testHeadCommit, "src/api/handler.go", 10, 11, "request handling")
+	staleReference := testReference(testForeignCommit, "src/api/handler.go", 99, 99, "")
+	staleRef := staleReference.Location().String()
+	first := gitdiff.Atom{Kind: "line", Path: "src/api/handler.go", Side: "new", Line: 10, Content: "first", Ref: firstRef}
 	first.Key = gitdiff.Key(first)
-	second := gitdiff.Atom{Kind: "line", Path: "src/api/handler.go", Side: "new", Line: 11, Content: "second", Ref: secondURI}
+	second := gitdiff.Atom{Kind: "line", Path: "src/api/handler.go", Side: "new", Line: 11, Content: "second", Ref: secondRef}
 	second.Key = gitdiff.Key(second)
-	unownedURI := mustDiffURI(t, diffuri.Reference{
-		Repository: "https://example.test/repo.git", Base: "aaa", Head: "product-bbb",
-		Kind: "line", Path: "docs/unowned.md", Side: "new", Start: 1, End: 1,
-	})
-	unowned := gitdiff.Atom{Kind: "line", Path: "docs/unowned.md", Side: "new", Line: 1, Content: "docs", Ref: unownedURI}
+	unownedRef := testLocation(testHeadCommit, "docs/unowned.md", 1, 1)
+	unowned := gitdiff.Atom{Kind: "line", Path: "docs/unowned.md", Side: "new", Line: 1, Content: "docs", Ref: unownedRef}
 	unowned.Key = gitdiff.Key(unowned)
 
 	overview := &saga.Fragment{ID: "overview", Title: "Overview", Target: saga.FragmentTarget("test", "overview"), Directory: overviewDir, MediaType: "text/markdown", Entrypoint: "content.md"}
 	flowDiffPath := filepath.Join(flowDir, saga.CodeDirName, "flow.json")
 	flow := &saga.Fragment{
 		ID: "flow", Title: "Request flow", Target: saga.FragmentTarget("test", "flow"), Directory: flowDir, MediaType: "text/html", Entrypoint: "index.html",
-		Code: []saga.CodeFile{{Path: flowDiffPath, References: []saga.DiffReference{{URI: rangeURI, Note: "request handling"}, {URI: staleURI}}}},
+		Code: []saga.CodeFile{{Path: flowDiffPath, References: []coderef.Reference{rangeReference, staleReference}}},
 	}
 	chapter := &saga.Section{Kind: "chapter", ID: "backend", Title: "Backend", Target: saga.ChapterTarget("test", "backend"), Fragments: []*saga.Fragment{flow}}
 	section := &saga.Section{Kind: "saga", ID: "test", Title: "Test", Target: saga.SagaTarget("test"), Fragments: []*saga.Fragment{overview}, Children: []*saga.Section{chapter}}
 	document := &saga.Saga{Root: root, Manifest: saga.Manifest{ID: "test"}, Section: section}
-	changes := gitdiff.ChangeSet{Repository: "https://example.test/repo.git", BaseOID: "aaa", HeadOID: "product-bbb", Atoms: []gitdiff.Atom{first, second, unowned}}
+	changes := gitdiff.ChangeSet{Repository: "https://example.test/repo.git", BaseOID: testBaseCommit, HeadOID: testHeadCommit, Atoms: []gitdiff.Atom{first, second, unowned}}
 	report := coverage.Report{
 		Ownership: map[string][]coverage.Assignment{
-			first.Key:  {{Target: overview.Target}, {Target: flow.Target, DiffFile: flowDiffPath, Diff: 1}},
-			second.Key: {{Target: flow.Target, DiffFile: flowDiffPath, Diff: 1}},
+			first.Key:  {{Target: overview.Target}, {Target: flow.Target, EvidenceFile: flowDiffPath, Reference: 1}},
+			second.Key: {{Target: flow.Target, EvidenceFile: flowDiffPath, Reference: 1}},
 		},
-		Orphans: []coverage.Orphan{{
-			Assignment: coverage.Assignment{Target: flow.Target, DiffFile: flowDiffPath, Diff: 2},
-			Reference:  saga.DiffReference{URI: staleURI}, Reason: "diff URI does not match the current source comparison",
+		StaleReferences: []coverage.StaleReference{{
+			Assignment: coverage.Assignment{Target: flow.Target, EvidenceFile: flowDiffPath, Reference: 2},
+			Reference:  staleReference, Reason: staleCodeReason,
 		}},
 	}
-	document.FileReviews = []saga.FileReview{{URI: mustDiffURI(t, diffuri.Reference{
-		Repository: changes.Repository, Base: changes.BaseOID, Head: changes.HeadOID, Kind: "file", Path: "src/api/handler.go",
-	}), Author: "Ada", State: "reviewed", CreatedAt: time.Now()}}
-	return document, changes, report, secondURI, staleURI
+	document.FileReviews = []saga.FileReview{{
+		Code: testReference(changes.HeadOID, "src/api/handler.go", 0, 0, ""), Author: "Ada", State: "reviewed", CreatedAt: time.Now(),
+	}}
+	return document, changes, report, secondRef, staleRef
 }
 
 func largeCodeViewFixture(tb testing.TB, fileCount, linesPerFile int) (*saga.Saga, gitdiff.ChangeSet, coverage.Report, codeSelection) {
 	tb.Helper()
 	const (
 		repository = "https://example.test/org/large.git"
-		base       = "base-oid"
-		head       = "product-head-oid"
 	)
+	base, head := testBaseCommit, testHeadCommit
 	document := &saga.Saga{
 		Manifest: saga.Manifest{ID: "large"},
 		Section:  &saga.Section{Kind: "saga", ID: "large", Title: "Large", Target: saga.SagaTarget("large")},
@@ -401,41 +387,39 @@ func largeCodeViewFixture(tb testing.TB, fileCount, linesPerFile int) (*saga.Sag
 			Target: saga.FragmentTarget("large", fragmentID), MediaType: "application/octet-stream",
 		}
 		diffPath := fmt.Sprintf("implementation.chapter/%s.fragment/___code/implementation.json", fragmentID)
-		rangeURI := mustDiffURIForTB(tb, diffuri.Reference{
-			Repository: repository, Base: base, Head: head, Kind: "line", Path: filePath,
-			Side: "new", Start: 1, End: linesPerFile,
-		})
-		fragment.Code = []saga.CodeFile{{Path: diffPath, References: []saga.DiffReference{{URI: rangeURI, Note: "Implements the component."}}}}
+		fragment.Code = []saga.CodeFile{{Path: diffPath, References: []coderef.Reference{testReference(head, filePath, 1, linesPerFile, "Implements the component.")}}}
 		chapter.Fragments = append(chapter.Fragments, fragment)
 		for line := 1; line <= linesPerFile; line++ {
 			atom := gitdiff.Atom{Kind: "line", Path: filePath, Side: "new", Line: line, Content: "changed line"}
 			atom.Key = gitdiff.Key(atom)
-			atom.Ref = mustDiffURIForTB(tb, diffuri.Reference{
-				Repository: repository, Base: base, Head: head, Kind: "line", Path: filePath,
-				Side: "new", Start: line, End: line,
-			})
+			atom.Ref = changes.Location(atom).String()
 			changes.Atoms = append(changes.Atoms, atom)
-			report.Ownership[atom.Key] = []coverage.Assignment{{Target: fragment.Target, DiffFile: diffPath, Diff: 1}}
+			report.Ownership[atom.Key] = []coverage.Assignment{{Target: fragment.Target, EvidenceFile: diffPath, Reference: 1}}
 		}
 	}
 	selectedPath := fmt.Sprintf("internal/component%03d/handler.go", fileCount-1)
 	return document, changes, report, codeSelection{filePath: selectedPath}
 }
 
-func mustDiffURIForTB(tb testing.TB, reference diffuri.Reference) string {
-	tb.Helper()
-	uri, err := diffuri.Build(reference)
-	if err != nil {
-		tb.Fatal(err)
-	}
-	return uri
+// Hand-built comparisons name full commits so their code locations parse.
+var (
+	testBaseCommit    = strings.Repeat("a", 40)
+	testHeadCommit    = strings.Repeat("b", 40)
+	testForeignCommit = strings.Repeat("c", 40)
+)
+
+// staleCodeReason is what the pinned resolver reports for a reference whose
+// commit is neither side of the hand-built comparison.
+var staleCodeReason = "pinned at cccccccccccc, viewed at bbbbbbbbbbbb"
+
+func testLocation(commit, path string, start, end int) string {
+	return coderef.Location{Commit: commit, Path: path, Start: start, End: end}.String()
 }
 
-func mustDiffURI(t *testing.T, reference diffuri.Reference) string {
-	t.Helper()
-	uri, err := diffuri.Build(reference)
-	if err != nil {
-		t.Fatal(err)
-	}
-	return uri
+// testReference builds a well-formed reference for a hand-built comparison.
+// No repository holds its bytes, so the digest is a stand-in derived from the
+// location; the pinned resolver does not read content.
+func testReference(commit, path string, start, end int, note string) coderef.Reference {
+	location := coderef.Location{Commit: commit, Path: path, Start: start, End: end}
+	return coderef.Reference{Commit: commit, Path: path, Start: start, End: end, Digest: coderef.DigestBytes([]byte(location.String())), Note: note}
 }
