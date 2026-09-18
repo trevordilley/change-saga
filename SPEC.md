@@ -1,61 +1,44 @@
-# Change Saga formats
+# Change Saga format
 
-## Report format v5 contract
+A Change Saga is the durable, version-controlled record of one big change: the
+kind that warrants product requirements, UX and UI design, technical design,
+quality verification, and an implementation deck. The change itself is often
+built quickly, in one large pull request; the Saga is what captures why it
+exists, what it was meant to do, and how every changed line traces back to
+that intent. A Saga starts with the big work and ends with the big work.
 
-Version 5 is the report-container evolution for requirements, visual technical
-design, implementation evidence, and quality. It is not a successor to the
-slide-native v4 mode. A v5 Saga has one `saga.json`, one Saga ID, ordinary v2
-report components, v3 requirement/work-plan components, and optional embedded
-byte-compatible v4 deck bundles under `___slides/`. It MUST NOT contain the v4
-root `00-saga.json` or the v4 `presentation` member.
+There is exactly one Saga format. It is identified by `version: 5` and the
+schemas under [`schema/v5`](schema/v5). A Saga has one `saga.json`, one Saga
+ID, report content, living requirements and work-plan records, quality
+records, and the embedded implementation deck under `___slides/`. Readers
+reject any other manifest version, a root `00-saga.json`, and a manifest
+`presentation` member.
 
-The normative schemas are under [`schema/v5`](schema/v5). Runtime support is
-enabled phase by phase; a reader or mutation command that has not reached its
-phase MUST continue to reject version 5.
+Git is the outer audit log. Saga records add the semantic history inside it:
+immutable identities, append-only revisions and lifecycle events, relations
+that pin the revisions they rely on, supersession, evidence, and review
+decisions. Staleness is always derived from those pins, never from Git
+history.
 
-Enabled phases:
+### Layout
 
-- **Composition read (Phase 1).** The core loader, `validate`, and the
-  requirement, prototype, work-plan, and quality loaders accept a v5 manifest
-  under the container rules below. The v5 manifest MUST be `saga.json` with a
-  canonical `source.repository`; a v4 `00-saga.json` root or `presentation`
-  member is invalid. `___quality` is admitted as a reserved root only in v5,
-  and `___requirements/coverage-exceptions/` is tolerated by the requirements
-  loader only in v5. Existing v3 component mutations may write their unchanged
-  v3 component records inside a v5 container.
-- **Explicit upgrade.** `change-saga upgrade --to 5 SAGA` is the only operation
-  that may write a version 5 manifest. See [CLI behavior](#11-cli-behavior).
-- **Quality record writers (Phase 5).** `change-saga quality` writes test-case,
-  policy, evidence, and run records under `___quality`, and only in a v5 Saga;
-  a v3 Saga is refused and left unchanged.
-- **v5 relation writers (Phase 3, relation half).** `change-saga relation add`
-  writes v5 relations in a v5 Saga, including a test case that `verifies` a
-  criterion, and pins each endpoint revision. It writes v3 relations in a v3
-  Saga exactly as before. `change-saga relation status` reports whether each
-  relation is current, judged only by comparing its pins against the current
-  heads.
-
-Not yet enabled: coverage-exception record writers and API v2 queries. No other command may upgrade a v2, v3, or v4 document, and
-no command other than `upgrade --to 5` may emit a v5 manifest; every other
-command leaves the manifest version it found byte-for-byte unchanged.
-
-### Container and component compatibility
-
-The v5 manifest has exactly the v3 report-manifest field contract with
-`version: 5` and the v5 schema identifier. It adds no aggregate quality,
-coverage, relation, or deck fields. The root layout is:
+The manifest carries identity and source only: it adds no aggregate quality,
+coverage, relation, or deck fields.
 
 ```text
 <id>.saga/
   saga.json
-  <v2 report content>
+  <report content>             # overview, chapters, sections, fragments
   ___requirements/
-    <v3 stories and citations>
-    relations/                 # mixed v3 history and v5 relations
-    coverage-exceptions/       # v5 immutable decisions
-  ___slides/                   # optional embedded v4 deck bundles
-  ___workplan/                 # optional v3 work plan
-  ___quality/                  # absent until quality is adopted
+    prototypes/                # revisioned interactive prototypes
+    stories/                   # stories and their acceptance criteria
+    citations/
+    relations/                 # typed, pinned edges between resources
+    coverage-exceptions/       # immutable per-criterion, per-axis decisions
+  ___design/                   # technical design chapters
+  ___slides/                   # the implementation deck
+  ___workplan/                 # waves, work items, dependencies, contracts
+  ___quality/
     policies/
     test-cases/<id>.test/
       test-case.json
@@ -63,20 +46,22 @@ coverage, relation, or deck fields. The root layout is:
       events/
       evidence/
       runs/
-  ___claims/                   # v2
-  ___verifications/            # v2
-  ___review/                   # existing review overlay
+  ___claims/
+  ___verifications/
+  ___review/                   # review overlay
 ```
 
-Every retained v2, v3, or v4 component is interpreted by its original schema
-and remains byte-compatible. V5 introduces only the v5 records in the table
-below. Every listed object boundary is closed; record files are bounded to one
-MiB, collection limits are enforced at runtime, and every ID uses
-`[A-Za-z0-9][A-Za-z0-9._-]{0,127}`.
+Each record is interpreted by the schema its `$schema` names. Report content
+records use the v2 component schemas, living requirement and work-plan records
+the v3 schemas, and deck, slide, and item records the v4 deck schemas; those
+component versions are part of this one format, not separate formats. The
+records introduced with the format are listed below. Every listed object
+boundary is closed; record files are bounded to one MiB, collection limits are
+enforced at runtime, and every ID uses `[A-Za-z0-9][A-Za-z0-9._-]{0,127}`.
 
 | Record | Schema | Required semantic fields | Runtime-only checks |
 | --- | --- | --- | --- |
-| Manifest | `v5/saga.schema.json` | v3 manifest fields, `version: 5` | canonical repository identity; report-only root composition |
+| Manifest | `v5/saga.schema.json` | identity, title, source, `version: 5` | canonical repository identity |
 | Relation | `v5/relation.schema.json` | endpoints, type, scope, pins required by the matrix, rationale, state, time | same Saga, no self-edge, canonical conflict ordering, graph acyclicity/currentness |
 | Coverage exception | `v5/coverage-exception.schema.json` | one of six axes, criterion/revision pin, rationale, citation, supersession set | current revision, resolved citations, one unsuperseded head per criterion/axis |
 | Test-case identity | `v5/test-case.schema.json` | immutable ID and creation time | filename/package match and one identity per package |
@@ -86,9 +71,11 @@ MiB, collection limits are enforced at runtime, and every ID uses
 | Test run | `v5/test-run.schema.json` | test revision, parents, exact source identity, result, evidence, execution time | current source/revision/evidence, one root, acyclic graph, visible multi-head conflicts |
 | Quality policy | `v5/quality-policy.schema.json` | criterion/revision, required kinds, allowed automation, rationale | resolved current criterion, acyclic supersession, one policy head |
 
-`___quality` absent means `not_adopted`; an existing quality root with no test
-case packages means `adopted_empty`. Neither state is equivalent to successful
-quality coverage.
+Every axis of every accepted criterion (prototype, UX, UI, technical, quality,
+and implementation) is required. A Saga with no test cases is not exempt from
+quality; each criterion's quality axis is a visible gap until a test case
+verifies it or a current coverage exception excuses it. Coverage-exception
+records are read and evaluated; no command writes them yet.
 
 ### V5 identities and quality records
 
