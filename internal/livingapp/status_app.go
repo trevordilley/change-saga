@@ -226,8 +226,10 @@ func (a *assembler) appProjection(status *Status) ([]readiness.Persona, []readin
 				row.Decks = append(row.Decks, deck.Target)
 			}
 		}
+		// Like a story, an epic is gated by a current off (or conflicted) flag;
+		// an on flag enables it and a retired flag gates nothing.
 		for _, flag := range status.Flags {
-			if flag.State != string(requirements.FlagRetired) && contains(flag.Targets, row.Epic) {
+			if flag.State != string(requirements.FlagRetired) && flag.State != string(requirements.FlagOn) && contains(flag.Targets, row.Epic) {
 				row.GatedBy = append(row.GatedBy, flag.Flag)
 			}
 		}
