@@ -1813,43 +1813,60 @@ Before handoff, run three visual audits:
 Perform these audits before chasing complete diff coverage. Coverage is the
 final omission check; it must not rationalize a generic visual after the fact.
 
-## Choose the workflow before authoring
+## One Saga, from the big work to the big work
 
-First determine whether the user is documenting an existing implementation or
-starting a new body of work.
+A Change Saga is the record of one big change: the kind that warrants product
+requirements, UX and UI design, technical design, quality verification, and an
+implementation walkthrough. There is one kind of Saga. It always has the same
+four parts, in the same order:
 
-For an existing PR, branch, or focused changeset, decide whether the change is
-large enough to benefit from a guided review. Size means review complexity—not
-just line count—including multiple behaviors, risks, systems, or workstreams.
-A small focused change may be better served by the repository's normal PR
-process. For a large change with no existing saga, author the saga from the
-completed implementation and exact diff as the review guide. Requirements,
-prototypes, technical design, and a work plan remain optional historical
-context; do not invent them after the fact merely to fill every surface.
+- **Product**: prototypes, and user stories with acceptance criteria;
+- **Design**: UX flows, UI references, and technical design;
+- **Quality**: test cases that verify the acceptance criteria;
+- **Implementation**: the deck that explains the change, whose Items own the
+  exact diffs.
 
-For a new feature or exploration, begin a living saga early. A common
-progression is:
+The only hard requirement is that code maps back to user stories. Designs,
+specifications, and test cases map to stories, so code reaches a story
+transitively through them. Do not author code-to-story links by hand when a
+design or test case can carry the path. Every relation pins the revision it
+relied on, so a story revision makes its dependents visibly stale.
 
-1. prototype the UX and UI aesthetic;
-2. draft sourced user stories and acceptance criteria;
-3. develop a technical design that traces to those requirements; and
-4. organize delivery into dependency-aware waves, parallel workspace lanes,
-   and explicit convergence points.
+This is not a waterfall. Prototypes and stories may come in either order and
+iterate together; design starts while they mature; a discovery during
+implementation becomes an explicit new revision of the story it changes,
+preserving history rather than rewriting it. When the implementation already
+exists, build the Saga the same way: the product intent and design are what the
+reviewer needs in order to judge the code, so recover them from the source
+material and the user rather than skipping them.
 
-This progression is not a waterfall. Prototypes and stories may be created in
-either order and iterated together. Design can proceed while they mature, and
-work-plan drafting can overlap design. Treat revisions as normal living
-changes, preserving their history and refreshing stale downstream links.
+Parallel authoring is a core property of the document. Partition ownership by
+stable stories, prototypes, design fragments, test cases, work items, and deck
+bundles so agents can fan out and merge their Saga changes alongside the code.
+Consolidate the lanes before the final status and validation passes.
 
-Parallel authoring is a core property of the document, not just of the code
-change. Partition ownership by stable stories, prototype packages, design
-fragments, and work items so agents can fan out and merge their Saga changes as
-well as their implementation. Before peer review, consolidate the lanes and
-connect the delivered commits and exact diffs through the acceptance criteria,
-design, and work plan that explain them.
+## Drive the work with status
+
+` + "`" + `change-saga status --json <saga>` + "`" + ` is the work queue. It reports the readiness
+gates, each accepted criterion's coverage on the prototype, UX, UI, technical,
+quality, and implementation axes, the stale set with pinned and current
+revisions, changed-source accounting, and ordered ` + "`" + `next_actions` + "`" + `. Loop:
+
+1. run ` + "`" + `change-saga spec --json` + "`" + ` once to learn the resources, legal relations,
+   and command shapes;
+2. run ` + "`" + `status --json` + "`" + ` and take the first next action;
+3. a ` + "`" + `command` + "`" + ` action carries a valid command shape: fill in its author inputs
+   and run it; a ` + "`" + `question` + "`" + ` action needs product judgment, external access, or
+   an explicit exclusion: ask the user its one question and run the command for
+   their answer;
+4. run ` + "`" + `validate` + "`" + `, then repeat from step 2.
+
+Stop when no required gap remains. A clean status proves nothing is missing or
+stale; it never proves the Saga is good. Status never reduces coverage to a
+score, and neither should you.
 
 When a user asks to draft, prepare, or create a pull request or otherwise make a
-large change ready for review, use the repository's existing PR-authoring
+big change ready for review, use the repository's existing PR-authoring
 processes, templates, issue context, conventions, and checks, but express the
 result as a Change Saga. Do not replace useful existing authoring discipline;
 extend it into this format.

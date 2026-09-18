@@ -212,24 +212,31 @@ func TestCriterionStructuredInputIsStrictAndFailureWritesNothing(t *testing.T) {
 	}
 }
 
-func TestInstalledSkillChoosesWorkflowAndSupportsParallelAuthoring(t *testing.T) {
+// The installed skill teaches one Saga for a big change, driven by status next
+// actions. It must never offer a lighter mode for small changes or treat
+// requirements and design as optional.
+func TestInstalledSkillDescribesOneSagaDrivenByStatus(t *testing.T) {
 	var output bytes.Buffer
 	if err := InstallSkill(nil, &output); err != nil {
 		t.Fatal(err)
 	}
 	text := output.String()
 	for _, want := range []string{
-		"Choose the workflow before authoring",
-		"existing PR, branch, or focused changeset",
-		"small focused change",
-		"A common",
-		"progression is",
-		"not a waterfall",
-		"parallel workspace lanes",
+		"One Saga, from the big work to the big work",
+		"There is one kind of Saga",
+		"The only hard requirement is that code maps back to user stories",
+		"This is not a waterfall",
 		"Parallel authoring is a core property",
+		"Drive the work with status",
+		"next_actions",
 	} {
 		if !strings.Contains(text, want) {
 			t.Fatalf("installed skill omitted %q:\n%s", want, text)
+		}
+	}
+	for _, retired := range []string{"Choose the workflow", "small focused change", "remain optional historical"} {
+		if strings.Contains(text, retired) {
+			t.Fatalf("installed skill still offers a retired workflow: %q", retired)
 		}
 	}
 }
