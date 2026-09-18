@@ -160,6 +160,126 @@ In compare mode, every changed line must fall inside some reference's range.
 This is computed from references, not stored. The app does not require every
 line of the codebase to be owned: ownership accumulates as changes land.
 
+### 9. Adoption is incremental
+
+The first time someone tries Change Saga on a 30-file pull request, the first
+thing that happens is not "define the personas of this app".
+
+- **The one thing asked of a first change is that the implementation covers
+  it.** Every changed line is referenced by the implementation deck. Personas,
+  stories, design, and test cases are not asked for up front.
+- **Everything else is growth, not debt.** Missing personas, stories, design, and
+  quality are reported as opportunities. They never block a change, and
+  readiness passing with nothing defined is correct: absence is not failure.
+- **What exists must stay healthy.** Once a story is accepted or a design
+  references code, a change that makes that link stale or leaves its code
+  uncovered is flagged. Coverage only ratchets up.
+- **The tool reports gaps; teams decide what to do about them.** `status` has no
+  verdict. Implementation coverage is part of the report like everything else:
+  for each area (changed lines covered by the implementation, the health of
+  existing records, stories, persona coverage, design, quality) it reports how
+  many are covered, with the lists of what is and is not. A gap is a finding,
+  never a failure, and `status` exits zero. It exits non-zero only when it
+  cannot produce a trustworthy report: a malformed Saga, duplicate IDs, or a
+  checkout that does not match the declared repository. The report is readable
+  as text and emitted as stable JSON; a team that wants a gap to fail its build
+  writes that rule over the JSON in its own CI, and the docs teach common rules
+  as recipes rather than flags. The JSON shape is therefore a contract. Counts
+  and lists, never one blended score.
+- **Asking a question is one command.** `change-saga check --against main
+  --covers implementation,stories app.saga` answers whether the named areas are
+  fully covered: exit zero if they are, non-zero with only those areas' gaps if
+  not. Nothing is required unless someone asks. The areas follow the chain, so
+  each is one more link:
+
+  | Area | Covered when |
+  | --- | --- |
+  | `implementation` | every changed line is referenced by the deck |
+  | `stories` | every changed line reaches a story through the chain |
+  | `personas` | every changed line reaches a persona |
+  | `design` | every story in scope has design |
+  | `quality` | every acceptance criterion in scope has a test |
+  | `health` | nothing that already existed went stale or broke |
+
+  With `--against`, the scope is the change: what it changed and what it
+  affected. Without it, the scope is the whole app. `--epic` narrows either.
+- **Nothing is locked in.** The first change's deck goes into an epic the author
+  names, defaulting to the pull request's title. Story, deck, and slide URNs
+  carry no epic, so reorganizing later breaks nothing.
+- **The Saga can live in the code repository or in a companion repository, and
+  both are first-class.** A companion repository lets a team document a
+  codebase, such as a client's, without landing a large documentation change in
+  it first; the Saga can move into the code repository later without rewriting
+  anything, because references name their repository.
+- **The first run is: initialize, cover the change, done.** After that, the
+  authoring agent offers, and never requires, to capture the stories the change
+  implies.
+- **Tools guide the Saga's growth and teach the practices.** Growth is a
+  first-class part of the product, just never a gate. Guidance is contextual
+  and arrives with the work, not as an up-front questionnaire: "this change
+  touched checkout; capture the checkout story?", "these three stories serve
+  someone you haven't named; define that persona?", "this design has no test
+  case; add one?". Each suggestion explains the practice it teaches, why it
+  pays off, and the one command that acts on it. Status reports growth
+  opportunities separately from the one requirement, ordered by value to the
+  current change, so an author can grow the Saga a step at a time or ignore it
+  entirely.
+
+### 10. Companion repositories
+
+When the Saga lives in its own repository:
+
+- Code references resolve against a checkout of the code repository passed with
+  `--repo`, which is verified against the repository the Saga declares.
+  Staleness and remapping use the code repository's history, never the Saga's.
+- The Saga records a **sync cursor**: the code commit it currently documents.
+  Every Saga commit that updates the documentation moves the cursor. In compare
+  mode the code delta comes from the code repository, and the Saga delta from
+  the Saga commit whose cursor matched the base. In the code repository the
+  cursor is implicit, so both setups share one model.
+- Documenting existing code needs no change at all: observe mode, with references
+  pinned at the current code commit. Per-change coverage does not apply because
+  there is no change; ownership of the existing code accumulates.
+- Scale is the risk to measure. A whole-codebase Saga reached 230 MB and 17
+  minutes under per-line diff evidence (see
+  [large-saga-diagnosis.md](large-saga-diagnosis.md)). References are ranges,
+  which should be far smaller, but a 400k-line codebase must be measured before
+  it is promised.
+
+### 11. A review is a first-class record of one comparison
+
+```sh
+change-saga review start app.saga --against main
+```
+
+1. **Start.** A review records its comparison (merge-base..head) and its
+   required set: the Changed and Affected layers, each at its current revision.
+2. **Work.** Reviewers approve or reject individual items and comment. Each
+   approval pins the revision it saw.
+3. **The head moves.** When new commits land, approvals whose records did not
+   change stay valid; only what changed since returns to needing approval. This
+   is incremental re-review at the level of stories and designs, not files.
+4. **Complete.** Once the review's requirement is met, an immutable completion
+   record says that `base..head` was reviewed, which revisions were approved by
+   whom, and which discussions took place.
+5. **Merge.** Re-pinning at merge links the review to the commit that landed, so
+   a squash merge keeps its review.
+
+A node's history (goal 7) then shows the review that approved it beside the
+commit reasons.
+
+**The team declares what is sufficient when it starts a review**, and the tool
+tracks progress against it; the tool never invents requirements. Candidate
+terms: approvals per item and whether reviewers must be distinct; whether a
+human approval is required (approval records already distinguish a human
+reviewer from an AI reviewer seat with its agent and exact model); and the
+`--covers` areas that must hold before completion.
+
+This reshapes the existing review overlay (per-target approvals, threads, and
+the `review_complete` gate) so that approvals belong to a review of a
+comparison. A pull request's own approval stays whole-PR; a review can record
+the PR number so the two line up.
+
 ### Kept from the current design
 
 One format and no backwards compatibility. Staleness derived only from pins.
@@ -190,11 +310,14 @@ reconstructs it.
 
 1. Do feature flags gate stories, epics, or both?
 2. Are retired stories shown in the app view, or only in history?
-3. Should `product_ready`, `design_ready`, and `quality_ready` block while no
-   story is accepted, instead of passing trivially?
-4. What is the app-level sidebar above the epics?
-5. Onboarding deck Items point at records (personas, epics, stories) rather than
+3. What is the app-level sidebar above the epics?
+4. Onboarding deck Items point at records (personas, epics, stories) rather than
    code. Confirm that this is its only kind of evidence.
+5. What does a review require by default: one approval per item and nothing
+   else, raised by teams that want more?
+6. Must every discussion be resolved before a review can complete?
+7. One review per pull request, or several per branch (for example a design
+   review early and a code review later)?
 
 ## Execution
 
@@ -208,7 +331,9 @@ whole-file references; re-pinning at merge. Remove `saga-diff://` evidence and
 **Phase 2 — Observe and compare.** `--against` on `open`, `status`, and `query`,
 with merge-base semantics; `saga.json` drops its comparison; the Changed,
 Affected, and Code layers; approvals only in compare mode, pinned to revisions;
-replacement pairing, commit reasons attached to nodes, and node history.
+replacement pairing, commit reasons attached to nodes, and node history;
+reviews of a comparison with incremental re-review and completion records
+(goal 11).
 Depends on Phase 1.
 
 **Phase 3 — App structure.** The app-level roots; epics containing today's
@@ -222,3 +347,15 @@ open decision 4.
 **Phase 5 — This repository.** Fold its Sagas into one `app.saga` as epics. If
 the fold is awkward, the model is wrong, so this is the model's acceptance test.
 It also decides whether decision records are needed.
+
+Phase 2 also includes the sync cursor and compare mode for companion
+repositories (goal 10).
+
+**Phase 6 — Adoption.** Turn readiness into a coverage report with no
+verdict: `status` exits zero whenever it can report, and non-zero only when the
+Saga is broken; the report covers implementation, the ratchet on existing
+records, and every growth area as stable JSON teams can script their own rules
+over, with documented CI recipes; `check --covers` for yes/no questions; `init` and first-run next actions that start with coverage; the
+default epic; contextual growth suggestions that teach the practices; and the
+skill, README, and help rewritten for incremental adoption. The first-run experience on a real 30-file pull request is its
+acceptance test.
