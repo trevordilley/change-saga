@@ -3,13 +3,12 @@ import { join } from "node:path";
 import { expect, test, waitForSettledSaga } from "../support/test.js";
 import { reviewFiles, runCLI } from "../support/fixture-builder.js";
 
-test("a Report Saga opens several implementation decks without paginating its documentation", async ({ page, saga }) => {
+test("a Saga opens several implementation decks without paginating its documentation", async ({ page, saga }) => {
   const run = (...args: string[]): void => {
     const result = runCLI(saga, args, saga.sagaRepo);
     expect(result.status, `${args[0]} failed\n${result.stdout}\n${result.stderr}`).toBe(0);
   };
 
-  run("upgrade", "--to", "3", saga.sagaRoot);
   for (const deck of [
     { id: "request-flow", title: "Request flow", slides: [["request-enters", "Request enters", "Ingress"], ["response-returns", "Response returns", "Egress"]] },
     { id: "failure-path", title: "Failure path", slides: [["failure-change", "Failure path", "Errors"]] }
@@ -37,9 +36,10 @@ test("a Report Saga opens several implementation decks without paginating its do
 
   const requestDeck = page.locator("[data-deck-toggle]", { hasText: "request flow" });
   const failureDeck = page.locator("[data-deck-toggle]", { hasText: "failure path" });
-  await expect(requestDeck).toHaveAttribute("aria-expanded", "false");
-  await requestDeck.click();
+  // Implementation opens with its decks expanded; several decks keep their
+  // rows so the reader knows which deck a slide belongs to.
   await expect(requestDeck).toHaveAttribute("aria-expanded", "true");
+  await expect(failureDeck).toHaveAttribute("aria-expanded", "true");
   const requestDeckNode = requestDeck.locator("xpath=ancestor::div[contains(@class,'doc-deck')]");
   await expect(requestDeckNode.locator("[data-slide-thumbnail]")).toHaveCount(2);
   await expect(requestDeckNode.locator(".slide-thumbnail-preview img")).toHaveCount(2);
@@ -53,13 +53,13 @@ test("a Report Saga opens several implementation decks without paginating its do
 
   const slidePanel = page.locator("#view-slides");
   await expect(slidePanel).toBeVisible();
-  await expect(slidePanel.locator("[data-native-slide]")).toHaveCount(3);
-  await expect(slidePanel.locator('[data-native-slide][data-slide-title="Request enters"]')).toBeVisible();
+  await expect(slidePanel.locator("[data-deck-slide]")).toHaveCount(3);
+  await expect(slidePanel.locator('[data-deck-slide][data-slide-title="Request enters"]')).toBeVisible();
   await expect(slidePanel.locator("[data-slide-position]")).toHaveText("1 / 2");
   await expect(page.locator("[data-shell]")).toHaveClass(/slide-mode/);
   await expect(page.getByRole("tab", { name: "Saga" })).toHaveAttribute("aria-selected", "true");
 
-  const activeSlide = slidePanel.locator('[data-native-slide][data-slide-title="Request enters"]');
+  const activeSlide = slidePanel.locator('[data-deck-slide][data-slide-title="Request enters"]');
   const linkedItem = activeSlide.locator('.landmark-hotspot[data-element-id="linked-node"]');
   const unlinkedItem = activeSlide.locator('.landmark-hotspot[data-element-id="unlinked-node"]');
   await expect(linkedItem).toHaveAttribute("data-landmark-has-diffs", "true");
@@ -125,18 +125,17 @@ test("a Report Saga opens several implementation decks without paginating its do
   const reload = await page.reload();
   expect(reload?.status()).toBe(200);
   await waitForSettledSaga(page);
-  await expect(slidePanel.locator('[data-native-slide][data-slide-title="Request enters"]')).toBeVisible();
+  await expect(slidePanel.locator('[data-deck-slide][data-slide-title="Request enters"]')).toBeVisible();
 
   await slidePanel.getByRole("button", { name: "Next slide" }).click();
-  await expect(slidePanel.locator('[data-native-slide][data-slide-title="Response returns"]')).toBeVisible();
+  await expect(slidePanel.locator('[data-deck-slide][data-slide-title="Response returns"]')).toBeVisible();
   await expect(slidePanel.locator("[data-slide-position]")).toHaveText("2 / 2");
   await expect(slidePanel.locator("[data-slide-next]")).toBeDisabled();
 
-  await failureDeck.click();
   const failureDeckNode = failureDeck.locator("xpath=ancestor::div[contains(@class,'doc-deck')]");
   await expect(failureDeckNode.locator(".slide-thumbnail-preview img")).toHaveCount(1);
   await failureDeckNode.getByRole("button", { name: "Show slide: Failure path" }).click();
-  await expect(slidePanel.locator('[data-native-slide][data-slide-title="Failure path"]')).toBeVisible();
+  await expect(slidePanel.locator('[data-deck-slide][data-slide-title="Failure path"]')).toBeVisible();
   await expect(slidePanel.locator("[data-slide-position]")).toHaveText("1 / 1");
   await expect(slidePanel.locator("[data-slide-previous]")).toBeDisabled();
   await expect(slidePanel.locator("[data-slide-next]")).toBeDisabled();
@@ -148,5 +147,5 @@ test("a Report Saga opens several implementation decks without paginating its do
   await page.getByRole("heading", { name: "Wave One Review" }).click();
   await page.keyboard.press("ArrowLeft");
   await failureDeckNode.getByRole("button", { name: "Show slide: Failure path" }).click();
-  await expect(slidePanel.locator('[data-native-slide][data-slide-title="Failure path"]')).toBeVisible();
+  await expect(slidePanel.locator('[data-deck-slide][data-slide-title="Failure path"]')).toBeVisible();
 });
