@@ -246,6 +246,40 @@ When the Saga lives in its own repository:
   which should be far smaller, but a 400k-line codebase must be measured before
   it is promised.
 
+### 11. A review is a first-class record of one comparison
+
+```sh
+change-saga review start app.saga --against main
+```
+
+1. **Start.** A review records its comparison (merge-base..head) and its
+   required set: the Changed and Affected layers, each at its current revision.
+2. **Work.** Reviewers approve or reject individual items and comment. Each
+   approval pins the revision it saw.
+3. **The head moves.** When new commits land, approvals whose records did not
+   change stay valid; only what changed since returns to needing approval. This
+   is incremental re-review at the level of stories and designs, not files.
+4. **Complete.** Once the review's requirement is met, an immutable completion
+   record says that `base..head` was reviewed, which revisions were approved by
+   whom, and which discussions took place.
+5. **Merge.** Re-pinning at merge links the review to the commit that landed, so
+   a squash merge keeps its review.
+
+A node's history (goal 7) then shows the review that approved it beside the
+commit reasons.
+
+**The team declares what is sufficient when it starts a review**, and the tool
+tracks progress against it; the tool never invents requirements. Candidate
+terms: approvals per item and whether reviewers must be distinct; whether a
+human approval is required (approval records already distinguish a human
+reviewer from an AI reviewer seat with its agent and exact model); and the
+`--covers` areas that must hold before completion.
+
+This reshapes the existing review overlay (per-target approvals, threads, and
+the `review_complete` gate) so that approvals belong to a review of a
+comparison. A pull request's own approval stays whole-PR; a review can record
+the PR number so the two line up.
+
 ### Kept from the current design
 
 One format and no backwards compatibility. Staleness derived only from pins.
@@ -279,6 +313,11 @@ reconstructs it.
 3. What is the app-level sidebar above the epics?
 4. Onboarding deck Items point at records (personas, epics, stories) rather than
    code. Confirm that this is its only kind of evidence.
+5. What does a review require by default: one approval per item and nothing
+   else, raised by teams that want more?
+6. Must every discussion be resolved before a review can complete?
+7. One review per pull request, or several per branch (for example a design
+   review early and a code review later)?
 
 ## Execution
 
@@ -292,7 +331,9 @@ whole-file references; re-pinning at merge. Remove `saga-diff://` evidence and
 **Phase 2 — Observe and compare.** `--against` on `open`, `status`, and `query`,
 with merge-base semantics; `saga.json` drops its comparison; the Changed,
 Affected, and Code layers; approvals only in compare mode, pinned to revisions;
-replacement pairing, commit reasons attached to nodes, and node history.
+replacement pairing, commit reasons attached to nodes, and node history;
+reviews of a comparison with incremental re-review and completion records
+(goal 11).
 Depends on Phase 1.
 
 **Phase 3 — App structure.** The app-level roots; epics containing today's
