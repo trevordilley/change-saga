@@ -130,7 +130,7 @@ func loadFlatReviewState(index MutationIndex, outline bool) (ReviewState, Valida
 		} else if match := flatReviewName.FindStringSubmatch(entry.Name()); match != nil && flatRegular(entry) {
 			target := reviewTargets[match[1]]
 			if target == "" {
-				addIssue(&validation, "error", entry.Name(), "v4 decisions must target a slide")
+				addIssue(&validation, "error", entry.Name(), "deck decisions must target a slide")
 				continue
 			}
 			var review Review

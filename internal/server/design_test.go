@@ -10,7 +10,7 @@ import (
 
 func TestV3DesignChapterAndFragmentEnterExistingRenderTree(t *testing.T) {
 	root := filepath.Join(t.TempDir(), "render-design.saga")
-	writeDesignTestFile(t, filepath.Join(root, "saga.json"), `{"version":3,"id":"render-design","title":"Render design","source":{"repository":"https://example.test/acme/app.git","base":"main","head":"HEAD"}}`)
+	writeDesignTestFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"render-design","title":"Render design","source":{"repository":"https://example.test/acme/app.git","base":"main","head":"HEAD"}}`)
 	writeDesignTestFile(t, filepath.Join(root, "overview.fragment", "fragment.json"), `{"version":2,"id":"overview","title":"Overview","media_type":"text/markdown","entrypoint":"content.md"}`)
 	writeDesignTestFile(t, filepath.Join(root, "overview.fragment", "content.md"), "Narrative overview.\n")
 	writeDesignTestFile(t, filepath.Join(root, "___design", "architecture.chapter", "chapter.json"), `{"version":2,"id":"architecture","title":"Technical architecture"}`)

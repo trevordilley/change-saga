@@ -821,7 +821,7 @@ func TestPageAttributesSagaFromItsOwnRepository(t *testing.T) {
 	repo := t.TempDir()
 	serverGit(t, repo, "init", "-b", "main")
 	root := filepath.Join(repo, "test.saga")
-	writeServerFile(t, filepath.Join(root, "saga.json"), `{"version":2,"id":"test","title":"Test","source":{"repository":"https://example.test/a.git","base":"main","head":"HEAD"}}`)
+	writeServerFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"test","title":"Test","source":{"repository":"https://example.test/a.git","base":"main","head":"HEAD"}}`)
 	writeServerFile(t, filepath.Join(root, "overview.fragment", "fragment.json"), `{"version":2,"id":"overview","title":"Overview","media_type":"text/markdown","entrypoint":"content.md"}`)
 	writeServerFile(t, filepath.Join(root, "overview.fragment", "content.md"), "# Story\n")
 	writeServerFile(t, filepath.Join(root, "overview.fragment", "___approvals", "review.json"), `{"version":2,"id":"review","author":"Payload Name","state":"approved","created_at":"2026-08-19T12:00:00Z"}`)
@@ -869,7 +869,7 @@ func TestCommittingReviewRecordsInvalidatesTheReviewSnapshot(t *testing.T) {
 	sagaRepo := t.TempDir()
 	serverGit(t, sagaRepo, "init", "-b", "main")
 	root := filepath.Join(sagaRepo, "test.saga")
-	writeServerFile(t, filepath.Join(root, "saga.json"), `{"version":2,"id":"test","title":"Test","source":{"repository":"`+repository+`","base":"`+base+`","head":"`+head+`"}}`)
+	writeServerFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"test","title":"Test","source":{"repository":"`+repository+`","base":"`+base+`","head":"`+head+`"}}`)
 	writeServerFile(t, filepath.Join(root, "overview.fragment", "fragment.json"), `{"version":2,"id":"overview","title":"Overview","media_type":"text/markdown","entrypoint":"content.md"}`)
 	writeServerFile(t, filepath.Join(root, "overview.fragment", "content.md"), "# Story\n")
 	serverGit(t, sagaRepo, "add", ".")
@@ -1293,7 +1293,7 @@ func TestPageHandlerRendersRealGitComparison(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	writeServerFile(t, filepath.Join(root, "saga.json"), `{"version":2,"id":"test","title":"Test","source":{"repository":"`+repository+`","base":"`+base+`","head":"HEAD"}}`)
+	writeServerFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"test","title":"Test","source":{"repository":"`+repository+`","base":"`+base+`","head":"HEAD"}}`)
 	writeServerFile(t, filepath.Join(root, "overview.fragment", "fragment.json"), `{"version":2,"id":"overview","media_type":"text/markdown","entrypoint":"content.md"}`)
 	writeServerFile(t, filepath.Join(root, "overview.fragment", "content.md"), "# Story\n")
 	application := &app{root: root, sourceDir: repo, template: serverTemplate(t)}
@@ -1371,7 +1371,7 @@ func TestTargetCodeLoadsOneNarrativeMappingWithoutGlobalSnapshot(t *testing.T) {
 	}
 
 	root := filepath.Join(repo, "linked.saga")
-	writeServerFile(t, filepath.Join(root, "saga.json"), `{"version":2,"id":"linked","title":"Linked","source":{"repository":"`+repository+`","base":"`+base+`","head":"HEAD"}}`)
+	writeServerFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"linked","title":"Linked","source":{"repository":"`+repository+`","base":"`+base+`","head":"HEAD"}}`)
 	writeServerFile(t, filepath.Join(root, "story.fragment", "fragment.json"), `{"version":2,"id":"story","title":"Story","media_type":"text/markdown","entrypoint":"content.md"}`)
 	writeServerFile(t, filepath.Join(root, "story.fragment", "content.md"), "# Story\n")
 	writeServerFile(t, filepath.Join(root, "story.fragment", "___diffs", "app.json"), fmt.Sprintf(`{"version":2,"diffs":[{"uri":%q,"note":"Implements the ready path."}]}`, appURI))
@@ -1431,15 +1431,16 @@ func TestSlideTargetCodeRollsUpItemFiles(t *testing.T) {
 	}
 
 	root := filepath.Join(repo, "slides.saga")
-	writeServerFile(t, filepath.Join(root, saga.FlatManifestName), `{"version":4,"id":"slides","title":"Slides","source":{"repository":"`+repository+`","base":"`+base+`","head":"HEAD"},"presentation":{"mode":"slides","aspect_ratio":"16:9","overview_deck":"review"}}`)
+	writeServerFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"slides","title":"Slides","source":{"repository":"`+repository+`","base":"`+base+`","head":"HEAD"}}`)
+	bundle := filepath.Join(root, saga.EmbeddedSlidesDir, "review"+saga.EmbeddedDeckSuffix)
 	deckTarget := saga.DeckTarget("slides", "review")
 	deckName, _ := saga.FlatDeckFilename(deckTarget, 0)
-	writeServerFile(t, filepath.Join(root, deckName), `{"version":4,"id":"review","title":"Review","role":"overview","rank":0,"objective":"Review the change."}`)
+	writeServerFile(t, filepath.Join(bundle, deckName), `{"version":4,"id":"review","title":"Review","role":"change","rank":0,"objective":"Review the change."}`)
 	slideTarget := saga.SlideTarget("slides", "summary")
 	slideName, _ := saga.FlatSlideFilename(deckTarget, slideTarget, 0)
 	assetName, _ := saga.FlatSlideAssetFilename(slideName, ".svg")
-	writeServerFile(t, filepath.Join(root, slideName), `{"version":4,"id":"summary","deck":"review","title":"Changed files","rank":0,"intent":"explain","layout":"diagram","media_type":"image/svg+xml","entrypoint":"`+assetName+`","takeaway":"Both files support this slide.","reading_order":["code","guide"]}`)
-	writeServerFile(t, filepath.Join(root, assetName), `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720"><g id="code"/><g id="guide"/></svg>`)
+	writeServerFile(t, filepath.Join(bundle, slideName), `{"version":4,"id":"summary","deck":"review","title":"Changed files","rank":0,"intent":"explain","layout":"diagram","media_type":"image/svg+xml","entrypoint":"`+assetName+`","takeaway":"Both files support this slide.","reading_order":["code","guide"]}`)
+	writeServerFile(t, filepath.Join(bundle, assetName), `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720"><g id="code"/><g id="guide"/></svg>`)
 	for rank, fixture := range []struct {
 		id, label, path, note string
 	}{
@@ -1448,7 +1449,7 @@ func TestSlideTargetCodeRollsUpItemFiles(t *testing.T) {
 	} {
 		itemTarget := saga.ItemTarget("slides", "summary", fixture.id)
 		itemName, _ := saga.FlatItemFilename(slideTarget, itemTarget, rank*10)
-		writeServerFile(t, filepath.Join(root, itemName), fmt.Sprintf(`{"version":4,"id":%q,"slide":"summary","rank":%d,"kind":"node","label":%q,"description":%q,"selector":{"type":"element","element_id":%q}}`, fixture.id, rank*10, fixture.label, fixture.note, fixture.id))
+		writeServerFile(t, filepath.Join(bundle, itemName), fmt.Sprintf(`{"version":4,"id":%q,"slide":"summary","rank":%d,"kind":"node","label":%q,"description":%q,"selector":{"type":"element","element_id":%q}}`, fixture.id, rank*10, fixture.label, fixture.note, fixture.id))
 		evidence := fmt.Sprintf(`{"version":2,"diffs":[{"uri":%q,"note":%q}]}`, uriByPath[fixture.path], fixture.note)
 		if fixture.id == "guide" {
 			// Repeating one exact diff on a second Item must not inflate the
@@ -1456,7 +1457,7 @@ func TestSlideTargetCodeRollsUpItemFiles(t *testing.T) {
 			// the overlapping ownership to the author.
 			evidence = fmt.Sprintf(`{"version":2,"diffs":[{"uri":%q,"note":%q},{"uri":%q,"note":"Also mentioned by the guide."}]}`, uriByPath[fixture.path], fixture.note, uriByPath["app.go"])
 		}
-		writeServerFile(t, filepath.Join(root, saga.FlatEvidenceFilename(itemTarget, fixture.id)), evidence)
+		writeServerFile(t, filepath.Join(bundle, saga.FlatEvidenceFilename(itemTarget, fixture.id)), evidence)
 	}
 
 	application := &app{root: root, sourceDir: repo, template: serverTemplate(t)}
@@ -1732,7 +1733,7 @@ func TestFileViewsGroupRenameAndUseDistinctAnchors(t *testing.T) {
 func validServerSaga(t *testing.T) string {
 	t.Helper()
 	root := filepath.Join(t.TempDir(), "test.saga")
-	writeServerFile(t, filepath.Join(root, "saga.json"), `{"version":2,"id":"test","title":"Test","source":{"repository":"https://example.test/a.git","base":"main","head":"HEAD"}}`)
+	writeServerFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"test","title":"Test","source":{"repository":"https://example.test/a.git","base":"main","head":"HEAD"}}`)
 	writeServerFile(t, filepath.Join(root, "overview.fragment", "fragment.json"), `{"version":2,"id":"overview","title":"Overview","media_type":"text/markdown","entrypoint":"content.md"}`)
 	writeServerFile(t, filepath.Join(root, "overview.fragment", "content.md"), "# Story\n")
 	return root

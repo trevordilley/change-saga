@@ -103,13 +103,13 @@ type ChangedFileTreeNode struct {
 }
 
 type RelatedSagaChapterView struct {
-	ID          string
-	Title       string
-	Target      string
-	Anchor      string
-	Href        string
-	SlideNative bool
-	Fragments   []*RelatedSagaFragmentView
+	ID        string
+	Title     string
+	Target    string
+	Anchor    string
+	Href      string
+	Deck      bool
+	Fragments []*RelatedSagaFragmentView
 }
 
 type RelatedSagaFragmentView struct {
@@ -471,7 +471,7 @@ func makeRelatedSagaViewsForTargets(locations []narrativeLocation, ownedURIs map
 		}
 		group := groups[groupKey]
 		if group == nil {
-			group = &RelatedSagaChapterView{ID: groupID, Title: groupTitle, Target: groupTarget, Anchor: domID(groupTarget), Href: groupHref, SlideNative: location.slideTarget != ""}
+			group = &RelatedSagaChapterView{ID: groupID, Title: groupTitle, Target: groupTarget, Anchor: domID(groupTarget), Href: groupHref, Deck: location.slideTarget != ""}
 			groups[groupKey] = group
 			result = append(result, group)
 		}

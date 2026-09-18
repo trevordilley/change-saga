@@ -224,22 +224,26 @@ func TestTopLevelHelpRecommendsTheAuthoringSkill(t *testing.T) {
 	}
 }
 
-func TestTopLevelHelpRoutesExistingAndNewWork(t *testing.T) {
+func TestTopLevelHelpDescribesOneBigChangeWorkflow(t *testing.T) {
 	var output bytes.Buffer
 	PrintHelp(&output)
 	text := output.String()
 	for _, want := range []string{
-		"Existing implementation or PR",
-		"small focused",
-		"normal PR may be enough",
-		"New feature or exploration",
-		"overlapping surfaces, not gates",
-		"waves of parallel workspaces",
-		"Parallel by design",
-		"acceptance-criterion coverage",
+		"big change",
+		"Product:", "prototype", "user stories",
+		"Design:", "UX, UI, and technical design",
+		"Quality:", "test cases",
+		"Implementation:", "implementation deck",
+		"Exact diffs:", "cover",
+		"dependency-aware waves",
 	} {
 		if !strings.Contains(text, want) {
 			t.Fatalf("top-level help omitted workflow guidance %q:\n%s", want, text)
+		}
+	}
+	for _, unwanted := range []string{"Choose the workflow", "normal PR may be enough", "optional", "--mode", "upgrade"} {
+		if strings.Contains(text, unwanted) {
+			t.Fatalf("top-level help still offers %q:\n%s", unwanted, text)
 		}
 	}
 }
@@ -254,7 +258,7 @@ func TestLivingCommandHelpExplainsParallelWorkflow(t *testing.T) {
 			var output bytes.Buffer
 			_ = Init(context.Background(), []string{"-h"}, &output)
 			return output.String()
-		}, want: []string{"reviewer guide", "Small focused changes may not need a Saga"}},
+		}, want: []string{"big change", "stories", "prototypes"}},
 		{name: "story add", run: func() string {
 			var output bytes.Buffer
 			_ = Story(context.Background(), []string{"add", "-h"}, &output)

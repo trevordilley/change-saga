@@ -131,7 +131,7 @@ func validPolicy(value string) bool {
 	return value == "" || value == readiness.PolicyFeature || value == readiness.PolicyCompatibility
 }
 
-// livingSpec is the `spec --json` description of the living v3/v5 authoring
+// livingSpec is the `spec --json` description of the living authoring
 // grammar. It is generated from the same grammar table next actions use.
 func livingSpec() map[string]any {
 	axes := []string{}
@@ -139,10 +139,7 @@ func livingSpec() map[string]any {
 		axes = append(axes, string(axis))
 	}
 	return map[string]any{
-		"report_container_versions": map[string]any{
-			"3": "living report: stories, citations, relations, prototypes, work plan, embedded v4 decks",
-			"5": "v3 plus v5 relations (scope, visual digests, test-case endpoints), coverage exceptions, and the ___quality domain",
-		},
+		"saga_version":    5,
 		"resources":       grammar.Resources(),
 		"relation_matrix": grammar.Relations(),
 		"derived_edges":   grammar.DerivedEdges(),

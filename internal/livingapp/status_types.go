@@ -74,8 +74,8 @@ func (link Link) pins() []Pin {
 }
 
 // StatusInputs is every already-loaded fact the status projection reads. The
-// assembler performs no I/O, so a test can hand it a v5 quality document next
-// to a v3 requirements document before the core loader accepts v5.
+// assembler performs no I/O, so a test can hand it any combination of
+// already-loaded documents.
 type StatusInputs struct {
 	SagaID      string
 	SagaVersion int

@@ -12,15 +12,6 @@ type reviewAppQuerySession struct {
 	session       reviewapp.Session
 	livingSession livingapp.Session
 	operation     string
-	slideMode     bool
-}
-
-type slideOverview struct {
-	Saga     reviewapp.SagaIdentity     `json:"saga"`
-	Source   reviewapp.SourceSnapshot   `json:"source"`
-	Root     reviewapp.Node             `json:"root"`
-	Decks    []reviewapp.ChapterSummary `json:"decks"`
-	Coverage reviewapp.CoverageSummary  `json:"coverage"`
 }
 
 type slideQueryContent struct {
@@ -52,13 +43,13 @@ func openReviewAppSession(ctx context.Context, options queryOpenOptions) (queryS
 		if err != nil {
 			return nil, err
 		}
-		return &reviewAppQuerySession{session: reviewSession, livingSession: session, operation: options.Operation, slideMode: options.SlideMode}, nil
+		return &reviewAppQuerySession{session: reviewSession, livingSession: session, operation: options.Operation}, nil
 	}
 	session, err := reviewapp.Open(ctx, reviewapp.OpenOptions{SagaRoot: options.SagaRoot, SourceDir: options.SourceDir, SummaryOnly: options.SummaryOnly})
 	if err != nil {
 		return nil, err
 	}
-	return &reviewAppQuerySession{session: session, operation: options.Operation, slideMode: options.SlideMode}, nil
+	return &reviewAppQuerySession{session: session, operation: options.Operation}, nil
 }
 
 func (s *reviewAppQuerySession) Snapshot() string {
@@ -69,11 +60,7 @@ func (s *reviewAppQuerySession) Snapshot() string {
 }
 
 func (s *reviewAppQuerySession) Overview(ctx context.Context, _ overviewQuery) (any, error) {
-	value, err := s.session.Overview(ctx, reviewapp.OverviewQuery{})
-	if err != nil || !s.slideMode {
-		return value, err
-	}
-	return slideOverview{Saga: value.Saga, Source: value.Source, Root: value.Root, Decks: value.Decks, Coverage: value.Coverage}, nil
+	return s.session.Overview(ctx, reviewapp.OverviewQuery{})
 }
 
 func (s *reviewAppQuerySession) Children(ctx context.Context, query childrenQuery) (queryPage, error) {

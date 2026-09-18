@@ -60,7 +60,7 @@ func largeServerSaga(tb testing.TB) (repo, root string) {
 		tb.Fatal(err)
 	}
 	root = filepath.Join(repo, "large.saga")
-	writeBenchmarkFile(tb, filepath.Join(root, "saga.json"), fmt.Sprintf(`{"version":2,"id":"large","title":"Large Saga","source":{"repository":%q,"base":"HEAD","head":"HEAD"}}`, repository))
+	writeBenchmarkFile(tb, filepath.Join(root, "saga.json"), fmt.Sprintf(`{"version":5,"id":"large","title":"Large Saga","source":{"repository":%q,"base":"HEAD","head":"HEAD"}}`, repository))
 	for chapter := 0; chapter < benchmarkChapterCount; chapter++ {
 		chapterID := fmt.Sprintf("chapter-%02d", chapter)
 		chapterDir := filepath.Join(root, chapterID+".chapter")

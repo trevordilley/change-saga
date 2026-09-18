@@ -380,26 +380,6 @@ func TestTypedRelationPinsExposeStaleInputsAndSupersede(t *testing.T) {
 	}
 }
 
-func TestIdentityRelationAllowsOptionalPins(t *testing.T) {
-	root := newSaga(t)
-	_, err := AddStory(root, "test", storyInput("parent", "r1", "created", nil))
-	if err != nil {
-		t.Fatal(err)
-	}
-	_, err = AddStory(root, "test", storyInput("child", "r1", "created", nil))
-	if err != nil {
-		t.Fatal(err)
-	}
-	_, err = AddRelation(root, "test", AddRelationInput{
-		ID: "child-refines-parent", Type: RelationRefines,
-		From: "urn:change-saga:test:story:child", To: "urn:change-saga:test:story:parent",
-		Rationale: "The child makes the broad obligation concrete.", CreatedAt: testTime,
-	})
-	if err != nil {
-		t.Fatal(err)
-	}
-}
-
 func TestExplainsRelationLinksSlideToPinnedCriterion(t *testing.T) {
 	root := newSaga(t)
 	_, err := AddStory(root, "test", storyInput("checkout", "r1", "created", []Criterion{{ID: "safe", Statement: "Preserves validated state"}}))
@@ -523,8 +503,8 @@ func newSaga(t *testing.T) string {
 		t.Fatal(err)
 	}
 	manifest := map[string]any{
-		"$schema": "https://changesaga.dev/schema/v3/saga.schema.json",
-		"version": 3, "id": "test", "title": "Test",
+		"$schema": "https://changesaga.dev/schema/v5/saga.schema.json",
+		"version": 5, "id": "test", "title": "Test",
 		"source": map[string]any{"repository": "https://example.com/repo.git", "base": "main", "head": "feature"},
 	}
 	if err := store.WriteJSON(filepath.Join(root, "saga.json"), manifest, true); err != nil {
@@ -563,10 +543,10 @@ func TestLoadToleratesTheSiblingPrototypeRootOnly(t *testing.T) {
 	}
 }
 
-// Coverage exceptions are v5 records stored beside the v3 requirement roots.
-// Like prototypes, this loader never reads them, but it must tolerate the root
-// in a v5 Saga or every requirement command breaks once one exception exists.
-func TestLoadToleratesV5CoverageExceptionsOnlyInV5(t *testing.T) {
+// Coverage exceptions are stored beside the requirement roots. Like
+// prototypes, this loader never reads them, but it must tolerate the root or
+// every requirement command breaks once one exception exists.
+func TestLoadToleratesCoverageExceptions(t *testing.T) {
 	root := newSaga(t)
 	exceptions := filepath.Join(root, "___requirements", "coverage-exceptions")
 	for _, name := range []string{"stories", "citations", "relations", "prototypes", "coverage-exceptions"} {
@@ -575,18 +555,6 @@ func TestLoadToleratesV5CoverageExceptionsOnlyInV5(t *testing.T) {
 		}
 	}
 	if err := os.WriteFile(filepath.Join(exceptions, "docs-only.json"), []byte(`{"version":5}`), 0o644); err != nil {
-		t.Fatal(err)
-	}
-	if _, err := Load(root, "test"); err == nil || !strings.Contains(err.Error(), "requires a format v5 saga") {
-		t.Fatalf("v3 coverage exceptions error = %v", err)
-	}
-
-	manifest := map[string]any{
-		"$schema": "https://changesaga.dev/schema/v5/saga.schema.json",
-		"version": 5, "id": "test", "title": "Test",
-		"source": map[string]any{"repository": "https://example.com/repo.git", "base": "main", "head": "feature"},
-	}
-	if err := store.WriteJSON(filepath.Join(root, "saga.json"), manifest, false); err != nil {
 		t.Fatal(err)
 	}
 	if _, err := AddStory(root, "test", AddStoryInput{
@@ -598,7 +566,7 @@ func TestLoadToleratesV5CoverageExceptionsOnlyInV5(t *testing.T) {
 	}
 	document, err := Load(root, "test")
 	if err != nil || len(document.Stories) != 1 {
-		t.Fatalf("v5 requirements = %#v, err %v", document.Stories, err)
+		t.Fatalf("requirements = %#v, err %v", document.Stories, err)
 	}
 	if err := os.Remove(filepath.Join(root, "___requirements", "prototypes")); err != nil {
 		t.Fatal(err)

@@ -33,7 +33,6 @@ type queryOpenOptions struct {
 	SourceDir   string
 	SummaryOnly bool
 	Operation   string
-	SlideMode   bool
 }
 
 type overviewQuery struct{}
@@ -311,19 +310,9 @@ func queryWithOpener(ctx context.Context, args []string, out io.Writer, open que
 	}
 	options.SummaryOnly = operation == "overview" || operation == "children"
 	options.Operation = operation
-	manifest, manifestErr := saga.ReadManifest(options.SagaRoot)
-	if manifestErr == nil {
-		options.SlideMode = manifest.Version == saga.SlideSagaVersion
-	}
-	if operation == "slide" || operation == "slide-diffs" || operation == "fragment" || operation == "fragment-diffs" {
-		if manifestErr != nil && (operation == "slide" || operation == "slide-diffs") {
-			return writeQueryOperationFailure(out, operation, normalizeQueryError(manifestErr))
-		}
-		if manifestErr == nil && (operation == "slide" || operation == "slide-diffs") && manifest.Version != saga.SlideSagaVersion && !saga.ReportContainerVersion(manifest.Version) {
-			return writeQueryOperationFailure(out, operation, &queryError{Code: "invalid_argument", Message: "slide queries require a v3 or v5 Report Saga with embedded decks or a v4 slide-native Saga"})
-		}
-		if manifestErr == nil && (operation == "fragment" || operation == "fragment-diffs") && manifest.Version == saga.SlideSagaVersion {
-			return writeQueryOperationFailure(out, operation, &queryError{Code: "invalid_argument", Message: "v4 does not expose slides as fragments; use slide or slide-diffs"})
+	if operation == "slide" || operation == "slide-diffs" {
+		if _, err := saga.ReadManifest(options.SagaRoot); err != nil {
+			return writeQueryOperationFailure(out, operation, normalizeQueryError(err))
 		}
 	}
 
@@ -381,7 +370,7 @@ func queryWithOpener(ctx context.Context, args []string, out io.Writer, open que
 	if err != nil {
 		return writeQueryOperationFailure(out, operation, normalizeQueryError(err))
 	}
-	if options.SlideMode || operation == "slide" || operation == "slide-diffs" {
+	if operation == "slide" || operation == "slide-diffs" {
 		return writeQuerySuccessSchema(out, slideQuerySchema, session.Snapshot(), result, responsePage)
 	}
 	return writeQuerySuccess(out, session.Snapshot(), result, responsePage)

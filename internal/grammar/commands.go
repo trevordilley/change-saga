@@ -156,7 +156,7 @@ var commands = []Command{
 	{
 		Name: "add-deck", Status: StatusImplemented, Mutates: true, Writes: []string{"deck"},
 		Usage:   "change-saga add-deck [flags] <saga> <name>",
-		Summary: "create an embedded v4 deck; role ux places it on the UX design axis, other decks are implementation decks",
+		Summary: "create an embedded deck; role ux places it on the UX design axis, other decks are implementation decks",
 		Flags: []Flag{
 			optional("id", "ID", "stable deck id"), optional("title", "TEXT", "deck title"), optional("role", "ROLE", "deck role; ux marks a UX flow deck"),
 			optional("rank", "N", "review order"), optional("objective", "TEXT", "one concise reviewer objective"),
@@ -187,13 +187,6 @@ var commands = []Command{
 			optional("carry-verifications", "", "carry equivalent verification results with an audit trail"), optional("dry-run", "", "prove and report without writing"),
 			jsonFlag, optional("quiet", "", "suppress successful output"), optional("allow-repository-mismatch", "", "accept a checkout whose origin differs"),
 		},
-		Positionals: sagaOnly,
-	},
-	{
-		Name: "upgrade", Status: StatusImplemented, Mutates: true, Writes: []string{"saga"},
-		Usage:       "change-saga upgrade --to 3|5 [--dry-run] [--json] <saga>",
-		Summary:     "atomically adopt the v3 (from v2) or v5 (from v3) report container; never invents links, tests, or exceptions",
-		Flags:       []Flag{required("to", "VERSION", "target Saga format version: 3 or 5"), optional("dry-run", "", "validate the staged result and report capability states without publishing"), jsonFlag},
 		Positionals: sagaOnly,
 	},
 	{

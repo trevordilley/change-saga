@@ -295,7 +295,7 @@ func TestSessionStableErrorsSnapshotAndCursor(t *testing.T) {
 func TestOpenReportsInvalidSagaAndUnavailableSource(t *testing.T) {
 	ctx := context.Background()
 	invalidRoot := filepath.Join(t.TempDir(), "invalid.saga")
-	writeFile(t, filepath.Join(invalidRoot, "saga.json"), `{}`)
+	writeFile(t, filepath.Join(invalidRoot, "saga.json"), `{"version":5}`)
 	_, err := Open(ctx, OpenOptions{SagaRoot: invalidRoot})
 	assertCode(t, err, CodeInvalidSaga)
 	var domain *Error
@@ -346,7 +346,7 @@ func newServiceFixture(t *testing.T) serviceFixture {
 	root := filepath.Join(repo, "review.saga")
 	fragmentTarget := saga.FragmentTarget("query-test", "overview")
 	writeJSON(t, filepath.Join(root, "saga.json"), saga.Manifest{
-		Schema: saga.SchemaURL, Version: saga.CurrentVersion, ID: "query-test", Title: "Query test",
+		Schema: saga.SagaSchemaURL, Version: saga.SagaVersion, ID: "query-test", Title: "Query test",
 		Source: saga.Source{Repository: comparison.Repository, Base: base, Head: "HEAD"},
 	})
 	writeJSON(t, filepath.Join(root, "___diffs", "root.json"), saga.DiffFile{Version: 2, Diffs: []saga.DiffReference{{URI: current.URI, Note: "root ownership"}}})

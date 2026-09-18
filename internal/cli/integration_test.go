@@ -186,19 +186,19 @@ func TestSpecJSONExposesPurposeFitVisualFormsAndAudits(t *testing.T) {
 	if err := json.Unmarshal(output.Bytes(), &contract); err != nil {
 		t.Fatal(err)
 	}
-	v4, ok := contract["slide_native_v4"].(map[string]any)
+	deck, ok := contract["implementation_deck"].(map[string]any)
 	if !ok {
-		t.Fatalf("spec omitted slide-native contract: %#v", contract)
+		t.Fatalf("spec omitted implementation deck contract: %#v", contract)
 	}
-	forms, ok := v4["visual_forms"].(map[string]any)
+	forms, ok := deck["visual_forms"].(map[string]any)
 	if !ok || forms["data-flow"] == nil || forms["state-machine"] == nil || forms["entity-relationship"] == nil || forms["failure-path"] == nil {
 		t.Fatalf("spec omitted purpose-fit visual forms: %#v", forms)
 	}
-	audits, ok := v4["composition_audits"].([]any)
+	audits, ok := deck["composition_audits"].([]any)
 	if !ok || len(audits) != 4 || audits[2] != "surprise" {
-		t.Fatalf("spec omitted composition audits: %#v", v4["composition_audits"])
+		t.Fatalf("spec omitted composition audits: %#v", deck["composition_audits"])
 	}
-	surprise, ok := v4["surprise_contract"].(map[string]any)
+	surprise, ok := deck["surprise_contract"].(map[string]any)
 	if !ok || !strings.Contains(fmt.Sprint(surprise["preferred_expression"]), "callout Item") || !strings.Contains(fmt.Sprint(surprise["grounding"]), "never manufactured novelty") {
 		t.Fatalf("spec omitted reviewer-surprise guidance: %#v", surprise)
 	}

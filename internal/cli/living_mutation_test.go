@@ -33,12 +33,7 @@ func decodeLivingOutput(t *testing.T, output *bytes.Buffer) livingMutationOutput
 
 func newLivingSaga(t *testing.T) string {
 	t.Helper()
-	root := newAuthoredSaga(t)
-	var output bytes.Buffer
-	if err := Upgrade(context.Background(), []string{"--to", "3", root}, &output); err != nil {
-		t.Fatalf("upgrade fixture: %v", err)
-	}
-	return root
+	return newAuthoredSaga(t)
 }
 
 func TestLivingMutationFamilyHelpIsDeterministicAndHasNoPivot(t *testing.T) {

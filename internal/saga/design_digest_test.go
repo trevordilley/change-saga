@@ -11,7 +11,7 @@ import (
 
 func TestCurrentDesignContentDigestsTrackAuthoredContentOnly(t *testing.T) {
 	root := filepath.Join(t.TempDir(), "digest.saga")
-	writeTestFile(t, filepath.Join(root, "saga.json"), `{"version":3,"id":"digest","title":"Digest","source":{"repository":"https://example.test/app.git","base":"main","head":"HEAD"}}`)
+	writeTestFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"digest","title":"Digest","source":{"repository":"https://example.test/app.git","base":"main","head":"HEAD"}}`)
 	writeTestFile(t, filepath.Join(root, "overview.fragment", "fragment.json"), `{"version":2,"id":"overview","media_type":"text/markdown","entrypoint":"content.md"}`)
 	writeTestFile(t, filepath.Join(root, "overview.fragment", "content.md"), "Narrative.\n")
 	writeTestFile(t, filepath.Join(root, "___design", "architecture.chapter", "chapter.json"), `{"version":2,"id":"architecture","title":"Architecture"}`)
@@ -100,7 +100,7 @@ func TestCurrentDesignContentDigestsCanonicalEmbeddedVisualTargets(t *testing.T)
 	}
 
 	// Callers cannot change the canonical order by rearranging model slices;
-	// rank and compact manifest path are the authored v4 order.
+	// rank and compact manifest path are the authored deck order.
 	items := document.Decks[0].Slides[0].Items
 	items[0], items[1] = items[1], items[0]
 	reordered, err := CurrentDesignContentDigests(document)
@@ -231,18 +231,6 @@ func TestEmbeddedVisualDigestsExcludeEvidenceAndReviewOverlays(t *testing.T) {
 	}
 }
 
-func TestCurrentDesignContentDigestsDoesNotReclassifyStandaloneV4(t *testing.T) {
-	document, _ := loadVisualDigestFixture(t)
-	document.Manifest.Version = SlideSagaVersion
-	digests, err := CurrentDesignContentDigests(document)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if len(digests) != 0 {
-		t.Fatalf("standalone v4 targets were reclassified as embedded technical design: %#v", digests)
-	}
-}
-
 type visualDigestFixture struct {
 	deckTarget    string
 	slideTarget   string
@@ -255,7 +243,7 @@ type visualDigestFixture struct {
 func loadVisualDigestFixture(t *testing.T) (*Saga, visualDigestFixture) {
 	t.Helper()
 	root := filepath.Join(t.TempDir(), "visual-digest.saga")
-	writeTestFile(t, filepath.Join(root, "saga.json"), `{"version":3,"id":"visual-digest","title":"Visual digest","source":{"repository":"https://example.test/app.git","base":"main","head":"HEAD"}}`)
+	writeTestFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"visual-digest","title":"Visual digest","source":{"repository":"https://example.test/app.git","base":"main","head":"HEAD"}}`)
 
 	bundle := filepath.Join(root, EmbeddedSlidesDir, "architecture.deck")
 	deckTarget := DeckTarget("visual-digest", "architecture")

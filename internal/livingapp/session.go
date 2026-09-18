@@ -63,16 +63,8 @@ func Open(_ context.Context, options OpenOptions) (Session, error) {
 			return nil, appError(CodeInternal, "the session snapshot could not be created", false, nil, err)
 		}
 	}
-	adopted := saga.ReportContainerVersion(doc.Manifest.Version) && livingRootPresent(root, "___requirements")
-	if !saga.ReportContainerVersion(doc.Manifest.Version) {
-		return &session{
-			snapshot: snapshot, sourceHeadIdentity: options.SourceHeadIdentity, sourceHeadCommit: options.SourceHeadCommit, saga: doc, adopted: false,
-			requirements: requirements.Document{Root: root, SagaID: doc.Manifest.ID, Stories: []requirements.Story{}, Citations: []requirements.Citation{}, Relations: []requirements.Relation{}},
-			plan:         workplan.Plan{Root: root, SagaID: doc.Manifest.ID, Waves: map[string]*workplan.Wave{}, WorkItems: map[string]*workplan.WorkItem{}, Dependencies: map[string]*workplan.Dependency{}, Contracts: map[string]*workplan.Contract{}, Requests: map[string]workplan.RequestRecord{}, Conflicts: []workplan.Conflict{}},
-		}, nil
-	}
-
-	testCases, err := testCaseHeads(root, doc.Manifest.Version)
+	adopted := livingRootPresent(root, "___requirements")
+	testCases, err := testCaseHeads(root)
 	if err != nil {
 		return nil, appError(CodeInvalidSaga, "the quality records could not be loaded", false, nil, err)
 	}

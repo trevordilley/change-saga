@@ -174,7 +174,7 @@ func TestRebaseEvidenceLeavesReplacementClaimUnverifiedByDefault(t *testing.T) {
 	}
 }
 
-func TestBuildEvidenceRebasePlanHandlesV4ItemEvidenceAndRefusesUnsafeClaimRewrite(t *testing.T) {
+func TestBuildEvidenceRebasePlanHandlesDeckItemEvidence(t *testing.T) {
 	const (
 		repository = "https://example.test/acme/slides.git"
 		oldBase    = "1111111111111111111111111111111111111111"
@@ -189,8 +189,11 @@ func TestBuildEvidenceRebasePlanHandlesV4ItemEvidenceAndRefusesUnsafeClaimRewrit
 	if err != nil {
 		t.Fatal(err)
 	}
+	root := filepath.Join(t.TempDir(), "slides.saga")
+	writeFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"slides","title":"Slides","source":{"repository":"`+repository+`","base":"`+oldBase+`","head":"`+head+`"}}`)
 	document := &saga.Saga{
-		Manifest: saga.Manifest{Version: saga.SlideSagaVersion, ID: "slides"},
+		Root:     root,
+		Manifest: saga.Manifest{Version: saga.SagaVersion, ID: "slides"},
 		Section: &saga.Section{Fragments: []*saga.Fragment{{Landmarks: []saga.Landmark{{
 			Diffs: []saga.DiffFile{{Path: "40-e-item.json", Version: saga.CurrentVersion, Diffs: []saga.DiffReference{{URI: oldURI, Note: "item evidence"}}}},
 		}}}}},
@@ -205,12 +208,7 @@ func TestBuildEvidenceRebasePlanHandlesV4ItemEvidenceAndRefusesUnsafeClaimRewrit
 		t.Fatal(err)
 	}
 	if plan.Output.Selectors != 1 || len(plan.Evidence) != 1 || plan.Evidence[0].Relative != "40-e-item.json" || plan.Evidence[0].Value.Diffs[0].URI != newURI {
-		t.Fatalf("v4 Item evidence was not planned correctly: %#v", plan)
-	}
-
-	document.Claims = []saga.Claim{{ID: "claim-v4", Evidence: []string{oldURI}}}
-	if _, err := buildEvidenceRebasePlan(document, changes, oldBase, false, time.Now().UTC()); err == nil || !strings.Contains(err.Error(), "v4 claim-supersession records") {
-		t.Fatalf("unsafe v4 claim rewrite was not refused clearly: %v", err)
+		t.Fatalf("deck Item evidence was not planned correctly: %#v", plan)
 	}
 }
 
@@ -282,9 +280,6 @@ func newEvidenceRebaseFixture(t *testing.T) evidenceRebaseFixture {
 
 	root := filepath.Join(t.TempDir(), "rebase.saga")
 	if err := Init(ctx, []string{"--repo", repo, "--repository", repository, "--base", "release/2.5.3", "--head", "feature", root}, &bytes.Buffer{}); err != nil {
-		t.Fatal(err)
-	}
-	if err := Upgrade(ctx, []string{"--to", "3", root}, &bytes.Buffer{}); err != nil {
 		t.Fatal(err)
 	}
 	document, validation, err := saga.Load(root)

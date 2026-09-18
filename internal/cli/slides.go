@@ -24,21 +24,11 @@ func relativePathForOutput(root, path string) string {
 	return filepath.ToSlash(relative)
 }
 
-func requireSlideSaga(document *saga.Saga, command string) error {
-	if saga.ReportContainerVersion(document.Manifest.Version) {
-		return nil
-	}
-	if document.Manifest.Version != saga.SlideSagaVersion || document.Manifest.Presentation == nil || document.Manifest.Presentation.Mode != "slides" {
-		return fmt.Errorf("%s requires a v3 Report Saga, a v5 report container, or a v4 slide-native Saga; reports are never silently paginated", command)
-	}
-	return nil
-}
-
 func AddDeck(_ context.Context, args []string, out io.Writer) error {
 	flags := commandFlags("add-deck", commandUsage["add-deck"], out)
 	id := flags.String("id", "", "stable deck identifier")
 	title := flags.String("title", "", "deck title")
-	role := flags.String("role", "change", "overview or change")
+	role := flags.String("role", "change", "deck role; implementation decks use change")
 	var rank optionalInt
 	flags.Var(&rank, "rank", "non-negative review order; defaults after the last deck")
 	objective := flags.String("objective", "", "one concise reviewer objective")
@@ -63,14 +53,11 @@ func AddDeck(_ context.Context, args []string, out io.Writer) error {
 	}
 	var created, target string
 	err := authorMutation(flags.Arg(0), func(document *saga.Saga) error {
-		if err := requireSlideSaga(document, "add-deck"); err != nil {
-			return err
-		}
 		if !saga.ValidID(*id) || targetIDExists(document, *id) {
 			return fmt.Errorf("deck id %q is invalid or already used", *id)
 		}
 		if *role != "change" {
-			return fmt.Errorf("v4 init creates the single overview deck; additional decks must use --role change")
+			return fmt.Errorf("--role must be change")
 		}
 		chosenRank := rank.value
 		if !rank.set {
@@ -80,42 +67,34 @@ func AddDeck(_ context.Context, args []string, out io.Writer) error {
 				}
 			}
 		}
-		manifest := saga.DeckManifest{Version: saga.SlideSagaVersion, ID: *id, Title: *title, Role: *role, Rank: chosenRank, Objective: strings.TrimSpace(*objective)}
+		manifest := saga.DeckManifest{Version: saga.DeckRecordVersion, ID: *id, Title: *title, Role: *role, Rank: chosenRank, Objective: strings.TrimSpace(*objective)}
 		target = saga.DeckTarget(document.Manifest.ID, *id)
 		filename, err := saga.FlatDeckFilename(target, chosenRank)
 		if err != nil {
 			return err
 		}
-		if saga.ReportContainerVersion(document.Manifest.Version) {
-			slidesRoot := filepath.Join(document.Root, saga.EmbeddedSlidesDir)
-			if info, statErr := os.Lstat(slidesRoot); statErr == nil && (!info.IsDir() || info.Mode()&os.ModeSymlink != 0) {
-				return fmt.Errorf("%s must be a real directory", saga.EmbeddedSlidesDir)
-			} else if statErr != nil && !os.IsNotExist(statErr) {
-				return statErr
-			}
-			bundle := filepath.Join(slidesRoot, *id+saga.EmbeddedDeckSuffix)
-			if len(filepath.Join(bundle, strings.Repeat("x", saga.FlatMaxBasename))) > saga.FlatMaxPath {
-				return fmt.Errorf("embedded deck path exceeds the portable %d-character budget; choose a shorter Saga location or deck id", saga.FlatMaxPath)
-			}
-			if err := os.MkdirAll(slidesRoot, 0o755); err != nil {
-				return err
-			}
-			if err := store.CommitDir(document.Root, bundle, func(stage string) error {
-				return store.WriteJSON(filepath.Join(stage, filename), manifest, true)
-			}); err != nil {
-				if errors.Is(err, fs.ErrExist) {
-					return fmt.Errorf("embedded deck %q already exists", *id)
-				}
-				return err
-			}
-			created = relativePathForOutput(document.Root, filepath.Join(bundle, filename))
-		} else {
-			path := filepath.Join(document.Root, filename)
-			if err := store.WriteJSON(path, manifest, true); err != nil {
-				return err
-			}
-			created = filename
+		slidesRoot := filepath.Join(document.Root, saga.EmbeddedSlidesDir)
+		if info, statErr := os.Lstat(slidesRoot); statErr == nil && (!info.IsDir() || info.Mode()&os.ModeSymlink != 0) {
+			return fmt.Errorf("%s must be a real directory", saga.EmbeddedSlidesDir)
+		} else if statErr != nil && !os.IsNotExist(statErr) {
+			return statErr
 		}
+		bundle := filepath.Join(slidesRoot, *id+saga.EmbeddedDeckSuffix)
+		if len(filepath.Join(bundle, strings.Repeat("x", saga.FlatMaxBasename))) > saga.FlatMaxPath {
+			return fmt.Errorf("embedded deck path exceeds the portable %d-character budget; choose a shorter Saga location or deck id", saga.FlatMaxPath)
+		}
+		if err := os.MkdirAll(slidesRoot, 0o755); err != nil {
+			return err
+		}
+		if err := store.CommitDir(document.Root, bundle, func(stage string) error {
+			return store.WriteJSON(filepath.Join(stage, filename), manifest, true)
+		}); err != nil {
+			if errors.Is(err, fs.ErrExist) {
+				return fmt.Errorf("embedded deck %q already exists", *id)
+			}
+			return err
+		}
+		created = relativePathForOutput(document.Root, filepath.Join(bundle, filename))
 		return nil
 	})
 	if err != nil {
@@ -172,7 +151,7 @@ func AddSlide(_ context.Context, args []string, out io.Writer) error {
 		return fmt.Errorf("%s", reason)
 	}
 	if strings.Contains(*entrypoint, "/") {
-		return fmt.Errorf("v4 --entrypoint is a simple filename used only to select the slide asset extension; nested paths are refused")
+		return fmt.Errorf("--entrypoint is a simple filename used only to select the slide asset extension; nested paths are refused")
 	}
 	var data []byte
 	var err error
@@ -182,7 +161,7 @@ func AddSlide(_ context.Context, args []string, out io.Writer) error {
 			return fmt.Errorf("read slide source: %w", statErr)
 		}
 		if info.IsDir() {
-			return fmt.Errorf("v4 slides require one self-contained SVG, image, or HTML file; source directories are not portable")
+			return fmt.Errorf("slides require one self-contained SVG, image, or HTML file; source directories are not portable")
 		}
 		data, err = os.ReadFile(*source)
 		if err != nil {
@@ -195,9 +174,6 @@ func AddSlide(_ context.Context, args []string, out io.Writer) error {
 	}
 	var created, target string
 	err = authorMutation(flags.Arg(0), func(document *saga.Saga) error {
-		if err := requireSlideSaga(document, "add-slide"); err != nil {
-			return err
-		}
 		deck := findDeck(document, *deckTarget)
 		if deck == nil {
 			return fmt.Errorf("--deck must identify an existing deck")
@@ -223,7 +199,7 @@ func AddSlide(_ context.Context, args []string, out io.Writer) error {
 		if err != nil {
 			return err
 		}
-		manifest := saga.SlideManifest{Version: saga.SlideSagaVersion, ID: *id, DeckID: deck.ID, Title: *title, Rank: chosenRank, Section: strings.TrimSpace(*section), Intent: *intent, Layout: *layout, MediaType: *mediaType, Entrypoint: assetName, Takeaway: *takeaway, ReadingOrder: []string{}, ExceptionRationale: *rationale}
+		manifest := saga.SlideManifest{Version: saga.DeckRecordVersion, ID: *id, DeckID: deck.ID, Title: *title, Rank: chosenRank, Section: strings.TrimSpace(*section), Intent: *intent, Layout: *layout, MediaType: *mediaType, Entrypoint: assetName, Takeaway: *takeaway, ReadingOrder: []string{}, ExceptionRationale: *rationale}
 		assetPath := filepath.Join(deck.Directory, assetName)
 		manifestPath := filepath.Join(deck.Directory, filename)
 		if err := store.WriteFile(assetPath, data, 0o644, true); err != nil {
@@ -314,9 +290,6 @@ func AddItem(_ context.Context, args []string, out io.Writer) error {
 	}
 	var created, target string
 	err := authorMutation(flags.Arg(0), func(document *saga.Saga) error {
-		if err := requireSlideSaga(document, "add-item"); err != nil {
-			return err
-		}
 		slide := findSlide(document, *slideTarget)
 		if slide == nil {
 			return fmt.Errorf("--slide must identify an existing slide")
@@ -355,7 +328,7 @@ func AddItem(_ context.Context, args []string, out io.Writer) error {
 			return err
 		}
 		path := filepath.Join(slide.Directory, filename)
-		manifest := saga.ItemManifest{Version: saga.SlideSagaVersion, ID: *id, SlideID: slide.ID, Rank: chosenRank, Kind: *kind, Label: *label, Description: strings.TrimSpace(*description), Selector: selector, Hotspot: hotspotRegion, About: *about, Body: *body, Placement: *placement, Leader: *leader}
+		manifest := saga.ItemManifest{Version: saga.DeckRecordVersion, ID: *id, SlideID: slide.ID, Rank: chosenRank, Kind: *kind, Label: *label, Description: strings.TrimSpace(*description), Selector: selector, Hotspot: hotspotRegion, About: *about, Body: *body, Placement: *placement, Leader: *leader}
 		if err := store.WriteJSON(path, manifest, true); err != nil {
 			return err
 		}
@@ -401,9 +374,6 @@ func SetSlideContent(_ context.Context, args []string, out io.Writer) error {
 	}
 	var target string
 	err = authorMutation(flags.Arg(0), func(document *saga.Saga) error {
-		if err := requireSlideSaga(document, "set-slide-content"); err != nil {
-			return err
-		}
 		slide := findSlide(document, *targetValue)
 		if slide == nil {
 			return fmt.Errorf("--target must identify a slide")
@@ -430,7 +400,7 @@ func SetSlideContent(_ context.Context, args []string, out io.Writer) error {
 
 func findDeck(document *saga.Saga, value string) *saga.Deck {
 	for _, deck := range document.Decks {
-		if value == deck.ID || value == deck.Target || filepath.Clean(value) == filepath.Clean(deck.Path) || document.Manifest.Version != saga.SlideSagaVersion && filepath.Clean(value) == filepath.Clean(deck.Directory) {
+		if value == deck.ID || value == deck.Target || filepath.Clean(value) == filepath.Clean(deck.Path) || filepath.Clean(value) == filepath.Clean(deck.Directory) {
 			return deck
 		}
 	}
@@ -460,38 +430,3 @@ func defaultSlideSVG(title, takeaway string) string {
 </svg>
 `, title, takeaway, title, takeaway)
 }
-
-const slideNativeBootstrapREADME = `# Slide-native Change Saga
-
-This is a v4 visual review deck, not a paginated report.
-
-Author with ` + "`change-saga add-deck`" + `, ` + "`change-saga add-slide`" + `, and ` + "`change-saga add-item`" + `.
-Every meaningful visual node, edge, region, transition, or callout is an Item.
-Attach exact diff evidence to Items with ` + "`change-saga cover`" + `; deck- and slide-level evidence is refused.
-
-Before authoring, storyboard the reviewer question and truthful visual form of
-each slide. Use boundaries for systems, containment/dependencies for
-architecture, directed edges for data flow, lanes/messages for sequence,
-states and labeled transitions for lifecycle, entities and cardinalities for
-data models, branches for logic, and trigger/propagation/containment/recovery
-for failure paths. A row of labeled cards is not a default diagram.
-
-Build a surprise inventory before drawing. Establish the minimum system model,
-then identify where a reasonable reviewer expectation differs from the actual
-behavior: hidden coupling, counterintuitive outcomes, consequential constraints,
-tradeoffs, or intentional deviations from repository norms. Show expectation,
-actual behavior, rationale, and consequence together and link them to exact
-evidence. Surprises are especially good callout Items: attach the callout to the
-node, edge, state, or transition that creates the surprise.
-Do not manufacture novelty when the change has none.
-
-Audit reviewer surprise as well as the deck's contact sheet before handoff. If
-the reviewer cannot name the system model, the consequential deviation, why it
-exists, and its tradeoff—or if slides remain
-indistinguishable after labels and colors are ignored—or several unrelated
-questions use the same primitive topology—rewrite them before mapping more
-evidence. Coverage detects omissions; it cannot turn a weak visual into an explanation.
-
-The package is intentionally flat and compact. Treat category-prefixed filenames
-as private storage; use stable IDs, target URNs, and ` + "`change-saga query`" + `.
-`

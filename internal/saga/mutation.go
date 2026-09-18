@@ -19,8 +19,8 @@ type MutationIndex struct {
 	Manifest      Manifest
 	Targets       map[string]string
 	ReviewTargets map[string]string
-	// FlatTargets marks embedded or standalone slide records whose mutable
-	// review overlay is stored as flat root-level records.
+	// FlatTargets marks embedded deck records whose mutable review overlay is
+	// stored as flat root-level records.
 	FlatTargets map[string]bool
 }
 
@@ -50,7 +50,7 @@ func MutationIndexFromDocument(document *Saga) MutationIndex {
 		index.Targets[section.Target] = dir
 		if section.Kind == "deck" {
 			index.FlatTargets[section.Target] = true
-		} else if document.Manifest.Version != SlideSagaVersion {
+		} else {
 			index.ReviewTargets[section.Target] = dir
 		}
 		for _, fragment := range section.Fragments {
@@ -58,7 +58,7 @@ func MutationIndexFromDocument(document *Saga) MutationIndex {
 			if fragment.SlideMeta != nil {
 				index.FlatTargets[fragment.Target] = true
 				index.ReviewTargets[fragment.Target] = fragment.Directory
-			} else if document.Manifest.Version != SlideSagaVersion {
+			} else {
 				index.ReviewTargets[fragment.Target] = fragment.Directory
 			}
 			for landmarkIndex := range fragment.Landmarks {
@@ -92,34 +92,21 @@ func LoadMutationIndex(root string) (MutationIndex, Validation, error) {
 	if !info.IsDir() {
 		return MutationIndex{}, Validation{}, fmt.Errorf("%s is not a directory", root)
 	}
-	manifestPath, err := rootManifestPath(abs)
+	manifest, err := readManifest(abs)
 	if err != nil {
 		return MutationIndex{}, Validation{}, err
-	}
-	var manifest Manifest
-	if err := readJSON(manifestPath, &manifest); err != nil {
-		return MutationIndex{}, Validation{}, fmt.Errorf("read %s: %w", filepath.Base(manifestPath), err)
 	}
 	validation := Validation{Valid: true, Issues: []Issue{}}
 	if !strings.HasSuffix(filepath.Base(abs), ".saga") {
 		addIssue(&validation, "error", ".", "saga root directory must end in .saga")
 	}
-	validateManifest(manifest, filepath.Base(manifestPath), &validation)
-	if manifest.Version == SlideSagaVersion {
+	validateManifest(manifest, ManifestName, &validation)
+	if info, statErr := os.Lstat(filepath.Join(abs, EmbeddedSlidesDir)); statErr == nil && info.IsDir() && info.Mode()&os.ModeSymlink == 0 {
 		document, loadedValidation, loadErr := load(abs, loadOptions{skipCoverage: true, skipReviews: true})
 		if loadErr != nil {
 			return MutationIndex{}, loadedValidation, loadErr
 		}
 		return MutationIndexFromDocument(document), loadedValidation, nil
-	}
-	if ReportContainerVersion(manifest.Version) {
-		if info, statErr := os.Lstat(filepath.Join(abs, EmbeddedSlidesDir)); statErr == nil && info.IsDir() && info.Mode()&os.ModeSymlink == 0 {
-			document, loadedValidation, loadErr := load(abs, loadOptions{skipCoverage: true, skipReviews: true})
-			if loadErr != nil {
-				return MutationIndex{}, loadedValidation, loadErr
-			}
-			return MutationIndexFromDocument(document), loadedValidation, nil
-		}
 	}
 	index := MutationIndex{
 		Root: abs, Manifest: manifest,
@@ -128,22 +115,20 @@ func LoadMutationIndex(root string) (MutationIndex, Validation, error) {
 		FlatTargets:   map[string]bool{},
 	}
 	ids := map[string]string{}
-	if err := scanMutationSection(abs, abs, sagaHierarchy, manifest.ID, manifest.Version, &index, ids, &validation); err != nil {
+	if err := scanMutationSection(abs, abs, sagaHierarchy, manifest.ID, &index, ids, &validation); err != nil {
 		return MutationIndex{}, validation, err
 	}
-	if ReportContainerVersion(manifest.Version) {
-		designDir := filepath.Join(abs, "___design")
-		if info, statErr := os.Lstat(designDir); statErr == nil && info.IsDir() && info.Mode()&os.ModeSymlink == 0 {
-			if err := scanMutationSection(abs, designDir, designHierarchy, manifest.ID, manifest.Version, &index, ids, &validation); err != nil {
-				return MutationIndex{}, validation, err
-			}
+	designDir := filepath.Join(abs, "___design")
+	if info, statErr := os.Lstat(designDir); statErr == nil && info.IsDir() && info.Mode()&os.ModeSymlink == 0 {
+		if err := scanMutationSection(abs, designDir, designHierarchy, manifest.ID, &index, ids, &validation); err != nil {
+			return MutationIndex{}, validation, err
 		}
 	}
 	validation.Valid = !hasErrors(validation.Issues)
 	return index, validation, nil
 }
 
-func scanMutationSection(root, dir string, hierarchy hierarchyRoot, sagaID string, sagaVersion int, index *MutationIndex, ids map[string]string, validation *Validation) error {
+func scanMutationSection(root, dir string, hierarchy hierarchyRoot, sagaID string, index *MutationIndex, ids map[string]string, validation *Validation) error {
 	entries, err := os.ReadDir(dir)
 	if err != nil {
 		return err
@@ -154,7 +139,7 @@ func scanMutationSection(root, dir string, hierarchy hierarchyRoot, sagaID strin
 		if strings.HasPrefix(name, "___") {
 			if entry.Type()&fs.ModeSymlink != 0 || !entry.IsDir() {
 				addIssue(validation, "error", relativePath(root, path), "reserved metadata path must be a real directory")
-			} else if !knownReservedDirectory(name, hierarchy == sagaHierarchy, sagaVersion) {
+			} else if !knownReservedDirectory(name, hierarchy == sagaHierarchy) {
 				addIssue(validation, "error", relativePath(root, path), "unknown reserved directory")
 			}
 			continue
@@ -209,7 +194,7 @@ func scanMutationSection(root, dir string, hierarchy hierarchyRoot, sagaID strin
 			}
 			index.Targets[target], index.ReviewTargets[target] = path, path
 		}
-		if err := scanMutationSection(root, path, nestedHierarchy, sagaID, sagaVersion, index, ids, validation); err != nil {
+		if err := scanMutationSection(root, path, nestedHierarchy, sagaID, index, ids, validation); err != nil {
 			return err
 		}
 	}
@@ -310,9 +295,6 @@ func registerMutationID(id, path string, validation *Validation, ids map[string]
 // LoadReviewState reads only review-owned paths named by a validated mutation
 // index. It never opens coverage mappings or ordinary authored fragments.
 func LoadReviewState(index MutationIndex) (ReviewState, Validation, error) {
-	if index.Manifest.Version == SlideSagaVersion {
-		return loadFlatReviewState(index, false)
-	}
 	validation := Validation{Valid: true, Issues: []Issue{}}
 	state := ReviewState{ByTarget: map[string][]Review{}}
 	for target, dir := range index.ReviewTargets {

@@ -166,7 +166,7 @@ func verifies(id, testCase, testRevision, criterion, storyRevision string) requi
 // fixtureLinks judges relations exactly as the loader does: currency comes
 // only from requirements.EvaluateRelations, with every test-case head supplied.
 func fixtureLinks(stories []requirements.Story, relations []requirements.Relation, document quality.Document) []Link {
-	requirementsDocument := requirements.Document{SagaID: fixtureSaga, SagaVersion: quality.Version, Stories: stories, Relations: relations}
+	requirementsDocument := requirements.Document{SagaID: fixtureSaga, Stories: stories, Relations: relations}
 	inputs := requirements.StaleInputs{}
 	heads := map[string][]string{}
 	for _, testCase := range document.TestCases {
@@ -426,31 +426,6 @@ func TestImplementationPathWithOrphanedDiffIsStaleSourceHistory(t *testing.T) {
 	}
 	if !implicated {
 		t.Fatalf("the source change implicates the criterion reached through the Item: %#v", status.ChangedSource.Implicated)
-	}
-}
-
-func TestV3QualityIsAVisibleNotAdoptedState(t *testing.T) {
-	inputs := qualityFixture(t)
-	inputs.SagaVersion = 3
-	inputs.Quality = quality.Document{SagaID: fixtureSaga, Adoption: quality.NotAdopted}
-	inputs.QualityReason = "quality records are v5; this is a v3 Saga"
-	inputs.Exceptions = nil
-	inputs.ExceptionsAdopted = false
-	status := Assemble(inputs)
-
-	if status.Policy.Name != readiness.PolicyCompatibility || status.Readiness.PeerReview == nil {
-		t.Fatalf("a v3 Saga keeps peer-review readiness by default: %#v", status.Policy)
-	}
-	if status.Quality.Adoption != string(quality.NotAdopted) {
-		t.Fatalf("quality adoption = %q", status.Quality.Adoption)
-	}
-	got := cell(t, status, "positive-path", coverage.AxisQuality)
-	if got.State != coverage.StateGap || !containsText(got.Gap.Reasons, "not_adopted") {
-		t.Fatalf("an unadopted quality axis is a visible gap with its reason, not a pass: %#v", got)
-	}
-	gate, _ := status.Readiness.Gate(readiness.GateQualityReady)
-	if gate.Configured || gate.Status != readiness.StatusNotApplicable || !blockedBy(gate, "quality_adopted") {
-		t.Fatalf("quality_ready is reported, unconfigured, and names adoption: %#v", gate)
 	}
 }
 

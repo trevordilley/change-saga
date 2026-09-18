@@ -17,7 +17,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
-func TestSlideNativeAuthoringLoopAndCompatibilityRefusal(t *testing.T) {
+func TestImplementationDeckAuthoringLoop(t *testing.T) {
 	repo := t.TempDir()
 	git(t, repo, "init", "-b", "main")
 	git(t, repo, "config", "user.name", "Test Author")
@@ -29,22 +29,19 @@ func TestSlideNativeAuthoringLoopAndCompatibilityRefusal(t *testing.T) {
 
 	root := filepath.Join(t.TempDir(), "visual.saga")
 	var output bytes.Buffer
-	if err := Init(context.Background(), []string{"--mode", "slides", "--repo", repo, "--base", "main", "--head", "HEAD", "--title", "Visual", root}, &output); err != nil {
+	if err := Init(context.Background(), []string{"--repo", repo, "--base", "main", "--head", "HEAD", "--title", "Visual", root}, &output); err != nil {
 		t.Fatal(err)
 	}
-	bootstrap, err := os.ReadFile(filepath.Join(root, "01-readme.md"))
-	if err != nil {
+	if err := AddDeck(context.Background(), []string{"--role", "overview", "--objective", "Explain the change.", root, "implementation"}, &output); err == nil || !strings.Contains(err.Error(), "--role must be change") {
+		t.Fatalf("overview deck role was not refused: %v", err)
+	}
+	if err := AddDeck(context.Background(), []string{"--objective", "Explain the change.", root, "implementation"}, &output); err != nil {
 		t.Fatal(err)
 	}
-	for _, expected := range []string{"surprise inventory", "reasonable reviewer expectation", "callout Items", "Do not manufacture novelty"} {
-		if !strings.Contains(string(bootstrap), expected) {
-			t.Errorf("slide-native bootstrap omitted %q", expected)
-		}
+	if err := AddSlide(context.Background(), []string{"--deck", "implementation", "--intent", "orient", "--layout", "hero", "--entrypoint", "assets/slide.svg", root, "nested-source"}, &output); err == nil || !strings.Contains(err.Error(), "simple filename") {
+		t.Fatalf("nested entrypoint was not refused clearly: %v", err)
 	}
-	if err := AddSlide(context.Background(), []string{"--deck", "overview", "--intent", "orient", "--layout", "hero", "--entrypoint", "assets/slide.svg", root, "nested-source"}, &output); err == nil || !strings.Contains(err.Error(), "simple filename") {
-		t.Fatalf("nested v4 entrypoint was not refused clearly: %v", err)
-	}
-	if err := AddSlide(context.Background(), []string{"--deck", "overview", "--section", "Overview", "--intent", "orient", "--layout", "hero", "--title", "What changed", "--takeaway", "Validation now happens first.", root, "change-overview"}, &output); err != nil {
+	if err := AddSlide(context.Background(), []string{"--deck", "implementation", "--section", "Overview", "--intent", "orient", "--layout", "hero", "--title", "What changed", "--takeaway", "Validation now happens first.", root, "change-overview"}, &output); err != nil {
 		t.Fatal(err)
 	}
 	if err := AddItem(context.Background(), []string{"--slide", "change-overview", "--kind", "callout", "--id", "premise", "--element-id", "slide-title", "--label", "Review premise", "--description", "The high-level behavioral change.", "--body", "Invalid requests never reach persistence.", "--placement", "right", "--leader", "arrow", root}, &output); err != nil {
@@ -52,7 +49,7 @@ func TestSlideNativeAuthoringLoopAndCompatibilityRefusal(t *testing.T) {
 	}
 	interactive := filepath.Join(t.TempDir(), "interactive.html")
 	writeFile(t, interactive, `<main id="decision">Choose a path</main><script>document.querySelector('#decision').dataset.ready = 'true'</script>`)
-	if err := AddSlide(context.Background(), []string{"--deck", "overview", "--intent", "compare", "--layout", "before-after", "--rank", "1", "--title", "Interactive comparison", "--takeaway", "The alternate path remains inspectable.", "--media-type", "text/html", "--entrypoint", "index.html", "--source", interactive, root, "interactive-comparison"}, &output); err != nil {
+	if err := AddSlide(context.Background(), []string{"--deck", "implementation", "--intent", "compare", "--layout", "before-after", "--rank", "1", "--title", "Interactive comparison", "--takeaway", "The alternate path remains inspectable.", "--media-type", "text/html", "--entrypoint", "index.html", "--source", interactive, root, "interactive-comparison"}, &output); err != nil {
 		t.Fatal(err)
 	}
 	if err := AddItem(context.Background(), []string{"--slide", "interactive-comparison", "--kind", "statement", "--id", "decision", "--element-id", "decision", "--description", "The alternate path decision.", root}, &output); err != nil {
@@ -60,21 +57,21 @@ func TestSlideNativeAuthoringLoopAndCompatibilityRefusal(t *testing.T) {
 	}
 	document, validation, err := saga.Load(root)
 	if err != nil || !validation.Valid {
-		t.Fatalf("authored v4 invalid: valid=%v err=%v issues=%#v", validation.Valid, err, validation.Issues)
+		t.Fatalf("authored deck invalid: valid=%v err=%v issues=%#v", validation.Valid, err, validation.Issues)
 	}
-	if _, err := os.Stat(filepath.Join(root, document.Decks[0].Slides[1].Entrypoint)); err != nil {
+	if _, err := os.Stat(filepath.Join(document.Decks[0].Slides[1].Directory, document.Decks[0].Slides[1].Entrypoint)); err != nil {
 		t.Fatalf("compact slide asset was not written: %v", err)
 	}
 	if document.Decks[0].Slides[0].Section != "Overview" {
 		t.Fatalf("slide section = %q, want Overview", document.Decks[0].Slides[0].Section)
 	}
-	entries, err := os.ReadDir(root)
+	entries, err := os.ReadDir(document.Decks[0].Directory)
 	if err != nil {
 		t.Fatal(err)
 	}
 	for _, entry := range entries {
 		if entry.IsDir() || len(entry.Name()) > saga.FlatMaxBasename {
-			t.Fatalf("v4 output is not compact and flat: %s", entry.Name())
+			t.Fatalf("deck bundle is not compact and flat: %s", entry.Name())
 		}
 	}
 	item := document.Decks[0].Slides[0].Items[0]
@@ -95,13 +92,13 @@ func TestSlideNativeAuthoringLoopAndCompatibilityRefusal(t *testing.T) {
 		t.Fatalf("slide review by compact record path failed: %v", err)
 	}
 	if err := Thread(context.Background(), []string{"--target", item.Target, "--body", "Keep the validation boundary visible.", root}, &output); err != nil {
-		t.Fatalf("flat thread failed: %v", err)
+		t.Fatalf("Item thread failed: %v", err)
 	}
 	if err := AddClaim(context.Background(), []string{"--id", "validation-boundary", "--target", item.Target, "--statement", "Validation runs before persistence.", "--diff", uri, root}, &output); err != nil {
-		t.Fatalf("flat claim failed: %v", err)
+		t.Fatalf("claim failed: %v", err)
 	}
 	if err := VerifyClaim(context.Background(), []string{"--id", "validation-check", "--claim", "validation-boundary", "--status", "verified", "--method", "inspection", "--summary", "The mapped line establishes the boundary.", root}, &output); err != nil {
-		t.Fatalf("flat verification failed: %v", err)
+		t.Fatalf("verification failed: %v", err)
 	}
 	document, validation, err = saga.Load(root)
 	if err != nil || !validation.Valid || len(document.Decks[0].Slides[0].Reviews) != 1 || len(document.Decks[0].Slides[0].Items[0].Reviews) != 0 || len(document.Threads) != 1 || len(document.Threads[0].Messages) != 1 || len(document.Claims) != 1 || len(document.Verifications) != 1 {
@@ -119,27 +116,12 @@ func TestSlideNativeAuthoringLoopAndCompatibilityRefusal(t *testing.T) {
 	if envelope["schema"] != slideQuerySchema || data["items"] == nil || data["landmarks"] != nil || data["section"] != "Overview" || data["takeaway"] != "Validation now happens first." {
 		t.Fatalf("slide query leaked report vocabulary or metadata: %#v", envelope)
 	}
-	queryOutput.Reset()
-	if err := Query(context.Background(), []string{"overview", "--saga", root, "--repo", repo}, &queryOutput); err != nil {
-		t.Fatalf("v4 overview query failed: %v\n%s", err, queryOutput.String())
-	}
-	envelope = map[string]any{}
-	if err := json.Unmarshal(queryOutput.Bytes(), &envelope); err != nil {
-		t.Fatal(err)
-	}
-	data, _ = envelope["data"].(map[string]any)
-	if envelope["schema"] != slideQuerySchema || data["decks"] == nil || data["chapters"] != nil || data["overview_fragments"] != nil {
-		t.Fatalf("v4 overview leaked report hierarchy: %#v", envelope)
-	}
-	if err := AddChapter(context.Background(), []string{root, "legacy"}, &output); err == nil || !strings.Contains(err.Error(), "use add-deck") {
-		t.Fatalf("legacy authoring was not refused: %v", err)
-	}
 	if !strings.Contains(output.String(), "change-saga cover") {
 		t.Fatalf("authoring guidance did not lead to Item evidence:\n%s", output.String())
 	}
 }
 
-func TestReportSagaEmbedsSeveralIndependentSlideDecks(t *testing.T) {
+func TestSagaEmbedsSeveralIndependentSlideDecks(t *testing.T) {
 	repo := t.TempDir()
 	git(t, repo, "init", "-b", "main")
 	git(t, repo, "config", "user.name", "Test Author")
@@ -153,15 +135,9 @@ func TestReportSagaEmbedsSeveralIndependentSlideDecks(t *testing.T) {
 	git(t, repo, "add", "README.md")
 	git(t, repo, "commit", "-m", "implement change")
 
-	root := filepath.Join(t.TempDir(), "hybrid.saga")
+	root := filepath.Join(t.TempDir(), "decks.saga")
 	var output bytes.Buffer
-	if err := Init(context.Background(), []string{"--repo", repo, "--base", "main", "--head", "HEAD", "--title", "Hybrid", root}, &output); err != nil {
-		t.Fatal(err)
-	}
-	if err := AddDeck(context.Background(), []string{"--objective", "Explain the complex flow.", root, "flow"}, &output); err == nil || !strings.Contains(err.Error(), "v3 Report Saga") {
-		t.Fatalf("v2 unexpectedly accepted embedded decks: %v", err)
-	}
-	if err := Upgrade(context.Background(), []string{"--to", "3", root}, &output); err != nil {
+	if err := Init(context.Background(), []string{"--repo", repo, "--base", "main", "--head", "HEAD", "--title", "Decks", root}, &output); err != nil {
 		t.Fatal(err)
 	}
 	for _, deck := range []string{"flow", "failure-path"} {
@@ -178,9 +154,9 @@ func TestReportSagaEmbedsSeveralIndependentSlideDecks(t *testing.T) {
 
 	document, validation, err := saga.Load(root)
 	if err != nil || !validation.Valid {
-		t.Fatalf("hybrid load: valid=%v err=%v issues=%#v", validation.Valid, err, validation.Issues)
+		t.Fatalf("deck load: valid=%v err=%v issues=%#v", validation.Valid, err, validation.Issues)
 	}
-	if document.Manifest.Version != saga.CurrentSagaVersion || len(document.Decks) != 2 || len(document.Section.Fragments) != 1 {
+	if document.Manifest.Version != saga.SagaVersion || len(document.Decks) != 2 || len(document.Section.Fragments) != 1 {
 		t.Fatalf("report and deck surfaces did not coexist: manifest=%#v decks=%d overview=%d", document.Manifest, len(document.Decks), len(document.Section.Fragments))
 	}
 	for _, deck := range document.Decks {
@@ -213,11 +189,11 @@ func TestReportSagaEmbedsSeveralIndependentSlideDecks(t *testing.T) {
 	if err := Story(context.Background(), []string{"add", "--id", "checkout", "--revision", "r1", "--event", "proposed", "--title", "Checkout", "--statement", "As a buyer I can complete checkout", "--priority", "high", "--criterion", "safe=Checkout preserves the validated state", "--criterion", "fast=Checkout does not add a retry delay", root}, &output); err != nil {
 		t.Fatalf("add linked story: %v", err)
 	}
-	storyURN, _ := livingid.Story("hybrid", "checkout")
-	criterionURN, _ := livingid.Criterion("hybrid", "checkout", "safe")
-	secondCriterionURN, _ := livingid.Criterion("hybrid", "checkout", "fast")
-	revisionURN, _ := livingid.Revision("hybrid", "checkout", "r1")
-	proposedURN, _ := requirements.StoryEventURN("hybrid", "checkout", "proposed")
+	storyURN, _ := livingid.Story("decks", "checkout")
+	criterionURN, _ := livingid.Criterion("decks", "checkout", "safe")
+	secondCriterionURN, _ := livingid.Criterion("decks", "checkout", "fast")
+	revisionURN, _ := livingid.Revision("decks", "checkout", "r1")
+	proposedURN, _ := requirements.StoryEventURN("decks", "checkout", "proposed")
 	if err := Relation(context.Background(), []string{"add", "--id", "flow-explains-checkout", "--type", "explains", "--from", document.Decks[0].Slides[0].Target, "--to", storyURN, "--to-revision", revisionURN, "--rationale", "The visual implementation breakdown demonstrates this user story.", root}, &output); err != nil {
 		t.Fatalf("link slide to story: %v", err)
 	}
@@ -269,7 +245,7 @@ func TestReportSagaEmbedsSeveralIndependentSlideDecks(t *testing.T) {
 	}
 	queryOutput.Reset()
 	if err := Query(context.Background(), []string{"overview", "--saga", root, "--repo", repo}, &queryOutput); err != nil {
-		t.Fatalf("hybrid overview query: %v\n%s", err, queryOutput.String())
+		t.Fatalf("overview query: %v\n%s", err, queryOutput.String())
 	}
 	var envelope map[string]any
 	if err := json.Unmarshal(queryOutput.Bytes(), &envelope); err != nil {
@@ -277,7 +253,7 @@ func TestReportSagaEmbedsSeveralIndependentSlideDecks(t *testing.T) {
 	}
 	data, _ := envelope["data"].(map[string]any)
 	if envelope["schema"] != querySchema || data["overview_fragments"] == nil || data["decks"] == nil {
-		t.Fatalf("hybrid overview did not expose both native surfaces: %#v", envelope)
+		t.Fatalf("overview did not expose both the report and its decks: %#v", envelope)
 	}
 	queryOutput.Reset()
 	if err := Query(context.Background(), []string{"slide", "--saga", root, "--repo", repo, "--target", document.Decks[0].Slides[0].Target}, &queryOutput); err != nil {

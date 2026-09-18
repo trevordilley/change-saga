@@ -173,14 +173,11 @@ func (story Story) RevisionConflict() bool  { return len(story.RevisionHeads) > 
 func (story Story) LifecycleConflict() bool { return len(story.LifecycleHeads) > 1 }
 
 type Document struct {
-	Root   string
-	SagaID string
-	// SagaVersion is the manifest version (3 or 5). It selects the relation
-	// record version writers emit.
-	SagaVersion int
-	Stories     []Story
-	Citations   []Citation
-	Relations   []Relation
+	Root      string
+	SagaID    string
+	Stories   []Story
+	Citations []Citation
+	Relations []Relation
 }
 
 // StaleInputs supplies current values owned outside this package. Keys are

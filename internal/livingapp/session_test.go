@@ -24,7 +24,7 @@ func TestOrdinarySagaIsNotApplicableRatherThanInvalidOrBlocked(t *testing.T) {
 	if err := os.Mkdir(root, 0o755); err != nil {
 		t.Fatal(err)
 	}
-	manifest := map[string]any{"version": 2, "id": "ordinary", "title": "Ordinary", "source": map[string]string{"repository": "https://example.com/repo.git", "base": "main", "head": "feature"}}
+	manifest := map[string]any{"version": 5, "id": "ordinary", "title": "Ordinary", "source": map[string]string{"repository": "https://example.com/repo.git", "base": "main", "head": "feature"}}
 	data, _ := json.Marshal(manifest)
 	if err := os.WriteFile(filepath.Join(root, "saga.json"), data, 0o644); err != nil {
 		t.Fatal(err)
@@ -197,7 +197,7 @@ func livingFixture(t *testing.T) string {
 			t.Fatal(err)
 		}
 	}
-	manifest := map[string]any{"$schema": "https://changesaga.dev/schema/v3/saga.schema.json", "version": 3, "id": "test", "title": "Test", "source": map[string]string{"repository": "https://example.com/repo.git", "base": "main", "head": "feature"}}
+	manifest := map[string]any{"$schema": "https://changesaga.dev/schema/v5/saga.schema.json", "version": 5, "id": "test", "title": "Test", "source": map[string]string{"repository": "https://example.com/repo.git", "base": "main", "head": "feature"}}
 	data, _ := json.Marshal(manifest)
 	if err := os.WriteFile(filepath.Join(root, "saga.json"), data, 0o644); err != nil {
 		t.Fatal(err)

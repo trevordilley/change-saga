@@ -2,6 +2,7 @@ package requirements
 
 import (
 	"bytes"
+	"encoding/json"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -11,8 +12,6 @@ import (
 	"time"
 
 	jsonschema "github.com/santhosh-tekuri/jsonschema/v6"
-
-	"github.com/twentyideas/changesaga/internal/store"
 )
 
 const (
@@ -28,14 +27,6 @@ const (
 func newV5Saga(t *testing.T) string {
 	t.Helper()
 	root := newSaga(t)
-	manifest := map[string]any{
-		"$schema": "https://changesaga.dev/schema/v5/saga.schema.json",
-		"version": 5, "id": "test", "title": "Test",
-		"source": map[string]any{"repository": "https://example.com/repo.git", "base": "main", "head": "feature"},
-	}
-	if err := store.WriteJSON(filepath.Join(root, "saga.json"), manifest, false); err != nil {
-		t.Fatal(err)
-	}
 	if _, err := AddStory(root, "test", storyInput("checkout", "r1", "proposed", []Criterion{{ID: "fast", Statement: "Checkout finishes promptly"}})); err != nil {
 		t.Fatal(err)
 	}
@@ -113,57 +104,25 @@ func TestV5GoldenRelationExampleLoads(t *testing.T) {
 	}
 }
 
-func TestV3RelationsKeepTheirContractBesideV5(t *testing.T) {
-	// A v3 Saga still writes v3 bytes and refuses v5-only endpoints and scope.
-	v3 := newSaga(t)
-	if _, err := AddStory(v3, "test", storyInput("checkout", "r1", "proposed", []Criterion{{ID: "fast", Statement: "Checkout finishes promptly"}})); err != nil {
+func TestV3RelationRecordsStillLoad(t *testing.T) {
+	root := newV5Saga(t)
+	if _, err := AddRelation(root, "test", verifiesInput()); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := AddRelation(v3, "test", verifiesInput()); err == nil || !strings.Contains(err.Error(), `unsupported relation endpoint kind "test-case"`) {
-		t.Fatalf("v3 test-case endpoint error = %v", err)
+	// rebase-evidence records claim supersession as a version-3 relation, so
+	// that record shape remains readable beside the v5 relations writers emit.
+	record := Relation{
+		Schema: RelationSchemaURL, Version: Version, ID: "refines", Type: RelationRefines,
+		From: v5Story, To: v5Criterion, Rationale: "narrower", State: RelationActive, CreatedAt: testTime,
 	}
-	scoped := AddRelationInput{ID: "refines", Type: RelationRefines, From: v5Story, To: v5Criterion, Rationale: "narrower", Scope: ScopeSelf}
-	if _, err := AddRelation(v3, "test", scoped); err == nil || !strings.Contains(err.Error(), "requires a format v5 saga") {
-		t.Fatalf("v3 scope error = %v", err)
-	}
-	scoped.Scope = ""
-	result, err := AddRelation(v3, "test", scoped)
+	data, err := json.Marshal(record)
 	if err != nil {
 		t.Fatal(err)
 	}
-	data, err := os.ReadFile(filepath.Join(v3, filepath.FromSlash(result.Path)))
-	if err != nil {
+	if err := os.WriteFile(filepath.Join(root, "___requirements", "relations", "refines.json"), data, 0o644); err != nil {
 		t.Fatal(err)
 	}
-	if !bytes.Contains(data, []byte(RelationSchemaURL)) || bytes.Contains(data, []byte(`"scope"`)) {
-		t.Fatalf("v3 relation bytes = %s", data)
-	}
-
-	// A v5 record smuggled into a v3 Saga is refused rather than reinterpreted.
-	v5 := newV5Saga(t)
-	if _, err := AddRelation(v5, "test", verifiesInput()); err != nil {
-		t.Fatal(err)
-	}
-	record, err := os.ReadFile(filepath.Join(v5, "___requirements", "relations", "fast-path-verifies-fast.json"))
-	if err != nil {
-		t.Fatal(err)
-	}
-	if err := os.WriteFile(filepath.Join(v3, "___requirements", "relations", "fast-path-verifies-fast.json"), record, 0o644); err != nil {
-		t.Fatal(err)
-	}
-	if _, err := Load(v3, "test"); err == nil || !strings.Contains(err.Error(), "requires a format v5 saga") {
-		t.Fatalf("v5 relation in v3 saga error = %v", err)
-	}
-
-	// Mixed history: a v3 record inside a v5 container loads unchanged.
-	v3Record, err := os.ReadFile(filepath.Join(v3, filepath.FromSlash(result.Path)))
-	if err != nil {
-		t.Fatal(err)
-	}
-	if err := os.WriteFile(filepath.Join(v5, filepath.FromSlash(result.Path)), v3Record, 0o644); err != nil {
-		t.Fatal(err)
-	}
-	document, err := Load(v5, "test")
+	document, err := Load(root, "test")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -172,7 +131,7 @@ func TestV3RelationsKeepTheirContractBesideV5(t *testing.T) {
 		versions[relation.ID] = relation.Version
 	}
 	if !reflect.DeepEqual(versions, map[string]int{"fast-path-verifies-fast": 5, "refines": 3}) {
-		t.Fatalf("mixed relation versions = %v", versions)
+		t.Fatalf("relation versions = %v", versions)
 	}
 }
 

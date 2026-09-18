@@ -190,8 +190,7 @@ func TestCoveredCriterionProducesNoActionAndNotAdoptedQualityIsOneDecision(t *te
 			t.Fatalf("a fully covered criterion has no coverage action: %#v", action)
 		}
 	}
-	status.Quality = livingapp.QualityStatus{Adoption: string(quality.NotAdopted), Reason: "v3 Saga"}
-	status.SagaVersion = 3
+	status.Quality = livingapp.QualityStatus{Adoption: string(quality.NotAdopted), Reason: "no ___quality root"}
 	actions := Derive(status, saga)
 	quality := 0
 	for _, action := range actions {
@@ -200,8 +199,8 @@ func TestCoveredCriterionProducesNoActionAndNotAdoptedQualityIsOneDecision(t *te
 		}
 		if action.ID == "capability:quality" {
 			quality++
-			if !strings.Contains(strings.Join(action.Question.Options[0].Commands[0].Argv, " "), "upgrade --to 5") {
-				t.Fatalf("adopting quality on v3 starts with the v5 upgrade shape: %#v", action.Question.Options[0])
+			if !strings.Contains(strings.Join(action.Question.Options[0].Commands[0].Argv, " "), "quality test-case add") {
+				t.Fatalf("adopting quality starts with the first test case: %#v", action.Question.Options[0])
 			}
 		}
 	}

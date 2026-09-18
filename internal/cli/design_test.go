@@ -11,14 +11,8 @@ import (
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
-func TestDesignAuthoringReusesHierarchyMutationsUnderV3Root(t *testing.T) {
+func TestDesignAuthoringReusesHierarchyMutations(t *testing.T) {
 	root := newAuthoredSaga(t)
-	if err := Design(context.Background(), []string{"add-chapter", "--id", "architecture", root, "architecture"}, &bytes.Buffer{}); err == nil || !strings.Contains(err.Error(), "upgrade --to 3") {
-		t.Fatalf("v2 design authoring error = %v", err)
-	}
-	if err := Upgrade(context.Background(), []string{"--to", "3", root}, &bytes.Buffer{}); err != nil {
-		t.Fatal(err)
-	}
 
 	var output bytes.Buffer
 	if err := Design(context.Background(), []string{"add-fragment", "--id", "system-map", "--name", "system-map", "--title", "System map", root}, &output); err != nil {
@@ -78,9 +72,6 @@ func TestDesignAuthoringReusesHierarchyMutationsUnderV3Root(t *testing.T) {
 
 func TestDesignScopedMutationsRejectNarrativeTargets(t *testing.T) {
 	root := newAuthoredSaga(t)
-	if err := Upgrade(context.Background(), []string{"--to", "3", root}, &bytes.Buffer{}); err != nil {
-		t.Fatal(err)
-	}
 	before, err := os.ReadFile(filepath.Join(root, "overview.fragment", "content.md"))
 	if err != nil {
 		t.Fatal(err)

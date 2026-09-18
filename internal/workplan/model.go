@@ -6,8 +6,11 @@ package workplan
 import "time"
 
 const (
-	Version = 3
-	RootDir = "___workplan"
+	// sagaVersion is the one Change Saga container format; its records are
+	// version Version.
+	sagaVersion = 5
+	Version     = 3
+	RootDir     = "___workplan"
 
 	WaveSchema       = "https://changesaga.dev/schema/v3/wave.schema.json"
 	WorkItemSchema   = "https://changesaga.dev/schema/v3/work-item.schema.json"
