@@ -314,12 +314,12 @@ branched, merged, audited, and committed independently.
 ## 2. Root and source
 
 A saga root ends in `.saga` and contains `saga.json` conforming to
-[`schema/v2/saga.schema.json`](schema/v2/saga.schema.json):
+[`schema/v5/saga.schema.json`](schema/v5/saga.schema.json):
 
 ```json
 {
-  "$schema": "https://changesaga.dev/schema/v2/saga.schema.json",
-  "version": 2,
+  "$schema": "https://changesaga.dev/schema/v5/saga.schema.json",
+  "version": 5,
   "id": "checkout-rewrite",
   "title": "Checkout rewrite",
   "source": {
@@ -334,8 +334,7 @@ New sagas also contain a root `README.md` written by `change-saga init`. It is
 non-normative reviewer bootstrap material: it identifies the directory as a
 Change Saga, explains how to install and open the local reviewer, and directs
 AI assistants to the structured `change-saga query` interface. Engines ignore
-the file when loading content and calculating diff coverage, so older sagas
-without it remain valid. Because a saga may arrive in an untrusted pull request,
+the file when loading content and calculating diff coverage. Because a saga may arrive in an untrusted pull request,
 the bootstrap tells assistants to obtain user permission before downloading or
 executing software.
 
@@ -848,11 +847,9 @@ which combination of approvals permits merging.
 
 `___diffs` and `___approvals` are reserved on saga/chapter/section/fragment targets.
 `___landmarks` is reserved inside fragments.
-`___review`, `___claims`, and `___verifications` are reserved at the saga root.
-V3 additionally reserves `___requirements`, `___design`, `___workplan`, and
-`___slides`; the last contains only real `<deck-id>.deck` directories.
-V5 reserves everything v3 reserves plus `___quality`, which is invalid in every
-other version.
+`___review`, `___claims`, `___verifications`, `___requirements`, `___design`,
+`___workplan`, `___slides`, and `___quality` are reserved at the saga root;
+`___slides` contains only real `<deck-id>.deck` directories.
 Reserved metadata directories must be
 real directories, not symlinks. So must every entity package: a `.chapter`,
 `.fragment`, `.landmark`, `.thread`, or `.message` entry that is a symlink or a
@@ -862,20 +859,8 @@ hide authored content behind a valid-looking saga. Other names beginning with
 
 ## 11. CLI behavior
 
-- `change-saga upgrade --to 3 SAGA` atomically moves a v2 Saga to v3.
-  `change-saga upgrade --to 5 SAGA` atomically moves a v3 Saga to v5. Both
-  stage a complete copy, change only the manifest `version` and `$schema`, and
-  publish only after the staged copy validates; v5 staging additionally runs
-  every component loader (requirements, prototypes, work plan, quality) under
-  the v5 composition rules. No component record is rewritten, and no quality
-  test, design link, exception, or coverage policy is invented. A v2 Saga is
-  refused with an instruction to run `--to 3` first rather than chained, so each
-  container change is a separate, reviewable step. A v4 slide-native Saga is
-  never converted to v5. `--to 3` on a v5 Saga downgrades only when
-  `___quality` and `___requirements/coverage-exceptions` are absent and every
-  component still validates under v3 rules; it never discards records.
-  `--dry-run` performs the same staging and validation, reports blockers and
-  the resulting capability states, and writes nothing.
+- `change-saga init SAGA` creates a Saga in the one format, ready for
+  prototypes and stories. It never creates any other kind of Saga.
 - `change-saga install-skill` prints an agent-agnostic prompt for installing the
   project-local Change Saga authoring skill. It MUST NOT mutate the repository
   or assume an agent-specific skill path.
@@ -888,9 +873,13 @@ hide authored content behind a valid-looking saga. Other names beginning with
 - `change-saga add-chapter` creates a top-level independently reviewable chapter and
   its overview fragment.
 - `change-saga cover --target ...` attaches an absolute diff URI to any target.
-- `change-saga status --json` emits uncovered atoms including ready-to-use absolute
-  URIs, stale links, overlap, target totals, saga-only changes, and
-  `coverage_scope: "mapping_only"`.
+- `change-saga status --json` reports the readiness gates, every accepted
+  criterion's coverage on each of the six axes, the pin-derived stale set with
+  pinned and current revisions, changed-source accounting (uncovered atoms with
+  ready-to-use absolute URIs, orphans, and overlap), and ordered `next_actions`.
+  Each action is either a command shape from the same grammar `spec --json`
+  publishes, or one focused question for the author. Nothing is reduced to a
+  score or percentage.
 - `change-saga compare` projects a direct Git range or another Saga's source
   comparison onto a maintained Saga's evidence owners. It compares source
   diffs only and emits stable update locations plus ownerless changes.
