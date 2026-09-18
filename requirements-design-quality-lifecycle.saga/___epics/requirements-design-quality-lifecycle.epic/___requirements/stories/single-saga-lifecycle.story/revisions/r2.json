@@ -1,0 +1,50 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r2",
+  "story": "urn:change-saga:requirements-design-quality-lifecycle:story:single-saga-lifecycle",
+  "parents": [
+    "urn:change-saga:requirements-design-quality-lifecycle:story:single-saga-lifecycle:revision:r1"
+  ],
+  "title": "Keep the whole change as one auditable Saga",
+  "statement": "As a product and engineering team, we can evolve one version-controlled Change Saga from exploratory prototypes through requirements, design, quality, implementation, and completed review so every intentional change and its rationale remain connected.",
+  "priority": "must",
+  "personas": [
+    "urn:change-saga:requirements-design-quality-lifecycle:persona:author"
+  ],
+  "citations": [
+    "urn:change-saga:requirements-design-quality-lifecycle:citation:lifecycle-plan"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "one-identity",
+      "statement": "Product prototypes, requirements, design, quality, implementation evidence, and review history derive from one Saga manifest and stable Saga ID."
+    },
+    {
+      "id": "separate-surfaces",
+      "statement": "Product, Design, Quality, and Implementation retain presentation appropriate to their artifact types while participating in one traceability graph."
+    },
+    {
+      "id": "history-preserved",
+      "statement": "Requirement, prototype, design, relation, test, evidence, rationale, and review changes preserve prior history rather than rewriting or silently retargeting it."
+    },
+    {
+      "id": "incremental-adoption",
+      "statement": "The Saga may begin in any useful phase and add the other sections later without creating disconnected artifacts."
+    },
+    {
+      "id": "static-navigation",
+      "statement": "The sidebar order is stable as Product, Design, Quality, and Implementation; authoring chronology does not reorder it."
+    },
+    {
+      "id": "flexible-feedback",
+      "statement": "Prototype findings, technical constraints, quality results, and implementation discoveries may create explicit new requirement or design revisions."
+    },
+    {
+      "id": "intent-to-diff-spine",
+      "statement": "Every retained artifact links back to one or more stories or criteria and every completed coverage path ends at exact current code diffs or an explicit justified exclusion."
+    }
+  ],
+  "created_at": "2026-09-17T22:30:58.094698Z",
+  "request_id": "story-single-saga-lifecycle-r2"
+}

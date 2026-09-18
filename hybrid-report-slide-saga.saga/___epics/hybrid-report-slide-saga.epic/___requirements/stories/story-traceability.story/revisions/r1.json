@@ -1,0 +1,33 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:hybrid-report-slide-saga:story:story-traceability",
+  "parents": [],
+  "title": "Close the loop to user intent",
+  "statement": "As a product and release owner, I can trace implementation evidence back to an accepted user story so completion gaps are visible.",
+  "priority": "high",
+  "personas": [
+    "urn:change-saga:hybrid-report-slide-saga:persona:author"
+  ],
+  "citations": [],
+  "acceptance_criteria": [
+    {
+      "id": "pinned-links",
+      "statement": "Deck, slide, or Item explanations link to a story or criterion through a revision-pinned relation."
+    },
+    {
+      "id": "reverse-trace",
+      "statement": "Traceability can be followed from an accepted criterion to exact diff evidence and in reverse from an exact diff or current committed head."
+    },
+    {
+      "id": "visible-gaps",
+      "statement": "Item evidence without a current path to an accepted story is reported explicitly, while revised requirements or missing visual targets stale their links."
+    },
+    {
+      "id": "commit-boundary",
+      "statement": "Commit reverse lookup is limited to the active committed comparison head and refuses WORKTREE comparisons."
+    }
+  ],
+  "created_at": "2026-09-16T19:09:11.061862Z"
+}

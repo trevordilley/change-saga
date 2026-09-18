@@ -1,0 +1,44 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:requirements-design-quality-lifecycle:story:compatible-schema-evolution",
+  "parents": [],
+  "title": "Adopt the evolution without breaking existing Sagas",
+  "statement": "As a Change Saga maintainer, I can adopt the new report-container capabilities explicitly while existing report and slide-native artifacts remain readable and predictable.",
+  "priority": "must",
+  "personas": [
+    "urn:change-saga:requirements-design-quality-lifecycle:persona:author"
+  ],
+  "citations": [
+    "urn:change-saga:requirements-design-quality-lifecycle:citation:lifecycle-plan"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "v5-report-container",
+      "statement": "The next report container declares version 5 because version 4 remains the distinct slide-native format."
+    },
+    {
+      "id": "legacy-reading",
+      "statement": "New readers continue to read canonical v2 reports, v3 living and hybrid reports, and standalone v4 slide-native Sagas without changing their semantics."
+    },
+    {
+      "id": "explicit-upgrade",
+      "statement": "Upgrade to v5 is explicit, dry-runnable, atomic, and never invents design links, tests, exceptions, or evidence."
+    },
+    {
+      "id": "old-reader-failure",
+      "statement": "Older readers reject v5 with a clear unsupported-version error rather than partially interpreting new reserved roots."
+    },
+    {
+      "id": "query-compatibility",
+      "statement": "Existing query API v1 response shapes remain compatible while typed expanded paths and coverage states are exposed through API v2."
+    },
+    {
+      "id": "safe-downgrade",
+      "statement": "Downgrade is allowed only when no v5-only quality, exception, policy, or relation records would be discarded."
+    }
+  ],
+  "created_at": "2026-09-17T18:52:05.580001Z",
+  "request_id": "story-compatible-schema-evolution-r1"
+}

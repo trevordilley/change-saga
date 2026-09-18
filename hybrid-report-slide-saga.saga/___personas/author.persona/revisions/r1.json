@@ -1,0 +1,10 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/persona-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "persona": "urn:change-saga:hybrid-report-slide-saga:persona:author",
+  "parents": [],
+  "name": "Saga author",
+  "description": "A human or AI collaborator who writes and maintains a Change Saga: its stories, design, quality, and implementation deck.",
+  "created_at": "2026-09-18T00:00:00Z"
+}

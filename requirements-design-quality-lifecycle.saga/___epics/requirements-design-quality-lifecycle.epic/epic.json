@@ -1,0 +1,7 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/epic.schema.json",
+  "version": 5,
+  "id": "requirements-design-quality-lifecycle",
+  "title": "Requirements, Design, and Quality Lifecycle",
+  "created_at": "2026-09-18T00:00:00Z"
+}

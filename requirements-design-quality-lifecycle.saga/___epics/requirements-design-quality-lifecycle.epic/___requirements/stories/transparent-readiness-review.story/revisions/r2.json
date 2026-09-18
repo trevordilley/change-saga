@@ -1,0 +1,59 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r2",
+  "story": "urn:change-saga:requirements-design-quality-lifecycle:story:transparent-readiness-review",
+  "parents": [
+    "urn:change-saga:requirements-design-quality-lifecycle:story:transparent-readiness-review:revision:r1"
+  ],
+  "title": "Make readiness and coverage gaps explainable",
+  "statement": "As a delivery owner, author, or reviewer, I can see what each story still needs across Product, Design, Quality, and Implementation, why it is missing, and what safe action should happen next.",
+  "priority": "must",
+  "personas": [
+    "urn:change-saga:requirements-design-quality-lifecycle:persona:author",
+    "urn:change-saga:requirements-design-quality-lifecycle:persona:reviewer"
+  ],
+  "citations": [
+    "urn:change-saga:requirements-design-quality-lifecycle:citation:lifecycle-plan"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "separate-gates",
+      "statement": "Requirements, prototype, UX, UI, technical-design, quality, implementation-trace, review-readiness, and completed-review states remain separate derived gates with concrete blockers."
+    },
+    {
+      "id": "explicit-exclusions",
+      "statement": "Intentional section exclusions are revision-pinned, cited, and shown separately from covered and missing work; accepted delivery obligations cannot be silently excluded."
+    },
+    {
+      "id": "progress-not-proof",
+      "statement": "Work progress, a relation, a passing status, diff coverage, and reviewer approval cannot substitute for one another or for current immutable evidence."
+    },
+    {
+      "id": "report-presentation",
+      "statement": "The reviewer UI uses the stable Product, Design, Quality, and Implementation hierarchy and deep-links from criterion paths to prototypes, design Items, tests, and exact code."
+    },
+    {
+      "id": "snapshot-consistency",
+      "statement": "Queries and UI projections are bound to one Saga and source snapshot and reject stale cursors rather than mixing revisions."
+    },
+    {
+      "id": "review-complete",
+      "statement": "Completed review requires configured readiness gates plus current required report, prototype, slide, diagram, reference, and test-case decisions; it does not imply external merge authorization."
+    },
+    {
+      "id": "criterion-matrix",
+      "statement": "Each accepted criterion has separate Prototype, UX, UI, Technical, Quality, and Implementation states with concrete linked artifacts, exclusions, or gaps."
+    },
+    {
+      "id": "artifact-diff-coverage",
+      "statement": "Each artifact counted toward a criterion also reports whether it reaches exact current diffs, keeping requirement-to-section and section-to-diff coverage distinct."
+    },
+    {
+      "id": "ordered-next-action",
+      "statement": "Machine-readable readiness orders safe next actions by blockers and dependencies without pretending sidebar order is execution order."
+    }
+  ],
+  "created_at": "2026-09-17T22:31:46.812663Z",
+  "request_id": "story-transparent-readiness-review-r2"
+}

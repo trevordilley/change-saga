@@ -1,0 +1,55 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r2",
+  "story": "urn:change-saga:requirements-design-quality-lifecycle:story:quality-evidence",
+  "parents": [
+    "urn:change-saga:requirements-design-quality-lifecycle:story:quality-evidence:revision:r1"
+  ],
+  "title": "Define and verify quality in the same Saga",
+  "statement": "As a quality engineer or reviewer, I can define independently reviewable test cases with ordered expected behavior, link them to requirements, and inspect current verification evidence without leaving the Saga.",
+  "priority": "must",
+  "personas": [
+    "urn:change-saga:requirements-design-quality-lifecycle:persona:author",
+    "urn:change-saga:requirements-design-quality-lifecycle:persona:reviewer"
+  ],
+  "citations": [
+    "urn:change-saga:requirements-design-quality-lifecycle:citation:lifecycle-plan"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "test-history",
+      "statement": "Each test case has stable identity, immutable definition revisions, append-only lifecycle history, and explicit conflict heads."
+    },
+    {
+      "id": "ordered-steps",
+      "statement": "A test revision records ordered steps with stable step IDs, actions, per-step expected results, and an overall expected result; removed step IDs are not reused for different behavior."
+    },
+    {
+      "id": "coverage-kinds",
+      "statement": "Tests explicitly declare positive, negative, and edge coverage kinds, while criterion policy identifies which kinds are required for readiness."
+    },
+    {
+      "id": "requirement-links",
+      "statement": "A current test-case relation links directly to one or more criteria and pins both the test revision and story revision."
+    },
+    {
+      "id": "typed-evidence",
+      "statement": "Quality evidence distinguishes test-implementation diffs, implementation-under-test references, and execution artifacts; implementation references exactly match current Item-owned selectors."
+    },
+    {
+      "id": "current-runs",
+      "statement": "A satisfying run has one semantic head, a passed result, the current test revision, the active source comparison identity, and resolved current evidence."
+    },
+    {
+      "id": "quality-traces",
+      "statement": "Queries derive Requirements to Quality to Diff paths and compare design, implementation, and quality coverage per criterion without collapsing them into one score."
+    },
+    {
+      "id": "quality-navigation",
+      "statement": "Quality \u003e Test Cases lists each case as an independent page using the same concise title, description, expected behavior, and collapsed-history pattern as stories."
+    }
+  ],
+  "created_at": "2026-09-17T22:31:57.579962Z",
+  "request_id": "story-quality-evidence-r2"
+}
