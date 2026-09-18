@@ -285,16 +285,35 @@ func TestOnlyImplementationOpensOnArrival(t *testing.T) {
 		implementation: []*navNodeView{deck},
 	})
 
-	if implementation := findNav(t, nodes, "Implementation"); !implementation.Expanded {
+	implementation := findNav(t, nodes, "Implementation")
+	if !implementation.Expanded {
 		t.Fatal("Implementation must open on arrival")
 	}
-	if !deck.Expanded {
-		t.Fatal("the implementation deck must open to its slides, not to a row to click first")
+	// Implementation is the deck: its slides sit directly beneath the section,
+	// with no deck row restating it in between.
+	if len(implementation.Children) != 1 || implementation.Children[0].Title != "Architecture and storage" {
+		t.Fatalf("implementation must list the deck's slides directly: %v", navTitles(implementation.Children, 0))
 	}
 	for _, title := range []string{"Product", "Design", "Quality"} {
 		if findNav(t, nodes, title).Expanded {
 			t.Fatalf("%s must stay collapsed on arrival", title)
 		}
+	}
+}
+
+// With several implementation decks the rows stay, so a reader can tell which
+// deck a slide belongs to; each still opens to its slides.
+func TestSeveralImplementationDecksKeepTheirRows(t *testing.T) {
+	first := &navNodeView{Title: "Storage", NodeID: "nav-a", Deck: true, Children: []*navNodeView{{Title: "Schema"}}}
+	second := &navNodeView{Title: "Checkout", NodeID: "nav-b", Deck: true, Children: []*navNodeView{{Title: "Retry"}}}
+	nodes := makeProductNavTree(productNavSources{implementation: []*navNodeView{first, second}})
+
+	implementation := findNav(t, nodes, "Implementation")
+	if len(implementation.Children) != 2 || !implementation.Children[0].Deck || !implementation.Children[1].Deck {
+		t.Fatalf("several decks must keep their rows: %v", navTitles(implementation.Children, 0))
+	}
+	if !first.Expanded || !second.Expanded {
+		t.Fatal("each implementation deck must open to its slides")
 	}
 }
 

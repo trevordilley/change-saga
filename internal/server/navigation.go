@@ -104,6 +104,13 @@ func makeProductNavTree(sources productNavSources) []*navNodeView {
 			Title: "No implementation decks yet", NodeID: "nav-implementation-empty", Gap: true,
 		}}
 	}
+	// Implementation is the deck. With the one deck a Saga normally has, its
+	// slides sit directly beneath the section instead of under a deck row that
+	// only restates the section and costs a click. Several decks keep their
+	// rows, since the reader then needs to know which deck a slide belongs to.
+	if len(implementation.Children) == 1 && implementation.Children[0].Deck && len(implementation.Children[0].Children) > 0 {
+		implementation.Children = implementation.Children[0].Children
+	}
 	implementation.Expanded = true
 	for _, deck := range implementation.Children {
 		deck.Expanded = len(deck.Children) > 0
