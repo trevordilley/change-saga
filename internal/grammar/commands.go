@@ -112,9 +112,9 @@ var commands = []Command{
 	},
 	{
 		Name: "story add", Status: StatusImplemented, Mutates: true, Writes: []string{"story", "story-revision", "story-event"},
-		Usage:   "change-saga story add --epic ID --persona URN... --id ID --revision ID --event ID --title TEXT --statement TEXT --priority TEXT [flags] <saga>",
+		Usage:   "change-saga story add --epic ID --id ID --revision ID --event ID --title TEXT --statement TEXT --priority TEXT [flags] <saga>",
 		Summary: "create a story identity, its initial complete revision, and its proposed lifecycle event",
-		Flags: []Flag{epicCreateFlag, repeatable("persona", "URN", "persona URN the story serves", true),
+		Flags: []Flag{epicCreateFlag, repeatable("persona", "URN", "persona URN the story serves; optional", false),
 			required("id", "ID", "stable story id"), required("revision", "ID", "initial revision id"), required("event", "ID", "initial proposed-event id"),
 			required("title", "TEXT", "story title"), required("statement", "TEXT", "complete user-story statement"), required("priority", "TEXT", "story priority"),
 			repeatable("criterion", "ID=STATEMENT", "acceptance criterion", false), repeatable("citation", "URN", "citation URN", false),
@@ -124,9 +124,9 @@ var commands = []Command{
 	},
 	{
 		Name: "story revise", Status: StatusImplemented, Mutates: true, Writes: []string{"story-revision"},
-		Usage:   "change-saga story revise --story URN --revision ID --parent URN... --persona URN... --title TEXT --statement TEXT --priority TEXT [flags] <saga>",
+		Usage:   "change-saga story revise --story URN --revision ID --parent URN... --title TEXT --statement TEXT --priority TEXT [flags] <saga>",
 		Summary: "append a complete story revision; several --parent values reconcile competing revision heads",
-		Flags: []Flag{repeatable("persona", "URN", "persona URN the revised story serves", true), epicFlag,
+		Flags: []Flag{repeatable("persona", "URN", "persona URN the revised story serves; optional", false), epicFlag,
 			required("story", "URN", "canonical story URN"), required("revision", "ID", "new revision id"), repeatable("parent", "URN", "current revision head URN", true),
 			required("title", "TEXT", "complete revised title"), required("statement", "TEXT", "complete revised statement"), required("priority", "TEXT", "complete revised priority"),
 			repeatable("criterion", "ID=STATEMENT", "acceptance criterion", false), repeatable("citation", "URN", "citation URN", false),

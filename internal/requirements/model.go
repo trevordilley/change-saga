@@ -56,9 +56,10 @@ type Revision struct {
 	Title     string   `json:"title"`
 	Statement string   `json:"statement"`
 	Priority  string   `json:"priority"`
-	// Personas names every persona this revision of the story serves. It is a
-	// defining attribute of the story, so every revision records it.
-	Personas           []string    `json:"personas"`
+	// Personas names the personas this revision of the story serves. It is
+	// optional, so a first story needs no personas defined; each persona it
+	// does name must exist.
+	Personas           []string    `json:"personas,omitempty"`
 	Citations          []string    `json:"citations"`
 	AcceptanceCriteria []Criterion `json:"acceptance_criteria"`
 	CreatedAt          time.Time   `json:"created_at"`

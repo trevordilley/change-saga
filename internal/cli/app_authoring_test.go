@@ -139,7 +139,7 @@ func TestInitCreatesOnlyTheAppWithItsOverview(t *testing.T) {
 	if err := Init(context.Background(), []string{"--repo", repo, "--repository", "https://example.test/acme/app.git", root}, &output); err != nil {
 		t.Fatal(err)
 	}
-	for _, want := range []string{"persona add", "epic add", "story add --epic ID --persona URN"} {
+	for _, want := range []string{"epic add", "story add --epic ID", "Personas are optional", "persona add"} {
 		if !strings.Contains(output.String(), want) {
 			t.Fatalf("init output does not lead to %q:\n%s", want, output.String())
 		}
@@ -315,14 +315,14 @@ func TestCreateCommandsRequireAnEpic(t *testing.T) {
 		t.Fatalf("a refused create wrote files:\nbefore %v\nafter  %v", before, after)
 	}
 
-	// A story also names the personas it serves.
+	// A story needs no persona: personas are optional, so a first story can
+	// be written before anyone is named.
 	var output bytes.Buffer
-	err := Story(ctx, []string{"add", root, "--epic", testEpic, "--id", "s", "--revision", "r1", "--event", "proposed", "--title", "S", "--statement", "S", "--priority", "must"}, &output)
-	if err == nil || !strings.Contains(err.Error(), "persona") {
+	if err := Story(ctx, []string{"add", root, "--epic", testEpic, "--id", "s", "--revision", "r1", "--event", "proposed", "--title", "S", "--statement", "S", "--priority", "must"}, &output); err != nil {
 		t.Fatalf("story add without --persona = %v", err)
 	}
 	// An unknown epic lists the known ones.
-	err = AddChapter(ctx, []string{"--epic", "missing", "--title", "C", root, "chapter"}, &output)
+	err := AddChapter(ctx, []string{"--epic", "missing", "--title", "C", root, "chapter"}, &output)
 	if err == nil || !strings.Contains(err.Error(), `epic "missing" does not exist`) || !strings.Contains(err.Error(), "known epics: "+testEpic) {
 		t.Fatalf("unknown epic = %v", err)
 	}

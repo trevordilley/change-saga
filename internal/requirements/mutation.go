@@ -596,15 +596,21 @@ func requireCitations(document *Document, citations []string) error {
 	return nil
 }
 
+// requirePersonas checks the personas a new story revision names: each must
+// exist and be active. A retired persona may stay on older revisions, where it
+// is reported, but is never newly assigned.
 func requirePersonas(document *Document, personas []string) error {
-	known := document.personaIDs()
 	for _, persona := range personas {
 		id, err := ParsePersonaURN(document.SagaID, persona)
 		if err != nil {
 			return err
 		}
-		if !known[id] {
+		found := document.FindPersona(id)
+		if found == nil {
 			return fmt.Errorf("persona %q does not exist", persona)
+		}
+		if found.CurrentLifecycle != nil && found.CurrentLifecycle.State == PersonaRetired {
+			return fmt.Errorf("persona %q is retired; a story cannot newly serve it", persona)
 		}
 	}
 	return nil

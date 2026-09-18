@@ -79,9 +79,6 @@ func validateRevision(value Revision, sagaID, storyID string) error {
 		}
 		seenParents[parent] = true
 	}
-	if len(value.Personas) == 0 {
-		problems.add("personas must name at least one persona the story serves")
-	}
 	seenPersonas := map[string]bool{}
 	for _, persona := range value.Personas {
 		if _, err := ParsePersonaURN(sagaID, persona); err != nil {

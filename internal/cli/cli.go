@@ -112,8 +112,8 @@ var commandUsage = map[string]string{
 	"prototype revise":            "change-saga prototype revise --prototype URN --revision ID --parent URN... --title TEXT (--source PATH | --url URL) [flags] <saga>",
 	"prototype annotate":          "change-saga prototype annotate --prototype URN --id ID --target URN --rationale TEXT --story-revision URN (--prototype-revision URN | --prototype-content-digest DIGEST) [selector] [flags] <saga>",
 	"story":                       "change-saga story <add|revise|set-state|move> [flags] <saga>",
-	"story add":                   "change-saga story add --epic ID --persona URN... --id ID --revision ID --event ID --title TEXT --statement TEXT --priority TEXT [flags] <saga>",
-	"story revise":                "change-saga story revise --story URN --revision ID --parent URN... --persona URN... --title TEXT --statement TEXT --priority TEXT [flags] <saga>",
+	"story add":                   "change-saga story add --epic ID --id ID --revision ID --event ID --title TEXT --statement TEXT --priority TEXT [flags] <saga>",
+	"story revise":                "change-saga story revise --story URN --revision ID --parent URN... --title TEXT --statement TEXT --priority TEXT [flags] <saga>",
 	"story set-state":             "change-saga story set-state --story URN --event ID --parent URN... --state STATE [flags] <saga>",
 	"criterion":                   "change-saga criterion <add|revise|remove> [flags] <saga>",
 	"criterion add":               "change-saga criterion add --story URN --parent REVISION --revision ID --id ID --statement TEXT [flags] <saga>",
@@ -192,11 +192,12 @@ domains that each hold their own stories, design, quality, and implementation
 deck. Commands that write epic content take --epic.
 
 The workflow:
-  0. App: "init" the app Saga, name who it serves ("persona"), and add the
-     product domains it covers ("epic"). Gate unreleased work with "flag".
+  0. App: "init" the app Saga and add the product domain the change belongs
+     to ("epic"). Name who the app serves ("persona") and gate unreleased
+     work ("flag") whenever that becomes useful; neither is required.
   1. Product: prototype the experience ("prototype") and write user stories
-     with acceptance criteria ("story", "criterion"); every story serves one
-     or more personas. Stories can "story move" between epics. Cite
+     with acceptance criteria ("story", "criterion"); a story may name the
+     personas it serves. Stories can "story move" between epics. Cite
      where each requirement came from ("citation"). Prototypes and stories
      inform each other; revise both as the change is clarified.
   2. Design: develop the UX, UI, and technical design ("design") and relate
@@ -251,9 +252,9 @@ func commandFlags(name, usage string, out io.Writer) *flag.FlagSet {
 }
 
 var commandDescription = map[string]string{
-	"init":                        "Create the app Saga: the saga.json manifest, a reviewer README, and the app\noverview under ___overview. Then add personas and epics, and author each epic's\nstories and prototypes.",
+	"init":                        "Create the app Saga: the saga.json manifest, a reviewer README, and the app\noverview under ___overview. Then add an epic and author its content; personas\nand flags are optional and can come later.",
 	"epic":                        "Add a durable product domain. An epic holds its own report content, stories,\ndesign, quality, work plan, and implementation deck. Story identity never\nnames an epic, so a story can move between epics without breaking a link.",
-	"persona":                     "Author the people the app serves. Personas are living records: every story\nrevision names the personas it serves, and every active persona needs an\naccepted story or it is a visible gap.",
+	"persona":                     "Author the people the app serves. Personas are optional living records: a story\nrevision may name the personas it serves, and status reports each active persona\nno accepted story serves as a coverage gap. Nothing blocks on personas.",
 	"flag":                        "Author feature flags that gate stories or whole epics. A gated story can be\nimplemented but not enabled; status reports it that way.",
 	"prototype":                   "Author revisioned interactive HTML experiences or explicitly allowed external\nembeds and pin them to the stories and criteria they clarify. A prototype may lead, follow,\nor evolve alongside its requirements.",
 	"prototype add-html":          "Add an interactive HTML prototype and its first immutable revision. The authored\nsource is copied into the revision package, so later edits outside the Saga never change it.",
@@ -438,7 +439,7 @@ func Init(ctx context.Context, args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
-	fmt.Fprintf(out, "Created %s\nNext: name who the app serves and the product domains it covers:\n  change-saga persona add --id ID --name TEXT --description TEXT %s\n  change-saga epic add --id ID --title TEXT %s\nThen write each epic's stories:\n  change-saga story add --epic ID --persona URN --id ID --revision r1 --event proposed --title TEXT --statement TEXT --priority TEXT %s\n", root, root, root, root)
+	fmt.Fprintf(out, "Created %s\nNext: add the product domain this change belongs to, then author its content:\n  change-saga epic add --id ID --title TEXT %s\n  change-saga story add --epic ID --id ID --revision r1 --event proposed --title TEXT --statement TEXT --priority TEXT %s\nPersonas are optional; name who the app serves when it helps:\n  change-saga persona add --id ID --name TEXT --description TEXT %s\n", root, root, root, root)
 	return nil
 }
 

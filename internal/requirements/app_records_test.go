@@ -80,16 +80,34 @@ func TestMovingAStoryKeepsEveryRelationCurrent(t *testing.T) {
 	}
 }
 
-func TestStoryRevisionMustServeAnExistingPersona(t *testing.T) {
+// Personas are optional: a first story needs none. Any persona a story does
+// name must exist, and a retired persona is never newly assigned.
+func TestStoryPersonasAreOptionalButMustExistAndBeActive(t *testing.T) {
 	root := newSaga(t)
 	input := storyInput("checkout", "r1", "proposed", nil)
 	input.Personas = nil
-	if _, err := AddStory(root, "test", input); err == nil || !strings.Contains(err.Error(), "at least one persona") {
+	if _, err := AddStory(root, "test", input); err != nil {
 		t.Fatalf("story without personas = %v", err)
 	}
-	input.Personas = []string{"urn:change-saga:test:persona:ghost"}
-	if _, err := AddStory(root, "test", input); err == nil || !strings.Contains(err.Error(), "does not exist") {
+	ghost := storyInput("ghost", "r1", "proposed", nil)
+	ghost.Personas = []string{"urn:change-saga:test:persona:ghost"}
+	if _, err := AddStory(root, "test", ghost); err == nil || !strings.Contains(err.Error(), "does not exist") {
 		t.Fatalf("story serving a missing persona = %v", err)
+	}
+	persona := "urn:change-saga:test:persona:buyer"
+	if _, err := SetPersonaState(root, "test", SetPersonaStateInput{Persona: persona, ID: "retired", Parents: []string{persona + ":event:active"}, State: PersonaRetired, CreatedAt: testTime}); err != nil {
+		t.Fatal(err)
+	}
+	retired := storyInput("refund", "r1", "proposed", nil)
+	if _, err := AddStory(root, "test", retired); err == nil || !strings.Contains(err.Error(), "retired") {
+		t.Fatalf("story newly serving a retired persona = %v", err)
+	}
+	document, err := Load(root, "test")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if story := document.FindStory("checkout"); story == nil || len(story.CurrentRevision.Personas) != 0 {
+		t.Fatalf("story without personas = %+v", story)
 	}
 }
 
