@@ -25,9 +25,17 @@ Enabled phases:
   v3 component records inside a v5 container.
 - **Explicit upgrade.** `change-saga upgrade --to 5 SAGA` is the only operation
   that may write a version 5 manifest. See [CLI behavior](#11-cli-behavior).
+- **Quality record writers (Phase 5).** `change-saga quality` writes test-case,
+  policy, evidence, and run records under `___quality`, and only in a v5 Saga;
+  a v3 Saga is refused and left unchanged.
+- **v5 relation writers (Phase 3, relation half).** `change-saga relation add`
+  writes v5 relations in a v5 Saga, including a test case that `verifies` a
+  criterion, and pins each endpoint revision. It writes v3 relations in a v3
+  Saga exactly as before. `change-saga relation status` reports whether each
+  relation is current, judged only by comparing its pins against the current
+  heads.
 
-Not yet enabled: v5 relation, coverage-exception, and quality record writers,
-and API v2 queries. No other command may upgrade a v2, v3, or v4 document, and
+Not yet enabled: coverage-exception record writers and API v2 queries. No other command may upgrade a v2, v3, or v4 document, and
 no command other than `upgrade --to 5` may emit a v5 manifest; every other
 command leaves the manifest version it found byte-for-byte unchanged.
 
