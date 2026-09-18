@@ -7,41 +7,34 @@
 ![license: MIT](https://img.shields.io/badge/license-MIT-blue)
 [![Made with ❤️ using DevSwarm](https://img.shields.io/badge/Made%20with%20%E2%9D%A4%EF%B8%8F%20using-DevSwarm-5F2AFF?labelColor=0A022E&logo=data%3Aimage%2Fpng%3Bbase64%2CiVBORw0KGgoAAAANSUhEUgAAAEAAAAAiCAQAAABFXBcEAAACEElEQVR42s1Y63mDMAw8ugErsAIdwR2BjsAKrMAKWSEdgRXICGQEMsL1RwhIIIFpXhX%2F7E%2F2WY%2BTBKCEAFhxko7TemDPGOmZXzUAQumUt3VHCIKpUimGVRA8MlaONx2ApYKWcg0CAfAgFJrhEAAsuEeKQQsEG7F%2BWLEBQTBXx4Tx%2FSnbXQDa61sJzM%2FMXRss0QpDVtwrlXCeYdWbJNP1CVjgOO5c8JmcCSABM7RIx50TTo4RMwRHv0E27nwnP5wuVuHXyRfQfgFZiB39aUfVYkdn1jIUCYC19iFsH%2BoAUx%2FAoP09njGDNgvF4Zo%2BIopJsnQtAOhklVlUKhvkAoIXKPTSz6UTAmC2tBbdAJcsp5iM0%2Fu7eACDRq3OmgDoO8JwCl2ycNNvC4AO5lqcZlh5aeae2Yg5M9l%2FldFXz9M0Xw4A5uknENvsvwFgYdGjY9GO6VVhVv1oxQXja5qhG2DHVMVF1AYRte1fASxqZ%2BMyRaaviWP%2Frap%2BS8fOqQwK2gcuQjPFK0TfuOKC5mEuaNdc8O4gxDPSMI1NQw4KRt%2F2FCLKjIK3QcX13VRcbVCx2XLLUOz3AYATU5wX%2FICpGr65HI8NSbe85IENSWGPLv%2BjJdtsSuvoprSziH2tKfXb8jO%2BHtaW52iEvtWWv28wecVoFiJHs7cPp%2BZ4Xt49nhc7xnNYE703uqz9oAjiB4VBy1J%2BAQwDuoYAr7YrAAAAAElFTkSuQmCC)](https://devswarm.ai)
 
-Change Saga turns a large code change into a guided visual review: a sequence
-of slides that explains what changed, why it matters, and what may surprise a
-reviewer. Instead of reconstructing intent from file-by-file diffs, reviewers
-get the system context, tradeoffs, and intentional deviations first.
+Change Saga is the review record for a big change: the kind that warrants a
+product definition, UX and UI design, technical design, quality verification,
+and an implementation walkthrough. With AI, the big thing is often fastest to
+build in one large pull request. That speed is no reason to lose what the
+change was meant to do. A Saga captures it from the first prototype to the
+last changed line, and proves how every changed line traces back to that
+intent.
 
-Each part of that story links directly to the exact code behind it, and Change
-Saga checks that every changed line is accounted for. Reviewers can move from
-the big picture to its evidence—and back—without losing context. Change Saga is
-experimental, and its formats may change before 1.0.
+One Saga holds the whole change, in four parts that never reorder as the work
+progresses:
 
-A v3 Report Saga can now keep living, chapter-like documentation as its entry
-surface while embedding several focused visual decks for complex implemented
-changes. Each deck is an independently mergeable drill-down; stories,
-requirements, prototypes, design, and work-plan history are not mechanically
-turned into slides. The reviewer opens those breakdowns in a separate **Decks**
-view under the same Saga identity. Revision-pinned `explains` relations connect
-each relevant deck, slide, or Item back to a user story or acceptance criterion,
-while Items retain exact diff ownership. `query traceability --diff` and
-`--commit` expose the reverse path from code evidence or the current committed
-source head to the story.
+- **Product**: interactive prototypes, and the user stories and acceptance
+  criteria that define the change.
+- **Design**: UX flows, UI references, and technical design (data models,
+  system structure, and data flows).
+- **Quality**: test cases that verify the acceptance criteria, with their
+  evidence and runs.
+- **Implementation**: the slide deck that explains the change, whose
+  individual visual elements own the exact diffs they explain.
 
-The slide-native v4 preview treats a review as a sequence of visual arguments,
-not a report split into pages. Start it explicitly with `change-saga init --mode
-slides ...`. Each meaningful node, edge, region, transition, or overlaid
-callout is an Item and links directly to the exact diff it explains. Existing
-v2/v3 reports are not silently paginated or reinterpreted. V4 uses compact,
-flat, category-prefixed files so deep checkout locations remain portable; its
-readable titles and stable target URNs live in the records rather than paths.
-Review decisions are explicitly per slide and appear on slide thumbnails;
-Items remain precise evidence and comment targets.
-Slide form follows meaning: architecture, data flow, sequence, lifecycle,
-entity, logic, comparison, failure, and evidence questions should not collapse
-into one repeated card template.
-
-https://github.com/user-attachments/assets/50822415-a92a-4c62-831e-9b0373db55f6
+The only hard requirement is that code maps back to user stories. Designs,
+specifications, and test cases map to stories, so code reaches a story
+through them rather than by hand-written code-to-story links. Every link pins
+the revision it relied on: when a story changes, whatever depended on the old
+revision becomes visibly stale. Change Saga also checks that every changed line
+is accounted for, because a path from each story to code does not prove that
+nothing else was built alongside it. Change Saga is experimental, and its
+format may change before 1.0.
 
 ## Install
 
@@ -64,19 +57,14 @@ change-saga version
 change-saga help
 ```
 
-## Try the canonical example Saga
+## See a Saga
 
-The repository's [canonical example Saga](docs/sagas/examples/slide-native-format.saga)
-reviews the change that introduced the slide-native v4 format itself. The video
-above walks through this same Saga. After installing Change Saga, open it from
-a source checkout with:
+This repository keeps its own Saga for the change that defines this format.
+After installing Change Saga, open it from a source checkout with:
 
 ```sh
-change-saga open docs/sagas/examples/slide-native-format.saga
+change-saga open requirements-design-quality-lifecycle.saga
 ```
-
-The example is intentionally self-referential: its semantic Items link every
-changed line in `6740031..974eaa3` to the visual argument that explains it.
 
 ## Quick start
 
@@ -95,28 +83,28 @@ these prompts from the repository containing your change:
 
 > Use the change-saga cli to open this PR's Saga
 
-### Choose the workflow
+### How a Saga grows
 
-If the implementation or PR already exists, first ask whether its review is
-complex enough to need a Saga. A small focused change may be clearer as a
-normal PR. For a large change—one spanning multiple behaviors, risks, systems,
-or workstreams—the Saga is authored from the completed implementation and
-exact diff as the guide reviewers will follow. It does not need retroactive
-requirements, prototypes, technical design, or a work plan merely to fill out
-the format.
+A Saga starts with the big work and ends with the big work. It usually begins
+before implementation: a prototype sharpens the UX and UI, the prototype and
+the conversation around it become sourced user stories with acceptance
+criteria, and those drive the UX, UI, and technical design and the test cases
+that will verify them. The implementation is then explained as a deck whose
+visual elements own the exact diffs. None of this is a waterfall. Prototypes
+and stories evolve together, design starts while they mature, and a discovery
+during implementation becomes an explicit new revision of the story it changes.
 
-For a new feature or exploration, a Saga can begin before implementation. A
-typical path starts with a prototype for the UX and UI, develops sourced user
-stories and acceptance criteria, turns those into a technical design, and then
-organizes implementation into dependency-aware waves of parallel workspaces.
-That is not a waterfall: prototypes and stories can evolve together, design can
-start while they mature, and work-plan drafting can overlap the design.
+`change-saga status --json` keeps the work honest at every step. It reports
+each acceptance criterion's coverage across prototype, UX, UI, technical,
+quality, and implementation; everything that has gone stale and why; any
+changed code nothing accounts for; and an ordered list of next actions. Each
+action is either a ready-to-run command or one focused question for you. An
+agent can loop on it until nothing required is missing, and it never reduces
+the result to a score.
 
-Saga files are built for that parallelism too. Separate agents can own story
-revisions, prototype packages, design fragments, and work items, then merge the
-document alongside the implementation as work fans out and converges. Before
-peer review, consolidate those lanes and connect the delivered commits and
-exact diffs back to the acceptance criteria and design they satisfy.
+Saga files are built for parallel work. Separate agents can own story
+revisions, prototypes, design, test cases, and work items, then merge the Saga
+alongside the implementation as the work fans out and converges.
 
 ### Expect to iterate
 
@@ -155,59 +143,52 @@ required.
 
 ## What it does
 
-A normal PR description sits above a flat file-by-file diff. That works for
-small changes. With a large change, the reviewer has to understand the whole
-system while reading isolated files in an arbitrary order.
+A normal PR description sits above a flat file-by-file diff. With a big change,
+the reviewer has to rebuild the product intent, the design, and the system
+model while reading isolated files in an arbitrary order.
 
-A slide-native saga turns the expression of the code change into a guided visual
-argument:
+A Saga gives the reviewer that context first and keeps it attached to the code:
 
-1. An overview deck establishes the goal and shape of the change.
-2. Change decks divide it into independently reviewable concerns.
-3. Diagrams, interactive HTML, screenshots, and examples show the important
-   flows and data models.
-4. Expectation/actual callouts expose surprising behavior, tradeoffs, hidden
-   coupling, and intentional deviations from repository norms.
+1. Prototypes and stories establish what the change is for and what done means.
+2. Design shows the flows, interface, data models, and system structure.
+3. Test cases state how each acceptance criterion is verified.
+4. The implementation deck explains the change as a sequence of visual
+   arguments. Diagrams, interactive HTML, screenshots, and examples show the
+   important flows, and expectation/actual callouts expose surprising
+   behavior, tradeoffs, hidden coupling, and intentional deviations.
 5. Semantic items inside each slide link to the exact diff ranges they explain.
-6. `change-saga status` reports any changed code that has not been accounted
-   for.
+6. `change-saga status` reports what is missing, stale, or unaccounted for.
 
 The tool does not review the code or generate a verdict. It helps the author
 prepare the material that other people will review. AI is useful here because
 it can build the first draft, create diagrams and examples, and iterate until
-the complete diff is represented. The reviewer still decides whether the
-change is correct.
+the whole change is represented. The reviewer still decides whether the change
+is correct.
 
-Version 4 is intentionally slide-native rather than a compatibility mode for
-older reports. Slides use self-contained SVG, raster, or sandboxed HTML visual
-entrypoints; prose formats are not slide entrypoints. Each slide makes one
-review argument, and its addressable items carry the exact implementation
-evidence. Existing v2/v3 sagas remain readable as reports. V3 reports may opt
-into focused embedded decks without changing format; becoming a standalone v4
-Saga still requires a semantic rewrite rather than pagination.
+Slides use self-contained SVG, raster, or sandboxed HTML visual entrypoints.
+Each slide makes one review argument, and its addressable items carry the exact
+implementation evidence. Everything is ordinary files in a `.saga` directory,
+kept in small independent records so separate agents or branches can work
+without a shared presentation file. [SPEC.md](SPEC.md) defines the format.
 
-Everything remains ordinary files in a `.saga` directory. The v4 flat format
-keeps decks, slides, items, evidence, claims, verifications, and review actions
-in small independent records so separate agents or branches can work without a
-shared presentation file. [SPEC.md](SPEC.md) defines the format.
-
-In legacy report sagas, prose citations and visual nodes have the same evidence requirement. A Markdown
-footnote marker and definition are not a finished citation until the definition
-is an exact-text landmark with focused diff evidence. Likewise, a code-bearing
-diagram node is unfinished without its element landmark and diffs. Requirements
-provenance created with `citation add` is different: it records where a story or
-decision came from and does not substitute for implementation evidence.
+Prose citations and visual nodes carry the same evidence requirement. A
+Markdown footnote marker and definition are not a finished citation until the
+definition is an exact-text landmark with focused diff evidence. Likewise, a
+code-bearing diagram node is unfinished without its element landmark and
+diffs. Requirements provenance created with `citation add` is different: it
+records where a story or decision came from and does not substitute for
+implementation evidence.
 
 ## Reviewing a saga
 
-`change-saga open` starts a local review application with report, deck, and code
-review surfaces as applicable:
+`change-saga open` starts a local review application:
 
-- **Saga** presents living/report documentation. Standalone v4 Sagas use this
-  space for their native deck.
-- **Decks** appears when a v3 report embeds visual implementation breakdowns,
-  with thumbnails, sequential navigation, and fullscreen presentation. Linked
-  code opens without losing the active slide.
+- **Saga** presents the whole change. Its sidebar is always Product, Design,
+  Quality, and Implementation, in that order. Implementation is the deck
+  itself, open to its slide thumbnails; the other sections stay collapsed
+  until you need them, and empty places say what is missing.
+- **Present** shows the implementation deck full screen, one slide at a time.
+  Linked code opens without losing the active slide.
 - **Code Diff** provides a traditional changed-file tree and diff view, with
   links back to every relevant explanation.
 - **Coverage** shows the mapping in both directions: code to explanations and
@@ -215,8 +196,7 @@ review surfaces as applicable:
 
 Reviews can be spread across multiple sessions. Reviewers can comment on text
 or code, highlight content, draw shapes, add sticky notes, mark files reviewed,
-and approve or reject report sections or complete slides in either an embedded
-deck or a standalone v4 Saga.
+and approve or reject report sections or complete slides.
 
 Every newly initialized saga also carries a small root `README.md`. It tells a
 human or AI assistant how to install and open the intended reviewer, and tells
@@ -304,7 +284,7 @@ change-saga rebase-evidence --repo ../source checkout.saga
 The command proves the unchanged base-independent product identity and verifies
 every translated selector before writing. It refuses a changed product diff,
 preserves evidence targets, notes, paths, sides, and ranges, and rolls affected
-immutable claims forward through v3 `supersedes` relations. Replacement claims
+immutable claims forward through `supersedes` relations. Replacement claims
 remain unverified unless `--carry-verifications` is explicitly requested; a
 carried result is a new `analysis` verification with an audit trail, never an
 edit or a claim that the original check was rerun.
