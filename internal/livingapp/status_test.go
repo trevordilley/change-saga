@@ -225,7 +225,7 @@ func qualityFixture(t *testing.T) StatusInputs {
 	}
 	stories := []requirements.Story{refundStory("positive-path", "cutoff", "stale-run", "failing", "not-run", "untested", "manual-only")}
 	return StatusInputs{
-		SagaID: fixtureSaga, SagaVersion: quality.Version, RequirementsAdopted: true,
+		SagaID: fixtureSaga, SagaVersion: quality.Version,
 		Stories:   stories,
 		Citations: []requirements.Citation{{ID: "policy"}},
 		Links: fixtureLinks(stories, []requirements.Relation{
@@ -246,10 +246,9 @@ func qualityFixture(t *testing.T) StatusInputs {
 			StoryRevision: storyR2, Rationale: "Verified by an operational playbook outside this change.",
 			Citations: []string{"urn:change-saga:checkout:citation:policy"}, Supersedes: []string{}, CreatedAt: statusFixtureTime,
 		}},
-		ExceptionsAdopted: true,
-		Quality:           document,
-		Report:            report,
-		Changes:           changes,
+		Quality: document,
+		Report:  report,
+		Changes: changes,
 	}
 }
 
@@ -285,9 +284,6 @@ func kind(t *testing.T, status Status, criterion, name string) KindStatus {
 func TestQualityAxisReflectsTestCasesKindsRunsAndExceptions(t *testing.T) {
 	status := Assemble(qualityFixture(t))
 
-	if status.Policy.Name != readiness.PolicyFeature {
-		t.Fatalf("a v5 Saga that adopted quality selects the feature policy, got %#v", status.Policy)
-	}
 	if got := cell(t, status, "positive-path", coverage.AxisQuality); got.State != coverage.StateCoveredDirect {
 		t.Fatalf("a current passing positive test covers the criterion: %#v", got)
 	}
@@ -429,28 +425,26 @@ func TestImplementationPathWithOrphanedDiffIsStaleSourceHistory(t *testing.T) {
 	}
 }
 
-func TestV3QualityIsAVisibleNotAdoptedState(t *testing.T) {
+// A Saga with no quality records has no exemption: every accepted criterion's
+// quality axis is a visible gap naming the missing kind, and quality_ready and
+// ready_for_review are blocked.
+func TestNoQualityRecordsIsAVisibleGapThatBlocksReview(t *testing.T) {
 	inputs := qualityFixture(t)
-	inputs.SagaVersion = 3
-	inputs.Quality = quality.Document{SagaID: fixtureSaga, Adoption: quality.NotAdopted}
-	inputs.QualityReason = "quality records are v5; this is a v3 Saga"
+	inputs.Quality = quality.Document{SagaID: fixtureSaga}
 	inputs.Exceptions = nil
-	inputs.ExceptionsAdopted = false
 	status := Assemble(inputs)
 
-	if status.Policy.Name != readiness.PolicyCompatibility || status.Readiness.PeerReview == nil {
-		t.Fatalf("a v3 Saga keeps peer-review readiness by default: %#v", status.Policy)
-	}
-	if status.Quality.Adoption != string(quality.NotAdopted) {
-		t.Fatalf("quality adoption = %q", status.Quality.Adoption)
-	}
-	got := cell(t, status, "positive-path", coverage.AxisQuality)
-	if got.State != coverage.StateGap || !containsText(got.Gap.Reasons, "not_adopted") {
-		t.Fatalf("an unadopted quality axis is a visible gap with its reason, not a pass: %#v", got)
+	got := cell(t, status, "untested", coverage.AxisQuality)
+	if got.State != coverage.StateGap || !containsText(got.Gap.Reasons, "required positive test: missing_kind") {
+		t.Fatalf("a Saga with no quality records is a visible quality gap with its reason: %#v", got)
 	}
 	gate, _ := status.Readiness.Gate(readiness.GateQualityReady)
-	if gate.Configured || gate.Status != readiness.StatusNotApplicable || !blockedBy(gate, "quality_adopted") {
-		t.Fatalf("quality_ready is reported, unconfigured, and names adoption: %#v", gate)
+	if gate.Status != readiness.StatusBlocked || !blockedBy(gate, "axis_gap") {
+		t.Fatalf("quality_ready is blocked by the quality gaps: %#v", gate)
+	}
+	review, _ := status.Readiness.Gate(readiness.GateReadyForReview)
+	if review.Status != readiness.StatusBlocked {
+		t.Fatalf("ready_for_review passed with no quality records: %#v", review)
 	}
 }
 

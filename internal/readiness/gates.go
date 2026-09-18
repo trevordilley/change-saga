@@ -10,7 +10,7 @@ import (
 
 // GateName is one readiness gate from the lifecycle gate table. The gates are
 // independent projections, evaluated in this order; ready_for_review depends on
-// the configured gates before it.
+// every gate before it.
 type GateName string
 
 const (
@@ -27,21 +27,12 @@ const (
 // and never a number: readiness is not a score, a percentage, or a progress bar.
 type GateStatus string
 
+// There is one readiness policy: every gate always applies, and quality is
+// required before review. An axis is excused only by an explicit, pinned, cited
+// coverage exception; nothing is excused because a record family is absent.
 const (
-	StatusReady         GateStatus = "ready"
-	StatusBlocked       GateStatus = "blocked"
-	StatusNotApplicable GateStatus = "not_applicable"
-)
-
-const (
-	// PolicyFeature is the v5 feature-Saga policy: every gate is configured and
-	// quality is required before review.
-	PolicyFeature = "feature"
-	// PolicyCompatibility keeps the existing peer_review_ready behavior for a
-	// v2/v3 Saga, or a v5 Saga whose quality capability is not adopted, unless
-	// the caller explicitly selects the feature policy. The new gates are still
-	// computed and reported as guidance; they simply do not block.
-	PolicyCompatibility = "compatibility"
+	StatusReady   GateStatus = "ready"
+	StatusBlocked GateStatus = "blocked"
 )
 
 // Fact is one concrete, checkable observation a gate required. A gate reports
@@ -61,7 +52,6 @@ type Gate struct {
 	Name        GateName                `json:"name"`
 	Status      GateStatus              `json:"status"`
 	Satisfied   bool                    `json:"satisfied"`
-	Configured  bool                    `json:"configured"`
 	Facts       []Fact                  `json:"facts"`
 	Blockers    []Blocker               `json:"blockers"`
 	Axes        []coverage.AxisSummary  `json:"axes"`
@@ -75,9 +65,7 @@ type Gate struct {
 // readiness field on purpose: a caller that wants one number has to decide
 // which facts it is willing to ignore, and that decision is not ours to hide.
 type GateProjection struct {
-	Policy     string      `json:"policy"`
-	Gates      []Gate      `json:"gates"`
-	PeerReview *Projection `json:"peer_review,omitempty"`
+	Gates []Gate `json:"gates"`
 }
 
 // Gate returns one gate by name.
@@ -114,11 +102,6 @@ type Prototype struct {
 	CurrentLinks []string
 	StaleReasons []string
 }
-
-// QualityDomain reports the adoption state of the quality capability. An absent
-// root is not_adopted, an existing root with no test cases is adopted_empty,
-// and neither is quality-ready.
-type QualityDomain struct{ Adoption string }
 
 // QualityFact is one required test kind for one criterion with its current run
 // and evidence. A past pass, a claim, or an authored progress state is never
@@ -159,15 +142,12 @@ type ReviewDecision struct {
 // package performs no filesystem or transport access; every field here is a
 // fact a loader established.
 type GateInputs struct {
-	Policy        string
 	Stories       []Story
 	Prototypes    []Prototype
 	Coverage      coverage.AxisProjection
-	Quality       QualityDomain
 	QualityFacts  []QualityFact
 	ChangedSource ChangedSourceAccounting
 	Reviews       []ReviewDecision
-	PeerReview    []Criterion
 }
 
 // notInferred is the gate table's "Not inferred" column, kept next to the gate
@@ -186,35 +166,23 @@ var notInferred = map[GateName][]string{
 // relations, paths, stale pins, exclusions, and gaps behind its verdict, and no
 // gate is ever summarized as a percentage.
 func EvaluateGates(inputs GateInputs) GateProjection {
-	policy := inputs.Policy
-	if policy == "" {
-		policy = PolicyCompatibility
-	}
-	feature := policy == PolicyFeature
-	projection := GateProjection{Policy: policy, Gates: []Gate{}}
-	if !feature {
-		legacy := Evaluate(inputs.PeerReview)
-		projection.PeerReview = &legacy
-	}
-
 	gates := []Gate{
-		requirementsGate(inputs, feature),
-		productGate(inputs, feature),
-		designGate(inputs, feature),
-		implementationTraceGate(inputs, feature),
-		qualityGate(inputs, feature),
+		requirementsGate(inputs),
+		productGate(inputs),
+		designGate(inputs),
+		implementationTraceGate(inputs),
+		qualityGate(inputs),
 	}
-	gates = append(gates, reviewGate(inputs, gates, feature, projection.PeerReview))
+	gates = append(gates, reviewGate(inputs, gates))
 	gates = append(gates, reviewCompleteGate(inputs, gates[len(gates)-1]))
 	for index := range gates {
 		finishGate(&gates[index])
 	}
-	projection.Gates = gates
-	return projection
+	return GateProjection{Gates: gates}
 }
 
-func requirementsGate(inputs GateInputs, feature bool) Gate {
-	gate := newGate(GateRequirementsReady, feature)
+func requirementsGate(inputs GateInputs) Gate {
+	gate := newGate(GateRequirementsReady)
 	accepted := 0
 	stories := append([]Story(nil), inputs.Stories...)
 	sort.Slice(stories, func(i, j int) bool { return stories[i].URN < stories[j].URN })
@@ -250,8 +218,8 @@ func requirementsGate(inputs GateInputs, feature bool) Gate {
 	return gate
 }
 
-func productGate(inputs GateInputs, feature bool) Gate {
-	gate := newGate(GateProductReady, feature)
+func productGate(inputs GateInputs) Gate {
+	gate := newGate(GateProductReady)
 	prototypes := append([]Prototype(nil), inputs.Prototypes...)
 	sort.Slice(prototypes, func(i, j int) bool { return prototypes[i].URN < prototypes[j].URN })
 	for _, prototype := range prototypes {
@@ -270,16 +238,16 @@ func productGate(inputs GateInputs, feature bool) Gate {
 	return gate
 }
 
-func designGate(inputs GateInputs, feature bool) Gate {
-	gate := newGate(GateDesignReady, feature)
+func designGate(inputs GateInputs) Gate {
+	gate := newGate(GateDesignReady)
 	for _, axis := range coverage.DesignAxes() {
 		gate.axis(inputs.Coverage, axis)
 	}
 	return gate
 }
 
-func implementationTraceGate(inputs GateInputs, feature bool) Gate {
-	gate := newGate(GateImplementationTraceReady, feature)
+func implementationTraceGate(inputs GateInputs) Gate {
+	gate := newGate(GateImplementationTraceReady)
 	gate.axis(inputs.Coverage, coverage.AxisImplementation)
 	for _, criterion := range inputs.Coverage.Criteria {
 		cell, ok := criterion.Axis(coverage.AxisImplementation)
@@ -305,12 +273,8 @@ func implementationTraceGate(inputs GateInputs, feature bool) Gate {
 	return gate
 }
 
-func qualityGate(inputs GateInputs, feature bool) Gate {
-	gate := newGate(GateQualityReady, feature)
-	gate.fact(Fact{
-		Code: "quality_adopted", Satisfied: inputs.Quality.Adoption == "adopted",
-		Detail: "quality capability is " + orUnknown(inputs.Quality.Adoption),
-	})
+func qualityGate(inputs GateInputs) Gate {
+	gate := newGate(GateQualityReady)
 	gate.axis(inputs.Coverage, coverage.AxisQuality)
 	facts := append([]QualityFact(nil), inputs.QualityFacts...)
 	sort.Slice(facts, func(i, j int) bool {
@@ -345,24 +309,16 @@ func qualityGate(inputs GateInputs, feature bool) Gate {
 	return gate
 }
 
-func reviewGate(inputs GateInputs, preceding []Gate, feature bool, peerReview *Projection) Gate {
-	gate := newGate(GateReadyForReview, true)
-	if feature {
-		for _, earlier := range preceding {
-			satisfied, _ := gateVerdict(earlier)
-			gate.fact(Fact{
-				Code: "preceding_gate_satisfied", Resource: string(earlier.Name),
-				Satisfied: !earlier.Configured || satisfied,
-				Detail:    gateDetail(earlier, satisfied),
-			})
-			gate.Gaps = append(gate.Gaps, earlier.Gaps...)
-			gate.StalePins = append(gate.StalePins, earlier.StalePins...)
-		}
-	} else if peerReview != nil {
+func reviewGate(inputs GateInputs, preceding []Gate) Gate {
+	gate := newGate(GateReadyForReview)
+	for _, earlier := range preceding {
+		satisfied, _ := gateVerdict(earlier)
 		gate.fact(Fact{
-			Code: "peer_review_ready", Satisfied: peerReview.PeerReviewReady,
-			Detail: countDetail(peerReview.DeliveryCoverage.Missing, "criterion without a complete delivery path", "criteria without a complete delivery path"),
+			Code: "preceding_gate_satisfied", Resource: string(earlier.Name),
+			Satisfied: satisfied, Detail: gateDetail(earlier, satisfied),
 		})
+		gate.Gaps = append(gate.Gaps, earlier.Gaps...)
+		gate.StalePins = append(gate.StalePins, earlier.StalePins...)
 	}
 
 	conflicts := conflictResources(inputs)
@@ -398,7 +354,7 @@ func reviewGate(inputs GateInputs, preceding []Gate, feature bool, peerReview *P
 }
 
 func reviewCompleteGate(inputs GateInputs, review Gate) Gate {
-	gate := newGate(GateReviewComplete, true)
+	gate := newGate(GateReviewComplete)
 	satisfied, _ := gateVerdict(review)
 	gate.fact(Fact{Code: "ready_for_review", Resource: string(GateReadyForReview), Satisfied: satisfied, Detail: gateDetail(review, satisfied)})
 	decisions := append([]ReviewDecision(nil), inputs.Reviews...)
@@ -460,9 +416,9 @@ func conflictResources(inputs GateInputs) []string {
 	return uniqueSorted(result)
 }
 
-func newGate(name GateName, configured bool) Gate {
+func newGate(name GateName) Gate {
 	return Gate{
-		Name: name, Configured: configured, Facts: []Fact{}, Blockers: []Blocker{},
+		Name: name, Facts: []Fact{}, Blockers: []Blocker{},
 		Axes: []coverage.AxisSummary{}, Exclusions: []coverage.ExclusionRow{}, Gaps: []coverage.AxisGap{},
 		StalePins: []string{}, NotInferred: notInferred[name],
 	}
@@ -543,19 +499,14 @@ func currentPaths(cell coverage.AxisCoverage) ([][]string, int) {
 }
 
 // finishGate derives the verdict and the blocker list from the facts. A gate is
-// satisfied only when every fact it required holds; an unconfigured gate is
-// reported as not_applicable but keeps its facts so the guidance is not lost.
+// satisfied only when every fact it required holds.
 func finishGate(gate *Gate) {
 	satisfied, blockers := gateVerdict(*gate)
 	gate.Satisfied = satisfied
 	gate.Blockers = blockers
-	switch {
-	case !gate.Configured:
-		gate.Status = StatusNotApplicable
-	case satisfied:
+	gate.Status = StatusBlocked
+	if satisfied {
 		gate.Status = StatusReady
-	default:
-		gate.Status = StatusBlocked
 	}
 	gate.StalePins = uniqueSorted(gate.StalePins)
 	sort.SliceStable(gate.Gaps, func(i, j int) bool {
@@ -584,9 +535,6 @@ func gateVerdict(gate Gate) (bool, []Blocker) {
 }
 
 func gateDetail(gate Gate, satisfied bool) string {
-	if !gate.Configured {
-		return string(gate.Name) + " is not configured by this policy"
-	}
 	if satisfied {
 		return string(gate.Name) + " is ready"
 	}

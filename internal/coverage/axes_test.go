@@ -47,7 +47,8 @@ func cell(t *testing.T, projection AxisProjection, urn string, axis Axis) AxisCo
 }
 
 // The schema enum and the runtime vocabulary must not drift: a Saga written by
-// one and read by the other would silently lose an exception.
+// one and read by the other would silently lose an exception. The six axes are
+// the whole vocabulary; no aggregate value is accepted by either.
 func TestExceptionSchemaAxisEnumMatchesRuntimeVocabulary(t *testing.T) {
 	data, err := os.ReadFile(exceptionSchemaPath)
 	if err != nil {
@@ -65,7 +66,7 @@ func TestExceptionSchemaAxisEnumMatchesRuntimeVocabulary(t *testing.T) {
 	}
 	got := append([]string(nil), schema.Properties.Axis.Enum...)
 	sort.Strings(got)
-	want := []string{string(AxisLegacyDesign)}
+	want := []string{}
 	for _, axis := range Axes() {
 		want = append(want, string(axis))
 	}
@@ -73,56 +74,47 @@ func TestExceptionSchemaAxisEnumMatchesRuntimeVocabulary(t *testing.T) {
 	if !reflect.DeepEqual(got, want) {
 		t.Fatalf("schema axis enum = %v, want %v", got, want)
 	}
-	for _, value := range got {
-		if _, ok := RecordedAxis(value); !ok {
-			t.Errorf("schema accepts axis %q that the runtime rejects", value)
+	for _, value := range []Axis{"design", "delivery"} {
+		if value.Canonical() {
+			t.Errorf("runtime accepted axis %q that the schema does not", value)
 		}
-	}
-	if _, ok := RecordedAxis("delivery"); ok {
-		t.Error("runtime accepted an axis the schema does not")
 	}
 }
 
-// A Saga written before the six-axis split must still load, and its aggregate
-// design decision must keep excluding every design axis.
-func TestLegacyDesignExceptionLoadsAndExpandsToEveryDesignAxis(t *testing.T) {
+// The committed example validates, and an exception naming anything but one of
+// the six axes is rejected by the schema and is an invalid record at runtime.
+func TestExceptionSchemaRejectsNonCanonicalAxis(t *testing.T) {
 	compiler := jsonschema.NewCompiler()
 	compiler.AssertFormat()
 	schema, err := compiler.Compile(exceptionSchemaPath)
 	if err != nil {
 		t.Fatal(err)
 	}
-	fixture, err := os.Open(filepath.Join("../../schema/v5/examples", "coverage-exception-legacy-design.golden.json"))
+	data, err := os.ReadFile(filepath.Join("../../schema/v5/examples", "coverage-exception.json"))
 	if err != nil {
 		t.Fatal(err)
 	}
-	defer fixture.Close()
-	instance, err := jsonschema.UnmarshalJSON(fixture)
+	instance, err := jsonschema.UnmarshalJSON(strings.NewReader(string(data)))
 	if err != nil {
 		t.Fatal(err)
 	}
 	if err := schema.Validate(instance); err != nil {
-		t.Fatalf("legacy design exception no longer validates: %v", err)
+		t.Fatalf("example exception does not validate: %v", err)
+	}
+	instance.(map[string]any)["axis"] = "design"
+	if err := schema.Validate(instance); err == nil {
+		t.Fatal("schema accepted the non-canonical axis design")
 	}
 
 	urn := "urn:change-saga:s:story:refund:criterion:deadline"
-	projection := ProjectAxes(
-		[]CriterionInput{criterion(urn)},
-		[]Exception{exception("legacy", AxisLegacyDesign)},
-		FeatureAxisPolicy(),
-	)
-	for _, axis := range DesignAxes() {
-		if state := cell(t, projection, urn, axis).State; state != StateExcluded {
-			t.Errorf("legacy design exception left %s as %s", axis, state)
-		}
+	projection := ProjectAxes([]CriterionInput{criterion(urn)}, []Exception{exception("aggregate", "design")})
+	if projection.Exceptions[0].State != ExceptionInvalid {
+		t.Fatalf("non-canonical exception state = %s", projection.Exceptions[0].State)
 	}
-	for _, axis := range []Axis{AxisPrototype, AxisQuality, AxisImplementation} {
+	for _, axis := range Axes() {
 		if state := cell(t, projection, urn, axis).State; state != StateGap {
-			t.Errorf("legacy design exception leaked onto %s as %s", axis, state)
+			t.Errorf("non-canonical exception excluded %s as %s", axis, state)
 		}
-	}
-	if got := projection.Exceptions[0].Axes; !reflect.DeepEqual(got, DesignAxes()) {
-		t.Fatalf("expanded axes = %v, want %v", got, DesignAxes())
 	}
 }
 
@@ -136,7 +128,6 @@ func TestEveryRequiredAxisCellIsLinkedExcludedOrGap(t *testing.T) {
 			AxisLink{Axis: AxisImplementation, Relation: "urn:change-saga:s:relation:guard", Source: "urn:change-saga:s:slide:d:item:guard", StaleReasons: []string{"source content digest changed"}},
 		)},
 		[]Exception{exception("no-ui", AxisUI)},
-		FeatureAxisPolicy(),
 	)
 	row, _ := projection.Criterion(urn)
 	if len(row.Axes) != len(Axes()) {
@@ -182,7 +173,7 @@ func TestBroadStoryLinkIsRetainedButNeverPresentedAsDirect(t *testing.T) {
 	urn := "urn:change-saga:s:story:refund:criterion:deadline"
 	projection := ProjectAxes(
 		[]CriterionInput{criterion(urn, AxisLink{Axis: AxisTechnical, Relation: "urn:change-saga:s:relation:erd", Source: "urn:change-saga:s:deck:erd", Broad: true})},
-		nil, FeatureAxisPolicy(),
+		nil,
 	)
 	value := cell(t, projection, urn, AxisTechnical)
 	if value.State != StateCoveredBroad || value.Precision != "broad" {
@@ -199,7 +190,7 @@ func TestExceptionGoesStaleWhenTheStoryRevisionChanges(t *testing.T) {
 	input := criterion(urn)
 	input.CurrentStoryRevision = "urn:change-saga:s:story:refund:revision:r3"
 	input.RevisionHeads = []string{"urn:change-saga:s:story:refund:revision:r3"}
-	projection := ProjectAxes([]CriterionInput{input}, []Exception{exception("no-ui", AxisUI)}, FeatureAxisPolicy())
+	projection := ProjectAxes([]CriterionInput{input}, []Exception{exception("no-ui", AxisUI)})
 	if got := projection.Exceptions[0].State; got != ExceptionStale {
 		t.Fatalf("exception state = %s, want stale", got)
 	}
@@ -214,18 +205,17 @@ func TestExceptionGoesStaleWhenTheStoryRevisionChanges(t *testing.T) {
 
 func TestCompetingExceptionHeadsConflictAndNameEveryCompetitor(t *testing.T) {
 	urn := "urn:change-saga:s:story:refund:criterion:deadline"
-	// One legacy aggregate and one narrow technical exception are two heads on
-	// the technical axis; they are never resolved by timestamp.
+	// Two technical exceptions are two heads on the technical axis; they are
+	// never resolved by timestamp.
 	projection := ProjectAxes(
 		[]CriterionInput{criterion(urn)},
-		[]Exception{exception("legacy", AxisLegacyDesign), exception("narrow", AxisTechnical)},
-		FeatureAxisPolicy(),
+		[]Exception{exception("broad", AxisTechnical), exception("narrow", AxisTechnical), exception("no-ui", AxisUI)},
 	)
 	value := cell(t, projection, urn, AxisTechnical)
 	if value.State != StateConflicted || value.Resolution != ResolutionGap {
 		t.Fatalf("technical cell = %+v", value)
 	}
-	if !strings.Contains(value.Conflicts[0], "legacy") || !strings.Contains(value.Conflicts[0], "narrow") {
+	if !strings.Contains(value.Conflicts[0], "broad") || !strings.Contains(value.Conflicts[0], "narrow") {
 		t.Fatalf("competing heads were not both named: %v", value.Conflicts)
 	}
 	if state := cell(t, projection, urn, AxisUI).State; state != StateExcluded {
@@ -239,7 +229,7 @@ func TestSupersededAndInvalidExceptionsDoNotExclude(t *testing.T) {
 	replacement.Supersedes = []string{"urn:change-saga:s:coverage-exception:original"}
 	replacement.Citations = nil
 	original := exception("original", AxisQuality)
-	projection := ProjectAxes([]CriterionInput{criterion(urn)}, []Exception{original, replacement}, FeatureAxisPolicy())
+	projection := ProjectAxes([]CriterionInput{criterion(urn)}, []Exception{original, replacement})
 
 	states := map[string]ExceptionState{}
 	for _, item := range projection.Exceptions {
@@ -261,7 +251,7 @@ func TestExclusionsAreCountedSeparatelyFromCoverage(t *testing.T) {
 	urn := "urn:change-saga:s:story:refund:criterion:deadline"
 	projection := ProjectAxes(
 		[]CriterionInput{criterion(urn, AxisLink{Axis: AxisUX, Relation: "urn:change-saga:s:relation:flow", Source: "urn:change-saga:s:deck:flows"})},
-		[]Exception{exception("no-ui", AxisUI)}, FeatureAxisPolicy(),
+		[]Exception{exception("no-ui", AxisUI)},
 	)
 	ux, _ := projection.Summary(AxisUX)
 	ui, _ := projection.Summary(AxisUI)
@@ -278,7 +268,7 @@ func TestExclusionsAreCountedSeparatelyFromCoverage(t *testing.T) {
 func TestProjectionExposesNoScoreOrPercentage(t *testing.T) {
 	projection := ProjectAxes(
 		[]CriterionInput{criterion("urn:change-saga:s:story:refund:criterion:deadline")},
-		[]Exception{exception("no-ui", AxisUI)}, FeatureAxisPolicy(),
+		[]Exception{exception("no-ui", AxisUI)},
 	)
 	data, err := json.Marshal(projection)
 	if err != nil {
@@ -318,16 +308,18 @@ func TestProjectAxesIsDeterministic(t *testing.T) {
 		criterion("urn:change-saga:s:story:refund:criterion:zeta"),
 		criterion("urn:change-saga:s:story:refund:criterion:alpha"),
 	}
-	first := ProjectAxes(inputs, []Exception{exception("no-ui", AxisUI)}, FeatureAxisPolicy())
-	second := ProjectAxes(inputs, []Exception{exception("no-ui", AxisUI)}, FeatureAxisPolicy())
+	first := ProjectAxes(inputs, []Exception{exception("no-ui", AxisUI)})
+	second := ProjectAxes(inputs, []Exception{exception("no-ui", AxisUI)})
 	if !reflect.DeepEqual(first, second) {
 		t.Fatal("projection is not deterministic")
 	}
 	if first.Criteria[0].Criterion >= first.Criteria[1].Criterion {
 		t.Fatalf("criteria are not ordered: %v", first.Criteria)
 	}
-	if !reflect.DeepEqual(first.Policy.Required, Axes()) {
-		t.Fatalf("policy axes = %v, want canonical order %v", first.Policy.Required, Axes())
+	for index, axis := range Axes() {
+		if first.Axes[index].Axis != axis || first.Criteria[0].Axes[index].Axis != axis {
+			t.Fatalf("axes are not in canonical order %v: %v", Axes(), first.Axes)
+		}
 	}
 }
 
@@ -338,7 +330,7 @@ func TestProjectAxesIsDeterministic(t *testing.T) {
 func TestUnsatisfiedFactsResolveToAGapWithTheirReason(t *testing.T) {
 	const urn = "urn:change-saga:s:story:refund:criterion:deadline"
 	failing := AxisLink{Axis: AxisQuality, Relation: "urn:change-saga:s:relation:verifies", Source: "urn:change-saga:s:test-case:t", Unsatisfied: []string{"current run failed"}}
-	projection := ProjectAxes([]CriterionInput{criterion(urn, failing)}, nil, FeatureAxisPolicy())
+	projection := ProjectAxes([]CriterionInput{criterion(urn, failing)}, nil)
 	got := cell(t, projection, urn, AxisQuality)
 	if got.State != StateGap || len(got.Unsatisfied) != 1 || !strings.Contains(got.Gap.Reasons[0], "current run failed") || got.Links[0].Current {
 		t.Fatalf("an unsatisfied link is a gap with its reason: %#v", got)
@@ -347,18 +339,18 @@ func TestUnsatisfiedFactsResolveToAGapWithTheirReason(t *testing.T) {
 	passing := AxisLink{Axis: AxisQuality, Relation: "urn:change-saga:s:relation:verifies", Source: "urn:change-saga:s:test-case:t"}
 	input := criterion(urn, passing)
 	input.Unsatisfied = map[Axis][]string{AxisQuality: {"required negative test: missing_kind"}}
-	projection = ProjectAxes([]CriterionInput{input}, nil, FeatureAxisPolicy())
+	projection = ProjectAxes([]CriterionInput{input}, nil)
 	if got := cell(t, projection, urn, AxisQuality); got.State != StateGap || !strings.Contains(strings.Join(got.Gap.Reasons, ";"), "missing_kind") {
 		t.Fatalf("an axis-level obligation blocks coverage even with a current link: %#v", got)
 	}
 
-	projection = ProjectAxes([]CriterionInput{input}, []Exception{exception("no-quality", AxisQuality)}, FeatureAxisPolicy())
+	projection = ProjectAxes([]CriterionInput{input}, []Exception{exception("no-quality", AxisQuality)})
 	if got := cell(t, projection, urn, AxisQuality); got.State != StateExcluded {
 		t.Fatalf("an explicit current exception still resolves the axis: %#v", got)
 	}
 
 	stale := AxisLink{Axis: AxisQuality, Source: "x", StaleReasons: []string{"test revision changed"}, Unsatisfied: []string{"current run failed"}}
-	projection = ProjectAxes([]CriterionInput{criterion(urn, stale)}, nil, FeatureAxisPolicy())
+	projection = ProjectAxes([]CriterionInput{criterion(urn, stale)}, nil)
 	if got := cell(t, projection, urn, AxisQuality); got.State != StateStale || len(got.Unsatisfied) != 0 {
 		t.Fatalf("a stale link explains itself; its unsatisfied facts are not double-reported: %#v", got)
 	}

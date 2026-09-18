@@ -32,7 +32,7 @@ func link(axis coverage.Axis, diffs ...string) coverage.AxisLink {
 	}
 }
 
-// coveredInputs is a feature-policy Saga that satisfies every gate. Each test
+// coveredInputs is a Saga that satisfies every gate. Each test
 // removes exactly one fact so the failure it asserts is the only difference.
 func coveredInputs() GateInputs {
 	criterion := coverage.CriterionInput{
@@ -45,11 +45,9 @@ func coveredInputs() GateInputs {
 		},
 	}
 	return GateInputs{
-		Policy:     PolicyFeature,
 		Stories:    []Story{acceptedStory()},
 		Prototypes: []Prototype{{URN: "urn:change-saga:s:prototype:checkout", Retained: true, CurrentLinks: []string{criterionURN}}},
-		Coverage:   coverage.ProjectAxes([]coverage.CriterionInput{criterion}, nil, coverage.FeatureAxisPolicy()),
-		Quality:    QualityDomain{Adoption: "adopted"},
+		Coverage:   coverage.ProjectAxes([]coverage.CriterionInput{criterion}, nil),
 		QualityFacts: []QualityFact{{
 			Criterion: criterionURN, Kind: "positive", Required: true,
 			TestCase: "urn:change-saga:s:test-case:deadline", RunResult: "passed",
@@ -136,7 +134,7 @@ func TestProductReadyNeedsLinkedPrototypesAndPrototypeCoverage(t *testing.T) {
 		URN: criterionURN, Story: storyURN, CurrentStoryRevision: revisionURN,
 		RevisionHeads: []string{revisionURN},
 		Links:         []coverage.AxisLink{link(coverage.AxisUX)},
-	}}, nil, coverage.FeatureAxisPolicy())
+	}}, nil)
 	product := gate(t, EvaluateGates(inputs), GateProductReady)
 
 	if product.Status != StatusBlocked {
@@ -167,7 +165,6 @@ func TestDesignReadyIsPerAxisAndHonorsExceptions(t *testing.T) {
 			Rationale: "A repository-schema migration does not require UI design.",
 			Citations: []string{"urn:change-saga:s:citation:migration-policy"},
 		}},
-		coverage.FeatureAxisPolicy(),
 	)
 	design := gate(t, EvaluateGates(inputs), GateDesignReady)
 
@@ -210,7 +207,6 @@ func TestNoExceptionExcusesChangedSourceAccounting(t *testing.T) {
 			Rationale: "Documentation-only obligation.",
 			Citations: []string{"urn:change-saga:s:citation:support-policy"},
 		}},
-		coverage.FeatureAxisPolicy(),
 	)
 	inputs.ChangedSource = ChangedSourceAccounting{Uncovered: []string{"docs/playbook.md:12"}, Orphans: []string{"saga-diff://v1/line?path=gone.go"}}
 	trace := gate(t, EvaluateGates(inputs), GateImplementationTraceReady)
@@ -238,7 +234,7 @@ func TestImplementationTraceNeedsAPathThatEndsAtAnExactDiff(t *testing.T) {
 		URN: criterionURN, Story: storyURN, CurrentStoryRevision: revisionURN,
 		RevisionHeads: []string{revisionURN},
 		Links:         []coverage.AxisLink{link(coverage.AxisImplementation)},
-	}}, nil, coverage.FeatureAxisPolicy())
+	}}, nil)
 	trace := gate(t, EvaluateGates(inputs), GateImplementationTraceReady)
 
 	if trace.Status != StatusBlocked {
@@ -258,15 +254,14 @@ func TestImplementationTraceNeedsAPathThatEndsAtAnExactDiff(t *testing.T) {
 	}
 }
 
-func TestQualityReadyNeedsAdoptionAndACurrentPassingRun(t *testing.T) {
+func TestQualityReadyNeedsACurrentPassingRun(t *testing.T) {
 	inputs := coveredInputs()
-	inputs.Quality = QualityDomain{Adoption: "adopted_empty"}
 	inputs.QualityFacts[0].RunResult = "failed"
 	projection := EvaluateGates(inputs)
 
 	quality := gate(t, projection, GateQualityReady)
 	codes := strings.Join(blockerCodes(quality), ",")
-	if !strings.Contains(codes, "quality_adopted") || !strings.Contains(codes, "required_kind_passing_run") {
+	if !strings.Contains(codes, "required_kind_passing_run") {
 		t.Fatalf("quality blockers = %v", codes)
 	}
 	review := gate(t, projection, GateReadyForReview)
@@ -307,56 +302,29 @@ func TestReviewCompleteNeedsCurrentRequiredDecisions(t *testing.T) {
 	}
 }
 
-// A v2/v3 Saga, or a v5 Saga that has not adopted quality, keeps the existing
-// peer_review_ready behavior. The new gates are still computed as guidance.
-func TestCompatibilityPolicyPreservesPeerReviewBehavior(t *testing.T) {
+// Quality is always required before review. A Saga with no quality records is
+// not exempt: its quality axis is a visible gap that blocks quality_ready, and
+// through it ready_for_review.
+func TestQualityIsRequiredBeforeReviewEvenWithNoQualityRecords(t *testing.T) {
 	inputs := coveredInputs()
-	inputs.Policy = PolicyCompatibility
-	inputs.Quality = QualityDomain{Adoption: "not_adopted"}
 	inputs.QualityFacts = nil
-	inputs.Prototypes = nil
-	inputs.Coverage = coverage.AxisProjection{}
-	inputs.PeerReview = []Criterion{{URN: criterionURN, Designed: true, Planned: true, Evidence: []string{"git-oid:abc"}}}
+	inputs.Coverage = coverage.ProjectAxes([]coverage.CriterionInput{{
+		URN: criterionURN, Story: storyURN, CurrentStoryRevision: revisionURN,
+		RevisionHeads: []string{revisionURN},
+		Links: []coverage.AxisLink{
+			link(coverage.AxisPrototype), link(coverage.AxisUX), link(coverage.AxisUI), link(coverage.AxisTechnical),
+			link(coverage.AxisImplementation, "saga-diff://v1/line?path=refund.go"),
+		},
+	}}, nil)
 	projection := EvaluateGates(inputs)
 
-	if projection.PeerReview == nil || !projection.PeerReview.PeerReviewReady {
-		t.Fatalf("legacy peer-review projection = %+v", projection.PeerReview)
+	quality := gate(t, projection, GateQualityReady)
+	if quality.Status != StatusBlocked || len(quality.Gaps) != 1 || quality.Gaps[0].Axis != coverage.AxisQuality {
+		t.Fatalf("a Saga with no quality records was not a quality gap: %+v", quality)
 	}
-	for _, name := range []GateName{GateRequirementsReady, GateProductReady, GateDesignReady, GateImplementationTraceReady, GateQualityReady} {
-		value := gate(t, projection, name)
-		if value.Status != StatusNotApplicable {
-			t.Errorf("%s = %s under the compatibility policy", name, value.Status)
-		}
-		if len(value.Facts) == 0 {
-			t.Errorf("%s discarded its guidance facts", name)
-		}
-	}
-	if gate(t, projection, GateReadyForReview).Status != StatusReady {
-		t.Fatalf("compatibility review gate = %+v", gate(t, projection, GateReadyForReview))
-	}
-}
-
-func TestCompatibilityPolicyStillBlocksOnTheLegacyProjection(t *testing.T) {
-	inputs := GateInputs{
-		Policy:     PolicyCompatibility,
-		Stories:    []Story{acceptedStory()},
-		PeerReview: []Criterion{{URN: criterionURN, Designed: true, Planned: true}},
-	}
-	review := gate(t, EvaluateGates(inputs), GateReadyForReview)
-	if review.Status != StatusBlocked || blockerCodes(review)[0] != "peer_review_ready" {
-		t.Fatalf("compatibility review gate = %+v", review)
-	}
-}
-
-// Feature-policy Sagas require quality before review even though the
-// compatibility policy does not.
-func TestFeaturePolicyRequiresQualityBeforeReview(t *testing.T) {
-	inputs := coveredInputs()
-	inputs.Quality = QualityDomain{Adoption: "not_adopted"}
-	inputs.QualityFacts = nil
-	review := gate(t, EvaluateGates(inputs), GateReadyForReview)
+	review := gate(t, projection, GateReadyForReview)
 	if review.Status != StatusBlocked {
-		t.Fatal("an unadopted quality domain passed the feature review gate")
+		t.Fatal("a Saga with no quality records passed ready_for_review")
 	}
 	for _, blocker := range review.Blockers {
 		if blocker.Resource == string(GateQualityReady) {
@@ -364,6 +332,20 @@ func TestFeaturePolicyRequiresQualityBeforeReview(t *testing.T) {
 		}
 	}
 	t.Fatalf("quality_ready was not named as the blocker: %v", review.Blockers)
+}
+
+// Every gate always applies: no gate reports itself as inapplicable, and an
+// empty Saga is blocked, never vacuously ready.
+func TestEveryGateAppliesAndAnEmptySagaIsBlocked(t *testing.T) {
+	projection := EvaluateGates(GateInputs{})
+	for _, value := range projection.Gates {
+		if value.Status != StatusReady && value.Status != StatusBlocked {
+			t.Errorf("%s = %s", value.Name, value.Status)
+		}
+	}
+	if gate(t, projection, GateReadyForReview).Status != StatusBlocked {
+		t.Fatal("a Saga with no accepted story is ready for review")
+	}
 }
 
 func TestGateProjectionExposesNoAggregateScore(t *testing.T) {

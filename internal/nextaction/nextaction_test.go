@@ -8,7 +8,6 @@ import (
 	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/grammar"
 	"github.com/twentyideas/changesaga/internal/livingapp"
-	"github.com/twentyideas/changesaga/internal/quality"
 	"github.com/twentyideas/changesaga/internal/readiness"
 )
 
@@ -36,7 +35,6 @@ func statusFixture() livingapp.Status {
 	}
 	return livingapp.Status{
 		SagaID: "checkout", SagaVersion: 5,
-		Capabilities: []livingapp.Capability{{Name: "requirements", State: "adopted"}, {Name: "quality", State: "adopted"}},
 		Stories: []livingapp.StoryStatus{{
 			Story: "urn:change-saga:checkout:story:refund", Title: "Refund", State: "accepted",
 			RevisionHeads: []string{"urn:change-saga:checkout:story:refund:revision:r2"}, LifecycleHeads: []string{"urn:change-saga:checkout:story:refund:event:accepted"},
@@ -51,7 +49,7 @@ func statusFixture() livingapp.Status {
 			}),
 			cells("done", nil),
 		}},
-		Quality: livingapp.QualityStatus{Adoption: "adopted", Criteria: []livingapp.QualityCriterion{{
+		Quality: livingapp.QualityStatus{Criteria: []livingapp.QualityCriterion{{
 			Criterion: criterion("failing"), RequiredKinds: []string{"positive"},
 			Kinds: []livingapp.KindStatus{{Kind: "positive", Required: true, State: "failed", TestCases: []string{"urn:change-saga:checkout:test-case:broken"}}},
 		}}},
@@ -67,7 +65,7 @@ func statusFixture() livingapp.Status {
 			Uncovered: []livingapp.UncoveredPath{{Path: "internal/other.go", Atoms: 1}}, UncoveredAtoms: 1,
 			Orphans: []livingapp.OrphanRef{{Target: "item", DiffFile: "40-e.json", Diff: 1, Affects: []string{criterion("done")}}},
 		},
-		Readiness: readiness.GateProjection{Policy: readiness.PolicyFeature},
+		Readiness: readiness.GateProjection{},
 	}
 }
 
@@ -183,30 +181,46 @@ func TestExclusionsAreNeverOfferedForSourceOrImplementation(t *testing.T) {
 	}
 }
 
-func TestCoveredCriterionProducesNoActionAndNotAdoptedQualityIsOneDecision(t *testing.T) {
-	status := statusFixture()
-	for _, action := range Derive(status, saga) {
+func TestCoveredCriterionProducesNoAction(t *testing.T) {
+	for _, action := range Derive(statusFixture(), saga) {
 		if action.Resource == criterion("done") && action.Category == CategoryCoverage {
 			t.Fatalf("a fully covered criterion has no coverage action: %#v", action)
 		}
 	}
-	status.Quality = livingapp.QualityStatus{Adoption: string(quality.NotAdopted), Reason: "v3 Saga"}
-	status.SagaVersion = 3
-	actions := Derive(status, saga)
-	quality := 0
-	for _, action := range actions {
-		if action.Axis == string(coverage.AxisQuality) {
-			t.Fatalf("an unadopted capability is one decision, not a question per criterion: %#v", action)
+}
+
+// A Saga with no quality records is not exempt from quality. Each accepted
+// criterion's quality gap is its own next action asking for a test case.
+func TestNoQualityRecordsIsAGapPerCriterionWithANextAction(t *testing.T) {
+	status := statusFixture()
+	status.Quality = livingapp.QualityStatus{}
+	status.Axes.Criteria[1].Axes[4] = coverage.AxisCoverage{
+		Criterion: criterion("done"), Axis: coverage.AxisQuality, State: coverage.StateGap, Resolution: coverage.ResolutionGap,
+		Gap: &coverage.AxisGap{Criterion: criterion("done"), Axis: coverage.AxisQuality, Reasons: []string{"required positive test: missing_kind"}},
+	}
+	actions := byID(Derive(status, saga))
+	for _, id := range []string{"gap:quality:" + criterion("failing"), "gap:quality:" + criterion("done")} {
+		action, ok := actions[id]
+		if !ok || action.Category != CategoryCoverage || action.Question == nil {
+			t.Fatalf("missing quality gap action %s: %#v", id, action)
 		}
-		if action.ID == "capability:quality" {
-			quality++
-			if !strings.Contains(strings.Join(action.Question.Options[0].Commands[0].Argv, " "), "upgrade --to 5") {
-				t.Fatalf("adopting quality on v3 starts with the v5 upgrade shape: %#v", action.Question.Options[0])
+		if !strings.Contains(strings.Join(action.Gates, ","), "quality_ready") {
+			t.Fatalf("quality gap does not name quality_ready: %#v", action.Gates)
+		}
+		found := false
+		for _, invocation := range commandsOf(action) {
+			if invocation.Command == "quality test-case add" {
+				found = true
 			}
 		}
+		if !found {
+			t.Fatalf("quality gap does not offer to record a test case: %#v", action.Question)
+		}
 	}
-	if quality != 1 {
-		t.Fatalf("expected one quality adoption decision, found %d", quality)
+	for id := range actions {
+		if strings.HasPrefix(id, "capability:") {
+			t.Fatalf("a missing record family is a gap, not a capability decision: %s", id)
+		}
 	}
 }
 
@@ -214,7 +228,6 @@ func TestEmptyActionsAreTheFixedPoint(t *testing.T) {
 	status := livingapp.Status{
 		Stories: []livingapp.StoryStatus{{Story: "urn:change-saga:checkout:story:refund", State: "accepted", CurrentRevision: "r", Criteria: []livingapp.CriterionStatus{{Criterion: criterion("done")}}}},
 		Axes:    coverage.AxisProjection{Criteria: []coverage.CriterionCoverage{}},
-		Quality: livingapp.QualityStatus{Adoption: "adopted"},
 		ChangedSource: livingapp.ChangedSource{
 			Complete: true, Uncovered: []livingapp.UncoveredPath{}, Orphans: []livingapp.OrphanRef{}, TestOwned: []livingapp.TestOwned{},
 		},

@@ -74,19 +74,14 @@ func (link Link) pins() []Pin {
 }
 
 // StatusInputs is every already-loaded fact the status projection reads. The
-// assembler performs no I/O, so a test can hand it a v5 quality document next
-// to a v3 requirements document before the core loader accepts v5.
+// assembler performs no I/O, so a test can hand it records directly.
 type StatusInputs struct {
 	SagaID      string
 	SagaVersion int
-	// Policy is an explicit readiness policy; empty selects the default for the
-	// Saga version and quality adoption.
-	Policy string
 
-	RequirementsAdopted bool
-	Stories             []requirements.Story
-	Citations           []requirements.Citation
-	Links               []Link
+	Stories   []requirements.Story
+	Citations []requirements.Citation
+	Links     []Link
 
 	Prototypes prototypes.Document
 	Decks      []*saga.Deck
@@ -94,20 +89,14 @@ type StatusInputs struct {
 	// visual target, used to report the current side of a stale digest pin.
 	DesignDigests map[string]string
 
-	ExceptionsAdopted bool
-	Exceptions        []coverage.Exception
+	Exceptions []coverage.Exception
 
-	Quality       quality.Document
-	QualityReason string
+	Quality quality.Document
 
 	Report  coverage.Report
 	Changes gitdiff.ChangeSet
 
-	PeerReview  []readiness.Criterion
 	Diagnostics []Diagnostic
-	// Unavailable is set when the living records exist but could not be
-	// composed; capabilities then say so instead of reading as not adopted.
-	Unavailable string
 }
 
 // Diagnostic is a load or composition fact that is not a gate result.
@@ -121,8 +110,6 @@ type Diagnostic struct {
 type Status struct {
 	SagaID        string                   `json:"saga_id"`
 	SagaVersion   int                      `json:"saga_version"`
-	Policy        PolicyChoice             `json:"policy"`
-	Capabilities  []Capability             `json:"capabilities"`
 	Stories       []StoryStatus            `json:"stories"`
 	Prototypes    []PrototypeStatus        `json:"prototypes"`
 	Readiness     readiness.GateProjection `json:"readiness"`
@@ -131,21 +118,6 @@ type Status struct {
 	Stale         []StaleRecord            `json:"stale"`
 	ChangedSource ChangedSource            `json:"changed_source"`
 	Diagnostics   []Diagnostic             `json:"diagnostics"`
-}
-
-// PolicyChoice records which readiness policy was applied and why.
-type PolicyChoice struct {
-	Name   string `json:"name"`
-	Source string `json:"source"`
-}
-
-// Capability is the adoption state of one optional Saga capability. A
-// capability that is not adopted is a visible state, not an error and not a
-// silent pass.
-type Capability struct {
-	Name   string `json:"name"`
-	State  string `json:"state"`
-	Reason string `json:"reason,omitempty"`
 }
 
 // StoryStatus is the requirement identity an author needs to act on a story.
@@ -178,10 +150,10 @@ type PrototypeStatus struct {
 	StaleLinks      []string `json:"stale_links"`
 }
 
-// QualityStatus is the quality domain as it bears on readiness.
+// QualityStatus is the quality domain as it bears on readiness. A Saga with no
+// quality records has no exemption: every accepted criterion's quality axis is
+// then a visible gap.
 type QualityStatus struct {
-	Adoption  string              `json:"adoption"`
-	Reason    string              `json:"reason,omitempty"`
 	Criteria  []QualityCriterion  `json:"criteria"`
 	TestCases []TestCaseStatus    `json:"test_cases"`
 	Facts     []QualityFactStatus `json:"facts"`

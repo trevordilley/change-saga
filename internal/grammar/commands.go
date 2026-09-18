@@ -204,9 +204,9 @@ var commands = []Command{
 	},
 	{
 		Name: "status", Status: StatusImplemented, Usage: "change-saga status [--json] [--repo PATH] <saga>",
-		Summary: "report changed-source accounting, gates, axis cells, stale pins, and ordered next actions",
+		Summary: "report changed-source accounting, gates, axis cells, stale pins, and ordered next actions; exits 0 only when ready_for_review is ready, 3 when it is blocked",
 		Flags: []Flag{
-			jsonFlag, optional("repo", "PATH", "source checkout when separate"), optional("policy", "POLICY", "feature or compatibility readiness policy"),
+			jsonFlag, optional("repo", "PATH", "source checkout when separate"),
 			optional("max", "N", "maximum uncovered items in text mode"), optional("allow-repository-mismatch", "", "accept a checkout whose origin differs"),
 		},
 		Positionals: sagaOnly,

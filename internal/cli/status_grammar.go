@@ -56,17 +56,17 @@ func readComparison(ctx context.Context, root, repoDir string, allowMismatch boo
 // buildStatus composes the complete status document. A living-record load
 // failure never hides changed-source accounting: it becomes a diagnostic and
 // the first next action.
-func buildStatus(ctx context.Context, root, repoDir, policy string, allowMismatch bool) (statusDocument, error) {
+func buildStatus(ctx context.Context, root, repoDir string, allowMismatch bool) (statusDocument, error) {
 	value, err := readComparison(ctx, root, repoDir, allowMismatch)
 	if err != nil {
 		return statusDocument{}, err
 	}
-	options := livingapp.StatusOptions{SagaRoot: root, Document: value.document, Policy: policy, Report: value.report, Changes: value.changes}
+	options := livingapp.StatusOptions{SagaRoot: root, Document: value.document, Report: value.report, Changes: value.changes}
 	living, err := livingapp.LoadStatus(ctx, options)
 	if err != nil {
 		living = livingapp.Assemble(livingapp.StatusInputs{
-			SagaID: value.document.Manifest.ID, SagaVersion: value.document.Manifest.Version, Policy: policy,
-			Report: value.report, Changes: value.changes, Unavailable: err.Error(),
+			SagaID: value.document.Manifest.ID, SagaVersion: value.document.Manifest.Version,
+			Report: value.report, Changes: value.changes,
 			Diagnostics: []livingapp.Diagnostic{{Code: "living_records_unavailable", Message: err.Error()}},
 		})
 	}
@@ -76,23 +76,24 @@ func buildStatus(ctx context.Context, root, repoDir, policy string, allowMismatc
 	}, nil
 }
 
+// readyForReview is status's pass/fail: the ready_for_review gate, which
+// requires every earlier gate (changed-source accounting included) plus no
+// conflicts, orphaned evidence, or failed required runs. review_complete is
+// reported but does not decide the exit code: it waits on reviewer decisions,
+// which authoring cannot supply.
+func (status statusDocument) readyForReview() bool {
+	gate, ok := status.Readiness.Gate(readiness.GateReadyForReview)
+	return ok && gate.Status == readiness.StatusReady
+}
+
 func printLivingStatus(out io.Writer, status statusDocument, maxItems int) {
-	fmt.Fprintf(out, "\nReadiness (%s policy; %s):\n", status.Readiness.Policy, status.Policy.Source)
+	fmt.Fprintln(out, "\nReadiness:")
 	for _, gate := range status.Readiness.Gates {
 		fmt.Fprintf(out, "  %-28s %s", gate.Name, gate.Status)
 		if len(gate.Blockers) > 0 {
 			fmt.Fprintf(out, " — %d blocking facts", len(gate.Blockers))
 		}
 		fmt.Fprintln(out)
-	}
-	for _, capability := range status.Capabilities {
-		if capability.State != "adopted" {
-			fmt.Fprintf(out, "  capability %s: %s", capability.Name, capability.State)
-			if capability.Reason != "" {
-				fmt.Fprintf(out, " (%s)", capability.Reason)
-			}
-			fmt.Fprintln(out)
-		}
 	}
 	if len(status.Stale) > 0 {
 		fmt.Fprintf(out, "\nStale pins: %d records must be revisited\n", len(status.Stale))
@@ -127,10 +128,6 @@ func firstLine(value string) string {
 	return value
 }
 
-func validPolicy(value string) bool {
-	return value == "" || value == readiness.PolicyFeature || value == readiness.PolicyCompatibility
-}
-
 // livingSpec is the `spec --json` description of the living v3/v5 authoring
 // grammar. It is generated from the same grammar table next actions use.
 func livingSpec() map[string]any {
@@ -162,14 +159,15 @@ func livingSpec() map[string]any {
 			"changed_source":       "every changed atom must be owned by some target; transitivity proves criteria reach code but cannot prove nothing else changed",
 			"staleness":            "derived only from pins (story/test/prototype revisions, content digests, diff selectors, run source identity), never from Git history",
 			"no_reducing_numbers":  true,
-			"readiness_policies":   []string{readiness.PolicyFeature, readiness.PolicyCompatibility},
 			"readiness_gate_order": []string{"requirements_ready", "product_ready", "design_ready", "implementation_trace_ready", "quality_ready", "ready_for_review", "review_complete"},
+			"readiness_rule":       "every gate always applies and every axis is required; an axis is excused only by an explicit, pinned, cited coverage exception, and no exception excuses changed-source accounting",
+			"status_exit_codes":    map[string]string{"0": "ready_for_review is ready", "3": "ready_for_review is blocked"},
 		},
 		"commands": grammar.Commands(),
 		"next_actions": map[string]any{
 			"kinds":      []string{string(nextaction.KindCommand), string(nextaction.KindQuestion)},
 			"needs":      []string{string(nextaction.NeedProductJudgment), string(nextaction.NeedExternalAccess), string(nextaction.NeedExplicitExclusion)},
-			"categories": []string{"invalid_saga", "conflict", "invalid", "stale", "changed_source", "requirements", "capability", "coverage", "orphan"},
+			"categories": []string{"invalid_saga", "conflict", "invalid", "stale", "changed_source", "requirements", "coverage", "orphan"},
 			"contract":   "a command action carries a grammar invocation whose inputs the author supplies; a question action carries one focused question and the invocation each answer leads to",
 			"loop":       "inspect status --json, ask or mutate, validate, re-evaluate; an empty list is the fixed point and never a claim of correctness",
 		},

@@ -193,12 +193,6 @@ func (b *builder) changedSource() {
 // can be evaluated.
 func (b *builder) requirements() {
 	gates := []string{"requirements_ready", "ready_for_review"}
-	requirementsAdopted := false
-	for _, capability := range b.status.Capabilities {
-		if capability.Name == "requirements" && capability.State == string(quality.Adopted) {
-			requirementsAdopted = true
-		}
-	}
 	accepted := 0
 	for _, story := range b.status.Stories {
 		if story.State == "accepted" {
@@ -230,36 +224,11 @@ func (b *builder) requirements() {
 	if accepted > 0 {
 		return
 	}
-	options := []Option{option("record a story", "a story with criteria; accept it once it is in scope", b.invoke("story add"))}
-	if !requirementsAdopted && b.status.SagaVersion < 3 {
-		options = []Option{option("record stories", "adopt the living container first, then add stories",
-			b.invoke("upgrade", grammar.V("to", "3")), b.invoke("story add"))}
-	}
 	b.add(Action{
 		ID: "requirements:accepted-story", Kind: KindQuestion, Category: CategoryRequirements, Gates: gates,
-		Reason:   "no accepted story exists, so no criterion anchors the transitive code -> design -> criterion trace",
-		Question: question("Which user stories, with acceptance criteria, does this change deliver?", NeedProductJudgment, options...),
-	})
-}
-
-// capabilities surfaces a capability that is not adopted as a decision, not an
-// error and not a silent pass.
-func (b *builder) capabilities() {
-	if b.status.Quality.Adoption != string(quality.NotAdopted) || len(b.status.Axes.Criteria) == 0 {
-		return
-	}
-	options := []Option{option("no", "quality_ready stays blocked as not_adopted; under the compatibility policy it does not gate peer review")}
-	if b.status.SagaVersion != quality.Version {
-		options = append([]Option{option("yes", "adopt the v5 report container, then add test cases, policies, evidence, and runs",
-			b.invoke("upgrade", grammar.V("to", "5")), b.invoke("quality test-case add"))}, options...)
-	} else {
-		options = append([]Option{option("yes", "add the first test case; the ___quality root becomes adopted", b.invoke("quality test-case add"))}, options...)
-	}
-	b.add(Action{
-		ID: "capability:quality", Kind: KindQuestion, Category: CategoryCapability, Resource: "quality",
-		Gates:    []string{"quality_ready"},
-		Reason:   "quality is not_adopted: " + b.status.Quality.Reason + "; the quality axis of every accepted criterion is a gap until it is adopted or excluded",
-		Question: question("Should this Saga record test cases so the quality axis can be satisfied?", NeedProductJudgment, options...),
+		Reason: "no accepted story exists, so no criterion anchors the transitive code -> design -> criterion trace",
+		Question: question("Which user stories, with acceptance criteria, does this change deliver?", NeedProductJudgment,
+			option("record a story", "a story with criteria; accept it once it is in scope", b.invoke("story add"))),
 	})
 }
 

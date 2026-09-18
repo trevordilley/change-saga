@@ -26,11 +26,10 @@ import (
 )
 
 const (
-	coverageExceptionsDir       = "coverage-exceptions"
-	coverageExceptionSchemaURL  = "https://changesaga.dev/schema/v5/coverage-exception.schema.json"
-	maxCoverageExceptions       = 20_000
-	maxCoverageExceptionBytes   = 1 << 20
-	qualityRequiresV5ReasonText = "quality records are v5; this is a v%d Saga (adopt with `change-saga upgrade --to 5`)"
+	coverageExceptionsDir      = "coverage-exceptions"
+	coverageExceptionSchemaURL = "https://changesaga.dev/schema/v5/coverage-exception.schema.json"
+	maxCoverageExceptions      = 20_000
+	maxCoverageExceptionBytes  = 1 << 20
 )
 
 // StatusOptions names the Saga and the source comparison status already read.
@@ -39,7 +38,6 @@ const (
 type StatusOptions struct {
 	SagaRoot string
 	Document *saga.Saga
-	Policy   string
 	Report   coverage.Report
 	Changes  gitdiff.ChangeSet
 }
@@ -69,23 +67,21 @@ func LoadStatusInputs(options StatusOptions) (StatusInputs, error) {
 	}
 	version := doc.Manifest.Version
 	inputs := StatusInputs{
-		SagaID: doc.Manifest.ID, SagaVersion: version, Policy: options.Policy, Decks: doc.Decks,
+		SagaID: doc.Manifest.ID, SagaVersion: version, Decks: doc.Decks,
 		Stories: []requirements.Story{}, Citations: []requirements.Citation{}, Links: []Link{},
 		Prototypes: prototypes.Document{SagaID: doc.Manifest.ID, Prototypes: []prototypes.Prototype{}, Annotations: []prototypes.Annotation{}},
 		Exceptions: []coverage.Exception{}, Report: options.Report, Changes: options.Changes, Diagnostics: []Diagnostic{},
-		Quality: quality.Document{SagaID: doc.Manifest.ID, Adoption: quality.NotAdopted, TestCases: []quality.TestCase{}, Policies: []quality.Policy{}, PolicySets: []quality.PolicySet{}},
+		Quality: quality.Document{SagaID: doc.Manifest.ID, TestCases: []quality.TestCase{}, Policies: []quality.Policy{}, PolicySets: []quality.PolicySet{}},
 	}
 	if version == quality.Version {
 		inputs.Quality, err = quality.Load(root)
 		if err != nil {
 			return StatusInputs{}, fmt.Errorf("load quality: %w", err)
 		}
-		inputs.Exceptions, inputs.ExceptionsAdopted, err = LoadCoverageExceptions(root, doc.Manifest.ID)
+		inputs.Exceptions, err = LoadCoverageExceptions(root, doc.Manifest.ID)
 		if err != nil {
 			return StatusInputs{}, err
 		}
-	} else {
-		inputs.QualityReason = fmt.Sprintf(qualityRequiresV5ReasonText, version)
 	}
 	if saga.ReportContainerVersion(version) && livingRootPresent(root, "___requirements") {
 		var heads map[string][]string
@@ -99,7 +95,6 @@ func LoadStatusInputs(options StatusOptions) (StatusInputs, error) {
 		if err != nil {
 			return StatusInputs{}, err
 		}
-		inputs.RequirementsAdopted = true
 		inputs.Stories = graph.requirements.Stories
 		inputs.Citations = graph.requirements.Citations
 		inputs.DesignDigests = graph.designDigests
@@ -108,8 +103,6 @@ func LoadStatusInputs(options StatusOptions) (StatusInputs, error) {
 		if err != nil {
 			return StatusInputs{}, fmt.Errorf("load prototypes: %w", err)
 		}
-		criteria, _ := (&session{requirements: graph.requirements, plan: graph.plan, saga: doc, adopted: true}).criterionInputs(Filters{})
-		inputs.PeerReview = criteria
 	}
 	return inputs, nil
 }
@@ -234,37 +227,37 @@ type coverageExceptionRecord struct {
 // unresolved citation, stale pin, supersession, or competing head is projected
 // by coverage.ProjectAxes as a visible cell state instead, so the author sees
 // why a recorded decision did not take.
-func LoadCoverageExceptions(root, sagaID string) ([]coverage.Exception, bool, error) {
+func LoadCoverageExceptions(root, sagaID string) ([]coverage.Exception, error) {
 	dir := filepath.Join(root, "___requirements", coverageExceptionsDir)
 	info, err := os.Lstat(dir)
 	if errors.Is(err, fs.ErrNotExist) {
-		return []coverage.Exception{}, false, nil
+		return []coverage.Exception{}, nil
 	}
 	if err != nil {
-		return nil, false, err
+		return nil, err
 	}
 	if info.Mode()&os.ModeSymlink != 0 || !info.IsDir() {
-		return nil, false, fmt.Errorf("coverage exceptions must be a real directory")
+		return nil, fmt.Errorf("coverage exceptions must be a real directory")
 	}
 	entries, err := os.ReadDir(dir)
 	if err != nil {
-		return nil, false, err
+		return nil, err
 	}
 	if len(entries) > maxCoverageExceptions {
-		return nil, false, fmt.Errorf("coverage exceptions exceed %d records", maxCoverageExceptions)
+		return nil, fmt.Errorf("coverage exceptions exceed %d records", maxCoverageExceptions)
 	}
 	result := []coverage.Exception{}
 	for _, entry := range entries {
 		path := filepath.Join(dir, entry.Name())
 		if entry.Type()&fs.ModeSymlink != 0 || !entry.Type().IsRegular() || !strings.HasSuffix(entry.Name(), ".json") {
-			return nil, false, fmt.Errorf("coverage exception %q must be a regular .json file", entry.Name())
+			return nil, fmt.Errorf("coverage exception %q must be a regular .json file", entry.Name())
 		}
 		record, err := readCoverageException(path)
 		if err != nil {
-			return nil, false, fmt.Errorf("coverage exception %s: %w", entry.Name(), err)
+			return nil, fmt.Errorf("coverage exception %s: %w", entry.Name(), err)
 		}
 		if err := validateCoverageException(record, sagaID, strings.TrimSuffix(entry.Name(), ".json")); err != nil {
-			return nil, false, fmt.Errorf("coverage exception %s: %w", entry.Name(), err)
+			return nil, fmt.Errorf("coverage exception %s: %w", entry.Name(), err)
 		}
 		urn, _ := qualityid.CoverageException(sagaID, record.ID)
 		result = append(result, coverage.Exception{
@@ -273,7 +266,7 @@ func LoadCoverageExceptions(root, sagaID string) ([]coverage.Exception, bool, er
 		})
 	}
 	sort.Slice(result, func(i, j int) bool { return result[i].URN < result[j].URN })
-	return result, true, nil
+	return result, nil
 }
 
 func readCoverageException(path string) (coverageExceptionRecord, error) {

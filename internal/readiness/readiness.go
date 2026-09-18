@@ -3,8 +3,9 @@
 // coverage vocabulary from internal/coverage but still performs no filesystem
 // or transport access of its own: every input is a fact a loader established.
 //
-// Evaluate is the existing v2/v3/v4 peer-review projection and is unchanged.
-// EvaluateGates in gates.go adds the v5 gate table on top of it.
+// EvaluateGates in gates.go is the readiness verdict. Evaluate below is the
+// per-criterion delivery trace behind the query API's readiness page; it never
+// feeds the gate table.
 package readiness
 
 import "sort"

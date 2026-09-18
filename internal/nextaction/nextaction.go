@@ -17,7 +17,6 @@ import (
 	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/grammar"
 	"github.com/twentyideas/changesaga/internal/livingapp"
-	"github.com/twentyideas/changesaga/internal/quality"
 )
 
 // Kind is whether an action can be taken as stated or needs the author.
@@ -49,14 +48,13 @@ const (
 	CategoryStale        Category = "stale"
 	CategorySource       Category = "changed_source"
 	CategoryRequirements Category = "requirements"
-	CategoryCapability   Category = "capability"
 	CategoryCoverage     Category = "coverage"
 	CategoryOrphan       Category = "orphan"
 )
 
 var categoryRank = map[Category]int{
 	CategoryInvalidSaga: 0, CategoryConflict: 1, CategoryInvalid: 2, CategoryStale: 3, CategorySource: 4,
-	CategoryRequirements: 5, CategoryCapability: 6, CategoryCoverage: 7, CategoryOrphan: 8,
+	CategoryRequirements: 5, CategoryCoverage: 6, CategoryOrphan: 7,
 }
 
 // Action is one ordered next step.
@@ -131,7 +129,6 @@ func Derive(status livingapp.Status, sagaPath string) []Action {
 	b.staleRecords()
 	b.changedSource()
 	b.requirements()
-	b.capabilities()
 	b.prototypes()
 	b.testCases()
 	result := make([]Action, 0, len(b.actions))
@@ -355,9 +352,6 @@ func (b *builder) gapAction(criterion string, cell coverage.AxisCoverage) (Actio
 			option("a design target or implementation-deck Item addresses it", "a digest-pinned addresses relation", relate("addresses", grammar.V("from-content-digest", ""))),
 			exclude)
 	case coverage.AxisQuality:
-		if b.status.Quality.Adoption == string(quality.NotAdopted) {
-			return Action{}, false
-		}
 		return b.qualityGap(criterion, cell, action, exclude)
 	case coverage.AxisImplementation:
 		return b.implementationGap(criterion, cell, action)
