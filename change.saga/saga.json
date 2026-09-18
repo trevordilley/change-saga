@@ -1,6 +1,6 @@
 {
-  "$schema": "https://changesaga.dev/schema/v2/saga.schema.json",
-  "version": 2,
+  "$schema": "https://changesaga.dev/schema/v5/saga.schema.json",
+  "version": 5,
   "id": "changesaga-codebase",
   "title": "Change Saga: the codebase",
   "source": {

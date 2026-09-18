@@ -1,6 +1,6 @@
 {
-  "$schema": "https://changesaga.dev/schema/v3/saga.schema.json",
-  "version": 3,
+  "$schema": "https://changesaga.dev/schema/v5/saga.schema.json",
+  "version": 5,
   "id": "requirements-design-quality-lifecycle",
   "title": "Requirements, Design, and Quality Lifecycle",
   "source": {
