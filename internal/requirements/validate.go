@@ -79,6 +79,18 @@ func validateRevision(value Revision, sagaID, storyID string) error {
 		}
 		seenParents[parent] = true
 	}
+	if len(value.Personas) == 0 {
+		problems.add("personas must name at least one persona the story serves")
+	}
+	seenPersonas := map[string]bool{}
+	for _, persona := range value.Personas {
+		if _, err := ParsePersonaURN(sagaID, persona); err != nil {
+			problems.add("persona %q is not a canonical persona URN in this saga", persona)
+		} else if seenPersonas[persona] {
+			problems.add("persona %q is duplicated", persona)
+		}
+		seenPersonas[persona] = true
+	}
 	seenCitations := map[string]bool{}
 	for _, citation := range value.Citations {
 		ref, err := livingid.Parse(citation)
@@ -323,7 +335,7 @@ func validateEndpointPins(problems *validationErrors, side string, endpoint endp
 	}
 }
 
-func validateStoryGraphs(story *Story, sagaID string, citationIDs map[string]bool) error {
+func validateStoryGraphs(story *Story, sagaID string, citationIDs, personaIDs map[string]bool) error {
 	var problems validationErrors
 	revisions := make(map[string]Revision, len(story.Revisions))
 	for _, revision := range story.Revisions {
@@ -335,6 +347,11 @@ func validateStoryGraphs(story *Story, sagaID string, citationIDs map[string]boo
 			ref, err := livingid.Parse(citation)
 			if err == nil && !citationIDs[ref.ID] {
 				problems.add("revision %q cites missing citation %q", revision.ID, citation)
+			}
+		}
+		for _, persona := range revision.Personas {
+			if id, err := ParsePersonaURN(sagaID, persona); err == nil && !personaIDs[id] {
+				problems.add("revision %q serves missing persona %q", revision.ID, persona)
 			}
 		}
 	}

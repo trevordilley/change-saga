@@ -4,7 +4,11 @@
 // independently.
 package requirements
 
-import "time"
+import (
+	"time"
+
+	"github.com/twentyideas/changesaga/internal/applayout"
+)
 
 const (
 	Version = 3
@@ -44,14 +48,17 @@ type Criterion struct {
 // Revision is a complete story snapshot. A reader never inherits omitted
 // values from a parent, which keeps branch merges deterministic.
 type Revision struct {
-	Schema             string      `json:"$schema"`
-	Version            int         `json:"version"`
-	ID                 string      `json:"id"`
-	Story              string      `json:"story"`
-	Parents            []string    `json:"parents"`
-	Title              string      `json:"title"`
-	Statement          string      `json:"statement"`
-	Priority           string      `json:"priority"`
+	Schema    string   `json:"$schema"`
+	Version   int      `json:"version"`
+	ID        string   `json:"id"`
+	Story     string   `json:"story"`
+	Parents   []string `json:"parents"`
+	Title     string   `json:"title"`
+	Statement string   `json:"statement"`
+	Priority  string   `json:"priority"`
+	// Personas names every persona this revision of the story serves. It is a
+	// defining attribute of the story, so every revision records it.
+	Personas           []string    `json:"personas"`
 	Citations          []string    `json:"citations"`
 	AcceptanceCriteria []Criterion `json:"acceptance_criteria"`
 	CreatedAt          time.Time   `json:"created_at"`
@@ -102,6 +109,10 @@ type Citation struct {
 	Reference string       `json:"reference"`
 	CreatedAt time.Time    `json:"created_at"`
 	RequestID string       `json:"request_id,omitempty"`
+
+	// Epic is the epic whose directory holds the record. It is where the
+	// record lives, never part of its identity.
+	Epic string `json:"-"`
 }
 
 type RelationType string
@@ -156,9 +167,14 @@ type Relation struct {
 
 	Stale        bool     `json:"-"`
 	StaleReasons []string `json:"-"`
+	// Epic is the epic whose directory holds the record.
+	Epic string `json:"-"`
 }
 
 type Story struct {
+	// Epic is the epic whose directory holds the story. Moving a story
+	// between epics changes only this; its URN and every pin stay the same.
+	Epic      string
 	Identity  StoryIdentity
 	Revisions []Revision
 	Events    []LifecycleEvent
@@ -175,6 +191,9 @@ func (story Story) LifecycleConflict() bool { return len(story.LifecycleHeads) >
 type Document struct {
 	Root      string
 	SagaID    string
+	Epics     []applayout.Epic
+	Personas  []Persona
+	Flags     []Flag
 	Stories   []Story
 	Citations []Citation
 	Relations []Relation
@@ -202,12 +221,15 @@ type LoadOptions struct {
 }
 
 type AddStoryInput struct {
+	// Epic is the epic the new story is written into.
+	Epic               string
 	ID                 string
 	RevisionID         string
 	EventID            string
 	Title              string
 	Statement          string
 	Priority           string
+	Personas           []string
 	Citations          []string
 	AcceptanceCriteria []Criterion
 	CreatedAt          time.Time
@@ -221,6 +243,7 @@ type ReviseStoryInput struct {
 	Title              string
 	Statement          string
 	Priority           string
+	Personas           []string
 	Citations          []string
 	AcceptanceCriteria []Criterion
 	CreatedAt          time.Time
@@ -275,6 +298,7 @@ type SetStoryStateInput struct {
 }
 
 type AddCitationInput struct {
+	Epic      string
 	ID        string
 	Kind      CitationKind
 	Title     string
@@ -284,6 +308,7 @@ type AddCitationInput struct {
 }
 
 type AddRelationInput struct {
+	Epic              string
 	ID                string
 	Type              RelationType
 	From              string

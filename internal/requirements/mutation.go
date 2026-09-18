@@ -11,6 +11,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/twentyideas/changesaga/internal/applayout"
 	"github.com/twentyideas/changesaga/internal/livingid"
 	"github.com/twentyideas/changesaga/internal/store"
 )
@@ -25,7 +26,7 @@ func AddStory(root, sagaID string, input AddStoryInput) (MutationResult, error) 
 	revision := Revision{
 		Schema: RevisionSchemaURL, Version: Version, ID: input.RevisionID, Story: storyID, Parents: []string{},
 		Title: strings.TrimSpace(input.Title), Statement: strings.TrimSpace(input.Statement), Priority: strings.TrimSpace(input.Priority),
-		Citations: copyStrings(input.Citations), AcceptanceCriteria: copyCriteria(input.AcceptanceCriteria), CreatedAt: createdAt, RequestID: input.RequestID,
+		Personas: copyStrings(input.Personas), Citations: copyStrings(input.Citations), AcceptanceCriteria: copyCriteria(input.AcceptanceCriteria), CreatedAt: createdAt, RequestID: input.RequestID,
 	}
 	event := LifecycleEvent{
 		Schema: LifecycleEventSchemaURL, Version: Version, ID: input.EventID, Story: storyID, Parents: []string{},
@@ -34,7 +35,7 @@ func AddStory(root, sagaID string, input AddStoryInput) (MutationResult, error) 
 	revisionID, _ := revisionURN(sagaID, input.ID, input.RevisionID)
 	eventID, _ := StoryEventURN(sagaID, input.ID, input.EventID)
 	created := []string{storyID, revisionID, eventID}
-	paths := []string{storyPackagePath(input.ID), revisionPath(input.ID, input.RevisionID), eventPath(input.ID, input.EventID)}
+	paths := []string{storyPackagePath(input.Epic, input.ID), revisionPath(input.Epic, input.ID, input.RevisionID), eventPath(input.Epic, input.ID, input.EventID)}
 	if err := validateIdentity(identity, input.ID); err != nil {
 		return MutationResult{}, err
 	}
@@ -51,9 +52,9 @@ func AddStory(root, sagaID string, input AddStoryInput) (MutationResult, error) 
 			if existing.Identity.ID != input.ID {
 				continue
 			}
-			if input.RequestID != "" && existing.Identity.RequestID == input.RequestID && equalStoryCreation(existing, identity, revision, event) {
+			if input.RequestID != "" && existing.Identity.RequestID == input.RequestID && existing.Epic == input.Epic && equalStoryCreation(existing, identity, revision, event) {
 				heads := append(copyStrings(existing.RevisionHeads), existing.LifecycleHeads...)
-				result = MutationResult{URN: storyID, Path: storyPackagePath(input.ID), Created: copyStrings(created), Paths: copyStrings(paths), CurrentHeads: heads, Replayed: true}
+				result = MutationResult{URN: storyID, Path: storyPackagePath(input.Epic, input.ID), Created: copyStrings(created), Paths: copyStrings(paths), CurrentHeads: heads, Replayed: true}
 				return nil
 			}
 			return fmt.Errorf("story id %q already exists", input.ID)
@@ -61,10 +62,17 @@ func AddStory(root, sagaID string, input AddStoryInput) (MutationResult, error) 
 		if len(document.Stories) >= MaxStories {
 			return fmt.Errorf("story limit of %d reached", MaxStories)
 		}
+		epic, err := document.epic(input.Epic)
+		if err != nil {
+			return err
+		}
 		if err := requireCitations(document, revision.Citations); err != nil {
 			return err
 		}
-		storiesDir, err := store.EnsureDirWithin(document.Root, filepath.Join(document.Root, "___requirements", "stories"))
+		if err := requirePersonas(document, revision.Personas); err != nil {
+			return err
+		}
+		storiesDir, err := store.EnsureDirWithin(document.Root, filepath.Join(epic.Dir, applayout.RequirementsDir, "stories"))
 		if err != nil {
 			return err
 		}
@@ -90,7 +98,7 @@ func AddStory(root, sagaID string, input AddStoryInput) (MutationResult, error) 
 		} else if err != nil {
 			return err
 		}
-		result = MutationResult{URN: storyID, Path: storyPackagePath(input.ID), Created: copyStrings(created), Paths: copyStrings(paths), CurrentHeads: []string{revisionID, eventID}}
+		result = MutationResult{URN: storyID, Path: storyPackagePath(input.Epic, input.ID), Created: copyStrings(created), Paths: copyStrings(paths), CurrentHeads: []string{revisionID, eventID}}
 		return nil
 	})
 	return result, err
@@ -104,7 +112,7 @@ func ReviseStory(root, sagaID string, input ReviseStoryInput) (MutationResult, e
 	revision := Revision{
 		Schema: RevisionSchemaURL, Version: Version, ID: input.ID, Story: input.Story, Parents: copyStrings(input.Parents),
 		Title: strings.TrimSpace(input.Title), Statement: strings.TrimSpace(input.Statement), Priority: strings.TrimSpace(input.Priority),
-		Citations: copyStrings(input.Citations), AcceptanceCriteria: copyCriteria(input.AcceptanceCriteria), CreatedAt: mutationTime(input.CreatedAt), RequestID: input.RequestID,
+		Personas: copyStrings(input.Personas), Citations: copyStrings(input.Citations), AcceptanceCriteria: copyCriteria(input.AcceptanceCriteria), CreatedAt: mutationTime(input.CreatedAt), RequestID: input.RequestID,
 	}
 	if err := validateRevision(revision, sagaID, storyRef.ID); err != nil {
 		return MutationResult{}, err
@@ -121,7 +129,7 @@ func ReviseStory(root, sagaID string, input ReviseStoryInput) (MutationResult, e
 				continue
 			}
 			if input.RequestID != "" && existing.RequestID == input.RequestID && equalRevisionIgnoringTime(existing, revision) {
-				result = MutationResult{URN: revisionID, Path: revisionPath(storyRef.ID, revision.ID), Created: []string{revisionID}, Paths: []string{revisionPath(storyRef.ID, revision.ID)}, CurrentHeads: copyStrings(story.RevisionHeads), Replayed: true}
+				result = MutationResult{URN: revisionID, Path: revisionPath(story.Epic, storyRef.ID, revision.ID), Created: []string{revisionID}, Paths: []string{revisionPath(story.Epic, storyRef.ID, revision.ID)}, CurrentHeads: copyStrings(story.RevisionHeads), Replayed: true}
 				return nil
 			}
 			return fmt.Errorf("revision id %q already exists", revision.ID)
@@ -135,22 +143,21 @@ func ReviseStory(root, sagaID string, input ReviseStoryInput) (MutationResult, e
 		if err := requireCitations(document, revision.Citations); err != nil {
 			return err
 		}
-		candidate := *story
-		candidate.Revisions = append(append([]Revision{}, story.Revisions...), revision)
-		citationIDs := map[string]bool{}
-		for _, citation := range document.Citations {
-			citationIDs[citation.ID] = true
-		}
-		if err := validateStoryGraphs(&candidate, sagaID, citationIDs); err != nil {
+		if err := requirePersonas(document, revision.Personas); err != nil {
 			return err
 		}
-		path := filepath.Join(document.Root, filepath.FromSlash(revisionPath(storyRef.ID, revision.ID)))
+		candidate := *story
+		candidate.Revisions = append(append([]Revision{}, story.Revisions...), revision)
+		if err := validateStoryGraphs(&candidate, sagaID, document.citationIDs(), document.personaIDs()); err != nil {
+			return err
+		}
+		path := filepath.Join(document.Root, filepath.FromSlash(revisionPath(story.Epic, storyRef.ID, revision.ID)))
 		if err := store.WriteJSON(path, revision, true); errors.Is(err, fs.ErrExist) {
 			return fmt.Errorf("revision id %q already exists", revision.ID)
 		} else if err != nil {
 			return err
 		}
-		result = MutationResult{URN: revisionID, Path: revisionPath(storyRef.ID, revision.ID), Created: []string{revisionID}, Paths: []string{revisionPath(storyRef.ID, revision.ID)}, CurrentHeads: []string{revisionID}}
+		result = MutationResult{URN: revisionID, Path: revisionPath(story.Epic, storyRef.ID, revision.ID), Created: []string{revisionID}, Paths: []string{revisionPath(story.Epic, storyRef.ID, revision.ID)}, CurrentHeads: []string{revisionID}}
 		return nil
 	})
 	return result, err
@@ -278,7 +285,7 @@ func mutateCriterion(root, sagaID string, input criterionMutation) (MutationResu
 		revision := Revision{
 			Schema: RevisionSchemaURL, Version: Version, ID: input.revisionID, Story: input.story,
 			Parents: []string{input.parent}, Title: parent.Title, Statement: parent.Statement,
-			Priority: parent.Priority, Citations: copyStrings(parent.Citations),
+			Priority: parent.Priority, Personas: copyStrings(parent.Personas), Citations: copyStrings(parent.Citations),
 			AcceptanceCriteria: copyCriteria(parent.AcceptanceCriteria), CreatedAt: mutationTime(input.createdAt),
 			RequestID: input.requestID,
 		}
@@ -312,7 +319,7 @@ func mutateCriterion(root, sagaID string, input criterionMutation) (MutationResu
 		if err := validateRevision(revision, sagaID, storyRef.ID); err != nil {
 			return err
 		}
-		path := revisionPath(storyRef.ID, revision.ID)
+		path := revisionPath(story.Epic, storyRef.ID, revision.ID)
 		if existingRevision != nil {
 			if input.requestID != "" && existingRevision.RequestID == input.requestID && equalRevisionIgnoringTime(*existingRevision, revision) {
 				result = MutationResult{
@@ -340,11 +347,7 @@ func mutateCriterion(root, sagaID string, input criterionMutation) (MutationResu
 		}
 		candidate := *story
 		candidate.Revisions = append(append([]Revision{}, story.Revisions...), revision)
-		citationIDs := map[string]bool{}
-		for _, citation := range document.Citations {
-			citationIDs[citation.ID] = true
-		}
-		if err := validateStoryGraphs(&candidate, sagaID, citationIDs); err != nil {
+		if err := validateStoryGraphs(&candidate, sagaID, document.citationIDs(), document.personaIDs()); err != nil {
 			return err
 		}
 		fullPath := filepath.Join(document.Root, filepath.FromSlash(path))
@@ -386,7 +389,7 @@ func SetStoryState(root, sagaID string, input SetStoryStateInput) (MutationResul
 				continue
 			}
 			if input.RequestID != "" && existing.RequestID == input.RequestID && equalEventIgnoringTime(existing, event) {
-				result = MutationResult{URN: eventURN, Path: eventPath(storyRef.ID, event.ID), Created: []string{eventURN}, Paths: []string{eventPath(storyRef.ID, event.ID)}, CurrentHeads: copyStrings(story.LifecycleHeads), Replayed: true}
+				result = MutationResult{URN: eventURN, Path: eventPath(story.Epic, storyRef.ID, event.ID), Created: []string{eventURN}, Paths: []string{eventPath(story.Epic, storyRef.ID, event.ID)}, CurrentHeads: copyStrings(story.LifecycleHeads), Replayed: true}
 				return nil
 			}
 			return fmt.Errorf("lifecycle event id %q already exists", event.ID)
@@ -399,20 +402,16 @@ func SetStoryState(root, sagaID string, input SetStoryStateInput) (MutationResul
 		}
 		candidate := *story
 		candidate.Events = append(append([]LifecycleEvent{}, story.Events...), event)
-		citationIDs := map[string]bool{}
-		for _, citation := range document.Citations {
-			citationIDs[citation.ID] = true
-		}
-		if err := validateStoryGraphs(&candidate, sagaID, citationIDs); err != nil {
+		if err := validateStoryGraphs(&candidate, sagaID, document.citationIDs(), document.personaIDs()); err != nil {
 			return err
 		}
-		path := filepath.Join(document.Root, filepath.FromSlash(eventPath(storyRef.ID, event.ID)))
+		path := filepath.Join(document.Root, filepath.FromSlash(eventPath(story.Epic, storyRef.ID, event.ID)))
 		if err := store.WriteJSON(path, event, true); errors.Is(err, fs.ErrExist) {
 			return fmt.Errorf("lifecycle event id %q already exists", event.ID)
 		} else if err != nil {
 			return err
 		}
-		result = MutationResult{URN: eventURN, Path: eventPath(storyRef.ID, event.ID), Created: []string{eventURN}, Paths: []string{eventPath(storyRef.ID, event.ID)}, CurrentHeads: []string{eventURN}}
+		result = MutationResult{URN: eventURN, Path: eventPath(story.Epic, storyRef.ID, event.ID), Created: []string{eventURN}, Paths: []string{eventPath(story.Epic, storyRef.ID, event.ID)}, CurrentHeads: []string{eventURN}}
 		return nil
 	})
 	return result, err
@@ -422,7 +421,7 @@ func AddCitation(root, sagaID string, input AddCitationInput) (MutationResult, e
 	value := Citation{
 		Schema: CitationSchemaURL, Version: Version, ID: input.ID, Kind: input.Kind,
 		Title: strings.TrimSpace(input.Title), Reference: strings.TrimSpace(input.Reference),
-		CreatedAt: mutationTime(input.CreatedAt), RequestID: input.RequestID,
+		CreatedAt: mutationTime(input.CreatedAt), RequestID: input.RequestID, Epic: input.Epic,
 	}
 	if err := validateCitation(value, sagaID, input.ID); err != nil {
 		return MutationResult{}, err
@@ -435,7 +434,7 @@ func AddCitation(root, sagaID string, input AddCitationInput) (MutationResult, e
 				continue
 			}
 			if input.RequestID != "" && existing.RequestID == input.RequestID && equalCitationIgnoringTime(existing, value) {
-				result = MutationResult{URN: urn, Path: citationPath(input.ID), Replayed: true}
+				result = MutationResult{URN: urn, Path: citationPath(existing.Epic, input.ID), Replayed: true}
 				return nil
 			}
 			return fmt.Errorf("citation id %q already exists; citations are immutable", input.ID)
@@ -443,7 +442,11 @@ func AddCitation(root, sagaID string, input AddCitationInput) (MutationResult, e
 		if len(document.Citations) >= MaxCitations {
 			return fmt.Errorf("citation limit of %d reached", MaxCitations)
 		}
-		dir, err := store.EnsureDirWithin(document.Root, filepath.Join(document.Root, "___requirements", "citations"))
+		epic, err := document.epic(input.Epic)
+		if err != nil {
+			return err
+		}
+		dir, err := store.EnsureDirWithin(document.Root, filepath.Join(epic.Dir, applayout.RequirementsDir, "citations"))
 		if err != nil {
 			return err
 		}
@@ -453,7 +456,7 @@ func AddCitation(root, sagaID string, input AddCitationInput) (MutationResult, e
 		} else if err != nil {
 			return err
 		}
-		result = MutationResult{URN: urn, Path: citationPath(input.ID)}
+		result = MutationResult{URN: urn, Path: citationPath(input.Epic, input.ID)}
 		return nil
 	})
 	return result, err
@@ -471,7 +474,7 @@ func AddRelation(root, sagaID string, input AddRelationInput) (MutationResult, e
 		FromRevision: input.FromRevision, ToRevision: input.ToRevision,
 		FromContentDigest: input.FromContentDigest, ToContentDigest: input.ToContentDigest,
 		State: RelationActive, CreatedAt: mutationTime(input.CreatedAt), RequestID: input.RequestID,
-		Scope: input.Scope,
+		Scope: input.Scope, Epic: input.Epic,
 	}
 	if value.Scope == "" {
 		value.Scope = ScopeSelf
@@ -487,7 +490,7 @@ func AddRelation(root, sagaID string, input AddRelationInput) (MutationResult, e
 				continue
 			}
 			if input.RequestID != "" && existing.RequestID == input.RequestID && equalRelationIgnoringTime(existing, value) {
-				result = MutationResult{URN: urn, Path: relationPath(input.ID), Replayed: true}
+				result = MutationResult{URN: urn, Path: relationPath(existing.Epic, input.ID), Replayed: true}
 				return nil
 			}
 			return fmt.Errorf("relation id %q already exists", input.ID)
@@ -495,12 +498,16 @@ func AddRelation(root, sagaID string, input AddRelationInput) (MutationResult, e
 		if len(document.Relations) >= MaxRelations {
 			return fmt.Errorf("relation limit of %d reached", MaxRelations)
 		}
+		epic, err := document.epic(input.Epic)
+		if err != nil {
+			return err
+		}
 		candidate := *document
 		candidate.Relations = append(append([]Relation{}, document.Relations...), value)
 		if err := validateRelationSet(&candidate); err != nil {
 			return err
 		}
-		dir, err := store.EnsureDirWithin(document.Root, filepath.Join(document.Root, "___requirements", "relations"))
+		dir, err := store.EnsureDirWithin(document.Root, filepath.Join(epic.Dir, applayout.RequirementsDir, "relations"))
 		if err != nil {
 			return err
 		}
@@ -510,7 +517,7 @@ func AddRelation(root, sagaID string, input AddRelationInput) (MutationResult, e
 		} else if err != nil {
 			return err
 		}
-		result = MutationResult{URN: urn, Path: relationPath(input.ID)}
+		result = MutationResult{URN: urn, Path: relationPath(input.Epic, input.ID)}
 		return nil
 	})
 	return result, err
@@ -540,7 +547,7 @@ func SupersedeRelation(root, sagaID, relation string, at time.Time, requestID st
 		}
 		if existing.State == RelationSuperseded {
 			if requestID != "" && existing.SupersedeRequestID == requestID {
-				result = MutationResult{URN: relation, Path: relationPath(ref.ID), Replayed: true}
+				result = MutationResult{URN: relation, Path: relationPath(existing.Epic, ref.ID), Replayed: true}
 				return nil
 			}
 			return fmt.Errorf("relation %q is already superseded", ref.ID)
@@ -552,11 +559,11 @@ func SupersedeRelation(root, sagaID, relation string, at time.Time, requestID st
 		if err := validateRelation(*existing, sagaID, ref.ID); err != nil {
 			return err
 		}
-		path := filepath.Join(document.Root, filepath.FromSlash(relationPath(ref.ID)))
+		path := filepath.Join(document.Root, filepath.FromSlash(relationPath(existing.Epic, ref.ID)))
 		if err := store.WriteJSON(path, *existing, false); err != nil {
 			return err
 		}
-		result = MutationResult{URN: relation, Path: relationPath(ref.ID)}
+		result = MutationResult{URN: relation, Path: relationPath(existing.Epic, ref.ID)}
 		return nil
 	})
 	return result, err
@@ -584,6 +591,20 @@ func requireCitations(document *Document, citations []string) error {
 	for _, citation := range citations {
 		if !known[citation] {
 			return fmt.Errorf("citation %q does not exist", citation)
+		}
+	}
+	return nil
+}
+
+func requirePersonas(document *Document, personas []string) error {
+	known := document.personaIDs()
+	for _, persona := range personas {
+		id, err := ParsePersonaURN(document.SagaID, persona)
+		if err != nil {
+			return err
+		}
+		if !known[id] {
+			return fmt.Errorf("persona %q does not exist", persona)
 		}
 	}
 	return nil
@@ -621,20 +642,40 @@ func ensureStageDir(path string) error {
 	return os.Mkdir(path, 0o755)
 }
 
-func storyPackagePath(id string) string {
-	return filepath.ToSlash(filepath.Join("___requirements", "stories", id+".story"))
+func storyPackagePath(epic, id string) string {
+	return applayout.EpicRel(epic) + "/" + applayout.RequirementsDir + "/stories/" + id + ".story"
 }
-func revisionPath(storyID, id string) string {
-	return filepath.ToSlash(filepath.Join(storyPackagePath(storyID), "revisions", id+".json"))
+func revisionPath(epic, storyID, id string) string {
+	return storyPackagePath(epic, storyID) + "/revisions/" + id + ".json"
 }
-func eventPath(storyID, id string) string {
-	return filepath.ToSlash(filepath.Join(storyPackagePath(storyID), "events", id+".json"))
+func eventPath(epic, storyID, id string) string {
+	return storyPackagePath(epic, storyID) + "/events/" + id + ".json"
 }
-func citationPath(id string) string {
-	return filepath.ToSlash(filepath.Join("___requirements", "citations", id+".json"))
+func citationPath(epic, id string) string {
+	return applayout.EpicRel(epic) + "/" + applayout.RequirementsDir + "/citations/" + id + ".json"
 }
-func relationPath(id string) string {
-	return filepath.ToSlash(filepath.Join("___requirements", "relations", id+".json"))
+func relationPath(epic, id string) string {
+	return applayout.EpicRel(epic) + "/" + applayout.RequirementsDir + "/relations/" + id + ".json"
+}
+
+// epic resolves the epic an authoring operation writes new content into.
+func (document *Document) epic(id string) (applayout.Epic, error) {
+	if strings.TrimSpace(id) == "" {
+		return applayout.Epic{}, fmt.Errorf("an epic is required; new epic content is never written to an implied epic")
+	}
+	epic, ok := applayout.Find(document.Epics, id)
+	if !ok {
+		return applayout.Epic{}, fmt.Errorf("epic %q does not exist", id)
+	}
+	return epic, nil
+}
+
+func (document *Document) citationIDs() map[string]bool {
+	ids := map[string]bool{}
+	for _, citation := range document.Citations {
+		ids[citation.ID] = true
+	}
+	return ids
 }
 
 func copyStrings(values []string) []string        { return append([]string{}, values...) }
