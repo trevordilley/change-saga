@@ -112,7 +112,7 @@ func LoadMutationIndex(root string) (MutationIndex, Validation, error) {
 		}
 		return MutationIndexFromDocument(document), loadedValidation, nil
 	}
-	if manifest.Version == CurrentSagaVersion {
+	if ReportContainerVersion(manifest.Version) {
 		if info, statErr := os.Lstat(filepath.Join(abs, EmbeddedSlidesDir)); statErr == nil && info.IsDir() && info.Mode()&os.ModeSymlink == 0 {
 			document, loadedValidation, loadErr := load(abs, loadOptions{skipCoverage: true, skipReviews: true})
 			if loadErr != nil {
@@ -131,7 +131,7 @@ func LoadMutationIndex(root string) (MutationIndex, Validation, error) {
 	if err := scanMutationSection(abs, abs, sagaHierarchy, manifest.ID, manifest.Version, &index, ids, &validation); err != nil {
 		return MutationIndex{}, validation, err
 	}
-	if manifest.Version == CurrentSagaVersion {
+	if ReportContainerVersion(manifest.Version) {
 		designDir := filepath.Join(abs, "___design")
 		if info, statErr := os.Lstat(designDir); statErr == nil && info.IsDir() && info.Mode()&os.ModeSymlink == 0 {
 			if err := scanMutationSection(abs, designDir, designHierarchy, manifest.ID, manifest.Version, &index, ids, &validation); err != nil {

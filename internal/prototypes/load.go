@@ -46,8 +46,9 @@ func LoadWithOptions(root, sagaID string, options LoadOptions) (Document, error)
 	if err := readStrictJSON(manifestPath, &manifest); err != nil {
 		return Document{}, fmt.Errorf("read saga.json: %w", err)
 	}
-	if manifest.Version != Version {
-		return Document{}, fmt.Errorf("prototypes require a format v3 saga")
+	// A v5 report container composes the unchanged v3 prototype records.
+	if manifest.Version != Version && manifest.Version != 5 {
+		return Document{}, fmt.Errorf("prototypes require a format v3 or v5 saga")
 	}
 	if !livingid.ValidID(manifest.ID) {
 		return Document{}, fmt.Errorf("saga.json contains an invalid saga id")

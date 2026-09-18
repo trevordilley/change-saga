@@ -562,3 +562,51 @@ func TestLoadToleratesTheSiblingPrototypeRootOnly(t *testing.T) {
 		t.Fatalf("an unknown requirements root error = %v", err)
 	}
 }
+
+// Coverage exceptions are v5 records stored beside the v3 requirement roots.
+// Like prototypes, this loader never reads them, but it must tolerate the root
+// in a v5 Saga or every requirement command breaks once one exception exists.
+func TestLoadToleratesV5CoverageExceptionsOnlyInV5(t *testing.T) {
+	root := newSaga(t)
+	exceptions := filepath.Join(root, "___requirements", "coverage-exceptions")
+	for _, name := range []string{"stories", "citations", "relations", "prototypes", "coverage-exceptions"} {
+		if err := os.MkdirAll(filepath.Join(root, "___requirements", name), 0o755); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if err := os.WriteFile(filepath.Join(exceptions, "docs-only.json"), []byte(`{"version":5}`), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := Load(root, "test"); err == nil || !strings.Contains(err.Error(), "requires a format v5 saga") {
+		t.Fatalf("v3 coverage exceptions error = %v", err)
+	}
+
+	manifest := map[string]any{
+		"$schema": "https://changesaga.dev/schema/v5/saga.schema.json",
+		"version": 5, "id": "test", "title": "Test",
+		"source": map[string]any{"repository": "https://example.com/repo.git", "base": "main", "head": "feature"},
+	}
+	if err := store.WriteJSON(filepath.Join(root, "saga.json"), manifest, false); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := AddStory(root, "test", AddStoryInput{
+		ID: "buyer", RevisionID: "r1", EventID: "proposed", Title: "Buyer",
+		Statement: "As a buyer I can check out", Priority: "must",
+		AcceptanceCriteria: []Criterion{{ID: "fast", Statement: "Checkout finishes promptly"}},
+	}); err != nil {
+		t.Fatalf("story beside coverage exceptions: %v", err)
+	}
+	document, err := Load(root, "test")
+	if err != nil || len(document.Stories) != 1 {
+		t.Fatalf("v5 requirements = %#v, err %v", document.Stories, err)
+	}
+	if err := os.Remove(filepath.Join(root, "___requirements", "prototypes")); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.Mkdir(filepath.Join(root, "___requirements", "experiments"), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := Load(root, "test"); err == nil || !strings.Contains(err.Error(), "unknown requirements entry") {
+		t.Fatalf("an unknown requirements root error = %v", err)
+	}
+}

@@ -11,9 +11,18 @@ const (
 	LegacySagaVersion  = 2
 	CurrentSagaVersion = 3
 	SlideSagaVersion   = 4
-	V2SchemaURL        = "https://changesaga.dev/schema/v2/saga.schema.json"
-	V3SchemaURL        = "https://changesaga.dev/schema/v3/saga.schema.json"
-	V4SchemaURL        = "https://changesaga.dev/schema/v4/saga.schema.json"
+	// ReportV5SagaVersion is the v5 report container. It composes the same v2
+	// report and v3 living components as CurrentSagaVersion and additionally
+	// admits v5-only roots. Only an explicit `upgrade --to 5` may write it;
+	// CurrentSagaVersion therefore deliberately remains 3.
+	ReportV5SagaVersion = 5
+	V2SchemaURL         = "https://changesaga.dev/schema/v2/saga.schema.json"
+	V3SchemaURL         = "https://changesaga.dev/schema/v3/saga.schema.json"
+	V4SchemaURL         = "https://changesaga.dev/schema/v4/saga.schema.json"
+	V5SchemaURL         = "https://changesaga.dev/schema/v5/saga.schema.json"
+
+	// QualityRootDir is the v5-only quality capability root.
+	QualityRootDir = "___quality"
 
 	// CurrentVersion and SchemaURL remain the v2 component/init aliases. Keeping
 	// them stable prevents adding v3-only roots without an explicit upgrade.
@@ -22,7 +31,14 @@ const (
 )
 
 func SupportedSagaVersion(version int) bool {
-	return version == LegacySagaVersion || version == CurrentSagaVersion || version == SlideSagaVersion
+	return version == LegacySagaVersion || version == CurrentSagaVersion || version == SlideSagaVersion || version == ReportV5SagaVersion
+}
+
+// ReportContainerVersion reports whether a Saga is a report container that
+// composes v3 requirement, design, work-plan, and embedded deck components.
+// Slide-native v4 and plain v2 reports are not report containers.
+func ReportContainerVersion(version int) bool {
+	return version == CurrentSagaVersion || version == ReportV5SagaVersion
 }
 
 func SagaSchemaURL(version int) string {
@@ -33,6 +49,8 @@ func SagaSchemaURL(version int) string {
 		return V3SchemaURL
 	case SlideSagaVersion:
 		return V4SchemaURL
+	case ReportV5SagaVersion:
+		return V5SchemaURL
 	default:
 		return ""
 	}

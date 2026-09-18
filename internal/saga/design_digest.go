@@ -68,7 +68,7 @@ func CurrentDesignContentDigests(document *Saga) (map[string]string, error) {
 	if document == nil || document.Section == nil {
 		return result, nil
 	}
-	reportContainer := document.Manifest.Version == CurrentSagaVersion || document.Manifest.Version > SlideSagaVersion
+	reportContainer := ReportContainerVersion(document.Manifest.Version) || document.Manifest.Version > SlideSagaVersion
 	if reportContainer {
 		if _, err := digestDesignSection(document.Section, result, false); err != nil {
 			return nil, err
