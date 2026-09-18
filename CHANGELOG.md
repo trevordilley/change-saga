@@ -10,6 +10,29 @@ tool, and what they have to do about it.
 
 ## [Unreleased]
 
+### Changed
+
+- **There is now one Change Saga format, for big changes.** A Saga carries
+  prototypes, user stories and acceptance criteria, UX/UI and technical design,
+  test cases, and the implementation deck in one record, from the first
+  prototype to the last changed line. `init` creates it directly.
+- The reviewer sidebar is always Product, Design, Quality, and Implementation.
+  Implementation is the deck itself, open to its slides.
+- `status --json` reports readiness gates, per-criterion coverage on six axes,
+  pin-derived staleness, changed-source accounting, and ordered next actions.
+  `spec --json` publishes the matching command grammar.
+
+### Added
+
+- `prototype`, `quality`, and `relation status` commands; test cases can verify
+  acceptance criteria through pinned relations.
+
+### Removed
+
+- Report-only, slide-only (`init --mode slides`), and report-with-decks as
+  separate Saga modes, and the `upgrade` command. Earlier Sagas are not
+  readable; no one depended on them.
+
 ## [0.1.1] - 2026-09-04
 
 ### Changed
