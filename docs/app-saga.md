@@ -174,12 +174,15 @@ thing that happens is not "define the personas of this app".
 - **What exists must stay healthy.** Once a story is accepted or a design
   references code, a change that makes that link stale or leaves its code
   uncovered is flagged. Coverage only ratchets up.
-- **The default blocks only on the implementation; stricter checks are opt-in.**
-  By default `status` fails only when the implementation does not cover the
-  change. Every other check (the ratchet on existing records, stories, persona
-  coverage, design, quality) is a named gate a team can choose to require, for
-  example in CI, with `status --require <gate>`. Teams adopt strictness as a
-  process decision; the tool never imposes it.
+- **The tool reports; teams decide what blocks.** `status` has one built-in
+  verdict, and it is the only one that affects the exit code: does the
+  implementation cover the change? Everything else is a coverage report: for
+  each area (the ratchet on existing records, stories, persona coverage,
+  design, quality), how many are covered, with the lists of what is and is not.
+  The report is readable as text and emitted as stable JSON, so a team that
+  wants "no accepted story without a test" to fail its build writes that rule
+  over the JSON in its own CI. The JSON shape is therefore a contract. Counts
+  and lists, never one blended score.
 - **Nothing is locked in.** The first change's deck goes into an epic the author
   names, defaulting to the pull request's title. Story, deck, and slide URNs
   carry no epic, so reorganizing later breaks nothing.
@@ -288,8 +291,9 @@ Phase 2 also includes the sync cursor and compare mode for companion
 repositories (goal 10).
 
 **Phase 6 — Adoption.** Split readiness into the one default requirement
-(implementation covers the change) and growth; named opt-in gates via
-`status --require`, including the ratchet on existing records; `init` and first-run next actions that start with coverage; the
+(implementation covers the change) and growth; the coverage report
+for everything else, including the ratchet on existing records, as stable JSON
+teams can script their own rules over; `init` and first-run next actions that start with coverage; the
 default epic; contextual growth suggestions that teach the practices; and the
 skill, README, and help rewritten for incremental adoption. The first-run experience on a real 30-file pull request is its
 acceptance test.
