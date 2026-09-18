@@ -184,6 +184,16 @@ thing that happens is not "define the personas of this app".
 - **The first run is: initialize, cover the change, done.** After that, the
   authoring agent offers, and never requires, to capture the stories the change
   implies.
+- **Tools guide the Saga's growth and teach the practices.** Growth is a
+  first-class part of the product, just never a gate. Guidance is contextual
+  and arrives with the work, not as an up-front questionnaire: "this change
+  touched checkout; capture the checkout story?", "these three stories serve
+  someone you haven't named; define that persona?", "this design has no test
+  case; add one?". Each suggestion explains the practice it teaches, why it
+  pays off, and the one command that acts on it. Status reports growth
+  opportunities separately from the one requirement, ordered by value to the
+  current change, so an author can grow the Saga a step at a time or ignore it
+  entirely.
 
 ### Kept from the current design
 
@@ -252,6 +262,6 @@ It also decides whether decision records are needed.
 **Phase 6 — Adoption.** Split readiness into the one requirement
 (implementation covers the change) and growth; the ratchet on existing
 records; `init` and first-run next actions that start with coverage; the
-default epic; and the skill, README, and help rewritten for incremental
-adoption. The first-run experience on a real 30-file pull request is its
+default epic; contextual growth suggestions that teach the practices; and the
+skill, README, and help rewritten for incremental adoption. The first-run experience on a real 30-file pull request is its
 acceptance test.
