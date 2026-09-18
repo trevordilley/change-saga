@@ -165,23 +165,26 @@ line of the codebase to be owned: ownership accumulates as changes land.
 The first time someone tries Change Saga on a 30-file pull request, the first
 thing that happens is not "define the personas of this app".
 
-- **The only requirement is that the implementation covers the change.** Every
-  changed line is referenced by the implementation deck. Personas, stories,
-  design, and test cases are not required up front.
+- **The one thing asked of a first change is that the implementation covers
+  it.** Every changed line is referenced by the implementation deck. Personas,
+  stories, design, and test cases are not asked for up front.
 - **Everything else is growth, not debt.** Missing personas, stories, design, and
   quality are reported as opportunities. They never block a change, and
   readiness passing with nothing defined is correct: absence is not failure.
 - **What exists must stay healthy.** Once a story is accepted or a design
   references code, a change that makes that link stale or leaves its code
   uncovered is flagged. Coverage only ratchets up.
-- **The tool reports; teams decide what blocks.** `status` has one built-in
-  verdict, and it is the only one that affects the exit code: does the
-  implementation cover the change? Everything else is a coverage report: for
-  each area (the ratchet on existing records, stories, persona coverage,
-  design, quality), how many are covered, with the lists of what is and is not.
-  The report is readable as text and emitted as stable JSON, so a team that
-  wants "no accepted story without a test" to fail its build writes that rule
-  over the JSON in its own CI. The JSON shape is therefore a contract. Counts
+- **The tool reports gaps; teams decide what to do about them.** `status` has no
+  verdict. Implementation coverage is part of the report like everything else:
+  for each area (changed lines covered by the implementation, the health of
+  existing records, stories, persona coverage, design, quality) it reports how
+  many are covered, with the lists of what is and is not. A gap is a finding,
+  never a failure, and `status` exits zero. It exits non-zero only when it
+  cannot produce a trustworthy report: a malformed Saga, duplicate IDs, or a
+  checkout that does not match the declared repository. The report is readable
+  as text and emitted as stable JSON; a team that wants a gap to fail its build
+  writes that rule over the JSON in its own CI, and the docs teach common rules
+  as recipes rather than flags. The JSON shape is therefore a contract. Counts
   and lists, never one blended score.
 - **Nothing is locked in.** The first change's deck goes into an epic the author
   names, defaulting to the pull request's title. Story, deck, and slide URNs
@@ -290,10 +293,11 @@ It also decides whether decision records are needed.
 Phase 2 also includes the sync cursor and compare mode for companion
 repositories (goal 10).
 
-**Phase 6 — Adoption.** Split readiness into the one default requirement
-(implementation covers the change) and growth; the coverage report
-for everything else, including the ratchet on existing records, as stable JSON
-teams can script their own rules over; `init` and first-run next actions that start with coverage; the
+**Phase 6 — Adoption.** Turn readiness into a coverage report with no
+verdict: `status` exits zero whenever it can report, and non-zero only when the
+Saga is broken; the report covers implementation, the ratchet on existing
+records, and every growth area as stable JSON teams can script their own rules
+over, with documented CI recipes; `init` and first-run next actions that start with coverage; the
 default epic; contextual growth suggestions that teach the practices; and the
 skill, README, and help rewritten for incremental adoption. The first-run experience on a real 30-file pull request is its
 acceptance test.
