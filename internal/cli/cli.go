@@ -1147,10 +1147,17 @@ func Spec(args []string, out io.Writer) error {
 			"thread_kinds":         []string{"comment", "suggestion"},
 			"reviewer_bootstrap":   "README.md",
 			"reserved_directories": []string{"___diffs", "___approvals", "___claims", "___verifications", "___review"},
-			"author_assertions":    "one claim per ___claims/*.json; one append-only result per ___verifications/*.json",
-			"review_storage":       "append-only; one thread, message, or event record per path",
+			"app_layout": map[string]any{
+				"app_roots":    applayout.AppRootDirs,
+				"epic_storage": applayout.EpicsDir + "/<id>" + applayout.EpicSuffix + "/" + applayout.EpicManifestName,
+				"epic_roots":   applayout.EpicRootDirs,
+				"epic_content": "report content (chapters and fragments) plus the epic roots; no URN names its epic, so IDs are unique across the app",
+				"onboarding":   applayout.OnboardingDir + "/<id>" + saga.EmbeddedDeckSuffix + " with role onboarding; its Items carry a persona, epic, or story record instead of code evidence",
+			},
+			"author_assertions": "one claim per ___claims/*.json; one append-only result per ___verifications/*.json",
+			"review_storage":    "append-only; one thread, message, or event record per path",
 			"implementation_deck": map[string]any{
-				"storage": saga.EmbeddedSlidesDir + "/<id>" + saga.EmbeddedDeckSuffix, "layout": "flat", "max_basename": saga.FlatMaxBasename, "max_absolute_path": saga.FlatMaxPath,
+				"storage": applayout.EpicsDir + "/<epic>" + applayout.EpicSuffix + "/" + saga.EmbeddedSlidesDir + "/<id>" + saga.EmbeddedDeckSuffix, "layout": "flat", "max_basename": saga.FlatMaxBasename, "max_absolute_path": saga.FlatMaxPath,
 				"categories": map[string]string{"10-d": "deck", "20-s": "slide", "30-i": "item", "40-e": "evidence", "80-85": "review"},
 				"content":    "one self-contained visual file sharing its slide manifest stem",
 				"visual_forms": map[string]string{

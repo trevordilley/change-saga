@@ -381,7 +381,15 @@ func storyMove(_ context.Context, args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
-	return writeRequirementsMutation(out, name, result, nil, *jsonOutput)
+	if *jsonOutput {
+		return writeRequirementsMutation(out, name, result, nil, true)
+	}
+	verb := "Moved"
+	if result.Replayed {
+		verb = "Already in epic " + target.ID + ":"
+	}
+	fmt.Fprintf(out, "%s %s\nPath: %s\n", verb, result.URN, result.Path)
+	return nil
 }
 
 // recordEpic returns the epic that holds the record named by urn. Nested URNs

@@ -132,7 +132,11 @@ func printAppStatus(out io.Writer, status livingapp.Status) {
 	if len(status.Epics) > 0 {
 		fmt.Fprintln(out, "\nEpics:")
 		for _, epic := range status.Epics {
-			fmt.Fprintf(out, "  %-28s %d stories", epic.ID, len(epic.Stories))
+			stories := "stories"
+			if len(epic.Stories) == 1 {
+				stories = "story"
+			}
+			fmt.Fprintf(out, "  %-28s %d %s", epic.ID, len(epic.Stories), stories)
 			if len(epic.GatedBy) > 0 {
 				fmt.Fprintf(out, ", gated by %s", strings.Join(epic.GatedBy, ", "))
 			}
@@ -143,6 +147,9 @@ func printAppStatus(out io.Writer, status livingapp.Status) {
 		fmt.Fprintln(out, "\nPersonas:")
 		for _, persona := range status.Personas {
 			served := fmt.Sprintf("served by %d accepted stories", len(persona.ServedBy))
+			if len(persona.ServedBy) == 1 {
+				served = "served by 1 accepted story"
+			}
 			if persona.Gap {
 				served = "gap: no accepted story serves it"
 			}
