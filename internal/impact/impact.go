@@ -45,6 +45,8 @@ type Summary struct {
 	NewContentRequired    int `json:"new_content_required"`
 	TargetsMustUpdate     int `json:"targets_must_update"`
 	TargetsConsiderUpdate int `json:"targets_consider_update"`
+	RequirementsImpacted  int `json:"requirements_implicated"`
+	TestCasesImpacted     int `json:"test_cases_implicated"`
 }
 
 type Change struct {
@@ -83,7 +85,66 @@ type Result struct {
 	Summary         Summary         `json:"summary"`
 	Targets         []TargetImpact  `json:"targets"`
 	NewContent      []UnownedChange `json:"new_content"`
-	Diagnostics     []Diagnostic    `json:"diagnostics"`
+	// Requirements and TestCases carry the source change back to the review
+	// repository: every story or criterion reached from an affected target
+	// through persisted relations, and every test case whose recorded evidence
+	// selects a changed atom. They are projections of recorded edges, never
+	// inferred from paths, names, or proximity.
+	Requirements []RequirementImpact `json:"requirements"`
+	TestCases    []TestCaseImpact    `json:"test_cases"`
+	Diagnostics  []Diagnostic        `json:"diagnostics"`
+}
+
+// Graph is the review-repository side of the projection, supplied by the
+// living composition layer so this package stays free of domain loaders.
+type Graph struct {
+	// Requirements maps an evidence-owning target (a report target or an Item)
+	// to the stories and criteria reached from it through persisted relations.
+	Requirements map[string][]Reach
+	// TestCases lists the current evidence selectors of every test case.
+	TestCases []TestCaseEvidence
+}
+
+// Reach is one recorded path from an evidence owner to a requirement.
+type Reach struct {
+	Requirement string   `json:"requirement"`
+	Relation    string   `json:"relation"`
+	Path        []string `json:"path"`
+}
+
+// TestCaseEvidence is one current quality-evidence record's exact selectors.
+type TestCaseEvidence struct {
+	TestCase string
+	Evidence string
+	Role     string
+	Diffs    []string
+	Criteria []string
+}
+
+// RequirementImpact is one story or criterion whose recorded evidence path
+// intersects the incoming change.
+type RequirementImpact struct {
+	Requirement string        `json:"requirement"`
+	Action      string        `json:"action"`
+	Via         []ImpactRoute `json:"via"`
+}
+
+// ImpactRoute names the affected owner and the recorded path to the requirement.
+type ImpactRoute struct {
+	Target   string   `json:"target"`
+	Relation string   `json:"relation,omitempty"`
+	Path     []string `json:"path"`
+}
+
+// TestCaseImpact is one test case whose evidence selects changed source. Its
+// runs pinned to the old comparison stop being current once the change lands.
+type TestCaseImpact struct {
+	TestCase string   `json:"test_case"`
+	Action   string   `json:"action"`
+	Evidence []string `json:"evidence"`
+	Roles    []string `json:"roles"`
+	Criteria []string `json:"criteria"`
+	Changes  []Change `json:"changes"`
 }
 
 type targetLocation struct {
@@ -105,6 +166,14 @@ type ownerSet map[string][]coverage.Assignment
 // Analyze projects incoming changed atoms onto the baseline Saga's ownership
 // graph. baseline must describe the repository tree at incoming.BaseOID.
 func Analyze(document *saga.Saga, baseline gitdiff.ChangeSet, report coverage.Report, incoming gitdiff.ChangeSet, mode string, incomingSaga *saga.Saga) Result {
+	return AnalyzeGraph(document, baseline, report, incoming, mode, incomingSaga, Graph{})
+}
+
+// AnalyzeGraph is Analyze plus the review-repository projection: test-case
+// evidence joins target ownership, and every affected owner is followed along
+// recorded relations to the stories and criteria it serves.
+func AnalyzeGraph(document *saga.Saga, baseline gitdiff.ChangeSet, report coverage.Report, incoming gitdiff.ChangeSet, mode string, incomingSaga *saga.Saga, graph Graph) Result {
+	report, testLocations := withTestOwnership(report, baseline, graph)
 	result := Result{
 		Schema: Schema, Mode: mode, Basis: "source_diffs_only", ContentCompared: false,
 		Baseline: BaselineStatus{
@@ -114,6 +183,7 @@ func Analyze(document *saga.Saga, baseline gitdiff.ChangeSet, report coverage.Re
 		},
 		Incoming: IncomingStatus{Source: sourceIdentity(incoming)},
 		Targets:  []TargetImpact{}, NewContent: []UnownedChange{}, Diagnostics: []Diagnostic{},
+		Requirements: []RequirementImpact{}, TestCases: []TestCaseImpact{},
 	}
 	if incomingSaga != nil {
 		result.Incoming.SagaID = incomingSaga.Manifest.ID
@@ -127,6 +197,9 @@ func Analyze(document *saga.Saga, baseline gitdiff.ChangeSet, report coverage.Re
 	}
 
 	locations := indexTargets(document)
+	for target, location := range testLocations {
+		locations[target] = location
+	}
 	currentLines := map[string]map[int]gitdiff.Atom{}
 	fileOwners := map[string]ownerSet{}
 	for _, atom := range baseline.Atoms {
@@ -244,6 +317,116 @@ func Analyze(document *saga.Saga, baseline gitdiff.ChangeSet, report coverage.Re
 			result.Summary.TargetsConsiderUpdate++
 		}
 	}
+	projectReviewRepository(&result, graph)
+	result.Summary.RequirementsImpacted = len(result.Requirements)
+	result.Summary.TestCasesImpacted = len(result.TestCases)
+	return result
+}
+
+// withTestOwnership adds current test-case evidence to baseline ownership using
+// the same exact selector semantics as changed-source accounting. The report is
+// copied; the caller's ownership map is never mutated.
+func withTestOwnership(report coverage.Report, baseline gitdiff.ChangeSet, graph Graph) (coverage.Report, map[string]targetLocation) {
+	locations := map[string]targetLocation{}
+	if len(graph.TestCases) == 0 {
+		return report, locations
+	}
+	ownership := make(map[string][]coverage.Assignment, len(report.Ownership))
+	for key, owners := range report.Ownership {
+		ownership[key] = append([]coverage.Assignment(nil), owners...)
+	}
+	for _, evidence := range graph.TestCases {
+		locations[evidence.TestCase] = targetLocation{Kind: "test-case", Title: evidence.TestCase, Location: evidence.TestCase}
+		for index, uri := range evidence.Diffs {
+			files := []saga.DiffFile{{Path: evidence.Evidence, Diffs: []saga.DiffReference{{URI: uri}}}}
+			for _, atom := range coverage.SelectTarget(files, baseline) {
+				ownership[atom.Key] = append(ownership[atom.Key], coverage.Assignment{Target: evidence.TestCase, DiffFile: evidence.Evidence, Diff: index + 1})
+			}
+		}
+	}
+	report.Ownership = ownership
+	return report, locations
+}
+
+// projectReviewRepository follows every affected owner to the requirements and
+// test cases the review repository records for it.
+func projectReviewRepository(result *Result, graph Graph) {
+	testEvidence := map[string][]TestCaseEvidence{}
+	for _, evidence := range graph.TestCases {
+		testEvidence[evidence.TestCase] = append(testEvidence[evidence.TestCase], evidence)
+	}
+	requirements := map[string]*RequirementImpact{}
+	addRequirement := func(requirement, action string, route ImpactRoute) {
+		value := requirements[requirement]
+		if value == nil {
+			value = &RequirementImpact{Requirement: requirement, Action: action, Via: []ImpactRoute{}}
+			requirements[requirement] = value
+		}
+		if action == "must_update" {
+			value.Action = action
+		}
+		value.Via = append(value.Via, route)
+	}
+	for _, target := range result.Targets {
+		for _, reach := range graph.Requirements[target.Target] {
+			addRequirement(reach.Requirement, target.Action, ImpactRoute{Target: target.Target, Relation: reach.Relation, Path: append([]string{}, reach.Path...)})
+		}
+		evidence := testEvidence[target.Target]
+		if len(evidence) == 0 {
+			continue
+		}
+		impact := TestCaseImpact{TestCase: target.Target, Action: target.Action, Evidence: []string{}, Roles: []string{}, Criteria: []string{}, Changes: target.Changes}
+		touched := map[string]bool{}
+		for _, file := range target.EvidenceFiles {
+			touched[file] = true
+		}
+		for _, value := range evidence {
+			if !touched[value.Evidence] {
+				continue
+			}
+			impact.Evidence = append(impact.Evidence, value.Evidence)
+			impact.Roles = append(impact.Roles, value.Role)
+			impact.Criteria = append(impact.Criteria, value.Criteria...)
+		}
+		impact.Evidence, impact.Roles, impact.Criteria = sortedUnique(impact.Evidence), sortedUnique(impact.Roles), sortedUnique(impact.Criteria)
+		for _, criterion := range impact.Criteria {
+			addRequirement(criterion, target.Action, ImpactRoute{Target: target.Target, Path: []string{target.Target, criterion}})
+		}
+		result.TestCases = append(result.TestCases, impact)
+	}
+	for _, value := range requirements {
+		sort.Slice(value.Via, func(i, j int) bool {
+			if value.Via[i].Target != value.Via[j].Target {
+				return value.Via[i].Target < value.Via[j].Target
+			}
+			return value.Via[i].Relation < value.Via[j].Relation
+		})
+		result.Requirements = append(result.Requirements, *value)
+	}
+	sort.Slice(result.Requirements, func(i, j int) bool {
+		if result.Requirements[i].Action != result.Requirements[j].Action {
+			return result.Requirements[i].Action == "must_update"
+		}
+		return result.Requirements[i].Requirement < result.Requirements[j].Requirement
+	})
+	sort.Slice(result.TestCases, func(i, j int) bool {
+		if result.TestCases[i].Action != result.TestCases[j].Action {
+			return result.TestCases[i].Action == "must_update"
+		}
+		return result.TestCases[i].TestCase < result.TestCases[j].TestCase
+	})
+}
+
+func sortedUnique(values []string) []string {
+	seen := map[string]bool{}
+	result := []string{}
+	for _, value := range values {
+		if value != "" && !seen[value] {
+			seen[value] = true
+			result = append(result, value)
+		}
+	}
+	sort.Strings(result)
 	return result
 }
 

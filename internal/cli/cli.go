@@ -934,44 +934,40 @@ func reservedLandmarkIDs(fragment *saga.Fragment) map[string]bool {
 func Status(ctx context.Context, args []string, out io.Writer) error {
 	flags := commandFlags("status", commandUsage["status"], out)
 	jsonOutput := flags.Bool("json", false, "emit machine-readable JSON")
-	maxItems := flags.Int("max", 100, "maximum uncovered items in text mode; 0 means all")
+	maxItems := flags.Int("max", 100, "maximum uncovered items and next actions in text mode; 0 means all")
 	repoDir := flags.String("repo", "", "source repository checkout; required when separate")
+	policy := flags.String("policy", "", "readiness policy: feature or compatibility; defaults by Saga version and quality adoption")
 	allowRepositoryMismatch := flags.Bool("allow-repository-mismatch", false, "use a checkout whose origin differs from the declared repository")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
-	if flags.NArg() != 1 {
+	if flags.NArg() != 1 || !validPolicy(*policy) {
 		return fmt.Errorf("usage: %s", commandUsage["status"])
 	}
-	report, err := buildReport(ctx, flags.Arg(0), *repoDir, *allowRepositoryMismatch)
+	status, err := buildStatus(ctx, flags.Arg(0), *repoDir, *policy, *allowRepositoryMismatch)
 	if err != nil {
 		return err
 	}
 	if *jsonOutput {
-		if err := writeJSON(out, report); err != nil {
+		if err := writeJSON(out, status); err != nil {
 			return err
 		}
 	} else {
-		printReport(out, report, *maxItems)
+		printReport(out, status.Report, *maxItems)
+		printLivingStatus(out, status, *maxItems)
 	}
-	if !report.Complete {
+	if !status.Report.Complete {
 		return &StatusError{Code: 3}
 	}
 	return nil
 }
 
 func buildReport(ctx context.Context, root, repoDir string, allowRepositoryMismatch ...bool) (coverage.Report, error) {
-	document, validation, err := saga.Load(root)
+	value, err := readComparison(ctx, root, repoDir, len(allowRepositoryMismatch) > 0 && allowRepositoryMismatch[0])
 	if err != nil {
 		return coverage.Report{}, err
 	}
-	checkout := firstNonEmpty(repoDir, document.Root)
-	allowMismatch := len(allowRepositoryMismatch) > 0 && allowRepositoryMismatch[0]
-	changes, err := gitdiff.ReadWithOptions(ctx, checkout, document.Manifest.Source.Repository, document.Manifest.Source.Base, document.Manifest.Source.Head, gitdiff.ReadOptions{AllowRepositoryMismatch: allowMismatch})
-	if err != nil {
-		return coverage.Report{}, fmt.Errorf("read source diff (use --repo for a separate saga repository): %w", err)
-	}
-	return coverage.Evaluate(document, validation, changes), nil
+	return value.report, nil
 }
 
 func printReport(out io.Writer, report coverage.Report, maxItems int) {
@@ -1128,6 +1124,7 @@ func Spec(args []string, out io.Writer) error {
 				},
 				"composition_audits": []string{"silhouette", "relationship", "surprise", "contact-sheet"},
 			},
+			"living": livingSpec(),
 		})
 	}
 	fmt.Fprint(out, specText)

@@ -9,6 +9,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/impact"
+	"github.com/twentyideas/changesaga/internal/livingapp"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
@@ -85,7 +86,17 @@ func Compare(ctx context.Context, args []string, out io.Writer) error {
 		return fmt.Errorf("reconstruct maintained Saga at incoming base: %w", err)
 	}
 	report := coverage.Evaluate(document, validation, baseline)
-	result := impact.Analyze(document, baseline, report, incoming, mode, incomingDocument)
+	// The review-repository graph carries the source change back to the stories,
+	// criteria, and test cases whose recorded evidence it touches.
+	graph := impact.Graph{}
+	inputs, graphErr := livingapp.LoadStatusInputs(livingapp.StatusOptions{SagaRoot: root, Document: document})
+	if graphErr == nil {
+		graph = livingapp.ImpactGraph(inputs)
+	}
+	result := impact.AnalyzeGraph(document, baseline, report, incoming, mode, incomingDocument, graph)
+	if graphErr != nil {
+		result.Diagnostics = append(result.Diagnostics, impact.Diagnostic{Code: "review_graph_unavailable", Message: "requirements and test cases were not projected: " + graphErr.Error()})
+	}
 	if *jsonOutput {
 		if err := writeJSON(out, result); err != nil {
 			return err
@@ -140,6 +151,18 @@ func printImpact(out io.Writer, result impact.Result) {
 			for _, change := range target.Changes {
 				fmt.Fprintf(out, "      %s: %s\n", change.Relationship, coverage.DescribeAtom(change.Atom))
 			}
+		}
+	}
+	if len(result.Requirements) > 0 {
+		fmt.Fprintln(out, "\nRequirements implicated:")
+		for _, requirement := range result.Requirements {
+			fmt.Fprintf(out, "  %s [%s]\n", requirement.Requirement, requirement.Action)
+		}
+	}
+	if len(result.TestCases) > 0 {
+		fmt.Fprintln(out, "\nTest cases implicated:")
+		for _, testCase := range result.TestCases {
+			fmt.Fprintf(out, "  %s [%s] evidence: %v\n", testCase.TestCase, testCase.Action, testCase.Evidence)
 		}
 	}
 	if len(result.NewContent) > 0 {

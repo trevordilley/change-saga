@@ -72,30 +72,11 @@ func Open(_ context.Context, options OpenOptions) (Session, error) {
 		}, nil
 	}
 
-	plan, validation, err := workplan.Load(root)
+	graph, err := loadLivingGraph(root, doc)
 	if err != nil {
-		return nil, appError(CodeInvalidSaga, "the work plan could not be loaded", false, nil, err)
+		return nil, err
 	}
-	if !validation.Valid {
-		return nil, appError(CodeInvalidSaga, "the work plan is invalid", false, map[string]any{"issues": sanitizePlanIssues(validation.Issues)}, nil)
-	}
-	designDigests, err := saga.CurrentDesignContentDigests(doc)
-	if err != nil {
-		return nil, appError(CodeInvalidSaga, "the technical design could not be indexed", false, nil, err)
-	}
-	stale := requirements.StaleInputs{CurrentRevisions: map[string]string{}, CurrentContentDigests: designDigests, Missing: map[string]bool{}}
-	for _, id := range sortedKeys(plan.WorkItems) {
-		item := plan.WorkItems[id]
-		if item.CurrentRevision != nil {
-			stale.CurrentRevisions[item.CurrentRevision.WorkItem] = item.Heads[0]
-		}
-	}
-	document, err := requirements.LoadWithOptions(root, plan.SagaID, requirements.LoadOptions{StaleInputs: stale})
-	if err != nil {
-		return nil, appError(CodeInvalidSaga, "the requirements could not be loaded", false, nil, err)
-	}
-	evaluateCrossDomainStaleness(&document, plan, doc, designDigests)
-	return &session{snapshot: snapshot, sourceHeadIdentity: options.SourceHeadIdentity, sourceHeadCommit: options.SourceHeadCommit, requirements: document, plan: plan, saga: doc, adopted: adopted}, nil
+	return &session{snapshot: snapshot, sourceHeadIdentity: options.SourceHeadIdentity, sourceHeadCommit: options.SourceHeadCommit, requirements: graph.requirements, plan: graph.plan, saga: doc, adopted: adopted}, nil
 }
 
 func livingRootPresent(root, name string) bool {

@@ -1,0 +1,203 @@
+package grammar
+
+// Resource describes one living record kind: where it lives, how it is named,
+// which Saga versions carry it, and how it changes over time.
+type Resource struct {
+	Kind      string   `json:"kind"`
+	URN       string   `json:"urn"`
+	Storage   string   `json:"storage"`
+	Schema    string   `json:"schema"`
+	Versions  []int    `json:"versions"`
+	History   string   `json:"history"`
+	Lifecycle []string `json:"lifecycle,omitempty"`
+	Writers   []string `json:"writers"`
+	Notes     string   `json:"notes,omitempty"`
+}
+
+// Relation is one row of the persisted relation endpoint matrix.
+type Relation struct {
+	Type         string   `json:"type"`
+	Sources      []string `json:"sources"`
+	Targets      []string `json:"targets"`
+	Scopes       []string `json:"scopes"`
+	RequiredPins []string `json:"required_pins"`
+	Axes         []string `json:"axes"`
+	Meaning      string   `json:"meaning"`
+}
+
+// DerivedEdge is a graph edge the engine computes from validated records and
+// never persists.
+type DerivedEdge struct {
+	Edge   string `json:"edge"`
+	Source string `json:"source"`
+	Target string `json:"target"`
+	Rule   string `json:"rule"`
+}
+
+// AxisRule states which persisted records can cover one coverage axis.
+type AxisRule struct {
+	Axis    string `json:"axis"`
+	Covered string `json:"covered_by"`
+	Gate    string `json:"gate"`
+}
+
+const schemaBase = "https://changesaga.dev/schema/"
+
+// Resources returns the living resource catalogue in stable order.
+func Resources() []Resource { return append([]Resource(nil), resources...) }
+
+// Relations returns the persisted relation endpoint matrix.
+func Relations() []Relation { return append([]Relation(nil), relations...) }
+
+// DerivedEdges returns the non-persisted edge kinds.
+func DerivedEdges() []DerivedEdge { return append([]DerivedEdge(nil), derivedEdges...) }
+
+// AxisRules returns what can satisfy each of the six coverage axes.
+func AxisRules() []AxisRule { return append([]AxisRule(nil), axisRules...) }
+
+var resources = []Resource{
+	{
+		Kind: "story", URN: "urn:change-saga:<saga>:story:<story>", Storage: "___requirements/stories/<story>.story/story.json",
+		Schema: schemaBase + "v3/story.schema.json", Versions: []int{3, 5}, History: "immutable identity",
+		Writers: []string{"story add"},
+	},
+	{
+		Kind: "story-revision", URN: "urn:change-saga:<saga>:story:<story>:revision:<revision>", Storage: "___requirements/stories/<story>.story/revisions/<revision>.json",
+		Schema: schemaBase + "v3/story-revision.schema.json", Versions: []int{3, 5}, History: "append-only complete snapshots with parent heads; multiple heads are a conflict",
+		Writers: []string{"story add", "story revise", "criterion add", "criterion revise", "criterion remove"},
+	},
+	{
+		Kind: "story-event", URN: "urn:change-saga:<saga>:story:<story>:event:<event>", Storage: "___requirements/stories/<story>.story/events/<event>.json",
+		Schema: schemaBase + "v3/story-event.schema.json", Versions: []int{3, 5}, History: "append-only lifecycle graph with parent heads",
+		Lifecycle: []string{"proposed", "accepted", "deferred", "rejected", "retired"}, Writers: []string{"story add", "story set-state"},
+	},
+	{
+		Kind: "criterion", URN: "urn:change-saga:<saga>:story:<story>:criterion:<criterion>", Storage: "inside every story revision's acceptance_criteria",
+		Schema: schemaBase + "v3/story-revision.schema.json", Versions: []int{3, 5}, History: "stable id across revisions; a removed id is never reused",
+		Writers: []string{"criterion add", "criterion revise", "criterion remove"},
+		Notes:   "inherits the story lifecycle; active only while present in the unique current story revision",
+	},
+	{
+		Kind: "citation", URN: "urn:change-saga:<saga>:citation:<citation>", Storage: "___requirements/citations/<citation>.json",
+		Schema: schemaBase + "v3/citation.schema.json", Versions: []int{3, 5}, History: "immutable", Writers: []string{"citation add"},
+	},
+	{
+		Kind: "relation", URN: "urn:change-saga:<saga>:relation:<relation>", Storage: "___requirements/relations/<relation>.json",
+		Schema: schemaBase + "v5/relation.schema.json", Versions: []int{3, 5}, History: "immutable pins; active or superseded",
+		Writers: []string{"relation add", "relation supersede"},
+		Notes:   "v3 relations remain valid history; v5 relations add scope and visual digest pins",
+	},
+	{
+		Kind: "prototype", URN: "urn:change-saga:<saga>:prototype:<prototype>", Storage: "___requirements/prototypes/<prototype>.prototype/prototype.json",
+		Schema: schemaBase + "v3/prototype.schema.json", Versions: []int{3, 5}, History: "immutable identity", Writers: []string{"prototype add-html"},
+	},
+	{
+		Kind: "prototype-revision", URN: "urn:change-saga:<saga>:prototype:<prototype>:revision:<revision>", Storage: "___requirements/prototypes/<prototype>.prototype/revisions/<revision>.revision/",
+		Schema: schemaBase + "v3/prototype-revision.schema.json", Versions: []int{3, 5}, History: "append-only immutable experiences with parent heads",
+		Lifecycle: []string{"draft", "ready", "retired"}, Writers: []string{"prototype add-html"},
+	},
+	{
+		Kind: "prototype-annotation", URN: "urn:change-saga:<saga>:prototype:<prototype>:annotation:<annotation>", Storage: "___requirements/prototypes/annotations/",
+		Schema: schemaBase + "v3/prototype-annotation.schema.json", Versions: []int{3, 5}, History: "immutable; pinned to a prototype revision or digest and a story revision",
+		Writers: []string{"prototype annotate"},
+	},
+	{
+		Kind: "coverage-exception", URN: "urn:change-saga:<saga>:coverage-exception:<exception>", Storage: "___requirements/coverage-exceptions/<exception>.json",
+		Schema: schemaBase + "v5/coverage-exception.schema.json", Versions: []int{5}, History: "immutable decisions; supersession graph with one head per criterion/axis",
+		Writers: []string{"coverage-exception add", "coverage-exception supersede"},
+		Notes:   "pins the current story revision; never excuses changed-source accounting",
+	},
+	{
+		Kind: "test-case", URN: "urn:change-saga:<saga>:test-case:<test-case>", Storage: "___quality/test-cases/<test-case>.test/test-case.json",
+		Schema: schemaBase + "v5/test-case.schema.json", Versions: []int{5}, History: "immutable identity", Writers: []string{"quality test-case add"},
+	},
+	{
+		Kind: "test-case-revision", URN: "urn:change-saga:<saga>:test-case:<test-case>:revision:<revision>", Storage: "___quality/test-cases/<test-case>.test/revisions/<revision>.json",
+		Schema: schemaBase + "v5/test-case-revision.schema.json", Versions: []int{5}, History: "append-only complete definitions with ordered steps; removed step ids are never reused",
+		Writers: []string{"quality test-case add", "quality test-case revise"},
+	},
+	{
+		Kind: "test-case-event", URN: "urn:change-saga:<saga>:test-case:<test-case>:event:<event>", Storage: "___quality/test-cases/<test-case>.test/events/<event>.json",
+		Schema: schemaBase + "v5/test-case-event.schema.json", Versions: []int{5}, History: "append-only lifecycle graph",
+		Lifecycle: []string{"proposed", "active", "deprecated", "retired"}, Writers: []string{"quality test-case add", "quality test-case set-state"},
+	},
+	{
+		Kind: "quality-policy", URN: "urn:change-saga:<saga>:quality-policy:<policy>", Storage: "___quality/policies/<policy>.json",
+		Schema: schemaBase + "v5/quality-policy.schema.json", Versions: []int{5}, History: "immutable; one unsuperseded head per criterion/story revision",
+		Writers: []string{"quality policy set"}, Notes: "absent policy means positive is required",
+	},
+	{
+		Kind: "quality-evidence", URN: "urn:change-saga:<saga>:test-case:<test-case>:evidence:<evidence>", Storage: "___quality/test-cases/<test-case>.test/evidence/<evidence>.json",
+		Schema: schemaBase + "v5/quality-evidence.schema.json", Versions: []int{5}, History: "immutable; supersession graph",
+		Writers: []string{"quality evidence add"},
+		Notes:   "roles: test_implementation, implementation_under_test, execution_artifact",
+	},
+	{
+		Kind: "test-run", URN: "urn:change-saga:<saga>:test-case:<test-case>:run:<run>", Storage: "___quality/test-cases/<test-case>.test/runs/<run>.json",
+		Schema: schemaBase + "v5/test-run.schema.json", Versions: []int{5}, History: "append-only results with parent heads; multiple heads are a conflict",
+		Lifecycle: []string{"passed", "failed", "blocked", "skipped"}, Writers: []string{"quality run record"},
+		Notes: "current only for the current test revision, the current source comparison, and current evidence",
+	},
+}
+
+const (
+	reportDesign = "report design target (chapter, section, fragment, or landmark under ___design)"
+	deckSlide    = "deck or slide"
+	item         = "item"
+	story        = "story"
+	criterion    = "criterion"
+)
+
+var relations = []Relation{
+	{
+		Type: "refines", Sources: []string{story, criterion}, Targets: []string{story, criterion}, Scopes: []string{"self"},
+		RequiredPins: []string{"from_revision", "to_revision"}, Axes: []string{},
+		Meaning: "navigational decomposition; not evidence; active graph is acyclic",
+	},
+	{
+		Type: "addresses", Sources: []string{reportDesign, "deck", "slide", item}, Targets: []string{story, criterion}, Scopes: []string{"self", "descendants"},
+		RequiredPins: []string{"from_content_digest", "to_revision"}, Axes: []string{"ux", "technical", "implementation"},
+		Meaning: "counts design coverage; descendants is legal only for a deck or slide source and lets the path reach contained Items and their exact diffs",
+	},
+	{
+		Type: "implements", Sources: []string{"work-item"}, Targets: []string{reportDesign, criterion}, Scopes: []string{"self"},
+		RequiredPins: []string{"from_revision", "to_revision or to_content_digest"}, Axes: []string{},
+		Meaning: "planning path only; progress never proves delivery",
+	},
+	{
+		Type: "explains", Sources: []string{deckSlide, item}, Targets: []string{story, criterion}, Scopes: []string{"self", "descendants"},
+		RequiredPins: []string{"to_revision"}, Axes: []string{"implementation"},
+		Meaning: "reviewer explanation (legacy_review_explanation); reaches exact diffs through Items but never counts as design coverage",
+	},
+	{
+		Type: "verifies", Sources: []string{"claim", "verification", "test-case"}, Targets: []string{criterion}, Scopes: []string{"self"},
+		RequiredPins: []string{"to_revision", "from_revision when the source is a test case"}, Axes: []string{"quality"},
+		Meaning: "test intent; a test case needs a current passing run before quality readiness",
+	},
+	{
+		Type: "supersedes", Sources: []string{"any resource"}, Targets: []string{"a resource of the same kind"}, Scopes: []string{"self"},
+		RequiredPins: []string{}, Axes: []string{},
+		Meaning: "explicit replacement; no automatic lifecycle mutation; acyclic",
+	},
+	{
+		Type: "conflicts_with", Sources: []string{story, criterion}, Targets: []string{story, criterion}, Scopes: []string{"self"},
+		RequiredPins: []string{"from_revision", "to_revision"}, Axes: []string{},
+		Meaning: "symmetric diagnostic in canonical lexical order; no inferred winner",
+	},
+}
+
+var derivedEdges = []DerivedEdge{
+	{Edge: "contains", Source: "deck -> slide -> item", Target: "item", Rule: "exact parent ids in validated v4 records"},
+	{Edge: "owns_diff", Source: "item", Target: "saga-diff URI", Rule: "valid current 40-e record in the Item's embedded bundle"},
+	{Edge: "has_quality_evidence", Source: "test-case revision or run", Target: "quality-evidence", Rule: "exact URN reference in validated v5 records"},
+	{Edge: "matches_item_diff", Source: "implementation_under_test evidence", Target: "item", Rule: "exact canonical diff URI equality in the same current source comparison"},
+}
+
+var axisRules = []AxisRule{
+	{Axis: "prototype", Covered: "a current prototype annotation pinned to the criterion (direct) or its story (broad)", Gate: "product_ready"},
+	{Axis: "ux", Covered: "a current addresses relation from a deck, slide, or Item of a ux-role deck", Gate: "design_ready"},
+	{Axis: "ui", Covered: "no UI reference resource is recorded yet; only an explicit ui coverage exception resolves this axis", Gate: "design_ready"},
+	{Axis: "technical", Covered: "a current addresses relation from a report design target or a non-ux deck, slide, or Item", Gate: "design_ready"},
+	{Axis: "quality", Covered: "active test cases linked by current verifies relations whose current passing runs cover every required kind", Gate: "quality_ready"},
+	{Axis: "implementation", Covered: "a current addresses or explains path through an Item to an exact diff in the current source comparison", Gate: "implementation_trace_ready"},
+}
