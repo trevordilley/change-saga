@@ -687,8 +687,7 @@ records.
 
 Claims remain immutable. Every claim containing migrated evidence is copied to
 a new claim ID with translated evidence, and a v3 `supersedes` relation points
-from the replacement to the original. A v2 Saga with an affected claim MUST be
-upgraded before migration. Verification is not inherited by default. With
+from the replacement to the original. Verification is not inherited by default. With
 `--carry-verifications`, the latest result is appended for the replacement as a
 new `analysis` verification whose summary identifies the source verification
 and unchanged product identity; this records logical carry-forward and MUST NOT
@@ -821,8 +820,8 @@ anchor and include explicit replacement text; they remain review proposals and
 are never applied to source code automatically.
 
 Saga-, chapter-, section-, and fragment-level decision records remain separate
-from discussion threads. The format continues to accept historical chapter
-decision records for compatibility, while the reviewer UI treats a chapter as
+from discussion threads. Chapter decision records are accepted, but the
+reviewer UI treats a chapter as
 a container and derives its progress from the independently reviewed sections
 and fragments inside it.
 Append-only approval events live in the target's `___approvals/` directory and
