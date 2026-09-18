@@ -46,13 +46,13 @@ func (b *builder) staleRecords() {
 			testCase := testCaseOf(record.Record)
 			action.Question = question("Run "+testCase+" against its current revision and the current source comparison, then record the result.", NeedExternalAccess,
 				option("recorded", "an immutable run pinned to the current test revision and source identity; the stale run stays as history",
-					b.invoke("quality run record", grammar.V("test-case", testCase), grammar.V("test-revision", current(record.Pins, "test_revision")),
+					b.invoke("quality run record", grammar.V("test", testCase), grammar.V("test-revision", current(record.Pins, "test_revision")),
 						grammar.V("parent", record.Record), grammar.V("result", ""), grammar.V("evidence", ""))))
 		case "quality_evidence":
 			testCase := testCaseOf(record.Record)
 			action.Question = question("Which exact lines now implement the evidence "+record.Record+" described?", NeedProductJudgment,
 				option("re-record the evidence", "new evidence for the current test revision supersedes the stale record",
-					b.invoke("quality evidence add", grammar.V("test-case", testCase), grammar.V("test-revision", current(record.Pins, "test_revision")),
+					b.invoke("quality evidence add", grammar.V("test", testCase), grammar.V("test-revision", current(record.Pins, "test_revision")),
 						grammar.V("role", ""), grammar.V("diff", ""), grammar.V("supersedes", record.Record))))
 		default:
 			action.Question = question("Does "+record.Record+" still hold against the current heads?", NeedProductJudgment,
@@ -65,6 +65,9 @@ func (b *builder) staleRecords() {
 func (b *builder) relationQuestion(record livingapp.StaleRecord) *Question {
 	subject := b.subjects(record.Affects)
 	values := []grammar.Value{grammar.V("type", record.Type), grammar.V("from", record.From), grammar.V("to", record.To)}
+	if record.Scope != "" {
+		values = append(values, grammar.V("scope", record.Scope))
+	}
 	for _, pin := range record.Pins {
 		if pin.Current == "" {
 			continue
@@ -180,8 +183,8 @@ func (b *builder) changedSource() {
 			Reason: "a source change touched this test case's evidence: " + strings.Join(implicated.Via, "; "),
 			Question: question("Does "+implicated.Resource+" still verify its criteria after the source change? Re-run it and re-record its evidence.", NeedExternalAccess,
 				option("recorded", "new evidence and a new run pinned to the current source comparison",
-					b.invoke("quality evidence add", grammar.V("test-case", implicated.Resource)),
-					b.invoke("quality run record", grammar.V("test-case", implicated.Resource)))),
+					b.invoke("quality evidence add", grammar.V("test", implicated.Resource)),
+					b.invoke("quality run record", grammar.V("test", implicated.Resource)))),
 		})
 	}
 }
@@ -288,7 +291,7 @@ func (b *builder) testCases() {
 				option("it verifies a criterion", "a pinned verifies relation",
 					b.invoke("relation add", grammar.V("type", "verifies"), grammar.V("from", testCase.TestCase), grammar.V("from-revision", testCase.CurrentRevision), grammar.V("to", ""), grammar.V("to-revision", ""))),
 				option("retire it", "it stays as history and leaves the queue",
-					b.invoke("quality test-case set-state", grammar.V("test-case", testCase.TestCase), grammar.V("state", "retired")))),
+					b.invoke("quality test-case set-state", grammar.V("test", testCase.TestCase), grammar.V("state", "retired")))),
 		})
 	}
 }

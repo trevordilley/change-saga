@@ -156,11 +156,24 @@ func refundStory(criteria ...string) requirements.Story {
 	}
 }
 
-func verifies(id, testCase, testRevision, criterion, storyRevision string) Link {
-	return Link{
-		URN: relationURN(id), Type: requirements.RelationVerifies, From: testURN(testCase), To: criterionURN(criterion), Scope: scopeSelf,
-		FromRevision: testRevisionURN(testCase, testRevision), ToRevision: storyRevision, Active: true,
+func verifies(id, testCase, testRevision, criterion, storyRevision string) requirements.Relation {
+	return requirements.Relation{
+		Version: requirements.V5RelationVersion, ID: id, Type: requirements.RelationVerifies, From: testURN(testCase), To: criterionURN(criterion),
+		Scope: requirements.ScopeSelf, FromRevision: testRevisionURN(testCase, testRevision), ToRevision: storyRevision, State: requirements.RelationActive,
 	}
+}
+
+// fixtureLinks judges relations exactly as the loader does: currency comes
+// only from requirements.EvaluateRelations, with every test-case head supplied.
+func fixtureLinks(stories []requirements.Story, relations []requirements.Relation, document quality.Document) []Link {
+	requirementsDocument := requirements.Document{SagaID: fixtureSaga, SagaVersion: quality.Version, Stories: stories, Relations: relations}
+	inputs := requirements.StaleInputs{}
+	heads := map[string][]string{}
+	for _, testCase := range document.TestCases {
+		heads[testCase.Identity.ID] = testCase.RevisionHeads
+	}
+	inputs.SetTestCaseHeads(fixtureSaga, heads)
+	return LinksFromCurrency(requirementsDocument, requirements.EvaluateRelations(requirementsDocument, inputs))
 }
 
 func testAtoms(t *testing.T) gitdiff.ChangeSet {
@@ -210,11 +223,12 @@ func qualityFixture(t *testing.T) StatusInputs {
 			report.Uncovered = append(report.Uncovered, atom)
 		}
 	}
+	stories := []requirements.Story{refundStory("positive-path", "cutoff", "stale-run", "failing", "not-run", "untested", "manual-only")}
 	return StatusInputs{
 		SagaID: fixtureSaga, SagaVersion: quality.Version, RequirementsAdopted: true,
-		Stories:   []requirements.Story{refundStory("positive-path", "cutoff", "stale-run", "failing", "not-run", "untested", "manual-only")},
+		Stories:   stories,
 		Citations: []requirements.Citation{{ID: "policy"}},
-		Links: []Link{
+		Links: fixtureLinks(stories, []requirements.Relation{
 			verifies("happy-positive", "happy", "r1", "positive-path", storyR2),
 			verifies("happy-positive-old", "happy", "r1", "positive-path", storyR1),
 			verifies("boundary-cutoff", "boundary", "r1", "cutoff", storyR2),
@@ -222,10 +236,10 @@ func qualityFixture(t *testing.T) StatusInputs {
 			verifies("broken-failing", "broken", "r1", "failing", storyR2),
 			verifies("unrun-not-run", "unrun", "r1", "not-run", storyR2),
 			{
-				URN: relationURN("guard-addresses-positive"), Type: requirements.RelationAddresses, From: item.Target, To: criterionURN("positive-path"),
-				Scope: scopeSelf, FromContentDigest: "sha256:" + strings.Repeat("a", 64), ToRevision: storyR2, Active: true,
+				Version: requirements.V5RelationVersion, ID: "guard-addresses-positive", Type: requirements.RelationAddresses, From: item.Target, To: criterionURN("positive-path"),
+				Scope: requirements.ScopeSelf, FromContentDigest: "sha256:" + strings.Repeat("a", 64), ToRevision: storyR2, State: requirements.RelationActive,
 			},
-		},
+		}, document),
 		Decks: []*saga.Deck{deck},
 		Exceptions: []coverage.Exception{{
 			URN: "urn:change-saga:checkout:coverage-exception:manual-only-quality", Axis: coverage.AxisQuality, Criterion: criterionURN("manual-only"),

@@ -59,7 +59,7 @@ type qualityEvaluation struct {
 	unsatisfied map[string][]string
 	criteria    map[string]*QualityCriterion
 	facts       map[string][]QualityFactStatus
-	verifies    map[string][]string
+	verifies    map[string][]VerifiesLink
 }
 
 func (a *assembler) indexQuality() {
@@ -132,18 +132,13 @@ func (a *assembler) testOwnedAtoms() map[string]TestOwned {
 func (a *assembler) qualityAxis() qualityEvaluation {
 	result := qualityEvaluation{
 		links: map[string][]coverage.AxisLink{}, unsatisfied: map[string][]string{}, criteria: map[string]*QualityCriterion{},
-		facts: map[string][]QualityFactStatus{}, verifies: map[string][]string{},
+		facts: map[string][]QualityFactStatus{}, verifies: a.verifiesByTestCase(),
 	}
 	adoption := a.in.Quality.Adoption
 	if adoption == "" {
 		adoption = quality.NotAdopted
 	}
 	evals := a.verifyEvaluations()
-	for _, criterionEvals := range evals {
-		for _, eval := range criterionEvals {
-			result.verifies[eval.testCase] = append(result.verifies[eval.testCase], eval.relation)
-		}
-	}
 	for _, frame := range a.criteria {
 		row := &QualityCriterion{
 			Criterion: frame.urn, StoryRevision: frame.currentRevision, Policy: "default", PolicyState: "default",
@@ -274,9 +269,8 @@ func (a *assembler) applyAutomation(row *QualityCriterion, eval *testEval) {
 }
 
 // verifyEvaluations evaluates every active verifies relation from a test case.
-// The relation's own pins are checked against current heads here: the test
-// revision pin against the test's current revision, and the story revision pin
-// against the story's current revision.
+// The relation's currency is taken as reported by requirements.EvaluateRelation;
+// no pin is compared here.
 func (a *assembler) verifyEvaluations() map[string][]*testEval {
 	result := map[string][]*testEval{}
 	links := append([]Link(nil), a.in.Links...)
@@ -290,22 +284,44 @@ func (a *assembler) verifyEvaluations() map[string][]*testEval {
 			continue
 		}
 		criteria, broad := a.reach(link.To)
-		stale := append([]string{}, link.StaleReasons...)
-		if current := a.currentRevs[link.From]; link.FromRevision != "" && current != "" && current != link.FromRevision {
-			stale = append(stale, "from revision changed")
-		}
-		if current := a.currentRevision(link.To); link.ToRevision != "" && current != "" && current != link.ToRevision {
-			stale = append(stale, "to revision changed")
-		}
-		stale = uniqueSorted(stale)
-		if len(stale) > 0 {
-			a.markStale(link.URN, "relation", historyReview, stale, a.relationPins(link), criteria)
-			a.describeStale(link.URN, string(link.Type), link.From, link.To, "")
-		}
+		stale, conflicts, invalid := link.reasons()
+		a.staleRelation(link, stale, criteria)
 		for _, criterion := range criteria {
 			eval := a.evaluateTest(link, criterion, broad, stale)
+			eval.conflicts = append(eval.conflicts, conflicts...)
+			eval.invalid = append(eval.invalid, invalid...)
+			switch {
+			case len(invalid) > 0:
+				eval.state = kindInvalid
+			case len(conflicts) > 0:
+				eval.state = kindConflicted
+			}
 			result[criterion] = append(result[criterion], eval)
 		}
+	}
+	return result
+}
+
+// verifiesByTestCase lists every active verifies relation from each test case,
+// whatever its currency and whether or not its criterion is accepted. A test
+// case with none is an orphan; a test case whose only link is stale is not.
+func (a *assembler) verifiesByTestCase() map[string][]VerifiesLink {
+	result := map[string][]VerifiesLink{}
+	for _, link := range a.in.Links {
+		if !link.Active || link.Type != requirements.RelationVerifies {
+			continue
+		}
+		if ref, err := qualityid.Parse(link.From); err != nil || ref.Kind != qualityid.KindTestCase {
+			continue
+		}
+		reasons := []string{}
+		for _, reason := range link.Reasons {
+			reasons = append(reasons, reason.Message)
+		}
+		result[link.From] = append(result[link.From], VerifiesLink{Relation: link.URN, Criterion: link.To, Currency: string(link.Currency), Reasons: uniqueSorted(reasons)})
+	}
+	for testCase := range result {
+		sort.Slice(result[testCase], func(i, j int) bool { return result[testCase][i].Relation < result[testCase][j].Relation })
 	}
 	return result
 }
@@ -474,7 +490,7 @@ func (a *assembler) finishQuality(evaluation qualityEvaluation, projection cover
 		testCase := a.testCases[urn]
 		row := TestCaseStatus{
 			TestCase: urn, Lifecycle: "conflicted", RevisionHeads: copyStrings(testCase.RevisionHeads), Kinds: []string{},
-			RunHeads: copyStrings(testCase.RunHeads), Verifies: uniqueSorted(evaluation.verifies[urn]),
+			RunHeads: copyStrings(testCase.RunHeads), Verifies: append([]VerifiesLink{}, evaluation.verifies[urn]...),
 		}
 		if testCase.CurrentLifecycle != nil {
 			row.Lifecycle = string(testCase.CurrentLifecycle.State)

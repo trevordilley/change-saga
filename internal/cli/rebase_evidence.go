@@ -199,7 +199,7 @@ func buildEvidenceRebasePlan(document *saga.Saga, changes gitdiff.ChangeSet, exp
 		if !changed {
 			continue
 		}
-		if document.Manifest.Version != saga.CurrentSagaVersion {
+		if !saga.ReportContainerVersion(document.Manifest.Version) {
 			if document.Manifest.Version == saga.SlideSagaVersion {
 				return evidenceRebasePlan{}, fmt.Errorf("claim %q needs immutable rollover, but v4 claim-supersession records are not yet part of the flat format; refusing to rewrite claim evidence", claim.ID)
 			}
@@ -270,7 +270,7 @@ func buildEvidenceRebasePlan(document *saga.Saga, changes gitdiff.ChangeSet, exp
 
 func loadSupersededClaims(document *saga.Saga) (map[string]bool, error) {
 	result := map[string]bool{}
-	if document.Manifest.Version != saga.CurrentSagaVersion {
+	if !saga.ReportContainerVersion(document.Manifest.Version) {
 		return result, nil
 	}
 	requirementDocument, err := requirements.Load(document.Root, document.Manifest.ID)
@@ -467,7 +467,7 @@ func applyEvidenceRebase(document *saga.Saga, plan evidenceRebasePlan) (err erro
 	if !validation.Valid {
 		return fmt.Errorf("rebased Saga failed validation")
 	}
-	if document.Manifest.Version == saga.CurrentSagaVersion {
+	if saga.ReportContainerVersion(document.Manifest.Version) {
 		if _, loadErr := requirements.Load(document.Root, document.Manifest.ID); loadErr != nil {
 			return fmt.Errorf("validate claim supersession: %w", loadErr)
 		}

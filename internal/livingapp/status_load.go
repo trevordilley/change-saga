@@ -75,26 +75,6 @@ func LoadStatusInputs(options StatusOptions) (StatusInputs, error) {
 		Exceptions: []coverage.Exception{}, Report: options.Report, Changes: options.Changes, Diagnostics: []Diagnostic{},
 		Quality: quality.Document{SagaID: doc.Manifest.ID, Adoption: quality.NotAdopted, TestCases: []quality.TestCase{}, Policies: []quality.Policy{}, PolicySets: []quality.PolicySet{}},
 	}
-	living := version == saga.CurrentSagaVersion || version == quality.Version
-	if living && livingRootPresent(root, "___requirements") {
-		graph, err := loadLivingGraph(root, doc)
-		if err != nil {
-			return StatusInputs{}, err
-		}
-		inputs.RequirementsAdopted = true
-		inputs.Stories = graph.requirements.Stories
-		inputs.Citations = graph.requirements.Citations
-		inputs.DesignDigests = graph.designDigests
-		for _, relation := range graph.requirements.Relations {
-			inputs.Links = append(inputs.Links, LinkFromRelation(graph.requirements.SagaID, relation))
-		}
-		inputs.Prototypes, err = prototypes.Load(root, doc.Manifest.ID)
-		if err != nil {
-			return StatusInputs{}, fmt.Errorf("load prototypes: %w", err)
-		}
-		criteria, _ := (&session{requirements: graph.requirements, plan: graph.plan, saga: doc, adopted: true}).criterionInputs(Filters{})
-		inputs.PeerReview = criteria
-	}
 	if version == quality.Version {
 		inputs.Quality, err = quality.Load(root)
 		if err != nil {
@@ -107,35 +87,95 @@ func LoadStatusInputs(options StatusOptions) (StatusInputs, error) {
 	} else {
 		inputs.QualityReason = fmt.Sprintf(qualityRequiresV5ReasonText, version)
 	}
+	if saga.ReportContainerVersion(version) && livingRootPresent(root, "___requirements") {
+		var heads map[string][]string
+		if version == quality.Version {
+			heads = map[string][]string{}
+			for _, testCase := range inputs.Quality.TestCases {
+				heads[testCase.Identity.ID] = copyStrings(testCase.RevisionHeads)
+			}
+		}
+		graph, err := loadLivingGraph(root, doc, heads)
+		if err != nil {
+			return StatusInputs{}, err
+		}
+		inputs.RequirementsAdopted = true
+		inputs.Stories = graph.requirements.Stories
+		inputs.Citations = graph.requirements.Citations
+		inputs.DesignDigests = graph.designDigests
+		inputs.Links = LinksFromCurrency(graph.requirements, graph.currency)
+		inputs.Prototypes, err = prototypes.Load(root, doc.Manifest.ID)
+		if err != nil {
+			return StatusInputs{}, fmt.Errorf("load prototypes: %w", err)
+		}
+		criteria, _ := (&session{requirements: graph.requirements, plan: graph.plan, saga: doc, adopted: true}).criterionInputs(Filters{})
+		inputs.PeerReview = criteria
+	}
 	return inputs, nil
 }
 
-// LinkFromRelation adapts a loaded relation record. A v3 record carries no
-// scope: every relation is self-scoped except a legacy explains relation from a
-// deck or slide, which keeps its established descendant trace behavior.
-func LinkFromRelation(sagaID string, relation requirements.Relation) Link {
-	urn, _ := livingid.Relation(sagaID, relation.ID)
-	scope := scopeSelf
-	if relation.Type == requirements.RelationExplains && (strings.Contains(relation.From, ":deck:") || !strings.Contains(relation.From, ":item:") && strings.Contains(relation.From, ":slide:")) {
-		scope = scopeDescendants
+// LinksFromCurrency adapts loaded relations and their currency, which must be
+// requirements.EvaluateRelations(document, ...) in document order. Scope is
+// read from the record; a v3 record carries none, so it is self except for a
+// legacy explains relation from a deck or slide, which keeps its established
+// descendant trace behavior.
+func LinksFromCurrency(document requirements.Document, currency []requirements.RelationCurrency) []Link {
+	links := make([]Link, 0, len(document.Relations))
+	for index, relation := range document.Relations {
+		urn, _ := livingid.Relation(document.SagaID, relation.ID)
+		scope := string(relation.Scope)
+		if scope == "" {
+			scope = scopeSelf
+			if relation.Type == requirements.RelationExplains && (strings.Contains(relation.From, ":deck:") || !strings.Contains(relation.From, ":item:") && strings.Contains(relation.From, ":slide:")) {
+				scope = scopeDescendants
+			}
+		}
+		link := Link{
+			URN: urn, Type: relation.Type, From: relation.From, To: relation.To, Scope: scope, Version: relation.Version,
+			FromRevision: relation.FromRevision, ToRevision: relation.ToRevision,
+			FromContentDigest: relation.FromContentDigest, ToContentDigest: relation.ToContentDigest,
+			Active: relation.State == requirements.RelationActive, Currency: requirements.CurrencyCurrent, Reasons: []requirements.CurrencyReason{},
+		}
+		if index < len(currency) && currency[index].Relation == urn {
+			link.Currency = currency[index].Status
+			link.Reasons = append(link.Reasons, currency[index].Reasons...)
+		}
+		links = append(links, link)
 	}
-	return Link{
-		URN: urn, Type: relation.Type, From: relation.From, To: relation.To, Scope: scope,
-		FromRevision: relation.FromRevision, ToRevision: relation.ToRevision,
-		FromContentDigest: relation.FromContentDigest, ToContentDigest: relation.ToContentDigest,
-		Active: relation.State == requirements.RelationActive, StaleReasons: copyStrings(relation.StaleReasons),
-	}
+	return links
 }
 
 type livingGraph struct {
 	requirements  requirements.Document
 	plan          workplan.Plan
 	designDigests map[string]string
+	currency      []requirements.RelationCurrency
+}
+
+// testCaseHeads returns every test case's revision heads on a v5 Saga, keyed
+// by test-case ID. It is nil on other versions, where no test-case endpoint
+// can exist.
+func testCaseHeads(root string, version int) (map[string][]string, error) {
+	if version != quality.Version {
+		return nil, nil
+	}
+	document, err := quality.Load(root)
+	if err != nil {
+		return nil, err
+	}
+	heads := map[string][]string{}
+	for _, testCase := range document.TestCases {
+		heads[testCase.Identity.ID] = copyStrings(testCase.RevisionHeads)
+	}
+	return heads, nil
 }
 
 // loadLivingGraph is the one composition path for requirements, work plan,
-// and design digests, shared by query sessions and status.
-func loadLivingGraph(root string, doc *saga.Saga) (livingGraph, error) {
+// design digests, and relation currency, shared by query sessions and status.
+// Relation currency comes only from requirements.EvaluateRelations; this
+// function supplies the heads other domains own, including test-case heads
+// on a v5 Saga, so a test-case link is never judged without them.
+func loadLivingGraph(root string, doc *saga.Saga, testCases map[string][]string) (livingGraph, error) {
 	plan, validation, err := workplan.Load(root)
 	if err != nil {
 		return livingGraph{}, appError(CodeInvalidSaga, "the work plan could not be loaded", false, nil, err)
@@ -147,19 +187,32 @@ func loadLivingGraph(root string, doc *saga.Saga) (livingGraph, error) {
 	if err != nil {
 		return livingGraph{}, appError(CodeInvalidSaga, "the technical design could not be indexed", false, nil, err)
 	}
-	stale := requirements.StaleInputs{CurrentRevisions: map[string]string{}, CurrentContentDigests: designDigests, Missing: map[string]bool{}}
+	stale := requirements.StaleInputs{CurrentRevisions: map[string]string{}, CurrentContentDigests: designDigests, Missing: map[string]bool{}, ConflictedRevisions: map[string][]string{}}
 	for _, id := range sortedKeys(plan.WorkItems) {
 		item := plan.WorkItems[id]
-		if item.CurrentRevision != nil {
+		if item.CurrentRevision != nil && len(item.Heads) == 1 {
 			stale.CurrentRevisions[item.CurrentRevision.WorkItem] = item.Heads[0]
 		}
+	}
+	if testCases != nil {
+		stale.SetTestCaseHeads(doc.Manifest.ID, testCases)
 	}
 	document, err := requirements.LoadWithOptions(root, plan.SagaID, requirements.LoadOptions{StaleInputs: stale})
 	if err != nil {
 		return livingGraph{}, appError(CodeInvalidSaga, "the requirements could not be loaded", false, nil, err)
 	}
-	evaluateCrossDomainStaleness(&document, plan, doc, designDigests)
-	return livingGraph{requirements: document, plan: plan, designDigests: designDigests}, nil
+	crossDomainInputs(document, plan, doc, designDigests, &stale)
+	currency := requirements.EvaluateRelations(document, stale)
+	for index := range document.Relations {
+		relation := &document.Relations[index]
+		reasons := []string{}
+		for _, reason := range currency[index].Reasons {
+			reasons = append(reasons, reason.Message)
+		}
+		relation.StaleReasons = reasons
+		relation.Stale = len(reasons) > 0
+	}
+	return livingGraph{requirements: document, plan: plan, designDigests: designDigests, currency: currency}, nil
 }
 
 type coverageExceptionRecord struct {

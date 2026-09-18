@@ -39,8 +39,8 @@ func (scope authoringScope) hierarchyRoot(document *saga.Saga) (string, error) {
 	if !scope.design {
 		return document.Root, nil
 	}
-	if document.Manifest.Version != saga.CurrentSagaVersion {
-		return "", fmt.Errorf("technical design authoring requires Saga format v3; run change-saga upgrade --to 3 %s", document.Root)
+	if !saga.ReportContainerVersion(document.Manifest.Version) {
+		return "", fmt.Errorf("technical design authoring requires Saga format v3 or v5; run change-saga upgrade --to 3 %s", document.Root)
 	}
 	dir := filepath.Join(document.Root, "___design")
 	info, err := os.Lstat(dir)

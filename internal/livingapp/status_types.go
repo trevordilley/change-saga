@@ -1,6 +1,8 @@
 package livingapp
 
 import (
+	"strings"
+
 	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/prototypes"
@@ -26,7 +28,49 @@ type Link struct {
 	FromContentDigest string
 	ToContentDigest   string
 	Active            bool
-	StaleReasons      []string
+	Version           int
+	// Currency and Reasons come from requirements.EvaluateRelation, the single
+	// place relation pins are compared with current heads. Only a current
+	// relation ever counts as coverage.
+	Currency requirements.Currency
+	Reasons  []requirements.CurrencyReason
+}
+
+// reasons splits the link's currency into the axis vocabulary: a stale pin, a
+// conflicted head, or an invalid endpoint. A current link has none.
+func (link Link) reasons() (stale, conflicts, invalid []string) {
+	stale, conflicts, invalid = []string{}, []string{}, []string{}
+	var target *[]string
+	switch link.Currency {
+	case requirements.CurrencyStale:
+		target = &stale
+	case requirements.CurrencyConflicted:
+		target = &conflicts
+	case requirements.CurrencyInvalid:
+		target = &invalid
+	default:
+		return
+	}
+	for _, reason := range link.Reasons {
+		*target = append(*target, reason.Message)
+	}
+	return uniqueSorted(stale), uniqueSorted(conflicts), uniqueSorted(invalid)
+}
+
+// pins reports the pinned and current value behind each currency reason.
+func (link Link) pins() []Pin {
+	pins := []Pin{}
+	for _, reason := range link.Reasons {
+		if reason.Pinned == "" {
+			continue
+		}
+		field := reason.Endpoint + "_revision"
+		if reason.Code == requirements.ReasonContentDigestChanged {
+			field = reason.Endpoint + "_content_digest"
+		}
+		pins = append(pins, Pin{Field: field, Pinned: reason.Pinned, Current: strings.Join(reason.Current, ", ")})
+	}
+	return pins
 }
 
 // StatusInputs is every already-loaded fact the status projection reads. The
@@ -183,20 +227,30 @@ type TestLinkRow struct {
 
 // TestCaseStatus is one test case and what it currently proves.
 type TestCaseStatus struct {
-	TestCase        string   `json:"test_case"`
-	Title           string   `json:"title,omitempty"`
-	Lifecycle       string   `json:"lifecycle"`
-	RevisionHeads   []string `json:"revision_heads"`
-	CurrentRevision string   `json:"current_revision,omitempty"`
-	Kinds           []string `json:"kinds"`
-	Automation      string   `json:"automation,omitempty"`
-	RunHeads        []string `json:"run_heads"`
-	CurrentRun      string   `json:"current_run,omitempty"`
-	RunResult       string   `json:"run_result,omitempty"`
-	Verifies        []string `json:"verifies"`
+	TestCase        string         `json:"test_case"`
+	Title           string         `json:"title,omitempty"`
+	Lifecycle       string         `json:"lifecycle"`
+	RevisionHeads   []string       `json:"revision_heads"`
+	CurrentRevision string         `json:"current_revision,omitempty"`
+	Kinds           []string       `json:"kinds"`
+	Automation      string         `json:"automation,omitempty"`
+	RunHeads        []string       `json:"run_heads"`
+	CurrentRun      string         `json:"current_run,omitempty"`
+	RunResult       string         `json:"run_result,omitempty"`
+	Verifies        []VerifiesLink `json:"verifies"`
 	// Orphaned is true when no active verifies relation connects the test to
 	// any criterion, so it proves nothing about any story.
 	Orphaned bool `json:"orphaned"`
+}
+
+// VerifiesLink is one active verifies relation from a test case with its
+// currency. A stale link needs re-pinning; only a test case with no active
+// verifies relation at all is an orphan that needs linking.
+type VerifiesLink struct {
+	Relation  string   `json:"relation"`
+	Criterion string   `json:"criterion"`
+	Currency  string   `json:"currency"`
+	Reasons   []string `json:"reasons"`
 }
 
 // QualityFactStatus is the readiness.QualityFact the gate evaluated, exposed so
@@ -227,10 +281,11 @@ type StaleRecord struct {
 	Affects []string `json:"affects"`
 	// Type, From, To, and Axis identify what the record asserted, so a refresh
 	// can restate the same claim against the current heads.
-	Type string `json:"type,omitempty"`
-	From string `json:"from,omitempty"`
-	To   string `json:"to,omitempty"`
-	Axis string `json:"axis,omitempty"`
+	Type  string `json:"type,omitempty"`
+	From  string `json:"from,omitempty"`
+	To    string `json:"to,omitempty"`
+	Axis  string `json:"axis,omitempty"`
+	Scope string `json:"scope,omitempty"`
 }
 
 // Pin is one pinned value beside the current value it is compared with.

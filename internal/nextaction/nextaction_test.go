@@ -139,7 +139,7 @@ func TestFailingRunAsksForJudgmentAndStaleRunNeedsExternalAccess(t *testing.T) {
 		t.Fatalf("re-running a test needs external access: %#v", run)
 	}
 	shape := run.Question.Options[0].Commands[0]
-	if shape.Command != "quality run record" || shape.Status != grammar.StatusPlanned || !hasArgument(shape, "test-revision", "urn:change-saga:checkout:test-case:revised:revision:r2") {
+	if shape.Command != "quality run record" || shape.Status != grammar.StatusImplemented || !hasArgument(shape, "test-revision", "urn:change-saga:checkout:test-case:revised:revision:r2") {
 		t.Fatalf("the re-run shape pins the current test revision: %#v", shape)
 	}
 }

@@ -481,7 +481,7 @@ func planCoverage(document *saga.Saga, records []coverRecord, files []saga.DiffF
 		if document.Manifest.Version == saga.SlideSagaVersion && !isItem {
 			return nil, recordError(records, i, fmt.Errorf("v4 evidence must target an Item; deck-, slide-, and Saga-level coverage is refused"))
 		}
-		if document.Manifest.Version == saga.SlideSagaVersion || document.Manifest.Version == saga.CurrentSagaVersion && isItem {
+		if document.Manifest.Version == saga.SlideSagaVersion || saga.ReportContainerVersion(document.Manifest.Version) && isItem {
 			identity := strings.TrimSpace(record.Name)
 			if identity != "" {
 				identity = store.Slug(identity)

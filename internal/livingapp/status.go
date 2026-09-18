@@ -331,11 +331,8 @@ func (a *assembler) linksByCriterion() map[string][]coverage.AxisLink {
 		if len(criteria) == 0 {
 			continue
 		}
-		stale := uniqueSorted(link.StaleReasons)
-		if len(stale) > 0 {
-			a.markStale(link.URN, "relation", historyReview, stale, a.relationPins(link), criteria)
-			a.describeStale(link.URN, string(link.Type), link.From, link.To, "")
-		}
+		stale, conflicts, invalid := link.reasons()
+		a.staleRelation(link, stale, criteria)
 		visual, isVisual := a.visual[link.From]
 		for _, criterion := range criteria {
 			story := a.byCriterion[criterion].story
@@ -348,11 +345,14 @@ func (a *assembler) linksByCriterion() map[string][]coverage.AxisLink {
 					result[criterion] = append(result[criterion], coverage.AxisLink{
 						Axis: axis, Relation: link.URN, Source: link.From, Broad: broad, PinnedRevision: link.ToRevision,
 						Paths: [][]string{hops(criterion, story, broad, link.From)}, StaleReasons: copyStrings(stale),
+						ConflictReasons: copyStrings(conflicts), InvalidReasons: copyStrings(invalid),
 					})
 				}
 			}
 			if isVisual {
-				result[criterion] = append(result[criterion], a.implementationLink(link, visual, criterion, story, broad, stale))
+				value := a.implementationLink(link, visual, criterion, story, broad, stale)
+				value.ConflictReasons, value.InvalidReasons = copyStrings(conflicts), copyStrings(invalid)
+				result[criterion] = append(result[criterion], value)
 			}
 		}
 	}
@@ -399,18 +399,18 @@ func (a *assembler) implementationLink(link Link, visual visualTarget, criterion
 	return value
 }
 
-func (a *assembler) relationPins(link Link) []Pin {
-	pins := []Pin{}
-	add := func(field, pinned, current string) {
-		if pinned != "" {
-			pins = append(pins, Pin{Field: field, Pinned: pinned, Current: current})
-		}
+// staleRelation records a stale relation with the pins requirements reported.
+// Invalid and conflicted relations surface in their cells instead.
+func (a *assembler) staleRelation(link Link, stale, criteria []string) {
+	if link.Currency != requirements.CurrencyStale {
+		return
 	}
-	add("from_revision", link.FromRevision, a.currentRevision(link.From))
-	add("to_revision", link.ToRevision, a.currentRevision(link.To))
-	add("from_content_digest", link.FromContentDigest, a.in.DesignDigests[link.From])
-	add("to_content_digest", link.ToContentDigest, a.in.DesignDigests[link.To])
-	return pins
+	a.markStale(link.URN, "relation", historyReview, stale, link.pins(), criteria)
+	scope := ""
+	if link.Version == requirements.V5RelationVersion {
+		scope = link.Scope
+	}
+	a.describeStale(link.URN, string(link.Type), link.From, link.To, "", scope)
 }
 
 func (a *assembler) currentRevision(endpoint string) string {
@@ -535,7 +535,7 @@ func (a *assembler) exceptionStale(projection coverage.AxisProjection) {
 		a.markStale(exception.Exception.URN, "coverage_exception", historyReview, exception.Reasons,
 			[]Pin{{Field: "story_revision", Pinned: exception.Exception.StoryRevision, Current: a.currentRevision(exception.Exception.Criterion)}},
 			[]string{exception.Exception.Criterion})
-		a.describeStale(exception.Exception.URN, "", "", exception.Exception.Criterion, string(exception.Exception.Axis))
+		a.describeStale(exception.Exception.URN, "", "", exception.Exception.Criterion, string(exception.Exception.Axis), "")
 	}
 }
 
@@ -563,9 +563,9 @@ func (a *assembler) markStale(record, kind, history string, reasons []string, pi
 	}
 }
 
-func (a *assembler) describeStale(record, kind, from, to, axis string) {
+func (a *assembler) describeStale(record, kind, from, to, axis, scope string) {
 	if value := a.stale[record]; value != nil {
-		value.Type, value.From, value.To, value.Axis = kind, from, to, axis
+		value.Type, value.From, value.To, value.Axis, value.Scope = kind, from, to, axis, scope
 	}
 }
 

@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/twentyideas/changesaga/internal/grammar"
+	"github.com/twentyideas/changesaga/internal/requirements"
 )
 
 // grammarHelp runs one grammar command with -h through the same entry
@@ -31,6 +32,7 @@ func grammarHelp(t *testing.T, name string) string {
 		"validate":        func() error { return Validate(ctx, args, &output) },
 		"status":          func() error { return Status(ctx, args, &output) },
 		"spec":            func() error { return Spec(args, &output) },
+		"quality":         func() error { return qualityCommand(ctx, args, &output, strings.NewReader("")) },
 	}[fields[0]]
 	if run == nil {
 		t.Fatalf("no dispatcher for implemented grammar command %q", name)
@@ -140,6 +142,119 @@ func assertNoReducingStatusKey(t *testing.T, value any, path string) {
 	case []any:
 		for _, child := range value {
 			assertNoReducingStatusKey(t, child, path+"/[]")
+		}
+	}
+}
+
+// Regression: on a v5 Saga, a test case linked by a verifies relation whose
+// story was then revised is linked-but-stale. It is not an orphan, the stale
+// reason is exactly the moved story pin, and the author gets exactly one next
+// action for it: re-pin. Recommending both re-pin and link would lead an agent
+// to create a duplicate relation.
+func TestStatusReportsAStaleTestCaseLinkOnceAndNeverAsAnOrphan(t *testing.T) {
+	ctx := context.Background()
+	root, repo := coveredSaga(t)
+	mustRun := func(name string, err error, output *bytes.Buffer) {
+		t.Helper()
+		if err != nil {
+			t.Fatalf("%s: %v\n%s", name, err, output.String())
+		}
+	}
+	var output bytes.Buffer
+	mustRun("upgrade 3", Upgrade(ctx, []string{"--to", "3", root}, &output), &output)
+	if err := addUpgradeStory(t, root, "checkout"); err != nil {
+		t.Fatal(err)
+	}
+	document, err := requirements.Load(root, "")
+	if err != nil {
+		t.Fatal(err)
+	}
+	prefix := "urn:change-saga:" + document.SagaID
+	story, testCase, relation := prefix+":story:checkout", prefix+":test-case:fast", prefix+":relation:fast-verifies"
+	mustRun("accept", Story(ctx, []string{"set-state", root, "--story", story, "--event", "accepted", "--parent", story + ":event:proposed", "--state", "accepted", "--json"}, &output), &output)
+	mustRun("upgrade 5", Upgrade(ctx, []string{"--to", "5", root}, &output), &output)
+	runQuality(t, "", "test-case", "add", root, "--id", "fast", "--title", "Fast checkout", "--kind", "positive",
+		"--automation", "automated", "--step", `{"id":"s1","action":"Check out","expected_result":"Done"}`, "--expected-result", "Done")
+	mustRun("relation add", Relation(ctx, []string{"add", root, "--id", "fast-verifies", "--type", "verifies", "--from", testCase,
+		"--to", story + ":criterion:fast", "--rationale", "Exercises the fast path.", "--json"}, &output), &output)
+	mustRun("story revise", Story(ctx, []string{"revise", root, "--story", story, "--revision", "r2", "--parent", story + ":revision:r1",
+		"--title", "Checkout", "--statement", "As a buyer I can check out quickly", "--priority", "must",
+		"--criterion", "fast=Checkout finishes promptly", "--json"}, &output), &output)
+
+	output.Reset()
+	_ = Status(ctx, []string{"--json", "--repo", repo, root}, &output)
+	var status struct {
+		Quality struct {
+			TestCases []struct {
+				TestCase string `json:"test_case"`
+				Orphaned bool   `json:"orphaned"`
+				Verifies []struct {
+					Relation string `json:"relation"`
+					Currency string `json:"currency"`
+				} `json:"verifies"`
+			} `json:"test_cases"`
+		} `json:"quality"`
+		Capabilities []struct {
+			Name  string `json:"name"`
+			State string `json:"state"`
+		} `json:"capabilities"`
+		Stale []struct {
+			Record  string   `json:"record"`
+			Reasons []string `json:"reasons"`
+		} `json:"stale"`
+		NextActions []struct {
+			ID       string `json:"id"`
+			Resource string `json:"resource"`
+			Question *struct {
+				Options []struct {
+					Commands []struct {
+						Command string   `json:"command"`
+						Argv    []string `json:"argv"`
+					} `json:"commands"`
+				} `json:"options"`
+			} `json:"question"`
+		} `json:"next_actions"`
+	}
+	if err := json.Unmarshal(output.Bytes(), &status); err != nil {
+		t.Fatalf("status: %v\n%s", err, output.String())
+	}
+	for _, capability := range status.Capabilities {
+		if capability.Name == "requirements" && capability.State != "adopted" {
+			t.Fatalf("a v5 Saga's requirements are adopted: %#v", status.Capabilities)
+		}
+	}
+	if len(status.Quality.TestCases) != 1 || status.Quality.TestCases[0].Orphaned || len(status.Quality.TestCases[0].Verifies) != 1 ||
+		status.Quality.TestCases[0].Verifies[0].Relation != relation || status.Quality.TestCases[0].Verifies[0].Currency != "stale" {
+		t.Fatalf("the linked test case is stale, not orphaned: %#v", status.Quality.TestCases)
+	}
+	found := false
+	for _, record := range status.Stale {
+		if record.Record == relation {
+			found = true
+			if len(record.Reasons) != 1 || record.Reasons[0] != "to revision changed" {
+				t.Fatalf("the only stale reason is the moved story pin: %#v", record.Reasons)
+			}
+		}
+	}
+	if !found {
+		t.Fatalf("the stale relation is in the stale set: %#v", status.Stale)
+	}
+	matching := []string{}
+	for _, action := range status.NextActions {
+		if action.Resource == relation || action.Resource == testCase {
+			matching = append(matching, action.ID)
+		}
+	}
+	if len(matching) != 1 || matching[0] != "stale:"+relation {
+		t.Fatalf("exactly one next action concerns the test case, and it re-pins: %v", matching)
+	}
+	for _, action := range status.NextActions {
+		if action.ID != "stale:"+relation {
+			continue
+		}
+		argv := strings.Join(action.Question.Options[0].Commands[1].Argv, " ")
+		if !strings.Contains(argv, "--to-revision "+story+":revision:r2") || !strings.Contains(argv, "--scope self") || !strings.Contains(argv, "--from "+testCase) {
+			t.Fatalf("the re-pin restates the relation against the current head: %s", argv)
 		}
 	}
 }

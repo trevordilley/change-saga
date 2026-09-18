@@ -974,7 +974,7 @@ func (a *app) page(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	if requirementsRoute && document.Manifest.Version != saga.CurrentSagaVersion {
+	if requirementsRoute && !saga.ReportContainerVersion(document.Manifest.Version) {
 		http.NotFound(w, r)
 		return
 	}
@@ -996,12 +996,12 @@ func (a *app) page(w http.ResponseWriter, r *http.Request) {
 	data := pageData{
 		Saga:           document,
 		SlideNative:    document.Manifest.Version == saga.SlideSagaVersion,
-		HybridSlides:   document.Manifest.Version == saga.CurrentSagaVersion && len(document.Decks) > 0,
+		HybridSlides:   saga.ReportContainerVersion(document.Manifest.Version) && len(document.Decks) > 0,
 		Root:           rootView,
 		MutationToken:  a.mutationToken,
 		CoverageTotals: a.cachedCoverageTotals(),
 	}
-	if document.Manifest.Version == saga.CurrentSagaVersion {
+	if saga.ReportContainerVersion(document.Manifest.Version) {
 		requirementsView, requirementsNav, err := loadRequirementsSurface(a.root, document.Manifest.ID, r)
 		if errors.Is(err, errRequirementNotFound) {
 			http.NotFound(w, r)
