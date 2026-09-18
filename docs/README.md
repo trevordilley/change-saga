@@ -7,8 +7,8 @@ your first saga. This directory holds the deeper material.
 
 | | |
 | --- | --- |
-| [SPEC.md](../SPEC.md) | The v2 format contract: model, root and source identity, chapters, sections, fragments, diff URIs, and review overlays. Normative. |
-| [`schema/`](../schema) | JSON Schemas for every persisted document, v1 and v2. |
+| [SPEC.md](../SPEC.md) | The one Saga format: layout, requirements, design, quality, the implementation deck, diff URIs, claims, and the review overlay. Normative. |
+| [`schema/`](../schema) | JSON Schemas for every persisted record. The manifest and the records the format introduced are under `schema/v5`; component records name the schema version they use. |
 | `change-saga spec` | The same contract as the CLI reports it, with `--json` for agents. If it disagrees with SPEC.md, the CLI wins — please open an issue. |
 
 ## Building and shipping
@@ -29,7 +29,7 @@ not a contract — where they disagree with the code, the code is current.
 | [renderer-ui.md](renderer-ui.md) | Conventions the reviewer UI holds to, including the vocabulary boundary between reviewer chrome and format terms. Read before touching `internal/server/`. |
 | [ux-reframe.md](ux-reframe.md) | Why review is structured as a sequence of finishable chapter sessions. |
 | [review-experience-audit.md](review-experience-audit.md) | The audit behind that reframe, with the session and resumption contract. |
-| [requirements-design-quality-lifecycle.md](requirements-design-quality-lifecycle.md) | Implementation-ready plan for evolving one report Saga from requirements through visual design, exact implementation traceability, quality evidence, and completed review. |
+| [requirements-design-quality-lifecycle.md](requirements-design-quality-lifecycle.md) | The plan behind the one Saga: from prototypes and requirements through design, exact implementation traceability, quality evidence, and completed review. |
 | [ai-facing-interface.md](ai-facing-interface.md) | The application boundary an AI client uses instead of walking `*.chapter` and `___review` paths directly. |
 | [ai-query-security-test-plan.md](ai-query-security-test-plan.md) | Adversarial acceptance cases and reusable fixture contract for the AI query boundary. |
 
