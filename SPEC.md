@@ -130,7 +130,7 @@ quality projection requires `positive`; a policy can additionally require
 `negative` and/or `edge`. Coverage exceptions use one of the six axes
 `prototype`, `ux`, `ui`, `technical`, `quality`, or `implementation`, pin one
 story revision, and require a nonblank rationale plus at least one resolved
-citation. The feature policy requires every axis; an exception is the only way
+citation. Every axis is required; an exception is the only way
 to declare an axis inapplicable, and there is one unsuperseded head per
 criterion/axis. The deprecated pre-six-axis value `design` still loads and
 expands to `ux`, `ui`, and `technical`; writers must not emit it. There is no

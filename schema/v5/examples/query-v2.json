@@ -2,7 +2,7 @@
   "schema": "change-saga.ai/v2",
   "ok": true,
   "data": {
-    "axis": "design",
+    "axis": "technical",
     "counts": {
       "covered_direct": 1,
       "covered_broad": 0,

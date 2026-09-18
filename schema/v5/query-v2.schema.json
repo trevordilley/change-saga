@@ -210,7 +210,7 @@
     },
     "axis_name": {
       "description": "One of the six canonical coverage axes, or the deprecated pre-six-axis aggregate \"design\" retained so existing readers keep working.",
-      "enum": ["design", "implementation", "prototype", "quality", "technical", "ui", "ux"]
+      "enum": ["implementation", "prototype", "quality", "technical", "ui", "ux"]
     },
     "axis_counts": {
       "type": "object",
