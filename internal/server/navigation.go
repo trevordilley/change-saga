@@ -45,8 +45,8 @@ type productNavSources struct {
 	// TODO: no diagram resource is recorded yet; nothing fills this.
 	dataFlows []*navNodeView
 	// testCases is the quality domain's test cases.
-	// TODO: internal/quality loads only format v5 Sagas, and every Saga on
-	// disk is still v3, so the server has no readable source for these.
+	// TODO: quality.Load reads the test cases, but no reviewer view renders a
+	// test case yet, so nothing fills this.
 	testCases      []*navNodeView
 	implementation []*navNodeView
 }

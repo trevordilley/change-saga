@@ -260,7 +260,7 @@ func TestSelectorValidationAndSourceCompatibility(t *testing.T) {
 func newSaga(t *testing.T) string {
 	t.Helper()
 	root := t.TempDir()
-	mustWrite(t, filepath.Join(root, "saga.json"), `{"$schema":"https://changesaga.dev/schema/v3/saga.schema.json","version":3,"id":"test","title":"Test","source":{"repository":"https://example.com/repo.git","base":"main","head":"feature"}}`)
+	mustWrite(t, filepath.Join(root, "saga.json"), `{"$schema":"https://changesaga.dev/schema/v5/saga.schema.json","version":5,"id":"test","title":"Test","source":{"repository":"https://example.com/repo.git","base":"main","head":"feature"}}`)
 	return root
 }
 

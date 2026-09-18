@@ -49,7 +49,7 @@ func AddThread(root, target, body string, anchor saga.Anchor, kind, replacement 
 		if err := verifyAnchorRepository(index, anchor); err != nil {
 			return err
 		}
-		if index.Manifest.Version == saga.SlideSagaVersion || index.FlatTargets[target] {
+		if index.FlatTargets[target] {
 			thread := saga.ThreadManifest{Version: saga.CurrentVersion, ID: id, Target: target, Anchor: anchor, Kind: kind, CreatedAt: now}
 			if kind == "suggestion" {
 				thread.Suggestion = &saga.Suggestion{Replacement: replacement}
@@ -111,9 +111,6 @@ func AddDiffReview(root, uri, state string) error {
 		now := time.Now().UTC()
 		id := store.EventID(now)
 		review := saga.DiffReview{Version: saga.CurrentVersion, ID: id, URI: uri, State: state, CreatedAt: now}
-		if index.Manifest.Version == saga.SlideSagaVersion {
-			return store.WriteJSON(filepath.Join(root, saga.FlatDiffReviewFilename(id)), review, true)
-		}
 		dir, err := store.EnsureDirWithin(root, filepath.Join(root, "___review", "diffs"))
 		if err != nil {
 			return err
@@ -135,7 +132,7 @@ func AddReply(root, threadID, body string, attachments []string) (id string, err
 	now := time.Now().UTC()
 	id = store.EventID(now)
 	err = mutate(root, func(index saga.MutationIndex) error {
-		if index.Manifest.Version == saga.SlideSagaVersion || flatThreadExists(root, threadID) {
+		if flatThreadExists(root, threadID) {
 			if _, err := flatThreadPath(root, threadID); err != nil {
 				return err
 			}
@@ -166,7 +163,7 @@ func SetState(root, threadID, state string) error {
 		return fmt.Errorf("thread state must be open, resolved, or withdrawn")
 	}
 	return mutate(root, func(index saga.MutationIndex) error {
-		if index.Manifest.Version == saga.SlideSagaVersion || flatThreadExists(root, threadID) {
+		if flatThreadExists(root, threadID) {
 			if _, err := flatThreadPath(root, threadID); err != nil {
 				return err
 			}
@@ -198,7 +195,7 @@ func SetAnchor(root, threadID string, anchor saga.Anchor) error {
 		if err := verifyAnchorRepository(index, anchor); err != nil {
 			return err
 		}
-		if index.Manifest.Version == saga.SlideSagaVersion || flatThreadExists(root, threadID) {
+		if flatThreadExists(root, threadID) {
 			if _, err := flatThreadPath(root, threadID); err != nil {
 				return err
 			}
@@ -234,7 +231,7 @@ func AddReview(root, targetValue, state, body string, reviewer saga.ReviewerIden
 		return err
 	}
 	return mutate(root, func(index saga.MutationIndex) error {
-		if index.Manifest.Version == saga.SlideSagaVersion || index.FlatTargets[targetValue] {
+		if index.FlatTargets[targetValue] {
 			if _, ok := index.ReviewTargets[targetValue]; !ok {
 				return fmt.Errorf("review target does not exist")
 			}

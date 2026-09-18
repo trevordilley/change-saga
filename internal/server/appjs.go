@@ -22,12 +22,11 @@ const appJavaScript = `(() => {
   let bubbleHideTimer = null;
   const slideDiffPreviewReasons = new WeakMap();
   const noteDefaultColor = '#f2bd4b';
-  const slideSidebarKey = 'change-saga-slide-sidebar-collapsed';
 
   function slideDiffSummaryButton(node) {
     const button = node?.closest?.('.diff-button');
     const fragment = button?.closest?.('.fragment');
-    if (!button || !fragment?.closest('[data-native-slide]')) return null;
+    if (!button || !fragment?.closest('[data-deck-slide]')) return null;
     return button.closest('.fragment-head')?.parentElement === fragment ? button : null;
   }
 
@@ -53,22 +52,22 @@ const appJavaScript = `(() => {
     if (visual) visual.dataset.landmarkHasDiffs = String(landmarkOwnsDiffs(target));
   }
 
-  function nativeSlides() { return qa('[data-native-slide]'); }
+  function deckViewerSlides() { return qa('[data-deck-slide]'); }
 
-  function nativeDeckSlides(slide) {
-    const slides = nativeSlides();
+  function viewerDeckSlides(slide) {
+    const slides = deckViewerSlides();
     if (!slide?.dataset.deckTarget) return slides;
     return slides.filter(candidate => candidate.dataset.deckTarget === slide.dataset.deckTarget);
   }
 
-  function nativeSlideSurfaceActive() {
-    const surface = q('[data-slide-native]');
+  function deckViewerActive() {
+    const surface = q('[data-deck-viewer]');
     const view = surface?.closest('[data-view]');
     return Boolean(surface && (!view || view.classList.contains('active')));
   }
 
-  function activateNativeSlide(index, updateHash = false) {
-    const slides = nativeSlides();
+  function activateDeckSlide(index, updateHash = false) {
+    const slides = deckViewerSlides();
     if (!slides.length) return;
     qa('.fragment.preview-linked-items').forEach(fragment => fragment.classList.remove('preview-linked-items'));
     const bounded = Math.max(0, Math.min(slides.length - 1, index));
@@ -79,11 +78,11 @@ const appJavaScript = `(() => {
       slide.setAttribute('aria-hidden', String(!active));
     });
     const active = slides[bounded];
-    const shell = active.closest('[data-slide-native]');
+    const shell = active.closest('[data-deck-viewer]');
     const position = q('[data-slide-position]', shell);
     const deckTitle = q('[data-slide-deck-title]', shell);
     const slideTitle = q('[data-current-slide-title]', shell);
-    const deckSlides = nativeDeckSlides(active);
+    const deckSlides = viewerDeckSlides(active);
     const deckIndex = deckSlides.indexOf(active);
     if (position) position.textContent = (deckIndex + 1) + ' / ' + deckSlides.length;
     if (deckTitle) deckTitle.textContent = active.dataset.deckTitle || '';
@@ -113,44 +112,25 @@ const appJavaScript = `(() => {
     positionFragmentOverlays();
   }
 
-  function stepNativeSlide(delta) {
-    const slides = nativeSlides();
+  function stepDeckSlide(delta) {
+    const slides = deckViewerSlides();
     const active = slides.find(slide => !slide.hidden);
     if (!active) return;
-    const deckSlides = nativeDeckSlides(active);
+    const deckSlides = viewerDeckSlides(active);
     const current = deckSlides.indexOf(active);
     const target = deckSlides[Math.max(0, Math.min(deckSlides.length - 1, current + delta))];
     const index = slides.indexOf(target);
-    if (index >= 0) activateNativeSlide(index, true);
+    if (index >= 0) activateDeckSlide(index, true);
   }
 
-  function syncNativeSlideForHash() {
-    const slides = nativeSlides();
+  function syncDeckSlideForHash() {
+    const slides = deckViewerSlides();
     if (!slides.length) return;
     const id = decodeURIComponent(location.hash.replace(/^#/, ''));
-    const requested = id ? document.getElementById(id)?.closest?.('[data-native-slide]') : null;
+    const requested = id ? document.getElementById(id)?.closest?.('[data-deck-slide]') : null;
     const view = slides[0].closest('[data-view]');
     if (view && !view.classList.contains('active') && !requested) return;
-    activateNativeSlide(requested ? slides.indexOf(requested) : Math.max(0, slides.findIndex(slide => !slide.hidden)));
-  }
-
-  function setSlideSidebarCollapsed(collapsed, persist = true) {
-    const shell = q('.slide-shell');
-    if (!shell) return;
-    shell.classList.toggle('slide-sidebar-collapsed', collapsed);
-    qa('[data-slide-sidebar-toggle]').forEach(button => {
-      button.setAttribute('aria-expanded', String(!collapsed));
-      button.setAttribute('aria-label', collapsed ? 'Show slide navigator' : 'Hide slide navigator');
-      button.title = collapsed ? 'Show slide navigator' : 'Hide slide navigator';
-    });
-    if (persist) try { localStorage.setItem(slideSidebarKey, collapsed ? 'true' : 'false'); } catch {}
-    globalThis.requestAnimationFrame?.(positionFragmentOverlays);
-  }
-
-  function syncSlideSidebarState() {
-    let collapsed = false;
-    try { collapsed = localStorage.getItem(slideSidebarKey) === 'true'; } catch {}
-    setSlideSidebarCollapsed(collapsed, false);
+    activateDeckSlide(requested ? slides.indexOf(requested) : Math.max(0, slides.findIndex(slide => !slide.hidden)));
   }
 
   function syncSlidePresentation() {
@@ -1659,7 +1639,6 @@ const appJavaScript = `(() => {
       shell.classList.toggle('code-mode', name === 'code');
       shell.classList.toggle('slide-mode', name === 'slides');
     }
-    qa('[data-slide-sidebar-toggle]').forEach(button => { button.hidden = name !== 'saga'; });
     const slideView = q('[data-view="slides"]') ? 'slides' : 'saga';
     qa('[data-slide-present]').forEach(button => { button.hidden = name !== slideView; });
     // A hidden view measures as zero, so the bubbles are placed once the saga
@@ -3375,18 +3354,12 @@ const appJavaScript = `(() => {
   document.addEventListener('click', event => {
     const slideThumbnail = event.target.closest?.('[data-slide-thumbnail]');
     if (slideThumbnail) {
-      const slides = nativeSlides();
+      const slides = deckViewerSlides();
       const index = slides.findIndex(slide => slide.dataset.slideTarget === slideThumbnail.dataset.slideTarget);
       if (index >= 0) {
         if (q('[data-view="slides"]')) setView('slides');
-        activateNativeSlide(index, true);
+        activateDeckSlide(index, true);
       }
-      return;
-    }
-    const slideSidebarToggle = event.target.closest?.('[data-slide-sidebar-toggle]');
-    if (slideSidebarToggle) {
-      const collapsed = q('.slide-shell')?.classList.contains('slide-sidebar-collapsed');
-      setSlideSidebarCollapsed(!collapsed);
       return;
     }
     if (event.target.closest?.('[data-slide-present],[data-slide-exit-presentation]')) {
@@ -3395,7 +3368,7 @@ const appJavaScript = `(() => {
     }
     const slideDirection = event.target.closest?.('[data-slide-previous],[data-slide-next]');
     if (slideDirection) {
-      stepNativeSlide(slideDirection.matches('[data-slide-next]') ? 1 : -1);
+      stepDeckSlide(slideDirection.matches('[data-slide-next]') ? 1 : -1);
       return;
     }
     const retryFile = event.target.closest?.('[data-retry-file]');
@@ -3623,9 +3596,9 @@ const appJavaScript = `(() => {
       syncSlidePresentation();
       return;
     }
-    if ((event.key === 'ArrowLeft' || event.key === 'ArrowRight') && nativeSlideSurfaceActive() && nativeSlides().length && !selectedAnnotation && !annotationDraft && !event.target.matches?.('input,textarea,select,[contenteditable="true"]')) {
+    if ((event.key === 'ArrowLeft' || event.key === 'ArrowRight') && deckViewerActive() && deckViewerSlides().length && !selectedAnnotation && !annotationDraft && !event.target.matches?.('input,textarea,select,[contenteditable="true"]')) {
       event.preventDefault();
-      stepNativeSlide(event.key === 'ArrowRight' ? 1 : -1);
+      stepDeckSlide(event.key === 'ArrowRight' ? 1 : -1);
       return;
     }
     const editingField = event.target.closest?.('.sticky-note-text');
@@ -3898,7 +3871,6 @@ const appJavaScript = `(() => {
   q('[data-annotation-color]')?.addEventListener('input', event => { annotationColorTouched = true; annotationColor = normalizedAnnotationColor(event.target.value); });
   q('[data-annotation-color]')?.addEventListener('change', event => { if (selectedAnnotation) recolorSelectedAnnotation(event.target.value); });
   prepareContext();
-  syncSlideSidebarState();
   syncSlidePresentation();
   highlightCode();
   applyDiffLayout('inline');
@@ -3919,7 +3891,7 @@ const appJavaScript = `(() => {
   const anchorResolving = initialView === 'saga' || initialView === 'slides'
     ? activateLandmark().then(revealHashedAnnotationBubble)
     : hydrateReviewSurface(initialView).then(revealHashedAnnotationBubble);
-	 syncNativeSlideForHash();
+	 syncDeckSlideForHash();
   const activityResolving = activityRequested ? openActivityDrawer(location.href, null, false) : Promise.resolve();
   // The page arrives as a shell and fills in what is on screen. Saying when
   // that has finished is the difference between a reviewer who can see the
@@ -3930,7 +3902,7 @@ const appJavaScript = `(() => {
   positionFragmentOverlays();
   globalThis.requestAnimationFrame?.(positionFragmentOverlays);
   addEventListener('hashchange', () => {
-	 syncNativeSlideForHash();
+	 syncDeckSlideForHash();
     const view = new URL(location.href).searchParams.get('view');
     if (view === 'code' || view === 'manifest') void hydrateReviewSurface(view).then(revealHashedAnnotationBubble);
     else void activateLandmark().then(revealHashedAnnotationBubble);

@@ -351,12 +351,9 @@ func relationAdd(_ context.Context, args []string, out io.Writer) error {
 		FromRevision: *fromRevision, ToRevision: *toRevision, FromContentDigest: *fromDigest,
 		ToContentDigest: *toDigest, Scope: requirements.RelationScope(*scope), RequestID: *requestID,
 	}
-	var defaulted []string
-	if document.SagaVersion == requirements.V5RelationVersion {
-		defaulted, err = defaultV5RelationPins(root, &input)
-		if err != nil {
-			return err
-		}
+	defaulted, err := defaultV5RelationPins(root, &input)
+	if err != nil {
+		return err
 	}
 	result, err := requirements.AddRelation(root, document.SagaID, input)
 	if err != nil {
@@ -380,8 +377,8 @@ func relationAdd(_ context.Context, args []string, out io.Writer) error {
 	return nil
 }
 
-// relationAddOutput extends the shared mutation output only when a v5 pin was
-// defaulted, so the reported bytes for explicit pins and v3 Sagas are unchanged.
+// relationAddOutput extends the shared mutation output only when a pin was
+// defaulted, so the reported bytes for explicit pins are unchanged.
 type relationAddOutput struct {
 	livingMutationOutput
 	DefaultedPins []string `json:"defaulted_pins"`

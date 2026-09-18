@@ -58,47 +58,47 @@ func AxisRules() []AxisRule { return append([]AxisRule(nil), axisRules...) }
 var resources = []Resource{
 	{
 		Kind: "story", URN: "urn:change-saga:<saga>:story:<story>", Storage: "___requirements/stories/<story>.story/story.json",
-		Schema: schemaBase + "v3/story.schema.json", Versions: []int{3, 5}, History: "immutable identity",
+		Schema: schemaBase + "v3/story.schema.json", Versions: []int{5}, History: "immutable identity",
 		Writers: []string{"story add"},
 	},
 	{
 		Kind: "story-revision", URN: "urn:change-saga:<saga>:story:<story>:revision:<revision>", Storage: "___requirements/stories/<story>.story/revisions/<revision>.json",
-		Schema: schemaBase + "v3/story-revision.schema.json", Versions: []int{3, 5}, History: "append-only complete snapshots with parent heads; multiple heads are a conflict",
+		Schema: schemaBase + "v3/story-revision.schema.json", Versions: []int{5}, History: "append-only complete snapshots with parent heads; multiple heads are a conflict",
 		Writers: []string{"story add", "story revise", "criterion add", "criterion revise", "criterion remove"},
 	},
 	{
 		Kind: "story-event", URN: "urn:change-saga:<saga>:story:<story>:event:<event>", Storage: "___requirements/stories/<story>.story/events/<event>.json",
-		Schema: schemaBase + "v3/story-event.schema.json", Versions: []int{3, 5}, History: "append-only lifecycle graph with parent heads",
+		Schema: schemaBase + "v3/story-event.schema.json", Versions: []int{5}, History: "append-only lifecycle graph with parent heads",
 		Lifecycle: []string{"proposed", "accepted", "deferred", "rejected", "retired"}, Writers: []string{"story add", "story set-state"},
 	},
 	{
 		Kind: "criterion", URN: "urn:change-saga:<saga>:story:<story>:criterion:<criterion>", Storage: "inside every story revision's acceptance_criteria",
-		Schema: schemaBase + "v3/story-revision.schema.json", Versions: []int{3, 5}, History: "stable id across revisions; a removed id is never reused",
+		Schema: schemaBase + "v3/story-revision.schema.json", Versions: []int{5}, History: "stable id across revisions; a removed id is never reused",
 		Writers: []string{"criterion add", "criterion revise", "criterion remove"},
 		Notes:   "inherits the story lifecycle; active only while present in the unique current story revision",
 	},
 	{
 		Kind: "citation", URN: "urn:change-saga:<saga>:citation:<citation>", Storage: "___requirements/citations/<citation>.json",
-		Schema: schemaBase + "v3/citation.schema.json", Versions: []int{3, 5}, History: "immutable", Writers: []string{"citation add"},
+		Schema: schemaBase + "v3/citation.schema.json", Versions: []int{5}, History: "immutable", Writers: []string{"citation add"},
 	},
 	{
 		Kind: "relation", URN: "urn:change-saga:<saga>:relation:<relation>", Storage: "___requirements/relations/<relation>.json",
-		Schema: schemaBase + "v5/relation.schema.json", Versions: []int{3, 5}, History: "immutable pins; active or superseded",
+		Schema: schemaBase + "v5/relation.schema.json", Versions: []int{5}, History: "immutable pins; active or superseded",
 		Writers: []string{"relation add", "relation supersede"},
 		Notes:   "v3 relations remain valid history; v5 relations add scope and visual digest pins",
 	},
 	{
 		Kind: "prototype", URN: "urn:change-saga:<saga>:prototype:<prototype>", Storage: "___requirements/prototypes/<prototype>.prototype/prototype.json",
-		Schema: schemaBase + "v3/prototype.schema.json", Versions: []int{3, 5}, History: "immutable identity", Writers: []string{"prototype add-html"},
+		Schema: schemaBase + "v3/prototype.schema.json", Versions: []int{5}, History: "immutable identity", Writers: []string{"prototype add-html"},
 	},
 	{
 		Kind: "prototype-revision", URN: "urn:change-saga:<saga>:prototype:<prototype>:revision:<revision>", Storage: "___requirements/prototypes/<prototype>.prototype/revisions/<revision>.revision/",
-		Schema: schemaBase + "v3/prototype-revision.schema.json", Versions: []int{3, 5}, History: "append-only immutable experiences with parent heads",
+		Schema: schemaBase + "v3/prototype-revision.schema.json", Versions: []int{5}, History: "append-only immutable experiences with parent heads",
 		Lifecycle: []string{"draft", "ready", "retired"}, Writers: []string{"prototype add-html"},
 	},
 	{
 		Kind: "prototype-annotation", URN: "urn:change-saga:<saga>:prototype:<prototype>:annotation:<annotation>", Storage: "___requirements/prototypes/annotations/",
-		Schema: schemaBase + "v3/prototype-annotation.schema.json", Versions: []int{3, 5}, History: "immutable; pinned to a prototype revision or digest and a story revision",
+		Schema: schemaBase + "v3/prototype-annotation.schema.json", Versions: []int{5}, History: "immutable; pinned to a prototype revision or digest and a story revision",
 		Writers: []string{"prototype annotate"},
 	},
 	{

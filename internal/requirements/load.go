@@ -24,10 +24,9 @@ type sagaIdentity struct {
 	Source  json.RawMessage `json:"source"`
 }
 
-// reportV5SagaVersion is the v5 report container. Its requirement components
-// are the unchanged v3 records, so this loader reads a v5 Saga exactly like a
-// v3 one and only additionally tolerates the v5 coverage-exceptions sibling.
-const reportV5SagaVersion = 5
+// sagaVersion is the one Change Saga container format. Its requirement
+// components are version-3 records.
+const sagaVersion = 5
 
 func Load(root, sagaID string) (Document, error) {
 	return LoadWithOptions(root, sagaID, LoadOptions{})
@@ -57,8 +56,8 @@ func LoadWithOptions(root, sagaID string, options LoadOptions) (Document, error)
 	if err := readStrictJSON(manifestPath, &identity); err != nil {
 		return Document{}, fmt.Errorf("read saga.json: %w", err)
 	}
-	if identity.Version != Version && identity.Version != reportV5SagaVersion {
-		return Document{}, fmt.Errorf("requirements require a format v3 or v5 saga")
+	if identity.Version != sagaVersion {
+		return Document{}, fmt.Errorf("saga.json: unsupported Saga version %d; change-saga reads only version %d", identity.Version, sagaVersion)
 	}
 	if !livingid.ValidID(identity.ID) {
 		return Document{}, fmt.Errorf("saga.json contains an invalid saga id")
@@ -69,7 +68,7 @@ func LoadWithOptions(root, sagaID string, options LoadOptions) (Document, error)
 	if sagaID != identity.ID {
 		return Document{}, fmt.Errorf("requested saga id %q does not match saga.json id %q", sagaID, identity.ID)
 	}
-	document := Document{Root: abs, SagaID: sagaID, SagaVersion: identity.Version, Stories: []Story{}, Citations: []Citation{}, Relations: []Relation{}}
+	document := Document{Root: abs, SagaID: sagaID, Stories: []Story{}, Citations: []Citation{}, Relations: []Relation{}}
 	requirementsRoot := filepath.Join(abs, "___requirements")
 	present, err := realDirectory(requirementsRoot)
 	if err != nil {
@@ -93,13 +92,10 @@ func LoadWithOptions(root, sagaID string, options LoadOptions) (Document, error)
 		// It shares ___requirements so the two merge independently; this loader
 		// deliberately never reads it.
 		case "prototypes":
-		// coverage-exceptions holds v5 immutable decisions owned by the coverage
+		// coverage-exceptions holds immutable decisions owned by the coverage
 		// exception domain. Like prototypes it is a sibling root this loader
-		// deliberately never reads; it exists only in a v5 Saga.
+		// deliberately never reads.
 		case "coverage-exceptions":
-			if identity.Version != reportV5SagaVersion {
-				return Document{}, fmt.Errorf("requirements entry %q requires a format v5 saga", entry.Name())
-			}
 		default:
 			return Document{}, fmt.Errorf("unknown requirements entry %q", entry.Name())
 		}
@@ -331,9 +327,6 @@ func loadRelations(document *Document) error {
 		expectedID := strings.TrimSuffix(entry.Name(), ".json")
 		if err := validateRelation(value, document.SagaID, expectedID); err != nil {
 			return fmt.Errorf("%s: %w", relative(document.Root, path), err)
-		}
-		if value.Version == V5RelationVersion && document.SagaVersion != reportV5SagaVersion {
-			return fmt.Errorf("%s: a v5 relation requires a format v5 saga", relative(document.Root, path))
 		}
 		document.Relations = append(document.Relations, value)
 	}

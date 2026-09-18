@@ -39,9 +39,6 @@ func (scope authoringScope) hierarchyRoot(document *saga.Saga) (string, error) {
 	if !scope.design {
 		return document.Root, nil
 	}
-	if !saga.ReportContainerVersion(document.Manifest.Version) {
-		return "", fmt.Errorf("technical design authoring requires Saga format v3 or v5; run change-saga upgrade --to 3 %s", document.Root)
-	}
 	dir := filepath.Join(document.Root, "___design")
 	info, err := os.Lstat(dir)
 	if errors.Is(err, os.ErrNotExist) {
@@ -92,7 +89,7 @@ func pathWithin(root, candidate string) bool {
 
 var designOperations = []string{"add-chapter", "add-section", "add-fragment", "set-fragment-content"}
 
-// Design dispatches the v3 technical-design authoring family. Each operation
+// Design dispatches the technical-design authoring family. Each operation
 // calls the same implementation used by root narrative authoring with a
 // different physical hierarchy root.
 func Design(ctx context.Context, args []string, out io.Writer) error {
@@ -118,7 +115,7 @@ func Design(ctx context.Context, args []string, out io.Writer) error {
 }
 
 func printDesignHelp(out io.Writer) {
-	fmt.Fprintln(out, "Technical design authoring (Saga format v3)")
+	fmt.Fprintln(out, "Technical design authoring")
 	if description := commandDescription["design"]; description != "" {
 		fmt.Fprintf(out, "\n%s\n", description)
 	}

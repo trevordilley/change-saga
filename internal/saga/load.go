@@ -42,32 +42,29 @@ var fullLoadCount atomic.Uint64
 // path; review-only and mutation-index loads do not increment it.
 func FullLoadCount() uint64 { return fullLoadCount.Load() }
 
-// ReadManifest reads only the root manifest. Format-aware front ends use it to refuse
-// ambiguous report/slide operations before opening a heavier application view.
+// ManifestName is the Change Saga root manifest.
+const ManifestName = "saga.json"
+
+// ReadManifest reads only the root manifest. Front ends use it to refuse an
+// unsupported directory before opening a heavier application view.
 func ReadManifest(root string) (Manifest, error) {
-	var manifest Manifest
-	path, err := rootManifestPath(root)
-	if err != nil {
-		return Manifest{}, err
-	}
-	if err := readJSON(path, &manifest); err != nil {
-		return Manifest{}, err
-	}
-	return manifest, nil
+	return readManifest(root)
 }
 
-func rootManifestPath(root string) (string, error) {
-	legacy := filepath.Join(root, "saga.json")
-	flat := filepath.Join(root, FlatManifestName)
-	_, legacyErr := os.Lstat(legacy)
-	_, flatErr := os.Lstat(flat)
-	if legacyErr == nil && flatErr == nil {
-		return "", fmt.Errorf("ambiguous Saga root contains both saga.json and %s", FlatManifestName)
+// readManifest reads saga.json and admits only the one Change Saga format.
+func readManifest(root string) (Manifest, error) {
+	var manifest Manifest
+	path := filepath.Join(root, ManifestName)
+	if _, err := os.Lstat(path); errors.Is(err, fs.ErrNotExist) {
+		return Manifest{}, fmt.Errorf("%s has no %s; it is not a Change Saga", root, ManifestName)
 	}
-	if flatErr == nil {
-		return flat, nil
+	if err := readJSON(path, &manifest); err != nil {
+		return Manifest{}, fmt.Errorf("read %s: %w", ManifestName, err)
 	}
-	return legacy, nil
+	if manifest.Version != SagaVersion {
+		return Manifest{}, fmt.Errorf("%s: unsupported Saga version %d; change-saga reads only version %d", ManifestName, manifest.Version, SagaVersion)
+	}
+	return manifest, nil
 }
 
 func Load(root string) (*Saga, Validation, error) {
@@ -105,72 +102,49 @@ func load(root string, options loadOptions) (*Saga, Validation, error) {
 		return nil, Validation{}, fmt.Errorf("%s is not a directory", root)
 	}
 
-	manifestPath, err := rootManifestPath(abs)
+	manifest, err := readManifest(abs)
 	if err != nil {
 		return nil, Validation{}, err
-	}
-	var manifest Manifest
-	if err := readJSON(manifestPath, &manifest); err != nil {
-		return nil, Validation{}, fmt.Errorf("read %s: %w", filepath.Base(manifestPath), err)
 	}
 	validation := Validation{Valid: true, Issues: []Issue{}}
 	if !strings.HasSuffix(filepath.Base(abs), ".saga") {
 		addIssue(&validation, "error", ".", "saga root directory must end in .saga")
 	}
-	validateManifest(manifest, filepath.Base(manifestPath), &validation)
-	if manifest.Version == SlideSagaVersion && filepath.Base(manifestPath) != FlatManifestName {
-		addIssue(&validation, "error", filepath.Base(manifestPath), "v4 requires the compact flat 00-saga.json manifest; nested preview Sagas must be regenerated")
-	}
-	if manifest.Version == SlideSagaVersion {
-		if issue := flatPathIssue(abs, strings.Repeat("x", FlatMaxBasename)); issue != "" {
-			addIssue(&validation, "error", ".", issue)
-		}
-	}
+	validateManifest(manifest, ManifestName, &validation)
 
-	var section *Section
-	var decks []*Deck
-	if manifest.Version == SlideSagaVersion {
-		decks, err = loadDecks(abs, manifest, options, &validation)
-		if err != nil {
-			return nil, validation, err
+	section, err := loadSection(abs, abs, manifest, sagaHierarchy, options, &validation)
+	if err != nil {
+		return nil, validation, err
+	}
+	designDir := filepath.Join(abs, "___design")
+	if info, statErr := os.Lstat(designDir); statErr == nil && info.IsDir() && info.Mode()&os.ModeSymlink == 0 {
+		design, loadErr := loadSection(abs, designDir, manifest, designHierarchy, options, &validation)
+		if loadErr != nil {
+			return nil, validation, loadErr
 		}
-		section = projectDecks(manifest, decks)
-	} else {
-		section, err = loadSection(abs, abs, manifest, sagaHierarchy, options, &validation)
+		// Design packages deliberately join the existing in-memory hierarchy.
+		// Every renderer and target index can therefore address them without a
+		// second, subtly different chapter/fragment implementation.
+		section.Fragments = append(section.Fragments, design.Fragments...)
+		section.Children = append(section.Children, design.Children...)
+		sortSectionContents(section)
+	}
+	var decks []*Deck
+	if metadataDirectorySafe(abs, abs, EmbeddedSlidesDir, &validation) {
+		decks, err = loadEmbeddedDecks(abs, manifest, options, &validation)
 		if err != nil {
 			return nil, validation, err
 		}
 	}
-	if ReportContainerVersion(manifest.Version) {
-		designDir := filepath.Join(abs, "___design")
-		if info, statErr := os.Lstat(designDir); statErr == nil && info.IsDir() && info.Mode()&os.ModeSymlink == 0 {
-			design, loadErr := loadSection(abs, designDir, manifest, designHierarchy, options, &validation)
-			if loadErr != nil {
-				return nil, validation, loadErr
-			}
-			// Design packages deliberately join the existing in-memory hierarchy.
-			// Every renderer and target index can therefore address them without a
-			// second, subtly different chapter/fragment implementation.
-			section.Fragments = append(section.Fragments, design.Fragments...)
-			section.Children = append(section.Children, design.Children...)
-			sortSectionContents(section)
-		}
-		if metadataDirectorySafe(abs, abs, EmbeddedSlidesDir, &validation) {
-			decks, err = loadEmbeddedDecks(abs, manifest, options, &validation)
-			if err != nil {
-				return nil, validation, err
-			}
-		}
-		// The query and coverage applications already understand deck/slide/Item
-		// nodes through the v4 projection. Joining only the projected deck children
-		// keeps the v3 report root and its overview fragments intact.
-		if len(decks) > 0 {
-			section.Children = append(section.Children, projectDecks(manifest, decks).Children...)
-			sortSectionContents(section)
-		}
+	// The query and coverage applications understand deck/slide/Item nodes
+	// through the section projection. Joining only the projected deck children
+	// keeps the report root and its overview fragments intact.
+	if len(decks) > 0 {
+		section.Children = append(section.Children, projectDecks(manifest, decks).Children...)
+		sortSectionContents(section)
 	}
 	document := &Saga{Root: abs, Manifest: manifest, Section: section, Decks: decks}
-	if (manifest.Version == SlideSagaVersion || ReportContainerVersion(manifest.Version) && len(decks) > 0) && !options.skipReviews {
+	if len(decks) > 0 && !options.skipReviews {
 		state, reviewValidation, reviewErr := loadFlatReviewState(MutationIndexFromDocument(document), options.outline)
 		if reviewErr != nil {
 			return nil, validation, reviewErr
@@ -188,30 +162,21 @@ func load(root string, options loadOptions) (*Saga, Validation, error) {
 			}
 		}
 	}
-	if !options.outline && !options.skipCoverage && manifest.Version == SlideSagaVersion {
-		document.Claims, err = loadClaims(abs, &validation, true)
-		if err != nil {
-			return nil, validation, err
-		}
-		document.Verifications, err = loadVerifications(abs, &validation, true)
-		if err != nil {
-			return nil, validation, err
-		}
-	} else if !options.outline && !options.skipCoverage {
+	if !options.outline && !options.skipCoverage {
 		if metadataDirectorySafe(abs, abs, "___claims", &validation) {
-			document.Claims, err = loadClaims(abs, &validation, false)
+			document.Claims, err = loadClaims(abs, &validation)
 			if err != nil {
 				return nil, validation, err
 			}
 		}
 		if metadataDirectorySafe(abs, abs, "___verifications", &validation) {
-			document.Verifications, err = loadVerifications(abs, &validation, false)
+			document.Verifications, err = loadVerifications(abs, &validation)
 			if err != nil {
 				return nil, validation, err
 			}
 		}
 	}
-	if manifest.Version != SlideSagaVersion && metadataDirectorySafe(abs, abs, "___review", &validation) {
+	if metadataDirectorySafe(abs, abs, "___review", &validation) {
 		reviewDir := filepath.Join(abs, "___review")
 		if metadataDirectorySafe(abs, reviewDir, "threads", &validation) {
 			if options.outline {
@@ -321,7 +286,7 @@ func loadSection(root, dir string, manifest Manifest, hierarchy hierarchyRoot, o
 				if name == "___diffs" {
 					section.HasDiffs = true
 				}
-				if !knownReservedDirectory(name, hierarchy == sagaHierarchy, manifest.Version) {
+				if !knownReservedDirectory(name, hierarchy == sagaHierarchy) {
 					addIssue(validation, "error", displayPath(rel, name), "unknown reserved directory")
 				}
 			}
@@ -544,7 +509,7 @@ func LoadTargetDiffs(index MutationIndex, target string) ([]DiffFile, Validation
 		validation.Valid = false
 		return nil, validation, nil
 	}
-	if index.Manifest.Version == SlideSagaVersion || index.FlatTargets[target] {
+	if index.FlatTargets[target] {
 		prefix := "40-e-" + FlatTargetKey(target) + "-"
 		recordRoot := dir
 		entries, err := os.ReadDir(recordRoot)
@@ -601,38 +566,16 @@ func loadReviews(root, dir string, validation *Validation) ([]Review, error) {
 	return result, err
 }
 
-func loadClaims(root string, validation *Validation, flat bool) ([]Claim, error) {
+func loadClaims(root string, validation *Validation) ([]Claim, error) {
 	var claims []Claim
-	dir := filepath.Join(root, "___claims")
-	loader := loadFlatRecords
-	if flat {
-		dir = root
-		loader = func(root, dir, kind string, validation *Validation, fn func(string)) error {
-			entries, err := os.ReadDir(dir)
-			if err != nil {
-				return err
-			}
-			for _, entry := range entries {
-				if flatRegular(entry) && flatClaimName.MatchString(entry.Name()) {
-					fn(filepath.Join(dir, entry.Name()))
-				}
-			}
-			return nil
-		}
-	}
-	err := loader(root, dir, "claim", validation, func(path string) {
+	err := loadFlatRecords(root, filepath.Join(root, "___claims"), "claim", validation, func(path string) {
 		var value Claim
 		if err := readJSON(path, &value); err != nil {
 			addIssue(validation, "error", relativePath(root, path), err.Error())
 			return
 		}
 		value.Path = path
-		if flat {
-			expected := FlatClaimFilename(value.ID)
-			if filepath.Base(path) != expected {
-				addIssue(validation, "error", relativePath(root, path), "claim filename key does not match its stable id")
-			}
-		} else if strings.TrimSuffix(filepath.Base(path), ".json") != value.ID {
+		if strings.TrimSuffix(filepath.Base(path), ".json") != value.ID {
 			addIssue(validation, "error", relativePath(root, path), fmt.Sprintf("claim id %q must match filename %q", value.ID, filepath.Base(path)))
 		}
 		validateClaim(value, relativePath(root, path), validation)
@@ -644,38 +587,16 @@ func loadClaims(root string, validation *Validation, flat bool) ([]Claim, error)
 	return claims, err
 }
 
-func loadVerifications(root string, validation *Validation, flat bool) ([]Verification, error) {
+func loadVerifications(root string, validation *Validation) ([]Verification, error) {
 	var verifications []Verification
-	dir := filepath.Join(root, "___verifications")
-	loader := loadFlatRecords
-	if flat {
-		dir = root
-		loader = func(root, dir, kind string, validation *Validation, fn func(string)) error {
-			entries, err := os.ReadDir(dir)
-			if err != nil {
-				return err
-			}
-			for _, entry := range entries {
-				if flatRegular(entry) && flatVerificationName.MatchString(entry.Name()) {
-					fn(filepath.Join(dir, entry.Name()))
-				}
-			}
-			return nil
-		}
-	}
-	err := loader(root, dir, "verification", validation, func(path string) {
+	err := loadFlatRecords(root, filepath.Join(root, "___verifications"), "verification", validation, func(path string) {
 		var value Verification
 		if err := readJSON(path, &value); err != nil {
 			addIssue(validation, "error", relativePath(root, path), err.Error())
 			return
 		}
 		value.Path = path
-		if flat {
-			expected := FlatVerificationFilename(value.Claim, value.ID)
-			if filepath.Base(path) != expected {
-				addIssue(validation, "error", relativePath(root, path), "verification filename keys do not match its claim and stable id")
-			}
-		} else if strings.TrimSuffix(filepath.Base(path), ".json") != value.ID {
+		if strings.TrimSuffix(filepath.Base(path), ".json") != value.ID {
 			addIssue(validation, "error", relativePath(root, path), fmt.Sprintf("verification id %q must match filename %q", value.ID, filepath.Base(path)))
 		}
 		validateVerification(value, relativePath(root, path), validation)
@@ -1015,26 +936,18 @@ func structuralEntry(entry fs.DirEntry, suffix string) (matches bool, problem st
 	return true, ""
 }
 
-func knownReservedDirectory(name string, root bool, sagaVersion int) bool {
+func knownReservedDirectory(name string, root bool) bool {
 	if name == "___diffs" || name == "___approvals" {
 		return true
 	}
 	if !root {
 		return false
 	}
-	if name == "___review" || name == "___claims" || name == "___verifications" {
+	switch name {
+	case "___review", "___claims", "___verifications", EmbeddedSlidesDir, QualityRootDir, "___requirements", "___design", "___workplan":
 		return true
 	}
-	if ReportContainerVersion(sagaVersion) && name == EmbeddedSlidesDir {
-		return true
-	}
-	// ___quality is a v5-only capability root. Its records are owned and
-	// strictly validated by internal/quality; the core loader only admits the
-	// root so a v3 Saga can never acquire it without an explicit upgrade.
-	if sagaVersion == ReportV5SagaVersion && name == QualityRootDir {
-		return true
-	}
-	return (ReportContainerVersion(sagaVersion) || sagaVersion == SlideSagaVersion) && (name == "___requirements" || name == "___design" || name == "___workplan")
+	return false
 }
 
 func metadataDirectorySafe(root, sectionDir, name string, validation *Validation) bool {

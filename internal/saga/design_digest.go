@@ -53,12 +53,12 @@ type designSectionDigest struct {
 }
 
 // visualDigestList is marshaled as a JSON array so child order is an explicit
-// part of the canonical contract. The v4 loader orders Slides and Items by
+// part of the canonical contract. The deck loader orders Slides and Items by
 // rank, then by their compact manifest path as the deterministic tie-break.
 type visualDigestList []string
 
 // CurrentDesignContentDigests returns the current digest for every addressable
-// report-design target and embedded v4 Deck, Slide, and Item. Digests cover
+// report-design target and embedded Deck, Slide, and Item. Digests cover
 // authored design content only: diffs, claims, verifications, comments,
 // approvals, and other review overlays do not invalidate pinned relations. The
 // fixed budgets keep a query from turning one design target into an unbounded
@@ -68,20 +68,11 @@ func CurrentDesignContentDigests(document *Saga) (map[string]string, error) {
 	if document == nil || document.Section == nil {
 		return result, nil
 	}
-	reportContainer := ReportContainerVersion(document.Manifest.Version) || document.Manifest.Version > SlideSagaVersion
-	if reportContainer {
-		if _, err := digestDesignSection(document.Section, result, false); err != nil {
-			return nil, err
-		}
+	if _, err := digestDesignSection(document.Section, result, false); err != nil {
+		return nil, err
 	}
-	// A standalone v4 Saga remains a slide-only review document. Embedded v4
-	// bundles in a report are visual design targets; the same condition also
-	// leaves this API ready for later report-container versions without coupling
-	// it to their relation schemas.
-	if reportContainer {
-		if err := digestEmbeddedVisualDesign(document.Decks, result); err != nil {
-			return nil, err
-		}
+	if err := digestEmbeddedVisualDesign(document.Decks, result); err != nil {
+		return nil, err
 	}
 	return result, nil
 }

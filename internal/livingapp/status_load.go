@@ -65,31 +65,25 @@ func LoadStatusInputs(options StatusOptions) (StatusInputs, error) {
 			return StatusInputs{}, err
 		}
 	}
-	version := doc.Manifest.Version
 	inputs := StatusInputs{
-		SagaID: doc.Manifest.ID, SagaVersion: version, Decks: doc.Decks,
+		SagaID: doc.Manifest.ID, SagaVersion: doc.Manifest.Version, Decks: doc.Decks,
 		Stories: []requirements.Story{}, Citations: []requirements.Citation{}, Links: []Link{},
 		Prototypes: prototypes.Document{SagaID: doc.Manifest.ID, Prototypes: []prototypes.Prototype{}, Annotations: []prototypes.Annotation{}},
 		Exceptions: []coverage.Exception{}, Report: options.Report, Changes: options.Changes, Diagnostics: []Diagnostic{},
 		Quality: quality.Document{SagaID: doc.Manifest.ID, TestCases: []quality.TestCase{}, Policies: []quality.Policy{}, PolicySets: []quality.PolicySet{}},
 	}
-	if version == quality.Version {
-		inputs.Quality, err = quality.Load(root)
-		if err != nil {
-			return StatusInputs{}, fmt.Errorf("load quality: %w", err)
-		}
-		inputs.Exceptions, err = LoadCoverageExceptions(root, doc.Manifest.ID)
-		if err != nil {
-			return StatusInputs{}, err
-		}
+	inputs.Quality, err = quality.Load(root)
+	if err != nil {
+		return StatusInputs{}, fmt.Errorf("load quality: %w", err)
 	}
-	if saga.ReportContainerVersion(version) && livingRootPresent(root, "___requirements") {
-		var heads map[string][]string
-		if version == quality.Version {
-			heads = map[string][]string{}
-			for _, testCase := range inputs.Quality.TestCases {
-				heads[testCase.Identity.ID] = copyStrings(testCase.RevisionHeads)
-			}
+	inputs.Exceptions, err = LoadCoverageExceptions(root, doc.Manifest.ID)
+	if err != nil {
+		return StatusInputs{}, err
+	}
+	if livingRootPresent(root, "___requirements") {
+		heads := map[string][]string{}
+		for _, testCase := range inputs.Quality.TestCases {
+			heads[testCase.Identity.ID] = copyStrings(testCase.RevisionHeads)
 		}
 		graph, err := loadLivingGraph(root, doc, heads)
 		if err != nil {
@@ -145,13 +139,9 @@ type livingGraph struct {
 	currency      []requirements.RelationCurrency
 }
 
-// testCaseHeads returns every test case's revision heads on a v5 Saga, keyed
-// by test-case ID. It is nil on other versions, where no test-case endpoint
-// can exist.
-func testCaseHeads(root string, version int) (map[string][]string, error) {
-	if version != quality.Version {
-		return nil, nil
-	}
+// testCaseHeads returns every test case's revision heads, keyed by test-case
+// ID.
+func testCaseHeads(root string) (map[string][]string, error) {
 	document, err := quality.Load(root)
 	if err != nil {
 		return nil, err
@@ -166,8 +156,8 @@ func testCaseHeads(root string, version int) (map[string][]string, error) {
 // loadLivingGraph is the one composition path for requirements, work plan,
 // design digests, and relation currency, shared by query sessions and status.
 // Relation currency comes only from requirements.EvaluateRelations; this
-// function supplies the heads other domains own, including test-case heads
-// on a v5 Saga, so a test-case link is never judged without them.
+// function supplies the heads other domains own, including test-case heads,
+// so a test-case link is never judged without them.
 func loadLivingGraph(root string, doc *saga.Saga, testCases map[string][]string) (livingGraph, error) {
 	plan, validation, err := workplan.Load(root)
 	if err != nil {

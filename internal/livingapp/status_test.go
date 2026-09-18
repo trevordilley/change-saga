@@ -166,7 +166,7 @@ func verifies(id, testCase, testRevision, criterion, storyRevision string) requi
 // fixtureLinks judges relations exactly as the loader does: currency comes
 // only from requirements.EvaluateRelations, with every test-case head supplied.
 func fixtureLinks(stories []requirements.Story, relations []requirements.Relation, document quality.Document) []Link {
-	requirementsDocument := requirements.Document{SagaID: fixtureSaga, SagaVersion: quality.Version, Stories: stories, Relations: relations}
+	requirementsDocument := requirements.Document{SagaID: fixtureSaga, Stories: stories, Relations: relations}
 	inputs := requirements.StaleInputs{}
 	heads := map[string][]string{}
 	for _, testCase := range document.TestCases {

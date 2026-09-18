@@ -7,7 +7,10 @@ package prototypes
 import "time"
 
 const (
-	Version = 3
+	// sagaVersion is the one Change Saga container format; its records are
+	// version Version.
+	sagaVersion = 5
+	Version     = 3
 
 	IdentitySchemaURL   = "https://changesaga.dev/schema/v3/prototype.schema.json"
 	RevisionSchemaURL   = "https://changesaga.dev/schema/v3/prototype-revision.schema.json"

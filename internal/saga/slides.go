@@ -29,13 +29,9 @@ var slideMediaTypes = map[string]bool{
 	"image/webp": true, "text/html": true,
 }
 
-func loadDecks(root string, manifest Manifest, options loadOptions, validation *Validation) ([]*Deck, error) {
-	return loadDeckRecords(root, root, manifest, options, validation, false)
-}
-
-// loadEmbeddedDecks discovers independently mergeable flat deck bundles inside
-// a v3 Report Saga. The parent manifest remains the only Saga identity; deck,
-// slide, and Item URNs are derived from that ID exactly as they are in v4.
+// loadEmbeddedDecks discovers the independently mergeable flat deck bundles
+// under ___slides/. The Saga manifest remains the only identity; deck, slide,
+// and Item URNs are derived from its ID.
 func loadEmbeddedDecks(root string, manifest Manifest, options loadOptions, validation *Validation) ([]*Deck, error) {
 	dir := filepath.Join(root, EmbeddedSlidesDir)
 	entries, err := os.ReadDir(dir)
@@ -52,7 +48,7 @@ func loadEmbeddedDecks(root string, manifest Manifest, options loadOptions, vali
 			addIssue(validation, "error", relativePath(root, path), "embedded slide decks must be real <id>.deck directories")
 			continue
 		}
-		decks, loadErr := loadDeckRecords(root, path, manifest, options, validation, true)
+		decks, loadErr := loadDeckRecords(root, path, manifest, options, validation)
 		if loadErr != nil {
 			return nil, loadErr
 		}
@@ -61,9 +57,6 @@ func loadEmbeddedDecks(root string, manifest Manifest, options loadOptions, vali
 			continue
 		}
 		deck := decks[0]
-		if deck.Role != "change" {
-			addIssue(validation, "error", deck.Path, "embedded Report Saga decks must use role change; the report is the overview")
-		}
 		if strings.TrimSuffix(entry.Name(), EmbeddedDeckSuffix) != deck.ID {
 			addIssue(validation, "error", deck.Path, "embedded deck directory must match the deck id")
 		}
@@ -78,7 +71,7 @@ func loadEmbeddedDecks(root string, manifest Manifest, options loadOptions, vali
 	return result, nil
 }
 
-func loadDeckRecords(root, recordRoot string, manifest Manifest, options loadOptions, validation *Validation, embedded bool) ([]*Deck, error) {
+func loadDeckRecords(root, recordRoot string, manifest Manifest, options loadOptions, validation *Validation) ([]*Deck, error) {
 	entries, err := os.ReadDir(recordRoot)
 	if err != nil {
 		return nil, err
@@ -97,11 +90,7 @@ func loadDeckRecords(root, recordRoot string, manifest Manifest, options loadOpt
 			addIssue(validation, "error", diagnostic, issue)
 		}
 		if !flatRegular(entry) {
-			message := "v4 is flat and permits only regular files at the Saga root; migrate nested packages explicitly"
-			if embedded {
-				message = "slide storage permits only regular files inside a deck bundle"
-			}
-			addIssue(validation, "error", diagnostic, message)
+			addIssue(validation, "error", diagnostic, "slide storage permits only regular files inside a deck bundle")
 			continue
 		}
 		regular[name] = true
@@ -222,18 +211,11 @@ func loadDeckRecords(root, recordRoot string, manifest Manifest, options loadOpt
 	knownRecord := func(name string) bool {
 		contentRecord := allowedAssets[name] || flatDeckName.MatchString(name) || flatSlideName.MatchString(name) ||
 			flatItemName.MatchString(name) || flatEvidenceName.MatchString(name)
-		if embedded {
-			return contentRecord || strings.HasPrefix(name, ".change-saga-stage-") || strings.HasPrefix(name, ".change-saga-write-")
-		}
-		return name == FlatManifestName || name == "01-readme.md" || name == ".change-saga.lock" || contentRecord ||
-			flatClaimName.MatchString(name) || flatVerificationName.MatchString(name) || flatThreadName.MatchString(name) ||
-			flatMessageName.MatchString(name) || flatAttachmentName.MatchString(name) || flatAttachmentAsset.MatchString(name) ||
-			flatThreadEventName.MatchString(name) || flatReviewName.MatchString(name) || flatDiffReviewName.MatchString(name) ||
-			strings.HasPrefix(name, ".change-saga-stage-") || strings.HasPrefix(name, ".change-saga-write-")
+		return contentRecord || strings.HasPrefix(name, ".change-saga-stage-") || strings.HasPrefix(name, ".change-saga-write-")
 	}
 	for _, entry := range entries {
 		if !entry.IsDir() && !knownRecord(entry.Name()) {
-			addIssue(validation, "error", entry.Name(), "file does not match the compact v4 storage contract")
+			addIssue(validation, "error", entry.Name(), "file does not match the compact deck storage contract")
 		}
 	}
 
@@ -262,22 +244,19 @@ func loadDeckRecords(root, recordRoot string, manifest Manifest, options loadOpt
 			}
 		}
 	}
-	if !embedded {
-		validateDeckSet(manifest, decks, validation)
-	}
 	return decks, nil
 }
 
 func validateDeckManifest(value DeckManifest, path, target string, validation *Validation) {
-	if value.Version != SlideSagaVersion || !stableID.MatchString(value.ID) || strings.TrimSpace(value.Title) == "" {
+	if value.Version != DeckRecordVersion || !stableID.MatchString(value.ID) || strings.TrimSpace(value.Title) == "" {
 		addIssue(validation, "error", path, "deck requires version 4, a stable id, and a title")
 	}
 	expected, err := FlatDeckFilename(target, value.Rank)
 	if err != nil || expected != path {
 		addIssue(validation, "error", path, "deck filename does not match its rank and stable target")
 	}
-	if value.Role != "overview" && value.Role != "change" {
-		addIssue(validation, "error", path, "deck role must be overview or change")
+	if value.Role != "change" {
+		addIssue(validation, "error", path, "deck role must be change")
 	}
 	if validFlatRank(value.Rank) != nil || strings.TrimSpace(value.Objective) == "" || utf8.RuneCountInString(value.Objective) > 240 {
 		addIssue(validation, "error", path, "deck rank must fit the portable range and objective must contain 1 to 240 characters")
@@ -285,7 +264,7 @@ func validateDeckManifest(value DeckManifest, path, target string, validation *V
 }
 
 func validateSlideManifest(value SlideManifest, path, deckID, deckTarget, target, dir string, outline bool, validation *Validation) {
-	if value.Version != SlideSagaVersion || !stableID.MatchString(value.ID) || strings.TrimSpace(value.Title) == "" {
+	if value.Version != DeckRecordVersion || !stableID.MatchString(value.ID) || strings.TrimSpace(value.Title) == "" {
 		addIssue(validation, "error", path, "slide requires version 4, a stable id, and a title")
 	}
 	if value.DeckID != deckID {
@@ -317,7 +296,7 @@ func validateSlideManifest(value SlideManifest, path, deckID, deckTarget, target
 }
 
 func validateItem(item *Item, slide *Slide, validation *Validation) {
-	if item.Version != SlideSagaVersion || !ValidMarkdownAnchor(item.ID) || !itemKinds[item.Kind] || strings.TrimSpace(item.Label) == "" {
+	if item.Version != DeckRecordVersion || !ValidMarkdownAnchor(item.ID) || !itemKinds[item.Kind] || strings.TrimSpace(item.Label) == "" {
 		addIssue(validation, "error", item.Path, "item requires version 4, a lowercase stable id, a supported kind, and a label")
 	}
 	if item.SlideID != slide.ID {
@@ -390,45 +369,8 @@ func validateSlideComposition(slide *Slide, validation *Validation) {
 	}
 }
 
-func validateDeckSet(manifest Manifest, decks []*Deck, validation *Validation) {
-	overviewCount := 0
-	foundConfigured := false
-	deckRanks := map[int]string{}
-	for _, deck := range decks {
-		if previous, exists := deckRanks[deck.Rank]; exists {
-			addIssue(validation, "warning", deck.Path, fmt.Sprintf("deck rank %d is also used by %s; path order is the deterministic tie-break", deck.Rank, previous))
-		} else {
-			deckRanks[deck.Rank] = deck.Path
-		}
-		slideRanks := map[int]string{}
-		for _, slide := range deck.Slides {
-			if previous, exists := slideRanks[slide.Rank]; exists {
-				addIssue(validation, "warning", slide.Path, fmt.Sprintf("slide rank %d is also used by %s; path order is the deterministic tie-break", slide.Rank, previous))
-			} else {
-				slideRanks[slide.Rank] = slide.Path
-			}
-		}
-		if deck.Role == "overview" {
-			overviewCount++
-		}
-		if manifest.Presentation != nil && deck.ID == manifest.Presentation.OverviewDeck {
-			foundConfigured = true
-			if deck.Role != "overview" {
-				addIssue(validation, "error", deck.Path, "presentation.overview_deck must name a deck with role overview")
-			}
-		}
-	}
-	if overviewCount != 1 {
-		addIssue(validation, "error", ".", "v4 requires exactly one overview deck")
-	}
-	if !foundConfigured {
-		addIssue(validation, "error", FlatManifestName, "presentation.overview_deck does not exist")
-	}
-}
-
-// projectDecks is the compatibility boundary inside the implementation. It
-// lets established review/evidence plumbing operate on v4 targets without ever
-// pretending that the on-disk document is a paginated report.
+// projectDecks lets the established review/evidence plumbing address deck,
+// slide, and Item targets through the section model.
 func projectDecks(manifest Manifest, decks []*Deck) *Section {
 	root := &Section{Kind: "saga", ID: manifest.ID + "-root", Title: manifest.Title, Target: SagaTarget(manifest.ID)}
 	for _, deck := range decks {

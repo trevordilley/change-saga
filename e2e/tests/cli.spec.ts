@@ -113,7 +113,7 @@ test("@critical refuses to mutate or serve a structurally invalid saga with zero
   const manifest = JSON.parse(readFileSync(manifestPath, "utf8")) as Record<string, unknown>;
   // A loadable manifest that fails schema validation: exactly the state the
   // product promises never to write review records into.
-  writeFileSync(manifestPath, `${JSON.stringify({ ...manifest, version: 999 }, null, 2)}\n`);
+  writeFileSync(manifestPath, `${JSON.stringify({ ...manifest, title: "" }, null, 2)}\n`);
 
   const validation = runCLI(sagaRepositories, ["validate", sagaRoot]);
   expect(validation.status, "validate must report the corrupted saga").not.toBe(0);

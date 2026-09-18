@@ -175,8 +175,8 @@ func TestValidateReportsQualityRecords(t *testing.T) {
 	if err := Validate(context.Background(), []string{"--json", root}, &output); err != nil {
 		t.Fatalf("validate without quality: %v\n%s", err, output.String())
 	}
-	// Quality is a v5 capability; a v3 Saga carrying it is reported, not ignored.
-	if err := os.MkdirAll(filepath.Join(root, quality.RootDir, "test-cases"), 0o755); err != nil {
+	// A malformed quality root is reported, not ignored.
+	if err := os.MkdirAll(filepath.Join(root, quality.RootDir, "experiments"), 0o755); err != nil {
 		t.Fatal(err)
 	}
 	output.Reset()
@@ -191,7 +191,7 @@ func TestValidateReportsQualityRecords(t *testing.T) {
 	}
 	found := false
 	for _, issue := range result.Issues {
-		found = found || (issue.Path == quality.RootDir && strings.Contains(issue.Message, "v5"))
+		found = found || (issue.Path == quality.RootDir && strings.Contains(issue.Message, "experiments"))
 	}
 	if result.Valid || !found {
 		t.Fatalf("validation did not report quality: %#v", result.Issues)

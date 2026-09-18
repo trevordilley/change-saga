@@ -301,7 +301,7 @@ func TestMutationRefusesForeignRepositoryDiffIdentityWithoutSideEffect(t *testin
 
 func TestMutationRefusesStructurallyInvalidSagaWithoutSideEffect(t *testing.T) {
 	root := newTestSaga(t)
-	manifest := saga.Manifest{Schema: saga.SchemaURL, Version: 999, ID: "test", Title: "Test", Source: saga.Source{Repository: "https://example.test/repo.git", Base: "main", Head: "HEAD"}}
+	manifest := saga.Manifest{Schema: saga.SagaSchemaURL, Version: 999, ID: "test", Title: "Test", Source: saga.Source{Repository: "https://example.test/repo.git", Base: "main", Head: "HEAD"}}
 	if err := store.WriteJSON(filepath.Join(root, "saga.json"), manifest, false); err != nil {
 		t.Fatal(err)
 	}
@@ -309,7 +309,7 @@ func TestMutationRefusesStructurallyInvalidSagaWithoutSideEffect(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if err := AddReview(root, root, "approved", "should not exist", saga.ReviewerIdentity{Kind: "human"}); err == nil || !strings.Contains(err.Error(), "structurally invalid") {
+	if err := AddReview(root, root, "approved", "should not exist", saga.ReviewerIdentity{Kind: "human"}); err == nil || !strings.Contains(err.Error(), "unsupported Saga version 999") {
 		t.Fatalf("AddReview error = %v, want invalid saga refusal", err)
 	}
 	after, err := os.ReadDir(root)
@@ -454,7 +454,7 @@ func newTestSaga(t *testing.T) string {
 	if err := os.MkdirAll(fragmentDir, 0o755); err != nil {
 		t.Fatal(err)
 	}
-	manifest := saga.Manifest{Schema: saga.SchemaURL, Version: saga.CurrentVersion, ID: "test", Title: "Test", Source: saga.Source{Repository: testRepository, Base: "main", Head: "HEAD"}}
+	manifest := saga.Manifest{Schema: saga.SagaSchemaURL, Version: saga.SagaVersion, ID: "test", Title: "Test", Source: saga.Source{Repository: testRepository, Base: "main", Head: "HEAD"}}
 	if err := store.WriteJSON(filepath.Join(root, "saga.json"), manifest, true); err != nil {
 		t.Fatal(err)
 	}

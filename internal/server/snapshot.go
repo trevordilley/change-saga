@@ -725,9 +725,6 @@ func reviewFingerprint(ctx context.Context, root string) (string, error) {
 // compact mutation index. It does not traverse coverage mappings, fragment
 // bodies, or diff evidence merely to decide whether a comment changed.
 func indexedReviewFingerprint(ctx context.Context, index saga.MutationIndex) (string, error) {
-	if index.Manifest.Version == saga.SlideSagaVersion {
-		return flatReviewFingerprint(ctx, index)
-	}
 	dirs := []string{filepath.Join(index.Root, "___review")}
 	seen := map[string]bool{dirs[0]: true}
 	for _, targetDir := range index.ReviewTargets {
@@ -791,31 +788,6 @@ func indexedReviewFingerprint(ctx context.Context, index saga.MutationIndex) (st
 	// Attribution changes when review files are committed even though their
 	// bytes do not. The saga may legitimately live outside Git; absence is a
 	// stable value.
-	head, _ := gitOutput(ctx, index.Root, "rev-parse", "HEAD")
-	return hex.EncodeToString(digest.Sum(nil)) + "\x00" + head, nil
-}
-
-// flatReviewFingerprint observes only the root-level records owned by the v4
-// review overlay. V4 targets point at ordinary flat files or the Saga root;
-// treating those locations as legacy package directories produces ENOTDIR and
-// prevents every snapshot-backed surface from loading.
-func flatReviewFingerprint(ctx context.Context, index saga.MutationIndex) (string, error) {
-	entries, err := os.ReadDir(index.Root)
-	if err != nil {
-		return "", err
-	}
-	digest := sha256.New()
-	fmt.Fprint(digest, "flat-review\x00")
-	for _, entry := range entries {
-		if !saga.IsFlatReviewRecord(entry.Name()) {
-			continue
-		}
-		info, err := entry.Info()
-		if err != nil {
-			return "", err
-		}
-		fmt.Fprintf(digest, "f\x00%s\x00%d\x00%d\x00", entry.Name(), info.Size(), info.ModTime().UnixNano())
-	}
 	head, _ := gitOutput(ctx, index.Root, "rev-parse", "HEAD")
 	return hex.EncodeToString(digest.Sum(nil)) + "\x00" + head, nil
 }

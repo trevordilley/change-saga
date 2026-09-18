@@ -19,17 +19,14 @@ var svgViewBoxValidationPattern = regexp.MustCompile(`(?i)\bviewBox\s*=\s*["']([
 func ValidID(value string) bool { return stableID.MatchString(value) }
 
 func validateManifest(manifest Manifest, path string, result *Validation) {
-	if !SupportedSagaVersion(manifest.Version) {
-		addIssue(result, "error", path, fmt.Sprintf("unsupported Saga version %d; expected 2, 3, 4, or 5", manifest.Version))
-	}
 	if !stableID.MatchString(manifest.ID) {
 		addIssue(result, "error", path, "id must be a stable 1-128 character identifier")
 	}
 	if strings.TrimSpace(manifest.Title) == "" {
 		addIssue(result, "error", path, "title is required")
 	}
-	if expected := SagaSchemaURL(manifest.Version); manifest.Schema != "" && expected != "" && manifest.Schema != expected {
-		addIssue(result, "warning", path, fmt.Sprintf("$schema is %q; Saga version %d uses %q", manifest.Schema, manifest.Version, expected))
+	if manifest.Schema != "" && manifest.Schema != SagaSchemaURL {
+		addIssue(result, "warning", path, fmt.Sprintf("$schema is %q; a Change Saga uses %q", manifest.Schema, SagaSchemaURL))
 	}
 	if manifest.PR != nil {
 		if manifest.PR.Number != nil && *manifest.PR.Number < 1 {
@@ -42,44 +39,14 @@ func validateManifest(manifest Manifest, path string, result *Validation) {
 		}
 	}
 	validateRepositoryIdentity(manifest.Source.Repository, path, result)
-	if manifest.Version == ReportV5SagaVersion {
-		// v5 composition is report-only: the manifest must be saga.json, never
-		// the v4 flat root, and the repository identity is part of every v5
-		// URN comparison, so a noncanonical spelling is an error, not a hint.
-		if path != "saga.json" {
-			addIssue(result, "error", path, "v5 requires saga.json; the v4 flat 00-saga.json root is not a v5 manifest")
-		}
-		if canonical, err := diffuri.CanonicalRepository(manifest.Source.Repository); err == nil && canonical != manifest.Source.Repository {
-			addIssue(result, "error", path, fmt.Sprintf("v5 source.repository must be canonical; use %q", canonical))
-		}
-	}
 	if strings.TrimSpace(manifest.Source.Base) == "" || strings.TrimSpace(manifest.Source.Head) == "" {
 		addIssue(result, "error", path, "source.base and source.head are required")
 	}
-	if manifest.Version == SlideSagaVersion {
-		if manifest.Presentation == nil {
-			addIssue(result, "error", path, "v4 requires presentation mode metadata")
-		} else {
-			if manifest.Presentation.Mode != "slides" {
-				addIssue(result, "error", path, "v4 presentation.mode must be slides")
-			}
-			if manifest.Presentation.AspectRatio != "16:9" {
-				addIssue(result, "error", path, "v4 presentation.aspect_ratio must be 16:9")
-			}
-			if !stableID.MatchString(manifest.Presentation.OverviewDeck) {
-				addIssue(result, "error", path, "v4 presentation.overview_deck must be a stable deck id")
-			}
-		}
-	} else if manifest.Presentation != nil {
-		addIssue(result, "error", path, "presentation mode is only valid for a v4 slide-native Saga")
-	}
 }
 
-// validateRepositoryIdentity enforces the portable identity rule shared by
-// SPEC.md and schema/v2/saga.schema.json: an absolute URI that never carries
-// URL userinfo credentials. Noncanonical-but-resolvable spellings stay loadable
-// so existing v2 sagas keep working, but they are reported so authors can fix
-// the identity before it is published.
+// validateRepositoryIdentity enforces the portable identity rule: an absolute,
+// canonical URI that never carries URL userinfo credentials. The identity is
+// part of every URN comparison, so a noncanonical spelling is an error.
 func validateRepositoryIdentity(value, path string, result *Validation) {
 	repository, err := url.Parse(value)
 	if err != nil || !repository.IsAbs() || repository.Host == "" && repository.Scheme != "file" {
@@ -101,7 +68,7 @@ func validateRepositoryIdentity(value, path string, result *Validation) {
 		return
 	}
 	if canonical != value {
-		addIssue(result, "warning", path, fmt.Sprintf("source.repository %q is not canonical; the canonical identity is %q", value, canonical))
+		addIssue(result, "error", path, fmt.Sprintf("source.repository must be canonical; use %q", canonical))
 	}
 }
 

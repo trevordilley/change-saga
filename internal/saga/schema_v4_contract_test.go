@@ -23,17 +23,19 @@ func loadV4Schema(t *testing.T, name string) map[string]any {
 	return value
 }
 
-func TestV4SchemasAreClosedAndVersioned(t *testing.T) {
-	for _, name := range []string{"saga.schema.json", "deck.schema.json", "slide.schema.json", "item.schema.json"} {
+// The v4 deck, slide, and Item record schemas still describe the records of
+// every embedded deck under ___slides/.
+func TestV4DeckRecordSchemasAreClosedAndVersioned(t *testing.T) {
+	for _, name := range []string{"deck.schema.json", "slide.schema.json", "item.schema.json"} {
 		t.Run(name, func(t *testing.T) {
 			schema := loadV4Schema(t, name)
 			if schema["$schema"] != "https://json-schema.org/draft/2020-12/schema" || schema["additionalProperties"] != false {
 				t.Fatalf("v4 schema is not closed draft 2020-12: %#v", schema)
 			}
+			if schema["$id"] != "https://changesaga.dev/schema/v4/"+name {
+				t.Fatalf("v4 %s $id = %v", name, schema["$id"])
+			}
 		})
-	}
-	if got := loadV4Schema(t, "saga.schema.json")["$id"]; got != V4SchemaURL {
-		t.Fatalf("v4 saga schema id = %v", got)
 	}
 }
 

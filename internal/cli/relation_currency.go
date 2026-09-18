@@ -62,18 +62,16 @@ func loadRelationHeads(root string) (relationHeads, error) {
 		inputs.CurrentContentDigests[urn] = digest
 	}
 	heads := relationHeads{document: document, testCases: map[string]quality.TestCase{}}
-	if document.SagaVersion == quality.Version {
-		qualityDocument, err := quality.Load(root)
-		if err != nil {
-			return relationHeads{}, fmt.Errorf("load quality: %w", err)
-		}
-		testCaseHeads := map[string][]string{}
-		for _, testCase := range qualityDocument.TestCases {
-			heads.testCases[testCase.Identity.ID] = testCase
-			testCaseHeads[testCase.Identity.ID] = testCase.RevisionHeads
-		}
-		inputs.SetTestCaseHeads(document.SagaID, testCaseHeads)
+	qualityDocument, err := quality.Load(root)
+	if err != nil {
+		return relationHeads{}, fmt.Errorf("load quality: %w", err)
 	}
+	testCaseHeads := map[string][]string{}
+	for _, testCase := range qualityDocument.TestCases {
+		heads.testCases[testCase.Identity.ID] = testCase
+		testCaseHeads[testCase.Identity.ID] = testCase.RevisionHeads
+	}
+	inputs.SetTestCaseHeads(document.SagaID, testCaseHeads)
 	heads.inputs = inputs
 	return heads, nil
 }

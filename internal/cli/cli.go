@@ -86,14 +86,13 @@ func (e *StatusError) Error() string { return "command reported a non-success st
 // commandUsage is the single source of each command's usage line so the
 // overview, the per-command -h banner, and argument errors cannot drift apart.
 var commandOrder = []string{
-	"init", "upgrade", "prototype", "story", "criterion", "citation", "relation", "design", "plan", "quality", "add-deck", "add-slide", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "cover", "remove-coverage", "replace-coverage", "rebase-evidence", "add-claim", "verify-claim",
+	"init", "prototype", "story", "criterion", "citation", "relation", "design", "plan", "quality", "add-deck", "add-slide", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "cover", "remove-coverage", "replace-coverage", "rebase-evidence", "add-claim", "verify-claim",
 	"thread", "reply", "review", "validate", "status", "compare", "query",
 	"serve", "open", "install-skill", "spec",
 }
 
 var commandUsage = map[string]string{
 	"init":                        "change-saga init [flags] <name.saga>",
-	"upgrade":                     "change-saga upgrade --to 3|5 [--dry-run] [--json] <saga>",
 	"prototype":                   "change-saga prototype <add-html|add-external|revise|annotate> [flags] <saga>",
 	"prototype add-html":          "change-saga prototype add-html --id ID --revision ID --title TEXT --source PATH [--state STATE] [flags] <saga>",
 	"prototype add-external":      "change-saga prototype add-external --id ID --revision ID --title TEXT --url URL [--embed-url URL --provider ID --embed-origin ORIGIN] [flags] <saga>",
@@ -168,34 +167,30 @@ var commandUsage = map[string]string{
 }
 
 func PrintHelp(out io.Writer) {
-	fmt.Fprint(out, `Change Saga — make every part of a large change reviewable
+	fmt.Fprint(out, `Change Saga — capture a big change from its first prototype to its exact diffs
 
-Choose the workflow:
-  Visual review deck (v4 preview)
-    Start with "init --mode slides". Explain the change as a sequence of 16:9
-    visual arguments whose form matches the relationship being explained—not
-    a repeated card template. Every meaningful node, edge, region, and callout
-    is an Item; exact diff evidence and precise comments attach to Items, while
-    approval applies explicitly to each complete slide.
+A Change Saga is for a big change: one that needs product requirements, UX/UI,
+technical design, quality, and an implementation deck. It starts with the big
+work and ends with the big work, even when the whole change lands in one PR.
 
-  Existing implementation or PR
-    Use a Saga when the change is large enough to need a guided review across
-    multiple behaviors, risks, systems, or workstreams. For a small focused
-    change, a normal PR may be enough. Author this Saga from the completed work
-    and its exact diff; requirements, prototypes, design, and work plan are optional.
+The workflow:
+  1. Product: "init" the Saga, then prototype the experience ("prototype") and
+     write user stories with acceptance criteria ("story", "criterion"). Cite
+     where each requirement came from ("citation"). Prototypes and stories
+     inform each other; revise both as the change is clarified.
+  2. Design: develop the UX, UI, and technical design ("design") and relate
+     each design artifact to the stories and criteria it addresses ("relation").
+  3. Quality: define test cases for every acceptance criterion ("quality") and
+     link them with verifies relations.
+  4. Implementation: explain the delivered change as the implementation deck
+     ("add-deck", "add-slide", "add-item"). Every meaningful node, edge,
+     region, and callout is an Item.
+  5. Exact diffs: attach every changed line to the Item that explains it
+     ("cover"), then "validate", check "status", and "serve" the Saga for review.
 
-  New feature or exploration
-    Start a living Saga early. Prototype the UX and UI, draft user stories with
-    acceptance criteria, develop the technical design, then organize delivery
-    into dependency-aware waves of parallel workspaces that converge cleanly.
-    These are overlapping surfaces, not gates: prototypes and stories can
-    inform each other while design and work planning continue to mature.
-
-  Parallel by design
-    Partition Saga work by stable stories, prototypes, design fragments, and
-    work items. They are Git-native and intended to merge as agents fan out and
-    consolidate. Before peer review, connect the delivered commits and exact
-    diffs, verify acceptance-criterion coverage, and validate the whole Saga.
+Stories, prototypes, design, test cases, and deck bundles are Git-native
+records partitioned so parallel workspaces can author them and merge cleanly;
+"plan" organizes that work into dependency-aware waves.
 
 Usage:
 `)
@@ -235,14 +230,13 @@ func commandFlags(name, usage string, out io.Writer) *flag.FlagSet {
 }
 
 var commandDescription = map[string]string{
-	"init":                        "Start a reviewer guide or living Saga. Small focused changes may not need a Saga.\nChoose --mode slides for the intentionally incompatible v4 visual review format;\nexisting reports are never silently paginated.",
-	"upgrade":                     "Atomically adopt the v3 Saga container (--to 3, from v2) or the v5 report\ncontainer (--to 5, from v3). Only the manifest version and schema change;\nevery component is preserved and revalidated. v2 must reach v3 before v5.\n--to 3 on a v5 Saga downgrades only when no v5-only record exists.\n--dry-run validates the staged result and reports capability states.",
+	"init":                        "Create a Change Saga for a big change: the saga.json manifest, a reviewer README,\nand an overview. Start the Saga as the work starts, then author its stories\nand prototypes.",
 	"prototype":                   "Author revisioned interactive HTML experiences or explicitly allowed external\nembeds and pin them to the stories and criteria they clarify. A prototype may lead, follow,\nor evolve alongside its requirements.",
 	"prototype add-html":          "Add an interactive HTML prototype and its first immutable revision. The authored\nsource is copied into the revision package, so later edits outside the Saga never change it.",
 	"prototype add-external":      "Add a prototype that lives outside the Saga. A plain --url is a reference; an --embed-url\nrenders inline only with explicit provider, origin, sandbox, and permission allowlisting.",
 	"prototype revise":            "Append a complete immutable prototype revision. Name every current head; an html\nrevision requires a fresh --source so no mutable directory becomes part of the revision.",
 	"prototype annotate":          "Pin one part of a prototype to the story or criterion it means, with a rationale and an\nelement, text, region, or provider selector. A prototype may stay unlinked while exploration\ncontinues; it simply cannot contribute to readiness until a current annotation connects it.",
-	"quality":                     "Author v5 test cases, per-criterion kind policies, exact evidence, and immutable runs.\nEvery record is append-only; results stay visible and nothing is scored or summarized as a percentage.",
+	"quality":                     "Author test cases, per-criterion kind policies, exact evidence, and immutable runs.\nEvery record is append-only; results stay visible and nothing is scored or summarized as a percentage.",
 	"quality test-case":           "Define test cases with ordered steps, lifecycle them, and revise them as the behavior they\nverify evolves.",
 	"quality test-case add":       "Add a test case: immutable identity, a complete first revision with ordered steps and declared\npositive/negative/edge kinds, and a proposed lifecycle root. Link it to criteria with verifies\nrelations; an unlinked test is an orphan and cannot satisfy coverage.",
 	"quality test-case revise":    "Append a complete immutable revision. Name every current head; with one parent, omitted\nfields are inherited, while reconciling several heads requires the complete definition. Step IDs\nremoved earlier cannot be reused. Runs and evidence pinned to the old revision become stale.",
@@ -264,7 +258,7 @@ var commandDescription = map[string]string{
 	"citation":                    "Create immutable provenance records for requirements and design decisions.",
 	"citation add":                "Record where a requirement or decision came from: an external URL, issue, document,\nrepository commit, or recorded decision. Provenance is context, not delivery evidence.",
 	"relation":                    "Create, explicitly supersede, or check the currency of pinned traceability relations.",
-	"relation add":                "Link stories and criteria to design, work items, slide explanations, and verification\nevidence with a typed rationale. Pin mutable requirement endpoints so their links go stale\nafter later edits. On a v5 Saga this writes a v5 relation: test cases may verify criteria,\nscope is self unless a Deck/Slide source declares descendants, and each omitted required\nrevision pin defaults to the endpoint's unique current head (reported as it is pinned).",
+	"relation add":                "Link stories and criteria to design, work items, slide explanations, and verification\nevidence with a typed rationale. Pin mutable requirement endpoints so their links go stale\nafter later edits. Test cases may verify criteria,\nscope is self unless a Deck/Slide source declares descendants, and each omitted required\nrevision pin defaults to the endpoint's unique current head (reported as it is pinned).",
 	"relation supersede":          "Retire one relation without erasing it. Add its corrected replacement separately;\na pivot is represented by normal requirement, design, plan, and relation revisions.",
 	"relation status":             "Report each relation as current, stale, conflicted, invalid, or superseded by comparing\nits persisted revision and digest pins with current heads. Only a current relation counts\nas coverage; every other status lists concrete reasons.",
 	"design":                      "Develop technical-design chapters, sections, and fragments that trace to user\nstories and acceptance criteria. Design may evolve alongside prototypes and requirements;\nits addressable packages are partitioned for parallel authoring and clean merges.",
@@ -282,17 +276,17 @@ var commandDescription = map[string]string{
 	"plan assign":                 "Bind a work item to a concrete workspace and branch so progress can be shown in the\nlive Saga. Assignment is coordination state, not evidence of implementation.",
 	"plan progress":               "Append explicit workspace progress against the item. Progress helps coordination but\nnever proves correctness, acceptance-criterion coverage, or delivery.",
 	"plan record-merge":           "Append merge evidence for a declared merge unit. A merged state contributes delivery\nevidence only when its immutable commit and diff links resolve.",
-	"add-deck":                    "Add an independently reviewable visual deck. In a v3 Report Saga each deck is an\noptional drill-down for one complex implementation concern; v4 remains wholly slide-native.",
-	"add-slide":                   "Add one visual argument to a standalone or report-embedded deck. Intent names the\nreviewer job; layout names geometry, not meaning. Establish the system model, then\nforeground consequential tradeoffs, hidden coupling, and deviations that may surprise a reviewer.",
+	"add-deck":                    "Add an implementation deck. The implementation decks are the Saga's Implementation\nsection; split the delivered change into decks only where a concern warrants its own review.",
+	"add-slide":                   "Add one visual argument to an implementation deck. Intent names the\nreviewer job; layout names geometry, not meaning. Establish the system model, then\nforeground consequential tradeoffs, hidden coupling, and deviations that may surprise a reviewer.",
 	"set-slide-content":           "Replace a slide's visual entrypoint while preserving its stable target and items.",
 	"add-item":                    "Add one semantic visual item, including an evidence-bearing callout overlay, and append\nit to the slide reading order. Exact diff evidence attaches here.",
 	"set-fragment-content":        "Replace a fragment entrypoint through the supported authoring API. Use --source -\nto read content from standard input; the fragment media type and metadata are preserved.",
-	"add-chapter":                 "Add one independently reviewable chapter to a v2/v3 Report Saga. A v3 report may\nalso embed focused visual decks without converting its documentation into slides.",
-	"add-section":                 "Group related narrative content inside a legacy report chapter.",
-	"add-fragment":                "Add a narrative artifact to a legacy v2/v3 report Saga. New slide-native Sagas use\nadd-slide with a visual entrypoint and semantic evidence-bearing Items.",
+	"add-chapter":                 "Add one independently reviewable narrative chapter to the Saga.",
+	"add-section":                 "Group related narrative content inside a chapter.",
+	"add-fragment":                "Add a narrative artifact to a chapter or section. Implementation evidence belongs on\ndeck Items; use add-slide and add-item for the implementation deck.",
 	"add-landmark":                "Create a coverable target for one Markdown heading, exact text span, HTML/SVG\nelement, or normalized image region inside a fragment. An SVG --element-id is\nmeasured into an on-canvas link automatically; --hotspot overrides its bounds.\nHTML elements need --hotspot for an on-canvas link. Visual landmarks require a\nsemantic --description for non-visual consumers.",
-	"cover": `Attach the exact diff atoms a review target explains. In v4 the target must
-be an Item. Report mode also accepts section/fragment paths, target URNs, and
+	"cover": `Attach the exact diff atoms a review target explains. In the implementation deck
+the target is an Item. Narrative targets are section/fragment paths, target URNs, and
 <fragment-path>#<landmark-id>.
 --batch reads newline-delimited JSON records (or one JSON array) with the
 per-record fields target, path, side, lines, changed_lines, event, old_path,
@@ -332,7 +326,6 @@ func Init(ctx context.Context, args []string, out io.Writer) error {
 	allowRepositoryMismatch := flags.Bool("allow-repository-mismatch", false, "accept an explicitly declared repository that differs from origin")
 	prNumber := flags.Int("pr", 0, "pull request number")
 	prURL := flags.String("pr-url", "", "pull request URL")
-	mode := flags.String("mode", "report", "document mode: report or slides (intentionally incompatible)")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -365,19 +358,11 @@ func Init(ctx context.Context, args []string, out io.Writer) error {
 			return fmt.Errorf("--pr-url must be an absolute URI")
 		}
 	}
-	if *mode != "report" && *mode != "slides" {
-		return fmt.Errorf("--mode must be report or slides")
-	}
 	repositoryURI, _, err := discoverRepository(ctx, *repoDir, *repository, *allowLocalRepository, *allowRepositoryMismatch)
 	if err != nil {
 		return err
 	}
-	manifest := saga.Manifest{Schema: saga.SchemaURL, Version: saga.CurrentVersion, ID: *id, Title: *title, Source: saga.Source{Repository: repositoryURI, Base: *base, Head: *head}}
-	if *mode == "slides" {
-		manifest.Schema = saga.V4SchemaURL
-		manifest.Version = saga.SlideSagaVersion
-		manifest.Presentation = &saga.Presentation{Mode: "slides", AspectRatio: "16:9", OverviewDeck: "overview"}
-	}
+	manifest := saga.Manifest{Schema: saga.SagaSchemaURL, Version: saga.SagaVersion, ID: *id, Title: *title, Source: saga.Source{Repository: repositoryURI, Base: *base, Head: *head}}
 	if *prNumber != 0 || *prURL != "" {
 		manifest.PR = &saga.PR{URL: *prURL}
 		if *prNumber != 0 {
@@ -391,11 +376,6 @@ func Init(ctx context.Context, args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
-	if *mode == "slides" {
-		if err := saga.ValidateFlatRoot(absRoot); err != nil {
-			return err
-		}
-	}
 	// The saga itself is staged and published atomically; its containing
 	// directories are ordinary parents and may be created up front. The parent
 	// is then resolved, because a saga may legitimately live under a symlinked
@@ -408,49 +388,21 @@ func Init(ctx context.Context, args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
-	if *mode == "slides" {
-		if err := saga.ValidateFlatRoot(filepath.Join(parent, filepath.Base(absRoot))); err != nil {
-			return err
-		}
-	}
 	err = store.CommitDir(parent, filepath.Join(parent, filepath.Base(absRoot)), func(stage string) error {
 		if err := os.Chmod(stage, 0o755); err != nil {
 			return err
 		}
 		reservedDirs := []string{"___approvals", "___claims", "___verifications", filepath.Join("___review", "threads"), filepath.Join("___review", "diffs"), "___diffs"}
-		if *mode == "slides" {
-			reservedDirs = nil
-		}
 		for _, dir := range reservedDirs {
 			if err := os.MkdirAll(filepath.Join(stage, dir), 0o755); err != nil {
 				return err
 			}
 		}
-		manifestName := "saga.json"
-		if *mode == "slides" {
-			manifestName = saga.FlatManifestName
-		}
-		if err := store.WriteJSON(filepath.Join(stage, manifestName), manifest, true); err != nil {
+		if err := store.WriteJSON(filepath.Join(stage, saga.ManifestName), manifest, true); err != nil {
 			return err
 		}
-		readme := reviewerBootstrapREADME
-		if *mode == "slides" {
-			readme = slideNativeBootstrapREADME
-		}
-		readmeName := "README.md"
-		if *mode == "slides" {
-			readmeName = "01-readme.md"
-		}
-		if err := store.WriteFile(filepath.Join(stage, readmeName), []byte(readme), 0o644, true); err != nil {
+		if err := store.WriteFile(filepath.Join(stage, "README.md"), []byte(reviewerBootstrapREADME), 0o644, true); err != nil {
 			return err
-		}
-		if *mode == "slides" {
-			deck := saga.DeckManifest{Version: saga.SlideSagaVersion, ID: "overview", Title: "Overview", Role: "overview", Rank: 0, Objective: "Orient the reviewer to the change and its review path."}
-			name, err := saga.FlatDeckFilename(saga.DeckTarget(manifest.ID, deck.ID), deck.Rank)
-			if err != nil {
-				return err
-			}
-			return store.WriteJSON(filepath.Join(stage, name), deck, true)
 		}
 		return populateFragment(filepath.Join(stage, "overview.fragment"), overview, "", nil)
 	})
@@ -460,11 +412,7 @@ func Init(ctx context.Context, args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
-	if *mode == "slides" {
-		fmt.Fprintf(out, "Created slide-native %s\nNext: change-saga add-slide --deck overview --intent orient --layout hero --title \"What changed\" %s change-overview\n", root, root)
-	} else {
-		fmt.Fprintf(out, "Created %s\nNext: change-saga add-chapter --title \"Architecture\" %s architecture\n", root, root)
-	}
+	fmt.Fprintf(out, "Created %s\nNext: capture what the change must do as user stories and prototypes:\n  change-saga story add --id ID --revision r1 --event proposed --title TEXT --statement TEXT --priority TEXT %s\n  change-saga prototype add-html --id ID --revision r1 --title TEXT --source PATH %s\n", root, root, root)
 	return nil
 }
 
@@ -490,9 +438,6 @@ func addChapter(_ context.Context, args []string, out io.Writer, scope authoring
 	}
 	var created, createdID, createdTarget string
 	err := authorMutation(flags.Arg(0), func(document *saga.Saga) error {
-		if document.Manifest.Version == saga.SlideSagaVersion {
-			return fmt.Errorf("add-chapter is unavailable for v4 slide-native Sagas; use add-deck")
-		}
 		hierarchyRoot, err := scope.hierarchyRoot(document)
 		if err != nil {
 			return err
@@ -569,9 +514,6 @@ func addSection(_ context.Context, args []string, out io.Writer, scope authoring
 	}
 	var created, createdID, createdTarget string
 	err := authorMutation(flags.Arg(0), func(document *saga.Saga) error {
-		if document.Manifest.Version == saga.SlideSagaVersion {
-			return fmt.Errorf("add-section is unavailable for v4 slide-native Sagas; use add-slide")
-		}
 		parentDir, _, err := scope.resolveTarget(document, parentPath, false)
 		if err != nil {
 			return fmt.Errorf("resolve parent: %w", err)
@@ -658,9 +600,6 @@ func addFragment(_ context.Context, args []string, out io.Writer, scope authorin
 	}
 	var created, createdTarget string
 	err = authorMutation(flags.Arg(0), func(document *saga.Saga) error {
-		if document.Manifest.Version == saga.SlideSagaVersion {
-			return fmt.Errorf("add-fragment is unavailable for v4 slide-native Sagas; use add-slide")
-		}
 		sectionDir, _, err := scope.resolveTarget(document, *section, false)
 		if err != nil {
 			return err
@@ -778,7 +717,7 @@ func Reply(_ context.Context, args []string, out io.Writer) error {
 
 func Review(_ context.Context, args []string, out io.Writer) error {
 	flags := commandFlags("review", commandUsage["review"], out)
-	target := flags.String("target", ".", "review target path, ID, or URN; v4 decisions are per slide")
+	target := flags.String("target", ".", "review target path, ID, or URN; deck decisions are per slide")
 	state := flags.String("state", "", "approved, rejected, closed, or open")
 	body := flags.String("body", "", "optional review note")
 	reviewerKind := flags.String("reviewer-kind", "", "required reviewer persona: human or ai")
@@ -808,9 +747,9 @@ func Review(_ context.Context, args []string, out io.Writer) error {
 	}
 	reviewTarget := targetDir
 	mutationIndex := saga.MutationIndexFromDocument(document)
-	if document.Manifest.Version == saga.SlideSagaVersion || mutationIndex.FlatTargets[resolvedTarget] {
+	if mutationIndex.FlatTargets[resolvedTarget] {
 		if _, ok := mutationIndex.ReviewTargets[resolvedTarget]; !ok {
-			return fmt.Errorf("v4 approval decisions must target a slide; use a thread to comment on an Item")
+			return fmt.Errorf("deck approval decisions must target a slide; use a thread to comment on an Item")
 		}
 		reviewTarget = resolvedTarget
 	}
@@ -864,12 +803,12 @@ func Validate(_ context.Context, args []string, out io.Writer) error {
 	return nil
 }
 
-// appendPrototypeIssues reports the optional v3 prototype capability through
+// appendPrototypeIssues reports the prototype capability through
 // the same validation surface as the rest of the Saga. The prototype loader
 // validates every identity, immutable revision, html digest, and pinned
 // annotation as it reads, so a load failure is the validation result.
 func appendPrototypeIssues(root string, document *saga.Saga, validation *saga.Validation) {
-	if document == nil || !saga.ReportContainerVersion(document.Manifest.Version) {
+	if document == nil {
 		return
 	}
 	if _, err := os.Lstat(filepath.Join(root, "___requirements")); err != nil {
@@ -885,7 +824,7 @@ func appendPrototypeIssues(root string, document *saga.Saga, validation *saga.Va
 	}
 }
 
-// appendQualityIssues reports the optional v5 quality capability. The quality
+// appendQualityIssues reports the quality capability. The quality
 // loader validates identities, revision/lifecycle/run graphs, step history,
 // evidence and policy supersession as it reads, so a load failure is the
 // validation result. An absent ___quality root is simply not adopted.
@@ -1141,7 +1080,7 @@ func Spec(args []string, out io.Writer) error {
 	}
 	if *jsonOutput {
 		return writeJSON(out, map[string]any{
-			"version": 2, "chapter_suffix": ".chapter", "chapter_manifest": "chapter.json", "fragment_suffix": ".fragment", "fragment_manifest": "fragment.json",
+			"version": saga.SagaVersion, "manifest": saga.ManifestName, "component_version": saga.ComponentVersion, "chapter_suffix": ".chapter", "chapter_manifest": "chapter.json", "fragment_suffix": ".fragment", "fragment_manifest": "fragment.json",
 			"hierarchy":     []string{"overview", "chapter", "section", "fragment"},
 			"media_types":   []string{"text/markdown", "text/html", "text/plain", "image/svg+xml", "image/*"},
 			"target_scheme": "urn:change-saga", "diff_scheme": "saga-diff://v1",
@@ -1151,9 +1090,9 @@ func Spec(args []string, out io.Writer) error {
 			"reserved_directories": []string{"___diffs", "___approvals", "___claims", "___verifications", "___review"},
 			"author_assertions":    "one claim per ___claims/*.json; one append-only result per ___verifications/*.json",
 			"review_storage":       "append-only; one thread, message, or event record per path",
-			"slide_native_v4": map[string]any{
-				"manifest": saga.FlatManifestName, "layout": "flat", "max_basename": saga.FlatMaxBasename, "max_absolute_path": saga.FlatMaxPath,
-				"categories": map[string]string{"10-d": "deck", "20-s": "slide", "30-i": "item", "40-e": "evidence", "50-c": "claim", "60-v": "verification", "80-85": "review"},
+			"implementation_deck": map[string]any{
+				"storage": saga.EmbeddedSlidesDir + "/<id>" + saga.EmbeddedDeckSuffix, "layout": "flat", "max_basename": saga.FlatMaxBasename, "max_absolute_path": saga.FlatMaxPath,
+				"categories": map[string]string{"10-d": "deck", "20-s": "slide", "30-i": "item", "40-e": "evidence", "80-85": "review"},
 				"content":    "one self-contained visual file sharing its slide manifest stem",
 				"visual_forms": map[string]string{
 					"system-context": "actors, external systems, boundaries, and changed interfaces", "architecture": "containment, dependencies, and responsibilities",
@@ -1372,10 +1311,10 @@ func resolveTarget(document *saga.Saga, value string, allowFragment bool) (strin
 	return abs, foundTarget, nil
 }
 
-// resolveTargetRecordPath recognizes the manifest filename printed by v4
-// authoring commands. All v4 targets share the Saga root as their storage
-// directory, so comparing Directory alone would make every slide and Item
-// collide. The Path field remains unique and is also useful for legacy targets.
+// resolveTargetRecordPath recognizes the record filename printed by deck
+// authoring commands. Every slide and Item in a deck bundle shares the bundle
+// as its storage directory, so comparing Directory alone would make them
+// collide. The Path field remains unique.
 func resolveTargetRecordPath(document *saga.Saga, candidateAbs string, allowFragment bool) (string, string, bool) {
 	var foundDir, foundTarget string
 	var walk func(*saga.Section)
@@ -1384,9 +1323,6 @@ func resolveTargetRecordPath(document *saga.Saga, candidateAbs string, allowFrag
 			pathAbs, _ := filepath.Abs(filepath.Join(document.Root, filepath.FromSlash(section.Path)))
 			if pathAbs == candidateAbs {
 				foundDir = pathAbs
-				if document.Manifest.Version == saga.SlideSagaVersion {
-					foundDir = document.Root
-				}
 				foundTarget = section.Target
 			}
 		}
@@ -1784,26 +1720,25 @@ A Change Saga is the authored change proposal submitted for review: a visual,
 executable successor to a flat pull-request title and description. It is the
 thing to be reviewed, not the review itself.
 
-## Slide-native v4
+## Implementation deck
 
-For a new visual review deck, initialize with ` + "`change-saga init --mode slides`" + `.
-This is an intentionally incompatible format, not a pagination option for an
-existing report. Its spine is Saga → Deck → Slide → Item. Author with
-` + "`add-deck`" + `, ` + "`add-slide`" + `, ` + "`set-slide-content`" + `, and ` + "`add-item`" + `.
+The implementation deck is the Saga's Implementation section. Its spine is
+Deck → Slide → Item. Author with ` + "`add-deck`" + `, ` + "`add-slide`" + `,
+` + "`set-slide-content`" + `, and ` + "`add-item`" + `.
 Each slide is one 16:9 visual argument with one takeaway and no more than seven
 semantic Items in a standard layout. Nodes, edges, regions, transitions,
 examples, risks, metrics, statements, and overlaid callouts are all Items. A
 callout may name another Item and may own its own exact diff evidence. Attach
-every product diff atom to the narrowest Item; v4 refuses Saga-, deck-, and
-slide-level coverage. Read it with the v2 ` + "`slide`" + ` and ` + "`slide-diffs`" + ` query
-operations. Never migrate by editing a report's manifest version.
+every product diff atom in the deck to the narrowest Item; deck- and
+slide-level coverage is refused. Read it with the ` + "`slide`" + ` and ` + "`slide-diffs`" + ` query
+operations.
 
-V4 storage is flat and deliberately opaque: ` + "`00-saga.json`" + ` plus compact
-category-prefixed records (` + "`10-d`" + ` decks, ` + "`20-s`" + ` slides, ` + "`30-i`" + ` Items,
-` + "`40-e`" + ` evidence, and ` + "`80`" + `–` + "`85`" + ` reviews). Titles and source paths belong
-inside records, never filenames. Always use CLI commands and query targets;
-never invent, rename, nest, glob, or infer meaning from v4 storage files. Slide
-HTML must be self-contained.
+Each deck is an independently mergeable bundle under ` + "`___slides/<id>.deck/`" + `
+with compact category-prefixed records (` + "`10-d`" + ` decks, ` + "`20-s`" + ` slides,
+` + "`30-i`" + ` Items, ` + "`40-e`" + ` evidence, and ` + "`80`" + `–` + "`85`" + ` reviews at the Saga root).
+Titles and source paths belong inside records, never filenames. Always use CLI
+commands and query targets; never invent, rename, nest, glob, or infer meaning
+from deck storage files. Slide HTML must be self-contained.
 
 Optimize for reviewer understanding and information gain, not exhaustive
 retelling. Establish enough of the surrounding system for the reviewer to form
@@ -2114,17 +2049,22 @@ const defaultSVGFragment = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0
 </svg>
 `
 
-const specText = `Change Saga formats (experimental)
+const specText = `Change Saga format (experimental)
 
-Slide-native v4 is an intentionally incompatible visual format. Its root
-manifest is 00-saga.json and every persistent object is a regular file at the
-Saga root. Compact prefixes group decks (10-d), slides (20-s), Items (30-i),
-evidence (40-e), claims/verifications (50-c/60-v), and review history (80-85).
-Fixed-width ranks and deterministic keys make ordinary filename sorting stable;
-semantic IDs, titles, parentage, and durable target URNs remain in the records.
-Basenames are at most 64 characters and the default portability budget is 240
-characters for an absolute path. Each slide owns one self-contained SVG, image,
-or HTML file sharing its manifest stem. Evidence may target only Items.
+A Change Saga is one directory whose saga.json declares version 5. It carries
+the whole of a big change: prototypes and user stories under ___requirements,
+UX/UI and technical design under ___design, delivery waves under ___workplan,
+test cases under ___quality, and the implementation deck under ___slides.
+
+The implementation deck is a set of independently mergeable bundles under
+___slides/<id>.deck/. Compact prefixes group decks (10-d), slides (20-s), Items
+(30-i), and evidence (40-e); their review history (80-85) lives at the Saga
+root. Fixed-width ranks and deterministic keys make ordinary filename sorting
+stable; semantic IDs, titles, parentage, and durable target URNs remain in the
+records. Basenames are at most 64 characters and the default portability
+budget is 240 characters for an absolute path. Each slide owns one
+self-contained SVG, image, or HTML file sharing its manifest stem. Deck
+evidence may target only Items.
 
 For authoring, ` + "`intent`" + ` names the reviewer job and ` + "`layout`" + ` names the canvas
 arrangement; neither names the diagram's meaning. Storyboard the specific
@@ -2147,7 +2087,7 @@ visual element and give it exact evidence. Do not manufacture novelty. The
 surprise audit fails when a reviewer cannot identify the system model, the
 highest-consequence deviation, why it exists, and the tradeoff it creates.
 
-Change Saga format v2
+Report components
 
 A saga root includes a reviewer-facing README.md with safe installation,
 opening, and structured-query guidance. The file is informational bootstrap
@@ -2167,7 +2107,7 @@ base/head identities, and a line range or file event.
 When a declared base advances but the exact product patch does not,
 change-saga rebase-evidence proves the base-independent product identity before
 rewriting only selector base identities. It refuses product changes. Affected
-claims are replaced through v3 supersedes relations and verification carry-forward
+claims are replaced through supersedes relations and verification carry-forward
 is explicit rather than automatic.
 
 Addressable Markdown headings, exact text, HTML/SVG elements, and image regions

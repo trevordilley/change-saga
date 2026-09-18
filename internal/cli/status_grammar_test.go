@@ -28,7 +28,6 @@ func grammarHelp(t *testing.T, name string) string {
 		"add-deck":        func() error { return AddDeck(ctx, args, &output) },
 		"cover":           func() error { return Cover(ctx, args, &output) },
 		"rebase-evidence": func() error { return RebaseEvidence(ctx, args, &output) },
-		"upgrade":         func() error { return Upgrade(ctx, args, &output) },
 		"validate":        func() error { return Validate(ctx, args, &output) },
 		"status":          func() error { return Status(ctx, args, &output) },
 		"spec":            func() error { return Spec(args, &output) },
@@ -61,17 +60,17 @@ func TestGrammarMatchesTheImplementedCLI(t *testing.T) {
 	}
 }
 
-func TestSpecJSONDescribesTheLivingGrammarWithoutBreakingV2Keys(t *testing.T) {
+func TestSpecJSONDescribesTheLivingGrammar(t *testing.T) {
 	var output bytes.Buffer
 	if err := Spec([]string{"--json"}, &output); err != nil {
 		t.Fatal(err)
 	}
 	var contract struct {
-		Version        int             `json:"version"`
-		ChapterSuffix  string          `json:"chapter_suffix"`
-		SlideNativeV4  json.RawMessage `json:"slide_native_v4"`
-		ReservedLegacy []string        `json:"reserved_directories"`
-		Living         struct {
+		Version       int             `json:"version"`
+		ChapterSuffix string          `json:"chapter_suffix"`
+		Deck          json.RawMessage `json:"implementation_deck"`
+		Reserved      []string        `json:"reserved_directories"`
+		Living        struct {
 			Resources      []grammar.Resource `json:"resources"`
 			RelationMatrix []grammar.Relation `json:"relation_matrix"`
 			Commands       []grammar.Command  `json:"commands"`
@@ -81,8 +80,8 @@ func TestSpecJSONDescribesTheLivingGrammarWithoutBreakingV2Keys(t *testing.T) {
 	if err := json.Unmarshal(output.Bytes(), &contract); err != nil {
 		t.Fatal(err)
 	}
-	if contract.Version != 2 || contract.ChapterSuffix != ".chapter" || len(contract.SlideNativeV4) == 0 || len(contract.ReservedLegacy) == 0 {
-		t.Fatal("existing spec keys must keep their values")
+	if contract.Version != 5 || contract.ChapterSuffix != ".chapter" || len(contract.Deck) == 0 || len(contract.Reserved) == 0 {
+		t.Fatal("spec must describe the one Saga format")
 	}
 	kinds := map[string]bool{}
 	for _, resource := range contract.Living.Resources {
@@ -161,8 +160,7 @@ func TestStatusReportsAStaleTestCaseLinkOnceAndNeverAsAnOrphan(t *testing.T) {
 		}
 	}
 	var output bytes.Buffer
-	mustRun("upgrade 3", Upgrade(ctx, []string{"--to", "3", root}, &output), &output)
-	if err := addUpgradeStory(t, root, "checkout"); err != nil {
+	if err := addCheckoutStory(t, root, "checkout"); err != nil {
 		t.Fatal(err)
 	}
 	document, err := requirements.Load(root, "")
@@ -172,7 +170,6 @@ func TestStatusReportsAStaleTestCaseLinkOnceAndNeverAsAnOrphan(t *testing.T) {
 	prefix := "urn:change-saga:" + document.SagaID
 	story, testCase, relation := prefix+":story:checkout", prefix+":test-case:fast", prefix+":relation:fast-verifies"
 	mustRun("accept", Story(ctx, []string{"set-state", root, "--story", story, "--event", "accepted", "--parent", story + ":event:proposed", "--state", "accepted", "--json"}, &output), &output)
-	mustRun("upgrade 5", Upgrade(ctx, []string{"--to", "5", root}, &output), &output)
 	runQuality(t, "", "test-case", "add", root, "--id", "fast", "--title", "Fast checkout", "--kind", "positive",
 		"--automation", "automated", "--step", `{"id":"s1","action":"Check out","expected_result":"Done"}`, "--expected-result", "Done")
 	mustRun("relation add", Relation(ctx, []string{"add", root, "--id", "fast-verifies", "--type", "verifies", "--from", testCase,

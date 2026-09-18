@@ -87,8 +87,7 @@ func OpenBrowser(rawURL string) error { return launchBrowser(rawURL) }
 
 type pageData struct {
 	Saga             *saga.Saga
-	SlideNative      bool
-	HybridSlides     bool
+	EmbeddedDecks    bool
 	RequirementsMode bool
 	Requirements     *requirementsPageView
 	Root             *sectionView
@@ -949,7 +948,7 @@ func (a *app) page(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "The saga could not be loaded. Run change-saga validate for details.", http.StatusInternalServerError)
 		return
 	}
-	if document.Manifest.Version == saga.SlideSagaVersion || len(document.Decks) > 0 {
+	if len(document.Decks) > 0 {
 		document = a.narrativeDocument(r.Context())
 		if document == nil {
 			http.Error(w, "The slide deck could not be loaded. Run change-saga validate for details.", http.StatusInternalServerError)
@@ -974,10 +973,6 @@ func (a *app) page(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	if requirementsRoute && !saga.ReportContainerVersion(document.Manifest.Version) {
-		http.NotFound(w, r)
-		return
-	}
 	threadsByTarget, _ := threadViews(document)
 	// The saga view is a shell: identity, coverage totals, the overview's
 	// fragments as descriptors, one summary per chapter, and the navigation
@@ -985,65 +980,47 @@ func (a *app) page(w http.ResponseWriter, r *http.Request) {
 	// /api/fragment as a reviewer opens it.
 	scope := viewScope{threads: threadsByTarget}
 	reportRoot, slideRoot := splitReportAndDeckSections(document.Section)
-	rootScope := scope
-	if document.Manifest.Version != saga.SlideSagaVersion {
-		rootScope = scope.shell()
-	}
-	rootView := makeSectionView(reportRoot, rootScope)
-	if document.Manifest.Version == saga.SlideSagaVersion {
-		rootView = makeSectionView(slideRoot, scope)
-	}
+	rootView := makeSectionView(reportRoot, scope.shell())
 	data := pageData{
 		Saga:           document,
-		SlideNative:    document.Manifest.Version == saga.SlideSagaVersion,
-		HybridSlides:   saga.ReportContainerVersion(document.Manifest.Version) && len(document.Decks) > 0,
+		EmbeddedDecks:  len(document.Decks) > 0,
 		Root:           rootView,
 		MutationToken:  a.mutationToken,
 		CoverageTotals: a.cachedCoverageTotals(),
 	}
-	if saga.ReportContainerVersion(document.Manifest.Version) {
-		requirementsView, requirementsNav, err := loadRequirementsSurface(a.root, document.Manifest.ID, r)
-		if errors.Is(err, errRequirementNotFound) {
-			http.NotFound(w, r)
-			return
-		}
-		if err != nil {
-			http.Error(w, "The requirements could not be loaded. Run change-saga validate for details.", http.StatusInternalServerError)
-			return
-		}
-		data.Requirements = requirementsView
-		data.Requirements.Rationale = requirementsRationale(reportRoot)
-		data.RequirementsMode = requirementsView.Active
-		data.Nav = makeNavTree(reportRoot, threadsByTarget)
-		if requirementsView.Active {
-			clearActiveNav(data.Nav)
-		}
-		prototypeNav, prototypeNote := a.prototypeNav(document.Manifest.ID)
-		uxDecks, implementationDecks := splitDeckNavByRole(makeDeckNavTree(slideRoot), document.Decks)
-		data.Nav = spliceProductNav(data.Nav, makeProductNavTree(productNavSources{
-			requirements:   requirementsNav,
-			prototypes:     prototypeNav,
-			prototypeNote:  prototypeNote,
-			uxDecks:        uxDecks,
-			technical:      makeDesignChapterNav(reportRoot, threadsByTarget),
-			implementation: implementationDecks,
-		}))
+	requirementsView, requirementsNav, err := loadRequirementsSurface(a.root, document.Manifest.ID, r)
+	if errors.Is(err, errRequirementNotFound) {
+		http.NotFound(w, r)
+		return
 	}
-	if data.HybridSlides {
+	if err != nil {
+		http.Error(w, "The requirements could not be loaded. Run change-saga validate for details.", http.StatusInternalServerError)
+		return
+	}
+	data.Requirements = requirementsView
+	data.Requirements.Rationale = requirementsRationale(reportRoot)
+	data.RequirementsMode = requirementsView.Active
+	data.Nav = makeNavTree(reportRoot, threadsByTarget)
+	if requirementsView.Active {
+		clearActiveNav(data.Nav)
+	}
+	prototypeNav, prototypeNote := a.prototypeNav(document.Manifest.ID)
+	uxDecks, implementationDecks := splitDeckNavByRole(makeDeckNavTree(slideRoot), document.Decks)
+	data.Nav = spliceProductNav(data.Nav, makeProductNavTree(productNavSources{
+		requirements:   requirementsNav,
+		prototypes:     prototypeNav,
+		prototypeNote:  prototypeNote,
+		uxDecks:        uxDecks,
+		technical:      makeDesignChapterNav(reportRoot, threadsByTarget),
+		implementation: implementationDecks,
+	}))
+	data.ReviewItems = makeReviewProgressItems(reportRoot)
+	if data.EmbeddedDecks {
 		data.SlideRoot = makeSectionView(slideRoot, scope)
-	}
-	if data.SlideNative {
-		data.ReviewItems = makeSlideReviewProgressItems(slideRoot)
-	} else if data.HybridSlides {
-		data.ReviewItems = append(makeReviewProgressItems(reportRoot), makeSlideReviewProgressItems(slideRoot)...)
-	} else {
-		data.ReviewItems = makeReviewProgressItems(reportRoot)
+		data.ReviewItems = append(data.ReviewItems, makeSlideReviewProgressItems(slideRoot)...)
 	}
 	data.ReviewDecided, data.ReviewTotal = reviewProgressSummary(data.ReviewItems)
 	data.ActivityCount = reviewActivityCount(document)
-	if data.Nav == nil {
-		data.Nav = makeNavTree(reportRoot, threadsByTarget)
-	}
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	if err := a.template.ExecuteTemplate(w, "page", data); err != nil {
 		http.Error(w, "The review page could not be rendered.", http.StatusInternalServerError)
@@ -1230,8 +1207,7 @@ func makeChapterNav(chapter *saga.Section, threads map[string][]*threadView) *na
 // living documentation. Decks are disclosure nodes, while their slides are
 // destinations that switch the main pane from report reading to visual review.
 // splitDeckNavByRole then places each deck in the architecture; the decks no
-// longer occupy a sidebar path of their own. Standalone v4 Sagas keep their
-// thumbnail navigator and never use this tree.
+// longer occupy a sidebar path of their own.
 func makeDeckNavTree(root *saga.Section) []*navNodeView {
 	if root == nil {
 		return nil
@@ -1426,7 +1402,7 @@ func makeReviewProgressItems(root *saga.Section) []*reviewProgressItem {
 	return result
 }
 
-// makeSlideReviewProgressItems reflects the v4 decision boundary: reviewers
+// makeSlideReviewProgressItems reflects the deck decision boundary: reviewers
 // approve complete visual arguments (slides), while Items remain precise
 // evidence and comment targets rather than becoming a checklist of approvals.
 func makeSlideReviewProgressItems(root *saga.Section) []*reviewProgressItem {
@@ -2046,9 +2022,7 @@ func (a *app) fragmentFile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	assetTarget := saga.FragmentTarget(index.Manifest.ID, r.PathValue("id"))
-	if index.Manifest.Version == saga.SlideSagaVersion {
-		assetTarget = saga.SlideTarget(index.Manifest.ID, r.PathValue("id"))
-	} else if slideTarget := saga.SlideTarget(index.Manifest.ID, r.PathValue("id")); index.FlatTargets[slideTarget] {
+	if slideTarget := saga.SlideTarget(index.Manifest.ID, r.PathValue("id")); index.FlatTargets[slideTarget] {
 		assetTarget = slideTarget
 	}
 	fragmentDir, ok := index.Targets[assetTarget]
@@ -2240,7 +2214,7 @@ func (a *app) review(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	reviewTarget := dir
-	if index.Manifest.Version == saga.SlideSagaVersion || index.FlatTargets[target] {
+	if index.FlatTargets[target] {
 		reviewTarget = target
 	}
 	if err := reviewstore.AddReview(a.root, reviewTarget, r.FormValue("state"), r.FormValue("body"), saga.ReviewerIdentity{Kind: "human"}); err != nil {

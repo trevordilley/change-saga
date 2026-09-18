@@ -15,7 +15,7 @@ import (
 var testNow = time.Date(2026, 8, 31, 18, 0, 0, 0, time.UTC)
 
 func TestWavesDoNotCreateImplicitBarriersAndDependenciesFormADAG(t *testing.T) {
-	root := newV3Saga(t)
+	root := newSaga(t)
 	mutator := testMutator()
 	createWave(t, mutator, root, "later", 20)
 	createWave(t, mutator, root, "earlier", 10)
@@ -48,7 +48,7 @@ func TestWavesDoNotCreateImplicitBarriersAndDependenciesFormADAG(t *testing.T) {
 }
 
 func TestRevisionAndProgressGraphsRetainConcurrentHeadsUntilReconciled(t *testing.T) {
-	root := newV3Saga(t)
+	root := newSaga(t)
 	mutator := testMutator()
 	createItem(t, mutator, root, "core", "", nil)
 	plan := mustLoad(t, root)
@@ -107,7 +107,7 @@ func TestRevisionAndProgressGraphsRetainConcurrentHeadsUntilReconciled(t *testin
 }
 
 func TestDependencyConditionsUseProgressMergeAndPinnedContractFacts(t *testing.T) {
-	root := newV3Saga(t)
+	root := newSaga(t)
 	mutator := testMutator()
 	unit := MergeUnit{ID: "primary", Repository: "https://example.com/repo.git", SourceBranch: "feature/core", TargetBranch: "main", Required: true}
 	createItem(t, mutator, root, "provider", "", []MergeUnit{unit})
@@ -169,7 +169,7 @@ func TestDependencyConditionsUseProgressMergeAndPinnedContractFacts(t *testing.T
 }
 
 func TestRequestReplayIsIdempotentAndPayloadReuseConflicts(t *testing.T) {
-	root := newV3Saga(t)
+	root := newSaga(t)
 	mutator := testMutator()
 	revision := WaveRevision{ID: "v1", Title: "Foundation", Objective: "Build storage.", Order: 10}
 	first, err := mutator.CreateWave(root, "foundation", revision, "same-request")
@@ -193,7 +193,7 @@ func TestRequestReplayIsIdempotentAndPayloadReuseConflicts(t *testing.T) {
 }
 
 func TestWorkspaceAssignmentsPersistPortableIdentityAndUseParentURNs(t *testing.T) {
-	root := newV3Saga(t)
+	root := newSaga(t)
 	mutator := testMutator()
 	createItem(t, mutator, root, "assigned", "", nil)
 	workspace := Workspace{Provider: "devswarm", ID: "f9f72560-988a-44fd-8d06-1d020bae9854", RepositoryID: "08fb259f-ceb1-4a3d-9121-a0b1866edd7b", Branch: "feature/work", SourceBranch: "main", Label: "Work"}
@@ -225,7 +225,7 @@ func TestWorkspaceAssignmentsPersistPortableIdentityAndUseParentURNs(t *testing.
 }
 
 func TestLoaderRejectsSymlinksAndUnknownFieldsWithoutFollowingThem(t *testing.T) {
-	root := newV3Saga(t)
+	root := newSaga(t)
 	outside := t.TempDir()
 	if err := os.MkdirAll(filepath.Join(root, RootDir), 0o755); err != nil {
 		t.Fatal(err)
@@ -259,13 +259,13 @@ func TestSchemasAreClosedVersionedV3Contracts(t *testing.T) {
 	}
 }
 
-func newV3Saga(t *testing.T) string {
+func newSaga(t *testing.T) string {
 	t.Helper()
 	root := filepath.Join(t.TempDir(), "test.saga")
 	if err := os.Mkdir(root, 0o755); err != nil {
 		t.Fatal(err)
 	}
-	manifest := map[string]any{"$schema": "https://changesaga.dev/schema/v3/saga.schema.json", "version": 3, "id": "test", "title": "Test", "source": map[string]string{"repository": "https://example.com/repo.git", "base": "main", "head": "feature"}}
+	manifest := map[string]any{"$schema": "https://changesaga.dev/schema/v5/saga.schema.json", "version": 5, "id": "test", "title": "Test", "source": map[string]string{"repository": "https://example.com/repo.git", "base": "main", "head": "feature"}}
 	data, _ := json.Marshal(manifest)
 	if err := os.WriteFile(filepath.Join(root, "saga.json"), data, 0o644); err != nil {
 		t.Fatal(err)

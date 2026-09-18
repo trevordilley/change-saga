@@ -334,7 +334,7 @@ func loadRecords[T any](root, dir, kind string, maximum int, decode func(string,
 func validateManifest(value manifest) error {
 	var problems validationErrors
 	if value.Version != Version {
-		problems.add("quality requires a format v5 Saga")
+		problems.add("unsupported Saga version %d; change-saga reads only version %d", value.Version, Version)
 	}
 	if !qualityid.ValidID(value.ID) {
 		problems.add("saga id is invalid")

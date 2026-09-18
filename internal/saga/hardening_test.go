@@ -47,7 +47,7 @@ func TestClaimAndVerificationRecordsFailClosed(t *testing.T) {
 	}
 }
 
-const validSagaJSON = `{"version":2,"id":"test","title":"A saga","source":{"repository":"https://example.test/acme/app.git","base":"main","head":"HEAD"}}`
+const validSagaJSON = `{"version":5,"id":"test","title":"A saga","source":{"repository":"https://example.test/acme/app.git","base":"main","head":"HEAD"}}`
 
 // buildSaga writes a minimal valid saga and then applies the caller's overlay,
 // so each case states only the thing under test.
@@ -95,19 +95,19 @@ func TestLoadRejectsMalformedMetadata(t *testing.T) {
 		want  string
 	}{{
 		name:  "repository carries credentials",
-		files: map[string]string{"saga.json": `{"version":2,"id":"test","title":"A saga","source":{"repository":"https://user:secret@example.test/a.git","base":"main","head":"HEAD"}}`},
+		files: map[string]string{"saga.json": `{"version":5,"id":"test","title":"A saga","source":{"repository":"https://user:secret@example.test/a.git","base":"main","head":"HEAD"}}`},
 		want:  "userinfo",
 	}, {
 		name:  "repository keeps ssh userinfo",
-		files: map[string]string{"saga.json": `{"version":2,"id":"test","title":"A saga","source":{"repository":"ssh://git@example.test/acme/app.git","base":"main","head":"HEAD"}}`},
+		files: map[string]string{"saga.json": `{"version":5,"id":"test","title":"A saga","source":{"repository":"ssh://git@example.test/acme/app.git","base":"main","head":"HEAD"}}`},
 		want:  `use "ssh://example.test/acme/app.git"`,
 	}, {
 		name:  "pull request number is not positive",
-		files: map[string]string{"saga.json": `{"version":2,"id":"test","title":"A saga","pr":{"number":0},"source":{"repository":"https://example.test/a.git","base":"main","head":"HEAD"}}`},
+		files: map[string]string{"saga.json": `{"version":5,"id":"test","title":"A saga","pr":{"number":0},"source":{"repository":"https://example.test/a.git","base":"main","head":"HEAD"}}`},
 		want:  "pr.number",
 	}, {
 		name:  "pull request url is relative",
-		files: map[string]string{"saga.json": `{"version":2,"id":"test","title":"A saga","pr":{"url":"/pull/7"},"source":{"repository":"https://example.test/a.git","base":"main","head":"HEAD"}}`},
+		files: map[string]string{"saga.json": `{"version":5,"id":"test","title":"A saga","pr":{"url":"/pull/7"},"source":{"repository":"https://example.test/a.git","base":"main","head":"HEAD"}}`},
 		want:  "pr.url",
 	}, {
 		name:  "media type is not a published type",
@@ -299,7 +299,6 @@ func TestLoadRejectsSymlinkedThread(t *testing.T) {
 }
 
 // A saga.json written by change-saga init must load without a single issue.
-// This is the compatibility floor for every v2 saga already in the wild.
 func TestExistingCanonicalManifestStaysClean(t *testing.T) {
 	for _, repository := range []string{
 		"https://github.com/acme/payments.git",
@@ -307,7 +306,7 @@ func TestExistingCanonicalManifestStaysClean(t *testing.T) {
 		"file:///srv/repos/app",
 	} {
 		root := buildSaga(t, map[string]string{
-			"saga.json": fmt.Sprintf(`{"version":2,"id":"test","title":"A saga","source":{"repository":%q,"base":"main","head":"HEAD"}}`, repository),
+			"saga.json": fmt.Sprintf(`{"version":5,"id":"test","title":"A saga","source":{"repository":%q,"base":"main","head":"HEAD"}}`, repository),
 		})
 		validation, report := loadIssues(t, root)
 		if !validation.Valid || len(validation.Issues) != 0 {
@@ -316,15 +315,15 @@ func TestExistingCanonicalManifestStaysClean(t *testing.T) {
 	}
 }
 
-func TestNoncanonicalRepositoryIsAWarningNotAnError(t *testing.T) {
+func TestNoncanonicalRepositoryIsAnError(t *testing.T) {
 	root := buildSaga(t, map[string]string{
-		"saga.json": `{"version":2,"id":"test","title":"A saga","source":{"repository":"HTTPS://Example.TEST:443/acme/app.git/","base":"main","head":"HEAD"}}`,
+		"saga.json": `{"version":5,"id":"test","title":"A saga","source":{"repository":"HTTPS://Example.TEST:443/acme/app.git/","base":"main","head":"HEAD"}}`,
 	})
 	validation, report := loadIssues(t, root)
-	if !validation.Valid {
-		t.Fatalf("an existing noncanonical identity must keep loading; issues:\n%s", report)
+	if validation.Valid {
+		t.Fatalf("a noncanonical repository identity must be rejected; issues:\n%s", report)
 	}
-	if !strings.Contains(report, "not canonical") {
-		t.Fatalf("expected a canonicalization warning; got:\n%s", report)
+	if !strings.Contains(report, "must be canonical") || !strings.Contains(report, "https://example.test/acme/app.git") {
+		t.Fatalf("expected a canonicalization error naming the canonical form; got:\n%s", report)
 	}
 }

@@ -132,7 +132,6 @@ func init() {
 
 func TestStableIDGrammarMatchesEverySchema(t *testing.T) {
 	files := map[string][]string{
-		"saga.schema.json":         {"$defs", "id", "pattern"},
 		"chapter.schema.json":      {"properties", "id", "pattern"},
 		"section.schema.json":      {"properties", "id", "pattern"},
 		"fragment.schema.json":     {"properties", "id", "pattern"},

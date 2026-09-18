@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"fmt"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -19,10 +20,7 @@ import (
 func TestV5RelationLinksTestCaseToCriterionAndGoesStaleOnRevision(t *testing.T) {
 	ctx := context.Background()
 	root := newLivingSaga(t)
-	if err := addUpgradeStory(t, root, "checkout"); err != nil {
-		t.Fatal(err)
-	}
-	if err := Upgrade(ctx, []string{"--to", "5", root}, &bytes.Buffer{}); err != nil {
+	if err := addCheckoutStory(t, root, "checkout"); err != nil {
 		t.Fatal(err)
 	}
 	document, err := requirements.Load(root, "")
@@ -95,4 +93,18 @@ func TestV5RelationLinksTestCaseToCriterionAndGoesStaleOnRevision(t *testing.T) 
 		"--to", story + ":criterion:fast", "--rationale", "No such case."}, &bytes.Buffer{}); err == nil || !strings.Contains(err.Error(), "does not exist") {
 		t.Fatalf("ghost test case error = %v", err)
 	}
+}
+
+func addCheckoutStory(t *testing.T, root, id string) error {
+	t.Helper()
+	var output bytes.Buffer
+	err := Story(context.Background(), []string{
+		"add", root, "--id", id, "--revision", "r1", "--event", "proposed",
+		"--title", "Checkout", "--statement", "As a buyer I can check out", "--priority", "must",
+		"--criterion", "fast=Checkout finishes promptly", "--request-id", id + "-request", "--json",
+	}, &output)
+	if err != nil {
+		return fmt.Errorf("%w: %s", err, output.String())
+	}
+	return nil
 }

@@ -189,12 +189,12 @@ func TestRelatedSagaLinksBackToExactLandmark(t *testing.T) {
 }
 
 func TestRelatedSagaRollsItemOwnersUpToSlidesAndGroupsByDeck(t *testing.T) {
-	deckTarget := saga.DeckTarget("visual", "overview")
+	deckTarget := saga.DeckTarget("visual", "implementation")
 	firstTarget := saga.SlideTarget("visual", "flow")
 	secondTarget := saga.SlideTarget("visual", "failure")
 	first := &saga.Fragment{
 		ID: "flow", Title: "Request flow", Target: firstTarget, MediaType: "image/svg+xml", Entrypoint: "flow.svg",
-		SlideMeta: &saga.SlideManifest{ID: "flow", DeckID: "overview"},
+		SlideMeta: &saga.SlideManifest{ID: "flow", DeckID: "implementation"},
 		Reviews:   []saga.Review{{State: "approved", CreatedAt: time.Now()}},
 		Landmarks: []saga.Landmark{
 			{ID: "client", Label: "Client", Target: saga.ItemTarget("visual", "flow", "client")},
@@ -203,13 +203,13 @@ func TestRelatedSagaRollsItemOwnersUpToSlidesAndGroupsByDeck(t *testing.T) {
 	}
 	second := &saga.Fragment{
 		ID: "failure", Title: "Failure path", Target: secondTarget, MediaType: "text/html", Entrypoint: "failure.html",
-		SlideMeta: &saga.SlideManifest{ID: "failure", DeckID: "overview"},
+		SlideMeta: &saga.SlideManifest{ID: "failure", DeckID: "implementation"},
 		Landmarks: []saga.Landmark{{ID: "timeout", Label: "Timeout", Target: saga.ItemTarget("visual", "failure", "timeout")}},
 	}
 	document := &saga.Saga{
-		Manifest: saga.Manifest{Version: saga.SlideSagaVersion, ID: "visual", Title: "Visual review"},
+		Manifest: saga.Manifest{Version: saga.SagaVersion, ID: "visual", Title: "Visual review"},
 		Section: &saga.Section{Kind: "saga", ID: "visual-root", Target: saga.SagaTarget("visual"), Children: []*saga.Section{{
-			Kind: "deck", ID: "overview", Title: "System tour", Target: deckTarget, Fragments: []*saga.Fragment{first, second},
+			Kind: "deck", ID: "implementation", Title: "System tour", Target: deckTarget, Fragments: []*saga.Fragment{first, second},
 		}}},
 	}
 	locations := indexNarrativeFragments(document)
@@ -223,7 +223,7 @@ func TestRelatedSagaRollsItemOwnersUpToSlidesAndGroupsByDeck(t *testing.T) {
 		"server":  {{Target: first.Landmarks[1].Target}},
 		"timeout": {{Target: second.Landmarks[0].Target}},
 	})
-	if len(result) != 1 || result[0].Title != "System tour" || !result[0].SlideNative || len(result[0].Fragments) != 2 {
+	if len(result) != 1 || result[0].Title != "System tour" || !result[0].Deck || len(result[0].Fragments) != 2 {
 		t.Fatalf("slide owners were not grouped by deck: %#v", result)
 	}
 	flow := result[0].Fragments[0].Slide
