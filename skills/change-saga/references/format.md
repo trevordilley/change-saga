@@ -1,28 +1,60 @@
 # Change Saga format quick reference
 
-## V3 report with embedded decks
+## The Saga
 
-A v3 Report Saga may contain several independent
-`___slides/<deck-id>.deck/` bundles. Keep requirements, acceptance criteria,
-prototypes, design, and work-plan history in their living/report surfaces; add
-a deck only for a complex implemented change that benefits from a visual
-breakdown. Each bundle contains one v4 `role: change` deck and its flat
-slide/Item/evidence records, but every target URN uses the parent v3 Saga ID.
+There is one Saga format. `change-saga init` creates it; readers reject any
+other version.
 
-```sh
-change-saga add-deck --objective "Explain the retry failure path." report.saga retry-flow
-change-saga add-slide --deck retry-flow --intent trace --layout sequence --title "Retry sequence" report.saga retry-sequence
-change-saga add-item --slide retry-sequence --kind callout --id hidden-retry --element-id hidden-retry --description "The retry reviewers may not expect." --body "The second write is conditional." report.saga
+```text
+<name>.saga/
+  saga.json                        # version 5
+  overview.fragment/               # report content
+  ___requirements/
+    prototypes/  stories/  citations/  relations/  coverage-exceptions/
+  ___design/                       # technical design
+  ___slides/<deck-id>.deck/        # the implementation deck
+  ___workplan/
+  ___quality/
+    policies/  test-cases/<id>.test/
+  ___claims/  ___verifications/  ___review/
 ```
 
-The v1 overview exposes report chapters/fragments and deck summaries together;
-read deck content with `query slide` and Item evidence with `query slide-diffs`.
-Do not read an embedded slide through `query fragment`.
+`change-saga spec --json` publishes the resources, the legal relation endpoint
+matrix, and every command shape. `change-saga status --json` returns the gates,
+per-criterion axis coverage, the stale set, changed-source accounting, and
+ordered `next_actions`; follow them until no required gap remains.
+
+## Implementation deck
+
+The deck is the Implementation section of the Saga. Keep requirements,
+acceptance criteria, prototypes, design, and work-plan history in their own
+surfaces; the deck explains the implemented change. Each
+`___slides/<deck-id>.deck/` bundle contains one `role: change` deck and its
+flat slide/Item/evidence records, and every target URN uses the Saga ID:
+`urn:change-saga:<saga>:deck:<deck>`, `urn:change-saga:<saga>:slide:<slide>`,
+and `urn:change-saga:<saga>:slide:<slide>:item:<item>`.
+
+```sh
+change-saga add-deck --objective "Explain the retry failure path." checkout.saga retry-flow
+change-saga add-slide --deck retry-flow --intent trace --layout sequence --title "Retry sequence" checkout.saga retry-sequence
+change-saga set-slide-content --target retry-sequence --source ./retry.svg checkout.saga
+change-saga add-item --slide retry-sequence --kind callout --id hidden-retry --element-id hidden-retry --description "The retry reviewers may not expect." --body "The second write is conditional." checkout.saga
+change-saga cover --target hidden-retry --uri 'saga-diff://v1/line?...' --note "Makes the second write conditional." checkout.saga
+change-saga query slide --saga checkout.saga --target retry-sequence
+change-saga query slide-diffs --saga checkout.saga --target hidden-retry
+```
+
+Only an Item may own slide coverage. Items include `callout`; a callout can
+name another Item with `about` and can own its own exact diff atoms. Approval
+decisions target slides only. Items remain valid targets for comments,
+annotations, evidence, claims, and deep links, but not approvals; deck status
+is derived from its slides. Read deck content with `query slide` and Item
+evidence with `query slide-diffs`, never through `query fragment`.
 
 Requirements are the traceability root. Link a deck, slide, or Item to a story
-or criterion with an active, target-revision-pinned `explains` relation. The
-source may be broad, but exact code evidence remains Item-owned. Story links
-apply to every criterion in the pinned revision.
+or criterion with an active relation pinned to the story revision it relied
+on. The source may be broad, but exact code evidence remains Item-owned. Story
+links apply to every criterion in the pinned revision.
 
 ```sh
 change-saga relation add --id retry-covers-safe-write --type explains \
@@ -30,8 +62,8 @@ change-saga relation add --id retry-covers-safe-write --type explains \
   --to urn:change-saga:checkout:story:safe-write:criterion:no-duplicate \
   --to-revision urn:change-saga:checkout:story:safe-write:revision:r1 \
   --rationale "The sequence explains how the criterion is implemented." \
-  report.saga
-change-saga query traceability --saga report.saga --diff '<saga-diff URI>'
+  checkout.saga
+change-saga query traceability --saga checkout.saga --diff '<saga-diff URI>'
 ```
 
 The traceability response includes paths from accepted criteria through review
@@ -40,52 +72,9 @@ current story path. `--commit` performs the same reverse lookup using the
 resolved source-head commit of the active committed comparison; it is not
 available for `WORKTREE` comparisons.
 
-## Slide-native v4
+## Report content
 
-v4 is an intentionally incompatible visual document mode. It does not contain
-chapters, sections, fragments, or landmarks:
-
-```text
-<name>.saga/
-  saga.json                       # version 4; presentation.mode = slides
-  overview.deck/
-    deck.json
-    change-overview.slide/
-      slide.json
-      slide.svg
-      ___items/
-        validation.item/
-          item.json
-          ___diffs/
-```
-
-Targets are `urn:change-saga:<saga>:deck:<deck>`,
-`urn:change-saga:<saga>:slide:<slide>`, and
-`urn:change-saga:<saga>:slide:<slide>:item:<item>`. Only the Item target may own
-coverage. Items include `callout`; a callout can name another Item with `about`
-and can own its own exact diff atoms.
-Approval decisions target slides only. Items remain valid targets for comments,
-annotations, evidence, claims, and deep links, but not approvals; deck status is
-derived from its slides.
-
-```sh
-change-saga init --mode slides --base main --head HEAD --title "Title" review.saga
-change-saga add-slide --deck overview --intent orient --layout hero --title "What changed" review.saga change-overview
-change-saga set-slide-content --target change-overview --source ./overview.svg review.saga
-change-saga add-item --slide change-overview --kind callout --id reject-early --element-id reject-early --description "Invalid input stops before persistence." --body "No write begins for invalid input." review.saga
-change-saga cover --target reject-early --uri 'saga-diff://v1/line?...' --note "Moves validation ahead of persistence." review.saga
-change-saga query slide --saga review.saga --target change-overview
-change-saga query slide-diffs --saga review.saga --target reject-early
-change-saga review --target change-overview --state approved review.saga
-```
-
-Never migrate by editing `version` or renaming report packages. A later
-AI-assisted rewrite command must create a separate v4 destination and preserve
-the source until its coverage/evidence ledger is reconciled.
-
-## Report v2/v3
-
-## Layout
+### Layout
 
 ```text
 <name>.saga/
