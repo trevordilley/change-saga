@@ -33,6 +33,8 @@ type requirementsPageView struct {
 }
 
 type requirementStoryView struct {
+	// Epic is the epic whose directory holds the story.
+	Epic               string
 	Number             int
 	Label              string
 	ID                 string
@@ -79,16 +81,17 @@ type requirementHistoryView struct {
 	Parents   int
 }
 
-func loadRequirementsSurface(root, sagaID string, r *http.Request) (*requirementsPageView, *navNodeView, error) {
+func loadRequirementsSurface(root, sagaID string, r *http.Request) (*requirementsPageView, *navNodeView, requirements.Document, error) {
 	document, err := requirements.Load(root, sagaID)
 	if err != nil {
-		return nil, nil, err
+		return nil, nil, requirements.Document{}, err
 	}
-	return makeRequirementsSurface(document, requirementRoute{
+	page, nav, err := makeRequirementsSurface(document, requirementRoute{
 		active:      isRequirementsPath(r.URL.Path),
 		storyID:     r.PathValue("story"),
 		criterionID: r.PathValue("criterion"),
 	})
+	return page, nav, document, err
 }
 
 func isRequirementsPath(value string) bool {
@@ -157,7 +160,7 @@ func makeRequirementStoryView(sagaID string, number int, story requirements.Stor
 		return nil, err
 	}
 	view := &requirementStoryView{
-		Number: number, Label: fmt.Sprintf("Story %02d", number), ID: story.Identity.ID,
+		Epic: story.Epic, Number: number, Label: fmt.Sprintf("Story %02d", number), ID: story.Identity.ID,
 		Target: target, DOMID: domID(target), Href: requirementStoryHref(story.Identity.ID),
 		Title: story.Identity.ID, CreatedAt: story.Identity.CreatedAt, Lifecycle: "unresolved",
 		RevisionConflict: story.RevisionConflict(), LifecycleConflict: story.LifecycleConflict(),
@@ -208,11 +211,21 @@ func makeRequirementStoryView(sagaID string, number int, story requirements.Stor
 }
 
 func makeRequirementsNav(page *requirementsPageView) *navNodeView {
+	return makeEpicRequirementsNav(page, "", "nav")
+}
+
+// makeEpicRequirementsNav lists one epic's stories, or every story when epic
+// is empty. Story numbering stays app-wide, so a label names one story
+// wherever it appears.
+func makeEpicRequirementsNav(page *requirementsPageView, epic, prefix string) *navNodeView {
 	root := &navNodeView{
-		Title: "Requirements", Href: "/requirements", NodeID: "nav-requirements",
-		Icon: "requirements", Requirement: true, Active: page.Overview, Expanded: page.Active,
+		Title: "Requirements", Href: "/requirements", NodeID: prefix + "-requirements",
+		Icon: "requirements", Requirement: true, Active: page.Overview && epic == "", Expanded: page.Active,
 	}
 	for _, story := range page.Stories {
+		if epic != "" && story.Epic != epic {
+			continue
+		}
 		selectedStory := page.Story != nil && page.Story.ID == story.ID
 		node := &navNodeView{
 			Title: story.Label + " · " + story.Title, Href: story.Href, NodeID: "nav-" + story.DOMID,

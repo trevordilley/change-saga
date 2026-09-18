@@ -948,7 +948,7 @@ func (a *app) page(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "The saga could not be loaded. Run change-saga validate for details.", http.StatusInternalServerError)
 		return
 	}
-	if len(document.Decks) > 0 {
+	if len(document.Decks)+len(document.Onboarding) > 0 {
 		document = a.narrativeDocument(r.Context())
 		if document == nil {
 			http.Error(w, "The slide deck could not be loaded. Run change-saga validate for details.", http.StatusInternalServerError)
@@ -983,12 +983,12 @@ func (a *app) page(w http.ResponseWriter, r *http.Request) {
 	rootView := makeSectionView(reportRoot, scope.shell())
 	data := pageData{
 		Saga:           document,
-		EmbeddedDecks:  len(document.Decks) > 0,
+		EmbeddedDecks:  len(document.Decks)+len(document.Onboarding) > 0,
 		Root:           rootView,
 		MutationToken:  a.mutationToken,
 		CoverageTotals: a.cachedCoverageTotals(),
 	}
-	requirementsView, requirementsNav, err := loadRequirementsSurface(a.root, document.Manifest.ID, r)
+	requirementsView, _, requirementsDocument, err := loadRequirementsSurface(a.root, document.Manifest.ID, r)
 	if errors.Is(err, errRequirementNotFound) {
 		http.NotFound(w, r)
 		return
@@ -1000,20 +1000,18 @@ func (a *app) page(w http.ResponseWriter, r *http.Request) {
 	data.Requirements = requirementsView
 	data.Requirements.Rationale = requirementsRationale(reportRoot)
 	data.RequirementsMode = requirementsView.Active
-	data.Nav = makeNavTree(reportRoot, threadsByTarget)
+	prototypeDocument, prototypeNote := a.prototypeDocument(document.Manifest.ID)
+	data.Nav = makeAppNavTree(appNavSources{
+		document: document, requirements: requirementsDocument, page: requirementsView,
+		prototypes: prototypeDocument, prototypeNote: prototypeNote,
+		threads: threadsByTarget, decks: makeDeckNavTree(slideRoot),
+	})
 	if requirementsView.Active {
 		clearActiveNav(data.Nav)
+		for _, node := range data.Nav {
+			revealActive(node)
+		}
 	}
-	prototypeNav, prototypeNote := a.prototypeNav(document.Manifest.ID)
-	uxDecks, implementationDecks := splitDeckNavByRole(makeDeckNavTree(slideRoot), document.Decks)
-	data.Nav = spliceProductNav(data.Nav, makeProductNavTree(productNavSources{
-		requirements:   requirementsNav,
-		prototypes:     prototypeNav,
-		prototypeNote:  prototypeNote,
-		uxDecks:        uxDecks,
-		technical:      makeDesignChapterNav(reportRoot, threadsByTarget),
-		implementation: implementationDecks,
-	}))
 	data.ReviewItems = makeReviewProgressItems(reportRoot)
 	if data.EmbeddedDecks {
 		data.SlideRoot = makeSectionView(slideRoot, scope)

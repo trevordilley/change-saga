@@ -44,6 +44,10 @@ const (
 func loadAppContent(root string, manifest Manifest, section *Section, options loadOptions, validation *Validation) (appContent, []*Deck, error) {
 	var app appContent
 	var decks []*Deck
+	// The app root holds no report content of its own, so the joined tree is
+	// ordered by place rather than by path: the overview, the design system,
+	// then every epic's report and design in epic order. Each part keeps the
+	// authored order its own loader gave it.
 	join := func(part *Section) {
 		if part == nil {
 			return
@@ -101,7 +105,6 @@ func loadAppContent(root string, manifest Manifest, section *Section, options lo
 	if all := append(append([]*Deck{}, decks...), app.onboarding...); len(all) > 0 {
 		section.Children = append(section.Children, projectDecks(manifest, all).Children...)
 	}
-	sortSectionContents(section)
 	return app, decks, nil
 }
 

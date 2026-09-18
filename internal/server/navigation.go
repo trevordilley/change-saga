@@ -28,6 +28,9 @@ import (
 // section. Fields with no producer yet are the seams the remaining domains
 // will be joined through, and their TODOs name what is still missing.
 type productNavSources struct {
+	// prefix namespaces the architecture's node IDs, since every epic has
+	// its own four places. An empty prefix is "nav".
+	prefix string
 	// requirements is makeRequirementsNav's tree. Requirements is its own
 	// overview and never gains a redundant "Overview" child.
 	requirements *navNodeView
@@ -55,10 +58,14 @@ type productNavSources struct {
 // been loaded plus the prototype packages, so building the whole architecture
 // opens no narrative content.
 func makeProductNavTree(sources productNavSources) []*navNodeView {
+	prefix := sources.prefix
+	if prefix == "" {
+		prefix = "nav"
+	}
 	requirements := sources.requirements
 	if requirements == nil {
 		requirements = &navNodeView{
-			Title: "Requirements", Href: "/requirements", NodeID: "nav-requirements",
+			Title: "Requirements", Href: "/requirements", NodeID: prefix + "-requirements",
 			Icon: "requirements", Requirement: true,
 		}
 	}
@@ -70,29 +77,29 @@ func makeProductNavTree(sources productNavSources) []*navNodeView {
 		prototypeNote = "no prototypes yet"
 	}
 
-	product := navPlace("Product", "nav-product", "product", "", []*navNodeView{
-		navPlace("Prototypes", "nav-prototypes", "prototype", prototypeNote, sources.prototypes),
+	product := navPlace("Product", prefix+"-product", "product", "", []*navNodeView{
+		navPlace("Prototypes", prefix+"-prototypes", "prototype", prototypeNote, sources.prototypes),
 		requirements,
 	})
-	technical := navPlace("Technical", "nav-technical", "", "", append([]*navNodeView{
-		navPlace("ERD", "nav-technical-erd", "", "not authored yet", nil),
-		navPlace("System", "nav-technical-system", "", "not authored yet", nil),
-		navPlace("Data Flows", "nav-technical-data-flows", "", "no flow diagrams yet", sources.dataFlows),
+	technical := navPlace("Technical", prefix+"-technical", "", "", append([]*navNodeView{
+		navPlace("ERD", prefix+"-technical-erd", "", "not authored yet", nil),
+		navPlace("System", prefix+"-technical-system", "", "not authored yet", nil),
+		navPlace("Data Flows", prefix+"-technical-data-flows", "", "no flow diagrams yet", sources.dataFlows),
 	}, sources.technical...))
-	design := navPlace("Design", "nav-design", "design", "", []*navNodeView{
-		navPlace("UX", "nav-design-ux", "", "no flow decks yet", sources.uxDecks),
-		navPlace("UI", "nav-design-ui", "", "no references yet", sources.uiDesign),
+	design := navPlace("Design", prefix+"-design", "design", "", []*navNodeView{
+		navPlace("UX", prefix+"-design-ux", "", "no flow decks yet", sources.uxDecks),
+		navPlace("UI", prefix+"-design-ui", "", "no references yet", sources.uiDesign),
 		technical,
 	})
-	quality := navPlace("Quality", "nav-quality", "quality", "", []*navNodeView{
-		navPlace("Test Cases", "nav-test-cases", "", "no test cases yet", sources.testCases),
+	quality := navPlace("Quality", prefix+"-quality", "quality", "", []*navNodeView{
+		navPlace("Test Cases", prefix+"-test-cases", "", "no test cases yet", sources.testCases),
 	})
 	// Implementation is the one place that opens on arrival, and it opens all
 	// the way to the slides. The deck that explains the change is what a
 	// reviewer came for, so the sidebar shows what is actually there instead of
 	// a row to click first. Everything else stays shut: four short rows read as
 	// one architecture, where four open ones read as a wall.
-	implementation := navPlace("Implementation", "nav-implementation", "implementation", "", sources.implementation)
+	implementation := navPlace("Implementation", prefix+"-implementation", "implementation", "", sources.implementation)
 	if len(implementation.Children) == 0 {
 		// A top-level place is a peer of the others and has to read as one. As
 		// a gap row it lost its disclosure, its weight, and most of its title
@@ -101,7 +108,7 @@ func makeProductNavTree(sources productNavSources) []*navNodeView {
 		// section has and states the gap beneath it instead.
 		implementation.Gap, implementation.Note = false, ""
 		implementation.Children = []*navNodeView{{
-			Title: "No implementation decks yet", NodeID: "nav-implementation-empty", Gap: true,
+			Title: "No implementation decks yet", NodeID: prefix+"-implementation-empty", Gap: true,
 		}}
 	}
 	// Implementation is the deck. With the one deck a Saga normally has, its
@@ -180,7 +187,7 @@ func makePrototypeNav(document prototypes.Document) []*navNodeView {
 // on-disk path is the only recorded signal that a chapter is technical design
 // rather than narrative.
 func designSection(section *saga.Section) bool {
-	return section.Path == "___design" || strings.HasPrefix(section.Path, "___design/")
+	return saga.IsDesignPath(section.Path)
 }
 
 // makeDesignChapterNav projects the ___design chapters into Technical. Which
@@ -247,9 +254,15 @@ func spliceProductNav(narrative, product []*navNodeView) []*navNodeView {
 // unreadable one degrades to a stated gap: a broken package is a thing the
 // reviewer should be told about, not a reason the report fails to render.
 func (a *app) prototypeNav(sagaID string) ([]*navNodeView, string) {
+	document, note := a.prototypeDocument(sagaID)
+	return makePrototypeNav(document), note
+}
+
+// prototypeDocument reads the prototype packages, or reports why it could not.
+func (a *app) prototypeDocument(sagaID string) (prototypes.Document, string) {
 	document, err := prototypes.Load(a.root, sagaID)
 	if err != nil {
-		return nil, "could not be read; run change-saga validate"
+		return prototypes.Document{SagaID: sagaID}, "could not be read; run change-saga validate"
 	}
-	return makePrototypeNav(document), ""
+	return document, ""
 }
