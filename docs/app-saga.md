@@ -174,6 +174,12 @@ thing that happens is not "define the personas of this app".
 - **What exists must stay healthy.** Once a story is accepted or a design
   references code, a change that makes that link stale or leaves its code
   uncovered is flagged. Coverage only ratchets up.
+- **The default blocks only on the implementation; stricter checks are opt-in.**
+  By default `status` fails only when the implementation does not cover the
+  change. Every other check (the ratchet on existing records, stories, persona
+  coverage, design, quality) is a named gate a team can choose to require, for
+  example in CI, with `status --require <gate>`. Teams adopt strictness as a
+  process decision; the tool never imposes it.
 - **Nothing is locked in.** The first change's deck goes into an epic the author
   names, defaulting to the pull request's title. Story, deck, and slide URNs
   carry no epic, so reorganizing later breaks nothing.
@@ -225,11 +231,8 @@ reconstructs it.
 
 1. Do feature flags gate stories, epics, or both?
 2. Are retired stories shown in the app view, or only in history?
-3. When a change breaks a link on an existing record (a stale story link, or
-   uncovered code under an existing design), does that block the change or only
-   warn? Absence of records never blocks (goal 9).
-4. What is the app-level sidebar above the epics?
-5. Onboarding deck Items point at records (personas, epics, stories) rather than
+3. What is the app-level sidebar above the epics?
+4. Onboarding deck Items point at records (personas, epics, stories) rather than
    code. Confirm that this is its only kind of evidence.
 
 ## Execution
@@ -259,9 +262,9 @@ open decision 4.
 the fold is awkward, the model is wrong, so this is the model's acceptance test.
 It also decides whether decision records are needed.
 
-**Phase 6 — Adoption.** Split readiness into the one requirement
-(implementation covers the change) and growth; the ratchet on existing
-records; `init` and first-run next actions that start with coverage; the
+**Phase 6 — Adoption.** Split readiness into the one default requirement
+(implementation covers the change) and growth; named opt-in gates via
+`status --require`, including the ratchet on existing records; `init` and first-run next actions that start with coverage; the
 default epic; contextual growth suggestions that teach the practices; and the
 skill, README, and help rewritten for incremental adoption. The first-run experience on a real 30-file pull request is its
 acceptance test.
