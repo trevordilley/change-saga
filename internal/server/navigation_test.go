@@ -53,16 +53,26 @@ func TestProductNavigationProjectsTheStableOrderWithNothingAuthored(t *testing.T
 		"Quality",
 		"  Test Cases",
 		"Implementation",
+		"  No implementation decks yet",
 	}
 	if got := navTitles(nodes, 0); strings.Join(got, "\n") != strings.Join(want, "\n") {
 		t.Fatalf("architecture =\n%s\nwant\n%s", strings.Join(got, "\n"), strings.Join(want, "\n"))
 	}
 	for _, path := range [][]string{{"Product", "Prototypes"}, {"Design", "UX"}, {"Design", "UI"},
-		{"Design", "Technical", "ERD"}, {"Design", "Technical", "Data Flows"}, {"Quality", "Test Cases"}, {"Implementation"}} {
+		{"Design", "Technical", "ERD"}, {"Design", "Technical", "Data Flows"}, {"Quality", "Test Cases"}} {
 		node := findNav(t, nodes, path...)
 		if !node.Gap || node.Note == "" {
 			t.Fatalf("%v is not an explicit gap: %#v", path, node)
 		}
+	}
+	// Implementation is a top-level peer: empty, it keeps the same header as
+	// Product, Design, and Quality, stays open, and states its gap beneath.
+	implementation := findNav(t, nodes, "Implementation")
+	if implementation.Gap || implementation.Note != "" || !implementation.Expanded {
+		t.Fatalf("an empty Implementation must keep a peer header: %#v", implementation)
+	}
+	if empty := findNav(t, nodes, "Implementation", "No implementation decks yet"); !empty.Gap {
+		t.Fatalf("an empty Implementation must state its gap beneath the header: %#v", empty)
 	}
 	// A place in the architecture is never a destination of its own.
 	for _, node := range nodes {

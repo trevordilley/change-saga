@@ -92,8 +92,19 @@ func makeProductNavTree(sources productNavSources) []*navNodeView {
 	// reviewer came for, so the sidebar shows what is actually there instead of
 	// a row to click first. Everything else stays shut: four short rows read as
 	// one architecture, where four open ones read as a wall.
-	implementation := navPlace("Implementation", "nav-implementation", "implementation", "no implementation decks yet", sources.implementation)
-	implementation.Expanded = len(implementation.Children) > 0
+	implementation := navPlace("Implementation", "nav-implementation", "implementation", "", sources.implementation)
+	if len(implementation.Children) == 0 {
+		// A top-level place is a peer of the others and has to read as one. As
+		// a gap row it lost its disclosure, its weight, and most of its title
+		// to the note, so an empty Implementation looked like a leftover rather
+		// than a quarter of the architecture. It keeps the header every
+		// section has and states the gap beneath it instead.
+		implementation.Gap, implementation.Note = false, ""
+		implementation.Children = []*navNodeView{{
+			Title: "No implementation decks yet", NodeID: "nav-implementation-empty", Gap: true,
+		}}
+	}
+	implementation.Expanded = true
 	for _, deck := range implementation.Children {
 		deck.Expanded = len(deck.Children) > 0
 	}
