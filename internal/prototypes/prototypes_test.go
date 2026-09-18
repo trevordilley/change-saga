@@ -6,6 +6,8 @@ import (
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/twentyideas/changesaga/internal/applayout"
 )
 
 var testTime = time.Date(2026, 8, 31, 12, 0, 0, 0, time.UTC)
@@ -25,7 +27,7 @@ func TestPrototypeCapabilityIsOptional(t *testing.T) {
 func TestLoadRejectsSymlinkedCapabilityBoundary(t *testing.T) {
 	root := newSaga(t)
 	outside := t.TempDir()
-	if err := os.Symlink(outside, filepath.Join(root, "___requirements")); err != nil {
+	if err := os.Symlink(outside, filepath.Join(root, "___epics", "core.epic", "___requirements")); err != nil {
 		t.Skipf("symlink unavailable: %v", err)
 	}
 	if _, err := Load(root, "test"); err == nil || !strings.Contains(err.Error(), "real directory") {
@@ -40,7 +42,7 @@ func TestHTMLPrototypeIsImmutableDigestVerifiedPackage(t *testing.T) {
 	mustWrite(t, filepath.Join(source, "index.html"), "<!doctype html><button id=buy>Buy</button>")
 	mustWrite(t, filepath.Join(source, "app.js"), "document.body.dataset.ready = 'yes'")
 
-	created, err := AddHTML(root, "test", AddHTMLInput{ID: "checkout", RevisionID: "r1", Title: "Checkout", State: StateReady, SourcePath: source, CreatedAt: testTime})
+	created, err := AddHTML(root, "test", AddHTMLInput{Epic: "core", ID: "checkout", RevisionID: "r1", Title: "Checkout", State: StateReady, SourcePath: source, CreatedAt: testTime})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -65,7 +67,7 @@ func TestHTMLPrototypeIsImmutableDigestVerifiedPackage(t *testing.T) {
 		t.Fatalf("external source change affected saga: %v", err)
 	}
 
-	packaged := filepath.Join(root, filepath.FromSlash(revisionPath("checkout", "r1")), "html", "index.html")
+	packaged := filepath.Join(root, filepath.FromSlash(revisionPath("core", "checkout", "r1")), "html", "index.html")
 	mustWrite(t, packaged, "tampered")
 	if _, err := Load(root, "test"); err == nil || !strings.Contains(err.Error(), "digest mismatch") {
 		t.Fatalf("tamper error = %v", err)
@@ -74,11 +76,11 @@ func TestHTMLPrototypeIsImmutableDigestVerifiedPackage(t *testing.T) {
 
 func TestExternalAndAllowlistedEmbedSources(t *testing.T) {
 	root := newSaga(t)
-	if _, err := AddExternal(root, "test", AddExternalInput{ID: "figma-link", RevisionID: "r1", Title: "Figma", State: StateDraft, URL: "https://www.figma.com/file/abc", CreatedAt: testTime}); err != nil {
+	if _, err := AddExternal(root, "test", AddExternalInput{Epic: "core", ID: "figma-link", RevisionID: "r1", Title: "Figma", State: StateDraft, URL: "https://www.figma.com/file/abc", CreatedAt: testTime}); err != nil {
 		t.Fatal(err)
 	}
 	allowlist := &ProviderAllowlist{Provider: "figma", EmbedOrigin: "https://embed.figma.com", Sandbox: []string{"allow-scripts", "allow-same-origin"}, Permissions: []string{"fullscreen"}}
-	if _, err := AddExternal(root, "test", AddExternalInput{ID: "figma-embed", RevisionID: "r1", Title: "Embedded Figma", State: StateReady, URL: "https://www.figma.com/file/abc", EmbedURL: "https://embed.figma.com/proto/abc", Allowlist: allowlist, CreatedAt: testTime}); err != nil {
+	if _, err := AddExternal(root, "test", AddExternalInput{Epic: "core", ID: "figma-embed", RevisionID: "r1", Title: "Embedded Figma", State: StateReady, URL: "https://www.figma.com/file/abc", EmbedURL: "https://embed.figma.com/proto/abc", Allowlist: allowlist, CreatedAt: testTime}); err != nil {
 		t.Fatal(err)
 	}
 	doc, err := Load(root, "test")
@@ -91,11 +93,11 @@ func TestExternalAndAllowlistedEmbedSources(t *testing.T) {
 
 	bad := *allowlist
 	bad.EmbedOrigin = "https://attacker.example"
-	_, err = AddExternal(root, "test", AddExternalInput{ID: "bad", RevisionID: "r1", Title: "Bad", State: StateReady, URL: "https://safe.example/fallback", EmbedURL: "https://embed.figma.com/proto/abc", Allowlist: &bad, CreatedAt: testTime})
+	_, err = AddExternal(root, "test", AddExternalInput{Epic: "core", ID: "bad", RevisionID: "r1", Title: "Bad", State: StateReady, URL: "https://safe.example/fallback", EmbedURL: "https://embed.figma.com/proto/abc", Allowlist: &bad, CreatedAt: testTime})
 	if err == nil || !strings.Contains(err.Error(), "exactly match") {
 		t.Fatalf("origin error = %v", err)
 	}
-	_, err = AddExternal(root, "test", AddExternalInput{ID: "implicit", RevisionID: "r1", Title: "Implicit", State: StateReady, URL: "https://safe.example/fallback", EmbedURL: "https://embed.figma.com/proto/abc", CreatedAt: testTime})
+	_, err = AddExternal(root, "test", AddExternalInput{Epic: "core", ID: "implicit", RevisionID: "r1", Title: "Implicit", State: StateReady, URL: "https://safe.example/fallback", EmbedURL: "https://embed.figma.com/proto/abc", CreatedAt: testTime})
 	if err == nil || !strings.Contains(err.Error(), "explicit allowlist") {
 		t.Fatalf("allowlist error = %v", err)
 	}
@@ -107,7 +109,7 @@ func TestUnresolvedAnnotationsAreQualityGapsUntilComposition(t *testing.T) {
 	story := "urn:change-saga:test:story:buyer"
 	storyRevision := story + ":revision:s1"
 	prototypeRevision := prototype + ":revision:r1"
-	annotation, err := AddAnnotation(root, "test", AddAnnotationInput{ID: "buy-button", Prototype: prototype, Target: story, Rationale: "Shows the primary action.", PrototypeRevision: prototypeRevision, StoryRevision: storyRevision, Selector: Selector{Kind: SelectorElement, ElementID: "buy"}, CreatedAt: testTime})
+	annotation, err := AddAnnotation(root, "test", AddAnnotationInput{Epic: "core", ID: "buy-button", Prototype: prototype, Target: story, Rationale: "Shows the primary action.", PrototypeRevision: prototypeRevision, StoryRevision: storyRevision, Selector: Selector{Kind: SelectorElement, ElementID: "buy"}, CreatedAt: testTime})
 	if err != nil {
 		t.Fatalf("annotation should not require either endpoint: %v", err)
 	}
@@ -122,7 +124,7 @@ func TestUnresolvedAnnotationsAreQualityGapsUntilComposition(t *testing.T) {
 
 	source := filepath.Join(t.TempDir(), "prototype.html")
 	mustWrite(t, source, "<button id=buy>Buy</button>")
-	if _, err := AddHTML(root, "test", AddHTMLInput{ID: "checkout", RevisionID: "r1", Title: "Checkout", State: StateReady, SourcePath: source, CreatedAt: testTime}); err != nil {
+	if _, err := AddHTML(root, "test", AddHTMLInput{Epic: "core", ID: "checkout", RevisionID: "r1", Title: "Checkout", State: StateReady, SourcePath: source, CreatedAt: testTime}); err != nil {
 		t.Fatal(err)
 	}
 	doc, err = Load(root, "test")
@@ -141,11 +143,11 @@ func TestUnresolvedAnnotationsAreQualityGapsUntilComposition(t *testing.T) {
 func TestRevisionPinsBecomeStaleWithoutRetargeting(t *testing.T) {
 	root := newSaga(t)
 	prototype := "urn:change-saga:test:prototype:flow"
-	if _, err := AddExternal(root, "test", AddExternalInput{ID: "flow", RevisionID: "r1", Title: "Flow", State: StateReady, URL: "https://example.com/flow", CreatedAt: testTime}); err != nil {
+	if _, err := AddExternal(root, "test", AddExternalInput{Epic: "core", ID: "flow", RevisionID: "r1", Title: "Flow", State: StateReady, URL: "https://example.com/flow", CreatedAt: testTime}); err != nil {
 		t.Fatal(err)
 	}
 	story := "urn:change-saga:test:story:buyer"
-	if _, err := AddAnnotation(root, "test", AddAnnotationInput{ID: "flow-link", Prototype: prototype, Target: story, Rationale: "Shows flow.", PrototypeRevision: prototype + ":revision:r1", StoryRevision: story + ":revision:s1", Selector: Selector{Kind: SelectorProvider, ProviderID: "node-1"}, CreatedAt: testTime}); err != nil {
+	if _, err := AddAnnotation(root, "test", AddAnnotationInput{Epic: "core", ID: "flow-link", Prototype: prototype, Target: story, Rationale: "Shows flow.", PrototypeRevision: prototype + ":revision:r1", StoryRevision: story + ":revision:s1", Selector: Selector{Kind: SelectorProvider, ProviderID: "node-1"}, CreatedAt: testTime}); err != nil {
 		t.Fatal(err)
 	}
 	if _, err := Revise(root, "test", ReviseInput{Prototype: prototype, ID: "r2", Parents: []string{prototype + ":revision:r1"}, Title: "Flow v2", State: StateReady, Source: Source{Kind: SourceExternal, URL: "https://example.com/flow-v2"}, CreatedAt: testTime.Add(time.Minute)}); err != nil {
@@ -166,7 +168,7 @@ func TestRepositoryStylesArePinnedAndFailClosed(t *testing.T) {
 	root := newSaga(t)
 	html := filepath.Join(t.TempDir(), "prototype.html")
 	mustWrite(t, html, "<button class=button>Buy</button>")
-	if _, err := AddHTML(root, "test", AddHTMLInput{ID: "styled", RevisionID: "r1", Title: "Styled", State: StateReady, SourcePath: html, CreatedAt: testTime}); err != nil {
+	if _, err := AddHTML(root, "test", AddHTMLInput{Epic: "core", ID: "styled", RevisionID: "r1", Title: "Styled", State: StateReady, SourcePath: html, CreatedAt: testTime}); err != nil {
 		t.Fatal(err)
 	}
 	repository := t.TempDir()
@@ -223,7 +225,7 @@ func TestAnnotationIdentityIsScopedToPrototype(t *testing.T) {
 	story := "urn:change-saga:test:story:shared"
 	for _, prototypeID := range []string{"one", "two"} {
 		prototype := "urn:change-saga:test:prototype:" + prototypeID
-		if _, err := AddAnnotation(root, "test", AddAnnotationInput{ID: "same", Prototype: prototype, Target: story, Rationale: "Scoped edge.", PrototypeRevision: prototype + ":revision:r1", StoryRevision: story + ":revision:s1", Selector: Selector{Kind: SelectorRegion, Region: &Region{X: 0, Y: 0, Width: 1, Height: 1}}, CreatedAt: testTime}); err != nil {
+		if _, err := AddAnnotation(root, "test", AddAnnotationInput{Epic: "core", ID: "same", Prototype: prototype, Target: story, Rationale: "Scoped edge.", PrototypeRevision: prototype + ":revision:r1", StoryRevision: story + ":revision:s1", Selector: Selector{Kind: SelectorRegion, Region: &Region{X: 0, Y: 0, Width: 1, Height: 1}}, CreatedAt: testTime}); err != nil {
 			t.Fatal(err)
 		}
 	}
@@ -236,15 +238,15 @@ func TestAnnotationIdentityIsScopedToPrototype(t *testing.T) {
 func TestSelectorValidationAndSourceCompatibility(t *testing.T) {
 	root := newSaga(t)
 	prototype := "urn:change-saga:test:prototype:external"
-	if _, err := AddExternal(root, "test", AddExternalInput{ID: "external", RevisionID: "r1", Title: "External", State: StateReady, URL: "https://example.com", CreatedAt: testTime}); err != nil {
+	if _, err := AddExternal(root, "test", AddExternalInput{Epic: "core", ID: "external", RevisionID: "r1", Title: "External", State: StateReady, URL: "https://example.com", CreatedAt: testTime}); err != nil {
 		t.Fatal(err)
 	}
 	story := "urn:change-saga:test:story:story"
-	_, err := AddAnnotation(root, "test", AddAnnotationInput{ID: "bad-region", Prototype: prototype, Target: story, Rationale: "Bad region.", PrototypeRevision: prototype + ":revision:r1", StoryRevision: story + ":revision:s1", Selector: Selector{Kind: SelectorRegion, Region: &Region{X: .9, Y: 0, Width: .2, Height: .2}}, CreatedAt: testTime})
+	_, err := AddAnnotation(root, "test", AddAnnotationInput{Epic: "core", ID: "bad-region", Prototype: prototype, Target: story, Rationale: "Bad region.", PrototypeRevision: prototype + ":revision:r1", StoryRevision: story + ":revision:s1", Selector: Selector{Kind: SelectorRegion, Region: &Region{X: .9, Y: 0, Width: .2, Height: .2}}, CreatedAt: testTime})
 	if err == nil || !strings.Contains(err.Error(), "normalized") {
 		t.Fatalf("region error = %v", err)
 	}
-	if _, err := AddAnnotation(root, "test", AddAnnotationInput{ID: "html-selector", Prototype: prototype, Target: story, Rationale: "Incompatible after composition.", PrototypeRevision: prototype + ":revision:r1", StoryRevision: story + ":revision:s1", Selector: Selector{Kind: SelectorText, ExactText: "Hello"}, CreatedAt: testTime}); err != nil {
+	if _, err := AddAnnotation(root, "test", AddAnnotationInput{Epic: "core", ID: "html-selector", Prototype: prototype, Target: story, Rationale: "Incompatible after composition.", PrototypeRevision: prototype + ":revision:r1", StoryRevision: story + ":revision:s1", Selector: Selector{Kind: SelectorText, ExactText: "Hello"}, CreatedAt: testTime}); err != nil {
 		t.Fatal(err)
 	}
 	doc, err := Load(root, "test")
@@ -257,11 +259,106 @@ func TestSelectorValidationAndSourceCompatibility(t *testing.T) {
 	}
 }
 
+func TestPrototypesLoadFromEveryEpicAndCreatesNameTheirEpic(t *testing.T) {
+	root := newSaga(t)
+	mustEpic(t, root, "billing")
+	if _, err := AddExternal(root, "test", AddExternalInput{ID: "implied", RevisionID: "r1", Title: "Implied", State: StateDraft, URL: "https://example.com", CreatedAt: testTime}); err == nil || !strings.Contains(err.Error(), "an epic is required") {
+		t.Fatalf("implied epic error = %v", err)
+	}
+	if _, err := AddExternal(root, "test", AddExternalInput{Epic: "missing", ID: "unknown", RevisionID: "r1", Title: "Unknown", State: StateDraft, URL: "https://example.com", CreatedAt: testTime}); err == nil || !strings.Contains(err.Error(), "does not exist") {
+		t.Fatalf("unknown epic error = %v", err)
+	}
+	input := AddExternalInput{Epic: "billing", ID: "invoice", RevisionID: "r1", Title: "Invoice", State: StateReady, URL: "https://example.com/invoice", CreatedAt: testTime, RequestID: "req-1"}
+	created, err := AddExternal(root, "test", input)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if created.Path != "___epics/billing.epic/___requirements/prototypes/invoice.prototype" {
+		t.Fatalf("created path = %q", created.Path)
+	}
+	if replay, err := AddExternal(root, "test", input); err != nil || !replay.Replayed || replay.Path != created.Path {
+		t.Fatalf("replay = %#v, %v", replay, err)
+	}
+	other := input
+	other.Epic = "core"
+	if _, err := AddExternal(root, "test", other); err == nil || !strings.Contains(err.Error(), "already exists") {
+		t.Fatalf("replay into another epic error = %v", err)
+	}
+	if _, err := AddExternal(root, "test", AddExternalInput{Epic: "core", ID: "cart", RevisionID: "r1", Title: "Cart", State: StateReady, URL: "https://example.com/cart", CreatedAt: testTime}); err != nil {
+		t.Fatal(err)
+	}
+	prototype := "urn:change-saga:test:prototype:invoice"
+	revised, err := Revise(root, "test", ReviseInput{Prototype: prototype, ID: "r2", Parents: []string{prototype + ":revision:r1"}, Title: "Invoice v2", State: StateReady, Source: Source{Kind: SourceExternal, URL: "https://example.com/invoice-v2"}, CreatedAt: testTime.Add(time.Minute)})
+	if err != nil || revised.Path != "___epics/billing.epic/___requirements/prototypes/invoice.prototype/revisions/r2.revision" {
+		t.Fatalf("revise = %#v, %v", revised, err)
+	}
+	story := "urn:change-saga:test:story:pay"
+	annotation := AddAnnotationInput{ID: "pay", Prototype: prototype, Target: story, Rationale: "Pay.", PrototypeRevision: prototype + ":revision:r2", StoryRevision: story + ":revision:s1", Selector: Selector{Kind: SelectorProvider, ProviderID: "n1"}, CreatedAt: testTime}
+	wrong := annotation
+	wrong.Epic = "core"
+	if _, err := AddAnnotation(root, "test", wrong); err == nil || !strings.Contains(err.Error(), "is in epic") {
+		t.Fatalf("annotation into another epic error = %v", err)
+	}
+	annotated, err := AddAnnotation(root, "test", annotation)
+	if err != nil || annotated.Path != "___epics/billing.epic/___requirements/prototypes/annotations/invoice.prototype/pay.json" {
+		t.Fatalf("annotate = %#v, %v", annotated, err)
+	}
+	doc, err := Load(root, "test")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if len(doc.Prototypes) != 2 || doc.Prototypes[0].Identity.ID != "cart" || doc.Prototypes[0].Epic != "core" || doc.Prototypes[1].Epic != "billing" {
+		t.Fatalf("prototypes = %#v", doc.Prototypes)
+	}
+	if len(doc.Annotations) != 1 || doc.Annotations[0].Epic != "billing" {
+		t.Fatalf("annotations = %#v", doc.Annotations)
+	}
+}
+
+func TestPrototypeIDsAreUniqueAcrossTheApp(t *testing.T) {
+	root := newSaga(t)
+	mustEpic(t, root, "billing")
+	if _, err := AddExternal(root, "test", AddExternalInput{Epic: "core", ID: "shared", RevisionID: "r1", Title: "Shared", State: StateReady, URL: "https://example.com", CreatedAt: testTime}); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := AddExternal(root, "test", AddExternalInput{Epic: "billing", ID: "shared", RevisionID: "r1", Title: "Shared", State: StateReady, URL: "https://example.com", CreatedAt: testTime}); err == nil || !strings.Contains(err.Error(), "already exists") {
+		t.Fatalf("second epic create error = %v", err)
+	}
+	// Simulate a Git merge that brings the same ID into a second epic.
+	source := filepath.Join(root, "___epics", "core.epic", "___requirements", "prototypes", "shared.prototype")
+	target := filepath.Join(root, "___epics", "billing.epic", "___requirements", "prototypes", "shared.prototype")
+	if err := os.MkdirAll(filepath.Dir(target), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.CopyFS(target, os.DirFS(source)); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := Load(root, "test"); err == nil || !strings.Contains(err.Error(), "unique across the app") {
+		t.Fatalf("duplicate id error = %v", err)
+	}
+}
+
+func TestEpicContentAtAppRootIsRejected(t *testing.T) {
+	root := newSaga(t)
+	mustMkdir(t, filepath.Join(root, "___requirements"))
+	if _, err := Load(root, "test"); err == nil || !strings.Contains(err.Error(), "belongs in an epic") {
+		t.Fatalf("app-root requirements error = %v", err)
+	}
+}
+
 func newSaga(t *testing.T) string {
 	t.Helper()
 	root := t.TempDir()
 	mustWrite(t, filepath.Join(root, "saga.json"), `{"$schema":"https://changesaga.dev/schema/v5/saga.schema.json","version":5,"id":"test","title":"Test","source":{"repository":"https://example.com/repo.git","base":"main","head":"feature"}}`)
+	mustEpic(t, root, "core")
 	return root
+}
+
+func mustEpic(t *testing.T, root, id string) {
+	t.Helper()
+	if _, err := applayout.WriteEpic(root, applayout.EpicManifest{ID: id, Title: id, CreatedAt: testTime}); err != nil {
+		t.Fatal(err)
+	}
 }
 
 func mustMkdir(t *testing.T, path string) {
