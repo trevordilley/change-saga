@@ -368,6 +368,4 @@ func addDesignDigest(result map[string]string, target, digest string) error {
 	return nil
 }
 
-func isDesignPath(path string) bool {
-	return path == "___design" || strings.HasPrefix(path, "___design/")
-}
+func isDesignPath(path string) bool { return IsDesignPath(path) }

@@ -256,8 +256,8 @@ func writeV5Composition(t *testing.T, manifest string) string {
 	t.Helper()
 	root := filepath.Join(t.TempDir(), "v5.saga")
 	writeTestFile(t, filepath.Join(root, "saga.json"), manifest)
-	writeTestFile(t, filepath.Join(root, "overview.fragment", "fragment.json"), `{"version":2,"id":"overview","media_type":"text/markdown","entrypoint":"content.md"}`)
-	writeTestFile(t, filepath.Join(root, "overview.fragment", "content.md"), "Composition.\n")
+	writeTestFile(t, filepath.Join(root, testEpicDir, "overview.fragment", "fragment.json"), `{"version":2,"id":"overview","media_type":"text/markdown","entrypoint":"content.md"}`)
+	writeTestFile(t, filepath.Join(root, testEpicDir, "overview.fragment", "content.md"), "Composition.\n")
 	return root
 }
 
@@ -282,7 +282,7 @@ func loadErrors(t *testing.T, root string) []string {
 func TestSagaLoadsReportComponentsAndEveryLivingRoot(t *testing.T) {
 	root := writeV5Composition(t, v5TestManifest)
 	for _, name := range []string{"___requirements", "___workplan", "___design", QualityRootDir, EmbeddedSlidesDir} {
-		if err := os.MkdirAll(filepath.Join(root, name), 0o755); err != nil {
+		if err := os.MkdirAll(filepath.Join(root, testEpicDir, name), 0o755); err != nil {
 			t.Fatal(err)
 		}
 	}
@@ -302,10 +302,10 @@ func TestSagaValidationRejectsMisplacedRootsAndNoncanonicalRepository(t *testing
 	}{
 		{"quality root nested", func(t *testing.T) string {
 			root := writeV5Composition(t, v5TestManifest)
-			if err := os.MkdirAll(filepath.Join(root, "intro.chapter", QualityRootDir), 0o755); err != nil {
+			if err := os.MkdirAll(filepath.Join(root, testEpicDir, "intro.chapter", QualityRootDir), 0o755); err != nil {
 				t.Fatal(err)
 			}
-			writeTestFile(t, filepath.Join(root, "intro.chapter", "chapter.json"), `{"version":2,"id":"intro","title":"Intro"}`)
+			writeTestFile(t, filepath.Join(root, testEpicDir, "intro.chapter", "chapter.json"), `{"version":2,"id":"intro","title":"Intro"}`)
 			return root
 		}, "unknown reserved directory"},
 		{"noncanonical repository", func(t *testing.T) string {
@@ -335,7 +335,7 @@ func TestSagaLoadRefusesEveryOtherContainer(t *testing.T) {
 		}, "presentation"},
 		{"flat 00-saga.json root", func(t *testing.T) string {
 			root := writeV5Composition(t, v5TestManifest)
-			if err := os.Rename(filepath.Join(root, ManifestName), filepath.Join(root, "00-saga.json")); err != nil {
+			if err := os.Rename(filepath.Join(root, ManifestName), filepath.Join(root, testEpicDir, "00-saga.json")); err != nil {
 				t.Fatal(err)
 			}
 			return root

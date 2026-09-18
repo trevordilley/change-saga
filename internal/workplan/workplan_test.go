@@ -8,6 +8,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/twentyideas/changesaga/internal/applayout"
 	"github.com/twentyideas/changesaga/internal/livingid"
 	"github.com/twentyideas/changesaga/internal/store"
 )
@@ -26,16 +27,16 @@ func TestWavesDoNotCreateImplicitBarriersAndDependenciesFormADAG(t *testing.T) {
 	storage := mustWorkItemURN(t, "test", "storage")
 	query := mustWorkItemURN(t, "test", "query")
 	viewer := mustWorkItemURN(t, "test", "viewer")
-	if _, err := mutator.CreateDependency(root, Dependency{ID: "storage-query", Prerequisite: storage, Dependent: query, Condition: DependencyCondition{Kind: "progress_done"}, Reason: "Query reads storage."}, "dep-1"); err != nil {
+	if _, err := mutator.CreateDependency(root, "core", Dependency{ID: "storage-query", Prerequisite: storage, Dependent: query, Condition: DependencyCondition{Kind: "progress_done"}, Reason: "Query reads storage."}, "dep-1"); err != nil {
 		t.Fatalf("cross-wave dependency: %v", err)
 	}
-	if _, err := mutator.CreateDependency(root, Dependency{ID: "query-viewer", Prerequisite: query, Dependent: viewer, Condition: DependencyCondition{Kind: "merge_integrated"}, Reason: "Viewer consumes query."}, "dep-2"); err != nil {
+	if _, err := mutator.CreateDependency(root, "core", Dependency{ID: "query-viewer", Prerequisite: query, Dependent: viewer, Condition: DependencyCondition{Kind: "merge_integrated"}, Reason: "Viewer consumes query."}, "dep-2"); err != nil {
 		t.Fatalf("second dependency: %v", err)
 	}
-	if _, err := mutator.CreateDependency(root, Dependency{ID: "cycle", Prerequisite: viewer, Dependent: storage, Condition: DependencyCondition{Kind: "progress_done"}, Reason: "Would close the cycle."}, "dep-3"); err == nil || !strings.Contains(err.Error(), "dependency cycle") {
+	if _, err := mutator.CreateDependency(root, "core", Dependency{ID: "cycle", Prerequisite: viewer, Dependent: storage, Condition: DependencyCondition{Kind: "progress_done"}, Reason: "Would close the cycle."}, "dep-3"); err == nil || !strings.Contains(err.Error(), "dependency cycle") {
 		t.Fatalf("cycle error = %v", err)
 	}
-	if _, err := os.Lstat(filepath.Join(root, RootDir, "dependencies", "cycle.dependency")); !os.IsNotExist(err) {
+	if _, err := os.Lstat(filepath.Join(coreWorkplan(root), "dependencies", "cycle.dependency")); !os.IsNotExist(err) {
 		t.Fatalf("invalid dependency became visible: %v", err)
 	}
 	plan, validation, err := Load(root)
@@ -139,7 +140,7 @@ func TestDependencyConditionsUseProgressMergeAndPinnedContractFacts(t *testing.T
 	}
 
 	contractRevision := ContractRevision{ID: "v1", Kind: "interface", Provider: provider, Consumer: consumer, Statement: "Provider emits the stable envelope.", Acceptance: []string{"Consumer tests pass."}}
-	if _, err := mutator.CreateContract(root, "handoff", contractRevision, "contract-create"); err != nil {
+	if _, err := mutator.CreateContract(root, "core", "handoff", contractRevision, "contract-create"); err != nil {
 		t.Fatalf("CreateContract: %v", err)
 	}
 	contractRevisionURN := mustRevisionURN(t, "test", livingid.KindContract, "handoff", "v1")
@@ -172,11 +173,11 @@ func TestRequestReplayIsIdempotentAndPayloadReuseConflicts(t *testing.T) {
 	root := newSaga(t)
 	mutator := testMutator()
 	revision := WaveRevision{ID: "v1", Title: "Foundation", Objective: "Build storage.", Order: 10}
-	first, err := mutator.CreateWave(root, "foundation", revision, "same-request")
+	first, err := mutator.CreateWave(root, "core", "foundation", revision, "same-request")
 	if err != nil {
 		t.Fatalf("first CreateWave: %v", err)
 	}
-	second, err := mutator.CreateWave(root, "foundation", revision, "same-request")
+	second, err := mutator.CreateWave(root, "core", "foundation", revision, "same-request")
 	if err != nil || !second.Replayed {
 		t.Fatalf("replayed CreateWave: result=%+v err=%v", second, err)
 	}
@@ -184,11 +185,129 @@ func TestRequestReplayIsIdempotentAndPayloadReuseConflicts(t *testing.T) {
 		t.Fatalf("replay created = %v, want %v", second.Created, first.Created)
 	}
 	revision.Objective = "Different payload."
-	if _, err := mutator.CreateWave(root, "foundation", revision, "same-request"); err == nil || !strings.Contains(err.Error(), "different payload") {
+	if _, err := mutator.CreateWave(root, "core", "foundation", revision, "same-request"); err == nil || !strings.Contains(err.Error(), "different payload") {
 		t.Fatalf("request reuse error = %v", err)
 	}
 	if got := len(mustLoad(t, root).Waves); got != 1 {
 		t.Fatalf("waves after replay = %d", got)
+	}
+}
+
+func TestSameIDInTwoEpicsIsAnError(t *testing.T) {
+	root := newSaga(t)
+	writeEpic(t, root, "billing")
+	mutator := testMutator()
+	createWave(t, mutator, root, "shared", 10)
+	createItem(t, mutator, root, "shared-item", "shared", nil)
+	billing := filepath.Join(applayout.EpicDir(root, "billing"), applayout.WorkplanDir)
+	if err := os.CopyFS(billing, os.DirFS(coreWorkplan(root))); err != nil {
+		t.Fatal(err)
+	}
+	_, validation, err := Load(root)
+	if err != nil {
+		t.Fatalf("Load: %v", err)
+	}
+	if validation.Valid {
+		t.Fatalf("duplicate IDs across epics validated: %+v", validation)
+	}
+	for _, want := range []struct{ kind, id, path string }{
+		{"wave", "shared", "/___workplan/waves/shared.wave"},
+		{"work-item", "shared-item", "/___workplan/work-items/shared-item.work-item"},
+	} {
+		found := false
+		for _, issue := range validation.Issues {
+			if issue.Severity == "error" && strings.HasPrefix(issue.Path, "___epics/") && strings.HasSuffix(issue.Path, want.path) &&
+				strings.Contains(issue.Message, want.kind+` id "`+want.id+`" is used by epics`) && strings.Contains(issue.Message, "unique across the app") {
+				found = true
+			}
+		}
+		if !found {
+			t.Errorf("no cross-epic duplicate %s error: %+v", want.kind, validation.Issues)
+		}
+	}
+	if _, err := mutator.CreateWave(root, "core", "another", WaveRevision{ID: "v1", Title: "Another", Objective: "More."}, "wave-another"); err == nil {
+		t.Fatal("mutated a plan with duplicate IDs")
+	}
+}
+
+func TestDependencyAcrossEpicsLoadsAndResolves(t *testing.T) {
+	root := newSaga(t)
+	writeEpic(t, root, "billing")
+	mutator := testMutator()
+	createItemIn(t, mutator, root, "core", "provider", "", nil)
+	createItemIn(t, mutator, root, "billing", "consumer", "", nil)
+	provider := mustWorkItemURN(t, "test", "provider")
+	consumer := mustWorkItemURN(t, "test", "consumer")
+	result, err := mutator.CreateDependency(root, "billing", Dependency{ID: "provider-consumer", Prerequisite: provider, Dependent: consumer, Condition: DependencyCondition{Kind: "progress_done"}, Reason: "Billing consumes the core provider."}, "dep-cross")
+	if err != nil {
+		t.Fatalf("cross-epic dependency: %v", err)
+	}
+	if result.Path != "___epics/billing.epic/___workplan/dependencies/provider-consumer.dependency" {
+		t.Fatalf("dependency path = %q", result.Path)
+	}
+	plan := mustLoad(t, root)
+	if plan.WorkItems["provider"].Epic != "core" || plan.WorkItems["consumer"].Epic != "billing" || plan.Dependencies["provider-consumer"].Epic != "billing" {
+		t.Fatalf("epic membership not recorded: provider=%q consumer=%q dependency=%q", plan.WorkItems["provider"].Epic, plan.WorkItems["consumer"].Epic, plan.Dependencies["provider-consumer"].Epic)
+	}
+	if ok, reason := DependencySatisfied(plan, "provider-consumer"); ok || reason != "progress_not_done" {
+		t.Fatalf("unfinished cross-epic dependency = %v %q", ok, reason)
+	}
+	heads, _ := progressHeads(plan.WorkItems["provider"])
+	progress := recordProgress(t, mutator, root, "provider", heads[0], "in_progress", "")
+	recordProgress(t, mutator, root, "provider", progress, "done", "")
+	plan = mustLoad(t, root)
+	if ok, reason := DependencySatisfied(plan, "provider-consumer"); !ok || reason != "" {
+		t.Fatalf("finished cross-epic dependency = %v %q", ok, reason)
+	}
+	events, err := os.ReadDir(filepath.Join(coreWorkplan(root), "work-items", "provider.work-item", "events", "progress"))
+	if err != nil || len(events) != 3 {
+		t.Fatalf("progress events were not written into the item's epic: %v %v", events, err)
+	}
+}
+
+func TestCreateRequiresAKnownEpicAndReplayIsEpicSpecific(t *testing.T) {
+	root := newSaga(t)
+	writeEpic(t, root, "billing")
+	mutator := testMutator()
+	revision := WaveRevision{ID: "v1", Title: "Foundation", Objective: "Build storage.", Order: 10}
+	if _, err := mutator.CreateWave(root, "", "foundation", revision, "no-epic"); err == nil || !strings.Contains(err.Error(), "an epic is required") {
+		t.Fatalf("missing epic error = %v", err)
+	}
+	if _, err := mutator.CreateWave(root, "missing", "foundation", revision, "unknown-epic"); err == nil || !strings.Contains(err.Error(), `epic "missing" does not exist`) {
+		t.Fatalf("unknown epic error = %v", err)
+	}
+	result, err := mutator.CreateWave(root, "billing", "foundation", revision, "wave-billing")
+	if err != nil {
+		t.Fatalf("CreateWave: %v", err)
+	}
+	if result.Path != "___epics/billing.epic/___workplan/waves/foundation.wave" {
+		t.Fatalf("wave path = %q", result.Path)
+	}
+	if replay, err := mutator.CreateWave(root, "billing", "foundation", revision, "wave-billing"); err != nil || !replay.Replayed || !strings.HasPrefix(replay.Path, result.Path+"/") {
+		t.Fatalf("replay = %+v %v", replay, err)
+	}
+	if _, err := mutator.CreateWave(root, "core", "foundation", revision, "wave-billing"); err == nil || !strings.Contains(err.Error(), "different payload") {
+		t.Fatalf("replay into another epic error = %v", err)
+	}
+	revised := revision
+	revised.ID, revised.Wave, revised.Parents = "v2", mustWaveURN(t, "foundation"), mustLoad(t, root).Waves["foundation"].Heads
+	revised.Title = "Foundation, revised"
+	revisedResult, err := mutator.ReviseWave(root, revised, "wave-revise")
+	if err != nil {
+		t.Fatalf("ReviseWave: %v", err)
+	}
+	if revisedResult.Path != "___epics/billing.epic/___workplan/waves/foundation.wave/revisions/v2.revision" {
+		t.Fatalf("revision path = %q", revisedResult.Path)
+	}
+}
+
+func TestLegacyRootWorkplanIsRejected(t *testing.T) {
+	root := newSaga(t)
+	if err := os.Mkdir(filepath.Join(root, "___workplan"), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	if _, _, err := Load(root); err == nil || !strings.Contains(err.Error(), "belongs in an epic") {
+		t.Fatalf("legacy root work plan error = %v", err)
 	}
 }
 
@@ -227,10 +346,10 @@ func TestWorkspaceAssignmentsPersistPortableIdentityAndUseParentURNs(t *testing.
 func TestLoaderRejectsSymlinksAndUnknownFieldsWithoutFollowingThem(t *testing.T) {
 	root := newSaga(t)
 	outside := t.TempDir()
-	if err := os.MkdirAll(filepath.Join(root, RootDir), 0o755); err != nil {
+	if err := os.MkdirAll(coreWorkplan(root), 0o755); err != nil {
 		t.Fatal(err)
 	}
-	if err := os.Symlink(outside, filepath.Join(root, RootDir, "waves")); err != nil {
+	if err := os.Symlink(outside, filepath.Join(coreWorkplan(root), "waves")); err != nil {
 		t.Skipf("symlinks unavailable: %v", err)
 	}
 	_, validation, err := Load(root)
@@ -270,7 +389,19 @@ func newSaga(t *testing.T) string {
 	if err := os.WriteFile(filepath.Join(root, "saga.json"), data, 0o644); err != nil {
 		t.Fatal(err)
 	}
+	writeEpic(t, root, "core")
 	return root
+}
+
+func writeEpic(t *testing.T, root, id string) {
+	t.Helper()
+	if _, err := applayout.WriteEpic(root, applayout.EpicManifest{ID: id, Title: "Epic " + id, CreatedAt: testNow}); err != nil {
+		t.Fatal(err)
+	}
+}
+
+func coreWorkplan(root string) string {
+	return filepath.Join(applayout.EpicDir(root, "core"), applayout.WorkplanDir)
 }
 
 func testMutator() Mutator {
@@ -280,26 +411,31 @@ func testMutator() Mutator {
 
 func createWave(t *testing.T, mutator Mutator, root, id string, order int) {
 	t.Helper()
-	if _, err := mutator.CreateWave(root, id, WaveRevision{ID: "v1", Title: id, Objective: "Coordinate " + id + ".", Order: order}, "wave-"+id); err != nil {
+	if _, err := mutator.CreateWave(root, "core", id, WaveRevision{ID: "v1", Title: id, Objective: "Coordinate " + id + ".", Order: order}, "wave-"+id); err != nil {
 		t.Fatalf("CreateWave(%s): %v", id, err)
 	}
 }
 
 func createItem(t *testing.T, mutator Mutator, root, id, wave string, units []MergeUnit) {
 	t.Helper()
+	createItemIn(t, mutator, root, "core", id, wave, units)
+}
+
+func createItemIn(t *testing.T, mutator Mutator, root, epic, id, wave string, units []MergeUnit) {
+	t.Helper()
 	waveURN := ""
 	if wave != "" {
 		waveURN, _ = livingid.Wave("test", wave)
 	}
 	revision := WorkItemRevision{ID: "v1", Title: id, Objective: "Deliver " + id + ".", Deliverables: []string{id + " implementation"}, Wave: waveURN, ExpectedTouchAreas: []TouchArea{{Repository: "https://example.com/repo.git", Selector: TouchSelector{Kind: "directory", Value: "internal/" + id}, Intents: []string{"modify", "test"}}}, CompletionChecks: []string{"go test"}, MergeUnits: units}
-	if _, err := mutator.CreateWorkItem(root, id, revision, "item-"+id); err != nil {
+	if _, err := mutator.CreateWorkItem(root, epic, id, revision, "item-"+id); err != nil {
 		t.Fatalf("CreateWorkItem(%s): %v", id, err)
 	}
 }
 
 func createDependency(t *testing.T, mutator Mutator, root string, dependency Dependency, request string) {
 	t.Helper()
-	if _, err := mutator.CreateDependency(root, dependency, request); err != nil {
+	if _, err := mutator.CreateDependency(root, "core", dependency, request); err != nil {
 		t.Fatalf("CreateDependency(%s): %v", dependency.ID, err)
 	}
 }
@@ -333,7 +469,7 @@ func recordContract(t *testing.T, mutator Mutator, root, contract string, parent
 
 func writeRawRevision(t *testing.T, root, itemID string, revision WorkItemRevision) {
 	t.Helper()
-	dir := filepath.Join(root, RootDir, "work-items", itemID+".work-item", "revisions", revision.ID+".revision")
+	dir := filepath.Join(coreWorkplan(root), "work-items", itemID+".work-item", "revisions", revision.ID+".revision")
 	if err := store.CommitDir(root, dir, func(stage string) error {
 		return store.WriteJSON(filepath.Join(stage, "revision.json"), revision, true)
 	}); err != nil {
@@ -343,7 +479,7 @@ func writeRawRevision(t *testing.T, root, itemID string, revision WorkItemRevisi
 
 func writeRawItemEvent(t *testing.T, root, itemID, stream, eventID string, event any) {
 	t.Helper()
-	dir := filepath.Join(root, RootDir, "work-items", itemID+".work-item", "events", stream)
+	dir := filepath.Join(coreWorkplan(root), "work-items", itemID+".work-item", "events", stream)
 	if _, err := store.EnsureDirWithin(root, dir); err != nil {
 		t.Fatal(err)
 	}
@@ -359,6 +495,15 @@ func mustLoad(t *testing.T, root string) Plan {
 		t.Fatalf("Load: err=%v validation=%+v", err, validation)
 	}
 	return plan
+}
+
+func mustWaveURN(t *testing.T, id string) string {
+	t.Helper()
+	value, err := livingid.Wave("test", id)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return value
 }
 
 func mustWorkItemURN(t *testing.T, sagaID, id string) string {

@@ -12,10 +12,10 @@ import (
 func TestCurrentDesignContentDigestsTrackAuthoredContentOnly(t *testing.T) {
 	root := filepath.Join(t.TempDir(), "digest.saga")
 	writeTestFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"digest","title":"Digest","source":{"repository":"https://example.test/app.git","base":"main","head":"HEAD"}}`)
-	writeTestFile(t, filepath.Join(root, "overview.fragment", "fragment.json"), `{"version":2,"id":"overview","media_type":"text/markdown","entrypoint":"content.md"}`)
-	writeTestFile(t, filepath.Join(root, "overview.fragment", "content.md"), "Narrative.\n")
-	writeTestFile(t, filepath.Join(root, "___design", "architecture.chapter", "chapter.json"), `{"version":2,"id":"architecture","title":"Architecture"}`)
-	fragmentDir := filepath.Join(root, "___design", "architecture.chapter", "flow.fragment")
+	writeTestFile(t, filepath.Join(root, testEpicDir, "overview.fragment", "fragment.json"), `{"version":2,"id":"overview","media_type":"text/markdown","entrypoint":"content.md"}`)
+	writeTestFile(t, filepath.Join(root, testEpicDir, "overview.fragment", "content.md"), "Narrative.\n")
+	writeTestFile(t, filepath.Join(root, testEpicDir, "___design", "architecture.chapter", "chapter.json"), `{"version":2,"id":"architecture","title":"Architecture"}`)
+	fragmentDir := filepath.Join(root, testEpicDir, "___design", "architecture.chapter", "flow.fragment")
 	writeTestFile(t, filepath.Join(fragmentDir, "fragment.json"), `{"version":2,"id":"flow","title":"Flow","media_type":"text/markdown","entrypoint":"content.md"}`)
 	writeTestFile(t, filepath.Join(fragmentDir, "content.md"), "# Flow {#flow}\n\nOriginal.\n")
 	writeTestFile(t, filepath.Join(fragmentDir, "___landmarks", "flow.landmark", "landmark.json"), `{"version":2,"id":"flow","label":"Flow","selector":{"type":"heading","heading_id":"flow"}}`)
@@ -245,7 +245,7 @@ func loadVisualDigestFixture(t *testing.T) (*Saga, visualDigestFixture) {
 	root := filepath.Join(t.TempDir(), "visual-digest.saga")
 	writeTestFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"visual-digest","title":"Visual digest","source":{"repository":"https://example.test/app.git","base":"main","head":"HEAD"}}`)
 
-	bundle := filepath.Join(root, EmbeddedSlidesDir, "architecture.deck")
+	bundle := filepath.Join(root, testEpicDir, EmbeddedSlidesDir, "architecture.deck")
 	deckTarget := DeckTarget("visual-digest", "architecture")
 	deckName, err := FlatDeckFilename(deckTarget, 20)
 	if err != nil {
