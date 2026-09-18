@@ -59,11 +59,11 @@ var categoryRank = map[Category]int{
 
 // Action is one ordered next step.
 type Action struct {
-	ID       string              `json:"id"`
-	Kind     Kind                `json:"kind"`
-	Category Category            `json:"category"`
-	Gates    []string            `json:"gates"`
-	Resource string              `json:"resource,omitempty"`
+	ID       string   `json:"id"`
+	Kind     Kind     `json:"kind"`
+	Category Category `json:"category"`
+	Gates    []string `json:"gates"`
+	Resource string   `json:"resource,omitempty"`
 	// Epic is the epic the action concerns, or empty when it concerns the app
 	// as a whole: a persona, a flag, or the app's overall scope.
 	Epic     string              `json:"epic,omitempty"`

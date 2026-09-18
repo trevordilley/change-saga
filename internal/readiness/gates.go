@@ -158,16 +158,16 @@ type ReviewDecision struct {
 // package performs no filesystem or transport access; every field here is a
 // fact a loader established.
 type GateInputs struct {
-	Stories       []Story
+	Stories []Story
 	// Personas and PersonaOrphans carry persona coverage: the persona ->
 	// story link of the persona -> story -> design -> code chain.
 	Personas       []Persona
 	PersonaOrphans []PersonaOrphans
-	Prototypes    []Prototype
-	Coverage      coverage.AxisProjection
-	QualityFacts  []QualityFact
-	ChangedSource ChangedSourceAccounting
-	Reviews       []ReviewDecision
+	Prototypes     []Prototype
+	Coverage       coverage.AxisProjection
+	QualityFacts   []QualityFact
+	ChangedSource  ChangedSourceAccounting
+	Reviews        []ReviewDecision
 }
 
 // notInferred is the gate table's "Not inferred" column, kept next to the gate
