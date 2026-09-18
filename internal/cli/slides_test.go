@@ -9,8 +9,8 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/coverage"
-	"github.com/twentyideas/changesaga/internal/diffuri"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/livingid"
 	"github.com/twentyideas/changesaga/internal/requirements"
@@ -75,14 +75,11 @@ func TestImplementationDeckAuthoringLoop(t *testing.T) {
 		}
 	}
 	item := document.Decks[0].Slides[0].Items[0]
-	uri, err := diffuri.Build(diffuri.Reference{Repository: document.Manifest.Source.Repository, Base: "main", Head: "HEAD", Kind: "line", Path: "README.md", Side: "new", Start: 1, End: 1})
-	if err != nil {
-		t.Fatal(err)
-	}
-	if err := Cover(context.Background(), []string{"--target", document.Decks[0].Slides[0].Target, "--uri", uri, root}, &output); err == nil || !strings.Contains(err.Error(), "must target an Item") {
+	uri := strings.TrimSpace(git(t, repo, "rev-parse", "HEAD")) + ":README.md#L1"
+	if err := Cover(context.Background(), []string{"--repo", repo, "--target", document.Decks[0].Slides[0].Target, "--ref", uri, root}, &output); err == nil || !strings.Contains(err.Error(), "must target an Item") {
 		t.Fatalf("slide-level coverage was not refused: %v", err)
 	}
-	if err := Cover(context.Background(), []string{"--target", item.Target, "--uri", uri, root}, &output); err != nil {
+	if err := Cover(context.Background(), []string{"--repo", repo, "--target", item.Target, "--ref", uri, root}, &output); err != nil {
 		t.Fatalf("item coverage failed: %v", err)
 	}
 	if err := Review(context.Background(), []string{"--target", item.Path, "--state", "approved", "--reviewer-kind", "human", root}, &output); err == nil || !strings.Contains(err.Error(), "must target a slide") {
@@ -94,7 +91,7 @@ func TestImplementationDeckAuthoringLoop(t *testing.T) {
 	if err := Thread(context.Background(), []string{"--target", item.Target, "--body", "Keep the validation boundary visible.", root}, &output); err != nil {
 		t.Fatalf("Item thread failed: %v", err)
 	}
-	if err := AddClaim(context.Background(), []string{"--id", "validation-boundary", "--target", item.Target, "--statement", "Validation runs before persistence.", "--diff", uri, root}, &output); err != nil {
+	if err := AddClaim(context.Background(), []string{"--id", "validation-boundary", "--target", item.Target, "--statement", "Validation runs before persistence.", "--repo", repo, "--ref", uri, root}, &output); err != nil {
 		t.Fatalf("claim failed: %v", err)
 	}
 	if err := VerifyClaim(context.Background(), []string{"--id", "validation-check", "--claim", "validation-boundary", "--status", "verified", "--method", "inspection", "--summary", "The mapped line establishes the boundary.", root}, &output); err != nil {
@@ -179,11 +176,11 @@ func TestSagaEmbedsSeveralIndependentSlideDecks(t *testing.T) {
 	if uri == "" {
 		t.Fatalf("fixture has no changed README line: %#v", changes.Atoms)
 	}
-	if err := Cover(context.Background(), []string{"--target", item.Target, "--uri", uri, root}, &output); err != nil {
+	if err := Cover(context.Background(), []string{"--repo", repo, "--target", item.Target, "--ref", uri, root}, &output); err != nil {
 		t.Fatalf("embedded Item coverage failed: %v", err)
 	}
 	var traceOutput bytes.Buffer
-	if err := Query(context.Background(), []string{"traceability", "--saga", root, "--repo", repo, "--diff", uri}, &traceOutput); err != nil || !strings.Contains(traceOutput.String(), `"unlinked_code_evidence":[{"deck":`) {
+	if err := Query(context.Background(), []string{"traceability", "--saga", root, "--repo", repo, "--ref", uri}, &traceOutput); err != nil || !strings.Contains(traceOutput.String(), `"unlinked_code_evidence":[{"deck":`) {
 		t.Fatalf("unlinked embedded evidence was not exposed: err=%v\n%s", err, traceOutput.String())
 	}
 	if err := Story(context.Background(), []string{"add", "--id", "checkout", "--revision", "r1", "--event", "proposed", "--title", "Checkout", "--statement", "As a buyer I can complete checkout", "--priority", "high", "--criterion", "safe=Checkout preserves the validated state", "--criterion", "fast=Checkout does not add a retry delay", root}, &output); err != nil {
@@ -198,14 +195,14 @@ func TestSagaEmbedsSeveralIndependentSlideDecks(t *testing.T) {
 		t.Fatalf("link slide to story: %v", err)
 	}
 	traceOutput.Reset()
-	if err := Query(context.Background(), []string{"traceability", "--saga", root, "--repo", repo, "--diff", uri}, &traceOutput); err != nil || !strings.Contains(traceOutput.String(), `"unlinked_code_evidence":[{"deck":`) {
+	if err := Query(context.Background(), []string{"traceability", "--saga", root, "--repo", repo, "--ref", uri}, &traceOutput); err != nil || !strings.Contains(traceOutput.String(), `"unlinked_code_evidence":[{"deck":`) {
 		t.Fatalf("evidence linked only to an unaccepted story was incorrectly closed: err=%v\n%s", err, traceOutput.String())
 	}
 	if err := Story(context.Background(), []string{"set-state", "--story", storyURN, "--event", "accepted", "--parent", proposedURN, "--state", "accepted", root}, &output); err != nil {
 		t.Fatalf("accept linked story: %v", err)
 	}
 	traceOutput.Reset()
-	if err := Query(context.Background(), []string{"traceability", "--saga", root, "--repo", repo, "--diff", uri}, &traceOutput); err != nil {
+	if err := Query(context.Background(), []string{"traceability", "--saga", root, "--repo", repo, "--ref", uri}, &traceOutput); err != nil {
 		t.Fatalf("reverse requirement trace: %v\n%s", err, traceOutput.String())
 	}
 	for _, want := range []string{storyURN, criterionURN, secondCriterionURN, document.Decks[0].Slides[0].Target, item.Target, uri, `"unlinked_code_evidence":[]`} {
@@ -228,11 +225,16 @@ func TestSagaEmbedsSeveralIndependentSlideDecks(t *testing.T) {
 	if err != nil || !validation.Valid || len(document.Decks[0].Slides[0].Items[0].Code) != 1 || len(document.Decks[0].Slides[0].Reviews) != 1 || len(document.Threads) != 1 {
 		t.Fatalf("embedded Item evidence/review did not round-trip: valid=%v err=%v", validation.Valid, err)
 	}
-	if loadedURI := document.Decks[0].Slides[0].Items[0].Code[0].References[0].URI; loadedURI != uri {
-		t.Fatalf("embedded Item evidence changed identity: got %q want %q", loadedURI, uri)
+	if loaded := document.Decks[0].Slides[0].Items[0].Code[0].References[0].Location().String(); loaded != uri {
+		t.Fatalf("embedded Item evidence changed identity: got %q want %q", loaded, uri)
 	}
-	if report := coverage.Evaluate(document, validation, changes); len(report.Orphans) != 0 {
-		t.Fatalf("embedded Item evidence did not match the source comparison: %#v", report.Orphans)
+	resolver, err := coderesolve.New(context.Background(), repo)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer resolver.Close()
+	if report := coverage.Evaluate(context.Background(), document, validation, changes, resolver); len(report.StaleReferences) != 0 || len(report.Ownership) == 0 {
+		t.Fatalf("embedded Item evidence did not match the source comparison: stale=%#v ownership=%#v", report.StaleReferences, report.Ownership)
 	}
 
 	var queryOutput bytes.Buffer
@@ -240,7 +242,7 @@ func TestSagaEmbedsSeveralIndependentSlideDecks(t *testing.T) {
 		t.Fatalf("embedded Item did not trace to its code: err=%v\n%s", err, queryOutput.String())
 	}
 	queryOutput.Reset()
-	if err := Query(context.Background(), []string{"diff-owners", "--saga", root, "--repo", repo, "--diff", uri}, &queryOutput); err != nil || !strings.Contains(queryOutput.String(), item.Target) {
+	if err := Query(context.Background(), []string{"diff-owners", "--saga", root, "--repo", repo, "--ref", uri}, &queryOutput); err != nil || !strings.Contains(queryOutput.String(), item.Target) {
 		t.Fatalf("code did not trace back to its embedded Item: err=%v\n%s", err, queryOutput.String())
 	}
 	queryOutput.Reset()

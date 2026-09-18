@@ -6,13 +6,13 @@ import (
 	"encoding/json"
 	"errors"
 	"flag"
+	"fmt"
 	"os"
 	"path/filepath"
 	"reflect"
 	"strings"
 	"testing"
 
-	"github.com/twentyideas/changesaga/internal/diffuri"
 	"github.com/twentyideas/changesaga/internal/quality"
 )
 
@@ -43,16 +43,16 @@ func runQuality(t *testing.T, stdin string, args ...string) livingMutationOutput
 	return decodeLivingOutput(t, &output)
 }
 
-func qualitySelector(t *testing.T, path string) string {
+// qualityCode commits a twelve-line file and returns the checkout and the
+// location of its lines 3-12, the code a quality evidence record pins.
+func qualityCode(t *testing.T, path string) (repo, location string) {
 	t.Helper()
-	selector, err := diffuri.Build(diffuri.Reference{
-		Repository: "https://example.com/repo.git", Base: "base", Head: "head", Kind: "line",
-		Path: path, Side: "new", Start: 3, End: 12,
-	})
-	if err != nil {
-		t.Fatal(err)
+	var body strings.Builder
+	for line := 1; line <= 12; line++ {
+		fmt.Fprintf(&body, "// line %d\n", line)
 	}
-	return selector
+	repo, commit := sourceRepo(t, map[string]string{path: body.String()})
+	return repo, commit + ":" + path + "#L3-L12"
 }
 
 func TestQualityHelpListsTheAuthoringGrammar(t *testing.T) {
@@ -110,7 +110,8 @@ func TestQualityCommandsAuthorTheFrozenRecordsEndToEnd(t *testing.T) {
 	}
 	runQuality(t, "", "test-case", "set-state", root, "--test-case", qualityTestURN, "--parent", qualityTestURN+":event:proposed", "--state", "active", "--reason", "Ready to run.")
 
-	evidence := runQuality(t, "", "evidence", "add", root, "--test", qualityTestURN, "--role", "test_implementation", "--diff", qualitySelector(t, "internal/refund_test.go"))
+	codeRepo, codeLocation := qualityCode(t, "internal/refund_test.go")
+	evidence := runQuality(t, "", "evidence", "add", root, "--test", qualityTestURN, "--role", "test_implementation", "--repo", codeRepo, "--code", codeLocation)
 	manual := runQuality(t, `[{"id":"qa","test_case":"`+qualityTestURN+`","role":"execution_artifact","citations":["urn:change-saga:checkout:citation:qa-notes"]}]`,
 		"evidence", "add", root, "--batch", "-")
 	failed := runQuality(t, "", "run", "record", root, "--test", qualityTestURN, "--id", "ci-1", "--result", "failed",
@@ -137,6 +138,18 @@ func TestQualityCommandsAuthorTheFrozenRecordsEndToEnd(t *testing.T) {
 	}
 	if passed.Resource != qualityTestURN+":run:ci-2" || len(document.PolicySets) != 1 || document.PolicySets[0].Current == nil {
 		t.Fatalf("passed = %#v policies = %#v", passed, document.PolicySets)
+	}
+	var pinned []string
+	for _, value := range testCase.Evidence {
+		for _, reference := range value.Code {
+			pinned = append(pinned, reference.Location().String())
+			if !strings.HasPrefix(reference.Digest, "sha256:") {
+				t.Fatalf("quality code reference has no digest: %#v", reference)
+			}
+		}
+	}
+	if !reflect.DeepEqual(pinned, []string{codeLocation}) {
+		t.Fatalf("quality evidence code = %v, want %s", pinned, codeLocation)
 	}
 	for _, record := range []string{"runs/ci-1.json", "evidence/test-implementation.json", "evidence/qa.json"} {
 		if _, err := os.Stat(filepath.Join(root, "___quality", "test-cases", "deadline.test", filepath.FromSlash(record))); err != nil {

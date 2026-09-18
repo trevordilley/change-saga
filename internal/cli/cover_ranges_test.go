@@ -7,224 +7,218 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"sort"
 	"strings"
 	"testing"
 
-	"github.com/twentyideas/changesaga/internal/diffuri"
+	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
+	"github.com/twentyideas/changesaga/internal/saga"
 )
+
+// comparisonCommits returns the merge-base and head commit of a saga's source
+// comparison, the two commits comparison-side references are pinned at.
+func comparisonCommits(t *testing.T, root, repo string) (base, head string) {
+	t.Helper()
+	report, err := buildReport(context.Background(), root, repo)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return report.BaseOID, report.HeadOID
+}
 
 const (
 	rangeRepository = "https://example.test/acme/app.git"
 	rangeBase       = "1111111111111111111111111111111111111111"
-	rangeHead       = "product-2222222222222222222222222222222222222222222222222222222222222222"
-	otherHead       = "product-3333333333333333333333333333333333333333333333333333333333333333"
+	rangeHead       = "2222222222222222222222222222222222222222"
 )
 
-// lineAtom builds the same single-line atom gitdiff.Read emits, so the unit
-// tests exercise the exact input the derived selector path sees in production.
-func lineAtom(t *testing.T, reference diffuri.Reference, line int) gitdiff.Atom {
-	t.Helper()
-	reference.Kind = "line"
-	reference.Start = line
-	reference.End = line
-	uri, err := diffuri.Build(reference)
-	if err != nil {
-		t.Fatalf("build line URI: %v", err)
-	}
-	return gitdiff.Atom{Kind: "line", Path: reference.Path, Side: reference.Side, Line: line, Ref: uri}
+// rangeChanges is a hand-built comparison of rangeBase..rangeHead, the same
+// shape gitdiff.Read emits, so the unit tests exercise the exact input the
+// derived reference path sees in production.
+func rangeChanges(atoms ...gitdiff.Atom) gitdiff.ChangeSet {
+	return gitdiff.ChangeSet{Repository: rangeRepository, BaseOID: rangeBase, HeadOID: rangeHead, Atoms: atoms}
 }
 
-func newLine(t *testing.T, path string, line int) gitdiff.Atom {
-	t.Helper()
-	return lineAtom(t, diffuri.Reference{Repository: rangeRepository, Base: rangeBase, Head: rangeHead, Path: path, Side: "new"}, line)
+func newLine(path string, line int) gitdiff.Atom {
+	return gitdiff.Atom{Kind: "line", Path: path, Side: "new", Line: line}
 }
 
-func oldLine(t *testing.T, path string, line int) gitdiff.Atom {
-	t.Helper()
-	return lineAtom(t, diffuri.Reference{Repository: rangeRepository, Base: rangeBase, Head: rangeHead, Path: path, Side: "old"}, line)
+func oldLine(path string, line int) gitdiff.Atom {
+	return gitdiff.Atom{Kind: "line", Path: path, Side: "old", Line: line}
 }
 
-func eventAtom(t *testing.T, event, path string) gitdiff.Atom {
-	t.Helper()
-	uri, err := diffuri.Build(diffuri.Reference{Repository: rangeRepository, Base: rangeBase, Head: rangeHead, Kind: "event", Event: event, Path: path})
-	if err != nil {
-		t.Fatalf("build event URI: %v", err)
-	}
-	return gitdiff.Atom{Kind: "event", Event: event, Path: path, Ref: uri}
+func eventAtom(event, path string) gitdiff.Atom {
+	return gitdiff.Atom{Kind: "event", Event: event, Path: path}
 }
 
-// describeSelectors renders emitted URIs as a compact, order-preserving shape so
-// a failure names the range that was wrong rather than dumping query strings.
-func describeSelectors(t *testing.T, uris []string) []string {
+// describeLocations renders emitted locations as a compact, order-preserving
+// shape naming the comparison side, so a failure names the range that was
+// wrong rather than dumping object names.
+func describeLocations(t *testing.T, base, head string, locations []coderef.Location) []string {
 	t.Helper()
-	described := make([]string, 0, len(uris))
-	for _, uri := range uris {
-		reference, err := diffuri.Parse(uri)
-		if err != nil {
-			t.Fatalf("parse emitted selector %q: %v", uri, err)
+	described := make([]string, 0, len(locations))
+	for _, location := range locations {
+		side := "?"
+		switch location.Commit {
+		case head:
+			side = "new"
+		case base:
+			side = "old"
 		}
-		if reference.Kind == "line" {
-			described = append(described, fmt.Sprintf("line %s %s %d-%d", reference.Path, reference.Side, reference.Start, reference.End))
+		if location.WholeFile() {
+			described = append(described, fmt.Sprintf("%s %s file", side, location.Path))
 			continue
 		}
-		described = append(described, fmt.Sprintf("%s %s %s", reference.Kind, reference.Event, reference.Path))
+		described = append(described, fmt.Sprintf("%s %s %d-%d", side, location.Path, location.Start, location.End))
 	}
 	return described
 }
 
-func selectorsFor(t *testing.T, atoms []gitdiff.Atom) []string {
-	t.Helper()
-	uris, err := changedLineSelectors(atoms)
-	if err != nil {
-		t.Fatalf("changedLineSelectors: %v", err)
+func referenceLocations(references []coderef.Reference) []coderef.Location {
+	locations := make([]coderef.Location, 0, len(references))
+	for _, reference := range references {
+		locations = append(locations, reference.Location())
 	}
-	return describeSelectors(t, uris)
+	return locations
 }
 
-// expandSelectors lists every atom identity a selector set matches, which is the
-// property coalescing must preserve exactly: the same atoms, no more, no fewer.
-func expandSelectors(t *testing.T, uris []string) []string {
-	t.Helper()
-	var keys []string
-	for _, uri := range uris {
-		reference, err := diffuri.Parse(uri)
-		if err != nil {
-			t.Fatalf("parse emitted selector %q: %v", uri, err)
-		}
-		if reference.Kind != "line" {
-			keys = append(keys, fmt.Sprintf("%s|%s|%s", reference.Kind, reference.Event, reference.Path))
-			continue
-		}
-		for line := reference.Start; line <= reference.End; line++ {
-			keys = append(keys, fmt.Sprintf("line|%s|%s|%s|%s|%d", reference.Repository, reference.Head, reference.Path, reference.Side, line))
-		}
-	}
-	sort.Strings(keys)
-	return keys
-}
-
-func TestChangedLineSelectorsCoalesceOnlyDenseRuns(t *testing.T) {
+func TestChangedLocationsCoalesceOnlyDenseRuns(t *testing.T) {
 	for _, testCase := range []struct {
 		name  string
+		path  string
+		side  string
 		atoms []gitdiff.Atom
 		want  []string
 	}{
 		{
 			name:  "consecutive new lines become one range",
-			atoms: []gitdiff.Atom{newLine(t, "a.go", 1), newLine(t, "a.go", 2), newLine(t, "a.go", 3)},
-			want:  []string{"line a.go new 1-3"},
+			atoms: []gitdiff.Atom{newLine("a.go", 1), newLine("a.go", 2), newLine("a.go", 3)},
+			want:  []string{"new a.go 1-3"},
 		},
 		{
 			name:  "a single line keeps a degenerate range",
-			atoms: []gitdiff.Atom{newLine(t, "a.go", 7)},
-			want:  []string{"line a.go new 7-7"},
+			atoms: []gitdiff.Atom{newLine("a.go", 7)},
+			want:  []string{"new a.go 7-7"},
 		},
 		{
 			name:  "a one line gap splits the run",
-			atoms: []gitdiff.Atom{newLine(t, "a.go", 1), newLine(t, "a.go", 2), newLine(t, "a.go", 4), newLine(t, "a.go", 5)},
-			want:  []string{"line a.go new 1-2", "line a.go new 4-5"},
+			atoms: []gitdiff.Atom{newLine("a.go", 1), newLine("a.go", 2), newLine("a.go", 4), newLine("a.go", 5)},
+			want:  []string{"new a.go 1-2", "new a.go 4-5"},
 		},
 		{
 			name:  "nonconsecutive lines never merge",
-			atoms: []gitdiff.Atom{newLine(t, "a.go", 1), newLine(t, "a.go", 10), newLine(t, "a.go", 20)},
-			want:  []string{"line a.go new 1-1", "line a.go new 10-10", "line a.go new 20-20"},
+			atoms: []gitdiff.Atom{newLine("a.go", 1), newLine("a.go", 10), newLine("a.go", 20)},
+			want:  []string{"new a.go 1-1", "new a.go 10-10", "new a.go 20-20"},
 		},
 		{
-			name:  "old and new sides stay separate",
-			atoms: []gitdiff.Atom{oldLine(t, "a.go", 1), oldLine(t, "a.go", 2), newLine(t, "a.go", 1), newLine(t, "a.go", 2)},
-			want:  []string{"line a.go old 1-2", "line a.go new 1-2"},
+			name:  "old and new sides stay separate, each at its own commit",
+			atoms: []gitdiff.Atom{oldLine("a.go", 1), oldLine("a.go", 2), newLine("a.go", 1), newLine("a.go", 2)},
+			want:  []string{"old a.go 1-2", "new a.go 1-2"},
 		},
 		{
-			name:  "different paths stay separate",
-			atoms: []gitdiff.Atom{newLine(t, "a.go", 1), newLine(t, "b.go", 2), newLine(t, "a.go", 2)},
-			want:  []string{"line a.go new 1-2", "line b.go new 2-2"},
+			name:  "only the requested path is referenced",
+			atoms: []gitdiff.Atom{newLine("a.go", 1), newLine("b.go", 2), newLine("a.go", 2)},
+			want:  []string{"new a.go 1-2"},
 		},
 		{
-			name:  "events are never coalesced and keep their place",
-			atoms: []gitdiff.Atom{eventAtom(t, "add", "a.go"), newLine(t, "a.go", 1), newLine(t, "a.go", 2)},
-			want:  []string{"event add a.go", "line a.go new 1-2"},
+			name:  "an add event is the whole file and accounts for its lines",
+			atoms: []gitdiff.Atom{eventAtom("add", "a.go"), newLine("a.go", 1), newLine("a.go", 2)},
+			want:  []string{"new a.go file"},
 		},
 		{
-			name:  "two events on one path remain two references",
-			atoms: []gitdiff.Atom{eventAtom(t, "mode", "a.go"), eventAtom(t, "modify", "a.go")},
-			want:  []string{"event mode a.go", "event modify a.go"},
+			name:  "a delete event is the whole file at the merge-base",
+			atoms: []gitdiff.Atom{eventAtom("delete", "a.go"), oldLine("a.go", 1), oldLine("a.go", 2)},
+			want:  []string{"old a.go file"},
 		},
 		{
-			name:  "an event between line runs does not bridge or split them",
-			atoms: []gitdiff.Atom{newLine(t, "a.go", 1), eventAtom(t, "modify", "a.go"), newLine(t, "a.go", 2)},
-			want:  []string{"line a.go new 1-2", "event modify a.go"},
+			name:  "two events on one path are one whole-file reference",
+			atoms: []gitdiff.Atom{eventAtom("mode", "a.go"), eventAtom("type-change", "a.go")},
+			want:  []string{"new a.go file"},
+		},
+		{
+			name:  "a whole file absorbs only the lines on its own side",
+			atoms: []gitdiff.Atom{oldLine("a.go", 1), oldLine("a.go", 2), eventAtom("mode", "a.go"), newLine("a.go", 3)},
+			want:  []string{"new a.go file", "old a.go 1-2"},
 		},
 		{
 			name:  "unsorted input canonicalizes to ascending ranges",
-			atoms: []gitdiff.Atom{newLine(t, "a.go", 3), newLine(t, "a.go", 1), newLine(t, "a.go", 2)},
-			want:  []string{"line a.go new 1-3"},
+			atoms: []gitdiff.Atom{newLine("a.go", 3), newLine("a.go", 1), newLine("a.go", 2)},
+			want:  []string{"new a.go 1-3"},
 		},
 		{
-			name: "a different head is a different identity",
-			atoms: []gitdiff.Atom{
-				newLine(t, "a.go", 1),
-				lineAtom(t, diffuri.Reference{Repository: rangeRepository, Base: rangeBase, Head: otherHead, Path: "a.go", Side: "new"}, 2),
-			},
-			want: []string{"line a.go new 1-1", "line a.go new 2-2"},
+			name:  "duplicate atoms do not widen a range",
+			atoms: []gitdiff.Atom{newLine("a.go", 2), newLine("a.go", 2), newLine("a.go", 4)},
+			want:  []string{"new a.go 2-2", "new a.go 4-4"},
 		},
 		{
-			name: "a different base is a different identity",
-			atoms: []gitdiff.Atom{
-				newLine(t, "a.go", 1),
-				lineAtom(t, diffuri.Reference{Repository: rangeRepository, Base: "4444444444444444444444444444444444444444", Head: rangeHead, Path: "a.go", Side: "new"}, 2),
-			},
-			want: []string{"line a.go new 1-1", "line a.go new 2-2"},
+			name:  "the old side filter keeps only merge-base lines",
+			side:  "old",
+			atoms: []gitdiff.Atom{oldLine("a.go", 1), newLine("a.go", 1), oldLine("a.go", 2)},
+			want:  []string{"old a.go 1-2"},
 		},
 		{
-			name: "a different repository is a different identity",
-			atoms: []gitdiff.Atom{
-				newLine(t, "a.go", 1),
-				lineAtom(t, diffuri.Reference{Repository: "https://example.test/acme/other.git", Base: rangeBase, Head: rangeHead, Path: "a.go", Side: "new"}, 2),
-			},
-			want: []string{"line a.go new 1-1", "line a.go new 2-2"},
+			name:  "the new side filter drops a delete event",
+			side:  "new",
+			atoms: []gitdiff.Atom{eventAtom("delete", "a.go"), oldLine("a.go", 1)},
+			want:  []string{},
 		},
 		{
-			name:  "no atoms produce no selectors",
+			name:  "no atoms produce no references",
 			atoms: nil,
 			want:  []string{},
 		},
 	} {
 		t.Run(testCase.name, func(t *testing.T) {
-			got := selectorsFor(t, testCase.atoms)
+			path := firstNonEmpty(testCase.path, "a.go")
+			got := describeLocations(t, rangeBase, rangeHead, changedLocations(rangeChanges(testCase.atoms...), path, testCase.side))
 			if strings.Join(got, "; ") != strings.Join(testCase.want, "; ") {
-				t.Fatalf("selectors = %v, want %v", got, testCase.want)
+				t.Fatalf("references = %v, want %v", got, testCase.want)
 			}
 		})
 	}
 }
 
-// Coalescing is only sound if the emitted ranges address exactly the atoms they
-// were built from. This checks that identity directly on a mixed atom set.
-func TestChangedLineSelectorsPreserveExactAtomIdentity(t *testing.T) {
-	atoms := []gitdiff.Atom{
-		eventAtom(t, "modify", "a.go"),
-		oldLine(t, "a.go", 4), oldLine(t, "a.go", 5),
-		newLine(t, "a.go", 4), newLine(t, "a.go", 5), newLine(t, "a.go", 6),
-		newLine(t, "a.go", 40),
-		newLine(t, "b.go", 1),
-	}
-	uris, err := changedLineSelectors(atoms)
-	if err != nil {
-		t.Fatalf("changedLineSelectors: %v", err)
-	}
-	if len(uris) != 5 {
-		t.Fatalf("expected five canonical selectors, got %v", describeSelectors(t, uris))
-	}
-	verbatim := make([]string, 0, len(atoms))
-	for _, atom := range atoms {
-		verbatim = append(verbatim, atom.Ref)
-	}
-	got := strings.Join(expandSelectors(t, uris), "\n")
-	want := strings.Join(expandSelectors(t, verbatim), "\n")
-	if got != want {
-		t.Fatalf("coalesced selectors address different atoms:\ngot:\n%s\nwant:\n%s", got, want)
+// Coalescing is only sound if the emitted references account for exactly the
+// atoms they were built from: every changed atom of the path lies inside some
+// reference, and every line a range spans is itself a changed line.
+func TestChangedLocationsPreserveExactAtomIdentity(t *testing.T) {
+	changes := rangeChanges(
+		oldLine("a.go", 4), oldLine("a.go", 5),
+		newLine("a.go", 4), newLine("a.go", 5), newLine("a.go", 6),
+		newLine("a.go", 40),
+		newLine("b.go", 1),
+		eventAtom("add", "c.go"), newLine("c.go", 1), newLine("c.go", 2),
+	)
+	for _, path := range []string{"a.go", "b.go", "c.go"} {
+		locations := changedLocations(changes, path, "")
+		changed := map[string]bool{}
+		for _, atom := range changes.Atoms {
+			if atom.Path != path {
+				continue
+			}
+			location := changes.Location(atom)
+			changed[location.String()] = true
+			inside := 0
+			for _, reference := range locations {
+				if reference.Contains(location) {
+					inside++
+				}
+			}
+			if inside != 1 {
+				t.Fatalf("%s atom %s lies inside %d references, want exactly 1: %v", path, location, inside, locations)
+			}
+		}
+		for _, reference := range locations {
+			if reference.WholeFile() {
+				continue
+			}
+			for line := reference.Start; line <= reference.End; line++ {
+				location := coderef.Location{Commit: reference.Commit, Path: reference.Path, Start: line, End: line}
+				if !changed[location.String()] {
+					t.Fatalf("range %s widened over unchanged line %d", reference, line)
+				}
+			}
+		}
 	}
 }
 
@@ -275,22 +269,6 @@ func changedLinesSaga(t *testing.T) (root, repo string) {
 	return root, repo
 }
 
-func parseSelectors(t *testing.T, references []struct {
-	URI  string `json:"uri"`
-	Note string `json:"note"`
-}) []diffuri.Reference {
-	t.Helper()
-	parsed := make([]diffuri.Reference, 0, len(references))
-	for _, reference := range references {
-		value, err := diffuri.Parse(reference.URI)
-		if err != nil {
-			t.Fatalf("parse persisted selector %q: %v", reference.URI, err)
-		}
-		parsed = append(parsed, value)
-	}
-	return parsed
-}
-
 func TestCoverChangedLinesEmitsCanonicalRangesWithGaps(t *testing.T) {
 	root, repo := changedLinesSaga(t)
 	output, err := runCover(t, "", "--repo", repo, "--path", "internal/service/handler.go", "--changed-lines", "--note", "the modified constants", "--name", "handler", "--json", root)
@@ -301,16 +279,18 @@ func TestCoverChangedLinesEmitsCanonicalRangesWithGaps(t *testing.T) {
 	if err := json.Unmarshal([]byte(output), &result); err != nil {
 		t.Fatalf("decode output: %v\n%s", err, output)
 	}
-	references := readDiffFile(t, filepath.Join(root, saga.CodeDirName, "handler.json"))
-	got := describeSelectors(t, urisOf(references))
-	// Each identity is emitted once, at the position of its first atom, with its
-	// dense runs ascending: the two separated edits stay two ranges per side.
-	want := []string{"line internal/service/handler.go old 3-4", "line internal/service/handler.go old 8-8", "line internal/service/handler.go new 3-4", "line internal/service/handler.go new 8-8"}
+	references := readCodeFile(t, filepath.Join(root, saga.CodeDirName, "handler.json"))
+	base, head := comparisonCommits(t, root, repo)
+	got := describeLocations(t, base, head, referenceLocations(references))
+	// Each side is emitted once, at the position of its first atom, with its
+	// dense runs ascending: the two separated edits stay two ranges per side,
+	// deleted lines pinned at the merge-base and added lines at the head.
+	want := []string{"old internal/service/handler.go 3-4", "old internal/service/handler.go 8-8", "new internal/service/handler.go 3-4", "new internal/service/handler.go 8-8"}
 	if strings.Join(got, "; ") != strings.Join(want, "; ") {
-		t.Fatalf("derived selectors = %v, want %v", got, want)
+		t.Fatalf("derived references = %v, want %v", got, want)
 	}
-	if result.Selectors != len(want) {
-		t.Fatalf("selector count = %d, want %d", result.Selectors, len(want))
+	if result.References != len(want) {
+		t.Fatalf("reference count = %d, want %d", result.References, len(want))
 	}
 	// Every reference the record produced must carry the record's note; a range
 	// stands in for the lines it replaced, not for a different annotation.
@@ -329,21 +309,22 @@ func TestCoverChangedLinesRespectsSideFilter(t *testing.T) {
 			if output, err := runCover(t, "", "--repo", repo, "--path", "internal/service/handler.go", "--changed-lines", "--side", side, "--name", "handler", root); err != nil {
 				t.Fatalf("changed-lines cover: %v\n%s", err, output)
 			}
-			references := readDiffFile(t, filepath.Join(root, saga.CodeDirName, "handler.json"))
-			got := describeSelectors(t, urisOf(references))
+			references := readCodeFile(t, filepath.Join(root, saga.CodeDirName, "handler.json"))
+			base, head := comparisonCommits(t, root, repo)
+			got := describeLocations(t, base, head, referenceLocations(references))
 			want := []string{
-				fmt.Sprintf("line internal/service/handler.go %s 3-4", side),
-				fmt.Sprintf("line internal/service/handler.go %s 8-8", side),
+				fmt.Sprintf("%s internal/service/handler.go 3-4", side),
+				fmt.Sprintf("%s internal/service/handler.go 8-8", side),
 			}
 			if strings.Join(got, "; ") != strings.Join(want, "; ") {
-				t.Fatalf("%s-side selectors = %v, want %v", side, got, want)
+				t.Fatalf("%s-side references = %v, want %v", side, got, want)
 			}
 		})
 	}
 }
 
-// Events keep their own references even when the same path also contributes
-// dense line runs, and covering every path must still close the saga exactly.
+// File events are whole-file references on the side the file exists, and
+// covering every path must still close the saga exactly.
 func TestCoverChangedLinesKeepsEventsSeparateAndCoverageExact(t *testing.T) {
 	root, repo := changedLinesSaga(t)
 	batch := strings.Join([]string{
@@ -355,22 +336,23 @@ func TestCoverChangedLinesKeepsEventsSeparateAndCoverageExact(t *testing.T) {
 		t.Fatalf("batch changed-lines cover: %v\n%s", err, output)
 	}
 
-	added := describeSelectors(t, urisOf(readDiffFile(t, filepath.Join(root, saga.CodeDirName, "added.json"))))
-	if strings.Join(added, "; ") != "event add internal/service/added.go; line internal/service/added.go new 1-3" {
-		t.Fatalf("added file selectors = %v", added)
+	base, head := comparisonCommits(t, root, repo)
+	added := describeLocations(t, base, head, referenceLocations(readCodeFile(t, filepath.Join(root, saga.CodeDirName, "added.json"))))
+	if strings.Join(added, "; ") != "new internal/service/added.go file" {
+		t.Fatalf("added file references = %v", added)
 	}
-	deleted := describeSelectors(t, urisOf(readDiffFile(t, filepath.Join(root, saga.CodeDirName, "legacy.json"))))
-	if strings.Join(deleted, "; ") != "event delete internal/service/legacy.go; line internal/service/legacy.go old 1-3" {
-		t.Fatalf("deleted file selectors = %v", deleted)
+	deleted := describeLocations(t, base, head, referenceLocations(readCodeFile(t, filepath.Join(root, saga.CodeDirName, "legacy.json"))))
+	if strings.Join(deleted, "; ") != "old internal/service/legacy.go file" {
+		t.Fatalf("deleted file references = %v", deleted)
 	}
 
 	report, err := buildReport(context.Background(), root, repo)
 	if err != nil {
 		t.Fatal(err)
 	}
-	// Ranged selectors must own exactly the atoms per-line selectors owned:
-	// nothing uncovered, nothing double-owned, nothing orphaned.
-	if !report.Complete || report.Summary.Uncovered != 0 || report.Summary.Overlapping != 0 || report.Summary.Orphaned != 0 {
+	// Ranged references must own exactly the atoms per-line references owned:
+	// nothing uncovered, nothing double-owned, nothing stale.
+	if !report.Complete || report.Summary.Uncovered != 0 || report.Summary.Overlapping != 0 || report.Summary.Stale != 0 {
 		t.Fatalf("canonical ranges changed coverage: %#v", report.Summary)
 	}
 	assertValid(t, root)
@@ -405,15 +387,4 @@ func TestCoverChangedLinesRangesDoNotStealNeighbouringAtoms(t *testing.T) {
 			t.Fatalf("unexpected uncovered atom: %#v", atom)
 		}
 	}
-}
-
-func urisOf(references []struct {
-	URI  string `json:"uri"`
-	Note string `json:"note"`
-}) []string {
-	uris := make([]string, 0, len(references))
-	for _, reference := range references {
-		uris = append(uris, reference.URI)
-	}
-	return uris
 }

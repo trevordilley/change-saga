@@ -18,8 +18,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/coderef"
+	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/prototypes"
 	"github.com/twentyideas/changesaga/internal/quality"
@@ -1086,9 +1086,9 @@ func Spec(args []string, out io.Writer) error {
 	if *jsonOutput {
 		return writeJSON(out, map[string]any{
 			"version": saga.SagaVersion, "manifest": saga.ManifestName, "component_version": saga.ComponentVersion, "chapter_suffix": ".chapter", "chapter_manifest": "chapter.json", "fragment_suffix": ".fragment", "fragment_manifest": "fragment.json",
-			"hierarchy":     []string{"overview", "chapter", "section", "fragment"},
-			"media_types":   []string{"text/markdown", "text/html", "text/plain", "image/svg+xml", "image/*"},
-			"target_scheme": "urn:change-saga",
+			"hierarchy":            []string{"overview", "chapter", "section", "fragment"},
+			"media_types":          []string{"text/markdown", "text/html", "text/plain", "image/svg+xml", "image/*"},
+			"target_scheme":        "urn:change-saga",
 			"code_reference":       map[string]any{"fields": []string{"commit", "path", "start", "end", "digest"}, "location": "<commit>:<path>[#L<start>[-L<end>]]", "digest": coderef.DigestPrefix + "<hex>"},
 			"anchors":              []string{"target", "region", "drawing", "text", "note", "code"},
 			"thread_kinds":         []string{"comment", "suggestion"},

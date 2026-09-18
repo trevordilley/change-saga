@@ -8,7 +8,6 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/twentyideas/changesaga/internal/diffuri"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
@@ -30,21 +29,10 @@ func TestAddLandmarkMakesDiagramElementsCoverable(t *testing.T) {
 		t.Fatalf("landmark output did not make the next step discoverable: %s", output.String())
 	}
 
-	reference, err := diffuri.Build(diffuri.Reference{
-		Repository: "https://example.test/acme/app.git",
-		Base:       "aaa",
-		Head:       "bbb",
-		Kind:       "line",
-		Path:       "worker.go",
-		Side:       "new",
-		Start:      3,
-		End:        7,
-	})
-	if err != nil {
-		t.Fatal(err)
-	}
+	repo, commit := sourceRepo(t, map[string]string{"worker.go": "package worker\n\n// one\n// two\n// three\n// four\n// five\n"})
+	reference := commit + ":worker.go#L3-L7"
 	target := "system-map.fragment/___landmarks/worker-pool.landmark"
-	if err := Cover(context.Background(), []string{"--target", target, "--uri", reference, "--note", "Implements the worker pool node.", root}, &output); err != nil {
+	if err := Cover(context.Background(), []string{"--repo", repo, "--target", target, "--ref", reference, "--note", "Implements the worker pool node.", root}, &output); err != nil {
 		t.Fatalf("cover landmark: %v", err)
 	}
 

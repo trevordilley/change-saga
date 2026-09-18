@@ -263,8 +263,9 @@ func Repin(ctx context.Context, args []string, out io.Writer) error {
 			result.Unchanged++
 			continue
 		}
+		// A pin that is gone resolves through its content digest.
 		resolution := resolver.Resolve(ctx, value.Code, ontoCommit)
-		byDigest := false
+		byDigest := !exists && resolution.Current()
 		if !resolution.Current() {
 			if found, ok := resolver.Find(ctx, value.Code, ontoCommit); ok {
 				resolution, byDigest = found, true
@@ -375,7 +376,7 @@ func referenceKeyBefore(changes []repinChange, file string, index int) string {
 	return ""
 }
 
-// branchCommits returns the commits the change brought, oldest first: every
+// branchCommits returns the commits the change brought, ancestors first: every
 // commit reachable from a pinned commit (or --branch) that the target branch
 // did not already have before the change landed. The target's previous tip is
 // the landed commit's first parent, which holds for squash, merge, and
@@ -384,7 +385,7 @@ func branchCommits(ctx context.Context, checkout, onto string, tips map[string]b
 	if len(tips) == 0 {
 		return []saga.MergedCommit{}, nil
 	}
-	args := []string{"-C", checkout, "log", "--reverse", "--format=%H%x00%an <%ae>%x00%aI%x00%s%x00%b%x1e"}
+	args := []string{"-C", checkout, "log", "--topo-order", "--reverse", "--format=%H%x00%an <%ae>%x00%aI%x00%s%x00%b%x1e"}
 	sorted := make([]string, 0, len(tips))
 	for tip := range tips {
 		sorted = append(sorted, tip)

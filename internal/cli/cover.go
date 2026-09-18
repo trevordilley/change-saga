@@ -322,12 +322,20 @@ func recordLocations(ctx context.Context, record coverRecord, changes *gitdiff.C
 // side; remaining lines coalesce into dense ranges per side. A dense range is
 // not a widened reference: every line it spans is a changed line.
 func changedLocations(changes gitdiff.ChangeSet, path, side string) []coderef.Location {
+	// A renamed file is one file: either of its paths selects the lines on
+	// both sides.
+	paths := map[string]bool{path: true}
+	for _, atom := range changes.Atoms {
+		if atom.Kind == "event" && atom.Event == "rename" && (atom.OldPath == path || atom.NewPath == path) {
+			paths[atom.OldPath], paths[atom.NewPath] = true, true
+		}
+	}
 	var locations []coderef.Location
 	whole := map[string]bool{}
 	lines := map[string][]int{}
 	var order []string
 	for _, atom := range changes.Atoms {
-		if atom.Path != path && atom.OldPath != path && atom.NewPath != path {
+		if !paths[atom.Path] && !paths[atom.OldPath] && !paths[atom.NewPath] {
 			continue
 		}
 		location := changes.Location(atom)

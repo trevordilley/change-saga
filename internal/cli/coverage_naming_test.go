@@ -6,13 +6,20 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
+const namingCommit = "1111111111111111111111111111111111111111"
+
+func namingReference(path string, start, end int, digest string) coderef.Reference {
+	return coderef.Reference{Commit: namingCommit, Path: path, Start: start, End: end, Digest: "sha256:" + strings.Repeat(digest, 64)}
+}
+
 func TestGeneratedCoverageNameIsSelectorIdentityNotAuthoringEvent(t *testing.T) {
 	record := coverRecord{Path: "internal/service/handler.go", Note: "first explanation"}
-	file := saga.CodeFile{Version: saga.CurrentVersion, References: []saga.DiffReference{
-		{URI: "saga-diff://v1/line?base=base&end=40&head=head&path=internal%2Fservice%2Fhandler.go&repository=https%3A%2F%2Fexample.test%2Facme.git&side=new&start=10", Note: record.Note},
+	file := saga.CodeFile{Version: saga.CurrentVersion, References: []coderef.Reference{
+		{Commit: namingCommit, Path: "internal/service/handler.go", Start: 10, End: 40, Digest: "sha256:" + strings.Repeat("a", 64), Note: record.Note},
 	}}
 	first := stableGeneratedCoverageName(record, file)
 
@@ -29,9 +36,9 @@ func TestGeneratedCoverageNameIsSelectorIdentityNotAuthoringEvent(t *testing.T) 
 
 func TestGeneratedCoverageNameSeparatesUnrelatedSelectors(t *testing.T) {
 	record := coverRecord{Path: "internal/service/handler.go"}
-	file := saga.CodeFile{Version: saga.CurrentVersion, References: []saga.DiffReference{{URI: "selector-one"}}}
+	file := saga.CodeFile{Version: saga.CurrentVersion, References: []coderef.Reference{namingReference("internal/service/handler.go", 1, 1, "a")}}
 	first := stableGeneratedCoverageName(record, file)
-	file.References[0].URI = "selector-two"
+	file.References[0] = namingReference("internal/service/handler.go", 3, 3, "a")
 	second := stableGeneratedCoverageName(record, file)
 	if first == second {
 		t.Fatalf("unrelated selectors shared generated path %q", first)
@@ -40,8 +47,8 @@ func TestGeneratedCoverageNameSeparatesUnrelatedSelectors(t *testing.T) {
 
 func TestGeneratedCoverageNameIgnoresSelectorDeliveryOrder(t *testing.T) {
 	record := coverRecord{Path: "internal/service/handler.go"}
-	first := saga.CodeFile{Version: saga.CurrentVersion, References: []saga.DiffReference{{URI: "selector-one"}, {URI: "selector-two"}}}
-	second := saga.CodeFile{Version: saga.CurrentVersion, References: []saga.DiffReference{{URI: "selector-two"}, {URI: "selector-one"}}}
+	first := saga.CodeFile{Version: saga.CurrentVersion, References: []coderef.Reference{namingReference("a.go", 1, 1, "a"), namingReference("b.go", 0, 0, "b")}}
+	second := saga.CodeFile{Version: saga.CurrentVersion, References: []coderef.Reference{namingReference("b.go", 0, 0, "b"), namingReference("a.go", 1, 1, "a")}}
 	if left, right := stableGeneratedCoverageName(record, first), stableGeneratedCoverageName(record, second); left != right {
 		t.Fatalf("delivery order changed logical evidence path: %q != %q", left, right)
 	}
