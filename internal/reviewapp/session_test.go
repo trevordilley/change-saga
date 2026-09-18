@@ -350,19 +350,23 @@ func newServiceFixture(t *testing.T) serviceFixture {
 		Source: saga.Source{Repository: comparison.Repository, Base: base, Head: "HEAD"},
 	})
 	writeJSON(t, filepath.Join(root, "___diffs", "root.json"), saga.DiffFile{Version: 2, Diffs: []saga.DiffReference{{URI: current.URI, Note: "root ownership"}}})
-	writeJSON(t, filepath.Join(root, "overview.fragment", "fragment.json"), saga.FragmentManifest{Version: 2, ID: "overview", Title: "Overview", MediaType: "text/markdown", Entrypoint: "content.md", Order: 1})
-	writeFile(t, filepath.Join(root, "overview.fragment", "content.md"), "A café explains the change.\n")
-	writeJSON(t, filepath.Join(root, "overview.fragment", "___landmarks", "readiness.landmark", "landmark.json"), saga.Landmark{
+	// Report content lives in an epic; root evidence, review records, claims,
+	// and verifications stay at the app root.
+	epicDir := filepath.Join(root, "___epics", "core.epic")
+	writeFile(t, filepath.Join(epicDir, "epic.json"), `{"$schema":"https://changesaga.dev/schema/v5/epic.schema.json","version":5,"id":"core","title":"Core","created_at":"2026-08-20T09:00:00Z"}`)
+	writeJSON(t, filepath.Join(epicDir, "overview.fragment", "fragment.json"), saga.FragmentManifest{Version: 2, ID: "overview", Title: "Overview", MediaType: "text/markdown", Entrypoint: "content.md", Order: 1})
+	writeFile(t, filepath.Join(epicDir, "overview.fragment", "content.md"), "A café explains the change.\n")
+	writeJSON(t, filepath.Join(epicDir, "overview.fragment", "___landmarks", "readiness.landmark", "landmark.json"), saga.Landmark{
 		Version: 2, ID: "readiness", Label: "Readiness", Description: "The readiness statement summarized by this fragment.",
 		Selector: saga.LandmarkSelector{Type: "text", Exact: "café"},
 	})
-	asset := filepath.Join(root, "overview.fragment", "diagram.png")
+	asset := filepath.Join(epicDir, "overview.fragment", "diagram.png")
 	writeFile(t, asset, "not-executed-image-bytes")
-	writeJSON(t, filepath.Join(root, "overview.fragment", "___diffs", "coverage.json"), saga.DiffFile{Version: 2, Diffs: []saga.DiffReference{{URI: current.URI, Note: "fragment ownership"}, {URI: stale, Note: "needs repair"}}})
-	writeJSON(t, filepath.Join(root, "overview.fragment", "___approvals", "review.json"), saga.Review{Version: 2, ID: "review-1", Reviewer: &saga.ReviewerIdentity{Kind: "ai", Name: "Codex 1", Agent: "codex", Model: "gpt-5.6-sol"}, State: "approved", Body: "Looks good.", CreatedAt: mustTime("2026-08-20T10:02:00Z")})
-	writeJSON(t, filepath.Join(root, "details.chapter", "chapter.json"), saga.ChapterManifest{Version: 2, ID: "details", Title: "Details", Order: 2})
-	writeJSON(t, filepath.Join(root, "details.chapter", "details.fragment", "fragment.json"), saga.FragmentManifest{Version: 2, ID: "details-body", Title: "Details body", MediaType: "text/plain", Entrypoint: "content.txt"})
-	writeFile(t, filepath.Join(root, "details.chapter", "details.fragment", "content.txt"), "Details.\n")
+	writeJSON(t, filepath.Join(epicDir, "overview.fragment", "___diffs", "coverage.json"), saga.DiffFile{Version: 2, Diffs: []saga.DiffReference{{URI: current.URI, Note: "fragment ownership"}, {URI: stale, Note: "needs repair"}}})
+	writeJSON(t, filepath.Join(epicDir, "overview.fragment", "___approvals", "review.json"), saga.Review{Version: 2, ID: "review-1", Reviewer: &saga.ReviewerIdentity{Kind: "ai", Name: "Codex 1", Agent: "codex", Model: "gpt-5.6-sol"}, State: "approved", Body: "Looks good.", CreatedAt: mustTime("2026-08-20T10:02:00Z")})
+	writeJSON(t, filepath.Join(epicDir, "details.chapter", "chapter.json"), saga.ChapterManifest{Version: 2, ID: "details", Title: "Details", Order: 2})
+	writeJSON(t, filepath.Join(epicDir, "details.chapter", "details.fragment", "fragment.json"), saga.FragmentManifest{Version: 2, ID: "details-body", Title: "Details body", MediaType: "text/plain", Entrypoint: "content.txt"})
+	writeFile(t, filepath.Join(epicDir, "details.chapter", "details.fragment", "content.txt"), "Details.\n")
 	threadDir := filepath.Join(root, "___review", "threads", "thread-1.thread")
 	writeJSON(t, filepath.Join(threadDir, "thread.json"), saga.ThreadManifest{Version: 2, ID: "thread-1", Target: fragmentTarget, Kind: "comment", Anchor: saga.Anchor{Type: "diff", Diff: &saga.DiffSelector{URI: current.URI}}, CreatedAt: mustTime("2026-08-20T10:00:00Z")})
 	messageDir := filepath.Join(threadDir, "messages", "message-1.message")

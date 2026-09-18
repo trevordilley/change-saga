@@ -12,6 +12,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/twentyideas/changesaga/internal/applayout"
 	"github.com/twentyideas/changesaga/internal/diffuri"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/saga"
@@ -20,6 +21,10 @@ import (
 const largeSagaRepository = "https://example.test/bench/large-saga.git"
 
 const coverageRangeWidth = 4
+
+// LargeSagaEpic is the one epic that holds the generated report content.
+// Review threads, claims, and diff reviews stay at the app root.
+const LargeSagaEpic = "core"
 
 // LargeSagaOptions controls the scale of a generated source comparison and
 // saga. Zero-valued fields are rejected so benchmarks cannot silently shrink.
@@ -260,7 +265,11 @@ func createSagaTree(root, base string, options LargeSagaOptions, fixture *LargeS
 	if err := writeJSON(filepath.Join(root, "saga.json"), manifest); err != nil {
 		return nil, err
 	}
-	if err := writeFragment(filepath.Join(root, "overview.fragment"), "overview", "Overview", "text/markdown", "content.md", "# Large benchmark saga {#overview}\n\nDeterministic fixture overview.\n", "overview"); err != nil {
+	epic, err := applayout.WriteEpic(root, applayout.EpicManifest{ID: LargeSagaEpic, Title: "Core", CreatedAt: fixtureTime(0)})
+	if err != nil {
+		return nil, err
+	}
+	if err := writeFragment(filepath.Join(epic.Dir, "overview.fragment"), "overview", "Overview", "text/markdown", "content.md", "# Large benchmark saga {#overview}\n\nDeterministic fixture overview.\n", "overview"); err != nil {
 		return nil, err
 	}
 	fixture.Fragments++
@@ -269,7 +278,7 @@ func createSagaTree(root, base string, options LargeSagaOptions, fixture *LargeS
 	fragments := make([]generatedFragment, 0, options.Chapters*options.SectionsPerChapter*options.FragmentsPerSection)
 	for chapter := 0; chapter < options.Chapters; chapter++ {
 		chapterName := fmt.Sprintf("chapter-%02d.chapter", chapter)
-		chapterDir := filepath.Join(root, chapterName)
+		chapterDir := filepath.Join(epic.Dir, chapterName)
 		chapterID := fmt.Sprintf("chapter-%02d", chapter)
 		chapterManifest := saga.ChapterManifest{Version: saga.CurrentVersion, ID: chapterID, Title: fmt.Sprintf("Chapter %02d", chapter), Order: chapter + 1}
 		if err := writeJSON(filepath.Join(chapterDir, "chapter.json"), chapterManifest); err != nil {

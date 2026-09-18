@@ -108,7 +108,7 @@ func makeProductNavTree(sources productNavSources) []*navNodeView {
 		// section has and states the gap beneath it instead.
 		implementation.Gap, implementation.Note = false, ""
 		implementation.Children = []*navNodeView{{
-			Title: "No implementation decks yet", NodeID: prefix+"-implementation-empty", Gap: true,
+			Title: "No implementation decks yet", NodeID: prefix + "-implementation-empty", Gap: true,
 		}}
 	}
 	// Implementation is the deck. With the one deck a Saga normally has, its
