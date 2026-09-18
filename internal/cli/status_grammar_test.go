@@ -120,7 +120,7 @@ func TestStatusJSONKeepsV1KeysAndAddsTheAuthoringGrammar(t *testing.T) {
 			t.Errorf("status dropped version 1 key %q", key)
 		}
 	}
-	for _, key := range []string{"status_schema", "readiness", "axes", "stale", "changed_source", "quality", "capabilities", "next_actions", "authoring_loop"} {
+	for _, key := range []string{"status_schema", "readiness", "axes", "stale", "changed_source", "quality", "next_actions", "authoring_loop"} {
 		if _, ok := document[key]; !ok {
 			t.Errorf("status omits %q", key)
 		}
@@ -194,10 +194,6 @@ func TestStatusReportsAStaleTestCaseLinkOnceAndNeverAsAnOrphan(t *testing.T) {
 				} `json:"verifies"`
 			} `json:"test_cases"`
 		} `json:"quality"`
-		Capabilities []struct {
-			Name  string `json:"name"`
-			State string `json:"state"`
-		} `json:"capabilities"`
 		Stale []struct {
 			Record  string   `json:"record"`
 			Reasons []string `json:"reasons"`
@@ -217,11 +213,6 @@ func TestStatusReportsAStaleTestCaseLinkOnceAndNeverAsAnOrphan(t *testing.T) {
 	}
 	if err := json.Unmarshal(output.Bytes(), &status); err != nil {
 		t.Fatalf("status: %v\n%s", err, output.String())
-	}
-	for _, capability := range status.Capabilities {
-		if capability.Name == "requirements" && capability.State != "adopted" {
-			t.Fatalf("a v5 Saga's requirements are adopted: %#v", status.Capabilities)
-		}
 	}
 	if len(status.Quality.TestCases) != 1 || status.Quality.TestCases[0].Orphaned || len(status.Quality.TestCases[0].Verifies) != 1 ||
 		status.Quality.TestCases[0].Verifies[0].Relation != relation || status.Quality.TestCases[0].Verifies[0].Currency != "stale" {

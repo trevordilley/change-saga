@@ -134,10 +134,6 @@ func (a *assembler) qualityAxis() qualityEvaluation {
 		links: map[string][]coverage.AxisLink{}, unsatisfied: map[string][]string{}, criteria: map[string]*QualityCriterion{},
 		facts: map[string][]QualityFactStatus{}, verifies: a.verifiesByTestCase(),
 	}
-	adoption := a.in.Quality.Adoption
-	if adoption == "" {
-		adoption = quality.NotAdopted
-	}
 	evals := a.verifyEvaluations()
 	for _, frame := range a.criteria {
 		row := &QualityCriterion{
@@ -146,15 +142,6 @@ func (a *assembler) qualityAxis() qualityEvaluation {
 			Tests: []string{}, Kinds: []KindStatus{}, Links: []TestLinkRow{},
 		}
 		result.criteria[frame.urn] = row
-		if adoption == quality.NotAdopted {
-			reason := "quality capability is not_adopted"
-			if a.in.QualityReason != "" {
-				reason += ": " + a.in.QualityReason
-			}
-			result.unsatisfied[frame.urn] = []string{reason}
-			row.PolicyState = "not_adopted"
-			continue
-		}
 		a.applyPolicy(frame, row, &result)
 		criterionEvals := evals[frame.urn]
 		for _, eval := range criterionEvals {
@@ -454,11 +441,7 @@ func kindState(criterion, kind string, required bool, evals []*testEval) (KindSt
 // test-case rows. A criterion whose quality axis is explicitly excluded has no
 // required kinds; its facts are kept only as observations.
 func (a *assembler) finishQuality(evaluation qualityEvaluation, projection coverage.AxisProjection) QualityStatus {
-	adoption := string(a.in.Quality.Adoption)
-	if adoption == "" {
-		adoption = string(quality.NotAdopted)
-	}
-	result := QualityStatus{Adoption: adoption, Reason: a.in.QualityReason, Criteria: []QualityCriterion{}, TestCases: []TestCaseStatus{}, Facts: []QualityFactStatus{}}
+	result := QualityStatus{Criteria: []QualityCriterion{}, TestCases: []TestCaseStatus{}, Facts: []QualityFactStatus{}}
 	for _, frame := range a.criteria {
 		row := evaluation.criteria[frame.urn]
 		excluded := false

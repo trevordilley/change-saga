@@ -71,11 +71,9 @@ func Assemble(in StatusInputs) Status {
 		affects: map[string]map[string]bool{}, implicatedBy: map[string]map[string]bool{}, implicatedKind: map[string]string{},
 	}
 	status := Status{
-		SagaID: in.SagaID, SagaVersion: in.SagaVersion, Capabilities: []Capability{}, Stories: []StoryStatus{}, Prototypes: []PrototypeStatus{},
+		SagaID: in.SagaID, SagaVersion: in.SagaVersion, Stories: []StoryStatus{}, Prototypes: []PrototypeStatus{},
 		Stale: []StaleRecord{}, Diagnostics: append([]Diagnostic{}, in.Diagnostics...),
 	}
-	status.Policy = a.policy()
-	status.Capabilities = a.capabilities()
 	status.Stories = a.indexStories()
 	a.indexVisual()
 	a.indexOrphans()
@@ -105,7 +103,7 @@ func Assemble(in StatusInputs) Status {
 		inputs = append(inputs, input)
 	}
 	a.exceptionCitations()
-	status.Axes = coverage.ProjectAxes(inputs, a.in.Exceptions, coverage.FeatureAxisPolicy())
+	status.Axes = coverage.ProjectAxes(inputs, a.in.Exceptions)
 	a.exceptionStale(status.Axes)
 
 	status.Quality = a.finishQuality(qualityEval, status.Axes)
@@ -134,53 +132,11 @@ func Assemble(in StatusInputs) Status {
 		uncoveredOrphans = append(uncoveredOrphans, orphan.DiffFile+"#"+itoa(orphan.Diff))
 	}
 	status.Readiness = readiness.EvaluateGates(readiness.GateInputs{
-		Policy: status.Policy.Name, Stories: stories, Prototypes: protoInputs, Coverage: status.Axes,
-		Quality: readiness.QualityDomain{Adoption: string(in.Quality.Adoption)}, QualityFacts: facts,
+		Stories: stories, Prototypes: protoInputs, Coverage: status.Axes, QualityFacts: facts,
 		ChangedSource: readiness.ChangedSourceAccounting{Complete: status.ChangedSource.Complete, Uncovered: status.ChangedSource.uncoveredURIs, Orphans: uncoveredOrphans},
-		PeerReview:    in.PeerReview,
 	})
 	status.Stale = a.staleRecords()
 	return status
-}
-
-func (a *assembler) policy() PolicyChoice {
-	switch a.in.Policy {
-	case readiness.PolicyFeature, readiness.PolicyCompatibility:
-		return PolicyChoice{Name: a.in.Policy, Source: "explicit"}
-	}
-	if a.in.SagaVersion == quality.Version && a.in.Quality.Adoption != quality.NotAdopted && a.in.Quality.Adoption != "" {
-		return PolicyChoice{Name: readiness.PolicyFeature, Source: "default for a v5 Saga that adopted quality"}
-	}
-	return PolicyChoice{Name: readiness.PolicyCompatibility, Source: "default: v" + itoa(a.in.SagaVersion) + " Saga without adopted quality keeps peer-review readiness; the new gates are guidance"}
-}
-
-func (a *assembler) capabilities() []Capability {
-	state := func(adopted bool) string {
-		if adopted {
-			return string(quality.Adopted)
-		}
-		return string(quality.NotAdopted)
-	}
-	result := []Capability{
-		{Name: "requirements", State: state(a.in.RequirementsAdopted)},
-		{Name: "prototypes", State: state(a.in.Prototypes.Adopted)},
-		{Name: "coverage_exceptions", State: state(a.in.ExceptionsAdopted)},
-	}
-	if !a.in.RequirementsAdopted {
-		result[0].Reason = "no ___requirements root; stories, criteria, and relations are not recorded"
-	}
-	if a.in.Unavailable != "" {
-		result[0].State, result[0].Reason = "unavailable", a.in.Unavailable
-	}
-	if !a.in.ExceptionsAdopted && a.in.SagaVersion != quality.Version {
-		result[2].Reason = "coverage exceptions are v5 records"
-	}
-	adoption := string(a.in.Quality.Adoption)
-	if adoption == "" {
-		adoption = string(quality.NotAdopted)
-	}
-	result = append(result, Capability{Name: "quality", State: adoption, Reason: a.in.QualityReason})
-	return result
 }
 
 // indexStories records every story and the accepted criteria the axes cover.

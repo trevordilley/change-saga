@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"os"
 	"path/filepath"
 	"strings"
@@ -433,6 +434,8 @@ func TestValidateFixLeavesReviewOverlayFragmentsAlone(t *testing.T) {
 
 // The end-to-end shape matters as much as the in-memory one: an agent polls
 // status --json until "uncovered" is empty, and a null there is a crash.
+// Complete changed-source accounting is not readiness: this Saga records no
+// story, so ready_for_review is blocked and status exits 3.
 func TestStatusJSONReportsEmptyCollectionsOnSuccess(t *testing.T) {
 	root, repo := coveredSaga(t)
 	batch := `{"path":"internal/service/handler.go","side":"new","lines":"1-5","note":"the whole new file"}
@@ -442,8 +445,9 @@ func TestStatusJSONReportsEmptyCollectionsOnSuccess(t *testing.T) {
 	}
 
 	var output bytes.Buffer
-	if err := Status(context.Background(), []string{"--json", "--repo", repo, root}, &output); err != nil {
-		t.Fatalf("status: %v\n%s", err, output.String())
+	var exit *StatusError
+	if err := Status(context.Background(), []string{"--json", "--repo", repo, root}, &output); !errors.As(err, &exit) || exit.Code != 3 {
+		t.Fatalf("status with no accepted story = %v, want exit 3\n%s", err, output.String())
 	}
 	var report map[string]json.RawMessage
 	if err := json.Unmarshal(output.Bytes(), &report); err != nil {

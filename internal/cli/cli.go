@@ -983,15 +983,14 @@ func Status(ctx context.Context, args []string, out io.Writer) error {
 	jsonOutput := flags.Bool("json", false, "emit machine-readable JSON")
 	maxItems := flags.Int("max", 100, "maximum uncovered items and next actions in text mode; 0 means all")
 	repoDir := flags.String("repo", "", "source repository checkout; required when separate")
-	policy := flags.String("policy", "", "readiness policy: feature or compatibility; defaults by Saga version and quality adoption")
 	allowRepositoryMismatch := flags.Bool("allow-repository-mismatch", false, "use a checkout whose origin differs from the declared repository")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
-	if flags.NArg() != 1 || !validPolicy(*policy) {
+	if flags.NArg() != 1 {
 		return fmt.Errorf("usage: %s", commandUsage["status"])
 	}
-	status, err := buildStatus(ctx, flags.Arg(0), *repoDir, *policy, *allowRepositoryMismatch)
+	status, err := buildStatus(ctx, flags.Arg(0), *repoDir, *allowRepositoryMismatch)
 	if err != nil {
 		return err
 	}
@@ -1003,7 +1002,7 @@ func Status(ctx context.Context, args []string, out io.Writer) error {
 		printReport(out, status.Report, *maxItems)
 		printLivingStatus(out, status, *maxItems)
 	}
-	if !status.Report.Complete {
+	if !status.readyForReview() {
 		return &StatusError{Code: 3}
 	}
 	return nil

@@ -5,8 +5,8 @@ import (
 	"time"
 )
 
-// Axis is one of the six coverage obligations a feature policy places on every
-// accepted acceptance criterion. The axes are deliberately separate concerns:
+// Axis is one of the six coverage obligations every accepted acceptance
+// criterion carries. The axes are deliberately separate concerns:
 // a prototype does not prove a UX flow, a UX flow does not prove a technical
 // design, and none of them prove an implementation diff.
 type Axis string
@@ -18,15 +18,6 @@ const (
 	AxisTechnical      Axis = "technical"
 	AxisQuality        Axis = "quality"
 	AxisImplementation Axis = "implementation"
-
-	// AxisLegacyDesign is the pre-six-axis recorded value. Sagas written before
-	// the split persisted one aggregate `design` exception, so readers must keep
-	// accepting it. It expands forward to every design axis (ux, ui, technical)
-	// because that is the only mapping that preserves the author's decision: the
-	// aggregate exception previously excluded the criterion from all visual and
-	// technical design coverage, and narrowing it to a single new axis would turn
-	// a recorded exclusion into two silent gaps. Writers must never emit it.
-	AxisLegacyDesign Axis = "design"
 )
 
 // AxisState classifies one criterion on one axis. The vocabulary is the design
@@ -83,8 +74,10 @@ func Axes() []Axis { return append([]Axis(nil), canonicalAxes...) }
 // DesignAxes returns the axes that `design_ready` governs.
 func DesignAxes() []Axis { return append([]Axis(nil), designAxes...) }
 
-// Canonical reports whether the axis is one of the six; the legacy aggregate is
-// deliberately not canonical.
+// Canonical reports whether the axis is one of the six. The six are the whole
+// vocabulary: every axis is required of every accepted criterion, and an axis
+// becomes inapplicable only through an explicit exception, never through a
+// missing link.
 func (axis Axis) Canonical() bool {
 	for _, candidate := range canonicalAxes {
 		if axis == candidate {
@@ -94,33 +87,9 @@ func (axis Axis) Canonical() bool {
 	return false
 }
 
-// RecordedAxis maps a persisted axis value onto the canonical axes it excludes.
-// It is the single forward-compatibility seam for the legacy aggregate.
-func RecordedAxis(value string) ([]Axis, bool) {
-	axis := Axis(value)
-	if axis == AxisLegacyDesign {
-		return DesignAxes(), true
-	}
-	if axis.Canonical() {
-		return []Axis{axis}, true
-	}
-	return nil, false
-}
-
-// AxisPolicy names the required axis set. The feature policy requires every
-// axis; an axis becomes inapplicable only through an explicit exception, never
-// through a missing link.
-type AxisPolicy struct {
-	Name     string `json:"name"`
-	Required []Axis `json:"required"`
-}
-
-// FeatureAxisPolicy is the v5 feature-Saga policy.
-func FeatureAxisPolicy() AxisPolicy { return AxisPolicy{Name: "feature", Required: Axes()} }
-
-// Exception is one immutable coverage-exception record as loaded. Axis is the
-// recorded value and may be the legacy aggregate; UnresolvedCitations carries
-// the runtime citation-resolution result the schema cannot express.
+// Exception is one immutable coverage-exception record as loaded; each record
+// excludes exactly one axis. UnresolvedCitations carries the runtime
+// citation-resolution result the schema cannot express.
 type Exception struct {
 	URN                 string    `json:"urn"`
 	Axis                Axis      `json:"axis"`
@@ -134,15 +103,14 @@ type Exception struct {
 }
 
 // ExceptionCoverage is the projected currency of one exception record.
-// ConflictedAxes names the axes on which this record competes with another
-// unsuperseded head; CompetingHeads names every competitor across them.
+// Conflicted is true when this record competes with another unsuperseded head
+// for the same criterion/axis cell; CompetingHeads names every competitor.
 type ExceptionCoverage struct {
 	Exception      Exception      `json:"exception"`
-	Axes           []Axis         `json:"axes"`
 	State          ExceptionState `json:"state"`
 	Reasons        []string       `json:"reasons"`
 	SupersededBy   []string       `json:"superseded_by"`
-	ConflictedAxes []Axis         `json:"conflicted_axes"`
+	Conflicted     bool           `json:"conflicted"`
 	CompetingHeads []string       `json:"competing_heads"`
 }
 
@@ -181,14 +149,12 @@ type LinkCoverage struct {
 }
 
 // CriterionInput is one accepted, active criterion and everything persisted
-// about it. RequiredAxes narrows the policy for this criterion only; an empty
-// value means the policy's full required set.
+// about it. Every criterion is projected on all six axes.
 type CriterionInput struct {
 	URN                  string
 	Story                string
 	CurrentStoryRevision string
 	RevisionHeads        []string
-	RequiredAxes         []Axis
 	Links                []AxisLink
 	// Unsatisfied names axis-level obligations no single link can carry, such as
 	// a required test kind no current passing test covers. While any reason is
@@ -233,8 +199,8 @@ type AxisCoverage struct {
 	Gap         *AxisGap `json:"gap,omitempty"`
 }
 
-// CriterionCoverage is one criterion across every required axis, in canonical
-// axis order.
+// CriterionCoverage is one criterion across all six axes, in canonical axis
+// order.
 type CriterionCoverage struct {
 	Criterion string         `json:"criterion"`
 	Story     string         `json:"story"`
@@ -272,7 +238,6 @@ type AxisSummary struct {
 
 // AxisProjection is the whole six-axis model for one Saga snapshot.
 type AxisProjection struct {
-	Policy     AxisPolicy          `json:"policy"`
 	Criteria   []CriterionCoverage `json:"criteria"`
 	Exceptions []ExceptionCoverage `json:"exceptions"`
 	Axes       []AxisSummary       `json:"axes"`
@@ -299,8 +264,8 @@ func (projection AxisProjection) Summary(axis Axis) (StateCounts, bool) {
 	return StateCounts{}, false
 }
 
-// ProjectAxes classifies every criterion on every required axis from persisted
-// links and exception records.
+// ProjectAxes classifies every criterion on all six axes from persisted links
+// and exception records.
 //
 // The state precedence is deterministic and documented so two readers agree:
 //
@@ -318,12 +283,8 @@ func (projection AxisProjection) Summary(axis Axis) (StateCounts, bool) {
 // one, and coverage precedes exclusion so a real link is never reported as an
 // exclusion. Nothing here is a percentage, and no state is ever inferred from
 // the absence of another.
-func ProjectAxes(criteria []CriterionInput, exceptions []Exception, policy AxisPolicy) AxisProjection {
-	if len(policy.Required) == 0 {
-		policy = FeatureAxisPolicy()
-	}
+func ProjectAxes(criteria []CriterionInput, exceptions []Exception) AxisProjection {
 	projection := AxisProjection{
-		Policy:     AxisPolicy{Name: policy.Name, Required: orderedAxes(policy.Required)},
 		Criteria:   []CriterionCoverage{},
 		Exceptions: []ExceptionCoverage{},
 		Axes:       []AxisSummary{},
@@ -337,31 +298,24 @@ func ProjectAxes(criteria []CriterionInput, exceptions []Exception, policy AxisP
 	projection.Exceptions = projected
 
 	counts := map[Axis]*StateCounts{}
-	for _, axis := range projection.Policy.Required {
+	for _, axis := range canonicalAxes {
 		counts[axis] = &StateCounts{}
 	}
 	ordered := append([]CriterionInput(nil), criteria...)
 	sort.Slice(ordered, func(i, j int) bool { return ordered[i].URN < ordered[j].URN })
 	for _, input := range ordered {
-		required := orderedAxes(input.RequiredAxes)
-		if len(required) == 0 {
-			required = projection.Policy.Required
-		}
 		row := CriterionCoverage{Criterion: input.URN, Story: input.Story, Axes: []AxisCoverage{}}
-		for _, axis := range required {
+		for _, axis := range canonicalAxes {
 			cell := classify(input, axis, heads[exceptionKey{criterion: input.URN, axis: axis}])
 			row.Axes = append(row.Axes, cell)
 			if cell.Gap != nil {
 				projection.Gaps = append(projection.Gaps, *cell.Gap)
 			}
-			if counts[axis] == nil {
-				counts[axis] = &StateCounts{}
-			}
 			countState(counts[axis], cell.State)
 		}
 		projection.Criteria = append(projection.Criteria, row)
 	}
-	for _, axis := range orderedAxes(mapAxes(counts)) {
+	for _, axis := range canonicalAxes {
 		projection.Axes = append(projection.Axes, AxisSummary{Axis: axis, Counts: *counts[axis]})
 	}
 	sort.SliceStable(projection.Gaps, func(i, j int) bool {
@@ -402,13 +356,10 @@ func projectExceptions(exceptions []Exception, criteria map[string]CriterionInpu
 	rejected := map[exceptionKey][]int{}
 	for _, exception := range ordered {
 		item := ExceptionCoverage{
-			Exception: exception, Axes: []Axis{}, State: ExceptionCurrent, Reasons: []string{},
-			SupersededBy: uniqueSorted(supersededBy[exception.URN]), ConflictedAxes: []Axis{}, CompetingHeads: []string{},
+			Exception: exception, State: ExceptionCurrent, Reasons: []string{},
+			SupersededBy: uniqueSorted(supersededBy[exception.URN]), CompetingHeads: []string{},
 		}
-		axes, ok := RecordedAxis(string(exception.Axis))
-		if ok {
-			item.Axes = axes
-		} else {
+		if !exception.Axis.Canonical() {
 			item.State = ExceptionInvalid
 			item.Reasons = append(item.Reasons, "axis is not one of the six coverage axes")
 		}
@@ -452,14 +403,12 @@ func projectExceptions(exceptions []Exception, criteria map[string]CriterionInpu
 		if item.State == ExceptionSuperseded {
 			continue
 		}
-		for _, axis := range item.Axes {
-			key := exceptionKey{criterion: exception.Criterion, axis: axis}
-			if item.State == ExceptionInvalid {
-				rejected[key] = append(rejected[key], index)
-				continue
-			}
-			candidates[key] = append(candidates[key], index)
+		key := exceptionKey{criterion: exception.Criterion, axis: exception.Axis}
+		if item.State == ExceptionInvalid {
+			rejected[key] = append(rejected[key], index)
+			continue
 		}
+		candidates[key] = append(candidates[key], index)
 	}
 	heads := map[exceptionKey]exceptionHead{}
 	for key, indexes := range candidates {
@@ -472,8 +421,8 @@ func projectExceptions(exceptions []Exception, criteria map[string]CriterionInpu
 			}
 			sort.Strings(head.competing)
 			for _, index := range indexes {
-				projected[index].ConflictedAxes = orderedAxes(append(projected[index].ConflictedAxes, key.axis))
-				projected[index].CompetingHeads = uniqueSorted(append(projected[index].CompetingHeads, head.competing...))
+				projected[index].Conflicted = true
+				projected[index].CompetingHeads = head.competing
 			}
 		}
 		heads[key] = head
@@ -637,27 +586,6 @@ func axisRank(axis Axis) int {
 		}
 	}
 	return len(canonicalAxes)
-}
-
-func orderedAxes(values []Axis) []Axis {
-	seen := map[Axis]bool{}
-	result := make([]Axis, 0, len(values))
-	for _, value := range values {
-		if !seen[value] {
-			seen[value] = true
-			result = append(result, value)
-		}
-	}
-	sort.SliceStable(result, func(i, j int) bool { return axisRank(result[i]) < axisRank(result[j]) })
-	return result
-}
-
-func mapAxes(counts map[Axis]*StateCounts) []Axis {
-	result := make([]Axis, 0, len(counts))
-	for axis := range counts {
-		result = append(result, axis)
-	}
-	return result
 }
 
 func joinSorted(values []string) string {
