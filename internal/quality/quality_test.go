@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/twentyideas/changesaga/internal/diffuri"
+	"github.com/twentyideas/changesaga/internal/coderef"
 )
 
 var fixtureTime = time.Date(2026, 9, 17, 20, 0, 0, 0, time.UTC)
@@ -50,19 +50,15 @@ func TestLoadProjectsQualityRecordsAndGraphHeads(t *testing.T) {
 	}
 }
 
-func TestRunAndEvidenceCurrencyRequiresCurrentPinsAndSource(t *testing.T) {
+// A code reference's currency belongs to the comparison it is viewed in, so a
+// pin at any commit leaves the evidence record itself current here; status
+// resolves the reference and reports it stale when its code changed.
+func TestEvidenceCurrencyIgnoresWhereCodeIsPinned(t *testing.T) {
 	root := newQualitySaga(t, true)
 	writeValidTestCase(t, root, "deadline")
 	path := filepath.Join(testPackage(root, "deadline"), "evidence", "test-code.json")
 	evidence := validEvidence("test-code", EvidenceTestImplementation)
-	selector, err := diffuri.Build(diffuri.Reference{
-		Repository: "https://example.com/repo.git", Base: "older-base", Head: "older-head", Kind: "line",
-		Path: "internal/refund_test.go", Side: "new", Start: 41, End: 88,
-	})
-	if err != nil {
-		t.Fatal(err)
-	}
-	evidence.Code = []string{selector}
+	evidence.Code = []coderef.Reference{testCode("internal/refund_test.go", strings.Repeat("c", 40))}
 	writeJSON(t, path, evidence)
 
 	document, err := Load(root)
@@ -70,14 +66,11 @@ func TestRunAndEvidenceCurrencyRequiresCurrentPinsAndSource(t *testing.T) {
 		t.Fatal(err)
 	}
 	testCase := document.TestCases[0]
-	if testCase.HeadRun == nil || testCase.CurrentRun != nil {
-		t.Fatalf("stale run projection = head %#v current %#v", testCase.HeadRun, testCase.CurrentRun)
+	if testCase.CurrentRun == nil {
+		t.Fatalf("a run over current evidence is not current: %#v", testCase.HeadRun)
 	}
-	if testCase.Evidence[0].Current || !strings.Contains(strings.Join(testCase.Evidence[0].StaleReasons, ","), "source comparison changed") {
+	if !testCase.Evidence[0].Current || len(testCase.Evidence[0].StaleReasons) != 0 {
 		t.Fatalf("evidence currency = %#v", testCase.Evidence[0])
-	}
-	if testCase.Runs[0].Current || !strings.Contains(strings.Join(testCase.Runs[0].StaleReasons, ","), "evidence is not current") {
-		t.Fatalf("run currency = %#v", testCase.Runs[0])
 	}
 }
 
@@ -148,10 +141,10 @@ func TestPolicyAndEvidenceSupersessionUsesGraphHeads(t *testing.T) {
 	writeJSON(t, filepath.Join(root, RootDir, "policies", "cutoff-v2.json"), newPolicy)
 
 	oldEvidence := validEvidence("artifact-v1", EvidenceExecutionArtifact)
-	oldEvidence.Code = []string{}
+	oldEvidence.Code = []coderef.Reference{}
 	oldEvidence.Verifications = []string{"urn:change-saga:checkout:verification:ci-log"}
 	newEvidence := validEvidence("artifact-v2", EvidenceExecutionArtifact)
-	newEvidence.Code = []string{}
+	newEvidence.Code = []coderef.Reference{}
 	newEvidence.Verifications = []string{"urn:change-saga:checkout:verification:ci-log-2"}
 	newEvidence.Supersedes = []string{"urn:change-saga:checkout:test-case:deadline:evidence:artifact-v1"}
 	writeJSON(t, filepath.Join(packageDir, "evidence", "artifact-v1.json"), oldEvidence)
@@ -244,13 +237,13 @@ func TestValidationCoversRevisionLifecycleEvidenceRunAndPolicyRecords(t *testing
 			want: "initial lifecycle state must be proposed",
 		},
 		{
-			name: "noncanonical diff",
+			name: "malformed code reference",
 			edit: func(root string) {
 				evidence := validEvidence("test-code", EvidenceTestImplementation)
-				evidence.Code = []string{"saga-diff://v1/line?repository=https://example.com/repo.git&base=base&head=head&path=test.go&side=new&start=2&end=1"}
+				evidence.Code[0].Start, evidence.Code[0].End = 2, 1
 				writeJSON(t, filepath.Join(testPackage(root, "deadline"), "evidence", "test-code.json"), evidence)
 			},
-			want: "canonical exact line or event selector",
+			want: "1 <= start <= end",
 		},
 		{
 			name: "execution artifact with diff",
@@ -259,7 +252,7 @@ func TestValidationCoversRevisionLifecycleEvidenceRunAndPolicyRecords(t *testing
 				evidence.Verifications = []string{"urn:change-saga:checkout:verification:ci-log"}
 				writeJSON(t, filepath.Join(testPackage(root, "deadline"), "evidence", "test-code.json"), evidence)
 			},
-			want: "cannot contain diff selectors",
+			want: "cannot contain code references",
 		},
 		{
 			name: "run missing evidence",
@@ -423,18 +416,16 @@ func eventFrom(id string, parents []string, state LifecycleState) LifecycleEvent
 	}
 }
 
+// testCode is a well-formed reference; loading never resolves it.
+func testCode(path, commit string) coderef.Reference {
+	return coderef.Reference{Commit: commit, Path: path, Start: 41, End: 88, Digest: coderef.DigestBytes([]byte(path))}
+}
+
 func validEvidence(id string, role EvidenceRole) Evidence {
-	selector, err := diffuri.Build(diffuri.Reference{
-		Repository: "https://example.com/repo.git", Base: "base", Head: "head", Kind: "line",
-		Path: "internal/refund_test.go", Side: "new", Start: 41, End: 88,
-	})
-	if err != nil {
-		panic(err)
-	}
 	return Evidence{
 		Schema: EvidenceSchemaURL, Version: Version, ID: id,
 		TestCase: "urn:change-saga:checkout:test-case:deadline", TestRevision: revisionURN("r1"),
-		Role: role, Code: []string{selector}, Verifications: []string{}, Citations: []string{}, Supersedes: []string{}, CreatedAt: fixtureTime,
+		Role: role, Code: []coderef.Reference{testCode("internal/refund_test.go", strings.Repeat("a", 40))}, Verifications: []string{}, Citations: []string{}, Supersedes: []string{}, CreatedAt: fixtureTime,
 	}
 }
 

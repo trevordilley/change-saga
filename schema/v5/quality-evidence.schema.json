@@ -4,69 +4,231 @@
   "title": "Change Saga v5 quality evidence",
   "type": "object",
   "additionalProperties": false,
-  "required": ["$schema", "version", "id", "test_case", "test_revision", "role", "diffs", "verifications", "citations", "supersedes", "created_at"],
+  "required": [
+    "$schema",
+    "version",
+    "id",
+    "test_case",
+    "test_revision",
+    "role",
+    "code",
+    "verifications",
+    "citations",
+    "supersedes",
+    "created_at"
+  ],
   "properties": {
-    "$schema": { "const": "https://changesaga.dev/schema/v5/quality-evidence.schema.json" },
-    "version": { "const": 5 },
-    "id": { "$ref": "#/$defs/id" },
-    "test_case": { "$ref": "#/$defs/test_case_urn" },
-    "test_revision": { "$ref": "#/$defs/revision_urn" },
-    "role": { "enum": ["test_implementation", "implementation_under_test", "execution_artifact"] },
-    "diffs": {
+    "$schema": {
+      "const": "https://changesaga.dev/schema/v5/quality-evidence.schema.json"
+    },
+    "version": {
+      "const": 5
+    },
+    "id": {
+      "$ref": "#/$defs/id"
+    },
+    "test_case": {
+      "$ref": "#/$defs/test_case_urn"
+    },
+    "test_revision": {
+      "$ref": "#/$defs/revision_urn"
+    },
+    "role": {
+      "enum": [
+        "test_implementation",
+        "implementation_under_test",
+        "execution_artifact"
+      ]
+    },
+    "code": {
       "type": "array",
       "maxItems": 20000,
-      "uniqueItems": true,
-      "items": { "$ref": "#/$defs/diff_urn" }
+      "items": {
+        "$ref": "#/$defs/code_reference"
+      }
     },
     "verifications": {
       "type": "array",
       "maxItems": 20000,
       "uniqueItems": true,
-      "items": { "$ref": "#/$defs/verification_urn" }
+      "items": {
+        "$ref": "#/$defs/verification_urn"
+      }
     },
     "citations": {
       "type": "array",
       "maxItems": 20000,
       "uniqueItems": true,
-      "items": { "$ref": "#/$defs/citation_urn" }
+      "items": {
+        "$ref": "#/$defs/citation_urn"
+      }
     },
     "supersedes": {
       "type": "array",
       "maxItems": 10000,
       "uniqueItems": true,
-      "items": { "$ref": "#/$defs/evidence_urn" }
+      "items": {
+        "$ref": "#/$defs/evidence_urn"
+      }
     },
-    "created_at": { "type": "string", "format": "date-time" },
-    "request_id": { "$ref": "#/$defs/id" }
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "request_id": {
+      "$ref": "#/$defs/id"
+    }
   },
   "anyOf": [
-    { "properties": { "diffs": { "minItems": 1 } } },
-    { "properties": { "verifications": { "minItems": 1 } } },
-    { "properties": { "citations": { "minItems": 1 } } }
+    {
+      "properties": {
+        "code": {
+          "minItems": 1
+        }
+      }
+    },
+    {
+      "properties": {
+        "verifications": {
+          "minItems": 1
+        }
+      }
+    },
+    {
+      "properties": {
+        "citations": {
+          "minItems": 1
+        }
+      }
+    }
   ],
   "allOf": [
     {
-      "if": { "properties": { "role": { "enum": ["test_implementation", "implementation_under_test"] } }, "required": ["role"] },
-      "then": { "properties": { "diffs": { "minItems": 1 } } }
+      "if": {
+        "properties": {
+          "role": {
+            "enum": [
+              "test_implementation",
+              "implementation_under_test"
+            ]
+          }
+        },
+        "required": [
+          "role"
+        ]
+      },
+      "then": {
+        "properties": {
+          "code": {
+            "minItems": 1
+          }
+        }
+      }
     },
     {
-      "if": { "properties": { "role": { "const": "execution_artifact" } }, "required": ["role"] },
+      "if": {
+        "properties": {
+          "role": {
+            "const": "execution_artifact"
+          }
+        },
+        "required": [
+          "role"
+        ]
+      },
       "then": {
-        "properties": { "diffs": { "maxItems": 0 } },
+        "properties": {
+          "code": {
+            "maxItems": 0
+          }
+        },
         "anyOf": [
-          { "properties": { "verifications": { "minItems": 1 } } },
-          { "properties": { "citations": { "minItems": 1 } } }
+          {
+            "properties": {
+              "verifications": {
+                "minItems": 1
+              }
+            }
+          },
+          {
+            "properties": {
+              "citations": {
+                "minItems": 1
+              }
+            }
+          }
         ]
       }
     }
   ],
   "$defs": {
-    "id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
-    "test_case_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:test-case:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
-    "revision_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:test-case:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:revision:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
-    "evidence_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:test-case:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:evidence:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
-    "verification_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:verification:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
-    "citation_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:citation:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
-    "diff_urn": { "type": "string", "pattern": "^saga-diff://v1/(line|event)\\?" }
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "test_case_urn": {
+      "type": "string",
+      "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:test-case:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "revision_urn": {
+      "type": "string",
+      "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:test-case:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:revision:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "evidence_urn": {
+      "type": "string",
+      "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:test-case:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:evidence:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "verification_urn": {
+      "type": "string",
+      "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:verification:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "citation_urn": {
+      "type": "string",
+      "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:citation:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "code_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "commit",
+        "path",
+        "digest"
+      ],
+      "properties": {
+        "commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$",
+          "description": "Full Git object name the reference is pinned at."
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Normalized repository-relative slash path at that commit."
+        },
+        "start": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "First referenced line, 1-based. Absent for a whole file."
+        },
+        "end": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Last referenced line, inclusive. Absent for a whole file."
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "description": "SHA-256 of the referenced bytes: the lines start..end including their newlines, or the whole file."
+        }
+      },
+      "dependentRequired": {
+        "start": [
+          "end"
+        ],
+        "end": [
+          "start"
+        ]
+      }
+    }
   }
 }

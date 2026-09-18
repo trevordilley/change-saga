@@ -6,8 +6,6 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
-
-	"github.com/twentyideas/changesaga/internal/diffuri"
 )
 
 func TestLoadRecursiveFragmentsAndReviewOverlay(t *testing.T) {
@@ -21,12 +19,9 @@ func TestLoadRecursiveFragmentsAndReviewOverlay(t *testing.T) {
 	writeTestFile(t, filepath.Join(root, "backend.chapter", "request-flow", "flow.fragment", "index.html"), `<button id="try-flow" onclick="this.textContent='ok'">Try it</button>`)
 	writeTestFile(t, filepath.Join(root, "backend.chapter", "request-flow", "flow.fragment", "___landmarks", "try-flow.landmark", "landmark.json"), `{"version":2,"id":"try-flow","label":"Try the flow","selector":{"type":"element","element_id":"try-flow"}}`)
 
-	diff, err := diffuri.Build(diffuri.Reference{Repository: "https://example.test/acme/app.git", Base: "aaa", Head: "bbb", Kind: "line", Path: "api.go", Side: "new", Start: 2, End: 4})
-	if err != nil {
-		t.Fatal(err)
-	}
-	writeTestFile(t, filepath.Join(root, "backend.chapter", "request-flow", "flow.fragment", CodeDirName, "api.json"), fmt.Sprintf(`{"version":2,"diffs":[{"uri":%q}]}`, diff))
-	writeTestFile(t, filepath.Join(root, "backend.chapter", "request-flow", "flow.fragment", "___landmarks", "try-flow.landmark", CodeDirName, "api.json"), fmt.Sprintf(`{"version":2,"diffs":[{"uri":%q}]}`, diff))
+	diff := referenceJSON(t, testReference("api.go", 2, 4))
+	writeTestFile(t, filepath.Join(root, "backend.chapter", "request-flow", "flow.fragment", CodeDirName, "api.json"), fmt.Sprintf(`{"version":2,"references":%s}`, diff))
+	writeTestFile(t, filepath.Join(root, "backend.chapter", "request-flow", "flow.fragment", "___landmarks", "try-flow.landmark", CodeDirName, "api.json"), fmt.Sprintf(`{"version":2,"references":%s}`, diff))
 	writeTestFile(t, filepath.Join(root, "___review", "threads", "thread-1.thread", "thread.json"), `{"version":2,"id":"thread-1","target":"urn:change-saga:test:fragment:flow","anchor":{"type":"region","coordinate_space":"normalized","shapes":[{"type":"rect","x":0.1,"y":0.2,"width":0.3,"height":0.4}]},"created_by":"Ada","created_at":"2026-08-19T12:00:00Z"}`)
 	writeTestFile(t, filepath.Join(root, "___review", "threads", "thread-1.thread", "messages", "message-1.message", "message.json"), `{"version":2,"id":"message-1","author":"Ada","created_at":"2026-08-19T12:00:00Z"}`)
 	writeTestFile(t, filepath.Join(root, "___review", "threads", "thread-1.thread", "messages", "message-1.message", "body.fragment", "fragment.json"), `{"version":2,"id":"message-body","media_type":"text/markdown","entrypoint":"content.md"}`)
@@ -83,11 +78,9 @@ func TestLoadNarrativeAdvertisesTargetEvidenceWithoutMaterializingIt(t *testing.
 	writeTestFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"narrative","title":"Narrative","source":{"repository":"https://example.test/acme/app.git","base":"main","head":"HEAD"}}`)
 	writeTestFile(t, filepath.Join(root, "story.fragment", "fragment.json"), `{"version":2,"id":"story","title":"Story","media_type":"text/markdown","entrypoint":"content.md"}`)
 	writeTestFile(t, filepath.Join(root, "story.fragment", "content.md"), "# Story\n")
-	uri, err := diffuri.Build(diffuri.Reference{Repository: "https://example.test/acme/app.git", Base: "aaa", Head: "bbb", Kind: "line", Path: "app.go", Side: "new", Start: 1, End: 2})
-	if err != nil {
-		t.Fatal(err)
-	}
-	writeTestFile(t, filepath.Join(root, "story.fragment", CodeDirName, "app.json"), fmt.Sprintf(`{"version":2,"diffs":[{"uri":%q,"note":"Implements the story."}]}`, uri))
+	reference := testReference("app.go", 1, 2)
+	reference.Note = "Implements the story."
+	writeTestFile(t, filepath.Join(root, "story.fragment", CodeDirName, "app.json"), fmt.Sprintf(`{"version":2,"references":%s}`, referenceJSON(t, reference)))
 
 	document, validation, err := LoadNarrative(root)
 	if err != nil || !validation.Valid {
@@ -98,7 +91,7 @@ func TestLoadNarrativeAdvertisesTargetEvidenceWithoutMaterializingIt(t *testing.
 		t.Fatalf("narrative evidence state = has %v, materialized %d", fragment.HasCode, len(fragment.Code))
 	}
 	diffs, targetValidation, err := LoadTargetCode(MutationIndexFromDocument(document), fragment.Target)
-	if err != nil || !targetValidation.Valid || len(diffs) != 1 || len(diffs[0].References) != 1 || diffs[0].References[0].URI != uri {
+	if err != nil || !targetValidation.Valid || len(diffs) != 1 || len(diffs[0].References) != 1 || diffs[0].References[0] != reference {
 		t.Fatalf("target evidence = %#v, valid %v, err %v, issues %#v", diffs, targetValidation.Valid, err, targetValidation.Issues)
 	}
 }

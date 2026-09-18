@@ -1,56 +1,24 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://changesaga.dev/schema/v2/claim.schema.json",
-  "title": "Change Saga author claim",
+  "$id": "https://changesaga.dev/schema/v2/code.schema.json",
+  "title": "Change Saga code references",
+  "description": "One evidence record: the code a narrative target explains, pinned at commits. A diff is never stored; coverage is computed per comparison from these references.",
   "type": "object",
   "additionalProperties": false,
   "required": [
     "version",
-    "id",
-    "target",
-    "kind",
-    "statement",
-    "evidence",
-    "created_at"
+    "references"
   ],
   "properties": {
     "version": {
       "const": 2
     },
-    "id": {
-      "type": "string",
-      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
-    },
-    "target": {
-      "type": "string",
-      "pattern": "^urn:change-saga:"
-    },
-    "kind": {
-      "enum": [
-        "behavior",
-        "invariant",
-        "performance",
-        "compatibility",
-        "security",
-        "data",
-        "ux",
-        "test"
-      ]
-    },
-    "statement": {
-      "type": "string",
-      "minLength": 1
-    },
-    "evidence": {
+    "references": {
       "type": "array",
       "minItems": 1,
       "items": {
         "$ref": "#/$defs/code_reference"
       }
-    },
-    "created_at": {
-      "type": "string",
-      "format": "date-time"
     }
   },
   "$defs": {
@@ -87,6 +55,9 @@
           "type": "string",
           "pattern": "^sha256:[0-9a-f]{64}$",
           "description": "SHA-256 of the referenced bytes: the lines start..end including their newlines, or the whole file."
+        },
+        "note": {
+          "type": "string"
         }
       },
       "dependentRequired": {

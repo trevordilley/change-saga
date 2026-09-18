@@ -1,39 +1,47 @@
 package saga
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
 	"testing"
 
-	"github.com/twentyideas/changesaga/internal/diffuri"
+	"github.com/twentyideas/changesaga/internal/coderef"
 )
 
-func claimTestURI(t *testing.T, kind string) string {
+const testCommit = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+
+// testReference is a well-formed reference; loading never resolves it, so
+// its digest need not match any repository.
+func testReference(path string, start, end int) coderef.Reference {
+	return coderef.Reference{Commit: testCommit, Path: path, Start: start, End: end, Digest: coderef.DigestBytes([]byte(path))}
+}
+
+func referenceJSON(t *testing.T, references ...coderef.Reference) string {
 	t.Helper()
-	reference := diffuri.Reference{Repository: "https://example.test/acme/app.git", Base: "aaa", Head: "bbb", Kind: kind, Path: "app.go"}
-	if kind == "line" {
-		reference.Side, reference.Start, reference.End = "new", 1, 1
-	}
-	uri, err := diffuri.Build(reference)
+	data, err := json.Marshal(references)
 	if err != nil {
 		t.Fatal(err)
 	}
-	return uri
+	return string(data)
 }
 
 func TestClaimAndVerificationRecordsFailClosed(t *testing.T) {
-	lineURI := claimTestURI(t, "line")
-	fileURI := claimTestURI(t, "file")
+	line := referenceJSON(t, testReference("app.go", 1, 1))
+	noted := testReference("app.go", 1, 1)
+	noted.Note = "claims explain themselves"
+	withNote := referenceJSON(t, noted)
 	tests := []struct {
 		name  string
 		files map[string]string
 		want  string
 	}{
-		{name: "claim filename mismatch", files: map[string]string{"___claims/wrong.json": fmt.Sprintf(`{"version":2,"id":"claim-1","target":"urn:change-saga:test:fragment:overview","kind":"behavior","statement":"Ready is true.","evidence":[%q],"created_at":"2026-08-21T12:00:00Z"}`, lineURI)}, want: "must match filename"},
-		{name: "claim target missing", files: map[string]string{"___claims/claim-1.json": fmt.Sprintf(`{"version":2,"id":"claim-1","target":"urn:change-saga:test:fragment:missing","kind":"behavior","statement":"Ready is true.","evidence":[%q],"created_at":"2026-08-21T12:00:00Z"}`, lineURI)}, want: "claim target does not exist"},
-		{name: "claim uses file URI", files: map[string]string{"___claims/claim-1.json": fmt.Sprintf(`{"version":2,"id":"claim-1","target":"urn:change-saga:test:fragment:overview","kind":"behavior","statement":"Ready is true.","evidence":[%q],"created_at":"2026-08-21T12:00:00Z"}`, fileURI)}, want: "line or event"},
+		{name: "claim filename mismatch", files: map[string]string{"___claims/wrong.json": fmt.Sprintf(`{"version":2,"id":"claim-1","target":"urn:change-saga:test:fragment:overview","kind":"behavior","statement":"Ready is true.","evidence":%s,"created_at":"2026-08-21T12:00:00Z"}`, line)}, want: "must match filename"},
+		{name: "claim target missing", files: map[string]string{"___claims/claim-1.json": fmt.Sprintf(`{"version":2,"id":"claim-1","target":"urn:change-saga:test:fragment:missing","kind":"behavior","statement":"Ready is true.","evidence":%s,"created_at":"2026-08-21T12:00:00Z"}`, line)}, want: "claim target does not exist"},
+		{name: "claim evidence carries a note", files: map[string]string{"___claims/claim-1.json": fmt.Sprintf(`{"version":2,"id":"claim-1","target":"urn:change-saga:test:fragment:overview","kind":"behavior","statement":"Ready is true.","evidence":%s,"created_at":"2026-08-21T12:00:00Z"}`, withNote)}, want: "cannot carry a note"},
+		{name: "claim evidence is a diff URI", files: map[string]string{"___claims/claim-1.json": `{"version":2,"id":"claim-1","target":"urn:change-saga:test:fragment:overview","kind":"behavior","statement":"Ready is true.","evidence":["saga-diff://v1/line?path=app.go"],"created_at":"2026-08-21T12:00:00Z"}`}, want: "cannot unmarshal"},
 		{name: "verification claim missing", files: map[string]string{"___verifications/check-1.json": `{"version":2,"id":"check-1","claim":"missing","status":"unverified","summary":"Not checked.","created_at":"2026-08-21T12:00:00Z"}`}, want: "unknown claim"},
 		{name: "reserved record is directory", files: map[string]string{"___claims/not-json.txt/file": "hidden"}, want: "regular .json files"},
 	}
@@ -143,8 +151,8 @@ func TestLoadRejectsMalformedMetadata(t *testing.T) {
 		want:  "reserved fragment path",
 	}, {
 		name:  "evidence file selects nothing",
-		files: map[string]string{"___code/empty.json": `{"version":2,"diffs":[]}`},
-		want:  "at least one diff reference",
+		files: map[string]string{"___code/empty.json": `{"version":2,"references":[]}`},
+		want:  "at least one code reference",
 	}, {
 		name: "thread id disagrees with its directory",
 		files: map[string]string{

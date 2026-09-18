@@ -5,7 +5,15 @@
   "test_case": "urn:change-saga:checkout-refund:test-case:refund-at-deadline",
   "test_revision": "urn:change-saga:checkout-refund:test-case:refund-at-deadline:revision:r1",
   "role": "test_implementation",
-  "diffs": ["saga-diff://v1/line?base=main&end=88&head=feature%2Frefund-window&path=internal%2Frefund_test.go&repository=https%3A%2F%2Fgithub.com%2Facme%2Fcheckout.git&side=new&start=41"],
+  "code": [
+    {
+      "commit": "3f5d2c1a9b8e7d6c5b4a39281706f5e4d3c2b1a0",
+      "path": "internal/refund_test.go",
+      "start": 41,
+      "end": 88,
+      "digest": "sha256:5555555555555555555555555555555555555555555555555555555555555555"
+    }
+  ],
   "verifications": [],
   "citations": [],
   "supersedes": [],

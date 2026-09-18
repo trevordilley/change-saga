@@ -44,7 +44,7 @@ func TestRunQueryKeepsMachineOutputOnStdout(t *testing.T) {
 
 func TestRunMutationJSONKeepsFailureOnStdout(t *testing.T) {
 	var stdout, stderr bytes.Buffer
-	if got := run([]string{"cover", "--uri", "not-a-uri", "--json", "missing.saga"}, &stdout, &stderr); got != 1 {
+	if got := run([]string{"cover", "--ref", "not-a-location", "--json", "missing.saga"}, &stdout, &stderr); got != 1 {
 		t.Fatalf("exit = %d, want 1", got)
 	}
 	if stderr.Len() != 0 {

@@ -1,6 +1,7 @@
 package livingapp
 
 import (
+	"context"
 	"encoding/json"
 	"os"
 	"path/filepath"
@@ -9,8 +10,9 @@ import (
 	"testing"
 	"time"
 
+	"github.com/twentyideas/changesaga/internal/coderef"
+	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/coverage"
-	"github.com/twentyideas/changesaga/internal/diffuri"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/quality"
 	"github.com/twentyideas/changesaga/internal/readiness"
@@ -35,13 +37,16 @@ func testRevisionURN(testCase, revision string) string {
 }
 func relationURN(id string) string { return "urn:change-saga:checkout:relation:" + id }
 
-func selector(t *testing.T, path string, start, end int) string {
+// The fixture comparison's commits. References are pinned at the head, and
+// coderesolve.Pinned finds a reference current exactly at its own commit.
+var (
+	fixtureBase = strings.Repeat("b", 40)
+	fixtureHead = strings.Repeat("a", 40)
+)
+
+func selector(t *testing.T, path string, start, end int) coderef.Reference {
 	t.Helper()
-	value, err := diffuri.Build(diffuri.Reference{Repository: fixtureRepo, Base: "base", Head: "head", Kind: "line", Path: path, Side: "new", Start: start, End: end})
-	if err != nil {
-		t.Fatal(err)
-	}
-	return value
+	return coderef.Reference{Commit: fixtureHead, Path: path, Start: start, End: end, Digest: coderef.DigestBytes([]byte(path))}
 }
 
 // testCaseSpec describes one hand-authored v5 test-case package.
@@ -125,7 +130,7 @@ func newV5QualitySaga(t *testing.T, specs []testCaseSpec, policies []quality.Pol
 		writeStatusJSON(t, filepath.Join(dir, "evidence", "code.json"), quality.Evidence{
 			Schema: quality.EvidenceSchemaURL, Version: quality.Version, ID: "code", TestCase: testURN(spec.id),
 			TestRevision: testRevisionURN(spec.id, spec.runRevision), Role: quality.EvidenceTestImplementation,
-			Code: []string{selector(t, "internal/refund_test.go", 1, 5)}, Verifications: []string{}, Citations: []string{}, Supersedes: []string{}, CreatedAt: statusFixtureTime,
+			Code: []coderef.Reference{selector(t, "internal/refund_test.go", 1, 5)}, Verifications: []string{}, Citations: []string{}, Supersedes: []string{}, CreatedAt: statusFixtureTime,
 		})
 		writeStatusJSON(t, filepath.Join(dir, "runs", "ci-1.json"), quality.Run{
 			Schema: quality.RunSchemaURL, Version: quality.Version, ID: "ci-1", TestCase: testURN(spec.id),
@@ -178,10 +183,11 @@ func fixtureLinks(stories []requirements.Story, relations []requirements.Relatio
 
 func testAtoms(t *testing.T) gitdiff.ChangeSet {
 	t.Helper()
-	changes := gitdiff.ChangeSet{Repository: fixtureRepo, Base: "base", Head: "head", BaseOID: "base", HeadOID: "head"}
+	changes := gitdiff.ChangeSet{Repository: fixtureRepo, Base: "base", Head: "head", BaseOID: fixtureBase, HeadOID: fixtureHead}
 	add := func(path string, line int) {
-		uri := selector(t, path, line, line)
-		changes.Atoms = append(changes.Atoms, gitdiff.Atom{Key: uri, Ref: uri, Kind: "line", Path: path, Side: "new", Line: line, Content: "x"})
+		atom := gitdiff.Atom{Kind: "line", Path: path, Side: "new", Line: line, Content: "x"}
+		atom.Key, atom.Ref = gitdiff.Key(atom), changes.Location(atom).String()
+		changes.Atoms = append(changes.Atoms, atom)
 	}
 	for line := 1; line <= 5; line++ {
 		add("internal/refund_test.go", line)
@@ -212,12 +218,12 @@ func qualityFixture(t *testing.T) StatusInputs {
 		t.Fatalf("hand-authored v5 fixture must load: %v", err)
 	}
 	item := &saga.Item{Target: "urn:change-saga:checkout:slide:guard:item:deadline", Code: []saga.CodeFile{{
-		Path: "___slides/implementation.deck/40-e-guard.json", References: []saga.DiffReference{{URI: selector(t, "internal/refund.go", 10, 10)}},
+		Path: "___slides/implementation.deck/40-e-guard.json", References: []coderef.Reference{selector(t, "internal/refund.go", 10, 10)},
 	}}}
 	deck := &saga.Deck{DeckManifest: saga.DeckManifest{ID: "implementation", Role: "change"}, Target: "urn:change-saga:checkout:deck:implementation",
 		Slides: []*saga.Slide{{Target: "urn:change-saga:checkout:slide:guard", Items: []*saga.Item{item}}}}
 	changes := testAtoms(t)
-	report := coverage.Report{SchemaValid: true, Uncovered: []gitdiff.Atom{}, Orphans: []coverage.Orphan{}}
+	report := coverage.Report{SchemaValid: true, Uncovered: []gitdiff.Atom{}, StaleReferences: []coverage.StaleReference{}}
 	for _, atom := range changes.Atoms {
 		if atom.Path != "internal/refund.go" {
 			report.Uncovered = append(report.Uncovered, atom)
@@ -246,10 +252,24 @@ func qualityFixture(t *testing.T) StatusInputs {
 			StoryRevision: storyR2, Rationale: "Verified by an operational playbook outside this change.",
 			Citations: []string{"urn:change-saga:checkout:citation:policy"}, Supersedes: []string{}, CreatedAt: statusFixtureTime,
 		}},
-		Quality: document,
-		Report:  report,
-		Changes: changes,
+		Quality:     document,
+		Report:      report,
+		Changes:     changes,
+		QualityCode: resolveQualityCode(document, changes),
 	}
+}
+
+// resolveQualityCode does what LoadStatusInputs does with a repository.
+func resolveQualityCode(document quality.Document, changes gitdiff.ChangeSet) map[string]coverage.ResolvedCode {
+	result := map[string]coverage.ResolvedCode{}
+	for _, testCase := range document.TestCases {
+		for _, evidence := range testCase.Evidence {
+			for _, reference := range evidence.Code {
+				result[reference.Key()] = coverage.Resolve(context.Background(), reference, changes, coderesolve.Pinned{})
+			}
+		}
+	}
+	return result
 }
 
 func cell(t *testing.T, status Status, criterion string, axis coverage.Axis) coverage.AxisCoverage {
@@ -396,25 +416,25 @@ func TestChangedSourceAccountingIsSeparateAndCreditsOnlyTestEvidence(t *testing.
 	}
 }
 
-func TestImplementationPathWithOrphanedDiffIsStaleSourceHistory(t *testing.T) {
+func TestImplementationPathWithStaleReferenceIsStaleSourceHistory(t *testing.T) {
 	inputs := qualityFixture(t)
 	item := inputs.Decks[0].Slides[0].Items[0]
-	inputs.Report.Orphans = []coverage.Orphan{{
-		Assignment: coverage.Assignment{Target: item.Target, DiffFile: item.Code[0].Path, Diff: 1},
-		Reference:  item.Code[0].References[0], Reason: "diff URI does not match the current source comparison",
+	inputs.Report.StaleReferences = []coverage.StaleReference{{
+		Assignment: coverage.Assignment{Target: item.Target, EvidenceFile: item.Code[0].Path, Reference: 1},
+		Reference:  item.Code[0].References[0], Reason: "lines 10-10 of internal/refund.go changed",
 	}}
 	status := Assemble(inputs)
 	if got := cell(t, status, "positive-path", coverage.AxisImplementation); got.State != coverage.StateStale {
-		t.Fatalf("an Item whose only diff no longer matches the comparison is stale, not covered: %#v", got)
+		t.Fatalf("an Item whose only reference is stale is stale, not covered: %#v", got)
 	}
 	found := false
 	for _, record := range status.Stale {
-		if record.Kind == "diff_selector" && record.History == historySource && reflect.DeepEqual(record.Affects, []string{criterionURN("positive-path")}) {
+		if record.Kind == "code_reference" && record.History == historySource && reflect.DeepEqual(record.Affects, []string{criterionURN("positive-path")}) {
 			found = true
 		}
 	}
 	if !found {
-		t.Fatalf("the orphaned selector is stale source history naming the criterion: %#v", status.Stale)
+		t.Fatalf("the stale reference is stale source history naming the criterion: %#v", status.Stale)
 	}
 	implicated := false
 	for _, value := range status.ChangedSource.Implicated {
@@ -506,7 +526,7 @@ func TestImpactGraphFollowsRecordedEdgesToCriteriaAndTestCases(t *testing.T) {
 	found := false
 	for _, evidence := range graph.TestCases {
 		if evidence.TestCase == testURN("happy") {
-			found = reflect.DeepEqual(evidence.Criteria, []string{criterionURN("positive-path")}) && len(evidence.Diffs) == 1
+			found = reflect.DeepEqual(evidence.Criteria, []string{criterionURN("positive-path")}) && len(evidence.Code) == 1
 		}
 	}
 	if !found {

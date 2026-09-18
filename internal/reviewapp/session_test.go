@@ -12,7 +12,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/twentyideas/changesaga/internal/diffuri"
+	"github.com/twentyideas/changesaga/internal/coderef"
+	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
@@ -21,8 +22,8 @@ type serviceFixture struct {
 	repo       string
 	root       string
 	fragment   string
-	atomURI    string
-	fileURI    string
+	atomRef    string
+	fileRef    string
 	asset      string
 	session    Session
 	comparison gitdiff.ChangeSet
@@ -92,7 +93,7 @@ func TestSessionReadOperations(t *testing.T) {
 			}
 		}},
 		{name: "atom owners are bidirectional", run: func(t *testing.T) {
-			value, err := fixture.session.DiffOwners(ctx, DiffOwnerQuery{Diff: fixture.atomURI})
+			value, err := fixture.session.DiffOwners(ctx, DiffOwnerQuery{Ref: fixture.atomRef})
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -101,7 +102,7 @@ func TestSessionReadOperations(t *testing.T) {
 			}
 		}},
 		{name: "file owners group atoms", run: func(t *testing.T) {
-			value, err := fixture.session.DiffOwners(ctx, DiffOwnerQuery{Diff: fixture.fileURI, Limit: 1})
+			value, err := fixture.session.DiffOwners(ctx, DiffOwnerQuery{Ref: fixture.fileRef, Limit: 1})
 			if err != nil || value.Kind != "file" || len(value.Atoms) != 1 || value.Page.NextCursor == nil {
 				t.Fatalf("unexpected file ownership: %#v, err=%v", value, err)
 			}
@@ -228,9 +229,9 @@ func TestSummarySessionMatchesOverviewAndChildrenWithoutDetailIndexes(t *testing
 	}
 
 	internal := compact.(*session)
-	if len(internal.changes.Atoms) != 0 || len(internal.report.Ownership) != 0 || len(internal.report.Orphans) != 0 || len(internal.report.Targets) != 0 || len(internal.selectors) != 0 || len(internal.selectorsByAtom) != 0 || len(internal.atomByURI) != 0 || len(internal.fragments) != 0 {
-		t.Fatalf("summary session retained detail indexes: changes=%d ownership=%d orphans=%d targets=%d selectors=%d owners=%d atoms=%d fragments=%d",
-			len(internal.changes.Atoms), len(internal.report.Ownership), len(internal.report.Orphans), len(internal.report.Targets), len(internal.selectors), len(internal.selectorsByAtom), len(internal.atomByURI), len(internal.fragments))
+	if len(internal.changes.Atoms) != 0 || len(internal.report.Ownership) != 0 || len(internal.report.StaleReferences) != 0 || len(internal.report.Targets) != 0 || len(internal.selectors) != 0 || len(internal.selectorsByAtom) != 0 || len(internal.fragments) != 0 {
+		t.Fatalf("summary session retained detail indexes: changes=%d ownership=%d stale=%d targets=%d selectors=%d owners=%d fragments=%d",
+			len(internal.changes.Atoms), len(internal.report.Ownership), len(internal.report.StaleReferences), len(internal.report.Targets), len(internal.selectors), len(internal.selectorsByAtom), len(internal.fragments))
 	}
 }
 
@@ -279,7 +280,7 @@ func TestSessionStableErrorsSnapshotAndCursor(t *testing.T) {
 			return err
 		}},
 		{name: "bad diff", code: CodeInvalidArgument, run: func() error {
-			_, err := fixture.session.DiffOwners(ctx, DiffOwnerQuery{Diff: "app.go"})
+			_, err := fixture.session.DiffOwners(ctx, DiffOwnerQuery{Ref: "app.go"})
 			return err
 		}},
 		{name: "bad gap kind", code: CodeInvalidArgument, run: func() error {
@@ -329,27 +330,32 @@ func newServiceFixture(t *testing.T) serviceFixture {
 		t.Fatalf("build real comparison: atoms=%d err=%v", len(comparison.Atoms), err)
 	}
 	current := comparison.Atoms[0]
-	stale, err := diffuri.Build(diffuri.Reference{
-		Repository: comparison.Repository, Base: comparison.BaseOID, Head: comparison.HeadOID,
-		Kind: "line", Path: "missing.go", Side: "new", Start: 99, End: 99,
-	})
+	resolver, err := coderesolve.New(ctx, repo)
 	if err != nil {
 		t.Fatal(err)
 	}
-	fileURI, err := diffuri.Build(diffuri.Reference{
-		Repository: comparison.Repository, Base: comparison.BaseOID, Head: comparison.HeadOID,
-		Kind: "file", Path: atomFilePath(current),
-	})
-	if err != nil {
-		t.Fatal(err)
+	defer resolver.Close()
+	author := func(location coderef.Location, note string) coderef.Reference {
+		t.Helper()
+		reference, err := resolver.Author(ctx, location, note)
+		if err != nil {
+			t.Fatal(err)
+		}
+		return reference
 	}
+	at := func(atom gitdiff.Atom, note string) coderef.Reference {
+		return author(comparison.Location(atom), note)
+	}
+	// A reference to a path the head never had is stale at both sides.
+	stale := coderef.Reference{Commit: comparison.HeadOID, Path: "missing.go", Start: 99, End: 99, Digest: coderef.DigestBytes(nil), Note: "needs repair"}
+	fileReview := author(coderef.Location{Commit: comparison.HeadOID, Path: atomFilePath(current)}, "")
 	root := filepath.Join(repo, "review.saga")
 	fragmentTarget := saga.FragmentTarget("query-test", "overview")
 	writeJSON(t, filepath.Join(root, "saga.json"), saga.Manifest{
 		Schema: saga.SagaSchemaURL, Version: saga.SagaVersion, ID: "query-test", Title: "Query test",
 		Source: saga.Source{Repository: comparison.Repository, Base: base, Head: "HEAD"},
 	})
-	writeJSON(t, filepath.Join(root, saga.CodeDirName, "root.json"), saga.CodeFile{Version: 2, References: []saga.DiffReference{{URI: current.Ref, Note: "root ownership"}}})
+	writeJSON(t, filepath.Join(root, saga.CodeDirName, "root.json"), saga.CodeFile{Version: 2, References: []coderef.Reference{at(current, "root ownership")}})
 	writeJSON(t, filepath.Join(root, "overview.fragment", "fragment.json"), saga.FragmentManifest{Version: 2, ID: "overview", Title: "Overview", MediaType: "text/markdown", Entrypoint: "content.md", Order: 1})
 	writeFile(t, filepath.Join(root, "overview.fragment", "content.md"), "A café explains the change.\n")
 	writeJSON(t, filepath.Join(root, "overview.fragment", "___landmarks", "readiness.landmark", "landmark.json"), saga.Landmark{
@@ -358,25 +364,25 @@ func newServiceFixture(t *testing.T) serviceFixture {
 	})
 	asset := filepath.Join(root, "overview.fragment", "diagram.png")
 	writeFile(t, asset, "not-executed-image-bytes")
-	writeJSON(t, filepath.Join(root, "overview.fragment", saga.CodeDirName, "coverage.json"), saga.CodeFile{Version: 2, References: []saga.DiffReference{{URI: current.Ref, Note: "fragment ownership"}, {URI: stale, Note: "needs repair"}}})
+	writeJSON(t, filepath.Join(root, "overview.fragment", saga.CodeDirName, "coverage.json"), saga.CodeFile{Version: 2, References: []coderef.Reference{at(current, "fragment ownership"), stale}})
 	writeJSON(t, filepath.Join(root, "overview.fragment", "___approvals", "review.json"), saga.Review{Version: 2, ID: "review-1", Reviewer: &saga.ReviewerIdentity{Kind: "ai", Name: "Codex 1", Agent: "codex", Model: "gpt-5.6-sol"}, State: "approved", Body: "Looks good.", CreatedAt: mustTime("2026-08-20T10:02:00Z")})
 	writeJSON(t, filepath.Join(root, "details.chapter", "chapter.json"), saga.ChapterManifest{Version: 2, ID: "details", Title: "Details", Order: 2})
 	writeJSON(t, filepath.Join(root, "details.chapter", "details.fragment", "fragment.json"), saga.FragmentManifest{Version: 2, ID: "details-body", Title: "Details body", MediaType: "text/plain", Entrypoint: "content.txt"})
 	writeFile(t, filepath.Join(root, "details.chapter", "details.fragment", "content.txt"), "Details.\n")
 	threadDir := filepath.Join(root, "___review", "threads", "thread-1.thread")
-	writeJSON(t, filepath.Join(threadDir, "thread.json"), saga.ThreadManifest{Version: 2, ID: "thread-1", Target: fragmentTarget, Kind: "comment", Anchor: saga.Anchor{Type: "diff", Code: &saga.DiffSelector{URI: current.Ref}}, CreatedAt: mustTime("2026-08-20T10:00:00Z")})
+	writeJSON(t, filepath.Join(threadDir, "thread.json"), saga.ThreadManifest{Version: 2, ID: "thread-1", Target: fragmentTarget, Kind: "comment", Anchor: saga.Anchor{Type: "code", Code: func() *coderef.Reference { value := at(current, ""); return &value }()}, CreatedAt: mustTime("2026-08-20T10:00:00Z")})
 	messageDir := filepath.Join(threadDir, "messages", "message-1.message")
 	writeJSON(t, filepath.Join(messageDir, "message.json"), saga.MessageManifest{Version: 2, ID: "message-1", CreatedAt: mustTime("2026-08-20T10:00:00Z")})
 	writeJSON(t, filepath.Join(messageDir, "body.fragment", "fragment.json"), saga.FragmentManifest{Version: 2, ID: "message-body", MediaType: "text/markdown", Entrypoint: "content.md"})
 	writeFile(t, filepath.Join(messageDir, "body.fragment", "content.md"), "Please clarify.\n")
-	writeJSON(t, filepath.Join(root, "___review", "diffs", "file-review.json"), saga.FileReview{Version: 2, ID: "file-review-1", URI: fileURI, State: "reviewed", CreatedAt: mustTime("2026-08-20T10:03:00Z")})
+	writeJSON(t, filepath.Join(root, "___review", saga.FileReviewDir, "file-review.json"), saga.FileReview{Version: 2, ID: "file-review-1", Code: fileReview, State: "reviewed", CreatedAt: mustTime("2026-08-20T10:03:00Z")})
 	writeJSON(t, filepath.Join(root, "___claims", "ready-claim.json"), saga.Claim{
 		Version: 2, ID: "ready-claim", Target: fragmentTarget, Kind: "behavior", Statement: "The readiness constant becomes true.",
-		Evidence: []string{current.Ref}, CreatedAt: mustTime("2026-08-20T10:04:00Z"),
+		Evidence: []coderef.Reference{at(current, "")}, CreatedAt: mustTime("2026-08-20T10:04:00Z"),
 	})
 	writeJSON(t, filepath.Join(root, "___claims", "mode-claim.json"), saga.Claim{
 		Version: 2, ID: "mode-claim", Target: fragmentTarget, Kind: "behavior", Statement: "The query mode is reported.",
-		Evidence: []string{comparison.Atoms[1].Ref}, CreatedAt: mustTime("2026-08-20T10:04:30Z"),
+		Evidence: []coderef.Reference{at(comparison.Atoms[1], "")}, CreatedAt: mustTime("2026-08-20T10:04:30Z"),
 	})
 	writeJSON(t, filepath.Join(root, "___verifications", "ready-check.json"), saga.Verification{
 		Version: 2, ID: "ready-check", Claim: "ready-claim", Status: "verified", Method: "inspection",
@@ -384,12 +390,15 @@ func newServiceFixture(t *testing.T) serviceFixture {
 	})
 	git(t, repo, "add", "review.saga")
 	git(t, repo, "commit", "-m", "add saga")
+	// The Saga's own commit moves the comparison head but not its code, so
+	// every reference above stays current; the file is addressed at the head.
+	head := strings.TrimSpace(git(t, repo, "rev-parse", "HEAD"))
 
 	opened, err := Open(ctx, OpenOptions{SagaRoot: root, SourceDir: repo})
 	if err != nil {
 		t.Fatal(err)
 	}
-	return serviceFixture{repo: repo, root: root, fragment: fragmentTarget, atomURI: current.Ref, fileURI: fileURI, asset: asset, session: opened, comparison: comparison}
+	return serviceFixture{repo: repo, root: root, fragment: fragmentTarget, atomRef: current.Ref, fileRef: coderef.Location{Commit: head, Path: atomFilePath(current)}.String(), asset: asset, session: opened, comparison: comparison}
 }
 
 func assertCode(t *testing.T, err error, want ErrorCode) {

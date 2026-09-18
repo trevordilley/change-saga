@@ -80,15 +80,16 @@ func TestAnchorEditTieBreaksDeterministically(t *testing.T) {
 	}
 }
 
-func TestApprovalsAndDiffReviewsAreOrderedDeterministically(t *testing.T) {
+func TestApprovalsAndFileReviewsAreOrderedDeterministically(t *testing.T) {
 	const stamp = "2026-08-19T12:05:00Z"
-	uri := "saga-diff://v1/file?base=aaa&head=bbb&path=api.go&repository=https%3A%2F%2Fexample.test%2Facme%2Fapp.git"
+	code := referenceJSON(t, testReference("api.go", 0, 0))[1:]
+	code = code[:len(code)-1]
 	for i, names := range [][2]string{{"z.json", "a.json"}, {"a.json", "z.json"}} {
 		root := buildSaga(t, map[string]string{
 			"___approvals/" + names[0]:    fmt.Sprintf(`{"version":2,"id":"zz-second","state":"approved","created_at":%q}`, stamp),
 			"___approvals/" + names[1]:    fmt.Sprintf(`{"version":2,"id":"aa-first","state":"rejected","created_at":%q}`, stamp),
-			"___review/diffs/" + names[0]: fmt.Sprintf(`{"version":2,"id":"zz-second","uri":%q,"state":"reviewed","created_at":%q}`, uri, stamp),
-			"___review/diffs/" + names[1]: fmt.Sprintf(`{"version":2,"id":"aa-first","uri":%q,"state":"unreviewed","created_at":%q}`, uri, stamp),
+			"___review/files/" + names[0]: fmt.Sprintf(`{"version":2,"id":"zz-second","code":%s,"state":"reviewed","created_at":%q}`, code, stamp),
+			"___review/files/" + names[1]: fmt.Sprintf(`{"version":2,"id":"aa-first","code":%s,"state":"unreviewed","created_at":%q}`, code, stamp),
 		})
 		document, validation, err := Load(root)
 		if err != nil {

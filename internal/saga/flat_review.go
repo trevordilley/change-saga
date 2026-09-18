@@ -6,7 +6,6 @@ import (
 	"sort"
 	"strconv"
 	"strings"
-
 )
 
 func loadFlatReviewState(index MutationIndex, outline bool) (ReviewState, Validation, error) {

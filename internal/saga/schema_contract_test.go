@@ -5,9 +5,13 @@ import (
 	"encoding/json"
 	"os"
 	"path/filepath"
+	"reflect"
 	"regexp"
 	"sort"
+	"strings"
 	"testing"
+
+	"github.com/twentyideas/changesaga/internal/coderef"
 )
 
 // The published JSON Schemas are the normative contract, and this package is
@@ -139,7 +143,7 @@ func TestStableIDGrammarMatchesEverySchema(t *testing.T) {
 		"review.schema.json":       {"properties", "id", "pattern"},
 		"thread.schema.json":       {"properties", "id", "pattern"},
 		"thread-event.schema.json": {"properties", "id", "pattern"},
-		"diff-review.schema.json":  {"properties", "id", "pattern"},
+		"file-review.schema.json":  {"properties", "id", "pattern"},
 		"claim.schema.json":        {"properties", "id", "pattern"},
 		"verification.schema.json": {"properties", "id", "pattern"},
 	}
@@ -279,7 +283,7 @@ func TestSchemaEnumsMatchRuntimeStates(t *testing.T) {
 	if want := []string{"open", "resolved", "withdrawn"}; !equal(events, want) {
 		t.Errorf("thread event states %v, want %v", events, want)
 	}
-	diffReviews := schemaEnum(t, loadSchema(t, "diff-review.schema.json"), "properties", "state", "enum")
+	diffReviews := schemaEnum(t, loadSchema(t, "file-review.schema.json"), "properties", "state", "enum")
 	if want := []string{"reviewed", "unreviewed"}; !equal(diffReviews, want) {
 		t.Errorf("diff review states %v, want %v", diffReviews, want)
 	}
@@ -321,7 +325,7 @@ func TestAnchorTypesMatchThreadSchema(t *testing.T) {
 			published[value] = true
 		}
 	}
-	want := map[string]bool{"target": true, "region": true, "drawing": true, "text": true, "note": true, "diff": true}
+	want := map[string]bool{"target": true, "region": true, "drawing": true, "text": true, "note": true, "code": true}
 	if len(published) != len(want) {
 		t.Fatalf("published anchor types %v, want %v", published, want)
 	}
@@ -337,7 +341,7 @@ func TestAnchorTypesMatchThreadSchema(t *testing.T) {
 		// An unknown type must be rejected outright; a known one must fail for
 		// a content reason rather than the "unknown type" default branch.
 		err := ValidateAnchor(Anchor{Type: kind})
-		if err != nil && err.Error() == "anchor type must be target, region, drawing, text, note, or diff" {
+		if err != nil && err.Error() == "anchor type must be target, region, drawing, text, note, or code" {
 			t.Errorf("published anchor type %q falls into the unknown-type branch", kind)
 		}
 	}
@@ -346,24 +350,37 @@ func TestAnchorTypesMatchThreadSchema(t *testing.T) {
 	}
 }
 
-func TestDiffURISchemaPatternsMatchTheirKinds(t *testing.T) {
-	coverage := schemaPattern(t, loadSchema(t, "diff.schema.json"), "properties", "diffs", "items", "properties", "uri", "pattern")
-	fileReview := schemaPattern(t, loadSchema(t, "diff-review.schema.json"), "properties", "uri", "pattern")
-	cases := map[string][2]bool{
-		"saga-diff://v1/line?a=b":  {true, false},
-		"saga-diff://v1/event?a=b": {true, false},
-		"saga-diff://v1/file?a=b":  {false, true},
-		"saga-diff://v1/line":      {false, false},
-		"saga-diff://v2/line?a=b":  {false, false},
-		"http://v1/line?a=b":       {false, false},
-		"":                         {false, false},
-	}
-	for uri, want := range cases {
-		if got := coverage.MatchString(uri); got != want[0] {
-			t.Errorf("coverage pattern on %q = %v, want %v", uri, got, want[0])
+// TestCodeReferenceSchemasAgreeWithTheValidator keeps every published copy of
+// the code reference identical and its patterns equal to what the loader
+// accepts, so a record the schema admits is a record the runtime admits.
+func TestCodeReferenceSchemasAgreeWithTheValidator(t *testing.T) {
+	canonical := dig(t, loadSchema(t, "code.schema.json"), "$defs", "code_reference").(map[string]any)
+	delete(canonical["properties"].(map[string]any), "note")
+	for _, name := range []string{"claim.schema.json", "thread.schema.json", "file-review.schema.json"} {
+		if got := dig(t, loadSchema(t, name), "$defs", "code_reference"); !reflect.DeepEqual(got, canonical) {
+			t.Errorf("%s publishes a different code reference: %v", name, got)
 		}
-		if got := fileReview.MatchString(uri); got != want[1] {
-			t.Errorf("file review pattern on %q = %v, want %v", uri, got, want[1])
+	}
+	quality := loadSchema(t, filepath.Join("..", "v5", "quality-evidence.schema.json"))
+	if got := dig(t, quality, "$defs", "code_reference"); !reflect.DeepEqual(got, canonical) {
+		t.Errorf("quality evidence publishes a different code reference: %v", got)
+	}
+	commit := schemaPattern(t, canonical, "properties", "commit", "pattern")
+	digest := schemaPattern(t, canonical, "properties", "digest", "pattern")
+	for value, want := range map[string]bool{
+		strings.Repeat("a", 40): true, strings.Repeat("b", 64): true, strings.Repeat("A", 40): false,
+		strings.Repeat("a", 39): false, "HEAD": false, "": false,
+	} {
+		if commit.MatchString(value) != want || coderef.ValidCommit(value) != want {
+			t.Errorf("commit %q: schema %v, validator %v, want %v", value, commit.MatchString(value), coderef.ValidCommit(value), want)
+		}
+	}
+	for value, want := range map[string]bool{
+		"sha256:" + strings.Repeat("0", 64): true, "sha256:" + strings.Repeat("0", 63): false, strings.Repeat("0", 64): false,
+	} {
+		reference := coderef.Reference{Commit: strings.Repeat("a", 40), Path: "app.go", Digest: value}
+		if digest.MatchString(value) != want || (coderef.Validate(reference) == nil) != want {
+			t.Errorf("digest %q: schema %v, want %v", value, digest.MatchString(value), want)
 		}
 	}
 }

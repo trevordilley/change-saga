@@ -1,12 +1,26 @@
 package impact
 
 import (
+	"context"
+	"strings"
 	"testing"
 
+	"github.com/twentyideas/changesaga/internal/coderef"
+	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
+
+// incomingBase is the commit an incoming comparison starts from. The
+// references below are pinned there, so the Pinned resolver finds them current
+// exactly where the projection looks.
+var incomingBase = strings.Repeat("b", 40)
+
+func codeAt(path string, start, end int) []saga.CodeFile {
+	reference := coderef.Reference{Commit: incomingBase, Path: path, Start: start, End: end, Digest: coderef.DigestBytes(nil)}
+	return []saga.CodeFile{{Path: path, References: []coderef.Reference{reference}}}
+}
 
 func TestAnalyzeProjectsReplacementAdditionsAndNewFilesWithoutReadingContent(t *testing.T) {
 	flowTarget := saga.FragmentTarget("codebase", "flow")
@@ -15,23 +29,13 @@ func TestAnalyzeProjectsReplacementAdditionsAndNewFilesWithoutReadingContent(t *
 		Manifest: saga.Manifest{ID: "codebase", Title: "Codebase", Source: saga.Source{Repository: "https://example.test/acme/app.git", Base: "root", Head: "documented"}},
 		Section: &saga.Section{Target: saga.SagaTarget("codebase"), Fragments: []*saga.Fragment{{
 			ID: "flow", Title: "Request flow", Path: "flow.fragment", Entrypoint: "content.md", Target: flowTarget,
-			Landmarks: []saga.Landmark{{ID: "guard", Label: "Guard", Path: "flow.fragment/___landmarks/guard.landmark", Target: guardTarget}},
+			Code:      append(codeAt("app.go", 1, 1), codeAt("app.go", 2, 2)...),
+			Landmarks: []saga.Landmark{{ID: "guard", Label: "Guard", Path: "flow.fragment/___landmarks/guard.landmark", Target: guardTarget, Code: codeAt("app.go", 10, 10)}},
 		}}},
 	}
-	baseline := gitdiff.ChangeSet{Repository: document.Manifest.Source.Repository, Base: "root", Head: "incoming-base", BaseOID: "root-oid", HeadOID: "baseline-patch", Atoms: []gitdiff.Atom{
-		{Key: "base-1", Ref: "base-1", Kind: "line", Path: "app.go", Side: "new", Line: 1, Content: "package app"},
-		{Key: "base-2", Ref: "base-2", Kind: "line", Path: "app.go", Side: "new", Line: 2, Content: "const Mode = \"old\""},
-		{Key: "base-10", Ref: "base-10", Kind: "line", Path: "app.go", Side: "new", Line: 10, Content: "func Guard() {}"},
-	}}
-	report := coverage.Report{
-		Complete: true, Summary: coverage.Summary{Total: 3, Covered: 3},
-		Ownership: map[string][]coverage.Assignment{
-			"base-1":  {{Target: flowTarget, DiffFile: "flow.fragment/___code/package.json", Diff: 1}},
-			"base-2":  {{Target: flowTarget, DiffFile: "flow.fragment/___code/mode.json", Diff: 1}},
-			"base-10": {{Target: guardTarget, DiffFile: "flow.fragment/___landmarks/guard.landmark/___code/guard.json", Diff: 1}},
-		},
-	}
-	incoming := gitdiff.ChangeSet{Repository: baseline.Repository, Base: "incoming-base", Head: "feature", BaseOID: "incoming-base-oid", HeadOID: "incoming-patch", Atoms: []gitdiff.Atom{
+	baseline := gitdiff.ChangeSet{Repository: document.Manifest.Source.Repository, Base: "root", Head: "incoming-base", BaseOID: "root-oid", HeadOID: incomingBase}
+	report := coverage.Report{Complete: true, Summary: coverage.Summary{Total: 3, Covered: 3}}
+	incoming := gitdiff.ChangeSet{Repository: baseline.Repository, Base: "incoming-base", Head: "feature", BaseOID: incomingBase, HeadOID: "incoming-patch", Atoms: []gitdiff.Atom{
 		{Key: "old-mode", Ref: "old-mode", Kind: "line", Path: "app.go", Side: "old", Line: 2, Content: "const Mode = \"old\""},
 		{Key: "new-mode", Ref: "new-mode", Kind: "line", Path: "app.go", Side: "new", Line: 2, Content: "const Mode = \"new\""},
 		{Key: "new-guard-line", Ref: "new-guard-line", Kind: "line", Path: "app.go", Side: "new", Line: 11, Content: "// guarded"},
@@ -48,7 +52,7 @@ func TestAnalyzeProjectsReplacementAdditionsAndNewFilesWithoutReadingContent(t *
 		{Kind: "new", Path: "new.go", NewLine: 1, AtomKey: "new-file-line"},
 	}}
 
-	result := Analyze(document, baseline, report, incoming, "saga_to_diff", nil)
+	result := Analyze(context.Background(), document, baseline, report, incoming, "saga_to_diff", nil, coderesolve.Pinned{})
 	if result.Schema != Schema || result.Summary.DirectIntersections != 1 || result.Summary.ContextualAdditions != 2 || result.Summary.NewContentRequired != 2 {
 		t.Fatalf("unexpected impact summary: %#v", result.Summary)
 	}
@@ -68,7 +72,7 @@ func TestAnalyzeProjectsReplacementAdditionsAndNewFilesWithoutReadingContent(t *
 
 func TestAnalyzeMarksIncompleteBaselineInsteadOfClaimingCompleteImpact(t *testing.T) {
 	document := &saga.Saga{Manifest: saga.Manifest{ID: "codebase", Title: "Codebase"}, Section: &saga.Section{Target: saga.SagaTarget("codebase")}}
-	result := Analyze(document, gitdiff.ChangeSet{}, coverage.Report{Complete: false}, gitdiff.ChangeSet{}, "saga_to_diff", nil)
+	result := Analyze(context.Background(), document, gitdiff.ChangeSet{}, coverage.Report{Complete: false}, gitdiff.ChangeSet{}, "saga_to_diff", nil, coderesolve.Pinned{})
 	if len(result.Diagnostics) != 1 || result.Diagnostics[0].Code != "baseline_incomplete" {
 		t.Fatalf("missing baseline caveat: %#v", result.Diagnostics)
 	}
@@ -79,16 +83,12 @@ func TestAnalyzeMarksIncompleteBaselineInsteadOfClaimingCompleteImpact(t *testin
 // criteria its recorded relations reach. Nothing is inferred from paths.
 func TestAnalyzeGraphImplicatesTestCasesAndRequirements(t *testing.T) {
 	item := "urn:change-saga:codebase:slide:guard:item:deadline"
-	document := &saga.Saga{Manifest: saga.Manifest{ID: "codebase", Title: "Codebase"}, Section: &saga.Section{Target: saga.SagaTarget("codebase")}}
-	testLine := "saga-diff://v1/line?base=root-oid&end=3&head=baseline-patch&path=app_test.go&repository=https%3A%2F%2Fexample.test%2Facme%2Fapp.git&side=new&start=1"
-	baseline := gitdiff.ChangeSet{Repository: "https://example.test/acme/app.git", Base: "root", BaseOID: "root-oid", HeadOID: "baseline-patch", Atoms: []gitdiff.Atom{
-		{Key: "code-10", Ref: "code-10", Kind: "line", Path: "app.go", Side: "new", Line: 10, Content: "func Guard() {}"},
-		{Key: "test-2", Ref: "test-2", Kind: "line", Path: "app_test.go", Side: "new", Line: 2, Content: "func TestGuard() {}"},
-	}}
-	report := coverage.Report{Complete: true, Ownership: map[string][]coverage.Assignment{
-		"code-10": {{Target: item, DiffFile: "___slides/review.deck/40-e-guard.json", Diff: 1}},
-	}}
-	incoming := gitdiff.ChangeSet{Repository: baseline.Repository, Atoms: []gitdiff.Atom{
+	document := &saga.Saga{Manifest: saga.Manifest{ID: "codebase", Title: "Codebase"}, Section: &saga.Section{Target: saga.SagaTarget("codebase"), Fragments: []*saga.Fragment{{
+		ID: "guard", Target: item, Code: codeAt("app.go", 10, 10),
+	}}}}
+	baseline := gitdiff.ChangeSet{Repository: "https://example.test/acme/app.git", Base: "root", BaseOID: "root-oid", HeadOID: incomingBase}
+	report := coverage.Report{Complete: true}
+	incoming := gitdiff.ChangeSet{Repository: baseline.Repository, BaseOID: incomingBase, Atoms: []gitdiff.Atom{
 		{Key: "old-code", Ref: "old-code", Kind: "line", Path: "app.go", Side: "old", Line: 10, Content: "func Guard() {}"},
 		{Key: "old-test", Ref: "old-test", Kind: "line", Path: "app_test.go", Side: "old", Line: 2, Content: "func TestGuard() {}"},
 	}}
@@ -97,10 +97,10 @@ func TestAnalyzeGraphImplicatesTestCasesAndRequirements(t *testing.T) {
 		Requirements: map[string][]Reach{item: {{Requirement: criterion, Relation: "urn:change-saga:codebase:relation:guard", Path: []string{item, criterion}}}},
 		TestCases: []TestCaseEvidence{{
 			TestCase: "urn:change-saga:codebase:test-case:guard", Evidence: "urn:change-saga:codebase:test-case:guard:evidence:code",
-			Role: "test_implementation", Diffs: []string{testLine}, Criteria: []string{criterion},
+			Role: "test_implementation", Code: codeAt("app_test.go", 1, 3)[0].References, Criteria: []string{criterion},
 		}},
 	}
-	result := AnalyzeGraph(document, baseline, report, incoming, "saga_to_diff", nil, graph)
+	result := AnalyzeGraph(context.Background(), document, baseline, report, incoming, "saga_to_diff", nil, graph, coderesolve.Pinned{})
 	if len(result.TestCases) != 1 || result.TestCases[0].TestCase != "urn:change-saga:codebase:test-case:guard" || result.TestCases[0].Action != "must_update" {
 		t.Fatalf("the test case whose evidence changed is implicated: %#v", result.TestCases)
 	}
@@ -113,10 +113,7 @@ func TestAnalyzeGraphImplicatesTestCasesAndRequirements(t *testing.T) {
 	if result.Summary.TestCasesImpacted != 1 || result.Summary.RequirementsImpacted != 1 || len(result.NewContent) != 0 {
 		t.Fatalf("summary = %#v new content = %#v", result.Summary, result.NewContent)
 	}
-	if len(report.Ownership) != 1 {
-		t.Fatal("the caller's ownership map must not be mutated")
-	}
-	plain := Analyze(document, baseline, report, incoming, "saga_to_diff", nil)
+	plain := Analyze(context.Background(), document, baseline, report, incoming, "saga_to_diff", nil, coderesolve.Pinned{})
 	if len(plain.TestCases) != 0 || len(plain.Requirements) != 0 || len(plain.NewContent) != 1 {
 		t.Fatalf("without a review graph the result is the version 1 projection: %#v", plain)
 	}

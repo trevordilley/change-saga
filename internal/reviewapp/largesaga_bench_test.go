@@ -3,6 +3,7 @@ package reviewapp
 import (
 	"context"
 	"fmt"
+	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"os"
 	"path/filepath"
 	"sync"
@@ -131,7 +132,7 @@ func BenchmarkLargeSagaSelectorConstruction(b *testing.B) {
 
 			b.ReportAllocs()
 			for b.Loop() {
-				if err := newLargeSagaSession(document, changes, report).build(ctx); err != nil {
+				if err := newLargeSagaSession(document, changes, report).build(ctx, coderesolve.Pinned{}); err != nil {
 					b.Fatal(err)
 				}
 			}
@@ -230,10 +231,10 @@ func formerSelectorScanSteps(tb testing.TB, fixture testfixture.LargeSaga) int64
 	var steps int64
 	for _, atom := range opened.changes.Atoms {
 		for _, assignment := range opened.report.Ownership[atom.Key] {
-			evidence := cleanDiagnosticPath(assignment.DiffFile)
+			evidence := cleanDiagnosticPath(assignment.EvidenceFile)
 			for _, entry := range opened.selectors[assignment.Target] {
 				steps++
-				if entry.selector.EvidenceFile == evidence && entry.diff == assignment.Diff {
+				if entry.selector.EvidenceFile == evidence && entry.reference == assignment.Reference {
 					break
 				}
 			}
@@ -278,7 +279,12 @@ func largeSagaInputs(tb testing.TB, fixture testfixture.LargeSaga) (*saga.Saga, 
 	if err != nil {
 		tb.Fatal(err)
 	}
-	return document, changes, coverage.Evaluate(document, validation, changes)
+	resolver, err := coderesolve.New(context.Background(), fixture.Repository)
+	if err != nil {
+		tb.Fatal(err)
+	}
+	defer resolver.Close()
+	return document, changes, coverage.Evaluate(context.Background(), document, validation, changes, resolver)
 }
 
 // newLargeSagaSession mirrors the session value Open builds before it calls
@@ -288,8 +294,8 @@ func newLargeSagaSession(document *saga.Saga, changes gitdiff.ChangeSet, report 
 	return &session{
 		document: document, changes: changes, report: report,
 		targets: map[string]*targetEntry{}, selectors: map[string][]selectorEntry{},
-		selectorsByAtom: map[string][]DiffOwner{}, atomByURI: map[string]int{},
-		fragments: map[string]fragmentValue{}, threads: map[string]ReviewThread{}, threadsByDiff: map[string][]ReviewThread{},
+		selectorsByAtom: map[string][]DiffOwner{},
+		fragments:       map[string]fragmentValue{}, threads: map[string]ReviewThread{}, threadsByAtom: map[string][]ReviewThread{},
 	}
 }
 

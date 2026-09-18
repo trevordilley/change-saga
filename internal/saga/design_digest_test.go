@@ -2,6 +2,7 @@ package saga
 
 import (
 	"fmt"
+	"github.com/twentyideas/changesaga/internal/coderef"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -40,7 +41,7 @@ func TestCurrentDesignContentDigestsTrackAuthoredContentOnly(t *testing.T) {
 		t.Fatal("root narrative was indexed as technical design")
 	}
 
-	writeTestFile(t, filepath.Join(fragmentDir, CodeDirName, "evidence.json"), `{"version":2,"diffs":[]}`)
+	writeTestFile(t, filepath.Join(fragmentDir, CodeDirName, "evidence.json"), `{"version":2,"references":[]}`)
 	document, _, err = Load(root)
 	if err != nil {
 		t.Fatal(err)
@@ -212,7 +213,7 @@ func TestEmbeddedVisualDigestsExcludeEvidenceAndReviewOverlays(t *testing.T) {
 	deck := document.Decks[0]
 	slide := deck.Slides[0]
 	item := slide.Items[0]
-	item.Code = []CodeFile{{Version: ComponentVersion, References: []DiffReference{{URI: "saga-diff://overlay"}}}}
+	item.Code = []CodeFile{{Version: ComponentVersion, References: []coderef.Reference{testReference("overlay.go", 1, 1)}}}
 	item.HasCode = true
 	item.Reviews = []Review{{ID: "item-comment", Body: "Comment overlay"}}
 	slide.Reviews = []Review{{ID: "slide-approval", State: "approved", Body: "Approval overlay"}}

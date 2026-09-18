@@ -13,7 +13,7 @@ type mutationFailure struct {
 type mutationFailureOutput struct {
 	OK            bool              `json:"ok"`
 	Records       int               `json:"records"`
-	Selectors     int               `json:"selectors"`
+	References    int               `json:"references"`
 	EvidenceFiles []string          `json:"evidence_files"`
 	Failures      []mutationFailure `json:"failures"`
 }

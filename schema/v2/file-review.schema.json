@@ -1,16 +1,14 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://changesaga.dev/schema/v2/claim.schema.json",
-  "title": "Change Saga author claim",
+  "$id": "https://changesaga.dev/schema/v2/file-review.schema.json",
+  "title": "Change Saga file review event",
   "type": "object",
   "additionalProperties": false,
   "required": [
     "version",
     "id",
-    "target",
-    "kind",
-    "statement",
-    "evidence",
+    "code",
+    "state",
     "created_at"
   ],
   "properties": {
@@ -21,32 +19,28 @@
       "type": "string",
       "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
     },
-    "target": {
-      "type": "string",
-      "pattern": "^urn:change-saga:"
+    "code": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/code_reference"
+        }
+      ],
+      "not": {
+        "required": [
+          "start"
+        ]
+      },
+      "description": "Whole-file reference to the reviewed file at the comparison commit holding it."
     },
-    "kind": {
-      "enum": [
-        "behavior",
-        "invariant",
-        "performance",
-        "compatibility",
-        "security",
-        "data",
-        "ux",
-        "test"
-      ]
-    },
-    "statement": {
+    "author": {
       "type": "string",
       "minLength": 1
     },
-    "evidence": {
-      "type": "array",
-      "minItems": 1,
-      "items": {
-        "$ref": "#/$defs/code_reference"
-      }
+    "state": {
+      "enum": [
+        "reviewed",
+        "unreviewed"
+      ]
     },
     "created_at": {
       "type": "string",

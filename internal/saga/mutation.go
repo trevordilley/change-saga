@@ -7,7 +7,6 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-
 )
 
 // MutationIndex is the small structural contract needed to append review
