@@ -330,3 +330,36 @@ func TestProjectAxesIsDeterministic(t *testing.T) {
 		t.Fatalf("policy axes = %v, want canonical order %v", first.Policy.Required, Axes())
 	}
 }
+
+// A current link that still falls short of the axis (a failing run, a path that
+// owns no diff) and an axis-level unmet obligation (a required test kind nobody
+// covers) are neither stale, invalid, nor conflicted. They resolve to a visible
+// gap that keeps the reason, and an explicit exclusion still applies.
+func TestUnsatisfiedFactsResolveToAGapWithTheirReason(t *testing.T) {
+	const urn = "urn:change-saga:s:story:refund:criterion:deadline"
+	failing := AxisLink{Axis: AxisQuality, Relation: "urn:change-saga:s:relation:verifies", Source: "urn:change-saga:s:test-case:t", Unsatisfied: []string{"current run failed"}}
+	projection := ProjectAxes([]CriterionInput{criterion(urn, failing)}, nil, FeatureAxisPolicy())
+	got := cell(t, projection, urn, AxisQuality)
+	if got.State != StateGap || len(got.Unsatisfied) != 1 || !strings.Contains(got.Gap.Reasons[0], "current run failed") || got.Links[0].Current {
+		t.Fatalf("an unsatisfied link is a gap with its reason: %#v", got)
+	}
+
+	passing := AxisLink{Axis: AxisQuality, Relation: "urn:change-saga:s:relation:verifies", Source: "urn:change-saga:s:test-case:t"}
+	input := criterion(urn, passing)
+	input.Unsatisfied = map[Axis][]string{AxisQuality: {"required negative test: missing_kind"}}
+	projection = ProjectAxes([]CriterionInput{input}, nil, FeatureAxisPolicy())
+	if got := cell(t, projection, urn, AxisQuality); got.State != StateGap || !strings.Contains(strings.Join(got.Gap.Reasons, ";"), "missing_kind") {
+		t.Fatalf("an axis-level obligation blocks coverage even with a current link: %#v", got)
+	}
+
+	projection = ProjectAxes([]CriterionInput{input}, []Exception{exception("no-quality", AxisQuality)}, FeatureAxisPolicy())
+	if got := cell(t, projection, urn, AxisQuality); got.State != StateExcluded {
+		t.Fatalf("an explicit current exception still resolves the axis: %#v", got)
+	}
+
+	stale := AxisLink{Axis: AxisQuality, Source: "x", StaleReasons: []string{"test revision changed"}, Unsatisfied: []string{"current run failed"}}
+	projection = ProjectAxes([]CriterionInput{criterion(urn, stale)}, nil, FeatureAxisPolicy())
+	if got := cell(t, projection, urn, AxisQuality); got.State != StateStale || len(got.Unsatisfied) != 0 {
+		t.Fatalf("a stale link explains itself; its unsatisfied facts are not double-reported: %#v", got)
+	}
+}

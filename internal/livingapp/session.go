@@ -63,8 +63,8 @@ func Open(_ context.Context, options OpenOptions) (Session, error) {
 			return nil, appError(CodeInternal, "the session snapshot could not be created", false, nil, err)
 		}
 	}
-	adopted := doc.Manifest.Version == saga.CurrentSagaVersion && livingRootPresent(root, "___requirements")
-	if doc.Manifest.Version != saga.CurrentSagaVersion {
+	adopted := saga.ReportContainerVersion(doc.Manifest.Version) && livingRootPresent(root, "___requirements")
+	if !saga.ReportContainerVersion(doc.Manifest.Version) {
 		return &session{
 			snapshot: snapshot, sourceHeadIdentity: options.SourceHeadIdentity, sourceHeadCommit: options.SourceHeadCommit, saga: doc, adopted: false,
 			requirements: requirements.Document{Root: root, SagaID: doc.Manifest.ID, Stories: []requirements.Story{}, Citations: []requirements.Citation{}, Relations: []requirements.Relation{}},
@@ -72,30 +72,15 @@ func Open(_ context.Context, options OpenOptions) (Session, error) {
 		}, nil
 	}
 
-	plan, validation, err := workplan.Load(root)
+	testCases, err := testCaseHeads(root, doc.Manifest.Version)
 	if err != nil {
-		return nil, appError(CodeInvalidSaga, "the work plan could not be loaded", false, nil, err)
+		return nil, appError(CodeInvalidSaga, "the quality records could not be loaded", false, nil, err)
 	}
-	if !validation.Valid {
-		return nil, appError(CodeInvalidSaga, "the work plan is invalid", false, map[string]any{"issues": sanitizePlanIssues(validation.Issues)}, nil)
-	}
-	designDigests, err := saga.CurrentDesignContentDigests(doc)
+	graph, err := loadLivingGraph(root, doc, testCases)
 	if err != nil {
-		return nil, appError(CodeInvalidSaga, "the technical design could not be indexed", false, nil, err)
+		return nil, err
 	}
-	stale := requirements.StaleInputs{CurrentRevisions: map[string]string{}, CurrentContentDigests: designDigests, Missing: map[string]bool{}}
-	for _, id := range sortedKeys(plan.WorkItems) {
-		item := plan.WorkItems[id]
-		if item.CurrentRevision != nil {
-			stale.CurrentRevisions[item.CurrentRevision.WorkItem] = item.Heads[0]
-		}
-	}
-	document, err := requirements.LoadWithOptions(root, plan.SagaID, requirements.LoadOptions{StaleInputs: stale})
-	if err != nil {
-		return nil, appError(CodeInvalidSaga, "the requirements could not be loaded", false, nil, err)
-	}
-	evaluateCrossDomainStaleness(&document, plan, doc, designDigests)
-	return &session{snapshot: snapshot, sourceHeadIdentity: options.SourceHeadIdentity, sourceHeadCommit: options.SourceHeadCommit, requirements: document, plan: plan, saga: doc, adopted: adopted}, nil
+	return &session{snapshot: snapshot, sourceHeadIdentity: options.SourceHeadIdentity, sourceHeadCommit: options.SourceHeadCommit, requirements: graph.requirements, plan: graph.plan, saga: doc, adopted: adopted}, nil
 }
 
 func livingRootPresent(root, name string) bool {
@@ -103,9 +88,12 @@ func livingRootPresent(root, name string) bool {
 	return err == nil && info.Mode()&os.ModeSymlink == 0 && info.IsDir()
 }
 
-// evaluateCrossDomainStaleness completes the projection that requirements
-// cannot compute without importing the work-plan and design domains.
-func evaluateCrossDomainStaleness(document *requirements.Document, plan workplan.Plan, doc *saga.Saga, designDigests map[string]string) {
+// crossDomainInputs adds the facts requirements cannot derive without
+// importing the work-plan and design domains: which relation endpoints no
+// longer exist, and which work items have competing revision heads. They are
+// inputs to requirements.EvaluateRelations, the one place relation pins and
+// endpoints are judged; nothing here compares a pin.
+func crossDomainInputs(document requirements.Document, plan workplan.Plan, doc *saga.Saga, designDigests map[string]string, inputs *requirements.StaleInputs) {
 	targets := saga.MutationIndexFromDocument(doc).Targets
 	claims := map[string]bool{}
 	for _, claim := range doc.Claims {
@@ -115,60 +103,50 @@ func evaluateCrossDomainStaleness(document *requirements.Document, plan workplan
 	for _, verification := range doc.Verifications {
 		verifications["urn:change-saga:"+document.SagaID+":verification:"+verification.ID] = true
 	}
-	for i := range document.Relations {
-		relation := &document.Relations[i]
+	if inputs.Missing == nil {
+		inputs.Missing = map[string]bool{}
+	}
+	if inputs.ConflictedRevisions == nil {
+		inputs.ConflictedRevisions = map[string][]string{}
+	}
+	for _, relation := range document.Relations {
 		if relation.State != requirements.RelationActive {
 			continue
 		}
-		for _, endpoint := range []struct {
-			name, urn, revision string
-		}{{"from", relation.From, relation.FromRevision}, {"to", relation.To, relation.ToRevision}} {
-			if ref, err := livingid.Parse(endpoint.urn); err == nil {
+		for _, endpoint := range []string{relation.From, relation.To} {
+			if ref, err := livingid.Parse(endpoint); err == nil {
 				switch ref.Kind {
 				case livingid.KindWorkItem:
 					item := plan.WorkItems[ref.ID]
 					if item == nil {
-						appendStaleReason(relation, endpoint.name+" work item is missing")
-					} else if endpoint.revision != "" && len(item.Heads) != 1 {
-						appendStaleReason(relation, endpoint.name+" work item has multiple revision heads")
-					} else if endpoint.revision != "" && item.Heads[0] != endpoint.revision {
-						appendStaleReason(relation, endpoint.name+" work-item revision changed")
+						inputs.Missing[endpoint] = true
+					} else if len(item.Heads) > 1 {
+						inputs.ConflictedRevisions[endpoint] = copyStrings(item.Heads)
 					}
 				case livingid.KindDesign:
-					if _, exists := designDigests[endpoint.urn]; !exists {
-						appendStaleReason(relation, endpoint.name+" design endpoint is missing")
+					if _, exists := designDigests[endpoint]; !exists {
+						inputs.Missing[endpoint] = true
 					}
 				}
 				continue
 			}
-			if target, err := sagaref.ParseTarget(endpoint.urn); err == nil {
+			if target, err := sagaref.ParseTarget(endpoint); err == nil {
 				switch target.Kind {
 				case sagaref.TargetDeck, sagaref.TargetSlide, sagaref.TargetItem:
-					if _, exists := targets[endpoint.urn]; !exists {
-						appendStaleReason(relation, endpoint.name+" review target is missing")
+					if _, exists := targets[endpoint]; !exists {
+						inputs.Missing[endpoint] = true
 					}
 					continue
 				}
 			}
-			if strings.Contains(endpoint.urn, ":claim:") && !claims[endpoint.urn] {
-				appendStaleReason(relation, endpoint.name+" claim is missing")
+			if strings.Contains(endpoint, ":claim:") && !claims[endpoint] {
+				inputs.Missing[endpoint] = true
 			}
-			if strings.Contains(endpoint.urn, ":verification:") && !verifications[endpoint.urn] {
-				appendStaleReason(relation, endpoint.name+" verification is missing")
+			if strings.Contains(endpoint, ":verification:") && !verifications[endpoint] {
+				inputs.Missing[endpoint] = true
 			}
 		}
 	}
-}
-
-func appendStaleReason(relation *requirements.Relation, reason string) {
-	for _, existing := range relation.StaleReasons {
-		if existing == reason {
-			return
-		}
-	}
-	relation.Stale = true
-	relation.StaleReasons = append(relation.StaleReasons, reason)
-	sort.Strings(relation.StaleReasons)
 }
 
 func (s *session) Snapshot() string { return s.snapshot }

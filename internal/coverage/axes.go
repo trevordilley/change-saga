@@ -161,12 +161,17 @@ type AxisLink struct {
 	StaleReasons    []string   `json:"stale_reasons,omitempty"`
 	InvalidReasons  []string   `json:"invalid_reasons,omitempty"`
 	ConflictReasons []string   `json:"conflict_reasons,omitempty"`
+	// Unsatisfied names why a link whose pins are all current still does not
+	// meet the axis, such as a test whose current run failed or an Item path that
+	// owns no exact diff. It is neither stale, invalid, nor conflicted, so it
+	// resolves the cell to a gap that keeps its reason.
+	Unsatisfied []string `json:"unsatisfied_reasons,omitempty"`
 }
 
-// Current reports whether the link carries no stale, invalid, or conflicting
-// fact and therefore counts as coverage.
+// Current reports whether the link carries no stale, invalid, conflicting, or
+// unsatisfied fact and therefore counts as coverage.
 func (link AxisLink) Current() bool {
-	return len(link.StaleReasons) == 0 && len(link.InvalidReasons) == 0 && len(link.ConflictReasons) == 0
+	return len(link.StaleReasons) == 0 && len(link.InvalidReasons) == 0 && len(link.ConflictReasons) == 0 && len(link.Unsatisfied) == 0
 }
 
 // LinkCoverage is one link plus its projected currency.
@@ -185,6 +190,10 @@ type CriterionInput struct {
 	RevisionHeads        []string
 	RequiredAxes         []Axis
 	Links                []AxisLink
+	// Unsatisfied names axis-level obligations no single link can carry, such as
+	// a required test kind no current passing test covers. While any reason is
+	// present the axis cannot be covered; an explicit exclusion still applies.
+	Unsatisfied map[Axis][]string
 }
 
 // ExclusionRow is one criterion/axis exclusion. Exclusions are reported as a
@@ -218,7 +227,10 @@ type AxisCoverage struct {
 	StalePins  []string           `json:"stale_pins"`
 	Conflicts  []string           `json:"conflicts"`
 	Invalid    []string           `json:"invalid"`
-	Gap        *AxisGap           `json:"gap,omitempty"`
+	// Unsatisfied lists recorded, current facts that still fall short of the
+	// axis. They are reported beside stale pins, never folded into them.
+	Unsatisfied []string `json:"unsatisfied"`
+	Gap         *AxisGap `json:"gap,omitempty"`
 }
 
 // CriterionCoverage is one criterion across every required axis, in canonical
@@ -477,7 +489,7 @@ func projectExceptions(exceptions []Exception, criteria map[string]CriterionInpu
 func classify(input CriterionInput, axis Axis, head exceptionHead) AxisCoverage {
 	cell := AxisCoverage{
 		Criterion: input.URN, Axis: axis, Precision: "none",
-		Links: []LinkCoverage{}, StalePins: []string{}, Conflicts: []string{}, Invalid: []string{},
+		Links: []LinkCoverage{}, StalePins: []string{}, Conflicts: []string{}, Invalid: []string{}, Unsatisfied: []string{},
 	}
 	if len(input.RevisionHeads) > 1 {
 		cell.Conflicts = append(cell.Conflicts, "criterion story has multiple revision heads: "+joinSorted(input.RevisionHeads))
@@ -499,6 +511,13 @@ func classify(input CriterionInput, axis Axis, head exceptionHead) AxisCoverage 
 		for _, reason := range link.ConflictReasons {
 			cell.Conflicts = append(cell.Conflicts, describe(link, reason))
 		}
+		// Unsatisfied facts matter only while nothing else is wrong with the link;
+		// a stale or invalid link already explains itself.
+		if len(link.StaleReasons) == 0 && len(link.InvalidReasons) == 0 && len(link.ConflictReasons) == 0 {
+			for _, reason := range link.Unsatisfied {
+				cell.Unsatisfied = append(cell.Unsatisfied, describe(link, reason))
+			}
+		}
 		if current && link.Broad {
 			broad = true
 		}
@@ -513,6 +532,10 @@ func classify(input CriterionInput, axis Axis, head exceptionHead) AxisCoverage 
 		}
 		return left.Source < right.Source
 	})
+	if blockers := input.Unsatisfied[axis]; len(blockers) > 0 {
+		cell.Unsatisfied = append(cell.Unsatisfied, blockers...)
+		direct, broad = false, false
+	}
 	excluded := false
 	if head.coverage != nil {
 		copied := *head.coverage
@@ -570,6 +593,7 @@ func gapReasons(cell AxisCoverage) []string {
 	reasons = append(reasons, cell.Conflicts...)
 	reasons = append(reasons, cell.Invalid...)
 	reasons = append(reasons, cell.StalePins...)
+	reasons = append(reasons, cell.Unsatisfied...)
 	if len(reasons) == 0 {
 		reasons = append(reasons, "no current "+string(cell.Axis)+" link and no current exception")
 	}

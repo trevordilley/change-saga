@@ -25,11 +25,11 @@ func relativePathForOutput(root, path string) string {
 }
 
 func requireSlideSaga(document *saga.Saga, command string) error {
-	if document.Manifest.Version == saga.CurrentSagaVersion {
+	if saga.ReportContainerVersion(document.Manifest.Version) {
 		return nil
 	}
 	if document.Manifest.Version != saga.SlideSagaVersion || document.Manifest.Presentation == nil || document.Manifest.Presentation.Mode != "slides" {
-		return fmt.Errorf("%s requires a v3 Report Saga or v4 slide-native Saga; reports are never silently paginated", command)
+		return fmt.Errorf("%s requires a v3 Report Saga, a v5 report container, or a v4 slide-native Saga; reports are never silently paginated", command)
 	}
 	return nil
 }
@@ -86,7 +86,7 @@ func AddDeck(_ context.Context, args []string, out io.Writer) error {
 		if err != nil {
 			return err
 		}
-		if document.Manifest.Version == saga.CurrentSagaVersion {
+		if saga.ReportContainerVersion(document.Manifest.Version) {
 			slidesRoot := filepath.Join(document.Root, saga.EmbeddedSlidesDir)
 			if info, statErr := os.Lstat(slidesRoot); statErr == nil && (!info.IsDir() || info.Mode()&os.ModeSymlink != 0) {
 				return fmt.Errorf("%s must be a real directory", saga.EmbeddedSlidesDir)
