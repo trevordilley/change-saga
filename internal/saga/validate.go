@@ -20,7 +20,7 @@ func ValidID(value string) bool { return stableID.MatchString(value) }
 
 func validateManifest(manifest Manifest, path string, result *Validation) {
 	if !SupportedSagaVersion(manifest.Version) {
-		addIssue(result, "error", path, fmt.Sprintf("unsupported Saga version %d; expected 2, 3, or 4", manifest.Version))
+		addIssue(result, "error", path, fmt.Sprintf("unsupported Saga version %d; expected 2, 3, 4, or 5", manifest.Version))
 	}
 	if !stableID.MatchString(manifest.ID) {
 		addIssue(result, "error", path, "id must be a stable 1-128 character identifier")
@@ -42,6 +42,17 @@ func validateManifest(manifest Manifest, path string, result *Validation) {
 		}
 	}
 	validateRepositoryIdentity(manifest.Source.Repository, path, result)
+	if manifest.Version == ReportV5SagaVersion {
+		// v5 composition is report-only: the manifest must be saga.json, never
+		// the v4 flat root, and the repository identity is part of every v5
+		// URN comparison, so a noncanonical spelling is an error, not a hint.
+		if path != "saga.json" {
+			addIssue(result, "error", path, "v5 requires saga.json; the v4 flat 00-saga.json root is not a v5 manifest")
+		}
+		if canonical, err := diffuri.CanonicalRepository(manifest.Source.Repository); err == nil && canonical != manifest.Source.Repository {
+			addIssue(result, "error", path, fmt.Sprintf("v5 source.repository must be canonical; use %q", canonical))
+		}
+	}
 	if strings.TrimSpace(manifest.Source.Base) == "" || strings.TrimSpace(manifest.Source.Head) == "" {
 		addIssue(result, "error", path, "source.base and source.head are required")
 	}

@@ -15,6 +15,11 @@ const (
 	CitationSchemaURL       = "https://changesaga.dev/schema/v3/citation.schema.json"
 	RelationSchemaURL       = "https://changesaga.dev/schema/v3/relation.schema.json"
 
+	// V5RelationVersion and V5RelationSchemaURL identify the frozen v5 relation
+	// record. Only a v5 Saga may contain or be written with one.
+	V5RelationVersion   = 5
+	V5RelationSchemaURL = "https://changesaga.dev/schema/v5/relation.schema.json"
+
 	MaxStories           = 10_000
 	MaxRevisionsPerStory = 10_000
 	MaxEventsPerStory    = 10_000
@@ -111,6 +116,15 @@ const (
 	RelationConflictsWith RelationType = "conflicts_with"
 )
 
+// RelationScope is persisted only on v5 relations. Self asserts only the named
+// source; descendants explicitly permits Deck/Slide containment traversal.
+type RelationScope string
+
+const (
+	ScopeSelf        RelationScope = "self"
+	ScopeDescendants RelationScope = "descendants"
+)
+
 type RelationState string
 
 const (
@@ -119,7 +133,8 @@ const (
 )
 
 // Relation pins mutable endpoints separately from their stable identities.
-// Computed stale fields are projections and are never persisted.
+// Computed stale fields are projections and are never persisted. Version is 3
+// or 5; Scope is present exactly on v5 records, so v3 bytes are unchanged.
 type Relation struct {
 	Schema             string        `json:"$schema"`
 	Version            int           `json:"version"`
@@ -127,6 +142,7 @@ type Relation struct {
 	Type               RelationType  `json:"type"`
 	From               string        `json:"from"`
 	To                 string        `json:"to"`
+	Scope              RelationScope `json:"scope,omitempty"`
 	Rationale          string        `json:"rationale"`
 	FromRevision       string        `json:"from_revision,omitempty"`
 	ToRevision         string        `json:"to_revision,omitempty"`
@@ -157,20 +173,31 @@ func (story Story) RevisionConflict() bool  { return len(story.RevisionHeads) > 
 func (story Story) LifecycleConflict() bool { return len(story.LifecycleHeads) > 1 }
 
 type Document struct {
-	Root      string
-	SagaID    string
-	Stories   []Story
-	Citations []Citation
-	Relations []Relation
+	Root   string
+	SagaID string
+	// SagaVersion is the manifest version (3 or 5). It selects the relation
+	// record version writers emit.
+	SagaVersion int
+	Stories     []Story
+	Citations   []Citation
+	Relations   []Relation
 }
 
 // StaleInputs supplies current values owned outside this package. Keys are
 // stable endpoint URNs. Missing marks identities known to have disappeared;
-// an absent map entry alone means "unknown", not stale.
+// an absent map entry alone means "unknown", not stale. Test cases are the
+// exception: a pinned test-case endpoint is never current unless its heads
+// were supplied through SetTestCaseHeads.
 type StaleInputs struct {
 	CurrentRevisions      map[string]string
 	CurrentContentDigests map[string]string
 	Missing               map[string]bool
+	// ConflictedRevisions lists the competing revision heads of an endpoint
+	// that has more than one.
+	ConflictedRevisions map[string][]string
+	// TestCasesSupplied records that SetTestCaseHeads supplied every test case
+	// in the Saga, so an unlisted test-case endpoint is missing.
+	TestCasesSupplied bool
 }
 
 type LoadOptions struct {
@@ -269,8 +296,10 @@ type AddRelationInput struct {
 	ToRevision        string
 	FromContentDigest string
 	ToContentDigest   string
-	CreatedAt         time.Time
-	RequestID         string
+	// Scope applies only on a v5 Saga, where an empty value means self.
+	Scope     RelationScope
+	CreatedAt time.Time
+	RequestID string
 }
 
 type MutationResult struct {

@@ -9,11 +9,35 @@ report components, v3 requirement/work-plan components, and optional embedded
 byte-compatible v4 deck bundles under `___slides/`. It MUST NOT contain the v4
 root `00-saga.json` or the v4 `presentation` member.
 
-The normative schemas are under [`schema/v5`](schema/v5). They are published
-before runtime support intentionally: production readers and mutation commands
-MUST continue to reject version 5 until the corresponding read and write phases
-are enabled. In particular, no existing command may silently upgrade a v2, v3,
-or v4 document or emit a v5 record.
+The normative schemas are under [`schema/v5`](schema/v5). Runtime support is
+enabled phase by phase; a reader or mutation command that has not reached its
+phase MUST continue to reject version 5.
+
+Enabled phases:
+
+- **Composition read (Phase 1).** The core loader, `validate`, and the
+  requirement, prototype, work-plan, and quality loaders accept a v5 manifest
+  under the container rules below. The v5 manifest MUST be `saga.json` with a
+  canonical `source.repository`; a v4 `00-saga.json` root or `presentation`
+  member is invalid. `___quality` is admitted as a reserved root only in v5,
+  and `___requirements/coverage-exceptions/` is tolerated by the requirements
+  loader only in v5. Existing v3 component mutations may write their unchanged
+  v3 component records inside a v5 container.
+- **Explicit upgrade.** `change-saga upgrade --to 5 SAGA` is the only operation
+  that may write a version 5 manifest. See [CLI behavior](#11-cli-behavior).
+- **Quality record writers (Phase 5).** `change-saga quality` writes test-case,
+  policy, evidence, and run records under `___quality`, and only in a v5 Saga;
+  a v3 Saga is refused and left unchanged.
+- **v5 relation writers (Phase 3, relation half).** `change-saga relation add`
+  writes v5 relations in a v5 Saga, including a test case that `verifies` a
+  criterion, and pins each endpoint revision. It writes v3 relations in a v3
+  Saga exactly as before. `change-saga relation status` reports whether each
+  relation is current, judged only by comparing its pins against the current
+  heads.
+
+Not yet enabled: coverage-exception record writers and API v2 queries. No other command may upgrade a v2, v3, or v4 document, and
+no command other than `upgrade --to 5` may emit a v5 manifest; every other
+command leaves the manifest version it found byte-for-byte unchanged.
 
 ### Container and component compatibility
 
@@ -903,6 +927,8 @@ which combination of approvals permits merging.
 `___review`, `___claims`, and `___verifications` are reserved at the saga root.
 V3 additionally reserves `___requirements`, `___design`, `___workplan`, and
 `___slides`; the last contains only real `<deck-id>.deck` directories.
+V5 reserves everything v3 reserves plus `___quality`, which is invalid in every
+other version.
 Reserved metadata directories must be
 real directories, not symlinks. So must every entity package: a `.chapter`,
 `.fragment`, `.landmark`, `.thread`, or `.message` entry that is a symlink or a
@@ -912,6 +938,20 @@ hide authored content behind a valid-looking saga. Other names beginning with
 
 ## 11. CLI behavior
 
+- `change-saga upgrade --to 3 SAGA` atomically moves a v2 Saga to v3.
+  `change-saga upgrade --to 5 SAGA` atomically moves a v3 Saga to v5. Both
+  stage a complete copy, change only the manifest `version` and `$schema`, and
+  publish only after the staged copy validates; v5 staging additionally runs
+  every component loader (requirements, prototypes, work plan, quality) under
+  the v5 composition rules. No component record is rewritten, and no quality
+  test, design link, exception, or coverage policy is invented. A v2 Saga is
+  refused with an instruction to run `--to 3` first rather than chained, so each
+  container change is a separate, reviewable step. A v4 slide-native Saga is
+  never converted to v5. `--to 3` on a v5 Saga downgrades only when
+  `___quality` and `___requirements/coverage-exceptions` are absent and every
+  component still validates under v3 rules; it never discards records.
+  `--dry-run` performs the same staging and validation, reports blockers and
+  the resulting capability states, and writes nothing.
 - `change-saga install-skill` prints an agent-agnostic prompt for installing the
   project-local Change Saga authoring skill. It MUST NOT mutate the repository
   or assume an agent-specific skill path.

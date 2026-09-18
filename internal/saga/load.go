@@ -141,7 +141,7 @@ func load(root string, options loadOptions) (*Saga, Validation, error) {
 			return nil, validation, err
 		}
 	}
-	if manifest.Version == CurrentSagaVersion {
+	if ReportContainerVersion(manifest.Version) {
 		designDir := filepath.Join(abs, "___design")
 		if info, statErr := os.Lstat(designDir); statErr == nil && info.IsDir() && info.Mode()&os.ModeSymlink == 0 {
 			design, loadErr := loadSection(abs, designDir, manifest, designHierarchy, options, &validation)
@@ -170,7 +170,7 @@ func load(root string, options loadOptions) (*Saga, Validation, error) {
 		}
 	}
 	document := &Saga{Root: abs, Manifest: manifest, Section: section, Decks: decks}
-	if (manifest.Version == SlideSagaVersion || manifest.Version == CurrentSagaVersion && len(decks) > 0) && !options.skipReviews {
+	if (manifest.Version == SlideSagaVersion || ReportContainerVersion(manifest.Version) && len(decks) > 0) && !options.skipReviews {
 		state, reviewValidation, reviewErr := loadFlatReviewState(MutationIndexFromDocument(document), options.outline)
 		if reviewErr != nil {
 			return nil, validation, reviewErr
@@ -1025,10 +1025,16 @@ func knownReservedDirectory(name string, root bool, sagaVersion int) bool {
 	if name == "___review" || name == "___claims" || name == "___verifications" {
 		return true
 	}
-	if sagaVersion == CurrentSagaVersion && name == EmbeddedSlidesDir {
+	if ReportContainerVersion(sagaVersion) && name == EmbeddedSlidesDir {
 		return true
 	}
-	return (sagaVersion == CurrentSagaVersion || sagaVersion == SlideSagaVersion) && (name == "___requirements" || name == "___design" || name == "___workplan")
+	// ___quality is a v5-only capability root. Its records are owned and
+	// strictly validated by internal/quality; the core loader only admits the
+	// root so a v3 Saga can never acquire it without an explicit upgrade.
+	if sagaVersion == ReportV5SagaVersion && name == QualityRootDir {
+		return true
+	}
+	return (ReportContainerVersion(sagaVersion) || sagaVersion == SlideSagaVersion) && (name == "___requirements" || name == "___design" || name == "___workplan")
 }
 
 func metadataDirectorySafe(root, sectionDir, name string, validation *Validation) bool {
