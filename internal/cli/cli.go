@@ -22,6 +22,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/diffuri"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/prototypes"
+	"github.com/twentyideas/changesaga/internal/quality"
 	"github.com/twentyideas/changesaga/internal/reviewstore"
 	"github.com/twentyideas/changesaga/internal/saga"
 	reviewserver "github.com/twentyideas/changesaga/internal/server"
@@ -85,7 +86,7 @@ func (e *StatusError) Error() string { return "command reported a non-success st
 // commandUsage is the single source of each command's usage line so the
 // overview, the per-command -h banner, and argument errors cannot drift apart.
 var commandOrder = []string{
-	"init", "upgrade", "prototype", "story", "criterion", "citation", "relation", "design", "plan", "add-deck", "add-slide", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "cover", "remove-coverage", "replace-coverage", "rebase-evidence", "add-claim", "verify-claim",
+	"init", "upgrade", "prototype", "story", "criterion", "citation", "relation", "design", "plan", "quality", "add-deck", "add-slide", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "cover", "remove-coverage", "replace-coverage", "rebase-evidence", "add-claim", "verify-claim",
 	"thread", "reply", "review", "validate", "status", "compare", "query",
 	"serve", "open", "install-skill", "spec",
 }
@@ -126,6 +127,17 @@ var commandUsage = map[string]string{
 	"plan assign":                 "change-saga plan assign --item URN --workspace UUID --repository-id ID --branch NAME --request-id ID [flags] <saga>",
 	"plan progress":               "change-saga plan progress --item URN --from EVENT... --to STATE --request-id ID [flags] <saga>",
 	"plan record-merge":           "change-saga plan record-merge --item URN --unit ID --state STATE --request-id ID [flags] <saga>",
+	"quality":                     "change-saga quality <test-case|policy|evidence|run> <operation> [flags] <saga>",
+	"quality test-case":           "change-saga quality test-case <add|revise|set-state> [flags] <saga>",
+	"quality test-case add":       "change-saga quality test-case add --id ID [--revision r1] [--event proposed] --title TEXT --kind KIND... --automation MODE --step JSON... --expected-result TEXT [--precondition TEXT...] [--from FILE|-] [flags] <saga>",
+	"quality test-case revise":    "change-saga quality test-case revise --test URN --parent REVISION... --revision ID [definition flags] [--from FILE|-] [flags] <saga>",
+	"quality test-case set-state": "change-saga quality test-case set-state --test URN --parent EVENT... --state STATE [--event ID] [--reason TEXT] [flags] <saga>",
+	"quality policy":              "change-saga quality policy set [flags] <saga>",
+	"quality policy set":          "change-saga quality policy set --criterion URN --story-revision URN --require KIND... --rationale TEXT [--allow MODE...] [--supersedes POLICY...] [--id ID] [flags] <saga>",
+	"quality evidence":            "change-saga quality evidence add [flags] <saga>",
+	"quality evidence add":        "change-saga quality evidence add --test URN --role ROLE (--diff URI... | --verification URN... | --citation URN...) [--test-revision URN] [--supersedes EVIDENCE...] [--id ID] [--batch FILE|-] [flags] <saga>",
+	"quality run":                 "change-saga quality run record [flags] <saga>",
+	"quality run record":          "change-saga quality run record --test URN --result RESULT --summary TEXT --evidence URN... [--parent RUN...] [--test-revision URN] [--command TEXT] [--id ID] [flags] <saga>",
 	"add-deck":                    "change-saga add-deck [flags] <saga> <name>",
 	"add-slide":                   "change-saga add-slide --deck TARGET --intent INTENT --layout LAYOUT [flags] <saga> <name>",
 	"set-slide-content":           "change-saga set-slide-content --target TARGET --source FILE|- [--json|--quiet] <saga>",
@@ -229,6 +241,17 @@ var commandDescription = map[string]string{
 	"prototype add-external":      "Add a prototype that lives outside the Saga. A plain --url is a reference; an --embed-url\nrenders inline only with explicit provider, origin, sandbox, and permission allowlisting.",
 	"prototype revise":            "Append a complete immutable prototype revision. Name every current head; an html\nrevision requires a fresh --source so no mutable directory becomes part of the revision.",
 	"prototype annotate":          "Pin one part of a prototype to the story or criterion it means, with a rationale and an\nelement, text, region, or provider selector. A prototype may stay unlinked while exploration\ncontinues; it simply cannot contribute to readiness until a current annotation connects it.",
+	"quality":                     "Author v5 test cases, per-criterion kind policies, exact evidence, and immutable runs.\nEvery record is append-only; results stay visible and nothing is scored or summarized as a percentage.",
+	"quality test-case":           "Define test cases with ordered steps, lifecycle them, and revise them as the behavior they\nverify evolves.",
+	"quality test-case add":       "Add a test case: immutable identity, a complete first revision with ordered steps and declared\npositive/negative/edge kinds, and a proposed lifecycle root. Link it to criteria with verifies\nrelations; an unlinked test is an orphan and cannot satisfy coverage.",
+	"quality test-case revise":    "Append a complete immutable revision. Name every current head; with one parent, omitted\nfields are inherited, while reconciling several heads requires the complete definition. Step IDs\nremoved earlier cannot be reused. Runs and evidence pinned to the old revision become stale.",
+	"quality test-case set-state": "Append a proposed, active, deprecated, or retired lifecycle event. Name every current head;\nnaming several heads reconciles a conflict. Lifecycle is not a run result.",
+	"quality policy":              "Declare which coverage kinds a criterion requires at an exact story revision.",
+	"quality policy set":          "Record an immutable policy for one criterion and story revision. Without a policy only\npositive is required. Supersede every current head for the same pin so exactly one remains.",
+	"quality evidence":            "Map a test revision to exact test code, implementation under test, or execution artifacts.",
+	"quality evidence add":        "Record immutable evidence. test_implementation diffs join global changed-source accounting;\nimplementation_under_test diffs must match Item-owned evidence exactly; execution_artifact cites\nverifications or citations. --batch validates the whole set before the first write.",
+	"quality run":                 "Record what executed and what happened.",
+	"quality run record":          "Append an immutable run/result event pinned to a test revision, source identity, and evidence.\nName every current run head: a failed or concurrent run stays visible and is only succeeded by a\nlater run. The command is recorded, never executed.",
 	"story":                       "Create and append revisions or lifecycle events to user stories and acceptance\ncriteria. Stories may lead, follow, or evolve alongside prototypes; cite their source\nand revise them as the feature is clarified.",
 	"story add":                   "Add a sourced user story and its first complete acceptance-criteria revision.\nIt may begin from a prototype, precede one, or evolve alongside one.",
 	"story revise":                "Append a complete story revision as requirements or prototypes evolve. Name every\ncurrent parent head when reconciling concurrent edits; prior revisions remain history.",
@@ -819,6 +842,7 @@ func Validate(_ context.Context, args []string, out io.Writer) error {
 		return err
 	}
 	appendPrototypeIssues(flags.Arg(0), document, &validation)
+	appendQualityIssues(flags.Arg(0), document, &validation)
 	if *jsonOutput {
 		if err := writeJSON(out, validationOutput{Validation: validation, Fixes: fixes}); err != nil {
 			return err
@@ -853,6 +877,27 @@ func appendPrototypeIssues(root string, document *saga.Saga, validation *saga.Va
 		for _, message := range strings.Split(err.Error(), "\n") {
 			validation.Issues = append(validation.Issues, saga.Issue{
 				Severity: "error", Path: "___requirements/prototypes", Message: message,
+			})
+		}
+		validation.Valid = false
+	}
+}
+
+// appendQualityIssues reports the optional v5 quality capability. The quality
+// loader validates identities, revision/lifecycle/run graphs, step history,
+// evidence and policy supersession as it reads, so a load failure is the
+// validation result. An absent ___quality root is simply not adopted.
+func appendQualityIssues(root string, document *saga.Saga, validation *saga.Validation) {
+	if document == nil {
+		return
+	}
+	if _, err := os.Lstat(filepath.Join(root, quality.RootDir)); err != nil {
+		return
+	}
+	if _, err := quality.Load(root); err != nil {
+		for _, message := range strings.Split(err.Error(), "\n") {
+			validation.Issues = append(validation.Issues, saga.Issue{
+				Severity: "error", Path: quality.RootDir, Message: message,
 			})
 		}
 		validation.Valid = false
