@@ -1,35 +1,33 @@
 # Requirements, Design, Implementation, and Quality in One Change Saga
 
-Status: implementation-ready plan for the next report-container schema evolution.
+Status: the plan behind the one Change Saga format.
 
 ## Decision
 
-A feature Change Saga is one durable, version-controlled audit log from
-inception through completed review. Requirements and quality remain report
-surfaces. Prototypes are revisioned interactive HTML experiences or explicitly
-allowed external embeds. UX and implementation use focused visual decks; UI
-design may use pinned references or embeds; technical design uses the diagram
-form appropriate to the relationship. Implementation evidence stays attached
-to the smallest authored target that explains it, including v4 Items inside
-embedded decks. All resources derive their identity from the one parent Saga ID
-and participate in one queryable graph.
+A Change Saga is the one durable, version-controlled audit log of a big change,
+from inception through completed review. There is exactly one kind of Saga.
+Requirements and quality are report surfaces. Prototypes are revisioned
+interactive HTML experiences or explicitly allowed external embeds. UX uses
+focused flow decks; UI design may use pinned references or embeds; technical
+design uses the diagram form appropriate to the relationship; and the
+implementation is explained by the implementation deck. Implementation evidence
+stays attached to the smallest authored target that explains it, including the
+Items inside that deck. All resources derive their identity from the one Saga
+ID and participate in one queryable graph.
 
-The next report-container version should be **v5**. Version 4 is already the
-distinct slide-native format, and adding a new `___quality` reserved root to a
-document that still declares v3 would make older v3 readers reject a document
-whose manifest still claims to be v3. A v5 report reuses existing component
-formats instead of rewriting them:
+The format is identified by manifest **version 5**. It reuses its component
+record formats rather than rewriting them:
 
-- v2 chapter, section, fragment, landmark, diff, claim, verification, and
-  review records remain byte-compatible;
-- v3 story, citation, work-plan, and existing relation records remain readable;
-- v4 deck, slide, Item, asset, and Item evidence records remain byte-compatible
-  inside `___slides/<deck-id>.deck/`; and
-- v5 introduces only the relation extensions, coverage exceptions, and quality
+- chapter, section, fragment, landmark, diff, claim, verification, and review
+  records use the v2 component schemas;
+- story, citation, work-plan, and existing relation records use the v3 schemas;
+- deck, slide, Item, asset, and Item evidence records inside
+  `___slides/<deck-id>.deck/` use the v4 deck schemas; and
+- the format adds the relation extensions, coverage exceptions, and quality
   records described below.
 
-This is an evolution of the merged hybrid report/slide model, not a second kind
-of Saga and not a conversion of report content into slides.
+Those component versions are parts of one format, not separate kinds of Saga,
+and report content is never converted into slides.
 
 ## Baseline on `main`
 
@@ -920,46 +918,23 @@ published JSON Schemas where expressible:
 17. Mutation failure leaves no partial files. Reads never write, execute a test,
     fetch a URL, or resolve external content as a side effect.
 
-## Migration and backward compatibility
+## One format, no migration
 
-### Reader/writer matrix
+There is one Saga format and no backwards compatibility to keep: no one depends
+on the earlier report-only, slide-only, or report-with-decks containers. Readers
+accept only the one format, `init` creates it directly, and there is no upgrade
+or downgrade command. Existing v3 relation records remain valid history inside
+the format; new visual-design and test-case relations are written in the v5
+relation form.
 
-| Document | New reader | Old reader | New writer behavior |
-| --- | --- | --- | --- |
-| v2 report | Unchanged | Unchanged | Must explicitly upgrade before v3/v5 roots. |
-| v3 living/hybrid report | Unchanged, including current v1 queries | Unchanged | Existing commands keep writing v3 until explicit upgrade. |
-| v4 slide-native | Unchanged | Unchanged | Never auto-converted to v5; an explicit rewrite may embed decks in a new report Saga. |
-| v5 report | Full support | Clean unsupported-version error | May reuse v2/v3/v4 component bytes and write v5 relation/quality records. |
-
-`change-saga upgrade --to 5 SAGA` accepts v3 and stages a complete copy, changes
-only the manifest version/schema, validates all existing components under the
-v5 composition rules, then atomically publishes. It does not invent quality
-tests, design links, exceptions, or coverage policy. V2 may upgrade directly
-only by running the same v2 -> v3 structural checks internally. `--dry-run`
-reports unsupported records and resulting capability states.
-
-Mixed relation versions are deliberate: unchanged v3 relations remain valid
-history, while new or refreshed visual-design/test-case relations use v5.
-Existing `explains` relations retain their current descendant trace behavior in
-API v1 and are labeled `legacy_review_explanation` in API v2. They do not become
-`addresses` automatically. An opt-in migration assistant may propose v5
-relations, but only an explicit write persists them.
-
-Downgrade to v3 is allowed only when `___quality` and v5 exceptions are absent
-and no v5 relation exists. It must never discard records. V5 component support,
-minimum CLI version, schema URLs, `SPEC.md`, `change-saga spec`, the authoring
-skill, and changelog must ship together.
-
-Compatibility risks and mitigations:
+Risks and mitigations:
 
 | Risk | Mitigation |
 | --- | --- |
-| Version 5 appears to supersede slide-native v4. | Documentation calls v5 a report container and retains explicit v4 slide-native mode; there is no numeric-mode inference. |
 | Story-level links look more precise than they are. | Preserve them as `covered_broad`, return expansion paths, and report criterion precision separately. |
 | A visual edit silently leaves an old relation current. | Require canonical visual source digests for v5 `addresses`; exclude overlay bytes from digest. |
 | Test pass is reused after code or test changes. | Pin both test revision and full source comparison identity. |
 | Quality duplicates Item ownership of implementation code. | `implementation_under_test` requires exact equality with Item-owned evidence and is a reference, not another design owner. |
-| Existing consumers break on larger query payloads. | Keep API v1 byte shape; add API v2 operations/fields and bounded pagination. |
 | Large decks/tests make the report eager and slow. | Requirements/Quality SSR returns bounded summaries; deck, steps, runs, evidence, and paths load by scoped endpoints and snapshot cursors. |
 | Central loader/CLI files become merge hotspots. | Implement leaf packages first and serialize only the small registry/dispatcher integration commits. |
 
