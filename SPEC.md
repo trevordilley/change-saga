@@ -224,29 +224,36 @@ validation MUST enforce those checks before returning a current path or a ready
 gate. Reads do not write files, execute commands, fetch URLs, or resolve
 external content.
 
-## Report-owned slide decks (v3 hybrid composition)
+## Implementation deck
 
-A v3 Report Saga may contain zero or more focused slide decks beneath
-`___slides/<deck-id>.deck/`. The v3 `saga.json` remains the only container
-manifest and the only Saga identity. Stories, acceptance criteria, technical
-design, work-plan history, prototypes, chapters, and ordinary fragments are not
-converted into slides. A deck is an optional visual drill-down for a complex
-implemented code change.
+The implementation deck is the core of a Change Saga: the visual explanation
+of the change a reviewer came to read. It lives beneath
+`___slides/<deck-id>.deck/`, and the reviewer presents it as the
+Implementation section itself. A Saga normally has one deck; several decks are
+allowed when the change has separable implementations. Stories, acceptance
+criteria, technical design, work-plan history, prototypes, chapters, and
+ordinary fragments are never converted into slides.
 
 Each deck bundle is flat and independently mergeable. It contains exactly one
-byte-compatible v4 deck record plus its v4 slide, Item, asset, and `40-e`
-evidence records. The directory basename must equal the deck ID and the deck
-uses `role: "change"`; the parent report supplies the overview. Deck, slide,
-and Item URNs all use the parent v3 Saga ID:
+deck record plus its slide, Item, asset, and `40-e` evidence records, all
+interpreted by the v4 deck schemas. The directory basename must equal the deck
+ID and the deck uses `role: "change"`. Deck, slide, and Item URNs use the Saga
+ID:
+
+```text
+urn:change-saga:<saga-id>:deck:<deck-id>
+urn:change-saga:<saga-id>:slide:<slide-id>
+urn:change-saga:<saga-id>:slide:<slide-id>:item:<item-id>
+```
 
 ```text
 checkout.saga/
   saga.json
   overview.fragment/
-  requirements.chapter/
-  ___design/
   ___requirements/
+  ___design/
   ___workplan/
+  ___quality/
   ___slides/
     validation-flow.deck/
       10-d-....json
@@ -256,104 +263,34 @@ checkout.saga/
       40-e-....json
 ```
 
-`add-deck`, `add-slide`, `set-slide-content`, and `add-item` author the embedded
-surface directly. V2 continues to refuse decks until it is explicitly upgraded
-to v3. V4 remains a flat, slide-only root and continues to refuse report
-chapters and fragments.
+`add-deck`, `add-slide`, `set-slide-content`, and `add-item` author the deck.
+Exact diff evidence on a slide is owned only by Items, so every changed line a
+reviewer sees in the deck is attached to the specific visual element that
+explains it.
 
-The v1 `overview` query for a v3 parent returns both report collections and a
-`decks` collection. `fragment`/`fragment-diffs` remain report operations;
-`slide`/`slide-diffs` return the v2 slide contract for embedded decks. Coverage
-is one bidirectional graph across both surfaces, but slide evidence may only be
-owned by Items. The reviewer opens the report first and enters the separate
-Decks surface for the visual breakdown; embedded decks are never rendered as
-report chapters.
-
-Stories and their acceptance criteria are the traceability backbone. An active
-v3 `explains` relation links a deck, slide, or Item source to a story or
-criterion target and pins the exact target story revision in `to_revision`.
-Linking a story applies to every acceptance criterion in that pinned revision;
-linking a criterion is the narrower form. A relation becomes stale when its
-story revision is no longer current or its visual source disappears. The
-relation does not move exact diff ownership away from Items.
+Stories and their acceptance criteria are the traceability backbone. A deck,
+slide, or Item relates to a story or criterion through an active relation that
+pins the exact story revision it relied on. Linking a story applies to every
+acceptance criterion in that pinned revision; linking a criterion is the
+narrower form. A relation becomes stale when its pinned revision is no longer
+current or its visual source disappears, and a stale relation is never
+coverage. Relations never move exact diff ownership away from Items.
 
 `query traceability` returns the complete current paths from each accepted
 criterion through its linked review targets to Item-owned diff URIs. It can be
 filtered in reverse with `--diff` or with `--commit`, where the commit is the
 resolved source-head commit of the active committed comparison. Commit lookup
 is unavailable for `WORKTREE` comparisons because their exact diff may include
-uncommitted content. Its
-`unlinked_code_evidence` collection exposes Item evidence that has no active,
-current `explains` path to an accepted story. Thus a caller can traverse from a
-story to code or from the current head commit/diff back to the story without
-duplicating story text inside slide records.
+uncommitted content. Its `unlinked_code_evidence` collection exposes Item
+evidence that has no active, current path to an accepted story. Thus a caller
+can traverse from a story to code, or from the current head commit or diff back
+to the story, without duplicating story text inside slide records.
 
-Prototype persistence remains an internal domain in this release. It is not
-part of this hybrid vertical slice: there is no public prototype CLI, query, or
-reviewer UI yet, and the requirements/prototype root-composition conflict must
-be resolved before that surface is exposed.
+## Report content, evidence, and review
 
-## Slide-native v4 preview
-
-Saga v4 is a distinct, intentionally incompatible document mode declared by
-`version: 4` and a closed `presentation` object whose `mode` is `slides`,
-`aspect_ratio` is `16:9`, and `overview_deck` names the single overview deck.
-Its normative schemas are under [`schema/v4`](schema/v4).
-
-The only authored hierarchy is `Saga → Deck → Slide → Item`, but the v4 storage
-is deliberately flat. `00-saga.json` is the root manifest. Compact category
-prefixes group independently mergeable deck (`10-d`), slide (`20-s`), Item
-(`30-i`), evidence (`40-e`), claim/verification (`50-c`/`60-v`), and review
-(`80`–`85`) records. Fixed-width ranks and deterministic 12-hex target keys
-make ordinary filename sorting stable without putting titles or source paths
-in filenames. JSON contains semantic IDs, titles, and parent hints; queries
-derive the stable target URNs. URNs, never storage filenames, are the durable
-link contract.
-
-Slide content shares its manifest stem and differs only by extension. V4
-slides are one self-contained SVG, raster image, or HTML file; nested asset
-packages are refused. Items have their own rank and all non-decorative Items
-appear exactly once in the slide `reading_order`. A callout is an Item kind; it
-may refer to a sibling Item through `about` and may own exact diff evidence.
-
-Coverage in v4 is a `40-e` record whose filename keys it to an Item. Root-,
-deck-, and slide-level coverage is rejected. Chapter, section, fragment,
-landmark, nested preview-v4 packages, and v3 living-document roots are not
-reinterpreted when a v4 document is loaded.
-Approval decisions in v4 target slides only: a slide is the complete visual
-argument a reviewer accepts or rejects. Items remain addressable evidence,
-deep-link, and comment/annotation targets, but cannot carry approvals. Deck
-status is a derived rollup of its slide decisions, never a stored decision.
-Migration therefore requires an explicit rewrite into a separate destination,
-with evidence reconciled atom by atom; changing the manifest version is never
-a migration.
-
-Every v4 root entry is a regular file, basenames are limited to 64 characters,
-ranks fit `0000`–`9999`, and the CLI reserves a conservative 240-character
-absolute path budget including room for the longest permitted basename.
-
-For authoring, `intent` identifies the reviewer job and `layout` identifies the
-canvas arrangement. Authors choose the visual form from the relationship being
-explained: boundaries for system context, containment and dependencies for
-architecture, directed transformations for data flow, lanes and messages for
-sequence, labeled transitions for state, keys and cardinality for entities,
-branches for logic, matched axes for comparison, and trigger-to-recovery paths
-for failure behavior. A repeated card grid is valid only when categorization or
-matched comparison is itself the claim. Authors audit slide silhouettes,
-visible relationship encoding, and the whole-deck contact sheet before using
-coverage as the final omission check.
-
-Stable targets are:
-
-```text
-urn:change-saga:<saga-id>:deck:<deck-id>
-urn:change-saga:<saga-id>:slide:<slide-id>
-urn:change-saga:<saga-id>:slide:<slide-id>:item:<item-id>
-```
-
-## Report format v2
-
-Status: experimental. Version 2 supersedes the unpublished v1 draft.
+The report carries the Saga's authored narrative, and the same component model
+carries diff evidence, claims, and the review overlay across every part of the
+Saga. Report records use the v2 component schemas.
 
 ## 1. Model
 
