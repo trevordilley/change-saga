@@ -125,7 +125,36 @@ An approval pins the revision it approved, so the next change to that record
 makes it need approval again. Observe mode has no approve or reject controls; it
 shows approvals as history. Comments are available in both modes.
 
-### 7. Every changed line is accounted for, per change
+### 7. Why things changed lives in Git, and compare mode surfaces it
+
+The Saga records the current state, not the work of getting there. If a queue
+moves from SQS to a Postgres table, the design and implementation slides now
+show the table; the reason for the switch is not part of the state. It is
+recovered from Git instead of being written into a new record type:
+
+- **Replacements are paired.** When a slide, design, or test case drops out and
+  another takes its place, compare mode shows them as a pair (the SQS diagram
+  beside the Postgres table). The pairing is inferred from the graph, because
+  both explain the same design or criterion. The author links them explicitly
+  only when that inference is ambiguous.
+- **Commit reasons sit beside what they changed.** The commit messages in the
+  comparison are attached to the nodes whose records or referenced code each
+  commit touched, not listed as a flat log. The authoring skill requires a
+  commit that changes a design to state why.
+- **Every node shows its history.** In observe mode a node shows when it was
+  introduced and what it replaced, read from Git's log of its record files, with
+  one step to open the comparison where it happened. A reader a year later can
+  find the reason without knowing which range to compare.
+- **Squash merges keep their reasons.** A squash merge collapses a branch's
+  commits into one message. When references are re-pinned at merge, the
+  branch's commit messages are recorded with the change so the finer reasoning
+  survives.
+
+Decision records (an ADR-like record type) are deferred. Phase 5 decides whether
+they are needed: any reasoning in this repository's Sagas that has no home in
+commits or pairing is the evidence for them.
+
+### 8. Every changed line is accounted for, per change
 
 In compare mode, every changed line must fall inside some reference's range.
 This is computed from references, not stored. The app does not require every
@@ -178,7 +207,8 @@ whole-file references; re-pinning at merge. Remove `saga-diff://` evidence and
 
 **Phase 2 — Observe and compare.** `--against` on `open`, `status`, and `query`,
 with merge-base semantics; `saga.json` drops its comparison; the Changed,
-Affected, and Code layers; approvals only in compare mode, pinned to revisions.
+Affected, and Code layers; approvals only in compare mode, pinned to revisions;
+replacement pairing, commit reasons attached to nodes, and node history.
 Depends on Phase 1.
 
 **Phase 3 — App structure.** The app-level roots; epics containing today's
@@ -191,3 +221,4 @@ open decision 4.
 
 **Phase 5 — This repository.** Fold its Sagas into one `app.saga` as epics. If
 the fold is awkward, the model is wrong, so this is the model's acceptance test.
+It also decides whether decision records are needed.
