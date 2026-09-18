@@ -24,6 +24,11 @@ type sagaIdentity struct {
 	Source  json.RawMessage `json:"source"`
 }
 
+// reportV5SagaVersion is the v5 report container. Its requirement components
+// are the unchanged v3 records, so this loader reads a v5 Saga exactly like a
+// v3 one and only additionally tolerates the v5 coverage-exceptions sibling.
+const reportV5SagaVersion = 5
+
 func Load(root, sagaID string) (Document, error) {
 	return LoadWithOptions(root, sagaID, LoadOptions{})
 }
@@ -52,8 +57,8 @@ func LoadWithOptions(root, sagaID string, options LoadOptions) (Document, error)
 	if err := readStrictJSON(manifestPath, &identity); err != nil {
 		return Document{}, fmt.Errorf("read saga.json: %w", err)
 	}
-	if identity.Version != Version {
-		return Document{}, fmt.Errorf("requirements require a format v3 saga")
+	if identity.Version != Version && identity.Version != reportV5SagaVersion {
+		return Document{}, fmt.Errorf("requirements require a format v3 or v5 saga")
 	}
 	if !livingid.ValidID(identity.ID) {
 		return Document{}, fmt.Errorf("saga.json contains an invalid saga id")
@@ -73,7 +78,7 @@ func LoadWithOptions(root, sagaID string, options LoadOptions) (Document, error)
 	if !present {
 		return document, nil
 	}
-	entries, err := boundedReadDir(requirementsRoot, 4)
+	entries, err := boundedReadDir(requirementsRoot, 5)
 	if err != nil {
 		return Document{}, err
 	}
@@ -88,6 +93,13 @@ func LoadWithOptions(root, sagaID string, options LoadOptions) (Document, error)
 		// It shares ___requirements so the two merge independently; this loader
 		// deliberately never reads it.
 		case "prototypes":
+		// coverage-exceptions holds v5 immutable decisions owned by the coverage
+		// exception domain. Like prototypes it is a sibling root this loader
+		// deliberately never reads; it exists only in a v5 Saga.
+		case "coverage-exceptions":
+			if identity.Version != reportV5SagaVersion {
+				return Document{}, fmt.Errorf("requirements entry %q requires a format v5 saga", entry.Name())
+			}
 		default:
 			return Document{}, fmt.Errorf("unknown requirements entry %q", entry.Name())
 		}

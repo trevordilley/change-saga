@@ -42,8 +42,9 @@ func Load(root string) (Plan, Validation, error) {
 		return Plan{}, validation, fmt.Errorf("read saga.json: %w", err)
 	}
 	plan.SagaID = manifest.ID
-	if manifest.Version != Version {
-		addIssue(&validation, "error", "saga.json", "work plans require a version 3 Saga")
+	// A v5 report container composes the unchanged v3 work-plan records.
+	if manifest.Version != Version && manifest.Version != 5 {
+		addIssue(&validation, "error", "saga.json", "work plans require a version 3 or 5 Saga")
 	}
 	if !validID(manifest.ID) {
 		addIssue(&validation, "error", "saga.json", "saga id is invalid")

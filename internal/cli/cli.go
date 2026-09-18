@@ -92,7 +92,7 @@ var commandOrder = []string{
 
 var commandUsage = map[string]string{
 	"init":                        "change-saga init [flags] <name.saga>",
-	"upgrade":                     "change-saga upgrade --to 3 [--json] <saga>",
+	"upgrade":                     "change-saga upgrade --to 3|5 [--dry-run] [--json] <saga>",
 	"prototype":                   "change-saga prototype <add-html|add-external|revise|annotate> [flags] <saga>",
 	"prototype add-html":          "change-saga prototype add-html --id ID --revision ID --title TEXT --source PATH [--state STATE] [flags] <saga>",
 	"prototype add-external":      "change-saga prototype add-external --id ID --revision ID --title TEXT --url URL [--embed-url URL --provider ID --embed-origin ORIGIN] [flags] <saga>",
@@ -223,7 +223,7 @@ func commandFlags(name, usage string, out io.Writer) *flag.FlagSet {
 
 var commandDescription = map[string]string{
 	"init":                        "Start a reviewer guide or living Saga. Small focused changes may not need a Saga.\nChoose --mode slides for the intentionally incompatible v4 visual review format;\nexisting reports are never silently paginated.",
-	"upgrade":                     "Atomically adopt the v3 Saga container. Existing v2 narrative and review\nrecords are preserved; requirements, design, and work-plan roots remain optional.",
+	"upgrade":                     "Atomically adopt the v3 Saga container (--to 3, from v2) or the v5 report\ncontainer (--to 5, from v3). Only the manifest version and schema change;\nevery component is preserved and revalidated. v2 must reach v3 before v5.\n--to 3 on a v5 Saga downgrades only when no v5-only record exists.\n--dry-run validates the staged result and reports capability states.",
 	"prototype":                   "Author revisioned interactive HTML experiences or explicitly allowed external\nembeds and pin them to the stories and criteria they clarify. A prototype may lead, follow,\nor evolve alongside its requirements.",
 	"prototype add-html":          "Add an interactive HTML prototype and its first immutable revision. The authored\nsource is copied into the revision package, so later edits outside the Saga never change it.",
 	"prototype add-external":      "Add a prototype that lives outside the Saga. A plain --url is a reference; an --embed-url\nrenders inline only with explicit provider, origin, sandbox, and permission allowlisting.",
@@ -843,7 +843,7 @@ func Validate(_ context.Context, args []string, out io.Writer) error {
 // validates every identity, immutable revision, html digest, and pinned
 // annotation as it reads, so a load failure is the validation result.
 func appendPrototypeIssues(root string, document *saga.Saga, validation *saga.Validation) {
-	if document == nil || document.Manifest.Version != saga.CurrentSagaVersion {
+	if document == nil || !saga.ReportContainerVersion(document.Manifest.Version) {
 		return
 	}
 	if _, err := os.Lstat(filepath.Join(root, "___requirements")); err != nil {
