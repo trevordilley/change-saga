@@ -193,51 +193,51 @@ var commandUsage = map[string]string{
 }
 
 func PrintHelp(out io.Writer) {
-	fmt.Fprint(out, `Change Saga — capture a big change from its first prototype to the code it changed
+	fmt.Fprint(out, `Change Saga — living documentation for an application, kept honest by the code
 
-A Change Saga is for a big change: one that needs product requirements, UX/UI,
-technical design, quality, and an implementation deck. It starts with the big
-work and ends with the big work, even when the whole change lands in one PR.
+A repository has one app Saga. It documents the application: an overview,
+the personas it serves, a design system, an onboarding deck, feature flags,
+and durable epics, the product domains that each hold their own stories,
+design, quality, and implementation deck. Every link is pinned, so when a
+story or the code changes, whatever relied on the old version goes visibly
+stale.
 
-A repository has one app Saga. It holds the app's overview, personas, design
-system, onboarding deck, and feature flags, plus durable epics: the product
-domains that each hold their own stories, design, quality, and implementation
-deck. Commands that write epic content take --epic.
+Start small. The one thing asked of a change is that its implementation deck
+explains every changed line. Stories, personas, design, and test cases are
+never asked for up front: status reports them as growth, suggests the next
+step with the practice it teaches, and never blocks.
 
-The workflow:
-  0. App: "init" the app Saga and add the product domain the change belongs
-     to ("epic"). Name who the app serves ("persona") and gate unreleased
-     work ("flag") whenever that becomes useful; neither is required. The
-     overview's elevator pitch and description ("overview") and the project's
-     own vocabulary ("term") can come whenever they help; a term references
-     the stories and code it names, so renames and new terminology surface
-     in status.
-  1. Product: prototype the experience ("prototype") and write user stories
-     with acceptance criteria ("story", "criterion"); a story may name the
-     personas it serves. Stories can "story move" between epics. Cite
-     where each requirement came from ("citation"). Prototypes and stories
-     inform each other; revise both as the change is clarified.
-  2. Design: develop the UX, UI, and technical design ("design") and relate
-     each design artifact to the stories and criteria it addresses ("relation").
-  3. Quality: define test cases for every acceptance criterion ("quality") and
-     link them with verifies relations.
-  4. Implementation: explain the delivered change as the implementation deck
-     ("add-deck", "add-slide", "add-item"). Every meaningful node, edge,
-     region, and callout is an Item.
-  5. Code: reference every changed line from the Item that explains it
-     ("cover"), then "validate", check "status", and "serve" the Saga.
-  6. Review: each pull request has one review, a slide deck explaining what
-     the change did and why ("review create", then "add-slide --review").
-     Approval and comments happen only on review slides ("review approve",
-     "review request-changes", "review comment"); "review list" and "status"
-     report each decision and whether it is out of date, and which changed
-     lines of the review's range its deck does not yet explain (cover them
-     from a review Item). The Saga itself is documentation and carries no
-     approvals.
+A first change:
+  1. "init" the app Saga.
+  2. Cover the change: "add-deck", "add-slide", and "add-item" explain it,
+     and "cover" references every changed line from the Item that explains
+     it. The first command that needs an epic creates one named after the
+     branch (or pass --epic); with one epic, --epic is implied.
+  3. "status --against main" reports coverage by area (implementation,
+     stories, personas, design, quality, health) with what is and is not
+     covered. It has no verdict: it exits 0 whenever the report can be
+     trusted, and non-zero only for a malformed Saga or a mismatched checkout.
+  4. "check --covers implementation --against main" answers one question
+     with its exit code; name more areas when your team wants them.
 
-Stories, prototypes, design, test cases, and deck bundles are Git-native
-records partitioned so parallel workspaces can author them and merge cleanly;
-"plan" organizes that work into dependency-aware waves.
+Growing the Saga, a step at a time and only when it helps:
+  - Product: write user stories with acceptance criteria ("story",
+    "criterion") and relate the slides that implement them ("relation");
+    prototype the experience ("prototype"); cite sources ("citation").
+  - People: name who the app serves ("persona"); a story names the personas
+    it serves. Gate unreleased work with "flag".
+  - Design: UX, UI, and technical design ("design"), related to the stories
+    it addresses.
+  - Quality: test cases that verify acceptance criteria ("quality").
+  - Language: the overview's pitch and description ("overview") and the
+    project's own vocabulary ("term").
+  - Review: each pull request has one review, a slide deck explaining what
+    it did and why ("review create", "add-slide --review"). Approval and
+    comments happen only there ("review approve", "review comment"); the
+    Saga itself is documentation and carries no approvals.
+
+Records are Git-native and partitioned so parallel workspaces can author them
+and merge cleanly; "plan" organizes larger work into dependency-aware waves.
 
 Usage:
 `)
@@ -277,7 +277,9 @@ func commandFlags(name, usage string, out io.Writer) *flag.FlagSet {
 }
 
 var commandDescription = map[string]string{
-	"init":                        "Create the app Saga: the saga.json manifest, a reviewer README, and the app\noverview under ___overview. Then add an epic and author its content; personas\nand flags are optional and can come later.",
+	"init":                        "Create the app Saga: the saga.json manifest, a reviewer README, and the app\noverview under ___overview. Then cover the change: explain it with an\nimplementation deck whose Items reference every changed line. Epics, stories,\npersonas, design, and quality are optional and can come later.",
+	"status":                      "Report coverage by area for the change (--against) or the whole app, with the\nlists of what is and is not covered, stale records, and ordered next actions:\nrequired work first (keep what exists healthy, cover every changed line), then\noptional growth suggestions. Status has no verdict: it exits 0 whenever its\nreport can be trusted, and 1 only when the Saga is malformed (for example, a\nduplicate ID) or the checkout does not match the declared repository. Teams\nwrite their own rules over --json, or ask check.",
+	"check":                       "Ask whether the named coverage areas are fully covered in scope: the change\nwith --against, the whole app without, narrowed by --epic. It exits 0 when\nthey are, 3 with only those areas' gaps when they are not, and 1 when the\nreport cannot be trusted. Nothing is required unless someone asks.\n\nAreas follow the chain persona -> story -> design -> code:\n  implementation  every changed line is referenced by the implementation deck\n  stories         every changed line reaches a story through the chain\n  personas        every changed line reaches a persona\n  design          every story in scope has design\n  quality         every acceptance criterion in scope has a test\n  health          nothing that already existed went stale or broke",
 	"epic":                        "Add a durable product domain. An epic holds its own report content, stories,\ndesign, quality, work plan, and implementation deck. Story identity never\nnames an epic, so a story can move between epics without breaking a link.",
 	"overview":                    "Write the overview's elevator pitch and description, as Markdown. The overview\nis formal: the project's name (saga.json's title), an elevator pitch, a\ndescription (a short essay), and its terms and vocabulary (\"term\"). Every part\nis optional; an absent part is shown as a gap, never an error.",
 	"overview set-pitch":          "Write the elevator pitch: what the application is and who it is for, in a few\nsentences. The first write creates ___overview/pitch.fragment; later writes\nreplace its content.",
@@ -465,7 +467,18 @@ func Init(ctx context.Context, args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
-	fmt.Fprintf(out, "Created %s\nNext: add the product domain this change belongs to, then author its content:\n  change-saga epic add --id ID --title TEXT %s\n  change-saga story add --epic ID --id ID --revision r1 --event proposed --title TEXT --statement TEXT --priority TEXT %s\nPersonas, the overview's pitch and description, and the project's terms are optional; add them when they help:\n  change-saga persona add --id ID --name TEXT --description TEXT %s\n  change-saga overview set-pitch --text TEXT %s\n  change-saga term add --id ID --name TEXT --definition TEXT [--ref LOCATION] %s\n", root, root, root, root, root, root)
+	fmt.Fprintf(out, `Created %[1]s
+Next: cover the change. Explain it with an implementation deck, then reference
+every changed line from the Item that explains it (the first command that
+needs an epic creates one named after the branch):
+  change-saga add-deck --objective TEXT %[1]s NAME
+  change-saga add-slide --deck TARGET --intent INTENT --layout LAYOUT %[1]s NAME
+  change-saga add-item --slide TARGET --kind KIND %[1]s
+  change-saga cover --against main --target ITEM --path PATH --changed-lines %[1]s
+  change-saga status --against main %[1]s
+Stories, personas, design, test cases, the overview, and terms are optional;
+status suggests them as the Saga grows.
+`, root)
 	return nil
 }
 

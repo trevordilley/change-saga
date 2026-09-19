@@ -140,10 +140,14 @@ func TestInitCreatesOnlyTheAppWithEveryOverviewPartAGap(t *testing.T) {
 	if err := Init(context.Background(), []string{"--repo", repo, "--repository", "https://example.test/acme/app.git", root}, &output); err != nil {
 		t.Fatal(err)
 	}
-	for _, want := range []string{"epic add", "story add --epic ID", "optional", "persona add", "overview set-pitch", "term add"} {
-		if !strings.Contains(output.String(), want) {
-			t.Fatalf("init output does not lead to %q:\n%s", want, output.String())
+	text := output.String()
+	for _, want := range []string{"Next: cover the change", "add-deck", "cover --against main", "status --against main", "optional"} {
+		if !strings.Contains(text, want) {
+			t.Fatalf("init output does not lead to %q:\n%s", want, text)
 		}
+	}
+	if strings.Index(text, "cover --against main") > strings.Index(text, "optional") {
+		t.Fatalf("init leads with covering the change before anything optional:\n%s", text)
 	}
 	for _, absent := range []string{"overview.fragment", applayout.OverviewDir, applayout.EpicsDir, applayout.PersonasDir, "___requirements"} {
 		if _, err := os.Stat(filepath.Join(root, absent)); !os.IsNotExist(err) {

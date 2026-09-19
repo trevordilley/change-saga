@@ -226,24 +226,28 @@ func TestTopLevelHelpRecommendsTheAuthoringSkill(t *testing.T) {
 	}
 }
 
-func TestTopLevelHelpDescribesOneBigChangeWorkflow(t *testing.T) {
+// The help teaches incremental adoption: a first change is init, cover, and
+// status, and everything else is growth that never blocks.
+func TestTopLevelHelpDescribesIncrementalAdoption(t *testing.T) {
 	var output bytes.Buffer
 	PrintHelp(&output)
 	text := output.String()
 	for _, want := range []string{
-		"big change",
+		"one app Saga", "Start small", "implementation deck", "cover",
+		"status --against main", "no verdict", "check --covers implementation",
 		"Product:", "prototype", "user stories",
 		"Design:", "UX, UI, and technical design",
 		"Quality:", "test cases",
-		"Implementation:", "implementation deck",
-		"Code:", "cover",
 		"dependency-aware waves",
 	} {
 		if !strings.Contains(text, want) {
 			t.Fatalf("top-level help omitted workflow guidance %q:\n%s", want, text)
 		}
 	}
-	for _, unwanted := range []string{"Choose the workflow", "normal PR may be enough", "optional", "--mode", "upgrade"} {
+	if strings.Index(text, "A first change:") > strings.Index(text, "Growing the Saga") {
+		t.Fatalf("the first change comes before growth:\n%s", text)
+	}
+	for _, unwanted := range []string{"big change", "starts with the big work", "Choose the workflow", "normal PR may be enough", "--mode", "upgrade"} {
 		if strings.Contains(text, unwanted) {
 			t.Fatalf("top-level help still offers %q:\n%s", unwanted, text)
 		}
@@ -260,7 +264,7 @@ func TestLivingCommandHelpExplainsParallelWorkflow(t *testing.T) {
 			var output bytes.Buffer
 			_ = Init(context.Background(), []string{"-h"}, &output)
 			return output.String()
-		}, want: []string{"app Saga", "___overview", "epic", "personas", "optional"}},
+		}, want: []string{"app Saga", "___overview", "cover the change", "implementation deck", "optional"}},
 		{name: "story add", run: func() string {
 			var output bytes.Buffer
 			_ = Story(context.Background(), []string{"add", "-h"}, &output)
