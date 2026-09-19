@@ -8,6 +8,8 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/twentyideas/changesaga/internal/gitdiff"
+	"github.com/twentyideas/changesaga/internal/nextaction"
 	"github.com/twentyideas/changesaga/internal/requirements"
 )
 
@@ -83,5 +85,90 @@ func TestATermPinsItsCodeAndGoesStaleWhenTheCodeIsRenamed(t *testing.T) {
 	}
 	if err := Term(context.Background(), []string{"add", "--id", "bad", "--name", "Bad", "--definition", "x", "--ref", "nope:kinds.go#L1", "--repo", repo, root}, &bytes.Buffer{}); err == nil {
 		t.Fatal("an unknown revision must be refused")
+	}
+}
+
+func statusOf(t *testing.T, root, repo string, rng gitdiff.Range) statusDocument {
+	t.Helper()
+	document, err := buildStatus(context.Background(), root, repo, rng, true)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return document
+}
+
+func actionsIn(document statusDocument, category nextaction.Category) []nextaction.Action {
+	var result []nextaction.Action
+	for _, action := range document.NextActions {
+		if action.Category == category {
+			result = append(result, action)
+		}
+	}
+	return result
+}
+
+func TestAComparisonSuggestsNewTerminologyWithoutBlocking(t *testing.T) {
+	repo, _ := sourceRepo(t, map[string]string{"kinds.go": kindsGo})
+	root := newTermSaga(t, repo)
+	if err := Term(context.Background(), []string{"add", "--id", "testtaker", "--name", "Testtaker", "--definition", "One sitting of an assessment.",
+		"--story", "sit-assessment", "--ref", "HEAD:kinds.go#L6", "--repo", repo, root}, &bytes.Buffer{}); err != nil {
+		t.Fatal(err)
+	}
+	observed := statusOf(t, root, repo, gitdiff.Range{})
+	if observed.Overview.Terms != 1 || len(observed.Terms) != 1 || observed.Terms[0].Stale || len(observed.NewTerminology) != 0 {
+		t.Fatalf("observed terms = %#v overview %#v", observed.Terms, observed.Overview)
+	}
+	if strings.Join(observed.Overview.Gaps, ",") != "pitch" {
+		t.Fatalf("the missing pitch is a gap and nothing else is: %v", observed.Overview.Gaps)
+	}
+
+	git(t, repo, "checkout", "-b", "grader")
+	writeFile(t, filepath.Join(repo, "kinds.go"), strings.Replace(kindsGo, "\tKindProctor   Kind = \"proctor\"\n", "\tKindProctor   Kind = \"proctor\"\n\tKindGrader    Kind = \"grader\"\n\tmaxGraders         = 3\n", 1))
+	git(t, repo, "commit", "-am", "add graders")
+	compared := statusOf(t, root, repo, gitdiff.Range{Against: "main"})
+	if len(compared.NewTerminology) != 1 || compared.NewTerminology[0].Name != "KindGrader" || compared.NewTerminology[0].Location.Start != 8 {
+		t.Fatalf("new terminology = %#v", compared.NewTerminology)
+	}
+	growth := actionsIn(compared, nextaction.CategoryGrowth)
+	if len(growth) != 1 || len(growth[0].Gates) != 0 || growth[0].Command == nil || growth[0].Command.Command != "term add" ||
+		!strings.Contains(growth[0].Reason, "looks like new terminology") || growth[0].ID != compared.NextActions[len(compared.NextActions)-1].ID {
+		t.Fatalf("growth = %#v", growth)
+	}
+	if strings.Join(growth[0].Command.Argv, " ") != "change-saga term add --id kind-grader --name KindGrader --definition TEXT --ref "+compared.NewTerminology[0].Location.String()+" "+root {
+		t.Fatalf("argv = %v", growth[0].Command.Argv)
+	}
+	for _, gate := range compared.Readiness.Gates {
+		for _, blocker := range gate.Blockers {
+			if strings.Contains(blocker.Resource, "kinds.go") || strings.Contains(blocker.Resource, ":term:") {
+				t.Fatalf("terminology must never block %s: %#v", gate.Name, blocker)
+			}
+		}
+	}
+	// Naming the new value in a term, even without referencing it, answers
+	// the suggestion.
+	if err := Term(context.Background(), []string{"add", "--id", "grader", "--name", "Grader", "--definition", "Scores a sitting.", root}, &bytes.Buffer{}); err != nil {
+		t.Fatal(err)
+	}
+	if again := statusOf(t, root, repo, gitdiff.Range{Against: "main"}); len(again.NewTerminology) != 0 {
+		t.Fatalf("a named declaration is not new terminology: %#v", again.NewTerminology)
+	}
+
+	// Renaming the termed constant stales the term instead of suggesting a new one.
+	writeFile(t, filepath.Join(repo, "kinds.go"), strings.Replace(kindsGo, "KindTesttaker", "KindCandidate", 1))
+	git(t, repo, "commit", "-am", "rename testtaker")
+	renamed := statusOf(t, root, repo, gitdiff.Range{Against: "main"})
+	if len(renamed.NewTerminology) != 0 {
+		t.Fatalf("a rename of a termed declaration is not new terminology: %#v", renamed.NewTerminology)
+	}
+	stale := actionsIn(renamed, nextaction.CategoryStale)
+	if len(stale) != 1 || stale[0].Resource != "urn:change-saga:atomic:term:testtaker" || len(stale[0].Gates) != 0 || stale[0].Command.Command != "term revise" {
+		t.Fatalf("stale term action = %#v", stale)
+	}
+	inputs := []string{}
+	for _, input := range stale[0].Command.Inputs {
+		inputs = append(inputs, input.Flag)
+	}
+	if strings.Join(inputs, ",") != "revision,ref" {
+		t.Fatalf("a stale term's revision is prefilled except its new id and code: %v", inputs)
 	}
 }

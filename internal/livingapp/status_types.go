@@ -1,6 +1,7 @@
 package livingapp
 
 import (
+	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"strings"
 
 	"github.com/twentyideas/changesaga/internal/applayout"
@@ -93,6 +94,15 @@ type StatusInputs struct {
 	Flags    []requirements.Flag
 	Gates    requirements.Gate
 
+	// Overview is the overview's parts; Terms are the project's vocabulary,
+	// TermCode each current term reference viewed at the head (keyed by
+	// coderef.Reference.Key), and TermSuggestions the declarations a
+	// comparison added that look like new vocabulary.
+	Overview        OverviewStatus
+	Terms           []requirements.Term
+	TermCode        map[string]coderesolve.Resolution
+	TermSuggestions []TermSuggestion
+
 	Prototypes prototypes.Document
 	Decks      []*saga.Deck
 	// DesignDigests is the current canonical content digest of every design and
@@ -128,16 +138,22 @@ type Status struct {
 	PersonaOrphans []PersonaOrphans `json:"persona_orphans"`
 	// PersonaCoverage reports the persona -> story link. It never blocks a
 	// readiness gate.
-	PersonaCoverage PersonaCoverage          `json:"persona_coverage"`
-	Flags           []FlagStatus             `json:"flags"`
-	Stories         []StoryStatus            `json:"stories"`
-	Prototypes      []PrototypeStatus        `json:"prototypes"`
-	Readiness       readiness.GateProjection `json:"readiness"`
-	Axes            coverage.AxisProjection  `json:"axes"`
-	Quality         QualityStatus            `json:"quality"`
-	Stale           []StaleRecord            `json:"stale"`
-	ChangedSource   ChangedSource            `json:"changed_source"`
-	Diagnostics     []Diagnostic             `json:"diagnostics"`
+	PersonaCoverage PersonaCoverage `json:"persona_coverage"`
+	Flags           []FlagStatus    `json:"flags"`
+	// Overview reports the overview's parts and which are gaps; Terms the
+	// project's vocabulary and its code health; NewTerminology the growth
+	// suggestions of a comparison. None of them is part of a readiness gate.
+	Overview       OverviewStatus           `json:"overview"`
+	Terms          []TermStatus             `json:"terms"`
+	NewTerminology []TermSuggestion         `json:"new_terminology"`
+	Stories        []StoryStatus            `json:"stories"`
+	Prototypes     []PrototypeStatus        `json:"prototypes"`
+	Readiness      readiness.GateProjection `json:"readiness"`
+	Axes           coverage.AxisProjection  `json:"axes"`
+	Quality        QualityStatus            `json:"quality"`
+	Stale          []StaleRecord            `json:"stale"`
+	ChangedSource  ChangedSource            `json:"changed_source"`
+	Diagnostics    []Diagnostic             `json:"diagnostics"`
 }
 
 // StoryStatus is the requirement identity an author needs to act on a story.

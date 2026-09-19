@@ -150,7 +150,9 @@ func References(ctx context.Context, args []string, out io.Writer) error {
 			location := head.Location
 			health.Head, health.State, health.Moved = &location, coderesolve.Current, head.Moved
 		}
-		if base.Current() {
+		// A term names the code as it is now, so only the head decides whether
+		// it is current: a rename in the change makes it stale.
+		if base.Current() && value.Kind != "term" {
 			location := base.Location
 			health.Base, health.State = &location, coderesolve.Current
 			health.Moved = health.Moved || base.Moved && health.Head == nil

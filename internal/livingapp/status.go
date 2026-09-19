@@ -109,6 +109,12 @@ func Assemble(in StatusInputs) Status {
 	status.Quality = a.finishQuality(qualityEval, status.Axes)
 	status.ChangedSource = a.changedSource()
 	personas, personaOrphans := a.appProjection(&status)
+	status.Overview = in.Overview
+	if status.Overview.Gaps == nil {
+		status.Overview.Gaps = []string{}
+	}
+	status.Terms = termStatuses(in.SagaID, in.Terms, in.TermCode)
+	status.NewTerminology = append([]TermSuggestion{}, in.TermSuggestions...)
 	status.PersonaCoverage = PersonaCoverage{Facts: readiness.PersonaCoverage(personas, personaOrphans)}
 
 	stories := make([]readiness.Story, 0, len(in.Stories))

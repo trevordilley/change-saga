@@ -41,8 +41,9 @@ type StatusOptions struct {
 	Document *saga.Saga
 	Report   coverage.Report
 	Changes  gitdiff.ChangeSet
-	// Resolver views quality-evidence code references in Changes. Without it
-	// every such reference is reported stale.
+	// Resolver views quality-evidence and term code references in Changes.
+	// Without it every such reference is reported stale. When it can also read
+	// file content (Blobs), a comparison suggests new terminology.
 	Resolver coverage.Resolver
 }
 
@@ -113,6 +114,7 @@ func LoadStatusInputs(ctx context.Context, options StatusOptions) (StatusInputs,
 		inputs.Citations = graph.requirements.Citations
 		inputs.Personas = graph.requirements.Personas
 		inputs.Flags = graph.requirements.Flags
+		inputs.Terms = graph.requirements.Terms
 		inputs.Gates = graph.requirements.Gates()
 		inputs.DesignDigests = graph.designDigests
 		inputs.Links = LinksFromCurrency(graph.requirements, graph.currency)
@@ -121,6 +123,10 @@ func LoadStatusInputs(ctx context.Context, options StatusOptions) (StatusInputs,
 			return StatusInputs{}, fmt.Errorf("load prototypes: %w", err)
 		}
 	}
+	inputs.TermCode = resolveTermCode(ctx, inputs.Terms, options.Changes, options.Resolver)
+	blobs, _ := options.Resolver.(Blobs)
+	inputs.TermSuggestions = SuggestTerms(ctx, inputs.Terms, options.Changes, options.Resolver, blobs)
+	inputs.Overview = overviewStatus(doc, inputs.Terms)
 	return inputs, nil
 }
 
@@ -310,7 +316,7 @@ func loadEpicCoverageExceptions(dir, sagaID string) ([]coverage.Exception, error
 // requirementsAdopted reports whether the app records any requirements: a
 // persona, or a ___requirements root in any epic.
 func requirementsAdopted(root string) bool {
-	if livingRootPresent(root, applayout.PersonasDir) {
+	if livingRootPresent(root, applayout.PersonasDir) || livingRootPresent(root, filepath.FromSlash(applayout.TermsDir)) {
 		return true
 	}
 	epics, err := applayout.Epics(root)
