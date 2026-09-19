@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-event.schema.json",
+  "version": 3,
+  "id": "proposed",
+  "story": "urn:change-saga:app:story:coverage-report",
+  "parents": [],
+  "state": "proposed",
+  "created_at": "2026-09-19T20:48:15.793688Z"
+}

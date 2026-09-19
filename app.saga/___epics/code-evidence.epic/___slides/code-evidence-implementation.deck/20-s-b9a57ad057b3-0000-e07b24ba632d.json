@@ -1,0 +1,21 @@
+{
+  "version": 4,
+  "id": "reference-resolution",
+  "deck": "code-evidence-implementation",
+  "title": "Viewing a reference at another commit",
+  "rank": 0,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-b9a57ad057b3-0000-e07b24ba632d.svg",
+  "takeaway": "A reference stays current only while its bytes are untouched; moved lines remap, any edit inside the range makes it stale.",
+  "reading_order": [
+    "pin-missing",
+    "verify-digest",
+    "unchanged-path",
+    "file-level-stale",
+    "remap-range",
+    "range-touched",
+    "insertion-inside"
+  ]
+}

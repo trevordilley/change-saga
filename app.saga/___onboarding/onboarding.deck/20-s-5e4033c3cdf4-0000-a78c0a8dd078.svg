@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" font-family="Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#475569"/></marker>
+  </defs>
+  <rect width="1280" height="720" fill="#ffffff"/>
+  <text x="40" y="52" font-size="30" font-weight="bold" fill="#0f172a">Change Saga's seven product domains</text>
+  <text x="40" y="84" font-size="18" fill="#475569">A change is authored with the agent loop, recorded in the format, explained with code references, compared, and reviewed.</text>
+
+  <g id="agent-loop">
+    <rect x="40" y="150" width="260" height="120" rx="12" fill="#ede9fe" stroke="#6d28d9"/>
+    <text x="170" y="195" font-size="20" text-anchor="middle" font-weight="bold" fill="#0f172a">Status, check, and</text>
+    <text x="170" y="222" font-size="20" text-anchor="middle" font-weight="bold" fill="#0f172a">the agent loop</text>
+    <text x="170" y="250" font-size="15" text-anchor="middle" fill="#475569">coverage report, next actions</text>
+  </g>
+  <g id="format">
+    <rect x="370" y="150" width="260" height="120" rx="12" fill="#e0f2fe" stroke="#0369a1"/>
+    <text x="500" y="195" font-size="20" text-anchor="middle" font-weight="bold" fill="#0f172a">Saga format and</text>
+    <text x="500" y="222" font-size="20" text-anchor="middle" font-weight="bold" fill="#0f172a">app structure</text>
+    <text x="500" y="250" font-size="15" text-anchor="middle" fill="#475569">one app.saga, durable epics</text>
+  </g>
+  <g id="requirements">
+    <rect x="700" y="150" width="260" height="120" rx="12" fill="#e0f2fe" stroke="#0369a1"/>
+    <text x="830" y="195" font-size="20" text-anchor="middle" font-weight="bold" fill="#0f172a">Requirements and</text>
+    <text x="830" y="222" font-size="20" text-anchor="middle" font-weight="bold" fill="#0f172a">traceability</text>
+    <text x="830" y="250" font-size="15" text-anchor="middle" fill="#475569">persona → story → design → code</text>
+  </g>
+  <g id="code-evidence">
+    <rect x="1000" y="150" width="240" height="120" rx="12" fill="#e0f2fe" stroke="#0369a1"/>
+    <text x="1120" y="195" font-size="20" text-anchor="middle" font-weight="bold" fill="#0f172a">Code references</text>
+    <text x="1120" y="222" font-size="20" text-anchor="middle" font-weight="bold" fill="#0f172a">and coverage</text>
+    <text x="1120" y="250" font-size="15" text-anchor="middle" fill="#475569">pinned, remapped, stale</text>
+  </g>
+  <g id="comparison">
+    <rect x="370" y="400" width="260" height="120" rx="12" fill="#dcfce7" stroke="#15803d"/>
+    <text x="500" y="445" font-size="20" text-anchor="middle" font-weight="bold" fill="#0f172a">Observe, compare,</text>
+    <text x="500" y="472" font-size="20" text-anchor="middle" font-weight="bold" fill="#0f172a">and history</text>
+    <text x="500" y="500" font-size="15" text-anchor="middle" fill="#475569">Changed, Affected, Code</text>
+  </g>
+  <g id="reviews">
+    <rect x="700" y="400" width="260" height="120" rx="12" fill="#fef3c7" stroke="#b45309"/>
+    <text x="830" y="445" font-size="20" text-anchor="middle" font-weight="bold" fill="#0f172a">Pull request</text>
+    <text x="830" y="472" font-size="20" text-anchor="middle" font-weight="bold" fill="#0f172a">reviews</text>
+    <text x="830" y="500" font-size="15" text-anchor="middle" fill="#475569">a deck per PR, per-slide approval</text>
+  </g>
+  <g id="reviewer-app">
+    <rect x="1000" y="400" width="240" height="120" rx="12" fill="#fef3c7" stroke="#b45309"/>
+    <text x="1120" y="445" font-size="20" text-anchor="middle" font-weight="bold" fill="#0f172a">The reviewer</text>
+    <text x="1120" y="472" font-size="20" text-anchor="middle" font-weight="bold" fill="#0f172a">application</text>
+    <text x="1120" y="500" font-size="15" text-anchor="middle" fill="#475569">change-saga open</text>
+  </g>
+
+  <line x1="300" y1="210" x2="366" y2="210" stroke="#475569" stroke-width="2.5" marker-end="url(#a)"/>
+  <text x="335" y="196" font-size="14" text-anchor="middle" fill="#475569">writes</text>
+  <line x1="630" y1="210" x2="696" y2="210" stroke="#475569" stroke-width="2.5" marker-end="url(#a)"/>
+  <line x1="960" y1="210" x2="996" y2="210" stroke="#475569" stroke-width="2.5" marker-end="url(#a)"/>
+  <line x1="1120" y1="270" x2="560" y2="396" stroke="#475569" stroke-width="2.5" marker-end="url(#a)"/>
+  <text x="600" y="330" font-size="14" fill="#475569">viewed at one commit or between two</text>
+  <line x1="630" y1="460" x2="696" y2="460" stroke="#475569" stroke-width="2.5" marker-end="url(#a)"/>
+  <line x1="960" y1="460" x2="996" y2="460" stroke="#475569" stroke-width="2.5" marker-end="url(#a)"/>
+  <text x="980" y="548" font-size="14" text-anchor="middle" fill="#475569">shown in</text>
+
+  <text x="40" y="640" font-size="16" fill="#64748b">Epics are durable areas of the product, not changes; a pull request may touch any number of them.</text>
+</svg>

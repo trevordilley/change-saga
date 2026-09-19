@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:app:story:companion-repositories",
+  "parents": [],
+  "title": "Companion repositories",
+  "statement": "The Saga can live in the code repository or in a companion repository, and both are first-class, so a team can document a codebase without landing a large documentation change in it first.",
+  "priority": "unspecified",
+  "citations": [
+    "urn:change-saga:app:citation:app-saga-goals"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "verified-checkout",
+      "statement": "Code references resolve against a checkout of the code repository passed with --repo, verified against the repository the Saga declares; staleness and remapping use the code repository's history, never the Saga's."
+    },
+    {
+      "id": "sync-cursor",
+      "statement": "The Saga records a sync cursor, the code commit it currently documents, and every Saga commit that updates the documentation moves it."
+    },
+    {
+      "id": "companion-compare",
+      "statement": "In compare mode the code delta comes from the code repository, and the Saga delta from the Saga commit whose cursor matched the base."
+    },
+    {
+      "id": "observe-existing-code",
+      "statement": "Documenting existing code needs no change: observe mode, with references pinned at the current code commit."
+    },
+    {
+      "id": "move-later",
+      "statement": "The Saga can move into the code repository later without rewriting anything, because references name their repository."
+    }
+  ],
+  "created_at": "2026-09-19T20:48:14.841765Z"
+}

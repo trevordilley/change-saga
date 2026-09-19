@@ -1,0 +1,39 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:app:story:observe-or-compare",
+  "parents": [],
+  "title": "One Saga, observed or compared",
+  "statement": "A Saga is opened to observe the app at one commit, or to compare what a branch changes from its merge-base the way a pull request does; the comparison is how the Saga is opened, never stored.",
+  "priority": "unspecified",
+  "personas": [
+    "urn:change-saga:app:persona:coding-agent"
+  ],
+  "citations": [
+    "urn:change-saga:app:citation:app-saga-goals"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "merge-base",
+      "statement": "Compare starts from the merge-base of the given commit and HEAD, the way a pull request does."
+    },
+    {
+      "id": "changed-layer",
+      "statement": "The Changed layer lists Saga records added, revised, or retired, each with its before and after."
+    },
+    {
+      "id": "affected-layer",
+      "statement": "The Affected layer lists records the change did not edit but invalidated: anything pinned to a revision that changed, and any node whose referenced code changed, so a code-only change still lights up the stories, designs, and personas it touches."
+    },
+    {
+      "id": "code-layer",
+      "statement": "The Code layer groups diff hunks under the nodes that reference them, plus every changed line no node references."
+    },
+    {
+      "id": "same-against",
+      "statement": "status and query accept the same --against as open, so an agent's work queue is scoped to one change."
+    }
+  ],
+  "created_at": "2026-09-19T20:48:14.929139Z"
+}

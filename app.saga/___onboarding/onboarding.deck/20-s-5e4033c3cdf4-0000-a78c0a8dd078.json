@@ -1,0 +1,21 @@
+{
+  "version": 4,
+  "id": "product-domains",
+  "deck": "onboarding",
+  "title": "Seven product domains",
+  "rank": 0,
+  "intent": "orient",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-5e4033c3cdf4-0000-a78c0a8dd078.svg",
+  "takeaway": "Change Saga is seven durable domains: authoring loop, format, requirements, code references, comparison, reviews, and the reviewer.",
+  "reading_order": [
+    "domain-agent-loop",
+    "domain-format",
+    "domain-requirements",
+    "domain-code-evidence",
+    "domain-comparison",
+    "domain-reviews",
+    "domain-reviewer-app"
+  ]
+}

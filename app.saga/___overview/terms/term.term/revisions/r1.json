@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/term-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "term": "urn:change-saga:app:term:term",
+  "parents": [],
+  "name": "term",
+  "definition": "A word the project uses that a newcomer would not know: a living record with a name, a definition, aliases, the stories and records it relates to, and the code that defines it, most often an enum value or a constant. Its code references are watched and never count toward coverage.",
+  "aliases": [
+    "vocabulary"
+  ],
+  "stories": [
+    "urn:change-saga:app:story:overview-and-terms"
+  ],
+  "records": [
+    "urn:change-saga:app:persona:newcomer"
+  ],
+  "code": [
+    {
+      "commit": "142737451284dd853d7519cfe6e8aedbd25c4668",
+      "path": "internal/requirements/terms.go",
+      "start": 37,
+      "end": 58,
+      "digest": "sha256:74f79516662cf144ce15d1600c6c33c0882e25e6ff75d3cb44b208e2b5ffabb7"
+    }
+  ],
+  "created_at": "2026-09-19T20:50:36.933611Z"
+}

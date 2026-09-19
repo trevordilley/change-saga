@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "file-level-stale",
+  "slide": "reference-resolution",
+  "rank": 30,
+  "kind": "node",
+  "label": "File-level staleness",
+  "description": "A deleted or binary-changed file makes the reference stale; a whole-file reference stays current only across a pure rename.",
+  "selector": {
+    "type": "element",
+    "element_id": "file-level-stale"
+  }
+}

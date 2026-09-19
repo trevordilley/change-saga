@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/term-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "term": "urn:change-saga:app:term:overview",
+  "parents": [],
+  "name": "overview",
+  "definition": "The Saga's formal overview: the project name (the manifest's title), the elevator pitch, a description (a short essay), and terms and vocabulary. Every part is optional, and a missing part is reported as a gap that never blocks.",
+  "stories": [
+    "urn:change-saga:app:story:overview-and-terms"
+  ],
+  "records": [
+    "urn:change-saga:app:term:term"
+  ],
+  "code": [
+    {
+      "commit": "142737451284dd853d7519cfe6e8aedbd25c4668",
+      "path": "internal/applayout/applayout.go",
+      "start": 53,
+      "end": 58,
+      "digest": "sha256:bf096e73d05d2ac4a9e02982097f8c0627fbad048c15295e3d578846edc658c6"
+    }
+  ],
+  "created_at": "2026-09-19T20:50:37.063861Z"
+}

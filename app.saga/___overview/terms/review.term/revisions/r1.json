@@ -1,0 +1,29 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/term-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "term": "urn:change-saga:app:term:review",
+  "parents": [],
+  "name": "review",
+  "definition": "A pull request's slide deck: one review per pull request, viewed from the merge-base of its base through its head and following the head as commits are pushed. It explains what the change did and why, and it is the only place approvals and comments live.",
+  "aliases": [
+    "pull request review"
+  ],
+  "stories": [
+    "urn:change-saga:app:story:review-is-pr-deck",
+    "urn:change-saga:app:story:documentation-not-approval"
+  ],
+  "records": [
+    "urn:change-saga:app:term:deck"
+  ],
+  "code": [
+    {
+      "commit": "142737451284dd853d7519cfe6e8aedbd25c4668",
+      "path": "internal/saga/review.go",
+      "start": 55,
+      "end": 73,
+      "digest": "sha256:860fed51c6f14a79bc659a9a050beb6d83024fa8bed51abcd25f420897ee5de5"
+    }
+  ],
+  "created_at": "2026-09-19T20:50:36.211527Z"
+}

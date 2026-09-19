@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "ad15b79feb5d404df52c9192d762a34a032a9701",
+      "path": "internal/coderesolve/resolve.go",
+      "start": 159,
+      "end": 161,
+      "digest": "sha256:ec63eab93b7168a06dcc23c89290078fa4ed0374a7fe96b041e609734ca22c65",
+      "note": "Reports a range touched by a hunk as stale, with the reason naming the lines and commits."
+    },
+    {
+      "commit": "ad15b79feb5d404df52c9192d762a34a032a9701",
+      "path": "internal/coderesolve/resolve.go",
+      "start": 188,
+      "end": 191,
+      "digest": "sha256:ad07ba5ddaa908322efa4e6ac4a471661031ea1772709e2d9aefa7ab0439a93a",
+      "note": "Reports a range touched by a hunk as stale, with the reason naming the lines and commits."
+    }
+  ]
+}

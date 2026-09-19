@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "ad15b79feb5d404df52c9192d762a34a032a9701",
+      "path": "internal/coderesolve/resolve.go",
+      "start": 134,
+      "end": 144,
+      "digest": "sha256:3ce6b1cf6344aa6a36e899673164eb878cf6ccdfaffc6dce57b632d4fd26a6b8",
+      "note": "Keeps a reference current at the same lines when the view is the pin or its path is untouched."
+    }
+  ]
+}

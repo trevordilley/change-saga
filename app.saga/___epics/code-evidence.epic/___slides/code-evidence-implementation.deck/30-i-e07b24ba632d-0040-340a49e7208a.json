@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "remap-range",
+  "slide": "reference-resolution",
+  "rank": 40,
+  "kind": "node",
+  "label": "Remap the line range",
+  "description": "Hunks entirely before the range shift it to the viewed commit, so moved lines stay current at their new location.",
+  "selector": {
+    "type": "element",
+    "element_id": "remap-range"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/term-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "term": "urn:change-saga:app:term:growth",
+  "parents": [],
+  "name": "growth",
+  "definition": "An optional next action that grows the Saga one link along the chain, such as a persona, story, design, test case, or term. It never blocks, comes after everything else, and carries the practice it teaches.",
+  "stories": [
+    "urn:change-saga:app:story:growth-not-debt"
+  ],
+  "records": [
+    "urn:change-saga:app:term:next-action"
+  ],
+  "code": [
+    {
+      "commit": "142737451284dd853d7519cfe6e8aedbd25c4668",
+      "path": "internal/nextaction/nextaction.go",
+      "start": 64,
+      "end": 66,
+      "digest": "sha256:a356f75b9574674429118aa395f0f592560e2a0fee40a0000c78973a4cd403b4"
+    }
+  ],
+  "created_at": "2026-09-19T20:50:36.810178Z"
+}
