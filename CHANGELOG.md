@@ -34,6 +34,13 @@ tool, and what they have to do about it.
   decision goes out of date when its slide or code changes. The documentation
   itself has no approvals or comments, and the tool never declares a review
   approved.
+- **Adoption is incremental, and status reports instead of judging.** A first
+  change is asked only to have its implementation explained. `status` reports
+  six coverage areas (implementation, stories, personas, design, quality, and
+  health) with every gap listed, suggests growth without demanding it, and
+  exits 0 whenever it can report. `check --covers` answers whether named areas
+  are covered. Commands default to the only epic, or create one from the
+  branch.
 - **A review deck must account for its change.** Every changed line in a
   review's range must be covered by its deck; coverage is reported per review,
   with the unexplained lines, and `cover` on a review Item uses the review's own
@@ -60,6 +67,7 @@ tool, and what they have to do about it.
   references after a merge.
 - `review create|list|approve|request-changes|withdraw|comment`, `sync` for a
   Saga in a companion repository, and `query layers` and `query history`.
+- `check --covers AREA[,AREA...]`.
 - `term add|revise|set-state`, `overview set-pitch|set-description`, `query
   terms`, and `review list --uncovered`.
 
@@ -69,6 +77,7 @@ tool, and what they have to do about it.
   separate Saga modes, and the `upgrade` command.
 - `saga-diff://` evidence URIs, `rebase-evidence`, and comparisons against the
   uncommitted working tree.
+- Readiness gates and `status` exit codes that failed on gaps.
 - The `compare` command (use `status --against`), `thread`, `reply`, the
   target-level `review` decisions, annotations and file-review marks on
   documentation, and the manifest's `source.base`, `source.head`, and `pr`. Earlier Sagas are not
