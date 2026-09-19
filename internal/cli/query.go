@@ -19,8 +19,8 @@ import (
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
+// querySchema is the one envelope every query operation writes.
 const querySchema = "change-saga.ai/v1"
-const slideQuerySchema = "change-saga.ai/v2"
 
 const (
 	maxQueryPageSize     = 1000
@@ -318,25 +318,22 @@ func queryWithOpener(ctx context.Context, args []string, out io.Writer, open que
 
 	request, options, help, err := parseQuery(operation, args[1:])
 	if help {
-		if operation == "slide" || operation == "slide-diffs" {
-			return writeQuerySuccessSchema(out, slideQuerySchema, "", queryHelpFor(operation), nil)
-		}
 		return writeQuerySuccess(out, "", queryHelpFor(operation), nil)
 	}
 	if err != nil {
-		return writeQueryOperationFailure(out, operation, &queryError{Code: "invalid_argument", Message: err.Error()})
+		return writeQueryFailure(out, &queryError{Code: "invalid_argument", Message: err.Error()})
 	}
 	options.SummaryOnly = operation == "overview" || operation == "children"
 	options.Operation = operation
 	if operation == "slide" || operation == "slide-diffs" {
 		if _, err := saga.ReadManifest(options.SagaRoot); err != nil {
-			return writeQueryOperationFailure(out, operation, normalizeQueryError(err))
+			return writeQueryFailure(out, normalizeQueryError(err))
 		}
 	}
 
 	session, err := open(ctx, options)
 	if err != nil {
-		return writeQueryOperationFailure(out, operation, normalizeQueryError(err))
+		return writeQueryFailure(out, normalizeQueryError(err))
 	}
 
 	var result any
@@ -384,7 +381,7 @@ func queryWithOpener(ctx context.Context, args []string, out io.Writer, open que
 			checkout := firstNonEmpty(options.SourceDir, options.SagaRoot)
 			resolver, locateErr := locateReferences(ctx, checkout, &request.Filters)
 			if locateErr != nil {
-				return writeQueryOperationFailure(out, operation, locateErr)
+				return writeQueryFailure(out, locateErr)
 			}
 			defer resolver.Close()
 		}
@@ -395,10 +392,7 @@ func queryWithOpener(ctx context.Context, args []string, out io.Writer, open que
 		err = errors.New("unsupported query request")
 	}
 	if err != nil {
-		return writeQueryOperationFailure(out, operation, normalizeQueryError(err))
-	}
-	if operation == "slide" || operation == "slide-diffs" {
-		return writeQuerySuccessSchema(out, slideQuerySchema, session.Snapshot(), result, responsePage)
+		return writeQueryFailure(out, normalizeQueryError(err))
 	}
 	return writeQuerySuccess(out, session.Snapshot(), result, responsePage)
 }
@@ -440,11 +434,7 @@ func writeQuerySchema(args []string, out io.Writer) error {
 	if operation == "schema" || queryUsage[operation] == "" {
 		return writeQueryFailure(out, &queryError{Code: "invalid_argument", Message: "unknown schema operation", Details: map[string]any{"allowed": queryDataOperations()}})
 	}
-	description := querySchemaFor(operation)
-	if operation == "slide" || operation == "slide-diffs" {
-		return writeQuerySuccessSchema(out, slideQuerySchema, "", description, nil)
-	}
-	return writeQuerySuccess(out, "", description, nil)
+	return writeQuerySuccess(out, "", querySchemaFor(operation), nil)
 }
 
 func queryDataOperations() []string {
@@ -777,15 +767,11 @@ func firstNonempty(values ...string) string {
 }
 
 func writeQuerySuccess(out io.Writer, snapshot string, data any, page *queryPageEnvelope) error {
-	return writeQuerySuccessSchema(out, querySchema, snapshot, data, page)
-}
-
-func writeQuerySuccessSchema(out io.Writer, schema string, snapshot string, data any, page *queryPageEnvelope) error {
 	if page == nil {
 		page = &queryPageEnvelope{Total: 1, Returned: 1}
 	}
 	return encodeQueryEnvelope(out, queryEnvelope{
-		Schema:   schema,
+		Schema:   querySchema,
 		OK:       true,
 		Snapshot: snapshot,
 		Data:     data,
@@ -794,20 +780,8 @@ func writeQuerySuccessSchema(out io.Writer, schema string, snapshot string, data
 }
 
 func writeQueryFailure(out io.Writer, queryErr *queryError) error {
-	return writeQueryFailureSchema(out, querySchema, queryErr)
-}
-
-func writeQueryOperationFailure(out io.Writer, operation string, queryErr *queryError) error {
-	schema := querySchema
-	if operation == "slide" || operation == "slide-diffs" {
-		schema = slideQuerySchema
-	}
-	return writeQueryFailureSchema(out, schema, queryErr)
-}
-
-func writeQueryFailureSchema(out io.Writer, schema string, queryErr *queryError) error {
 	if err := encodeQueryEnvelope(out, queryEnvelope{
-		Schema: schema,
+		Schema: querySchema,
 		OK:     false,
 		Error: &queryErrorEnvelope{
 			Code:      queryErr.Code,

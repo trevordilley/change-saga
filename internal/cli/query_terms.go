@@ -14,6 +14,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/livingapp"
 	"github.com/twentyideas/changesaga/internal/livingid"
 	"github.com/twentyideas/changesaga/internal/requirements"
+	"github.com/twentyideas/changesaga/internal/reviewapp"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
@@ -42,27 +43,27 @@ func queryTerms(ctx context.Context, args []string, out io.Writer) error {
 		if errors.Is(err, flag.ErrHelp) {
 			return writeQuerySuccess(out, "", queryHelpFor("terms"), nil)
 		}
-		return writeQueryOperationFailure(out, "terms", &queryError{Code: "invalid_argument", Message: err.Error()})
+		return writeQueryFailure(out, &queryError{Code: "invalid_argument", Message: err.Error()})
 	}
 	if *sagaRoot == "" || flags.NArg() != 0 {
-		return writeQueryOperationFailure(out, "terms", &queryError{Code: "invalid_argument", Message: "usage: " + queryUsage["terms"]})
+		return writeQueryFailure(out, &queryError{Code: "invalid_argument", Message: "usage: " + queryUsage["terms"]})
 	}
 	manifest, err := saga.ReadManifest(*sagaRoot)
 	if err != nil {
-		return writeQueryOperationFailure(out, "terms", normalizeQueryError(err))
+		return writeQueryFailure(out, normalizeQueryError(err))
 	}
 	document, err := requirements.Load(*sagaRoot, manifest.ID)
 	if err != nil {
-		return writeQueryOperationFailure(out, "terms", &queryError{Code: "invalid_saga", Message: err.Error()})
+		return writeQueryFailure(out, &queryError{Code: "invalid_saga", Message: err.Error()})
 	}
 	checkout := firstNonEmpty(*sourceDir, *sagaRoot)
 	changes, err := gitdiff.ReadRange(ctx, checkout, manifest.Source.Repository, opening.rng(), gitdiff.ReadOptions{})
 	if err != nil {
-		return writeQueryOperationFailure(out, "terms", &queryError{Code: "source_unavailable", Message: err.Error(), Retryable: true})
+		return writeQueryFailure(out, &queryError{Code: "source_unavailable", Message: err.Error(), Retryable: true})
 	}
 	resolver, err := coderesolve.New(ctx, checkout)
 	if err != nil {
-		return writeQueryOperationFailure(out, "terms", &queryError{Code: "source_unavailable", Message: err.Error(), Retryable: true})
+		return writeQueryFailure(out, &queryError{Code: "source_unavailable", Message: err.Error(), Retryable: true})
 	}
 	defer resolver.Close()
 
@@ -74,7 +75,7 @@ func queryTerms(ctx context.Context, args []string, out io.Writer) error {
 			selected = []requirements.Term{*found}
 		}
 		if selected == nil {
-			return writeQueryOperationFailure(out, "terms", &queryError{Code: "not_found", Message: "term " + *term + " does not exist"})
+			return writeQueryFailure(out, &queryError{Code: "not_found", Message: "term " + *term + " does not exist"})
 		}
 	}
 	if *story != "" {
@@ -88,7 +89,7 @@ func queryTerms(ctx context.Context, args []string, out io.Writer) error {
 	if *ref != "" {
 		location, err := resolveLocation(ctx, checkout, *ref)
 		if err != nil {
-			return writeQueryOperationFailure(out, "terms", &queryError{Code: "invalid_argument", Message: "--ref: " + err.Error()})
+			return writeQueryFailure(out, &queryError{Code: "invalid_argument", Message: "--ref: " + err.Error()})
 		}
 		result.Ref = location.String()
 		selected = filterTerms(selected, func(revision *requirements.TermRevision) bool {
@@ -102,7 +103,11 @@ func queryTerms(ctx context.Context, args []string, out io.Writer) error {
 		})
 	}
 	result.Terms = livingapp.TermStatuses(ctx, manifest.ID, selected, changes, resolver)
-	return writeQuerySuccess(out, "", result, nil)
+	snapshot, err := reviewapp.Snapshot(ctx, *sagaRoot, changes)
+	if err != nil {
+		return writeQueryFailure(out, &queryError{Code: "internal", Message: err.Error()})
+	}
+	return writeQuerySuccess(out, snapshot, result, nil)
 }
 
 func filterTerms(terms []requirements.Term, keep func(*requirements.TermRevision) bool) []requirements.Term {

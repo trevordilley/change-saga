@@ -831,6 +831,13 @@ func assetMediaType(extension string) string {
 	}
 }
 
+// Snapshot identifies the Saga tree and the comparison a query read, the same
+// value every query envelope carries, so an operation answered outside a
+// session still reports it.
+func Snapshot(ctx context.Context, root string, changes gitdiff.ChangeSet) (string, error) {
+	return buildSnapshot(ctx, root, changes)
+}
+
 func buildSnapshot(ctx context.Context, root string, changes gitdiff.ChangeSet) (string, error) {
 	hash := sha256.New()
 	_, _ = fmt.Fprintf(hash, "change-saga-reviewapp-v1\x00%s\x00%s\x00", changes.BaseOID, changes.HeadOID)

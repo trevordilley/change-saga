@@ -8,6 +8,8 @@ import (
 
 	"github.com/twentyideas/changesaga/internal/changeview"
 	"github.com/twentyideas/changesaga/internal/coderesolve"
+	"github.com/twentyideas/changesaga/internal/gitdiff"
+	"github.com/twentyideas/changesaga/internal/reviewapp"
 )
 
 // queryLayers answers "query layers": the Changed, Affected, and Code layers
@@ -24,23 +26,23 @@ func queryLayers(ctx context.Context, args []string, out io.Writer) error {
 		if errors.Is(err, flag.ErrHelp) {
 			return writeQuerySuccess(out, "", queryHelpFor("layers"), nil)
 		}
-		return writeQueryOperationFailure(out, "layers", &queryError{Code: "invalid_argument", Message: err.Error()})
+		return writeQueryFailure(out, &queryError{Code: "invalid_argument", Message: err.Error()})
 	}
 	switch {
 	case *sagaRoot == "" || flags.NArg() != 0:
-		return writeQueryOperationFailure(out, "layers", &queryError{Code: "invalid_argument", Message: "usage: " + queryUsage["layers"]})
+		return writeQueryFailure(out, &queryError{Code: "invalid_argument", Message: "usage: " + queryUsage["layers"]})
 	case *opening.against == "":
-		return writeQueryOperationFailure(out, "layers", &queryError{Code: "invalid_argument", Message: "layers belong to a comparison: pass --against REV"})
+		return writeQueryFailure(out, &queryError{Code: "invalid_argument", Message: "layers belong to a comparison: pass --against REV"})
 	case *layer != "" && *layer != "changed" && *layer != "affected" && *layer != "code":
-		return writeQueryOperationFailure(out, "layers", &queryError{Code: "invalid_argument", Message: "--layer must be changed, affected, or code"})
+		return writeQueryFailure(out, &queryError{Code: "invalid_argument", Message: "--layer must be changed, affected, or code"})
 	}
 	value, err := readComparison(ctx, *sagaRoot, *sourceDir, opening.rng(), false)
 	if err != nil {
-		return writeQueryOperationFailure(out, "layers", &queryError{Code: "source_unavailable", Message: err.Error(), Retryable: true})
+		return writeQueryFailure(out, &queryError{Code: "source_unavailable", Message: err.Error(), Retryable: true})
 	}
 	resolver, err := coderesolve.New(ctx, value.checkout)
 	if err != nil {
-		return writeQueryOperationFailure(out, "layers", &queryError{Code: "source_unavailable", Message: err.Error(), Retryable: true})
+		return writeQueryFailure(out, &queryError{Code: "source_unavailable", Message: err.Error(), Retryable: true})
 	}
 	defer resolver.Close()
 	layers, _, err := changeview.Open(ctx, changeview.OpenOptions{
@@ -48,7 +50,7 @@ func queryLayers(ctx context.Context, args []string, out io.Writer) error {
 		Changes: value.changes, Report: value.report, Resolver: resolver,
 	})
 	if err != nil {
-		return writeQueryOperationFailure(out, "layers", &queryError{Code: "internal", Message: err.Error()})
+		return writeQueryFailure(out, &queryError{Code: "internal", Message: err.Error()})
 	}
 	empty := changeview.CodeLayer{Groups: []changeview.CodeGroup{}, Unreferenced: []changeview.Hunk{}}
 	switch *layer {
@@ -59,7 +61,11 @@ func queryLayers(ctx context.Context, args []string, out io.Writer) error {
 	case "code":
 		layers.Changed, layers.Affected = []changeview.Change{}, []changeview.Affected{}
 	}
-	return writeQuerySuccess(out, "", layers, nil)
+	snapshot, err := reviewapp.Snapshot(ctx, *sagaRoot, value.changes)
+	if err != nil {
+		return writeQueryFailure(out, &queryError{Code: "internal", Message: err.Error()})
+	}
+	return writeQuerySuccess(out, snapshot, layers, nil)
 }
 
 // queryHistory answers "query history": when a record was introduced, what
@@ -72,11 +78,16 @@ func queryHistory(ctx context.Context, args []string, out io.Writer) error {
 	sagaRoot := flags.String("saga", "", "saga root")
 	node := flags.String("node", "", "record URN")
 	if err := flags.Parse(args); err != nil || *sagaRoot == "" || *node == "" || flags.NArg() != 0 {
-		return writeQueryOperationFailure(out, "history", &queryError{Code: "invalid_argument", Message: "usage: " + queryUsage["history"]})
+		return writeQueryFailure(out, &queryError{Code: "invalid_argument", Message: "usage: " + queryUsage["history"]})
 	}
 	history, err := changeview.NodeHistory(ctx, *sagaRoot, *node)
 	if err != nil {
-		return writeQueryOperationFailure(out, "history", &queryError{Code: "not_found", Message: err.Error()})
+		return writeQueryFailure(out, &queryError{Code: "not_found", Message: err.Error()})
 	}
-	return writeQuerySuccess(out, "", history, nil)
+	// History reads the Saga's own Git log and no comparison.
+	snapshot, err := reviewapp.Snapshot(ctx, *sagaRoot, gitdiff.ChangeSet{})
+	if err != nil {
+		return writeQueryFailure(out, &queryError{Code: "internal", Message: err.Error()})
+	}
+	return writeQuerySuccess(out, snapshot, history, nil)
 }
