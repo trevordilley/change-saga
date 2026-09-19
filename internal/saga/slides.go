@@ -48,7 +48,7 @@ func loadEmbeddedDecks(root, dir, role string, manifest Manifest, options loadOp
 			addIssue(validation, "error", relativePath(root, path), "embedded slide decks must be real <id>.deck directories")
 			continue
 		}
-		decks, loadErr := loadDeckRecords(root, path, manifest, options, validation)
+		decks, loadErr := loadDeckRecords(root, path, appDeckTargets(manifest.ID), options, validation)
 		if loadErr != nil {
 			return nil, loadErr
 		}
@@ -72,7 +72,24 @@ func loadEmbeddedDecks(root, dir, role string, manifest Manifest, options loadOp
 	return result, nil
 }
 
-func loadDeckRecords(root, recordRoot string, manifest Manifest, options loadOptions, validation *Validation) ([]*Deck, error) {
+// deckTargets names the deck, slide, and Item URNs of one deck bundle. The
+// app's decks are named in the app's URN space; a review's deck is named
+// inside its review, so slide IDs never collide across reviews.
+type deckTargets struct {
+	deck  func(deckID string) string
+	slide func(slideID string) string
+	item  func(slideID, itemID string) string
+}
+
+func appDeckTargets(sagaID string) deckTargets {
+	return deckTargets{
+		deck:  func(id string) string { return DeckTarget(sagaID, id) },
+		slide: func(id string) string { return SlideTarget(sagaID, id) },
+		item:  func(slide, id string) string { return ItemTarget(sagaID, slide, id) },
+	}
+}
+
+func loadDeckRecords(root, recordRoot string, targets deckTargets, options loadOptions, validation *Validation) ([]*Deck, error) {
 	entries, err := os.ReadDir(recordRoot)
 	if err != nil {
 		return nil, err
@@ -104,7 +121,7 @@ func loadDeckRecords(root, recordRoot string, manifest Manifest, options loadOpt
 			addIssue(validation, "error", name, err.Error())
 			continue
 		}
-		deck := &Deck{Path: diagnostic, Directory: recordRoot, DeckManifest: value, Target: DeckTarget(manifest.ID, value.ID)}
+		deck := &Deck{Path: diagnostic, Directory: recordRoot, DeckManifest: value, Target: targets.deck(value.ID)}
 		validateDeckManifest(value, name, deck.Target, validation)
 		key := FlatTargetKey(deck.Target)
 		if matches[2] != key {
@@ -134,7 +151,7 @@ func loadDeckRecords(root, recordRoot string, manifest Manifest, options loadOpt
 			addIssue(validation, "error", name, "slide filename references an unknown deck key")
 			continue
 		}
-		slide := &Slide{Path: relativePath(root, path), Directory: recordRoot, SlideManifest: value, Target: SlideTarget(manifest.ID, value.ID)}
+		slide := &Slide{Path: relativePath(root, path), Directory: recordRoot, SlideManifest: value, Target: targets.slide(value.ID)}
 		validateSlideManifest(value, name, deck.ID, deck.Target, slide.Target, recordRoot, options.outline, validation)
 		key := FlatTargetKey(slide.Target)
 		if matches[3] != key {
@@ -168,7 +185,7 @@ func loadDeckRecords(root, recordRoot string, manifest Manifest, options loadOpt
 			addIssue(validation, "error", name, "item filename references an unknown slide key")
 			continue
 		}
-		item := &Item{Path: relativePath(root, path), Directory: recordRoot, ItemManifest: value, Target: ItemTarget(manifest.ID, slide.ID, value.ID)}
+		item := &Item{Path: relativePath(root, path), Directory: recordRoot, ItemManifest: value, Target: targets.item(slide.ID, value.ID)}
 		validateItem(item, slide, validation)
 		expected, nameErr := FlatItemFilename(slide.Target, item.Target, value.Rank)
 		if nameErr != nil || expected != name {
@@ -256,8 +273,8 @@ func validateDeckManifest(value DeckManifest, path, target string, validation *V
 	if err != nil || expected != path {
 		addIssue(validation, "error", path, "deck filename does not match its rank and stable target")
 	}
-	if value.Role != DeckRoleChange && value.Role != DeckRoleOnboarding {
-		addIssue(validation, "error", path, "deck role must be change or onboarding")
+	if value.Role != DeckRoleChange && value.Role != DeckRoleOnboarding && value.Role != DeckRoleReview {
+		addIssue(validation, "error", path, "deck role must be change, onboarding, or review")
 	}
 	if validFlatRank(value.Rank) != nil || strings.TrimSpace(value.Objective) == "" || utf8.RuneCountInString(value.Objective) > 240 {
 		addIssue(validation, "error", path, "deck rank must fit the portable range and objective must contain 1 to 240 characters")
@@ -402,6 +419,12 @@ func validateDeckRole(deck *Deck, role, sagaID string, validation *Validation) {
 	for _, slide := range deck.Slides {
 		for _, item := range slide.Items {
 			switch role {
+			case DeckRoleReview:
+				// A review Item may reference the code the change touched,
+				// a Saga record to open beside it, both, or neither.
+				if item.Record != "" && !validReviewRecordReference(sagaID, item.Record) {
+					addIssue(validation, "error", item.Path, "review item record must be a canonical record URN of this Saga")
+				}
 			case DeckRoleOnboarding:
 				if !validRecordReference(sagaID, item.Record) {
 					addIssue(validation, "error", item.Path, "onboarding item record must be a canonical persona, epic, or story URN of this Saga")
@@ -421,8 +444,20 @@ func validateDeckRole(deck *Deck, role, sagaID string, validation *Validation) {
 // RecordReferenceKinds are the record kinds an onboarding Item may reference.
 var RecordReferenceKinds = []string{"persona", "epic", "story"}
 
+// ReviewRecordReferenceKinds are the documentation records a review Item may
+// reference so a reviewer can open them beside the change.
+var ReviewRecordReferenceKinds = []string{"persona", "epic", "story", "test-case", "deck", "slide", "chapter", "section", "fragment"}
+
+func validReviewRecordReference(sagaID, value string) bool {
+	return validRecordOfKinds(sagaID, value, ReviewRecordReferenceKinds)
+}
+
 func validRecordReference(sagaID, value string) bool {
-	for _, kind := range RecordReferenceKinds {
+	return validRecordOfKinds(sagaID, value, RecordReferenceKinds)
+}
+
+func validRecordOfKinds(sagaID, value string, kinds []string) bool {
+	for _, kind := range kinds {
 		prefix := "urn:change-saga:" + sagaID + ":" + kind + ":"
 		if id := strings.TrimPrefix(value, prefix); id != value && stableID.MatchString(id) {
 			return true

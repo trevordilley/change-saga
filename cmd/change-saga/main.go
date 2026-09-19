@@ -39,6 +39,8 @@ func run(args []string, stdout, stderr io.Writer) int {
 		err = cli.Init(ctx, args[1:], stdout)
 	case "epic":
 		err = cli.Epic(ctx, args[1:], stdout)
+	case "review":
+		err = cli.Review(ctx, args[1:], stdout)
 	case "persona":
 		err = cli.Persona(ctx, args[1:], stdout)
 	case "flag":

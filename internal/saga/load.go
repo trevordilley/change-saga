@@ -128,6 +128,11 @@ func load(root string, options loadOptions) (*Saga, Validation, error) {
 		return nil, validation, err
 	}
 	document := &Saga{Root: abs, Manifest: manifest, Section: section, Decks: decks, Overview: app.overview, DesignSystem: app.designSystem, Onboarding: app.onboarding, Epics: app.epics}
+	if metadataDirectorySafe(abs, abs, ReviewsDir, &validation) {
+		if document.Reviews, err = loadReviews(abs, manifest, options, &validation); err != nil {
+			return nil, validation, err
+		}
+	}
 	if !options.outline && !options.skipCoverage {
 		if metadataDirectorySafe(abs, abs, "___claims", &validation) {
 			document.Claims, err = loadClaims(abs, &validation)
@@ -661,7 +666,7 @@ func knownReservedDirectory(name string, hierarchy hierarchyRoot) bool {
 	switch hierarchy {
 	case sagaHierarchy:
 		switch name {
-		case CodeDirName, "___claims", "___verifications", MergesDir,
+		case CodeDirName, ReviewsDir, "___claims", "___verifications", MergesDir,
 			applayout.OverviewDir, applayout.PersonasDir, applayout.DesignSystemDir,
 			applayout.OnboardingDir, applayout.FeatureFlagsDir, applayout.EpicsDir:
 			return true

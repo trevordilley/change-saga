@@ -306,7 +306,10 @@ type Saga struct {
 	// Onboarding is the app's onboarding deck, whose Items reference records.
 	Onboarding []*Deck `json:"onboarding,omitempty"`
 	// Epics groups the same nodes by durable product domain.
-	Epics         []*Epic        `json:"epics,omitempty"`
+	Epics []*Epic `json:"epics,omitempty"`
+	// Reviews are the pull requests' review decks. They are not
+	// documentation and never count toward coverage.
+	Reviews       []*Review      `json:"reviews,omitempty"`
 	Claims        []Claim        `json:"claims,omitempty"`
 	Verifications []Verification `json:"verifications,omitempty"`
 	Merges        []Merge        `json:"merges,omitempty"`

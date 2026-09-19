@@ -148,6 +148,23 @@ var resources = []Resource{
 		Notes:   "pins the current story revision; never excuses changed-source accounting",
 	},
 	{
+		Kind: "review", URN: "urn:change-saga:<saga>:review:<review>", Storage: "___reviews/<review>.review/review.json and deck/ (a flat deck bundle, role review)",
+		Schema: schemaBase + "v5/review.schema.json", Versions: []int{5}, History: "one per pull request; its head follows a ref until repin freezes the merged base and head",
+		Writers: []string{"review create", "repin"},
+		Notes:   "a review is the pull request's slide deck; its slide and Item URNs are <review>:slide:<slide>[:item:<item>], its Items reference code (viewed as a diff against the base) and may reference records; it never counts toward coverage",
+	},
+	{
+		Kind: "review-approval", URN: "urn:change-saga:<saga>:review:<review>:slide:<slide>", Storage: "___reviews/<review>.review/approvals/<event>.json",
+		Schema: schemaBase + "v5/review-approval.schema.json", Versions: []int{5}, History: "append-only; the latest decision per reviewer and slide is current",
+		Lifecycle: []string{"approved", "changes_requested", "none"}, Writers: []string{"review approve", "review request-changes", "review withdraw"},
+		Notes: "records the head commit and the slide digest it was given at; out of date when the slide or the code it references changed since",
+	},
+	{
+		Kind: "review-comment", URN: "urn:change-saga:<saga>:review:<review>:slide:<slide>[:item:<item>]", Storage: "___reviews/<review>.review/comments/<comment>.json",
+		Schema: schemaBase + "v5/review-comment.schema.json", Versions: []int{5}, History: "append-only; a reply names its parent and may resolve or reopen the thread",
+		Lifecycle: []string{"open", "resolved"}, Writers: []string{"review comment"},
+	},
+	{
 		Kind: "test-case", URN: "urn:change-saga:<saga>:test-case:<test-case>", Storage: "___epics/<epic>.epic/___quality/test-cases/<test-case>.test/test-case.json",
 		Schema: schemaBase + "v5/test-case.schema.json", Versions: []int{5}, History: "immutable identity", Writers: []string{"quality test-case add"},
 	},

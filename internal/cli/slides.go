@@ -142,10 +142,11 @@ func AddSlide(_ context.Context, args []string, out io.Writer) error {
 	mediaType := flags.String("media-type", "image/svg+xml", "visual media type")
 	entrypoint := flags.String("entrypoint", "slide.svg", "simple filename whose extension selects the compact slide asset name")
 	epic := epicFlag(flags)
+	reviewID := flags.String("review", "", "add the slide to this pull request review's deck instead of --deck")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
-	if flags.NArg() != 2 || *deckTarget == "" || *intent == "" || *layout == "" {
+	if flags.NArg() != 2 || (*deckTarget == "") == (*reviewID == "") || *intent == "" || *layout == "" {
 		return fmt.Errorf("usage: %s", commandUsage["add-slide"])
 	}
 	name := store.Slug(strings.TrimSuffix(flags.Arg(1), ".slide"))
@@ -197,17 +198,32 @@ func AddSlide(_ context.Context, args []string, out io.Writer) error {
 	}
 	var created, target string
 	err = authorMutation(flags.Arg(0), func(document *saga.Saga) error {
-		deck := findDeck(document, *deckTarget)
-		if deck != nil {
+		var deck *saga.Deck
+		target = saga.SlideTarget(document.Manifest.ID, *id)
+		if *reviewID != "" {
+			review, err := findReviewDeck(document, *reviewID)
+			if err != nil {
+				return err
+			}
+			if *epic != "" {
+				return fmt.Errorf("a review deck belongs to its review, not an epic; omit --epic")
+			}
+			deck = review.Deck
+			if !saga.ValidID(*id) || review.Slide(*id) != nil {
+				return fmt.Errorf("slide id %q is invalid or already used in review %s", *id, review.ID)
+			}
+			target = saga.ReviewSlideTarget(document.Manifest.ID, review.ID, *id)
+		} else {
+			deck = findDeck(document, *deckTarget)
+			if deck == nil {
+				return fmt.Errorf("--deck must identify an existing deck")
+			}
 			if err := assertDeckEpic(document, *epic, deck.Path, deck.Target); err != nil {
 				return err
 			}
-		}
-		if deck == nil {
-			return fmt.Errorf("--deck must identify an existing deck")
-		}
-		if !saga.ValidID(*id) || targetIDExists(document, *id) {
-			return fmt.Errorf("slide id %q is invalid or already used", *id)
+			if !saga.ValidID(*id) || targetIDExists(document, *id) {
+				return fmt.Errorf("slide id %q is invalid or already used", *id)
+			}
 		}
 		chosenRank := rank.value
 		if !rank.set {
@@ -217,7 +233,6 @@ func AddSlide(_ context.Context, args []string, out io.Writer) error {
 				}
 			}
 		}
-		target = saga.SlideTarget(document.Manifest.ID, *id)
 		filename, err := saga.FlatSlideFilename(deck.Target, target, chosenRank)
 		if err != nil {
 			return err
@@ -243,6 +258,10 @@ func AddSlide(_ context.Context, args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
+	if *reviewID != "" {
+		fmt.Fprintf(out, "Added slide %s\nTarget: %s\nNext: change-saga set-slide-content --review %s --target %s --source FILE %s\n", filepath.ToSlash(created), target, *reviewID, *id, flags.Arg(0))
+		return nil
+	}
 	fmt.Fprintf(out, "Added slide %s\nTarget: %s\nNext: change-saga set-slide-content --target %s --source FILE %s\n", filepath.ToSlash(created), target, target, flags.Arg(0))
 	return nil
 }
@@ -261,8 +280,9 @@ func AddItem(_ context.Context, args []string, out io.Writer) error {
 	body := flags.String("body", "", "required concise callout body")
 	placement := flags.String("placement", "", "top, right, bottom, left, or overlay")
 	leader := flags.String("leader", "", "none, line, or arrow")
-	record := flags.String("record", "", "onboarding items only: the persona, epic, or story URN the item explains")
+	record := flags.String("record", "", "the record the item points at: required for onboarding items (a persona, epic, or story URN); optional for review items (a story, epic slide, or other record to open beside the change)")
 	epic := epicFlag(flags)
+	reviewID := flags.String("review", "", "the pull request review whose slide receives the item")
 	var rank optionalInt
 	flags.Var(&rank, "rank", "non-negative item order; defaults after the last item")
 	if err := flags.Parse(args); err != nil {
@@ -320,15 +340,36 @@ func AddItem(_ context.Context, args []string, out io.Writer) error {
 	}
 	var created, target string
 	err := authorMutation(flags.Arg(0), func(document *saga.Saga) error {
-		slide := findSlide(document, *slideTarget)
-		if slide == nil {
-			return fmt.Errorf("--slide must identify an existing slide")
-		}
-		if err := assertDeckEpic(document, *epic, slide.Path, slide.Target); err != nil {
-			return err
-		}
-		if err := checkItemRecord(document, slide, *record); err != nil {
-			return err
+		var slide *saga.Slide
+		target = ""
+		if *reviewID != "" {
+			review, err := findReviewDeck(document, *reviewID)
+			if err != nil {
+				return err
+			}
+			if slide = findReviewSlide(review, *slideTarget); slide == nil {
+				return fmt.Errorf("review %s has no slide %q", review.ID, *slideTarget)
+			}
+			if *epic != "" {
+				return fmt.Errorf("a review deck belongs to its review, not an epic; omit --epic")
+			}
+			if *record != "" {
+				if err := requireReviewRecord(document, *record); err != nil {
+					return err
+				}
+			}
+			target = saga.ReviewItemTarget(document.Manifest.ID, review.ID, slide.ID, *id)
+		} else {
+			if slide = findSlide(document, *slideTarget); slide == nil {
+				return fmt.Errorf("--slide must identify an existing slide")
+			}
+			if err := assertDeckEpic(document, *epic, slide.Path, slide.Target); err != nil {
+				return err
+			}
+			if err := checkItemRecord(document, slide, *record); err != nil {
+				return err
+			}
+			target = saga.ItemTarget(document.Manifest.ID, slide.ID, *id)
 		}
 		if len(slide.Items) >= 7 && slide.Layout != "custom" {
 			return fmt.Errorf("standard layouts allow at most 7 semantic Items; split the slide")
@@ -358,7 +399,6 @@ func AddItem(_ context.Context, args []string, out io.Writer) error {
 				}
 			}
 		}
-		target = saga.ItemTarget(document.Manifest.ID, slide.ID, *id)
 		filename, err := saga.FlatItemFilename(slide.Target, target, chosenRank)
 		if err != nil {
 			return err
@@ -379,11 +419,14 @@ func AddItem(_ context.Context, args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
+	fmt.Fprintf(out, "Added item %s\nTarget: %s\n", filepath.ToSlash(created), target)
 	if *record != "" {
-		fmt.Fprintf(out, "Added item %s\nTarget: %s\nRecord: %s\n", filepath.ToSlash(created), target, *record)
-		return nil
+		fmt.Fprintf(out, "Record: %s\n", *record)
+		if *reviewID == "" {
+			return nil
+		}
 	}
-	fmt.Fprintf(out, "Added item %s\nTarget: %s\nNext: change-saga cover --target %s ... %s\n", filepath.ToSlash(created), target, target, flags.Arg(0))
+	fmt.Fprintf(out, "Next: change-saga cover --target %s ... %s\n", target, flags.Arg(0))
 	return nil
 }
 
@@ -394,6 +437,7 @@ func SetSlideContent(_ context.Context, args []string, out io.Writer) error {
 	jsonOutput := flags.Bool("json", false, "emit one machine-readable JSON result")
 	quiet := flags.Bool("quiet", false, "suppress successful output")
 	epic := epicFlag(flags)
+	reviewID := flags.String("review", "", "the pull request review whose slide is replaced")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -415,12 +459,22 @@ func SetSlideContent(_ context.Context, args []string, out io.Writer) error {
 	}
 	var target string
 	err = authorMutation(flags.Arg(0), func(document *saga.Saga) error {
-		slide := findSlide(document, *targetValue)
-		if slide == nil {
-			return fmt.Errorf("--target must identify a slide")
-		}
-		if err := assertDeckEpic(document, *epic, slide.Path, slide.Target); err != nil {
-			return err
+		var slide *saga.Slide
+		if *reviewID != "" {
+			review, err := findReviewDeck(document, *reviewID)
+			if err != nil {
+				return err
+			}
+			if slide = findReviewSlide(review, *targetValue); slide == nil {
+				return fmt.Errorf("review %s has no slide %q", review.ID, *targetValue)
+			}
+		} else {
+			if slide = findSlide(document, *targetValue); slide == nil {
+				return fmt.Errorf("--target must identify a slide")
+			}
+			if err := assertDeckEpic(document, *epic, slide.Path, slide.Target); err != nil {
+				return err
+			}
 		}
 		entrypoint := filepath.Join(slide.Directory, filepath.FromSlash(slide.Entrypoint))
 		if err := store.WriteFile(entrypoint, data, 0o644, false); err != nil {
@@ -472,6 +526,29 @@ func checkItemRecord(document *saga.Saga, slide *saga.Slide, record string) erro
 	}
 	if record == "" {
 		return fmt.Errorf("--record is required: an onboarding item explains a persona, epic, or story URN")
+	}
+	return requireAppRecord(document.Root, document.Manifest.ID, record)
+}
+
+// requireReviewRecord checks that a review Item's record names an existing
+// documentation record: a persona, epic, or story, or a deck, slide, chapter,
+// section, or fragment of the living Saga.
+func requireReviewRecord(document *saga.Saga, record string) error {
+	prefix := "urn:change-saga:" + document.Manifest.ID + ":"
+	for _, kind := range []string{"deck", "slide", "chapter", "section", "fragment"} {
+		if strings.HasPrefix(record, prefix+kind+":") {
+			found := false
+			walkTargets(document.Root, document.Section, func(target, _ string, _ bool) {
+				found = found || target == record
+			})
+			if !found {
+				return fmt.Errorf("%s %q does not exist in the Saga", kind, record)
+			}
+			return nil
+		}
+	}
+	if id, ok := strings.CutPrefix(record, prefix+"test-case:"); ok && applayout.ValidID(id) {
+		return nil
 	}
 	return requireAppRecord(document.Root, document.Manifest.ID, record)
 }

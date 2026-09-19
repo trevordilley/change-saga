@@ -151,9 +151,9 @@ var commandUsage = map[string]string{
 	"quality run":                 "change-saga quality run record [flags] <saga>",
 	"quality run record":          "change-saga quality run record --test URN --result RESULT --summary TEXT --evidence URN... [--parent RUN...] [--test-revision URN] [--command TEXT] [--commit REV] [--id ID] [flags] <saga>",
 	"add-deck":                    "change-saga add-deck (--epic ID | --role onboarding) [flags] <saga> <name>",
-	"add-slide":                   "change-saga add-slide --deck TARGET --intent INTENT --layout LAYOUT [flags] <saga> <name>",
-	"set-slide-content":           "change-saga set-slide-content --target TARGET --source FILE|- [--json|--quiet] <saga>",
-	"add-item":                    "change-saga add-item --slide TARGET --kind KIND [selector] [--record URN] [flags] <saga>",
+	"add-slide":                   "change-saga add-slide (--deck TARGET | --review ID) --intent INTENT --layout LAYOUT [flags] <saga> <name>",
+	"set-slide-content":           "change-saga set-slide-content [--review ID] --target TARGET --source FILE|- [--json|--quiet] <saga>",
+	"add-item":                    "change-saga add-item [--review ID] --slide TARGET --kind KIND [selector] [--record URN] [flags] <saga>",
 	"add-chapter":                 "change-saga add-chapter (--epic ID | --app overview|designsystem) [flags] <saga> <name>",
 	"add-section":                 "change-saga add-section [flags] <saga> <section/path>",
 	"add-fragment":                "change-saga add-fragment (--epic ID | --app overview|designsystem | --section TARGET) [flags] <saga>",
@@ -167,7 +167,13 @@ var commandUsage = map[string]string{
 	"sync":                        "change-saga sync --repo PATH [--commit REV] [--json] <saga>",
 	"add-claim":                   "change-saga add-claim --target TARGET --kind KIND --statement TEXT --ref LOCATION [--ref LOCATION...] <saga>",
 	"verify-claim":                "change-saga verify-claim --claim ID --status STATUS --summary TEXT [flags] <saga>",
-	"review":                      "change-saga review [flags] <saga>",
+	"review":                      "change-saga review <create|list|approve|request-changes|withdraw|comment> [flags] <saga>",
+	"review create":               "change-saga review create --id ID --base REV [--head REF] [--pr N] [--url URL] [--title TEXT] [flags] <saga>",
+	"review list":                 "change-saga review list [--review ID] [--repo PATH] [--json] <saga>",
+	"review approve":              "change-saga review approve --review ID --slide ID --reviewer-kind human|ai [--body TEXT] [flags] <saga>",
+	"review request-changes":      "change-saga review request-changes --review ID --slide ID --reviewer-kind human|ai --body TEXT [flags] <saga>",
+	"review withdraw":             "change-saga review withdraw --review ID --slide ID --reviewer-kind human|ai [flags] <saga>",
+	"review comment":              "change-saga review comment --review ID (--target SLIDE[/ITEM] | --reply-to ID) --body TEXT --reviewer-kind human|ai [--resolve|--reopen] [flags] <saga>",
 	"validate":                    "change-saga validate [--json] [--fix] <saga>",
 	"status":                      "change-saga status [--json] [--repo PATH] [--against REV [--head REV]] <saga>",
 	"query":                       "change-saga query <operation> --saga PATH [--repo PATH] [operation flags]",
@@ -303,6 +309,13 @@ var commandDescription = map[string]string{
 	"add-slide":                   "Add one visual argument to an implementation deck. Intent names the\nreviewer job; layout names geometry, not meaning. Establish the system model, then\nforeground consequential tradeoffs, hidden coupling, and deviations that may surprise a reviewer.",
 	"set-slide-content":           "Replace a slide's visual entrypoint while preserving its stable target and items.",
 	"add-item":                    "Add one semantic visual item, including an evidence-bearing callout overlay, and append\nit to the slide reading order. Code references attach here.",
+	"review":                      "A review is a pull request's slide deck: one review per pull request, viewed from the\nmerge-base of its base and its head, and following the head as commits are pushed. The deck\nexplains what the change did and why, the transition the current documentation no longer\nshows. Its Items reference the code the change touched (shown as a diff against the base)\nand the Saga records it revised. Approval and comments exist only here, per review slide:\nthe documentation itself has none. The tool records decisions and reports whether each is\nout of date for the current head; it never declares a review approved.",
+	"review create":               "Create the review for one pull request and its empty review deck. --base is what the pull\nrequest merges into; --head is the ref the review follows (the pull request's branch),\ndefaulting to the checkout's HEAD. Author the deck with add-slide --review, add-item --review,\nset-slide-content --review, and cover --target <review Item URN>.",
+	"review list":                 "Report every review slide by slide: each reviewer's current decision, the head commit it\nwas given at, and whether it is out of date because the slide or the code it references changed\nsince. There is no verdict; a team writes its own rule over the JSON.",
+	"review approve":              "Approve one review slide at the pull request's current head. Declare the reviewer seat:\n--reviewer-kind human for your own decision, or ai with --reviewer-name, --agent, and the exact\n--model. The decision goes out of date when the slide or the code it references changes.",
+	"review request-changes":      "Request changes on one review slide at the pull request's current head, saying what\nshould change.",
+	"review withdraw":             "Withdraw your current decision on one review slide.",
+	"review comment":              "Comment on a review slide or Item, or reply to a comment. --resolve or --reopen sets the\nthread's state. Documentation has no comments; discuss a change to it on the review slide\nor Item that references it.",
 	"set-fragment-content":        "Replace a fragment entrypoint through the supported authoring API. Use --source -\nto read content from standard input; the fragment media type and metadata are preserved.",
 	"add-chapter":                 "Add one independently reviewable narrative chapter to the Saga.",
 	"add-section":                 "Group related narrative content inside a chapter.",
@@ -1230,6 +1243,9 @@ func resolveTarget(document *saga.Saga, value string, allowFragment bool) (strin
 			foundDir = document.Root
 		}
 		if foundDir == "" {
+			foundDir = reviewTargetDirectory(document, value)
+		}
+		if foundDir == "" {
 			return "", "", fmt.Errorf("target %q does not exist%s", value, targetHint(document, allowFragment))
 		}
 		return foundDir, value, nil
@@ -1279,6 +1295,27 @@ func resolveTarget(document *saga.Saga, value string, allowFragment bool) (strin
 		return "", "", fmt.Errorf("target %q is not a valid %s%s", value, targetKinds, targetHint(document, allowFragment))
 	}
 	return abs, foundTarget, nil
+}
+
+// reviewTargetDirectory finds a review slide or Item's deck bundle. A
+// review Item references the code the change touched, so cover accepts it.
+func reviewTargetDirectory(document *saga.Saga, target string) string {
+	for _, review := range document.Reviews {
+		if review.Deck == nil || !strings.HasPrefix(target, review.Target+":") {
+			continue
+		}
+		for _, slide := range review.Deck.Slides {
+			if slide.Target == target {
+				return slide.Directory
+			}
+			for _, item := range slide.Items {
+				if item.Target == target {
+					return item.Directory
+				}
+			}
+		}
+	}
+	return ""
 }
 
 // resolveTargetRecordPath recognizes the record filename printed by deck
