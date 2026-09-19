@@ -558,8 +558,13 @@ func (s *session) DiffOwners(ctx context.Context, query DiffOwnerQuery) (DiffOwn
 	if err != nil {
 		return DiffOwnership{}, invalidArgument("ref must be a code location <commit>:<path>[#L<start>[-L<end>]]")
 	}
+	// Diff ownership is about a comparison's changed lines. Observing has
+	// none, so say what to do instead of reporting the line missing.
+	if s.changes.Mode == gitdiff.ModeObserve {
+		return DiffOwnership{}, invalidArgument("diff-owners reads a comparison's changed lines; pass --against REV, or find what references any line with query traceability --ref or query terms --ref")
+	}
 	if location.Commit != s.changes.BaseOID && location.Commit != s.changes.HeadOID {
-		return DiffOwnership{}, notFound("ref", query.Ref)
+		return DiffOwnership{}, newError(CodeNotFound, "ref's commit is neither the comparison's base "+s.changes.BaseOID+" nor its head "+s.changes.HeadOID, false, map[string]any{"kind": "ref", "id": query.Ref}, nil)
 	}
 	var atoms []gitdiff.Atom
 	for _, atom := range s.changes.Atoms {
@@ -568,7 +573,7 @@ func (s *session) DiffOwners(ctx context.Context, query DiffOwnerQuery) (DiffOwn
 		}
 	}
 	if len(atoms) == 0 {
-		return DiffOwnership{}, notFound("ref", query.Ref)
+		return DiffOwnership{}, newError(CodeNotFound, "ref holds no line this comparison changed; find what references an unchanged line with query traceability --ref", false, map[string]any{"kind": "ref", "id": query.Ref}, nil)
 	}
 	sortAtoms(atoms)
 	start, end, page, pageErr := s.page("diff-owners", query.Ref, query.Cursor, query.Limit, len(atoms))

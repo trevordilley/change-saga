@@ -56,7 +56,7 @@ for a node with no explained code.
   `change-saga query slide --saga PATH --target SLIDE [--offset N] [--limit N] [--repo PATH] [--against REV [--head REV]]`
 - `slide-diffs`: the changed atoms a slide Item references.
   `change-saga query slide-diffs --saga PATH --target ITEM [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]`
-- `diff-owners`: the narrative targets whose code references hold the changed lines or file at a code location, and the terms whose code contains each line.
+- `diff-owners`: in a comparison (--against), the narrative targets whose code references hold the changed lines or file at a code location, and the terms whose code contains each line; for any line, use traceability --ref.
   `change-saga query diff-owners --saga PATH --ref LOCATION [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]`
 - `gaps`: uncovered atoms, stale selectors, and overlapping coverage.
   `change-saga query gaps --saga PATH [--kind uncovered|stale|overlap] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]`

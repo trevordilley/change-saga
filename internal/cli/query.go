@@ -224,7 +224,7 @@ var queryPurpose = map[string]string{
 	"fragment-diffs":      "the changed atoms a saga, chapter, section, fragment, or landmark references, and its stale references",
 	"slide":               "bounded visual slide content and its ordered semantic Items",
 	"slide-diffs":         "the changed atoms a slide Item references",
-	"diff-owners":         "the narrative targets whose code references hold the changed lines or file at a code location, and the terms whose code contains each line",
+	"diff-owners":         "in a comparison (--against), the narrative targets whose code references hold the changed lines or file at a code location, and the terms whose code contains each line; for any line, use traceability --ref",
 	"gaps":                "uncovered atoms, stale selectors, and overlapping coverage",
 	"mappings":            "coverage records ranked by breadth and justification signals so scrutiny starts at the weakest mappings",
 	"claims":              "falsifiable author assertions, exact evidence, current mapping state, and latest verification result",
@@ -355,6 +355,11 @@ func queryWithOpener(ctx context.Context, args []string, out io.Writer, open que
 		page, err = session.FragmentDiffs(ctx, request)
 		result, responsePage = page.Data, &page.Page
 	case diffOwnerQuery:
+		// The ref's commit may be any revision, as everywhere a location is
+		// accepted; an unresolvable one is left for the session to refuse.
+		if location, resolveErr := resolveLocation(ctx, firstNonEmpty(options.SourceDir, options.SagaRoot), request.Ref); resolveErr == nil {
+			request.Ref = location.String()
+		}
 		var page queryPage
 		page, err = session.DiffOwners(ctx, request)
 		result, responsePage = page.Data, &page.Page
