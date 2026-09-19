@@ -169,7 +169,7 @@ var commandUsage = map[string]string{
 	"verify-claim":                "change-saga verify-claim --claim ID --status STATUS --summary TEXT [flags] <saga>",
 	"review":                      "change-saga review <create|list|approve|request-changes|withdraw|comment> [flags] <saga>",
 	"review create":               "change-saga review create --id ID --base REV [--head REF] [--pr N] [--url URL] [--title TEXT] [flags] <saga>",
-	"review list":                 "change-saga review list [--review ID] [--repo PATH] [--json] <saga>",
+	"review list":                 "change-saga review list [--review ID] [--uncovered] [--repo PATH] [--json] <saga>",
 	"review approve":              "change-saga review approve --review ID --slide ID --reviewer-kind human|ai [--body TEXT] [flags] <saga>",
 	"review request-changes":      "change-saga review request-changes --review ID --slide ID --reviewer-kind human|ai --body TEXT [flags] <saga>",
 	"review withdraw":             "change-saga review withdraw --review ID --slide ID --reviewer-kind human|ai [flags] <saga>",
@@ -217,8 +217,10 @@ The workflow:
      the change did and why ("review create", then "add-slide --review").
      Approval and comments happen only on review slides ("review approve",
      "review request-changes", "review comment"); "review list" and "status"
-     report each decision and whether it is out of date. The Saga itself is
-     documentation and carries no approvals.
+     report each decision and whether it is out of date, and which changed
+     lines of the review's range its deck does not yet explain (cover them
+     from a review Item). The Saga itself is documentation and carries no
+     approvals.
 
 Stories, prototypes, design, test cases, and deck bundles are Git-native
 records partitioned so parallel workspaces can author them and merge cleanly;
@@ -317,7 +319,7 @@ var commandDescription = map[string]string{
 	"add-item":                    "Add one semantic visual item, including an evidence-bearing callout overlay, and append\nit to the slide reading order. Code references attach here.",
 	"review":                      "A review is a pull request's slide deck: one review per pull request, viewed from the\nmerge-base of its base and its head, and following the head as commits are pushed. The deck\nexplains what the change did and why, the transition the current documentation no longer\nshows. Its Items reference the code the change touched (shown as a diff against the base)\nand the Saga records it revised. Approval and comments exist only here, per review slide:\nthe documentation itself has none. The tool records decisions and reports whether each is\nout of date for the current head; it never declares a review approved.",
 	"review create":               "Create the review for one pull request and its empty review deck. --base is what the pull\nrequest merges into; --head is the ref the review follows (the pull request's branch),\ndefaulting to the checkout's HEAD. Author the deck with add-slide --review, add-item --review,\nset-slide-content --review, and cover --target <review Item URN>.",
-	"review list":                 "Report every review slide by slide: each reviewer's current decision, the head commit it\nwas given at, and whether it is out of date because the slide or the code it references changed\nsince. There is no verdict; a team writes its own rule over the JSON.",
+	"review list":                 "Report every review slide by slide: each reviewer's current decision, the head commit it\nwas given at, and whether it is out of date because the slide or the code it references changed\nsince. Reports how completely each review's deck covers the review's own range: every changed\nline covered by a review Item reference, with the uncovered lines as ready-to-use locations,\nstale references, and overlap. --uncovered lists only the gaps. There is no verdict; a team\nwrites its own rule over the JSON.",
 	"review approve":              "Approve one review slide at the pull request's current head. Declare the reviewer seat:\n--reviewer-kind human for your own decision, or ai with --reviewer-name, --agent, and the exact\n--model. The decision goes out of date when the slide or the code it references changes.",
 	"review request-changes":      "Request changes on one review slide at the pull request's current head, saying what\nshould change.",
 	"review withdraw":             "Withdraw your current decision on one review slide.",
@@ -333,6 +335,10 @@ deleted lines); --commit pins any revision; --ref names a location directly. --f
 references a whole file (renames, mode and binary changes). In the implementation deck
 the target is an Item. Narrative targets are section/fragment paths, target URNs, and
 <fragment-path>#<landmark-id>.
+A pull request review's Item explains its review's change, so with neither --against nor
+--head, cover on a review Item compares the review's own range: the merge-base of its base
+and the head it follows (its frozen range after merge). --changed-lines then needs no
+--against. Pass --against to compare anything else.
 --batch reads newline-delimited JSON records (or one JSON array) with the per-record
 fields target, path, side, lines, changed_lines, file, commit, refs, note, and name; the
 whole batch is resolved before anything is written, and a failing record leaves the saga
@@ -1083,7 +1089,8 @@ func Spec(args []string, out io.Writer) error {
 				"currency":        []string{"current", "out_of_date", "unknown"},
 				"item_records":    saga.ReviewRecordReferenceKinds,
 				"documentation":   "stories, designs, test cases, and decks carry no approvals and no comments",
-				"verdict":         "none; status and review list report each slide's decisions and currency, and the team decides",
+				"coverage":        "computed per review over its own range (frozen after merge), never stored: every changed line covered by a review Item reference current at its side, file events by whole-file references; review decks never count toward the documentation's coverage",
+				"verdict":         "none; status and review list report each slide's decisions and currency and each review's coverage, and the team decides",
 			},
 			"implementation_deck": map[string]any{
 				"storage": applayout.EpicsDir + "/<epic>" + applayout.EpicSuffix + "/" + saga.EmbeddedSlidesDir + "/<id>" + saga.EmbeddedDeckSuffix, "layout": "flat", "max_basename": saga.FlatMaxBasename, "max_absolute_path": saga.FlatMaxPath,
@@ -2112,6 +2119,12 @@ may decide the same slide, and one persona's later decision supersedes only
 that same persona's prior decision. A decision records the pull request head it
 was given at and goes out of date when the slide or the code it references
 changes; "change-saga review list" and "status" report each one's currency.
+A review deck must account for its change: every changed line of the review's
+range is covered by a review Item. "review list" reports each review's
+coverage and lists the uncovered lines ("review list --uncovered" lists only
+the gaps); cover them with "change-saga cover --target <review Item URN>
+--path <file> --changed-lines", which compares the review's own range when
+--against is omitted.
 Never state that a review is approved: the tool records decisions and the team
 decides what it requires.
 `
@@ -2221,7 +2234,12 @@ approvals/<event>.json and comments/<event>.json are append-only records. A
 review is viewed from the merge-base of its base and head, so its Items' code
 references show as diffs; an Item may also carry a record URN (a persona,
 epic, story, test case, deck, slide, chapter, section, or fragment) to open
-beside the change. Review decks never count toward coverage.
+beside the change. Review decks never count toward the documentation's
+coverage. A review has its own coverage, computed over its range (the frozen
+range after merge) with the same rule: every changed line covered by a review
+Item reference current at its side, and file events by whole-file references.
+status and review list report it with the uncovered lines; cover --target on a
+review Item compares the review's range unless --against is given.
 
 A decision (approved, changes_requested, or none to withdraw) names one review
 slide, the reviewer persona, the pull request head commit it was given at, and
@@ -2232,7 +2250,7 @@ Comments attach to review slides and Items; a reply names its parent and may
 resolve or reopen the thread. Decisions declare a human or AI reviewer persona
 in addition to their Git-derived author; AI personas name an independent
 review seat, their agent kind, and model. status and review list report every
-slide's decisions and currency with no verdict: the team decides what it
+slide's decisions and currency, and each review's coverage, with no verdict: the team decides what it
 requires. repin freezes the landed change's review, and a record's history
 links to the reviews that changed it.
 

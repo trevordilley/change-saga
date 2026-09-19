@@ -256,6 +256,10 @@ func TestRepinFreezesTheLandedReviewAndHistoryLinksIt(t *testing.T) {
 	if report.Merged == nil || report.Merged.Base != fork || report.Merged.Head != head || report.Merged.Landed != landed || report.Range == nil || !report.Range.Frozen || report.Range.HeadOID != head {
 		t.Fatalf("frozen review = merged %#v range %#v", report.Merged, report.Range)
 	}
+	// A frozen review reports its coverage against its frozen range.
+	if covered := report.Coverage; covered == nil || covered.BaseOID != fork || covered.HeadOID != head || covered.Summary.Total != 4 || covered.Summary.Covered != 2 {
+		t.Fatalf("frozen review coverage = %#v (diagnostics %v)", covered, report.Diagnostics)
+	}
 	if queue := slideReport(t, report, "queue"); len(queue.Decisions) != 1 || queue.Decisions[0].Currency != reviewstate.Current {
 		t.Fatalf("the frozen review lost its decisions: %#v", queue.Decisions)
 	}
@@ -278,5 +282,140 @@ func TestRepinFreezesTheLandedReviewAndHistoryLinksIt(t *testing.T) {
 	}
 	if err := json.Unmarshal(history.Bytes(), &envelope); err != nil || len(envelope.Data.Reviews) != 1 || envelope.Data.Reviews[0].ID != "pr-7" {
 		t.Fatalf("history did not link the review: %v\n%s", err, history.String())
+	}
+}
+
+// TestReviewCoverageAccountsForItsOwnRange reports how completely the deck
+// explains the review's range: the fixture's Items reference each file's
+// added line at the head, so the deleted lines at the merge-base are
+// uncovered, and a pushed commit's new line joins them.
+func TestReviewCoverageAccountsForItsOwnRange(t *testing.T) {
+	fixture := newReviewFixture(t)
+	report := reviewReport(t, fixture)
+	covered := report.Coverage
+	if covered == nil {
+		t.Fatalf("review coverage is missing: %#v", report.Diagnostics)
+	}
+	if covered.Summary.Total != 4 || covered.Summary.Covered != 2 || covered.Summary.Uncovered != 2 || covered.Summary.Stale != 0 || covered.Summary.Overlapping != 0 {
+		t.Fatalf("coverage summary = %#v", covered.Summary)
+	}
+	if covered.BaseOID != report.Range.BaseOID || covered.HeadOID != report.Range.HeadOID || len(covered.Items) != 2 {
+		t.Fatalf("coverage = %#v", covered)
+	}
+	base := report.Range.BaseOID
+	if len(covered.UncoveredFiles) != 2 || covered.UncoveredFiles[0].Path != "queue.go" || strings.Join(covered.UncoveredFiles[0].Locations, " ") != base+":queue.go#L3" {
+		t.Fatalf("uncovered files = %#v", covered.UncoveredFiles)
+	}
+	for _, atom := range covered.Uncovered {
+		if atom.Side != "old" || !strings.HasPrefix(atom.Ref, base+":") {
+			t.Fatalf("uncovered atom = %#v", atom)
+		}
+	}
+	text := run(t, Review, "list", fixture.root)
+	if !strings.Contains(text, "coverage: 2 of 4 changed lines") || !strings.Contains(text, "uncovered store.go: "+base+":store.go#L3") {
+		t.Fatalf("review list omitted coverage:\n%s", text)
+	}
+
+	// A pushed commit's new line is uncovered until an Item explains it.
+	writeFile(t, filepath.Join(fixture.repo, "store.go"), "package store\n\nfunc Table() string { return \"jobs\" }\n\nfunc Index() string { return \"status\" }\n")
+	git(t, fixture.repo, "commit", "-am", "Index the jobs table")
+	report = reviewReport(t, fixture)
+	head := report.Range.HeadOID
+	if report.Coverage.Summary.Uncovered != 4 || !strings.Contains(strings.Join(report.Coverage.UncoveredFiles[1].Locations, " "), head+":store.go#L4-L5") {
+		t.Fatalf("a pushed line is not uncovered: %#v", report.Coverage.UncoveredFiles)
+	}
+}
+
+func TestReviewListUncoveredListsOnlyGaps(t *testing.T) {
+	fixture := newReviewFixture(t)
+	text := run(t, Review, "list", "--uncovered", fixture.root)
+	if !strings.Contains(text, "Review pr-7") || !strings.Contains(text, "uncovered queue.go") || strings.Contains(text, "slide queue") {
+		t.Fatalf("review list --uncovered:\n%s", text)
+	}
+	head := strings.TrimSpace(git(t, fixture.repo, "rev-parse", "feature/pg"))
+	base := strings.TrimSpace(git(t, fixture.repo, "merge-base", "main", "feature/pg"))
+	for _, file := range []string{"queue.go", "store.go"} {
+		run(t, Cover, "--target", saga.ReviewItemTarget("app", "pr-7", map[string]string{"queue.go": "queue", "store.go": "table"}[file], "node"), "--ref", base+":"+file+"#L3", "--repo", fixture.repo, fixture.root)
+	}
+	if report := reviewReport(t, fixture); report.Coverage.Summary.Covered != 4 || report.Coverage.HeadOID != head {
+		t.Fatalf("coverage after covering the deleted lines = %#v", report.Coverage)
+	}
+	text = run(t, Review, "list", "--uncovered", fixture.root)
+	if !strings.Contains(text, "No uncovered changes") {
+		t.Fatalf("review list --uncovered with no gaps:\n%s", text)
+	}
+	var result reviewListOutput
+	if err := json.Unmarshal([]byte(run(t, Review, "list", "--uncovered", "--json", fixture.root)), &result); err != nil || len(result.Reviews) != 0 {
+		t.Fatalf("review list --uncovered --json = %#v, %v", result, err)
+	}
+}
+
+// TestCoverOnAReviewItemComparesTheReviewsRange needs no --against: a review
+// Item explains its review's change, so cover reads the review's own range.
+func TestCoverOnAReviewItemComparesTheReviewsRange(t *testing.T) {
+	fixture := newReviewFixture(t)
+	git(t, fixture.repo, "remote", "add", "origin", "https://example.test/acme/app.git")
+	// The checkout moves past the review's head; cover reads the head the
+	// review follows, not the checkout's.
+	git(t, fixture.repo, "checkout", "-b", "elsewhere")
+	writeFile(t, filepath.Join(fixture.repo, "queue.go"), "package queue\n\nfunc Enqueue() string { return \"elsewhere\" }\n")
+	git(t, fixture.repo, "commit", "-am", "Unrelated work")
+	queue := saga.ReviewItemTarget("app", "pr-7", "queue", "node")
+	table := saga.ReviewItemTarget("app", "pr-7", "table", "node")
+	run(t, Cover, "--target", queue, "--path", "queue.go", "--changed-lines", "--repo", fixture.repo, fixture.root)
+	run(t, Cover, "--target", table, "--path", "store.go", "--side", "old", "--lines", "3", "--repo", fixture.repo, fixture.root)
+	covered := reviewReport(t, fixture).Coverage
+	if covered == nil || covered.Summary.Covered != 4 || covered.Summary.Total != 4 || covered.Summary.Overlapping != 1 {
+		t.Fatalf("coverage after covering from the review's range = %#v", covered)
+	}
+
+	var output bytes.Buffer
+	if err := Cover(context.Background(), []string{"--target", "app-overview", "--path", "queue.go", "--changed-lines", "--repo", fixture.repo, fixture.root}, &output); err == nil || !strings.Contains(err.Error(), "--against") {
+		t.Fatalf("--changed-lines on documentation without --against = %v", err)
+	}
+	batch := `{"target":"` + queue + `","path":"queue.go","changed_lines":true,"name":"again"}
+{"target":"app-overview","path":"queue.go","changed_lines":true}`
+	if err := cover(context.Background(), []string{"--batch", "-", "--repo", fixture.repo, fixture.root}, &output, strings.NewReader(batch)); err == nil || !strings.Contains(err.Error(), "comparisons differ") {
+		t.Fatalf("a batch mixing a review Item and documentation = %v", err)
+	}
+	assertValid(t, fixture.root)
+}
+
+func TestStatusReportsReviewCoverageAndNamesTheCoverCommand(t *testing.T) {
+	fixture := newReviewFixture(t)
+	git(t, fixture.repo, "remote", "add", "origin", "https://example.test/acme/app.git")
+	var output bytes.Buffer
+	_ = Status(context.Background(), []string{"--json", fixture.root}, &output)
+	var status struct {
+		Reviews     []reviewstate.Report `json:"reviews"`
+		NextActions []struct {
+			ID       string   `json:"id"`
+			Category string   `json:"category"`
+			Gates    []string `json:"gates"`
+			Command  *struct {
+				Command string   `json:"command"`
+				Argv    []string `json:"argv"`
+			} `json:"command"`
+		} `json:"next_actions"`
+	}
+	if err := json.Unmarshal(output.Bytes(), &status); err != nil {
+		t.Fatalf("status JSON: %v\n%s", err, output.String())
+	}
+	if len(status.Reviews) != 1 || status.Reviews[0].Coverage == nil || status.Reviews[0].Coverage.Summary.Uncovered != 2 {
+		t.Fatalf("status reviews = %#v", status.Reviews)
+	}
+	found := 0
+	for _, action := range status.NextActions {
+		if !strings.HasPrefix(action.ID, "review:uncovered:pr-7:") {
+			continue
+		}
+		found++
+		argv := strings.Join(action.Command.Argv, " ")
+		if action.Category != "review" || len(action.Gates) != 0 || action.Command.Command != "cover" || !strings.Contains(argv, "--changed-lines") || strings.Contains(argv, "--against") {
+			t.Fatalf("review action = %#v %s", action, argv)
+		}
+	}
+	if found != 2 {
+		t.Fatalf("review next actions = %d:\n%s", found, output.String())
 	}
 }

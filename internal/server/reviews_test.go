@@ -196,3 +196,37 @@ func TestFrozenReviewIsViewableButTakesNoDecisions(t *testing.T) {
 		t.Fatalf("a decision on a frozen review = %d", refused.Code)
 	}
 }
+
+// The review page shows the changes of the review's range no Item explains
+// beside the deck: the fixture's Item references the added line, so the
+// deleted line is uncovered, and a pushed line joins it.
+func TestReviewPageShowsUncoveredChangesBesideTheDeck(t *testing.T) {
+	fixture := newServerReviewFixture(t)
+	_, handler := reviewApp(t, fixture, gitdiff.Range{})
+	body := getPage(t, handler, "/reviews/pr-7").Body.String()
+	base := strings.TrimSpace(serverGit(t, fixture.repo, "merge-base", "main", "feature/pg"))
+	for _, want := range []string{
+		`data-review-coverage data-total="2" data-covered="1" data-uncovered="1" data-stale="0"`,
+		`data-review-gap="queue.go"`, base + `:queue.go#L3`, `<code>-return`,
+	} {
+		if !strings.Contains(strings.ReplaceAll(body, "func Enqueue() string { ", ""), want) {
+			t.Fatalf("review page is missing %q:\n%s", want, body)
+		}
+	}
+	if index := getPage(t, handler, "/reviews").Body.String(); !strings.Contains(index, `data-review-coverage-summary data-uncovered="1"`) {
+		t.Fatalf("review index omitted coverage:\n%s", index)
+	}
+	writeServerFile(t, filepath.Join(fixture.repo, "queue.go"), "package queue\n\nfunc Enqueue() string { return \"postgres\" }\n\nfunc Drain() {}\n")
+	serverGit(t, fixture.repo, "commit", "-am", "Drain the queue")
+	body = getPage(t, handler, "/reviews/pr-7").Body.String()
+	if !strings.Contains(body, `data-uncovered="3"`) || !strings.Contains(body, "+func Drain() {}") {
+		t.Fatalf("a pushed line is not shown as uncovered:\n%s", body)
+	}
+
+	if err := reviewstore.Freeze(fixture.root, "pr-7", saga.ReviewMerge{Base: base, Head: fixture.head, Landed: fixture.head, MergedAt: time.Now().UTC()}); err != nil {
+		t.Fatal(err)
+	}
+	if body = getPage(t, handler, "/reviews/pr-7").Body.String(); !strings.Contains(body, `data-uncovered="1"`) {
+		t.Fatalf("a frozen review does not report its frozen range's coverage:\n%s", body)
+	}
+}

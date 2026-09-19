@@ -17,6 +17,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
+	"github.com/twentyideas/changesaga/internal/reviewstate"
 	"github.com/twentyideas/changesaga/internal/saga"
 	"github.com/twentyideas/changesaga/internal/store"
 )
@@ -135,7 +136,7 @@ func cover(ctx context.Context, args []string, out io.Writer, stdin io.Reader) e
 	if err != nil {
 		return err
 	}
-	files, err := buildCoverageFiles(ctx, document, records, *options.repoDir, options.opening.rng(), *options.allowMismatch)
+	files, err := buildCoverageFiles(ctx, document, records, *options.repoDir, options.opening.rng(), flagWasSet(flags, "head"), *options.allowMismatch)
 	if err != nil {
 		return err
 	}
@@ -205,17 +206,39 @@ func coverageOutput(planned []plannedRecord, dryRun bool) coverageMutationOutput
 // write. The comparison is read once for the whole batch, and before any lock
 // is taken, so a slow diff neither repeats per record nor stalls other
 // writers; each reference's digest is read from the repository here.
-func buildCoverageFiles(ctx context.Context, document *saga.Saga, records []coverRecord, repoDir string, rng gitdiff.Range, allowMismatch bool) ([]saga.CodeFile, error) {
+//
+// A review Item explains its review's change, so with neither --against nor
+// --head its records compare the review's own range: the merge-base of its
+// base and the head it follows, or its frozen range after merge.
+func buildCoverageFiles(ctx context.Context, document *saga.Saga, records []coverRecord, repoDir string, rng gitdiff.Range, headSet, allowMismatch bool) ([]saga.CodeFile, error) {
 	checkout := firstNonEmpty(repoDir, document.Root)
+	var review *saga.Review
+	if rng.Observe() && !headSet {
+		var err error
+		if review, err = recordsReview(document, records); err != nil {
+			return nil, err
+		}
+	}
 	var changes *gitdiff.ChangeSet
 	for _, record := range records {
 		if !record.needsComparison() {
 			continue
 		}
-		if record.ChangedLines && rng.Observe() {
-			return nil, fmt.Errorf("--changed-lines needs a comparison: pass --against REV")
+		if record.ChangedLines && rng.Observe() && review == nil {
+			return nil, fmt.Errorf("--changed-lines needs a comparison: pass --against REV, or target a review Item to compare its review's range")
 		}
-		read, err := gitdiff.ReadRange(ctx, checkout, document.Manifest.Source.Repository, rng, gitdiff.ReadOptions{AllowRepositoryMismatch: allowMismatch})
+		options := gitdiff.ReadOptions{AllowRepositoryMismatch: allowMismatch}
+		var read gitdiff.ChangeSet
+		var err error
+		if review != nil {
+			reviewRange, rangeErr := reviewstate.ResolveRange(ctx, checkout, review)
+			if rangeErr != nil {
+				return nil, fmt.Errorf("compare review %s's range (or pass --against REV): %w", review.ID, rangeErr)
+			}
+			read, err = gitdiff.ReadWithOptions(ctx, checkout, document.Manifest.Source.Repository, reviewRange.BaseOID, reviewRange.HeadOID, options)
+		} else {
+			read, err = gitdiff.ReadRange(ctx, checkout, document.Manifest.Source.Repository, rng, options)
+		}
 		if err != nil {
 			return nil, fmt.Errorf("read source comparison (use --repo for a separate saga repository): %w", err)
 		}
@@ -249,6 +272,41 @@ func buildCoverageFiles(ctx context.Context, document *saga.Saga, records []cove
 		files[i] = file
 	}
 	return files, nil
+}
+
+// recordsReview is the review whose Items the records addressing a
+// comparison target, or nil when they target no review Item. Records that
+// would compare different ranges are refused rather than silently read
+// against one of them.
+func recordsReview(document *saga.Saga, records []coverRecord) (*saga.Review, error) {
+	var found *saga.Review
+	other := false
+	for index, record := range records {
+		if !record.needsComparison() {
+			continue
+		}
+		var review *saga.Review
+		if _, target, err := resolveTarget(document, record.Target, true); err != nil {
+			return nil, recordError(records, index, err)
+		} else if strings.Contains(target, ":item:") {
+			for _, candidate := range document.Reviews {
+				if strings.HasPrefix(target, candidate.Target+":") {
+					review = candidate
+				}
+			}
+		}
+		if review == nil {
+			other = true
+		} else if found != nil && found != review {
+			return nil, fmt.Errorf("the records target Items of reviews %s and %s, whose ranges differ; cover each review separately, or pass --against REV", found.ID, review.ID)
+		} else {
+			found = review
+		}
+		if found != nil && other {
+			return nil, fmt.Errorf("the records target both review %s's Items and other targets, whose comparisons differ; cover them separately, or pass --against REV", found.ID)
+		}
+	}
+	return found, nil
 }
 
 // recordLocations turns one record into the code locations it references.

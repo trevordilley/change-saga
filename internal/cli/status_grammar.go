@@ -38,8 +38,9 @@ type statusDocument struct {
 	Comparison *changeview.Layers `json:"comparison,omitempty"`
 	livingapp.Status
 	// Reviews reports every open pull request review slide by slide: each
-	// reviewer's decision and whether it is out of date. It is a report,
-	// never part of the exit status.
+	// reviewer's decision and whether it is out of date, and how completely
+	// its deck covers its range. It is a report, never part of the exit
+	// status.
 	Reviews       []reviewstate.Report `json:"reviews"`
 	NextActions   []nextaction.Action  `json:"next_actions"`
 	AuthoringLoop nextaction.Loop      `json:"authoring_loop"`
@@ -137,6 +138,7 @@ func buildStatus(ctx context.Context, root, repoDir string, rng gitdiff.Range, a
 	if document.Reviews, err = buildReviewReports(ctx, value.document, value.checkout, open); err != nil {
 		return statusDocument{}, err
 	}
+	document.NextActions = append(document.NextActions, nextaction.Reviews(document.Reviews, root)...)
 	if value.changes.Mode == gitdiff.ModeCompare {
 		layers, _, err := changeview.Open(ctx, changeview.OpenOptions{
 			SagaRoot: root, Document: value.document, Checkout: value.checkout,
@@ -221,7 +223,7 @@ func printLivingStatus(out io.Writer, status statusDocument, maxItems int) {
 	}
 	printAppStatus(out, status.Status)
 	if len(status.Reviews) > 0 {
-		fmt.Fprintln(out, "\nReviews (decisions per slide; the team decides what it requires):")
+		fmt.Fprintln(out, "\nReviews (decisions per slide and each deck's coverage of its range; the team decides what it requires):")
 		printReviewReports(out, status.Reviews)
 	}
 	if len(status.Stale) > 0 {
@@ -327,6 +329,7 @@ func livingSpec() map[string]any {
 			},
 			"exceptions":           "a cited, revision-pinned decision that one axis does not apply to one criterion; never excuses changed-source accounting",
 			"changed_source":       "every changed atom must be owned by some target; transitivity proves criteria reach code but cannot prove nothing else changed",
+			"review_coverage":      "every changed line of a review's own range must be covered by its deck's Items; reported per review with next actions, never part of the exit status or the documentation's coverage",
 			"staleness":            "derived only from pins (story/test/prototype revisions, content digests, diff selectors, run source identity), never from Git history",
 			"no_reducing_numbers":  true,
 			"readiness_gate_order": []string{"requirements_ready", "product_ready", "design_ready", "implementation_trace_ready", "quality_ready", "ready_for_review"},
@@ -337,7 +340,7 @@ func livingSpec() map[string]any {
 		"next_actions": map[string]any{
 			"kinds":      []string{string(nextaction.KindCommand), string(nextaction.KindQuestion)},
 			"needs":      []string{string(nextaction.NeedProductJudgment), string(nextaction.NeedExternalAccess), string(nextaction.NeedExplicitExclusion)},
-			"categories": []string{"invalid_saga", "conflict", "invalid", "stale", "changed_source", "requirements", "coverage", "orphan"},
+			"categories": []string{"invalid_saga", "conflict", "invalid", "stale", "changed_source", "requirements", "coverage", "orphan", "review"},
 			"contract":   "a command action carries a grammar invocation whose inputs the author supplies; a question action carries one focused question and the invocation each answer leads to",
 			"loop":       "inspect status --json, ask or mutate, validate, re-evaluate; an empty list is the fixed point and never a claim of correctness",
 		},
