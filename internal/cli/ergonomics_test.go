@@ -442,9 +442,9 @@ func TestValidateFixLeavesReviewOverlayFragmentsAlone(t *testing.T) {
 // story, so ready_for_review is blocked and status exits 3.
 func TestStatusJSONReportsEmptyCollectionsOnSuccess(t *testing.T) {
 	root, repo := coveredSaga(t)
-	// One whole-file reference covers the add event and every added line, so
+	// One record references the add event and the added lines exactly, so
 	// nothing overlaps.
-	batch := `{"path":"internal/service/handler.go","file":true,"note":"the whole new file"}`
+	batch := `{"path":"internal/service/handler.go","changed_lines":true,"note":"the whole new file"}`
 	if out, err := runCover(t, batch, "--repo", repo, "--batch", "-", root); err != nil {
 		t.Fatalf("cover: %v\n%s", err, out)
 	}

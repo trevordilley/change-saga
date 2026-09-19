@@ -121,14 +121,14 @@ func TestChangedLocationsCoalesceOnlyDenseRuns(t *testing.T) {
 			want:  []string{"new a.go 1-2"},
 		},
 		{
-			name:  "an add event is the whole file and accounts for its lines",
+			name:  "an add event is the whole file, and its lines stay line ranges",
 			atoms: []gitdiff.Atom{eventAtom("add", "a.go"), newLine("a.go", 1), newLine("a.go", 2)},
-			want:  []string{"new a.go file"},
+			want:  []string{"new a.go file", "new a.go 1-2"},
 		},
 		{
 			name:  "a delete event is the whole file at the merge-base",
 			atoms: []gitdiff.Atom{eventAtom("delete", "a.go"), oldLine("a.go", 1), oldLine("a.go", 2)},
-			want:  []string{"old a.go file"},
+			want:  []string{"old a.go file", "old a.go 1-2"},
 		},
 		{
 			name:  "two events on one path are one whole-file reference",
@@ -136,9 +136,18 @@ func TestChangedLocationsCoalesceOnlyDenseRuns(t *testing.T) {
 			want:  []string{"new a.go file"},
 		},
 		{
-			name:  "a whole file absorbs only the lines on its own side",
+			name:  "a whole file absorbs no lines on either side",
 			atoms: []gitdiff.Atom{oldLine("a.go", 1), oldLine("a.go", 2), eventAtom("mode", "a.go"), newLine("a.go", 3)},
-			want:  []string{"new a.go file", "old a.go 1-2"},
+			want:  []string{"new a.go file", "old a.go 1-2", "new a.go 3-3"},
+		},
+		{
+			name: "either path of a rename selects both sides",
+			path: "b.go",
+			atoms: []gitdiff.Atom{
+				{Kind: "event", Event: "rename", Path: "b.go", OldPath: "a.go", NewPath: "b.go"},
+				oldLine("a.go", 3), newLine("b.go", 3), newLine("c.go", 1),
+			},
+			want: []string{"new b.go file", "old a.go 3-3", "new b.go 3-3"},
 		},
 		{
 			name:  "unsorted input canonicalizes to ascending ranges",
@@ -179,8 +188,9 @@ func TestChangedLocationsCoalesceOnlyDenseRuns(t *testing.T) {
 }
 
 // Coalescing is only sound if the emitted references account for exactly the
-// atoms they were built from: every changed atom of the path lies inside some
-// reference, and every line a range spans is itself a changed line.
+// atoms they were built from: every changed line lies inside exactly one line
+// reference, every file event is its own whole-file reference, and every line
+// a range spans is itself a changed line.
 func TestChangedLocationsPreserveExactAtomIdentity(t *testing.T) {
 	changes := rangeChanges(
 		oldLine("a.go", 4), oldLine("a.go", 5),
@@ -200,7 +210,8 @@ func TestChangedLocationsPreserveExactAtomIdentity(t *testing.T) {
 			changed[location.String()] = true
 			inside := 0
 			for _, reference := range locations {
-				if reference.Contains(location) {
+				// A whole-file reference accounts only for its file's events.
+				if reference.WholeFile() == (atom.Kind == "event") && reference.Contains(location) {
 					inside++
 				}
 			}
@@ -323,8 +334,9 @@ func TestCoverChangedLinesRespectsSideFilter(t *testing.T) {
 	}
 }
 
-// File events are whole-file references on the side the file exists, and
-// covering every path must still close the saga exactly.
+// File events are whole-file references on the side the file exists, their
+// lines are dense line ranges, and covering every path must still close the
+// saga exactly.
 func TestCoverChangedLinesKeepsEventsSeparateAndCoverageExact(t *testing.T) {
 	root, repo := changedLinesSaga(t)
 	batch := strings.Join([]string{
@@ -338,11 +350,11 @@ func TestCoverChangedLinesKeepsEventsSeparateAndCoverageExact(t *testing.T) {
 
 	base, head := comparisonCommits(t, root, repo)
 	added := describeLocations(t, base, head, referenceLocations(readCodeFile(t, filepath.Join(root, saga.CodeDirName, "added.json"))))
-	if strings.Join(added, "; ") != "new internal/service/added.go file" {
+	if strings.Join(added, "; ") != "new internal/service/added.go file; new internal/service/added.go 1-3" {
 		t.Fatalf("added file references = %v", added)
 	}
 	deleted := describeLocations(t, base, head, referenceLocations(readCodeFile(t, filepath.Join(root, saga.CodeDirName, "legacy.json"))))
-	if strings.Join(deleted, "; ") != "old internal/service/legacy.go file" {
+	if strings.Join(deleted, "; ") != "old internal/service/legacy.go file; old internal/service/legacy.go 1-3" {
 		t.Fatalf("deleted file references = %v", deleted)
 	}
 

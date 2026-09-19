@@ -318,9 +318,8 @@ func recordLocations(ctx context.Context, record coverRecord, changes *gitdiff.C
 
 // changedLocations references exactly the changed atoms of one path with the
 // fewest locations. A file event is referenced as the whole file on the side
-// it exists, which also accounts for every changed line of that file on that
-// side; remaining lines coalesce into dense ranges per side. A dense range is
-// not a widened reference: every line it spans is a changed line.
+// it exists; changed lines coalesce into dense ranges per side. A dense range
+// is not a widened reference: every line it spans is a changed line.
 func changedLocations(changes gitdiff.ChangeSet, path, side string) []coderef.Location {
 	// A renamed file is one file: either of its paths selects the lines on
 	// both sides.
@@ -360,9 +359,6 @@ func changedLocations(changes gitdiff.ChangeSet, path, side string) []coderef.Lo
 		lines[key] = append(lines[key], atom.Line)
 	}
 	for _, key := range order {
-		if whole[key] {
-			continue
-		}
 		commit, file, _ := strings.Cut(key, "\x00")
 		values := append([]int(nil), lines[key]...)
 		sort.Ints(values)

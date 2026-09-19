@@ -7,6 +7,7 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -177,7 +178,9 @@ func TestReferencesSurviveShiftsGoStaleOnEditsAndRepinAfterSquash(t *testing.T) 
 		t.Fatalf("a Saga-only commit broke coverage: %s", report["summary"])
 	}
 	result := runReferences(t, root)
-	if result.Total != 2 || result.Current != 2 || result.Stale != 0 || result.Remapped != 0 {
+	// util.go is an added file: its add event has a whole-file reference and
+	// its lines a line reference, so the Saga holds three references.
+	if result.Total != 3 || result.Current != 3 || result.Stale != 0 || result.Remapped != 0 {
 		t.Fatalf("after a Saga-only commit: %#v", result)
 	}
 
@@ -194,7 +197,7 @@ func TestReferencesSurviveShiftsGoStaleOnEditsAndRepinAfterSquash(t *testing.T) 
 		t.Fatalf("shifted lines broke coverage: %s uncovered=%s stale=%s", report["summary"], report["uncovered"], report["stale_references"])
 	}
 	result = runReferences(t, root)
-	if result.Total != 2 || result.Current != 2 || result.Remapped != 1 || result.Stale != 0 || result.Head != head {
+	if result.Total != 3 || result.Current != 3 || result.Remapped != 1 || result.Stale != 0 || result.Head != head {
 		t.Fatalf("after shifting lines: %#v", result)
 	}
 	moved := findHealth(t, result, "evidence", "app.go")
@@ -210,7 +213,7 @@ func TestReferencesSurviveShiftsGoStaleOnEditsAndRepinAfterSquash(t *testing.T) 
 	writeFile(t, filepath.Join(repo, "app.go"), appHeader+appChanged)
 	commitAll(t, repo, "Return two")
 	stale := runReferences(t, "--stale", "--diff", root)
-	if stale.Total != 2 || stale.Stale != 1 || stale.Current != 1 || len(stale.References) != 1 {
+	if stale.Total != 3 || stale.Stale != 1 || stale.Current != 2 || len(stale.References) != 1 {
 		t.Fatalf("--stale should list exactly the edited reference: %#v", stale)
 	}
 	edited := stale.References[0]
@@ -259,7 +262,7 @@ func TestReferencesSurviveShiftsGoStaleOnEditsAndRepinAfterSquash(t *testing.T) 
 	evidenceBefore := readCodeFile(t, filepath.Join(root, saga.CodeDirName, "app.json"))
 
 	dryRun := runRepin(t, "--onto", "main", "--branch", "feature", "--dry-run", root)
-	if !dryRun.DryRun || len(dryRun.Repinned) != 2 || dryRun.MergeRecord != "" {
+	if !dryRun.DryRun || len(dryRun.Repinned) != 3 || dryRun.MergeRecord != "" {
 		t.Fatalf("dry run = %#v", dryRun)
 	}
 	if after := readCodeFile(t, filepath.Join(root, saga.CodeDirName, "app.json")); !sameReferences(after, evidenceBefore) {
@@ -275,15 +278,22 @@ func TestReferencesSurviveShiftsGoStaleOnEditsAndRepinAfterSquash(t *testing.T) 
 	}
 	changes := map[string]repinChange{}
 	for _, change := range repinned.Repinned {
-		changes[change.EvidenceFile] = change
+		changes[fmt.Sprintf("%s#%d", change.EvidenceFile, change.Reference)] = change
 	}
-	appChange := changes["___code/app.json"]
+	if len(changes) != 3 {
+		t.Fatalf("repin should move all three evidence references: %#v", repinned.Repinned)
+	}
+	appChange := changes["___code/app.json#1"]
 	if appChange.From != (coderef.Location{Commit: edit, Path: "app.go", Start: 6, End: 9}) || appChange.To != (coderef.Location{Commit: landed, Path: "app.go", Start: 6, End: 9}) || !appChange.ByDigest {
 		t.Fatalf("the evidence whose pin is gone was not found by digest at the landed commit: %#v", appChange)
 	}
-	utilChange := changes["___code/util.json"]
+	utilChange := changes["___code/util.json#1"]
 	if utilChange.From != (coderef.Location{Commit: authored, Path: "util.go"}) || utilChange.To != (coderef.Location{Commit: landed, Path: "util.go"}) || utilChange.ByDigest {
 		t.Fatalf("the evidence whose pin exists was not remapped to the landed commit: %#v", utilChange)
+	}
+	utilLines := changes["___code/util.json#2"]
+	if utilLines.From != (coderef.Location{Commit: authored, Path: "util.go", Start: 1, End: 3}) || utilLines.To != (coderef.Location{Commit: landed, Path: "util.go", Start: 1, End: 3}) || utilLines.ByDigest {
+		t.Fatalf("the line evidence whose pin exists was not remapped to the landed commit: %#v", utilLines)
 	}
 	// The claim is an immutable record: it keeps its pin and resolves by
 	// digest instead.
@@ -325,7 +335,7 @@ func TestReferencesSurviveShiftsGoStaleOnEditsAndRepinAfterSquash(t *testing.T) 
 	git(t, repo, "gc", "-q", "--prune=now")
 	assertValid(t, root)
 	final := runReferences(t, root)
-	if final.Total != 3 || final.Stale != 0 || final.Current != 3 {
+	if final.Total != 4 || final.Stale != 0 || final.Current != 4 {
 		t.Fatalf("after deleting the branch: %#v", final)
 	}
 	if claim := findHealth(t, final, "claim", "app.go"); claim.State != "current" || claim.Head == nil || *claim.Head != (coderef.Location{Commit: landed, Path: "app.go", Start: 7, End: 9}) {
@@ -386,14 +396,14 @@ func TestRepinOntoTheCurrentPinChangesNothing(t *testing.T) {
 	before := readCodeFile(t, filepath.Join(root, saga.CodeDirName, "handler.json"))
 	head := strings.TrimSpace(git(t, repo, "rev-parse", "HEAD"))
 	result := runRepin(t, "--repo", repo, "--onto", "HEAD", root)
-	if result.Onto != head || result.Unchanged != 1 || len(result.Repinned) != 0 || len(result.Commits) != 0 || result.MergeRecord != "" {
+	if result.Onto != head || result.Unchanged != 2 || len(result.Repinned) != 0 || len(result.Commits) != 0 || result.MergeRecord != "" {
 		t.Fatalf("repin onto the existing pin = %#v", result)
 	}
 	if after := readCodeFile(t, filepath.Join(root, saga.CodeDirName, "handler.json")); !sameReferences(after, before) {
 		t.Fatalf("a no-op repin rewrote evidence: %#v", after)
 	}
 	var text bytes.Buffer
-	if err := References(context.Background(), []string{"--repo", repo, root}, &text); err != nil || !strings.Contains(text.String(), "1 references: 1 current (0 remapped), 0 stale") {
+	if err := References(context.Background(), []string{"--repo", repo, root}, &text); err != nil || !strings.Contains(text.String(), "2 references: 2 current (0 remapped), 0 stale") {
 		t.Fatalf("references text output = %v\n%s", err, text.String())
 	}
 }

@@ -129,16 +129,16 @@ func TestCoverChangedLinesSelectsExactFileAtomsAndAddEvent(t *testing.T) {
 	if err := json.Unmarshal([]byte(output), &result); err != nil {
 		t.Fatalf("decode output: %v\n%s", err, output)
 	}
-	// An added file is a file event, which only a whole-file reference covers;
-	// that reference also accounts for every added line, so one reference is
-	// the whole record.
-	if !result.OK || result.Records != 1 || result.References != 1 {
-		t.Fatalf("changed-lines summary = %#v, want one whole-file reference", result)
+	// An added file is a file event, which only a whole-file reference covers,
+	// and five added lines, which one dense line range covers.
+	if !result.OK || result.Records != 1 || result.References != 2 {
+		t.Fatalf("changed-lines summary = %#v, want a whole-file reference and a line range", result)
 	}
 	references := readCodeFile(t, filepath.Join(root, saga.CodeDirName, "whole-file.json"))
 	head := strings.TrimSpace(git(t, repo, "rev-parse", "HEAD"))
-	if len(references) != 1 || references[0].Location() != (coderef.Location{Commit: head, Path: "internal/service/handler.go"}) {
-		t.Fatalf("added file was not referenced as the whole file at the head commit: %#v", references)
+	if len(references) != 2 || references[0].Location() != (coderef.Location{Commit: head, Path: "internal/service/handler.go"}) ||
+		references[1].Location() != (coderef.Location{Commit: head, Path: "internal/service/handler.go", Start: 1, End: 5}) {
+		t.Fatalf("added file was not referenced as the whole file and its lines at the head commit: %#v", references)
 	}
 	report, err := buildReport(context.Background(), root, repo)
 	if err != nil {
@@ -205,16 +205,16 @@ func TestReplaceAndRemoveCoverageCompleteRepairLoop(t *testing.T) {
 		t.Fatalf("split replacement should preserve complete coverage: %#v, %v", report.Summary, err)
 	}
 
-	// The whole-file record overlaps the line records, so removing a line
-	// record reopens nothing; removing the whole-file record then reopens the
-	// add event, which no line reference can cover, and the three constants.
+	// Removing the constants record reopens exactly its three lines; the
+	// whole-file record accounts only for the add event. Removing that record
+	// then reopens the event as well.
 	output.Reset()
 	if err := RemoveCoverage(context.Background(), []string{"--record", "___code/constants.json", "--json", root}, &output); err != nil {
 		t.Fatal(err)
 	}
 	report, err = buildReport(context.Background(), root, repo)
-	if err != nil || !report.Complete {
-		t.Fatalf("the whole-file record still covers the constants: %#v, %v", report.Summary, err)
+	if err != nil || report.Complete || report.Summary.Uncovered != 3 {
+		t.Fatalf("removing the constants should reopen exactly their lines: %#v, %v", report.Summary, err)
 	}
 	output.Reset()
 	if err := RemoveCoverage(context.Background(), []string{"--record", "___code/file-add.json", "--json", root}, &output); err != nil {
