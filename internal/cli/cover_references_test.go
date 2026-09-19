@@ -324,7 +324,7 @@ func TestCoverRejectsContradictoryReferenceFlags(t *testing.T) {
 		{"changed lines without a path", []string{"--changed-lines"}, "--changed-lines requires --path"},
 		{"changed lines with lines", []string{"--path", "service/modified.go", "--changed-lines", "--lines", "3"}, "cannot be combined"},
 		{"changed lines of an unchanged path", []string{"--path", "README.md", "--changed-lines"}, "has no changed atoms"},
-		{"unknown commit", []string{"--path", "service/modified.go", "--commit", "no-such-branch", "--lines", "1"}, "resolve --commit"},
+		{"unknown commit", []string{"--path", "service/modified.go", "--commit", "no-such-branch", "--lines", "1"}, "resolve revision"},
 		{"abbreviated ref", []string{"--ref", head[:12] + ":service/added.go"}, "invalid --ref"},
 		{"noncanonical ref", []string{"--ref", head + ":service/added.go#L2-L2"}, "invalid --ref"},
 		{"lines past the end", []string{"--path", "service/added.go", "--side", "new", "--lines", "3-9"}, "outside the file"},

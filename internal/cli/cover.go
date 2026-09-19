@@ -93,7 +93,7 @@ func registerCoverFlags(flags *flag.FlagSet) *coverFlags {
 		quiet:         flags.Bool("quiet", false, "suppress successful output"),
 		allowMismatch: flags.Bool("allow-repository-mismatch", false, "use a checkout whose origin differs from the declared repository"),
 	}
-	flags.Var(&value.refs, "ref", "code location <commit>:<path>[#L<start>[-L<end>]]; repeatable")
+	flags.Var(&value.refs, "ref", "code location <commit>:<path>[#L<start>[-L<end>]], the commit any revision; repeatable")
 	value.opening = registerOpenFlags(flags)
 	return value
 }
@@ -313,7 +313,7 @@ func recordsReview(document *saga.Saga, records []coverRecord) (*saga.Review, er
 func recordLocations(ctx context.Context, record coverRecord, changes *gitdiff.ChangeSet, checkout string) ([]coderef.Location, error) {
 	var locations []coderef.Location
 	for _, value := range record.Refs {
-		location, err := coderef.ParseLocation(value)
+		location, err := resolveLocation(ctx, checkout, value)
 		if err != nil {
 			return nil, fmt.Errorf("invalid --ref: %w", err)
 		}
@@ -440,7 +440,7 @@ func changedLocations(changes gitdiff.ChangeSet, path, side string) []coderef.Lo
 func resolveCommit(ctx context.Context, checkout, revision string) (string, error) {
 	output, err := exec.CommandContext(ctx, "git", "-C", checkout, "rev-parse", "--verify", "--end-of-options", revision+"^{commit}").CombinedOutput()
 	if err != nil {
-		return "", fmt.Errorf("resolve --commit %q: %s", revision, strings.TrimSpace(string(output)))
+		return "", fmt.Errorf("resolve revision %q: %s", revision, strings.TrimSpace(string(output)))
 	}
 	return strings.TrimSpace(string(output)), nil
 }

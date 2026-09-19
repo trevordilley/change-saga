@@ -72,7 +72,7 @@ func TestClaimFailuresDoNotWriteRecords(t *testing.T) {
 		want string
 	}{
 		{"not a location", []string{"not-a-location"}, "invalid --ref 1"},
-		{"abbreviated commit", []string{commit[:12] + ":worker.go"}, "invalid --ref 1"},
+		{"unknown revision", []string{"no-such-branch:worker.go"}, "invalid --ref 1"},
 		{"missing file", []string{commit + ":missing.go"}, "does not exist"},
 		{"lines past the end", []string{commit + ":worker.go#L1-L9"}, "invalid --ref 1"},
 		{"duplicate location", []string{commit + ":worker.go", commit + ":worker.go"}, "--ref 2 duplicates"},

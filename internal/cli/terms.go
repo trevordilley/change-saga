@@ -5,7 +5,6 @@ import (
 	"flag"
 	"fmt"
 	"io"
-	"strings"
 
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coderesolve"
@@ -89,19 +88,9 @@ func termReferences(ctx context.Context, checkout string, values []string) ([]co
 	defer resolver.Close()
 	references := make([]coderef.Reference, 0, len(values))
 	for index, value := range values {
-		location, err := coderef.ParseLocation(value)
+		location, err := resolveLocation(ctx, checkout, value)
 		if err != nil {
-			revision, rest, found := strings.Cut(value, ":")
-			if !found || revision == "" {
-				return nil, fmt.Errorf("--ref %d: %w", index+1, err)
-			}
-			commit, resolveErr := resolveCommit(ctx, checkout, revision)
-			if resolveErr != nil {
-				return nil, fmt.Errorf("--ref %d: %w", index+1, resolveErr)
-			}
-			if location, err = coderef.ParseLocation(commit + ":" + rest); err != nil {
-				return nil, fmt.Errorf("--ref %d: %w", index+1, err)
-			}
+			return nil, fmt.Errorf("--ref %d: %w", index+1, err)
 		}
 		reference, err := resolver.Author(ctx, location, "")
 		if err != nil {

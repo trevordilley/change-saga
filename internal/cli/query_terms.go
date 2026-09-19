@@ -124,7 +124,9 @@ func overlaps(left, right coderef.Location) bool {
 	return left.Start <= right.End && right.Start <= left.End
 }
 
-// resolveLocation parses a code location whose commit may be any revision.
+// resolveLocation parses a code location whose commit may be any revision:
+// every command that accepts a location resolves HEAD, a branch, or an
+// abbreviated commit to the full commit it pins.
 func resolveLocation(ctx context.Context, checkout, value string) (coderef.Location, error) {
 	if location, err := coderef.ParseLocation(value); err == nil {
 		return location, nil

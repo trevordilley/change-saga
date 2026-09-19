@@ -30,7 +30,7 @@ func AddClaim(ctx context.Context, args []string, out io.Writer) error {
 	statement := flags.String("statement", "", "falsifiable assertion made by the change author")
 	repoDir := flags.String("repo", "", "source repository checkout; required when separate")
 	var evidence stringList
-	flags.Var(&evidence, "ref", "supporting code location <commit>:<path>[#L<start>[-L<end>]]; repeatable")
+	flags.Var(&evidence, "ref", "supporting code location <commit>:<path>[#L<start>[-L<end>]], the commit any revision; repeatable")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -187,7 +187,7 @@ func authorLocations(ctx context.Context, dir string, values []string, flag stri
 	seen := map[string]bool{}
 	references := make([]coderef.Reference, 0, len(values))
 	for index, value := range values {
-		location, err := coderef.ParseLocation(value)
+		location, err := resolveLocation(ctx, dir, value)
 		if err != nil {
 			return nil, fmt.Errorf("invalid %s %d: %w", flag, index+1, err)
 		}
