@@ -149,7 +149,8 @@ func TestManagedRuntimeEndpointsRequireTokenAndSignalShutdown(t *testing.T) {
 }
 
 func TestColdComparisonEndpointReportsBuildingCacheWithoutMaterializingReviewData(t *testing.T) {
-	application := &app{}
+	// Comparing: observing has no comparison, so its Coverage never waits on one.
+	application := &app{rng: gitdiff.Range{Against: "main"}}
 	application.cache.building = true
 	handler := newMux(application)
 

@@ -297,6 +297,10 @@ func (a *app) coveragePage(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "mode must be code or saga", http.StatusBadRequest)
 		return
 	}
+	if a.rng.Observe() {
+		a.observeCoveragePage(w, r, mode)
+		return
+	}
 	current := a.requestSnapshot(w, r)
 	if current == nil {
 		return

@@ -256,6 +256,11 @@ body.presentation-mode .deck-viewer-stage:hover .slide-exit-presentation,body.pr
 .requirements-epic-head h2 a{color:var(--ink);text-decoration:none}
 .requirements-epic-head h2 a:hover{color:var(--accent)}
 .requirements-epic-head p{margin:0 0 12px;color:var(--muted);font:13.5px/1.55 var(--ui)}
+.observe-coverage-note{margin:0 0 12px;color:var(--muted);font:13px/1.5 var(--ui)}
+.observe-coverage-empty{color:var(--muted);font:13px var(--ui)}
+.observe-references{display:grid;gap:4px;margin:0 0 10px;padding:0;list-style:none;font:12px var(--mono)}
+.observe-references li{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.observe-references .gap{color:var(--red);font:600 12px var(--ui)}
 .criterion-page h1{font-size:24px;line-height:1.35}
 .criterion-trace{margin-top:8px;font:12.5px/1.45 var(--ui);color:var(--muted)}
 .criterion-trace a{color:var(--accent);text-decoration:none}

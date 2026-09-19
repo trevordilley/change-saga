@@ -1984,6 +1984,54 @@ const appJavaScript = `(() => {
     if (fragment) setActiveFragment(fragment);
   });
 
+  // An observed Coverage row renders its record's code only when opened.
+  async function hydrateLazyDetails(details) {
+    if (details.dataset.lazyLoaded === 'true' || details.dataset.lazyLoading === 'true') return;
+    const body = q('[data-lazy-body]', details);
+    if (!body) return;
+    details.dataset.lazyLoading = 'true';
+    try {
+      const response = await fetch(details.dataset.lazyHref, {headers:{Accept:'text/html'},credentials:'same-origin'});
+      if (!response.ok) throw new Error('request failed');
+      body.innerHTML = await response.text();
+      details.dataset.lazyLoaded = 'true';
+      highlightCode(body);
+    } catch (_) {
+      body.innerHTML = '<p class="diff-placeholder">This code could not be loaded. Close and reopen to try again.</p>';
+    } finally {
+      delete details.dataset.lazyLoading;
+    }
+  }
+
+  // The overview's coverage line starts as a placeholder and is replaced by
+  // the totals once they can be read. A comparison that is still building
+  // answers 202, and the line asks again; a failure leaves a quiet pointer
+  // to the Coverage tab instead of a spinner that never ends.
+  async function loadCoverageTotals() {
+    const line = q('[data-coverage-loading]');
+    const href = line?.dataset.totalsHref;
+    if (!line || !href) return;
+    for (let attempt = 0; attempt < 120 && line.isConnected; attempt++) {
+      let response;
+      try {
+        response = await fetch(href, {headers:{Accept:'text/html','X-Change-Saga-Async':'true'},credentials:'same-origin'});
+      } catch (_) { break; }
+      if (response.status === 202) {
+        await new Promise(resolve => setTimeout(resolve, retryDelay(response)));
+        continue;
+      }
+      if (!response.ok) break;
+      const replacement = q('[data-coverage-totals]', parseShellHTML(await response.text()));
+      if (replacement) { line.replaceWith(replacement); return; }
+      break;
+    }
+    if (line.isConnected) {
+      line.classList.remove('loading');
+      line.removeAttribute('data-coverage-loading');
+      line.textContent = 'Coverage is on the Coverage tab.';
+    }
+  }
+
   document.addEventListener('toggle', event => {
     const details = event.target.closest?.('details');
     if (!details) return;
@@ -1994,6 +2042,7 @@ const appJavaScript = `(() => {
     if (details.dataset.fileDiffHref) void hydrateReviewFile(details);
     if (details.dataset.coverageFileHref) void hydrateCoverageFile(details);
     if (details.dataset.coverageTargetHref) void hydrateCoverageTarget(details);
+    if (details.dataset.lazyHref) void hydrateLazyDetails(details);
     hydrateOpenedManifestDiffs(details);
   }, true);
 
@@ -2067,6 +2116,7 @@ const appJavaScript = `(() => {
     document.body.dataset.shellReady = 'true';
   });
   void loadLayers();
+  void loadCoverageTotals();
   positionLandmarkHotspots();
   globalThis.requestAnimationFrame?.(positionLandmarkHotspots);
   addEventListener('hashchange', () => {

@@ -338,3 +338,77 @@ func TestRequirementsOverviewIsGroupedByEpic(t *testing.T) {
 		}
 	}
 }
+
+// Finding 32: observing, Coverage shows the documented code. Every Item that
+// references code is a Saga → Code row whose code renders at the head, and
+// every referenced file is a Code → Saga row.
+func TestObservedCoverageShowsTheDocumentedCode(t *testing.T) {
+	document, _, err := saga.Load(dogfoodSaga)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var items []*saga.Item
+	for _, deck := range document.Decks {
+		for _, slide := range deck.Slides {
+			for _, item := range slide.Items {
+				if len(item.Code) > 0 {
+					items = append(items, item)
+				}
+			}
+		}
+	}
+	if len(items) == 0 {
+		t.Skip("no Item references code")
+	}
+	sagaToCode := dogfoodOK(t, "/api/coverage?mode=saga")
+	if !strings.Contains(sagaToCode, "data-observe-coverage") {
+		t.Fatal("observing did not render the documented-code coverage")
+	}
+	for _, item := range items {
+		if !strings.Contains(sagaToCode, `data-observe-target="`+item.Target+`"`) {
+			t.Fatalf("Saga → Code lacks the Item %s", item.Target)
+		}
+		code := dogfoodOK(t, "/api/reference-code?target="+url.QueryEscape(item.Target))
+		if !strings.Contains(code, "data-reference-code") || !strings.Contains(code, "<code data-code>") {
+			t.Fatalf("the Item %s rendered no code", item.Target)
+		}
+		codeToSaga := dogfoodOK(t, "/api/coverage?mode=code")
+		for _, file := range item.Code {
+			for _, reference := range file.References {
+				if !strings.Contains(codeToSaga, `data-observe-file="`+reference.Path+`"`) && !strings.Contains(sagaToCode, "stale") {
+					t.Fatalf("Code → Saga lacks %s", reference.Path)
+				}
+			}
+		}
+	}
+	if strings.Contains(sagaToCode, "0 files · 0 changes") {
+		t.Fatal("observed coverage still reports an empty comparison")
+	}
+}
+
+// Finding 32: the overview's coverage line is replaced once it can be read,
+// instead of saying "Building the review index…" forever.
+func TestOverviewCoverageLineIsFilledIn(t *testing.T) {
+	root := dogfoodOK(t, "/")
+	if !strings.Contains(root, `data-totals-href="/api/coverage-totals"`) || strings.Contains(root, "Building the review index") {
+		t.Fatal("the observed overview does not ask for its coverage line")
+	}
+	if !strings.Contains(appJavaScript, "loadCoverageTotals()") || !strings.Contains(appJavaScript, "hydrateLazyDetails(details)") {
+		t.Fatal("the page script never fills in the coverage line or opens reference code")
+	}
+	if totals := dogfoodOK(t, "/api/coverage-totals"); !strings.Contains(totals, "data-observe-totals") || !strings.Contains(totals, "records reference") && !strings.Contains(totals, "record references") {
+		t.Fatalf("coverage totals = %s", totals)
+	}
+}
+
+// Comparing, the coverage line waits for the comparison: the totals endpoint
+// asks the browser to retry while it builds, so the line updates when ready.
+func TestComparedCoverageLineRetriesWhileTheComparisonBuilds(t *testing.T) {
+	application := &app{rng: gitdiff.Range{Against: "main"}}
+	application.cache.building = true
+	recorder := httptest.NewRecorder()
+	newMux(application).ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, "/api/coverage-totals", nil))
+	if recorder.Code != http.StatusAccepted || recorder.Header().Get("Retry-After") == "" {
+		t.Fatalf("totals while building = %d", recorder.Code)
+	}
+}
