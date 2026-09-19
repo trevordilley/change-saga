@@ -540,6 +540,19 @@ func (graph *appGraph) decorateRequirements(page *requirementsPageView) {
 			view.EpicLink = graph.link(applayout.EpicURN(graph.requirements.SagaID, view.Epic))
 		}
 	}
+	if page.Overview {
+		for _, epic := range graph.requirements.Epics {
+			group := requirementGroupView{Epic: graph.link(applayout.EpicURN(graph.requirements.SagaID, epic.ID)), Description: epic.Description}
+			for _, story := range page.Stories {
+				if story.Epic == epic.ID {
+					group.Stories = append(group.Stories, story)
+				}
+			}
+			if len(group.Stories) > 0 {
+				page.Groups = append(page.Groups, group)
+			}
+		}
+	}
 	view := page.Story
 	if view == nil {
 		return

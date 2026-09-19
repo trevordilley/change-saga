@@ -191,11 +191,7 @@ var pageTemplate = `{{define "page"}}<!doctype html>
 {{define "requirements-page"}}<section class="requirements-page" data-requirements-page>{{if .Overview}}<header class="requirements-header">
 <h1>Requirements</h1>
 </header>
-{{if .Rationale}}<section class="requirements-rationale">
-<h2>Rationale</h2>
-<p>{{.Rationale}}</p>
-</section>{{end}}
-<div class="requirements-story-list">{{range .Stories}}<article class="requirements-story-card" data-requirement-target="{{.Target}}">
+{{range .Groups}}<section class="requirements-epic" data-requirements-epic="{{.Epic.Target}}"><header class="requirements-epic-head"><h2><a href="{{.Epic.Href}}">{{.Epic.Title}}</a></h2>{{if .Description}}<p>{{.Description}}</p>{{end}}</header><div class="requirements-story-list">{{range .Stories}}<article class="requirements-story-card" data-requirement-target="{{.Target}}">
 <header>
 <div>
 <h2>
@@ -214,10 +210,10 @@ var pageTemplate = `{{define "page"}}<!doctype html>
 </a>
 </li>{{end}}</ol>
 </details>
-</article>{{else}}<div class="requirements-empty">
+</article>{{end}}</div></section>{{else}}<div class="requirements-empty">
 <strong>No stories yet.</strong>
 <span>Add the first story through the requirements authoring workflow.</span>
-</div>{{end}}</div>{{else if .FocusedCriterion}}{{template "criterion-page" .}}{{else}}{{with .Story}}<nav class="requirements-breadcrumbs" aria-label="Requirement breadcrumb">
+</div>{{end}}{{else if .FocusedCriterion}}{{template "criterion-page" .}}{{else}}{{with .Story}}<nav class="requirements-breadcrumbs" aria-label="Requirement breadcrumb">
 <a href="/requirements">Requirements</a>
 <span>/</span>{{with .EpicLink.Href}}<a href="{{.}}">{{$.Story.EpicLink.Title}}</a>
 <span>/</span>{{end}}

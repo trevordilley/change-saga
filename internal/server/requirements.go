@@ -21,8 +21,9 @@ var errRequirementNotFound = errors.New("requirement not found")
 // ___requirements.
 type requirementsPageView struct {
 	Active           bool
-	Overview         bool
-	Rationale        string
+	Overview bool
+	// Groups is the overview's stories by epic, in epic order.
+	Groups           []requirementGroupView
 	Stories          []*requirementStoryView
 	Story            *requirementStoryView
 	FocusedCriterion *requirementCriterionView
@@ -66,6 +67,13 @@ type requirementStoryView struct {
 	Personas  []traceLink
 	Citations []citationView
 	Trace     traceGroups
+}
+
+// requirementGroupView is one epic's stories on the requirements overview.
+type requirementGroupView struct {
+	Epic        traceLink
+	Description string
+	Stories     []*requirementStoryView
 }
 
 // citationView is one source a story cites.

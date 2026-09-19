@@ -314,3 +314,27 @@ func TestStoriesAndCriteriaShowTheirTraceability(t *testing.T) {
 		}
 	}
 }
+
+// Finding 31: /requirements groups stories under their epics and no longer
+// titles the elevator pitch "Rationale".
+func TestRequirementsOverviewIsGroupedByEpic(t *testing.T) {
+	_, records, _ := dogfoodRecords(t)
+	page := dogfoodOK(t, "/requirements")
+	page = page[strings.Index(page, "data-requirements-page"):]
+	if strings.Contains(page, "Rationale") {
+		t.Fatal("the requirements overview still has a Rationale heading")
+	}
+	for _, story := range records.Stories {
+		if story.CurrentRevision == nil {
+			continue
+		}
+		group := strings.Index(page, `data-requirements-epic="urn:change-saga:`+records.SagaID+`:epic:`+story.Epic+`"`)
+		card := strings.Index(page, `href="`+requirementStoryHref(story.Identity.ID)+`"`)
+		if group < 0 || card < group {
+			t.Fatalf("story %s is not listed under its epic %s", story.Identity.ID, story.Epic)
+		}
+		if next := strings.Index(page[group+1:], "data-requirements-epic="); next >= 0 && card > group+1+next {
+			t.Fatalf("story %s is listed under another epic", story.Identity.ID)
+		}
+	}
+}

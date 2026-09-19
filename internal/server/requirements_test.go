@@ -67,12 +67,15 @@ func TestRequirementsTemplatesGiveOverviewAndStoryDistinctPresentations(t *testi
 	if err != nil {
 		t.Fatal(err)
 	}
-	overview.Rationale = "Keep product intent and implementation evidence connected."
+	overview.Groups = []requirementGroupView{{Epic: traceLink{Title: "Shop", Href: "/epics/shop", Target: "urn:change-saga:test:epic:shop"}, Description: "Buying things.", Stories: overview.Stories}}
 	var rendered bytes.Buffer
 	if err := tmpl.ExecuteTemplate(&rendered, "requirements-page", overview); err != nil {
 		t.Fatal(err)
 	}
-	for _, expected := range []string{"<h1>Requirements</h1>", "Rationale", overview.Rationale, "requirements-story-card", "1 criterion", "/requirements/checkout"} {
+	if strings.Contains(rendered.String(), "Rationale") {
+		t.Fatal("the requirements overview still titles the elevator pitch as its rationale")
+	}
+	for _, expected := range []string{"<h1>Requirements</h1>", `data-requirements-epic="urn:change-saga:test:epic:shop"`, `<a href="/epics/shop">Shop</a>`, "Buying things.", "requirements-story-card", "1 criterion", "/requirements/checkout"} {
 		if !strings.Contains(rendered.String(), expected) {
 			t.Fatalf("requirements overview missing %q: %s", expected, rendered.String())
 		}
@@ -114,13 +117,6 @@ func TestRequirementsTemplatesGiveOverviewAndStoryDistinctPresentations(t *testi
 	}
 	if strings.Contains(rendered.String(), `<details class="requirement-story-details" open`) {
 		t.Fatalf("story details must be collapsed by default: %s", rendered.String())
-	}
-}
-
-func TestFirstMarkdownParagraphSkipsTheOverviewHeading(t *testing.T) {
-	source := "# Change overview {#overview}\n\nWhy this product change matters.\nIt preserves intent.\n\n## Status\n\n- proposed\n"
-	if got := firstMarkdownParagraph(source); got != "Why this product change matters. It preserves intent." {
-		t.Fatalf("rationale = %q", got)
 	}
 }
 

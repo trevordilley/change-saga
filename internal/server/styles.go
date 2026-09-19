@@ -251,6 +251,11 @@ body.presentation-mode .deck-viewer-stage:hover .slide-exit-presentation,body.pr
 .test-run.passed{border-left-color:var(--green)}.test-run.failed{border-left-color:var(--red)}.test-run.blocked,.test-run.skipped{border-left-color:var(--amber)}
 .test-run p{margin:5px 0 0}
 .requirement-trace{display:grid;gap:4px}
+.requirements-epic{margin:0 0 28px}
+.requirements-epic-head h2{margin:0 0 4px;font:650 18px/1.3 var(--ui)}
+.requirements-epic-head h2 a{color:var(--ink);text-decoration:none}
+.requirements-epic-head h2 a:hover{color:var(--accent)}
+.requirements-epic-head p{margin:0 0 12px;color:var(--muted);font:13.5px/1.55 var(--ui)}
 .criterion-page h1{font-size:24px;line-height:1.35}
 .criterion-trace{margin-top:8px;font:12.5px/1.45 var(--ui);color:var(--muted)}
 .criterion-trace a{color:var(--accent);text-decoration:none}
@@ -286,9 +291,6 @@ body.presentation-mode .deck-viewer-stage:hover .slide-exit-presentation,body.pr
 .file-terms h3{margin:0 0 6px;color:var(--muted);font:650 11px/1.3 var(--ui);letter-spacing:.04em;text-transform:uppercase}
 .requirements-header{margin:0 0 20px;padding-bottom:14px;border-bottom:1px solid var(--line)}
 .requirements-header h1,.requirement-story-hero h1{margin:0;color:var(--ink);font:650 28px/1.15 var(--ui);letter-spacing:-.025em}
-.requirements-rationale{max-width:780px;margin:0 0 24px}
-.requirements-rationale h2{margin:0 0 6px;color:var(--muted);font:650 12px/1.3 var(--ui);letter-spacing:.04em;text-transform:uppercase}
-.requirements-rationale p{margin:0;color:var(--ink);font:16px/1.55 var(--ui)}
 .requirements-story-list{display:grid;gap:10px}
 .requirements-story-card{overflow:hidden;border:1px solid var(--line);border-radius:9px;background:var(--bg);transition:border-color .14s}
 .requirements-story-card:hover{border-color:var(--accent-line)}
