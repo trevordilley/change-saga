@@ -152,7 +152,9 @@ func buildStatus(ctx context.Context, root, repoDir string, rng gitdiff.Range, a
 	if document.Reviews, err = buildReviewReports(ctx, value.document, value.checkout, open); err != nil {
 		return statusDocument{}, err
 	}
-	if value.changes.Mode == gitdiff.ModeCompare {
+	// A Saga whose records cannot be composed has no layers to open; status
+	// reports what it can and then says the report cannot be trusted.
+	if value.changes.Mode == gitdiff.ModeCompare && len(living.Diagnostics) == 0 {
 		layers, _, err := changeview.Open(ctx, changeview.OpenOptions{
 			SagaRoot: root, Document: value.document, Checkout: value.checkout,
 			Changes: value.changes, Report: value.report, Resolver: resolver,
@@ -183,7 +185,7 @@ func (status statusDocument) trustworthy(root string) error {
 		return fmt.Errorf("the Saga is malformed (%d schema errors), so this report cannot be trusted; fix them and re-run: change-saga validate %s", errors, root)
 	}
 	for _, diagnostic := range status.Diagnostics {
-		return fmt.Errorf("the Saga's records could not be read (%s), so this report cannot be trusted: %s", diagnostic.Code, diagnostic.Message)
+		return fmt.Errorf("the Saga's records could not be read (%s), so this report cannot be trusted: %s; run change-saga validate %s for details", diagnostic.Code, diagnostic.Message, root)
 	}
 	return nil
 }
