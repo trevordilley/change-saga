@@ -83,6 +83,30 @@ func run(args []string, stdout, stderr io.Writer) int {
 		err = cli.SetFragmentContent(ctx, args[1:], stdout)
 	case "add-landmark":
 		err = cli.AddLandmark(ctx, args[1:], stdout)
+	case "revise-deck":
+		err = cli.ReviseDeck(ctx, args[1:], stdout)
+	case "remove-deck":
+		err = cli.RemoveDeck(ctx, args[1:], stdout)
+	case "revise-slide":
+		err = cli.ReviseSlide(ctx, args[1:], stdout)
+	case "remove-slide":
+		err = cli.RemoveSlide(ctx, args[1:], stdout)
+	case "revise-item":
+		err = cli.ReviseItem(ctx, args[1:], stdout)
+	case "remove-item":
+		err = cli.RemoveItem(ctx, args[1:], stdout)
+	case "revise-chapter":
+		err = cli.ReviseChapter(ctx, args[1:], stdout)
+	case "remove-chapter":
+		err = cli.RemoveChapter(ctx, args[1:], stdout)
+	case "revise-section":
+		err = cli.ReviseSection(ctx, args[1:], stdout)
+	case "remove-section":
+		err = cli.RemoveSection(ctx, args[1:], stdout)
+	case "revise-fragment":
+		err = cli.ReviseFragment(ctx, args[1:], stdout)
+	case "remove-fragment":
+		err = cli.RemoveFragment(ctx, args[1:], stdout)
 	case "cover":
 		err = cli.Cover(ctx, args[1:], stdout)
 	case "remove-coverage":

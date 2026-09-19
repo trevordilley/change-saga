@@ -186,7 +186,9 @@ overviews, walkthroughs) and the app-level design system. Create them with
 `change-saga add-fragment` (Markdown, SVG, image, text, or a self-contained
 HTML package). Write or replace an entrypoint only with `change-saga
 set-fragment-content --target <fragment> --source FILE|-`; do not edit fragment
-package files directly. Pass the target URN each command prints (or that `query
+package files directly. Fix a title or order with `revise-chapter`,
+`revise-section`, or `revise-fragment --target <target>`, and delete a record
+with the matching `remove-*`. Pass the target URN each command prints (or that `query
 children` reports) as `--target`.
 
 Organize chapters by behavior, risk, architecture, or reviewer intent rather

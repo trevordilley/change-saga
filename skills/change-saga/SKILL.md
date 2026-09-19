@@ -326,6 +326,12 @@ record was introduced, what it replaced, and the comparisons that changed it.
 
 - Re-author stale references with `replace-coverage` or remove them with
   `remove-coverage`; never delete metadata files directly.
+- Correct a deck, slide, Item, chapter, section, or fragment in place with
+  `revise-deck`, `revise-slide`, `revise-item`, `revise-chapter`,
+  `revise-section`, or `revise-fragment`, and delete one (with what it
+  contains) with the matching `remove-*`. Each takes `--dry-run` and `--json`,
+  refuses an edit that would make the Saga invalid, and a remove lists the
+  relations left pointing at what it deleted so you can supersede them.
 - Place newly uncovered lines only after reading their current diff context.
 - Update slide and fragment content when behavior changed, even if an old
   reference still happens to remap cleanly.

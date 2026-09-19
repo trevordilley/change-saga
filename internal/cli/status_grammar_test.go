@@ -42,6 +42,9 @@ func grammarHelp(t *testing.T, name string) string {
 		"overview":   func() error { return overviewCommand(ctx, args, &output, strings.NewReader("")) },
 		"flag":       func() error { return FeatureFlag(ctx, args, &output) },
 	}[fields[0]]
+	if command := skillCommands[fields[0]]; run == nil && command != nil {
+		run = func() error { return command(ctx, args, &output) }
+	}
 	if run == nil {
 		t.Fatalf("no dispatcher for implemented grammar command %q", name)
 	}
