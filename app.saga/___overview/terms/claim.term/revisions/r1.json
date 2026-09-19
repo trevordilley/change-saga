@@ -1,0 +1,22 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/term-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "term": "urn:change-saga:app:term:claim",
+  "parents": [],
+  "name": "claim",
+  "definition": "A falsifiable author assertion with its target and exact code evidence. Claims never contribute to coverage; verification results (unverified, verified, failed, or inconclusive) are append-only records.",
+  "aliases": [
+    "verification"
+  ],
+  "code": [
+    {
+      "commit": "142737451284dd853d7519cfe6e8aedbd25c4668",
+      "path": "internal/saga/model.go",
+      "start": 225,
+      "end": 253,
+      "digest": "sha256:159bba04e402530980599e6ee67b7a87e4953cd806a0ea3aadc1b9c1dfb7fd7e"
+    }
+  ],
+  "created_at": "2026-09-19T20:50:37.188053Z"
+}

@@ -1,0 +1,25 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/term-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "term": "urn:change-saga:app:term:sync-cursor",
+  "parents": [],
+  "name": "sync cursor",
+  "definition": "The code commit a Saga in a companion repository currently documents. Every Saga commit that updates the documentation moves it; a Saga in its code repository has no cursor and documents the commit it is read at.",
+  "aliases": [
+    "sync.json"
+  ],
+  "stories": [
+    "urn:change-saga:app:story:companion-repositories"
+  ],
+  "code": [
+    {
+      "commit": "142737451284dd853d7519cfe6e8aedbd25c4668",
+      "path": "internal/saga/cursor.go",
+      "start": 13,
+      "end": 28,
+      "digest": "sha256:3b04d3d9403db265316ba2d22b10594219916fee66ccd4e3137e37a68746568e"
+    }
+  ],
+  "created_at": "2026-09-19T20:50:35.587094Z"
+}

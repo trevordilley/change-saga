@@ -1,0 +1,30 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/term-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "term": "urn:change-saga:app:term:comparison-layers",
+  "parents": [],
+  "name": "Changed, Affected, and Code layers",
+  "definition": "The three layers of a comparison. Changed: Saga records added, revised, or retired, each with its before and after. Affected: records the change did not edit but invalidated, through code, a pin, or the chain. Code: the diff grouped under the records that reference it, plus every changed line no record references.",
+  "aliases": [
+    "Changed",
+    "Affected",
+    "layers"
+  ],
+  "stories": [
+    "urn:change-saga:app:story:observe-or-compare"
+  ],
+  "records": [
+    "urn:change-saga:app:term:compare"
+  ],
+  "code": [
+    {
+      "commit": "142737451284dd853d7519cfe6e8aedbd25c4668",
+      "path": "internal/changeview/layers.go",
+      "start": 22,
+      "end": 40,
+      "digest": "sha256:c24f98fc273c4f66167318a5e60db5b0d57fcb8dc52bffbf3dbf8951baa9b8c4"
+    }
+  ],
+  "created_at": "2026-09-19T20:50:36.088837Z"
+}

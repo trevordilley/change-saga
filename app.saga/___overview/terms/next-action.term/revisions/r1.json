@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/term-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "term": "urn:change-saga:app:term:next-action",
+  "parents": [],
+  "name": "next action",
+  "definition": "One ordered step in status's work queue, either a command or one focused question. Categories run invalid_saga, conflict, invalid, stale, failed_run, changed_source, review, then growth.",
+  "aliases": [
+    "next_actions"
+  ],
+  "stories": [
+    "urn:change-saga:app:story:coverage-report"
+  ],
+  "records": [
+    "urn:change-saga:app:term:coverage-area"
+  ],
+  "code": [
+    {
+      "commit": "142737451284dd853d7519cfe6e8aedbd25c4668",
+      "path": "internal/nextaction/nextaction.go",
+      "start": 29,
+      "end": 67,
+      "digest": "sha256:89b299a28e9c076f039e1e87527eae1ced68972db2d709923e4a9deaf6bce2e5"
+    }
+  ],
+  "created_at": "2026-09-19T20:50:36.684896Z"
+}

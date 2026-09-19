@@ -1,0 +1,29 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/term-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "term": "urn:change-saga:app:term:coverage-area",
+  "parents": [],
+  "name": "coverage area",
+  "definition": "One link of the persona, story, design, and code chain that status reports coverage for: implementation, stories, personas, design, quality, and health. Each is reported as counts and lists, never one blended score.",
+  "aliases": [
+    "area"
+  ],
+  "stories": [
+    "urn:change-saga:app:story:coverage-report",
+    "urn:change-saga:app:story:check-covers"
+  ],
+  "records": [
+    "urn:change-saga:app:term:coverage"
+  ],
+  "code": [
+    {
+      "commit": "142737451284dd853d7519cfe6e8aedbd25c4668",
+      "path": "internal/areas/areas.go",
+      "start": 18,
+      "end": 33,
+      "digest": "sha256:d07a2d4fb5ada9f5efabd23586ed9d155dbd22d0bb5dcad676b478bd4765d9b1"
+    }
+  ],
+  "created_at": "2026-09-19T20:50:35.759694Z"
+}
