@@ -95,6 +95,7 @@ func printLivingStatus(out io.Writer, status statusDocument, maxItems int) {
 		}
 		fmt.Fprintln(out)
 	}
+	printAppStatus(out, status.Status)
 	if len(status.Stale) > 0 {
 		fmt.Fprintf(out, "\nStale pins: %d records must be revisited\n", len(status.Stale))
 	}
@@ -108,7 +109,11 @@ func printLivingStatus(out io.Writer, status statusDocument, maxItems int) {
 		limit = maxItems
 	}
 	for index, action := range status.NextActions[:limit] {
-		fmt.Fprintf(out, "  %d. [%s] %s\n", index+1, action.Category, firstLine(action.Reason))
+		scope := string(action.Category)
+		if action.Epic != "" {
+			scope += " · epic " + action.Epic
+		}
+		fmt.Fprintf(out, "  %d. [%s] %s\n", index+1, scope, firstLine(action.Reason))
 		switch {
 		case action.Command != nil:
 			fmt.Fprintf(out, "     $ %s\n", strings.Join(action.Command.Argv, " "))
@@ -118,6 +123,46 @@ func printLivingStatus(out io.Writer, status statusDocument, maxItems int) {
 	}
 	if limit < len(status.NextActions) {
 		fmt.Fprintf(out, "  … and %d more (use --max 0 or --json)\n", len(status.NextActions)-limit)
+	}
+}
+
+// printAppStatus prints the app-level facts: epics, persona coverage, the
+// questions persona retirements raise, and stories gated off by flags.
+func printAppStatus(out io.Writer, status livingapp.Status) {
+	if len(status.Epics) > 0 {
+		fmt.Fprintln(out, "\nEpics:")
+		for _, epic := range status.Epics {
+			stories := "stories"
+			if len(epic.Stories) == 1 {
+				stories = "story"
+			}
+			fmt.Fprintf(out, "  %-28s %d %s", epic.ID, len(epic.Stories), stories)
+			if len(epic.GatedBy) > 0 {
+				fmt.Fprintf(out, ", gated by %s", strings.Join(epic.GatedBy, ", "))
+			}
+			fmt.Fprintln(out)
+		}
+	}
+	if len(status.Personas) > 0 {
+		fmt.Fprintln(out, "\nPersonas:")
+		for _, persona := range status.Personas {
+			served := fmt.Sprintf("served by %d accepted stories", len(persona.ServedBy))
+			if len(persona.ServedBy) == 1 {
+				served = "served by 1 accepted story"
+			}
+			if persona.Gap {
+				served = "gap: no accepted story serves it"
+			}
+			fmt.Fprintf(out, "  %-28s %-8s %s\n", persona.ID, persona.State, served)
+		}
+	}
+	for _, group := range status.PersonaOrphans {
+		fmt.Fprintf(out, "\nStories serving only retired %s: %s — retire them or reassign them\n", strings.Join(group.Personas, ", "), strings.Join(group.Stories, ", "))
+	}
+	for _, story := range status.Stories {
+		if story.Availability == livingapp.AvailabilityImplementedNotEnabled {
+			fmt.Fprintf(out, "\nImplemented, not enabled: %s (gated by %s)\n", story.Story, strings.Join(story.GatedBy, ", "))
+		}
 	}
 }
 

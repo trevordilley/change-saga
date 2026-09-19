@@ -7,6 +7,11 @@ var (
 	jsonFlag      = Flag{Name: "json", Description: "emit a machine-readable result"}
 	fromFileFlag  = Flag{Name: "from", Value: "FILE|-", Description: "read the complete structured request from a JSON file, or - for stdin"}
 	sagaOnly      = []string{"<saga>"}
+	// epicFlag is required by commands that create epic content and accepted by
+	// commands that change an existing record, where it must name the epic that
+	// already holds the record.
+	epicFlag       = Flag{Name: "epic", Value: "ID", Description: "epic id or URN that holds the record"}
+	epicCreateFlag = Flag{Name: "epic", Value: "ID", Required: true, Description: "epic id or URN the new content belongs to"}
 )
 
 func required(name, value, description string) Flag {
@@ -26,10 +31,90 @@ func repeatable(name, value, description string, isRequired bool) Flag {
 // and that every declared flag is accepted by the real flag set.
 var commands = []Command{
 	{
-		Name: "story add", Status: StatusImplemented, Mutates: true, Writes: []string{"story", "story-revision", "story-event"},
-		Usage:   "change-saga story add --id ID --revision ID --event ID --title TEXT --statement TEXT --priority TEXT [flags] <saga>",
-		Summary: "create a story identity, its initial complete revision, and its proposed lifecycle event",
+		Name: "epic add", Status: StatusImplemented, Mutates: true, Writes: []string{"epic"},
+		Usage:   "change-saga epic add --id ID --title TEXT [--description TEXT] [flags] <saga>",
+		Summary: "add a durable product domain; it holds its own stories, design, quality, work plan, and implementation deck",
 		Flags: []Flag{
+			required("id", "ID", "stable epic id"), required("title", "TEXT", "the product domain the epic covers"),
+			optional("description", "TEXT", "what the domain covers"), requestIDFlag, jsonFlag,
+		},
+		Positionals: sagaOnly,
+	},
+	{
+		Name: "persona add", Status: StatusImplemented, Mutates: true, Writes: []string{"persona", "persona-revision", "persona-event"},
+		Usage:   "change-saga persona add --id ID --name TEXT --description TEXT [--revision r1] [--event active] [flags] <saga>",
+		Summary: "add an active persona; until an accepted story serves it, it is a visible gap",
+		Flags: []Flag{
+			required("id", "ID", "stable persona id"), required("name", "TEXT", "persona name"), required("description", "TEXT", "who the persona is and what they need"),
+			optional("revision", "ID", "initial revision id; defaults to r1"), optional("event", "ID", "initial active-event id; defaults to active"), requestIDFlag, jsonFlag,
+		},
+		Positionals: sagaOnly,
+	},
+	{
+		Name: "persona revise", Status: StatusImplemented, Mutates: true, Writes: []string{"persona-revision"},
+		Usage:   "change-saga persona revise --persona URN --revision ID --parent URN... --name TEXT --description TEXT [flags] <saga>",
+		Summary: "append a complete persona revision; several --parent values reconcile competing heads",
+		Flags: []Flag{
+			required("persona", "URN", "canonical persona URN"), required("revision", "ID", "new revision id"), repeatable("parent", "URN", "current revision head URN", true),
+			required("name", "TEXT", "complete revised name"), required("description", "TEXT", "complete revised description"), requestIDFlag, jsonFlag,
+		},
+		Positionals: sagaOnly,
+	},
+	{
+		Name: "persona set-state", Status: StatusImplemented, Mutates: true, Writes: []string{"persona-event"},
+		Usage:   "change-saga persona set-state --persona URN --event ID --parent URN... --state active|retired [--reason TEXT] [flags] <saga>",
+		Summary: "retire or restore a persona; stories that served only a retired persona become one question: retire them or reassign them",
+		Flags: []Flag{
+			required("persona", "URN", "canonical persona URN"), required("event", "ID", "new lifecycle event id"), repeatable("parent", "URN", "current lifecycle head URN", true),
+			required("state", "STATE", "active or retired"), optional("reason", "TEXT", "why the lifecycle changed"), requestIDFlag, jsonFlag,
+		},
+		Positionals: sagaOnly,
+	},
+	{
+		Name: "flag add", Status: StatusImplemented, Mutates: true, Writes: []string{"flag", "flag-revision", "flag-event"},
+		Usage:   "change-saga flag add --id ID --description TEXT --target URN... [--state off|on] [flags] <saga>",
+		Summary: "add a feature flag gating stories or whole epics; a gated story can be implemented but not enabled",
+		Flags: []Flag{
+			required("id", "ID", "stable flag id"), required("description", "TEXT", "what the flag gates and why"),
+			repeatable("target", "URN", "story or epic URN the flag gates", true), optional("state", "STATE", "off (default) or on"),
+			optional("revision", "ID", "initial revision id; defaults to r1"), optional("event", "ID", "initial event id; defaults to the state"), requestIDFlag, jsonFlag,
+		},
+		Positionals: sagaOnly,
+	},
+	{
+		Name: "flag revise", Status: StatusImplemented, Mutates: true, Writes: []string{"flag-revision"},
+		Usage:   "change-saga flag revise --flag URN --revision ID --parent URN... --description TEXT --target URN... [flags] <saga>",
+		Summary: "append a complete flag revision: its description and every story or epic it gates",
+		Flags: []Flag{
+			required("flag", "URN", "canonical flag URN"), required("revision", "ID", "new revision id"), repeatable("parent", "URN", "current revision head URN", true),
+			required("description", "TEXT", "complete revised description"), repeatable("target", "URN", "story or epic URN the flag gates", true), requestIDFlag, jsonFlag,
+		},
+		Positionals: sagaOnly,
+	},
+	{
+		Name: "flag set-state", Status: StatusImplemented, Mutates: true, Writes: []string{"flag-event"},
+		Usage:   "change-saga flag set-state --flag URN --event ID --parent URN... --state off|on|retired [--reason TEXT] [flags] <saga>",
+		Summary: "turn a flag on or off, or retire it; a retired flag gates nothing",
+		Flags: []Flag{
+			required("flag", "URN", "canonical flag URN"), required("event", "ID", "new lifecycle event id"), repeatable("parent", "URN", "current lifecycle head URN", true),
+			required("state", "STATE", "off, on, or retired"), optional("reason", "TEXT", "why the flag changed"), requestIDFlag, jsonFlag,
+		},
+		Positionals: sagaOnly,
+	},
+	{
+		Name: "story move", Status: StatusImplemented, Mutates: true, Writes: []string{"story"},
+		Usage:   "change-saga story move --story URN --epic ID [--json] <saga>",
+		Summary: "move a story to another epic; its URN, revisions, and every relation and pin to it are unchanged",
+		Flags: []Flag{
+			required("story", "URN", "canonical story URN"), epicCreateFlag, jsonFlag,
+		},
+		Positionals: sagaOnly,
+	},
+	{
+		Name: "story add", Status: StatusImplemented, Mutates: true, Writes: []string{"story", "story-revision", "story-event"},
+		Usage:   "change-saga story add --epic ID --id ID --revision ID --event ID --title TEXT --statement TEXT --priority TEXT [flags] <saga>",
+		Summary: "create a story identity, its initial complete revision, and its proposed lifecycle event",
+		Flags: []Flag{epicCreateFlag, repeatable("persona", "URN", "persona URN the story serves; optional", false),
 			required("id", "ID", "stable story id"), required("revision", "ID", "initial revision id"), required("event", "ID", "initial proposed-event id"),
 			required("title", "TEXT", "story title"), required("statement", "TEXT", "complete user-story statement"), required("priority", "TEXT", "story priority"),
 			repeatable("criterion", "ID=STATEMENT", "acceptance criterion", false), repeatable("citation", "URN", "citation URN", false),
@@ -41,7 +126,7 @@ var commands = []Command{
 		Name: "story revise", Status: StatusImplemented, Mutates: true, Writes: []string{"story-revision"},
 		Usage:   "change-saga story revise --story URN --revision ID --parent URN... --title TEXT --statement TEXT --priority TEXT [flags] <saga>",
 		Summary: "append a complete story revision; several --parent values reconcile competing revision heads",
-		Flags: []Flag{
+		Flags: []Flag{repeatable("persona", "URN", "persona URN the revised story serves; optional", false), epicFlag,
 			required("story", "URN", "canonical story URN"), required("revision", "ID", "new revision id"), repeatable("parent", "URN", "current revision head URN", true),
 			required("title", "TEXT", "complete revised title"), required("statement", "TEXT", "complete revised statement"), required("priority", "TEXT", "complete revised priority"),
 			repeatable("criterion", "ID=STATEMENT", "acceptance criterion", false), repeatable("citation", "URN", "citation URN", false),
@@ -53,7 +138,7 @@ var commands = []Command{
 		Name: "story set-state", Status: StatusImplemented, Mutates: true, Writes: []string{"story-event"},
 		Usage:   "change-saga story set-state --story URN --event ID --parent URN... --state STATE [flags] <saga>",
 		Summary: "append a story lifecycle event: proposed, accepted, deferred, rejected, or retired",
-		Flags: []Flag{
+		Flags: []Flag{epicFlag,
 			required("story", "URN", "canonical story URN"), required("event", "ID", "new lifecycle event id"), repeatable("parent", "URN", "current lifecycle head URN", true),
 			required("state", "STATE", "proposed, accepted, deferred, rejected, or retired"), optional("reason", "TEXT", "why the lifecycle changed"),
 			requestIDFlag, fromFileFlag, jsonFlag,
@@ -64,7 +149,7 @@ var commands = []Command{
 		Name: "criterion add", Status: StatusImplemented, Mutates: true, Writes: []string{"story-revision"},
 		Usage:   "change-saga criterion add --story URN --parent REVISION --revision ID --id ID --statement TEXT [flags] <saga>",
 		Summary: "write a complete story revision that adds one acceptance criterion",
-		Flags: []Flag{
+		Flags: []Flag{epicFlag,
 			required("story", "URN", "canonical story URN"), required("parent", "REVISION", "the single current story revision head URN"), required("revision", "ID", "new story revision id"),
 			required("id", "ID", "stable criterion id; removed ids can never be reused"), required("statement", "TEXT", "acceptance criterion statement"),
 			requestIDFlag, fromFileFlag, jsonFlag,
@@ -75,7 +160,7 @@ var commands = []Command{
 		Name: "criterion revise", Status: StatusImplemented, Mutates: true, Writes: []string{"story-revision"},
 		Usage:   "change-saga criterion revise --story URN --criterion URN --parent REVISION --revision ID (--statement TEXT|--edit) [flags] <saga>",
 		Summary: "write a complete story revision that rewords one criterion without changing its obligation; every relation pinned to the parent becomes stale",
-		Flags: []Flag{
+		Flags: []Flag{epicFlag,
 			required("story", "URN", "canonical story URN"), required("criterion", "URN", "canonical criterion URN"), required("parent", "REVISION", "the single current story revision head URN"),
 			required("revision", "ID", "new story revision id"), required("statement", "TEXT", "new wording"), optional("edit", "", "edit the complete proposed revision with $EDITOR"),
 			requestIDFlag, fromFileFlag, jsonFlag,
@@ -86,7 +171,7 @@ var commands = []Command{
 		Name: "criterion remove", Status: StatusImplemented, Mutates: true, Writes: []string{"story-revision"},
 		Usage:   "change-saga criterion remove --story URN --criterion URN --parent REVISION --revision ID --reason TEXT [flags] <saga>",
 		Summary: "write a complete story revision that omits one criterion; its id is retired forever",
-		Flags: []Flag{
+		Flags: []Flag{epicFlag,
 			required("story", "URN", "canonical story URN"), required("criterion", "URN", "canonical criterion URN"), required("parent", "REVISION", "the single current story revision head URN"),
 			required("revision", "ID", "new story revision id"), required("reason", "TEXT", "why the obligation is removed"),
 			requestIDFlag, fromFileFlag, jsonFlag,
@@ -95,9 +180,9 @@ var commands = []Command{
 	},
 	{
 		Name: "citation add", Status: StatusImplemented, Mutates: true, Writes: []string{"citation"},
-		Usage:   "change-saga citation add --id ID --kind KIND --title TEXT --reference LOCATOR [flags] <saga>",
+		Usage:   "change-saga citation add --epic ID --id ID --kind KIND --title TEXT --reference LOCATOR [flags] <saga>",
 		Summary: "record an immutable citation that stories, exceptions, and evidence can cite",
-		Flags: []Flag{
+		Flags: []Flag{epicCreateFlag,
 			required("id", "ID", "stable citation id"), required("kind", "KIND", "url, repository_commit, issue, document, or decision"),
 			required("title", "TEXT", "citation title"), required("reference", "LOCATOR", "authoritative locator"), requestIDFlag, jsonFlag,
 		},
@@ -105,9 +190,9 @@ var commands = []Command{
 	},
 	{
 		Name: "relation add", Status: StatusImplemented, Mutates: true, Writes: []string{"relation"},
-		Usage:   "change-saga relation add --id ID --type TYPE --from URN --to URN --rationale TEXT [--scope self|descendants] [flags] <saga>",
+		Usage:   "change-saga relation add --epic ID --id ID --type TYPE --from URN --to URN --rationale TEXT [--scope self|descendants] [flags] <saga>",
 		Summary: "record one typed, pinned source -> target relation; see relation_matrix for legal endpoints and required pins; omitted revision pins default to the unique current head",
-		Flags: []Flag{
+		Flags: []Flag{epicCreateFlag,
 			required("id", "ID", "stable relation id"), required("type", "TYPE", "relation type from relation_matrix"),
 			required("from", "URN", "source endpoint URN"), required("to", "URN", "target endpoint URN"), required("rationale", "TEXT", "why the endpoints are related"),
 			optional("scope", "SCOPE", "v5 only: self (default) or descendants for a deck or slide source"),
@@ -119,9 +204,9 @@ var commands = []Command{
 	},
 	{
 		Name: "relation supersede", Status: StatusImplemented, Mutates: true, Writes: []string{"relation"},
-		Usage:       "change-saga relation supersede --relation URN [--request-id ID] [--json] <saga>",
+		Usage:       "change-saga relation supersede --relation URN [--epic ID] [--request-id ID] [--json] <saga>",
 		Summary:     "retire one active relation; history keeps the record",
-		Flags:       []Flag{required("relation", "URN", "canonical relation URN"), requestIDFlag, jsonFlag},
+		Flags:       []Flag{epicFlag, required("relation", "URN", "canonical relation URN"), requestIDFlag, jsonFlag},
 		Positionals: sagaOnly,
 	},
 	{
@@ -132,9 +217,9 @@ var commands = []Command{
 	},
 	{
 		Name: "prototype add-html", Status: StatusImplemented, Mutates: true, Writes: []string{"prototype", "prototype-revision"},
-		Usage:   "change-saga prototype add-html --id ID --revision ID --title TEXT --source PATH [--state STATE] [flags] <saga>",
+		Usage:   "change-saga prototype add-html --epic ID --id ID --revision ID --title TEXT --source PATH [--state STATE] [flags] <saga>",
 		Summary: "record an interactive HTML prototype and its initial immutable revision",
-		Flags: []Flag{
+		Flags: []Flag{epicCreateFlag,
 			required("id", "ID", "stable prototype id"), required("revision", "ID", "initial revision id"), required("title", "TEXT", "prototype title"),
 			required("source", "PATH", "single .html file or directory containing index.html"), optional("state", "STATE", "draft, ready, or retired"), requestIDFlag, jsonFlag,
 		},
@@ -144,7 +229,7 @@ var commands = []Command{
 		Name: "prototype annotate", Status: StatusImplemented, Mutates: true, Writes: []string{"prototype-annotation"},
 		Usage:   "change-saga prototype annotate --prototype URN --id ID --target URN --rationale TEXT --story-revision URN (--prototype-revision URN | --prototype-content-digest DIGEST) [selector] [flags] <saga>",
 		Summary: "pin one prototype element, text, region, or provider node to a story or criterion revision",
-		Flags: []Flag{
+		Flags: []Flag{epicFlag,
 			required("prototype", "URN", "canonical prototype URN"), required("id", "ID", "stable annotation id"), required("target", "URN", "story or criterion URN"),
 			required("rationale", "TEXT", "why this part of the prototype expresses the requirement"), required("story-revision", "URN", "exact story revision pin"),
 			optional("prototype-revision", "URN", "exact prototype revision pin"), optional("prototype-content-digest", "DIGEST", "exact prototype content digest pin"),
@@ -155,10 +240,10 @@ var commands = []Command{
 	},
 	{
 		Name: "add-deck", Status: StatusImplemented, Mutates: true, Writes: []string{"deck"},
-		Usage:   "change-saga add-deck [flags] <saga> <name>",
-		Summary: "create an embedded deck; role ux places it on the UX design axis, other decks are implementation decks",
-		Flags: []Flag{
-			optional("id", "ID", "stable deck id"), optional("title", "TEXT", "deck title"), optional("role", "ROLE", "deck role; ux marks a UX flow deck"),
+		Usage:   "change-saga add-deck (--epic ID | --role onboarding) [flags] <saga> <name>",
+		Summary: "create an epic's implementation deck, or with --role onboarding the app's onboarding deck whose Items reference records",
+		Flags: []Flag{optional("epic", "ID", "epic whose implementation deck this is; required unless --role onboarding"),
+			optional("id", "ID", "stable deck id"), optional("title", "TEXT", "deck title"), optional("role", "ROLE", "change (an epic's implementation deck, the default) or onboarding (the app's onboarding deck)"),
 			optional("rank", "N", "review order"), optional("objective", "TEXT", "one concise reviewer objective"),
 		},
 		Positionals: []string{"<saga>", "<name>"},
@@ -213,9 +298,9 @@ var commands = []Command{
 	// v5 quality writers.
 	{
 		Name: "quality test-case add", Status: StatusImplemented, Mutates: true, Writes: []string{"test-case", "test-case-revision", "test-case-event"},
-		Usage:   "change-saga quality test-case add --id ID [--revision r1] [--event proposed] --title TEXT --kind KIND... --automation MODE --step JSON... --expected-result TEXT [--precondition TEXT...] [--from FILE|-] [flags] <saga>",
+		Usage:   "change-saga quality test-case add --epic ID --id ID [--revision r1] [--event proposed] --title TEXT --kind KIND... --automation MODE --step JSON... --expected-result TEXT [--precondition TEXT...] [--from FILE|-] [flags] <saga>",
 		Summary: "create a test case with its initial complete revision (ordered steps, coverage kinds, automation) and proposed event; link it with a verifies relation",
-		Flags: []Flag{
+		Flags: []Flag{epicCreateFlag,
 			required("id", "ID", "stable test-case id"), optional("revision", "ID", "initial revision id; defaults to r1"), optional("event", "ID", "initial proposed-event id"),
 			required("title", "TEXT", "test-case title"), repeatable("kind", "KIND", "positive, negative, or edge", true), required("automation", "MODE", "manual, automated, or hybrid"),
 			repeatable("step", "JSON", `ordered step {"id","action","expected_result"}`, true), required("expected-result", "TEXT", "overall expected result"),
@@ -227,7 +312,7 @@ var commands = []Command{
 		Name: "quality test-case revise", Status: StatusImplemented, Mutates: true, Writes: []string{"test-case-revision"},
 		Usage:   "change-saga quality test-case revise --test URN --parent REVISION... --revision ID [definition flags] [--from FILE|-] [flags] <saga>",
 		Summary: "append a complete test-case revision; runs, evidence, and verifies relations pinned to the parent become stale",
-		Flags: []Flag{
+		Flags: []Flag{epicFlag,
 			required("test", "URN", "canonical test-case URN"), repeatable("parent", "URN", "current revision head URN", true), required("revision", "ID", "new revision id"),
 			optional("title", "TEXT", "revised title"), repeatable("kind", "KIND", "positive, negative, or edge", false), optional("automation", "MODE", "manual, automated, or hybrid"),
 			repeatable("step", "JSON", "ordered step", false), optional("expected-result", "TEXT", "overall expected result"), repeatable("precondition", "TEXT", "ordered precondition", false),
@@ -239,7 +324,7 @@ var commands = []Command{
 		Name: "quality test-case set-state", Status: StatusImplemented, Mutates: true, Writes: []string{"test-case-event"},
 		Usage:   "change-saga quality test-case set-state --test URN --parent EVENT... --state STATE [--event ID] [--reason TEXT] [flags] <saga>",
 		Summary: "append a test-case lifecycle event: proposed, active, deprecated, or retired",
-		Flags: []Flag{
+		Flags: []Flag{epicFlag,
 			required("test", "URN", "canonical test-case URN"), repeatable("parent", "URN", "current lifecycle head URN", true),
 			required("state", "STATE", "proposed, active, deprecated, or retired"), optional("event", "ID", "new event id"), optional("reason", "TEXT", "why the lifecycle changed"),
 			fromFileFlag, requestIDFlag, jsonFlag,
@@ -248,9 +333,9 @@ var commands = []Command{
 	},
 	{
 		Name: "quality policy set", Status: StatusImplemented, Mutates: true, Writes: []string{"quality-policy"},
-		Usage:   "change-saga quality policy set --criterion URN --story-revision URN --require KIND... --rationale TEXT [--allow MODE...] [--supersedes POLICY...] [--id ID] [flags] <saga>",
+		Usage:   "change-saga quality policy set --epic ID --criterion URN --story-revision URN --require KIND... --rationale TEXT [--allow MODE...] [--supersedes POLICY...] [--id ID] [flags] <saga>",
 		Summary: "record the test kinds one criterion revision requires; positive is required by default",
-		Flags: []Flag{
+		Flags: []Flag{epicCreateFlag,
 			required("criterion", "URN", "canonical criterion URN"), required("story-revision", "URN", "exact story revision pin"),
 			repeatable("require", "KIND", "positive, negative, or edge", true), required("rationale", "TEXT", "why these kinds are required"),
 			repeatable("allow", "MODE", "allowed automation: manual, automated, or hybrid", false), repeatable("supersedes", "URN", "current policy head this replaces", false),
@@ -262,7 +347,7 @@ var commands = []Command{
 		Name: "quality evidence add", Status: StatusImplemented, Mutates: true, Writes: []string{"quality-evidence"},
 		Usage:   "change-saga quality evidence add --test URN --role ROLE (--diff URI... | --verification URN... | --citation URN...) [--test-revision URN] [--supersedes EVIDENCE...] [--id ID] [--batch FILE|-] [flags] <saga>",
 		Summary: "record immutable typed evidence for one test revision: test code diffs, implementation-under-test diffs, or execution artifacts",
-		Flags: []Flag{
+		Flags: []Flag{epicFlag,
 			required("test", "URN", "canonical test-case URN"), required("role", "ROLE", "test_implementation, implementation_under_test, or execution_artifact"),
 			repeatable("diff", "SAGA_DIFF_URI", "exact diff URI", false), repeatable("verification", "URN", "verification URN", false), repeatable("citation", "URN", "citation URN", false),
 			optional("test-revision", "URN", "test revision pin; defaults to the unique current head"), repeatable("supersedes", "URN", "evidence this record replaces", false),
@@ -274,7 +359,7 @@ var commands = []Command{
 		Name: "quality run record", Status: StatusImplemented, Mutates: true, Writes: []string{"test-run"},
 		Usage:   "change-saga quality run record --test URN --result RESULT --summary TEXT --evidence URN... [--parent RUN...] [--test-revision URN] [--command TEXT] [--id ID] [flags] <saga>",
 		Summary: "append an immutable run result pinned to the test revision and the source identity; the command is recorded, never executed",
-		Flags: []Flag{
+		Flags: []Flag{epicFlag,
 			required("test", "URN", "canonical test-case URN"), required("result", "RESULT", "passed, failed, blocked, or skipped"),
 			required("summary", "TEXT", "what ran and what was observed"), repeatable("evidence", "URN", "current evidence URN", true),
 			repeatable("parent", "URN", "current run head URN", false), optional("test-revision", "URN", "test revision that ran; defaults to the unique current head"),
@@ -286,9 +371,9 @@ var commands = []Command{
 	// shapes are published as planned so the loop is visible end to end.
 	{
 		Name: "coverage-exception add", Status: StatusPlanned, Mutates: true, Writes: []string{"coverage-exception"},
-		Usage:   "change-saga coverage-exception add --id ID --axis AXIS --criterion URN --story-revision URN --rationale TEXT --citation URN... [flags] <saga>",
+		Usage:   "change-saga coverage-exception add --epic ID --id ID --axis AXIS --criterion URN --story-revision URN --rationale TEXT --citation URN... [flags] <saga>",
 		Summary: "record an explicit, cited decision that one axis does not apply to one criterion revision; never excuses changed-source accounting",
-		Flags: []Flag{
+		Flags: []Flag{epicCreateFlag,
 			required("id", "ID", "stable exception id"), required("axis", "AXIS", "prototype, ux, ui, technical, quality, or implementation"),
 			required("criterion", "URN", "canonical criterion URN"), required("story-revision", "URN", "exact current story revision pin"),
 			required("rationale", "TEXT", "why the axis does not apply"), repeatable("citation", "URN", "citation supporting the decision", true), requestIDFlag, jsonFlag,
@@ -299,7 +384,7 @@ var commands = []Command{
 		Name: "coverage-exception supersede", Status: StatusPlanned, Mutates: true, Writes: []string{"coverage-exception"},
 		Usage:       "change-saga coverage-exception supersede --exception URN --with URN [flags] <saga>",
 		Summary:     "replace one exception decision with another; competing heads are never resolved by timestamp",
-		Flags:       []Flag{required("exception", "URN", "exception being replaced"), required("with", "URN", "replacing exception"), requestIDFlag, jsonFlag},
+		Flags:       []Flag{epicFlag, required("exception", "URN", "exception being replaced"), required("with", "URN", "replacing exception"), requestIDFlag, jsonFlag},
 		Positionals: sagaOnly,
 	},
 }

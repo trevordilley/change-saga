@@ -14,6 +14,7 @@ import (
 	"sync/atomic"
 	"time"
 
+	"github.com/twentyideas/changesaga/internal/applayout"
 	"github.com/twentyideas/changesaga/internal/diffuri"
 )
 
@@ -31,8 +32,15 @@ type hierarchyRoot uint8
 
 const (
 	nestedHierarchy hierarchyRoot = iota
+	// sagaHierarchy is the app root: saga.json, the app-level roots, the
+	// epics, and the review overlay. It holds no report content of its own.
 	sagaHierarchy
+	// designHierarchy is an authored report root that is not an epic:
+	// an epic's ___design, and the app's ___overview and ___designsystem.
 	designHierarchy
+	// epicHierarchy is one epic directory: report content plus the epic's
+	// capability roots.
+	epicHierarchy
 )
 
 var fullLoadCount atomic.Uint64
@@ -116,35 +124,12 @@ func load(root string, options loadOptions) (*Saga, Validation, error) {
 	if err != nil {
 		return nil, validation, err
 	}
-	designDir := filepath.Join(abs, "___design")
-	if info, statErr := os.Lstat(designDir); statErr == nil && info.IsDir() && info.Mode()&os.ModeSymlink == 0 {
-		design, loadErr := loadSection(abs, designDir, manifest, designHierarchy, options, &validation)
-		if loadErr != nil {
-			return nil, validation, loadErr
-		}
-		// Design packages deliberately join the existing in-memory hierarchy.
-		// Every renderer and target index can therefore address them without a
-		// second, subtly different chapter/fragment implementation.
-		section.Fragments = append(section.Fragments, design.Fragments...)
-		section.Children = append(section.Children, design.Children...)
-		sortSectionContents(section)
+	app, decks, err := loadAppContent(abs, manifest, section, options, &validation)
+	if err != nil {
+		return nil, validation, err
 	}
-	var decks []*Deck
-	if metadataDirectorySafe(abs, abs, EmbeddedSlidesDir, &validation) {
-		decks, err = loadEmbeddedDecks(abs, manifest, options, &validation)
-		if err != nil {
-			return nil, validation, err
-		}
-	}
-	// The query and coverage applications understand deck/slide/Item nodes
-	// through the section projection. Joining only the projected deck children
-	// keeps the report root and its overview fragments intact.
-	if len(decks) > 0 {
-		section.Children = append(section.Children, projectDecks(manifest, decks).Children...)
-		sortSectionContents(section)
-	}
-	document := &Saga{Root: abs, Manifest: manifest, Section: section, Decks: decks}
-	if len(decks) > 0 && !options.skipReviews {
+	document := &Saga{Root: abs, Manifest: manifest, Section: section, Decks: decks, Overview: app.overview, DesignSystem: app.designSystem, Onboarding: app.onboarding, Epics: app.epics}
+	if len(decks)+len(app.onboarding) > 0 && !options.skipReviews {
 		state, reviewValidation, reviewErr := loadFlatReviewState(MutationIndexFromDocument(document), options.outline)
 		if reviewErr != nil {
 			return nil, validation, reviewErr
@@ -152,7 +137,7 @@ func load(root string, options loadOptions) (*Saga, Validation, error) {
 		validation.Issues = append(validation.Issues, reviewValidation.Issues...)
 		document.Threads, document.DiffReviews = state.Threads, state.DiffReviews
 		applyFlatReviews(document.Section, state.ByTarget)
-		for _, deck := range document.Decks {
+		for _, deck := range append(append([]*Deck{}, document.Decks...), document.Onboarding...) {
 			deck.Reviews = state.ByTarget[deck.Target]
 			for _, slide := range deck.Slides {
 				slide.Reviews = state.ByTarget[slide.Target]
@@ -231,6 +216,13 @@ func loadSection(root, dir string, manifest Manifest, hierarchy hierarchyRoot, o
 		section.Kind = "design"
 		section.ID = manifest.ID + "-design-root"
 		section.Title = "Technical design"
+	} else if hierarchy == epicHierarchy {
+		// Like the design root, an epic is a synthetic grouping node. Its
+		// report content joins the app root so every target index still sees
+		// one tree; Saga.Epics keeps the grouping for readers.
+		section.Kind = "epic"
+		section.ID = strings.TrimSuffix(filepath.Base(dir), applayout.EpicSuffix)
+		section.Title = section.ID
 	} else {
 		if strings.HasSuffix(filepath.Base(dir), ".chapter") {
 			section.Kind = "chapter"
@@ -286,7 +278,7 @@ func loadSection(root, dir string, manifest Manifest, hierarchy hierarchyRoot, o
 				if name == "___diffs" {
 					section.HasDiffs = true
 				}
-				if !knownReservedDirectory(name, hierarchy == sagaHierarchy) {
+				if !knownReservedDirectory(name, hierarchy) {
 					addIssue(validation, "error", displayPath(rel, name), "unknown reserved directory")
 				}
 			}
@@ -303,6 +295,10 @@ func loadSection(root, dir string, manifest Manifest, hierarchy hierarchyRoot, o
 		path := filepath.Join(dir, name)
 		if reason := PortabilityWarning(name); reason != "" {
 			addIssue(validation, "warning", displayPath(rel, name), fmt.Sprintf("directory name %q %s", name, reason))
+		}
+		if hierarchy == sagaHierarchy {
+			addIssue(validation, "error", displayPath(rel, name), "report content belongs in ___overview, ___designsystem, or an epic under ___epics, not at the app root")
+			continue
 		}
 		if hierarchy != nestedHierarchy && !strings.HasSuffix(name, ".fragment") && !strings.HasSuffix(name, ".chapter") {
 			addIssue(validation, "error", displayPath(rel, name), "direct saga children must be .chapter or .fragment directories")
@@ -936,18 +932,25 @@ func structuralEntry(entry fs.DirEntry, suffix string) (matches bool, problem st
 	return true, ""
 }
 
-func knownReservedDirectory(name string, root bool) bool {
-	if name == "___diffs" || name == "___approvals" {
-		return true
-	}
-	if !root {
+func knownReservedDirectory(name string, hierarchy hierarchyRoot) bool {
+	switch hierarchy {
+	case sagaHierarchy:
+		switch name {
+		case "___diffs", "___approvals", "___review", "___claims", "___verifications",
+			applayout.OverviewDir, applayout.PersonasDir, applayout.DesignSystemDir,
+			applayout.OnboardingDir, applayout.FeatureFlagsDir, applayout.EpicsDir:
+			return true
+		}
+		return false
+	case epicHierarchy:
+		for _, known := range applayout.EpicRootDirs {
+			if name == known {
+				return true
+			}
+		}
 		return false
 	}
-	switch name {
-	case "___review", "___claims", "___verifications", EmbeddedSlidesDir, QualityRootDir, "___requirements", "___design", "___workplan":
-		return true
-	}
-	return false
+	return name == "___diffs" || name == "___approvals"
 }
 
 func metadataDirectorySafe(root, sectionDir, name string, validation *Validation) bool {

@@ -42,7 +42,7 @@ test("@critical refuses malformed, non-canonical, and cross-repository coverage 
 
   const before = treeSnapshot(sagaRoot);
   for (const [label, uri] of rejected) {
-    const result = runCLI(sagaRepositories, ["cover", "--repo", sourceRepo, "--target", "overview.fragment", "--name", "must-not-exist", "--uri", uri, sagaRoot]);
+    const result = runCLI(sagaRepositories, ["cover", "--repo", sourceRepo, "--target", "___overview/overview.fragment", "--name", "must-not-exist", "--uri", uri, sagaRoot]);
     expect(result.status, `cover with ${label} URI`).not.toBe(0);
     expect(`${result.stdout}${result.stderr}`, `cover with ${label} URI`).toMatch(/invalid --uri|does not match the saga source repository/);
   }
@@ -51,7 +51,7 @@ test("@critical refuses malformed, non-canonical, and cross-repository coverage 
 
   // Positive control: the same shape of URI, with this saga's own identity, is
   // accepted and written, so the rejections above are the identity check.
-  const accepted = runCLI(sagaRepositories, ["cover", "--repo", sourceRepo, "--target", "overview.fragment", "--name", "accepted-evidence", "--uri", canonical, sagaRoot]);
+  const accepted = runCLI(sagaRepositories, ["cover", "--repo", sourceRepo, "--target", "___overview/overview.fragment", "--name", "accepted-evidence", "--uri", canonical, sagaRoot]);
   expect(accepted.status, accepted.stderr).toBe(0);
   expect(reviewFiles(sagaRepositories, /___diffs\/accepted-evidence\.json$/)).toHaveLength(1);
 });
@@ -61,7 +61,7 @@ test("@critical exposes mapping scrutiny, claims, and verification as an AI revi
   const evidence = canonicalLineURI(identity, "src/app.go", "new", 3, 3);
 
   const claim = runCLI(sagaRepositories, [
-    "add-claim", "--id", "greeting-behavior", "--target", "overview.fragment#greeting-input", "--kind", "behavior",
+    "add-claim", "--id", "greeting-behavior", "--target", "___overview/overview.fragment#greeting-input", "--kind", "behavior",
     "--statement", "Greeting accepts a name in its function signature.", "--diff", evidence, sagaRoot
   ]);
   expect(claim.status, claim.stderr).toBe(0);
@@ -124,9 +124,9 @@ test("@critical refuses to mutate or serve a structurally invalid saga with zero
 
   const before = treeSnapshot(sagaRoot);
   const refused: Array<[string, string[]]> = [
-    ["comment", ["thread", "--target", "overview.fragment", "--body", "Should never be stored.", sagaRoot]],
+    ["comment", ["thread", "--target", "___overview/overview.fragment", "--body", "Should never be stored.", sagaRoot]],
     ["reply", ["reply", "--thread", "20250101T000000000Z", "--body", "Should never be stored.", sagaRoot]],
-    ["approval", ["review", "--target", "overview.fragment", "--state", "approved", "--reviewer-kind", "human", "--body", "Should never be stored.", sagaRoot]],
+    ["approval", ["review", "--target", "___overview/overview.fragment", "--state", "approved", "--reviewer-kind", "human", "--body", "Should never be stored.", sagaRoot]],
     ["rejection", ["review", "--target", ".", "--state", "rejected", "--reviewer-kind", "human", sagaRoot]]
   ];
   for (const [label, args] of refused) {
@@ -156,13 +156,13 @@ test("@critical refuses a checkout whose origin does not match the declared repo
   expect(status.status, "status against a mismatched checkout").not.toBe(0);
   expect(`${status.stdout}${status.stderr}`).toContain("does not match declared repository");
 
-  const cover = runCLI(sagaRepositories, ["cover", "--repo", sourceRepo, "--target", "overview.fragment", "--path", "src/app.go", "--side", "new", "--lines", "3", "--name", "must-not-exist", sagaRoot]);
+  const cover = runCLI(sagaRepositories, ["cover", "--repo", sourceRepo, "--target", "___overview/overview.fragment", "--path", "src/app.go", "--side", "new", "--lines", "3", "--name", "must-not-exist", sagaRoot]);
   expect(cover.status, "cover against a mismatched checkout").not.toBe(0);
   expect(`${cover.stdout}${cover.stderr}`).toContain("does not match declared repository");
   expect(treeSnapshot(sagaRoot), "saga tree after a refused mismatched checkout").toBe(before);
 
   // The override exists and is explicit; nothing else unblocks the check.
-  const overridden = runCLI(sagaRepositories, ["cover", "--repo", sourceRepo, "--allow-repository-mismatch", "--target", "overview.fragment", "--path", "src/app.go", "--side", "new", "--lines", "3", "--name", "explicit-override", sagaRoot]);
+  const overridden = runCLI(sagaRepositories, ["cover", "--repo", sourceRepo, "--allow-repository-mismatch", "--target", "___overview/overview.fragment", "--path", "src/app.go", "--side", "new", "--lines", "3", "--name", "explicit-override", sagaRoot]);
   expect(overridden.status, overridden.stderr).toBe(0);
 
   git(sourceRepo, "remote", "set-url", "origin", declaredRepository);

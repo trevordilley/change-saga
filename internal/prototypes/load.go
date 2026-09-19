@@ -12,6 +12,7 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/twentyideas/changesaga/internal/applayout"
 	"github.com/twentyideas/changesaga/internal/livingid"
 )
 
@@ -26,9 +27,10 @@ type sagaIdentity struct {
 
 func Load(root, sagaID string) (Document, error) { return LoadWithOptions(root, sagaID, LoadOptions{}) }
 
-// LoadWithOptions reads only saga.json and ___requirements/prototypes. It
-// never follows symlinks or opens stories, narrative, design, work-plan,
-// review, or diff data.
+// LoadWithOptions reads only saga.json, the epic manifests, and every epic's
+// ___requirements/prototypes into one app-wide document. It never follows
+// symlinks or opens stories, narrative, design, work-plan, review, or diff
+// data.
 func LoadWithOptions(root, sagaID string, options LoadOptions) (Document, error) {
 	abs, err := filepath.Abs(root)
 	if err != nil {
@@ -58,57 +60,20 @@ func LoadWithOptions(root, sagaID string, options LoadOptions) (Document, error)
 	if sagaID != manifest.ID {
 		return Document{}, fmt.Errorf("requested saga id %q does not match saga.json id %q", sagaID, manifest.ID)
 	}
-	doc := Document{Root: abs, SagaID: sagaID, Prototypes: []Prototype{}, Annotations: []Annotation{}}
-	requirementsRoot := filepath.Join(abs, "___requirements")
-	present, err := realDirectory(requirementsRoot)
+	epics, err := applayout.Epics(abs)
 	if err != nil {
 		return Document{}, err
 	}
-	if !present {
-		return doc, nil
-	}
-	prototypeRoot := filepath.Join(requirementsRoot, "prototypes")
-	present, err = realDirectory(prototypeRoot)
-	if err != nil {
+	if err := applayout.RejectEpicRootsAtAppRoot(abs); err != nil {
 		return Document{}, err
 	}
-	if !present {
-		return doc, nil
-	}
-	doc.Adopted = true
-	entries, err := boundedReadDir(prototypeRoot, MaxPrototypes+1)
-	if err != nil {
-		return Document{}, err
-	}
-	for _, entry := range entries {
-		path := filepath.Join(prototypeRoot, entry.Name())
-		if entry.Type()&fs.ModeSymlink != 0 {
-			return Document{}, fmt.Errorf("prototype root contains symlink %q", entry.Name())
-		}
-		if entry.Name() == "annotations" {
-			if !entry.IsDir() {
-				return Document{}, fmt.Errorf("prototype annotations must be a real directory")
-			}
-			if err := loadAnnotations(&doc, path); err != nil {
-				return Document{}, err
-			}
-			continue
-		}
-		if !entry.IsDir() || !strings.HasSuffix(entry.Name(), ".prototype") {
-			return Document{}, fmt.Errorf("prototype entry %q must be a real <id>.prototype directory", entry.Name())
-		}
-		id := strings.TrimSuffix(entry.Name(), ".prototype")
-		if !livingid.ValidID(id) {
-			return Document{}, fmt.Errorf("prototype package %q has an invalid id", entry.Name())
-		}
-		prototype, err := loadPrototypePackage(&doc, path, id, options)
-		if err != nil {
+	doc := Document{Root: abs, SagaID: sagaID, Epics: epics, Prototypes: []Prototype{}, Annotations: []Annotation{}}
+	prototypeIDs := applayout.NewUniqueIDs("prototype")
+	annotationIDs := applayout.NewUniqueIDs("annotation")
+	for _, epic := range epics {
+		if err := loadEpic(&doc, epic, prototypeIDs, annotationIDs, options); err != nil {
 			return Document{}, err
 		}
-		doc.Prototypes = append(doc.Prototypes, prototype)
-	}
-	if len(doc.Prototypes) > MaxPrototypes {
-		return Document{}, fmt.Errorf("prototype limit of %d exceeded", MaxPrototypes)
 	}
 	sort.Slice(doc.Prototypes, func(i, j int) bool { return doc.Prototypes[i].Identity.ID < doc.Prototypes[j].Identity.ID })
 	sort.Slice(doc.Annotations, func(i, j int) bool {
@@ -118,6 +83,62 @@ func LoadWithOptions(root, sagaID string, options LoadOptions) (Document, error)
 		return doc.Annotations[i].Prototype < doc.Annotations[j].Prototype
 	})
 	return doc, nil
+}
+
+// loadEpic reads one epic's ___requirements/prototypes into the app-wide
+// document. Prototype and annotation URNs never name an epic, so each must be
+// unique across the app.
+func loadEpic(doc *Document, epic applayout.Epic, prototypeIDs, annotationIDs *applayout.UniqueIDs, options LoadOptions) error {
+	requirementsRoot := filepath.Join(epic.Dir, applayout.RequirementsDir)
+	present, err := realDirectory(requirementsRoot)
+	if err != nil || !present {
+		return err
+	}
+	prototypeRoot := filepath.Join(requirementsRoot, "prototypes")
+	present, err = realDirectory(prototypeRoot)
+	if err != nil || !present {
+		return err
+	}
+	doc.Adopted = true
+	entries, err := boundedReadDir(prototypeRoot, MaxPrototypes+1)
+	if err != nil {
+		return err
+	}
+	for _, entry := range entries {
+		path := filepath.Join(prototypeRoot, entry.Name())
+		if entry.Type()&fs.ModeSymlink != 0 {
+			return fmt.Errorf("%s: prototype root contains symlink %q", epic.Rel, entry.Name())
+		}
+		if entry.Name() == "annotations" {
+			if !entry.IsDir() {
+				return fmt.Errorf("%s: prototype annotations must be a real directory", epic.Rel)
+			}
+			if err := loadAnnotations(doc, epic.ID, path, annotationIDs); err != nil {
+				return err
+			}
+			continue
+		}
+		if !entry.IsDir() || !strings.HasSuffix(entry.Name(), ".prototype") {
+			return fmt.Errorf("%s: prototype entry %q must be a real <id>.prototype directory", epic.Rel, entry.Name())
+		}
+		id := strings.TrimSuffix(entry.Name(), ".prototype")
+		if !livingid.ValidID(id) {
+			return fmt.Errorf("%s: prototype package %q has an invalid id", epic.Rel, entry.Name())
+		}
+		if err := prototypeIDs.Claim(id, epic.ID); err != nil {
+			return err
+		}
+		prototype, err := loadPrototypePackage(doc, path, id, options)
+		if err != nil {
+			return err
+		}
+		prototype.Epic = epic.ID
+		doc.Prototypes = append(doc.Prototypes, prototype)
+		if len(doc.Prototypes) > MaxPrototypes {
+			return fmt.Errorf("prototype limit of %d exceeded", MaxPrototypes)
+		}
+	}
+	return nil
 }
 
 func loadPrototypePackage(doc *Document, dir, id string, options LoadOptions) (Prototype, error) {
@@ -267,13 +288,12 @@ func loadRevisionPackage(doc *Document, dir, prototypeID, id string, options Loa
 	return value, nil
 }
 
-func loadAnnotations(doc *Document, dir string) error {
+func loadAnnotations(doc *Document, epicID, dir string, annotationIDs *applayout.UniqueIDs) error {
 	entries, err := boundedReadDir(dir, MaxAnnotations)
 	if err != nil {
 		return err
 	}
-	seen := map[string]bool{}
-	count := 0
+	count := len(doc.Annotations)
 	for _, packageEntry := range entries {
 		if packageEntry.Type()&fs.ModeSymlink != 0 || !packageEntry.IsDir() || !strings.HasSuffix(packageEntry.Name(), ".prototype") {
 			return fmt.Errorf("annotation entry %q must be a real <prototype-id>.prototype directory", packageEntry.Name())
@@ -305,10 +325,10 @@ func loadAnnotations(doc *Document, dir string) error {
 				return fmt.Errorf("%s: annotation prototype must match its package", relative(doc.Root, path))
 			}
 			urn, _ := AnnotationURN(doc.SagaID, prototypeID, value.ID)
-			if seen[urn] {
-				return fmt.Errorf("duplicate annotation %q", urn)
+			if err := annotationIDs.Claim(urn, epicID); err != nil {
+				return fmt.Errorf("%s: %w", relative(doc.Root, path), err)
 			}
-			seen[urn] = true
+			value.Epic = epicID
 			doc.Annotations = append(doc.Annotations, value)
 		}
 	}

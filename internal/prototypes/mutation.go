@@ -12,6 +12,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/twentyideas/changesaga/internal/applayout"
 	"github.com/twentyideas/changesaga/internal/store"
 )
 
@@ -30,15 +31,19 @@ func AddHTML(root, sagaID string, input AddHTMLInput) (MutationResult, error) {
 		if err := validateIdentity(identity, input.ID); err != nil {
 			return err
 		}
+		epic, err := doc.epic(input.Epic)
+		if err != nil {
+			return err
+		}
 		if existing := findPrototype(doc, input.ID); existing != nil {
-			if input.RequestID != "" && existing.Identity.RequestID == input.RequestID {
+			if input.RequestID != "" && existing.Identity.RequestID == input.RequestID && existing.Epic == epic.ID {
 				digest, digestErr := digestHTMLInput(input.SourcePath)
 				if digestErr != nil {
 					return digestErr
 				}
 				wanted := Revision{Schema: RevisionSchemaURL, Version: Version, ID: input.RevisionID, Prototype: prototypeURN, Parents: []string{}, Title: strings.TrimSpace(input.Title), State: input.State, Source: Source{Kind: SourceHTML, Entrypoint: "html/index.html", ContentDigest: digest}, Styles: []StyleSource{}, CreatedAt: created, RequestID: input.RequestID}
 				if equalPrototypeCreation(*existing, identity, wanted) {
-					result = MutationResult{URN: prototypeURN, Path: prototypePath(input.ID), Replayed: true}
+					result = MutationResult{URN: prototypeURN, Path: prototypePath(epic.ID, input.ID), Replayed: true}
 					return nil
 				}
 			}
@@ -47,8 +52,8 @@ func AddHTML(root, sagaID string, input AddHTMLInput) (MutationResult, error) {
 		if len(doc.Prototypes) >= MaxPrototypes {
 			return fmt.Errorf("prototype limit of %d reached", MaxPrototypes)
 		}
-		final := filepath.Join(doc.Root, filepath.FromSlash(prototypePath(input.ID)))
-		err := store.CommitDir(doc.Root, final, func(stage string) error {
+		final := filepath.Join(doc.Root, filepath.FromSlash(prototypePath(epic.ID, input.ID)))
+		err = store.CommitDir(doc.Root, final, func(stage string) error {
 			if err := store.WriteJSON(filepath.Join(stage, "prototype.json"), identity, true); err != nil {
 				return err
 			}
@@ -80,7 +85,7 @@ func AddHTML(root, sagaID string, input AddHTMLInput) (MutationResult, error) {
 		if err != nil {
 			return err
 		}
-		result = MutationResult{URN: prototypeURN, Path: prototypePath(input.ID)}
+		result = MutationResult{URN: prototypeURN, Path: prototypePath(epic.ID, input.ID)}
 		return nil
 	})
 	return result, err
@@ -122,9 +127,13 @@ func AddExternal(root, sagaID string, input AddExternalInput) (MutationResult, e
 		if err := validateRevision(revision, sagaID, input.ID); err != nil {
 			return err
 		}
+		epic, err := doc.epic(input.Epic)
+		if err != nil {
+			return err
+		}
 		if existing := findPrototype(doc, input.ID); existing != nil {
-			if input.RequestID != "" && existing.Identity.RequestID == input.RequestID && equalExternalCreation(*existing, identity, revision) {
-				result = MutationResult{URN: prototypeURN, Path: prototypePath(input.ID), Replayed: true}
+			if input.RequestID != "" && existing.Identity.RequestID == input.RequestID && existing.Epic == epic.ID && equalExternalCreation(*existing, identity, revision) {
+				result = MutationResult{URN: prototypeURN, Path: prototypePath(epic.ID, input.ID), Replayed: true}
 				return nil
 			}
 			return fmt.Errorf("prototype id %q already exists", input.ID)
@@ -132,8 +141,8 @@ func AddExternal(root, sagaID string, input AddExternalInput) (MutationResult, e
 		if len(doc.Prototypes) >= MaxPrototypes {
 			return fmt.Errorf("prototype limit of %d reached", MaxPrototypes)
 		}
-		final := filepath.Join(doc.Root, filepath.FromSlash(prototypePath(input.ID)))
-		err := store.CommitDir(doc.Root, final, func(stage string) error {
+		final := filepath.Join(doc.Root, filepath.FromSlash(prototypePath(epic.ID, input.ID)))
+		err = store.CommitDir(doc.Root, final, func(stage string) error {
 			if err := store.WriteJSON(filepath.Join(stage, "prototype.json"), identity, true); err != nil {
 				return err
 			}
@@ -153,7 +162,7 @@ func AddExternal(root, sagaID string, input AddExternalInput) (MutationResult, e
 		if err != nil {
 			return err
 		}
-		result = MutationResult{URN: prototypeURN, Path: prototypePath(input.ID)}
+		result = MutationResult{URN: prototypeURN, Path: prototypePath(epic.ID, input.ID)}
 		return nil
 	})
 	return result, err
@@ -185,7 +194,7 @@ func Revise(root, sagaID string, input ReviseInput) (MutationResult, error) {
 		for _, existing := range prototype.Revisions {
 			if existing.ID == input.ID {
 				if input.RequestID != "" && existing.RequestID == input.RequestID && revisionInputMatches(existing, input) {
-					result = MutationResult{URN: revisionURN, Path: revisionPath(prototypeID, input.ID), Replayed: true}
+					result = MutationResult{URN: revisionURN, Path: revisionPath(prototype.Epic, prototypeID, input.ID), Replayed: true}
 					return nil
 				}
 				return fmt.Errorf("revision id %q already exists", input.ID)
@@ -197,7 +206,7 @@ func Revise(root, sagaID string, input ReviseInput) (MutationResult, error) {
 		if !sameSet(input.Parents, prototype.RevisionHeads) {
 			return fmt.Errorf("revision parents must name every current head (got %v, want %v)", input.Parents, prototype.RevisionHeads)
 		}
-		final := filepath.Join(doc.Root, filepath.FromSlash(revisionPath(prototypeID, input.ID)))
+		final := filepath.Join(doc.Root, filepath.FromSlash(revisionPath(prototype.Epic, prototypeID, input.ID)))
 		err := store.CommitDir(doc.Root, final, func(stage string) error {
 			source := cloneSource(input.Source)
 			if input.HTMLSourcePath != "" {
@@ -233,7 +242,7 @@ func Revise(root, sagaID string, input ReviseInput) (MutationResult, error) {
 		if err != nil {
 			return err
 		}
-		result = MutationResult{URN: revisionURN, Path: revisionPath(prototypeID, input.ID)}
+		result = MutationResult{URN: revisionURN, Path: revisionPath(prototype.Epic, prototypeID, input.ID)}
 		return nil
 	})
 	return result, err
@@ -262,16 +271,20 @@ func AddAnnotation(root, sagaID string, input AddAnnotationInput) (MutationResul
 			if existing.ID != input.ID || existing.Prototype != input.Prototype {
 				continue
 			}
-			if input.RequestID != "" && existing.RequestID == input.RequestID && equalAnnotationIgnoringTime(existing, value) {
-				result = MutationResult{URN: urn, Path: annotationPath(prototypeID, input.ID), Replayed: true}
+			if input.RequestID != "" && existing.RequestID == input.RequestID && (input.Epic == "" || existing.Epic == input.Epic) && equalAnnotationIgnoringTime(existing, value) {
+				result = MutationResult{URN: urn, Path: annotationPath(existing.Epic, prototypeID, input.ID), Replayed: true}
 				return nil
 			}
 			return fmt.Errorf("annotation id %q already exists", input.ID)
 		}
+		epicID, err := annotationEpic(doc, prototypeID, input.Epic)
+		if err != nil {
+			return err
+		}
 		if len(doc.Annotations) >= MaxAnnotations {
 			return fmt.Errorf("annotation limit of %d reached", MaxAnnotations)
 		}
-		dir, err := store.EnsureDirWithin(doc.Root, filepath.Join(doc.Root, "___requirements", "prototypes", "annotations", prototypeID+".prototype"))
+		dir, err := store.EnsureDirWithin(doc.Root, filepath.Join(doc.Root, filepath.FromSlash(annotationDir(epicID, prototypeID))))
 		if err != nil {
 			return err
 		}
@@ -281,7 +294,7 @@ func AddAnnotation(root, sagaID string, input AddAnnotationInput) (MutationResul
 		} else if err != nil {
 			return err
 		}
-		result = MutationResult{URN: urn, Path: annotationPath(prototypeID, input.ID)}
+		result = MutationResult{URN: urn, Path: annotationPath(epicID, prototypeID, input.ID)}
 		return nil
 	})
 	return result, err
@@ -336,7 +349,7 @@ func AddStyle(root, sagaID string, input AddStyleInput) (MutationResult, error) 
 			if input.RequestID != "" && existing.RequestID == input.RequestID {
 				for _, storedStyle := range existing.Styles {
 					if reflect.DeepEqual(storedStyle, style) {
-						result = MutationResult{URN: revisionURN, Path: revisionPath(prototypeID, input.ID), Replayed: true}
+						result = MutationResult{URN: revisionURN, Path: revisionPath(prototype.Epic, prototypeID, input.ID), Replayed: true}
 						return nil
 					}
 				}
@@ -369,9 +382,9 @@ func AddStyle(root, sagaID string, input AddStyleInput) (MutationResult, error) 
 		if !replaced {
 			styles = append(styles, style)
 		}
-		final := filepath.Join(doc.Root, filepath.FromSlash(revisionPath(prototypeID, input.ID)))
+		final := filepath.Join(doc.Root, filepath.FromSlash(revisionPath(prototype.Epic, prototypeID, input.ID)))
 		err = store.CommitDir(doc.Root, final, func(stage string) error {
-			priorHTML := filepath.Join(doc.Root, filepath.FromSlash(revisionPath(prototypeID, current.ID)), "html")
+			priorHTML := filepath.Join(doc.Root, filepath.FromSlash(revisionPath(prototype.Epic, prototypeID, current.ID)), "html")
 			if err := copyHTMLSource(priorHTML, filepath.Join(stage, "html")); err != nil {
 				return err
 			}
@@ -389,7 +402,7 @@ func AddStyle(root, sagaID string, input AddStyleInput) (MutationResult, error) 
 		if err != nil {
 			return err
 		}
-		result = MutationResult{URN: revisionURN, Path: revisionPath(prototypeID, input.ID)}
+		result = MutationResult{URN: revisionURN, Path: revisionPath(prototype.Epic, prototypeID, input.ID)}
 		return nil
 	})
 	return result, err
@@ -597,12 +610,49 @@ func equalAnnotationIgnoringTime(existing, wanted Annotation) bool {
 	wanted.CreatedAt = existing.CreatedAt
 	return reflect.DeepEqual(existing, wanted)
 }
-func prototypePath(id string) string {
-	return filepath.ToSlash(filepath.Join("___requirements", "prototypes", id+".prototype"))
+
+// prototypesRel is the app-relative slash path of an epic's prototype root.
+func prototypesRel(epic string) string {
+	return applayout.EpicRel(epic) + "/" + applayout.RequirementsDir + "/prototypes"
 }
-func revisionPath(prototypeID, id string) string {
-	return filepath.ToSlash(filepath.Join(prototypePath(prototypeID), "revisions", id+".revision"))
+func prototypePath(epic, id string) string {
+	return prototypesRel(epic) + "/" + id + ".prototype"
 }
-func annotationPath(prototypeID, id string) string {
-	return filepath.ToSlash(filepath.Join("___requirements", "prototypes", "annotations", prototypeID+".prototype", id+".json"))
+func revisionPath(epic, prototypeID, id string) string {
+	return prototypePath(epic, prototypeID) + "/revisions/" + id + ".revision"
+}
+func annotationDir(epic, prototypeID string) string {
+	return prototypesRel(epic) + "/annotations/" + prototypeID + ".prototype"
+}
+func annotationPath(epic, prototypeID, id string) string {
+	return annotationDir(epic, prototypeID) + "/" + id + ".json"
+}
+
+// epic resolves the epic a create mutation names. New epic content is never
+// written to an implied epic.
+func (doc *Document) epic(id string) (applayout.Epic, error) {
+	if strings.TrimSpace(id) == "" {
+		return applayout.Epic{}, fmt.Errorf("an epic is required; new epic content is never written to an implied epic")
+	}
+	epic, ok := applayout.Find(doc.Epics, id)
+	if !ok {
+		return applayout.Epic{}, fmt.Errorf("epic %q does not exist", id)
+	}
+	return epic, nil
+}
+
+// annotationEpic returns the epic an annotation of prototypeID is written
+// into: the prototype's own epic when it exists, otherwise the named epic.
+func annotationEpic(doc *Document, prototypeID, requested string) (string, error) {
+	if prototype := findPrototype(doc, prototypeID); prototype != nil {
+		if requested != "" && requested != prototype.Epic {
+			return "", fmt.Errorf("prototype %q is in epic %q; its annotations cannot be written to epic %q", prototypeID, prototype.Epic, requested)
+		}
+		return prototype.Epic, nil
+	}
+	epic, err := doc.epic(requested)
+	if err != nil {
+		return "", fmt.Errorf("prototype %q does not exist yet, so its annotation needs an epic: %w", prototypeID, err)
+	}
+	return epic.ID, nil
 }

@@ -3,8 +3,12 @@ import { expectNoSeriousAccessibilityViolations, expect, test, waitForSettledSag
 
 test("requirements remain canonical while stories and criteria get dedicated review targets", async ({ page, saga }) => {
   const statement = "As a reviewer, I can inspect the canonical requirement without duplicated report prose.";
+  const persona = runCLI(saga, ["persona", "add", "--id", "reviewer", "--name", "Reviewer", "--description", "Reads the Saga to approve a change.", saga.sagaRoot]);
+  expect(persona.status, persona.stderr).toBe(0);
   const result = runCLI(saga, [
     "story", "add",
+    "--epic", "wave-one",
+    "--persona", "urn:change-saga:wave-one:persona:reviewer",
     "--id", "canonical-review",
     "--revision", "r1",
     "--event", "proposed",

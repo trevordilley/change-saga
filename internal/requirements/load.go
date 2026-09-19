@@ -12,6 +12,7 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/twentyideas/changesaga/internal/applayout"
 	"github.com/twentyideas/changesaga/internal/livingid"
 )
 
@@ -68,56 +69,76 @@ func LoadWithOptions(root, sagaID string, options LoadOptions) (Document, error)
 	if sagaID != identity.ID {
 		return Document{}, fmt.Errorf("requested saga id %q does not match saga.json id %q", sagaID, identity.ID)
 	}
-	document := Document{Root: abs, SagaID: sagaID, Stories: []Story{}, Citations: []Citation{}, Relations: []Relation{}}
-	requirementsRoot := filepath.Join(abs, "___requirements")
-	present, err := realDirectory(requirementsRoot)
+	epics, err := applayout.Epics(abs)
 	if err != nil {
 		return Document{}, err
 	}
-	if !present {
-		return document, nil
-	}
-	entries, err := boundedReadDir(requirementsRoot, 5)
-	if err != nil {
+	if err := applayout.RejectEpicRootsAtAppRoot(abs); err != nil {
 		return Document{}, err
 	}
-	for _, entry := range entries {
-		path := filepath.Join(requirementsRoot, entry.Name())
-		if entry.Type()&fs.ModeSymlink != 0 || !entry.IsDir() {
-			return Document{}, fmt.Errorf("requirements entry %q must be a real directory", entry.Name())
+	document := Document{Root: abs, SagaID: sagaID, Epics: epics, Personas: []Persona{}, Stories: []Story{}, Citations: []Citation{}, Relations: []Relation{}, Flags: []Flag{}}
+	if err := loadPersonas(&document); err != nil {
+		return Document{}, err
+	}
+	stories, citations, relations := applayout.NewUniqueIDs("story"), applayout.NewUniqueIDs("citation"), applayout.NewUniqueIDs("relation")
+	for _, epic := range epics {
+		requirementsRoot := filepath.Join(epic.Dir, applayout.RequirementsDir)
+		present, err := realDirectory(requirementsRoot)
+		if err != nil {
+			return Document{}, err
 		}
-		switch entry.Name() {
-		case "stories", "citations", "relations":
-		// prototypes is the sibling capability root owned by internal/prototypes.
-		// It shares ___requirements so the two merge independently; this loader
-		// deliberately never reads it.
-		case "prototypes":
-		// coverage-exceptions holds immutable decisions owned by the coverage
-		// exception domain. Like prototypes it is a sibling root this loader
-		// deliberately never reads.
-		case "coverage-exceptions":
-		default:
-			return Document{}, fmt.Errorf("unknown requirements entry %q", entry.Name())
+		if !present {
+			continue
 		}
-		_ = path
+		entries, err := boundedReadDir(requirementsRoot, 5)
+		if err != nil {
+			return Document{}, err
+		}
+		for _, entry := range entries {
+			if entry.Type()&fs.ModeSymlink != 0 || !entry.IsDir() {
+				return Document{}, fmt.Errorf("%s: requirements entry %q must be a real directory", epic.Rel, entry.Name())
+			}
+			switch entry.Name() {
+			case "stories", "citations", "relations":
+			// prototypes is the sibling capability root owned by internal/prototypes.
+			// It shares ___requirements so the two merge independently; this loader
+			// deliberately never reads it.
+			case "prototypes":
+			// coverage-exceptions holds immutable decisions owned by the coverage
+			// exception domain. Like prototypes it is a sibling root this loader
+			// deliberately never reads.
+			case "coverage-exceptions":
+			default:
+				return Document{}, fmt.Errorf("%s: unknown requirements entry %q", epic.Rel, entry.Name())
+			}
+		}
+		if err := loadCitations(&document, epic, citations); err != nil {
+			return Document{}, err
+		}
+		if err := loadStories(&document, epic, stories); err != nil {
+			return Document{}, err
+		}
+		if err := loadRelations(&document, epic, relations); err != nil {
+			return Document{}, err
+		}
 	}
-
-	if err := loadCitations(&document); err != nil {
-		return Document{}, err
+	if len(document.Stories) > MaxStories {
+		return Document{}, fmt.Errorf("the app has %d stories; maximum is %d", len(document.Stories), MaxStories)
 	}
-	if err := loadStories(&document); err != nil {
-		return Document{}, err
-	}
-	if err := loadRelations(&document); err != nil {
+	sort.Slice(document.Stories, func(i, j int) bool { return document.Stories[i].Identity.ID < document.Stories[j].Identity.ID })
+	sort.Slice(document.Citations, func(i, j int) bool { return document.Citations[i].ID < document.Citations[j].ID })
+	sort.Slice(document.Relations, func(i, j int) bool { return document.Relations[i].ID < document.Relations[j].ID })
+	if err := loadFlags(&document); err != nil {
 		return Document{}, err
 	}
 	citationIDs := map[string]bool{}
 	for _, citation := range document.Citations {
 		citationIDs[citation.ID] = true
 	}
+	personaIDs := document.personaIDs()
 	for index := range document.Stories {
 		story := &document.Stories[index]
-		if err := validateStoryGraphs(story, sagaID, citationIDs); err != nil {
+		if err := validateStoryGraphs(story, sagaID, citationIDs, personaIDs); err != nil {
 			return Document{}, fmt.Errorf("story %q: %w", story.Identity.ID, err)
 		}
 	}
@@ -128,8 +149,8 @@ func LoadWithOptions(root, sagaID string, options LoadOptions) (Document, error)
 	return document, nil
 }
 
-func loadStories(document *Document) error {
-	dir := filepath.Join(document.Root, "___requirements", "stories")
+func loadStories(document *Document, epic applayout.Epic, ids *applayout.UniqueIDs) error {
+	dir := filepath.Join(epic.Dir, applayout.RequirementsDir, "stories")
 	present, err := realDirectory(dir)
 	if err != nil || !present {
 		return err
@@ -147,13 +168,16 @@ func loadStories(document *Document) error {
 		if !livingid.ValidID(storyID) {
 			return fmt.Errorf("story package %q has an invalid id", entry.Name())
 		}
+		if err := ids.Claim(storyID, epic.ID); err != nil {
+			return err
+		}
 		story, err := loadStoryPackage(document.Root, document.SagaID, path, storyID)
 		if err != nil {
 			return err
 		}
+		story.Epic = epic.ID
 		document.Stories = append(document.Stories, story)
 	}
-	sort.Slice(document.Stories, func(i, j int) bool { return document.Stories[i].Identity.ID < document.Stories[j].Identity.ID })
 	return nil
 }
 
@@ -276,8 +300,8 @@ func loadEvents(root, sagaID, storyID, dir string) ([]LifecycleEvent, error) {
 	return values, nil
 }
 
-func loadCitations(document *Document) error {
-	dir := filepath.Join(document.Root, "___requirements", "citations")
+func loadCitations(document *Document, epic applayout.Epic, ids *applayout.UniqueIDs) error {
+	dir := filepath.Join(epic.Dir, applayout.RequirementsDir, "citations")
 	present, err := realDirectory(dir)
 	if err != nil || !present {
 		return err
@@ -299,14 +323,20 @@ func loadCitations(document *Document) error {
 		if err := validateCitation(value, document.SagaID, expectedID); err != nil {
 			return fmt.Errorf("%s: %w", relative(document.Root, path), err)
 		}
+		if err := ids.Claim(value.ID, epic.ID); err != nil {
+			return err
+		}
+		value.Epic = epic.ID
 		document.Citations = append(document.Citations, value)
 	}
-	sort.Slice(document.Citations, func(i, j int) bool { return document.Citations[i].ID < document.Citations[j].ID })
+	if len(document.Citations) > MaxCitations {
+		return fmt.Errorf("the app has more than %d citations", MaxCitations)
+	}
 	return nil
 }
 
-func loadRelations(document *Document) error {
-	dir := filepath.Join(document.Root, "___requirements", "relations")
+func loadRelations(document *Document, epic applayout.Epic, ids *applayout.UniqueIDs) error {
+	dir := filepath.Join(epic.Dir, applayout.RequirementsDir, "relations")
 	present, err := realDirectory(dir)
 	if err != nil || !present {
 		return err
@@ -328,9 +358,15 @@ func loadRelations(document *Document) error {
 		if err := validateRelation(value, document.SagaID, expectedID); err != nil {
 			return fmt.Errorf("%s: %w", relative(document.Root, path), err)
 		}
+		if err := ids.Claim(value.ID, epic.ID); err != nil {
+			return err
+		}
+		value.Epic = epic.ID
 		document.Relations = append(document.Relations, value)
 	}
-	sort.Slice(document.Relations, func(i, j int) bool { return document.Relations[i].ID < document.Relations[j].ID })
+	if len(document.Relations) > MaxRelations {
+		return fmt.Errorf("the app has more than %d relations", MaxRelations)
+	}
 	return nil
 }
 

@@ -59,11 +59,14 @@ var categoryRank = map[Category]int{
 
 // Action is one ordered next step.
 type Action struct {
-	ID       string              `json:"id"`
-	Kind     Kind                `json:"kind"`
-	Category Category            `json:"category"`
-	Gates    []string            `json:"gates"`
-	Resource string              `json:"resource,omitempty"`
+	ID       string   `json:"id"`
+	Kind     Kind     `json:"kind"`
+	Category Category `json:"category"`
+	Gates    []string `json:"gates"`
+	Resource string   `json:"resource,omitempty"`
+	// Epic is the epic the action concerns, or empty when it concerns the app
+	// as a whole: a persona, a flag, or the app's overall scope.
+	Epic     string              `json:"epic,omitempty"`
 	Axis     string              `json:"axis,omitempty"`
 	Reason   string              `json:"reason"`
 	Command  *grammar.Invocation `json:"command,omitempty"`
@@ -103,6 +106,9 @@ func AuthoringLoop(sagaPath string) Loop {
 }
 
 type builder struct {
+	// epicOf maps each story, criterion, test case, and prototype URN to the
+	// epic that holds it.
+	epicOf  map[string]string
 	status  livingapp.Status
 	saga    string
 	actions map[string]Action
@@ -116,12 +122,20 @@ type criterionInfo struct {
 
 // Derive returns the ordered next actions for one status projection.
 func Derive(status livingapp.Status, sagaPath string) []Action {
-	b := &builder{status: status, saga: sagaPath, actions: map[string]Action{}, stories: map[string]livingapp.StoryStatus{}, crit: map[string]criterionInfo{}}
+	b := &builder{status: status, saga: sagaPath, actions: map[string]Action{}, stories: map[string]livingapp.StoryStatus{}, crit: map[string]criterionInfo{}, epicOf: map[string]string{}}
 	for _, story := range status.Stories {
 		b.stories[story.Story] = story
+		b.epicOf[story.Story] = story.Epic
 		for _, criterion := range story.Criteria {
 			b.crit[criterion.Criterion] = criterionInfo{story: story.Story, statement: criterion.Statement, revision: story.CurrentRevision}
+			b.epicOf[criterion.Criterion] = story.Epic
 		}
+	}
+	for _, testCase := range status.Quality.TestCases {
+		b.epicOf[testCase.TestCase] = testCase.Epic
+	}
+	for _, prototype := range status.Prototypes {
+		b.epicOf[prototype.Prototype] = prototype.Epic
 	}
 	b.diagnostics()
 	b.storyConflicts()
@@ -131,10 +145,11 @@ func Derive(status livingapp.Status, sagaPath string) []Action {
 	b.requirements()
 	b.prototypes()
 	b.testCases()
+	b.personas()
 	result := make([]Action, 0, len(b.actions))
 	for _, action := range b.actions {
 		sort.Strings(action.Gates)
-		result = append(result, action)
+		result = append(result, b.inEpic(action))
 	}
 	sort.Slice(result, func(i, j int) bool {
 		left, right := result[i], result[j]

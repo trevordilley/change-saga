@@ -472,7 +472,7 @@ func (a *assembler) finishQuality(evaluation qualityEvaluation, projection cover
 	for _, urn := range urns {
 		testCase := a.testCases[urn]
 		row := TestCaseStatus{
-			TestCase: urn, Lifecycle: "conflicted", RevisionHeads: copyStrings(testCase.RevisionHeads), Kinds: []string{},
+			TestCase: urn, Epic: testCase.Epic, Lifecycle: "conflicted", RevisionHeads: copyStrings(testCase.RevisionHeads), Kinds: []string{},
 			RunHeads: copyStrings(testCase.RunHeads), Verifies: append([]VerifiesLink{}, evaluation.verifies[urn]...),
 		}
 		if testCase.CurrentLifecycle != nil {

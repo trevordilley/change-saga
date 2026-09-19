@@ -271,7 +271,7 @@ func changedLinesSaga(t *testing.T) (root, repo string) {
 	if err := Init(context.Background(), []string{"--repo", repo, "--repository", rangeRepository, "--base", base, "--head", "HEAD", root}, &output); err != nil {
 		t.Fatal(err)
 	}
-	writeFile(t, filepath.Join(root, "overview.fragment", "content.md"), "# Range change {#range-change}\n\nThe canonical range coverage test change.\n")
+	writeFile(t, filepath.Join(overviewFragment(root), "content.md"), "# Range change {#range-change}\n\nThe canonical range coverage test change.\n")
 	return root, repo
 }
 

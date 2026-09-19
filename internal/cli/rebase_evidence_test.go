@@ -48,7 +48,7 @@ func TestRebaseEvidenceProvesProductIdentityAndRollsClaimsForward(t *testing.T) 
 	if after, readErr := os.ReadFile(fixture.evidencePath); readErr != nil || !bytes.Equal(after, evidenceBefore) {
 		t.Fatalf("dry run changed evidence: equal=%v err=%v", bytes.Equal(after, evidenceBefore), readErr)
 	}
-	if entries, readErr := os.ReadDir(filepath.Join(fixture.root, "___requirements")); readErr == nil && len(entries) != 0 {
+	if entries, readErr := os.ReadDir(filepath.Join(testEpicDir(fixture.root), "___requirements")); readErr == nil && len(entries) != 0 {
 		t.Fatalf("dry run created requirements records: %#v", entries)
 	} else if readErr != nil && !errors.Is(readErr, os.ErrNotExist) {
 		t.Fatal(readErr)
@@ -155,7 +155,7 @@ func TestRebaseEvidenceRefusesChangedProductDiffWithoutWriting(t *testing.T) {
 	if loadErr != nil || len(document.Claims) != 1 || len(document.Verifications) != 1 {
 		t.Fatalf("refusal appended immutable records: claims=%d verifications=%d err=%v", len(document.Claims), len(document.Verifications), loadErr)
 	}
-	if _, statErr := os.Lstat(filepath.Join(fixture.root, "___requirements")); !errors.Is(statErr, os.ErrNotExist) {
+	if _, statErr := os.Lstat(filepath.Join(testEpicDir(fixture.root), "___requirements")); !errors.Is(statErr, os.ErrNotExist) {
 		t.Fatalf("refusal created requirements root: %v", statErr)
 	}
 }
@@ -282,11 +282,17 @@ func newEvidenceRebaseFixture(t *testing.T) evidenceRebaseFixture {
 	if err := Init(ctx, []string{"--repo", repo, "--repository", repository, "--base", "release/2.5.3", "--head", "feature", root}, &bytes.Buffer{}); err != nil {
 		t.Fatal(err)
 	}
-	document, validation, err := saga.Load(root)
+	// Claims and their supersedes relations belong to the epic holding the
+	// report content the claim is about.
+	addTestApp(t, root)
+	if err := AddFragment(ctx, []string{"--epic", testEpic, "--id", "product", "--name", "product", "--title", "Product", root}, &bytes.Buffer{}); err != nil {
+		t.Fatal(err)
+	}
+	_, validation, err := saga.Load(root)
 	if err != nil || !validation.Valid {
 		t.Fatalf("load fixture Saga: valid=%v err=%v", validation.Valid, err)
 	}
-	evidencePath := filepath.Join(root, "overview.fragment", "___diffs", "product.json")
+	evidencePath := filepath.Join(testEpicDir(root), "product.fragment", "___diffs", "product.json")
 	diffs := make([]saga.DiffReference, 0, len(old.Atoms))
 	for _, atom := range old.Atoms {
 		diffs = append(diffs, saga.DiffReference{URI: atom.URI, Note: "preserve this note"})
@@ -296,7 +302,7 @@ func newEvidenceRebaseFixture(t *testing.T) evidenceRebaseFixture {
 	statement := "The feature remains ready."
 	claimPath := filepath.Join(root, "___claims", claimID+".json")
 	writeJSONTestFile(t, claimPath, saga.Claim{
-		Version: saga.CurrentVersion, ID: claimID, Target: document.Section.Fragments[0].Target,
+		Version: saga.CurrentVersion, ID: claimID, Target: saga.FragmentTarget("rebase", "product"),
 		Kind: "behavior", Statement: statement, Evidence: []string{old.Atoms[0].URI}, CreatedAt: time.Now().UTC().Add(-time.Hour),
 	})
 	verificationID := "claim-v2-check"

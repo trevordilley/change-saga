@@ -11,12 +11,14 @@ import (
 )
 
 type storyAddRequest struct {
+	Epic               string                   `json:"epic"`
 	ID                 string                   `json:"id"`
 	Revision           string                   `json:"revision"`
 	Event              string                   `json:"event"`
 	Title              string                   `json:"title"`
 	Statement          string                   `json:"statement"`
 	Priority           string                   `json:"priority"`
+	Personas           []string                 `json:"personas"`
 	Citations          []string                 `json:"citations,omitempty"`
 	AcceptanceCriteria []requirements.Criterion `json:"acceptance_criteria,omitempty"`
 	CreatedAt          time.Time                `json:"created_at,omitempty"`
@@ -30,6 +32,7 @@ type storyReviseRequest struct {
 	Title              string
 	Statement          string
 	Priority           string
+	Personas           []string
 	Citations          []string
 	AcceptanceCriteria []requirements.Criterion
 	CreatedAt          time.Time
@@ -76,8 +79,12 @@ func editStoryRevision(ctx context.Context, root, sagaID string, request storyRe
 	candidate := *current
 	candidate.ID = request.Revision
 	candidate.Parents = append([]string{}, request.Parents...)
+	candidate.Personas = append([]string{}, current.Personas...)
 	candidate.Citations = append([]string{}, current.Citations...)
 	candidate.AcceptanceCriteria = append([]requirements.Criterion{}, current.AcceptanceCriteria...)
+	if request.Personas != nil {
+		candidate.Personas = append([]string{}, request.Personas...)
+	}
 	if strings.TrimSpace(request.Title) != "" {
 		candidate.Title = request.Title
 	}
@@ -107,7 +114,7 @@ func editStoryRevision(ctx context.Context, root, sagaID string, request storyRe
 	}
 	return storyReviseRequest{
 		Story: edited.Story, Revision: edited.ID, Parents: edited.Parents, Title: edited.Title,
-		Statement: edited.Statement, Priority: edited.Priority, Citations: edited.Citations,
+		Statement: edited.Statement, Priority: edited.Priority, Personas: edited.Personas, Citations: edited.Citations,
 		AcceptanceCriteria: edited.AcceptanceCriteria, CreatedAt: edited.CreatedAt, RequestID: edited.RequestID,
 	}, nil
 }

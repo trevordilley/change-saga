@@ -10,6 +10,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/twentyideas/changesaga/internal/applayout"
 	"github.com/twentyideas/changesaga/internal/livingid"
 	"github.com/twentyideas/changesaga/internal/readiness"
 	"github.com/twentyideas/changesaga/internal/requirements"
@@ -18,6 +19,16 @@ import (
 )
 
 var fixtureTime = time.Date(2026, 8, 31, 18, 0, 0, 0, time.UTC)
+
+const (
+	fixtureEpic      = "main"
+	fixturePersonaID = "shopper"
+)
+
+func fixturePersona() string {
+	urn, _ := requirements.PersonaURN("test", fixturePersonaID)
+	return urn
+}
 
 func TestOrdinarySagaIsNotApplicableRatherThanInvalidOrBlocked(t *testing.T) {
 	root := filepath.Join(t.TempDir(), "ordinary.saga")
@@ -114,10 +125,10 @@ func TestTransitiveDependencyBlockerPathIsExposed(t *testing.T) {
 	checkout, _ := livingid.WorkItem("test", "checkout")
 	middle, _ := livingid.WorkItem("test", "middle")
 	foundation, _ := livingid.WorkItem("test", "foundation")
-	if _, err := workplan.CreateDependency(root, workplan.Dependency{ID: "middle-checkout", Prerequisite: middle, Dependent: checkout, Condition: workplan.DependencyCondition{Kind: "progress_done"}, Reason: "middle first"}, "dep-middle"); err != nil {
+	if _, err := workplan.CreateDependency(root, fixtureEpic, workplan.Dependency{ID: "middle-checkout", Prerequisite: middle, Dependent: checkout, Condition: workplan.DependencyCondition{Kind: "progress_done"}, Reason: "middle first"}, "dep-middle"); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := workplan.CreateDependency(root, workplan.Dependency{ID: "foundation-middle", Prerequisite: foundation, Dependent: middle, Condition: workplan.DependencyCondition{Kind: "merge_integrated"}, Reason: "foundation first"}, "dep-foundation"); err != nil {
+	if _, err := workplan.CreateDependency(root, fixtureEpic, workplan.Dependency{ID: "foundation-middle", Prerequisite: foundation, Dependent: middle, Condition: workplan.DependencyCondition{Kind: "merge_integrated"}, Reason: "foundation first"}, "dep-foundation"); err != nil {
 		t.Fatal(err)
 	}
 	result, err := openFixture(t, root).Query(context.Background(), Query{Operation: "traceability"})
@@ -141,7 +152,7 @@ func TestMissingCrossDomainEndpointsMakeRelationsAndPathsStale(t *testing.T) {
 	root := livingFixture(t)
 	addAcceptedStory(t, root, "checkout", "fast")
 	createDeliveryItem(t, root, "checkout", "fast")
-	if err := os.RemoveAll(filepath.Join(root, "___design", "checkout-design.fragment")); err != nil {
+	if err := os.RemoveAll(filepath.Join(applayout.EpicDir(root, fixtureEpic), "___design", "checkout-design.fragment")); err != nil {
 		t.Fatal(err)
 	}
 	session := openFixture(t, root)
@@ -167,7 +178,7 @@ func TestDesignContentChangeStalesPinnedRelations(t *testing.T) {
 	root := livingFixture(t)
 	addAcceptedStory(t, root, "checkout", "fast")
 	createDeliveryItem(t, root, "checkout", "fast")
-	path := filepath.Join(root, "___design", "checkout-design.fragment", "content.txt")
+	path := filepath.Join(applayout.EpicDir(root, fixtureEpic), "___design", "checkout-design.fragment", "content.txt")
 	if err := os.WriteFile(path, []byte("revised design\n"), 0o644); err != nil {
 		t.Fatal(err)
 	}
@@ -192,14 +203,20 @@ func livingFixture(t *testing.T) string {
 	if err := os.Mkdir(root, 0o755); err != nil {
 		t.Fatal(err)
 	}
-	for _, name := range []string{"___requirements", "___design", "___workplan"} {
-		if err := os.Mkdir(filepath.Join(root, name), 0o755); err != nil {
-			t.Fatal(err)
-		}
-	}
 	manifest := map[string]any{"$schema": "https://changesaga.dev/schema/v5/saga.schema.json", "version": 5, "id": "test", "title": "Test", "source": map[string]string{"repository": "https://example.com/repo.git", "base": "main", "head": "feature"}}
 	data, _ := json.Marshal(manifest)
 	if err := os.WriteFile(filepath.Join(root, "saga.json"), data, 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := applayout.WriteEpic(root, applayout.EpicManifest{ID: fixtureEpic, Title: "Main", CreatedAt: fixtureTime}); err != nil {
+		t.Fatal(err)
+	}
+	for _, name := range []string{"___requirements", "___design", "___workplan"} {
+		if err := os.Mkdir(filepath.Join(applayout.EpicDir(root, fixtureEpic), name), 0o755); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if _, err := requirements.AddPersona(root, "test", requirements.AddPersonaInput{ID: fixturePersonaID, RevisionID: "r1", EventID: "active", Name: "Shopper", Description: "Buys things", CreatedAt: fixtureTime, RequestID: "persona-shopper"}); err != nil {
 		t.Fatal(err)
 	}
 	return root
@@ -207,7 +224,7 @@ func livingFixture(t *testing.T) string {
 
 func addAcceptedStory(t *testing.T, root, id, criterion string) {
 	t.Helper()
-	if _, err := requirements.AddStory(root, "test", requirements.AddStoryInput{ID: id, RevisionID: "r1", EventID: "proposed", Title: id, Statement: "Deliver " + id, Priority: "high", Citations: []string{}, AcceptanceCriteria: []requirements.Criterion{{ID: criterion, Statement: "Criterion " + criterion}}, CreatedAt: fixtureTime, RequestID: "story-" + id}); err != nil {
+	if _, err := requirements.AddStory(root, "test", requirements.AddStoryInput{Epic: fixtureEpic, Personas: []string{fixturePersona()}, ID: id, RevisionID: "r1", EventID: "proposed", Title: id, Statement: "Deliver " + id, Priority: "high", Citations: []string{}, AcceptanceCriteria: []requirements.Criterion{{ID: criterion, Statement: "Criterion " + criterion}}, CreatedAt: fixtureTime, RequestID: "story-" + id}); err != nil {
 		t.Fatal(err)
 	}
 	story, _ := livingid.Story("test", id)
@@ -220,7 +237,7 @@ func addAcceptedStory(t *testing.T, root, id, criterion string) {
 func createPlainItem(t *testing.T, root, id string) {
 	t.Helper()
 	revision := workplan.WorkItemRevision{ID: "r1", Title: id, Objective: "Deliver " + id, Deliverables: []string{id}, Relations: []string{}, Dependencies: []string{}, Contracts: []string{}, ExpectedTouchAreas: []workplan.TouchArea{}, CompletionChecks: []string{}, MergeUnits: []workplan.MergeUnit{{ID: "main", Repository: "https://example.com/repo.git", SourceBranch: "feature/" + id, TargetBranch: "main", Required: true}}}
-	if _, err := workplan.CreateWorkItem(root, id, revision, "item-"+id); err != nil {
+	if _, err := workplan.CreateWorkItem(root, fixtureEpic, id, revision, "item-"+id); err != nil {
 		t.Fatal(err)
 	}
 }
@@ -231,7 +248,7 @@ func createDeliveryItem(t *testing.T, root, storyID, criterionID string) {
 	criterion, _ := livingid.Criterion("test", storyID, criterionID)
 	revision, _ := livingid.Revision("test", storyID, "r1")
 	design, _ := livingid.Design("test", livingid.DesignFragment, storyID+"-design")
-	designDir := filepath.Join(root, "___design", storyID+"-design.fragment")
+	designDir := filepath.Join(applayout.EpicDir(root, fixtureEpic), "___design", storyID+"-design.fragment")
 	if err := os.MkdirAll(designDir, 0o755); err != nil {
 		t.Fatal(err)
 	}
@@ -253,10 +270,10 @@ func createDeliveryItem(t *testing.T, root, storyID, criterionID string) {
 	if err != nil || !exists {
 		t.Fatalf("design digest: exists=%v err=%v", exists, err)
 	}
-	if _, err := requirements.AddRelation(root, "test", requirements.AddRelationInput{ID: "addresses-" + storyID, Type: requirements.RelationAddresses, From: design, To: criterion, Rationale: "current design", FromContentDigest: digest, ToRevision: revision, CreatedAt: fixtureTime, RequestID: "addresses-" + storyID}); err != nil {
+	if _, err := requirements.AddRelation(root, "test", requirements.AddRelationInput{Epic: fixtureEpic, ID: "addresses-" + storyID, Type: requirements.RelationAddresses, From: design, To: criterion, Rationale: "current design", FromContentDigest: digest, ToRevision: revision, CreatedAt: fixtureTime, RequestID: "addresses-" + storyID}); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := requirements.AddRelation(root, "test", requirements.AddRelationInput{ID: "implements-" + storyID, Type: requirements.RelationImplements, From: item, To: design, Rationale: "current plan", FromRevision: itemRevision, ToContentDigest: digest, CreatedAt: fixtureTime, RequestID: "implements-" + storyID}); err != nil {
+	if _, err := requirements.AddRelation(root, "test", requirements.AddRelationInput{Epic: fixtureEpic, ID: "implements-" + storyID, Type: requirements.RelationImplements, From: item, To: design, Rationale: "current plan", FromRevision: itemRevision, ToContentDigest: digest, CreatedAt: fixtureTime, RequestID: "implements-" + storyID}); err != nil {
 		t.Fatal(err)
 	}
 }

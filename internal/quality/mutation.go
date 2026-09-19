@@ -12,6 +12,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/twentyideas/changesaga/internal/applayout"
 	"github.com/twentyideas/changesaga/internal/diffuri"
 	"github.com/twentyideas/changesaga/internal/livingid"
 	"github.com/twentyideas/changesaga/internal/qualityid"
@@ -19,7 +20,8 @@ import (
 )
 
 // MutationResult describes one committed (or replayed) quality write. Paths
-// are Saga-relative and slash-separated; CurrentHeads are the graph heads the
+// are app-relative and slash-separated, including the
+// ___epics/<id>.epic/ prefix of the epic holding the record; CurrentHeads are the graph heads the
 // write leaves behind so the caller can name them as the next parents.
 type MutationResult struct {
 	URN          string   `json:"urn"`
@@ -41,6 +43,8 @@ type Definition struct {
 }
 
 type AddTestCaseInput struct {
+	// Epic is the epic the new test case is written into.
+	Epic       string
 	ID         string
 	RevisionID string
 	EventID    string
@@ -69,6 +73,8 @@ type SetTestCaseStateInput struct {
 }
 
 type SetPolicyInput struct {
+	// Epic is the epic the new policy is written into.
+	Epic              string
 	ID                string
 	Criterion         string
 	StoryRevision     string
@@ -139,9 +145,9 @@ func AddTestCase(root string, input AddTestCaseInput) (MutationResult, error) {
 		revisionURN, _ := qualityid.Revision(sagaID, input.ID, revision.ID)
 		eventURN, _ := qualityid.Event(sagaID, input.ID, event.ID)
 		created := []string{testCaseURN, revisionURN, eventURN}
-		paths := []string{testCasePath(input.ID), revisionPath(input.ID, revision.ID), eventPath(input.ID, event.ID)}
+		paths := []string{testCasePath(input.Epic, input.ID), revisionPath(input.Epic, input.ID, revision.ID), eventPath(input.Epic, input.ID, event.ID)}
 		if existing := findTestCase(document, input.ID); existing != nil {
-			if replayableTestCase(*existing, identity, revision, event) {
+			if existing.Epic == input.Epic && replayableTestCase(*existing, identity, revision, event) {
 				result = MutationResult{URN: testCaseURN, Path: paths[0], Created: created, Paths: paths,
 					CurrentHeads: append(copyStrings(existing.RevisionHeads), existing.LifecycleHeads...), Replayed: true}
 				return nil
@@ -151,12 +157,16 @@ func AddTestCase(root string, input AddTestCaseInput) (MutationResult, error) {
 		if len(document.TestCases) >= MaxTestCases {
 			return fmt.Errorf("test-case limit of %d reached", MaxTestCases)
 		}
+		epic, err := document.epic(input.Epic)
+		if err != nil {
+			return err
+		}
 		candidate := TestCase{Identity: identity, Revisions: []Revision{revision}, Events: []LifecycleEvent{event}}
 		if err := validateTestCaseGraphs(&candidate, sagaID, document.Source); err != nil {
 			return err
 		}
 		var rollback dirRollback
-		parent, err := rollback.ensure(document.Root, filepath.Join(RootDir, "test-cases"))
+		parent, err := rollback.ensure(document.Root, filepath.Join(filepath.FromSlash(epic.Rel), RootDir, "test-cases"))
 		if err != nil {
 			rollback.undo()
 			return err
@@ -199,7 +209,7 @@ func ReviseTestCase(root string, input ReviseTestCaseInput) (MutationResult, err
 			return err
 		}
 		urn, _ := qualityid.Revision(sagaID, testCaseID, revision.ID)
-		path := revisionPath(testCaseID, revision.ID)
+		path := revisionPath(testCase.Epic, testCaseID, revision.ID)
 		for _, existing := range testCase.Revisions {
 			if existing.ID != revision.ID {
 				continue
@@ -245,7 +255,7 @@ func SetTestCaseState(root string, input SetTestCaseStateInput) (MutationResult,
 			return err
 		}
 		urn, _ := qualityid.Event(sagaID, testCaseID, event.ID)
-		path := eventPath(testCaseID, event.ID)
+		path := eventPath(testCase.Epic, testCaseID, event.ID)
 		for _, existing := range testCase.Events {
 			if existing.ID != event.ID {
 				continue
@@ -289,6 +299,7 @@ func SetPolicy(root string, input SetPolicyInput) (MutationResult, error) {
 			StoryRevision: input.StoryRevision, RequiredKinds: sortedKinds(input.RequiredKinds),
 			AllowedAutomation: sortedAutomation(input.AllowedAutomation), Supersedes: copyStrings(input.Supersedes),
 			Rationale: strings.TrimSpace(input.Rationale), CreatedAt: mutationTime(input.CreatedAt), RequestID: input.RequestID,
+			Epic: input.Epic,
 		}
 		if replayed, ok := replayPolicy(document, value, input.ID == ""); ok {
 			result = replayed
@@ -301,7 +312,7 @@ func SetPolicy(root string, input SetPolicyInput) (MutationResult, error) {
 			return err
 		}
 		urn, _ := qualityid.QualityPolicy(sagaID, value.ID)
-		path := policyPath(value.ID)
+		path := policyPath(value.Epic, value.ID)
 		for _, existing := range document.Policies {
 			if existing.ID == value.ID {
 				return fmt.Errorf("policy id %q already exists; policies are immutable, supersede it with a new id", value.ID)
@@ -309,6 +320,9 @@ func SetPolicy(root string, input SetPolicyInput) (MutationResult, error) {
 		}
 		if len(document.Policies) >= MaxPolicies {
 			return fmt.Errorf("policy limit of %d reached", MaxPolicies)
+		}
+		if _, err := document.epic(value.Epic); err != nil {
+			return err
 		}
 		heads := []string{}
 		for _, set := range document.PolicySets {
@@ -399,7 +413,7 @@ func AddEvidenceBatch(root string, inputs []AddEvidenceInput) ([]MutationResult,
 			}
 			if replayedValue, ok := findReplay(testCase.Evidence, value, input.ID == "", func(e Evidence) (string, string) { return e.ID, e.RequestID }); ok {
 				urn, _ := qualityid.Evidence(sagaID, testCaseID, replayedValue.ID)
-				results = append(results, singleResult(urn, evidencePath(testCaseID, replayedValue.ID), testCase.EvidenceHeads, true))
+				results = append(results, singleResult(urn, evidencePath(testCase.Epic, testCaseID, replayedValue.ID), testCase.EvidenceHeads, true))
 				continue
 			}
 			if value.ID == "" {
@@ -430,7 +444,7 @@ func AddEvidenceBatch(root string, inputs []AddEvidenceInput) ([]MutationResult,
 			}
 			candidate.Evidence = append(candidate.Evidence, value)
 			urn, _ := qualityid.Evidence(sagaID, testCaseID, value.ID)
-			path := evidencePath(testCaseID, value.ID)
+			path := evidencePath(testCase.Epic, testCaseID, value.ID)
 			pending = append(pending, pendingRecord{path: path, value: value})
 			results = append(results, MutationResult{URN: urn, Path: path, Created: []string{urn}, Paths: []string{path}})
 		}
@@ -479,7 +493,7 @@ func RecordRun(root string, input RecordRunInput) (MutationResult, error) {
 		}
 		if replayedValue, ok := findReplay(testCase.Runs, value, input.ID == "", func(r Run) (string, string) { return r.ID, r.RequestID }); ok {
 			urn, _ := qualityid.Run(sagaID, testCaseID, replayedValue.ID)
-			result = singleResult(urn, runPath(testCaseID, replayedValue.ID), testCase.RunHeads, true)
+			result = singleResult(urn, runPath(testCase.Epic, testCaseID, replayedValue.ID), testCase.RunHeads, true)
 			return nil
 		}
 		if value.ID == "" {
@@ -505,7 +519,7 @@ func RecordRun(root string, input RecordRunInput) (MutationResult, error) {
 			return err
 		}
 		urn, _ := qualityid.Run(sagaID, testCaseID, value.ID)
-		path := runPath(testCaseID, value.ID)
+		path := runPath(testCase.Epic, testCaseID, value.ID)
 		if err := writeRecords(document.Root, pendingRecord{path: path, value: value}); err != nil {
 			return err
 		}
@@ -692,7 +706,7 @@ func replayPolicy(document *Document, value Policy, generatedID bool) (MutationR
 			heads = set.Heads
 		}
 	}
-	return singleResult(urn, policyPath(existing.ID), heads, true), true
+	return singleResult(urn, policyPath(existing.Epic, existing.ID), heads, true), true
 }
 
 func defaultPolicyID(document *Document, criterion, storyRevision string) string {
@@ -810,23 +824,35 @@ func (r *dirRollback) undo() {
 	}
 }
 
-func testCasePath(id string) string {
-	return RootDir + "/test-cases/" + id + ".test"
+func testCasePath(epic, id string) string {
+	return applayout.EpicRel(epic) + "/" + RootDir + "/test-cases/" + id + ".test"
 }
-func revisionPath(testCaseID, id string) string {
-	return testCasePath(testCaseID) + "/revisions/" + id + ".json"
+func revisionPath(epic, testCaseID, id string) string {
+	return testCasePath(epic, testCaseID) + "/revisions/" + id + ".json"
 }
-func eventPath(testCaseID, id string) string {
-	return testCasePath(testCaseID) + "/events/" + id + ".json"
+func eventPath(epic, testCaseID, id string) string {
+	return testCasePath(epic, testCaseID) + "/events/" + id + ".json"
 }
-func evidencePath(testCaseID, id string) string {
-	return testCasePath(testCaseID) + "/evidence/" + id + ".json"
+func evidencePath(epic, testCaseID, id string) string {
+	return testCasePath(epic, testCaseID) + "/evidence/" + id + ".json"
 }
-func runPath(testCaseID, id string) string {
-	return testCasePath(testCaseID) + "/runs/" + id + ".json"
+func runPath(epic, testCaseID, id string) string {
+	return testCasePath(epic, testCaseID) + "/runs/" + id + ".json"
 }
-func policyPath(id string) string {
-	return RootDir + "/policies/" + id + ".json"
+func policyPath(epic, id string) string {
+	return applayout.EpicRel(epic) + "/" + RootDir + "/policies/" + id + ".json"
+}
+
+// epic resolves the epic an authoring operation writes new content into.
+func (document *Document) epic(id string) (applayout.Epic, error) {
+	if strings.TrimSpace(id) == "" {
+		return applayout.Epic{}, fmt.Errorf("an epic is required; new epic content is never written to an implied epic")
+	}
+	epic, ok := applayout.Find(document.Epics, id)
+	if !ok {
+		return applayout.Epic{}, fmt.Errorf("epic %q does not exist", id)
+	}
+	return epic, nil
 }
 
 func mutationTime(value time.Time) time.Time {

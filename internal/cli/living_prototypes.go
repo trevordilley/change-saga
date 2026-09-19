@@ -60,6 +60,7 @@ func prototypeAddHTML(_ context.Context, args []string, out io.Writer) error {
 	state := flags.String("state", string(prototypes.StateDraft), "draft, ready, or retired")
 	requestID := flags.String("request-id", "", "idempotency key")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
+	epic := epicFlag(flags)
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
 	}
@@ -71,8 +72,12 @@ func prototypeAddHTML(_ context.Context, args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
+	target, err := requireEpic(root, *epic)
+	if err != nil {
+		return err
+	}
 	result, err := prototypes.AddHTML(root, sagaID, prototypes.AddHTMLInput{
-		ID: *id, RevisionID: *revision, Title: *title, State: prototypes.State(*state),
+		Epic: target.ID, ID: *id, RevisionID: *revision, Title: *title, State: prototypes.State(*state),
 		SourcePath: *source, RequestID: *requestID,
 	})
 	if err != nil {
@@ -91,6 +96,7 @@ func prototypeAddExternal(_ context.Context, args []string, out io.Writer) error
 	external := registerExternalPrototypeFlags(flags)
 	requestID := flags.String("request-id", "", "idempotency key")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
+	epic := epicFlag(flags)
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
 	}
@@ -106,8 +112,12 @@ func prototypeAddExternal(_ context.Context, args []string, out io.Writer) error
 	if err != nil {
 		return err
 	}
+	target, err := requireEpic(root, *epic)
+	if err != nil {
+		return err
+	}
 	result, err := prototypes.AddExternal(root, sagaID, prototypes.AddExternalInput{
-		ID: *id, RevisionID: *revision, Title: *title, State: prototypes.State(*state),
+		Epic: target.ID, ID: *id, RevisionID: *revision, Title: *title, State: prototypes.State(*state),
 		URL: *external.url, EmbedURL: *external.embedURL, FallbackURL: *external.fallbackURL,
 		Allowlist: allowlist, RequestID: *requestID,
 	})
@@ -128,6 +138,7 @@ func prototypeRevise(_ context.Context, args []string, out io.Writer) error {
 	external := registerExternalPrototypeFlags(flags)
 	requestID := flags.String("request-id", "", "idempotency key")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
+	epic := epicFlag(flags)
 	var parents stringList
 	flags.Var(&parents, "parent", "current revision head URN; repeatable")
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
@@ -161,6 +172,9 @@ func prototypeRevise(_ context.Context, args []string, out io.Writer) error {
 	} else {
 		input.Source = externalPrototypeSource(*external.url, *external.embedURL, *external.fallbackURL, allowlist)
 	}
+	if err := assertRecordEpic(root, *epic, *prototype); err != nil {
+		return err
+	}
 	result, err := prototypes.Revise(root, sagaID, input)
 	if err != nil {
 		return err
@@ -185,6 +199,7 @@ func prototypeAnnotate(_ context.Context, args []string, out io.Writer) error {
 	deepLink := flags.String("deep-link", "", "provider selector: absolute deep link")
 	requestID := flags.String("request-id", "", "idempotency key")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
+	epic := epicFlag(flags)
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
 	}
@@ -203,8 +218,16 @@ func prototypeAnnotate(_ context.Context, args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
+	epicID := ""
+	if *epic != "" {
+		resolved, err := requireEpic(root, *epic)
+		if err != nil {
+			return err
+		}
+		epicID = resolved.ID
+	}
 	result, err := prototypes.AddAnnotation(root, sagaID, prototypes.AddAnnotationInput{
-		ID: *id, Prototype: *prototype, Target: *target, Rationale: *rationale,
+		Epic: epicID, ID: *id, Prototype: *prototype, Target: *target, Rationale: *rationale,
 		PrototypeRevision: *prototypeRevision, PrototypeContentDigest: *contentDigest,
 		StoryRevision: *storyRevision, Selector: selector, RequestID: *requestID,
 	})

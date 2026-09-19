@@ -9,6 +9,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/twentyideas/changesaga/internal/applayout"
 	"github.com/twentyideas/changesaga/internal/diffuri"
 )
 
@@ -17,7 +18,7 @@ var fixtureTime = time.Date(2026, 9, 17, 20, 0, 0, 0, time.UTC)
 func TestLoadProjectsQualityRecordsAndGraphHeads(t *testing.T) {
 	root := newQualitySaga(t, true)
 	writeValidTestCase(t, root, "deadline")
-	writeJSON(t, filepath.Join(root, RootDir, "policies", "cutoff.json"), validPolicy("cutoff"))
+	writeJSON(t, filepath.Join(epicQuality(root), "policies", "cutoff.json"), validPolicy("cutoff"))
 
 	document, err := Load(root)
 	if err != nil {
@@ -87,7 +88,7 @@ func TestAbsentAndEmptyQualityRootsHaveDistinctAdoptionStates(t *testing.T) {
 	if err != nil || document.Adoption != NotAdopted {
 		t.Fatalf("absent root = %s, %v", document.Adoption, err)
 	}
-	if err := os.Mkdir(filepath.Join(root, RootDir), 0o755); err != nil {
+	if err := os.Mkdir(epicQuality(root), 0o755); err != nil {
 		t.Fatal(err)
 	}
 	document, err = Load(root)
@@ -144,8 +145,8 @@ func TestPolicyAndEvidenceSupersessionUsesGraphHeads(t *testing.T) {
 	oldPolicy := validPolicy("cutoff-v1")
 	newPolicy := validPolicy("cutoff-v2")
 	newPolicy.Supersedes = []string{"urn:change-saga:checkout:quality-policy:cutoff-v1"}
-	writeJSON(t, filepath.Join(root, RootDir, "policies", "cutoff-v1.json"), oldPolicy)
-	writeJSON(t, filepath.Join(root, RootDir, "policies", "cutoff-v2.json"), newPolicy)
+	writeJSON(t, filepath.Join(epicQuality(root), "policies", "cutoff-v1.json"), oldPolicy)
+	writeJSON(t, filepath.Join(epicQuality(root), "policies", "cutoff-v2.json"), newPolicy)
 
 	oldEvidence := validEvidence("artifact-v1", EvidenceExecutionArtifact)
 	oldEvidence.Diffs = []string{}
@@ -171,7 +172,7 @@ func TestPolicyAndEvidenceSupersessionUsesGraphHeads(t *testing.T) {
 	}
 
 	conflict := validPolicy("cutoff-concurrent")
-	writeJSON(t, filepath.Join(root, RootDir, "policies", "cutoff-concurrent.json"), conflict)
+	writeJSON(t, filepath.Join(epicQuality(root), "policies", "cutoff-concurrent.json"), conflict)
 	document, err = Load(root)
 	if err != nil {
 		t.Fatal(err)
@@ -212,8 +213,8 @@ func TestValidationRejectsRemovedStepReuseAndInvalidGraphs(t *testing.T) {
 		second := validPolicy("second")
 		first.Supersedes = []string{"urn:change-saga:checkout:quality-policy:second"}
 		second.Supersedes = []string{"urn:change-saga:checkout:quality-policy:first"}
-		writeJSON(t, filepath.Join(root, RootDir, "policies", "first.json"), first)
-		writeJSON(t, filepath.Join(root, RootDir, "policies", "second.json"), second)
+		writeJSON(t, filepath.Join(epicQuality(root), "policies", "first.json"), first)
+		writeJSON(t, filepath.Join(epicQuality(root), "policies", "second.json"), second)
 		if _, err := Load(root); err == nil || !strings.Contains(err.Error(), "must be acyclic") {
 			t.Fatalf("cycle error = %v", err)
 		}
@@ -275,7 +276,7 @@ func TestValidationCoversRevisionLifecycleEvidenceRunAndPolicyRecords(t *testing
 			edit: func(root string) {
 				policy := validPolicy("cutoff")
 				policy.StoryRevision = "urn:change-saga:checkout:story:other:revision:r1"
-				writeJSON(t, filepath.Join(root, RootDir, "policies", "cutoff.json"), policy)
+				writeJSON(t, filepath.Join(epicQuality(root), "policies", "cutoff.json"), policy)
 			},
 			want: "must pin the criterion's story",
 		},
@@ -352,7 +353,7 @@ func TestStrictReadOnlyLoaderRejectsUnknownFieldsAndSymlinks(t *testing.T) {
 		t.Run("symlinked record", func(t *testing.T) {
 			root := newQualitySaga(t, true)
 			writeValidTestCase(t, root, "deadline")
-			policyPath := filepath.Join(root, RootDir, "policies", "linked.json")
+			policyPath := filepath.Join(epicQuality(root), "policies", "linked.json")
 			if err := os.Symlink(filepath.Join(testPackage(root, "deadline"), "test-case.json"), policyPath); err != nil {
 				t.Fatal(err)
 			}
@@ -373,9 +374,12 @@ func newQualitySaga(t *testing.T, qualityRoot bool) string {
 		"title":   "Checkout",
 		"source":  SourceIdentity{Repository: "https://example.com/repo.git", Base: "base", Head: "head"},
 	})
+	if _, err := applayout.WriteEpic(root, applayout.EpicManifest{ID: "core", Title: "Core", CreatedAt: fixtureTime}); err != nil {
+		t.Fatal(err)
+	}
 	if qualityRoot {
 		for _, dir := range []string{"policies", "test-cases"} {
-			if err := os.MkdirAll(filepath.Join(root, RootDir, dir), 0o755); err != nil {
+			if err := os.MkdirAll(filepath.Join(epicQuality(root), dir), 0o755); err != nil {
 				t.Fatal(err)
 			}
 		}
@@ -459,8 +463,13 @@ func validPolicy(id string) Policy {
 	}
 }
 
+// epicQuality is the quality root of the fixture's "core" epic.
+func epicQuality(root string) string {
+	return filepath.Join(applayout.EpicDir(root, "core"), RootDir)
+}
+
 func testPackage(root, id string) string {
-	return filepath.Join(root, RootDir, "test-cases", id+".test")
+	return filepath.Join(epicQuality(root), "test-cases", id+".test")
 }
 
 func revisionURN(id string) string {

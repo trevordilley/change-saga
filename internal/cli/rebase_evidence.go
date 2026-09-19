@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/twentyideas/changesaga/internal/applayout"
 	"io"
 	"io/fs"
 	"os"
@@ -423,7 +424,13 @@ func applyEvidenceRebase(document *saga.Saga, plan evidenceRebasePlan) (err erro
 			}
 		}
 
-		relationDir, dirErr := store.EnsureDirWithin(document.Root, filepath.Join(document.Root, "___requirements", "relations"))
+		// A relation lives in an epic; the rebased one joins the epic that
+		// holds the story it points at.
+		relationEpic, epicErr := recordEpic(document.Root, claim.Relation.To)
+		if epicErr != nil {
+			return epicErr
+		}
+		relationDir, dirErr := store.EnsureDirWithin(document.Root, filepath.Join(applayout.EpicDir(document.Root, relationEpic), applayout.RequirementsDir, "relations"))
 		if dirErr != nil {
 			return dirErr
 		}

@@ -63,7 +63,7 @@ func Open(_ context.Context, options OpenOptions) (Session, error) {
 			return nil, appError(CodeInternal, "the session snapshot could not be created", false, nil, err)
 		}
 	}
-	adopted := livingRootPresent(root, "___requirements")
+	adopted := requirementsAdopted(root)
 	testCases, err := testCaseHeads(root)
 	if err != nil {
 		return nil, appError(CodeInvalidSaga, "the quality records could not be loaded", false, nil, err)

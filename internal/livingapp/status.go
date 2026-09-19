@@ -108,6 +108,8 @@ func Assemble(in StatusInputs) Status {
 
 	status.Quality = a.finishQuality(qualityEval, status.Axes)
 	status.ChangedSource = a.changedSource()
+	personas, personaOrphans := a.appProjection(&status)
+	status.PersonaCoverage = PersonaCoverage{Facts: readiness.PersonaCoverage(personas, personaOrphans)}
 
 	stories := make([]readiness.Story, 0, len(in.Stories))
 	for _, row := range status.Stories {
@@ -148,8 +150,8 @@ func (a *assembler) indexStories() []StoryStatus {
 		story := &a.in.Stories[i]
 		storyURN, _ := livingid.Story(a.in.SagaID, story.Identity.ID)
 		row := StoryStatus{
-			Story: storyURN, ID: story.Identity.ID, State: "conflicted", RevisionHeads: copyStrings(story.RevisionHeads),
-			LifecycleHeads: copyStrings(story.LifecycleHeads), Criteria: []CriterionStatus{},
+			Story: storyURN, ID: story.Identity.ID, Epic: story.Epic, State: "conflicted", RevisionHeads: copyStrings(story.RevisionHeads),
+			LifecycleHeads: copyStrings(story.LifecycleHeads), Criteria: []CriterionStatus{}, Personas: []string{}, GatedBy: []string{},
 		}
 		if story.CurrentLifecycle != nil {
 			row.State = string(story.CurrentLifecycle.State)
@@ -159,6 +161,7 @@ func (a *assembler) indexStories() []StoryStatus {
 		heads := []requirements.Revision{}
 		if story.CurrentRevision != nil {
 			row.Title = story.CurrentRevision.Title
+			row.Personas = uniqueSorted(story.CurrentRevision.Personas)
 			row.CurrentRevision, _ = livingid.Revision(a.in.SagaID, story.Identity.ID, story.CurrentRevision.ID)
 			a.storyRevision[storyURN] = row.CurrentRevision
 			heads = append(heads, *story.CurrentRevision)
@@ -445,7 +448,7 @@ func (a *assembler) prototypeAxis() ([]PrototypeStatus, map[string][]coverage.Ax
 	for _, prototype := range a.in.Prototypes.Prototypes {
 		urn, _ := prototypes.PrototypeURN(a.in.SagaID, prototype.Identity.ID)
 		row := PrototypeStatus{
-			Prototype: urn, State: "conflicted", Retained: true, RevisionHeads: copyStrings(prototype.RevisionHeads),
+			Prototype: urn, Epic: prototype.Epic, State: "conflicted", Retained: true, RevisionHeads: copyStrings(prototype.RevisionHeads),
 			CurrentLinks: uniqueSorted(current[urn]), StaleLinks: uniqueSorted(staleLinks[urn]),
 		}
 		input := readiness.Prototype{URN: urn, Retained: true, CurrentLinks: row.CurrentLinks, StaleReasons: []string{}}
