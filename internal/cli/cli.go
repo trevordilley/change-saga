@@ -88,8 +88,8 @@ func (e *StatusError) Error() string { return "command reported a non-success st
 // commandUsage is the single source of each command's usage line so the
 // overview, the per-command -h banner, and argument errors cannot drift apart.
 var commandOrder = []string{
-	"init", "epic", "persona", "flag", "prototype", "story", "criterion", "citation", "relation", "design", "plan", "quality", "add-deck", "add-slide", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "cover", "remove-coverage", "replace-coverage", "references", "repin", "add-claim", "verify-claim",
-	"thread", "reply", "review", "validate", "status", "compare", "query",
+	"init", "epic", "persona", "flag", "prototype", "story", "criterion", "citation", "relation", "design", "plan", "quality", "add-deck", "add-slide", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "cover", "remove-coverage", "replace-coverage", "references", "repin", "sync", "add-claim", "verify-claim",
+	"thread", "reply", "review", "validate", "status", "query",
 	"serve", "open", "install-skill", "spec",
 }
 
@@ -150,7 +150,7 @@ var commandUsage = map[string]string{
 	"quality evidence":            "change-saga quality evidence add [flags] <saga>",
 	"quality evidence add":        "change-saga quality evidence add --test URN --role ROLE (--code LOCATION... | --verification URN... | --citation URN...) [--test-revision URN] [--supersedes EVIDENCE...] [--id ID] [--batch FILE|-] [flags] <saga>",
 	"quality run":                 "change-saga quality run record [flags] <saga>",
-	"quality run record":          "change-saga quality run record --test URN --result RESULT --summary TEXT --evidence URN... [--parent RUN...] [--test-revision URN] [--command TEXT] [--id ID] [flags] <saga>",
+	"quality run record":          "change-saga quality run record --test URN --result RESULT --summary TEXT --evidence URN... [--parent RUN...] [--test-revision URN] [--command TEXT] [--commit REV] [--id ID] [flags] <saga>",
 	"add-deck":                    "change-saga add-deck (--epic ID | --role onboarding) [flags] <saga> <name>",
 	"add-slide":                   "change-saga add-slide --deck TARGET --intent INTENT --layout LAYOUT [flags] <saga> <name>",
 	"set-slide-content":           "change-saga set-slide-content --target TARGET --source FILE|- [--json|--quiet] <saga>",
@@ -160,22 +160,22 @@ var commandUsage = map[string]string{
 	"add-fragment":                "change-saga add-fragment (--epic ID | --app overview|designsystem | --section TARGET) [flags] <saga>",
 	"set-fragment-content":        "change-saga set-fragment-content --target TARGET --source FILE|- [--json|--quiet] <saga>",
 	"add-landmark":                "change-saga add-landmark [flags] <saga>",
-	"cover":                       "change-saga cover [flags] [--batch FILE|-] [--dry-run] <saga>",
+	"cover":                       "change-saga cover [flags] [--batch FILE|-] [--dry-run] [--against REV [--head REV]] <saga>",
 	"remove-coverage":             "change-saga remove-coverage --record PATH [--dry-run] [--json|--quiet] <saga>",
-	"replace-coverage":            "change-saga replace-coverage --record PATH [coverage flags] [--batch FILE|-] [--dry-run] <saga>",
-	"references":                  "change-saga references [--stale] [--diff] [--json] [--repo PATH] <saga>",
+	"replace-coverage":            "change-saga replace-coverage --record PATH [coverage flags] [--batch FILE|-] [--dry-run] [--against REV [--head REV]] <saga>",
+	"references":                  "change-saga references [--stale] [--diff] [--json] [--repo PATH] [--against REV [--head REV]] <saga>",
 	"repin":                       "change-saga repin --onto REV [--branch REV] [--dry-run] [--json] [--repo PATH] <saga>",
+	"sync":                        "change-saga sync --repo PATH [--commit REV] [--json] <saga>",
 	"add-claim":                   "change-saga add-claim --target TARGET --kind KIND --statement TEXT --ref LOCATION [--ref LOCATION...] <saga>",
 	"verify-claim":                "change-saga verify-claim --claim ID --status STATUS --summary TEXT [flags] <saga>",
 	"thread":                      "change-saga thread [flags] <saga>",
 	"reply":                       "change-saga reply [flags] <saga>",
 	"review":                      "change-saga review [flags] <saga>",
 	"validate":                    "change-saga validate [--json] [--fix] <saga>",
-	"status":                      "change-saga status [--json] [--repo PATH] <saga>",
-	"compare":                     "change-saga compare [--json] [--repo PATH] (--against-saga PATH | --base REV [--head REV]) <saga>",
+	"status":                      "change-saga status [--json] [--repo PATH] [--against REV [--head REV]] <saga>",
 	"query":                       "change-saga query <operation> --saga PATH [--repo PATH] [operation flags]",
-	"serve":                       "change-saga serve [--addr ADDR] [--repo PATH] [--open] [--detach] <saga>",
-	"open":                        "change-saga open [--addr ADDR] [--repo PATH] <saga>",
+	"serve":                       "change-saga serve [--addr ADDR] [--repo PATH] [--open] [--detach] [--against REV [--head REV]] <saga>",
+	"open":                        "change-saga open [--addr ADDR] [--repo PATH] [--against REV [--head REV]] <saga>",
 	"install-skill":               "change-saga install-skill",
 	"spec":                        "change-saga spec [--json]",
 }
@@ -272,7 +272,7 @@ var commandDescription = map[string]string{
 	"quality evidence":            "Map a test revision to exact test code, implementation under test, or execution artifacts.",
 	"quality evidence add":        "Record immutable evidence. test_implementation code references join global changed-source\naccounting; implementation_under_test references name the code the test exercises;\nexecution_artifact cites verifications or citations. --batch validates the whole set before the\nfirst write.",
 	"quality run":                 "Record what executed and what happened.",
-	"quality run record":          "Append an immutable run/result event pinned to a test revision, source identity, and evidence.\nName every current run head: a failed or concurrent run stays visible and is only succeeded by a\nlater run. The command is recorded, never executed.",
+	"quality run record":          "Append an immutable run/result event pinned to a test revision, the code commit it ran against\n(--commit, default HEAD of --repo), and evidence.\nName every current run head: a failed or concurrent run stays visible and is only succeeded by a\nlater run. The command is recorded, never executed.",
 	"story":                       "Create and append revisions or lifecycle events to user stories and acceptance\ncriteria. Stories may lead, follow, or evolve alongside prototypes; cite their source\nand revise them as the feature is clarified.",
 	"story add":                   "Add a sourced user story and its first complete acceptance-criteria revision.\nIt may begin from a prototype, precede one, or evolve alongside one.",
 	"story revise":                "Append a complete story revision as requirements or prototypes evolve. Name every\ncurrent parent head when reconciling concurrent edits; prior revisions remain history.",
@@ -323,15 +323,15 @@ whole batch is resolved before anything is written, and a failing record leaves 
 untouched.`,
 	"remove-coverage":  "Delete one exact coverage record named by query mappings or fragment-diffs.",
 	"replace-coverage": "Atomically replace one coverage record with one or more newly resolved records.\nUse --batch to split or retarget broad evidence without leaving partial coverage.",
-	"references":       "List every code reference viewed in the comparison: current (remapped when its lines only\nmoved), or stale with the reason its code changed. --diff adds the patch since the pin.",
+	"references":       "List every code reference: current (remapped when its lines only moved), or stale with the\nreason its code changed. Observing, health is judged at --head; comparing, at both sides.\n--diff adds the patch since the pin.",
 	"repin":            "After a change lands, re-pin evidence references to the landed commit (following moved\nlines, or the content digest when the branch commit is gone) and record the branch's commit\nmessages in ___merges/<commit>.json so a squash merge keeps its reasoning.",
+	"sync":             "Move a companion Saga's sync cursor (sync.json) to the code commit it now documents,\ndefault HEAD of --repo. Move it in every Saga commit that updates the documentation, so a\ncomparison reads the Saga that documented its merge-base. A Saga in its code repository\nhas no cursor: it documents the commit it is read at. repin moves it too.",
 	"add-claim":        "Record one falsifiable author assertion and the code that supports it. Claims do not\ncount toward coverage and are independently verified.",
 	"verify-claim":     "Append an independent verification result without rewriting the claim or prior results.",
-	"open":             "Start a managed loopback reviewer, open it in a browser, and return after\nprinting the PID and active URL.",
+	"open":             "Start a managed loopback reviewer, open it in a browser, and return after\nprinting the PID and active URL. Without --against it observes the app at --head: every\nnode current, stale references as health warnings, approvals shown only as history.\nWith --against it compares what --head changes since their merge-base, the way a pull\nrequest does, and highlights the Changed, Affected, and Code layers.",
 	"serve":            "Serve the saga on loopback for review. Detached instances are managed with\nchange-saga serve status [SAGA] and change-saga serve stop [SAGA].",
 	"install-skill":    "Print the agent-agnostic prompt that installs the change-saga authoring skill.\nPipe it to a coding agent; it neither writes to this repository nor creates a saga.",
 	"validate":         "Check the format and authoring completeness, including a warning for every Markdown\nfootnote without an evidence-bearing exact-text landmark. --fix adds missing stable\nheading anchors and changes nothing else.",
-	"compare":          "Project an incoming Git comparison onto the maintained Saga's source evidence.\nThe command never compares prose or visual content. Direct intersections identify\ntargets that must update; nearby additions identify targets to reconsider; ownerless\nchanges require new Saga content.",
 }
 
 func flagWasSet(flags *flag.FlagSet, name string) bool {
@@ -346,16 +346,12 @@ func flagWasSet(flags *flag.FlagSet, name string) bool {
 
 func Init(ctx context.Context, args []string, out io.Writer) error {
 	flags := commandFlags("init", commandUsage["init"], out)
-	base := flags.String("base", "main", "base Git revision")
-	head := flags.String("head", "HEAD", "head Git revision")
 	title := flags.String("title", "", "saga title")
 	id := flags.String("id", "", "stable saga identifier")
 	repoDir := flags.String("repo", ".", "source repository checkout")
 	repository := flags.String("repository", "", "portable absolute source repository URI; defaults to origin")
 	allowLocalRepository := flags.Bool("allow-local-repository", false, "persist a local file:// repository identity when origin is unavailable")
 	allowRepositoryMismatch := flags.Bool("allow-repository-mismatch", false, "accept an explicitly declared repository that differs from origin")
-	prNumber := flags.Int("pr", 0, "pull request number")
-	prURL := flags.String("pr-url", "", "pull request URL")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -380,25 +376,11 @@ func Init(ctx context.Context, args []string, out io.Writer) error {
 	if !saga.ValidID(*id) {
 		return fmt.Errorf("--id must be a stable 1-128 character identifier")
 	}
-	if *prNumber < 0 {
-		return fmt.Errorf("--pr cannot be negative")
-	}
-	if *prURL != "" {
-		if parsed, err := url.Parse(*prURL); err != nil || !parsed.IsAbs() {
-			return fmt.Errorf("--pr-url must be an absolute URI")
-		}
-	}
 	repositoryURI, _, err := discoverRepository(ctx, *repoDir, *repository, *allowLocalRepository, *allowRepositoryMismatch)
 	if err != nil {
 		return err
 	}
-	manifest := saga.Manifest{Schema: saga.SagaSchemaURL, Version: saga.SagaVersion, ID: *id, Title: *title, Source: saga.Source{Repository: repositoryURI, Base: *base, Head: *head}}
-	if *prNumber != 0 || *prURL != "" {
-		manifest.PR = &saga.PR{URL: *prURL}
-		if *prNumber != 0 {
-			manifest.PR.Number = prNumber
-		}
-	}
+	manifest := saga.Manifest{Schema: saga.SagaSchemaURL, Version: saga.SagaVersion, ID: *id, Title: *title, Source: saga.Source{Repository: repositoryURI}}
 	// The app overview is the elevator pitch for the whole application. Epics,
 	// personas, and everything else are authored after init.
 	overview := saga.FragmentManifest{Version: saga.CurrentVersion, ID: *id + "-overview", Title: "Overview", MediaType: "text/markdown", Entrypoint: "content.md"}
@@ -987,6 +969,7 @@ func Status(ctx context.Context, args []string, out io.Writer) error {
 	jsonOutput := flags.Bool("json", false, "emit machine-readable JSON")
 	maxItems := flags.Int("max", 100, "maximum uncovered items and next actions in text mode; 0 means all")
 	repoDir := flags.String("repo", "", "source repository checkout; required when separate")
+	opening := registerOpenFlags(flags)
 	allowRepositoryMismatch := flags.Bool("allow-repository-mismatch", false, "use a checkout whose origin differs from the declared repository")
 	if err := flags.Parse(args); err != nil {
 		return err
@@ -994,7 +977,7 @@ func Status(ctx context.Context, args []string, out io.Writer) error {
 	if flags.NArg() != 1 {
 		return fmt.Errorf("usage: %s", commandUsage["status"])
 	}
-	status, err := buildStatus(ctx, flags.Arg(0), *repoDir, *allowRepositoryMismatch)
+	status, err := buildStatus(ctx, flags.Arg(0), *repoDir, opening.rng(), *allowRepositoryMismatch)
 	if err != nil {
 		return err
 	}
@@ -1003,7 +986,8 @@ func Status(ctx context.Context, args []string, out io.Writer) error {
 			return err
 		}
 	} else {
-		printReport(out, status.Report, *maxItems)
+		printReport(out, status.Report, status.Opening, *maxItems)
+		printComparison(out, status.Comparison, *maxItems)
 		printLivingStatus(out, status, *maxItems)
 	}
 	if !status.readyForReview() {
@@ -1012,22 +996,50 @@ func Status(ctx context.Context, args []string, out io.Writer) error {
 	return nil
 }
 
-func buildReport(ctx context.Context, root, repoDir string, allowRepositoryMismatch ...bool) (coverage.Report, error) {
-	value, err := readComparison(ctx, root, repoDir, len(allowRepositoryMismatch) > 0 && allowRepositoryMismatch[0])
+func buildReport(ctx context.Context, root, repoDir string, rng gitdiff.Range, allowRepositoryMismatch ...bool) (coverage.Report, error) {
+	value, err := readComparison(ctx, root, repoDir, rng, len(allowRepositoryMismatch) > 0 && allowRepositoryMismatch[0])
 	if err != nil {
 		return coverage.Report{}, err
 	}
 	return value.report, nil
 }
 
-func printReport(out io.Writer, report coverage.Report, maxItems int) {
-	state := "MAPPING GAPS"
-	if report.Complete {
-		state = "ALL ATOMS MAPPED"
+func shortOID(value string) string {
+	if len(value) > 12 {
+		return value[:12]
 	}
-	fmt.Fprintf(out, "%s — %d/%d product changes mapped\n", state, report.Summary.Covered, report.Summary.Total)
-	fmt.Fprintln(out, "Mapping detects omissions; it does not establish explanation quality or correctness.")
-	fmt.Fprintf(out, "Uncovered: %d  Overlapping: %d  Stale references: %d  Remapped: %d  Saga-only changes: %d\n", report.Summary.Uncovered, report.Summary.Overlapping, report.Summary.Stale, report.Summary.Remapped, report.Summary.SagaChanges)
+	return value
+}
+
+// printCursor says which code commit a companion Saga documents.
+func printCursor(out io.Writer, view opening) {
+	switch {
+	case !view.Companion:
+	case view.Cursor == "":
+		fmt.Fprintln(out, "Companion Saga with no sync cursor; run change-saga sync --repo PATH after documenting the code")
+	case view.Cursor != view.HeadOID:
+		fmt.Fprintf(out, "Companion Saga documents %s, not head; run change-saga sync after updating it\n", shortOID(view.Cursor))
+	default:
+		fmt.Fprintf(out, "Companion Saga documents head %s\n", shortOID(view.Cursor))
+	}
+}
+
+func printReport(out io.Writer, report coverage.Report, view opening, maxItems int) {
+	if view.Mode == gitdiff.ModeObserve {
+		fmt.Fprintf(out, "OBSERVING %s (%s) — no change to account for; pass --against REV to compare\n", view.Head, shortOID(view.HeadOID))
+		printCursor(out, view)
+		fmt.Fprintf(out, "Stale references: %d  Remapped: %d\n", report.Summary.Stale, report.Summary.Remapped)
+	} else {
+		state := "MAPPING GAPS"
+		if report.Complete {
+			state = "ALL ATOMS MAPPED"
+		}
+		fmt.Fprintf(out, "COMPARING %s..%s (merge-base %s)\n", view.Against, view.Head, shortOID(view.BaseOID))
+		printCursor(out, view)
+		fmt.Fprintf(out, "%s — %d/%d product changes mapped\n", state, report.Summary.Covered, report.Summary.Total)
+		fmt.Fprintln(out, "Mapping detects omissions; it does not establish explanation quality or correctness.")
+		fmt.Fprintf(out, "Uncovered: %d  Overlapping: %d  Stale references: %d  Remapped: %d  Saga-only changes: %d\n", report.Summary.Uncovered, report.Summary.Overlapping, report.Summary.Stale, report.Summary.Remapped, report.Summary.SagaChanges)
+	}
 	if len(report.SchemaIssues) > 0 {
 		fmt.Fprintln(out, "\nSchema issues:")
 		for _, issue := range report.SchemaIssues {
@@ -1077,6 +1089,7 @@ func Serve(ctx context.Context, args []string, out io.Writer, openByDefault ...b
 	flags := commandFlags(name, commandUsage[name], out)
 	addr := flags.String("addr", "127.0.0.1:7342", "loopback listen address; remote serving is disabled")
 	repoDir := flags.String("repo", "", "source repository checkout; required when separate")
+	opening := registerOpenFlags(flags)
 	openBrowser := flags.Bool("open", opensBrowser, "open the review in a browser")
 	if !opensBrowser {
 		flags.BoolVar(&detach, "detach", false, "run in the background and return the PID and active URL")
@@ -1091,12 +1104,12 @@ func Serve(ctx context.Context, args []string, out io.Writer, openByDefault ...b
 		if !flagWasSet(flags, "addr") {
 			*addr = "127.0.0.1:0"
 		}
-		return startDetachedServer(ctx, flags.Arg(0), *repoDir, *addr, *openBrowser, out)
+		return startDetachedServer(ctx, flags.Arg(0), *repoDir, opening.rng(), *addr, *openBrowser, out)
 	}
 	if statePath, token := os.Getenv(runtimeStateEnv), os.Getenv(runtimeTokenEnv); statePath != "" && token != "" {
-		return runManagedServer(ctx, flags.Arg(0), *repoDir, *addr, *openBrowser, statePath, token, out)
+		return runManagedServer(ctx, flags.Arg(0), *repoDir, opening.rng(), *addr, *openBrowser, statePath, token, out)
 	}
-	return reviewserver.Listen(ctx, flags.Arg(0), *repoDir, *addr, *openBrowser, out)
+	return reviewserver.ListenManaged(ctx, flags.Arg(0), *repoDir, *addr, *openBrowser, out, reviewserver.ManagedOptions{Range: opening.rng()})
 }
 
 // normalizeLegacyOpenDetach keeps pre-0.0.9 `open --detach` calls working
@@ -1998,8 +2011,12 @@ fragment with no explained code.
 
 Use this authoring loop, consulting each command's "-h" output for exact flags:
 
-1. "change-saga init" records the exact repository, base, head, title, and PR identity.
-2. "change-saga query gaps --kind uncovered --saga <path>" pages the coverage
+1. "change-saga init" records the repository and title. The Saga stores no
+   comparison: every command that reads one takes "--against REV" (and
+   optionally "--head REV", default HEAD) and compares the merge-base of the
+   two with head, the way a pull request does. Without "--against" a command
+   observes the app at head, with no changed lines to account for.
+2. "change-saga query gaps --kind uncovered --against main --saga <path>" pages the coverage
    work queue. Use "--kind stale" for reconciliation and "--kind overlap" for
    mappings that need justification; preserve the returned snapshot across the
    loop.
@@ -2072,15 +2089,17 @@ Use this authoring loop, consulting each command's "-h" output for exact flags:
 
 ## Maintain a codebase Saga
 
-Use "change-saga compare --json --repo <source-checkout> --base <incoming-base>
---head <incoming-head> <maintained.saga>" or supply "--against-saga
-<incoming.saga>". This compares source diffs only, never authored fragment
-content. Follow "must_update" targets for direct conflicting intersections,
-"consider_update" targets for additions near owned code, and "new_content" for
-ownerless changes. Use the returned target URNs, "content_path", and
-"evidence_files" as the maintenance work queue. If "baseline.complete" is
-false, repair the maintained Saga at the incoming base before treating the
-impact list as exhaustive.
+"change-saga status --json --against <base> <app.saga>" scopes the work queue
+to one change and reports three layers under "comparison": "changed" (Saga
+records added, revised, or retired, each with its before and after),
+"affected" (records the change did not edit but invalidated: pinned to a
+revision that changed, or referencing code that changed, followed up the
+persona, story, design, and code chain), and "code" (the changed hunks grouped
+under the nodes that reference them, plus every changed line nothing
+references). Update the affected records, then cover the unreferenced lines.
+When the Saga lives in its own repository, pass the code checkout with
+"--repo" and move the sync cursor with "change-saga sync" in every Saga commit
+that updates the documentation.
 
 Lead with pictures and show by example. The root should establish the goal,
 system/change map, affected workflows, and chapter path before dense prose.

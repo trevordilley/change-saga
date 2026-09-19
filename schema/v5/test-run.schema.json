@@ -20,15 +20,14 @@
     "source": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["repository", "base", "head"],
+      "required": ["repository", "commit"],
       "properties": {
         "repository": {
           "type": "string",
           "format": "uri",
           "not": { "pattern": "^[A-Za-z][A-Za-z0-9+.-]*://[^/?#]*@" }
         },
-        "base": { "type": "string", "minLength": 1 },
-        "head": { "type": "string", "minLength": 1 }
+        "commit": { "type": "string", "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$" }
       }
     },
     "result": { "enum": ["passed", "failed", "blocked", "skipped"] },

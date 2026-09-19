@@ -346,7 +346,7 @@ func TestEpicStoriesAppearOnlyUnderThatEpicsRequirements(t *testing.T) {
 // onboarding deck at the app root.
 func TestPageRendersTheAppLevelListFromAnAppSaga(t *testing.T) {
 	root := filepath.Join(t.TempDir(), "shop.saga")
-	writeServerFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"shop","title":"Shop","source":{"repository":"https://example.test/acme/shop.git","base":"main","head":"HEAD"}}`)
+	writeServerFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"shop","title":"Shop","source":{"repository":"https://example.test/acme/shop.git"}}`)
 	for _, epic := range []struct{ id, title string }{{"billing", "Billing"}, {"catalog", "Catalog"}} {
 		dir := applayout.EpicDir(root, epic.id)
 		writeServerFile(t, filepath.Join(dir, applayout.EpicManifestName), fmt.Sprintf(`{"$schema":%q,"version":5,"id":%q,"title":%q,"created_at":"2026-08-21T12:00:00Z"}`, applayout.EpicSchemaURL, epic.id, epic.title))

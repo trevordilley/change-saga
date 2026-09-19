@@ -1662,7 +1662,7 @@ const appJavaScript = `(() => {
       if (name === 'saga') url.searchParams.delete('view'); else url.searchParams.set('view', name);
       history.pushState({view: name}, '', url);
     }
-    if (name === 'code' || name === 'manifest') void hydrateReviewSurface(name);
+    if (name === 'code' || name === 'manifest' || name === 'change') void hydrateReviewSurface(name);
   }
 
   function filterActivity(selected = q('[data-activity-filter][aria-pressed="true"]')?.dataset.activityFilter || 'all') {
@@ -1855,6 +1855,76 @@ const appJavaScript = `(() => {
     configureDrawer('code', attached?.dataset.attachedTitle ? 'Linked code · ' + attached.dataset.attachedTitle : 'Linked code');
     highlightCode(body);
     showDrawer(returnOpener);
+  }
+
+  // A record's history opens in the review drawer: when it was introduced,
+  // what it replaced, and every commit that changed it.
+  async function openHistoryDrawer(href, opener) {
+    const drawer = q('.diff-drawer');
+    const returnOpener = drawer?.classList.contains('open') ? drawerOpener : opener;
+    restoreDrawerContent();
+    const surface = document.createElement('div');
+    surface.className = 'activity-drawer-surface';
+    surface.dataset.reviewSurface = 'history';
+    surface.dataset.surfaceHref = href;
+    q('.drawer-body')?.append(surface);
+    configureDrawer('activity', 'History');
+    showDrawer(returnOpener);
+    return hydrateReviewSurface('history', {href:new URL(href, location.href).toString(), force:true});
+  }
+
+  // Compare mode highlights the records this change edited or affected and
+  // offers approval only on them; everything else stays reachable but quiet.
+  // Observe mode renders no approval controls at all.
+  const layerState = {ready:false, approvable:new Set(), changed:new Set(), affected:new Set(), dom:new Map()};
+  function applyLayers(root = document) {
+    if (!layerState.ready) return;
+    within(root, '[data-review-controls]').forEach(controls => {
+      const gate = q('[data-approval-gate]', controls);
+      if (gate) gate.hidden = !layerState.approvable.has(controls.dataset.reviewTarget || '');
+    });
+    within(root, '[data-review-progress-target]').forEach(segment => {
+      segment.hidden = !layerState.approvable.has(segment.dataset.reviewProgressTarget || '');
+    });
+    within(root, '[data-review-directory-target]').forEach(row => {
+      row.hidden = !layerState.approvable.has(row.dataset.reviewDirectoryTarget || '');
+    });
+    const layerOf = id => layerState.changed.has(id) ? 'changed' : layerState.affected.has(id) ? 'affected' : '';
+    const byDOM = new Map();
+    layerState.dom.forEach((dom, urn) => byDOM.set(dom, layerOf(urn)));
+    within(root, '[data-target]').forEach(element => {
+      if (element.closest('[data-review-surface]')) return;
+      const layer = layerOf(element.dataset.target);
+      element.classList.toggle('layer-changed', layer === 'changed');
+      element.classList.toggle('layer-affected', layer === 'affected');
+      element.classList.toggle('layer-quiet', !layer);
+    });
+    within(root, 'nav a[href^="#target-"], .nav a[href^="#target-"]').forEach(link => {
+      const layer = byDOM.get(link.getAttribute('href').slice(1)) || '';
+      link.classList.toggle('layer-changed', layer === 'changed');
+      link.classList.toggle('layer-affected', layer === 'affected');
+      link.classList.toggle('layer-quiet', !layer);
+    });
+  }
+  async function loadLayers() {
+    if (q('[data-opening]')?.dataset.opening !== 'compare') return;
+    for (let attempt = 0; attempt < 120; attempt++) {
+      const response = await fetch('/api/layers', {headers:{Accept:'application/json'}, credentials:'same-origin'});
+      if (response.status === 202) { await new Promise(resolve => setTimeout(resolve, retryDelay(response))); continue; }
+      if (!response.ok) return;
+      const layers = await response.json();
+      layerState.approvable = new Set(layers.approvable || []);
+      layerState.changed = new Set(layers.changed || []);
+      layerState.affected = new Set(layers.affected || []);
+      layerState.dom = new Map(Object.entries(layers.dom || {}));
+      layerState.ready = true;
+      document.body.dataset.layersReady = 'true';
+      applyLayers(document);
+      new MutationObserver(records => records.forEach(record => record.addedNodes.forEach(node => {
+        if (node.nodeType === 1) applyLayers(node);
+      }))).observe(document.body, {childList:true, subtree:true});
+      return;
+    }
   }
 
   async function openActivityDrawer(href, opener, updateURL = true) {
@@ -3486,6 +3556,8 @@ const appJavaScript = `(() => {
     if (chapterToggle) { toggleChapter(chapterToggle); return; }
     const viewTab = event.target.closest('[data-view-tab]');
     if (viewTab) { setView(viewTab.dataset.viewTab); return; }
+    const historyButton = event.target.closest('[data-open-history]');
+    if (historyButton) { event.preventDefault(); void openHistoryDrawer(historyButton.dataset.historyHref, historyButton); return; }
     const activityButton = event.target.closest('[data-open-activity]');
     if (activityButton) { event.preventDefault(); void openActivityDrawer(activityButton.dataset.activityHref, activityButton); return; }
     const activityFilter = event.target.closest('[data-activity-filter]');
@@ -3899,7 +3971,7 @@ const appJavaScript = `(() => {
   }, {passive:true});
   const requestedView = new URL(location.href).searchParams.get('view');
   const activityRequested = new URL(location.href).searchParams.has('activity') || requestedView === 'activity';
-  const initialView = requestedView === 'code' || requestedView === 'manifest' || requestedView === 'slides' ? requestedView : 'saga';
+  const initialView = requestedView === 'code' || requestedView === 'manifest' || requestedView === 'slides' || requestedView === 'change' ? requestedView : 'saga';
   setView(initialView, false);
   setManifestMode('code');
   const anchorResolving = initialView === 'saga' || initialView === 'slides'
@@ -3913,6 +3985,7 @@ const appJavaScript = `(() => {
   void Promise.all([shellArriving, anchorResolving, activityResolving]).then(() => {
     document.body.dataset.shellReady = 'true';
   });
+  void loadLayers();
   positionFragmentOverlays();
   globalThis.requestAnimationFrame?.(positionFragmentOverlays);
   addEventListener('hashchange', () => {
@@ -3924,7 +3997,7 @@ const appJavaScript = `(() => {
   addEventListener('popstate', () => {
     const url = new URL(location.href);
     const view = url.searchParams.get('view');
-    setView(view === 'code' || view === 'manifest' || view === 'slides' ? view : 'saga', false);
+    setView(view === 'code' || view === 'manifest' || view === 'slides' || view === 'change' ? view : 'saga', false);
     if (url.searchParams.has('activity') || view === 'activity') void openActivityDrawer(url.toString(), null, false);
     else if (q('.diff-drawer')?.dataset.drawerMode === 'activity') closeDrawer(false);
   });

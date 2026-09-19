@@ -21,6 +21,7 @@ import (
 type serviceFixture struct {
 	repo       string
 	root       string
+	base       string
 	fragment   string
 	atomRef    string
 	fileRef    string
@@ -198,7 +199,7 @@ func TestNodeDiffsSeparateDirectAndDescendantCoverage(t *testing.T) {
 func TestSummarySessionMatchesOverviewAndChildrenWithoutDetailIndexes(t *testing.T) {
 	fixture := newServiceFixture(t)
 	ctx := context.Background()
-	compact, err := Open(ctx, OpenOptions{SagaRoot: fixture.root, SourceDir: fixture.repo, SummaryOnly: true})
+	compact, err := Open(ctx, OpenOptions{SagaRoot: fixture.root, SourceDir: fixture.repo, Range: gitdiff.Range{Against: fixture.base}, SummaryOnly: true})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -244,7 +245,7 @@ func TestSessionStableErrorsSnapshotAndCursor(t *testing.T) {
 		t.Fatalf("create cursor: %#v, %v", first, err)
 	}
 	originalSnapshot := fixture.session.Snapshot()
-	unchanged, err := Open(ctx, OpenOptions{SagaRoot: fixture.root, SourceDir: fixture.repo})
+	unchanged, err := Open(ctx, OpenOptions{SagaRoot: fixture.root, SourceDir: fixture.repo, Range: gitdiff.Range{Against: fixture.base}})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -252,7 +253,7 @@ func TestSessionStableErrorsSnapshotAndCursor(t *testing.T) {
 		t.Fatalf("unchanged snapshot moved: %q != %q", unchanged.Snapshot(), originalSnapshot)
 	}
 	writeFile(t, fixture.asset, "different ignored asset bytes")
-	newSession, err := Open(ctx, OpenOptions{SagaRoot: fixture.root, SourceDir: fixture.repo})
+	newSession, err := Open(ctx, OpenOptions{SagaRoot: fixture.root, SourceDir: fixture.repo, Range: gitdiff.Range{Against: fixture.base}})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -353,7 +354,7 @@ func newServiceFixture(t *testing.T) serviceFixture {
 	fragmentTarget := saga.FragmentTarget("query-test", "overview")
 	writeJSON(t, filepath.Join(root, "saga.json"), saga.Manifest{
 		Schema: saga.SagaSchemaURL, Version: saga.SagaVersion, ID: "query-test", Title: "Query test",
-		Source: saga.Source{Repository: comparison.Repository, Base: base, Head: "HEAD"},
+		Source: saga.Source{Repository: comparison.Repository},
 	})
 	writeJSON(t, filepath.Join(root, saga.CodeDirName, "root.json"), saga.CodeFile{Version: 2, References: []coderef.Reference{at(current, "root ownership")}})
 	// Report content lives in an epic; root evidence, review records, claims,
@@ -398,11 +399,11 @@ func newServiceFixture(t *testing.T) serviceFixture {
 	// every reference above stays current; the file is addressed at the head.
 	head := strings.TrimSpace(git(t, repo, "rev-parse", "HEAD"))
 
-	opened, err := Open(ctx, OpenOptions{SagaRoot: root, SourceDir: repo})
+	opened, err := Open(ctx, OpenOptions{SagaRoot: root, SourceDir: repo, Range: gitdiff.Range{Against: base}})
 	if err != nil {
 		t.Fatal(err)
 	}
-	return serviceFixture{repo: repo, root: root, fragment: fragmentTarget, atomRef: current.Ref, fileRef: coderef.Location{Commit: head, Path: atomFilePath(current)}.String(), asset: asset, session: opened, comparison: comparison}
+	return serviceFixture{repo: repo, root: root, base: base, fragment: fragmentTarget, atomRef: current.Ref, fileRef: coderef.Location{Commit: head, Path: atomFilePath(current)}.String(), asset: asset, session: opened, comparison: comparison}
 }
 
 func assertCode(t *testing.T, err error, want ErrorCode) {

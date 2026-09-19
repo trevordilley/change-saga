@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 	"fmt"
+	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
@@ -283,8 +284,23 @@ func TestRootMutationStaysBoundedAndIsolated(t *testing.T) {
 	requireRootMarkup(t, "mutation baseline", before.body)
 	requireRootMarkup(t, "peer baseline", peerBefore.body)
 
+	// Approval is offered only on the records the change edited or affected,
+	// so the page reads the comparison's layers before any approve control
+	// appears. That one build precedes the write; the write and the following
+	// root must not repeat it.
+	layersResponse := httptest.NewRecorder()
+	first.handler.ServeHTTP(layersResponse, httptest.NewRequest(http.MethodGet, "/api/layers", nil))
+	for attempt := 0; layersResponse.Code == http.StatusAccepted && attempt < 600; attempt++ {
+		time.Sleep(50 * time.Millisecond)
+		layersResponse = httptest.NewRecorder()
+		first.handler.ServeHTTP(layersResponse, httptest.NewRequest(http.MethodGet, "/api/layers", nil))
+	}
+	if layersResponse.Code != http.StatusOK {
+		t.Fatalf("layers = %d: %s", layersResponse.Code, firstLine(layersResponse.Body.String()))
+	}
+	warmBuilds := first.application.cache.builds
 	values := url.Values{
-		"target": {saga.SagaTarget("large-benchmark")},
+		"target": {saga.FragmentTarget("large-benchmark", "overview")},
 		"state":  {"approved"},
 		"body":   {"Bounded mutation decision."},
 	}
@@ -310,7 +326,7 @@ func TestRootMutationStaysBoundedAndIsolated(t *testing.T) {
 	if peerAfter.body != peerBefore.body || strings.Contains(peerAfter.body, "Bounded mutation decision.") {
 		t.Error("mutating one saga changed the root response of a separate served saga")
 	}
-	if builds := first.application.cache.builds; builds != 0 {
+	if builds := first.application.cache.builds - warmBuilds; builds != 0 {
 		t.Errorf("mutation plus following root built the full comparison/coverage model %d times", builds)
 	}
 	if builds := peer.application.cache.builds; builds != 0 {
@@ -338,7 +354,7 @@ func newRootTestServer(tb testing.TB, parent string, options testfixture.LargeSa
 		tb.Fatal(err)
 	}
 	application := &app{
-		root: fixture.Root, sourceDir: fixture.Repository, template: tmpl,
+		root: fixture.Root, sourceDir: fixture.Repository, rng: gitdiff.Range{Against: fixture.Base}, template: tmpl,
 	}
 	return rootTestServer{handler: newMux(application), application: application, fixture: fixture}
 }
@@ -443,7 +459,7 @@ func measureRootFirstLoad(tb testing.TB, name string, options testfixture.LargeS
 	var page string
 	for sample := 0; sample < 3; sample++ {
 		application := &app{
-			root: fixture.Root, sourceDir: fixture.Repository, template: tmpl,
+			root: fixture.Root, sourceDir: fixture.Repository, rng: gitdiff.Range{Against: fixture.Base}, template: tmpl,
 		}
 		handler = newMux(application)
 		started := time.Now()
@@ -546,7 +562,7 @@ func newFirstLoadHandler(tb testing.TB, options testfixture.LargeSagaOptions) *h
 	if err != nil {
 		tb.Fatal(err)
 	}
-	handler := newMux(&app{root: fixture.Root, sourceDir: fixture.Repository, template: tmpl})
+	handler := newMux(&app{root: fixture.Root, sourceDir: fixture.Repository, rng: gitdiff.Range{Against: fixture.Base}, template: tmpl})
 	firstLoadPage(tb, handler)
 	return handler
 }

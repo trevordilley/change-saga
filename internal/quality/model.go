@@ -42,10 +42,11 @@ const (
 	Adopted      AdoptionState = "adopted"
 )
 
+// SourceIdentity is the code a run executed against: the repository and the
+// exact commit. It is a fact about the run, not a comparison.
 type SourceIdentity struct {
 	Repository string `json:"repository"`
-	Base       string `json:"base"`
-	Head       string `json:"head"`
+	Commit     string `json:"commit"`
 }
 
 type TestCaseIdentity struct {

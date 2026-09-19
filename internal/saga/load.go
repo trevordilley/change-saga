@@ -167,6 +167,9 @@ func load(root string, options loadOptions) (*Saga, Validation, error) {
 			}
 		}
 	}
+	if _, _, err := ReadCursor(abs); err != nil {
+		addIssue(&validation, "error", CursorName, err.Error())
+	}
 	if metadataDirectorySafe(abs, abs, "___review", &validation) {
 		reviewDir := filepath.Join(abs, "___review")
 		if metadataDirectorySafe(abs, reviewDir, "threads", &validation) {
@@ -893,6 +896,9 @@ func validateMerge(value Merge, name string) error {
 	}
 	if !coderef.ValidCommit(value.Commit) || name != MergeFilename(value.Commit) {
 		return fmt.Errorf("merge record must be named <commit>.json for its full landed commit")
+	}
+	if value.Base != "" && !coderef.ValidCommit(value.Base) {
+		return fmt.Errorf("merge record base must be a full commit")
 	}
 	for index, commit := range value.Commits {
 		if !coderef.ValidCommit(commit.Commit) || strings.TrimSpace(commit.Subject) == "" || commit.Date.IsZero() {

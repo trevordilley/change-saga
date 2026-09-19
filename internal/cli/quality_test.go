@@ -25,7 +25,7 @@ func newQualityFixture(t *testing.T) string {
 	root := filepath.Join(t.TempDir(), "checkout.saga")
 	data, err := json.Marshal(map[string]any{
 		"$schema": quality.ManifestSchemaURL, "version": quality.Version, "id": "checkout", "title": "Checkout",
-		"source": quality.SourceIdentity{Repository: "https://example.com/repo.git", Base: "base", Head: "head"},
+		"source": map[string]string{"repository": "https://example.com/repo.git"},
 	})
 	if err != nil {
 		t.Fatal(err)
@@ -118,9 +118,9 @@ func TestQualityCommandsAuthorTheFrozenRecordsEndToEnd(t *testing.T) {
 	evidence := runQuality(t, "", "evidence", "add", root, "--test", qualityTestURN, "--role", "test_implementation", "--repo", codeRepo, "--code", codeLocation)
 	manual := runQuality(t, `[{"id":"qa","test_case":"`+qualityTestURN+`","role":"execution_artifact","citations":["urn:change-saga:checkout:citation:qa-notes"]}]`,
 		"evidence", "add", root, "--batch", "-")
-	failed := runQuality(t, "", "run", "record", root, "--test", qualityTestURN, "--id", "ci-1", "--result", "failed",
+	failed := runQuality(t, "", "run", "record", root, "--commit", "0123456789abcdef0123456789abcdef01234567", "--test", qualityTestURN, "--id", "ci-1", "--result", "failed",
 		"--summary", "Wrong reason.", "--evidence", evidence.Resource, "--command", "go test ./internal/refund")
-	passed := runQuality(t, "", "run", "record", root, "--test", qualityTestURN, "--id", "ci-2", "--parent", failed.Resource,
+	passed := runQuality(t, "", "run", "record", root, "--commit", "0123456789abcdef0123456789abcdef01234567", "--test", qualityTestURN, "--id", "ci-2", "--parent", failed.Resource,
 		"--result", "passed", "--summary", "Manual and CI pass.", "--evidence", evidence.Resource, "--evidence", manual.Resource)
 	runQuality(t, "", "policy", "set", root, "--epic", testEpic, "--criterion", "urn:change-saga:checkout:story:refund:criterion:cutoff",
 		"--story-revision", "urn:change-saga:checkout:story:refund:revision:r2", "--require", "positive", "--require", "edge",

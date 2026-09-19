@@ -250,7 +250,7 @@ func TestV5SchemasRejectUnknownFieldsAndContractViolations(t *testing.T) {
 	}
 }
 
-const v5TestManifest = `{"$schema":"https://changesaga.dev/schema/v5/saga.schema.json","version":5,"id":"v5","title":"Composition","source":{"repository":"https://example.test/acme/app.git","base":"main","head":"feature"}}`
+const v5TestManifest = `{"$schema":"https://changesaga.dev/schema/v5/saga.schema.json","version":5,"id":"v5","title":"Composition","source":{"repository":"https://example.test/acme/app.git"}}`
 
 func writeV5Composition(t *testing.T, manifest string) string {
 	t.Helper()

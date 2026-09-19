@@ -279,7 +279,7 @@ func TestRunsAreImmutableEventsAndFailuresStayVisible(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	failed, err := RecordRun(root, RecordRunInput{ID: "ci-1", TestCase: deadlineURN, Result: RunFailed, Summary: "Rejected with the wrong reason.", Command: "go test ./...", Evidence: []string{evidence.URN}})
+	failed, err := RecordRun(root, RecordRunInput{ID: "ci-1", TestCase: deadlineURN, Result: RunFailed, Summary: "Rejected with the wrong reason.", Command: "go test ./...", Source: &SourceIdentity{Commit: testRunCommit}, Evidence: []string{evidence.URN}})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -287,13 +287,13 @@ func TestRunsAreImmutableEventsAndFailuresStayVisible(t *testing.T) {
 	if testCase.HeadRun == nil || testCase.HeadRun.Result != RunFailed || !testCase.HeadRun.Current {
 		t.Fatalf("failed head run = %#v", testCase.HeadRun)
 	}
-	if _, err := RecordRun(root, RecordRunInput{ID: "ci-2", TestCase: deadlineURN, Result: RunPassed, Summary: "Passed.", Evidence: []string{evidence.URN}}); err == nil || !strings.Contains(err.Error(), "every current run head") {
+	if _, err := RecordRun(root, RecordRunInput{ID: "ci-2", TestCase: deadlineURN, Result: RunPassed, Summary: "Passed.", Source: &SourceIdentity{Commit: testRunCommit}, Evidence: []string{evidence.URN}}); err == nil || !strings.Contains(err.Error(), "every current run head") {
 		t.Fatalf("run that ignored the failed head error = %v", err)
 	}
-	if _, err := RecordRun(root, RecordRunInput{ID: "ci-1", TestCase: deadlineURN, Parents: []string{failed.URN}, Result: RunPassed, Summary: "Overwrite.", Evidence: []string{evidence.URN}}); err == nil || !strings.Contains(err.Error(), "immutable") {
+	if _, err := RecordRun(root, RecordRunInput{ID: "ci-1", TestCase: deadlineURN, Parents: []string{failed.URN}, Result: RunPassed, Summary: "Overwrite.", Source: &SourceIdentity{Commit: testRunCommit}, Evidence: []string{evidence.URN}}); err == nil || !strings.Contains(err.Error(), "immutable") {
 		t.Fatalf("run overwrite error = %v", err)
 	}
-	if _, err := RecordRun(root, RecordRunInput{ID: "ci-2", TestCase: deadlineURN, Parents: []string{failed.URN}, Result: RunPassed, Summary: "Passed.", Evidence: []string{evidence.URN}}); err != nil {
+	if _, err := RecordRun(root, RecordRunInput{ID: "ci-2", TestCase: deadlineURN, Parents: []string{failed.URN}, Result: RunPassed, Summary: "Passed.", Source: &SourceIdentity{Commit: testRunCommit}, Evidence: []string{evidence.URN}}); err != nil {
 		t.Fatal(err)
 	}
 	// A concurrent manual run on another branch also followed ci-1; Git merges both.
@@ -305,7 +305,7 @@ func TestRunsAreImmutableEventsAndFailuresStayVisible(t *testing.T) {
 		t.Fatalf("concurrent runs were not a conflict: %v", testCase.RunHeads)
 	}
 	conflictHeads := testCase.RunHeads
-	passed, err := RecordRun(root, RecordRunInput{TestCase: deadlineURN, Parents: conflictHeads, Result: RunPassed, Summary: "Reconciled pass.", Evidence: []string{evidence.URN}, RequestID: "ci-3"})
+	passed, err := RecordRun(root, RecordRunInput{TestCase: deadlineURN, Parents: conflictHeads, Result: RunPassed, Summary: "Reconciled pass.", Source: &SourceIdentity{Commit: testRunCommit}, Evidence: []string{evidence.URN}, RequestID: "ci-3"})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -316,7 +316,7 @@ func TestRunsAreImmutableEventsAndFailuresStayVisible(t *testing.T) {
 	if data, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(failed.Path))); err != nil || !strings.Contains(string(data), `"failed"`) {
 		t.Fatalf("failed run was not preserved: %v", err)
 	}
-	replay, err := RecordRun(root, RecordRunInput{TestCase: deadlineURN, Parents: conflictHeads, Result: RunPassed, Summary: "Reconciled pass.", Evidence: []string{evidence.URN}, RequestID: "ci-3"})
+	replay, err := RecordRun(root, RecordRunInput{TestCase: deadlineURN, Parents: conflictHeads, Result: RunPassed, Summary: "Reconciled pass.", Source: &SourceIdentity{Commit: testRunCommit}, Evidence: []string{evidence.URN}, RequestID: "ci-3"})
 	if err != nil || !replay.Replayed || replay.URN != passed.URN {
 		t.Fatalf("generated-id replay = %#v, %v; want replay of %s", replay, err, passed.URN)
 	}
@@ -332,7 +332,7 @@ func TestRevisingATestMakesItsPassingRunStale(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if _, err := RecordRun(root, RecordRunInput{ID: "ci-1", TestCase: deadlineURN, Result: RunPassed, Summary: "Passed.", Evidence: []string{evidence.URN}}); err != nil {
+	if _, err := RecordRun(root, RecordRunInput{ID: "ci-1", TestCase: deadlineURN, Result: RunPassed, Summary: "Passed.", Source: &SourceIdentity{Commit: testRunCommit}, Evidence: []string{evidence.URN}}); err != nil {
 		t.Fatal(err)
 	}
 	if loadDeadline(t, root).CurrentRun == nil {
@@ -346,10 +346,10 @@ func TestRevisingATestMakesItsPassingRunStale(t *testing.T) {
 		t.Fatalf("pass after revision = current %#v head %#v", testCase.CurrentRun, testCase.HeadRun)
 	}
 	if _, err := RecordRun(root, RecordRunInput{ID: "old-source", TestCase: deadlineURN, Parents: testCase.RunHeads, Result: RunPassed, Summary: "Ran elsewhere.",
-		Source: &SourceIdentity{Repository: "https://example.com/repo.git", Base: "base", Head: "other"}, Evidence: []string{evidence.URN}}); err != nil {
+		Source: &SourceIdentity{Repository: "https://example.com/other.git", Commit: "89abcdef0123456789abcdef0123456789abcdef"}, Evidence: []string{evidence.URN}}); err != nil {
 		t.Fatal(err)
 	}
-	if testCase = loadDeadline(t, root); testCase.CurrentRun != nil || !contains(testCase.HeadRun.StaleReasons, "source comparison changed") {
+	if testCase = loadDeadline(t, root); testCase.CurrentRun != nil || !contains(testCase.HeadRun.StaleReasons, "source repository changed") {
 		t.Fatalf("other-source run projection = %#v", testCase.HeadRun)
 	}
 }
@@ -396,3 +396,6 @@ func TestPolicySetKeepsOneHeadPerCriterionRevision(t *testing.T) {
 		t.Fatalf("kinds = %v", kinds)
 	}
 }
+
+// testRunCommit is the code commit the fixture runs executed against.
+const testRunCommit = "0123456789abcdef0123456789abcdef01234567"

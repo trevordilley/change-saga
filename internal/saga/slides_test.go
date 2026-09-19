@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-const embeddedDeckManifest = `{"$schema":"https://changesaga.dev/schema/v5/saga.schema.json","version":5,"id":"visual","title":"Visual review","source":{"repository":"https://example.test/acme/app.git","base":"main","head":"feature"}}`
+const embeddedDeckManifest = `{"$schema":"https://changesaga.dev/schema/v5/saga.schema.json","version":5,"id":"visual","title":"Visual review","source":{"repository":"https://example.test/acme/app.git"}}`
 
 func TestLoadEmbeddedDeckItemEvidence(t *testing.T) {
 	root := filepath.Join(t.TempDir(), "visual.saga")

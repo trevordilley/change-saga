@@ -71,6 +71,7 @@ type coverFlags struct {
 	target, repoDir, path, side, lines, commit, note, name, batch *string
 	changedLines, file, dryRun, jsonOutput, quiet, allowMismatch  *bool
 	refs                                                          stringList
+	opening                                                       *openFlags
 }
 
 func registerCoverFlags(flags *flag.FlagSet) *coverFlags {
@@ -92,6 +93,7 @@ func registerCoverFlags(flags *flag.FlagSet) *coverFlags {
 		allowMismatch: flags.Bool("allow-repository-mismatch", false, "use a checkout whose origin differs from the declared repository"),
 	}
 	flags.Var(&value.refs, "ref", "code location <commit>:<path>[#L<start>[-L<end>]]; repeatable")
+	value.opening = registerOpenFlags(flags)
 	return value
 }
 
@@ -133,7 +135,7 @@ func cover(ctx context.Context, args []string, out io.Writer, stdin io.Reader) e
 	if err != nil {
 		return err
 	}
-	files, err := buildCoverageFiles(ctx, document, records, *options.repoDir, *options.allowMismatch)
+	files, err := buildCoverageFiles(ctx, document, records, *options.repoDir, options.opening.rng(), *options.allowMismatch)
 	if err != nil {
 		return err
 	}
@@ -203,14 +205,17 @@ func coverageOutput(planned []plannedRecord, dryRun bool) coverageMutationOutput
 // write. The comparison is read once for the whole batch, and before any lock
 // is taken, so a slow diff neither repeats per record nor stalls other
 // writers; each reference's digest is read from the repository here.
-func buildCoverageFiles(ctx context.Context, document *saga.Saga, records []coverRecord, repoDir string, allowMismatch bool) ([]saga.CodeFile, error) {
+func buildCoverageFiles(ctx context.Context, document *saga.Saga, records []coverRecord, repoDir string, rng gitdiff.Range, allowMismatch bool) ([]saga.CodeFile, error) {
 	checkout := firstNonEmpty(repoDir, document.Root)
 	var changes *gitdiff.ChangeSet
 	for _, record := range records {
 		if !record.needsComparison() {
 			continue
 		}
-		read, err := gitdiff.ReadWithOptions(ctx, checkout, document.Manifest.Source.Repository, document.Manifest.Source.Base, document.Manifest.Source.Head, gitdiff.ReadOptions{AllowRepositoryMismatch: allowMismatch})
+		if record.ChangedLines && rng.Observe() {
+			return nil, fmt.Errorf("--changed-lines needs a comparison: pass --against REV")
+		}
+		read, err := gitdiff.ReadRange(ctx, checkout, document.Manifest.Source.Repository, rng, gitdiff.ReadOptions{AllowRepositoryMismatch: allowMismatch})
 		if err != nil {
 			return nil, fmt.Errorf("read source comparison (use --repo for a separate saga repository): %w", err)
 		}

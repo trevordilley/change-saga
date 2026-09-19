@@ -380,7 +380,7 @@ func (a *app) populateDerivedSnapshot(ctx context.Context, built *reviewSnapshot
 	a.cache.mutex.Lock()
 	a.cache.builds++
 	a.cache.mutex.Unlock()
-	built.changes, built.diffErr = gitdiff.Read(ctx, a.sourceDir, built.document.Manifest.Source.Repository, built.document.Manifest.Source.Base, built.document.Manifest.Source.Head)
+	built.changes, built.diffErr = gitdiff.ReadRange(ctx, a.sourceDir, built.document.Manifest.Source.Repository, a.rng, gitdiff.ReadOptions{})
 	if built.diffErr != nil {
 		return built.diffErr
 	}
@@ -871,13 +871,9 @@ func filteredTreeFingerprint(root string, selectEntry func(string, fs.DirEntry) 
 	return hex.EncodeToString(digest.Sum(nil)), nil
 }
 
-// sourceFingerprint identifies the exact comparison gitdiff.Read would
-// produce. WORKTREE remains uncacheable because no cheap identity pins all of
-// its bytes exactly.
+// sourceFingerprint identifies the exact comparison gitdiff.ReadRange would
+// produce for the range the reviewer was opened with.
 func (a *app) sourceFingerprint(ctx context.Context, manifest saga.Manifest) (string, error) {
-	if manifest.Source.Head == "WORKTREE" {
-		return "", nil
-	}
 	var remote string
 	var group sync.WaitGroup
 	group.Add(1)
@@ -885,12 +881,16 @@ func (a *app) sourceFingerprint(ctx context.Context, manifest saga.Manifest) (st
 		defer group.Done()
 		remote, _ = gitOutput(ctx, a.sourceDir, "config", "--get", "remote.origin.url")
 	}()
-	revisions, err := gitOutput(ctx, a.sourceDir, "rev-parse", manifest.Source.Base+"^{commit}", manifest.Source.Head+"^{commit}")
+	against := a.rng.Against
+	if a.rng.Observe() {
+		against = a.rng.HeadRevision()
+	}
+	revisions, err := gitOutput(ctx, a.sourceDir, "rev-parse", against+"^{commit}", a.rng.HeadRevision()+"^{commit}")
 	group.Wait()
 	if err != nil {
 		return "", err
 	}
-	return manifest.Source.Repository + "\x00" + strings.Join(strings.Fields(revisions), " ") + "\x00" + remote, nil
+	return a.rng.Mode() + "\x00" + manifest.Source.Repository + "\x00" + strings.Join(strings.Fields(revisions), " ") + "\x00" + remote, nil
 }
 
 func gitOutput(ctx context.Context, dir string, args ...string) (string, error) {

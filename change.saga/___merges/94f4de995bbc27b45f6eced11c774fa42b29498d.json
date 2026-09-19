@@ -1,0 +1,755 @@
+{
+  "version": 2,
+  "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+  "base": "14afd0526c471d9ccad5825fadda735094e599e4",
+  "commits": [
+    {
+      "commit": "93b2ee0cfc3b9fc25487b46c662bf43141eac706",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-19T22:22:20Z",
+      "subject": "Build Review Saga v2 scaffold"
+    },
+    {
+      "commit": "ffa5d3819812802302925ee673afbe1dc05852e8",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-19T22:25:29Z",
+      "subject": "Harden saga authoring workflow"
+    },
+    {
+      "commit": "8fc13fe266c527947dfcf84cc29b721352785009",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-19T22:32:09Z",
+      "subject": "Preserve diff URIs in review controls"
+    },
+    {
+      "commit": "09f97b3e44d9dce1ae8eaa484530fbecbd200968",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-19T22:33:33Z",
+      "subject": "Add first Review Saga"
+    },
+    {
+      "commit": "26ff0a9e09d77c273ed27729992024e1c6b7df60",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-19T22:58:16Z",
+      "subject": "Plan content-first review UX"
+    },
+    {
+      "commit": "b5cfe876b30293c46c5902cf6e1db50dff05aaf1",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-19T23:14:33Z",
+      "subject": "Implement content-first saga review shell"
+    },
+    {
+      "commit": "9a900b33d9c5fd575df3f80cc3f2d14541d1a34f",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-19T23:07:14Z",
+      "subject": "Derive review authorship from Git history"
+    },
+    {
+      "commit": "59e86df96c50c609a41282cd19ab592619ee0626",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-19T23:08:12Z",
+      "subject": "Specify committer as review identity"
+    },
+    {
+      "commit": "69fc201c95f1e9b3fd7ea61487d7960251f77106",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-19T23:15:08Z",
+      "subject": "Merge branch 'main' into ux/saga-navigation-controls"
+    },
+    {
+      "commit": "fe2d7a47722a4d61fb0bf09d5104405bbcf0c739",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-19T23:13:35Z",
+      "subject": "Design AI-facing Review Saga interface"
+    },
+    {
+      "commit": "c4d199a39a26a1cb15d9bd4f06e757fc484e57f9",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-19T23:14:36Z",
+      "subject": "Clarify committer-based review identity"
+    },
+    {
+      "commit": "9ffb9c4564887d59d45c6d2e9ebf42b22cd59b00",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-19T23:16:44Z",
+      "subject": "Merge branch 'feature/ai-saga-interface'"
+    },
+    {
+      "commit": "f9e2ceaf03d8053d45223608f1a83050d66fb15f",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-19T23:07:06Z",
+      "subject": "Audit large-change review experience"
+    },
+    {
+      "commit": "2ad2bf09e8eedead8583d654a9d7153a7fdb507f",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-19T23:08:47Z",
+      "subject": "Document Git-derived review identity"
+    },
+    {
+      "commit": "27be5d4bc17165c032ab07bdc7ca2d6fb88d151f",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-19T23:09:35Z",
+      "subject": "Specify committer as review identity"
+    },
+    {
+      "commit": "5fa1fa44787bf915f34d9e61c5a44a138c7af351",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-19T23:19:03Z",
+      "subject": "Merge branch 'ux/review-experience-audit'"
+    },
+    {
+      "commit": "f478c437a217a11a472bc6ab1a82b12bc3bea5b8",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-19T23:13:33Z",
+      "subject": "Build focused code review view models"
+    },
+    {
+      "commit": "6872e6b4cacb2a7b14be9052023ee97683c0f09f",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-19T23:43:38Z",
+      "subject": "Build focused syntax-aware code review surface"
+    },
+    {
+      "commit": "aebc442859c12a280752cec1a22b1ff6c919c224",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-19T23:23:38Z",
+      "subject": "Derive review identity from Git history"
+    },
+    {
+      "commit": "dfa1da529c8cd3bc35d7bdaf31b24fde895722b8",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-19T23:46:11Z",
+      "subject": "Merge branch 'main' into ux/code-diff-surface",
+      "body": "# Conflicts:\n#\tinternal/server/codeview.go\n#\tinternal/server/template.go"
+    },
+    {
+      "commit": "1f40fd86eefc079aa62fea51e4d0c039652e1c5e",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-19T23:42:31Z",
+      "subject": "Derive review identity from Git committers"
+    },
+    {
+      "commit": "b785bbfb29b0ebdfdc8a87d17a0b80f2256cc57c",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-19T23:48:24Z",
+      "subject": "Merge main and harden review attribution integration"
+    },
+    {
+      "commit": "4fbab802650d31e85834716590830e77dfc6b91d",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-19T23:55:09Z",
+      "subject": "Merge branch 'feature/git-review-attribution'"
+    },
+    {
+      "commit": "7c17373f7c48d3f383d4a7f14a5d63f76429716f",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-20T00:06:18Z",
+      "subject": "Strip redundant fragment chrome from saga view"
+    },
+    {
+      "commit": "baee293c049cd06695e7ddfdeb08d5ea86caaabf",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-20T00:19:32Z",
+      "subject": "Add direct navigation permalinks and annotation colors"
+    },
+    {
+      "commit": "ac8c51a4218d18ce04c76fd4c631312b51623f1c",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-20T00:30:02Z",
+      "subject": "Add stable permalinks for fragment headings"
+    },
+    {
+      "commit": "742591518371879280148996928bca646a9b0e70",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-20T00:59:28Z",
+      "subject": "Add landmark-level code narratives"
+    },
+    {
+      "commit": "591d4189ecd5808b1ca88a6c135fff08911a4b9d",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-20T03:44:13Z",
+      "subject": "Add bidirectional coverage manifest"
+    },
+    {
+      "commit": "b72e33ca2b3e3ed06d858d97d68a503a138aef3f",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-20T04:06:03Z",
+      "subject": "Group linked code by explained files"
+    },
+    {
+      "commit": "60c9a60899b5ce8cbc2fda4d108b43b4faf9e0a4",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-20T04:15:21Z",
+      "subject": "Record Saga review activity"
+    },
+    {
+      "commit": "e154ce8fec3275ab56dfe87774fad142cac23613",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-20T04:28:10Z",
+      "subject": "Add append-only annotation undo and redo"
+    },
+    {
+      "commit": "bb9d6d50bb55b6d3ac40814e9215c3675b4b90db",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-20T04:45:57Z",
+      "subject": "Make Saga annotations directly editable"
+    },
+    {
+      "commit": "34258b4312af4d68f9e1a0b3a7ca953ecdd42f6a",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-20T04:53:21Z",
+      "subject": "Delete selected annotations from keyboard"
+    },
+    {
+      "commit": "f6580ef333d2570c20d822ec5dc8afe1800eb9a4",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-20T14:31:25Z",
+      "subject": "Build and distribute signed cross-platform releases",
+      "body": "Release automation for the six supported targets, split along the trust\nboundary that matters: pull requests build unsigned with no secrets, tags\nbuild signed in a protected environment.\n\n- ci.yml runs tests on Linux, macOS, and Windows, gofmt, shellcheck, the\n  installer test, and an unsigned build of every release target. It is\n  read-only and reads no secret, so fork pull requests run it unchanged.\n- release.yml triggers on tags and manual dispatch only. There is no\n  pull_request or pull_request_target trigger, and the Apple secrets are\n  scoped to the release-signing environment, so fork pull requests cannot\n  reach them. It re-runs the full CI matrix, builds, signs and notarizes the\n  macOS pair, re-verifies every artifact after transit, publishes SHA256SUMS\n  and a build provenance attestation, and creates the release.\n- build-release.sh builds one target, honours SAGA_SIGN_HOOK so signing\n  happens before archiving, and injects version, commit, and build date.\n- install.sh detects OS and architecture, verifies against SHA256SUMS, fails\n  closed when no checksum tool exists, reports the macOS signing authority,\n  and installs atomically. It never calls sudo, never strips quarantine, and\n  never disables Gatekeeper.\n- install_test.sh runs the unmodified installer against a staged release with\n  a stub curl, covering tampered archives, missing checksums, missing\n  platform builds, and unwritable targets.\n\nmacOS signing is optional until the Apple credentials exist: releases build\nunsigned with a warning in the notes, and REQUIRE_MACOS_SIGNING=true turns\nthat into a hard failure once setup is done. docs/releasing.md documents the\nprocess, the six secrets, and the remaining Apple account steps.\n\nCo-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>"
+    },
+    {
+      "commit": "62b31a6c4c9b0a43b8480ae7a3202acf6bcd82c2",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-20T17:33:12Z",
+      "subject": "Merge cross-platform release distribution"
+    },
+    {
+      "commit": "4afb8f20b1dacc562e6353ba5b185e831a43d82c",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-20T15:34:07Z",
+      "subject": "Add CDK hosting foundation for shareable sagas",
+      "body": "Adds infra/, an AWS CDK v2 app in TypeScript that provisions the hosting\nfoundation for shareable Review Saga sites. It stops at the boundary:\nGitHub OAuth, comment posting, and private saga delivery are documented\nextension points, not implementations.\n\nThe stack is one CloudFront distribution over two origins. A private S3\nbucket holds the generic renderer shell and is reachable only through\nOrigin Access Control, scoped by AWS:SourceArn to this distribution. An\nAPI Gateway HTTP API fronts a small health/config Lambda at /api/*, so\nlater authenticated endpoints land somewhere already routed, throttled,\nlogged, and running under a least-privilege role.\n\nRouting /api/* through the same distribution keeps the browser on one\norigin, which is what lets the CSP stay at default-src 'self' with no\nCORS and leaves room for a host-only session cookie. Caching is split\nthree ways: five minutes for shell documents, a year for content-hashed\n/assets/*, and nothing for the API. Directory URLs are rewritten by a\nCloudFront Function attached to the shell behaviour only; CloudFront\ncustom error responses would have rewritten genuine API 404s too.\n\nEverything private stays out of the public bucket. Synthesis fails if\nthe configured shell directory contains saga packages, reserved\noverlays, saga manifests, or credential-shaped files - pointing it at\nthis repository's own review-saga-v2.saga is a test case.\n\nConfiguration is CDK context with validation, including the CloudFront\nrequirement that the certificate live in us-east-1. No domain is\nhard-coded and no credential is embedded; the GitHub App secret is\nreferenced by ARN and granted read on that ARN alone.\n\ninfra/go.mod is a shim, not a Go project: it keeps `go build ./...` and\nfriends from descending into the Go source that npm install leaves\nunder infra/node_modules.\n\n83 assertion and unit tests pass, and both the default and custom-domain\nvariants synthesize without warnings. Nothing was deployed.\n\nCo-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>"
+    },
+    {
+      "commit": "24a28a56278354fb6d63dce2b875d031d600f548",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-20T17:33:16Z",
+      "subject": "Merge AWS hosting foundation"
+    },
+    {
+      "commit": "52dcab16beb5431ac7ee8873e8a801c5916fbc73",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-20T15:39:10Z",
+      "subject": "Refine the reviewer into a quiet developer-tool interface",
+      "body": "The renderer read like an editorial report: blocky cards, oversized\nheadings, text buttons repeated per target, and storage vocabulary in the\nchrome. This reworks the whole surface toward a tool a reviewer already\nrecognises from their editor and their code host.\n\nChrome now speaks the reviewer's language — chapters, files, changes,\ncomments — and keeps fragment, section, media type, schema, and internal\npaths in the CLI and validator where they belong. Authored saga content is\nstill rendered verbatim and may discuss the format freely.\n\nCompact system UI at 13px, monospace reserved for code and code-shaped\nmetadata, hairline separators instead of cards, and controls that stay\ninvisible until the reviewer hovers or focuses the thing they own.\n\nThe Saga sidebar becomes a collapsed documentation tree: overview plus\nchapters, only the open page expanded into its own headings, with no\nfragment counts and no mirror of the on-disk hierarchy. Code Diff keeps a\nseparate compact changed-file tree with filtering, status, and selection.\nCoverage renders as a fully expanded repository tree that keeps its change\nand ownership metadata and its bidirectional navigation.\n\nComplete coverage is an invariant, so the success banner is gone. Only\nunexplained changes and stale references are reported.\n\nText controls become icons with tooltips and accessible names, drawn from a\nnew local SVG sprite that is original to this repository, so a committed\nsaga still reviews with no network access and no third-party icon licence.\nFile-type badges cover Go, TypeScript/JavaScript, Markdown, JSON/YAML,\nHTML/CSS, SVG/images, shell, and a neutral fallback.\n\nAlso fixes four defects found while inspecting the result:\n\n- `.related-chapter>a` matched the excerpt beneath it, rendering prose in\n  monospace; the chapter link now has its own class.\n- The linked-code drawer chevron was styled by a class the template no\n  longer emits, so it never sized or rotated.\n- Fragment excerpts ran a heading into the first sentence and kept the\n  closing backtick of an inline code span.\n- Markdown, text, and licence diffs fell through to the generic keyword\n  set, painting every capitalised word as a type. Prose is now left alone.\n\nDeep links, annotation editing, comments, the code drawer, and responsive\nbehaviour are unchanged. No frontend framework and no CDN.\n\nCo-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>"
+    },
+    {
+      "commit": "e99fb7c2d34df5f64e0ce8b3377343d31537dc9f",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-20T17:33:49Z",
+      "subject": "Merge developer-focused UI refinement",
+      "body": "# Conflicts:\n#\tCONTRIBUTING.md"
+    },
+    {
+      "commit": "62bd0d365b4ecda5e3a5e1268a30e84fd9937ac8",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-20T15:30:22Z",
+      "subject": "Add sticky notes as a first-class annotation",
+      "body": "A sticky is a new `note` anchor on an ordinary comment thread rather than\na new thread kind. That is the smallest coherent extension: the note keeps\nreplies, state, permalinks, and Git attribution, and because its visible\ntext lives in the anchor, rewording is an append-only anchor event instead\nof a message rewrite.\n\nThe anchor carries plain text (2000 rune cap), a normalized centre point,\nand an optional color, all validated in Go and in schema/v2. The overlay\nrenders note text as a text node only, and an unsafe color falls back to\nan accessible default.\n\nCo-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>"
+    },
+    {
+      "commit": "4deaebdd8949c794b9707ebfbc0beed2250452cc",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-20T17:38:16Z",
+      "subject": "Merge sticky note annotations",
+      "body": "# Conflicts:\n#\tinternal/server/appjs.go\n#\tinternal/server/server.go\n#\tinternal/server/server_test.go\n#\tinternal/server/styles.go\n#\tinternal/server/template.go"
+    },
+    {
+      "commit": "5338a164a485d2ca5d6ad15e975ebb1746424f09",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-20T17:57:16Z",
+      "subject": "Show actual diffs in coverage files"
+    },
+    {
+      "commit": "566891109286ca6204a0a7394046b3213849f3e6",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-20T18:09:43Z",
+      "subject": "Expand Saga-to-Code coverage inline"
+    },
+    {
+      "commit": "40e4b9a8e35037c0815c100de64b87623df88964",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-20T18:36:09Z",
+      "subject": "Make saga review decisions fast"
+    },
+    {
+      "commit": "9c0c9cb10142043fbf722f6e773547e906ca81ab",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-20T19:31:57Z",
+      "subject": "Make review progress a navigable map"
+    },
+    {
+      "commit": "1e5f1328c1ddfbe30c1aa34deb67178105bcf7c0",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-20T19:36:26Z",
+      "subject": "Show review notes in progress map"
+    },
+    {
+      "commit": "0e05f0ded356ed7ac33f76d1fbe6a726e60dfb6e",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-20T19:41:48Z",
+      "subject": "Show decision attribution on review controls"
+    },
+    {
+      "commit": "17efba0e1dc528e67d58ce71f3e69d823c6c76fa",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-20T20:08:04Z",
+      "subject": "Remove generated review saga"
+    },
+    {
+      "commit": "288880e70c87c7ee549d182b0b275a65ad9657e2",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-20T21:03:10Z",
+      "subject": "Render sagas as instant one-page documents"
+    },
+    {
+      "commit": "0b7df026db8da6a48485a1a4514d33acdeba659b",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-20T21:03:18Z",
+      "subject": "Define visual saga authoring and portable skill install"
+    },
+    {
+      "commit": "3a5456531806dc23d1417f0e917e1ae6600949ef",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-20T22:28:55Z",
+      "subject": "Add standalone Apple Silicon installer builder"
+    },
+    {
+      "commit": "bd80ee52ab0d855ca65a19188cb0d54bd98dd68f",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-20T22:56:14Z",
+      "subject": "Install review-saga convenience command"
+    },
+    {
+      "commit": "b710c26758b176f940d90a14b20fa26f5a514b67",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-20T23:04:48Z",
+      "subject": "Make review-saga the canonical CLI command"
+    },
+    {
+      "commit": "1f631ff3cc5c4c751685bb518edd9705b1641c2b",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T01:40:11Z",
+      "subject": "Distribute review-saga through GitHub releases"
+    },
+    {
+      "commit": "0299401541d293814d9517f6efa0e7af2d628642",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T01:44:25Z",
+      "subject": "Remove obsolete AWS hosting infrastructure"
+    },
+    {
+      "commit": "a62c0a6661326381b928cd91703dce59e7295ee6",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T02:03:51Z",
+      "subject": "Rename product to Change Saga"
+    },
+    {
+      "commit": "c40254407f8bb47e0a116b2f9a2b50e47f0e715c",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T03:22:34Z",
+      "subject": "Harden local writes and review mutations"
+    },
+    {
+      "commit": "aa3db3cf354a426249165b94c079cc0da053b35a",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T03:21:53Z",
+      "subject": "Harden diff identity and lifecycle contract"
+    },
+    {
+      "commit": "102aeb5e35de83fadd90f063fdf4e72d414b7ac4",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T03:29:53Z",
+      "subject": "Add real-browser Wave 1 E2E foundation"
+    },
+    {
+      "commit": "e56c6d151e5be89d73871a87a0295b9083c50f70",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T03:34:45Z",
+      "subject": "Merge branch 'test/browser-e2e-foundation'"
+    },
+    {
+      "commit": "81b9d956f2583943900f5f6b3f3c6a0e525db74c",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T03:36:58Z",
+      "subject": "Merge branch 'main' into hardening/safe-local-writes"
+    },
+    {
+      "commit": "b037a64aa7afe5aa9156bc029812a4751433f81c",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T04:05:00Z",
+      "subject": "Harden the E2E suite around identity, session, and accessibility",
+      "body": "Fix the two known chrome accessibility defects and the harness gaps that kept\nthe browser suite from asserting the product's real contracts.\n\nAccessibility:\n- The workspace switcher's tablist children are real tabs with explicit\n  aria-selected, roving tabindex, aria-controls, matching tabpanels, and\n  Arrow/Home/End movement.\n- The closed linked-code drawer is inert, so it holds no focusable descendants\n  while hidden, and closing returns focus to the control that opened it.\n- Scope the aria-pressed layout sweep and the layout click handler to the\n  toolbar buttons. The diff surface also carries data-layout, which both put an\n  invalid aria-pressed on that container and swallowed every click inside a\n  diff before the line-selection and comment handlers could run.\n- Give diff rows role=group instead of role=row, which required a table\n  ancestor and cell children that do not exist.\n\nIdentity:\n- Review mutations now refuse a diff URI whose repository is not the one the\n  saga declares, for diff reviews and for diff anchors on create and re-anchor.\n  The check runs under the writer lock and before any write.\n\nHarness:\n- The fixture source repository has an origin matching the declared repository,\n  so the suite exercises the identity verification the CLI performs on every\n  read instead of being unable to build at all.\n- Fixtures expose the comparison identity, canonical diff URI builders verified\n  against the server's own rendering, a mutation-token reader, a raw HTTP client\n  that can forge Host and Origin, a CLI runner that returns exit status, a\n  private server TMPDIR, and whole-tree snapshots for zero-side-effect proofs.\n- Add a repositories-only fixture for subprocess tests.\n\nNew regressions, each layered at the cheapest honest level:\n- Browser: tab semantics, drawer inertness, whole-page axe on every view, and\n  commenting on a selected diff line with the exact stored line identity.\n- HTTP against the running process: session-token rejection on every mutation\n  including a token from another process, cross-origin and foreign-Host\n  rejection, malformed/non-canonical/cross-repository diff URIs, upload size,\n  count and sniffed-type rejection with staged-file cleanup, and path redaction.\n- Subprocess: coverage URI rejection, invalid-saga refusal with zero side\n  effects, checkout/origin mismatch refusal, and non-loopback serve refusal.\n\nThe code and coverage views still fail axe color-contrast on their muted counts\nand metrics. That gap is pinned against an exact rule list rather than excluded\nor disabled, so any change to it fails the suite.\n\nCo-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>"
+    },
+    {
+      "commit": "665f792ca4fa465d3871663a7c04f4949ae1de5c",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T03:50:32Z",
+      "subject": "Make the public open-source surface publication-ready",
+      "body": "Rewrite the README around the actual thesis: a large change should reach a\nreviewer as a gradient of information density rather than a flat diff, and a\nChange Saga is the material authored to be reviewed — not an AI review. Lead\nwith the problem, show the authoring loop as a diagram, and keep install and\nfirst-saga instructions short and exact.\n\nEvery CLI invocation in the README was executed against a build of this tree in\na scratch repository, including the failure-to-complete path and the exit codes;\nthe shown status output is real output. Install commands and archive names were\nchecked against scripts/install.sh, scripts/install.ps1, and\nscripts/build-release.sh.\n\nBadges are static and true today. The CI, E2E, and release badges are kept in a\ncomment with an explanation, because a workflow badge on an unpublished\nrepository reports nothing and should not be shown until it can.\n\nAdd the community health files a public repository is expected to have —\nCODE_OF_CONDUCT.md, SECURITY.md, SUPPORT.md, GOVERNANCE.md, CHANGELOG.md, issue\nforms, and a pull request template — plus a docs index, and expand CONTRIBUTING\nwith the checks CI actually runs and the rules for changing the on-disk format.\nSECURITY.md documents the real posture: loopback-only serving, host validation,\ncross-origin rejection, a per-process mutation token, sandboxed fragments, and\nwhat none of that protects against.\n\nDocument the versioning policy and release checklist in docs/releasing.md so\nCHANGELOG.md and the tag validation in release.yml describe one policy.\n\nAdd scripts/check-docs-links.sh, which resolves every relative Markdown link and\nheading anchor in the repository offline; all 79 in-repository links pass. No Go\ncode, schema, or existing workflow was touched.\n\nCo-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>"
+    },
+    {
+      "commit": "bff5d45dc5f29644bb859f3f73f0a436a5e4c510",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T03:53:25Z",
+      "subject": "Tighten public release claims"
+    },
+    {
+      "commit": "a06ec3a0ef9ecbf058ea84d7bd8c47dd682815d6",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T04:04:04Z",
+      "subject": "Harden Change Saga schema/runtime integrity",
+      "body": "Audit of SPEC.md, schema/v2, the saga loader/validator, the CLI mutation\ncommands, and target/ID/path resolution, closing the cases where the\npublished contract and the reference implementation disagreed.\n\nSchema/runtime mismatches. The runtime accepted records schema/v2 rejects:\nany \"image/*\" media type including \"image/\" and values with spaces or CRLF;\na source.repository carrying URL userinfo, which SPEC.md forbids and which\ndisagrees with the identity every diff URI builder produces; pr.number 0 and\na relative pr.url; annotation colors outside #rrggbb on text and shape\nselectors; negative text anchor positions and stroke widths; and an evidence\nfile with an empty diffs array, which the schema requires to hold at least\none link. Each is now enforced, pr.number became a pointer so \"unset\" and an\ninvalid literal 0 are distinguishable, and the schema gained the entrypoint\nand shape-color grammars it was missing. A noncanonical-but-resolvable\nrepository stays loadable as a warning so existing v2 sagas keep working.\n\nDeterminism. SPEC.md resolves thread state, approvals, and reviewed state\nfrom the latest record by created_at, but ties were broken by directory\nlisting order: two events with the same timestamp made a thread resolve\ndifferently depending on file names. Every append-only record now sorts by\n(created_at, id), including the server's latest-wins lookups, and fragments\nand messages fall back to path order on equal order values.\n\nIdentity and traversal. A thread or message whose directory name disagreed\nwith its manifest id let the mutation commands and the URN address different\nrecords; both are now rejected, and reply/state/anchor refuse a thread\nidentifier that is not a stable id rather than silently reducing it with\nfilepath.Base. Chapter, fragment, landmark, thread, and message entries that\nare symlinks or regular files were silently skipped, hiding authored content\nbehind a valid-looking saga; they are errors now. NaN coordinates passed\nevery normalized range test and are rejected explicitly.\n\nWindows portability. Entrypoint validation compared filepath.Clean output,\nso a nested \"assets/app.js\" entrypoint authored on Unix was rejected on\nWindows. Entrypoints are now slash paths validated OS-independently, with\nbackslashes, drive letters, control characters, traversal, and reserved\npackage paths rejected, and non-portable component names reported as\nwarnings.\n\nPartial mutation. add-chapter, add-section, add-fragment, and init created\ndirectories and wrote manifests in place, so a failure left a manifest-less\nchapter or an entrypoint-less fragment that invalidated the saga and blocked\nevery later mutation. All four now stage into a hidden directory and publish\nwith one rename, and the authoring commands take the same writer lock the\nreview overlay uses instead of racing it.\n\nTests: a schema contract suite that cross-checks every published pattern and\nenum against the runtime predicate, adversarial tables for malformed\nmetadata and symlinked entities, filename-shuffle determinism properties, an\nentrypoint fuzz target, and CLI atomicity and concurrency tests.\n\nCo-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>"
+    },
+    {
+      "commit": "315a847b7329b5283239f7a296fcc3d9b7178df2",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T04:07:19Z",
+      "subject": "Merge branch 'main' into test/browser-e2e-hardening"
+    },
+    {
+      "commit": "a2cbc0f8325cb997444f29b24a7cf34dbbb08576",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T04:10:09Z",
+      "subject": "Require accessible contrast across every review view"
+    },
+    {
+      "commit": "7bb118008f0d794f673e442d364e29de33927cad",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T04:10:45Z",
+      "subject": "Document unreleased hardening changes"
+    },
+    {
+      "commit": "fc9d3c7bcef25cbd26d2a4a1c426107ae402eadb",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T04:27:31Z",
+      "subject": "Harden release workflow trust boundaries"
+    },
+    {
+      "commit": "2977c058db0024dffd3a5977bf3c0345c7f21f47",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T04:28:37Z",
+      "subject": "Harden release asset installers"
+    },
+    {
+      "commit": "9de1d0fa6997da41f6401d68ec0d84a61fd63bbb",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T04:23:24Z",
+      "subject": "Correct release artifact documentation"
+    },
+    {
+      "commit": "a1e7f9d8685e394a1fb72792cf018c001d88adfc",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T04:24:58Z",
+      "subject": "Make release artifacts reproducible"
+    },
+    {
+      "commit": "0700d3a7e55a9fbf1c9963f9d31379cf9df7e5de",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T04:36:43Z",
+      "subject": "Bind release provenance to exact inputs"
+    },
+    {
+      "commit": "0fa9c1130b0457840b6693533da3fec29f5a9d9e",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T04:30:10Z",
+      "subject": "Harden release artifact scripts and metadata"
+    },
+    {
+      "commit": "c79e139d8793a0cd2673312b0f842c0fbe7344ac",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T04:33:25Z",
+      "subject": "Reconcile release provenance and validation"
+    },
+    {
+      "commit": "c8ac2a2b55e4524889f3155ba496406a09abf79b",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T04:28:43Z",
+      "subject": "Pin and test release archive contents and permissions",
+      "body": "Release archives were only ever checked by extracting one and running the\nbinary. Nothing asserted the shape a consumer actually depends on, and the\nmember permissions were whatever the builder's umask happened to produce: a\nbuild under `umask 077` shipped a 0700 binary and 0600 documents.\n\nPin the staged modes in build-release.sh, and add artifact_test.sh, which\nbuilds real tar.gz and zip artifacts and asserts they hold exactly the three\ndocumented members, unpack flat, are all regular files with no setuid, setgid,\nor sticky bit, and carry a single-line checksum sidecar that names the archive\nby basename and matches it. It also rebuilds under `umask 077` to prove the\nmodes no longer depend on the build machine.\n\nModes are read from the archive listing rather than an extraction, because\nextraction applies the extracting user's umask and would mask a wrong mode in\nthe archive itself. The test runs on both the Linux and macOS CI images, since\ntar and zip listings differ between GNU and BSD userland.\n\nCo-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>"
+    },
+    {
+      "commit": "4381284952f005fa35464ec6e46f718ea3cc8144",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T04:21:46Z",
+      "subject": "Add deterministic large saga benchmarks"
+    },
+    {
+      "commit": "4549cfc866cad344358ea2fdd5626abd92d77a61",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T04:22:28Z",
+      "subject": "Optimize large saga coverage and attribution"
+    },
+    {
+      "commit": "0e54a3e32265db378f9e9b446dc6a5e57cb10d87",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T04:28:51Z",
+      "subject": "Exercise ranged large saga mappings"
+    },
+    {
+      "commit": "1fdeee5eb45388a00156600a6062a990d346a138",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T04:22:08Z",
+      "subject": "Speed up large Code Diff view construction"
+    },
+    {
+      "commit": "91a3d2cf5ddcebb12ed6dd1e8882fa31d4fee15b",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T04:26:09Z",
+      "subject": "Optimize large coverage range construction"
+    },
+    {
+      "commit": "8134b96079908aefca844b2fe8fe141215ea2ea0",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T04:29:20Z",
+      "subject": "Reuse drawer evidence candidates"
+    },
+    {
+      "commit": "64b9aae54d56c0902f11f3741304121fc6303e6c",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T04:26:02Z",
+      "subject": "Batch Git attribution checks for large saga pages"
+    },
+    {
+      "commit": "6ec61a33e8dec7d88256bcdc3a74474bd1858179",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T04:38:04Z",
+      "subject": "Document and bound large saga performance"
+    },
+    {
+      "commit": "27abf493d73385e13e1967a5362e14ea6fd9b182",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T04:39:06Z",
+      "subject": "Merge branch 'main' into hardening/release-distribution"
+    },
+    {
+      "commit": "e21cdf1d700f01c0f86ec5156cb9ad802d5d8bfb",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T04:44:39Z",
+      "subject": "Close release packaging failure windows"
+    },
+    {
+      "commit": "75f65024de329d721eaea666c6f7960e2d9c7e36",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T04:21:09Z",
+      "subject": "Add adversarial AI query fixtures",
+      "body": "Provide independent saga/source Git worktrees, hostile content and cursor overlays, and state/redaction assertions for the pending review application and CLI suites. Document the exact safety and paging contracts those suites should enforce."
+    },
+    {
+      "commit": "22286300f050156f512afe53fd738c432c408a45",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T04:26:31Z",
+      "subject": "Add transport-independent saga read session"
+    },
+    {
+      "commit": "3f7292e85aa2abd455e87f173f16514d32d86fdd",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T04:28:11Z",
+      "subject": "Add structured query CLI transport"
+    },
+    {
+      "commit": "9e788f8a7b33ba2b747eee2c9bd9dae920d4bafe",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T04:38:04Z",
+      "subject": "Integrate and harden structured saga queries"
+    },
+    {
+      "commit": "2eb871510396b5975eb888aaf0cad02905dd12d0",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T04:39:51Z",
+      "subject": "Redact path-shaped query operations"
+    },
+    {
+      "commit": "e09821d2e4177a561855e4e0b1e8958cdc8dbe08",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T04:40:16Z",
+      "subject": "Merge branch 'main' into feature/ai-query-cli"
+    },
+    {
+      "commit": "2d99819da22df0af0bf3b81baf7f02947115125d",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T04:43:55Z",
+      "subject": "Complete bidirectional target diff queries"
+    },
+    {
+      "commit": "b234ba8c83c83905e56f212b2ff1bb59c691e96d",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T04:46:28Z",
+      "subject": "Merge branch 'main' into hardening/release-distribution"
+    },
+    {
+      "commit": "aba950c663e9394435521aeec0b6f7b2b4bcebbf",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T04:51:27Z",
+      "subject": "Align release docs with query exit codes"
+    },
+    {
+      "commit": "3a5707a0b0f916bb566b270a3f45d53fbcb1a02d",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T04:58:17Z",
+      "subject": "Enforce cross-browser review coverage"
+    },
+    {
+      "commit": "f6ab695d3e345ad58afe8c628656d99f5fe6ee81",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T18:22:07Z",
+      "subject": "Simplify README and align public repository identity"
+    },
+    {
+      "commit": "1ddaaf219a8649f606249dae37444eaad3fa40e1",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T18:25:59Z",
+      "subject": "Fix release checks across supported platforms"
+    },
+    {
+      "commit": "5768bf927bc0f440d6e00698bd5411b1fd795738",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T18:29:05Z",
+      "subject": "Fix atomic reinstall on Windows"
+    },
+    {
+      "commit": "353e188ba5c9c3c2b6ccb739a962cad67706c145",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T18:29:06Z",
+      "subject": "Prepare 0.0.1 release"
+    },
+    {
+      "commit": "513bd65e44fe50cc8a218aa583acc762cac5b060",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T18:30:07Z",
+      "subject": "Keep authoring paths portable on Windows"
+    },
+    {
+      "commit": "d01fb9b9097277b98dd9f6fe18f81a85b8d54ac3",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T19:44:44Z",
+      "subject": "Make authored sagas visual, linkable, and safe to hand off"
+    },
+    {
+      "commit": "1722d3a9efc6e2446e4754d533875fbb6c4387f8",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T19:49:00Z",
+      "subject": "Make agent authoring ergonomic without loosening coverage",
+      "body": "Six concrete pieces of CLI feedback, all of which kept the format's\nexact-coverage discipline intact.\n\nRoute agents through the query API. install-skill now tells an agent to read\nan existing saga only through \"change-saga query\" and names every operation\nwith its purpose and usage. The list is generated from the CLI's own dispatch\ntable, so a new operation cannot ship without appearing in the installed\nskill. SKILL.md says the same thing for authoring, not just review.\n\nAdd batch coverage. \"cover --batch FILE|-\" reads newline-delimited JSON\nrecords, or one JSON array, with per-record target/path/side/lines/event/\nold_path/new_path/note/name/uris; --target and --note are batch-wide\ndefaults. The source comparison is read once, every record is resolved before\nthe first write, and a failing record leaves the saga untouched. Unknown\nfields are rejected rather than dropped, because a silently ignored selector\nunder-covers while reporting success. Batching changes delivery only: each\nrecord still maps the exact atoms it names.\n\nFix coverage-name collisions. A generated name was slugged as a whole and\ntruncated to 60 characters, which discarded the uniquifying event ID for any\nrealistic path. Generated names now keep the uniquifier and are uniquified\ndeterministically; an explicit --name that is already taken fails with an\nerror naming the stored file, including when two long names truncate to it.\n\nStabilize the status contract. The report's collections are always present\nand never null, so a complete saga reports \"uncovered\": []. Diff atoms always\ncarry \"content\", including for an empty changed line.\n\nImprove landmark handling. --target accepts <fragment-path>#<landmark-id>,\nan unknown landmark lists the ones its fragment declares or says where to\ncreate one, and an unresolvable target names the known targets and points at\n\"query children\".\n\nFix the help surfaces and add two flags. Every command's -h now leads with\nthe command actually typed, so \"open -h\" stops describing serve and\ninstall-skill explains itself instead of printing an empty banner. \"cover\n--dry-run\" reports the records and selectors an invocation would write.\n\"validate --fix\" adds stable anchors to Markdown headings that lack one in\nnarrative fragments only, preserving existing anchors, fenced code, and line\nendings, and never touching append-only review history.\n\nCo-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>"
+    },
+    {
+      "commit": "85bae6365962f84b4c45d5bf4f47a87b1472c9c7",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T20:00:06Z",
+      "subject": "Merge agent authoring ergonomics"
+    },
+    {
+      "commit": "988f148d1aa469c779d6ee95aa83fed5fff64e4a",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T20:37:39Z",
+      "subject": "Make Change Saga an AI review harness"
+    },
+    {
+      "commit": "44e0a72079ad0676292a6854ae849a181478cd37",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T21:05:08Z",
+      "subject": "Prepare v0.0.2 release"
+    },
+    {
+      "commit": "f52502c2e36957189e2ecc256eae8fe36e6e14f4",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T22:36:11Z",
+      "subject": "Improve AI queries and reciprocal diff navigation"
+    },
+    {
+      "commit": "9e1b57b4b5dbf896f2a5439c41a0150c513e959b",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T23:35:02Z",
+      "subject": "Clarify AI query pagination contracts"
+    },
+    {
+      "commit": "a640e4fc312a045152273237f3a48d6c00d839f9",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-21T23:41:03Z",
+      "subject": "Add copy-ready saga prompts to README"
+    },
+    {
+      "commit": "b63df5401938aa7e5d9b154fb89cb83ebb43dba3",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-22T00:30:50Z",
+      "subject": "Add DevSwarm badge to README",
+      "body": "Links to https://devswarm.ai and uses the DevSwarm brand purple\n(#5F2AFF) with the DevSwarm mark inlined as a data-URI logo.\n\nCo-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>"
+    },
+    {
+      "commit": "0f13bb3b9c0a4fa55e531dec3b627cc47ba14565",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-22T00:28:01Z",
+      "subject": "Pin annotation comments to the marks they were drawn on",
+      "body": "A comment drawn onto an explanation used to land in the same flat list as a\ncomment about the whole explanation, so the reviewer had to guess which\nrectangle, drawing, highlight, or sticky note a thread belonged to. The\nanchor already said which; the renderer just did not use it.\n\nComments whose anchor is a mark on the content now render as a compact bubble\npinned to that mark, and reveal their thread when the reviewer hovers or\nfocuses either the mark or the bubble. Replies, resolution, permalinks, and\npersistence are the same thread machinery as before. Every other anchor — a\nwhole fragment, section, chapter, or diff line — keeps exactly the placement\nit had; annotationAnchor in server.go is the single place that decides.\n\nThe server places each bubble from the stored anchor so the page is right\nbefore script runs, and the browser refines it against the mark as laid out,\nwhich is the only way to place a highlight at all. A revealed comment moves\nrather than burying its own mark, and arming a drawing tool closes every open\nbubble so the content keeps the pointer.\n\nLabelling the attachment pickers is not incidental: the reply form only ever\nreaches an axe scan now that a bubble can be opened during one, and the scan\nfound them unnamed.\n\nCo-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>"
+    },
+    {
+      "commit": "6fc91e3ef05fc3d80d7c1740a7db50a73913e325",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-22T00:30:01Z",
+      "subject": "Improve agent authoring and granular diff citations"
+    },
+    {
+      "commit": "2300c9c839a2600f0587b95d02677650f5ef1848",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-22T00:30:17Z",
+      "subject": "Merge branch 'main' into feature/annotation-comment-bubbles"
+    },
+    {
+      "commit": "201d8d91deca18534d63b191eb1b9c7b34859986",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-22T00:34:41Z",
+      "subject": "Merge branch 'main' into update-the-readme-to-have-a-made-with"
+    },
+    {
+      "commit": "d337498296c133a9ba6749baee10f26695819690",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-22T00:40:36Z",
+      "subject": "Prepare v0.0.4 release"
+    },
+    {
+      "commit": "0bc758a3205a4ed5cbbf18262d888afdffce66f9",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-22T00:42:48Z",
+      "subject": "Fix Windows release checks"
+    },
+    {
+      "commit": "9fbf1781b7f58281c1459465839171229e83854f",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-22T01:50:44Z",
+      "subject": "Make granular SVG and prose links explicit"
+    },
+    {
+      "commit": "fa7054a6a8a17c925a3746498a3f6b63b6b6079c",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-22T03:38:10Z",
+      "subject": "Add Saga impact analysis and complete linked diffs"
+    },
+    {
+      "commit": "4d3f0011d3b1868482503ce0ee5391b7aaa7ca35",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-22T03:42:32Z",
+      "subject": "Streamline AI-first README workflow"
+    },
+    {
+      "commit": "a5f7668a0d85b36fa51e928e79bc6e3ae99e7b18",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-22T03:45:13Z",
+      "subject": "Refocus codebase Saga docs on AI prompts"
+    },
+    {
+      "commit": "f002a62bf1712ee7467152186b205aa18ca722f3",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-22T03:48:09Z",
+      "subject": "Clarify AI-managed Saga maintenance"
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-22T03:49:43Z",
+      "subject": "Prepare v0.0.6 release"
+    }
+  ],
+  "pinned_at": "2026-09-18T00:00:00Z"
+}

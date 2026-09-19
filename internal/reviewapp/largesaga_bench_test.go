@@ -73,7 +73,7 @@ func BenchmarkLargeSagaOpen(b *testing.B) {
 	for _, shape := range largeSagaShapes() {
 		b.Run(shape.name, func(b *testing.B) {
 			fixture := largeSagaFixture(b, shape)
-			options := OpenOptions{SagaRoot: fixture.Root, SourceDir: fixture.Repository}
+			options := OpenOptions{SagaRoot: fixture.Root, SourceDir: fixture.Repository, Range: gitdiff.Range{Against: fixture.Base}}
 			steps := formerSelectorScanSteps(b, fixture)
 
 			b.ReportAllocs()
@@ -258,7 +258,7 @@ func reportLargeSagaMetrics(b *testing.B, fixture testfixture.LargeSaga, steps i
 
 func openLargeSaga(tb testing.TB, fixture testfixture.LargeSaga) Session {
 	tb.Helper()
-	session, err := Open(context.Background(), OpenOptions{SagaRoot: fixture.Root, SourceDir: fixture.Repository})
+	session, err := Open(context.Background(), OpenOptions{SagaRoot: fixture.Root, SourceDir: fixture.Repository, Range: gitdiff.Range{Against: fixture.Base}})
 	if err != nil {
 		tb.Fatal(err)
 	}
@@ -275,7 +275,7 @@ func largeSagaInputs(tb testing.TB, fixture testfixture.LargeSaga) (*saga.Saga, 
 		tb.Fatalf("benchmark fixture is invalid: %#v", validation.Issues)
 	}
 	source := document.Manifest.Source
-	changes, err := gitdiff.Read(context.Background(), fixture.Repository, source.Repository, source.Base, source.Head)
+	changes, err := gitdiff.Read(context.Background(), fixture.Repository, source.Repository, fixture.Base, "HEAD")
 	if err != nil {
 		tb.Fatal(err)
 	}

@@ -85,7 +85,7 @@ func newV5QualitySaga(t *testing.T, specs []testCaseSpec, policies []quality.Pol
 	root := t.TempDir()
 	writeStatusJSON(t, filepath.Join(root, "saga.json"), map[string]any{
 		"$schema": quality.ManifestSchemaURL, "version": quality.Version, "id": fixtureSaga, "title": "Checkout",
-		"source": quality.SourceIdentity{Repository: fixtureRepo, Base: "base", Head: "head"},
+		"source": map[string]string{"repository": fixtureRepo},
 	})
 	if _, err := applayout.WriteEpic(root, applayout.EpicManifest{ID: statusFixtureEpic, Title: "Refunds", CreatedAt: statusFixtureTime}); err != nil {
 		t.Fatal(err)
@@ -143,7 +143,7 @@ func newV5QualitySaga(t *testing.T, specs []testCaseSpec, policies []quality.Pol
 		writeStatusJSON(t, filepath.Join(dir, "runs", "ci-1.json"), quality.Run{
 			Schema: quality.RunSchemaURL, Version: quality.Version, ID: "ci-1", TestCase: testURN(spec.id),
 			TestRevision: testRevisionURN(spec.id, spec.runRevision), Parents: []string{},
-			Source: quality.SourceIdentity{Repository: fixtureRepo, Base: "base", Head: "head"}, Result: spec.result,
+			Source: quality.SourceIdentity{Repository: fixtureRepo, Commit: "0123456789abcdef0123456789abcdef01234567"}, Result: spec.result,
 			Summary: "CI completed.", Command: "go test ./...", Evidence: []string{evidence}, ExecutedAt: statusFixtureTime.Add(time.Hour),
 		})
 	}

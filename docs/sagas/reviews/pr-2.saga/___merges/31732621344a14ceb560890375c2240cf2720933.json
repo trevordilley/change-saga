@@ -1,0 +1,271 @@
+{
+  "version": 2,
+  "commit": "31732621344a14ceb560890375c2240cf2720933",
+  "base": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+  "commits": [
+    {
+      "commit": "c4efeebaf21d701e22864bceb5127f3f384bbf9c",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-23T05:42:36Z",
+      "subject": "Add compact saga connector encoding experiment",
+      "body": "A whole-codebase saga spends 230 MB restating one comparison identity and\n133 notes across 532,290 diff references, and `change-saga query overview`\non it takes 17 minutes 30 seconds and 1.93 GB resident. This experiment asks\nwhether a compact, semantically sharded text encoding plus a disposable\nSQLite index fixes that without making the evidence unmergeable.\n\nIt does, and the measurements say not to adopt it.\n\nThe encoding writes one human-readable `*.connectors` shard per (ownership\ntarget, source path), hoisting the comparison identity and the notes behind\ncontent-addressed aliases and writing contiguous changed lines as dense\nranges. It reaches 1.46 MB, 158x smaller raw. Every atom keeps the same\nowners, notes, overlaps and stale verdicts, checked per atom against the\nunmodified coverage.Evaluate in both directions and at both granularities.\nShards live inside the existing `___diffs/` directory, which a v2 loader\nreads for `*.json` only, so a dual-encoded saga still loads and reports\nidentical coverage under an unmodified reader; dropping the JSON requires a\nmanifest version a v2 reader rejects loudly rather than reporting a fully\ndocumented change as undocumented.\n\nThe result that matters is the control. Re-emitting the same evidence as\nordinary v2 JSON with ranged references -- a feature SPEC.md already has --\nreaches 2.33 MB and takes `query overview` to 12.6 s. That is 98.9% of the\nsize and all 83x of the latency, with no format change at all. The 17 minutes\nwere a quadratic in reviewapp.session.build, which scans every selector a\ntarget owns for every atom it owns; ranges collapse 1.19e10 scan steps to\nabout 1e8. Against ranged v2 the connector encoding adds 1.6x raw bytes,\nnothing in the Git object store (1.01 MB against 1002.57 KB after\n`git gc --aggressive`), and nothing measurable in load or evaluate. On a\nsparse saga it is a regression: 5x larger deflated and 1.6x slower.\n\nWhat survives is merge behaviour. `change-saga cover` names records by\ntimestamp, so two reviewers who explain the same lines differently never\nconflict -- both records survive and the lines acquire an overlap neither\nauthored. Real `git merge` scenarios show the shards conflict instead, in\nunder twelve readable lines. That defect probably has a smaller fix than a\nnew encoding.\n\nEverything lives in a separate Go module so the reference implementation's\ndependency-light guarantee is untouched: the root module never sees\nmodernc.org/sqlite, and `go build`, `go vet` and `go test` at the repository\nroot are unchanged. docs/findings.md records the measurements, the\ntradeoffs, the open questions, and the recommendation to fix the authoring\ngranularity and the selector scan instead.\n\nCo-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>"
+    },
+    {
+      "commit": "6216268df109f58cf409951b53b4c203e422645d",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-23T14:24:29Z",
+      "subject": "Record why whole-codebase sagas are 230 MB and 17 minutes",
+      "body": "A saga documenting an entire codebase — 532,290 changed atoms across 2,666\nfiles, fully mapped, no overlaps, no stale references — takes 17 minutes 30\nseconds to answer `query overview` and occupies 230.36 MB. Neither number is\na property of the format. Both are caused by three specific defects here.\n\n`cover --changed-lines` copies one URI per changed atom straight out of the\ncomparison and never coalesces them, while the manual `--lines` path builds\nranged URIs from the same input. Zero of that saga's 529,599 line references\nare ranged, which is not a plausible authoring choice; it is the signature of\nthe derived path. Coalescing takes the same evidence, with byte-identical\ncoverage, from 230.36 MB to 2.33 MB.\n\n`session.build` calls cleanDiagnosticPath — filepath.Clean plus ToSlash, so\nit allocates — inside its innermost loop, although the argument only changes\nwith the enclosing assignment. On this saga that is about 1.19e10 calls.\n\nThat same inner loop linearly scans every selector a target owns, once per\natom it owns, so the work is sum(atoms^2): 1.19e10 steps, of which one target\ncontributes 1.4e9. Ranged evidence takes it to about 1e8 and `query overview`\nfrom 1,049.7 s to 12.6 s with identical reported coverage, but that only helps\nsagas authored after the first defect is fixed. Sagas already on disk keep\ntheir per-line references, and for them this loop is the whole problem.\n\nThe document also records what the compact-connectors experiment ruled out,\nand one defect ranges do not fix: timestamped `cover` record filenames mean\ntwo reviewers who explain the same lines differently never conflict in Git —\nboth records survive and the lines acquire an overlap neither authored.\n\nDiagnosis only. Nothing here is fixed, and the document marks which claims are\nmeasured and which are inferred from them.\n\nCo-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>"
+    },
+    {
+      "commit": "c9945aca1769cf50a0b397746dd54602411b859a",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-23T15:15:22Z",
+      "subject": "Make coverage record names expose merge conflicts"
+    },
+    {
+      "commit": "fa0e66fe8d09dab5af45dd41cb71a50dd0087940",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-23T15:15:52Z",
+      "subject": "Emit canonical dense ranges from cover --changed-lines",
+      "body": "`--changed-lines` copied one single-line URI per changed atom straight out of\nthe comparison, while the manual `--lines` path built ranged URIs from the same\ninput. On a saga documenting a whole codebase that is 529,599 line references,\nnone of them ranged, and 230 MB of evidence restating one comparison identity\nhalf a million times.\n\nDerived line atoms now coalesce into dense ranges. Coalescing is restricted:\ntwo line atoms merge only when their repository, base, head, path, and side are\nidentical and their line numbers have no gap between them. A dense range is not\na widened selector — every line it spans is an atom the flag had already\nselected — so the emitted URIs address exactly the same atoms, with the same\nowners, the same notes, and the same overlaps. Events never coalesce; an event\nis not a line and has no range spelling. Each identity is emitted once, at the\nposition of its first atom, with its dense runs ascending, so output is\ncanonical rather than dependent on hunk order.\n\nNothing about the persisted schema changes. Ranged line URIs are already what\n`--lines 1-40` writes and already what `coverage.Evaluate` matches; the derived\npath simply stops declining to use them.\n\nThe one behavioural loss is the one the diagnosis names: a dense range keeps\nmatching when a single line inside it stops being a changed line, so stale\ndetection for derived coverage is range-grained. In practice head identity is a\ndigest of the whole product patch, so any edit that changes the diff already\norphans every reference in the comparison, ranged or not.\n\nCo-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>"
+    },
+    {
+      "commit": "5f9b7701ebf9e945c2bac69ea9da85547b2ac885",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-23T15:21:27Z",
+      "subject": "Merge branch 'feature/canonical-cover-ranges' into feature/compact-saga-connectors",
+      "body": "# Conflicts:\n#\tdocs/ai-facing-interface.md"
+    },
+    {
+      "commit": "b99e1f76bb2ba205892ba9e89ce6ae8ad668493a",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-23T15:20:19Z",
+      "subject": "Resolve selector ownership by identity instead of scanning",
+      "body": "Session build resolved every coverage assignment by walking the owning\ntarget's selector slice, normalizing each candidate's evidence path with\nfilepath.Clean along the way, and resolved every stale selector by\nwalking the whole orphan list. A saga whose selectors grow with its atoms\ntherefore cost O(atoms x selectors): linking 4096 selectors took 278ms,\nand a saga eight times larger cost roughly sixty times as much.\n\nCoverage already stamps each assignment with the identity it resolved --\ntarget, evidence file, and the reference's position within that file --\nso build now indexes selectors by that identity once and looks each\nassignment up directly. Orphan reasons get the same treatment. Path\nnormalization is hoisted into a per-path memo, since coverage repeats one\nraw evidence path across every atom the diff file owns.\n\nTwo evidence paths under one target can normalize to the same identity\n(absolute paths are redacted to the empty string). The scan stopped at\nthe first such entry, so the index keeps the first one and the stale\nreason lookup keys orphans by the unnormalized path the scan compared,\npreserving both edge cases exactly.\n\nLinking 4096 selectors now takes 4.6ms, and the new scale regression\nfails if growth ever returns to quadratic.\n\nCo-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>"
+    },
+    {
+      "commit": "3712207b53700d14bf00fbb8354bec240087eb67",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-23T15:21:50Z",
+      "subject": "Merge branch 'feature/linear-review-index' into feature/compact-saga-connectors"
+    },
+    {
+      "commit": "f08351f4879d47596a138f88947a5bcc9b70da08",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-23T15:23:58Z",
+      "subject": "Index atoms by position in review sessions"
+    },
+    {
+      "commit": "08849edab72e2f76295c0fb93a5ef9fa1cc37713",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-23T15:28:15Z",
+      "subject": "Canonicalize manual line ranges"
+    },
+    {
+      "commit": "c7a11e71951e1e5100b89bb29508758dc843dbe6",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-23T15:27:19Z",
+      "subject": "Benchmark Open and query overview over per-line evidence",
+      "body": "`change-saga query overview` on a whole-codebase saga takes 17 minutes, and\ndocs/large-saga-diagnosis.md attributes most of it to a quadratic in\n`reviewapp.session.build`. Nothing in the repository reproduced it: the\ngenerated fixture writes 1,024 four-line ranges over 144 fragments, so no target\nowns more than eight selectors and the scan the diagnosis is about never runs at\nlength.\n\n`testfixture.GenerateLargeSaga` can now write the other shape. `CoverageRangeWidth`\nof 1 gives a reference per changed line, which is what `cover --changed-lines`\nwrites and what sagas already on disk contain, and `CoverageTargets` concentrates\nthose references on a few narrative targets, which is what a real saga looks\nlike. The default is untouched, so the byte budgets measured against it are too.\n\nThe benchmark holds one comparison fixed — 32 files, 4,096 atoms, the same tree\nand review overlay — and varies only how its 4,096 references are owned. It\nreports `scan-steps/op`: the exact iteration count of the selector loop over the\nindex it built, which is a property of the saga rather than of the host, so\n`TestLargeSagaBenchmarkShapesRemainRealistic` asserts it where it could not\nassert a duration. Nothing here asserts a wall-clock time or an allocation count.\n\nQuartering the targets quadruples the scan — 4.1 steps per atom ranged, then\n32.5, 128.5 and 512.5 — and construction follows it: 33.4 ms, 47.4 ms, 80.1 ms,\n251.0 ms, against a flat ~33 ms of linear work and flat allocations.\n\nTwo things the measurement adds to the diagnosis. `Overview` answers in 0.2 ms\nand 5 allocations whatever the shape, because it reads an index already built —\nthe 17 minutes is construction, not query. And `cleanDiagnosticPath` does not\nallocate as recorded; `filepath.Clean` returns an already-clean relative path\nunchanged. It costs 81.7 ns of CPU a call, which is about 172 ms of the\nconcentrated shape's 218 ms of scan, so the fix stands and the reason is\ncorrected in place.\n\nNo production code changed.\n\nCo-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>"
+    },
+    {
+      "commit": "7331f4955138aea1bd8445e36592ad0c1802713e",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-23T15:29:14Z",
+      "subject": "Merge branch 'feature/query-scale-budgets' into feature/compact-saga-connectors"
+    },
+    {
+      "commit": "f42ffd3221891665e035fca1f52977d186492093",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-23T15:43:13Z",
+      "subject": "Guard large saga authoring and query scale"
+    },
+    {
+      "commit": "6b3022555a5a04cc5ef0ae83729d23b5eae23517",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-23T16:08:48Z",
+      "subject": "Optimize aggregate queries for huge sagas"
+    },
+    {
+      "commit": "74a3458450e5e13a429164ad04bad8a0608dd355",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-24T03:56:44Z",
+      "subject": "Render the saga as a shell and fetch it as it is reached",
+      "body": "GET / rendered the whole narrative tree: every chapter, every section, and\nevery explanation, with each explanation's Markdown read from disk, rendered,\nand inlined behind a chapter disclosure that starts closed. That work was\nproportional to the size of the story and almost none of it was on screen.\n\nThe saga document is now a shell — saga identity, coverage totals, the\noverview's explanations as descriptors, one summary per chapter, and the\nnavigation outline — and the rest arrives from endpoints bounded by one node:\n\n  /api/section   one chapter's structure, when that chapter is opened\n  /api/fragment  one explanation, when it comes into view or is pointed at\n  /api/locate    one anchor, when a permalink names something not on the page\n\nThe page's root render and /api/section share one scope, so a chapter body is\nbuilt by exactly the code that built the shell around it. Navigation and the\nreview progress map read the saga's manifests rather than the rendered views,\nso they still name and count every destination while its chapter is unfetched.\n\nOn the 4,096-line fixture the saga document goes from roughly 2.41 MB and\n71,000 elements to 39,126 bytes and 1,048 elements, and now tracks the number\nof chapters rather than the number of explanations. In the browser the whole\nfirst-load document goes from 555,974 to 414,626 bytes.\n\nThree rules keep the boundary honest, each with a test: a descriptor is still a\ndestination, so permalinks and review decisions work before content arrives;\ncontent is filled into the article that described it rather than swapping the\nelement under the reviewer's pointer; and anything that needs content asks for\nit first, so arming an annotation tool waits rather than silently disarming.\n<body data-shell-ready> says when the first fill-in has finished.\n\nFetching more often also exposed a snapshot that could outlive its inputs:\ncommitting review records changes attribution without changing a byte under the\nsaga root, so the freshness check now commits to the saga repository's history\nas well as to its bytes.\n\nCo-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>"
+    },
+    {
+      "commit": "3c3e90fa64e07dad7367a11592755539fae3094d",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-24T01:35:54Z",
+      "subject": "Measure whether large-saga first run needs SQLite",
+      "body": "It does not, and the measurements say why. On this repository's own saga\n(38,209 atoms, 183 files, 814 saga files) a first-run snapshot costs 562 ms:\n223 ms of saga.Load, 302 ms of two git diff subprocesses and their parsing,\nand 37 ms of coverage.Evaluate. Ninety-three percent of that is reading Git\nand reading the saga, which any cache consumes as input and no index can\nremove. The 6.6% that is derivation persists to a flat gob file that reads\nback in 37.5 ms -- a 15x win over rebuilding, available with no dependency.\n\nPersistence also does not bound memory: decoding rehydrates the same 65 MB\nheap. Bounded memory is a partitioning decision, and the server already reads\nper source path, so a directory of independently readable parts gives it\nwhere a query engine would not.\n\nTwo constraints settle the rest. Release artifacts build with CGO_ENABLED=0\nfor three platforms, so mattn/go-sqlite3 is not a tradeoff but an\nincompatibility; and modernc.org/sqlite's nine modules run against a go.mod\nwith one requirement and a governance commitment to staying dependency-light.\n\ninternal/snapshotcache implements the foundation the design calls for and\nnothing more: generations addressed by the fingerprints the server already\ncomputes, so invalidation is addressing rather than a step that can be\nforgotten; staged population published by one rename, so a reader sees a\ncomplete generation or none; absent/building/ready with single-flight, so a\nburst mid-build can be answered with progress instead of a second rebuild;\nand placement outside every saga, so the Git-native tree gains no untracked\nderived bytes and merge behaviour is unchanged.\n\nIt is deliberately not wired into the server. No handler calls it and root\nHTML rendering is untouched, so this commit cannot change what a reviewer\nsees.\n\nTwelve tests pin the rules under -race. One of them found a defect during\ndevelopment: a damaged generation correctly missed on lookup but still held\nits name, so the rebuild's rename failed and the key was wedged permanently.\npublish now removes damage and retries once.\n\nRecorded separately in the design note, because it is larger than the\nquestion asked: a WORKTREE head disables the snapshot cache entirely, so the\nordinary authoring configuration pays a full rebuild on every request. No\nindex fixes that -- the input genuinely changes -- but a git status probe\nmeasures 40 ms against the 562 ms it would save.\n\nCo-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>"
+    },
+    {
+      "commit": "c613faad718709663fec31e1e5ae58033dae1b64",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-24T04:25:12Z",
+      "subject": "Merge branch 'feature/disposable-saga-index' into feature/compact-saga-connectors"
+    },
+    {
+      "commit": "fac2829d5ddb629d68c772999d66050b84b7ec5f",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-24T02:32:15Z",
+      "subject": "Budget first load against comparison scale",
+      "body": "The existing first-load budgets are ceilings over one fixed fixture. The\nwhole-codebase failure in docs/large-saga-diagnosis.md is not a ceiling\nbreach — it is a slope: 532,290 atoms across 2,666 files, authored as\n529,599 single-line references, produced a page no browser opens, and a\nbudget measured only at 4,096 atoms passes throughout.\n\nMeasure the same first load over four fully covered fixtures that each\nmove one axis, and budget what may and may not grow with them:\n\n  base      32 files x  64 lines,  4,096 atoms, 1,024 ranges\n  deeper    32 files x 256 lines, 16,384 atoms, 1,024 ranges\n  wider    128 files x  64 lines, 16,384 atoms, 4,096 ranges\n  per-line  32 files x  64 lines,  4,096 atoms, 4,096 ranges\n\ndeeper widens the coverage range in step with the changed lines, so the\ndocument and the authored evidence hold still while only the code grows;\nper-line explains the same code the way the diagnosed saga did.\n\nThe asserted invariants are that the coverage audit renders exactly one\nrow per authored evidence range at every scale and never one per atom,\nthat the inlined diff rows do not move when the comparison gains four\ntimes the files, and that four times the code costs the page 1.09x\nrather than 4x. Two marginal coefficients are budgeted directly because\nthey are what decided the diagnosed saga: an authored range costs 3,357 B\nof page and 3,640 B of resident memory.\n\nAllocated bytes and retained heap are asserted; both reproduce to within\n0.1% across repeated runs, and retained heap per changed atom sits in the\nsame regime the real 1.49 GB peak was measured in. The absolute\nallocation figure is skipped under -race, which roughly doubles it, while\nthe growth ratios hold either way. Wall time is reported by\nBenchmarkFirstLoadScale and never asserted: repeated loads of one\nunchanged fixture varied by 3.9x on an idle machine.\n\nEvery fixture is checked for complete coverage before it is measured, so\nno budget here can be met by a saga that simply explains less, and\nTestScalingChangedLinesWithRangeWidthHoldsEvidenceConstant pins the\ngenerator property deeper depends on.\n\nTestFirstLoadMaterializesBoundedDiffNodes records what the page cannot\nshow: first load builds 2n + d diff view nodes for n atoms and d display\nlines, and renders about 1% of them. Production rendering is unchanged,\nso the accounting is pinned exactly rather than fixed, and removing it is\nnow listed as the largest remaining first-load allocation.\n\nCo-Authored-By: Claude Opus 5 (1M context) <noreply@anthropic.com>"
+    },
+    {
+      "commit": "c75a41b4fead2deea95b8f974eb6a2c93871e6ea",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-24T04:25:12Z",
+      "subject": "Merge branch 'feature/daylight-first-load-budget' into feature/compact-saga-connectors"
+    },
+    {
+      "commit": "5dbe9f483ff6b739467b6514e532e596b8792afc",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-24T04:33:02Z",
+      "subject": "Fix merged first-load budget helper"
+    },
+    {
+      "commit": "33acde0966fc37e1a072e8091daa706f94e5b0d9",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-24T04:48:05Z",
+      "subject": "Lazy-load bounded review surfaces in browser"
+    },
+    {
+      "commit": "9d5ffd539effc638fea09c52c862cbe19615c07b",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-24T04:43:35Z",
+      "subject": "Test bounded incremental review construction"
+    },
+    {
+      "commit": "2a1ec8342a6ad1135995d5f1e63d2dc3e93cc09e",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-24T04:48:12Z",
+      "subject": "Merge branch 'feature/bounded-review-surfaces' into feature/bounded-review-browser"
+    },
+    {
+      "commit": "cfb38d5a8ae0677741bb621a2ba251f394f029f2",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-24T04:52:28Z",
+      "subject": "Serve review comparison incrementally"
+    },
+    {
+      "commit": "2b19d64ab0665909e29279468118ad71c617421b",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-24T05:00:20Z",
+      "subject": "Merge branch 'feature/bounded-review-surfaces' into feature/compact-saga-connectors"
+    },
+    {
+      "commit": "53cf760528e07d50d0fd42aab962c08688bdf9cb",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-24T04:55:15Z",
+      "subject": "Append multi-part bounded response pages"
+    },
+    {
+      "commit": "e9c395bb34609fd24b6d2ba7f0c4f660f06fb7fd",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-24T05:00:20Z",
+      "subject": "Merge branch 'feature/bounded-review-browser' into feature/compact-saga-connectors"
+    },
+    {
+      "commit": "eeccd1f53a0196a088a97e10dd0fef4981dba43c",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-24T04:45:34Z",
+      "subject": "Define bounded incremental SSR scale budgets"
+    },
+    {
+      "commit": "4c8be059466ec292359888e820cddadd744d2c13",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-24T05:01:24Z",
+      "subject": "Merge branch 'feature/bounded-scale-contract' into feature/compact-saga-connectors",
+      "body": "# Conflicts:\n#\tinternal/server/firstload_budget_test.go"
+    },
+    {
+      "commit": "ec69b62c84ac0227921022ab28139e807a14f167",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-24T05:08:36Z",
+      "subject": "Align bounded review fragments across server and browser"
+    },
+    {
+      "commit": "56f243dd3c5390cf057bc261458cb447ac2731b3",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-24T05:13:51Z",
+      "subject": "Index bounded review pages by atom position"
+    },
+    {
+      "commit": "cd3b912ce3f2d41dc944b569cb7f360b310d748d",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-24T04:49:26Z",
+      "subject": "Isolate review mutations from cache generations"
+    },
+    {
+      "commit": "3b172257ba2217aecf372efab71fefe990eb4b59",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-24T05:00:57Z",
+      "subject": "Keep review writes off structural load paths"
+    },
+    {
+      "commit": "d38625ff56868a19b58f5106f441462e62d81f71",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-24T05:05:20Z",
+      "subject": "Keep HTTP mutations off full saga loads"
+    },
+    {
+      "commit": "7a4885f6b16546b5fb934a5a55f755cffc69c3f1",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-24T05:27:20Z",
+      "subject": "Merge branch 'feature/review-cache-generations' into feature/compact-saga-connectors",
+      "body": "# Conflicts:\n#\tinternal/saga/load.go\n#\tinternal/server/budget_test.go\n#\tinternal/server/firstload_budget_test.go\n#\tinternal/server/server.go\n#\tinternal/server/snapshot.go"
+    },
+    {
+      "commit": "6cab0e5d8926a46eea07e14925a9866a9ed8e079",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-24T06:01:51Z",
+      "subject": "Preserve review workflows across bounded surfaces"
+    },
+    {
+      "commit": "1b715116bd8a623af28da3e9bcc54b285723f2f7",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-24T06:17:20Z",
+      "subject": "Compress disposable review generations"
+    },
+    {
+      "commit": "79cea23241406fa88d72fd7dec6d5144a6c081a3",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-24T14:11:40Z",
+      "subject": "Design lazy partitioned review generation"
+    },
+    {
+      "commit": "6d366853dc5d917715932864b46457110f412bbc",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-24T14:48:20Z",
+      "subject": "Keep narrative requests off comparison generation"
+    },
+    {
+      "commit": "20b96f3fb1b3f31e449c675559f008e64b073889",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-24T18:08:22Z",
+      "subject": "Keep saga code navigation bounded"
+    },
+    {
+      "commit": "8e1ee296c8224eb08c5d92c6e38da8b97ddd9a90",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-24T18:43:14Z",
+      "subject": "Prefetch fragment code summaries"
+    },
+    {
+      "commit": "52e333660f8a939074ac8d6481ec02b8d090a27d",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-24T19:08:31Z",
+      "subject": "Stream coverage summaries progressively"
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "author": "trevor@twentyideas.com <trevor@twentyideas.com>",
+      "date": "2026-08-24T20:08:11Z",
+      "subject": "Document PR 2 with a review saga"
+    }
+  ],
+  "pinned_at": "2026-09-18T00:00:00Z"
+}

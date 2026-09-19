@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"os"
 	"path/filepath"
 	"strings"
@@ -46,7 +47,7 @@ func TestCoverResolvesLandmarkShorthand(t *testing.T) {
 	}
 	assertValid(t, root)
 
-	report, err := buildReport(context.Background(), root, repo)
+	report, err := buildReport(context.Background(), root, repo, gitdiff.Range{Against: "main"})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -451,7 +452,7 @@ func TestStatusJSONReportsEmptyCollectionsOnSuccess(t *testing.T) {
 
 	var output bytes.Buffer
 	var exit *StatusError
-	if err := Status(context.Background(), []string{"--json", "--repo", repo, root}, &output); !errors.As(err, &exit) || exit.Code != 3 {
+	if err := Status(context.Background(), []string{"--against", "main", "--json", "--repo", repo, root}, &output); !errors.As(err, &exit) || exit.Code != 3 {
 		t.Fatalf("status with no accepted story = %v, want exit 3\n%s", err, output.String())
 	}
 	var report map[string]json.RawMessage

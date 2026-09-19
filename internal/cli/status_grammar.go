@@ -7,6 +7,7 @@ import (
 	"io"
 	"strings"
 
+	"github.com/twentyideas/changesaga/internal/changeview"
 	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/grammar"
@@ -28,9 +29,36 @@ const StatusSchema = "change-saga.status/v2"
 type statusDocument struct {
 	coverage.Report
 	Schema string `json:"status_schema"`
+	// Opening is how the Saga was opened. It is never read from the Saga.
+	Opening opening `json:"opening"`
+	// Comparison is the Changed, Affected, and Code layers; only a Saga
+	// opened with --against has them.
+	Comparison *changeview.Layers `json:"comparison,omitempty"`
 	livingapp.Status
 	NextActions   []nextaction.Action `json:"next_actions"`
 	AuthoringLoop nextaction.Loop     `json:"authoring_loop"`
+}
+
+// opening names how a Saga was opened: observe one commit, or compare head
+// with its merge-base with against.
+type opening struct {
+	Mode    string `json:"mode"`
+	Against string `json:"against,omitempty"`
+	Head    string `json:"head"`
+	BaseOID string `json:"base_oid,omitempty"`
+	HeadOID string `json:"head_oid"`
+	// Companion is set when the Saga lives in a different repository from
+	// its code; Cursor is then the code commit its sync cursor names.
+	Companion bool   `json:"companion,omitempty"`
+	Cursor    string `json:"cursor,omitempty"`
+}
+
+func openingOf(changes gitdiff.ChangeSet) opening {
+	value := opening{Mode: changes.Mode, Against: changes.Base, Head: changes.Head, HeadOID: changes.HeadOID}
+	if changes.Mode == gitdiff.ModeCompare {
+		value.BaseOID = changes.BaseOID
+	}
+	return value
 }
 
 // comparison is one Saga snapshot with the source comparison it describes.
@@ -42,13 +70,13 @@ type comparison struct {
 	checkout   string
 }
 
-func readComparison(ctx context.Context, root, repoDir string, allowMismatch bool) (comparison, error) {
+func readComparison(ctx context.Context, root, repoDir string, rng gitdiff.Range, allowMismatch bool) (comparison, error) {
 	document, validation, err := saga.Load(root)
 	if err != nil {
 		return comparison{}, err
 	}
 	checkout := firstNonEmpty(repoDir, document.Root)
-	changes, err := gitdiff.ReadWithOptions(ctx, checkout, document.Manifest.Source.Repository, document.Manifest.Source.Base, document.Manifest.Source.Head, gitdiff.ReadOptions{AllowRepositoryMismatch: allowMismatch})
+	changes, err := gitdiff.ReadRange(ctx, checkout, document.Manifest.Source.Repository, rng, gitdiff.ReadOptions{AllowRepositoryMismatch: allowMismatch})
 	if err != nil {
 		return comparison{}, fmt.Errorf("read source diff (use --repo for a separate saga repository): %w", err)
 	}
@@ -64,8 +92,8 @@ func readComparison(ctx context.Context, root, repoDir string, allowMismatch boo
 // buildStatus composes the complete status document. A living-record load
 // failure never hides changed-source accounting: it becomes a diagnostic and
 // the first next action.
-func buildStatus(ctx context.Context, root, repoDir string, allowMismatch bool) (statusDocument, error) {
-	value, err := readComparison(ctx, root, repoDir, allowMismatch)
+func buildStatus(ctx context.Context, root, repoDir string, rng gitdiff.Range, allowMismatch bool) (statusDocument, error) {
+	value, err := readComparison(ctx, root, repoDir, rng, allowMismatch)
 	if err != nil {
 		return statusDocument{}, err
 	}
@@ -83,10 +111,28 @@ func buildStatus(ctx context.Context, root, repoDir string, allowMismatch bool) 
 			Diagnostics: []livingapp.Diagnostic{{Code: "living_records_unavailable", Message: err.Error()}},
 		})
 	}
-	return statusDocument{
-		Report: value.report, Schema: StatusSchema, Status: living,
+	view := openingOf(value.changes)
+	if companionCheckout(ctx, root, value.checkout) {
+		view.Companion = true
+		if cursor, ok, err := saga.ReadCursor(root); err == nil && ok {
+			view.Cursor = cursor.Commit
+		}
+	}
+	document := statusDocument{
+		Report: value.report, Schema: StatusSchema, Opening: view, Status: living,
 		NextActions: nextaction.Derive(living, root), AuthoringLoop: nextaction.AuthoringLoop(root),
-	}, nil
+	}
+	if value.changes.Mode == gitdiff.ModeCompare {
+		layers, _, err := changeview.Open(ctx, changeview.OpenOptions{
+			SagaRoot: root, Document: value.document, Checkout: value.checkout,
+			Changes: value.changes, Report: value.report, Resolver: resolver,
+		})
+		if err != nil {
+			return statusDocument{}, fmt.Errorf("open the comparison: %w", err)
+		}
+		document.Comparison = &layers
+	}
+	return document, nil
 }
 
 // readyForReview is status's pass/fail: the ready_for_review gate, which
@@ -97,6 +143,57 @@ func buildStatus(ctx context.Context, root, repoDir string, allowMismatch bool) 
 func (status statusDocument) readyForReview() bool {
 	gate, ok := status.Readiness.Gate(readiness.GateReadyForReview)
 	return ok && gate.Status == readiness.StatusReady
+}
+
+// printReasons prints the commits beside a record, each squash merge with
+// the branch commits it collapsed.
+func printReasons(out io.Writer, reasons []changeview.Reason) {
+	for _, reason := range reasons {
+		fmt.Fprintf(out, "      why: %s %s\n", shortOID(reason.Commit), reason.Subject)
+		for _, collapsed := range reason.Collapsed {
+			fmt.Fprintf(out, "           %s %s\n", shortOID(collapsed.Commit), collapsed.Subject)
+		}
+	}
+}
+
+// printComparison prints the three layers of a compared Saga.
+func printComparison(out io.Writer, layers *changeview.Layers, maxItems int) {
+	if layers == nil {
+		return
+	}
+	limit := func(n int) int {
+		if maxItems > 0 && maxItems < n {
+			return maxItems
+		}
+		return n
+	}
+	fmt.Fprintf(out, "\nChanged (%d records the change added, revised, or retired):\n", len(layers.Changed))
+	for _, change := range layers.Changed[:limit(len(layers.Changed))] {
+		fmt.Fprintf(out, "  %-8s %-10s %s  %s\n", change.Change, change.Kind, change.Title, change.URN)
+		if pairing := change.Pair; pairing != nil {
+			switch {
+			case pairing.Basis == changeview.PairAmbiguous:
+				fmt.Fprintf(out, "      may replace or be replaced by one of %s; link it: %s\n", strings.Join(pairing.Candidates, ", "), pairing.Link)
+			case pairing.Role == changeview.PairReplaces:
+				fmt.Fprintf(out, "      replaces %s (%s)\n", pairing.With, pairing.Basis)
+			default:
+				fmt.Fprintf(out, "      replaced by %s (%s)\n", pairing.With, pairing.Basis)
+			}
+		}
+		printReasons(out, change.Reasons)
+	}
+	fmt.Fprintf(out, "\nAffected (%d records the change did not edit but invalidated):\n", len(layers.Affected))
+	for _, affected := range layers.Affected[:limit(len(layers.Affected))] {
+		fmt.Fprintf(out, "  %-10s %s  %s\n", affected.Kind, affected.Title, affected.URN)
+		for _, cause := range affected.Because {
+			fmt.Fprintf(out, "      %s: %s\n", cause.Kind, cause.Detail)
+		}
+		printReasons(out, affected.Reasons)
+	}
+	fmt.Fprintf(out, "\nCode: %d changed lines under %d records; %d lines no record references\n", layers.Summary.ChangedLines, layers.Summary.CodeGroups, layers.Summary.Unreferenced)
+	for _, diagnostic := range layers.Diagnostics {
+		fmt.Fprintf(out, "  note %s: %s\n", diagnostic.Code, diagnostic.Message)
+	}
 }
 
 func printLivingStatus(out io.Writer, status statusDocument, maxItems int) {

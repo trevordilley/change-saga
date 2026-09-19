@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -55,7 +56,7 @@ func fileEventSaga(t *testing.T) (root, repo, base, head string) {
 
 	root = filepath.Join(t.TempDir(), "events.saga")
 	var output bytes.Buffer
-	if err := Init(context.Background(), []string{"--repo", repo, "--repository", rangeRepository, "--base", base, "--head", "HEAD", root}, &output); err != nil {
+	if err := Init(context.Background(), []string{"--repo", repo, "--repository", rangeRepository, root}, &output); err != nil {
 		t.Fatal(err)
 	}
 	writeFile(t, filepath.Join(root, "___overview", "overview.fragment", "content.md"), "# Events {#events}\n\nEvery kind of file change.\n")
@@ -110,7 +111,7 @@ func TestCoverSideLineReferencesPinEachSideWithItsDigest(t *testing.T) {
 		t.Fatalf("old-side references = %#v\nwant %#v", oldSide, wantOld)
 	}
 
-	report, err := buildReport(context.Background(), root, repo)
+	report, err := buildReport(context.Background(), root, repo, gitdiff.Range{Against: "main"})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -141,7 +142,7 @@ func TestCoverFileReferencesTheWholeFileOnASide(t *testing.T) {
 	if !sameReferences(deleted, []coderef.Reference{{Commit: base, Path: "service/deleted.go", Digest: sha256Digest(deletedFile)}}) {
 		t.Fatalf("deleted whole-file reference = %#v", deleted)
 	}
-	report, err := buildReport(context.Background(), root, repo)
+	report, err := buildReport(context.Background(), root, repo, gitdiff.Range{Against: "main"})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -215,7 +216,7 @@ func TestCoverChangedLinesCompletesEveryFileEvent(t *testing.T) {
 			t.Fatalf("%s references = %v, want %v", test.path, got, test.want)
 		}
 	}
-	report, err := buildReport(context.Background(), root, repo)
+	report, err := buildReport(context.Background(), root, repo, gitdiff.Range{Against: "main"})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -252,7 +253,7 @@ func TestCoverChangedLinesSelectsBothPathsOfARename(t *testing.T) {
 			if want := "new service/relocated.go file; old service/moved.go 3-3; new service/relocated.go 3-3"; strings.Join(got, "; ") != want {
 				t.Fatalf("references = %v, want %s", got, want)
 			}
-			report, err := buildReport(context.Background(), root, repo)
+			report, err := buildReport(context.Background(), root, repo, gitdiff.Range{Against: "main"})
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -346,7 +347,7 @@ func TestCoverRejectsContradictoryReferenceFlags(t *testing.T) {
 func TestCoverJSONFailureReportsReferencesField(t *testing.T) {
 	root, repo, _, _ := fileEventSaga(t)
 	var output bytes.Buffer
-	err := Cover(context.Background(), []string{"--repo", repo, "--path", "service/modified.go", "--lines", "3", "--json", root}, &output)
+	err := Cover(context.Background(), []string{"--against", "main", "--repo", repo, "--path", "service/modified.go", "--lines", "3", "--json", root}, &output)
 	var status *StatusError
 	if !errors.As(err, &status) || status.Code != 1 {
 		t.Fatalf("JSON failure status = %v", err)

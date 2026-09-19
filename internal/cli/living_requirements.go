@@ -3,6 +3,7 @@ package cli
 import (
 	"context"
 	"fmt"
+	"github.com/twentyideas/changesaga/internal/saga"
 	"io"
 	"os"
 	"time"
@@ -442,6 +443,27 @@ func defaultV5RelationPins(root string, input *requirements.AddRelationInput) ([
 			}
 			*side.pin = head
 			defaulted = append(defaulted, fmt.Sprintf("%s to current head %s", side.name, head))
+		}
+	}
+	if input.Type == requirements.RelationAddresses || input.Type == requirements.RelationImplements {
+		// A design endpoint is pinned by its content digest. Defaulting it to
+		// the current digest matches the revision rule above and is reported.
+		document, _, err := saga.Load(root)
+		if err == nil {
+			digests, digestErr := saga.CurrentDesignContentDigests(document)
+			if digestErr != nil {
+				return nil, digestErr
+			}
+			for _, side := range []struct {
+				name     string
+				endpoint string
+				pin      *string
+			}{{"from_content_digest", input.From, &input.FromContentDigest}, {"to_content_digest", input.To, &input.ToContentDigest}} {
+				if digest, ok := digests[side.endpoint]; ok && *side.pin == "" {
+					*side.pin = digest
+					defaulted = append(defaulted, fmt.Sprintf("%s to current digest %s", side.name, digest))
+				}
+			}
 		}
 	}
 	if err := heads.checkTestCasePin(input.From, input.FromRevision); err != nil {

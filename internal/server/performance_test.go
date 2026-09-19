@@ -109,7 +109,7 @@ func benchmarkCoverageFixture() (*saga.Saga, gitdiff.ChangeSet, coverage.Report,
 	base, head := testBaseCommit, testHeadCommit
 	root := &saga.Section{Kind: "saga", ID: "large", Title: "Large saga", Target: saga.SagaTarget("large")}
 	document := &saga.Saga{
-		Manifest: saga.Manifest{ID: "large", Title: "Large saga", Source: saga.Source{Repository: repository, Base: base, Head: head}},
+		Manifest: saga.Manifest{ID: "large", Title: "Large saga", Source: saga.Source{Repository: repository}},
 		Section:  root,
 	}
 	changes := gitdiff.ChangeSet{Repository: repository, BaseOID: base, HeadOID: head}

@@ -32,7 +32,7 @@ func TestAddLandmarkMakesDiagramElementsCoverable(t *testing.T) {
 	repo, commit := sourceRepo(t, map[string]string{"worker.go": "package worker\n\n// one\n// two\n// three\n// four\n// five\n"})
 	reference := commit + ":worker.go#L3-L7"
 	target := testEpicRel + "/system-map.fragment/___landmarks/worker-pool.landmark"
-	if err := Cover(context.Background(), []string{"--repo", repo, "--target", target, "--ref", reference, "--note", "Implements the worker pool node.", root}, &output); err != nil {
+	if err := Cover(context.Background(), []string{"--against", "main", "--repo", repo, "--target", target, "--ref", reference, "--note", "Implements the worker pool node.", root}, &output); err != nil {
 		t.Fatalf("cover landmark: %v", err)
 	}
 

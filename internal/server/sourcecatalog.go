@@ -40,7 +40,7 @@ func (a *app) sourceCatalog(ctx context.Context, manifest saga.Manifest) (gitdif
 	if a.catalogLoader != nil {
 		catalog, err = a.catalogLoader(ctx, manifest)
 	} else {
-		catalog, err = gitdiff.ReadCatalog(ctx, a.sourceDir, manifest.Source.Repository, manifest.Source.Base, manifest.Source.Head)
+		catalog, err = gitdiff.ReadCatalogRange(ctx, a.sourceDir, manifest.Source.Repository, a.rng, gitdiff.ReadOptions{})
 	}
 	if err != nil {
 		return gitdiff.Catalog{}, err

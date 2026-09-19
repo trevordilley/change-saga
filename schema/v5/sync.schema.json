@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://changesaga.dev/schema/v5/sync.schema.json",
+  "title": "Change Saga v5 sync cursor",
+  "description": "sync.json in a Saga that lives in a companion repository: the code commit the Saga currently documents. A Saga in its code repository has none.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "commit"],
+  "properties": {
+    "$schema": { "const": "https://changesaga.dev/schema/v5/sync.schema.json" },
+    "version": { "const": 5 },
+    "commit": { "type": "string", "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$" }
+  }
+}

@@ -45,7 +45,6 @@ type Manifest struct {
 	Version int    `json:"version"`
 	ID      string `json:"id"`
 	Title   string `json:"title"`
-	PR      *PR    `json:"pr,omitempty"`
 	Source  Source `json:"source"`
 }
 
@@ -121,18 +120,11 @@ type Item struct {
 	Reviews []Review   `json:"reviews,omitempty"`
 }
 
-// PR uses a pointer for Number so an absent pull request number stays absent.
-// schema/v2/saga.schema.json requires a positive number when the field is
-// present; a plain int could not tell "unset" from an invalid literal 0.
-type PR struct {
-	Number *int   `json:"number,omitempty"`
-	URL    string `json:"url,omitempty"`
-}
-
+// Source names the code repository a Saga documents. It holds no
+// comparison: a Saga is opened to observe one commit or to compare two, and
+// that choice is never stored.
 type Source struct {
 	Repository string `json:"repository"`
-	Base       string `json:"base"`
-	Head       string `json:"head"`
 }
 
 type SectionManifest struct {
@@ -407,9 +399,13 @@ type FileReview struct {
 // oldest first, so a squash merge keeps the per-commit reasoning Git's own
 // history no longer carries.
 type Merge struct {
-	Path     string         `json:"-"`
-	Version  int            `json:"version"`
-	Commit   string         `json:"commit"`
+	Path    string `json:"-"`
+	Version int    `json:"version"`
+	Commit  string `json:"commit"`
+	// Base is the commit the change was compared from, so the comparison
+	// "--against <base> --head <commit>" reproduces the landed change. It is
+	// absent when the landed commit has no parent.
+	Base     string         `json:"base,omitempty"`
 	Commits  []MergedCommit `json:"commits"`
 	PinnedAt time.Time      `json:"pinned_at"`
 }

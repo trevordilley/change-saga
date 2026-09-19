@@ -295,7 +295,7 @@ func TestMutationRefusesMalformedCodeReferencesWithoutSideEffect(t *testing.T) {
 
 func TestMutationRefusesStructurallyInvalidSagaWithoutSideEffect(t *testing.T) {
 	root := newTestSaga(t)
-	manifest := saga.Manifest{Schema: saga.SagaSchemaURL, Version: 999, ID: "test", Title: "Test", Source: saga.Source{Repository: "https://example.test/repo.git", Base: "main", Head: "HEAD"}}
+	manifest := saga.Manifest{Schema: saga.SagaSchemaURL, Version: 999, ID: "test", Title: "Test", Source: saga.Source{Repository: "https://example.test/repo.git"}}
 	if err := store.WriteJSON(filepath.Join(root, "saga.json"), manifest, false); err != nil {
 		t.Fatal(err)
 	}
@@ -451,7 +451,7 @@ func newTestSaga(t *testing.T) string {
 	if err := os.MkdirAll(root, 0o755); err != nil {
 		t.Fatal(err)
 	}
-	manifest := saga.Manifest{Schema: saga.SagaSchemaURL, Version: saga.SagaVersion, ID: "test", Title: "Test", Source: saga.Source{Repository: testRepository, Base: "main", Head: "HEAD"}}
+	manifest := saga.Manifest{Schema: saga.SagaSchemaURL, Version: saga.SagaVersion, ID: "test", Title: "Test", Source: saga.Source{Repository: testRepository}}
 	if err := store.WriteJSON(filepath.Join(root, "saga.json"), manifest, true); err != nil {
 		t.Fatal(err)
 	}

@@ -4,8 +4,6 @@
   "id": "compact-saga-connectors",
   "title": "Scaling Change Saga to whole-codebase reviews",
   "source": {
-    "repository": "https://github.com/twentyideas/changesaga.git",
-    "base": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
-    "head": "31732621344a14ceb560890375c2240cf2720933"
+    "repository": "https://github.com/twentyideas/changesaga.git"
   }
 }

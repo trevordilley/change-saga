@@ -94,6 +94,7 @@ type referencesOutput struct {
 func References(ctx context.Context, args []string, out io.Writer) error {
 	flags := commandFlags("references", commandUsage["references"], out)
 	repoDir := flags.String("repo", "", "source repository checkout; required when separate")
+	opening := registerOpenFlags(flags)
 	staleOnly := flags.Bool("stale", false, "list only stale references")
 	withDiff := flags.Bool("diff", false, "include each stale reference's diff since its pin")
 	jsonOutput := flags.Bool("json", false, "emit machine-readable JSON")
@@ -109,7 +110,7 @@ func References(ctx context.Context, args []string, out io.Writer) error {
 		return err
 	}
 	checkout := firstNonEmpty(*repoDir, document.Root)
-	changes, err := gitdiff.ReadWithOptions(ctx, checkout, document.Manifest.Source.Repository, document.Manifest.Source.Base, document.Manifest.Source.Head, gitdiff.ReadOptions{AllowRepositoryMismatch: *allowMismatch})
+	changes, err := gitdiff.ReadRange(ctx, checkout, document.Manifest.Source.Repository, opening.rng(), gitdiff.ReadOptions{AllowRepositoryMismatch: *allowMismatch})
 	if err != nil {
 		return fmt.Errorf("read source comparison (use --repo for a separate saga repository): %w", err)
 	}
@@ -207,8 +208,11 @@ type repinOutput struct {
 	Repinned    []repinChange       `json:"repinned"`
 	Unchanged   int                 `json:"unchanged"`
 	Left        []repinSkip         `json:"left_pinned"`
+	Base        string              `json:"base,omitempty"`
 	Commits     []saga.MergedCommit `json:"commits"`
 	MergeRecord string              `json:"merge_record,omitempty"`
+	// Cursor is the code commit a companion Saga's sync cursor moved to.
+	Cursor string `json:"cursor,omitempty"`
 }
 
 // Repin moves every evidence reference to the commit a change landed as, so
@@ -305,8 +309,13 @@ func Repin(ctx context.Context, args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
+	result.Base = landedBase(ctx, checkout, ontoCommit, *branch)
+	companion := companionCheckout(ctx, root, checkout)
 
-	if !*dryRun && (len(updates) > 0 || len(result.Commits) > 0) {
+	if companion {
+		result.Cursor = ontoCommit
+	}
+	if !*dryRun && (len(updates) > 0 || len(result.Commits) > 0 || companion) {
 		err = authorMutation(root, func(locked *saga.Saga) error {
 			for relative, changed := range updates {
 				path := filepath.Join(locked.Root, filepath.FromSlash(relative))
@@ -324,6 +333,12 @@ func Repin(ctx context.Context, args []string, out io.Writer) error {
 					return err
 				}
 			}
+			if companion {
+				// A companion Saga now documents the landed commit.
+				if err := store.WriteJSON(filepath.Join(locked.Root, saga.CursorName), saga.Cursor{Schema: saga.CursorSchemaURL, Version: saga.CursorVersion, Commit: ontoCommit}, false); err != nil {
+					return err
+				}
+			}
 			if len(result.Commits) == 0 {
 				return nil
 			}
@@ -332,7 +347,7 @@ func Repin(ctx context.Context, args []string, out io.Writer) error {
 				return err
 			}
 			path := filepath.Join(dir, saga.MergeFilename(ontoCommit))
-			record := saga.Merge{Version: saga.CurrentVersion, Commit: ontoCommit, Commits: result.Commits, PinnedAt: time.Now().UTC()}
+			record := saga.Merge{Version: saga.CurrentVersion, Commit: ontoCommit, Base: result.Base, Commits: result.Commits, PinnedAt: time.Now().UTC()}
 			if err := store.WriteJSON(path, record, false); err != nil {
 				return err
 			}
@@ -355,6 +370,9 @@ func Repin(ctx context.Context, args []string, out io.Writer) error {
 	for _, skipped := range result.Left {
 		fmt.Fprintf(out, "  left %s %s #%d at %s: %s\n", skipped.Kind, firstNonEmpty(skipped.EvidenceFile, skipped.Owner), skipped.Reference, skipped.Pinned, skipped.Reason)
 	}
+	if result.Cursor != "" {
+		fmt.Fprintf(out, "Moved the sync cursor to %s\n", result.Cursor)
+	}
 	if len(result.Commits) > 0 {
 		fmt.Fprintf(out, "Recorded %d branch commit messages", len(result.Commits))
 		if result.MergeRecord != "" {
@@ -363,6 +381,24 @@ func Repin(ctx context.Context, args []string, out io.Writer) error {
 		fmt.Fprintln(out)
 	}
 	return nil
+}
+
+// landedBase is the commit the landed change is compared from: the target
+// branch's previous tip (the landed commit's first parent), or, when the
+// branch is still available, the merge-base of that tip and the branch. It is
+// empty for a root commit.
+func landedBase(ctx context.Context, checkout, onto, branch string) string {
+	parent, err := exec.CommandContext(ctx, "git", "-C", checkout, "rev-parse", "--verify", "--quiet", onto+"^1").Output()
+	if err != nil {
+		return ""
+	}
+	base := strings.TrimSpace(string(parent))
+	if branch != "" {
+		if forked, err := exec.CommandContext(ctx, "git", "-C", checkout, "merge-base", base, branch).Output(); err == nil {
+			base = strings.TrimSpace(string(forked))
+		}
+	}
+	return base
 }
 
 // referenceKeyBefore returns the key the planned change expects to replace,

@@ -29,6 +29,7 @@ func grammarHelp(t *testing.T, name string) string {
 		"cover":      func() error { return Cover(ctx, args, &output) },
 		"references": func() error { return References(ctx, args, &output) },
 		"repin":      func() error { return Repin(ctx, args, &output) },
+		"sync":       func() error { return Sync(ctx, args, &output) },
 		"validate":   func() error { return Validate(ctx, args, &output) },
 		"status":     func() error { return Status(ctx, args, &output) },
 		"spec":       func() error { return Spec(args, &output) },
@@ -113,7 +114,7 @@ func TestSpecJSONDescribesTheLivingGrammar(t *testing.T) {
 func TestStatusJSONKeepsV1KeysAndAddsTheAuthoringGrammar(t *testing.T) {
 	root, repo := coveredSaga(t)
 	var output bytes.Buffer
-	_ = Status(context.Background(), []string{"--json", "--repo", repo, root}, &output)
+	_ = Status(context.Background(), []string{"--against", "main", "--json", "--repo", repo, root}, &output)
 	var document map[string]any
 	if err := json.Unmarshal(output.Bytes(), &document); err != nil {
 		t.Fatalf("status JSON: %v\n%s", err, output.String())
@@ -183,7 +184,7 @@ func TestStatusReportsAStaleTestCaseLinkOnceAndNeverAsAnOrphan(t *testing.T) {
 		"--criterion", "fast=Checkout finishes promptly", "--json"}, &output), &output)
 
 	output.Reset()
-	_ = Status(ctx, []string{"--json", "--repo", repo, root}, &output)
+	_ = Status(ctx, []string{"--against", "main", "--json", "--repo", repo, root}, &output)
 	var status struct {
 		Quality struct {
 			TestCases []struct {

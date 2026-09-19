@@ -12,7 +12,7 @@ import (
 
 func TestCurrentDesignContentDigestsTrackAuthoredContentOnly(t *testing.T) {
 	root := filepath.Join(t.TempDir(), "digest.saga")
-	writeTestFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"digest","title":"Digest","source":{"repository":"https://example.test/app.git","base":"main","head":"HEAD"}}`)
+	writeTestFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"digest","title":"Digest","source":{"repository":"https://example.test/app.git"}}`)
 	writeTestFile(t, filepath.Join(root, testEpicDir, "overview.fragment", "fragment.json"), `{"version":2,"id":"overview","media_type":"text/markdown","entrypoint":"content.md"}`)
 	writeTestFile(t, filepath.Join(root, testEpicDir, "overview.fragment", "content.md"), "Narrative.\n")
 	writeTestFile(t, filepath.Join(root, testEpicDir, "___design", "architecture.chapter", "chapter.json"), `{"version":2,"id":"architecture","title":"Architecture"}`)
@@ -244,7 +244,7 @@ type visualDigestFixture struct {
 func loadVisualDigestFixture(t *testing.T) (*Saga, visualDigestFixture) {
 	t.Helper()
 	root := filepath.Join(t.TempDir(), "visual-digest.saga")
-	writeTestFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"visual-digest","title":"Visual digest","source":{"repository":"https://example.test/app.git","base":"main","head":"HEAD"}}`)
+	writeTestFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"visual-digest","title":"Visual digest","source":{"repository":"https://example.test/app.git"}}`)
 
 	bundle := filepath.Join(root, testEpicDir, EmbeddedSlidesDir, "architecture.deck")
 	deckTarget := DeckTarget("visual-digest", "architecture")

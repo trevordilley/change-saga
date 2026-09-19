@@ -2,6 +2,7 @@ package server
 
 import (
 	"bytes"
+	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
@@ -116,7 +117,7 @@ func TestEmbeddedDeckCoverageAndActivityUseTheFlatReviewOverlay(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	writeServerFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"visual","title":"Visual review","source":{"repository":"`+repository+`","base":"`+base+`","head":"HEAD"}}`)
+	writeServerFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"visual","title":"Visual review","source":{"repository":"`+repository+`"}}`)
 	writeServerEpic(t, root)
 
 	index, validation, err := saga.LoadMutationIndex(root)
@@ -128,7 +129,7 @@ func TestEmbeddedDeckCoverageAndActivityUseTheFlatReviewOverlay(t *testing.T) {
 		t.Fatalf("fingerprint empty flat review state: %v", err)
 	}
 
-	application := &app{root: root, sourceDir: repo, template: serverTemplate(t)}
+	application := &app{root: root, sourceDir: repo, rng: gitdiff.Range{Against: base}, template: serverTemplate(t)}
 	handler := newMux(application)
 	coverage := httptest.NewRecorder()
 	handler.ServeHTTP(coverage, httptest.NewRequest(http.MethodGet, "/api/coverage", nil))
@@ -196,7 +197,7 @@ func TestEmbeddedDeckCoverageAndActivityUseTheFlatReviewOverlay(t *testing.T) {
 
 func writeEmbeddedSlideFixture(t *testing.T, root string) string {
 	t.Helper()
-	writeServerFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"visual","title":"Visual review","source":{"repository":"https://example.test/acme/app.git","base":"main","head":"feature"}}`)
+	writeServerFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"visual","title":"Visual review","source":{"repository":"https://example.test/acme/app.git"}}`)
 	writeServerEpic(t, root)
 	writeServerFile(t, filepath.Join(serverEpicDir(root), "overview.fragment", "fragment.json"), `{"version":2,"id":"overview","title":"Living overview","media_type":"text/markdown","entrypoint":"content.md"}`)
 	writeServerFile(t, filepath.Join(serverEpicDir(root), "overview.fragment", "content.md"), "# Living overview {#living-overview}\n")

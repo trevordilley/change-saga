@@ -471,7 +471,10 @@ func RecordRun(root string, input RecordRunInput) (MutationResult, error) {
 		sagaID, testCaseID := document.SagaID, testCase.Identity.ID
 		source := document.Source
 		if input.Source != nil {
-			source = *input.Source
+			source.Commit = input.Source.Commit
+			if input.Source.Repository != "" {
+				source.Repository = input.Source.Repository
+			}
 		}
 		value := Run{
 			Schema: RunSchemaURL, Version: Version, ID: input.ID, TestCase: input.TestCase,
