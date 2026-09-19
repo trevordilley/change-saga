@@ -246,39 +246,59 @@ When the Saga lives in its own repository:
   which should be far smaller, but a 400k-line codebase must be measured before
   it is promised.
 
-### 11. A review is a first-class record of one comparison
+### 11. Reviews are records of exact ranges, with their own decks
 
-```sh
-change-saga review start app.saga --against main
+Reviews live at the application root, one per range:
+
+```text
+app.saga/
+  ___reviews/<id>.review/
+    review.json      # base and head as exact commits, title, pull request
+    ___slides/       # the review deck: what this range changed, and why
+    <approvals, comments, and the completion record>
 ```
 
-1. **Start.** A review records its comparison (merge-base..head) and its
-   required set: the Changed and Affected layers, each at its current revision.
-2. **Work.** Reviewers approve or reject individual items and comment. Each
-   approval pins the revision it saw.
-3. **The head moves.** When new commits land, approvals whose records did not
-   change stay valid; only what changed since returns to needing approval. This
-   is incremental re-review at the level of stories and designs, not files.
-4. **Complete.** Once the review's requirement is met, an immutable completion
-   record says that `base..head` was reviewed, which revisions were approved by
-   whom, and which discussions took place.
-5. **Merge.** Re-pinning at merge links the review to the commit that landed, so
-   a squash merge keeps its review.
+**A review is over a specific range.** Its base and head are exact commits,
+never symbolic references, and the range never changes. That is what makes a
+review different from the living Saga, and what makes its currency decidable.
 
-A node's history (goal 7) then shows the review that approved it beside the
-commit reasons.
+**Two kinds of deck, two jobs.** An epic's deck explains the current state and
+follows the code as it evolves. A review's deck explains one change, the
+transition and the reasoning behind it (why the queue moved from SQS to a
+Postgres table), which the current state no longer shows. Its code references
+are viewed against its own range, so they never go stale inside the review.
 
-**The team declares what is sufficient when it starts a review**, and the tool
-tracks progress against it; the tool never invents requirements. Candidate
-terms: approvals per item and whether reviewers must be distinct; whether a
-human approval is required (approval records already distinguish a human
-reviewer from an AI reviewer seat with its agent and exact model); and the
-`--covers` areas that must hold before completion.
+**Opening a comparison shows both.** The reviewer shows the living Saga's
+Changed and Affected layers, including the epic slides that changed, beside the
+review and its deck. After merge, a node's history links to the reviews that
+approved it, so the reasoning behind today's state stays one step away.
+
+**A review is out of date when the pull request moves past it.** If new commits
+land after the review's head, exactly those commits are unreviewed. If the
+branch is rebased so the review's head is no longer in its history, the review
+is out of date; approvals of records that did not change can carry forward.
+
+**Reviews chain.** New commits get a follow-up review of just the new range
+rather than stretching an existing one. A pull request is fully reviewed when
+its completed reviews chain from the merge-base to its head with no gap. Each
+link keeps its own permanent record, and re-review is incremental by
+construction.
+
+**Approval.** A reviewer approves or rejects individual records in the review's
+Changed and Affected layers, and each approval pins the revision it saw. The
+team declares what is sufficient when it starts a review, and the tool tracks
+progress against it; it never invents requirements. Candidate terms: approvals
+per item and whether reviewers must be distinct; whether a human approval is
+required (approval records already distinguish a human reviewer from an AI
+reviewer seat with its agent and exact model); and the `check --covers` areas
+that must hold. When the requirement is met, an immutable completion record
+names the range, the approved revisions and their reviewers, and the
+discussions.
 
 This reshapes the existing review overlay (per-target approvals, threads, and
-the `review_complete` gate) so that approvals belong to a review of a
-comparison. A pull request's own approval stays whole-PR; a review can record
-the PR number so the two line up.
+the `review_complete` gate) so that approvals and comments belong to a review.
+A pull request's own approval stays whole-PR; a review records the pull request
+number so the two line up.
 
 ### Kept from the current design
 
@@ -316,8 +336,8 @@ reconstructs it.
 5. What does a review require by default: one approval per item and nothing
    else, raised by teams that want more?
 6. Must every discussion be resolved before a review can complete?
-7. One review per pull request, or several per branch (for example a design
-   review early and a code review later)?
+7. Is a review deck optional? Incremental adoption suggests yes: a small change
+   may need only approvals.
 
 ## Execution
 
@@ -332,8 +352,9 @@ whole-file references; re-pinning at merge. Remove `saga-diff://` evidence and
 with merge-base semantics; `saga.json` drops its comparison; the Changed,
 Affected, and Code layers; approvals only in compare mode, pinned to revisions;
 replacement pairing, commit reasons attached to nodes, and node history;
-reviews of a comparison with incremental re-review and completion records
-(goal 11).
+reviews
+of exact ranges with their own decks, chained follow-up reviews, out-of-date
+detection, and completion records (goal 11).
 Depends on Phase 1.
 
 **Phase 3 — App structure.** The app-level roots; epics containing today's
