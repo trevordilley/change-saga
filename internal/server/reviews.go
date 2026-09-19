@@ -285,7 +285,13 @@ func (a *app) referenceDiff(ctx context.Context, resolver *coderesolve.Resolver,
 			start, end = 0, 0
 		}
 	}
-	patch, err := gitdiff.FileDiff(ctx, a.sourceDir, rng.BaseOID, rng.HeadOID, path)
+	// Pathspecs are relative to the working directory, and a Saga served from
+	// inside its code repository has the Saga directory as its source dir.
+	repo := a.sourceDir
+	if top, err := gitOutput(ctx, a.sourceDir, "rev-parse", "--show-toplevel"); err == nil && top != "" {
+		repo = top
+	}
+	patch, err := gitdiff.FileDiff(ctx, repo, rng.BaseOID, rng.HeadOID, path)
 	if err != nil {
 		view.Note = "The diff could not be read from this checkout."
 		return view

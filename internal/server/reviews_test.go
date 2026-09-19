@@ -88,7 +88,9 @@ func reviewApp(t *testing.T, fixture serverReviewFixture, rng gitdiff.Range) (*a
 	if err != nil {
 		t.Fatal(err)
 	}
-	application := &app{root: fixture.root, sourceDir: fixture.repo, rng: rng, template: tmpl, mutationToken: "review-token"}
+	// Like serve without --repo, the source dir is the Saga's own directory
+	// inside the code repository.
+	application := &app{root: fixture.root, sourceDir: fixture.root, rng: rng, template: tmpl, mutationToken: "review-token"}
 	return application, newMux(application)
 }
 
