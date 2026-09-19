@@ -181,7 +181,10 @@ implementation evidence.
 
 ## Reviewing a saga
 
-`change-saga open` starts a local review application:
+`change-saga open` starts a local review application. Opened on its own it
+shows the documentation as of the current commit; opened with `--against main`
+it compares the branch, showing what the change revised, what it affected, and
+the code, grouped by the documentation that explains it.
 
 - **Saga** presents the whole change. Its sidebar is always Product, Design,
   Quality, and Implementation, in that order. Implementation is the deck
@@ -194,18 +197,23 @@ implementation evidence.
 - **Coverage** shows the mapping in both directions: code to explanations and
   explanations to code.
 
-Reviews can be spread across multiple sessions. Reviewers can comment on text
-or code, highlight content, draw shapes, add sticky notes, mark files reviewed,
-and approve or reject report sections or complete slides.
+- **Reviews** lists each pull request's review: a slide deck that explains what
+  the change did and why, with the diffs its slides reference. Reviewers approve
+  or request changes slide by slide and discuss slides and Items. A decision
+  records the commit it was given at and shows as out of date once that slide or
+  its code changes.
+
+The documentation itself carries no comments or approvals; review happens in
+reviews. The tool records every decision and never declares a review approved:
+what a pull request needs before merging is the team's decision.
 
 Every newly initialized saga also carries a small root `README.md`. It tells a
 human or AI assistant how to install and open the intended reviewer, and tells
 assistants to ask before downloading or executing anything from PR content.
 
-Review data is stored inside the saga. Each comment, reply, annotation, and
-state transition gets its own file, which keeps concurrent Git changes small
-and avoids shared comment arrays. Attribution comes from the commit that adds
-the record.
+Review data is stored inside the saga. Each decision and comment gets its own
+file, which keeps concurrent Git changes small and avoids shared arrays.
+Attribution comes from the commit that adds the record.
 
 ## Maintain a codebase Saga
 
@@ -325,25 +333,19 @@ work. If the saga lives in a separate repository, pass
 
 ### Maintaining a codebase Saga
 
-Project a PR's source diff onto an existing codebase Saga:
+See what a PR's change does to an existing Saga:
 
 ```sh
-change-saga compare --repo /path/to/checkout \
-  --base <pr-base> --head <pr-head> codebase.saga
+change-saga status --repo /path/to/checkout --against <pr-base> --head <pr-head> codebase.saga
+change-saga query layers --saga codebase.saga --repo /path/to/checkout \
+  --against <pr-base> --head <pr-head> --layer affected
 ```
 
-If the PR already has a Saga, use its source comparison directly:
-
-```sh
-change-saga compare --repo /path/to/checkout \
-  --against-saga pr-123.saga codebase.saga
-```
-
-`compare` never compares prose, diagrams, or other Saga content. It follows
-conflicting and nearby source changes through existing evidence ownership and
-reports targets that must be updated, targets that should be considered, and
-changes that need new content. The command is read-only; use `--json` for CI or
-an agent-driven maintenance loop.
+A comparison never compares prose, diagrams, or other Saga content. It follows
+changed code through the references that explain it and reports the records the
+change must update, the records it should prompt you to reconsider, and changes
+that need new documentation. It is read-only; use `--json` for CI or an
+agent-driven maintenance loop.
 
 ## Security
 
