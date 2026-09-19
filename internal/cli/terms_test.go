@@ -172,3 +172,84 @@ func TestAComparisonSuggestsNewTerminologyWithoutBlocking(t *testing.T) {
 		t.Fatalf("a stale term's revision is prefilled except its new id and code: %v", inputs)
 	}
 }
+
+func queryData(t *testing.T, args ...string) map[string]any {
+	t.Helper()
+	var output bytes.Buffer
+	if err := Query(context.Background(), args, &output); err != nil {
+		t.Fatalf("query %v: %v\n%s", args, err, output.String())
+	}
+	var envelope struct {
+		OK   bool           `json:"ok"`
+		Data map[string]any `json:"data"`
+	}
+	if err := json.Unmarshal(output.Bytes(), &envelope); err != nil || !envelope.OK {
+		t.Fatalf("query %v: %v\n%s", args, err, output.String())
+	}
+	return envelope.Data
+}
+
+func termURNs(data map[string]any) string {
+	values := []string{}
+	for _, value := range data["terms"].([]any) {
+		values = append(values, value.(map[string]any)["term"].(string))
+	}
+	return strings.Join(values, ",")
+}
+
+func TestALineOfCodeAndAStoryReachTheirTerms(t *testing.T) {
+	repo, _ := sourceRepo(t, map[string]string{"kinds.go": kindsGo})
+	git(t, repo, "remote", "add", "origin", "https://example.test/acme/app.git")
+	root := newTermSaga(t, repo)
+	if err := Term(context.Background(), []string{"add", "--id", "testtaker", "--name", "Testtaker", "--definition", "One sitting.",
+		"--story", "sit-assessment", "--ref", "HEAD:kinds.go#L6", "--repo", repo, root}, &bytes.Buffer{}); err != nil {
+		t.Fatal(err)
+	}
+	if err := Term(context.Background(), []string{"add", "--id", "proctor", "--name", "Proctor", "--definition", "Watches a sitting.",
+		"--ref", "HEAD:kinds.go#L7", "--repo", repo, root}, &bytes.Buffer{}); err != nil {
+		t.Fatal(err)
+	}
+	const testtaker, proctor = "urn:change-saga:atomic:term:testtaker", "urn:change-saga:atomic:term:proctor"
+	if got := termURNs(queryData(t, "terms", "--saga", root, "--repo", repo, "--ref", "HEAD:kinds.go#L6")); got != testtaker {
+		t.Fatalf("the constant's line reaches its term: %s", got)
+	}
+	if got := termURNs(queryData(t, "terms", "--saga", root, "--repo", repo, "--ref", "HEAD:kinds.go")); got != proctor+","+testtaker {
+		t.Fatalf("a whole file reaches every term in it: %s", got)
+	}
+	if got := termURNs(queryData(t, "terms", "--saga", root, "--repo", repo, "--story", "sit-assessment")); got != testtaker {
+		t.Fatalf("a story reaches the terms that belong to it: %s", got)
+	}
+	if got := termURNs(queryData(t, "terms", "--saga", root, "--repo", repo, "--term", "proctor")); got != proctor {
+		t.Fatalf("--term = %s", got)
+	}
+
+	// In a comparison, a changed line lists the terms whose code contains it.
+	git(t, repo, "checkout", "-b", "reword")
+	writeFile(t, filepath.Join(repo, "kinds.go"), strings.Replace(kindsGo, `"proctor"`, `"invigilator"`, 1))
+	git(t, repo, "commit", "-am", "reword proctor")
+	head := strings.TrimSpace(git(t, repo, "rev-parse", "HEAD"))
+	data := queryData(t, "diff-owners", "--saga", root, "--repo", repo, "--against", "main", "--ref", head+":kinds.go#L7")
+	atoms := data["atoms"].([]any)
+	if len(atoms) != 1 {
+		t.Fatalf("atoms = %#v", atoms)
+	}
+	if terms := atoms[0].(map[string]any)["terms"].([]any); len(terms) != 0 {
+		t.Fatalf("a changed line whose term reference went stale is not claimed by it at the head: %v", terms)
+	}
+	base := strings.TrimSpace(git(t, repo, "merge-base", "main", "HEAD"))
+	data = queryData(t, "diff-owners", "--saga", root, "--repo", repo, "--against", "main", "--ref", base+":kinds.go#L7")
+	if terms := data["atoms"].([]any)[0].(map[string]any)["terms"].([]any); len(terms) != 1 || terms[0] != proctor {
+		t.Fatalf("the removed line names the term it defined: %v", terms)
+	}
+	// The changed lines are grouped under the term in the Code layer. (This
+	// Saga is not in Git, so every record counts as added rather than
+	// affected; the Code layer does not depend on that.)
+	layers := queryData(t, "layers", "--saga", root, "--repo", repo, "--against", "main")
+	grouped := false
+	for _, value := range layers["code"].(map[string]any)["groups"].([]any) {
+		grouped = grouped || value.(map[string]any)["urn"] == proctor
+	}
+	if !grouped {
+		t.Fatalf("the changed line is grouped under the term that names it: %v", layers["code"])
+	}
+}

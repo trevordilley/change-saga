@@ -22,6 +22,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
+	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
@@ -65,6 +66,15 @@ type session struct {
 	summaryOnly     bool
 	directCurrent   map[string]int
 	directStale     map[string]int
+	// termCode is every current term reference viewed at the base and the
+	// head, so a changed line reaches the terms that name it.
+	termCode []termLocation
+}
+
+// termLocation is one term's code reference where it lies at one commit.
+type termLocation struct {
+	term     string
+	location coderef.Location
 }
 
 func Open(ctx context.Context, options OpenOptions) (Session, error) {
@@ -129,6 +139,9 @@ func Open(ctx context.Context, options OpenOptions) (Session, error) {
 		selectorsByAtom: make(map[string][]DiffOwner, len(report.Ownership)), sourceDir: sourceDir,
 		fragments:   map[string]fragmentValue{},
 		summaryOnly: options.SummaryOnly, directCurrent: map[string]int{}, directStale: map[string]int{},
+	}
+	if !options.SummaryOnly {
+		s.termCode = termLocations(ctx, document, changes, resolver)
 	}
 	if err := s.build(ctx, resolver); err != nil {
 		return nil, err
@@ -576,7 +589,7 @@ func (s *session) DiffOwners(ctx context.Context, query DiffOwnerQuery) (DiffOwn
 				owners[index].Mapping = &copy
 			}
 		}
-		owned := OwnedAtom{Atom: atom, Owners: owners}
+		owned := OwnedAtom{Atom: atom, Owners: owners, Terms: s.termsAt(s.changes.Location(atom))}
 		result.Atoms = append(result.Atoms, owned)
 	}
 	return result, nil
@@ -931,4 +944,50 @@ func (s *session) page(operation, key, cursor string, limit, total int) (int, in
 		page.NextCursor = &next
 	}
 	return start, end, page, nil
+}
+
+// termLocations resolves every current term reference at both sides of the
+// comparison. A Saga whose living records cannot be loaded has no terms here;
+// status reports why.
+func termLocations(ctx context.Context, document *saga.Saga, changes gitdiff.ChangeSet, resolver coverage.Resolver) []termLocation {
+	vocabulary, err := requirements.Load(document.Root, document.Manifest.ID)
+	if err != nil {
+		return nil
+	}
+	var result []termLocation
+	for _, term := range vocabulary.Terms {
+		if term.CurrentRevision == nil {
+			continue
+		}
+		urn, _ := requirements.TermURN(document.Manifest.ID, term.Identity.ID)
+		for _, reference := range term.CurrentRevision.Code {
+			for _, commit := range uniqueCommits(changes.BaseOID, changes.HeadOID) {
+				if at := resolver.Resolve(ctx, reference, commit); at.Current() {
+					result = append(result, termLocation{term: urn, location: at.Location})
+				}
+			}
+		}
+	}
+	return result
+}
+
+func uniqueCommits(base, head string) []string {
+	if base == head || base == "" {
+		return []string{head}
+	}
+	return []string{base, head}
+}
+
+// termsAt returns the terms whose code contains location, in URN order.
+func (s *session) termsAt(location coderef.Location) []string {
+	seen := map[string]bool{}
+	result := []string{}
+	for _, value := range s.termCode {
+		if !seen[value.term] && value.location.Contains(location) {
+			seen[value.term] = true
+			result = append(result, value.term)
+		}
+	}
+	sort.Strings(result)
+	return result
 }

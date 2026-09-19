@@ -287,3 +287,8 @@ func normalizeSpelling(value string) string {
 	}
 	return builder.String()
 }
+
+// TermStatuses projects terms with their code viewed at the head of changes.
+func TermStatuses(ctx context.Context, sagaID string, terms []requirements.Term, changes gitdiff.ChangeSet, resolver coverage.Resolver) []TermStatus {
+	return termStatuses(sagaID, terms, resolveTermCode(ctx, terms, changes, resolver))
+}
