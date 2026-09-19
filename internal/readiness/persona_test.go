@@ -1,6 +1,7 @@
 package readiness
 
 import (
+	"reflect"
 	"strings"
 	"testing"
 )
@@ -11,66 +12,51 @@ const (
 	legacyURN  = "urn:change-saga:s:persona:legacy"
 )
 
-func factsWithCode(value Gate, code string) []Fact {
-	facts := []Fact{}
-	for _, fact := range value.Facts {
+func factsWithCode(facts []Fact, code string) []Fact {
+	result := []Fact{}
+	for _, fact := range facts {
 		if fact.Code == code {
-			facts = append(facts, fact)
+			result = append(result, fact)
 		}
 	}
-	return facts
+	return result
 }
 
-func TestActivePersonaWithNoAcceptedStoryBlocksRequirements(t *testing.T) {
+// Persona coverage is a report. No gate reads it, so the gate table is the
+// same with or without personas.
+func TestPersonaCoverageNeverChangesAGate(t *testing.T) {
 	inputs := coveredInputs()
-	inputs.Personas = []Persona{{URN: shopperURN, Active: true}}
-	requirements := gate(t, EvaluateGates(inputs), GateRequirementsReady)
-	if requirements.Status != StatusBlocked {
-		t.Fatalf("an unserved active persona must block requirements_ready: %s", requirements.Status)
+	want := EvaluateGates(inputs)
+	facts := PersonaCoverage([]Persona{{URN: shopperURN, Active: true}}, []PersonaOrphans{{Personas: []string{legacyURN}, Stories: []string{storyURN}}})
+	if len(facts) != 2 {
+		t.Fatalf("persona coverage facts = %+v", facts)
 	}
-	facts := factsWithCode(requirements, "active_persona_served")
+	if got := EvaluateGates(inputs); !reflect.DeepEqual(got, want) {
+		t.Fatalf("persona coverage changed the gate table")
+	}
+}
+
+func TestActivePersonaWithNoAcceptedStoryIsAnUnsatisfiedFact(t *testing.T) {
+	facts := factsWithCode(PersonaCoverage([]Persona{{URN: shopperURN, Active: true}}, nil), "active_persona_served")
 	if len(facts) != 1 || facts[0].Satisfied || facts[0].Resource != shopperURN {
 		t.Fatalf("active_persona_served facts = %+v", facts)
 	}
-	if codes := blockerCodes(requirements); len(codes) != 1 || codes[0] != "active_persona_served" {
-		t.Fatalf("the unserved persona must be the only blocker: %v", codes)
-	}
-
-	inputs.Personas[0].ServedBy = []string{storyURN}
-	requirements = gate(t, EvaluateGates(inputs), GateRequirementsReady)
-	if requirements.Status != StatusReady {
-		t.Fatalf("a served persona satisfies requirements_ready: %s blockers %v", requirements.Status, blockerCodes(requirements))
-	}
-	facts = factsWithCode(requirements, "active_persona_served")
+	facts = factsWithCode(PersonaCoverage([]Persona{{URN: shopperURN, Active: true, ServedBy: []string{storyURN}}}, nil), "active_persona_served")
 	if len(facts) != 1 || !facts[0].Satisfied {
 		t.Fatalf("served persona fact = %+v", facts)
 	}
 }
 
 func TestRetiredPersonaNeedsNoStory(t *testing.T) {
-	inputs := coveredInputs()
-	inputs.Personas = []Persona{{URN: legacyURN, Active: false}}
-	requirements := gate(t, EvaluateGates(inputs), GateRequirementsReady)
-	if requirements.Status != StatusReady {
-		t.Fatalf("a retired persona must not block: %s blockers %v", requirements.Status, blockerCodes(requirements))
-	}
-	if facts := factsWithCode(requirements, "active_persona_served"); len(facts) != 0 {
+	if facts := PersonaCoverage([]Persona{{URN: legacyURN, Active: false}}, nil); len(facts) != 0 {
 		t.Fatalf("a retired persona reports no served fact: %+v", facts)
 	}
 }
 
 func TestPersonaOrphansAreOneFactRegardlessOfStoryCount(t *testing.T) {
-	inputs := coveredInputs()
-	stories := []string{
-		"urn:change-saga:s:story:a", "urn:change-saga:s:story:b", "urn:change-saga:s:story:c",
-	}
-	inputs.Personas = []Persona{{URN: legacyURN}, {URN: clerkURN}}
-	inputs.PersonaOrphans = []PersonaOrphans{{Personas: []string{clerkURN, legacyURN}, Stories: stories}}
-	requirements := gate(t, EvaluateGates(inputs), GateRequirementsReady)
-	if requirements.Status != StatusBlocked {
-		t.Fatalf("stories serving only retired personas must block: %s", requirements.Status)
-	}
-	facts := factsWithCode(requirements, "retired_persona_stories_decided")
+	stories := []string{"urn:change-saga:s:story:a", "urn:change-saga:s:story:b", "urn:change-saga:s:story:c"}
+	facts := factsWithCode(PersonaCoverage([]Persona{{URN: legacyURN}, {URN: clerkURN}},
+		[]PersonaOrphans{{Personas: []string{clerkURN, legacyURN}, Stories: stories}}), "retired_persona_stories_decided")
 	if len(facts) != 1 || facts[0].Satisfied {
 		t.Fatalf("a persona-orphan group must be exactly one unsatisfied fact: %+v", facts)
 	}
@@ -78,14 +64,5 @@ func TestPersonaOrphansAreOneFactRegardlessOfStoryCount(t *testing.T) {
 		if !strings.Contains(facts[0].Detail, story) {
 			t.Errorf("fact detail %q does not name %s", facts[0].Detail, story)
 		}
-	}
-	blockers := 0
-	for _, code := range blockerCodes(requirements) {
-		if code == "retired_persona_stories_decided" {
-			blockers++
-		}
-	}
-	if blockers != 1 {
-		t.Fatalf("persona orphans must be one blocker, got %d: %v", blockers, blockerCodes(requirements))
 	}
 }

@@ -700,3 +700,84 @@ func TestFlagGatedStoryIsImplementedButNotEnabled(t *testing.T) {
 	}
 	assertValid(t, root)
 }
+
+// The incremental case: a first change names an epic, writes one story, and
+// explains itself with a deck, without defining a single persona. It is
+// valid, and requirements_ready answers exactly what it would without the
+// persona feature: blocked only until the story is accepted.
+func TestFirstChangeNeedsNoPersonas(t *testing.T) {
+	repo := t.TempDir()
+	git(t, repo, "init", "-b", "main")
+	git(t, repo, "config", "user.name", "Test Author")
+	git(t, repo, "config", "user.email", "test@example.test")
+	git(t, repo, "remote", "add", "origin", "https://example.test/acme/app.git")
+	writeFile(t, filepath.Join(repo, "README.md"), "base\n")
+	git(t, repo, "add", ".")
+	git(t, repo, "commit", "-m", "base")
+	root := filepath.Join(t.TempDir(), "first.saga")
+	ctx := context.Background()
+	var output bytes.Buffer
+	if err := Init(ctx, []string{"--repo", repo, "--repository", "https://example.test/acme/app.git", "--id", "first", root}, &output); err != nil {
+		t.Fatal(err)
+	}
+	mustLiving(t, "epic add", epicCommand, "add", root, "--id", "checkout", "--title", "Checkout")
+	story := addStory(t, root, "checkout", "pay").Resource
+	output.Reset()
+	if err := AddDeck(ctx, []string{"--epic", "checkout", "--objective", "Explain how payment works.", root, "payments"}, &output); err != nil {
+		t.Fatalf("add-deck: %v\n%s", err, output.String())
+	}
+	output.Reset()
+	if err := Validate(ctx, []string{"--json", root}, &output); err != nil {
+		t.Fatalf("a first change without personas is invalid: %v\n%s", err, output.String())
+	}
+
+	requirementsReady := func() (string, []string, bool, int) {
+		t.Helper()
+		var document struct {
+			Readiness struct {
+				Gates []struct {
+					Name   string `json:"name"`
+					Status string `json:"status"`
+					Facts  []struct {
+						Code string `json:"code"`
+					} `json:"facts"`
+				} `json:"gates"`
+			} `json:"readiness"`
+			PersonaCoverage struct {
+				Blocking bool              `json:"blocking"`
+				Facts    []json.RawMessage `json:"facts"`
+			} `json:"persona_coverage"`
+		}
+		var status bytes.Buffer
+		if err := Status(ctx, []string{"--json", "--repo", repo, root}, &status); err != nil && status.Len() == 0 {
+			t.Fatalf("status: %v", err)
+		}
+		if err := json.Unmarshal(status.Bytes(), &document); err != nil {
+			t.Fatalf("status --json: %v\n%s", err, status.String())
+		}
+		for _, gate := range document.Readiness.Gates {
+			if gate.Name == "requirements_ready" {
+				codes := []string{}
+				for _, fact := range gate.Facts {
+					codes = append(codes, fact.Code)
+				}
+				return gate.Status, codes, document.PersonaCoverage.Blocking, len(document.PersonaCoverage.Facts)
+			}
+		}
+		t.Fatal("status has no requirements_ready gate")
+		return "", nil, false, 0
+	}
+	state, codes, blocking, personaFacts := requirementsReady()
+	if state != "blocked" || blocking || personaFacts != 0 {
+		t.Fatalf("a proposed story blocks requirements_ready on its own: %s %v blocking=%v persona facts=%d", state, codes, blocking, personaFacts)
+	}
+	for _, code := range codes {
+		if strings.Contains(code, "persona") {
+			t.Fatalf("requirements_ready asks about personas: %v", codes)
+		}
+	}
+	acceptStory(t, root, story)
+	if state, codes, _, _ := requirementsReady(); state != "ready" {
+		t.Fatalf("an accepted story with no personas leaves requirements_ready ready, got %s %v", state, codes)
+	}
+}

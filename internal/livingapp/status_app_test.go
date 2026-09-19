@@ -158,13 +158,23 @@ func TestAppStatusReportsPersonaGapsAndOneOrphanGroup(t *testing.T) {
 		t.Fatalf("retiring faxer leaves one orphan group with both stories: %+v", status.PersonaOrphans)
 	}
 
+	// Persona coverage is reported, never gating: requirements_ready carries
+	// no persona fact, and the coverage report carries them all.
 	requirementsGate, ok := status.Readiness.Gate(readiness.GateRequirementsReady)
-	if !ok || requirementsGate.Status != readiness.StatusBlocked {
+	if !ok || requirementsGate.Status != readiness.StatusReady {
 		t.Fatalf("requirements_ready = %+v", requirementsGate)
+	}
+	if status.PersonaCoverage.Blocking {
+		t.Fatal("persona coverage must never block")
 	}
 	clerkURN, _ := requirements.PersonaURN("test", "clerk")
 	orphanFacts, clerkServed := 0, false
 	for _, fact := range requirementsGate.Facts {
+		if strings.Contains(fact.Code, "persona") {
+			t.Fatalf("a persona fact leaked into requirements_ready: %+v", fact)
+		}
+	}
+	for _, fact := range status.PersonaCoverage.Facts {
 		switch fact.Code {
 		case "retired_persona_stories_decided":
 			orphanFacts++

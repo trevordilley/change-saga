@@ -109,6 +109,7 @@ func Assemble(in StatusInputs) Status {
 	status.Quality = a.finishQuality(qualityEval, status.Axes)
 	status.ChangedSource = a.changedSource()
 	personas, personaOrphans := a.appProjection(&status)
+	status.PersonaCoverage = PersonaCoverage{Facts: readiness.PersonaCoverage(personas, personaOrphans)}
 
 	stories := make([]readiness.Story, 0, len(in.Stories))
 	for _, row := range status.Stories {
@@ -133,7 +134,7 @@ func Assemble(in StatusInputs) Status {
 		uncoveredOrphans = append(uncoveredOrphans, orphan.DiffFile+"#"+itoa(orphan.Diff))
 	}
 	status.Readiness = readiness.EvaluateGates(readiness.GateInputs{
-		Stories: stories, Personas: personas, PersonaOrphans: personaOrphans, Prototypes: protoInputs, Coverage: status.Axes, QualityFacts: facts,
+		Stories: stories, Prototypes: protoInputs, Coverage: status.Axes, QualityFacts: facts,
 		ChangedSource: readiness.ChangedSourceAccounting{Complete: status.ChangedSource.Complete, Uncovered: status.ChangedSource.uncoveredURIs, Orphans: uncoveredOrphans},
 	})
 	status.Stale = a.staleRecords()

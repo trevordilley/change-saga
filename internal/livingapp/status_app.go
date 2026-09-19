@@ -56,6 +56,14 @@ type PersonaOrphans struct {
 	Stories  []string `json:"stories"`
 }
 
+// PersonaCoverage is a report, not a gate: each fact says whether an active
+// persona is served by an accepted story, or names the stories left serving
+// only retired personas. Nothing here changes any readiness gate.
+type PersonaCoverage struct {
+	Blocking bool             `json:"blocking"`
+	Facts    []readiness.Fact `json:"facts"`
+}
+
 // FlagStatus is one feature flag and the stories it currently gates.
 type FlagStatus struct {
 	Flag            string   `json:"flag"`

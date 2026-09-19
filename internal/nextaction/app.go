@@ -47,7 +47,8 @@ func (b *builder) inEpic(action Action) Action {
 // accepted story serves is a gap, and the stories left serving only retired
 // personas are one question.
 func (b *builder) personas() {
-	gates := []string{"requirements_ready", "ready_for_review"}
+	// Persona coverage is reported, never gating: these actions name no gate.
+	gates := []string{}
 	for _, persona := range b.status.Personas {
 		if !persona.Gap {
 			continue

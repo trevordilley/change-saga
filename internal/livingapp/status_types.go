@@ -117,20 +117,23 @@ type Diagnostic struct {
 // Status is the machine-readable authoring status of one Saga snapshot. Every
 // section is a list of facts; nothing is reduced to a score or a percentage.
 type Status struct {
-	SagaID         string                   `json:"saga_id"`
-	SagaVersion    int                      `json:"saga_version"`
-	Epics          []EpicStatus             `json:"epics"`
-	Personas       []PersonaStatus          `json:"personas"`
-	PersonaOrphans []PersonaOrphans         `json:"persona_orphans"`
-	Flags          []FlagStatus             `json:"flags"`
-	Stories        []StoryStatus            `json:"stories"`
-	Prototypes     []PrototypeStatus        `json:"prototypes"`
-	Readiness      readiness.GateProjection `json:"readiness"`
-	Axes           coverage.AxisProjection  `json:"axes"`
-	Quality        QualityStatus            `json:"quality"`
-	Stale          []StaleRecord            `json:"stale"`
-	ChangedSource  ChangedSource            `json:"changed_source"`
-	Diagnostics    []Diagnostic             `json:"diagnostics"`
+	SagaID         string           `json:"saga_id"`
+	SagaVersion    int              `json:"saga_version"`
+	Epics          []EpicStatus     `json:"epics"`
+	Personas       []PersonaStatus  `json:"personas"`
+	PersonaOrphans []PersonaOrphans `json:"persona_orphans"`
+	// PersonaCoverage reports the persona -> story link. It never blocks a
+	// readiness gate.
+	PersonaCoverage PersonaCoverage          `json:"persona_coverage"`
+	Flags           []FlagStatus             `json:"flags"`
+	Stories         []StoryStatus            `json:"stories"`
+	Prototypes      []PrototypeStatus        `json:"prototypes"`
+	Readiness       readiness.GateProjection `json:"readiness"`
+	Axes            coverage.AxisProjection  `json:"axes"`
+	Quality         QualityStatus            `json:"quality"`
+	Stale           []StaleRecord            `json:"stale"`
+	ChangedSource   ChangedSource            `json:"changed_source"`
+	Diagnostics     []Diagnostic             `json:"diagnostics"`
 }
 
 // StoryStatus is the requirement identity an author needs to act on a story.

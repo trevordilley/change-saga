@@ -90,8 +90,8 @@ func TestPersonaGapIsAnAppLevelQuestion(t *testing.T) {
 	if action.Epic != "" {
 		t.Fatalf("a persona concerns the app, not an epic: %q", action.Epic)
 	}
-	if !strings.Contains(strings.Join(action.Gates, ","), "requirements_ready") {
-		t.Fatalf("a persona gap names requirements_ready: %v", action.Gates)
+	if len(action.Gates) != 0 {
+		t.Fatalf("persona coverage gates nothing: %v", action.Gates)
 	}
 	accept := false
 	for _, command := range commandsOf(action) {
