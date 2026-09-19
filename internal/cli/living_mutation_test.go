@@ -227,13 +227,18 @@ func TestInstalledSkillDescribesOneSagaDrivenByStatus(t *testing.T) {
 	if err := InstallSkill(nil, &output); err != nil {
 		t.Fatal(err)
 	}
-	text := output.String()
+	text := strings.Join(strings.Fields(output.String()), " ")
 	for _, want := range []string{
-		"One Saga, from the big work to the big work",
-		"There is one kind of Saga",
-		"The only hard requirement is that code maps back to user stories",
+		"A repository has one app Saga",
+		"Epics are durable product domains",
+		"The chain is persona → story → design → code",
+		"The Saga is documentation",
 		"This is not a waterfall",
 		"Parallel authoring is a core property",
+		"The one thing asked of a change is that its implementation covers it",
+		"Everything else is growth, not debt",
+		"never invent a story",
+		"What exists must stay healthy",
 		"Drive the work with status",
 		"next_actions",
 	} {
@@ -241,7 +246,10 @@ func TestInstalledSkillDescribesOneSagaDrivenByStatus(t *testing.T) {
 			t.Fatalf("installed skill omitted %q:\n%s", want, text)
 		}
 	}
-	for _, retired := range []string{"Choose the workflow", "small focused change", "remain optional historical"} {
+	for _, retired := range []string{
+		"Choose the workflow", "choose a workflow", "small focused change", "small change may not need",
+		"remain optional historical", "requirements are optional", "Requirements are optional",
+	} {
 		if strings.Contains(text, retired) {
 			t.Fatalf("installed skill still offers a retired workflow: %q", retired)
 		}

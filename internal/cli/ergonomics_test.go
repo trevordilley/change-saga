@@ -316,7 +316,7 @@ func TestInstallSkillRoutesAgentsThroughTheQueryAPI(t *testing.T) {
 		"page.next_cursor",
 		"--batch",
 		"--dry-run",
-		"<fragment-path>#<landmark-id>",
+		"<fragment>#<landmark-id>",
 		"Never widen",
 	} {
 		if !strings.Contains(prompt, want) {
