@@ -52,7 +52,7 @@ quality, coverage, relation, or deck fields.
   ___claims/
   ___verifications/
   ___merges/                   # landed commits and their branch messages
-  ___review/                   # review overlay
+  ___reviews/<id>.review/      # pull-request reviews: a deck, approvals, comments
 ```
 
 Report content and epic roots are invalid at the application root. No URN names
@@ -328,8 +328,7 @@ to the story, without duplicating story text inside slide records.
 ## Report content, evidence, and review
 
 The report carries the Saga's authored narrative, and the same component model
-carries diff evidence, claims, and the review overlay across every part of the
-Saga. Report records use the v2 component schemas.
+carries code evidence and claims across every part of the Saga. Report records use the v2 component schemas.
 
 ## 1. Model
 
@@ -735,148 +734,93 @@ navigation state; every earlier result remains part of the audit history.
 Claims and results never accept an author name. Readers derive attribution from
 the Git commit that first introduced each file.
 
-## 8. Review overlay
+## 8. Reviews
 
-Review data lives separately from authored content:
-
-```text
-___review/threads/<thread-id>.thread/
-├── thread.json
-├── events/
-│   └── <event-id>.json
-└── messages/
-    └── <message-id>.message/
-        ├── message.json
-        ├── body.fragment/
-        │   ├── fragment.json
-        │   └── content.md
-        └── screenshot.fragment/
-            ├── fragment.json
-            └── screenshot.png
-```
-
-The overlay also contains append-only file-review events:
+The Saga is documentation: stories, designs, test cases, epic decks, and report
+content carry no approvals and no comments. Review happens in **reviews**. A
+review is equivalent to a pull request, and it is always a slide deck:
 
 ```text
-___review/files/<event-id>.json
+___reviews/<id>.review/
+├── review.json
+├── deck/                      # one flat deck bundle with role "review"
+│   ├── 10-d-....json
+│   ├── 20-s-....json
+│   ├── 30-i-....json
+│   └── 40-e-....json
+├── approvals/<event-id>.json
+└── comments/<event-id>.json
 ```
 
-Each event conforms to
-[`schema/v2/file-review.schema.json`](schema/v2/file-review.schema.json), carries
-a whole-file code reference in `code`, and has state `reviewed` or
-`unreviewed`. The latest event for the path is current; when two events share a
-`created_at`, the greater event `id` is the later one. Ordering never depends on
-file names, so every engine resolves the same commit to the same state. A file
-review applies to the file's content at the referenced commit, so a later change
-to the file is not implicitly reviewed.
+`review.json` conforms to
+[`schema/v5/review.schema.json`](schema/v5/review.schema.json). It names the pull
+request (`number`, `url`), the `base` it merges into, the `head` reference it
+follows (omitted means the checkout's `HEAD`), and its creation time. A review's
+range is the merge-base of base and head through head, exactly as a pull
+request's is, and the head follows the pull request as commits are pushed. There
+is one review per pull request number.
 
-A thread conforms to [`schema/v2/thread.schema.json`](schema/v2/thread.schema.json)
-and targets a saga, chapter, section, or fragment URN. Its anchor is one of:
+The review deck explains what the change did and why, including the transition
+and reasoning that the current documentation no longer shows. Its URNs are
+scoped to the review, `urn:change-saga:<saga>:review:<id>[:deck:<d>|:slide:<s>[:item:<i>]]`,
+so slide IDs never collide across reviews. An Item may reference code, which a
+reviewer sees as a diff against the review's base, and may carry a `record`: the
+URN of a persona, epic, story, test case, deck, slide, chapter, section, or
+fragment in the documentation. Review decks never join the documentation's
+structure, so they have no effect on coverage, readiness, or comparison layers.
 
-- `target`: the entire target.
-- `region`: rectangles, ellipses, or lines in normalized coordinates.
-- `drawing`: arbitrary paths represented by normalized points.
-- `text`: an exact quote with optional prefix, suffix, and character positions.
-- `note`: a sticky note carrying its own visible text and normalized placement.
-- `code`: one code reference. The reviewer supplies only the location; the
-  server computes the digest.
+**Approvals are per slide.** Each decision is an append-only record in
+`approvals/`, conforming to
+[`schema/v5/review-approval.schema.json`](schema/v5/review-approval.schema.json):
+the slide, a state of `approved`, `changes_requested`, or `none` (which
+withdraws), the reviewer, the full pull-request head commit at the time of the
+decision, a `slide_digest` over the slide's manifest, visual, Items, and their
+evidence, an optional body (required when requesting changes), and the creation
+time. The reviewer is `human` or `ai`; an AI reviewer also names a distinct
+reviewer seat, the agent, and the exact model, so `Claude 1` and `Claude 2`
+remain independent even on the same model. Git supplies the authoritative author
+identity. The latest decision for each Git author and reviewer seat on a slide
+is that reviewer's current decision.
 
-Normalized coordinates are in `[0,1]` relative to the rendered fragment stage,
-so drawings survive responsive resizing. Shapes support presentation hints such
-as color and stroke width, and text selectors may carry a highlight color.
-Engines may apply accessible defaults.
+**A decision is out of date** when the slide's digest differs from the one it
+recorded, or when the code referenced by any of the slide's Items changed
+between the decision's commit and the pull request's current head. Currency is
+`current`, `out_of_date` with its reasons, or `unknown` when the decision's
+commit is not available. This is how a review is known to be out of date for a
+pull request: slide by slide.
 
-A `note` anchor is a first-class review entity rather than a new thread kind: it
-is an ordinary `comment` thread whose anchor holds `text`, the normalized `x`/`y`
-centre of the note on the fragment stage, and an optional `color`. Note text is
-limited to 2000 characters and carries no markup; engines must render it as
-plain text. Because the note lives in the anchor, moving, rewording, and
-recoloring a committed note are `anchor` events rather than message rewrites,
-and the note keeps the thread's replies, state, and permalink. Engines should
-give each committed note its own document anchor so a sticky is directly
-linkable.
+**The format records; teams decide.** There is no aggregate state for a slide
+or a review. Every current decision is reported individually, and an AI
+approval is never presented as a human one. Repository policy, not this
+format, decides which combination of decisions permits merging.
 
-Text selectors follow the resilient idea from Web Annotation selectors: `exact`
-is authoritative, while positions and surrounding text help engines re-anchor
-after modest content edits. An engine must report an unanchored selector rather
-than attaching it to different text silently.
+**Comments** are append-only records in `comments/`, conforming to
+[`schema/v5/review-comment.schema.json`](schema/v5/review-comment.schema.json).
+A comment targets a review slide or Item, may reply to another comment, carries
+the reviewer and the head commit, and may resolve or reopen its thread.
 
-## 9. Thread messages and state
+Every decision and comment is its own file with a unique time-plus-random
+identifier, written with exclusive creation, so two reviewers acting on the same
+slide add disjoint files and do not create a Git conflict.
 
-Each message has `message.json` and one or more fragment packages. Comments are
-therefore not limited to plain text: a reply may contain Markdown, images, SVG,
-or sandboxed interactive HTML using the same fragment model as the saga.
-
-Thread lifecycle changes are append-only files in `events/` with state `open`,
-`resolved`, or `withdrawn`. The latest event by `created_at` is current, with
-ties broken by the greater event `id`. A
-withdrawn thread is omitted from the active review surface but remains fully
-auditable; a later `open` event restores it. An event may instead carry an
-`anchor` replacement to move, recolor, reword, or otherwise edit committed
-annotation geometry and note content. Transient undo and redo are engine-local
-composition behavior and do not create files. Messages, thread roots, and thread events are history and
-should not be rewritten or deleted during ordinary review.
-
-### Append-only file granularity
-
-Review mutations never append to a shared JSON array or rewrite a neighboring
-reviewer's record:
-
-- Each top-level comment creates its own `<id>.thread/` directory, whose name is
-  exactly the `id` in its `thread.json`.
-- The initial comment and every reply create separate `<id>.message/`
-  directories, with independent `message.json` metadata and fragment files, and
-  the directory name is exactly the `id` in its `message.json`. A record whose
-  directory and identifier disagree is invalid: the two would otherwise address
-  different records.
-- Every resolve/reopen/remove/restore, anchor edit, approval/rejection, and
-  reviewed/unreviewed change is a new event file with a unique time-plus-random
-  identifier.
-- Writers use exclusive creation and must fail rather than overwrite an
-  existing record.
-
-Consequently, two people commenting on the same fragment or replying to the
-same thread normally add disjoint files and do not create a Git content conflict.
-
-A thread has kind `comment` or `suggestion`. Suggestions must use a `diff`
-anchor and include explicit replacement text; they remain review proposals and
-are never applied to source code automatically.
-
-Saga-, chapter-, section-, and fragment-level decision records remain separate
-from discussion threads. Chapter decision records are accepted, but the
-reviewer UI treats a chapter as
-a container and derives its progress from the independently reviewed sections
-and fragments inside it.
-Append-only approval events live in the target's `___approvals/` directory and
-use state `approved`, `rejected`, `closed`, or `open` as defined by
-[`schema/v2/review.schema.json`](schema/v2/review.schema.json). New events carry
-a `reviewer` persona: `kind` is `human` or `ai`; AI personas also require a
-distinct reviewer name, agent kind, and model. Git still supplies the
-authoritative author identity. The name identifies one independent review seat
-(for example `Claude 1` and `Claude 2`) even when both seats use the same model.
-Legacy events without a persona remain valid and are displayed as unspecified.
-
-The latest event for each distinct Git author and reviewer persona is that
-reviewer's current decision, resolving `created_at` ties by the greater `id`.
-An `open` or `closed` event retracts only that persona's active decision. The
-displayed aggregate is rejected when any current reviewer rejects, approved
-when at least one current reviewer approves and none reject, and otherwise
-unreviewed. Every current decision remains visible; an AI approval is never
-presented as a human approval. Repository policy, not this format, decides
-which combination of approvals permits merging.
+**After merge**, `repin` freezes the review: `review.json` gains `merged` with
+the exact base and head commits and the landed commit, and the merge record in
+`___merges/` names the review. A frozen review stays viewable against its exact
+range and refuses new decisions and deck edits. A node's history lists the
+reviews that changed it.
 
 ## 10. Reserved names
 
-`___code` and `___approvals` are reserved on saga/chapter/section/fragment targets.
+`___code` is reserved on saga/chapter/section/fragment targets.
 `___landmarks` is reserved inside fragments.
 `___overview`, `___designsystem`, `___personas`, `___featureflags`,
-`___onboarding`, `___epics`, `___review`, `___claims`, `___verifications`, and
+`___onboarding`, `___epics`, `___reviews`, `___claims`, `___verifications`, and
 `___merges` are reserved at the saga root. `___requirements`, `___design`,
 `___workplan`, `___slides`, and `___quality` are reserved at an epic root;
 `___slides` contains only real `<deck-id>.deck` directories.
 Reserved metadata directories must be
 real directories, not symlinks. So must every entity package: a `.chapter`,
-`.fragment`, `.landmark`, `.thread`, or `.message` entry that is a symlink or a
+`.fragment`, or `.landmark` entry that is a symlink or a
 regular file is invalid rather than ignored, because silently skipping it would
 hide authored content behind a valid-looking saga. Other names beginning with
 `___` are invalid.
@@ -918,9 +862,10 @@ hide authored content behind a valid-looking saga. Other names beginning with
   records without claiming that a low score proves correctness. `query claims`
   and `query verifications` expose assertions, exact evidence, attribution, and
   result history.
-- `change-saga thread` and `change-saga reply` edit the review overlay without modifying
-  authored fragment content.
-- `change-saga review` appends a saga-, chapter-, section-, or fragment-level decision.
+- `change-saga review create|list|approve|request-changes|withdraw|comment`
+  manages a pull request's review: its deck is authored with `add-slide`,
+  `set-slide-content`, and `add-item` using `--review`, and decisions and
+  comments apply to review slides and Items only.
 - `change-saga open` serves a Saga view with attached-diff drawers, a Code Diff view
   with a changed-file tree, and a bidirectional Coverage Manifest. The Manifest
   must derive both code-to-narrative and narrative-to-code projections from the
