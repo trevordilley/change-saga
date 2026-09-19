@@ -7,34 +7,40 @@
 ![license: MIT](https://img.shields.io/badge/license-MIT-blue)
 [![Made with ❤️ using DevSwarm](https://img.shields.io/badge/Made%20with%20%E2%9D%A4%EF%B8%8F%20using-DevSwarm-5F2AFF?labelColor=0A022E&logo=data%3Aimage%2Fpng%3Bbase64%2CiVBORw0KGgoAAAANSUhEUgAAAEAAAAAiCAQAAABFXBcEAAACEElEQVR42s1Y63mDMAw8ugErsAIdwR2BjsAKrMAKWSEdgRXICGQEMsL1RwhIIIFpXhX%2F7E%2F2WY%2BTBKCEAFhxko7TemDPGOmZXzUAQumUt3VHCIKpUimGVRA8MlaONx2ApYKWcg0CAfAgFJrhEAAsuEeKQQsEG7F%2BWLEBQTBXx4Tx%2FSnbXQDa61sJzM%2FMXRss0QpDVtwrlXCeYdWbJNP1CVjgOO5c8JmcCSABM7RIx50TTo4RMwRHv0E27nwnP5wuVuHXyRfQfgFZiB39aUfVYkdn1jIUCYC19iFsH%2BoAUx%2FAoP09njGDNgvF4Zo%2BIopJsnQtAOhklVlUKhvkAoIXKPTSz6UTAmC2tBbdAJcsp5iM0%2Fu7eACDRq3OmgDoO8JwCl2ycNNvC4AO5lqcZlh5aeae2Yg5M9l%2FldFXz9M0Xw4A5uknENvsvwFgYdGjY9GO6VVhVv1oxQXja5qhG2DHVMVF1AYRte1fASxqZ%2BMyRaaviWP%2Frap%2BS8fOqQwK2gcuQjPFK0TfuOKC5mEuaNdc8O4gxDPSMI1NQw4KRt%2F2FCLKjIK3QcX13VRcbVCx2XLLUOz3AYATU5wX%2FICpGr65HI8NSbe85IENSWGPLv%2BjJdtsSuvoprSziH2tKfXb8jO%2BHtaW52iEvtWWv28wecVoFiJHs7cPp%2BZ4Xt49nhc7xnNYE703uqz9oAjiB4VBy1J%2BAQwDuoYAr7YrAAAAAElFTkSuQmCC)](https://devswarm.ai)
 
-Change Saga is the review record for a big change: the kind that warrants a
-product definition, UX and UI design, technical design, quality verification,
-and an implementation walkthrough. With AI, the big thing is often fastest to
-build in one large pull request. That speed is no reason to lose what the
-change was meant to do. A Saga captures it from the first prototype to the
-last changed line, and proves how every changed line traces back to that
-intent.
+Change Saga is living documentation for an application, kept honest by the
+code. It records what the application is for, who it serves, what it must do,
+how it is designed and verified, and exactly which code implements it, and it
+stays current as the application changes. With AI, a big change is often
+fastest to build in one large pull request; that speed is no reason to lose
+what the change was meant to do.
 
-One Saga holds the whole change, in four parts that never reorder as the work
-progresses:
+A Saga documents one application:
 
-- **Product**: interactive prototypes, and the user stories and acceptance
-  criteria that define the change.
-- **Design**: UX flows, UI references, and technical design (data models,
-  system structure, and data flows).
-- **Quality**: test cases that verify the acceptance criteria, with their
-  evidence and runs.
-- **Implementation**: the slide deck that explains the change, whose
-  individual visual elements own the exact diffs they explain.
+- **Overview**: the project's name, elevator pitch, a short description, and
+  its **terms and vocabulary**: the words the team uses that a newcomer would
+  not know, each linked to the stories and the exact code (usually an enum or a
+  constant) that define it.
+- **Personas**, a **design system**, an **onboarding deck**, and **feature
+  flags**.
+- **Epics**, the durable areas of the product. Each has the same four parts,
+  which never reorder as work progresses: **Product** (prototypes, and user
+  stories with acceptance criteria), **Design** (UX flows, UI references, and
+  technical design), **Quality** (test cases and their evidence), and
+  **Implementation** (a slide deck whose visual elements reference the exact
+  code they explain).
 
-The only hard requirement is that code maps back to user stories. Designs,
-specifications, and test cases map to stories, so code reaches a story
-through them rather than by hand-written code-to-story links. Every link pins
-the revision it relied on: when a story changes, whatever depended on the old
-revision becomes visibly stale. Change Saga also checks that every changed line
-is accounted for, because a path from each story to code does not prove that
-nothing else was built alongside it. Change Saga is experimental, and its
-format may change before 1.0.
+Every pull request gets a **review**: a slide deck explaining what the change
+did and why, which must account for every changed line, and whose slides
+reviewers approve one by one.
+
+Code maps back to user stories through designs, specifications, and test
+cases rather than hand-written code-to-story links. Every link pins what it
+relied on: evidence pins code at a commit and follows it as it moves, and
+records pin the revisions they depend on. When a story or the code changes,
+whatever depended on the old version becomes visibly stale, and the tool says
+exactly what to revisit. Nothing is demanded up front: a first change needs only
+its implementation explained, and the rest of the Saga grows from there.
+Change Saga is experimental, and its format may change before 1.0.
 
 ## Install
 
