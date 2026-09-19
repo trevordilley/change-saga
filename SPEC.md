@@ -531,99 +531,85 @@ IDs are 1–128 characters from `A-Z`, `a-z`, `0-9`, `.`, `_`, and `-`, beginnin
 with an alphanumeric character. Chapter, section, and fragment IDs are unique
 across the saga. Renaming or moving a directory does not change its target URN.
 
-## 5. Absolute diff URIs
+## 5. Code references
 
-A diff link is a fully realized URI. It does not inherit repository or revision
-state from the directory containing it.
-
-Line range:
-
-```text
-saga-diff://v1/line
-  ?repository=https%3A%2F%2Fgithub.com%2Facme%2Fpayments.git
-  &base=6c5f...40-hex-oid
-  &head=b127...40-hex-oid
-  &path=internal%2Fcheckout%2Fhandler.go
-  &side=new
-  &start=18
-  &end=42
-```
-
-File event:
-
-```text
-saga-diff://v1/event
-  ?repository=https%3A%2F%2Fgithub.com%2Facme%2Fpayments.git
-  &base=<identity>&head=<identity>
-  &event=rename
-  &old_path=internal%2Fold.go
-  &new_path=internal%2Fnew.go
-```
-
-File review target:
-
-```text
-saga-diff://v1/file
-  ?repository=https%3A%2F%2Fgithub.com%2Facme%2Fpayments.git
-  &base=<identity>&head=<identity>
-  &path=internal%2Fcheckout%2Fhandler.go
-```
-
-Required common parameters are `repository`, `base`, and `head`. Line URIs also
-require `path`, `side` (`old` or `new`), `start`, and `end`. Event URIs use
-`event=add|delete|type-change|rename|mode|binary|modify`. Rename carries exactly
-`old_path` and `new_path`; every other event carries exactly `path`. `add` and
-`delete` record file lifecycle independently of any changed-line atoms, so
-empty-file changes remain coverable. `type-change` records transitions among
-regular files, symlinks, and Gitlinks; `mode` records permission-only changes;
-`binary` records content Git cannot express as lines. `modify` is the defensive
-event for any other Git-reported file record that yields no more specific atom.
-File URIs identify the complete changed file for review-progress events; they
-are not valid coverage links.
-
-The query parameter set is closed and every parameter occurs exactly once.
-Canonical builders sort and escape the query and canonicalize the embedded
-repository identity. Parsers reject duplicate or unknown parameters and reject
-alternate encodings, ordering, userinfo, fragments, or other noncanonical
-spellings rather than assigning them an ambiguous meaning.
-
-The base identity is the comparison's resolved merge-base commit OID. The head identity is
-`product-<sha256-of-binary-patch>` where the patch excludes paths beneath any
-`.saga` directory. Product edits therefore make links stale, while committing
-comments, replies, approvals, or other saga-only changes does not invalidate
-otherwise identical evidence. `HEAD` and `WORKTREE` produce the same identity
-when their tracked product changes are identical. Engines compare the complete
-URI identity, preventing evidence from silently matching a similar path in a
-different repository or product comparison.
-
-## 6. Attaching diffs
-
-The root, a section, or a fragment can contain `___diffs/*.json` conforming to
-[`schema/v2/diff.schema.json`](schema/v2/diff.schema.json):
+Evidence never stores a diff. A code reference says "this node explains these
+lines, as of this commit", and a diff is a way of viewing references against
+two commits. Evidence records conform to
+[`schema/v2/code.schema.json`](schema/v2/code.schema.json):
 
 ```json
 {
-  "version": 2,
-  "diffs": [
-    {
-      "uri": "saga-diff://v1/line?repository=...&base=...&head=...&path=internal%2Fapi.go&side=new&start=18&end=42",
-      "note": "The behavior demonstrated by this fragment"
-    }
-  ]
+  "commit": "b127...40-hex-commit",
+  "path": "internal/checkout/handler.go",
+  "start": 18,
+  "end": 42,
+  "digest": "sha256:<hex of the exact referenced bytes>",
+  "note": "The behavior demonstrated by this fragment"
 }
 ```
 
-The containing object is the target of the evidence. One link may select a line
-range; one evidence file may hold multiple links and must hold at least one. All
-atoms are mapped when every changed line and file event is selected and every
-committed link matches the current source comparison. This is an omission
+`commit` is a full commit object name, never a symbolic ref. `start` and `end`
+select a 1-based inclusive line range; both are absent for a whole-file
+reference. `digest` is `sha256:` followed by the hex digest of the exact
+referenced bytes: the selected lines including their newlines, or the whole file
+blob. References do not repeat the repository; it is the Saga's declared
+`source.repository`.
+
+The compact location form, used by CLI flags, query arguments, URLs, and
+traceability results, omits the digest:
+
+```text
+<commit>:<path>[#L<start>[-L<end>]]
+```
+
+**Deletions** reference the base side of a comparison, since removed lines exist
+only there. Renames, mode and type changes, binary changes, and file additions
+or deletions are referenced by whole-file references.
+
+### 5.1 Viewing a reference at another commit
+
+A reference pinned at commit P is viewed at commit V by diffing P against V
+(renames followed, `.saga` paths excluded):
+
+- The pinned digest is verified first. A mismatch makes the reference stale.
+- Insertions and deletions entirely before the range shift it; the reference is
+  **remapped** and stays current.
+- Any change touching the range, including an insertion inside it, makes the
+  reference **stale**, with the reason and the diff since the pin available.
+- A whole-file reference remaps only on a pure rename and is stale on any
+  content, mode, or binary change.
+- Commits that change only `.saga` paths leave the code identical, so they
+  never move or stale a reference.
+- If the pinned commit is no longer available, the reference is resolved by
+  searching for its digest in the same path at V; only a unique match counts.
+
+A reference that is current but covers no changed line is not stale: it
+explains unchanged code.
+
+## 6. Attaching code
+
+A report target (a section, fragment, or landmark) holds evidence in
+`___code/*.json`, and a deck Item holds it in its `40-e-*.json` record, both as
+`{"version": 2, "references": [ ... ]}`. The containing object is the target of
+the evidence. An evidence file holds at least one reference.
+
+Coverage is computed for a comparison, never stored. For the merge-base M and
+head H (excluding `.saga` paths), every reference is viewed at both M and H.
+Added and modified lines are covered by references current at H, and deleted
+lines by references current at M. File events are covered only by whole-file
+references on the side where the file exists (M for a deletion). A whole-file
+reference does not cover the file's individual lines. `cover --changed-lines`
+therefore writes a whole-file reference for each file event plus line ranges
+for the changed lines. All atoms are mapped when every changed line and file
+event is covered and no reference in the Saga is stale. This is an omission
 invariant only; it does not establish explanation quality, claim truth, review
 completion, or correctness. Overlap is reported but permitted.
 
 CLI-generated evidence filenames are a deterministic function of the target's
-canonical selector set and exclude reviewer-facing notes. Unrelated selector
+canonical reference set and exclude reviewer-facing notes. Unrelated reference
 sets therefore write unrelated files, while two branches that explain the same
-selectors differently write the same path and require an explicit Git
+code differently write the same path and require an explicit Git
 reconciliation. A generated filename collision MUST NOT be resolved by adding a
 timestamp or numeric suffix: preserving both records would turn an authored
 disagreement into an accidental overlap. Explicit `--name` values remain stable
@@ -631,12 +617,14 @@ author-chosen repair handles.
 
 Every Git-reported product file has at least one event or line atom, so an
 unrepresentable file record cannot make a nonempty comparison appear complete.
+Comparisons are between commits; uncommitted working-tree changes are not a
+comparison.
 
 Changes under a `.saga` path in the source repository are classified separately
 as saga-only changes. When source and saga are different repositories, all saga
 history is naturally outside the source comparison.
 
-### 6.1 Diff-based maintenance impact
+### 6.1 Maintenance impact
 
 `change-saga compare` is a read-only evidence projection for maintaining a Saga
 as its source evolves. It MUST NOT compare fragment bytes, rendered prose,
@@ -644,8 +632,8 @@ diagram geometry, review comments, or other authored content.
 
 The first Saga is the maintained document. An incoming Git comparison may be
 provided directly or through another Saga's `source` declaration. The engine
-reconstructs the maintained Saga's comparison at the incoming comparison's
-resolved base and evaluates its committed evidence there. It then classifies
+views the maintained Saga's references at the incoming comparison's resolved
+base and evaluates its evidence there. It then classifies
 incoming source atoms as:
 
 - `conflicting_intersection` when a removed line or destructive file event
@@ -667,31 +655,25 @@ This projection does not rewrite evidence or advance the Saga's declared head.
 Its purpose is to produce the formal maintenance work queue before content and
 coverage are reconciled against the new source state.
 
-### 6.2 Exact evidence rebase
+### 6.2 Re-pinning at merge
 
-`change-saga rebase-evidence` is the only supported bulk identity migration for
-a moved declared base. It resolves the Saga's current source comparison and
-MUST prove that every candidate selector already carries the same
-base-independent product identity as that comparison. It MUST also rebuild each
-candidate using only the new resolved base and prove the result still selects a
-current atom. A different repository, product identity, selector shape, or
-unmatched translated selector MUST refuse the entire operation without writes.
-Multiple old base cohorts MUST be refused rather than partially migrated.
+When a change lands, `change-saga repin --onto REV [--branch REV]` re-pins
+coverage references from branch commits to the landed commit, following moved
+lines exactly as viewing does. A squash merge or a deleted branch therefore
+loses nothing. References to deleted code, which exist only at the base, stay
+pinned and are reported. Claims, quality evidence, threads, and file reviews are
+immutable records; they keep their pins and resolve through the same viewing
+rules and digest fallback.
 
-The operation preserves evidence record paths, targets, ordering, notes, paths,
-sides, ranges, and events. Only the exact base field in each canonical URI may
-change. `--dry-run` performs the same proof and reports the complete impact
-without mutation. Application is serialized under the Saga authoring lock; a
-failed multi-file write restores original evidence and removes newly appended
-records.
+`repin` also writes `___merges/<landed-commit>.json`, conforming to
+[`schema/v2/merge.schema.json`](schema/v2/merge.schema.json). It records the
+landed commit and the branch's commit messages, ancestors first, so the
+reasoning in individual commits survives a squash merge. `--branch` must be
+given while the branch still exists. `--dry-run` reports the complete impact
+without writing.
 
-Claims remain immutable. Every claim containing migrated evidence is copied to
-a new claim ID with translated evidence, and a v3 `supersedes` relation points
-from the replacement to the original. Verification is not inherited by default. With
-`--carry-verifications`, the latest result is appended for the replacement as a
-new `analysis` verification whose summary identifies the source verification
-and unchanged product identity; this records logical carry-forward and MUST NOT
-imply that a command or test was rerun.
+`change-saga references [--stale] [--diff]` reports every reference's health:
+current, remapped, or stale with its reason and the diff since the pin.
 
 ## 7. Claims and verification
 
