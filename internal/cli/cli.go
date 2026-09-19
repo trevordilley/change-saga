@@ -19,6 +19,7 @@ import (
 	"strings"
 
 	"github.com/twentyideas/changesaga/internal/applayout"
+	"github.com/twentyideas/changesaga/internal/areas"
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
@@ -119,8 +120,8 @@ var commandUsage = map[string]string{
 	"prototype revise":            "change-saga prototype revise --prototype URN --revision ID --parent URN... --title TEXT (--source PATH | --url URL) [flags] <saga>",
 	"prototype annotate":          "change-saga prototype annotate --prototype URN --id ID --target URN --rationale TEXT --story-revision URN (--prototype-revision URN | --prototype-content-digest DIGEST) [selector] [flags] <saga>",
 	"story":                       "change-saga story <add|revise|set-state|move> [flags] <saga>",
-	"story add":                   "change-saga story add --epic ID --id ID --revision ID --event ID --title TEXT --statement TEXT --priority TEXT [flags] <saga>",
-	"story revise":                "change-saga story revise --story URN --revision ID --parent URN... --title TEXT --statement TEXT --priority TEXT [flags] <saga>",
+	"story add":                   "change-saga story add --epic ID --id ID --revision ID --event ID --title TEXT --statement TEXT [--priority TEXT] [flags] <saga>",
+	"story revise":                "change-saga story revise --story URN --revision ID --parent URN... --title TEXT --statement TEXT [--priority TEXT] [flags] <saga>",
 	"story set-state":             "change-saga story set-state --story URN --event ID --parent URN... --state STATE [flags] <saga>",
 	"criterion":                   "change-saga criterion <add|revise|remove> [flags] <saga>",
 	"criterion add":               "change-saga criterion add --story URN --parent REVISION --revision ID --id ID --statement TEXT [flags] <saga>",
@@ -289,9 +290,9 @@ func commandFlags(name, usage string, out io.Writer) *flag.FlagSet {
 }
 
 var commandDescription = map[string]string{
-	"init":                        "Create the app Saga: the saga.json manifest, a reviewer README, and the app\noverview under ___overview. Then cover the change: explain it with an\nimplementation deck whose Items reference every changed line. Epics, stories,\npersonas, design, and quality are optional and can come later.",
+	"init":                        "Create the app Saga: the saga.json manifest, a reviewer README, and the app\noverview under ___overview. Then either cover the change: explain it with an\nimplementation deck whose Items reference every changed line; or document\nexisting code: observe HEAD with status and reference the code each Item\nexplains at the current commit. Epics, stories, personas, design, and quality\nare optional and can come later.",
 	"status":                      "Report coverage by area for the change (--against) or the whole app, with the\nlists of what is and is not covered, stale records, and ordered next actions:\nrequired work first (keep what exists healthy, cover every changed line), then\noptional growth suggestions. Status has no verdict: it exits 0 whenever its\nreport can be trusted, and 1 only when the Saga is malformed (for example, a\nduplicate ID) or the checkout does not match the declared repository. Teams\nwrite their own rules over --json, or ask check.",
-	"check":                       "Ask whether the named coverage areas are fully covered in scope: the change\nwith --against, the whole app without, narrowed by --epic. It exits 0 when\nthey are, 3 with only those areas' gaps when they are not, and 1 when the\nreport cannot be trusted. Nothing is required unless someone asks.\n\nAreas follow the chain persona -> story -> design -> code:\n  implementation  every changed line is referenced by the implementation deck\n  stories         every changed line reaches a story through the chain\n  personas        every changed line reaches a persona\n  design          every story in scope has design\n  quality         every acceptance criterion in scope has a test\n  health          nothing that already existed went stale or broke",
+	"check":                       "Ask whether the named coverage areas are fully covered in scope: the change\nwith --against, the whole app without, narrowed by --epic. It exits 0 when\nthey are, 3 with only those areas' gaps when they are not, and 1 when the\nreport cannot be trusted. Nothing is required unless someone asks.\n\nAreas follow the chain persona -> story -> design -> code:\n  implementation  every changed line is referenced by the implementation deck\n                  (or narrative), or test code by its test case's evidence\n  stories         every changed line reaches a story through the chain\n  personas        every changed line reaches a persona\n  design          every story in scope has design\n  quality         every acceptance criterion in scope has a test\n  health          nothing that already existed went stale or broke",
 	"epic":                        "Add a durable product domain. An epic holds its own report content, stories,\ndesign, quality, work plan, and implementation deck. Story identity never\nnames an epic, so a story can move between epics without breaking a link.",
 	"overview":                    "Write the overview's elevator pitch and description, as Markdown. The overview\nis formal: the project's name (saga.json's title), an elevator pitch, a\ndescription (a short essay), and its terms and vocabulary (\"term\"). Every part\nis optional; an absent part is shown as a gap, never an error.",
 	"overview set-pitch":          "Write the elevator pitch: what the application is and who it is for, in a few\nsentences. The first write creates ___overview/pitch.fragment; later writes\nreplace its content.",
@@ -492,16 +493,27 @@ func Init(ctx context.Context, args []string, out io.Writer) error {
 		return err
 	}
 	fmt.Fprintf(out, `Created %[1]s
-Next: cover the change. Explain it with an implementation deck, then reference
-every changed line from the Item that explains it (the first command that
-needs an epic creates one named after the branch):
+Next, one of two paths.
+
+To cover a change (a branch or pull request): explain it with an
+implementation deck, then reference every changed line from the Item that
+explains it (the first command that needs an epic creates one named after the
+branch):
   change-saga add-deck --objective TEXT %[1]s NAME
   change-saga add-slide --deck TARGET --intent INTENT --layout LAYOUT %[1]s NAME
   change-saga add-item --slide TARGET --kind KIND %[1]s
   change-saga cover --against main --target ITEM --path PATH --changed-lines %[1]s
   change-saga status --against main %[1]s
-Stories, personas, design, test cases, the overview, and terms are optional;
-status suggests them as the Saga grows.
+
+To document existing code (no change needed): observe the app at HEAD, start
+with the overview and the project's terms, and reference the code each Item
+explains at the current commit, a range or a whole file at a time:
+  change-saga status %[1]s
+  change-saga overview set-pitch --text TEXT %[1]s
+  change-saga cover --target ITEM --path PATH (--lines RANGES | --file) %[1]s
+
+Either way, stories, personas, design, test cases, the overview, and terms
+are optional; status suggests them as the Saga grows.
 `, root)
 	return nil
 }
@@ -954,7 +966,7 @@ func Status(ctx context.Context, args []string, out io.Writer) error {
 			return err
 		}
 	} else {
-		printReport(out, status.Report, status.Opening, *maxItems)
+		printReport(out, status, *maxItems)
 		printComparison(out, status.Comparison, *maxItems)
 		printLivingStatus(out, status, *maxItems)
 	}
@@ -991,21 +1003,20 @@ func printCursor(out io.Writer, view opening) {
 	}
 }
 
-func printReport(out io.Writer, report coverage.Report, view opening, maxItems int) {
+// printReport prints how the Saga was opened and what code accounting found:
+// schema issues, the changed lines nothing references (one line per file
+// range), and stale references. It passes no verdict; the coverage report
+// that follows counts every area.
+func printReport(out io.Writer, status statusDocument, maxItems int) {
+	report, view := status.Report, status.Opening
 	if view.Mode == gitdiff.ModeObserve {
 		fmt.Fprintf(out, "OBSERVING %s (%s) — no change to account for; pass --against REV to compare\n", view.Head, shortOID(view.HeadOID))
 		printCursor(out, view)
 		fmt.Fprintf(out, "Stale references: %d  Remapped: %d\n", report.Summary.Stale, report.Summary.Remapped)
 	} else {
-		state := "MAPPING GAPS"
-		if report.Complete {
-			state = "ALL ATOMS MAPPED"
-		}
 		fmt.Fprintf(out, "COMPARING %s..%s (merge-base %s)\n", view.Against, view.Head, shortOID(view.BaseOID))
 		printCursor(out, view)
-		fmt.Fprintf(out, "%s — %d/%d product changes mapped\n", state, report.Summary.Covered, report.Summary.Total)
-		fmt.Fprintln(out, "Mapping detects omissions; it does not establish explanation quality or correctness.")
-		fmt.Fprintf(out, "Uncovered: %d  Overlapping: %d  Stale references: %d  Remapped: %d  Saga-only changes: %d\n", report.Summary.Uncovered, report.Summary.Overlapping, report.Summary.Stale, report.Summary.Remapped, report.Summary.SagaChanges)
+		fmt.Fprintf(out, "Stale references: %d  Remapped: %d  Overlapping: %d  Saga-only changes: %d\n", report.Summary.Stale, report.Summary.Remapped, report.Summary.Overlapping, report.Summary.SagaChanges)
 	}
 	if len(report.SchemaIssues) > 0 {
 		fmt.Fprintln(out, "\nSchema issues:")
@@ -1013,17 +1024,17 @@ func printReport(out io.Writer, report coverage.Report, view opening, maxItems i
 			fmt.Fprintf(out, "  %s: %s: %s\n", issue.Severity, issue.Path, issue.Message)
 		}
 	}
-	if len(report.Uncovered) > 0 {
-		fmt.Fprintln(out, "\nUncovered changes:")
-		limit := len(report.Uncovered)
+	if implementation := status.Coverage.Areas.Implementation; len(implementation.UncoveredEntries) > 0 {
+		fmt.Fprintf(out, "\nChanged lines nothing references (%d lines in %d file ranges):\n", implementation.Uncovered, len(implementation.UncoveredEntries))
+		limit := len(implementation.UncoveredEntries)
 		if maxItems > 0 && maxItems < limit {
 			limit = maxItems
 		}
-		for _, atom := range report.Uncovered[:limit] {
-			fmt.Fprintf(out, "  %s\n    %s\n", coverage.DescribeAtom(atom), atom.Ref)
+		for _, entry := range implementation.UncoveredEntries[:limit] {
+			fmt.Fprintf(out, "  %s\n", describeLines(entry))
 		}
-		if limit < len(report.Uncovered) {
-			fmt.Fprintf(out, "  … and %d more (use --max 0 or --json)\n", len(report.Uncovered)-limit)
+		if limit < len(implementation.UncoveredEntries) {
+			fmt.Fprintf(out, "  … and %d more file ranges (use --max 0 or --json)\n", len(implementation.UncoveredEntries)-limit)
 		}
 	}
 	if len(report.StaleReferences) > 0 {
@@ -1032,6 +1043,26 @@ func printReport(out io.Writer, report coverage.Report, view opening, maxItems i
 			fmt.Fprintf(out, "  %s reference %d (%s): %s\n", stale.Assignment.EvidenceFile, stale.Assignment.Reference, stale.Reference.Location(), stale.Reason)
 		}
 	}
+}
+
+// describeLines names one file's changed-line entry: its path and line
+// ranges, the side a deletion is on, and the line count.
+func describeLines(entry areas.Entry) string {
+	text := entry.Resource
+	switch {
+	case entry.Event != "":
+		text += " (" + entry.Event + ")"
+	case entry.Lines != "":
+		text += ":" + entry.Lines
+		if entry.Side == "old" {
+			text += " (deleted)"
+		}
+	}
+	lines := "lines"
+	if entry.Count == 1 {
+		lines = "line"
+	}
+	return fmt.Sprintf("%s  [%d %s]", text, entry.Count, lines)
 }
 
 // Serve runs the loopback reviewer. It is reached as both "serve" and "open":

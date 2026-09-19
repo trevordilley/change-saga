@@ -165,7 +165,7 @@ func buildStatus(ctx context.Context, root, repoDir string, rng gitdiff.Range, a
 		document.Comparison = &layers
 	}
 	document.Coverage = areas.Evaluate(coverageInputs(value.document, value.changes, value.report, living, document.Comparison, epic))
-	document.NextActions = nextaction.Derive(living, root, nextaction.Context{Coverage: document.Coverage, Places: storyPlaces(value.document)})
+	document.NextActions = nextaction.Derive(living, root, nextaction.Context{Coverage: document.Coverage, Places: storyPlaces(value.document), DesignEpics: designEpics(value.document)})
 	document.NextActions = append(document.NextActions, nextaction.Reviews(document.Reviews, root)...)
 	return document, nil
 }
@@ -235,7 +235,7 @@ func printComparison(out io.Writer, layers *changeview.Layers, maxItems int) {
 		}
 		printReasons(out, affected.Reasons)
 	}
-	fmt.Fprintf(out, "\nCode: %d changed lines under %d records; %d lines no record references\n", layers.Summary.ChangedLines, layers.Summary.CodeGroups, layers.Summary.Unreferenced)
+	fmt.Fprintf(out, "\nCode: the diff of %d changed lines, grouped under the %d records that reference them (the implementation area counts what is referenced)\n", layers.Summary.ChangedLines, layers.Summary.CodeGroups)
 	for _, diagnostic := range layers.Diagnostics {
 		fmt.Fprintf(out, "  note %s: %s\n", diagnostic.Code, diagnostic.Message)
 	}
@@ -259,14 +259,22 @@ func printLivingStatus(out io.Writer, status statusDocument, maxItems int) {
 			work = append(work, action)
 		}
 	}
-	if len(work) == 0 {
-		fmt.Fprintln(out, "\nNext actions: none. Every changed line is covered and nothing existing is stale or broken; that is not a claim of correctness.")
-	} else {
+	observing := status.Opening.Mode == gitdiff.ModeObserve
+	switch {
+	case len(work) > 0:
 		fmt.Fprintf(out, "\nNext actions (%d, in order):\n", len(work))
 		printActions(out, work, maxItems, false)
+	case observing:
+		fmt.Fprintln(out, "\nNext actions: none. Observing, there is no change to cover, and nothing existing is stale or broken; that is not a claim of correctness.")
+	default:
+		fmt.Fprintln(out, "\nNext actions: none. Every changed line is covered and nothing existing is stale or broken; that is not a claim of correctness.")
 	}
 	if len(growth) > 0 {
-		fmt.Fprintf(out, "\nGrowth (%d optional suggestions, most valuable to this change first; take them a step at a time or ignore them):\n", len(growth))
+		order := "most valuable to this change first"
+		if observing {
+			order = "for the app as it is, the overview and vocabulary first"
+		}
+		fmt.Fprintf(out, "\nGrowth (%d optional suggestions, %s; take them a step at a time or ignore them):\n", len(growth), order)
 		printActions(out, growth, maxItems, true)
 	}
 }
@@ -374,15 +382,40 @@ func printOverviewStatus(out io.Writer, status livingapp.Status) {
 			}
 		}
 	}
-	if len(status.NewTerminology) > 0 {
-		fmt.Fprintf(out, "\nNew terminology (%d suggestions; optional, never blocking):\n", len(status.NewTerminology))
-		for _, suggestion := range status.NewTerminology {
-			name := suggestion.Name
-			if suggestion.Container != "" {
-				name = suggestion.Container + "." + name
-			}
-			fmt.Fprintf(out, "  %-28s %s#L%d\n", name, suggestion.Location.Path, suggestion.Location.Start)
+	printNewTerminology(out, status.NewTerminology)
+}
+
+// printNewTerminology prints a comparison's new-terminology suggestions one
+// declaration block (a type's members in one file) per line, each by the
+// domain word its identifier spells.
+func printNewTerminology(out io.Writer, suggestions []livingapp.TermSuggestion) {
+	if len(suggestions) == 0 {
+		return
+	}
+	order := []string{}
+	blocks := map[string][]livingapp.TermSuggestion{}
+	for _, suggestion := range suggestions {
+		key := suggestion.Location.Path + "#" + suggestion.Container
+		if _, ok := blocks[key]; !ok {
+			order = append(order, key)
 		}
+		blocks[key] = append(blocks[key], suggestion)
+	}
+	fmt.Fprintf(out, "\nNew terminology (%d declarations in %d blocks no term names; optional, never blocking):\n", len(suggestions), len(order))
+	for _, key := range order {
+		block := blocks[key]
+		start, end := block[0].Location.Start, block[0].Location.End
+		words := []string{}
+		for _, suggestion := range block {
+			start, end = min(start, suggestion.Location.Start), max(end, suggestion.Location.End)
+			words = append(words, suggestion.Suggested)
+		}
+		lines := fmt.Sprintf("#L%d", start)
+		if end > start {
+			lines += fmt.Sprintf("-L%d", end)
+		}
+		name := firstNonEmpty(block[0].Container, block[0].Name)
+		fmt.Fprintf(out, "  %s (%s%s): %s\n", name, block[0].Location.Path, lines, strings.Join(words, ", "))
 	}
 }
 
@@ -456,7 +489,7 @@ func livingSpec() map[string]any {
 		"coverage_report": map[string]any{
 			"areas": areaNames(),
 			"area_rules": map[string]string{
-				"implementation": "every changed line is referenced by the implementation deck",
+				"implementation": "every changed line is referenced by the implementation deck (or a narrative target), or, for test code, by its test case's evidence",
 				"stories":        "every changed line reaches a story through the chain",
 				"personas":       "every changed line reaches a persona",
 				"design":         "every story in scope has design",
@@ -476,7 +509,7 @@ func livingSpec() map[string]any {
 			"kinds":      []string{string(nextaction.KindCommand), string(nextaction.KindQuestion)},
 			"needs":      []string{string(nextaction.NeedProductJudgment), string(nextaction.NeedExternalAccess), string(nextaction.NeedExplicitExclusion)},
 			"categories": categoryNames(),
-			"contract":   "a command action carries a grammar invocation whose inputs the author supplies; a question action carries one focused question and the invocation each answer leads to; area names the coverage area it advances; a growth action is optional and carries the practice it teaches",
+			"contract":   "a command action carries a grammar invocation whose inputs the author supplies; a question action carries one focused question and the invocation each answer leads to; area names the coverage area it advances, or overview or terms for growth no coverage area counts; a growth action is optional and carries the practice it teaches",
 			"loop":       "inspect status --json, ask or mutate, validate, re-evaluate; a list of growth suggestions only is the fixed point and never a claim of correctness",
 		},
 		"status_schema": StatusSchema,

@@ -207,7 +207,7 @@ func TestGrowthComesLastAndTeachesItsPractice(t *testing.T) {
 		}
 	}
 	ids := byID(actions)
-	for _, id := range []string{"growth:design:urn:change-saga:checkout:story:refund", "growth:quality:" + criterion("failing"), "growth:persona:unnamed"} {
+	for _, id := range []string{"growth:design:urn:change-saga:checkout:story:refund", "growth:quality:urn:change-saga:checkout:story:refund", "growth:persona:unnamed"} {
 		if _, ok := ids[id]; !ok {
 			t.Fatalf("missing growth suggestion %s in %v", id, actions)
 		}

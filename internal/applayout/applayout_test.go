@@ -70,3 +70,25 @@ func TestUniqueIDsNameBothEpics(t *testing.T) {
 		t.Fatalf("duplicate across epics = %v", err)
 	}
 }
+
+// Epics are presented in the order they were created, not alphabetically;
+// epics created at the same instant keep ID order.
+func TestInCreationOrderPresentsEpicsAsTheyWereIntroduced(t *testing.T) {
+	at := func(second int) time.Time { return time.Date(2026, 9, 19, 20, 47, second, 0, time.UTC) }
+	epics := []Epic{
+		{EpicManifest: EpicManifest{ID: "agent-loop", CreatedAt: at(9)}},
+		{EpicManifest: EpicManifest{ID: "format", CreatedAt: at(1)}},
+		{EpicManifest: EpicManifest{ID: "comparison", CreatedAt: at(5)}},
+		{EpicManifest: EpicManifest{ID: "code-evidence", CreatedAt: at(5)}},
+	}
+	got := []string{}
+	for _, epic := range InCreationOrder(epics) {
+		got = append(got, epic.ID)
+	}
+	if strings.Join(got, ",") != "format,code-evidence,comparison,agent-loop" {
+		t.Fatalf("order = %v", got)
+	}
+	if epics[0].ID != "agent-loop" {
+		t.Fatal("InCreationOrder must not reorder its argument")
+	}
+}

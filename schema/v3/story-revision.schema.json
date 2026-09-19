@@ -4,7 +4,7 @@
   "title": "Living Change Saga full story revision",
   "type": "object",
   "additionalProperties": false,
-  "required": ["$schema", "version", "id", "story", "parents", "title", "statement", "priority", "citations", "acceptance_criteria", "created_at"],
+  "required": ["$schema", "version", "id", "story", "parents", "title", "statement", "citations", "acceptance_criteria", "created_at"],
   "properties": {
     "$schema": { "const": "https://changesaga.dev/schema/v3/story-revision.schema.json" },
     "version": { "const": 3 },
@@ -18,7 +18,7 @@
     },
     "title": { "type": "string", "minLength": 1 },
     "statement": { "type": "string", "minLength": 1 },
-    "priority": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "priority": { "type": "string", "maxLength": 128 },
     "personas": {
       "type": "array",
       "maxItems": 1000,

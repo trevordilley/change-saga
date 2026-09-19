@@ -72,7 +72,7 @@ func loadAppContent(root string, manifest Manifest, section *Section, options lo
 	if epicErr != nil {
 		addIssue(validation, "error", applayout.EpicsDir, epicErr.Error())
 	}
-	for _, value := range epics {
+	for _, value := range applayout.InCreationOrder(epics) {
 		epic := &Epic{ID: value.ID, Title: value.Title, Path: value.Rel, Target: applayout.EpicURN(manifest.ID, value.ID)}
 		report, err := loadSection(root, value.Dir, manifest, epicHierarchy, options, validation)
 		if err != nil {
