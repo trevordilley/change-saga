@@ -34,8 +34,8 @@ context. Do not manufacture drama. If investigation finds no meaningful
 deviation, say so and use the slides to teach system shape, risk boundaries,
 and proof instead.
 
-Only enter reviewer mode when the user explicitly asks to review, approve,
-reject, annotate, or comment on an already-authored saga.
+Only enter reviewer mode when the user explicitly asks to conduct the review of
+a pull request that has a review.
 
 Use the `change-saga` CLI as the source of truth for format validity and diff coverage.
 Treat completeness as an omission check, not proof that the authored proposal
@@ -130,11 +130,13 @@ saga during both authoring and review. It is deterministic and paginated, never
 starts the server, and never mutates either repository.
 
 The operations are `schema`, `overview`, `children`, `fragment`, `fragment-diffs`, `slide`, `slide-diffs`,
-`diff-owners`, `reviews`, `gaps`, `mappings`, `claims`, `verifications`,
-`requirements`, `relations`, and `traceability`. Start at `query overview`, walk one level
+`diff-owners`, `gaps`, `mappings`, `claims`, `verifications`, `requirements`,
+`relations`, `traceability`, `layers`, and `history`. Start at `query overview`, walk one level
 at a time with `query children`, read narrative content through `query
 fragment`, navigate evidence in both directions with `query fragment-diffs` and
-`query diff-owners`, read the review overlay with `query reviews`, and page
+`query diff-owners`, read a comparison's Changed, Affected, and Code layers with
+`query layers --against REV`, trace a record's history with `query history
+--node URN`, and page
 completeness problems with `query gaps --kind uncovered|stale|overlap`.
 Use `query mappings --sort scrutiny` to find coverage records whose breadth or
 thin justification deserves the most skepticism. Use `query claims` and
@@ -181,10 +183,28 @@ risk, metric, example, or callout. A callout may point at another Item with
 `--about`, and it may own diff evidence itself. Put every non-decorative Item
 in `reading_order`; `add-item` does this automatically. Attach every exact diff
 atom to the narrowest Item; slide evidence is owned only by Items. Use `query
-slide` and `query slide-diffs` to read it back. Approval is deliberately
-coarser than evidence: approve or reject the complete slide, while using
-Item-targeted threads and annotations for precise feedback. Do not create
-approval records for the Saga, a deck, or an Item.
+slide` and `query slide-diffs` to read it back. The Saga is documentation: its
+decks carry no approvals and no comments. Review happens only in a pull
+request's review (see below).
+
+## Author a pull request's review
+
+A review is a pull request's slide deck: one review per pull request, viewed
+from the merge-base of its base through its head, and following the head as
+commits are pushed. Create it with `change-saga review create --id pr-<n> --pr
+<n> --url <url> --base <branch it merges into> --head <its branch>`, and author
+its deck with `add-slide --review`, `set-slide-content --review`, `add-item
+--review`, and `cover --against <base> --target <review Item URN>`.
+
+The review deck explains what the change did and why: the transition and its
+reasoning (why the queue moved from SQS to a Postgres table), which the current
+documentation no longer shows. Its Items reference the code the change touched,
+shown as a diff against the review's base, and may reference the records it
+revised with `--record` (a story, an epic slide) so a reviewer can open them
+beside the change. Review decks never count toward coverage; each epic's
+implementation deck still explains the current code. After the change lands,
+`change-saga repin --onto <landed commit> --branch <branch>` freezes the review
+at its exact base and head.
 
 Before handoff, page `query traceability`; use `--diff` for exact reverse
 lookup or `--commit` for the resolved head commit of a committed comparison,
@@ -208,8 +228,7 @@ it.
 3. Initialize the saga when none exists:
 
    ```sh
-   change-saga init --base <base> --head <head> --title "<title>" \
-     [--pr <number> --pr-url <url>] <name>.saga
+   change-saga init --title "<title>" <name>.saga
    ```
 
    Comparisons are between commits, so commit in-progress work before covering
@@ -237,8 +256,8 @@ it.
 7. Enumerate every meaningful visual node, edge, region, transition, statement,
    risk, metric, example, and callout with `add-item`. Keep 1–7 primary Items per
    slide, include every non-decorative Item in `reading_order`, and give each a
-   semantic description that stands without the picture. The slide is the
-   approval unit; Items are the precise evidence and discussion units.
+   semantic description that stands without the picture. Items are the
+   precise evidence units.
 8. Reference only the exact code each Item explains with `change-saga cover
    --target`. A reference pins lines at a commit with a digest of their
    content. Always provide a concise reviewer-facing note. `--side new --lines`
@@ -276,82 +295,59 @@ the maintenance work queue from source evidence rather than comparing authored
 content:
 
 ```sh
-change-saga compare --json --repo <source-checkout> \
-  --base <incoming-base> --head <incoming-head> <maintained.saga>
-change-saga compare --json --repo <source-checkout> \
-  --against-saga <incoming.saga> <maintained.saga>
+change-saga status --json --repo <source-checkout> \
+  --against <incoming-base> --head <incoming-head> <maintained.saga>
+change-saga query layers --saga <maintained.saga> --repo <source-checkout> \
+  --against <incoming-base> --head <incoming-head> --layer affected
 ```
 
-The first Saga is the maintained document. `must_update` targets have a direct
-conflicting intersection with removed, replaced, renamed, or otherwise
-destructive source evidence. `consider_update` targets neighbor additive code
-in the same implementation area. `new_content` atoms have no existing owner
-and require a new or expanded explanation. Follow the returned target URNs,
-`content_path`, and `evidence_files`; do not compare prose, SVG, HTML, or other
-fragment bytes to infer impact. Stop and repair the baseline first when the
-result reports `baseline_incomplete`, because the work queue is not exhaustive.
+The Affected layer lists the records the change invalidated: a removed or
+destructively changed line under a record's references means that record must
+be revisited; a new line beside referenced code is a prompt to reconsider it;
+changed code no record can own requires new or expanded documentation. Follow
+the returned record URNs and evidence files; do not compare prose, SVG, HTML, or
+other fragment bytes to infer impact.
 
-Run status against the new head, then handle both sides of drift:
+Then handle both sides of drift:
 
-- Remove or revise stale evidence with `remove-coverage` or
-  `replace-coverage`; never delete metadata files directly.
+- Re-author stale references with `replace-coverage` or remove them with
+  `remove-coverage`; never delete metadata files directly.
 - Place newly uncovered atoms only after reading their current diff context.
-- Update fragment content when behavior changed, even if an old range still
-  happens to match line numbers.
-- Preserve comments and review events. They are history; do not rewrite or
-  delete them to make the current state look cleaner.
-- Never consolidate comments, replies, or state events into shared files. Each
-  review action is an independent append-only record to minimize Git conflicts.
-- Saga-only commits intentionally preserve the product diff identity. Product
-  changes make old evidence stale and require reconciliation.
+- Update fragment content when behavior changed, even if an old reference
+  still happens to remap cleanly.
+- Commits that change only the Saga never move or stale a reference; code
+  changes do, and require reconciliation.
 
 ## Open the authored saga for review
 
-Run `change-saga open <name>.saga` when asked to present the authored change for
-review. Opening the UI does not authorize the AI to review it. The local UI can
-anchor threads to whole fragments, selected text, rectangles, freehand paths, or
-placed sticky notes.
-Thread messages are fragments and may include images, SVG, or HTML attachments.
-Use Saga view to follow the narrative and open attached code in the side
-drawer. Read the collapsed file summaries first, then expand a file to inspect
-the complete patch with its linked evidence highlighted. Use Code Diff view for the complete file tree. Diff comments,
-suggestions, reviewed-file state, and fragment approvals are committed overlay
-data and remain visible across both views.
-Choose Sticky and click a fragment to place a note, type its text, then Add note
-to commit it. Before submitting an annotation, use Ctrl/Cmd+Z to undo the latest
-canvas edit and Ctrl/Cmd+Shift+Z (or Ctrl+Y) to redo it. After submission, select
-a committed shape or note to move, recolor, reword, or remove it; Delete or
-Backspace removes the current selection. Committed edits append anchor or state
-events; never rewrite or delete the original thread or message.
-Do not create comments or findings, or resolve, reopen, approve, or reject on a
-person's behalf without an explicit request to conduct those review actions.
+Run `change-saga open <name>.saga` when asked to present the Saga. Opening it
+does not authorize the AI to review anything. Without `--against` it shows the
+documentation as of the head; with `--against <base>` it shows the Changed,
+Affected, and Code layers read-only beside the pull request's review. The
+documentation has no comment or approval controls in either mode.
 `change-saga open` starts a managed background reviewer and prints its PID and
 URL. Discover it later with `change-saga serve status [SAGA]` and stop it with
 `change-saga serve stop [SAGA]`. Use `change-saga serve --open` only when the
 reviewer should remain attached to the current terminal.
 
-When reviewing without the UI, read the saga through the query API described
-above rather than searching for or reading saga metadata files directly.
-When recording an approval or rejection from the CLI, always declare the
-reviewer persona. Use `--reviewer-kind human` only for a decision the human made
-directly. For your own AI review, use `--reviewer-kind ai` together with an
-independent `--reviewer-name`, `--agent`, and the exact `--model`; never turn an
-AI pass into a human approval. Give simultaneous passes stable distinct names
-such as `Claude 1` and `Claude 2` even when their model is identical.
-Multiple reviewers may decide the same target, and your decision must not erase
-or stand in for theirs.
-Conduct correctness review in three passes:
+When explicitly asked to review a pull request, first read the code diff
+independently and record provisional findings; then inspect the review deck,
+mappings, claims, verifications, and narrative intent; finally reconcile
+contradictions and independently test author claims. Do not let the author's
+explanation anchor the first correctness pass. Read the Saga through the query
+API rather than its metadata files.
 
-1. Read the code diff independently before reading the author's conclusions.
-   Record provisional findings so the narrative cannot anchor the first pass.
-2. Run `query mappings --sort scrutiny`, `query claims`, and `query
-   verifications`; use `query diff-owners` while inspecting atoms to see the
-   relevant target and its mapping-quality signals. Read the saga narrative for
-   architecture, intent, workflows, and tradeoffs, and independently test each
-   claim rather than accepting its latest status.
-3. Reconcile the two passes. Prioritize contradictions, unverified or failed
-   claims, stale evidence, broad mappings, and code the narrative minimizes.
-
-Treat uncovered results as a hard warning that the narrative is incomplete.
-Treat all-atoms-mapped as an omission invariant only, never as approval,
-correctness, or evidence that the explanation is sufficiently precise.
+Decisions are per review slide: `change-saga review approve`, `review
+request-changes` (say what should change), or `review withdraw`, each with
+`--review` and `--slide`; discuss with `review comment` on a slide or Item.
+Always declare the reviewer persona. Use `--reviewer-kind human` only for a
+decision the human made directly. For your own AI review, use `--reviewer-kind
+ai` together with an independent `--reviewer-name`, `--agent`, and the exact
+`--model`; never turn an AI pass into a human approval. Give simultaneous passes
+stable distinct names such as `Claude 1` and `Claude 2` even when their model
+is identical. A decision records the pull request head it was given at and goes
+out of date when the slide or the code it references changes; `change-saga
+review list` and `status` report each one's currency. Never state that a review
+is approved: the tool records decisions and the team decides what it requires.
+Do not record decisions or comments on a person's behalf without an explicit
+request to conduct the review.
