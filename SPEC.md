@@ -319,10 +319,8 @@ coverage. Relations never move exact diff ownership away from Items.
 
 `query traceability` returns the complete current paths from each accepted
 criterion through its linked review targets to Item-owned code references. It can be
-filtered in reverse with `--diff` or with `--commit`, where the commit is the
-resolved source-head commit of the active committed comparison. Commit lookup
-is unavailable for `WORKTREE` comparisons because their exact diff may include
-uncommitted content. Its `unlinked_code_evidence` collection exposes Item
+filtered in reverse with `--ref <location>`, or with `--commit` to select
+evidence pinned at that commit. Its `unlinked_code_evidence` collection exposes Item
 evidence that has no active, current path to an accepted story. Thus a caller
 can traverse from a story to code, or from the current head commit or diff back
 to the story, without duplicating story text inside slide records.
@@ -387,9 +385,9 @@ userinfo is invalid rather than silently stripped on read. An optional `pr`
 records a positive `number`, an absolute `url`, or both.
 
 `base` and `head` select the comparison to evaluate. Commit comparisons resolve
-both revisions and record their actual Git merge base. `WORKTREE` is allowed as `head`; engines resolve the merge base of
-the configured base and current `HEAD`, then compare that tree to the tracked
-worktree. Untracked files are excluded.
+both revisions and record their actual Git merge base. Comparisons are always
+between commits: code references pin commits, so uncommitted working-tree
+changes are not a comparison.
 
 `change-saga init` uses the canonical portable `origin` identity when available.
 Without an origin, or when origin is itself a local path, the author must provide
@@ -871,8 +869,10 @@ which combination of approvals permits merging.
 
 `___code` and `___approvals` are reserved on saga/chapter/section/fragment targets.
 `___landmarks` is reserved inside fragments.
-`___review`, `___claims`, `___verifications`, `___requirements`, `___design`,
-`___workplan`, `___slides`, and `___quality` are reserved at the saga root;
+`___overview`, `___designsystem`, `___personas`, `___featureflags`,
+`___onboarding`, `___epics`, `___review`, `___claims`, `___verifications`, and
+`___merges` are reserved at the saga root. `___requirements`, `___design`,
+`___workplan`, `___slides`, and `___quality` are reserved at an epic root;
 `___slides` contains only real `<deck-id>.deck` directories.
 Reserved metadata directories must be
 real directories, not symlinks. So must every entity package: a `.chapter`,
@@ -885,6 +885,13 @@ hide authored content behind a valid-looking saga. Other names beginning with
 
 - `change-saga init SAGA` creates a Saga in the one format, ready for
   prototypes and stories. It never creates any other kind of Saga.
+- `change-saga epic add`, `persona add|revise|set-state`, `flag
+  add|revise|set-state`, and `story move --story URN --epic ID` author the
+  application's structure. Commands that create a record inside an epic
+  require `--epic`; commands that revise one accept it as an assertion.
+- `change-saga references [--stale] [--diff]` reports every code reference's
+  health, and `change-saga repin --onto REV [--branch REV]` re-pins references
+  when a change lands (see section 6.2).
 - `change-saga install-skill` prints an agent-agnostic prompt for installing the
   project-local Change Saga authoring skill. It MUST NOT mutate the repository
   or assume an agent-specific skill path.
