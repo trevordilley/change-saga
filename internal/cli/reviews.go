@@ -298,7 +298,7 @@ func buildReviewReports(ctx context.Context, document *saga.Saga, checkout strin
 		defer resolver.Close()
 	}
 	for _, review := range reviews {
-		reports = append(reports, reviewstate.Build(ctx, review, reviewstate.Options{Checkout: checkout, SagaRoot: document.Root, Resolver: resolver}))
+		reports = append(reports, reviewstate.Build(ctx, review, reviewstate.Options{Checkout: checkout, SagaRoot: document.Root, Resolver: resolver, Repository: document.Manifest.Source.Repository}))
 	}
 	return reports, nil
 }
@@ -330,6 +330,7 @@ func printReviewReports(out io.Writer, reports []reviewstate.Report) {
 		for _, diagnostic := range report.Diagnostics {
 			fmt.Fprintf(out, "  note: %s\n", diagnostic)
 		}
+		printReviewCoverage(out, report.Coverage)
 		if len(report.Slides) == 0 {
 			fmt.Fprintln(out, "  no slides yet")
 		}
@@ -349,6 +350,24 @@ func printReviewReports(out io.Writer, reports []reviewstate.Report) {
 				fmt.Fprintf(out, "    %d comments, %d open threads\n", slide.Comments, slide.OpenThreads)
 			}
 		}
+	}
+}
+
+// printReviewCoverage states how completely the deck accounts for the
+// review's range, and every change it does not. It is reported, never a
+// verdict.
+func printReviewCoverage(out io.Writer, covered *reviewstate.Coverage) {
+	if covered == nil {
+		return
+	}
+	summary := covered.Summary
+	fmt.Fprintf(out, "  coverage: %d of %d changed lines and file events explained by the deck", summary.Covered, summary.Total)
+	fmt.Fprintf(out, " (%d uncovered, %d stale %s, %d overlapping)\n", summary.Uncovered, summary.Stale, plural(summary.Stale, "reference", "references"), summary.Overlapping)
+	for _, file := range covered.UncoveredFiles {
+		fmt.Fprintf(out, "    uncovered %s: %s\n", file.Path, strings.Join(file.Locations, " "))
+	}
+	for _, stale := range covered.StaleReferences {
+		fmt.Fprintf(out, "    stale %s (%s): %s\n", stale.Reference.Location(), stale.Assignment.Target, stale.Reason)
 	}
 }
 
@@ -390,4 +409,11 @@ func relativeToSaga(root, path string) string {
 		root = abs
 	}
 	return relativePathForOutput(root, path)
+}
+
+func plural(count int, one, many string) string {
+	if count == 1 {
+		return one
+	}
+	return many
 }

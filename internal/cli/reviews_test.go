@@ -256,6 +256,10 @@ func TestRepinFreezesTheLandedReviewAndHistoryLinksIt(t *testing.T) {
 	if report.Merged == nil || report.Merged.Base != fork || report.Merged.Head != head || report.Merged.Landed != landed || report.Range == nil || !report.Range.Frozen || report.Range.HeadOID != head {
 		t.Fatalf("frozen review = merged %#v range %#v", report.Merged, report.Range)
 	}
+	// A frozen review reports its coverage against its frozen range.
+	if covered := report.Coverage; covered == nil || covered.BaseOID != fork || covered.HeadOID != head || covered.Summary.Total != 4 || covered.Summary.Covered != 2 {
+		t.Fatalf("frozen review coverage = %#v (diagnostics %v)", covered, report.Diagnostics)
+	}
 	if queue := slideReport(t, report, "queue"); len(queue.Decisions) != 1 || queue.Decisions[0].Currency != reviewstate.Current {
 		t.Fatalf("the frozen review lost its decisions: %#v", queue.Decisions)
 	}
@@ -278,5 +282,46 @@ func TestRepinFreezesTheLandedReviewAndHistoryLinksIt(t *testing.T) {
 	}
 	if err := json.Unmarshal(history.Bytes(), &envelope); err != nil || len(envelope.Data.Reviews) != 1 || envelope.Data.Reviews[0].ID != "pr-7" {
 		t.Fatalf("history did not link the review: %v\n%s", err, history.String())
+	}
+}
+
+// TestReviewCoverageAccountsForItsOwnRange reports how completely the deck
+// explains the review's range: the fixture's Items reference each file's
+// added line at the head, so the deleted lines at the merge-base are
+// uncovered, and a pushed commit's new line joins them.
+func TestReviewCoverageAccountsForItsOwnRange(t *testing.T) {
+	fixture := newReviewFixture(t)
+	report := reviewReport(t, fixture)
+	covered := report.Coverage
+	if covered == nil {
+		t.Fatalf("review coverage is missing: %#v", report.Diagnostics)
+	}
+	if covered.Summary.Total != 4 || covered.Summary.Covered != 2 || covered.Summary.Uncovered != 2 || covered.Summary.Stale != 0 || covered.Summary.Overlapping != 0 {
+		t.Fatalf("coverage summary = %#v", covered.Summary)
+	}
+	if covered.BaseOID != report.Range.BaseOID || covered.HeadOID != report.Range.HeadOID || len(covered.Items) != 2 {
+		t.Fatalf("coverage = %#v", covered)
+	}
+	base := report.Range.BaseOID
+	if len(covered.UncoveredFiles) != 2 || covered.UncoveredFiles[0].Path != "queue.go" || strings.Join(covered.UncoveredFiles[0].Locations, " ") != base+":queue.go#L3" {
+		t.Fatalf("uncovered files = %#v", covered.UncoveredFiles)
+	}
+	for _, atom := range covered.Uncovered {
+		if atom.Side != "old" || !strings.HasPrefix(atom.Ref, base+":") {
+			t.Fatalf("uncovered atom = %#v", atom)
+		}
+	}
+	text := run(t, Review, "list", fixture.root)
+	if !strings.Contains(text, "coverage: 2 of 4 changed lines") || !strings.Contains(text, "uncovered store.go: "+base+":store.go#L3") {
+		t.Fatalf("review list omitted coverage:\n%s", text)
+	}
+
+	// A pushed commit's new line is uncovered until an Item explains it.
+	writeFile(t, filepath.Join(fixture.repo, "store.go"), "package store\n\nfunc Table() string { return \"jobs\" }\n\nfunc Index() string { return \"status\" }\n")
+	git(t, fixture.repo, "commit", "-am", "Index the jobs table")
+	report = reviewReport(t, fixture)
+	head := report.Range.HeadOID
+	if report.Coverage.Summary.Uncovered != 4 || !strings.Contains(strings.Join(report.Coverage.UncoveredFiles[1].Locations, " "), head+":store.go#L4-L5") {
+		t.Fatalf("a pushed line is not uncovered: %#v", report.Coverage.UncoveredFiles)
 	}
 }

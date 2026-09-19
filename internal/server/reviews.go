@@ -129,7 +129,7 @@ func (a *app) reviewReports(ctx context.Context, document *saga.Saga, reviews []
 	}
 	reports := make([]reviewstate.Report, 0, len(reviews))
 	for _, review := range reviews {
-		reports = append(reports, reviewstate.Build(ctx, review, reviewstate.Options{Checkout: a.sourceDir, SagaRoot: document.Root, Resolver: resolver}))
+		reports = append(reports, reviewstate.Build(ctx, review, reviewstate.Options{Checkout: a.sourceDir, SagaRoot: document.Root, Resolver: resolver, Repository: document.Manifest.Source.Repository}))
 	}
 	return reports
 }

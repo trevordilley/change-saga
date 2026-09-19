@@ -83,6 +83,9 @@ type Report struct {
 	Range       *Range            `json:"range,omitempty"`
 	Merged      *saga.ReviewMerge `json:"merged,omitempty"`
 	Slides      []SlideReport     `json:"slides"`
+	// Coverage is how completely the deck accounts for the review's range;
+	// it is absent, with a diagnostic, when the range cannot be read.
+	Coverage *Coverage `json:"coverage,omitempty"`
 	// Diagnostics say why part of the report could not be read, such as a
 	// head that does not resolve in this checkout.
 	Diagnostics []string `json:"diagnostics"`
@@ -122,6 +125,8 @@ type Options struct {
 	// SagaRoot attributes decision records through Git.
 	SagaRoot string
 	Resolver *coderesolve.Resolver
+	// Repository is the Saga's declared source repository.
+	Repository string
 }
 
 // Build reports review. It never fails on a range that cannot be read: the
@@ -140,6 +145,13 @@ func Build(ctx context.Context, review *saga.Review, options Options) Report {
 		report.Range = rng
 		if value.Note != "" {
 			report.Diagnostics = append(report.Diagnostics, value.Note)
+		}
+		if options.Resolver != nil {
+			if covered, err := ReadCoverage(ctx, review, value, options.Checkout, options.Repository, options.Resolver); err != nil {
+				report.Diagnostics = append(report.Diagnostics, "the review's coverage could not be read: "+err.Error())
+			} else {
+				report.Coverage = covered
+			}
 		}
 	}
 	if review.Deck == nil {
