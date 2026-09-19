@@ -158,15 +158,14 @@ operation are in [references/query.md](references/query.md).
 
 ## Author a change
 
-1. **Resolve the comparison.** For a PR number or URL, use the available
-   hosting integration or CLI to obtain its title, URL, base, and head, and
-   ensure the head is available locally. Verify the returned head branch/OID
-   and changed-file summary describe the checkout you are about to explain.
-   Never guess a PR number from nearby context, and omit PR identity rather
-   than recording one that cannot be verified. Never infer the base from the
-   default branch when PR metadata is available. When asked to draft or prepare
-   a pull request, keep the repository's existing PR-authoring processes,
-   templates, issue context, and checks, and express the result in the Saga.
+1. **Resolve the comparison** from the hosting provider's metadata, never
+   from a guess, as described in
+   [references/authoring.md](references/authoring.md): never infer the base
+   from the default branch when PR metadata is available, and omit PR
+   identity rather than record one you cannot verify. When asked to draft or
+   prepare a pull request, keep the repository's existing PR-authoring
+   processes, templates, issue context, and checks, and express the result in
+   the Saga.
 2. **Inspect** the PR description, commit/file summary, full diff, tests, and
    the existing Saga. Do not modify product code while authoring unless asked.
 3. **Open the app Saga,** creating it only when the repository has none:
