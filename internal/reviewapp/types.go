@@ -313,7 +313,9 @@ type MappingAssessment struct {
 
 type MappingPage struct {
 	Mappings []MappingAssessment `json:"mappings"`
-	Page     Page                `json:"-"`
+	// Note says why the scores cannot rank anything, when they cannot.
+	Note string `json:"note,omitempty"`
+	Page Page   `json:"-"`
 }
 
 type ClaimEvidence struct {

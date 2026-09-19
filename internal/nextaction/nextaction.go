@@ -83,7 +83,8 @@ type Action struct {
 	Category Category `json:"category"`
 	// Area is the coverage area the action advances: health or
 	// implementation for required work, and the chain area a growth
-	// suggestion grows. A term suggestion grows no area.
+	// suggestion grows. Growth no coverage area counts names overview or
+	// terms.
 	Area     string `json:"area,omitempty"`
 	Resource string `json:"resource,omitempty"`
 	// Epic is the epic the action concerns, or empty when it concerns the app
@@ -99,6 +100,9 @@ type Action struct {
 	// value orders growth, lowest first: a story for the most changed lines,
 	// then other suggestions about the current change, then the rest.
 	value int
+	// order breaks a tie between growth of one value and area, such as the
+	// overview's pitch before its description.
+	order int
 }
 
 // Question is one focused question for the author with what each answer does.
@@ -129,7 +133,7 @@ func AuthoringLoop(sagaPath string) Loop {
 			grammar.MustInvoke("validate", sagaPath, grammar.V("json", "true")),
 			grammar.MustInvoke("status", sagaPath, grammar.V("json", "true")),
 		},
-		FixedPoint: "next_actions holds only optional growth suggestions; that means every changed line is covered and nothing existing is stale or broken, never that the change is correct",
+		FixedPoint: "next_actions holds only optional growth suggestions; that means every changed line is covered (when comparing) and nothing existing is stale or broken, never that the change is correct",
 	}
 }
 
@@ -196,6 +200,9 @@ func Derive(status livingapp.Status, sagaPath string, context ...Context) []Acti
 			}
 			if areaRank(left.Area) != areaRank(right.Area) {
 				return areaRank(left.Area) < areaRank(right.Area)
+			}
+			if left.order != right.order {
+				return left.order < right.order
 			}
 		}
 		if axisRank(left.Axis) != axisRank(right.Axis) {

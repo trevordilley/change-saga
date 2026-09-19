@@ -11,6 +11,7 @@ import (
 	"testing"
 
 	"github.com/twentyideas/changesaga/internal/applayout"
+	"github.com/twentyideas/changesaga/internal/livingapp"
 	"github.com/twentyideas/changesaga/internal/nextaction"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
@@ -141,7 +142,10 @@ func TestInitCreatesOnlyTheAppWithEveryOverviewPartAGap(t *testing.T) {
 		t.Fatal(err)
 	}
 	text := output.String()
-	for _, want := range []string{"Next: cover the change", "add-deck", "cover --against main", "status --against main", "optional"} {
+	// Both first runs are named: covering a change, and documenting existing
+	// code by observing HEAD.
+	for _, want := range []string{"To cover a change", "add-deck", "cover --against main", "status --against main", "To document existing code",
+		"change-saga status " + root, "overview set-pitch", "--lines RANGES | --file", "optional"} {
 		if !strings.Contains(text, want) {
 			t.Fatalf("init output does not lead to %q:\n%s", want, text)
 		}
@@ -163,6 +167,22 @@ func TestInitCreatesOnlyTheAppWithEveryOverviewPartAGap(t *testing.T) {
 	// terms are gaps until they are written.
 	if len(document.Epics) != 0 || len(document.Section.Fragments) != 0 || document.OverviewPart(applayout.OverviewPitch) != nil {
 		t.Fatalf("init app = epics %d, fragments %#v", len(document.Epics), document.Section.Fragments)
+	}
+
+	// Observing the fresh app, the path that documents existing code, has no
+	// change to cover, and its loop has the overview to take as growth.
+	var status bytes.Buffer
+	if err := Status(context.Background(), []string{"--repo", repo, "--allow-repository-mismatch", root}, &status); err != nil {
+		t.Fatal(err)
+	}
+	for _, want := range []string{"Next actions: none. Observing, there is no change to cover", "for the app as it is, the overview and vocabulary first",
+		"[overview] the overview has no elevator pitch", "$ change-saga overview set-pitch --text TEXT " + root, "[terms] no term is defined yet"} {
+		if !strings.Contains(status.String(), want) {
+			t.Fatalf("observed status lacks %q:\n%s", want, status.String())
+		}
+	}
+	if strings.Contains(status.String(), "Every changed line is covered") || strings.Contains(status.String(), "most valuable to this change") {
+		t.Fatalf("observing speaks of a change it does not have:\n%s", status.String())
 	}
 }
 
@@ -326,8 +346,17 @@ func TestCreateCommandsRequireAnEpicAmongSeveral(t *testing.T) {
 	if err := Story(ctx, []string{"add", root, "--epic", testEpic, "--id", "s", "--revision", "r1", "--event", "proposed", "--title", "S", "--statement", "S", "--priority", "must"}, &output); err != nil {
 		t.Fatalf("story add without --persona = %v", err)
 	}
+	// Nor a priority: it is optional free text, so incremental adoption never
+	// makes an author invent one.
+	if err := Story(ctx, []string{"add", root, "--epic", testEpic, "--id", "unprioritized", "--revision", "r1", "--event", "proposed", "--title", "U", "--statement", "U"}, &output); err != nil {
+		t.Fatalf("story add without --priority = %v", err)
+	}
+	revision, err := os.ReadFile(filepath.Join(root, "___epics", testEpic+".epic", "___requirements", "stories", "unprioritized.story", "revisions", "r1.json"))
+	if err != nil || strings.Contains(string(revision), "priority") {
+		t.Fatalf("a story with no priority records none: %v\n%s", err, revision)
+	}
 	// An unknown epic lists the known ones.
-	err := AddChapter(ctx, []string{"--epic", "missing", "--title", "C", root, "chapter"}, &output)
+	err = AddChapter(ctx, []string{"--epic", "missing", "--title", "C", root, "chapter"}, &output)
 	if err == nil || !strings.Contains(err.Error(), `epic "missing" does not exist`) || !strings.Contains(err.Error(), "known epics: billing, "+testEpic) {
 		t.Fatalf("unknown epic = %v", err)
 	}
@@ -804,4 +833,35 @@ func TestOmittedEpicDefaultsAndSaysWhatItChose(t *testing.T) {
 		t.Fatalf("the implied epic is reported: %q", notices.String())
 	}
 	assertValid(t, root)
+}
+
+// The reviewer's sidebar and status list epics in the order the author
+// created them, not alphabetically.
+func TestEpicsArePresentedInCreationOrder(t *testing.T) {
+	root := newAuthoredSaga(t)
+	for _, id := range []string{"zebra", "accounts"} {
+		mustLiving(t, "epic add", epicCommand, "add", root, "--id", id, "--title", id)
+	}
+	document, _, err := saga.Load(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	got := []string{}
+	for _, epic := range document.Epics {
+		got = append(got, epic.ID)
+	}
+	if strings.Join(got, ",") != testEpic+",zebra,accounts" {
+		t.Fatalf("document epics = %v", got)
+	}
+	status, err := livingapp.LoadStatus(context.Background(), livingapp.StatusOptions{SagaRoot: root, Document: document})
+	if err != nil {
+		t.Fatal(err)
+	}
+	got = got[:0]
+	for _, epic := range status.Epics {
+		got = append(got, epic.ID)
+	}
+	if strings.Join(got, ",") != testEpic+",zebra,accounts" {
+		t.Fatalf("status epics = %v", got)
+	}
 }

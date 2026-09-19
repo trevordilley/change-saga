@@ -536,3 +536,17 @@ func hasPin(pins []Pin, field, pinned, current string) bool {
 	}
 	return false
 }
+
+// Test code a test case's evidence owns reaches the story whose criterion the
+// test case verifies, so a comparison's stories area counts the same lines
+// its implementation area does, and growth never asks for a story for a test
+// case that already verifies one.
+func TestAVerifyingTestCaseReachesItsStory(t *testing.T) {
+	status := Assemble(qualityFixture(t))
+	if got := status.Chain.TargetStories[testURN("happy")]; len(got) != 1 || got[0] != storyURN {
+		t.Fatalf("test case happy reaches %v, want the story it verifies", got)
+	}
+	if got := status.Chain.TargetStories[testURN("orphan")]; len(got) != 0 {
+		t.Fatalf("a test case that verifies nothing reaches no story: %v", got)
+	}
+}

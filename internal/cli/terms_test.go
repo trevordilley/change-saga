@@ -135,12 +135,18 @@ func TestAComparisonSuggestsNewTerminologyWithoutBlocking(t *testing.T) {
 			growth = append(growth, action)
 		}
 	}
-	if len(growth) != 1 || growth[0].Command == nil || growth[0].Command.Command != "term add" ||
-		!strings.Contains(growth[0].Reason, "looks like new terminology") || compared.NextActions[len(compared.NextActions)-1].Category != nextaction.CategoryGrowth {
+	if len(growth) != 1 || growth[0].Question == nil || len(growth[0].Question.Options) != 2 || growth[0].Area != nextaction.AreaTerms ||
+		!strings.Contains(growth[0].Reason, "new terminology") || compared.NextActions[len(compared.NextActions)-1].Category != nextaction.CategoryGrowth {
 		t.Fatalf("growth = %#v", growth)
 	}
-	if strings.Join(growth[0].Command.Argv, " ") != "change-saga term add --id kind-grader --name KindGrader --definition TEXT --ref "+compared.NewTerminology[0].Location.String()+" "+root {
-		t.Fatalf("argv = %v", growth[0].Command.Argv)
+	// The suggestion offers the domain word the identifier spells, and keeps
+	// the identifier as the term's code reference.
+	if compared.NewTerminology[0].Suggested != "grader" || !strings.Contains(growth[0].Reason, "Kind.KindGrader") {
+		t.Fatalf("suggested name = %q, reason %q", compared.NewTerminology[0].Suggested, growth[0].Reason)
+	}
+	define := growth[0].Question.Options[0].Commands[0]
+	if strings.Join(define.Argv, " ") != "change-saga term add --id grader --name grader --definition TEXT --ref "+compared.NewTerminology[0].Location.String()+" "+root {
+		t.Fatalf("argv = %v", define.Argv)
 	}
 	for _, action := range compared.NextActions {
 		if strings.Contains(action.Resource, ":term:") && action.Category != nextaction.CategoryGrowth {

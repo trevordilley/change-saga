@@ -214,7 +214,7 @@ func (a *assembler) appProjection(status *Status) ([]readiness.Persona, []readin
 
 	// Epics group the app-wide facts by domain.
 	status.Epics = []EpicStatus{}
-	for _, epic := range a.in.Epics {
+	for _, epic := range applayout.InCreationOrder(a.in.Epics) {
 		row := EpicStatus{
 			Epic: applayout.EpicURN(sagaID, epic.ID), ID: epic.ID, Title: epic.Title,
 			Stories: []string{}, TestCases: []string{}, Decks: []string{}, GatedBy: []string{},

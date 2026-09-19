@@ -141,7 +141,8 @@ func (a *assembler) indexStories() []StoryStatus {
 		}
 		heads := []requirements.Revision{}
 		if story.CurrentRevision != nil {
-			row.Title = story.CurrentRevision.Title
+			row.Title, row.Statement, row.Priority = story.CurrentRevision.Title, story.CurrentRevision.Statement, story.CurrentRevision.Priority
+			row.Citations = copyStrings(story.CurrentRevision.Citations)
 			row.Personas = uniqueSorted(story.CurrentRevision.Personas)
 			row.CurrentRevision, _ = livingid.Revision(a.in.SagaID, story.Identity.ID, story.CurrentRevision.ID)
 			a.storyRevision[storyURN] = row.CurrentRevision
