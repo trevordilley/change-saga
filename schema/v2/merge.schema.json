@@ -19,6 +19,11 @@
       "type": "string",
       "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$"
     },
+    "base": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$",
+      "description": "The merge-base commit the landed change was compared against, when known."
+    },
     "commits": {
       "type": "array",
       "items": {
