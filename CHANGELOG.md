@@ -12,10 +12,16 @@ tool, and what they have to do about it.
 
 ### Changed
 
-- **There is now one Change Saga format, for big changes.** A Saga carries
-  prototypes, user stories and acceptance criteria, UX/UI and technical design,
-  test cases, and the implementation deck in one record, from the first
-  prototype to the last changed line. `init` creates it directly.
+- **A Saga documents an application.** It holds application-level material
+  (overview, personas, design system, onboarding deck, feature flags) and
+  durable epics, each carrying prototypes, stories and acceptance criteria,
+  design, test cases, and an implementation deck. Stories keep their identity
+  when they move between epics. `init` creates an application Saga.
+- **Evidence references code at a commit instead of storing diffs.** A
+  reference follows its code: it is remapped when later commits only move the
+  lines and goes stale, with a reason, when the lines change. Merged Sagas keep
+  resolving their evidence, and `repin` re-pins references when a change lands,
+  recording the branch's commit messages.
 - The reviewer sidebar is always Product, Design, Quality, and Implementation.
   Implementation is the deck itself, open to its slides.
 - `status --json` reports readiness gates, per-criterion coverage on six axes,
@@ -26,11 +32,18 @@ tool, and what they have to do about it.
 
 - `prototype`, `quality`, and `relation status` commands; test cases can verify
   acceptance criteria through pinned relations.
+- `epic add`, `persona add|revise|set-state`, `flag add|revise|set-state`, and
+  `story move`. Personas are optional; persona coverage is reported, never
+  required.
+- `references` reports each code reference's health, and `repin` re-pins
+  references after a merge.
 
 ### Removed
 
 - Report-only, slide-only (`init --mode slides`), and report-with-decks as
-  separate Saga modes, and the `upgrade` command. Earlier Sagas are not
+  separate Saga modes, and the `upgrade` command.
+- `saga-diff://` evidence URIs, `rebase-evidence`, and comparisons against the
+  uncommitted working tree. Earlier Sagas are not
   readable; no one depended on them.
 
 ## [0.1.1] - 2026-09-04
