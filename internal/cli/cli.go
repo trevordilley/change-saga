@@ -714,7 +714,14 @@ func addFragment(_ context.Context, args []string, out io.Writer, scope authorin
 	}
 	fmt.Fprintf(out, "Added fragment %s\n", created)
 	fmt.Fprintf(out, "Target: %s\n", createdTarget)
-	fmt.Fprintf(out, "Next: %s --target %s --source FILE|- %s\n", scope.commandText("set-fragment-content"), createdTarget, flags.Arg(0))
+	switch {
+	case *source == "":
+		fmt.Fprintf(out, "Next: %s --target %s --source FILE|- %s\n", scope.commandText("set-fragment-content"), createdTarget, flags.Arg(0))
+	case resolvedType == "text/html" || strings.HasPrefix(resolvedType, "image/"):
+		// Written content that is visual still needs its meaningful elements
+		// named so they can be linked.
+		fmt.Fprintf(out, "Next: change-saga add-landmark --target %s %s --label TEXT --description TEXT %s\n", createdTarget, selectorHint(resolvedType), flags.Arg(0))
+	}
 	return nil
 }
 
@@ -1323,7 +1330,7 @@ func resolveTarget(document *saga.Saga, value string, allowFragment bool) (strin
 	if directTarget != "" {
 		return candidateAbs, directTarget, nil
 	}
-	targetKinds := map[bool]string{true: "chapter, section, fragment, or landmark", false: "chapter or section"}[allowFragment]
+	targetKinds := map[bool]string{true: "chapter, section, fragment, landmark, or Item", false: "chapter or section"}[allowFragment]
 	dir, err := store.ResolveSection(document.Root, value)
 	if err != nil {
 		// Report content lives beneath reserved roots (___epics, ___overview),
