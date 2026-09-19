@@ -205,7 +205,11 @@ deck. Commands that write epic content take --epic.
 The workflow:
   0. App: "init" the app Saga and add the product domain the change belongs
      to ("epic"). Name who the app serves ("persona") and gate unreleased
-     work ("flag") whenever that becomes useful; neither is required.
+     work ("flag") whenever that becomes useful; neither is required. The
+     overview's elevator pitch and description ("overview") and the project's
+     own vocabulary ("term") can come whenever they help; a term references
+     the stories and code it names, so renames and new terminology surface
+     in status.
   1. Product: prototype the experience ("prototype") and write user stories
      with acceptance criteria ("story", "criterion"); a story may name the
      personas it serves. Stories can "story move" between epics. Cite
@@ -2059,6 +2063,31 @@ references). Update the affected records, then cover the unreferenced lines.
 When the Saga lives in its own repository, pass the code checkout with
 "--repo" and move the sync cursor with "change-saga sync" in every Saga commit
 that updates the documentation.
+
+## Keep the overview and the project's vocabulary current
+
+The overview has four parts: the project's name (saga.json's title), an
+elevator pitch ("change-saga overview set-pitch"), a description, a short
+essay ("change-saga overview set-description"), and its terms and vocabulary.
+Every part is optional; status lists each absent one under "overview.gaps",
+and none ever blocks.
+
+A term ("change-saga term add") is a word the team says every day that a
+newcomer cannot decode without digging through the code: a name, a
+definition, aliases, the stories it belongs to ("--story"), other records it
+names ("--record"), and the exact code that defines it ("--ref
+HEAD:path#L12"), most often an enum value or a constant. Its code references
+never count toward changed-line coverage; they are watched instead. From a
+line of code, "query terms --ref <commit>:<path>#L<n>" and "query diff-owners"
+return the terms it defines; from a story, "query terms --story <id>".
+Keep terms current through the next actions status gives you:
+
+- A rename makes the term's code reference stale, and a stale action names
+  exactly that term with a prefilled "term revise"; supply the new "--ref".
+- In a comparison, an added enum value or typed constant that no term names
+  becomes a "growth" action: "this looks like new terminology; define it?".
+  Offer it to the user with what the value appears to mean; never invent a
+  definition, and never treat the suggestion as required.
 
 Lead with pictures and show by example. The root should establish the goal,
 system/change map, affected workflows, and chapter path before dense prose.
