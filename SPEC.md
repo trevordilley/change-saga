@@ -934,7 +934,14 @@ hide authored content behind a valid-looking saga. Other names beginning with
   manages a pull request's review: its deck is authored with `add-slide`,
   `set-slide-content`, and `add-item` using `--review`, and decisions and
   comments apply to review slides and Items only.
-- `change-saga open` serves a Saga view with attached-diff drawers, a Code Diff view
+- `change-saga open` serves a page per record: the overview and its terms,
+  each persona, each epic, each story and each acceptance criterion, each test
+  case with its steps, the criteria it verifies, its evidence code and its
+  runs, each slide, and each review. Observing, the Coverage view lists the
+  documented code in both directions and does not treat unreferenced code as a
+  gap, because ownership accumulates. Counts are never a score or a verdict,
+  and missing links are stated as growth with the command that acts on them.
+- `change-saga open` also serves a Saga view with attached-diff drawers, a Code Diff view
   with a changed-file tree, and a bidirectional Coverage Manifest. The Manifest
   must derive both code-to-narrative and narrative-to-code projections from the
   same atom assignments. Attached code is grouped by collapsed source file, and
