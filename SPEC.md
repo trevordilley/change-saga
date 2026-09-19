@@ -67,7 +67,7 @@ enforced at runtime, and every ID uses `[A-Za-z0-9][A-Za-z0-9._-]{0,127}`.
 | Test-case identity | `v5/test-case.schema.json` | immutable ID and creation time | filename/package match and one identity per package |
 | Test-case revision | `v5/test-case-revision.schema.json` | full definition, parents, kinds, automation, ordered steps | one root, reachable acyclic graph, unique/non-reused step IDs |
 | Test lifecycle | `v5/test-case-event.schema.json` | parents and proposed/active/deprecated/retired state | one root, reachable acyclic graph, explicit multi-head conflicts |
-| Quality evidence | `v5/quality-evidence.schema.json` | test revision, role, at least one locator, supersession set | canonical/current diff URIs, resolved local URNs, acyclic supersession |
+| Quality evidence | `v5/quality-evidence.schema.json` | test revision, role, at least one locator, supersession set | current code references, resolved local URNs, acyclic supersession |
 | Test run | `v5/test-run.schema.json` | test revision, parents, exact source identity, result, evidence, execution time | current source/revision/evidence, one root, acyclic graph, visible multi-head conflicts |
 | Quality policy | `v5/quality-policy.schema.json` | criterion/revision, required kinds, allowed automation, rationale | resolved current criterion, acyclic supersession, one policy head |
 
@@ -111,9 +111,9 @@ than being ordered by timestamp.
 
 Quality evidence roles are `test_implementation`,
 `implementation_under_test`, and `execution_artifact`. The first two require
-one or more exact line/event diff URIs. Execution artifacts forbid diff URIs
-and require a verification or citation. Every evidence record contains the
-four explicit arrays `diffs`, `verifications`, `citations`, and `supersedes`;
+one or more code references. Execution artifacts forbid code references and
+require a verification or citation. Every evidence record contains the four
+explicit arrays `code`, `verifications`, `citations`, and `supersedes`;
 projection uses the supersession graph, never timestamps, to choose current
 heads.
 
@@ -277,7 +277,7 @@ current or its visual source disappears, and a stale relation is never
 coverage. Relations never move exact diff ownership away from Items.
 
 `query traceability` returns the complete current paths from each accepted
-criterion through its linked review targets to Item-owned diff URIs. It can be
+criterion through its linked review targets to Item-owned code references. It can be
 filtered in reverse with `--diff` or with `--commit`, where the commit is the
 resolved source-head commit of the active committed comparison. Commit lookup
 is unavailable for `WORKTREE` comparisons because their exact diff may include
@@ -405,8 +405,8 @@ interactive-flow.fragment/
 ├── ___landmarks/
 │   └── submit-action.landmark/
 │       ├── landmark.json
-│       └── ___diffs/
-└── ___diffs/
+│       └── ___code/
+└── ___code/
 ```
 
 ```json
@@ -453,7 +453,7 @@ an exact-text landmark. When that landmark owns diff evidence, reference
 renderers should let both the inline marker and the definition open the linked
 code. Citation definition text should remain plain, unique within its fragment,
 and focused on one claim so its exact-text selector is durable. Footnote syntax
-does not itself create coverage; the landmark's independent `___diffs` records
+does not itself create coverage; the landmark's independent `___code` records
 remain the authoritative association.
 
 A prose diff citation and a code-bearing visual landmark have identical
@@ -489,9 +489,9 @@ stable fragment-local ID, a reviewer-facing label, and one selector:
 Landmark IDs follow the Markdown-anchor grammar and are unique within the
 fragment. A `heading` package intentionally shares its ID with the heading it
 enriches. Engines combine the fragment target and landmark ID into a portable
-page anchor and assign the landmark its own target URN. Each `___diffs/*.json`
-inside the landmark package associates fully qualified diff atoms with that
-exact narrative element; each association remains an independent file.
+page anchor and assign the landmark its own target URN. Each `___code/*.json`
+inside the landmark package associates code references with that exact
+narrative element; each association remains an independent file.
 Meaningful visual landmarks should carry a concise semantic `description` that
 explains their role without relying on geometry, color, or position. Query
 clients return this description so non-visual consumers do not need to infer
@@ -680,7 +680,7 @@ current, remapped, or stale with its reason and the diff since the pin.
 Author claims are independent `___claims/<id>.json` records conforming to
 [`schema/v2/claim.schema.json`](schema/v2/claim.schema.json). A claim contains a
 falsifiable `statement`, a `kind`, one existing narrative `target`, at least one
-exact line/event diff URI in `evidence`, and `created_at`. Claim evidence never
+code reference in `evidence`, and `created_at`. Claim evidence never
 contributes to coverage; readers independently report whether it is current and
 whether every matching atom is already mapped to the claim's target.
 
@@ -719,16 +719,17 @@ ___review/threads/<thread-id>.thread/
 The overlay also contains append-only file-review events:
 
 ```text
-___review/diffs/<event-id>-reviewed.json
+___review/files/<event-id>.json
 ```
 
 Each event conforms to
-[`schema/v2/diff-review.schema.json`](schema/v2/diff-review.schema.json), uses a
-fully realized `/file` diff URI, and has state `reviewed` or `unreviewed`. The
-latest event for the URI is current; when two events share a `created_at`, the
-greater event `id` is the later one. Ordering never depends on file names, so
-every engine resolves the same commit to the same state. A new comparison identity therefore starts
-with no files implicitly reviewed.
+[`schema/v2/file-review.schema.json`](schema/v2/file-review.schema.json), carries
+a whole-file code reference in `code`, and has state `reviewed` or
+`unreviewed`. The latest event for the path is current; when two events share a
+`created_at`, the greater event `id` is the later one. Ordering never depends on
+file names, so every engine resolves the same commit to the same state. A file
+review applies to the file's content at the referenced commit, so a later change
+to the file is not implicitly reviewed.
 
 A thread conforms to [`schema/v2/thread.schema.json`](schema/v2/thread.schema.json)
 and targets a saga, chapter, section, or fragment URN. Its anchor is one of:
@@ -738,7 +739,8 @@ and targets a saga, chapter, section, or fragment URN. Its anchor is one of:
 - `drawing`: arbitrary paths represented by normalized points.
 - `text`: an exact quote with optional prefix, suffix, and character positions.
 - `note`: a sticky note carrying its own visible text and normalized placement.
-- `diff`: one fully realized line or file-event diff URI.
+- `code`: one code reference. The reviewer supplies only the location; the
+  server computes the digest.
 
 Normalized coordinates are in `[0,1]` relative to the rendered fragment stage,
 so drawings survive responsive resizing. Shapes support presentation hints such
@@ -826,7 +828,7 @@ which combination of approvals permits merging.
 
 ## 10. Reserved names
 
-`___diffs` and `___approvals` are reserved on saga/chapter/section/fragment targets.
+`___code` and `___approvals` are reserved on saga/chapter/section/fragment targets.
 `___landmarks` is reserved inside fragments.
 `___review`, `___claims`, `___verifications`, `___requirements`, `___design`,
 `___workplan`, `___slides`, and `___quality` are reserved at the saga root;
@@ -853,7 +855,7 @@ hide authored content behind a valid-looking saga. Other names beginning with
   changing coverage. `change-saga verify-claim` appends one independent result.
 - `change-saga add-chapter` creates a top-level independently reviewable chapter and
   its overview fragment.
-- `change-saga cover --target ...` attaches an absolute diff URI to any target.
+- `change-saga cover --target ...` attaches code references to a target.
 - `change-saga status --json` reports the readiness gates, every accepted
   criterion's coverage on each of the six axes, the pin-derived stale set with
   pinned and current revisions, changed-source accounting (uncovered atoms with
