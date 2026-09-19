@@ -91,22 +91,33 @@ these prompts from the repository containing your change:
 
 ### How a Saga grows
 
-A Saga starts with the big work and ends with the big work. It usually begins
-before implementation: a prototype sharpens the UX and UI, the prototype and
-the conversation around it become sourced user stories with acceptance
-criteria, and those drive the UX, UI, and technical design and the test cases
-that will verify them. The implementation is then explained as a deck whose
-visual elements own the exact diffs. None of this is a waterfall. Prototypes
-and stories evolve together, design starts while they mature, and a discovery
-during implementation becomes an explicit new revision of the story it changes.
+Start with the change in front of you. The first time you use Change Saga on a
+pull request, the only thing it asks is that the implementation is explained:
+`init`, author a deck, and reference every changed line from the Item that
+explains it. Nothing else is demanded up front: no personas, no stories, no
+design.
 
-`change-saga status --json` keeps the work honest at every step. It reports
-each acceptance criterion's coverage across prototype, UX, UI, technical,
-quality, and implementation; everything that has gone stale and why; any
-changed code nothing accounts for; and an ordered list of next actions. Each
-action is either a ready-to-run command or one focused question for you. An
-agent can loop on it until nothing required is missing, and it never reduces
-the result to a score.
+From there the Saga grows a step at a time. `change-saga status` reports a
+coverage report for six areas (implementation, stories, personas, design,
+quality, and the health of what already exists) with every gap listed, and
+offers growth suggestions tied to the change: "this change touched checkout; no
+story says why; capture the checkout story?" Each suggestion explains the
+practice it teaches and the one command that acts on it; take it or ignore it.
+Over time prototypes, stories, design, test cases, and terms fill in, and a
+discovery during implementation becomes an explicit revision of the story it
+changes.
+
+`status` reports; it never passes a verdict, and it exits 0 whenever it can
+produce a report. Your team decides what must be true before a merge, and can
+ask directly:
+
+```sh
+change-saga check --covers implementation --against main app.saga
+change-saga check --covers implementation,stories --against main app.saga
+```
+
+`check` exits 0 when every named area is covered and 3 when one has a gap,
+printing only those gaps. Nothing is reduced to a score.
 
 Saga files are built for parallel work. Separate agents can own story
 revisions, prototypes, design, test cases, and work items, then merge the Saga

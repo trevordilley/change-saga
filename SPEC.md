@@ -84,11 +84,11 @@ enforced at runtime, and every ID uses `[A-Za-z0-9][A-Za-z0-9._-]{0,127}`.
 | Test run | `v5/test-run.schema.json` | test revision, parents, exact source identity, result, evidence, execution time | current source/revision/evidence, one root, acyclic graph, visible multi-head conflicts |
 | Quality policy | `v5/quality-policy.schema.json` | criterion/revision, required kinds, allowed automation, rationale | resolved current criterion, acyclic supersession, one policy head |
 
-Every axis of every accepted criterion (prototype, UX, UI, technical, quality,
-and implementation) is required. A Saga with no test cases is not exempt from
-quality; each criterion's quality axis is a visible gap until a test case
-verifies it or a current coverage exception excuses it. Coverage-exception
-records are read and evaluated; no command writes them yet.
+Nothing in a Saga is required up front. A first change is asked only to have
+its implementation explained; personas, stories, design, quality, and terms
+grow from there. Coverage is reported, never enforced (section 11).
+Coverage-exception records are read and evaluated; no command writes them
+yet.
 
 ### Application records
 
@@ -198,11 +198,8 @@ quality projection requires `positive`; a policy can additionally require
 `negative` and/or `edge`. Coverage exceptions use one of the six axes
 `prototype`, `ux`, `ui`, `technical`, `quality`, or `implementation`, pin one
 story revision, and require a nonblank rationale plus at least one resolved
-citation. Every axis is required; an exception is the only way
-to declare an axis inapplicable, and there is one unsuperseded head per
-criterion/axis. The deprecated pre-six-axis value `design` still loads and
-expands to `ux`, `ui`, and `technical`; writers must not emit it. There is no
-exception from exact changed-source accounting: documentation-only work still
+citation. An exception declares an axis inapplicable to a criterion, and there is one unsuperseded head per
+criterion/axis. There is no exception from exact changed-source accounting: documentation-only work still
 ends at its documentation diff.
 
 ### V5 relation matrix
@@ -278,13 +275,8 @@ No score or percentage substitutes for the per-axis facts.
 Design coverage states are `covered_direct`, `covered_broad`, `excluded`,
 `gap`, `stale`, `invalid`, and `conflicted`. Quality states are `covered`,
 `missing_kind`, `not_run`, `failed`, `blocked`, `stale`, `excluded`, `invalid`,
-and `conflicted`. Readiness reports independent `requirements_ready`,
-`product_ready`, `design_ready`, `implementation_trace_ready`, `quality_ready`,
-`ready_for_review`, and `review_complete` gates with their required facts,
-explicitly not-inferred judgments, and blocker paths. `design_ready` is
-per-axis: it requires current `ux`, `ui`, and `technical` coverage or a current
-exception on each applicable axis. Every criterion/axis cell is exactly one of a
-current link, an explicit exclusion, or a visible gap.
+and `conflicted`. Every criterion/axis cell is exactly one of a current link,
+an explicit exclusion, or a visible gap.
 
 Schema validation cannot establish same-Saga equality, graph rules, current
 Git identity, exact selector resolution, or canonical URI equivalence. Runtime
@@ -906,13 +898,27 @@ hide authored content behind a valid-looking saga. Other names beginning with
 - `change-saga add-chapter` creates a top-level independently reviewable chapter and
   its overview fragment.
 - `change-saga cover --target ...` attaches code references to a target.
-- `change-saga status --json` reports the readiness gates, every accepted
-  criterion's coverage on each of the six axes, the pin-derived stale set with
-  pinned and current revisions, changed-source accounting (uncovered atoms with
-  ready-to-use absolute URIs, orphans, and overlap), and ordered `next_actions`.
-  Each action is either a command shape from the same grammar `spec --json`
-  publishes, or one focused question for the author. Nothing is reduced to a
-  score or percentage.
+- `change-saga status --json` (`status_schema` `change-saga.status/v3`) reports
+  a **coverage report** under `coverage`: a scope (the change with `--against`,
+  otherwise the whole application; `--epic` narrows either) and six areas.
+  `implementation` counts changed lines referenced by an implementation deck;
+  `stories` and `personas` count changed lines that reach a story or persona
+  through the chain; `design` counts stories in scope that have design;
+  `quality` counts acceptance criteria in scope that have a test; `health`
+  counts existing records that went stale or broke. Each area gives its unit,
+  total, covered, uncovered, and `complete`, with the covered and uncovered
+  entries listed. It also reports the pin-derived stale set, the comparison
+  layers, reviews, and ordered `next_actions`: each is a command shape from the
+  grammar `spec --json` publishes, or one focused question. Growth suggestions
+  (a story, persona, design, test, or term that would help) explain the practice
+  they teach and are never demanded. Nothing is reduced to a score or
+  percentage, and the JSON shape is a contract teams may script against.
+- `change-saga check --covers AREA[,AREA...]` answers whether the named areas are
+  fully covered in scope, printing only their gaps; it takes the same
+  `--against`, `--head`, and `--epic` as `status`.
+- Commands that need an epic default to the only epic when there is exactly
+  one. With none, the first such command creates one named after the branch
+  (or, on a default branch, after the application).
 - `--against REV [--head REV]` opens `status`, `references`, `cover`,
   `replace-coverage`, every `query` operation, `serve`, and `open` in compare
   mode; without it they observe. `query layers` returns the three comparison
@@ -932,11 +938,14 @@ hide authored content behind a valid-looking saga. Other names beginning with
   must derive both code-to-narrative and narrative-to-code projections from the
   same atom assignments. Attached code is grouped by collapsed source file, and
   evidence `note` values provide the reviewer-facing what-and-why summary before
-  linked ranges are expanded. Review surfaces support diff comments and
-  suggestions; the full diff view also records reviewed/unreviewed file events.
+  linked ranges are expanded. The documentation has no comment or approval
+  controls; review happens in reviews (section 8).
 - `change-saga validate` checks structure, identifiers, URIs, anchors, entrypoints, and
   review history independently from coverage completeness.
 
-`status` exits 0 when every atom is mapped with no stale selector and 3 when
-mapping gaps remain. The status is not a correctness verdict. `validate` exits
+`status` carries no verdict: it exits 0 whenever it can produce a trustworthy
+report and 1 when it cannot (a structural error, records that fail to load such
+as duplicate IDs, or a repository mismatch). Every gap, including uncovered
+changed lines, is a finding. `check` exits 0 when every named area is covered,
+3 when one has a gap, and 1 when the report cannot be trusted. `validate` exits
 1 for structural errors. Unknown v2 JSON fields are rejected.

@@ -355,6 +355,11 @@ reconstructs it.
 
 Each phase leaves the repository valid and tested.
 
+Progress: Phases 1, 2, 3, and 6 are built, as are reviews, review coverage, and
+the overview with terms and vocabulary. Phase 4 waits on the app-level sidebar
+decision. Phase 5 changed course: rather than folding the old Sagas, they were
+removed and this repository is being documented afresh with one app Saga.
+
 **Phase 1 — Code references.** The reference format; `cover` writing
 references; coverage computed per comparison; remap and staleness; deletions and
 whole-file references; re-pinning at merge. Remove `saga-diff://` evidence and
