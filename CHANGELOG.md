@@ -22,6 +22,18 @@ tool, and what they have to do about it.
   lines and goes stale, with a reason, when the lines change. Merged Sagas keep
   resolving their evidence, and `repin` re-pins references when a change lands,
   recording the branch's commit messages.
+- **A Saga is observed or compared, never configured with a comparison.**
+  `saga.json` holds only identity and repository. Commands observe the head, or
+  compare with `--against REV [--head REV]` from the merge-base as a pull
+  request does, reporting what the change revised, what it affected (including
+  through persona → story → design → code), and the code grouped by the records
+  that explain it. Replaced records are paired, commit messages sit beside what
+  they changed, and `query history` shows each record's history.
+- **Review happens in pull-request reviews.** A review is a pull request's slide
+  deck under `___reviews`; reviewers approve or request changes per slide, and a
+  decision goes out of date when its slide or code changes. The documentation
+  itself has no approvals or comments, and the tool never declares a review
+  approved.
 - The reviewer sidebar is always Product, Design, Quality, and Implementation.
   Implementation is the deck itself, open to its slides.
 - `status --json` reports readiness gates, per-criterion coverage on six axes,
@@ -37,13 +49,18 @@ tool, and what they have to do about it.
   required.
 - `references` reports each code reference's health, and `repin` re-pins
   references after a merge.
+- `review create|list|approve|request-changes|withdraw|comment`, `sync` for a
+  Saga in a companion repository, and `query layers` and `query history`.
 
 ### Removed
 
 - Report-only, slide-only (`init --mode slides`), and report-with-decks as
   separate Saga modes, and the `upgrade` command.
 - `saga-diff://` evidence URIs, `rebase-evidence`, and comparisons against the
-  uncommitted working tree. Earlier Sagas are not
+  uncommitted working tree.
+- The `compare` command (use `status --against`), `thread`, `reply`, the
+  target-level `review` decisions, annotations and file-review marks on
+  documentation, and the manifest's `source.base`, `source.head`, and `pr`. Earlier Sagas are not
   readable; no one depended on them.
 
 ## [0.1.1] - 2026-09-04
