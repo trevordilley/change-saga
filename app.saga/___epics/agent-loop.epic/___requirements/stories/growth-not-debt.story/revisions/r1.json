@@ -1,0 +1,35 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:app:story:growth-not-debt",
+  "parents": [],
+  "title": "Growth, not debt",
+  "statement": "Missing personas, stories, design, and quality are reported as opportunities and never block a change, while what exists must stay healthy; tools guide the Saga's growth and teach the practices.",
+  "priority": "unspecified",
+  "personas": [
+    "urn:change-saga:app:persona:change-author"
+  ],
+  "citations": [
+    "urn:change-saga:app:citation:app-saga-goals"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "never-block",
+      "statement": "Missing personas, stories, design, and quality are reported as opportunities and never block a change; readiness passing with nothing defined is correct."
+    },
+    {
+      "id": "stay-healthy",
+      "statement": "Once a story is accepted or a design references code, a change that makes that link stale or leaves its code uncovered is flagged; coverage only ratchets up."
+    },
+    {
+      "id": "contextual-guidance",
+      "statement": "Growth guidance is contextual and arrives with the work: each suggestion explains the practice it teaches, why it pays off, and the one command that acts on it."
+    },
+    {
+      "id": "growth-separate",
+      "statement": "Status reports growth opportunities separately from the one requirement, ordered by value to the current change, so an author can grow the Saga a step at a time or ignore it entirely."
+    }
+  ],
+  "created_at": "2026-09-19T20:48:15.703138Z"
+}

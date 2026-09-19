@@ -1,0 +1,32 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:app:story:why-things-changed",
+  "parents": [],
+  "title": "Why things changed lives in Git",
+  "statement": "The Saga records the current state, not the work of getting there; the reason for a change is recovered from Git, and compare mode surfaces it.",
+  "priority": "unspecified",
+  "citations": [
+    "urn:change-saga:app:citation:app-saga-goals"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "paired-replacements",
+      "statement": "When a slide, design, or test case drops out and another takes its place, compare mode shows them as a pair, inferred from the graph; the author links them explicitly only when that inference is ambiguous."
+    },
+    {
+      "id": "commit-reasons",
+      "statement": "The commit messages in a comparison are attached to the nodes whose records or referenced code each commit touched, not listed as a flat log."
+    },
+    {
+      "id": "node-history",
+      "statement": "In observe mode a node shows when it was introduced and what it replaced, read from Git's log of its record files, with one step to open the comparison where it happened."
+    },
+    {
+      "id": "squash-keeps-reasons",
+      "statement": "When references are re-pinned at merge, the branch's commit messages are recorded with the change so a squash merge keeps the finer reasoning."
+    }
+  ],
+  "created_at": "2026-09-19T20:48:15.008701Z"
+}

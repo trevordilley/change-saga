@@ -1,0 +1,39 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:app:story:overview-and-terms",
+  "parents": [],
+  "title": "The overview and the project's terminology",
+  "statement": "The overview is formal: the project name, the elevator pitch, a description, and Terms and Vocabulary, so the words a team says every day are defined and linked to the code and stories that define them.",
+  "priority": "unspecified",
+  "personas": [
+    "urn:change-saga:app:persona:newcomer"
+  ],
+  "citations": [
+    "urn:change-saga:app:citation:app-saga-goals"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "overview-parts",
+      "statement": "The overview's parts are the project name, the elevator pitch, a description (a short essay), and Terms and Vocabulary."
+    },
+    {
+      "id": "term-record",
+      "statement": "A term is a record with a name, a definition, and any aliases, and it references the stories it belongs to and the exact code that defines it, most often an enum value or a constant."
+    },
+    {
+      "id": "both-directions",
+      "statement": "The links run both ways: from a term to its code and stories, and from a line of code or a story to the terms it defines."
+    },
+    {
+      "id": "stale-on-rename",
+      "statement": "Renaming the enum makes the term's code reference stale, which names exactly the term to update."
+    },
+    {
+      "id": "new-term-suggestion",
+      "statement": "A comparison that adds an enum value or a constant no term references suggests, as growth rather than a requirement, that the change may have introduced new terminology to define."
+    }
+  ],
+  "created_at": "2026-09-19T20:48:15.175107Z"
+}
