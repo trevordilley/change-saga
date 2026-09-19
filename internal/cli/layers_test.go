@@ -10,6 +10,7 @@ import (
 	"testing"
 
 	"github.com/twentyideas/changesaga/internal/changeview"
+	"github.com/twentyideas/changesaga/internal/saga"
 )
 
 type layerCommand func(context.Context, []string, io.Writer) error
@@ -306,5 +307,79 @@ func TestSquashMergeKeepsItsBranchReasons(t *testing.T) {
 	}
 	if len(reasons) != 1 || reasons[0].Subject != "Retry enqueue (#12)" || len(reasons[0].Collapsed) != 1 || reasons[0].Collapsed[0].Body != "SQS throttles under load." {
 		t.Fatalf("the squash commit's branch reasons are lost: %#v", reasons)
+	}
+}
+
+// A Saga in its own repository documents a client's code: the code delta
+// comes from the code repository and the Saga delta from the Saga commit
+// whose sync cursor named the merge-base.
+func TestCompanionSagaComparesThroughItsSyncCursor(t *testing.T) {
+	code := t.TempDir()
+	git(t, code, "init", "-b", "main")
+	git(t, code, "config", "user.name", "Code Author")
+	git(t, code, "config", "user.email", "code@example.test")
+	git(t, code, "remote", "add", "origin", "https://example.test/client/shop.git")
+	writeFile(t, filepath.Join(code, "src", "queue.go"), "package shop\n\n// Enqueue sends a job.\nfunc Enqueue(job string) error {\n\treturn sqs.Send(job)\n}\n")
+	git(t, code, "add", ".")
+	git(t, code, "commit", "-m", "Add checkout")
+	documented := strings.TrimSpace(git(t, code, "rev-parse", "HEAD"))
+
+	docs := t.TempDir()
+	git(t, docs, "init", "-b", "main")
+	git(t, docs, "config", "user.name", "Docs Author")
+	git(t, docs, "config", "user.email", "docs@example.test")
+	root := filepath.Join(docs, "app.saga")
+	mustRun(t, Init, "--repo", code, "--id", "shop", root)
+	mustRun(t, Epic, "add", "--id", "checkout", "--title", "Checkout", root)
+	mustRun(t, Story, "add", "--epic", "checkout", "--id", "pay", "--revision", "r1", "--event", "proposed", "--title", "Pay", "--statement", "As a shopper I pay",
+		"--priority", "must", "--criterion", "charged=The card is charged once", root)
+	design := filepath.Join(t.TempDir(), "design.md")
+	writeFile(t, design, "# Queue {#queue}\n\nJobs go to SQS.\n")
+	mustRun(t, Design, "add-fragment", "--epic", "checkout", "--id", "queue-design", "--title", "Queue", "--type", "markdown", "--name", "queue-design", "--source", design, root)
+	mustRun(t, Cover, "--repo", code, "--target", "___epics/checkout.epic/___design/queue-design.fragment", "--commit", "HEAD", "--path", "src/queue.go", "--lines", "3-6", root)
+	mustRun(t, Relation, "add", "--epic", "checkout", "--id", "design-pay", "--type", "addresses", "--from", "urn:change-saga:shop:fragment:queue-design",
+		"--to", "urn:change-saga:shop:story:pay", "--rationale", "How payment reaches fulfilment", root)
+	mustRun(t, Sync, "--repo", code, root)
+	git(t, docs, "add", ".")
+	git(t, docs, "commit", "-m", "Document the checkout")
+	if cursor, ok, err := saga.ReadCursor(root); err != nil || !ok || cursor.Commit != documented {
+		t.Fatalf("sync did not record the documented commit: %#v %v %v", cursor, ok, err)
+	}
+
+	git(t, code, "checkout", "-b", "retry")
+	writeFile(t, filepath.Join(code, "src", "queue.go"), "package shop\n\n// Enqueue sends a job.\nfunc Enqueue(job string) error {\n\treturn retry(3, func() error { return sqs.Send(job) })\n}\n")
+	git(t, code, "commit", "-am", "Retry enqueue")
+	mustRun(t, Story, "revise", "--story", "urn:change-saga:shop:story:pay", "--revision", "r2", "--parent", "urn:change-saga:shop:story:pay:revision:r1",
+		"--title", "Pay reliably", "--statement", "As a shopper my payment survives throttling", "--priority", "must", "--criterion", "charged=The card is charged once", root)
+	mustRun(t, Sync, "--repo", code, root)
+	git(t, docs, "add", "-A")
+	git(t, docs, "commit", "-m", "Say payment survives throttling")
+
+	status, _ := statusLayers(t, root, "--repo", code, "--against", "main")
+	layers := status.Comparison
+	if !status.Opening.Companion || status.Opening.Cursor != status.Opening.HeadOID {
+		t.Fatalf("status does not report the companion cursor: %#v", status.Opening)
+	}
+	if layers.Saga.Base.Source != changeview.SideGit || layers.Saga.Base.Commit == "" || layers.Saga.Head.Source != changeview.SideWorking {
+		t.Fatalf("the Saga delta must come from the Saga commit whose cursor matched the base: %#v", layers.Saga)
+	}
+	if len(layers.Changed) != 1 || layers.Changed[0].URN != "urn:change-saga:shop:story:pay" || len(layers.Changed[0].Reasons) != 1 || layers.Changed[0].Reasons[0].Subject != "Say payment survives throttling" {
+		t.Fatalf("the Saga delta = %#v", layers.Changed)
+	}
+	designReasons, found := []changeview.Reason{}, false
+	for _, affected := range layers.Affected {
+		if affected.URN == "urn:change-saga:shop:fragment:queue-design" {
+			designReasons, found = affected.Reasons, affected.Because[0].Kind == changeview.CauseCode
+		}
+	}
+	if !found || len(designReasons) != 1 || designReasons[0].Subject != "Retry enqueue" {
+		t.Fatalf("the code delta must come from the code repository: %#v", layers.Affected)
+	}
+
+	// In the code repository the cursor is implicit, so sync refuses.
+	_, inRepo := shopSaga(t)
+	var output bytes.Buffer
+	if err := Sync(context.Background(), []string{"--repo", filepath.Dir(inRepo), inRepo}, &output); err == nil || !strings.Contains(err.Error(), "no sync cursor") {
+		t.Fatalf("sync in the code repository = %v", err)
 	}
 }

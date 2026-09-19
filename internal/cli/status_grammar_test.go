@@ -29,6 +29,7 @@ func grammarHelp(t *testing.T, name string) string {
 		"cover":      func() error { return Cover(ctx, args, &output) },
 		"references": func() error { return References(ctx, args, &output) },
 		"repin":      func() error { return Repin(ctx, args, &output) },
+		"sync":       func() error { return Sync(ctx, args, &output) },
 		"validate":   func() error { return Validate(ctx, args, &output) },
 		"status":     func() error { return Status(ctx, args, &output) },
 		"spec":       func() error { return Spec(args, &output) },

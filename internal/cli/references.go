@@ -211,6 +211,8 @@ type repinOutput struct {
 	Base        string              `json:"base,omitempty"`
 	Commits     []saga.MergedCommit `json:"commits"`
 	MergeRecord string              `json:"merge_record,omitempty"`
+	// Cursor is the code commit a companion Saga's sync cursor moved to.
+	Cursor string `json:"cursor,omitempty"`
 }
 
 // Repin moves every evidence reference to the commit a change landed as, so
@@ -308,8 +310,12 @@ func Repin(ctx context.Context, args []string, out io.Writer) error {
 		return err
 	}
 	result.Base = landedBase(ctx, checkout, ontoCommit, *branch)
+	companion := companionCheckout(ctx, root, checkout)
 
-	if !*dryRun && (len(updates) > 0 || len(result.Commits) > 0) {
+	if companion {
+		result.Cursor = ontoCommit
+	}
+	if !*dryRun && (len(updates) > 0 || len(result.Commits) > 0 || companion) {
 		err = authorMutation(root, func(locked *saga.Saga) error {
 			for relative, changed := range updates {
 				path := filepath.Join(locked.Root, filepath.FromSlash(relative))
@@ -324,6 +330,12 @@ func Repin(ctx context.Context, args []string, out io.Writer) error {
 					file.References[index-1] = reference
 				}
 				if err := store.WriteJSON(path, file, false); err != nil {
+					return err
+				}
+			}
+			if companion {
+				// A companion Saga now documents the landed commit.
+				if err := store.WriteJSON(filepath.Join(locked.Root, saga.CursorName), saga.Cursor{Schema: saga.CursorSchemaURL, Version: saga.CursorVersion, Commit: ontoCommit}, false); err != nil {
 					return err
 				}
 			}
@@ -357,6 +369,9 @@ func Repin(ctx context.Context, args []string, out io.Writer) error {
 	fmt.Fprintf(out, "%s %d references to %s (%d already there)\n", verb, len(result.Repinned), ontoCommit, result.Unchanged)
 	for _, skipped := range result.Left {
 		fmt.Fprintf(out, "  left %s %s #%d at %s: %s\n", skipped.Kind, firstNonEmpty(skipped.EvidenceFile, skipped.Owner), skipped.Reference, skipped.Pinned, skipped.Reason)
+	}
+	if result.Cursor != "" {
+		fmt.Fprintf(out, "Moved the sync cursor to %s\n", result.Cursor)
 	}
 	if len(result.Commits) > 0 {
 		fmt.Fprintf(out, "Recorded %d branch commit messages", len(result.Commits))

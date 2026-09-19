@@ -278,12 +278,22 @@ var commands = []Command{
 		Positionals: sagaOnly,
 	},
 	{
-		Name: "repin", Status: StatusImplemented, Mutates: true, Writes: []string{"code-evidence", "merge"},
+		Name: "repin", Status: StatusImplemented, Mutates: true, Writes: []string{"code-evidence", "merge", "sync-cursor"},
 		Usage:   "change-saga repin --onto REV [--branch REV] [--dry-run] [--json] [--repo PATH] <saga>",
 		Summary: "after a change lands, re-pin evidence references to the landed commit and record the branch's commit messages",
 		Flags: []Flag{
 			required("onto", "REV", "the commit the change landed as"), optional("branch", "REV", "the branch's last commit when still available"),
 			optional("dry-run", "", "report without writing"), jsonFlag, optional("repo", "PATH", "source checkout when separate"),
+		},
+		Positionals: sagaOnly,
+	},
+	{
+		Name: "sync", Status: StatusImplemented, Mutates: true, Writes: []string{"sync-cursor"},
+		Usage:   "change-saga sync --repo PATH [--commit REV] [--json] <saga>",
+		Summary: "move a companion Saga's sync cursor to the code commit it now documents",
+		Flags: []Flag{
+			required("repo", "PATH", "code repository checkout the Saga documents"), optional("commit", "REV", "code commit the Saga now documents; defaults to HEAD"),
+			jsonFlag, optional("allow-repository-mismatch", "", "accept a checkout whose origin differs"),
 		},
 		Positionals: sagaOnly,
 	},

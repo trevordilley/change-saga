@@ -47,6 +47,10 @@ type opening struct {
 	Head    string `json:"head"`
 	BaseOID string `json:"base_oid,omitempty"`
 	HeadOID string `json:"head_oid"`
+	// Companion is set when the Saga lives in a different repository from
+	// its code; Cursor is then the code commit its sync cursor names.
+	Companion bool   `json:"companion,omitempty"`
+	Cursor    string `json:"cursor,omitempty"`
 }
 
 func openingOf(changes gitdiff.ChangeSet) opening {
@@ -107,8 +111,15 @@ func buildStatus(ctx context.Context, root, repoDir string, rng gitdiff.Range, a
 			Diagnostics: []livingapp.Diagnostic{{Code: "living_records_unavailable", Message: err.Error()}},
 		})
 	}
+	view := openingOf(value.changes)
+	if companionCheckout(ctx, root, value.checkout) {
+		view.Companion = true
+		if cursor, ok, err := saga.ReadCursor(root); err == nil && ok {
+			view.Cursor = cursor.Commit
+		}
+	}
 	document := statusDocument{
-		Report: value.report, Schema: StatusSchema, Opening: openingOf(value.changes), Status: living,
+		Report: value.report, Schema: StatusSchema, Opening: view, Status: living,
 		NextActions: nextaction.Derive(living, root), AuthoringLoop: nextaction.AuthoringLoop(root),
 	}
 	if value.changes.Mode == gitdiff.ModeCompare {

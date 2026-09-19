@@ -88,7 +88,7 @@ func (e *StatusError) Error() string { return "command reported a non-success st
 // commandUsage is the single source of each command's usage line so the
 // overview, the per-command -h banner, and argument errors cannot drift apart.
 var commandOrder = []string{
-	"init", "epic", "persona", "flag", "prototype", "story", "criterion", "citation", "relation", "design", "plan", "quality", "add-deck", "add-slide", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "cover", "remove-coverage", "replace-coverage", "references", "repin", "add-claim", "verify-claim",
+	"init", "epic", "persona", "flag", "prototype", "story", "criterion", "citation", "relation", "design", "plan", "quality", "add-deck", "add-slide", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "cover", "remove-coverage", "replace-coverage", "references", "repin", "sync", "add-claim", "verify-claim",
 	"thread", "reply", "review", "validate", "status", "query",
 	"serve", "open", "install-skill", "spec",
 }
@@ -165,6 +165,7 @@ var commandUsage = map[string]string{
 	"replace-coverage":            "change-saga replace-coverage --record PATH [coverage flags] [--batch FILE|-] [--dry-run] [--against REV [--head REV]] <saga>",
 	"references":                  "change-saga references [--stale] [--diff] [--json] [--repo PATH] [--against REV [--head REV]] <saga>",
 	"repin":                       "change-saga repin --onto REV [--branch REV] [--dry-run] [--json] [--repo PATH] <saga>",
+	"sync":                        "change-saga sync --repo PATH [--commit REV] [--json] <saga>",
 	"add-claim":                   "change-saga add-claim --target TARGET --kind KIND --statement TEXT --ref LOCATION [--ref LOCATION...] <saga>",
 	"verify-claim":                "change-saga verify-claim --claim ID --status STATUS --summary TEXT [flags] <saga>",
 	"thread":                      "change-saga thread [flags] <saga>",
@@ -324,6 +325,7 @@ untouched.`,
 	"replace-coverage": "Atomically replace one coverage record with one or more newly resolved records.\nUse --batch to split or retarget broad evidence without leaving partial coverage.",
 	"references":       "List every code reference: current (remapped when its lines only moved), or stale with the\nreason its code changed. Observing, health is judged at --head; comparing, at both sides.\n--diff adds the patch since the pin.",
 	"repin":            "After a change lands, re-pin evidence references to the landed commit (following moved\nlines, or the content digest when the branch commit is gone) and record the branch's commit\nmessages in ___merges/<commit>.json so a squash merge keeps its reasoning.",
+	"sync":             "Move a companion Saga's sync cursor (sync.json) to the code commit it now documents,\ndefault HEAD of --repo. Move it in every Saga commit that updates the documentation, so a\ncomparison reads the Saga that documented its merge-base. A Saga in its code repository\nhas no cursor: it documents the commit it is read at. repin moves it too.",
 	"add-claim":        "Record one falsifiable author assertion and the code that supports it. Claims do not\ncount toward coverage and are independently verified.",
 	"verify-claim":     "Append an independent verification result without rewriting the claim or prior results.",
 	"open":             "Start a managed loopback reviewer, open it in a browser, and return after\nprinting the PID and active URL. Without --against it observes the app at --head: every\nnode current, stale references as health warnings, approvals shown only as history.\nWith --against it compares what --head changes since their merge-base, the way a pull\nrequest does, and highlights the Changed, Affected, and Code layers.",
@@ -1009,9 +1011,23 @@ func shortOID(value string) string {
 	return value
 }
 
+// printCursor says which code commit a companion Saga documents.
+func printCursor(out io.Writer, view opening) {
+	switch {
+	case !view.Companion:
+	case view.Cursor == "":
+		fmt.Fprintln(out, "Companion Saga with no sync cursor; run change-saga sync --repo PATH after documenting the code")
+	case view.Cursor != view.HeadOID:
+		fmt.Fprintf(out, "Companion Saga documents %s, not head; run change-saga sync after updating it\n", shortOID(view.Cursor))
+	default:
+		fmt.Fprintf(out, "Companion Saga documents head %s\n", shortOID(view.Cursor))
+	}
+}
+
 func printReport(out io.Writer, report coverage.Report, view opening, maxItems int) {
 	if view.Mode == gitdiff.ModeObserve {
 		fmt.Fprintf(out, "OBSERVING %s (%s) — no change to account for; pass --against REV to compare\n", view.Head, shortOID(view.HeadOID))
+		printCursor(out, view)
 		fmt.Fprintf(out, "Stale references: %d  Remapped: %d\n", report.Summary.Stale, report.Summary.Remapped)
 	} else {
 		state := "MAPPING GAPS"
@@ -1019,6 +1035,7 @@ func printReport(out io.Writer, report coverage.Report, view opening, maxItems i
 			state = "ALL ATOMS MAPPED"
 		}
 		fmt.Fprintf(out, "COMPARING %s..%s (merge-base %s)\n", view.Against, view.Head, shortOID(view.BaseOID))
+		printCursor(out, view)
 		fmt.Fprintf(out, "%s — %d/%d product changes mapped\n", state, report.Summary.Covered, report.Summary.Total)
 		fmt.Fprintln(out, "Mapping detects omissions; it does not establish explanation quality or correctness.")
 		fmt.Fprintf(out, "Uncovered: %d  Overlapping: %d  Stale references: %d  Remapped: %d  Saga-only changes: %d\n", report.Summary.Uncovered, report.Summary.Overlapping, report.Summary.Stale, report.Summary.Remapped, report.Summary.SagaChanges)

@@ -87,6 +87,8 @@ func run(args []string, stdout, stderr io.Writer) int {
 		err = cli.References(ctx, args[1:], stdout)
 	case "repin":
 		err = cli.Repin(ctx, args[1:], stdout)
+	case "sync":
+		err = cli.Sync(ctx, args[1:], stdout)
 	case "add-claim":
 		err = cli.AddClaim(ctx, args[1:], stdout)
 	case "verify-claim":
