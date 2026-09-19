@@ -216,6 +216,10 @@ func (a *assembler) indexVisual() {
 	}
 }
 
+// UnsatisfiedNoItemCode is the implementation-axis reason for a path whose
+// Items reference no code at all; next actions key their cover suggestion on it.
+const UnsatisfiedNoItemCode = "no Item on this path references code"
+
 func (a *assembler) indexStale() {
 	for _, stale := range a.in.Report.StaleReferences {
 		a.staleRefs[staleKey(stale.Assignment.Target, stale.Assignment.EvidenceFile, stale.Assignment.Reference)] = stale.Reason
@@ -273,7 +277,7 @@ func hops(criterion, story string, broad bool, rest ...string) []string {
 // linksByCriterion projects every persisted relation onto the design and
 // implementation axes. An addresses relation counts as design coverage on the
 // axis its source belongs to; addresses and legacy explains relations both
-// reach code through Items, and only a path ending at a current exact diff is
+// reach code through Items, and only a path ending at a current code reference is
 // implementation coverage.
 func (a *assembler) linksByCriterion() map[string][]coverage.AxisLink {
 	result := map[string][]coverage.AxisLink{}
@@ -349,7 +353,7 @@ func (a *assembler) implementationLink(link Link, visual visualTarget, criterion
 	value.Paths = uniquePaths(value.Paths)
 	switch {
 	case owned == 0:
-		value.Unsatisfied = append(value.Unsatisfied, "no Item on this path references code")
+		value.Unsatisfied = append(value.Unsatisfied, UnsatisfiedNoItemCode)
 	case len(value.Code) == 0:
 		value.StaleReasons = append(value.StaleReasons, itoa(staleCount)+" Item code references are stale")
 	}

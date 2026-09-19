@@ -418,20 +418,20 @@ func (b *builder) implementationGap(criterion string, cell coverage.AxisCoverage
 	subject := b.describe(criterion)
 	for _, link := range cell.Links {
 		for _, reason := range link.Link.Unsatisfied {
-			if reason == "no Item on this path owns an exact diff" {
+			if reason == livingapp.UnsatisfiedNoItemCode {
 				action.Kind = KindCommand
 				action.Question = nil
-				action.Reason = link.Link.Source + " addresses the criterion but owns no exact diff"
-				action.Command = ptr(b.invoke("cover", grammar.V("target", ""), grammar.V("path", ""), grammar.V("lines", "")))
+				action.Reason = link.Link.Source + " addresses the criterion but references no code"
+				action.Command = ptr(b.invoke("cover", grammar.V("target", ""), grammar.V("path", ""), grammar.V("side", "new"), grammar.V("lines", "")))
 				return action, true
 			}
 		}
 	}
 	action.Question = question("Which design Item owns the code that implements "+subject+"?", NeedProductJudgment,
-		option("an Item with exact diffs addresses it", "a digest-pinned addresses relation from the Item",
+		option("an Item that references the code addresses it", "a digest-pinned addresses relation from the Item",
 			b.invoke("relation add", grammar.V("type", "addresses"), grammar.V("from", ""), grammar.V("from-content-digest", ""), grammar.V("to", criterion), grammar.V("to-revision", info.revision))),
-		option("the implementing code has no Item yet", "attach its exact changed lines to an Item, then relate the Item",
-			b.invoke("cover", grammar.V("target", ""), grammar.V("path", ""), grammar.V("lines", "")),
+		option("the implementing code has no Item yet", "reference its changed lines from an Item, then relate the Item",
+			b.invoke("cover", grammar.V("target", ""), grammar.V("path", ""), grammar.V("side", "new"), grammar.V("lines", "")),
 			b.invoke("relation add", grammar.V("type", "addresses"), grammar.V("from", ""), grammar.V("from-content-digest", ""), grammar.V("to", criterion), grammar.V("to-revision", info.revision))))
 	return action, true
 }

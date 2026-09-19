@@ -62,7 +62,8 @@ type TargetSummary struct {
 // Coverage is computed per comparison and never stored: every changed atom of
 // BaseOID..HeadOID must lie inside a reference that is current at the side the
 // atom lives on. Added lines are matched at the head commit, deleted lines at
-// the merge-base, and file events by whole-file references.
+// the merge-base, and file events by whole-file references, which account for
+// no lines.
 type Report struct {
 	Complete        bool                    `json:"complete"`
 	CoverageScope   string                  `json:"coverage_scope"`
@@ -298,14 +299,17 @@ func buildIndex(changes gitdiff.ChangeSet) atomIndex {
 	return index
 }
 
-// within returns the atoms inside location: the lines of its range, or, for a
-// whole file, every line of the file on that side and the file's own events.
+// within returns the atoms a location accounts for: the changed lines of its
+// range, or, for a whole file, the file's own events (add, delete, rename,
+// mode, type, and binary changes). A whole-file reference does not account
+// for the file's changed lines; they need line references, so ownership stays
+// as narrow as the explanation.
 func (index atomIndex) within(location coderef.Location) []int {
 	key := location.Commit + "\x00" + location.Path
-	values := index.lines[key]
 	if location.WholeFile() {
-		return append(append([]int(nil), values...), index.events[key]...)
+		return index.events[key]
 	}
+	values := index.lines[key]
 	start := sort.Search(len(values), func(i int) bool { return index.atoms[values[i]].Line >= location.Start })
 	end := sort.Search(len(values), func(i int) bool { return index.atoms[values[i]].Line > location.End })
 	return values[start:end]

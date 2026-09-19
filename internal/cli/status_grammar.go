@@ -155,7 +155,7 @@ func livingSpec() map[string]any {
 		"derived_edges":   grammar.DerivedEdges(),
 		"relation_scopes": map[string]string{
 			"self":        "only the source target is asserted to address the requirement",
-			"descendants": "a deck or slide source reaches contained Items and their exact diffs",
+			"descendants": "a deck or slide source reaches contained Items and their code references",
 		},
 		"coverage": map[string]any{
 			"axes":        axes,

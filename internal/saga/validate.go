@@ -664,9 +664,9 @@ func validateVisualMappings(fragment *Fragment, result *Validation) {
 		}
 	}
 	if !mapped {
-		message := "visual fragment has no directly linked code; attach exact diff evidence to the fragment or its landmarks"
+		message := "visual fragment has no directly linked code; reference the code it explains from the fragment or its landmarks"
 		if fragment.SlideMeta != nil {
-			message = "slide has no Item-linked code; attach every exact diff atom to the Item it realizes"
+			message = "slide has no Item-linked code; reference every changed line from the Item it realizes"
 		}
 		addIssue(result, "warning", fragment.Path, message)
 	}
@@ -688,11 +688,11 @@ func validateNarrativeMappings(fragment *Fragment, result *Validation) {
 				}
 			}
 			if citation == nil {
-				addIssue(result, "warning", fragment.Path, fmt.Sprintf("Markdown footnote [^%s] is not linked to code; create an exact-text landmark for its definition and attach focused diff evidence", footnote.ID))
+				addIssue(result, "warning", fragment.Path, fmt.Sprintf("Markdown footnote [^%s] is not linked to code; create an exact-text landmark for its definition and reference the code it cites", footnote.ID))
 				continue
 			}
 			if len(citation.Code) == 0 {
-				addIssue(result, "warning", citation.Path, fmt.Sprintf("Markdown footnote [^%s] has an exact-text landmark but no linked code; attach focused diff evidence just as you would for a diagram node", footnote.ID))
+				addIssue(result, "warning", citation.Path, fmt.Sprintf("Markdown footnote [^%s] has an exact-text landmark but no linked code; reference the code it cites just as you would for a diagram node", footnote.ID))
 			}
 		}
 	}

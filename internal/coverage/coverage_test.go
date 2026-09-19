@@ -94,9 +94,11 @@ func TestEvaluateMatchesEachSideAtItsOwnCommit(t *testing.T) {
 			lineReference(testHead, "app.go", 4, 5),
 			// A deletion references the base commit's code.
 			lineReference(testBase, "app.go", 4, 4),
-			// A whole file covers its event and every line on its side.
+			// A whole file accounts for its event; its lines need line references.
 			fileReference(testHead, "new.go"),
+			lineReference(testHead, "new.go", 1, 1),
 			fileReference(testBase, "gone.go"),
+			lineReference(testBase, "gone.go", 1, 1),
 		},
 		"urn:change-saga:test:fragment:b": {
 			lineReference(testHead, "app.go", 5, 5),
@@ -124,12 +126,19 @@ func TestEvaluateMatchesEachSideAtItsOwnCommit(t *testing.T) {
 	}
 }
 
-func TestEvaluateLineReferenceDoesNotCoverFileEvent(t *testing.T) {
+// File events and lines are accounted for separately, so ownership is never
+// wider than what a reference names.
+func TestEvaluateKeepsFileEventsAndLinesSeparate(t *testing.T) {
 	changes := gitdiff.ChangeSet{BaseOID: testBase, HeadOID: testHead, Atoms: []gitdiff.Atom{eventAtom("add", "new.go"), lineAtom("new.go", "new", 1)}}
-	document := documentWith(map[string][]coderef.Reference{"urn:change-saga:test:saga": {lineReference(testHead, "new.go", 1, 1)}})
-	report := Evaluate(context.Background(), document, saga.Validation{Valid: true}, changes, coderesolve.Pinned{})
+	lines := documentWith(map[string][]coderef.Reference{"urn:change-saga:test:saga": {lineReference(testHead, "new.go", 1, 1)}})
+	report := Evaluate(context.Background(), lines, saga.Validation{Valid: true}, changes, coderesolve.Pinned{})
 	if report.Complete || len(report.Uncovered) != 1 || report.Uncovered[0].Event != "add" {
 		t.Fatalf("file events need whole-file references: %+v", report.Uncovered)
+	}
+	file := documentWith(map[string][]coderef.Reference{"urn:change-saga:test:saga": {fileReference(testHead, "new.go")}})
+	report = Evaluate(context.Background(), file, saga.Validation{Valid: true}, changes, coderesolve.Pinned{})
+	if report.Complete || len(report.Uncovered) != 1 || report.Uncovered[0].Kind != "line" {
+		t.Fatalf("a whole-file reference must not account for the file's lines: %+v", report.Uncovered)
 	}
 }
 
