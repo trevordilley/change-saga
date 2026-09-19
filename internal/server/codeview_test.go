@@ -8,7 +8,6 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
-	"time"
 	"unicode/utf8"
 
 	"github.com/twentyideas/changesaga/internal/coderef"
@@ -22,7 +21,7 @@ func BenchmarkMakeCodeReviewViewLargeSaga(b *testing.B) {
 	b.ReportAllocs()
 	b.ResetTimer()
 	for b.Loop() {
-		view, selectionErr := makeCodeReviewView(document, changes, report, nil, selection)
+		view, selectionErr := makeCodeReviewView(document, changes, report, selection)
 		if selectionErr != nil {
 			b.Fatal(selectionErr)
 		}
@@ -44,21 +43,21 @@ func TestCodeDiffURLPreservesPathAndExactCodeLocation(t *testing.T) {
 	}
 }
 
-func TestChangedFileTreeIsNestedAndAggregatesReviewState(t *testing.T) {
+func TestChangedFileTreeIsNestedAndAggregatesCounts(t *testing.T) {
 	files := []*FileDiffView{
 		{Path: "README.md", Deleted: 3},
-		{Path: "src/api/handler.go", Added: 2, Deleted: 1, Reviewed: true, Selected: true},
+		{Path: "src/api/handler.go", Added: 2, Deleted: 1, Selected: true},
 		{Path: "src/ui/view.js", Added: 4},
 	}
 	tree := makeChangedFileTree(files)
-	if tree.FileCount != 3 || tree.ReviewedCount != 1 || tree.Added != 6 || tree.Deleted != 4 {
+	if tree.FileCount != 3 || tree.Added != 6 || tree.Deleted != 4 {
 		t.Fatalf("unexpected root aggregates: %#v", tree)
 	}
 	if len(tree.Nodes) != 2 || tree.Nodes[0].Name != "src" || tree.Nodes[0].Kind != "folder" {
 		t.Fatalf("expected sorted folder and file roots: %#v", tree.Nodes)
 	}
 	src := tree.Nodes[0]
-	if !src.Selected || !src.Expanded || src.FileCount != 2 || src.ReviewedCount != 1 || len(src.Children) != 2 {
+	if !src.Selected || !src.Expanded || src.FileCount != 2 || len(src.Children) != 2 {
 		t.Fatalf("unexpected src folder state: %#v", src)
 	}
 	api := src.Children[0]
@@ -69,7 +68,7 @@ func TestChangedFileTreeIsNestedAndAggregatesReviewState(t *testing.T) {
 
 func TestCodeReviewViewScopesReverseOwnershipAndKeepsForwardLinks(t *testing.T) {
 	document, changes, report, secondRef, staleRef := codeViewFixture(t)
-	view, selectionErr := makeCodeReviewView(document, changes, report, nil, codeSelection{filePath: "src/api/handler.go"})
+	view, selectionErr := makeCodeReviewView(document, changes, report, codeSelection{filePath: "src/api/handler.go"})
 	if selectionErr != nil {
 		t.Fatal(selectionErr)
 	}
@@ -87,7 +86,7 @@ func TestCodeReviewViewScopesReverseOwnershipAndKeepsForwardLinks(t *testing.T) 
 		t.Fatalf("fragment reverse link is not exact: %#v", flow)
 	}
 
-	view, selectionErr = makeCodeReviewView(document, changes, report, nil, codeSelection{ref: secondRef})
+	view, selectionErr = makeCodeReviewView(document, changes, report, codeSelection{ref: secondRef})
 	if selectionErr != nil {
 		t.Fatal(selectionErr)
 	}
@@ -119,43 +118,43 @@ func TestCodeReviewViewScopesReverseOwnershipAndKeepsForwardLinks(t *testing.T) 
 func TestCodeReviewSelectionRejectsUnknownOrMismatchedValues(t *testing.T) {
 	document, changes, report, _, _ := codeViewFixture(t)
 	fileRef := testLocation(changes.HeadOID, "src/api/handler.go", 0, 0)
-	view, selectionErr := makeCodeReviewView(document, changes, report, nil, codeSelection{ref: fileRef})
+	view, selectionErr := makeCodeReviewView(document, changes, report, codeSelection{ref: fileRef})
 	if selectionErr != nil || view.SelectedFile.Path != "src/api/handler.go" || len(view.SelectedDiffs) != 2 || len(view.RelatedSaga) != 2 {
 		t.Fatalf("qualified file selection failed: view=%#v error=%v", view, selectionErr)
 	}
-	_, selectionErr = makeCodeReviewView(document, changes, report, nil, codeSelection{filePath: "missing.go"})
+	_, selectionErr = makeCodeReviewView(document, changes, report, codeSelection{filePath: "missing.go"})
 	if selectionErr == nil || selectionErr.status != http.StatusNotFound {
 		t.Fatalf("unknown file error = %#v", selectionErr)
 	}
-	_, selectionErr = makeCodeReviewView(document, changes, report, nil, codeSelection{ref: "not-a-diff-uri"})
+	_, selectionErr = makeCodeReviewView(document, changes, report, codeSelection{ref: "not-a-diff-uri"})
 	if selectionErr == nil || selectionErr.status != http.StatusBadRequest {
 		t.Fatalf("malformed diff error = %#v", selectionErr)
 	}
 	// The changed line exists at the head commit; the same line number at a
 	// commit outside the comparison is a different line.
 	foreign := testLocation(testForeignCommit, "src/api/handler.go", 11, 11)
-	_, selectionErr = makeCodeReviewView(document, changes, report, nil, codeSelection{ref: foreign})
+	_, selectionErr = makeCodeReviewView(document, changes, report, codeSelection{ref: foreign})
 	if selectionErr == nil || selectionErr.status != http.StatusNotFound {
 		t.Fatalf("foreign diff error = %#v", selectionErr)
 	}
 	// The added line lives at the head commit, not at the merge-base.
 	wrongSide := testLocation(changes.BaseOID, "src/api/handler.go", 11, 11)
-	_, selectionErr = makeCodeReviewView(document, changes, report, nil, codeSelection{ref: wrongSide})
+	_, selectionErr = makeCodeReviewView(document, changes, report, codeSelection{ref: wrongSide})
 	if selectionErr == nil || selectionErr.status != http.StatusNotFound {
 		t.Fatalf("wrong-side diff error = %#v", selectionErr)
 	}
 	foreignFile := testLocation(testForeignCommit, "src/api/handler.go", 0, 0)
-	_, selectionErr = makeCodeReviewView(document, changes, report, nil, codeSelection{ref: foreignFile})
+	_, selectionErr = makeCodeReviewView(document, changes, report, codeSelection{ref: foreignFile})
 	if selectionErr == nil || selectionErr.status != http.StatusNotFound {
 		t.Fatalf("foreign whole-file error = %#v", selectionErr)
 	}
 	unchangedFile := testLocation(changes.HeadOID, "src/api/unchanged.go", 0, 0)
-	_, selectionErr = makeCodeReviewView(document, changes, report, nil, codeSelection{filePath: "src/api/handler.go", ref: unchangedFile})
+	_, selectionErr = makeCodeReviewView(document, changes, report, codeSelection{filePath: "src/api/handler.go", ref: unchangedFile})
 	if selectionErr == nil || selectionErr.status != http.StatusNotFound {
 		t.Fatalf("unchanged file diff error = %#v", selectionErr)
 	}
 	emptyDocument := &saga.Saga{Manifest: saga.Manifest{ID: "empty"}, Section: &saga.Section{Target: saga.SagaTarget("empty")}}
-	_, selectionErr = makeCodeReviewView(emptyDocument, gitdiff.ChangeSet{}, coverage.Report{}, nil, codeSelection{ref: fileRef})
+	_, selectionErr = makeCodeReviewView(emptyDocument, gitdiff.ChangeSet{}, coverage.Report{}, codeSelection{ref: fileRef})
 	if selectionErr == nil || selectionErr.status != http.StatusNotFound {
 		t.Fatalf("diff against empty comparison error = %#v", selectionErr)
 	}
@@ -163,7 +162,7 @@ func TestCodeReviewSelectionRejectsUnknownOrMismatchedValues(t *testing.T) {
 
 func TestRelatedSagaEmptyStateIsExplicit(t *testing.T) {
 	document, changes, report, _, _ := codeViewFixture(t)
-	view, selectionErr := makeCodeReviewView(document, changes, report, nil, codeSelection{filePath: "docs/unowned.md"})
+	view, selectionErr := makeCodeReviewView(document, changes, report, codeSelection{filePath: "docs/unowned.md"})
 	if selectionErr != nil {
 		t.Fatal(selectionErr)
 	}
@@ -196,7 +195,6 @@ func TestRelatedSagaRollsItemOwnersUpToSlidesAndGroupsByDeck(t *testing.T) {
 	first := &saga.Fragment{
 		ID: "flow", Title: "Request flow", Target: firstTarget, MediaType: "image/svg+xml", Entrypoint: "flow.svg",
 		SlideMeta: &saga.SlideManifest{ID: "flow", DeckID: "implementation"},
-		Reviews:   []saga.Review{{State: "approved", CreatedAt: time.Now()}},
 		Landmarks: []saga.Landmark{
 			{ID: "client", Label: "Client", Target: saga.ItemTarget("visual", "flow", "client")},
 			{ID: "server", Label: "Server", Target: saga.ItemTarget("visual", "flow", "server")},
@@ -228,7 +226,7 @@ func TestRelatedSagaRollsItemOwnersUpToSlidesAndGroupsByDeck(t *testing.T) {
 		t.Fatalf("slide owners were not grouped by deck: %#v", result)
 	}
 	flow := result[0].Fragments[0].Slide
-	if flow == nil || flow.Title != "Request flow" || flow.ItemCount != 2 || flow.URL != "/f/flow/flow.svg" || flow.ReviewState != "approved" || flow.Href != sagaHref(firstTarget) {
+	if flow == nil || flow.Title != "Request flow" || flow.ItemCount != 2 || flow.URL != "/f/flow/flow.svg" || flow.Href != sagaHref(firstTarget) {
 		t.Fatalf("item owners did not roll up to the visual slide reference: %#v", flow)
 	}
 	if failure := result[0].Fragments[1].Slide; failure == nil || failure.ItemCount != 1 || failure.MediaType != "text/html" {
@@ -265,7 +263,7 @@ func TestFileViewsAttachRendererContextWithoutChangingAtoms(t *testing.T) {
 			{Kind: "new", Path: "app.go", NewLine: 2, Content: "new", AtomKey: added.Key},
 		},
 	}
-	files := makeFileViews(changes, "urn:change-saga:test:saga", nil, nil)
+	files := makeFileViews(changes, "urn:change-saga:test:saga")
 	if len(files) != 1 || len(files[0].Atoms) != 2 || len(files[0].Lines) != 3 {
 		if len(files) == 0 {
 			t.Fatal("focused file was not built")
@@ -358,9 +356,6 @@ func codeViewFixture(t *testing.T) (*saga.Saga, gitdiff.ChangeSet, coverage.Repo
 			Reference:  staleReference, Reason: staleCodeReason,
 		}},
 	}
-	document.FileReviews = []saga.FileReview{{
-		Code: testReference(changes.HeadOID, "src/api/handler.go", 0, 0, ""), Author: "Ada", State: "reviewed", CreatedAt: time.Now(),
-	}}
 	return document, changes, report, secondRef, staleRef
 }
 

@@ -70,24 +70,11 @@ func makeFileDiffPage(current *reviewSnapshot, filePath, owner, linkedTarget str
 			needed[line.AtomKey] = true
 		}
 	}
-	threads := map[string][]*threadView{}
-	if !manifest {
-		for _, thread := range current.document.Threads {
-			if thread.State == "withdrawn" || thread.Anchor.Type != "code" {
-				continue
-			}
-			for _, key := range codeThreadKeys(thread.Anchor.Code, current.changes.BaseOID) {
-				if needed[key] {
-					threads[key] = append(threads[key], makeThreadView(thread))
-				}
-			}
-		}
-	}
 	for _, line := range lines {
 		view := &DiffLineView{Kind: line.Kind, Path: filePath, OldLine: line.OldLine, NewLine: line.NewLine, Content: line.Content, Event: line.Event, OldPath: line.OldPath, NewPath: line.NewPath}
 		if index, ok := current.atomByKey[line.AtomKey]; ok {
 			atom := &current.changes.Atoms[index]
-			view.Atom = &diffAtomView{Atom: *atom, Threads: threads[atom.Key], Target: owner}
+			view.Atom = &diffAtomView{Atom: *atom, Target: owner}
 			if linkedTarget != "" {
 				for _, assignment := range current.report.Ownership[atom.Key] {
 					if assignment.Target == linkedTarget {
@@ -163,15 +150,14 @@ func writePageHeaders(w http.ResponseWriter, window pageWindow) {
 }
 
 type codePageView struct {
-	Tree          ChangedFileTreeView
-	Selected      *FileDiffView
-	Owners        []*ManifestOwnerView
-	RelatedEmpty  string
-	TotalFiles    int
-	ReviewedFiles int
-	NextCursor    string
-	HasMore       bool
-	Returned      int
+	Tree         ChangedFileTreeView
+	Selected     *FileDiffView
+	Owners       []*ManifestOwnerView
+	RelatedEmpty string
+	TotalFiles   int
+	NextCursor   string
+	HasMore      bool
+	Returned     int
 }
 
 func fileSummary(current *reviewSnapshot, filePath string) *FileDiffView {
@@ -207,11 +193,10 @@ func (a *app) codePage(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	reviews, reviewedFiles := latestCatalogReviews(document, catalog)
 	fileStart, fileEnd := boundedSlice(window.start, window.end, len(catalog.Files))
 	files := make([]*FileDiffView, 0, fileEnd-fileStart)
 	for _, summary := range catalog.Files[fileStart:fileEnd] {
-		file := catalogFileView(catalog, summary, reviews[summary.Path])
+		file := catalogFileView(catalog, summary)
 		file.Selected = summary.Path == selectedPath
 		files = append(files, file)
 	}
@@ -219,14 +204,14 @@ func (a *app) codePage(w http.ResponseWriter, r *http.Request) {
 	if selectedPath != "" {
 		index := sort.Search(len(catalog.Files), func(index int) bool { return catalog.Files[index].Path >= selectedPath })
 		if index < len(catalog.Files) && catalog.Files[index].Path == selectedPath {
-			selected = catalogFileView(catalog, catalog.Files[index], reviews[selectedPath])
+			selected = catalogFileView(catalog, catalog.Files[index])
 			selected.Selected = true
 		}
 	}
 	result := codePageView{
 		Tree: makeChangedFileTree(files), Selected: selected,
 		RelatedEmpty: "Loading explanations…",
-		TotalFiles:   len(catalog.Files), ReviewedFiles: reviewedFiles, NextCursor: window.next, HasMore: window.hasMore(), Returned: window.end - window.start,
+		TotalFiles:   len(catalog.Files), NextCursor: window.next, HasMore: window.hasMore(), Returned: window.end - window.start,
 	}
 	writeIncrementalHeaders(w, "text/html; charset=utf-8")
 	writePageHeaders(w, window)

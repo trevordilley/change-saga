@@ -6,13 +6,14 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"io"
 	"os"
 	"path/filepath"
 	"reflect"
 	"strings"
 	"testing"
+
+	"github.com/twentyideas/changesaga/internal/gitdiff"
 
 	"github.com/twentyideas/changesaga/internal/livingapp"
 )
@@ -48,11 +49,6 @@ func (s *fakeQuerySession) FragmentDiffs(_ context.Context, request fragmentDiff
 
 func (s *fakeQuerySession) DiffOwners(_ context.Context, request diffOwnerQuery) (queryPage, error) {
 	s.called, s.request = "diff-owners", request
-	return fakePage(s.called), s.err
-}
-
-func (s *fakeQuerySession) Reviews(_ context.Context, request reviewQuery) (queryPage, error) {
-	s.called, s.request = "reviews", request
 	return fakePage(s.called), s.err
 }
 
@@ -147,7 +143,6 @@ func TestQueryDispatchesEveryOperationAndPreservesArguments(t *testing.T) {
 		{"fragment", []string{"--target", "urn:fragment", "--offset", "23", "--limit", "4096"}, fragmentQuery{Target: "urn:fragment", Offset: int64(23), Limit: 4096}},
 		{"fragment-diffs", []string{"--target", "urn:fragment", "--cursor", "c2", "--limit", "18"}, fragmentDiffQuery{Target: "urn:fragment", Cursor: "c2", Limit: 18}},
 		{"diff-owners", []string{"--ref", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:app.go#L1-L2", "--cursor", "c3", "--limit", "19"}, diffOwnerQuery{Ref: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa:app.go#L1-L2", Cursor: "c3", Limit: 19}},
-		{"reviews", []string{"--target", "urn:target", "--thread", "thread-1", "--state", "open", "--cursor", "c4", "--limit", "20"}, reviewQuery{Target: "urn:target", Thread: "thread-1", State: "open", Cursor: "c4", Limit: 20}},
 		{"gaps", []string{"--kind", "stale", "--cursor", "c5", "--limit", "21"}, gapQuery{Kind: "stale", Cursor: "c5", Limit: 21}},
 		{"mappings", []string{"--target", "urn:target", "--sort", "path", "--minimum-score", "25", "--cursor", "c6", "--limit", "22"}, mappingQuery{Target: "urn:target", Sort: "path", MinimumScore: 25, Cursor: "c6", Limit: 22}},
 		{"claims", []string{"--target", "urn:target", "--status", "failed", "--cursor", "c7", "--limit", "23"}, claimQuery{Target: "urn:target", Status: "failed", Cursor: "c7", Limit: 23}},
@@ -275,7 +270,7 @@ func TestQueryRejectsAdversarialArgumentsBeforeOpening(t *testing.T) {
 }
 
 func TestQueryHelpNeverOpensSessionAndAlwaysUsesOneEnvelope(t *testing.T) {
-	for _, args := range [][]string{nil, {"help"}, {"-h"}, {"--help"}, {"schema", "--help"}, {"reviews", "--help"}} {
+	for _, args := range [][]string{nil, {"help"}, {"-h"}, {"--help"}, {"schema", "--help"}, {"gaps", "--help"}} {
 		var out bytes.Buffer
 		if err := queryWithOpener(context.Background(), args, &out, failIfOpened(t)); err != nil {
 			t.Fatalf("%v: %v", args, err)
@@ -291,7 +286,7 @@ func TestQueryHelpNeverOpensSessionAndAlwaysUsesOneEnvelope(t *testing.T) {
 func TestQuerySchemaDescribesEveryResponseWithoutOpeningSession(t *testing.T) {
 	wantCountedPaths := map[string]string{
 		"overview": "data.coverage", "children": "data.children", "fragment": "data.content.data",
-		"fragment-diffs": "data.selectors", "diff-owners": "data.atoms", "reviews": "data.items",
+		"fragment-diffs": "data.selectors", "diff-owners": "data.atoms",
 		"gaps": "data.gaps", "mappings": "data.mappings", "claims": "data.claims", "verifications": "data.verifications",
 		"requirements": "data.requirements", "requirement-history": "data.events", "citations": "data.citations",
 		"relations": "data.relations", "waves": "data.waves", "work-items": "data.items",

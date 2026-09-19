@@ -3,10 +3,11 @@ package cli
 import (
 	"context"
 	"fmt"
-	"github.com/twentyideas/changesaga/internal/saga"
 	"io"
 	"os"
 	"time"
+
+	"github.com/twentyideas/changesaga/internal/saga"
 
 	"github.com/twentyideas/changesaga/internal/requirements"
 )

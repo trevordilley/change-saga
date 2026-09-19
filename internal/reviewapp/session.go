@@ -16,13 +16,11 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
-	"time"
 	"unicode/utf8"
 
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/coverage"
-	"github.com/twentyideas/changesaga/internal/gitattribution"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
@@ -31,7 +29,6 @@ type targetEntry struct {
 	node     Node
 	children []string
 	diffs    []saga.CodeFile
-	reviews  []saga.Review
 	fragment *saga.Fragment
 }
 
@@ -64,9 +61,6 @@ type session struct {
 	selectors       map[string][]selectorEntry
 	selectorsByAtom map[string][]DiffOwner
 	fragments       map[string]fragmentValue
-	reviewItems     []ReviewItem
-	threads         map[string]ReviewThread
-	threadsByAtom   map[string][]ReviewThread
 	sourceDir       string
 	summaryOnly     bool
 	directCurrent   map[string]int
@@ -133,7 +127,7 @@ func Open(ctx context.Context, options OpenOptions) (Session, error) {
 		snapshot: snapshot, document: document, changes: changes, report: report,
 		targets: map[string]*targetEntry{}, selectors: map[string][]selectorEntry{},
 		selectorsByAtom: make(map[string][]DiffOwner, len(report.Ownership)), sourceDir: sourceDir,
-		fragments: map[string]fragmentValue{}, threads: map[string]ReviewThread{}, threadsByAtom: map[string][]ReviewThread{},
+		fragments:   map[string]fragmentValue{},
 		summaryOnly: options.SummaryOnly, directCurrent: map[string]int{}, directStale: map[string]int{},
 	}
 	if err := s.build(ctx, resolver); err != nil {
@@ -146,7 +140,6 @@ func (s *session) Snapshot() string { return s.snapshot }
 
 func (s *session) build(ctx context.Context, resolver coverage.Resolver) error {
 	s.indexSection(s.document.Section, "")
-	s.resolveReviewIdentities(ctx)
 	if s.summaryOnly {
 		for _, target := range s.report.Targets {
 			s.directCurrent[target.Target] = target.Covered
@@ -165,29 +158,7 @@ func (s *session) build(ctx context.Context, resolver coverage.Resolver) error {
 	s.linkOwnership()
 	s.resolveStaleSelectors()
 	s.sortAtomOwners()
-	s.indexReviewItems(ctx, resolver)
 	return nil
-}
-
-func (s *session) resolveReviewIdentities(ctx context.Context) {
-	resolver := gitattribution.New(ctx, s.document.Root)
-	for _, entry := range s.targets {
-		for index := range entry.reviews {
-			review := &entry.reviews[index]
-			value := attribution(ctx, resolver, review.Path)
-			switch value.Status {
-			case "committed":
-				if value.Committer != nil {
-					review.AttributionIdentity = "git:" + strings.ToLower(strings.TrimSpace(value.Committer.Email))
-					review.Author = value.Committer.Name
-				}
-			case "uncommitted":
-				review.AttributionIdentity, review.Author = "local", "Local / uncommitted"
-			default:
-				review.AttributionIdentity = value.Status
-			}
-		}
-	}
 }
 
 // sortAtomOwners gives every atom a deterministic owner order. The slices are
@@ -289,7 +260,7 @@ func (s *session) resolveStaleSelectors() {
 func (s *session) indexSection(section *saga.Section, parent string) {
 	entry := &targetEntry{
 		node:  Node{Kind: section.Kind, Target: section.Target, Parent: parent, ID: section.ID, Title: section.Title, Order: section.Order},
-		diffs: section.Code, reviews: section.Reviews,
+		diffs: section.Code,
 	}
 	s.targets[section.Target] = entry
 	if !s.summaryOnly {
@@ -302,7 +273,7 @@ func (s *session) indexSection(section *saga.Section, parent string) {
 		}
 		fragmentEntry := &targetEntry{
 			node:  Node{Kind: fragmentKind, Target: fragment.Target, Parent: section.Target, ID: fragment.ID, Title: fragment.Title, Order: fragment.Order, MediaType: fragment.MediaType},
-			diffs: fragment.Code, reviews: fragment.Reviews, fragment: fragment,
+			diffs: fragment.Code, fragment: fragment,
 		}
 		if fragmentEntry.node.Title == "" {
 			fragmentEntry.node.Title = fragment.ID
@@ -328,7 +299,7 @@ func (s *session) indexSection(section *saga.Section, parent string) {
 			landmarkEntry := &targetEntry{node: Node{
 				Kind: landmarkKind, Target: landmark.Target, Parent: fragment.Target, ID: landmark.ID, Title: landmark.Label,
 				Description: landmark.Description, Selector: landmarkValue(landmark.Selector),
-			}, diffs: landmark.Code, reviews: landmark.Reviews}
+			}, diffs: landmark.Code}
 			if landmark.ItemMeta != nil {
 				landmarkEntry.node.ItemKind = landmark.ItemMeta.Kind
 				landmarkEntry.node.About = landmark.ItemMeta.About
@@ -371,26 +342,6 @@ func (s *session) indexDiffs(target string, files []saga.CodeFile) {
 func (s *session) finishNode(target string, recursive bool) Node {
 	entry := s.targets[target]
 	node := entry.node
-	if reviews := entry.reviews; len(reviews) > 0 {
-		node.Review.LatestState = saga.AggregateReviewState(reviews)
-		for _, review := range saga.CurrentReviews(reviews) {
-			if review.State == "rejected" {
-				node.Review.Rejections++
-			}
-			if review.Reviewer == nil {
-				node.Review.Unspecified++
-			} else if review.State == "approved" && review.Reviewer.Kind == "human" {
-				node.Review.HumanApprovals++
-			} else if review.State == "approved" && review.Reviewer.Kind == "ai" {
-				node.Review.AIApprovals++
-			}
-		}
-	}
-	for _, thread := range s.document.Threads {
-		if thread.Target == target && thread.State == "open" {
-			node.Review.OpenThreads++
-		}
-	}
 	if s.summaryOnly {
 		node.Diffs.DirectCurrent = s.directCurrent[target]
 		node.Diffs.DirectStale = s.directStale[target]
@@ -412,12 +363,6 @@ func (s *session) finishNode(target string, recursive bool) Node {
 	}
 	node.Diffs.Current += node.Diffs.DescendantCurrent
 	node.Diffs.Stale += node.Diffs.DescendantStale
-	if recursive {
-		for _, child := range entry.children {
-			childNode := s.finishNode(child, true)
-			node.Review.OpenThreads += childNode.Review.OpenThreads
-		}
-	}
 	return node
 }
 
@@ -631,47 +576,10 @@ func (s *session) DiffOwners(ctx context.Context, query DiffOwnerQuery) (DiffOwn
 				owners[index].Mapping = &copy
 			}
 		}
-		owned := OwnedAtom{Atom: atom, Owners: owners, Threads: append([]ReviewThread{}, s.threadsByAtom[atom.Key]...)}
+		owned := OwnedAtom{Atom: atom, Owners: owners}
 		result.Atoms = append(result.Atoms, owned)
 	}
 	return result, nil
-}
-
-func (s *session) Reviews(ctx context.Context, query ReviewQuery) (ReviewPage, error) {
-	if err := ctx.Err(); err != nil {
-		return ReviewPage{}, err
-	}
-	if query.Target != "" {
-		if err := s.validateTargetArgument(query.Target); err != nil {
-			return ReviewPage{}, err
-		}
-		if s.targets[query.Target] == nil {
-			return ReviewPage{}, notFound("target", query.Target)
-		}
-	}
-	if query.Thread != "" {
-		if !saga.ValidID(query.Thread) {
-			return ReviewPage{}, invalidArgument("thread must be a stable ID")
-		}
-		if _, ok := s.threads[query.Thread]; !ok {
-			return ReviewPage{}, notFound("thread", query.Thread)
-		}
-	}
-	if query.State != "" && !validReviewState(query.State) {
-		return ReviewPage{}, invalidArgument("state is not a recognized review or thread state")
-	}
-	var items []ReviewItem
-	for _, item := range s.reviewItems {
-		if reviewItemMatches(item, query) {
-			items = append(items, item)
-		}
-	}
-	key := query.Target + "\x00" + query.Thread + "\x00" + query.State
-	start, end, page, err := s.page("reviews", key, query.Cursor, query.Limit, len(items))
-	if err != nil {
-		return ReviewPage{}, err
-	}
-	return ReviewPage{Items: append([]ReviewItem{}, items[start:end]...), Page: page}, nil
 }
 
 func (s *session) Gaps(ctx context.Context, query GapQuery) (GapPage, error) {
@@ -1023,46 +931,4 @@ func (s *session) page(operation, key, cursor string, limit, total int) (int, in
 		page.NextCursor = &next
 	}
 	return start, end, page, nil
-}
-
-func validReviewState(value string) bool {
-	switch value {
-	case "open", "closed", "resolved", "withdrawn", "approved", "rejected", "reviewed", "unreviewed":
-		return true
-	default:
-		return false
-	}
-}
-
-func reviewItemMatches(item ReviewItem, query ReviewQuery) bool {
-	if item.Thread != nil {
-		if query.Thread != "" && item.Thread.ID != query.Thread {
-			return false
-		}
-		if query.Target != "" && item.Thread.Target != query.Target {
-			return false
-		}
-		return query.State == "" || item.Thread.State == query.State
-	}
-	if query.Thread != "" || item.Event == nil {
-		return false
-	}
-	if query.Target != "" && item.Event.Target != query.Target {
-		return false
-	}
-	return query.State == "" || item.Event.State == query.State
-}
-
-func recordTime(item ReviewItem) time.Time {
-	if item.Thread != nil {
-		return item.Thread.CreatedAt
-	}
-	return item.Event.CreatedAt
-}
-
-func recordID(item ReviewItem) string {
-	if item.Thread != nil {
-		return item.Thread.ID
-	}
-	return item.Event.ID
 }

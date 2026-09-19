@@ -145,56 +145,6 @@ func TestLoadRejectsMalformedMetadata(t *testing.T) {
 		name:  "evidence file selects nothing",
 		files: map[string]string{"___code/empty.json": `{"version":2,"references":[]}`},
 		want:  "at least one code reference",
-	}, {
-		name: "thread id disagrees with its directory",
-		files: map[string]string{
-			"___review/threads/alpha.thread/thread.json":                                     `{"version":2,"id":"beta","target":"urn:change-saga:test:fragment:overview","anchor":{"type":"target"},"created_at":"2026-08-19T12:00:00Z"}`,
-			"___review/threads/alpha.thread/messages/m1.message/message.json":                `{"version":2,"id":"m1","created_at":"2026-08-19T12:00:00Z"}`,
-			"___review/threads/alpha.thread/messages/m1.message/body.fragment/fragment.json": `{"version":2,"id":"m1-body","media_type":"text/markdown","entrypoint":"content.md"}`,
-			"___review/threads/alpha.thread/messages/m1.message/body.fragment/content.md":    "hi\n",
-		},
-		want: `thread id "beta" must match directory "alpha.thread"`,
-	}, {
-		name: "message id disagrees with its directory",
-		files: map[string]string{
-			"___review/threads/t1.thread/thread.json":                                     `{"version":2,"id":"t1","target":"urn:change-saga:test:fragment:overview","anchor":{"type":"target"},"created_at":"2026-08-19T12:00:00Z"}`,
-			"___review/threads/t1.thread/messages/m1.message/message.json":                `{"version":2,"id":"m2","created_at":"2026-08-19T12:00:00Z"}`,
-			"___review/threads/t1.thread/messages/m1.message/body.fragment/fragment.json": `{"version":2,"id":"m1-body","media_type":"text/markdown","entrypoint":"content.md"}`,
-			"___review/threads/t1.thread/messages/m1.message/body.fragment/content.md":    "hi\n",
-		},
-		want: `message id "m2" must match directory "m1.message"`,
-	}, {
-		name:  "approval id is not a stable identifier",
-		files: map[string]string{"___approvals/a.json": `{"version":2,"id":"../escape","state":"approved","created_at":"2026-08-19T12:00:00Z"}`},
-		want:  "stable id",
-	}, {
-		name: "thread event id is not a stable identifier",
-		files: map[string]string{
-			"___review/threads/t1.thread/thread.json":                                     `{"version":2,"id":"t1","target":"urn:change-saga:test:fragment:overview","anchor":{"type":"target"},"created_at":"2026-08-19T12:00:00Z"}`,
-			"___review/threads/t1.thread/messages/m1.message/message.json":                `{"version":2,"id":"m1","created_at":"2026-08-19T12:00:00Z"}`,
-			"___review/threads/t1.thread/messages/m1.message/body.fragment/fragment.json": `{"version":2,"id":"m1-body","media_type":"text/markdown","entrypoint":"content.md"}`,
-			"___review/threads/t1.thread/messages/m1.message/body.fragment/content.md":    "hi\n",
-			"___review/threads/t1.thread/events/e.json":                                   `{"version":2,"id":"a/b","state":"resolved","created_at":"2026-08-19T12:01:00Z"}`,
-		},
-		want: "stable id",
-	}, {
-		name: "annotation color is not a safe value",
-		files: map[string]string{
-			"___review/threads/t1.thread/thread.json":                                     `{"version":2,"id":"t1","target":"urn:change-saga:test:fragment:overview","anchor":{"type":"region","coordinate_space":"normalized","shapes":[{"type":"rect","x":0.1,"y":0.1,"width":0.2,"height":0.2,"color":"expression(alert(1))"}]},"created_at":"2026-08-19T12:00:00Z"}`,
-			"___review/threads/t1.thread/messages/m1.message/message.json":                `{"version":2,"id":"m1","created_at":"2026-08-19T12:00:00Z"}`,
-			"___review/threads/t1.thread/messages/m1.message/body.fragment/fragment.json": `{"version":2,"id":"m1-body","media_type":"text/markdown","entrypoint":"content.md"}`,
-			"___review/threads/t1.thread/messages/m1.message/body.fragment/content.md":    "hi\n",
-		},
-		want: "#rrggbb",
-	}, {
-		name: "text anchor positions run backwards",
-		files: map[string]string{
-			"___review/threads/t1.thread/thread.json":                                     `{"version":2,"id":"t1","target":"urn:change-saga:test:fragment:overview","anchor":{"type":"text","text":{"exact":"story","start":-4,"end":-9}},"created_at":"2026-08-19T12:00:00Z"}`,
-			"___review/threads/t1.thread/messages/m1.message/message.json":                `{"version":2,"id":"m1","created_at":"2026-08-19T12:00:00Z"}`,
-			"___review/threads/t1.thread/messages/m1.message/body.fragment/fragment.json": `{"version":2,"id":"m1-body","media_type":"text/markdown","entrypoint":"content.md"}`,
-			"___review/threads/t1.thread/messages/m1.message/body.fragment/content.md":    "hi\n",
-		},
-		want: "non-negative",
 	}}
 
 	for _, testCase := range cases {
@@ -277,24 +227,6 @@ func TestLoadRejectsSymlinkedEntities(t *testing.T) {
 				t.Fatalf("expected a symlink issue; got:\n%s", report)
 			}
 		})
-	}
-}
-
-func TestLoadRejectsSymlinkedThread(t *testing.T) {
-	root := buildSaga(t, nil)
-	outside := filepath.Join(filepath.Dir(root), "outside")
-	if err := os.MkdirAll(outside, 0o755); err != nil {
-		t.Fatal(err)
-	}
-	if err := os.MkdirAll(filepath.Join(root, "___review", "threads"), 0o755); err != nil {
-		t.Fatal(err)
-	}
-	if err := os.Symlink(outside, filepath.Join(root, "___review", "threads", "t1.thread")); err != nil {
-		t.Skipf("symlinks unavailable: %v", err)
-	}
-	validation, report := loadIssues(t, root)
-	if validation.Valid || !strings.Contains(report, "symlink") {
-		t.Fatalf("a symlinked thread must be reported; issues:\n%s", report)
 	}
 }
 

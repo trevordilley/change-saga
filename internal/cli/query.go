@@ -63,14 +63,6 @@ type diffOwnerQuery struct {
 	Limit  int
 }
 
-type reviewQuery struct {
-	Target string
-	Thread string
-	State  string
-	Cursor string
-	Limit  int
-}
-
 type gapQuery struct {
 	Kind   string
 	Cursor string
@@ -120,7 +112,6 @@ type querySession interface {
 	ReadFragment(context.Context, fragmentQuery) (any, error)
 	FragmentDiffs(context.Context, fragmentDiffQuery) (queryPage, error)
 	DiffOwners(context.Context, diffOwnerQuery) (queryPage, error)
-	Reviews(context.Context, reviewQuery) (queryPage, error)
 	Gaps(context.Context, gapQuery) (queryPage, error)
 	Mappings(context.Context, mappingQuery) (queryPage, error)
 	Claims(context.Context, claimQuery) (queryPage, error)
@@ -201,7 +192,6 @@ var queryOperations = []string{
 	"slide",
 	"slide-diffs",
 	"diff-owners",
-	"reviews",
 	"gaps",
 	"mappings",
 	"claims",
@@ -233,7 +223,6 @@ var queryPurpose = map[string]string{
 	"slide":               "bounded visual slide content and its ordered semantic Items",
 	"slide-diffs":         "the changed atoms a slide Item references",
 	"diff-owners":         "the narrative targets whose code references hold the changed lines or file at a code location",
-	"reviews":             "the normalized review overlay: threads, messages, events, and approvals",
 	"gaps":                "uncovered atoms, stale selectors, and overlapping coverage",
 	"mappings":            "coverage records ranked by breadth and justification signals so scrutiny starts at the weakest mappings",
 	"claims":              "falsifiable author assertions, exact evidence, current mapping state, and latest verification result",
@@ -262,7 +251,6 @@ var queryUsage = map[string]string{
 	"slide":               "change-saga query slide --saga PATH --target SLIDE [--offset N] [--limit N] [--repo PATH] [--against REV [--head REV]]",
 	"slide-diffs":         "change-saga query slide-diffs --saga PATH --target ITEM [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]",
 	"diff-owners":         "change-saga query diff-owners --saga PATH --ref LOCATION [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]",
-	"reviews":             "change-saga query reviews --saga PATH [--target TARGET] [--thread ID] [--state STATE] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]",
 	"gaps":                "change-saga query gaps --saga PATH [--kind uncovered|stale|overlap] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]",
 	"mappings":            "change-saga query mappings --saga PATH [--target TARGET] [--sort scrutiny|target|path] [--minimum-score N] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]",
 	"claims":              "change-saga query claims --saga PATH [--target TARGET] [--status unverified|verified|failed|inconclusive] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]",
@@ -360,10 +348,6 @@ func queryWithOpener(ctx context.Context, args []string, out io.Writer, open que
 		var page queryPage
 		page, err = session.DiffOwners(ctx, request)
 		result, responsePage = page.Data, &page.Page
-	case reviewQuery:
-		var page queryPage
-		page, err = session.Reviews(ctx, request)
-		result, responsePage = page.Data, &page.Page
 	case gapQuery:
 		var page queryPage
 		page, err = session.Gaps(ctx, request)
@@ -435,7 +419,6 @@ func querySchemaFor(operation string) querySchemaDescription {
 		"slide":               {"data.target", "data.intent", "data.layout", "data.section", "data.takeaway", "data.content.data", "data.assets", "data.items", "data.reading_order"},
 		"slide-diffs":         {"data.selectors", "data.atoms", "data.stale"},
 		"diff-owners":         {"data.atoms"},
-		"reviews":             {"data.items"},
 		"gaps":                {"data.gaps"},
 		"mappings":            {"data.mappings"},
 		"claims":              {"data.claims"},
@@ -458,7 +441,6 @@ func querySchemaFor(operation string) querySchemaDescription {
 		"fragment-diffs":      "data.selectors",
 		"slide-diffs":         "data.selectors",
 		"diff-owners":         "data.atoms",
-		"reviews":             "data.items",
 		"gaps":                "data.gaps",
 		"mappings":            "data.mappings",
 		"claims":              "data.claims",
@@ -496,7 +478,7 @@ func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, e
 	sourceDir := flags.String("repo", "", "source repository checkout")
 	opening := registerOpenFlags(flags)
 
-	var parent, target, ref, cursor, thread, state, kind, sortOrder, claim string
+	var parent, target, ref, cursor, state, kind, sortOrder, claim string
 	var requirement, citation, relation, from, to, wave, item, criterion, commit string
 	var offset int64
 	var limit optionalInt
@@ -516,12 +498,6 @@ func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, e
 		flags.Var(&limit, "limit", "page size")
 	case "diff-owners":
 		flags.StringVar(&ref, "ref", "", "code location in the comparison: <commit>:<path>[#L<start>[-L<end>]]")
-		flags.StringVar(&cursor, "cursor", "", "pagination cursor")
-		flags.Var(&limit, "limit", "page size")
-	case "reviews":
-		flags.StringVar(&target, "target", "", "target URN")
-		flags.StringVar(&thread, "thread", "", "thread ID")
-		flags.StringVar(&state, "state", "", "review or thread state")
 		flags.StringVar(&cursor, "cursor", "", "pagination cursor")
 		flags.Var(&limit, "limit", "page size")
 	case "gaps":
@@ -701,8 +677,6 @@ func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, e
 		return fragmentDiffQuery{Target: target, Cursor: cursor, Limit: limit.value}, options, false, nil
 	case "diff-owners":
 		return diffOwnerQuery{Ref: ref, Cursor: cursor, Limit: limit.value}, options, false, nil
-	case "reviews":
-		return reviewQuery{Target: target, Thread: thread, State: state, Cursor: cursor, Limit: limit.value}, options, false, nil
 	case "gaps":
 		return gapQuery{Kind: kind, Cursor: cursor, Limit: limit.value}, options, false, nil
 	case "mappings":

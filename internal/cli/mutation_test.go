@@ -46,27 +46,6 @@ func assertValid(t *testing.T, root string) {
 	}
 }
 
-func TestReviewRequiresExplicitPersonaAndAIDetails(t *testing.T) {
-	root := newAuthoredSaga(t)
-	var output bytes.Buffer
-	if err := Review(context.Background(), []string{"--state", "approved", root}, &output); err == nil || !strings.Contains(err.Error(), "--reviewer-kind") {
-		t.Fatalf("missing reviewer persona error = %v", err)
-	}
-	if err := Review(context.Background(), []string{"--state", "approved", "--reviewer-kind", "ai", "--agent", "codex", root}, &output); err == nil || !strings.Contains(err.Error(), "reviewer name, agent, and model") {
-		t.Fatalf("incomplete AI identity error = %v", err)
-	}
-	if err := Review(context.Background(), []string{"--state", "approved", "--reviewer-kind", "ai", "--reviewer-name", "Codex 1", "--agent", "codex", "--model", "gpt-5.6-sol", root}, &output); err != nil {
-		t.Fatal(err)
-	}
-	document, _, err := saga.Load(root)
-	if err != nil || len(document.Section.Reviews) != 1 || document.Section.Reviews[0].Reviewer == nil {
-		t.Fatalf("AI review was not persisted: document=%#v err=%v", document, err)
-	}
-	if got := document.Section.Reviews[0].Reviewer; got.Kind != "ai" || got.Name != "Codex 1" || got.Agent != "codex" || got.Model != "gpt-5.6-sol" {
-		t.Fatalf("reviewer identity = %#v", got)
-	}
-}
-
 // A fragment that is missing its entrypoint invalidates the whole saga, and an
 // invalid saga blocks every later review mutation. A failed add-fragment must
 // therefore leave nothing behind at all.
@@ -266,19 +245,4 @@ func TestInitCreatesMissingParentsAndToleratesSymlinkedAncestors(t *testing.T) {
 		t.Fatalf("add-chapter under a symlinked ancestor: %v", err)
 	}
 	assertValid(t, through)
-}
-
-func TestReplyRejectsAnUnstableThreadIdentifier(t *testing.T) {
-	root := newAuthoredSaga(t)
-	var output bytes.Buffer
-	for _, threadID := range []string{"../escape", "a/b", "..", "with space"} {
-		err := Reply(context.Background(), []string{"--thread", threadID, "--body", "hello", root}, &output)
-		if err == nil {
-			t.Fatalf("thread id %q was accepted", threadID)
-		}
-		if !strings.Contains(err.Error(), "stable identifier") && !strings.Contains(err.Error(), "does not exist") {
-			t.Fatalf("thread id %q: unexpected error %v", threadID, err)
-		}
-	}
-	assertValid(t, root)
 }

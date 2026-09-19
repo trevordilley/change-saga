@@ -10,7 +10,6 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/twentyideas/changesaga/internal/gitattribution"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
@@ -38,7 +37,6 @@ func (a *app) outlineDocument(ctx context.Context) *saga.Saga {
 	if err != nil || !validation.Valid {
 		return nil
 	}
-	applyGitAttribution(ctx, gitattribution.New(ctx, a.root), document)
 	// Fingerprint after loading. A concurrent edit cannot be mistaken for the
 	// model just read; it produces a miss on the next request.
 	after, err := a.outlineFingerprint(ctx)
@@ -120,14 +118,11 @@ func skipOutlineDirectory(rel, base string) bool {
 
 func outlineFile(rel, base string) bool {
 	switch base {
-	case "saga.json", "chapter.json", "section.json", "fragment.json", "thread.json":
+	case "saga.json", "chapter.json", "section.json", "fragment.json":
 		return true
 	}
 	if strings.HasPrefix(rel, saga.EmbeddedSlidesDir+"/") && strings.HasSuffix(base, ".json") {
 		return strings.HasPrefix(base, "10-d-") || strings.HasPrefix(base, "20-s-") || strings.HasPrefix(base, "30-i-")
 	}
-	if saga.IsFlatReviewRecord(base) {
-		return true
-	}
-	return strings.Contains(rel, "/___approvals/") || strings.Contains(rel, "/events/")
+	return strings.Contains(rel, "/events/")
 }

@@ -4,12 +4,13 @@ import (
 	"context"
 	"crypto/sha256"
 	"fmt"
-	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"io"
 	"os"
 	"path/filepath"
 	"sort"
 	"testing"
+
+	"github.com/twentyideas/changesaga/internal/coderesolve"
 
 	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
@@ -19,8 +20,7 @@ import (
 func TestGenerateLargeSagaIsDeterministicAndValid(t *testing.T) {
 	options := LargeSagaOptions{
 		Chapters: 2, SectionsPerChapter: 2, FragmentsPerSection: 3,
-		SourceFiles: 4, ChangedLinesPerFile: 4, ReviewsPerFragment: 2,
-		Threads: 3, DiffReviews: 4,
+		SourceFiles: 4, ChangedLinesPerFile: 4,
 	}
 	first, err := GenerateLargeSaga(context.Background(), filepath.Join(t.TempDir(), "first"), options)
 	if err != nil {
@@ -65,12 +65,6 @@ func TestGenerateLargeSagaIsDeterministicAndValid(t *testing.T) {
 	if first.Markdown == 0 || first.SVG == 0 || first.HTML == 0 {
 		t.Fatalf("fixture omitted a required asset type: %#v", first)
 	}
-	if got, want := first.Reviews, (first.Fragments-1)*options.ReviewsPerFragment; got != want {
-		t.Fatalf("reviews = %d, want %d", got, want)
-	}
-	if len(document.Threads) != options.Threads || len(document.FileReviews) != options.DiffReviews {
-		t.Fatalf("review overlay counts differ: threads=%d diff reviews=%d", len(document.Threads), len(document.FileReviews))
-	}
 	changes, err := gitdiff.Read(context.Background(), first.Repository, document.Manifest.Source.Repository, first.Base, first.Head)
 	if err != nil {
 		t.Fatal(err)
@@ -93,8 +87,8 @@ func TestGenerateLargeSagaIsDeterministicAndValid(t *testing.T) {
 func TestGenerateLargeSagaCoverageShapeIsSelectable(t *testing.T) {
 	options := LargeSagaOptions{
 		Chapters: 2, SectionsPerChapter: 2, FragmentsPerSection: 3,
-		SourceFiles: 4, ChangedLinesPerFile: 4, ReviewsPerFragment: 1,
-		Threads: 1, DiffReviews: 1, CoverageRangeWidth: 1, CoverageTargets: 2,
+		SourceFiles: 4, ChangedLinesPerFile: 4,
+		CoverageRangeWidth: 1, CoverageTargets: 2,
 	}
 	fixture, err := GenerateLargeSaga(context.Background(), filepath.Join(t.TempDir(), "per-line"), options)
 	if err != nil {
@@ -153,8 +147,7 @@ func TestDefaultLargeSagaOptionsKeepTheirSpreadRangedShape(t *testing.T) {
 func TestGenerateLargeSagaRejectsImpossibleCoverageShapes(t *testing.T) {
 	base := LargeSagaOptions{
 		Chapters: 1, SectionsPerChapter: 1, FragmentsPerSection: 2,
-		SourceFiles: 1, ChangedLinesPerFile: 1, ReviewsPerFragment: 0,
-		Threads: 0, DiffReviews: 0,
+		SourceFiles: 1, ChangedLinesPerFile: 1,
 	}
 	cases := map[string]LargeSagaOptions{
 		"negative range width":        {CoverageRangeWidth: -1},
@@ -185,9 +178,6 @@ func TestDefaultLargeSagaScaleBudget(t *testing.T) {
 	}
 	if fragments < 100 {
 		t.Fatalf("default fixture has only %d section fragments; keep hierarchy traversal representative", fragments)
-	}
-	if options.ReviewsPerFragment*fragments+options.Threads+options.DiffReviews < 300 {
-		t.Fatal("default fixture review history is too small to exercise large overlay loading")
 	}
 }
 
@@ -243,8 +233,8 @@ func treeDigest(t *testing.T, root string) [sha256.Size]byte {
 func TestScalingChangedLinesWithRangeWidthHoldsEvidenceConstant(t *testing.T) {
 	base := LargeSagaOptions{
 		Chapters: 2, SectionsPerChapter: 2, FragmentsPerSection: 3,
-		SourceFiles: 4, ChangedLinesPerFile: 8, ReviewsPerFragment: 1,
-		Threads: 1, DiffReviews: 1, CoverageRangeWidth: 2,
+		SourceFiles: 4, ChangedLinesPerFile: 8,
+		CoverageRangeWidth: 2,
 	}
 	deeper := base
 	deeper.ChangedLinesPerFile *= 4

@@ -6,7 +6,6 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io/fs"
 	"net/http"
@@ -19,7 +18,6 @@ import (
 
 	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/coverage"
-	"github.com/twentyideas/changesaga/internal/gitattribution"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/saga"
 	"github.com/twentyideas/changesaga/internal/snapshotcache"
@@ -46,8 +44,6 @@ type reviewSnapshot struct {
 	targetOrder     []string
 	targetFiles     map[string][]string
 	targetFileAtoms map[string]map[string][]int
-	fileReviews     map[string]saga.FileReview
-	reviewedFiles   int
 	fileOwners      map[string][]string
 	fileSummaries   map[string]FileDiffView
 	fileCoverage    map[string]ManifestFileView
@@ -55,39 +51,21 @@ type reviewSnapshot struct {
 	mutationIndex   saga.MutationIndex
 }
 
-// reviewState contains only mutable review-overlay records. Keeping it apart
-// from the structural/source snapshot is the central mutation boundary: a
-// comment can advance this generation without touching coverage or Git diffs.
-type reviewState struct {
-	threads     []*saga.Thread
-	diffReviews []saga.FileReview
-	byTarget    map[string][]saga.Review
-	fingerprint string
-}
-
-type reviewGeneration struct {
-	fingerprint string
-	document    *saga.Saga
-}
-
-// snapshotCache owns two independently advancing generations. current is the
-// expensive structural/source generation; review is a compact projection of
-// append-only review records onto that immutable structure.
+// snapshotCache owns the expensive structural/source generation. Reviews
+// under ___reviews are read directly for each review surface, so recording an
+// approval never rebuilds the comparison.
 type snapshotCache struct {
 	mutex sync.Mutex
 
 	saga    string
 	source  string
 	current *reviewSnapshot
-	review  reviewGeneration
 
 	building bool
 	buildErr error
 
-	// builds counts structural/source work only. Review mutations must not move
-	// it; tests use that fact to guard the lifecycle boundary.
-	builds       int
-	reviewBuilds int
+	// builds counts structural/source work.
+	builds int
 }
 
 // snapshot returns a ready request generation. The ordinary in-process test
@@ -103,23 +81,11 @@ func (a *app) snapshot(ctx context.Context) *reviewSnapshot {
 	if current := a.cache.current; current != nil {
 		sagaPrint, sourcePrint := a.fingerprints(ctx, current.document.Manifest)
 		if sagaPrint != "" && sagaPrint == a.cache.saga && sourcePrint != "" && sourcePrint == a.cache.source {
-			if reviewPrint, err := indexedReviewFingerprint(ctx, current.mutationIndex); err == nil && reviewPrint == a.cache.review.fingerprint && a.cache.review.document != nil {
-				result := snapshotWithReviews(current, a.cache.review.document)
-				a.cache.mutex.Unlock()
-				return result
-			}
-			if err := a.reloadReviewsLocked(ctx, current); err == nil {
-				result := snapshotWithReviews(current, a.cache.review.document)
-				a.cache.mutex.Unlock()
-				return result
-			}
-			// A review-only read failure is not allowed to poison or replace the
-			// last complete generation. Report it as unavailable and retry later.
 			a.cache.mutex.Unlock()
-			return nil
+			return current
 		}
 	}
-	a.cache.current, a.cache.review = nil, reviewGeneration{}
+	a.cache.current = nil
 	a.cache.saga, a.cache.source = "", ""
 	a.cache.building, a.cache.buildErr = true, nil
 	a.cache.mutex.Unlock()
@@ -156,7 +122,7 @@ func (a *app) startSnapshotBuild(ctx context.Context, done func(error)) bool {
 // publishes both its immutable snapshot and the review generation observed
 // alongside it. Callers must have changed cache.building from false to true.
 func (a *app) finishSnapshotBuild(ctx context.Context) *reviewSnapshot {
-	built, reviews, err := a.loadComparison(ctx)
+	built, err := a.loadComparison(ctx)
 	var sagaPrint, sourcePrint string
 	if err == nil {
 		sagaPrint, sourcePrint = a.fingerprints(ctx, built.document.Manifest)
@@ -170,49 +136,21 @@ func (a *app) finishSnapshotBuild(ctx context.Context) *reviewSnapshot {
 		return nil
 	}
 	a.cache.saga, a.cache.source, a.cache.current = sagaPrint, sourcePrint, built
-	a.cache.review = reviewGeneration{fingerprint: reviews.fingerprint, document: composeReviewDocument(built.document, reviews)}
-	return snapshotWithReviews(built, a.cache.review.document)
+	return built
 }
 
-func (a *app) loadComparison(ctx context.Context) (*reviewSnapshot, reviewState, error) {
+func (a *app) loadComparison(ctx context.Context) (*reviewSnapshot, error) {
 	if a.comparisonLoader != nil {
 		built, err := a.comparisonLoader(ctx)
 		if err != nil {
-			return nil, reviewState{}, err
+			return nil, err
 		}
-		reviews := extractReviewState(built.document)
-		structural := *built
-		structural.document = structuralDocument(built.document)
-		if structural.mutationIndex.Root == "" {
-			structural.mutationIndex = saga.MutationIndexFromDocument(structural.document)
+		if built.mutationIndex.Root == "" {
+			built.mutationIndex = saga.MutationIndexFromDocument(built.document)
 		}
-		return &structural, reviews, nil
+		return built, nil
 	}
 	return a.buildSnapshot(ctx)
-}
-
-func snapshotWithReviews(structural *reviewSnapshot, document *saga.Saga) *reviewSnapshot {
-	result := *structural
-	result.document = document
-	result.fileReviews = map[string]saga.FileReview{}
-	result.reviewedFiles = 0
-	result.fileSummaries = make(map[string]FileDiffView, len(structural.fileSummaries))
-	for path, summary := range structural.fileSummaries {
-		result.fileSummaries[path] = summary
-	}
-	result.fileReviews = latestFileReviews(document.FileReviews)
-	for path, review := range result.fileReviews {
-		if review.State == "reviewed" {
-			result.reviewedFiles++
-		}
-		if summary, ok := result.fileSummaries[path]; ok {
-			summary.Reviewed = review.State == "reviewed"
-			summary.Reviewer = review.Author
-			summary.ReviewerDetail = review.AttributionDetail
-			result.fileSummaries[path] = summary
-		}
-	}
-	return &result
 }
 
 // cachedCoverageTotals reads an already-published generation without starting
@@ -268,52 +206,6 @@ func (a *app) snapshotState() (state string, err error) {
 	}
 }
 
-// refreshReviewsAfterMutation is called only after reviewstore has durably
-// committed a mutation. It never publishes speculative memory state. If no
-// structural generation exists yet there is nothing to refresh; the cold build
-// will read the just-committed records from disk.
-func (a *app) refreshReviewsAfterMutation(ctx context.Context) error {
-	a.cache.mutex.Lock()
-	defer a.cache.mutex.Unlock()
-	if a.cache.current == nil {
-		return nil
-	}
-	if a.reviewRefreshHook != nil {
-		return a.reviewRefreshHook()
-	}
-	return a.reloadReviewsLocked(ctx, a.cache.current)
-}
-
-// publishReviewsAfterMutation acknowledges disk as the source of truth. A
-// failed in-memory refresh invalidates only the overlay generation so the next
-// read retries it; it must not turn an already durable mutation into an HTTP
-// failure that invites the client to submit a duplicate record.
-func (a *app) publishReviewsAfterMutation(ctx context.Context) bool {
-	if err := a.refreshReviewsAfterMutation(ctx); err == nil {
-		return true
-	}
-	a.cache.mutex.Lock()
-	a.cache.review.fingerprint = ""
-	a.cache.mutex.Unlock()
-	return false
-}
-
-func (a *app) reloadReviewsLocked(ctx context.Context, structural *reviewSnapshot) error {
-	loaded, validation, print, err := a.loadReviewStateWithStableFingerprint(ctx, structural.mutationIndex)
-	if err != nil {
-		return err
-	}
-	if !validation.Valid {
-		return fmt.Errorf("saga became structurally invalid while loading review state")
-	}
-	state := reviewState{threads: loaded.Threads, diffReviews: loaded.FileReviews, byTarget: loaded.ByTarget, fingerprint: print}
-	document := composeReviewDocument(structural.document, state)
-	applyGitAttribution(ctx, gitattribution.New(ctx, a.root), document)
-	a.cache.review = reviewGeneration{fingerprint: print, document: document}
-	a.cache.reviewBuilds++
-	return nil
-}
-
 // fingerprints describes only structural saga bytes and the source comparison.
 // Review records have their own generation and are intentionally excluded.
 func (a *app) fingerprints(ctx context.Context, manifest saga.Manifest) (sagaPrint, sourcePrint string) {
@@ -330,22 +222,18 @@ func (a *app) fingerprints(ctx context.Context, manifest saga.Manifest) (sagaPri
 	return sagaPrint, sourcePrint
 }
 
-func (a *app) buildSnapshot(ctx context.Context) (*reviewSnapshot, reviewState, error) {
-	document, validation, reviewPrint, err := a.loadDocumentWithStableReviews(ctx)
+func (a *app) buildSnapshot(ctx context.Context) (*reviewSnapshot, error) {
+	structural, validation, err := saga.Load(a.root)
 	if err != nil {
-		return nil, reviewState{}, err
+		return nil, err
 	}
 	if !validation.Valid {
-		return nil, reviewState{}, fmt.Errorf("saga is structurally invalid; run change-saga validate")
+		return nil, fmt.Errorf("saga is structurally invalid; run change-saga validate")
 	}
-	applyGitAttribution(ctx, gitattribution.New(ctx, a.root), document)
-	reviews := extractReviewState(document)
-	reviews.fingerprint = reviewPrint
-	structural := structuralDocument(document)
 	built := &reviewSnapshot{document: structural, validation: validation, mutationIndex: saga.MutationIndexFromDocument(structural)}
 	if a.generations == nil {
 		_ = a.populateDerivedSnapshot(ctx, built)
-		return built, reviews, nil
+		return built, nil
 	}
 
 	treePrint, sourcePrint := a.fingerprints(ctx, structural.Manifest)
@@ -363,7 +251,7 @@ func (a *app) buildSnapshot(ctx context.Context) (*reviewSnapshot, reviewState, 
 	})
 	if buildErr != nil {
 		built.diffErr = buildErr
-		return built, reviews, nil
+		return built, nil
 	}
 	if !populated {
 		if err := readDerivedSnapshot(filepath.Join(dir, derivedSnapshotName), built); err != nil {
@@ -373,7 +261,7 @@ func (a *app) buildSnapshot(ctx context.Context) (*reviewSnapshot, reviewState, 
 	if key.Valid() {
 		_ = a.generations.Prune(key, 3)
 	}
-	return built, reviews, nil
+	return built, nil
 }
 
 func (a *app) populateDerivedSnapshot(ctx context.Context, built *reviewSnapshot) error {
@@ -413,7 +301,6 @@ func (s *reviewSnapshot) indexComparison() {
 	s.fileLines = map[string][]int{}
 	s.atomByKey = make(map[string]int, len(s.changes.Atoms))
 	s.atomPathByURI = make(map[string]string, len(s.changes.Atoms))
-	s.fileReviews = map[string]saga.FileReview{}
 	renameTo := map[string]string{}
 	for index := range s.changes.Atoms {
 		atom := &s.changes.Atoms[index]
@@ -446,12 +333,6 @@ func (s *reviewSnapshot) indexComparison() {
 		s.fileOrder = append(s.fileOrder, path)
 	}
 	sort.Strings(s.fileOrder)
-	s.fileReviews = latestFileReviews(s.document.FileReviews)
-	for _, review := range s.fileReviews {
-		if review.State == "reviewed" {
-			s.reviewedFiles++
-		}
-	}
 	s.fileSummaries = make(map[string]FileDiffView, len(s.fileOrder))
 	s.fileCoverage = make(map[string]ManifestFileView, len(s.fileOrder))
 	for _, path := range s.fileOrder {
@@ -464,9 +345,6 @@ func (s *reviewSnapshot) indexComparison() {
 			} else if atom.Side == "old" {
 				file.Deleted++
 			}
-		}
-		if review, ok := s.fileReviews[path]; ok {
-			file.Reviewed, file.Reviewer, file.ReviewerDetail = review.State == "reviewed", review.Author, review.AttributionDetail
 		}
 		s.fileSummaries[path] = file
 		coverageFile := ManifestFileView{Path: path, HasDiff: true}
@@ -611,79 +489,11 @@ func readDerivedSnapshot(path string, snapshot *reviewSnapshot) error {
 	return nil
 }
 
-func extractReviewState(document *saga.Saga) reviewState {
-	state := reviewState{
-		threads: document.Threads, diffReviews: document.FileReviews,
-		byTarget: map[string][]saga.Review{},
-	}
-	var walk func(*saga.Section)
-	walk = func(section *saga.Section) {
-		if len(section.Reviews) > 0 {
-			state.byTarget[section.Target] = section.Reviews
-		}
-		for _, fragment := range section.Fragments {
-			if len(fragment.Reviews) > 0 {
-				state.byTarget[fragment.Target] = fragment.Reviews
-			}
-			for landmarkIndex := range fragment.Landmarks {
-				landmark := &fragment.Landmarks[landmarkIndex]
-				if len(landmark.Reviews) > 0 {
-					state.byTarget[landmark.Target] = landmark.Reviews
-				}
-			}
-		}
-		for _, child := range section.Children {
-			walk(child)
-		}
-	}
-	walk(document.Section)
-	return state
-}
-
-func structuralDocument(document *saga.Saga) *saga.Saga {
-	empty := reviewState{byTarget: map[string][]saga.Review{}}
-	return composeReviewDocument(document, empty)
-}
-
-// composeReviewDocument copies only section and fragment headers. Large diff,
-// landmark, claim, and content structures remain shared with the immutable
-// structural generation, keeping review generations compact.
-func composeReviewDocument(structural *saga.Saga, reviews reviewState) *saga.Saga {
-	result := *structural
-	result.Threads = reviews.threads
-	result.FileReviews = reviews.diffReviews
-	result.Section = composeReviewSection(structural.Section, reviews.byTarget)
-	return &result
-}
-
-func composeReviewSection(section *saga.Section, reviews map[string][]saga.Review) *saga.Section {
-	if section == nil {
-		return nil
-	}
-	result := *section
-	result.Reviews = reviews[section.Target]
-	result.Fragments = make([]*saga.Fragment, len(section.Fragments))
-	for index, fragment := range section.Fragments {
-		copy := *fragment
-		copy.Reviews = reviews[fragment.Target]
-		copy.Landmarks = append([]saga.Landmark(nil), fragment.Landmarks...)
-		for landmarkIndex := range copy.Landmarks {
-			copy.Landmarks[landmarkIndex].Reviews = reviews[copy.Landmarks[landmarkIndex].Target]
-		}
-		result.Fragments[index] = &copy
-	}
-	result.Children = make([]*saga.Section, len(section.Children))
-	for index, child := range section.Children {
-		result.Children[index] = composeReviewSection(child, reviews)
-	}
-	return &result
-}
-
-// structuralFingerprint hashes every saga entry except review-overlay
-// directories. A comment therefore cannot select a new structural generation.
+// structuralFingerprint hashes every saga entry except ___reviews. Recording
+// an approval or comment therefore cannot select a new structural generation.
 func structuralFingerprint(root string) (string, error) {
 	return filteredTreeFingerprint(root, func(_ string, entry fs.DirEntry) (include, skip bool) {
-		if entry.IsDir() && (entry.Name() == "___review" || entry.Name() == "___approvals") {
+		if entry.IsDir() && entry.Name() == saga.ReviewsDir {
 			return false, true
 		}
 		return true, false
@@ -695,146 +505,6 @@ func structuralFingerprint(root string) (string, error) {
 // variant above.
 func treeFingerprint(root string) (string, error) {
 	return filteredTreeFingerprint(root, func(string, fs.DirEntry) (bool, bool) { return true, false })
-}
-
-func reviewFingerprint(ctx context.Context, root string) (string, error) {
-	index, validation, err := saga.LoadMutationIndex(root)
-	if err != nil {
-		return "", err
-	}
-	if !validation.Valid {
-		return "", fmt.Errorf("saga is structurally invalid")
-	}
-	return indexedReviewFingerprint(ctx, index)
-}
-
-// indexedReviewFingerprint visits only mutable review roots named by the
-// compact mutation index. It does not traverse coverage mappings, fragment
-// bodies, or diff evidence merely to decide whether a comment changed.
-func indexedReviewFingerprint(ctx context.Context, index saga.MutationIndex) (string, error) {
-	dirs := []string{filepath.Join(index.Root, "___review")}
-	seen := map[string]bool{dirs[0]: true}
-	for _, targetDir := range index.ReviewTargets {
-		dir := filepath.Join(targetDir, "___approvals")
-		if !seen[dir] {
-			seen[dir] = true
-			dirs = append(dirs, dir)
-		}
-	}
-	sort.Strings(dirs)
-	digest := sha256.New()
-	for _, dir := range dirs {
-		relativeDir, err := filepath.Rel(index.Root, dir)
-		if err != nil {
-			return "", err
-		}
-		fmt.Fprintf(digest, "r\x00%s\x00", filepath.ToSlash(relativeDir))
-		err = filepath.WalkDir(dir, func(path string, entry fs.DirEntry, walkErr error) error {
-			if walkErr != nil {
-				return walkErr
-			}
-			relative, err := filepath.Rel(index.Root, path)
-			if err != nil {
-				return err
-			}
-			if entry.IsDir() {
-				fmt.Fprintf(digest, "d\x00%s\x00", filepath.ToSlash(relative))
-				return nil
-			}
-			info, err := entry.Info()
-			if err != nil {
-				return err
-			}
-			fmt.Fprintf(digest, "f\x00%s\x00%d\x00%d\x00", filepath.ToSlash(relative), info.Size(), info.ModTime().UnixNano())
-			return nil
-		})
-		if errors.Is(err, fs.ErrNotExist) {
-			fmt.Fprint(digest, "missing\x00")
-			continue
-		}
-		if err != nil {
-			return "", err
-		}
-	}
-	if len(index.FlatTargets) > 0 {
-		entries, err := os.ReadDir(index.Root)
-		if err != nil {
-			return "", err
-		}
-		for _, entry := range entries {
-			if !saga.IsFlatReviewRecord(entry.Name()) || entry.IsDir() {
-				continue
-			}
-			info, err := entry.Info()
-			if err != nil {
-				return "", err
-			}
-			fmt.Fprintf(digest, "f\x00%s\x00%d\x00%d\x00", entry.Name(), info.Size(), info.ModTime().UnixNano())
-		}
-	}
-	// Attribution changes when review files are committed even though their
-	// bytes do not. The saga may legitimately live outside Git; absence is a
-	// stable value.
-	head, _ := gitOutput(ctx, index.Root, "rev-parse", "HEAD")
-	return hex.EncodeToString(digest.Sum(nil)) + "\x00" + head, nil
-}
-
-// loadDocumentWithStableReviews brackets the load with review fingerprints.
-// If a supported writer commits during the read, the mismatched fingerprints
-// force a retry rather than publishing old memory under the new disk identity.
-func (a *app) loadDocumentWithStableReviews(ctx context.Context) (*saga.Saga, saga.Validation, string, error) {
-	index, validation, err := saga.LoadMutationIndex(a.root)
-	if err != nil || !validation.Valid {
-		return nil, validation, "", err
-	}
-	for attempt := 0; attempt < 3; attempt++ {
-		before, err := indexedReviewFingerprint(ctx, index)
-		if err != nil {
-			return nil, saga.Validation{}, "", err
-		}
-		document, validation, err := saga.Load(a.root)
-		if err != nil {
-			return nil, validation, "", err
-		}
-		after, err := indexedReviewFingerprint(ctx, index)
-		if err != nil {
-			return nil, validation, "", err
-		}
-		if before == after {
-			return document, validation, after, nil
-		}
-	}
-	return nil, saga.Validation{}, "", fmt.Errorf("review state kept changing while it was being loaded")
-}
-
-func (a *app) loadReviewStateWithStableFingerprint(ctx context.Context, index saga.MutationIndex) (saga.ReviewState, saga.Validation, string, error) {
-	for attempt := 0; attempt < 3; attempt++ {
-		before, err := indexedReviewFingerprint(ctx, index)
-		if err != nil {
-			return saga.ReviewState{}, saga.Validation{}, "", err
-		}
-		state, validation, err := saga.LoadReviewState(index)
-		if err != nil {
-			return saga.ReviewState{}, validation, "", err
-		}
-		after, err := indexedReviewFingerprint(ctx, index)
-		if err != nil {
-			return saga.ReviewState{}, validation, "", err
-		}
-		if before == after {
-			return state, validation, after, nil
-		}
-	}
-	return saga.ReviewState{}, saga.Validation{}, "", fmt.Errorf("review state kept changing while it was being loaded")
-}
-
-func reviewOverlayPath(relative string) bool {
-	for _, part := range strings.Split(filepath.ToSlash(relative), "/") {
-		if part == "___review" || part == "___approvals" {
-			return true
-		}
-	}
-	return false
 }
 
 func filteredTreeFingerprint(root string, selectEntry func(string, fs.DirEntry) (include, skip bool)) (string, error) {

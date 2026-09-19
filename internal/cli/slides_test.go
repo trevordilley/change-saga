@@ -83,15 +83,6 @@ func TestImplementationDeckAuthoringLoop(t *testing.T) {
 	if err := Cover(context.Background(), []string{"--against", "main", "--repo", repo, "--target", item.Target, "--ref", uri, root}, &output); err != nil {
 		t.Fatalf("item coverage failed: %v", err)
 	}
-	if err := Review(context.Background(), []string{"--target", item.Path, "--state", "approved", "--reviewer-kind", "human", root}, &output); err == nil || !strings.Contains(err.Error(), "must target a slide") {
-		t.Fatalf("Item approval was not explicitly refused: %v", err)
-	}
-	if err := Review(context.Background(), []string{"--target", document.Decks[0].Slides[0].Path, "--state", "approved", "--reviewer-kind", "human", "--body", "Visual argument checked.", root}, &output); err != nil {
-		t.Fatalf("slide review by compact record path failed: %v", err)
-	}
-	if err := Thread(context.Background(), []string{"--target", item.Target, "--body", "Keep the validation boundary visible.", root}, &output); err != nil {
-		t.Fatalf("Item thread failed: %v", err)
-	}
 	if err := AddClaim(context.Background(), []string{"--id", "validation-boundary", "--target", item.Target, "--statement", "Validation runs before persistence.", "--repo", repo, "--ref", uri, root}, &output); err != nil {
 		t.Fatalf("claim failed: %v", err)
 	}
@@ -99,8 +90,8 @@ func TestImplementationDeckAuthoringLoop(t *testing.T) {
 		t.Fatalf("verification failed: %v", err)
 	}
 	document, validation, err = saga.Load(root)
-	if err != nil || !validation.Valid || len(document.Decks[0].Slides[0].Reviews) != 1 || len(document.Decks[0].Slides[0].Items[0].Reviews) != 0 || len(document.Threads) != 1 || len(document.Threads[0].Messages) != 1 || len(document.Claims) != 1 || len(document.Verifications) != 1 {
-		t.Fatalf("slide approval or Item comment was not preserved: valid=%v err=%v slide=%#v", validation.Valid, err, document.Decks[0].Slides[0])
+	if err != nil || !validation.Valid || len(document.Claims) != 1 || len(document.Verifications) != 1 {
+		t.Fatalf("claim or verification was not preserved: valid=%v err=%v slide=%#v", validation.Valid, err, document.Decks[0].Slides[0])
 	}
 	var queryOutput bytes.Buffer
 	if err := Query(context.Background(), []string{"slide", "--saga", root, "--repo", repo, "--against", "main", "--target", document.Decks[0].Slides[0].Target}, &queryOutput); err != nil {
@@ -217,15 +208,9 @@ func TestSagaEmbedsSeveralIndependentSlideDecks(t *testing.T) {
 	if err := Query(context.Background(), []string{"traceability", "--saga", root, "--repo", repo, "--against", "main", "--commit", headCommit}, &traceOutput); err != nil || !strings.Contains(traceOutput.String(), storyURN) || !strings.Contains(traceOutput.String(), item.Target) {
 		t.Fatalf("comparison-head requirement trace failed for %q: err=%v\n%s", headCommit, err, traceOutput.String())
 	}
-	if err := Review(context.Background(), []string{"--target", document.Decks[0].Slides[0].Path, "--state", "approved", "--reviewer-kind", "human", root}, &output); err != nil {
-		t.Fatalf("embedded slide review failed: %v", err)
-	}
-	if err := Thread(context.Background(), []string{"--target", item.Target, "--body", "Keep the surprise explicit.", root}, &output); err != nil {
-		t.Fatalf("embedded Item thread failed: %v", err)
-	}
 	document, validation, err = saga.Load(root)
-	if err != nil || !validation.Valid || len(document.Decks[0].Slides[0].Items[0].Code) != 1 || len(document.Decks[0].Slides[0].Reviews) != 1 || len(document.Threads) != 1 {
-		t.Fatalf("embedded Item evidence/review did not round-trip: valid=%v err=%v", validation.Valid, err)
+	if err != nil || !validation.Valid || len(document.Decks[0].Slides[0].Items[0].Code) != 1 {
+		t.Fatalf("embedded Item evidence did not round-trip: valid=%v err=%v", validation.Valid, err)
 	}
 	if loaded := document.Decks[0].Slides[0].Items[0].Code[0].References[0].Location().String(); loaded != uri {
 		t.Fatalf("embedded Item evidence changed identity: got %q want %q", loaded, uri)

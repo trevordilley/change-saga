@@ -61,7 +61,7 @@ func TestSchemaFilesAreWellFormed(t *testing.T) {
 			t.Errorf("%s: $id %q does not match its path", entry.Name(), id)
 		}
 	}
-	if count < 10 {
+	if count < 8 {
 		t.Fatalf("expected the full v2 schema set, found %d files", count)
 	}
 }
@@ -139,11 +139,6 @@ func TestStableIDGrammarMatchesEverySchema(t *testing.T) {
 		"chapter.schema.json":      {"properties", "id", "pattern"},
 		"section.schema.json":      {"properties", "id", "pattern"},
 		"fragment.schema.json":     {"properties", "id", "pattern"},
-		"message.schema.json":      {"properties", "id", "pattern"},
-		"review.schema.json":       {"properties", "id", "pattern"},
-		"thread.schema.json":       {"properties", "id", "pattern"},
-		"thread-event.schema.json": {"properties", "id", "pattern"},
-		"file-review.schema.json":  {"properties", "id", "pattern"},
 		"claim.schema.json":        {"properties", "id", "pattern"},
 		"verification.schema.json": {"properties", "id", "pattern"},
 	}
@@ -237,126 +232,13 @@ func TestEntrypointGrammarMatchesFragmentSchema(t *testing.T) {
 	}
 }
 
-func TestAnnotationColorGrammarMatchesThreadSchema(t *testing.T) {
-	schema := loadSchema(t, "thread.schema.json")
-	patterns := map[string]*regexp.Regexp{
-		"note":  schemaPattern(t, schema, "$defs", "note", "properties", "color", "pattern"),
-		"text":  schemaPattern(t, schema, "$defs", "text", "properties", "color", "pattern"),
-		"shape": schemaPattern(t, schema, "$defs", "shape", "properties", "color", "pattern"),
-	}
-	probes := []string{
-		"#000000", "#ffffff", "#FFFFFF", "#f2bd4b", "#F2BD4B", "#abcdef",
-		"#fff", "#1234567", "#12345", "ffffff", "red", "", "#gggggg",
-		"#12345g", "rgb(1,2,3)", "expression(alert(1))", "url(javascript:1)",
-		"#000000;background:url(x)", " #000000", "#000000 ", "#00000\n",
-	}
-	for name, pattern := range patterns {
-		for _, probe := range probes {
-			if got, want := pattern.MatchString(probe), ValidAnnotationColor(probe); got != want {
-				t.Errorf("%s color %q: schema=%v runtime=%v", name, probe, got, want)
-			}
-		}
-	}
-}
-
-func TestSchemaEnumsMatchRuntimeStates(t *testing.T) {
-	reviewerKinds := schemaEnum(t, loadSchema(t, "review.schema.json"), "properties", "reviewer", "properties", "kind", "enum")
-	if want := []string{"ai", "human"}; !equal(reviewerKinds, want) {
-		t.Errorf("reviewer kinds %v, want %v", reviewerKinds, want)
-	}
-	approvals := schemaEnum(t, loadSchema(t, "review.schema.json"), "properties", "state", "enum")
-	for _, state := range approvals {
-		if !validReviewState(state) {
-			t.Errorf("approval state %q is published but rejected by the runtime", state)
-		}
-	}
-	for _, state := range []string{"approved", "rejected", "closed", "open"} {
-		if !contains(approvals, state) {
-			t.Errorf("approval state %q is accepted by the runtime but not published", state)
-		}
-	}
-	if len(approvals) != 4 {
-		t.Errorf("unexpected approval state set %v", approvals)
-	}
-
-	events := schemaEnum(t, loadSchema(t, "thread-event.schema.json"), "properties", "state", "enum")
-	if want := []string{"open", "resolved", "withdrawn"}; !equal(events, want) {
-		t.Errorf("thread event states %v, want %v", events, want)
-	}
-	diffReviews := schemaEnum(t, loadSchema(t, "file-review.schema.json"), "properties", "state", "enum")
-	if want := []string{"reviewed", "unreviewed"}; !equal(diffReviews, want) {
-		t.Errorf("diff review states %v, want %v", diffReviews, want)
-	}
-	kinds := schemaEnum(t, loadSchema(t, "thread.schema.json"), "properties", "kind", "enum")
-	if want := []string{"comment", "suggestion"}; !equal(kinds, want) {
-		t.Errorf("thread kinds %v, want %v", kinds, want)
-	}
-	shapes := schemaEnum(t, loadSchema(t, "thread.schema.json"), "$defs", "shape", "properties", "type", "enum")
-	if want := []string{"ellipse", "line", "path", "rect"}; !equal(shapes, want) {
-		t.Errorf("shape types %v, want %v", shapes, want)
-	}
-	for _, shape := range shapes {
-		anchor := Anchor{Type: "region", Coordinate: "normalized", Shapes: []Shape{{Type: shape}}}
-		if err := ValidateAnchor(anchor); err != nil {
-			t.Errorf("published shape %q is rejected by the runtime: %v", shape, err)
-		}
-	}
-}
-
-// TestAnchorTypesMatchThreadSchema keeps the anchor vocabulary in one place:
-// every anchor branch the schema publishes must be a type the runtime knows,
-// and the runtime must not accept a type the schema never described.
-func TestAnchorTypesMatchThreadSchema(t *testing.T) {
-	branches, ok := dig(t, loadSchema(t, "thread.schema.json"), "$defs", "anchor", "oneOf").([]any)
-	if !ok {
-		t.Fatal("anchor is not a oneOf list")
-	}
-	published := map[string]bool{}
-	for _, branch := range branches {
-		typeSchema, ok := dig(t, branch, "properties", "type").(map[string]any)
-		if !ok {
-			t.Fatal("anchor branch type is not an object")
-		}
-		if constant, ok := typeSchema["const"].(string); ok {
-			published[constant] = true
-			continue
-		}
-		for _, value := range schemaEnum(t, typeSchema, "enum") {
-			published[value] = true
-		}
-	}
-	want := map[string]bool{"target": true, "region": true, "drawing": true, "text": true, "note": true, "code": true}
-	if len(published) != len(want) {
-		t.Fatalf("published anchor types %v, want %v", published, want)
-	}
-	for kind := range want {
-		if !published[kind] {
-			t.Errorf("anchor type %q is implemented but not published", kind)
-		}
-	}
-	for kind := range published {
-		if !want[kind] {
-			t.Errorf("anchor type %q is published but not implemented", kind)
-		}
-		// An unknown type must be rejected outright; a known one must fail for
-		// a content reason rather than the "unknown type" default branch.
-		err := ValidateAnchor(Anchor{Type: kind})
-		if err != nil && err.Error() == "anchor type must be target, region, drawing, text, note, or code" {
-			t.Errorf("published anchor type %q falls into the unknown-type branch", kind)
-		}
-	}
-	if err := ValidateAnchor(Anchor{Type: "sticky"}); err == nil {
-		t.Error("an unpublished anchor type must be rejected")
-	}
-}
-
 // TestCodeReferenceSchemasAgreeWithTheValidator keeps every published copy of
 // the code reference identical and its patterns equal to what the loader
 // accepts, so a record the schema admits is a record the runtime admits.
 func TestCodeReferenceSchemasAgreeWithTheValidator(t *testing.T) {
 	canonical := dig(t, loadSchema(t, "code.schema.json"), "$defs", "code_reference").(map[string]any)
 	delete(canonical["properties"].(map[string]any), "note")
-	for _, name := range []string{"claim.schema.json", "thread.schema.json", "file-review.schema.json"} {
+	for _, name := range []string{"claim.schema.json"} {
 		if got := dig(t, loadSchema(t, name), "$defs", "code_reference"); !reflect.DeepEqual(got, canonical) {
 			t.Errorf("%s publishes a different code reference: %v", name, got)
 		}
@@ -382,21 +264,6 @@ func TestCodeReferenceSchemasAgreeWithTheValidator(t *testing.T) {
 		if digest.MatchString(value) != want || (coderef.Validate(reference) == nil) != want {
 			t.Errorf("digest %q: schema %v, want %v", value, digest.MatchString(value), want)
 		}
-	}
-}
-
-func TestNoteLengthLimitMatchesSchema(t *testing.T) {
-	limit := dig(t, loadSchema(t, "thread.schema.json"), "$defs", "note", "properties", "text", "maxLength")
-	number, ok := limit.(json.Number)
-	if !ok {
-		t.Fatalf("note maxLength is %T, not a number", limit)
-	}
-	value, err := number.Int64()
-	if err != nil {
-		t.Fatal(err)
-	}
-	if value != MaxNoteRunes {
-		t.Fatalf("schema note maxLength %d does not match runtime MaxNoteRunes %d", value, MaxNoteRunes)
 	}
 }
 

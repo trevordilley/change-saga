@@ -402,116 +402,6 @@ func textSelectorMatches(content, exact, prefix, suffix string) bool {
 	}
 }
 
-func validateThread(thread Thread, sagaID, path string, result *Validation) {
-	if thread.Version != CurrentVersion || !stableID.MatchString(thread.ID) || thread.CreatedAt.IsZero() {
-		addIssue(result, "error", path, "thread requires version 2, id, and created_at")
-	}
-	prefix := "urn:change-saga:" + sagaID + ":"
-	if !strings.HasPrefix(thread.Target, prefix) {
-		addIssue(result, "error", path, "thread target must be a URN in this saga")
-	}
-	if err := ValidateAnchor(thread.Anchor); err != nil {
-		addIssue(result, "error", path, err.Error())
-	}
-	if thread.Kind != "" && thread.Kind != "comment" && thread.Kind != "suggestion" {
-		addIssue(result, "error", path, "thread kind must be comment or suggestion")
-	}
-	if thread.Kind == "suggestion" && (thread.Suggestion == nil || strings.TrimSpace(thread.Suggestion.Replacement) == "") {
-		addIssue(result, "error", path, "suggestion thread requires replacement content")
-	}
-	if thread.Kind != "suggestion" && thread.Suggestion != nil {
-		addIssue(result, "error", path, "only suggestion threads may contain a suggestion")
-	}
-}
-
-// MaxNoteRunes bounds sticky note text so a single annotation stays a compact
-// canvas note rather than an unbounded document; schema/v2 enforces the same
-// limit as maxLength.
-const MaxNoteRunes = 2000
-
-func ValidAnnotationColor(value string) bool {
-	if len(value) != 7 || value[0] != '#' {
-		return false
-	}
-	for _, character := range value[1:] {
-		if character < '0' || character > '9' {
-			lower := character | 0x20
-			if lower < 'a' || lower > 'f' {
-				return false
-			}
-		}
-	}
-	return true
-}
-
-func ValidateAnchor(anchor Anchor) error {
-	switch anchor.Type {
-	case "target":
-		if len(anchor.Shapes) != 0 || anchor.Text != nil || anchor.Note != nil || anchor.Code != nil {
-			return fmt.Errorf("target anchor cannot contain shapes, text, note, or diff data")
-		}
-	case "region", "drawing":
-		if anchor.Coordinate != "normalized" || len(anchor.Shapes) == 0 || anchor.Text != nil || anchor.Note != nil || anchor.Code != nil {
-			return fmt.Errorf("region/drawing anchor requires normalized shapes")
-		}
-		for _, shape := range anchor.Shapes {
-			if shape.Type != "rect" && shape.Type != "ellipse" && shape.Type != "line" && shape.Type != "path" {
-				return fmt.Errorf("unsupported annotation shape %q", shape.Type)
-			}
-			if !normalized(shape.X) || !normalized(shape.Y) || !normalized(shape.Width) || !normalized(shape.Height) {
-				return fmt.Errorf("shape coordinates must be normalized between 0 and 1")
-			}
-			for _, point := range shape.Points {
-				if !normalized(point.X) || !normalized(point.Y) {
-					return fmt.Errorf("shape points must be normalized between 0 and 1")
-				}
-			}
-			if shape.StrokeWidth < 0 || math.IsNaN(shape.StrokeWidth) {
-				return fmt.Errorf("shape stroke_width cannot be negative")
-			}
-			if shape.Color != "" && !ValidAnnotationColor(shape.Color) {
-				return fmt.Errorf("shape color must be a #rrggbb value")
-			}
-		}
-	case "text":
-		if anchor.Text == nil || anchor.Text.Exact == "" || len(anchor.Shapes) != 0 || anchor.Note != nil || anchor.Code != nil {
-			return fmt.Errorf("text anchor requires an exact quote")
-		}
-		if anchor.Text.Start < 0 || anchor.Text.End < 0 || anchor.Text.End < anchor.Text.Start {
-			return fmt.Errorf("text anchor positions must be non-negative with end at or after start")
-		}
-		if anchor.Text.Color != "" && !ValidAnnotationColor(anchor.Text.Color) {
-			return fmt.Errorf("text highlight color must be a #rrggbb value")
-		}
-	case "note":
-		if anchor.Note == nil || len(anchor.Shapes) != 0 || anchor.Text != nil || anchor.Code != nil {
-			return fmt.Errorf("note anchor requires exactly one sticky note")
-		}
-		if anchor.Coordinate != "normalized" {
-			return fmt.Errorf("note anchor requires normalized placement")
-		}
-		if strings.TrimSpace(anchor.Note.Text) == "" || len([]rune(anchor.Note.Text)) > MaxNoteRunes {
-			return fmt.Errorf("note text must contain 1 to %d characters", MaxNoteRunes)
-		}
-		if !normalized(anchor.Note.X) || !normalized(anchor.Note.Y) {
-			return fmt.Errorf("note placement must be normalized between 0 and 1")
-		}
-		if anchor.Note.Color != "" && !ValidAnnotationColor(anchor.Note.Color) {
-			return fmt.Errorf("note color must be a #rrggbb value")
-		}
-	case "code":
-		if anchor.Code == nil || len(anchor.Shapes) != 0 || anchor.Text != nil || anchor.Note != nil {
-			return fmt.Errorf("code anchor requires exactly one code reference")
-		}
-		if err := coderef.Validate(*anchor.Code); err != nil || anchor.Code.Note != "" {
-			return fmt.Errorf("code anchor requires a valid code reference without a note")
-		}
-	default:
-		return fmt.Errorf("anchor type must be target, region, drawing, text, note, or code")
-	}
-	return nil
-}
-
 func validateDocument(document *Saga, result *Validation) {
 	ids := map[string]string{}
 	targets := map[string]bool{SagaTarget(document.Manifest.ID): true}
@@ -548,18 +438,6 @@ func validateDocument(document *Saga, result *Validation) {
 		}
 	}
 	walkSection(document.Section)
-	for _, thread := range document.Threads {
-		for _, message := range thread.Messages {
-			for _, fragment := range message.Fragments {
-				visitFragment(fragment)
-			}
-		}
-	}
-	for _, thread := range document.Threads {
-		if !targets[thread.Target] {
-			addIssue(result, "error", relativePath(document.Root, filepath.Join(thread.Directory, "thread.json")), "thread target does not exist")
-		}
-	}
 	claimIDs := map[string]string{}
 	for _, claim := range document.Claims {
 		path := relativePath(document.Root, claim.Path)

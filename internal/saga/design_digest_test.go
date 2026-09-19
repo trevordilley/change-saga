@@ -2,12 +2,13 @@ package saga
 
 import (
 	"fmt"
-	"github.com/twentyideas/changesaga/internal/coderef"
 	"os"
 	"path/filepath"
 	"reflect"
 	"strings"
 	"testing"
+
+	"github.com/twentyideas/changesaga/internal/coderef"
 )
 
 func TestCurrentDesignContentDigestsTrackAuthoredContentOnly(t *testing.T) {
@@ -203,7 +204,7 @@ func TestEmbeddedVisualDigestsPropagateOnlyAuthoredInputs(t *testing.T) {
 	}
 }
 
-func TestEmbeddedVisualDigestsExcludeEvidenceAndReviewOverlays(t *testing.T) {
+func TestEmbeddedVisualDigestsExcludeEvidenceAndClaims(t *testing.T) {
 	document, _ := loadVisualDigestFixture(t)
 	before, err := CurrentDesignContentDigests(document)
 	if err != nil {
@@ -215,20 +216,15 @@ func TestEmbeddedVisualDigestsExcludeEvidenceAndReviewOverlays(t *testing.T) {
 	item := slide.Items[0]
 	item.Code = []CodeFile{{Version: ComponentVersion, References: []coderef.Reference{testReference("overlay.go", 1, 1)}}}
 	item.HasCode = true
-	item.Reviews = []Review{{ID: "item-comment", Body: "Comment overlay"}}
-	slide.Reviews = []Review{{ID: "slide-approval", State: "approved", Body: "Approval overlay"}}
-	deck.Reviews = []Review{{ID: "deck-review", Body: "Derived review overlay"}}
 	document.Claims = []Claim{{ID: "claim-overlay", Target: item.Target, Statement: "Claim overlay"}}
 	document.Verifications = []Verification{{ID: "verification-overlay", Claim: "claim-overlay", Summary: "Verification overlay"}}
-	document.Threads = []*Thread{{ID: "thread-overlay", Target: item.Target, Messages: []*Message{{ID: "comment-overlay"}}}}
-	document.FileReviews = []FileReview{{ID: "diff-review-overlay", State: "reviewed"}}
 
 	after, err := CurrentDesignContentDigests(document)
 	if err != nil {
 		t.Fatal(err)
 	}
 	if !reflect.DeepEqual(after, before) {
-		t.Fatalf("diff, claim, verification, comment, approval, or review overlays changed visual digests:\nbefore: %#v\n after: %#v", before, after)
+		t.Fatalf("code, claim, or verification records changed visual digests:\nbefore: %#v\n after: %#v", before, after)
 	}
 }
 

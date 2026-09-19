@@ -20,7 +20,7 @@ func linkedSession(document *saga.Saga, changes gitdiff.ChangeSet, report covera
 		document: document, changes: changes, report: report,
 		targets: map[string]*targetEntry{}, selectors: map[string][]selectorEntry{},
 		selectorsByAtom: make(map[string][]DiffOwner, len(report.Ownership)),
-		fragments:       map[string]fragmentValue{}, threads: map[string]ReviewThread{}, threadsByAtom: map[string][]ReviewThread{},
+		fragments:       map[string]fragmentValue{},
 	}
 	service.indexSection(document.Section, "")
 	service.linkOwnership()

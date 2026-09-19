@@ -440,11 +440,10 @@ func indexManifestTargets(document *saga.Saga) map[string]manifestTargetLocation
 			var slide *SlideReferenceView
 			kind := "Fragment"
 			if fragment.SlideMeta != nil {
-				state, _, _, _ := latestReview(fragment.Reviews)
 				slide = &SlideReferenceView{
 					ID: fragment.ID, Title: title, Target: fragment.Target,
 					Anchor: strings.TrimPrefix(fragmentHref, "#"), Href: fragmentHref,
-					URL: fragmentAssetURL(fragment), MediaType: fragment.MediaType, ReviewState: state,
+					URL: fragmentAssetURL(fragment), MediaType: fragment.MediaType,
 				}
 				kind = "Slide"
 			}

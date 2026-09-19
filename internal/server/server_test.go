@@ -4,9 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
-	"github.com/twentyideas/changesaga/internal/changeview"
 	"html/template"
 	"mime/multipart"
 	"net/http"
@@ -19,12 +17,12 @@ import (
 	"testing"
 	"time"
 
+	"github.com/twentyideas/changesaga/internal/changeview"
+
 	"github.com/twentyideas/changesaga/internal/applayout"
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coderesolve"
-	"github.com/twentyideas/changesaga/internal/gitattribution"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
-	"github.com/twentyideas/changesaga/internal/reviewstore"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
@@ -69,28 +67,6 @@ func TestSecureHandlerRejectsCrossOriginFetchSiteAndHost(t *testing.T) {
 	handler.ServeHTTP(recorder, request)
 	if recorder.Code != http.StatusNoContent || called != 1 {
 		t.Fatalf("same-origin request status=%d called=%d", recorder.Code, called)
-	}
-}
-
-func TestEveryMutationEndpointRequiresSessionToken(t *testing.T) {
-	application := &app{root: validServerSaga(t), mutationToken: "correct-token"}
-	handler := secureHandler(newMux(application), "127.0.0.1:7342")
-	for _, path := range []string{"/api/thread", "/api/reply", "/api/thread-state", "/api/thread-anchor", "/api/review", "/api/diff-review"} {
-		t.Run(path, func(t *testing.T) {
-			var request *http.Request
-			if path == "/api/thread" || path == "/api/reply" {
-				request = multipartRequest(t, path, map[string]string{})
-			} else {
-				request = httptest.NewRequest(http.MethodPost, path, strings.NewReader("state=open"))
-				request.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-			}
-			request.Host = "127.0.0.1:7342"
-			recorder := httptest.NewRecorder()
-			handler.ServeHTTP(recorder, request)
-			if recorder.Code != http.StatusForbidden || !strings.Contains(recorder.Body.String(), "mutation token") {
-				t.Fatalf("status=%d body=%q, want missing-token rejection", recorder.Code, recorder.Body.String())
-			}
-		})
 	}
 }
 
@@ -140,7 +116,6 @@ func TestWorkspaceTabsAndClosedDrawerCarryAccessibleSemantics(t *testing.T) {
 		`role="tab" id="view-tab-saga"`,
 		`aria-controls="view-saga" aria-selected="true" tabindex="0"`,
 		`aria-controls="view-code" aria-selected="false" tabindex="-1"`,
-		`data-open-activity data-activity-href="/api/activity" aria-controls="review-drawer" aria-expanded="false"`,
 		`id="view-saga" role="tabpanel" aria-labelledby="view-tab-saga"`,
 		`id="view-code" role="tabpanel" aria-labelledby="view-tab-code"`,
 		`id="view-manifest" role="tabpanel" aria-labelledby="view-tab-manifest"`,
@@ -228,46 +203,6 @@ func TestColdComparisonEndpointReportsBuildingCacheWithoutMaterializingReviewDat
 	}
 }
 
-func TestMultipartLimitsSniffingAndCleanup(t *testing.T) {
-	tempDir := t.TempDir()
-	attachmentTempDir = tempDir
-	t.Cleanup(func() { attachmentTempDir = "" })
-
-	oversized := multipartFileRequest(t, "/api/thread", "large.txt", bytes.Repeat([]byte("x"), maxAttachmentBytes+1))
-	if _, _, err := parseMultipart(oversized, httptest.NewRecorder()); !errors.Is(err, errUploadTooLarge) {
-		t.Fatalf("oversized attachment error = %v", err)
-	}
-	assertEmptyDirectory(t, tempDir)
-
-	totalOversized := multipartFilesRequest(t, "/api/thread", map[string][]byte{
-		"one.txt":   bytes.Repeat([]byte("a"), 9<<20),
-		"two.txt":   bytes.Repeat([]byte("b"), 9<<20),
-		"three.txt": bytes.Repeat([]byte("c"), 9<<20),
-		"four.txt":  bytes.Repeat([]byte("d"), 9<<20),
-	})
-	if _, _, err := parseMultipart(totalOversized, httptest.NewRecorder()); !errors.Is(err, errUploadTooLarge) {
-		t.Fatalf("total oversized multipart error = %v", err)
-	}
-	assertEmptyDirectory(t, tempDir)
-
-	hiddenExecutable := multipartFileRequest(t, "/api/thread", "fake.png", []byte("#!/bin/sh\necho nope\n"))
-	if _, _, err := parseMultipart(hiddenExecutable, httptest.NewRecorder()); !errors.Is(err, errInvalidUpload) {
-		t.Fatalf("content mismatch error = %v", err)
-	}
-	assertEmptyDirectory(t, tempDir)
-
-	valid := multipartFileRequest(t, "/api/thread", "note.txt", []byte("hello\n"))
-	paths, cleanup, err := parseMultipart(valid, httptest.NewRecorder())
-	if err != nil || len(paths) != 1 {
-		t.Fatalf("valid upload paths=%v err=%v", paths, err)
-	}
-	if _, err := os.Stat(paths[0]); err != nil {
-		t.Fatalf("staged upload missing before cleanup: %v", err)
-	}
-	cleanup()
-	assertEmptyDirectory(t, tempDir)
-}
-
 func TestBrowserErrorsDoNotExposeFilesystemPaths(t *testing.T) {
 	root := filepath.Join(t.TempDir(), "private", "missing.saga")
 	recorder := httptest.NewRecorder()
@@ -280,161 +215,7 @@ func TestBrowserErrorsDoNotExposeFilesystemPaths(t *testing.T) {
 	}
 }
 
-func TestCreateAnchoredThreadWritesOverlayRecords(t *testing.T) {
-	root := validServerSaga(t)
-	application := &app{root: root}
-	fields := map[string]string{
-		"target":    "urn:change-saga:test:fragment:overview",
-		"body":      "Check this edge case.",
-		"anchor":    `{"type":"region","coordinate_space":"normalized","shapes":[{"type":"rect","x":0.1,"y":0.2,"width":0.3,"height":0.4,"color":"#336699"}]}`,
-		"return_to": "/chapters/backend#target-overview",
-	}
-	request := multipartRequest(t, "/api/thread", fields)
-	recorder := httptest.NewRecorder()
-	application.createThread(recorder, request)
-	if recorder.Code != http.StatusSeeOther {
-		t.Fatalf("thread status = %d, want %d: %s", recorder.Code, http.StatusSeeOther, recorder.Body.String())
-	}
-	if location := recorder.Header().Get("Location"); location != "/chapters/backend#target-overview" {
-		t.Fatalf("thread redirect = %q, want chapter deep link", location)
-	}
-	document, validation, err := saga.Load(root)
-	if err != nil || !validation.Valid {
-		t.Fatalf("written overlay should validate: validation=%#v err=%v", validation, err)
-	}
-	if len(document.Threads) != 1 || document.Threads[0].Anchor.Type != "region" || document.Threads[0].Anchor.Shapes[0].Color != "#336699" || len(document.Threads[0].Messages) != 1 {
-		t.Fatalf("unexpected thread: %#v", document.Threads)
-	}
-}
-
-func TestCreateTextHighlightPersistsChosenColor(t *testing.T) {
-	root := validServerSaga(t)
-	application := &app{root: root}
-	request := multipartRequest(t, "/api/thread", map[string]string{
-		"target": "urn:change-saga:test:fragment:overview",
-		"body":   "This phrase matters.",
-		"anchor": `{"type":"text","text":{"exact":"Story","start":0,"end":5,"color":"#aa22cc"}}`,
-	})
-	recorder := httptest.NewRecorder()
-	application.createThread(recorder, request)
-	if recorder.Code != http.StatusSeeOther {
-		t.Fatalf("highlight status = %d: %s", recorder.Code, recorder.Body.String())
-	}
-	document, validation, err := saga.Load(root)
-	if err != nil || !validation.Valid || len(document.Threads) != 1 {
-		t.Fatalf("written highlight should validate: document=%#v validation=%#v err=%v", document, validation, err)
-	}
-	if color := document.Threads[0].Anchor.Text.Color; color != "#aa22cc" {
-		t.Fatalf("highlight color = %q, want #aa22cc", color)
-	}
-}
-
-func TestWithdrawnThreadIsHiddenUntilReopened(t *testing.T) {
-	root := validServerSaga(t)
-	threadID, err := reviewstore.AddThread(root, "urn:change-saga:test:fragment:overview", "Temporarily hidden", saga.Anchor{Type: "target"}, "comment", "", nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if err := reviewstore.SetState(root, threadID, "withdrawn"); err != nil {
-		t.Fatal(err)
-	}
-	tmpl := template.Must(template.New("page").Parse(`{{define "fragment"}}{{len .Threads}}{{end}}`))
-	application := &app{root: root, sourceDir: root, template: tmpl}
-	render := func() string {
-		recorder := httptest.NewRecorder()
-		application.fragmentContent(recorder, fragmentRequest("urn:change-saga:test:fragment:overview"))
-		if recorder.Code != http.StatusOK {
-			t.Fatalf("explanation status = %d: %s", recorder.Code, recorder.Body.String())
-		}
-		return recorder.Body.String()
-	}
-	if got := render(); got != "0" {
-		t.Fatalf("withdrawn thread count = %q, want 0", got)
-	}
-	if err := reviewstore.SetState(root, threadID, "open"); err != nil {
-		t.Fatal(err)
-	}
-	if got := render(); got != "1" {
-		t.Fatalf("reopened thread count = %q, want 1", got)
-	}
-}
-
-func TestAnnotationCommentsBecomeBubblesAndOtherCommentsKeepTheirList(t *testing.T) {
-	root := validServerSaga(t)
-	target := "urn:change-saga:test:fragment:overview"
-	fragmentThread, err := reviewstore.AddThread(root, target, "Comment on the whole explanation", saga.Anchor{Type: "target"}, "comment", "", nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-	rectangleThread, err := reviewstore.AddThread(root, target, "Comment on the rectangle", saga.Anchor{
-		Type: "region", Coordinate: "normalized",
-		Shapes: []saga.Shape{{Type: "rect", X: .2, Y: .3, Width: .25, Height: .1}},
-	}, "comment", "", nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-	noteThread, err := reviewstore.AddThread(root, target, "Comment on the sticky note", saga.Anchor{
-		Type: "note", Coordinate: "normalized", Note: &saga.NoteSelector{Text: "Placed", X: .6, Y: .4},
-	}, "comment", "", nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-	highlightThread, err := reviewstore.AddThread(root, target, "Comment on the highlight", saga.Anchor{
-		Type: "text", Text: &saga.TextSelector{Exact: "Story"},
-	}, "comment", "", nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	tmpl, err := newPageTemplate()
-	if err != nil {
-		t.Fatal(err)
-	}
-	recorder := httptest.NewRecorder()
-	(&app{root: root, sourceDir: root, template: tmpl}).fragmentContent(recorder, fragmentRequest(target))
-	if recorder.Code != http.StatusOK {
-		t.Fatalf("explanation status = %d: %s", recorder.Code, recorder.Body.String())
-	}
-	page := recorder.Body.String()
-
-	for _, thread := range []string{rectangleThread, noteThread, highlightThread} {
-		if !strings.Contains(page, `data-annotation-bubble data-thread-id="`+thread+`"`) {
-			t.Fatalf("annotation comment %s did not render as a bubble", thread)
-		}
-		panel := `id="` + domID("thread:"+thread) + `--bubble" data-annotation-bubble-panel hidden`
-		if !strings.Contains(page, panel) {
-			t.Fatalf("bubble for %s did not render a hidden comment panel", thread)
-		}
-	}
-	if strings.Contains(page, `data-annotation-bubble data-thread-id="`+fragmentThread+`"`) {
-		t.Fatal("a comment on the whole explanation must not become a bubble")
-	}
-	if !strings.Contains(page, "Comment on the whole explanation") {
-		t.Fatal("the whole-explanation comment disappeared from the page")
-	}
-
-	// The bubble sits at the top-right corner of the rectangle it belongs to.
-	if !strings.Contains(page, `style="left:45.0000%;top:30.0000%"`) {
-		t.Fatal("the rectangle bubble was not placed on its rectangle")
-	}
-	// A highlight has no stored geometry, so it carries no server placement and
-	// the browser measures the rendered mark instead.
-	highlight := page[strings.Index(page, `data-thread-id="`+highlightThread+`" data-anchor-type="text"`):]
-	if strings.Contains(highlight[:strings.Index(highlight, ">")], "style=") {
-		t.Fatal("a highlight bubble must be placed by the browser, not by the server")
-	}
-
-	// Every comment list on the page is either inside a bubble panel or below
-	// the content, and exactly one is below the content: the comment that was
-	// never drawn onto anything.
-	lists := strings.Count(page, `<div class="threads">`)
-	inBubbles := strings.Count(page, `data-annotation-bubble-panel hidden><div class="threads">`)
-	if inBubbles != 3 || lists-inBubbles != 1 {
-		t.Fatalf("comment lists = %d with %d in bubbles, want 4 with 3 in bubbles", lists, inBubbles)
-	}
-}
-
-// A permalink can name a heading, a marked place, or a comment inside a chapter
+// A permalink can name a heading or a marked place inside a chapter
 // that has not been fetched yet. The browser cannot scroll to what is not there,
 // so the server answers where one anchor lives — and answers it for the derived
 // anchors too, because a heading id and a landmark id are both suffixes of the
@@ -448,10 +229,6 @@ func TestDeferredAnchorsResolveToTheirChapterAndExplanation(t *testing.T) {
 		`{"version":2,"id":"place","label":"A marked place","selector":{"type":"text","exact":"Alpha"},"target":""}`)
 	chapterTarget := saga.ChapterTarget("test", "alpha")
 	fragmentTarget := "urn:change-saga:test:fragment:alpha-story"
-	threadID, err := reviewstore.AddThread(root, fragmentTarget, "A comment inside a closed chapter", saga.Anchor{Type: "target"}, "comment", "", nil)
-	if err != nil {
-		t.Fatal(err)
-	}
 	application := &app{root: root, sourceDir: root, template: serverTemplate(t)}
 
 	place := func(anchor string) (map[string]string, int) {
@@ -471,7 +248,6 @@ func TestDeferredAnchorsResolveToTheirChapterAndExplanation(t *testing.T) {
 		"the explanation itself": fragmentID,
 		"a heading inside it":    fragmentID + "--deep",
 		"a marked place":         fragmentID + "--place",
-		"a comment on it":        domID("thread:" + threadID),
 	} {
 		found, status := place(anchor)
 		if status != http.StatusOK {
@@ -510,480 +286,6 @@ func fragmentRequest(target string) *http.Request {
 // reviewer opens that chapter.
 func sectionRequest(target string) *http.Request {
 	return httptest.NewRequest(http.MethodGet, "/api/section?target="+url.QueryEscape(target), nil)
-}
-
-func TestAnnotationBubblePointFollowsTheMark(t *testing.T) {
-	for name, testCase := range map[string]struct {
-		anchor saga.Anchor
-		x, y   float64
-		placed bool
-	}{
-		"rectangle uses its top-right corner": {
-			anchor: saga.Anchor{Type: "region", Shapes: []saga.Shape{{Type: "rect", X: .1, Y: .2, Width: .3, Height: .4}}},
-			x:      .4, y: .2, placed: true,
-		},
-		"freehand uses the extremes of its points": {
-			anchor: saga.Anchor{Type: "drawing", Shapes: []saga.Shape{{Type: "path", Points: []saga.Point{{X: .5, Y: .6}, {X: .2, Y: .1}}}}},
-			x:      .5, y: .1, placed: true,
-		},
-		"several shapes share one bubble": {
-			anchor: saga.Anchor{Type: "drawing", Shapes: []saga.Shape{
-				{Type: "rect", X: .1, Y: .5, Width: .1, Height: .1},
-				{Type: "path", Points: []saga.Point{{X: .8, Y: .2}}},
-			}},
-			x: .8, y: .2, placed: true,
-		},
-		"an ellipse spans its radii": {
-			anchor: saga.Anchor{Type: "region", Shapes: []saga.Shape{{Type: "ellipse", X: .5, Y: .5, Width: .2, Height: .1}}},
-			x:      .7, y: .4, placed: true,
-		},
-		"a line spans its endpoints": {
-			anchor: saga.Anchor{Type: "region", Shapes: []saga.Shape{{Type: "line", X: .8, Y: .9, Width: .2, Height: .1}}},
-			x:      .8, y: .1, placed: true,
-		},
-		"a sticky note uses its own placement": {
-			anchor: saga.Anchor{Type: "note", Note: &saga.NoteSelector{X: .25, Y: .75}},
-			x:      .25, y: .75, placed: true,
-		},
-		"a mark outside the stage is pulled back onto it": {
-			anchor: saga.Anchor{Type: "region", Shapes: []saga.Shape{{Type: "rect", X: .9, Y: -.4, Width: .5, Height: .2}}},
-			x:      1, y: 0, placed: true,
-		},
-		"a highlight is placed by the browser": {
-			anchor: saga.Anchor{Type: "text", Text: &saga.TextSelector{Exact: "quote"}},
-		},
-		"an empty annotation is placed by the browser": {
-			anchor: saga.Anchor{Type: "region"},
-		},
-	} {
-		t.Run(name, func(t *testing.T) {
-			x, y, placed := annotationBubblePoint(testCase.anchor)
-			if placed != testCase.placed || x != testCase.x || y != testCase.y {
-				t.Fatalf("bubble point = (%v, %v, %v), want (%v, %v, %v)", x, y, placed, testCase.x, testCase.y, testCase.placed)
-			}
-		})
-	}
-}
-
-func TestAnnotationAnchorsAreExactlyTheMarksDrawnOnContent(t *testing.T) {
-	for kind, want := range map[string]bool{
-		"region": true, "drawing": true, "text": true, "note": true,
-		"target": false, "diff": false, "": false,
-	} {
-		if got := annotationAnchor(kind); got != want {
-			t.Errorf("annotationAnchor(%q) = %v, want %v", kind, got, want)
-		}
-	}
-	if got := annotationBubbleLabel("note"); got != "sticky note" {
-		t.Errorf("sticky note bubble label = %q", got)
-	}
-	if got := annotationBubbleLabel("region"); got != anchorLabel("region") {
-		t.Errorf("rectangle bubble label = %q, want the shared reviewer word %q", got, anchorLabel("region"))
-	}
-}
-
-func TestThreadAnchorEditPersistsWithoutChangingState(t *testing.T) {
-	root := validServerSaga(t)
-	threadID, err := reviewstore.AddThread(root, "urn:change-saga:test:fragment:overview", "Move this", saga.Anchor{Type: "region", Coordinate: "normalized", Shapes: []saga.Shape{{Type: "rect", X: .1, Y: .1, Width: .2, Height: .2}}}, "comment", "", nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-	values := url.Values{
-		"thread": {threadID},
-		"anchor": {`{"type":"drawing","coordinate_space":"normalized","shapes":[{"type":"path","points":[{"x":0.2,"y":0.3},{"x":0.4,"y":0.5}],"color":"#123456"}]}`},
-	}
-	request := httptest.NewRequest(http.MethodPost, "/api/thread-anchor", strings.NewReader(values.Encode()))
-	request.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	recorder := httptest.NewRecorder()
-	(&app{root: root}).threadAnchor(recorder, request)
-	if recorder.Code != http.StatusNoContent {
-		t.Fatalf("anchor edit status = %d: %s", recorder.Code, recorder.Body.String())
-	}
-	document, validation, err := saga.Load(root)
-	if err != nil || !validation.Valid || len(document.Threads) != 1 {
-		t.Fatalf("edited annotation should load: validation=%#v err=%v", validation, err)
-	}
-	thread := document.Threads[0]
-	if thread.State != "open" || thread.Anchor.Type != "drawing" || thread.Anchor.Shapes[0].Points[0].X != .2 || len(thread.Events) != 1 {
-		t.Fatalf("unexpected edited annotation: %#v", thread)
-	}
-}
-
-func TestStickyNoteThreadCommitsPlacementAndAppendsEdits(t *testing.T) {
-	root := validServerSaga(t)
-	application := &app{root: root}
-	const noteText = "Rename <this> helper"
-	request := multipartRequest(t, "/api/thread", map[string]string{
-		"target": "urn:change-saga:test:fragment:overview",
-		"body":   noteText,
-		"anchor": `{"type":"note","coordinate_space":"normalized","note":{"text":"Rename <this> helper","x":0.25,"y":0.5,"color":"#f2bd4b"}}`,
-	})
-	recorder := httptest.NewRecorder()
-	application.createThread(recorder, request)
-	if recorder.Code != http.StatusSeeOther {
-		t.Fatalf("sticky note status = %d: %s", recorder.Code, recorder.Body.String())
-	}
-	document, validation, err := saga.Load(root)
-	if err != nil || !validation.Valid || len(document.Threads) != 1 {
-		t.Fatalf("committed sticky note should validate: validation=%#v err=%v", validation, err)
-	}
-	thread := document.Threads[0]
-	if thread.Anchor.Type != "note" || thread.Anchor.Note == nil || thread.Anchor.Note.Text != noteText || thread.Anchor.Note.X != .25 || thread.Anchor.Note.Y != .5 || thread.Anchor.Note.Color != "#f2bd4b" {
-		t.Fatalf("unexpected sticky note anchor: %#v", thread.Anchor)
-	}
-	if thread.Kind != "comment" || len(thread.Messages) != 1 {
-		t.Fatalf("a sticky note should commit as a comment thread with one message: %#v", thread)
-	}
-	manifestPath := filepath.Join(thread.Directory, "thread.json")
-	manifestBefore, err := os.ReadFile(manifestPath)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	values := url.Values{
-		"thread": {thread.ID},
-		"anchor": {`{"type":"note","coordinate_space":"normalized","note":{"text":"Renamed already","x":0.8,"y":0.1,"color":"#3366cc"}}`},
-	}
-	edit := httptest.NewRequest(http.MethodPost, "/api/thread-anchor", strings.NewReader(values.Encode()))
-	edit.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	editRecorder := httptest.NewRecorder()
-	application.threadAnchor(editRecorder, edit)
-	if editRecorder.Code != http.StatusNoContent {
-		t.Fatalf("sticky note edit status = %d: %s", editRecorder.Code, editRecorder.Body.String())
-	}
-	document, validation, err = saga.Load(root)
-	if err != nil || !validation.Valid || len(document.Threads) != 1 {
-		t.Fatalf("edited sticky note should validate: validation=%#v err=%v", validation, err)
-	}
-	edited := document.Threads[0]
-	if edited.State != "open" || len(edited.Events) != 1 || edited.Anchor.Note.Text != "Renamed already" || edited.Anchor.Note.X != .8 || edited.Anchor.Note.Color != "#3366cc" {
-		t.Fatalf("unexpected edited sticky note: %#v", edited)
-	}
-	if manifestAfter, err := os.ReadFile(manifestPath); err != nil || !bytes.Equal(manifestBefore, manifestAfter) {
-		t.Fatal("editing a sticky note rewrote its original thread record")
-	}
-	if len(edited.Messages) != 1 {
-		t.Fatalf("editing note text should not add a message: %#v", edited.Messages)
-	}
-}
-
-func TestStickyNoteThreadRejectsUnplaceableNote(t *testing.T) {
-	root := validServerSaga(t)
-	request := multipartRequest(t, "/api/thread", map[string]string{
-		"target": "urn:change-saga:test:fragment:overview",
-		"body":   "Off canvas",
-		"anchor": `{"type":"note","coordinate_space":"normalized","note":{"text":"Off canvas","x":1.4,"y":0.5}}`,
-	})
-	recorder := httptest.NewRecorder()
-	(&app{root: root}).createThread(recorder, request)
-	if recorder.Code != http.StatusBadRequest {
-		t.Fatalf("off-canvas sticky note status = %d, want %d", recorder.Code, http.StatusBadRequest)
-	}
-}
-
-func TestStickyNoteOverlayRendersSafelyAndDeepLinks(t *testing.T) {
-	tmpl := serverTemplate(t)
-	fragmentDir := t.TempDir()
-	writeServerFile(t, filepath.Join(fragmentDir, "content.md"), "# Story {#story}\n")
-	fragment := &saga.Fragment{ID: "overview", Title: "Overview", Target: "urn:change-saga:test:fragment:overview", Directory: fragmentDir, MediaType: "text/markdown", Entrypoint: "content.md"}
-	section := &saga.Section{Kind: "chapter", ID: "root", Title: "Test", Target: "urn:change-saga:test:saga", Path: "private/root.chapter", Fragments: []*saga.Fragment{fragment}}
-	created := time.Date(2026, 8, 19, 12, 0, 0, 0, time.UTC)
-	sticky := &saga.Thread{ID: "sticky", Target: fragment.Target, CreatedBy: "Ada Lovelace", State: "open", CreatedAt: created,
-		Anchor:   saga.Anchor{Type: "note", Coordinate: "normalized", Note: &saga.NoteSelector{Text: "Rename <this> helper", X: .25, Y: .5, Color: "#f2bd4b"}},
-		Messages: []*saga.Message{{ID: "message", CreatedAt: created}}}
-	hostile := &saga.Thread{ID: "hostile", Target: fragment.Target, State: "open", CreatedAt: created,
-		Anchor:   saga.Anchor{Type: "note", Coordinate: "normalized", Note: &saga.NoteSelector{Text: "Unstyled", X: 0, Y: 0, Color: "expression(alert(1))"}},
-		Messages: []*saga.Message{{ID: "hostile-message", CreatedAt: created}}}
-	threads := map[string][]*threadView{fragment.Target: {makeThreadView(sticky), makeThreadView(hostile)}}
-	data := pageData{
-		Saga: &saga.Saga{Manifest: saga.Manifest{ID: "test", Title: "Test", Source: saga.Source{Repository: "https://example.test/a.git"}}, Section: section},
-		Root: makeSectionView(section, viewScope{threads: threads}), Code: &CodeReviewView{},
-	}
-	var output bytes.Buffer
-	if err := tmpl.ExecuteTemplate(&output, "page", data); err != nil {
-		t.Fatal(err)
-	}
-	page := output.String()
-	noteID := domID("thread:sticky") + "--note"
-	if strings.Contains(page, "ZgotmplZ") || !strings.Contains(page, `class="sticky-note"`) || !strings.Contains(page, `data-sticky-note`) {
-		t.Fatal("sticky note overlay was not rendered")
-	}
-	if !strings.Contains(page, "--note-color:#f2bd4b;left:25.0000%;top:50.0000%") || !strings.Contains(page, `data-x="0.25"`) {
-		t.Fatal("sticky note placement was not rendered from normalized coordinates")
-	}
-	if strings.Contains(page, "Rename <this> helper") || !strings.Contains(page, "Rename &lt;this&gt; helper") {
-		t.Fatal("sticky note text was not rendered safely")
-	}
-	if strings.Contains(page, "expression(alert(1))") || strings.Count(page, "--note-color:#f2bd4b") < 2 {
-		t.Fatal("an unsafe note color was not replaced with the accessible default")
-	}
-	if !strings.Contains(page, `id="`+noteID+`"`) || !strings.Contains(page, `data-copy-link="#`+noteID+`"`) {
-		t.Fatal("sticky note was not independently hyperlinkable")
-	}
-	if !strings.Contains(page, `data-tool="sticky"`) || !strings.Contains(page, `class="note-anchor"`) || !strings.Contains(page, `tabindex="0" role="note"`) {
-		t.Fatal("sticky tool, thread echo, or keyboard affordance was missing")
-	}
-}
-
-func TestCreateDiffSuggestionAndMarkFileReviewed(t *testing.T) {
-	root := validServerSaga(t)
-	repo := t.TempDir()
-	serverGit(t, repo, "init", "-b", "main")
-	serverGit(t, repo, "config", "user.name", "Test")
-	serverGit(t, repo, "config", "user.email", "test@example.test")
-	source := "package app\n\nfunc Ready() error {\n\treturn nil\n}\n"
-	writeServerFile(t, filepath.Join(repo, "app.go"), source)
-	serverGit(t, repo, "add", "app.go")
-	serverGit(t, repo, "commit", "-m", "feature")
-	head := strings.TrimSpace(serverGit(t, repo, "rev-parse", "HEAD"))
-	application := &app{root: root, sourceDir: repo, catalogLoader: func(context.Context, saga.Manifest) (gitdiff.Catalog, error) {
-		return gitdiff.Catalog{BaseOID: strings.Repeat("b", 40), HeadOID: head}, nil
-	}}
-	// The server reads the digest of the referenced bytes from the source
-	// repository; a digest supplied by the browser is never trusted.
-	request := multipartRequest(t, "/api/thread", map[string]string{
-		"target":      "urn:change-saga:test:fragment:overview",
-		"body":        "Prefer the guarded form.",
-		"kind":        "suggestion",
-		"replacement": "if ready { return nil }",
-		"anchor":      `{"type":"code","code":{"commit":"` + head + `","path":"app.go","start":4,"end":4,"digest":"sha256:` + strings.Repeat("0", 64) + `"}}`,
-	})
-	recorder := httptest.NewRecorder()
-	application.createThread(recorder, request)
-	if recorder.Code != http.StatusSeeOther {
-		t.Fatalf("suggestion status = %d: %s", recorder.Code, recorder.Body.String())
-	}
-	values := url.Values{"ref": {coderef.Location{Commit: head, Path: "app.go"}.String()}, "state": {"reviewed"}, "file": {"diff-app-go"}}
-	request = httptest.NewRequest(http.MethodPost, "/api/diff-review", strings.NewReader(values.Encode()))
-	request.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	recorder = httptest.NewRecorder()
-	application.diffReview(recorder, request)
-	if recorder.Code != http.StatusSeeOther {
-		t.Fatalf("diff review status = %d: %s", recorder.Code, recorder.Body.String())
-	}
-	if location := recorder.Header().Get("Location"); location != CodeDiffURL("app.go", "") {
-		t.Fatalf("diff review redirect = %q, want focused file", location)
-	}
-	document, validation, err := saga.Load(root)
-	if err != nil || !validation.Valid {
-		t.Fatalf("review data should validate: validation=%#v err=%v", validation, err)
-	}
-	if len(document.Threads) != 1 || document.Threads[0].Kind != "suggestion" || document.Threads[0].Suggestion == nil || len(document.FileReviews) != 1 || document.FileReviews[0].State != "reviewed" {
-		t.Fatalf("unexpected persisted diff review: threads=%#v reviews=%#v", document.Threads, document.FileReviews)
-	}
-	lineDigest, err := coderef.DigestRange([]byte(source), 4, 4)
-	if err != nil {
-		t.Fatal(err)
-	}
-	anchor := document.Threads[0].Anchor
-	if anchor.Type != "code" || anchor.Code == nil || *anchor.Code != (coderef.Reference{Commit: head, Path: "app.go", Start: 4, End: 4, Digest: lineDigest}) {
-		t.Fatalf("suggestion anchor was not authored at the exact line: %#v", anchor.Code)
-	}
-	if review := document.FileReviews[0].Code; review != (coderef.Reference{Commit: head, Path: "app.go", Digest: coderef.DigestBytes([]byte(source))}) {
-		t.Fatalf("file review was not authored as a whole-file reference: %#v", review)
-	}
-
-	// A location outside the file cannot be authored.
-	request = multipartRequest(t, "/api/thread", map[string]string{
-		"target": "urn:change-saga:test:fragment:overview",
-		"body":   "Out of range.",
-		"anchor": `{"type":"code","code":{"commit":"` + head + `","path":"app.go","start":40,"end":40}}`,
-	})
-	recorder = httptest.NewRecorder()
-	application.createThread(recorder, request)
-	if recorder.Code != http.StatusBadRequest {
-		t.Fatalf("an unauthorable code anchor status = %d: %s", recorder.Code, recorder.Body.String())
-	}
-	values = url.Values{"ref": {coderef.Location{Commit: head, Path: "app.go", Start: 1, End: 1}.String()}, "state": {"reviewed"}}
-	request = httptest.NewRequest(http.MethodPost, "/api/diff-review", strings.NewReader(values.Encode()))
-	request.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	recorder = httptest.NewRecorder()
-	application.diffReview(recorder, request)
-	if recorder.Code != http.StatusBadRequest {
-		t.Fatalf("a line range was accepted as a file review: %d", recorder.Code)
-	}
-}
-
-func TestReviewDecisionPersistsAndReturnsToChapter(t *testing.T) {
-	root := validServerSaga(t)
-	application := &app{root: root, rng: gitdiff.Range{Against: "main"}, layersLoader: changedLayers("urn:change-saga:test:fragment:overview")}
-	values := url.Values{
-		"target":    {"urn:change-saga:test:fragment:overview"},
-		"state":     {"approved"},
-		"body":      {"Ready to merge."},
-		"return_to": {"/chapters/backend#target-overview"},
-	}
-	request := httptest.NewRequest(http.MethodPost, "/api/review", strings.NewReader(values.Encode()))
-	request.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	recorder := httptest.NewRecorder()
-	application.review(recorder, request)
-	if recorder.Code != http.StatusSeeOther || recorder.Header().Get("Location") != "/chapters/backend#target-overview" {
-		t.Fatalf("review response = %d location %q", recorder.Code, recorder.Header().Get("Location"))
-	}
-	document, validation, err := saga.Load(root)
-	if err != nil || !validation.Valid {
-		t.Fatalf("written review should validate: validation=%#v err=%v", validation, err)
-	}
-	reviews := document.Section.Fragments[0].Reviews
-	if len(reviews) != 1 || reviews[0].State != "approved" || reviews[0].Author != "" || reviews[0].Body != "Ready to merge." {
-		t.Fatalf("unexpected persisted review: %#v", reviews)
-	}
-}
-
-func TestAsyncReviewDecisionPersistsWithoutRedirect(t *testing.T) {
-	root := validServerSaga(t)
-	application := &app{root: root, rng: gitdiff.Range{Against: "main"}, layersLoader: changedLayers("urn:change-saga:test:fragment:overview")}
-	values := url.Values{
-		"target": {"urn:change-saga:test:fragment:overview"},
-		"state":  {"rejected"},
-		"body":   {"Please cover the failure path."},
-	}
-	request := httptest.NewRequest(http.MethodPost, "/api/review", strings.NewReader(values.Encode()))
-	request.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	request.Header.Set("X-Change-Saga-Async", "true")
-	recorder := httptest.NewRecorder()
-	application.review(recorder, request)
-	if recorder.Code != http.StatusNoContent || recorder.Header().Get("Location") != "" {
-		t.Fatalf("async review response = %d location %q", recorder.Code, recorder.Header().Get("Location"))
-	}
-	document, validation, err := saga.Load(root)
-	if err != nil || !validation.Valid {
-		t.Fatalf("written async review should validate: validation=%#v err=%v", validation, err)
-	}
-	reviews := document.Section.Fragments[0].Reviews
-	if len(reviews) != 1 || reviews[0].State != "rejected" || reviews[0].Body != "Please cover the failure path." || reviews[0].Reviewer == nil || reviews[0].Reviewer.Kind != "human" {
-		t.Fatalf("unexpected async review: %#v", reviews)
-	}
-}
-
-func TestPageAttributesSagaFromItsOwnRepository(t *testing.T) {
-	repo := t.TempDir()
-	serverGit(t, repo, "init", "-b", "main")
-	root := filepath.Join(repo, "test.saga")
-	writeServerFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"test","title":"Test","source":{"repository":"https://example.test/a.git"}}`)
-	writeServerEpic(t, root)
-	writeServerFile(t, filepath.Join(serverEpicDir(root), "overview.fragment", "fragment.json"), `{"version":2,"id":"overview","title":"Overview","media_type":"text/markdown","entrypoint":"content.md"}`)
-	writeServerFile(t, filepath.Join(serverEpicDir(root), "overview.fragment", "content.md"), "# Story\n")
-	writeServerFile(t, filepath.Join(serverEpicDir(root), "overview.fragment", "___approvals", "review.json"), `{"version":2,"id":"review","author":"Payload Name","state":"approved","created_at":"2026-08-19T12:00:00Z"}`)
-	serverGit(t, repo, "add", ".")
-	serverGitEnv(t, repo, []string{
-		"GIT_AUTHOR_NAME=Git Author", "GIT_AUTHOR_EMAIL=author@example.test",
-		"GIT_COMMITTER_NAME=Saga Reviewer", "GIT_COMMITTER_EMAIL=reviewer@example.test",
-	}, "commit", "-m", "saga review")
-
-	tmpl := template.Must(template.New("page").Parse(`{{define "page"}}{{(index .Root.FragmentViews 0).ReviewAuthor}}|{{(index .Root.FragmentViews 0).ReviewDetail}}{{end}}`))
-	application := &app{root: root, sourceDir: t.TempDir(), template: tmpl}
-	recorder := httptest.NewRecorder()
-	application.page(recorder, httptest.NewRequest(http.MethodGet, "/", nil))
-	if recorder.Code != http.StatusOK || !strings.Contains(recorder.Body.String(), "Saga Reviewer") || !strings.Contains(recorder.Body.String(), "reviewer@example.test") || strings.Contains(recorder.Body.String(), "Payload Name") {
-		t.Fatalf("saga repository attribution was not canonical: status=%d body=%q", recorder.Code, recorder.Body.String())
-	}
-}
-
-// Review identity is read from the saga's own repository, and committing review
-// records changes it without changing a byte under the saga root. The snapshot
-// is reused for as long as its inputs are observably unchanged, so its freshness
-// check has to commit to that history as well as to those bytes — otherwise a
-// reviewer keeps reading their own decision as uncommitted after recording it.
-func TestCommittingReviewRecordsInvalidatesTheReviewSnapshot(t *testing.T) {
-	source := t.TempDir()
-	serverGit(t, source, "init", "-b", "main")
-	serverGit(t, source, "config", "user.name", "Test")
-	serverGit(t, source, "config", "user.email", "test@example.test")
-	writeServerFile(t, filepath.Join(source, "base.txt"), "base\n")
-	serverGit(t, source, "add", ".")
-	serverGit(t, source, "commit", "-m", "base")
-	base := strings.TrimSpace(serverGit(t, source, "rev-parse", "HEAD"))
-	writeServerFile(t, filepath.Join(source, "app.go"), "package app\n")
-	serverGit(t, source, "add", ".")
-	serverGit(t, source, "commit", "-m", "feature")
-	_ = strings.TrimSpace(serverGit(t, source, "rev-parse", "HEAD"))
-	repository, err := coderef.FileRepository(source)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	// The saga lives in a different repository from the code it explains, which
-	// is the shape that makes this a real hazard: committing the review leaves
-	// the source comparison, and every saga byte, exactly as they were.
-	sagaRepo := t.TempDir()
-	serverGit(t, sagaRepo, "init", "-b", "main")
-	root := filepath.Join(sagaRepo, "test.saga")
-	writeServerFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"test","title":"Test","source":{"repository":"`+repository+`"}}`)
-	writeServerEpic(t, root)
-	writeServerFile(t, filepath.Join(serverEpicDir(root), "overview.fragment", "fragment.json"), `{"version":2,"id":"overview","title":"Overview","media_type":"text/markdown","entrypoint":"content.md"}`)
-	writeServerFile(t, filepath.Join(serverEpicDir(root), "overview.fragment", "content.md"), "# Story\n")
-	serverGit(t, sagaRepo, "add", ".")
-	serverGitEnv(t, sagaRepo, []string{
-		"GIT_AUTHOR_NAME=Author", "GIT_AUTHOR_EMAIL=author@example.test",
-		"GIT_COMMITTER_NAME=Author", "GIT_COMMITTER_EMAIL=author@example.test",
-	}, "commit", "-m", "write the saga")
-
-	tmpl := template.Must(template.New("page").Parse(`{{define "page"}}{{(index .Root.FragmentViews 0).ReviewAuthor}}|{{(index .Root.FragmentViews 0).ReviewDetail}}{{end}}`))
-	application := &app{root: root, sourceDir: source, rng: gitdiff.Range{Against: base}, template: tmpl}
-	render := func() string {
-		recorder := httptest.NewRecorder()
-		application.page(recorder, httptest.NewRequest(http.MethodGet, "/", nil))
-		if recorder.Code != http.StatusOK {
-			t.Fatalf("page status = %d: %s", recorder.Code, recorder.Body.String())
-		}
-		return recorder.Body.String()
-	}
-
-	// The cache has to actually be on, or nothing below is a test of anything.
-	render()
-	render()
-	if application.outline.builds != 1 {
-		t.Fatalf("two identical requests rebuilt the outline %d times; this fixture does not exercise reuse", application.outline.builds)
-	}
-
-	writeServerFile(t, filepath.Join(serverEpicDir(root), "overview.fragment", "___approvals", "review.json"), `{"version":2,"id":"review","author":"Payload Name","state":"approved","created_at":"2026-08-19T12:00:00Z"}`)
-	if body := render(); !strings.Contains(body, gitattribution.Uncommitted) {
-		t.Fatalf("a decision that is only on disk was attributed as if it were in history: %q", body)
-	}
-
-	serverGit(t, sagaRepo, "add", ".")
-	serverGitEnv(t, sagaRepo, []string{
-		"GIT_AUTHOR_NAME=Git Author", "GIT_AUTHOR_EMAIL=author@example.test",
-		"GIT_COMMITTER_NAME=Saga Reviewer", "GIT_COMMITTER_EMAIL=reviewer@example.test",
-	}, "commit", "-m", "record the decision")
-	if body := render(); !strings.Contains(body, "Saga Reviewer") || strings.Contains(body, gitattribution.Uncommitted) {
-		t.Fatalf("a committed decision kept its uncommitted attribution; the snapshot outlived the history it was read from: %q", body)
-	}
-	if application.cache.builds != 0 {
-		t.Fatalf("review file creation or attribution commit rebuilt coverage/diffs: builds=%d", application.cache.builds)
-	}
-}
-
-func TestUnavailableHistoryNeverFallsBackToPayloadIdentityOrChangesEventTime(t *testing.T) {
-	root := filepath.Join(t.TempDir(), "test.saga")
-	eventTime := time.Date(2026, time.August, 19, 12, 0, 0, 0, time.UTC)
-	path := filepath.Join(root, "event.json")
-	document := &saga.Saga{
-		Section: &saga.Section{Reviews: []saga.Review{{Path: path, Author: "Payload Approval", CreatedAt: eventTime}}},
-		Threads: []*saga.Thread{{
-			Directory: filepath.Join(root, "thread.thread"), CreatedBy: "Payload Thread", CreatedAt: eventTime,
-			Messages: []*saga.Message{{Path: path, Author: "Payload Reply", CreatedAt: eventTime}},
-			Events:   []saga.ThreadEvent{{Path: path, Author: "Payload State", CreatedAt: eventTime}},
-		}},
-		FileReviews: []saga.FileReview{{Path: path, Author: "Payload Diff", CreatedAt: eventTime}},
-	}
-	applyGitAttribution(t.Context(), gitattribution.New(t.Context(), root), document)
-	authors := []string{
-		document.Section.Reviews[0].Author,
-		document.Threads[0].CreatedBy,
-		document.Threads[0].Messages[0].Author,
-		document.Threads[0].Events[0].Author,
-		document.FileReviews[0].Author,
-	}
-	for _, author := range authors {
-		if author != "Git history unavailable" {
-			t.Fatalf("unavailable history trusted payload identity: %q", author)
-		}
-	}
-	if !document.Section.Reviews[0].CreatedAt.Equal(eventTime) || !document.Threads[0].CreatedAt.Equal(eventTime) || !document.FileReviews[0].CreatedAt.Equal(eventTime) {
-		t.Fatal("attribution changed event ordering timestamps")
-	}
 }
 
 func TestFragmentFileRejectsSymlinkOutsidePackage(t *testing.T) {
@@ -1030,13 +332,8 @@ func TestPageTemplateAndMarkdown(t *testing.T) {
 	writeServerFile(t, filepath.Join(fragmentDir, "content.md"), "# Story {#story}\n")
 	landmarkTarget := saga.LandmarkTarget("test", "overview", "story-text")
 	fragment := &saga.Fragment{ID: "overview", Title: "Overview", Target: "urn:change-saga:test:fragment:overview", Directory: fragmentDir, MediaType: "text/markdown", Entrypoint: "content.md", Landmarks: []saga.Landmark{{Version: 2, ID: "story-text", Label: "Story text", Target: landmarkTarget, Selector: saga.LandmarkSelector{Type: "text", Exact: "Story"}}}}
-	fragment.Reviews = []saga.Review{
-		{ID: "ai-review", State: "approved", Author: "Ada", AttributionIdentity: "git:ada@example.test", AttributionDetail: "ada@example.test · committed abc122", Reviewer: &saga.ReviewerIdentity{Kind: "ai", Name: "Codex 1", Agent: "codex", Model: "gpt-5.6-sol"}, Body: "Automated review passed.", CreatedAt: time.Date(2026, 8, 19, 11, 0, 0, 0, time.UTC)},
-		{ID: "human-review", State: "approved", Author: "Ada", AttributionIdentity: "git:ada@example.test", AttributionDetail: "ada@example.test · committed abc123", Reviewer: &saga.ReviewerIdentity{Kind: "human"}, Body: "Ready to merge.", CreatedAt: time.Date(2026, 8, 19, 12, 0, 0, 0, time.UTC)},
-	}
 	emptyFragment := &saga.Fragment{ID: "empty", Title: "No changes", Target: "urn:change-saga:test:fragment:empty", Directory: fragmentDir, MediaType: "text/plain", Entrypoint: "missing.txt"}
 	section := &saga.Section{Kind: "chapter", ID: "root", Title: "Test", Target: "urn:change-saga:test:saga", Path: "private/root.chapter", Fragments: []*saga.Fragment{fragment, emptyFragment}}
-	thread := &saga.Thread{ID: "thread", Target: fragment.Target, Anchor: saga.Anchor{Type: "region", Coordinate: "normalized", Shapes: []saga.Shape{{Type: "rect", X: .1, Y: .2, Width: .3, Height: .4, Color: "#336699"}}}, State: "open", Messages: []*saga.Message{{ID: "message", CreatedAt: time.Date(2026, 8, 19, 12, 0, 0, 0, time.UTC)}}}
 	lineRef := testLocation(testHeadCommit, "app.go", 1, 1)
 	fragment.Code = []saga.CodeFile{{Version: 2, References: []coderef.Reference{testReference(testHeadCommit, "app.go", 1, 1, "Adds the package entrypoint so the example compiles.")}}}
 	manifestFiles := []*ManifestFileView{{Path: "internal/app.go", AtomCount: 1, Added: 1, Covered: 1, HasDiff: true, Chunks: []*ManifestChunkView{{Label: "+1", Path: "internal/app.go", AtomCount: 1, Excerpt: "package app", Href: CodeDiffURL("internal/app.go", lineRef), Covered: true, Owners: []*ManifestOwnerView{{Title: "Overview", Kind: "Fragment", Chapter: "Test", Href: "#overview"}}}}}}
@@ -1051,14 +348,8 @@ func TestPageTemplateAndMarkdown(t *testing.T) {
 				fragment.Target: {{Kind: "line", Ref: lineRef, Path: "app.go", Side: "new", Line: 1, Content: "package app"}},
 				landmarkTarget:  {{Kind: "line", Ref: lineRef, Path: "app.go", Side: "new", Line: 1, Content: "package app"}},
 			},
-			threads: map[string][]*threadView{fragment.Target: {makeThreadView(thread)}},
 		}),
-		Code: &CodeReviewView{}, Manifest: manifestFixture, ReviewDecided: 2, ReviewTotal: 3,
-		ReviewItems: []*reviewProgressItem{
-			makeReviewProgressItem(section.Target, section.Title, "/#"+domID(section.Target), "", ""),
-			makeReviewProgressItem(fragment.Target, fragment.Title, "/#"+domID(fragment.Target), "approved", "Ready to merge."),
-			makeReviewProgressItem(emptyFragment.Target, emptyFragment.Title, "/#"+domID(emptyFragment.Target), "rejected", "Needs tests."),
-		},
+		Code: &CodeReviewView{}, Manifest: manifestFixture,
 	}
 	var output bytes.Buffer
 	if err := tmpl.ExecuteTemplate(&output, "page", data); err != nil {
@@ -1071,25 +362,20 @@ func TestPageTemplateAndMarkdown(t *testing.T) {
 	if strings.Contains(renderedPage, "ZgotmplZ") {
 		t.Fatal("template produced an unsafe URL sentinel")
 	}
-	for _, expected := range []string{"/app.js", `x="100.00"`, `id="` + domID(fragment.Target) + `--story"`} {
+	for _, expected := range []string{"/app.js", `id="` + domID(fragment.Target) + `--story"`} {
 		if !strings.Contains(renderedPage, expected) {
 			t.Fatalf("template output is missing %q", expected)
 		}
 	}
-	if strings.Count(renderedPage, `class="annotation-toolbox"`) != 1 || !strings.Contains(renderedPage, `data-annotation-tools="`+fragment.Target+`"`) || !strings.Contains(renderedPage, `aria-controls="annotation-toolbox"`) || !strings.Contains(renderedPage, `data-review-progress`) || !strings.Contains(renderedPage, `data-review-decided="2" data-review-total="3"`) || !strings.Contains(renderedPage, `aria-label="Review progress: 2 of 3 decisions"`) || !strings.Contains(renderedPage, `class="review-progress-segment approved"`) || !strings.Contains(renderedPage, `class="review-progress-segment rejected"`) || !strings.Contains(renderedPage, `class="review-progress-segment pending"`) || !strings.Contains(renderedPage, `data-review-progress-note="Ready to merge."`) || !strings.Contains(renderedPage, `Comment: Ready to merge.`) || !strings.Contains(renderedPage, `data-review-progress-tooltip`) || !strings.Contains(renderedPage, `href="/#`+domID(fragment.Target)+`"`) || !strings.Contains(renderedPage, `data-review-controls`) || !strings.Contains(renderedPage, `data-review-author="Ada"`) || !strings.Contains(renderedPage, `data-review-detail="ada@example.test · committed abc123"`) || !strings.Contains(renderedPage, `data-review-decision="approved" aria-pressed="true"`) || !strings.Contains(renderedPage, `data-review-comment`) || !strings.Contains(renderedPage, `data-review-note title="Ready to merge."`) || !strings.Contains(renderedPage, `i-approve-filled`) || !strings.Contains(renderedPage, `i-reject-filled`) || !strings.Contains(renderedPage, `data-shared-review-form`) || strings.Contains(renderedPage, `decision-dialog`) || strings.Contains(renderedPage, `class="review-form"`) {
-		t.Fatal("fast inline review controls and progress were not rendered")
+	// The Saga is documentation: no approval, comment, or annotation control
+	// is rendered on it in any mode.
+	for _, control := range []string{"annotation-toolbox", "data-annotation-tools", "data-review-progress", "data-review-controls", "data-review-decision", "data-review-comment", "data-shared-review-form", "/api/thread", "/api/review", "/api/reply", "/api/diff-review", "data-activity"} {
+		if strings.Contains(renderedPage, control) {
+			t.Fatalf("documentation rendered review control %q", control)
+		}
 	}
-	if !strings.Contains(renderedPage, `class="review-identity approved ai"`) || !strings.Contains(renderedPage, `class="review-identity approved human"`) || !strings.Contains(renderedPage, `Codex 1 · codex · gpt-5.6-sol`) {
-		t.Fatal("human and AI reviewer identities were not both rendered")
-	}
-	if !strings.Contains(renderedPage, `body data-saga-id="test"`) || !strings.Contains(renderedPage, `data-undo disabled`) || !strings.Contains(renderedPage, `data-redo disabled`) || strings.Contains(renderedPage, `name="record_history"`) {
-		t.Fatal("annotation command history controls were not rendered")
-	}
-	if !strings.Contains(renderedPage, `class="dialog-actions"`) || !strings.Contains(renderedPage, `placeholder="Start a review thread" aria-label="Comment"`) {
-		t.Fatal("the annotation composer did not render its spaced, accessible action layout")
-	}
-	if !strings.Contains(renderedPage, `data-annotation-selection`) || !strings.Contains(renderedPage, `data-annotation-entity`) || !strings.Contains(renderedPage, `data-thread-id="thread"`) || !strings.Contains(renderedPage, `data-shape-index="0"`) {
-		t.Fatal("shape annotations were not rendered as selectable entities")
+	if !strings.Contains(renderedPage, `body data-saga-id="test"`) || !strings.Contains(renderedPage, `data-open-history`) {
+		t.Fatal("the page lost its identity or history controls")
 	}
 	if !strings.Contains(renderedPage, `data-view-tab="manifest"`) || !strings.Contains(renderedPage, `data-review-surface="manifest"`) || !strings.Contains(renderedPage, `data-surface-href="/api/coverage"`) {
 		t.Fatal("bounded coverage navigation was not rendered")
@@ -1112,9 +398,6 @@ func TestPageTemplateAndMarkdown(t *testing.T) {
 	}
 	if !strings.Contains(renderedPage, `class="attached-code-summary"`) || !strings.Contains(renderedPage, `class="diff-counts"`) || !strings.Contains(renderedPage, "linked line") || !strings.Contains(renderedPage, "highlighted") {
 		t.Fatal("attached code did not distinguish linked-change counts from full-file context")
-	}
-	if !strings.Contains(renderedPage, `data-annotation-color`) || !strings.Contains(renderedPage, `stroke="#336699"`) || !strings.Contains(renderedPage, `data-copy-link="#`+domID("thread:thread")+`"`) || !strings.Contains(renderedPage, `data-copy-link="#`+domID("message:message")+`"`) {
-		t.Fatal("annotation colors or committed-item permalinks were not rendered")
 	}
 	if !strings.Contains(renderedPage, `data-landmark-type="text"`) || !strings.Contains(renderedPage, `data-exact="Story"`) || !strings.Contains(renderedPage, `data-prefix=""`) || !strings.Contains(renderedPage, `>Story text</a>`) {
 		t.Fatal("fragment landmarks were not exposed as deep links")
@@ -1224,8 +507,8 @@ func TestPageHandlerShipsAChapterShellAndRedirectsLegacyRoutes(t *testing.T) {
 		!strings.Contains(overviewBody, `data-section-href="/api/section?target=`+template.HTMLEscapeString(url.QueryEscape(alphaTarget))+`"`) {
 		t.Fatal("the shell did not describe its chapters as fetchable summaries")
 	}
-	if !strings.Contains(overviewBody, `data-review-target="`+alphaTarget+`"`) {
-		t.Fatal("the chapter bar did not expose its review controls")
+	if strings.Contains(overviewBody, `data-review-target=`) || !strings.Contains(overviewBody, `data-history-href="/api/history?target=`+template.HTMLEscapeString(url.QueryEscape(alphaTarget))+`"`) {
+		t.Fatal("the chapter bar carried review controls or lost its history")
 	}
 	if strings.Contains(overviewBody, `data-chapter-review-directory`) {
 		t.Fatal("the first-load shell eagerly carried a chapter review directory")
@@ -1249,13 +532,8 @@ func TestPageHandlerShipsAChapterShellAndRedirectsLegacyRoutes(t *testing.T) {
 	if !strings.Contains(alphaBody, `data-fragment-href="/api/fragment?target=`+template.HTMLEscapeString(url.QueryEscape(alphaFragment))+`"`) {
 		t.Fatalf("chapter body did not describe its explanations: %s", alphaBody)
 	}
-	if !strings.Contains(alphaBody, `data-chapter-review-directory`) ||
-		!strings.Contains(alphaBody, `data-review-directory-target="`+alphaFragment+`"`) ||
-		!strings.Contains(alphaBody, `href="#`+domID(alphaFragment)+`"`) {
-		t.Fatalf("chapter body did not carry its bounded, navigable review directory: %s", alphaBody)
-	}
-	if strings.Count(alphaBody, `data-review-target="`+alphaFragment+`"`) != 2 {
-		t.Fatalf("chapter explanation did not expose synchronized controls in its bar and directory: %s", alphaBody)
+	if strings.Contains(alphaBody, `data-chapter-review-directory`) || strings.Contains(alphaBody, `data-review-target=`) {
+		t.Fatalf("chapter body carried approval controls on documentation: %s", alphaBody)
 	}
 	if strings.Contains(alphaBody, "Alpha-exclusive narrative") || strings.Contains(alphaBody, "Beta-exclusive narrative") {
 		t.Fatal("a chapter body carried explanation content, or content from another chapter")
@@ -1541,132 +819,6 @@ func TestNarrativeEvidenceTargetsFindsTheRequestedDeck(t *testing.T) {
 	}
 }
 
-// Resume state is read from the document and the thread index, so a chapter
-// reports where a reviewer left off before its body has ever been fetched.
-func TestChapterResumeState(t *testing.T) {
-	approved := saga.Review{State: "approved", Reviewer: &saga.ReviewerIdentity{Kind: "human"}, CreatedAt: time.Unix(10, 0)}
-	rejected := saga.Review{State: "rejected", Reviewer: &saga.ReviewerIdentity{Kind: "human"}, CreatedAt: time.Unix(10, 0)}
-	commented := &saga.Section{Kind: "chapter", ID: "commented", Title: "Commented",
-		Fragments: []*saga.Fragment{{ID: "talked", Target: "urn:change-saga:test:fragment:talked"}}}
-	chapters := []*saga.Section{
-		{Kind: "chapter", ID: "done", Title: "Done", Reviews: []saga.Review{approved}},
-		{Kind: "chapter", ID: "started", Title: "Started", Fragments: []*saga.Fragment{{ID: "part", Reviews: []saga.Review{rejected}}}},
-		commented,
-		{Kind: "chapter", ID: "new", Title: "New"},
-	}
-	threads := map[string][]*threadView{
-		commented.Fragments[0].Target: {{Thread: &saga.Thread{ID: "open", Anchor: saga.Anchor{Type: "target"}}}},
-	}
-	statuses := make([]string, 0, len(chapters))
-	for _, chapter := range chapters {
-		status, _, _ := reviewProgress(chapter, threads)
-		statuses = append(statuses, status)
-	}
-	if strings.Join(statuses, ",") != "Unreviewed,Needs changes,In progress,Unreviewed" {
-		t.Fatalf("unexpected chapter resume states: %#v", statuses)
-	}
-
-	// An annotation is activity, but remains a signal separate from approval.
-	drawn := map[string][]*threadView{
-		commented.Fragments[0].Target: {{Thread: &saga.Thread{ID: "drawn", Anchor: saga.Anchor{Type: "region"}}}},
-	}
-	if status, _, _ := reviewProgress(commented, drawn); status != "In progress" {
-		t.Fatalf("a drawn annotation was not counted as separate chapter activity: %q", status)
-	}
-	allApproved := &saga.Section{Kind: "chapter", ID: "complete", Title: "Complete",
-		Fragments: []*saga.Fragment{{ID: "part", Target: "urn:change-saga:test:fragment:complete", Reviews: []saga.Review{approved}}}}
-	if status, _, _ := reviewProgress(allApproved, nil); status != "Approved" {
-		t.Fatalf("a chapter with every child approved reported %q", status)
-	}
-	aiApproved := &saga.Section{Kind: "chapter", ID: "ai-complete", Title: "AI complete",
-		Fragments: []*saga.Fragment{{ID: "part", Target: "urn:change-saga:test:fragment:ai-complete", Reviews: []saga.Review{{State: "approved", Reviewer: &saga.ReviewerIdentity{Kind: "ai", Name: "Codex 1", Agent: "codex", Model: "gpt-5.6-sol"}, CreatedAt: time.Unix(10, 0)}}}}}
-	if status, _, _ := reviewProgress(aiApproved, nil); status != "AI review complete" {
-		t.Fatalf("an AI-only chapter implied human approval: %q", status)
-	}
-}
-
-func TestChapterReviewDirectoryProjectsIndependentStatesAndSignals(t *testing.T) {
-	decision := func(state string) []saga.Review {
-		return []saga.Review{{State: state, Reviewer: &saga.ReviewerIdentity{Kind: "human"}, CreatedAt: time.Unix(10, 0)}}
-	}
-	landmarkTarget := "urn:change-saga:test:landmark:diagram:edge"
-	diagram := &saga.Fragment{
-		ID: "diagram", Title: "Diagram", Target: "urn:change-saga:test:fragment:diagram", Reviews: decision("rejected"),
-		Landmarks: []saga.Landmark{{ID: "edge", Target: landmarkTarget}},
-	}
-	child := &saga.Section{Kind: "section", ID: "details", Title: "Details", Target: "urn:change-saga:test:section:details", Reviews: decision("approved"),
-		Fragments: []*saga.Fragment{{ID: "legacy-open", Title: "Legacy open", Target: "urn:change-saga:test:fragment:legacy-open", Reviews: decision("open")}}}
-	chapter := &saga.Section{Kind: "chapter", ID: "chapter", Title: "Chapter", Target: "urn:change-saga:test:chapter:chapter",
-		Reviews: decision("approved"), Fragments: []*saga.Fragment{diagram}, Children: []*saga.Section{child}}
-	threads := map[string][]*threadView{
-		diagram.Target: {{Thread: &saga.Thread{ID: "comment", Anchor: saga.Anchor{Type: "target"}}}},
-		landmarkTarget: {{Thread: &saga.Thread{ID: "annotation", Anchor: saga.Anchor{Type: "region"}}}},
-		child.Target:   {{Thread: &saga.Thread{ID: "section-comment", Anchor: saga.Anchor{Type: "target"}}}},
-	}
-
-	items := makeChapterReviewDirectory(chapter, threads)
-	if len(items) != 3 {
-		t.Fatalf("chapter directory has %d items, want 3: %#v", len(items), items)
-	}
-	if items[0].Target != diagram.Target || items[0].ReviewState != "rejected" || items[0].Status != "Changes requested" || items[0].CommentCount != 2 {
-		t.Fatalf("diagram directory row lost its decision or combined discussion signal: %#v", items[0])
-	}
-	if items[0].ActivityHref != "/?activity=1&target="+url.QueryEscape(diagram.Target) {
-		t.Fatalf("diagram comments do not open their scoped activity: %#v", items[0])
-	}
-	if items[1].Target != child.Target || items[1].ReviewState != "approved" || items[1].Status != "Approved" || items[1].CommentCount != 1 {
-		t.Fatalf("nested section directory row is wrong: %#v", items[1])
-	}
-	if items[2].ReviewState != "" || items[2].Status != "Unreviewed" || items[2].StateClass != "unreviewed" {
-		t.Fatalf("legacy open state was not projected to unreviewed: %#v", items[2])
-	}
-	if items[2].ActivityHref != "" {
-		t.Fatalf("comment-free directory row received an activity link: %#v", items[2])
-	}
-	for _, item := range items {
-		if item.Target == chapter.Target {
-			t.Fatal("legacy chapter approval became a directory item")
-		}
-		if item.Href != "#"+domID(item.Target) {
-			t.Fatalf("directory item does not navigate to its exact target: %#v", item)
-		}
-	}
-}
-
-// The progress map counts approval-bearing items over the whole saga, including
-// items inside chapters the shell has only summarised. Chapters themselves are
-// containers and their legacy approval events do not add a decision.
-func TestReviewDecisionProgressCountsTheWholeSaga(t *testing.T) {
-	decision := func(state string) []saga.Review {
-		return []saga.Review{{State: state, CreatedAt: time.Unix(10, 0)}}
-	}
-	chapter := &saga.Section{Kind: "chapter", ID: "chapter", Title: "Chapter", Target: "urn:change-saga:test:chapter:chapter",
-		Fragments: []*saga.Fragment{{ID: "three", Title: "Three", Target: "urn:change-saga:test:fragment:three", Reviews: decision("approved")}}}
-	root := &saga.Section{Kind: "saga", ID: "root", Title: "Root", Target: "urn:change-saga:test:saga", Reviews: decision("approved"),
-		Fragments: []*saga.Fragment{
-			{ID: "one", Title: "One", Target: "urn:change-saga:test:fragment:one", Reviews: decision("rejected")},
-			{ID: "two", Title: "Two", Target: "urn:change-saga:test:fragment:two", Reviews: decision("open")},
-		},
-		Children: []*saga.Section{chapter}}
-
-	items := makeReviewProgressItems(root)
-	decided, total := reviewProgressSummary(items)
-	if decided != 3 || total != 4 {
-		t.Fatalf("review decision progress = %d/%d, want 3/4", decided, total)
-	}
-	if items[0].Href != "#"+domID(root.Target) || items[3].Href != "#"+domID(chapter.Fragments[0].Target) {
-		t.Fatalf("review progress links do not navigate to their targets: %#v", items)
-	}
-	for _, item := range items {
-		if item.Target == chapter.Target {
-			t.Fatal("legacy chapter approval was counted as a current decision")
-		}
-	}
-	if items[0].StateClass != "approved" || items[1].StateClass != "rejected" || items[2].StateClass != "pending" {
-		t.Fatalf("review progress colors do not match decision state: %#v", items)
-	}
-}
-
 // Stylesheet rules and the markup they target drift apart silently: a rule that
 // matches nothing, or one that matches more than intended, breaks the design
 // without breaking a render. These two pairs have both regressed before.
@@ -1698,7 +850,7 @@ func TestNavigationTreeReadsAsCollapsedDocumentationOutline(t *testing.T) {
 				Fragments: []*saga.Fragment{{ID: "shell", Title: "Reviewer"}, systemMap}},
 		}}
 
-	nodes := makeNavTree(root, nil)
+	nodes := makeNavTree(root)
 	if len(nodes) != 3 || nodes[0].Title != "Overview" || nodes[1].Title != "Format" || nodes[2].Title != "Reviewer" {
 		t.Fatalf("unexpected navigation nodes: %#v", nodes)
 	}
@@ -1710,7 +862,7 @@ func TestNavigationTreeReadsAsCollapsedDocumentationOutline(t *testing.T) {
 	if !nodes[0].Expanded || nodes[1].Expanded || nodes[2].Expanded {
 		t.Fatal("only the open page may be expanded")
 	}
-	if nodes[1].StateLabel != "Unreviewed" || nodes[1].Href != sagaHref(saga.ChapterTarget("test", "format")) {
+	if nodes[1].Href != sagaHref(saga.ChapterTarget("test", "format")) {
 		t.Fatalf("chapter node is not navigation: %#v", nodes[1])
 	}
 	if nodes[2].Expanded || len(nodes[2].Children) != 1 || nodes[2].Children[0].Title != "System map" {
@@ -1760,7 +912,7 @@ func TestFileViewsGroupRenameAndUseDistinctAnchors(t *testing.T) {
 			{Kind: "line", Path: "another.go", Side: "new", Line: 1, Content: "new"},
 		},
 	}
-	files := makeFileViews(changes, "urn:change-saga:test:saga", nil, nil)
+	files := makeFileViews(changes, "urn:change-saga:test:saga")
 	if len(files) != 2 {
 		t.Fatalf("files = %d, want renamed file plus another file", len(files))
 	}
@@ -1932,33 +1084,8 @@ func changedLayers(targets ...string) func(context.Context) (*changeview.Layers,
 	}
 }
 
-// Approval belongs to a change: an observing reviewer refuses it, and a
-// comparing reviewer accepts it only on the records the change edited or
-// affected.
-func TestApprovalExistsOnlyOnTheChangedAndAffectedLayers(t *testing.T) {
-	root := validServerSaga(t)
-	post := func(application *app) int {
-		values := url.Values{"target": {"urn:change-saga:test:fragment:overview"}, "state": {"approved"}}
-		request := httptest.NewRequest(http.MethodPost, "/api/review", strings.NewReader(values.Encode()))
-		request.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-		request.Header.Set("X-Change-Saga-Async", "true")
-		recorder := httptest.NewRecorder()
-		application.review(recorder, request)
-		return recorder.Code
-	}
-	if code := post(&app{root: root}); code != http.StatusForbidden {
-		t.Fatalf("observing accepted an approval: %d", code)
-	}
-	if code := post(&app{root: root, rng: gitdiff.Range{Against: "main"}, layersLoader: changedLayers("urn:change-saga:test:fragment:other")}); code != http.StatusForbidden {
-		t.Fatalf("a record outside the change was approvable: %d", code)
-	}
-	if code := post(&app{root: root, rng: gitdiff.Range{Against: "main"}, layersLoader: changedLayers("urn:change-saga:test:fragment:overview")}); code != http.StatusNoContent {
-		t.Fatalf("a changed record was not approvable: %d", code)
-	}
-}
-
-// An observing reviewer renders no approve or reject control and offers each
-// record's history instead; a comparing one renders the gated controls.
+// Documentation has no approve, reject, or comment control in either mode;
+// each record offers its history, and comparing adds the Change tab.
 func TestObservingRendersNoApprovalControls(t *testing.T) {
 	root := validServerSaga(t)
 	render := func(rng gitdiff.Range) string {
@@ -1978,7 +1105,7 @@ func TestObservingRendersNoApprovalControls(t *testing.T) {
 		t.Fatal("observe mode rendered approval controls or no history")
 	}
 	compared := render(gitdiff.Range{Against: "main"})
-	if !strings.Contains(compared, "data-approval-gate hidden") || !strings.Contains(compared, `data-view-tab="change"`) || strings.Contains(compared, "data-open-history") {
-		t.Fatal("compare mode did not render gated approval controls and the Change tab")
+	if strings.Contains(compared, "data-review-decision=") || strings.Contains(compared, "data-approval-gate") || strings.Contains(compared, "data-review-comment") || !strings.Contains(compared, `data-view-tab="change"`) || !strings.Contains(compared, `data-opening="compare"`) {
+		t.Fatal("compare mode rendered approval controls or lost the Change tab")
 	}
 }

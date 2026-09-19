@@ -29,8 +29,8 @@ const (
 	// and the messages of the branch commits it collapsed.
 	MergesDir = "___merges"
 
-	// FileReviewDir, under ___review, holds reviewed marks for changed files.
-	FileReviewDir = "files"
+	// ReviewsDir holds one <id>.review directory per pull request review.
+	ReviewsDir = "___reviews"
 
 	// QualityRootDir is the quality capability root.
 	QualityRootDir = "___quality"
@@ -96,18 +96,16 @@ type Deck struct {
 	Path      string `json:"path"`
 	Directory string `json:"-"`
 	DeckManifest
-	Target  string   `json:"target"`
-	Slides  []*Slide `json:"slides"`
-	Reviews []Review `json:"reviews,omitempty"`
+	Target string   `json:"target"`
+	Slides []*Slide `json:"slides"`
 }
 
 type Slide struct {
 	Path      string `json:"path"`
 	Directory string `json:"-"`
 	SlideManifest
-	Target  string   `json:"target"`
-	Items   []*Item  `json:"items"`
-	Reviews []Review `json:"reviews,omitempty"`
+	Target string  `json:"target"`
+	Items  []*Item `json:"items"`
 }
 
 type Item struct {
@@ -117,7 +115,6 @@ type Item struct {
 	Target  string     `json:"target"`
 	Code    []CodeFile `json:"code,omitempty"`
 	HasCode bool       `json:"-"`
-	Reviews []Review   `json:"reviews,omitempty"`
 }
 
 // Source names the code repository a Saga documents. It holds no
@@ -154,8 +151,7 @@ type Section struct {
 	// HasCode records the presence of this target's ___code directory without
 	// materializing any evidence records. Narrative-only loads use it to render
 	// a lazy linked-code affordance while keeping coverage metadata unopened.
-	HasCode bool     `json:"-"`
-	Reviews []Review `json:"reviews,omitempty"`
+	HasCode bool `json:"-"`
 }
 
 type FragmentManifest struct {
@@ -179,7 +175,6 @@ type Fragment struct {
 	Code       []CodeFile     `json:"code,omitempty"`
 	HasCode    bool           `json:"-"`
 	Landmarks  []Landmark     `json:"landmarks,omitempty"`
-	Reviews    []Review       `json:"reviews,omitempty"`
 	SlideMeta  *SlideManifest `json:"-"`
 }
 
@@ -196,7 +191,6 @@ type Landmark struct {
 	Code        []CodeFile       `json:"code,omitempty"`
 	HasCode     bool             `json:"-"`
 	ItemMeta    *ItemManifest    `json:"-"`
-	Reviews     []Review         `json:"reviews,omitempty"`
 }
 
 type LandmarkSelector struct {
@@ -258,19 +252,6 @@ type Verification struct {
 	CreatedAt time.Time `json:"created_at"`
 }
 
-type Review struct {
-	Path                string            `json:"-"`
-	AttributionDetail   string            `json:"-"`
-	AttributionIdentity string            `json:"-"`
-	Version             int               `json:"version"`
-	ID                  string            `json:"id"`
-	Author              string            `json:"author,omitempty"`
-	Reviewer            *ReviewerIdentity `json:"reviewer,omitempty"`
-	State               string            `json:"state"`
-	Body                string            `json:"body,omitempty"`
-	CreatedAt           time.Time         `json:"created_at"`
-}
-
 // ReviewerIdentity describes the persona that made a review decision. Git
 // remains the authority for who introduced the event; this metadata says
 // whether that person acted directly or through a particular AI reviewer.
@@ -281,117 +262,6 @@ type ReviewerIdentity struct {
 	Name  string `json:"name,omitempty"`
 	Agent string `json:"agent,omitempty"`
 	Model string `json:"model,omitempty"`
-}
-
-type Thread struct {
-	Path              string        `json:"-"`
-	Version           int           `json:"version"`
-	ID                string        `json:"id"`
-	Target            string        `json:"target"`
-	Anchor            Anchor        `json:"anchor"`
-	Kind              string        `json:"kind,omitempty"`
-	Suggestion        *Suggestion   `json:"suggestion,omitempty"`
-	CreatedBy         string        `json:"created_by,omitempty"`
-	CreatedAt         time.Time     `json:"created_at"`
-	Directory         string        `json:"-"`
-	AttributionDetail string        `json:"-"`
-	Messages          []*Message    `json:"messages,omitempty"`
-	Events            []ThreadEvent `json:"events,omitempty"`
-	State             string        `json:"state"`
-}
-
-type ThreadManifest struct {
-	Version    int         `json:"version"`
-	ID         string      `json:"id"`
-	Target     string      `json:"target"`
-	Anchor     Anchor      `json:"anchor"`
-	Kind       string      `json:"kind,omitempty"`
-	Suggestion *Suggestion `json:"suggestion,omitempty"`
-	CreatedBy  string      `json:"created_by,omitempty"`
-	CreatedAt  time.Time   `json:"created_at"`
-}
-
-type Anchor struct {
-	Type       string             `json:"type"`
-	Shapes     []Shape            `json:"shapes,omitempty"`
-	Text       *TextSelector      `json:"text,omitempty"`
-	Note       *NoteSelector      `json:"note,omitempty"`
-	Code       *coderef.Reference `json:"code,omitempty"`
-	Coordinate string             `json:"coordinate_space,omitempty"`
-}
-
-type Suggestion struct {
-	Replacement string `json:"replacement"`
-}
-
-type Shape struct {
-	Type        string  `json:"type"`
-	X           float64 `json:"x,omitempty"`
-	Y           float64 `json:"y,omitempty"`
-	Width       float64 `json:"width,omitempty"`
-	Height      float64 `json:"height,omitempty"`
-	Points      []Point `json:"points,omitempty"`
-	Color       string  `json:"color,omitempty"`
-	StrokeWidth float64 `json:"stroke_width,omitempty"`
-}
-
-type Point struct {
-	X float64 `json:"x"`
-	Y float64 `json:"y"`
-}
-
-type TextSelector struct {
-	Exact  string `json:"exact"`
-	Prefix string `json:"prefix,omitempty"`
-	Suffix string `json:"suffix,omitempty"`
-	Start  int    `json:"start,omitempty"`
-	End    int    `json:"end,omitempty"`
-	Color  string `json:"color,omitempty"`
-}
-
-type NoteSelector struct {
-	Text  string  `json:"text"`
-	X     float64 `json:"x"`
-	Y     float64 `json:"y"`
-	Color string  `json:"color,omitempty"`
-}
-
-type MessageManifest struct {
-	Version   int       `json:"version"`
-	ID        string    `json:"id"`
-	Author    string    `json:"author,omitempty"`
-	CreatedAt time.Time `json:"created_at"`
-}
-
-type Message struct {
-	Path              string      `json:"-"`
-	AttributionDetail string      `json:"-"`
-	ID                string      `json:"id"`
-	Author            string      `json:"author,omitempty"`
-	CreatedAt         time.Time   `json:"created_at"`
-	Fragments         []*Fragment `json:"fragments"`
-}
-
-type ThreadEvent struct {
-	Path              string    `json:"-"`
-	AttributionDetail string    `json:"-"`
-	Version           int       `json:"version"`
-	ID                string    `json:"id"`
-	Author            string    `json:"author,omitempty"`
-	State             string    `json:"state,omitempty"`
-	Anchor            *Anchor   `json:"anchor,omitempty"`
-	CreatedAt         time.Time `json:"created_at"`
-}
-
-type FileReview struct {
-	Path              string            `json:"-"`
-	AttributionDetail string            `json:"-"`
-	Version           int               `json:"version"`
-	ID                string            `json:"id"`
-	Code              coderef.Reference `json:"code"`
-	Author            string            `json:"author,omitempty"`
-	State             string            `json:"state"`
-	CreatedAt         time.Time         `json:"created_at"`
 }
 
 // Merge records a change landing on its target branch. Commit is the landed
@@ -437,8 +307,6 @@ type Saga struct {
 	Onboarding []*Deck `json:"onboarding,omitempty"`
 	// Epics groups the same nodes by durable product domain.
 	Epics         []*Epic        `json:"epics,omitempty"`
-	Threads       []*Thread      `json:"threads,omitempty"`
-	FileReviews   []FileReview   `json:"file_reviews,omitempty"`
 	Claims        []Claim        `json:"claims,omitempty"`
 	Verifications []Verification `json:"verifications,omitempty"`
 	Merges        []Merge        `json:"merges,omitempty"`

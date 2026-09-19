@@ -375,13 +375,13 @@ func validateSlideComposition(slide *Slide, validation *Validation) {
 func projectDecks(manifest Manifest, decks []*Deck) *Section {
 	root := &Section{Kind: "saga", ID: manifest.ID + "-root", Title: manifest.Title, Target: SagaTarget(manifest.ID)}
 	for _, deck := range decks {
-		section := &Section{Path: deck.Path, Kind: "deck", ID: deck.ID, Title: deck.Title, Order: deck.Rank, Target: deck.Target, Reviews: deck.Reviews}
+		section := &Section{Path: deck.Path, Kind: "deck", ID: deck.ID, Title: deck.Title, Order: deck.Rank, Target: deck.Target}
 		for _, slide := range deck.Slides {
 			meta := slide.SlideManifest
-			fragment := &Fragment{Path: slide.Path, Directory: slide.Directory, ID: slide.ID, Title: slide.Title, MediaType: slide.MediaType, Entrypoint: slide.Entrypoint, Order: slide.Rank, Target: slide.Target, Reviews: slide.Reviews, SlideMeta: &meta}
+			fragment := &Fragment{Path: slide.Path, Directory: slide.Directory, ID: slide.ID, Title: slide.Title, MediaType: slide.MediaType, Entrypoint: slide.Entrypoint, Order: slide.Rank, Target: slide.Target, SlideMeta: &meta}
 			for _, item := range slide.Items {
 				meta := item.ItemManifest
-				fragment.Landmarks = append(fragment.Landmarks, Landmark{Path: item.Path, Directory: item.Directory, Version: item.Version, ID: item.ID, Label: item.Label, Description: item.Description, Selector: item.Selector, Hotspot: item.Hotspot, Target: item.Target, Code: item.Code, HasCode: item.HasCode, ItemMeta: &meta, Reviews: item.Reviews})
+				fragment.Landmarks = append(fragment.Landmarks, Landmark{Path: item.Path, Directory: item.Directory, Version: item.Version, ID: item.ID, Label: item.Label, Description: item.Description, Selector: item.Selector, Hotspot: item.Hotspot, Target: item.Target, Code: item.Code, HasCode: item.HasCode, ItemMeta: &meta})
 				fragment.HasCode = fragment.HasCode || item.HasCode
 			}
 			section.Fragments = append(section.Fragments, fragment)

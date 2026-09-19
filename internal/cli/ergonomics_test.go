@@ -5,11 +5,12 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"os"
 	"path/filepath"
 	"strings"
 	"testing"
+
+	"github.com/twentyideas/changesaga/internal/gitdiff"
 
 	"github.com/twentyideas/changesaga/internal/saga"
 )
@@ -387,53 +388,6 @@ func TestValidateFixIsANoOpWhenNothingIsMissing(t *testing.T) {
 	}
 	if len(result.Fixes) != 0 {
 		t.Fatalf("nothing should have been fixed: %#v", result.Fixes)
-	}
-}
-
-// --fix rewrites authored narrative only. Thread messages are append-only
-// review history and must never be edited to tidy up their Markdown.
-func TestValidateFixLeavesReviewOverlayFragmentsAlone(t *testing.T) {
-	root, _ := coveredSaga(t)
-	var output bytes.Buffer
-	if err := Thread(context.Background(), []string{"--target", ".", "--body", "# A reviewer heading\n\nnote", root}, &output); err != nil {
-		t.Fatal(err)
-	}
-	var messages []string
-	if err := filepath.Walk(filepath.Join(root, "___review"), func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-		if !info.IsDir() && strings.HasSuffix(path, ".md") {
-			messages = append(messages, path)
-		}
-		return nil
-	}); err != nil {
-		t.Fatal(err)
-	}
-	if len(messages) == 0 {
-		t.Fatal("the thread body was not stored as a Markdown fragment")
-	}
-	before := map[string][]byte{}
-	for _, message := range messages {
-		data, err := os.ReadFile(message)
-		if err != nil {
-			t.Fatal(err)
-		}
-		before[message] = data
-	}
-
-	output.Reset()
-	if err := Validate(context.Background(), []string{"--fix", root}, &output); err != nil {
-		t.Fatalf("validate --fix: %v\n%s", err, output.String())
-	}
-	for message, original := range before {
-		current, err := os.ReadFile(message)
-		if err != nil {
-			t.Fatal(err)
-		}
-		if string(current) != string(original) {
-			t.Fatalf("--fix rewrote review history %s:\n%s\n%s", message, original, current)
-		}
 	}
 }
 

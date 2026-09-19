@@ -26,10 +26,6 @@ var (
 	flatSlideName       = regexp.MustCompile(`^20-s-([0-9a-f]{12})-([0-9]{4})-([0-9a-f]{12})\.json$`)
 	flatItemName        = regexp.MustCompile(`^30-i-([0-9a-f]{12})-([0-9]{4})-([0-9a-f]{12})\.json$`)
 	flatEvidenceName    = regexp.MustCompile(`^40-e-([0-9a-f]{12})-([0-9a-f]{12})\.json$`)
-	flatThreadName      = regexp.MustCompile(`^80-t-([0-9a-f]{12})-([0-9a-f]{12})\.json$`)
-	flatMessageName     = regexp.MustCompile(`^81-m-([0-9a-f]{12})-([0-9a-f]{12})\.json$`)
-	flatAttachmentName  = regexp.MustCompile(`^82-a-([0-9a-f]{12})-([0-9]{2})-([0-9a-f]{12})\.json$`)
-	flatAttachmentAsset = regexp.MustCompile(`^82-a-[0-9a-f]{12}-[0-9]{2}-[0-9a-f]{12}\.[a-z0-9]+$`)
 	flatThreadEventName = regexp.MustCompile(`^83-x-([0-9a-f]{12})-([0-9a-f]{12})\.json$`)
 	flatReviewName      = regexp.MustCompile(`^84-r-([0-9a-f]{12})-([0-9a-f]{12})\.json$`)
 	flatDiffReviewName  = regexp.MustCompile(`^85-f-([0-9a-f]{12})\.json$`)
@@ -80,47 +76,6 @@ func FlatItemFilename(slideTarget, itemTarget string, rank int) (string, error) 
 
 func FlatEvidenceFilename(target, identity string) string {
 	return fmt.Sprintf("40-e-%s-%s.json", FlatTargetKey(target), FlatKey("evidence\x00"+identity))
-}
-
-func FlatThreadFilename(target, id string) string {
-	return fmt.Sprintf("80-t-%s-%s.json", FlatTargetKey(target), FlatKey("thread\x00"+id))
-}
-
-func FlatMessageFilename(threadID, id string) string {
-	return fmt.Sprintf("81-m-%s-%s.json", FlatKey("thread\x00"+threadID), FlatKey("message\x00"+id))
-}
-
-func FlatAttachmentFilename(messageID string, order int, fragmentID string) (string, error) {
-	if order < 0 || order > 99 {
-		return "", fmt.Errorf("review attachment order must be between 0 and 99")
-	}
-	return fmt.Sprintf("82-a-%s-%02d-%s.json", FlatKey("message\x00"+messageID), order, FlatKey("fragment\x00"+fragmentID)), nil
-}
-
-func FlatThreadEventFilename(threadID, id string) string {
-	return fmt.Sprintf("83-x-%s-%s.json", FlatKey("thread\x00"+threadID), FlatKey("event\x00"+id))
-}
-
-func FlatReviewFilename(target, id string) string {
-	return fmt.Sprintf("84-r-%s-%s.json", FlatTargetKey(target), FlatKey("review\x00"+id))
-}
-
-func FlatDiffReviewFilename(id string) string {
-	return fmt.Sprintf("85-f-%s.json", FlatKey("diff-review\x00"+id))
-}
-
-// IsFlatReviewRecord reports whether name belongs to the mutable review
-// overlay of an embedded deck. Keeping this classification beside the filename
-// grammar lets caches observe review changes without mistaking authored deck,
-// slide, Item, or evidence records for mutable review state.
-func IsFlatReviewRecord(name string) bool {
-	return flatThreadName.MatchString(name) ||
-		flatMessageName.MatchString(name) ||
-		flatAttachmentName.MatchString(name) ||
-		flatAttachmentAsset.MatchString(name) ||
-		flatThreadEventName.MatchString(name) ||
-		flatReviewName.MatchString(name) ||
-		flatDiffReviewName.MatchString(name)
 }
 
 func validFlatRank(rank int) error {

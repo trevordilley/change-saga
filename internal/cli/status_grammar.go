@@ -3,9 +3,10 @@ package cli
 import (
 	"context"
 	"fmt"
-	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"io"
 	"strings"
+
+	"github.com/twentyideas/changesaga/internal/coderesolve"
 
 	"github.com/twentyideas/changesaga/internal/changeview"
 	"github.com/twentyideas/changesaga/internal/coverage"
@@ -137,9 +138,8 @@ func buildStatus(ctx context.Context, root, repoDir string, rng gitdiff.Range, a
 
 // readyForReview is status's pass/fail: the ready_for_review gate, which
 // requires every earlier gate (changed-source accounting included) plus no
-// conflicts, orphaned evidence, or failed required runs. review_complete is
-// reported but does not decide the exit code: it waits on reviewer decisions,
-// which authoring cannot supply.
+// conflicts, orphaned evidence, or failed required runs. Reviews are reported
+// slide by slide and never decide the exit code: the team decides.
 func (status statusDocument) readyForReview() bool {
 	gate, ok := status.Readiness.Gate(readiness.GateReadyForReview)
 	return ok && gate.Status == readiness.StatusReady
@@ -311,7 +311,7 @@ func livingSpec() map[string]any {
 			"changed_source":       "every changed atom must be owned by some target; transitivity proves criteria reach code but cannot prove nothing else changed",
 			"staleness":            "derived only from pins (story/test/prototype revisions, content digests, diff selectors, run source identity), never from Git history",
 			"no_reducing_numbers":  true,
-			"readiness_gate_order": []string{"requirements_ready", "product_ready", "design_ready", "implementation_trace_ready", "quality_ready", "ready_for_review", "review_complete"},
+			"readiness_gate_order": []string{"requirements_ready", "product_ready", "design_ready", "implementation_trace_ready", "quality_ready", "ready_for_review"},
 			"readiness_rule":       "every gate always applies and every axis is required; an axis is excused only by an explicit, pinned, cited coverage exception, and no exception excuses changed-source accounting",
 			"status_exit_codes":    map[string]string{"0": "ready_for_review is ready", "3": "ready_for_review is blocked"},
 		},

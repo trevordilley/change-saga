@@ -21,7 +21,6 @@ import (
 type loadOptions struct {
 	outline      bool
 	skipCoverage bool
-	skipReviews  bool
 }
 
 // hierarchyRoot distinguishes the two package trees that reuse the authored
@@ -129,24 +128,6 @@ func load(root string, options loadOptions) (*Saga, Validation, error) {
 		return nil, validation, err
 	}
 	document := &Saga{Root: abs, Manifest: manifest, Section: section, Decks: decks, Overview: app.overview, DesignSystem: app.designSystem, Onboarding: app.onboarding, Epics: app.epics}
-	if len(decks)+len(app.onboarding) > 0 && !options.skipReviews {
-		state, reviewValidation, reviewErr := loadFlatReviewState(MutationIndexFromDocument(document), options.outline)
-		if reviewErr != nil {
-			return nil, validation, reviewErr
-		}
-		validation.Issues = append(validation.Issues, reviewValidation.Issues...)
-		document.Threads, document.FileReviews = state.Threads, state.FileReviews
-		applyFlatReviews(document.Section, state.ByTarget)
-		for _, deck := range append(append([]*Deck{}, document.Decks...), document.Onboarding...) {
-			deck.Reviews = state.ByTarget[deck.Target]
-			for _, slide := range deck.Slides {
-				slide.Reviews = state.ByTarget[slide.Target]
-				for _, item := range slide.Items {
-					item.Reviews = state.ByTarget[item.Target]
-				}
-			}
-		}
-	}
 	if !options.outline && !options.skipCoverage {
 		if metadataDirectorySafe(abs, abs, "___claims", &validation) {
 			document.Claims, err = loadClaims(abs, &validation)
@@ -169,31 +150,6 @@ func load(root string, options loadOptions) (*Saga, Validation, error) {
 	}
 	if _, _, err := ReadCursor(abs); err != nil {
 		addIssue(&validation, "error", CursorName, err.Error())
-	}
-	if metadataDirectorySafe(abs, abs, "___review", &validation) {
-		reviewDir := filepath.Join(abs, "___review")
-		if metadataDirectorySafe(abs, reviewDir, "threads", &validation) {
-			if options.outline {
-				var threads []*Thread
-				threads, err = loadThreadSummaries(abs, manifest.ID, &validation)
-				document.Threads = append(document.Threads, threads...)
-			} else {
-				var threads []*Thread
-				threads, err = loadThreads(abs, manifest.ID, options, &validation)
-				document.Threads = append(document.Threads, threads...)
-			}
-			if err != nil {
-				return nil, validation, err
-			}
-		}
-		if !options.skipCoverage && metadataDirectorySafe(abs, reviewDir, FileReviewDir, &validation) {
-			var reviews []FileReview
-			reviews, err = loadFileReviews(abs, &validation)
-			document.FileReviews = append(document.FileReviews, reviews...)
-			if err != nil {
-				return nil, validation, err
-			}
-		}
 	}
 	if options.outline {
 		validateOutlineDocument(document, &validation)
@@ -263,12 +219,6 @@ func loadSection(root, dir string, manifest Manifest, hierarchy hierarchyRoot, o
 
 	if !options.skipCoverage && metadataDirectorySafe(root, dir, CodeDirName, validation) {
 		section.Code, err = loadCode(root, filepath.Join(dir, CodeDirName), validation)
-		if err != nil {
-			return nil, err
-		}
-	}
-	if metadataDirectorySafe(root, dir, "___approvals", validation) {
-		section.Reviews, err = loadReviews(root, filepath.Join(dir, "___approvals"), validation)
 		if err != nil {
 			return nil, err
 		}
@@ -380,13 +330,6 @@ func loadFragment(root, dir, sagaID string, options loadOptions, validation *Val
 			return nil, err
 		}
 	}
-	if metadataDirectorySafe(root, dir, "___approvals", validation) {
-		var err error
-		fragment.Reviews, err = loadReviews(root, filepath.Join(dir, "___approvals"), validation)
-		if err != nil {
-			return nil, err
-		}
-	}
 	entries, err := os.ReadDir(dir)
 	if err != nil {
 		return nil, err
@@ -395,7 +338,7 @@ func loadFragment(root, dir, sagaID string, options loadOptions, validation *Val
 		if entry.IsDir() && entry.Name() == CodeDirName {
 			fragment.HasCode = true
 		}
-		if entry.IsDir() && strings.HasPrefix(entry.Name(), "___") && entry.Name() != CodeDirName && entry.Name() != "___landmarks" && entry.Name() != "___approvals" {
+		if entry.IsDir() && strings.HasPrefix(entry.Name(), "___") && entry.Name() != CodeDirName && entry.Name() != "___landmarks" {
 			addIssue(validation, "error", relativePath(root, filepath.Join(dir, entry.Name())), "unknown reserved directory in fragment")
 		}
 	}
@@ -548,29 +491,6 @@ func LoadTargetCode(index MutationIndex, target string) ([]CodeFile, Validation,
 	return diffs, validation, err
 }
 
-func loadReviews(root, dir string, validation *Validation) ([]Review, error) {
-	var result []Review
-	err := loadMetaJSON(dir, func(path string) {
-		var value Review
-		if err := readJSON(path, &value); err != nil {
-			addIssue(validation, "error", relativePath(root, path), err.Error())
-			return
-		}
-		value.Path = path
-		if value.Version != CurrentVersion || !stableID.MatchString(value.ID) || value.CreatedAt.IsZero() || !validReviewState(value.State) {
-			addIssue(validation, "error", relativePath(root, path), "review requires version 2, a stable id, created_at, and a valid state")
-		}
-		if err := ValidateReviewerIdentity(value.Reviewer); err != nil {
-			addIssue(validation, "error", relativePath(root, path), err.Error())
-		}
-		result = append(result, value)
-	})
-	sort.Slice(result, func(i, j int) bool {
-		return earlierRecord(result[i].CreatedAt, result[i].ID, result[j].CreatedAt, result[j].ID)
-	})
-	return result, err
-}
-
 func loadClaims(root string, validation *Validation) ([]Claim, error) {
 	var claims []Claim
 	err := loadFlatRecords(root, filepath.Join(root, "___claims"), "claim", validation, func(path string) {
@@ -631,245 +551,6 @@ func loadFlatRecords(root, dir, kind string, validation *Validation, fn func(str
 		fn(path)
 	}
 	return nil
-}
-
-func loadThreads(root, sagaID string, options loadOptions, validation *Validation) ([]*Thread, error) {
-	threadsDir := filepath.Join(root, "___review", "threads")
-	entries, err := os.ReadDir(threadsDir)
-	if errors.Is(err, fs.ErrNotExist) {
-		return nil, nil
-	}
-	if err != nil {
-		return nil, err
-	}
-	var threads []*Thread
-	for _, entry := range entries {
-		matches, problem := structuralEntry(entry, ".thread")
-		if problem != "" {
-			addIssue(validation, "error", relativePath(root, filepath.Join(threadsDir, entry.Name())), problem)
-			continue
-		}
-		if !matches {
-			continue
-		}
-		dir := filepath.Join(threadsDir, entry.Name())
-		var threadManifest ThreadManifest
-		manifestPath := filepath.Join(dir, "thread.json")
-		if err := readJSON(manifestPath, &threadManifest); err != nil {
-			addIssue(validation, "error", relativePath(root, manifestPath), err.Error())
-			continue
-		}
-		// The reply, state, and anchor commands address a thread by its
-		// directory name while the overlay identity comes from thread.json. A
-		// disagreement would let one identifier resolve to a different record
-		// than the other, so it is rejected rather than silently preferred.
-		if directoryID := strings.TrimSuffix(entry.Name(), ".thread"); directoryID != threadManifest.ID {
-			addIssue(validation, "error", relativePath(root, manifestPath), fmt.Sprintf("thread id %q must match directory %q", threadManifest.ID, directoryID+".thread"))
-		}
-		thread := Thread{Version: threadManifest.Version, ID: threadManifest.ID, Target: threadManifest.Target, Anchor: threadManifest.Anchor, Kind: threadManifest.Kind, Suggestion: threadManifest.Suggestion, CreatedBy: threadManifest.CreatedBy, CreatedAt: threadManifest.CreatedAt}
-		thread.Directory = dir
-		validateThread(thread, sagaID, relativePath(root, manifestPath), validation)
-		thread.Messages, err = loadMessages(root, dir, sagaID, options, validation)
-		if err != nil {
-			return nil, err
-		}
-		if len(thread.Messages) == 0 {
-			addIssue(validation, "error", relativePath(root, manifestPath), "thread must contain at least one message")
-		}
-		thread.Events, err = loadThreadEvents(root, dir, validation)
-		if err != nil {
-			return nil, err
-		}
-		thread.State = "open"
-		if len(thread.Events) > 0 {
-			sort.Slice(thread.Events, func(i, j int) bool {
-				return earlierRecord(thread.Events[i].CreatedAt, thread.Events[i].ID, thread.Events[j].CreatedAt, thread.Events[j].ID)
-			})
-			for _, event := range thread.Events {
-				if event.State != "" {
-					thread.State = event.State
-				}
-				if event.Anchor != nil {
-					thread.Anchor = *event.Anchor
-				}
-			}
-		}
-		threads = append(threads, &thread)
-	}
-	sort.Slice(threads, func(i, j int) bool {
-		return earlierRecord(threads[i].CreatedAt, threads[i].ID, threads[j].CreatedAt, threads[j].ID)
-	})
-	return threads, nil
-}
-
-// loadThreadSummaries resolves only the pieces of a thread that affect shell
-// navigation: its target, anchor, and latest state. Message bodies and attached
-// fragments arrive with the focused narrative endpoint and are intentionally
-// absent here.
-func loadThreadSummaries(root, sagaID string, validation *Validation) ([]*Thread, error) {
-	threadsDir := filepath.Join(root, "___review", "threads")
-	entries, err := os.ReadDir(threadsDir)
-	if errors.Is(err, fs.ErrNotExist) {
-		return nil, nil
-	}
-	if err != nil {
-		return nil, err
-	}
-	var threads []*Thread
-	for _, entry := range entries {
-		matches, problem := structuralEntry(entry, ".thread")
-		if problem != "" {
-			addIssue(validation, "error", relativePath(root, filepath.Join(threadsDir, entry.Name())), problem)
-			continue
-		}
-		if !matches {
-			continue
-		}
-		dir := filepath.Join(threadsDir, entry.Name())
-		manifestPath := filepath.Join(dir, "thread.json")
-		var manifest ThreadManifest
-		if err := readJSON(manifestPath, &manifest); err != nil {
-			addIssue(validation, "error", relativePath(root, manifestPath), err.Error())
-			continue
-		}
-		if directoryID := strings.TrimSuffix(entry.Name(), ".thread"); directoryID != manifest.ID {
-			addIssue(validation, "error", relativePath(root, manifestPath), fmt.Sprintf("thread id %q must match directory %q", manifest.ID, directoryID+".thread"))
-		}
-		thread := &Thread{Version: manifest.Version, ID: manifest.ID, Target: manifest.Target, Anchor: manifest.Anchor, Kind: manifest.Kind, Suggestion: manifest.Suggestion, CreatedBy: manifest.CreatedBy, CreatedAt: manifest.CreatedAt, Directory: dir, State: "open"}
-		validateThread(*thread, sagaID, relativePath(root, manifestPath), validation)
-		thread.Events, err = loadThreadEvents(root, dir, validation)
-		if err != nil {
-			return nil, err
-		}
-		sort.Slice(thread.Events, func(i, j int) bool {
-			return earlierRecord(thread.Events[i].CreatedAt, thread.Events[i].ID, thread.Events[j].CreatedAt, thread.Events[j].ID)
-		})
-		for _, event := range thread.Events {
-			if event.State != "" {
-				thread.State = event.State
-			}
-			if event.Anchor != nil {
-				thread.Anchor = *event.Anchor
-			}
-		}
-		threads = append(threads, thread)
-	}
-	sort.Slice(threads, func(i, j int) bool {
-		return earlierRecord(threads[i].CreatedAt, threads[i].ID, threads[j].CreatedAt, threads[j].ID)
-	})
-	return threads, nil
-}
-
-func loadFileReviews(root string, validation *Validation) ([]FileReview, error) {
-	var reviews []FileReview
-	err := loadMetaJSON(filepath.Join(root, "___review", FileReviewDir), func(path string) {
-		var value FileReview
-		if err := readJSON(path, &value); err != nil {
-			addIssue(validation, "error", relativePath(root, path), err.Error())
-			return
-		}
-		value.Path = path
-		if !validFileReview(value) {
-			addIssue(validation, "error", relativePath(root, path), "file review requires version 2, id, created_at, reviewed/unreviewed state, and a whole-file code reference")
-		}
-		reviews = append(reviews, value)
-	})
-	sort.Slice(reviews, func(i, j int) bool {
-		return earlierRecord(reviews[i].CreatedAt, reviews[i].ID, reviews[j].CreatedAt, reviews[j].ID)
-	})
-	return reviews, err
-}
-
-func loadMessages(root, threadDir, sagaID string, options loadOptions, validation *Validation) ([]*Message, error) {
-	dir := filepath.Join(threadDir, "messages")
-	entries, err := os.ReadDir(dir)
-	if errors.Is(err, fs.ErrNotExist) {
-		return nil, nil
-	}
-	if err != nil {
-		return nil, err
-	}
-	var messages []*Message
-	for _, entry := range entries {
-		matches, problem := structuralEntry(entry, ".message")
-		if problem != "" {
-			addIssue(validation, "error", relativePath(root, filepath.Join(dir, entry.Name())), problem)
-			continue
-		}
-		if !matches {
-			continue
-		}
-		messageDir := filepath.Join(dir, entry.Name())
-		var manifest MessageManifest
-		manifestPath := filepath.Join(messageDir, "message.json")
-		if err := readJSON(manifestPath, &manifest); err != nil {
-			addIssue(validation, "error", relativePath(root, manifestPath), err.Error())
-			continue
-		}
-		if manifest.Version != CurrentVersion || !stableID.MatchString(manifest.ID) || manifest.CreatedAt.IsZero() {
-			addIssue(validation, "error", relativePath(root, manifestPath), "message requires version 2, a stable id, and created_at")
-		}
-		if directoryID := strings.TrimSuffix(entry.Name(), ".message"); directoryID != manifest.ID {
-			addIssue(validation, "error", relativePath(root, manifestPath), fmt.Sprintf("message id %q must match directory %q", manifest.ID, directoryID+".message"))
-		}
-		message := &Message{Path: manifestPath, ID: manifest.ID, Author: manifest.Author, CreatedAt: manifest.CreatedAt}
-		children, err := os.ReadDir(messageDir)
-		if err != nil {
-			return nil, err
-		}
-		for _, child := range children {
-			matches, problem := structuralEntry(child, ".fragment")
-			if problem != "" {
-				addIssue(validation, "error", relativePath(root, filepath.Join(messageDir, child.Name())), problem)
-				continue
-			}
-			if !matches {
-				continue
-			}
-			fragment, err := loadFragment(root, filepath.Join(messageDir, child.Name()), sagaID, options, validation)
-			if err != nil {
-				return nil, err
-			}
-			message.Fragments = append(message.Fragments, fragment)
-		}
-		if len(message.Fragments) == 0 {
-			addIssue(validation, "error", relativePath(root, manifestPath), "message must contain at least one fragment")
-		}
-		sort.Slice(message.Fragments, func(i, j int) bool {
-			if message.Fragments[i].Order == message.Fragments[j].Order {
-				return message.Fragments[i].Path < message.Fragments[j].Path
-			}
-			return message.Fragments[i].Order < message.Fragments[j].Order
-		})
-		messages = append(messages, message)
-	}
-	sort.Slice(messages, func(i, j int) bool {
-		return earlierRecord(messages[i].CreatedAt, messages[i].ID, messages[j].CreatedAt, messages[j].ID)
-	})
-	return messages, nil
-}
-
-func loadThreadEvents(root, threadDir string, validation *Validation) ([]ThreadEvent, error) {
-	var events []ThreadEvent
-	err := loadMetaJSON(filepath.Join(threadDir, "events"), func(path string) {
-		var value ThreadEvent
-		if err := readJSON(path, &value); err != nil {
-			addIssue(validation, "error", relativePath(root, path), err.Error())
-			return
-		}
-		value.Path = path
-		validState := value.State == "" || value.State == "open" || value.State == "resolved" || value.State == "withdrawn"
-		if value.Version != CurrentVersion || !stableID.MatchString(value.ID) || value.CreatedAt.IsZero() || !validState || value.State == "" && value.Anchor == nil {
-			addIssue(validation, "error", relativePath(root, path), "thread event requires version 2, a stable id, created_at, and a valid state or anchor")
-		}
-		if value.Anchor != nil {
-			if err := ValidateAnchor(*value.Anchor); err != nil {
-				addIssue(validation, "error", relativePath(root, path), err.Error())
-			}
-		}
-		events = append(events, value)
-	})
-	return events, err
 }
 
 func loadMerges(root string, validation *Validation) ([]Merge, error) {
@@ -980,7 +661,7 @@ func knownReservedDirectory(name string, hierarchy hierarchyRoot) bool {
 	switch hierarchy {
 	case sagaHierarchy:
 		switch name {
-		case CodeDirName, "___approvals", "___review", "___claims", "___verifications", MergesDir,
+		case CodeDirName, "___claims", "___verifications", MergesDir,
 			applayout.OverviewDir, applayout.PersonasDir, applayout.DesignSystemDir,
 			applayout.OnboardingDir, applayout.FeatureFlagsDir, applayout.EpicsDir:
 			return true
@@ -994,7 +675,7 @@ func knownReservedDirectory(name string, hierarchy hierarchyRoot) bool {
 		}
 		return false
 	}
-	return name == CodeDirName || name == "___approvals"
+	return name == CodeDirName
 }
 
 func metadataDirectorySafe(root, sectionDir, name string, validation *Validation) bool {
@@ -1035,15 +716,6 @@ func validateCodeFile(value CodeFile, validation *Validation) {
 	}
 }
 
-// validFileReview accepts a reviewed/unreviewed mark on a whole file. The
-// reference pins the file's content, so the mark stops applying once the file
-// changes.
-func validFileReview(value FileReview) bool {
-	return value.Version == CurrentVersion && stableID.MatchString(value.ID) && !value.CreatedAt.IsZero() &&
-		(value.State == "reviewed" || value.State == "unreviewed") &&
-		coderef.Validate(value.Code) == nil && value.Code.WholeFile() && value.Code.Note == ""
-}
-
 // earlierRecord defines the total order the format uses for append-only review
 // records. SPEC.md resolves state from the latest record by created_at; two
 // records can legitimately share a timestamp, so the record id breaks the tie.
@@ -1058,8 +730,4 @@ func earlierRecord(leftTime time.Time, leftID string, rightTime time.Time, right
 
 func addIssue(validation *Validation, severity, path, message string) {
 	validation.Issues = append(validation.Issues, Issue{Severity: severity, Path: path, Message: message})
-}
-
-func validReviewState(state string) bool {
-	return state == "approved" || state == "rejected" || state == "closed" || state == "open"
 }

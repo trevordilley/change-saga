@@ -96,32 +96,13 @@ func catalogFile(catalog gitdiff.Catalog, filePath string) (gitdiff.FileSummary,
 	return catalog.Files[index], true
 }
 
-func latestCatalogReviews(document *saga.Saga, catalog gitdiff.Catalog) (map[string]saga.FileReview, int) {
-	latest := latestFileReviews(document.FileReviews)
-	reviewed := 0
-	for _, review := range latest {
-		if review.State == "reviewed" {
-			reviewed++
-		}
-	}
-	return latest, reviewed
-}
-
-func latestReviewForCatalogFile(document *saga.Saga, catalog gitdiff.Catalog, filePath string) saga.FileReview {
-	reviews, _ := latestCatalogReviews(document, catalog)
-	return reviews[filePath]
-}
-
-func catalogFileView(catalog gitdiff.Catalog, file gitdiff.FileSummary, review saga.FileReview) *FileDiffView {
+func catalogFileView(catalog gitdiff.Catalog, file gitdiff.FileSummary) *FileDiffView {
 	digest := sha256.Sum256([]byte(file.Path))
 	// The catalog cannot tell a deleted file from an edited one, so the file is
 	// named at the head; reviewing a deleted file falls back to the merge-base.
 	view := &FileDiffView{
 		ID: fmt.Sprintf("diff-%x", digest[:8]), Name: path.Base(file.Path), Path: file.Path,
 		Ref: fileLocation(catalog.BaseOID, catalog.HeadOID, file.Path, false), Href: CodeDiffURL(file.Path, ""), Added: file.Added, Deleted: file.Deleted,
-	}
-	if review.ID != "" {
-		view.Reviewed, view.Reviewer, view.ReviewerDetail = review.State == "reviewed", review.Author, review.AttributionDetail
 	}
 	return view
 }

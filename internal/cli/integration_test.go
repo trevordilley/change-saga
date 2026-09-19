@@ -5,12 +5,13 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"strings"
 	"testing"
+
+	"github.com/twentyideas/changesaga/internal/gitdiff"
 
 	"github.com/twentyideas/changesaga/internal/saga"
 )
@@ -113,35 +114,9 @@ func TestAuthoringLoopAgainstGitDiff(t *testing.T) {
 	if _, err := os.Stat(filepath.Join(testEpicDir(root), "bundled-demo.fragment", "app.js")); err != nil {
 		t.Fatalf("fragment package dependency was not copied: %v", err)
 	}
-	attachment := filepath.Join(t.TempDir(), "note.svg")
-	writeFile(t, attachment, `<svg xmlns="http://www.w3.org/2000/svg"><circle r="4"/></svg>`)
-	if err := Thread(context.Background(), []string{"--target", "___overview/overview.fragment", "--body", "Please clarify this.", "--attachment", attachment, root}, &output); err != nil {
-		t.Fatal(err)
-	}
-	threadDocument, _, err := saga.Load(root)
-	if err != nil || len(threadDocument.Threads) != 1 {
-		t.Fatalf("created thread should load: document=%#v err=%v", threadDocument, err)
-	}
-	threadID := threadDocument.Threads[0].ID
-	if err := Reply(context.Background(), []string{"--thread", threadID, "--state", "withdrawn", root}, &output); err != nil {
-		t.Fatal(err)
-	}
-	if err := Reply(context.Background(), []string{"--thread", threadID, "--state", "open", root}, &output); err != nil {
-		t.Fatal(err)
-	}
-	if err := Review(context.Background(), []string{"--target", ".", "--state", "approved", "--reviewer-kind", "human", root}, &output); err != nil {
-		t.Fatal(err)
-	}
-	if err := Review(context.Background(), []string{"--target", "___overview/overview.fragment", "--state", "approved", "--reviewer-kind", "human", root}, &output); err != nil {
-		t.Fatal(err)
-	}
 	document, validation, err := saga.Load(root)
-	fragmentReviews := 0
-	for _, fragment := range document.Section.Fragments {
-		fragmentReviews += len(fragment.Reviews)
-	}
-	if err != nil || !validation.Valid || len(document.Threads) != 1 || len(document.Threads[0].Events) != 2 || document.Threads[0].State != "open" || len(document.Section.Reviews) != 1 || fragmentReviews != 1 || len(document.Threads[0].Messages[0].Fragments) != 2 {
-		t.Fatalf("authored saga should load with thread: validation=%#v err=%v", validation, err)
+	if err != nil || !validation.Valid {
+		t.Fatalf("authored saga should load: validation=%#v err=%v", validation, err)
 	}
 	if len(document.Section.Children) != 1 || document.Section.Children[0].Kind != "chapter" || len(document.Section.Children[0].Children) != 1 {
 		t.Fatalf("chapter hierarchy was not authored: %#v", document.Section.Children)

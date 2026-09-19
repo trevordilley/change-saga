@@ -30,7 +30,6 @@ type appNavSources struct {
 	page          *requirementsPageView
 	prototypes    prototypes.Document
 	prototypeNote string
-	threads       map[string][]*threadView
 	// decks is every projected deck row, implementation and onboarding.
 	decks []*navNodeView
 }
@@ -38,7 +37,7 @@ type appNavSources struct {
 func makeAppNavTree(sources appNavSources) []*navNodeView {
 	document := sources.document
 	overview := &navNodeView{Title: "Overview", Href: sagaHref(document.Section.Target), NodeID: "nav-overview", Active: true}
-	overview.Children = reportRootNav(document.Overview, sources.threads)
+	overview.Children = reportRootNav(document.Overview)
 	overview.Expanded = len(overview.Children) > 0
 	if len(overview.Children) == 0 {
 		overview.Gap, overview.Note = true, "no overview yet"
@@ -70,7 +69,7 @@ func makeAppNavTree(sources appNavSources) []*navNodeView {
 	navigation := []*navNodeView{
 		overview,
 		navPlace("Personas", "nav-personas", "", "no personas yet", personaNav(sources.requirements)),
-		navPlace("Design system", "nav-designsystem", "design", "no design system yet", reportRootNav(document.DesignSystem, sources.threads)),
+		navPlace("Design system", "nav-designsystem", "design", "no design system yet", reportRootNav(document.DesignSystem)),
 		navPlace("Onboarding", "nav-onboarding", "deck", "no onboarding deck yet", onboarding),
 		navPlace("Feature flags", "nav-featureflags", "", "no feature flags yet", flagNav(sources.requirements)),
 		epicsPlace,
@@ -111,7 +110,7 @@ func makeEpicNav(sources appNavSources, epic *saga.Epic, deckRows map[string]*na
 	if epic.Design != nil {
 		for _, child := range epic.Design.Children {
 			if child.Kind == "chapter" {
-				technical = append(technical, makeChapterNav(child, sources.threads))
+				technical = append(technical, makeChapterNav(child))
 			}
 		}
 	}
@@ -125,19 +124,19 @@ func makeEpicNav(sources appNavSources, epic *saga.Epic, deckRows map[string]*na
 		implementation: implementation,
 	})
 	node := &navNodeView{Title: epic.Title, NodeID: prefix, Icon: "product", Group: true, Expanded: true}
-	node.Children = append(reportRootNav(epic.Report, sources.threads), places...)
+	node.Children = append(reportRootNav(epic.Report), places...)
 	return node
 }
 
 // reportRootNav outlines one report root: its fragments, then its chapters.
-func reportRootNav(root *saga.Section, threads map[string][]*threadView) []*navNodeView {
+func reportRootNav(root *saga.Section) []*navNodeView {
 	if root == nil {
 		return nil
 	}
 	nodes := fragmentOutline(root)
 	for _, child := range root.Children {
 		if child.Kind == "chapter" && !designSection(child) {
-			nodes = append(nodes, makeChapterNav(child, threads))
+			nodes = append(nodes, makeChapterNav(child))
 		}
 	}
 	return nodes

@@ -25,7 +25,6 @@ import (
 	"github.com/twentyideas/changesaga/internal/prototypes"
 	"github.com/twentyideas/changesaga/internal/quality"
 	"github.com/twentyideas/changesaga/internal/requirements"
-	"github.com/twentyideas/changesaga/internal/reviewstore"
 	"github.com/twentyideas/changesaga/internal/saga"
 	reviewserver "github.com/twentyideas/changesaga/internal/server"
 	"github.com/twentyideas/changesaga/internal/store"
@@ -89,7 +88,7 @@ func (e *StatusError) Error() string { return "command reported a non-success st
 // overview, the per-command -h banner, and argument errors cannot drift apart.
 var commandOrder = []string{
 	"init", "epic", "persona", "flag", "prototype", "story", "criterion", "citation", "relation", "design", "plan", "quality", "add-deck", "add-slide", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "cover", "remove-coverage", "replace-coverage", "references", "repin", "sync", "add-claim", "verify-claim",
-	"thread", "reply", "review", "validate", "status", "query",
+	"review", "validate", "status", "query",
 	"serve", "open", "install-skill", "spec",
 }
 
@@ -168,8 +167,6 @@ var commandUsage = map[string]string{
 	"sync":                        "change-saga sync --repo PATH [--commit REV] [--json] <saga>",
 	"add-claim":                   "change-saga add-claim --target TARGET --kind KIND --statement TEXT --ref LOCATION [--ref LOCATION...] <saga>",
 	"verify-claim":                "change-saga verify-claim --claim ID --status STATUS --summary TEXT [flags] <saga>",
-	"thread":                      "change-saga thread [flags] <saga>",
-	"reply":                       "change-saga reply [flags] <saga>",
 	"review":                      "change-saga review [flags] <saga>",
 	"validate":                    "change-saga validate [--json] [--fix] <saga>",
 	"status":                      "change-saga status [--json] [--repo PATH] [--against REV [--head REV]] <saga>",
@@ -406,7 +403,7 @@ func Init(ctx context.Context, args []string, out io.Writer) error {
 		if err := os.Chmod(stage, 0o755); err != nil {
 			return err
 		}
-		reservedDirs := []string{"___approvals", "___claims", "___verifications", filepath.Join("___review", "threads"), filepath.Join("___review", saga.FileReviewDir), saga.CodeDirName}
+		reservedDirs := []string{"___claims", "___verifications", saga.CodeDirName}
 		for _, dir := range reservedDirs {
 			if err := os.MkdirAll(filepath.Join(stage, dir), 0o755); err != nil {
 				return err
@@ -482,7 +479,7 @@ func addChapter(_ context.Context, args []string, out io.Writer, scope authoring
 			if err := os.Chmod(stage, 0o755); err != nil {
 				return err
 			}
-			for _, reserved := range []string{saga.CodeDirName, "___approvals"} {
+			for _, reserved := range []string{saga.CodeDirName} {
 				if err := os.Mkdir(filepath.Join(stage, reserved), 0o755); err != nil {
 					return err
 				}
@@ -558,7 +555,7 @@ func addSection(_ context.Context, args []string, out io.Writer, scope authoring
 			if err := os.Chmod(stage, 0o755); err != nil {
 				return err
 			}
-			for _, reserved := range []string{saga.CodeDirName, "___approvals"} {
+			for _, reserved := range []string{saga.CodeDirName} {
 				if err := os.Mkdir(filepath.Join(stage, reserved), 0o755); err != nil {
 					return err
 				}
@@ -672,120 +669,6 @@ type stringList []string
 func (s *stringList) String() string { return strings.Join(*s, ",") }
 func (s *stringList) Set(value string) error {
 	*s = append(*s, value)
-	return nil
-}
-
-func Thread(_ context.Context, args []string, out io.Writer) error {
-	flags := commandFlags("thread", commandUsage["thread"], out)
-	target := flags.String("target", ".", "section/fragment path or target URN")
-	body := flags.String("body", "", "initial Markdown comment")
-	anchorJSON := flags.String("anchor", `{"type":"target"}`, "anchor JSON")
-	kind := flags.String("kind", "comment", "comment or suggestion")
-	replacement := flags.String("replacement", "", "replacement code for a suggestion")
-	var attachments stringList
-	flags.Var(&attachments, "attachment", "image, SVG, HTML, or text attachment; repeatable")
-	if err := flags.Parse(args); err != nil {
-		return err
-	}
-	if flags.NArg() != 1 {
-		return fmt.Errorf("usage: %s", commandUsage["thread"])
-	}
-	document, _, err := saga.Load(flags.Arg(0))
-	if err != nil {
-		return err
-	}
-	_, targetURI, err := resolveTarget(document, *target, true)
-	if err != nil {
-		return err
-	}
-	var anchor saga.Anchor
-	if err := json.Unmarshal([]byte(*anchorJSON), &anchor); err != nil {
-		return fmt.Errorf("parse --anchor: %w", err)
-	}
-	id, err := reviewstore.AddThread(document.Root, targetURI, *body, anchor, *kind, *replacement, attachments)
-	if err != nil {
-		return err
-	}
-	fmt.Fprintf(out, "Created thread %s\n", id)
-	return nil
-}
-
-func Reply(_ context.Context, args []string, out io.Writer) error {
-	flags := commandFlags("reply", commandUsage["reply"], out)
-	threadID := flags.String("thread", "", "thread identifier")
-	body := flags.String("body", "", "Markdown reply")
-	state := flags.String("state", "", "optionally set thread to open, resolved, or withdrawn")
-	var attachments stringList
-	flags.Var(&attachments, "attachment", "attachment; repeatable")
-	if err := flags.Parse(args); err != nil {
-		return err
-	}
-	if flags.NArg() != 1 {
-		return fmt.Errorf("usage: %s", commandUsage["reply"])
-	}
-	document, _, err := saga.Load(flags.Arg(0))
-	if err != nil {
-		return err
-	}
-	if *body != "" || len(attachments) > 0 {
-		if _, err := reviewstore.AddReply(document.Root, *threadID, *body, attachments); err != nil {
-			return err
-		}
-	}
-	if *state != "" {
-		if err := reviewstore.SetState(document.Root, *threadID, *state); err != nil {
-			return err
-		}
-	}
-	if *body == "" && len(attachments) == 0 && *state == "" {
-		return fmt.Errorf("provide --body, --attachment, or --state")
-	}
-	fmt.Fprintf(out, "Updated thread %s\n", *threadID)
-	return nil
-}
-
-func Review(_ context.Context, args []string, out io.Writer) error {
-	flags := commandFlags("review", commandUsage["review"], out)
-	target := flags.String("target", ".", "review target path, ID, or URN; deck decisions are per slide")
-	state := flags.String("state", "", "approved, rejected, closed, or open")
-	body := flags.String("body", "", "optional review note")
-	reviewerKind := flags.String("reviewer-kind", "", "required reviewer persona: human or ai")
-	reviewerName := flags.String("reviewer-name", "", "distinct AI reviewer name, for example Claude 1 (required for AI reviews)")
-	agent := flags.String("agent", "", "AI agent kind, for example codex (required for AI reviews)")
-	model := flags.String("model", "", "AI model name (required for AI reviews)")
-	if err := flags.Parse(args); err != nil {
-		return err
-	}
-	if flags.NArg() != 1 {
-		return fmt.Errorf("usage: %s", commandUsage["review"])
-	}
-	if strings.TrimSpace(*reviewerKind) == "" {
-		return fmt.Errorf("review requires --reviewer-kind human or ai")
-	}
-	reviewer := saga.ReviewerIdentity{Kind: *reviewerKind, Name: *reviewerName, Agent: *agent, Model: *model}
-	if err := saga.ValidateReviewerIdentity(&reviewer); err != nil {
-		return err
-	}
-	document, _, err := saga.Load(flags.Arg(0))
-	if err != nil {
-		return err
-	}
-	targetDir, resolvedTarget, err := resolveTarget(document, *target, true)
-	if err != nil {
-		return err
-	}
-	reviewTarget := targetDir
-	mutationIndex := saga.MutationIndexFromDocument(document)
-	if mutationIndex.FlatTargets[resolvedTarget] {
-		if _, ok := mutationIndex.ReviewTargets[resolvedTarget]; !ok {
-			return fmt.Errorf("deck approval decisions must target a slide; use a thread to comment on an Item")
-		}
-		reviewTarget = resolvedTarget
-	}
-	if err := reviewstore.AddReview(document.Root, reviewTarget, *state, *body, reviewer); err != nil {
-		return err
-	}
-	fmt.Fprintf(out, "Recorded %s review for %s\n", *state, *target)
 	return nil
 }
 
@@ -1163,10 +1046,8 @@ func Spec(args []string, out io.Writer) error {
 			"media_types":          []string{"text/markdown", "text/html", "text/plain", "image/svg+xml", "image/*"},
 			"target_scheme":        "urn:change-saga",
 			"code_reference":       map[string]any{"fields": []string{"commit", "path", "start", "end", "digest"}, "location": "<commit>:<path>[#L<start>[-L<end>]]", "digest": coderef.DigestPrefix + "<hex>"},
-			"anchors":              []string{"target", "region", "drawing", "text", "note", "code"},
-			"thread_kinds":         []string{"comment", "suggestion"},
 			"reviewer_bootstrap":   "README.md",
-			"reserved_directories": []string{saga.CodeDirName, "___approvals", "___claims", "___verifications", saga.MergesDir, "___review"},
+			"reserved_directories": []string{saga.CodeDirName, "___claims", "___verifications", saga.MergesDir},
 			"app_layout": map[string]any{
 				"app_roots":    applayout.AppRootDirs,
 				"epic_storage": applayout.EpicsDir + "/<id>" + applayout.EpicSuffix + "/" + applayout.EpicManifestName,
@@ -1175,10 +1056,9 @@ func Spec(args []string, out io.Writer) error {
 				"onboarding":   applayout.OnboardingDir + "/<id>" + saga.EmbeddedDeckSuffix + " with role onboarding; its Items carry a persona, epic, or story record instead of code evidence",
 			},
 			"author_assertions": "one claim per ___claims/*.json; one append-only result per ___verifications/*.json",
-			"review_storage":    "append-only; one thread, message, or event record per path",
 			"implementation_deck": map[string]any{
 				"storage": applayout.EpicsDir + "/<epic>" + applayout.EpicSuffix + "/" + saga.EmbeddedSlidesDir + "/<id>" + saga.EmbeddedDeckSuffix, "layout": "flat", "max_basename": saga.FlatMaxBasename, "max_absolute_path": saga.FlatMaxPath,
-				"categories": map[string]string{"10-d": "deck", "20-s": "slide", "30-i": "item", "40-e": "evidence", "80-85": "review"},
+				"categories": map[string]string{"10-d": "deck", "20-s": "slide", "30-i": "item", "40-e": "evidence"},
 				"content":    "one self-contained visual file sharing its slide manifest stem",
 				"visual_forms": map[string]string{
 					"system-context": "actors, external systems, boundaries, and changed interfaces", "architecture": "containment, dependencies, and responsibilities",

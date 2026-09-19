@@ -3,11 +3,12 @@ package reviewapp
 import (
 	"context"
 	"fmt"
-	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"os"
 	"path/filepath"
 	"sync"
 	"testing"
+
+	"github.com/twentyideas/changesaga/internal/coderesolve"
 
 	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
@@ -295,7 +296,7 @@ func newLargeSagaSession(document *saga.Saga, changes gitdiff.ChangeSet, report 
 		document: document, changes: changes, report: report,
 		targets: map[string]*targetEntry{}, selectors: map[string][]selectorEntry{},
 		selectorsByAtom: map[string][]DiffOwner{},
-		fragments:       map[string]fragmentValue{}, threads: map[string]ReviewThread{}, threadsByAtom: map[string][]ReviewThread{},
+		fragments:       map[string]fragmentValue{},
 	}
 }
 

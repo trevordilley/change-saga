@@ -52,11 +52,8 @@ func TestLoadEmbeddedDeckItemEvidence(t *testing.T) {
 	if index.Targets[item.Target] != item.Directory {
 		t.Fatalf("item is not a stable mutation target: %#v", index)
 	}
-	if _, ok := index.ReviewTargets[item.Target]; ok {
-		t.Fatalf("Item unexpectedly accepted an approval decision: %#v", index.ReviewTargets)
-	}
-	if index.ReviewTargets[slideTarget] != bundle || !index.FlatTargets[slideTarget] {
-		t.Fatalf("slide is not the approval boundary: %#v", index.ReviewTargets)
+	if !index.FlatTargets[slideTarget] {
+		t.Fatalf("slide is not a flat deck target: %#v", index.FlatTargets)
 	}
 
 	writeTestFile(t, filepath.Join(bundle, slideName), fmt.Sprintf(`{"version":4,"id":"change","deck":"wrong-deck","title":"Reject early","rank":0,"intent":"explain","layout":"diagram","media_type":"image/svg+xml","entrypoint":%q,"takeaway":"Invalid requests stop before persistence.","reading_order":["validate","why"]}`, assetName))
