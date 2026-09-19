@@ -245,11 +245,12 @@ func TestPersonaAddReviseAndSetState(t *testing.T) {
 	assertValid(t, root)
 }
 
-// Every command that creates a top-level epic record names its epic; it is
-// never implied, even when the app has exactly one epic.
-func TestCreateCommandsRequireAnEpic(t *testing.T) {
+// When the app has several epics, every command that creates a top-level
+// epic record must name its epic: the choice is the author's.
+func TestCreateCommandsRequireAnEpicAmongSeveral(t *testing.T) {
 	root := newAuthoredSaga(t)
 	story := addStory(t, root, testEpic, "checkout", testPersonaURN).Resource
+	mustLiving(t, "epic add", epicCommand, "add", root, "--id", "billing", "--title", "Billing")
 	source := newPrototypeSource(t, "<p>prototype</p>")
 	ctx := context.Background()
 	commands := []struct {
@@ -307,7 +308,7 @@ func TestCreateCommandsRequireAnEpic(t *testing.T) {
 	for _, command := range commands {
 		var output bytes.Buffer
 		err := command.run(&output)
-		if err == nil || !strings.Contains(err.Error(), "--epic is required") || !strings.Contains(err.Error(), "known epics: "+testEpic) {
+		if err == nil || !strings.Contains(err.Error(), "--epic is required") || !strings.Contains(err.Error(), "known epics: billing, "+testEpic) {
 			t.Errorf("%s without --epic = %v", command.name, err)
 		}
 	}
@@ -323,7 +324,7 @@ func TestCreateCommandsRequireAnEpic(t *testing.T) {
 	}
 	// An unknown epic lists the known ones.
 	err := AddChapter(ctx, []string{"--epic", "missing", "--title", "C", root, "chapter"}, &output)
-	if err == nil || !strings.Contains(err.Error(), `epic "missing" does not exist`) || !strings.Contains(err.Error(), "known epics: "+testEpic) {
+	if err == nil || !strings.Contains(err.Error(), `epic "missing" does not exist`) || !strings.Contains(err.Error(), "known epics: billing, "+testEpic) {
 		t.Fatalf("unknown epic = %v", err)
 	}
 }
@@ -762,4 +763,41 @@ func TestFirstChangeNeedsNoPersonas(t *testing.T) {
 		}
 	}
 	_ = story
+}
+
+// An omitted --epic uses the app's only epic, and when the app has none, the
+// first command that needs one creates it, named after the branch. Either
+// way the choice is reported.
+func TestOmittedEpicDefaultsAndSaysWhatItChose(t *testing.T) {
+	repo := t.TempDir()
+	git(t, repo, "init", "-b", "main")
+	git(t, repo, "checkout", "-b", "feature/checkout-flow")
+	root := filepath.Join(repo, "app.saga")
+	ctx := context.Background()
+	if err := Init(ctx, []string{"--repo", repo, "--repository", "https://example.test/acme/app.git", "--allow-repository-mismatch", root}, &bytes.Buffer{}); err != nil {
+		t.Fatal(err)
+	}
+	var notices bytes.Buffer
+	previous := epicNotices
+	epicNotices = &notices
+	defer func() { epicNotices = previous }()
+
+	if err := AddDeck(ctx, []string{"--objective", "Explain.", root, "implementation"}, &bytes.Buffer{}); err != nil {
+		t.Fatalf("add-deck with no epic yet: %v", err)
+	}
+	epics, err := applayout.Epics(root)
+	if err != nil || len(epics) != 1 || epics[0].ID != "checkout-flow" || epics[0].Title != "Checkout flow" {
+		t.Fatalf("the first epic is named after the branch: %+v %v", epics, err)
+	}
+	if !strings.Contains(notices.String(), `Created epic "checkout-flow"`) || !strings.Contains(notices.String(), "branch feature/checkout-flow") {
+		t.Fatalf("the created epic is reported: %q", notices.String())
+	}
+	notices.Reset()
+	if err := Story(ctx, []string{"add", root, "--id", "pay", "--revision", "r1", "--event", "proposed", "--title", "Pay", "--statement", "S", "--priority", "must"}, &bytes.Buffer{}); err != nil {
+		t.Fatalf("story add with one epic: %v", err)
+	}
+	if !strings.Contains(notices.String(), `Using epic "checkout-flow", the app's only epic`) {
+		t.Fatalf("the implied epic is reported: %q", notices.String())
+	}
+	assertValid(t, root)
 }
