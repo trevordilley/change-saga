@@ -27,6 +27,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/twentyideas/changesaga/internal/changeview"
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/gitattribution"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
@@ -50,6 +51,7 @@ type app struct {
 	outline       outlineCache
 	catalog       sourceCatalogCache
 	evidence      evidenceOwnerCache
+	layers        layersCache
 	// comparisonLoader is the injectable boundary around the expensive source
 	// diff and coverage build. Root and narrative shell handlers must never call
 	// it; focused comparison endpoints reach it through snapshot().
@@ -58,7 +60,10 @@ type app struct {
 	// uses it instead of comparisonLoader so opening the tab cannot construct
 	// every source atom or the coverage ownership graph.
 	catalogLoader func(context.Context, saga.Manifest) (gitdiff.Catalog, error)
-	generations   *snapshotcache.Store
+	// layersLoader is the injectable boundary around the comparison's layers,
+	// which decide where approval is offered.
+	layersLoader func(context.Context) (*changeview.Layers, error)
+	generations  *snapshotcache.Store
 	// reviewRefreshHook is a test seam for the post-commit failure boundary.
 	reviewRefreshHook func() error
 }
@@ -91,6 +96,9 @@ func (w *lockedWriter) Write(data []byte) (int, error) {
 func OpenBrowser(rawURL string) error { return launchBrowser(rawURL) }
 
 type pageData struct {
+	// Opening says how the reviewer was opened; Comparing is compare mode.
+	Opening          string
+	Comparing        bool
 	Saga             *saga.Saga
 	EmbeddedDecks    bool
 	RequirementsMode bool
@@ -334,7 +342,7 @@ func ListenManaged(ctx context.Context, root, sourceDir, addr string, openBrowse
 	} else if !validation.Valid {
 		return fmt.Errorf("saga is structurally invalid; run change-saga validate")
 	}
-	tmpl, err := newPageTemplate()
+	tmpl, err := newPageTemplateFor(options.Range)
 	if err != nil {
 		return err
 	}
@@ -408,6 +416,9 @@ func newMux(application *app) *http.ServeMux {
 	mux.HandleFunc("GET /api/code", application.codePage)
 	mux.HandleFunc("GET /api/activity", application.reviewActivity)
 	mux.HandleFunc("GET /api/coverage", application.coveragePage)
+	mux.HandleFunc("GET /api/layers", application.layersAPI)
+	mux.HandleFunc("GET /api/change", application.changePage)
+	mux.HandleFunc("GET /api/history", application.historyPage)
 	mux.HandleFunc("GET /api/coverage-file", application.coverageFilePage)
 	mux.HandleFunc("GET /api/coverage-target", application.coverageTargetPage)
 	mux.HandleFunc("GET /api/file-diff", application.fileDiffFragment)
@@ -911,15 +922,29 @@ func newMutationToken() (string, error) {
 }
 
 // newPageTemplate is the single definition of the renderer's template funcs so
-// tests exercise exactly the helpers the served page uses.
+// tests exercise exactly the helpers the served page uses. It renders a
+// compared Saga; newPageTemplateFor renders the way a reviewer was opened.
 func newPageTemplate() (*template.Template, error) {
-	return template.New("page").Funcs(templateFuncs()).Parse(pageTemplate)
+	return newPageTemplateFor(gitdiff.Range{Against: "HEAD"})
+}
+
+// newPageTemplateFor renders a reviewer opened with rng. Approval exists only
+// in compare mode, so an observing reviewer's template renders no approve or
+// reject control anywhere; decisions already recorded remain as history.
+func newPageTemplateFor(rng gitdiff.Range) (*template.Template, error) {
+	funcs := templateFuncs()
+	comparing := !rng.Observe()
+	funcs["comparing"] = func() bool { return comparing }
+	return template.New("page").Funcs(funcs).Parse(pageTemplate)
 }
 
 // templateFuncs is shared by the server and its rendering tests so a new
 // presentation helper cannot be wired into one and forgotten in the other.
 func templateFuncs() template.FuncMap {
 	return template.FuncMap{
+		"comparing":   func() bool { return true },
+		"short":       shortCommit,
+		"join":        strings.Join,
 		"markdown":    markdown,
 		"domID":       domID,
 		"fileIcon":    fileIcon,
@@ -992,6 +1017,8 @@ func (a *app) page(w http.ResponseWriter, r *http.Request) {
 	reportRoot, slideRoot := splitReportAndDeckSections(document.Section)
 	rootView := makeSectionView(reportRoot, scope.shell())
 	data := pageData{
+		Opening:        openingLabel(a.rng),
+		Comparing:      !a.rng.Observe(),
 		Saga:           document,
 		EmbeddedDecks:  len(document.Decks)+len(document.Onboarding) > 0,
 		Root:           rootView,
@@ -2224,6 +2251,9 @@ func (a *app) review(w http.ResponseWriter, r *http.Request) {
 	dir, ok := index.ReviewTargets[target]
 	if !ok {
 		http.Error(w, "review target does not exist", http.StatusBadRequest)
+		return
+	}
+	if !a.reviewAllowed(w, r, target) {
 		return
 	}
 	reviewTarget := dir

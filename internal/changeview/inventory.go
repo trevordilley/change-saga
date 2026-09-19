@@ -31,6 +31,7 @@ import (
 // Node kinds. Design, overview, and designsystem nodes are report targets
 // (sections, fragments, and landmarks) under those roots.
 const (
+	KindApp       = "app"
 	KindPersona   = "persona"
 	KindEpic      = "epic"
 	KindFlag      = "flag"
@@ -158,6 +159,9 @@ func Build(root string, document *saga.Saga, inputs livingapp.StatusInputs) *Inv
 		root = resolved
 	}
 	builder := &inventoryBuilder{root: root, sagaID: document.Manifest.ID, inventory: &Inventory{Nodes: map[string]*Node{}, aliases: map[string]string{}}}
+	if document.Section != nil {
+		builder.add(&Node{URN: document.Section.Target, Kind: KindApp, Title: document.Manifest.Title, Files: []string{saga.ManifestName}, Text: document.Manifest.Title})
+	}
 	builder.app(inputs)
 	builder.report(document.Section, "")
 	builder.decks(document.Decks)

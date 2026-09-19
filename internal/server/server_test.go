@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/twentyideas/changesaga/internal/changeview"
 	"html/template"
 	"mime/multipart"
 	"net/http"
@@ -805,7 +806,7 @@ func TestCreateDiffSuggestionAndMarkFileReviewed(t *testing.T) {
 
 func TestReviewDecisionPersistsAndReturnsToChapter(t *testing.T) {
 	root := validServerSaga(t)
-	application := &app{root: root}
+	application := &app{root: root, rng: gitdiff.Range{Against: "main"}, layersLoader: changedLayers("urn:change-saga:test:fragment:overview")}
 	values := url.Values{
 		"target":    {"urn:change-saga:test:fragment:overview"},
 		"state":     {"approved"},
@@ -831,7 +832,7 @@ func TestReviewDecisionPersistsAndReturnsToChapter(t *testing.T) {
 
 func TestAsyncReviewDecisionPersistsWithoutRedirect(t *testing.T) {
 	root := validServerSaga(t)
-	application := &app{root: root}
+	application := &app{root: root, rng: gitdiff.Range{Against: "main"}, layersLoader: changedLayers("urn:change-saga:test:fragment:overview")}
 	values := url.Values{
 		"target": {"urn:change-saga:test:fragment:overview"},
 		"state":  {"rejected"},
@@ -1918,4 +1919,66 @@ func writeServerEpic(t *testing.T, root string) {
 	t.Helper()
 	writeServerFile(t, filepath.Join(serverEpicDir(root), applayout.EpicManifestName),
 		`{"$schema":"https://changesaga.dev/schema/v5/epic.schema.json","version":5,"id":"core","title":"Core","created_at":"2026-08-21T12:00:00Z"}`)
+}
+
+// changedLayers is a comparison in which the change edited targets.
+func changedLayers(targets ...string) func(context.Context) (*changeview.Layers, error) {
+	return func(context.Context) (*changeview.Layers, error) {
+		layers := &changeview.Layers{}
+		for _, target := range targets {
+			layers.Changed = append(layers.Changed, changeview.Change{NodeRef: changeview.NodeRef{URN: target}, Change: changeview.ChangeRevised})
+		}
+		return layers, nil
+	}
+}
+
+// Approval belongs to a change: an observing reviewer refuses it, and a
+// comparing reviewer accepts it only on the records the change edited or
+// affected.
+func TestApprovalExistsOnlyOnTheChangedAndAffectedLayers(t *testing.T) {
+	root := validServerSaga(t)
+	post := func(application *app) int {
+		values := url.Values{"target": {"urn:change-saga:test:fragment:overview"}, "state": {"approved"}}
+		request := httptest.NewRequest(http.MethodPost, "/api/review", strings.NewReader(values.Encode()))
+		request.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+		request.Header.Set("X-Change-Saga-Async", "true")
+		recorder := httptest.NewRecorder()
+		application.review(recorder, request)
+		return recorder.Code
+	}
+	if code := post(&app{root: root}); code != http.StatusForbidden {
+		t.Fatalf("observing accepted an approval: %d", code)
+	}
+	if code := post(&app{root: root, rng: gitdiff.Range{Against: "main"}, layersLoader: changedLayers("urn:change-saga:test:fragment:other")}); code != http.StatusForbidden {
+		t.Fatalf("a record outside the change was approvable: %d", code)
+	}
+	if code := post(&app{root: root, rng: gitdiff.Range{Against: "main"}, layersLoader: changedLayers("urn:change-saga:test:fragment:overview")}); code != http.StatusNoContent {
+		t.Fatalf("a changed record was not approvable: %d", code)
+	}
+}
+
+// An observing reviewer renders no approve or reject control and offers each
+// record's history instead; a comparing one renders the gated controls.
+func TestObservingRendersNoApprovalControls(t *testing.T) {
+	root := validServerSaga(t)
+	render := func(rng gitdiff.Range) string {
+		tmpl, err := newPageTemplateFor(rng)
+		if err != nil {
+			t.Fatal(err)
+		}
+		recorder := httptest.NewRecorder()
+		(&app{root: root, sourceDir: root, rng: rng, template: tmpl}).page(recorder, httptest.NewRequest(http.MethodGet, "/", nil))
+		if recorder.Code != http.StatusOK {
+			t.Fatalf("page = %d", recorder.Code)
+		}
+		return recorder.Body.String()
+	}
+	observed := render(gitdiff.Range{})
+	if strings.Contains(observed, "data-review-decision=") || strings.Contains(observed, "data-review-progress") || !strings.Contains(observed, "data-open-history") || !strings.Contains(observed, `data-opening="observe"`) {
+		t.Fatal("observe mode rendered approval controls or no history")
+	}
+	compared := render(gitdiff.Range{Against: "main"})
+	if !strings.Contains(compared, "data-approval-gate hidden") || !strings.Contains(compared, `data-view-tab="change"`) || strings.Contains(compared, "data-open-history") {
+		t.Fatal("compare mode did not render gated approval controls and the Change tab")
+	}
 }
