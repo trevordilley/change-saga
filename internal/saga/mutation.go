@@ -7,6 +7,8 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/twentyideas/changesaga/internal/applayout"
 )
 
 // MutationIndex is the small structural contract needed to append review
@@ -99,7 +101,15 @@ func LoadMutationIndex(root string) (MutationIndex, Validation, error) {
 		addIssue(&validation, "error", ".", "saga root directory must end in .saga")
 	}
 	validateManifest(manifest, ManifestName, &validation)
-	if info, statErr := os.Lstat(filepath.Join(abs, EmbeddedSlidesDir)); statErr == nil && info.IsDir() && info.Mode()&os.ModeSymlink == 0 {
+	epics, epicErr := applayout.Epics(abs)
+	if epicErr != nil {
+		addIssue(&validation, "error", applayout.EpicsDir, epicErr.Error())
+	}
+	hasDecks := realDirectoryExists(filepath.Join(abs, applayout.OnboardingDir))
+	for _, epic := range epics {
+		hasDecks = hasDecks || realDirectoryExists(filepath.Join(epic.Dir, EmbeddedSlidesDir))
+	}
+	if hasDecks {
 		document, loadedValidation, loadErr := load(abs, loadOptions{skipCoverage: true, skipReviews: true})
 		if loadErr != nil {
 			return MutationIndex{}, loadedValidation, loadErr
@@ -116,9 +126,24 @@ func LoadMutationIndex(root string) (MutationIndex, Validation, error) {
 	if err := scanMutationSection(abs, abs, sagaHierarchy, manifest.ID, &index, ids, &validation); err != nil {
 		return MutationIndex{}, validation, err
 	}
-	designDir := filepath.Join(abs, "___design")
-	if info, statErr := os.Lstat(designDir); statErr == nil && info.IsDir() && info.Mode()&os.ModeSymlink == 0 {
-		if err := scanMutationSection(abs, designDir, designHierarchy, manifest.ID, &index, ids, &validation); err != nil {
+	roots := []struct {
+		dir       string
+		hierarchy hierarchyRoot
+	}{{filepath.Join(abs, applayout.OverviewDir), designHierarchy}, {filepath.Join(abs, applayout.DesignSystemDir), designHierarchy}}
+	for _, epic := range epics {
+		roots = append(roots, struct {
+			dir       string
+			hierarchy hierarchyRoot
+		}{epic.Dir, epicHierarchy}, struct {
+			dir       string
+			hierarchy hierarchyRoot
+		}{filepath.Join(epic.Dir, applayout.DesignDir), designHierarchy})
+	}
+	for _, value := range roots {
+		if !realDirectoryExists(value.dir) {
+			continue
+		}
+		if err := scanMutationSection(abs, value.dir, value.hierarchy, manifest.ID, &index, ids, &validation); err != nil {
 			return MutationIndex{}, validation, err
 		}
 	}
@@ -137,7 +162,7 @@ func scanMutationSection(root, dir string, hierarchy hierarchyRoot, sagaID strin
 		if strings.HasPrefix(name, "___") {
 			if entry.Type()&fs.ModeSymlink != 0 || !entry.IsDir() {
 				addIssue(validation, "error", relativePath(root, path), "reserved metadata path must be a real directory")
-			} else if !knownReservedDirectory(name, hierarchy == sagaHierarchy) {
+			} else if !knownReservedDirectory(name, hierarchy) {
 				addIssue(validation, "error", relativePath(root, path), "unknown reserved directory")
 			}
 			continue
@@ -148,6 +173,10 @@ func scanMutationSection(root, dir string, hierarchy hierarchyRoot, sagaID strin
 					addIssue(validation, "error", relativePath(root, path), problem)
 				}
 			}
+			continue
+		}
+		if hierarchy == sagaHierarchy {
+			addIssue(validation, "error", relativePath(root, path), "report content belongs in ___overview, ___designsystem, or an epic under ___epics, not at the app root")
 			continue
 		}
 		if hierarchy != nestedHierarchy && !strings.HasSuffix(name, ".fragment") && !strings.HasSuffix(name, ".chapter") {
@@ -280,6 +309,11 @@ func scanMutationFragment(root, dir, sagaID string, index *MutationIndex, ids ma
 		index.Targets[LandmarkTarget(sagaID, value.ID, landmark.ID)] = filepath.Dir(landmarkPath)
 	}
 	return nil
+}
+
+func realDirectoryExists(path string) bool {
+	info, err := os.Lstat(path)
+	return err == nil && info.IsDir() && info.Mode()&os.ModeSymlink == 0
 }
 
 func registerMutationID(id, path string, validation *Validation, ids map[string]string) {

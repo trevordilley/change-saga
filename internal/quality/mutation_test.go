@@ -27,7 +27,7 @@ func deadlineDefinition() Definition {
 
 func addDeadline(t *testing.T, root string) MutationResult {
 	t.Helper()
-	result, err := AddTestCase(root, AddTestCaseInput{ID: "deadline", RevisionID: "r1", Definition: deadlineDefinition(), CreatedAt: fixtureTime, RequestID: "add-deadline"})
+	result, err := AddTestCase(root, AddTestCaseInput{Epic: "core", ID: "deadline", RevisionID: "r1", Definition: deadlineDefinition(), CreatedAt: fixtureTime, RequestID: "add-deadline"})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -58,9 +58,9 @@ func TestAddTestCaseCreatesLoadablePackageAndReplays(t *testing.T) {
 	root := newQualitySaga(t, false)
 	result := addDeadline(t, root)
 	wantPaths := []string{
-		"___quality/test-cases/deadline.test",
-		"___quality/test-cases/deadline.test/revisions/r1.json",
-		"___quality/test-cases/deadline.test/events/proposed.json",
+		"___epics/core.epic/___quality/test-cases/deadline.test",
+		"___epics/core.epic/___quality/test-cases/deadline.test/revisions/r1.json",
+		"___epics/core.epic/___quality/test-cases/deadline.test/events/proposed.json",
 	}
 	if result.URN != deadlineURN || !reflect.DeepEqual(result.Paths, wantPaths) || result.Replayed {
 		t.Fatalf("result = %#v", result)
@@ -73,13 +73,13 @@ func TestAddTestCaseCreatesLoadablePackageAndReplays(t *testing.T) {
 		t.Fatalf("kinds are not canonical: %v", got)
 	}
 	before := snapshotPaths(t, root)
-	replayed, err := AddTestCase(root, AddTestCaseInput{ID: "deadline", RevisionID: "r1", Definition: deadlineDefinition(), RequestID: "add-deadline"})
+	replayed, err := AddTestCase(root, AddTestCaseInput{Epic: "core", ID: "deadline", RevisionID: "r1", Definition: deadlineDefinition(), RequestID: "add-deadline"})
 	if err != nil || !replayed.Replayed {
 		t.Fatalf("replay = %#v, %v", replayed, err)
 	}
 	changed := deadlineDefinition()
 	changed.Title = "Different"
-	if _, err := AddTestCase(root, AddTestCaseInput{ID: "deadline", RevisionID: "r1", Definition: changed, RequestID: "add-deadline"}); err == nil || !strings.Contains(err.Error(), "already exists") {
+	if _, err := AddTestCase(root, AddTestCaseInput{Epic: "core", ID: "deadline", RevisionID: "r1", Definition: changed, RequestID: "add-deadline"}); err == nil || !strings.Contains(err.Error(), "already exists") {
 		t.Fatalf("conflicting replay error = %v", err)
 	}
 	if after := snapshotPaths(t, root); !reflect.DeepEqual(before, after) {
@@ -92,10 +92,10 @@ func TestInvalidFirstWriteLeavesQualityUnadopted(t *testing.T) {
 	before := snapshotPaths(t, root)
 	definition := deadlineDefinition()
 	definition.Steps = append(definition.Steps, Step{ID: "submit", Action: "Again.", ExpectedResult: "Again."})
-	if _, err := AddTestCase(root, AddTestCaseInput{ID: "deadline", RevisionID: "r1", Definition: definition}); err == nil {
+	if _, err := AddTestCase(root, AddTestCaseInput{Epic: "core", ID: "deadline", RevisionID: "r1", Definition: definition}); err == nil {
 		t.Fatal("duplicate step id was accepted")
 	}
-	if _, err := SetPolicy(root, SetPolicyInput{Criterion: "not-a-urn", StoryRevision: "x", RequiredKinds: []CoverageKind{CoveragePositive}, AllowedAutomation: []Automation{AutomationManual}, Rationale: "r"}); err == nil {
+	if _, err := SetPolicy(root, SetPolicyInput{Epic: "core", Criterion: "not-a-urn", StoryRevision: "x", RequiredKinds: []CoverageKind{CoveragePositive}, AllowedAutomation: []Automation{AutomationManual}, Rationale: "r"}); err == nil {
 		t.Fatal("invalid policy was accepted")
 	}
 	if after := snapshotPaths(t, root); !reflect.DeepEqual(before, after) {
@@ -186,7 +186,7 @@ func TestLifecycleTransitionsAndActivationRules(t *testing.T) {
 	stepless := newQualitySaga(t, false)
 	definition := deadlineDefinition()
 	definition.Steps = []Step{}
-	if _, err := AddTestCase(stepless, AddTestCaseInput{ID: "deadline", RevisionID: "r1", Definition: definition}); err != nil {
+	if _, err := AddTestCase(stepless, AddTestCaseInput{Epic: "core", ID: "deadline", RevisionID: "r1", Definition: definition}); err != nil {
 		t.Fatal(err)
 	}
 	if _, err := SetTestCaseState(stepless, SetTestCaseStateInput{TestCase: deadlineURN, EventID: "active", Parents: []string{proposed}, State: StateActive}); err == nil || !strings.Contains(err.Error(), "step") {
@@ -251,7 +251,7 @@ func TestEvidenceBatchIsAllOrNothing(t *testing.T) {
 	if runtime.GOOS == "windows" || os.Geteuid() == 0 {
 		t.Skip("write-failure rollback requires enforced directory permissions")
 	}
-	if _, err := AddTestCase(root, AddTestCaseInput{ID: "other", RevisionID: "r1", Definition: deadlineDefinition()}); err != nil {
+	if _, err := AddTestCase(root, AddTestCaseInput{Epic: "core", ID: "other", RevisionID: "r1", Definition: deadlineDefinition()}); err != nil {
 		t.Fatal(err)
 	}
 	locked := filepath.Join(testPackage(root, "other"), "evidence")
@@ -358,27 +358,27 @@ func TestPolicySetKeepsOneHeadPerCriterionRevision(t *testing.T) {
 	root := newQualitySaga(t, false)
 	criterion := "urn:change-saga:checkout:story:refund:criterion:cutoff"
 	storyRevision := "urn:change-saga:checkout:story:refund:revision:r1"
-	first, err := SetPolicy(root, SetPolicyInput{
+	first, err := SetPolicy(root, SetPolicyInput{Epic: "core",
 		Criterion: criterion, StoryRevision: storyRevision, RequiredKinds: []CoverageKind{CoverageEdge, CoveragePositive},
 		AllowedAutomation: []Automation{AutomationManual, AutomationAutomated}, Rationale: "Boundary risk.", RequestID: "policy-1",
 	})
 	if err != nil {
 		t.Fatal(err)
 	}
-	if first.URN != "urn:change-saga:checkout:quality-policy:refund.cutoff.r1" || first.Path != "___quality/policies/refund.cutoff.r1.json" {
+	if first.URN != "urn:change-saga:checkout:quality-policy:refund.cutoff.r1" || first.Path != "___epics/core.epic/___quality/policies/refund.cutoff.r1.json" {
 		t.Fatalf("default policy = %#v", first)
 	}
-	replay, err := SetPolicy(root, SetPolicyInput{
+	replay, err := SetPolicy(root, SetPolicyInput{Epic: "core",
 		Criterion: criterion, StoryRevision: storyRevision, RequiredKinds: []CoverageKind{CoveragePositive, CoverageEdge},
 		AllowedAutomation: []Automation{AutomationAutomated, AutomationManual}, Rationale: "Boundary risk.", RequestID: "policy-1",
 	})
 	if err != nil || !replay.Replayed || replay.URN != first.URN {
 		t.Fatalf("policy replay = %#v, %v", replay, err)
 	}
-	if _, err := SetPolicy(root, SetPolicyInput{Criterion: criterion, StoryRevision: storyRevision, RequiredKinds: []CoverageKind{CoveragePositive}, AllowedAutomation: []Automation{AutomationManual}, Rationale: "Narrower."}); err == nil || !strings.Contains(err.Error(), "supersede every current head") {
+	if _, err := SetPolicy(root, SetPolicyInput{Epic: "core", Criterion: criterion, StoryRevision: storyRevision, RequiredKinds: []CoverageKind{CoveragePositive}, AllowedAutomation: []Automation{AutomationManual}, Rationale: "Narrower."}); err == nil || !strings.Contains(err.Error(), "supersede every current head") {
 		t.Fatalf("competing policy error = %v", err)
 	}
-	second, err := SetPolicy(root, SetPolicyInput{Criterion: criterion, StoryRevision: storyRevision, RequiredKinds: []CoverageKind{CoveragePositive, CoverageNegative, CoverageEdge}, AllowedAutomation: []Automation{AutomationAutomated}, Supersedes: []string{first.URN}, Rationale: "All kinds."})
+	second, err := SetPolicy(root, SetPolicyInput{Epic: "core", Criterion: criterion, StoryRevision: storyRevision, RequiredKinds: []CoverageKind{CoveragePositive, CoverageNegative, CoverageEdge}, AllowedAutomation: []Automation{AutomationAutomated}, Supersedes: []string{first.URN}, Rationale: "All kinds."})
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -13,6 +13,7 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/twentyideas/changesaga/internal/applayout"
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/qualityid"
 )
@@ -31,7 +32,9 @@ type manifestPR struct {
 	URL    string `json:"url,omitempty"`
 }
 
-// Load strictly reads only saga.json and the bounded ___quality subtree. It
+// Load strictly reads only saga.json and the bounded ___quality subtree of
+// every epic, combined into one app-wide document. Test-case and policy IDs
+// are unique across the app because their URNs never name an epic. It
 // never follows symlinks, writes files, executes commands, fetches URLs, or
 // resolves referenced resources outside the Saga.
 func Load(root string) (Document, error) {
@@ -58,41 +61,60 @@ func Load(root string) (Document, error) {
 	if err := validateManifest(identity); err != nil {
 		return Document{}, fmt.Errorf("saga.json: %w", err)
 	}
+	epics, err := applayout.Epics(abs)
+	if err != nil {
+		return Document{}, err
+	}
+	if err := applayout.RejectEpicRootsAtAppRoot(abs); err != nil {
+		return Document{}, err
+	}
 	document := Document{
-		Root: abs, SagaID: identity.ID, Source: identity.Source, Adoption: NotAdopted,
+		Root: abs, SagaID: identity.ID, Source: identity.Source, Adoption: NotAdopted, Epics: epics,
 		TestCases: []TestCase{}, Policies: []Policy{}, PolicySets: []PolicySet{},
 	}
 
-	qualityRoot := filepath.Join(abs, RootDir)
-	present, err := realDirectory(qualityRoot)
-	if err != nil {
-		return Document{}, err
-	}
-	if !present {
-		return document, nil
-	}
-	document.Adoption = AdoptedEmpty
-	entries, err := boundedReadDir(qualityRoot, 2)
-	if err != nil {
-		return Document{}, err
-	}
-	for _, entry := range entries {
-		if entry.Type()&fs.ModeSymlink != 0 || !entry.IsDir() {
-			return Document{}, fmt.Errorf("quality entry %q must be a real directory", entry.Name())
+	testCaseIDs := applayout.NewUniqueIDs("test-case")
+	policyIDs := applayout.NewUniqueIDs("policy")
+	for _, epic := range epics {
+		qualityRoot := filepath.Join(epic.Dir, RootDir)
+		present, err := realDirectory(qualityRoot)
+		if err != nil {
+			return Document{}, err
 		}
-		switch entry.Name() {
-		case "policies", "test-cases":
-		default:
-			return Document{}, fmt.Errorf("unknown quality entry %q", entry.Name())
+		if !present {
+			continue
+		}
+		// Quality is adopted when any epic has a quality root.
+		document.Adoption = AdoptedEmpty
+		entries, err := boundedReadDir(qualityRoot, 2)
+		if err != nil {
+			return Document{}, err
+		}
+		for _, entry := range entries {
+			if entry.Type()&fs.ModeSymlink != 0 || !entry.IsDir() {
+				return Document{}, fmt.Errorf("%s: quality entry %q must be a real directory", epic.Rel, entry.Name())
+			}
+			switch entry.Name() {
+			case "policies", "test-cases":
+			default:
+				return Document{}, fmt.Errorf("%s: unknown quality entry %q", epic.Rel, entry.Name())
+			}
+		}
+		if err := loadPolicies(&document, epic, policyIDs); err != nil {
+			return Document{}, err
+		}
+		if err := loadTestCases(&document, epic, testCaseIDs); err != nil {
+			return Document{}, err
 		}
 	}
-
-	if err := loadPolicies(&document); err != nil {
-		return Document{}, err
+	if len(document.Policies) > MaxPolicies {
+		return Document{}, fmt.Errorf("the app has %d policies; maximum is %d", len(document.Policies), MaxPolicies)
 	}
-	if err := loadTestCases(&document); err != nil {
-		return Document{}, err
+	if len(document.TestCases) > MaxTestCases {
+		return Document{}, fmt.Errorf("the app has %d test cases; maximum is %d", len(document.TestCases), MaxTestCases)
 	}
+	sort.Slice(document.Policies, func(i, j int) bool { return document.Policies[i].ID < document.Policies[j].ID })
+	sort.Slice(document.TestCases, func(i, j int) bool { return document.TestCases[i].Identity.ID < document.TestCases[j].Identity.ID })
 	if len(document.TestCases) > 0 {
 		document.Adoption = Adopted
 	}
@@ -102,8 +124,8 @@ func Load(root string) (Document, error) {
 	return document, nil
 }
 
-func loadPolicies(document *Document) error {
-	dir := filepath.Join(document.Root, RootDir, "policies")
+func loadPolicies(document *Document, epic applayout.Epic, ids *applayout.UniqueIDs) error {
+	dir := filepath.Join(epic.Dir, RootDir, "policies")
 	present, err := realDirectory(dir)
 	if err != nil || !present {
 		return err
@@ -114,7 +136,7 @@ func loadPolicies(document *Document) error {
 	}
 	for _, entry := range entries {
 		if entry.Type()&fs.ModeSymlink != 0 || !entry.Type().IsRegular() || filepath.Ext(entry.Name()) != ".json" {
-			return fmt.Errorf("policy entry %q must be a real JSON file", entry.Name())
+			return fmt.Errorf("%s: policy entry %q must be a real JSON file", epic.Rel, entry.Name())
 		}
 		path := filepath.Join(dir, entry.Name())
 		var value Policy
@@ -128,14 +150,17 @@ func loadPolicies(document *Document) error {
 		if err := validatePolicy(value, document.SagaID, expectedID); err != nil {
 			return fmt.Errorf("%s: %w", relative(document.Root, path), err)
 		}
+		if err := ids.Claim(value.ID, epic.ID); err != nil {
+			return err
+		}
+		value.Epic = epic.ID
 		document.Policies = append(document.Policies, value)
 	}
-	sort.Slice(document.Policies, func(i, j int) bool { return document.Policies[i].ID < document.Policies[j].ID })
 	return nil
 }
 
-func loadTestCases(document *Document) error {
-	dir := filepath.Join(document.Root, RootDir, "test-cases")
+func loadTestCases(document *Document, epic applayout.Epic, ids *applayout.UniqueIDs) error {
+	dir := filepath.Join(epic.Dir, RootDir, "test-cases")
 	present, err := realDirectory(dir)
 	if err != nil || !present {
 		return err
@@ -147,19 +172,22 @@ func loadTestCases(document *Document) error {
 	for _, entry := range entries {
 		path := filepath.Join(dir, entry.Name())
 		if entry.Type()&fs.ModeSymlink != 0 || !entry.IsDir() || !strings.HasSuffix(entry.Name(), ".test") {
-			return fmt.Errorf("test-case entry %q must be a real <id>.test directory", entry.Name())
+			return fmt.Errorf("%s: test-case entry %q must be a real <id>.test directory", epic.Rel, entry.Name())
 		}
 		testCaseID := strings.TrimSuffix(entry.Name(), ".test")
 		if !qualityid.ValidID(testCaseID) {
-			return fmt.Errorf("test-case package %q has an invalid id", entry.Name())
+			return fmt.Errorf("%s: test-case package %q has an invalid id", epic.Rel, entry.Name())
+		}
+		if err := ids.Claim(testCaseID, epic.ID); err != nil {
+			return err
 		}
 		value, err := loadTestCasePackage(document.Root, document.SagaID, path, testCaseID)
 		if err != nil {
 			return err
 		}
+		value.Epic = epic.ID
 		document.TestCases = append(document.TestCases, value)
 	}
-	sort.Slice(document.TestCases, func(i, j int) bool { return document.TestCases[i].Identity.ID < document.TestCases[j].Identity.ID })
 	return nil
 }
 

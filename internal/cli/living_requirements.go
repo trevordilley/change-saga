@@ -18,7 +18,7 @@ func story(ctx context.Context, args []string, out io.Writer, stdin io.Reader) e
 	operation := "story"
 	var err error
 	if len(args) == 0 || args[0] == "-h" || args[0] == "--help" {
-		return livingFamilyHelp("story", []string{"add", "revise", "set-state"}, out)
+		return livingFamilyHelp("story", []string{"add", "revise", "set-state", "move"}, out)
 	}
 	operation += " " + args[0]
 	switch args[0] {
@@ -28,6 +28,8 @@ func story(ctx context.Context, args []string, out io.Writer, stdin io.Reader) e
 		err = storyRevise(ctx, args[1:], out, stdin)
 	case "set-state":
 		err = storySetState(ctx, args[1:], out, stdin)
+	case "move":
+		err = storyMove(ctx, args[1:], out)
 	default:
 		err = fmt.Errorf("usage: %s", commandUsage["story"])
 	}
@@ -97,9 +99,11 @@ func storyAdd(_ context.Context, args []string, out io.Writer, stdin io.Reader) 
 	requestID := flags.String("request-id", "", "idempotency key")
 	from := flags.String("from", "", "read a structured mutation request from a JSON file, or - for stdin")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
-	var citations, criteria stringList
+	epic := epicFlag(flags)
+	var citations, criteria, personas stringList
 	flags.Var(&citations, "citation", "citation URN; repeatable")
 	flags.Var(&criteria, "criterion", "acceptance criterion as ID=STATEMENT; repeatable")
+	flags.Var(&personas, "persona", "persona URN the story serves; repeatable")
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
 	}
@@ -127,22 +131,28 @@ func storyAdd(_ context.Context, args []string, out io.Writer, stdin io.Reader) 
 		"request-id": func() { request.RequestID = *requestID },
 		"citation":   func() { request.Citations = append([]string{}, citations...) },
 		"criterion":  func() { request.AcceptanceCriteria = append([]requirements.Criterion{}, flagCriteria...) },
+		"persona":    func() { request.Personas = append([]string{}, personas...) },
+		"epic":       func() { request.Epic = *epic },
 	})
 	if *from == "" {
-		request = storyAddRequest{ID: *id, Revision: *revision, Event: *event, Title: *title, Statement: *statement, Priority: *priority, Citations: citations, RequestID: *requestID}
+		request = storyAddRequest{Epic: *epic, ID: *id, Revision: *revision, Event: *event, Title: *title, Statement: *statement, Priority: *priority, Personas: personas, Citations: citations, RequestID: *requestID}
 		request.AcceptanceCriteria = append([]requirements.Criterion{}, flagCriteria...)
 	}
 	if request.ID == "" || request.Revision == "" || request.Event == "" || request.Title == "" || request.Statement == "" || request.Priority == "" {
 		return fmt.Errorf("usage: %s", usage)
 	}
 	root := flags.Arg(0)
+	target, err := requireEpic(root, request.Epic)
+	if err != nil {
+		return err
+	}
 	sagaID, err := requirementSagaID(root)
 	if err != nil {
 		return err
 	}
 	result, err := requirements.AddStory(root, sagaID, requirements.AddStoryInput{
-		ID: request.ID, RevisionID: request.Revision, EventID: request.Event, Title: request.Title, Statement: request.Statement,
-		Priority: request.Priority, Citations: request.Citations, AcceptanceCriteria: request.AcceptanceCriteria,
+		Epic: target.ID, ID: request.ID, RevisionID: request.Revision, EventID: request.Event, Title: request.Title, Statement: request.Statement,
+		Priority: request.Priority, Personas: request.Personas, Citations: request.Citations, AcceptanceCriteria: request.AcceptanceCriteria,
 		CreatedAt: request.CreatedAt, RequestID: request.RequestID,
 	})
 	if err != nil {
@@ -164,10 +174,12 @@ func storyRevise(ctx context.Context, args []string, out io.Writer, stdin io.Rea
 	from := flags.String("from", "", "read a structured complete revision from a JSON file, or - for stdin")
 	edit := flags.Bool("edit", false, "edit the complete proposed revision with $EDITOR")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
-	var parents, citations, criteria stringList
+	epic := epicFlag(flags)
+	var parents, citations, criteria, personas stringList
 	flags.Var(&parents, "parent", "current revision head URN; repeatable")
 	flags.Var(&citations, "citation", "citation URN; repeatable")
 	flags.Var(&criteria, "criterion", "acceptance criterion as ID=STATEMENT; repeatable")
+	flags.Var(&personas, "persona", "persona URN the revised story serves; repeatable")
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
 	}
@@ -196,7 +208,7 @@ func storyRevise(ctx context.Context, args []string, out io.Writer, stdin io.Rea
 		if value.Schema != requirements.RevisionSchemaURL || value.Version != requirements.Version {
 			return fmt.Errorf("structured story revision must use the v3 story-revision schema")
 		}
-		request = storyReviseRequest{Story: value.Story, Revision: value.ID, Parents: value.Parents, Title: value.Title, Statement: value.Statement, Priority: value.Priority, Citations: value.Citations, AcceptanceCriteria: value.AcceptanceCriteria, CreatedAt: value.CreatedAt, RequestID: value.RequestID}
+		request = storyReviseRequest{Story: value.Story, Revision: value.ID, Parents: value.Parents, Title: value.Title, Statement: value.Statement, Priority: value.Priority, Personas: value.Personas, Citations: value.Citations, AcceptanceCriteria: value.AcceptanceCriteria, CreatedAt: value.CreatedAt, RequestID: value.RequestID}
 	}
 	overrideVisited(flags, map[string]func(){
 		"story": func() { request.Story = *story }, "revision": func() { request.Revision = *revision },
@@ -205,9 +217,10 @@ func storyRevise(ctx context.Context, args []string, out io.Writer, stdin io.Rea
 		"parent":    func() { request.Parents = append([]string{}, parents...) },
 		"citation":  func() { request.Citations = append([]string{}, citations...) },
 		"criterion": func() { request.AcceptanceCriteria = append([]requirements.Criterion{}, flagCriteria...) },
+		"persona":   func() { request.Personas = append([]string{}, personas...) },
 	})
 	if *from == "" {
-		request = storyReviseRequest{Story: *story, Revision: *revision, Parents: parents, Title: *title, Statement: *statement, Priority: *priority, Citations: citations, RequestID: *requestID}
+		request = storyReviseRequest{Story: *story, Revision: *revision, Parents: parents, Title: *title, Statement: *statement, Priority: *priority, Personas: personas, Citations: citations, RequestID: *requestID}
 		request.AcceptanceCriteria = append([]requirements.Criterion{}, flagCriteria...)
 	}
 	if *edit {
@@ -222,9 +235,12 @@ func storyRevise(ctx context.Context, args []string, out io.Writer, stdin io.Rea
 	if request.Story == "" || request.Revision == "" || request.Title == "" || request.Statement == "" || request.Priority == "" {
 		return fmt.Errorf("usage: %s", usage)
 	}
+	if err := assertRecordEpic(root, *epic, request.Story); err != nil {
+		return err
+	}
 	result, err := requirements.ReviseStory(root, sagaID, requirements.ReviseStoryInput{
 		Story: request.Story, ID: request.Revision, Parents: request.Parents, Title: request.Title, Statement: request.Statement,
-		Priority: request.Priority, Citations: request.Citations, AcceptanceCriteria: request.AcceptanceCriteria,
+		Priority: request.Priority, Personas: request.Personas, Citations: request.Citations, AcceptanceCriteria: request.AcceptanceCriteria,
 		CreatedAt: request.CreatedAt, RequestID: request.RequestID,
 	})
 	if err != nil {
@@ -244,6 +260,7 @@ func storySetState(_ context.Context, args []string, out io.Writer, stdin io.Rea
 	requestID := flags.String("request-id", "", "idempotency key")
 	from := flags.String("from", "", "read a structured lifecycle event from a JSON file, or - for stdin")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
+	epic := epicFlag(flags)
 	var parents stringList
 	flags.Var(&parents, "parent", "current lifecycle head URN; repeatable")
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
@@ -279,6 +296,9 @@ func storySetState(_ context.Context, args []string, out io.Writer, stdin io.Rea
 	if err != nil {
 		return err
 	}
+	if err := assertRecordEpic(root, *epic, request.Story); err != nil {
+		return err
+	}
 	result, err := requirements.SetStoryState(root, sagaID, requirements.SetStoryStateInput{
 		Story: request.Story, ID: request.Event, Parents: request.Parents, State: request.State,
 		Reason: request.Reason, CreatedAt: request.CreatedAt, RequestID: request.RequestID,
@@ -299,6 +319,7 @@ func citationAdd(_ context.Context, args []string, out io.Writer) error {
 	reference := flags.String("reference", "", "authoritative citation locator")
 	requestID := flags.String("request-id", "", "idempotency key")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
+	epic := epicFlag(flags)
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
 	}
@@ -310,8 +331,12 @@ func citationAdd(_ context.Context, args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
+	target, err := requireEpic(root, *epic)
+	if err != nil {
+		return err
+	}
 	result, err := requirements.AddCitation(root, sagaID, requirements.AddCitationInput{
-		ID: *id, Kind: requirements.CitationKind(*kind), Title: *title, Reference: *reference, RequestID: *requestID,
+		Epic: target.ID, ID: *id, Kind: requirements.CitationKind(*kind), Title: *title, Reference: *reference, RequestID: *requestID,
 	})
 	if err != nil {
 		return err
@@ -335,6 +360,7 @@ func relationAdd(_ context.Context, args []string, out io.Writer) error {
 	scope := flags.String("scope", "", "v5 only: self (default) or descendants for a Deck/Slide addresses or explains source")
 	requestID := flags.String("request-id", "", "idempotency key")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
+	epic := epicFlag(flags)
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
 	}
@@ -342,12 +368,16 @@ func relationAdd(_ context.Context, args []string, out io.Writer) error {
 		return err
 	}
 	root := flags.Arg(0)
+	target, err := requireEpic(root, *epic)
+	if err != nil {
+		return err
+	}
 	document, err := requirements.Load(root, "")
 	if err != nil {
 		return err
 	}
 	input := requirements.AddRelationInput{
-		ID: *id, Type: requirements.RelationType(*typeName), From: *from, To: *to, Rationale: *rationale,
+		Epic: target.ID, ID: *id, Type: requirements.RelationType(*typeName), From: *from, To: *to, Rationale: *rationale,
 		FromRevision: *fromRevision, ToRevision: *toRevision, FromContentDigest: *fromDigest,
 		ToContentDigest: *toDigest, Scope: requirements.RelationScope(*scope), RequestID: *requestID,
 	}
@@ -430,6 +460,7 @@ func relationSupersede(_ context.Context, args []string, out io.Writer) error {
 	relation := flags.String("relation", "", "canonical relation URN")
 	requestID := flags.String("request-id", "", "idempotency key")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
+	epic := epicFlag(flags)
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
 	}
@@ -439,6 +470,9 @@ func relationSupersede(_ context.Context, args []string, out io.Writer) error {
 	root := flags.Arg(0)
 	sagaID, err := requirementSagaID(root)
 	if err != nil {
+		return err
+	}
+	if err := assertRecordEpic(root, *epic, *relation); err != nil {
 		return err
 	}
 	result, err := requirements.SupersedeRelation(root, sagaID, *relation, time.Time{}, *requestID)

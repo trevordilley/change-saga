@@ -13,7 +13,7 @@ test("a Saga opens several implementation decks without paginating its documenta
     { id: "request-flow", title: "Request flow", slides: [["request-enters", "Request enters", "Ingress"], ["response-returns", "Response returns", "Egress"]] },
     { id: "failure-path", title: "Failure path", slides: [["failure-change", "Failure path", "Errors"]] }
   ] as const) {
-    run("add-deck", "--objective", `Explain the complex ${deck.title.toLowerCase()}.`, saga.sagaRoot, deck.id);
+    run("add-deck", "--epic", "wave-one", "--objective", `Explain the complex ${deck.title.toLowerCase()}.`, saga.sagaRoot, deck.id);
     for (const [slide, title, section] of deck.slides) {
       run("add-slide", "--deck", deck.id, "--section", section, "--intent", "explain", "--layout", "diagram", "--title", title, "--takeaway", `${title} is explicit.`, saga.sagaRoot, slide);
       if (slide === "request-enters") {
@@ -119,7 +119,7 @@ test("a Saga opens several implementation decks without paginating its documenta
   expect(page.url()).toBe(reviewURL);
   expect(navigations).toEqual([]);
   expect(reviewFiles(saga, /\/84-r-.*\.json$/)).toHaveLength(1);
-  expect(existsSync(join(saga.sagaRoot, "___slides", "request-flow.deck", "___approvals"))).toBe(false);
+  expect(existsSync(join(saga.sagaRoot, "___epics", "wave-one.epic", "___slides", "request-flow.deck", "___approvals"))).toBe(false);
   run("validate", saga.sagaRoot);
 
   const reload = await page.reload();

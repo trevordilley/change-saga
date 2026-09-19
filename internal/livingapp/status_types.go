@@ -3,6 +3,7 @@ package livingapp
 import (
 	"strings"
 
+	"github.com/twentyideas/changesaga/internal/applayout"
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
@@ -84,6 +85,14 @@ type StatusInputs struct {
 	Citations []requirements.Citation
 	Links     []Link
 
+	// Epics, Personas, Flags, and Gates are the app-level records: the
+	// durable product domains, who the app serves, and which stories current
+	// flags gate.
+	Epics    []applayout.Epic
+	Personas []requirements.Persona
+	Flags    []requirements.Flag
+	Gates    requirements.Gate
+
 	Prototypes prototypes.Document
 	Decks      []*saga.Deck
 	// DesignDigests is the current canonical content digest of every design and
@@ -112,24 +121,35 @@ type Diagnostic struct {
 // Status is the machine-readable authoring status of one Saga snapshot. Every
 // section is a list of facts; nothing is reduced to a score or a percentage.
 type Status struct {
-	SagaID        string                   `json:"saga_id"`
-	SagaVersion   int                      `json:"saga_version"`
-	Stories       []StoryStatus            `json:"stories"`
-	Prototypes    []PrototypeStatus        `json:"prototypes"`
-	Readiness     readiness.GateProjection `json:"readiness"`
-	Axes          coverage.AxisProjection  `json:"axes"`
-	Quality       QualityStatus            `json:"quality"`
-	Stale         []StaleRecord            `json:"stale"`
-	ChangedSource ChangedSource            `json:"changed_source"`
-	Diagnostics   []Diagnostic             `json:"diagnostics"`
+	SagaID         string           `json:"saga_id"`
+	SagaVersion    int              `json:"saga_version"`
+	Epics          []EpicStatus     `json:"epics"`
+	Personas       []PersonaStatus  `json:"personas"`
+	PersonaOrphans []PersonaOrphans `json:"persona_orphans"`
+	// PersonaCoverage reports the persona -> story link. It never blocks a
+	// readiness gate.
+	PersonaCoverage PersonaCoverage          `json:"persona_coverage"`
+	Flags           []FlagStatus             `json:"flags"`
+	Stories         []StoryStatus            `json:"stories"`
+	Prototypes      []PrototypeStatus        `json:"prototypes"`
+	Readiness       readiness.GateProjection `json:"readiness"`
+	Axes            coverage.AxisProjection  `json:"axes"`
+	Quality         QualityStatus            `json:"quality"`
+	Stale           []StaleRecord            `json:"stale"`
+	ChangedSource   ChangedSource            `json:"changed_source"`
+	Diagnostics     []Diagnostic             `json:"diagnostics"`
 }
 
 // StoryStatus is the requirement identity an author needs to act on a story.
 type StoryStatus struct {
 	Story           string            `json:"story"`
 	ID              string            `json:"id"`
+	Epic            string            `json:"epic"`
 	Title           string            `json:"title,omitempty"`
 	State           string            `json:"state"`
+	Personas        []string          `json:"personas"`
+	GatedBy         []string          `json:"gated_by"`
+	Availability    string            `json:"availability"`
 	RevisionHeads   []string          `json:"revision_heads"`
 	LifecycleHeads  []string          `json:"lifecycle_heads"`
 	CurrentRevision string            `json:"current_revision,omitempty"`
@@ -146,6 +166,7 @@ type CriterionStatus struct {
 // PrototypeStatus is one prototype's product-discovery linkage.
 type PrototypeStatus struct {
 	Prototype       string   `json:"prototype"`
+	Epic            string   `json:"epic"`
 	State           string   `json:"state"`
 	Retained        bool     `json:"retained"`
 	RevisionHeads   []string `json:"revision_heads"`
@@ -204,6 +225,7 @@ type TestLinkRow struct {
 // TestCaseStatus is one test case and what it currently proves.
 type TestCaseStatus struct {
 	TestCase        string         `json:"test_case"`
+	Epic            string         `json:"epic"`
 	Title           string         `json:"title,omitempty"`
 	Lifecycle       string         `json:"lifecycle"`
 	RevisionHeads   []string       `json:"revision_heads"`

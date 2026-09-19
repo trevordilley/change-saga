@@ -3,14 +3,17 @@
 // or server dependencies so those adapters can evolve independently.
 package workplan
 
-import "time"
+import (
+	"time"
+
+	"github.com/twentyideas/changesaga/internal/applayout"
+)
 
 const (
 	// sagaVersion is the one Change Saga container format; its records are
 	// version Version.
 	sagaVersion = 5
 	Version     = 3
-	RootDir     = "___workplan"
 
 	WaveSchema       = "https://changesaga.dev/schema/v3/wave.schema.json"
 	WorkItemSchema   = "https://changesaga.dev/schema/v3/work-item.schema.json"
@@ -37,6 +40,9 @@ type Identity struct {
 
 type Wave struct {
 	Identity
+	// Epic is the epic whose ___workplan holds the record. It is where the
+	// record lives, never part of its identity.
+	Epic            string         `json:"-"`
 	Revisions       []WaveRevision `json:"-"`
 	Heads           []string       `json:"-"`
 	CurrentRevision *WaveRevision  `json:"-"`
@@ -60,6 +66,9 @@ type WaveRevision struct {
 
 type WorkItem struct {
 	Identity
+	// Epic is the epic whose ___workplan holds the record. It is where the
+	// record lives, never part of its identity.
+	Epic            string             `json:"-"`
 	Revisions       []WorkItemRevision `json:"-"`
 	Heads           []string           `json:"-"`
 	Progress        []ProgressEvent    `json:"-"`
@@ -121,6 +130,10 @@ type Dependency struct {
 	CreatedAt     time.Time           `json:"created_at"`
 	RequestID     string              `json:"request_id,omitempty"`
 	RequestDigest string              `json:"request_digest,omitempty"`
+
+	// Epic is the epic whose ___workplan holds the record. It is where the
+	// record lives, never part of its identity.
+	Epic string `json:"-"`
 }
 
 type DependencyCondition struct {
@@ -130,6 +143,9 @@ type DependencyCondition struct {
 
 type Contract struct {
 	Identity
+	// Epic is the epic whose ___workplan holds the record. It is where the
+	// record lives, never part of its identity.
+	Epic            string             `json:"-"`
 	Revisions       []ContractRevision `json:"-"`
 	Heads           []string           `json:"-"`
 	Events          []ContractEvent    `json:"-"`
@@ -209,8 +225,11 @@ type ContractEvent struct {
 }
 
 type Plan struct {
-	Root         string
-	SagaID       string
+	Root   string
+	SagaID string
+	// Epics lists every epic of the app in ID order. The plan holds the work
+	// plans of all of them.
+	Epics        []applayout.Epic
 	Waves        map[string]*Wave
 	WorkItems    map[string]*WorkItem
 	Dependencies map[string]*Dependency

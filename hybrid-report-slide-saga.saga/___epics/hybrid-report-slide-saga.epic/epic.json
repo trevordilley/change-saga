@@ -1,0 +1,7 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/epic.schema.json",
+  "version": 5,
+  "id": "hybrid-report-slide-saga",
+  "title": "Hybrid Report + Slide Sagas",
+  "created_at": "2026-09-18T00:00:00Z"
+}

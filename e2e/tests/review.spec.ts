@@ -149,7 +149,7 @@ test("@critical keeps saga and source repositories separate and reloads Git-deri
   await reviewResponse;
 
   expect(git(saga.sagaRepo, "status", "--short")).toMatch(/___review|___approvals/);
-  git(saga.sagaRepo, "add", "wave-one.saga/___review", "wave-one.saga/overview.fragment/___approvals");
+  git(saga.sagaRepo, "add", "wave-one.saga/___review", "wave-one.saga/___overview/overview.fragment/___approvals");
   git(saga.sagaRepo, "commit", "-m", "record browser review");
   expect(git(saga.sourceRepo, "rev-parse", "HEAD")).toBe(sourceHeadBefore);
   expect(git(saga.sourceRepo, "status", "--short")).toBe(sourceStatusBefore);

@@ -4,7 +4,11 @@
 // through Compose.
 package prototypes
 
-import "time"
+import (
+	"time"
+
+	"github.com/twentyideas/changesaga/internal/applayout"
+)
 
 const (
 	// sagaVersion is the one Change Saga container format; its records are
@@ -140,9 +144,16 @@ type Annotation struct {
 	Selector               Selector  `json:"selector"`
 	CreatedAt              time.Time `json:"created_at"`
 	RequestID              string    `json:"request_id,omitempty"`
+
+	// Epic is the epic whose directory holds the record. It is where the
+	// record lives, never part of its identity.
+	Epic string `json:"-"`
 }
 
 type Prototype struct {
+	// Epic is the epic whose directory holds the prototype. Its URN and every
+	// pin are independent of it.
+	Epic            string
 	Identity        Identity
 	Revisions       []Revision
 	RevisionHeads   []string
@@ -154,6 +165,7 @@ func (p Prototype) RevisionConflict() bool { return len(p.RevisionHeads) > 1 }
 type Document struct {
 	Root        string
 	SagaID      string
+	Epics       []applayout.Epic
 	Adopted     bool
 	Prototypes  []Prototype
 	Annotations []Annotation
@@ -172,6 +184,8 @@ type MutationResult struct {
 }
 
 type AddHTMLInput struct {
+	// Epic is the epic the new prototype is written into.
+	Epic                  string
 	ID, RevisionID, Title string
 	State                 State
 	SourcePath            string
@@ -180,6 +194,8 @@ type AddHTMLInput struct {
 }
 
 type AddExternalInput struct {
+	// Epic is the epic the new prototype is written into.
+	Epic                  string
 	ID, RevisionID, Title string
 	State                 State
 	URL                   string
@@ -204,6 +220,10 @@ type ReviseInput struct {
 }
 
 type AddAnnotationInput struct {
+	// Epic is optional when the prototype exists: the annotation is written
+	// into the prototype's epic, and a different Epic is refused. It is
+	// required for an annotation of a prototype that does not exist yet.
+	Epic                             string
 	ID, Prototype, Target, Rationale string
 	PrototypeRevision                string
 	PrototypeContentDigest           string

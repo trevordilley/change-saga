@@ -117,6 +117,7 @@ func TestEmbeddedDeckCoverageAndActivityUseTheFlatReviewOverlay(t *testing.T) {
 		t.Fatal(err)
 	}
 	writeServerFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"visual","title":"Visual review","source":{"repository":"`+repository+`","base":"`+base+`","head":"HEAD"}}`)
+	writeServerEpic(t, root)
 
 	index, validation, err := saga.LoadMutationIndex(root)
 	if err != nil || !validation.Valid {
@@ -196,9 +197,10 @@ func TestEmbeddedDeckCoverageAndActivityUseTheFlatReviewOverlay(t *testing.T) {
 func writeEmbeddedSlideFixture(t *testing.T, root string) string {
 	t.Helper()
 	writeServerFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"visual","title":"Visual review","source":{"repository":"https://example.test/acme/app.git","base":"main","head":"feature"}}`)
-	writeServerFile(t, filepath.Join(root, "overview.fragment", "fragment.json"), `{"version":2,"id":"overview","title":"Living overview","media_type":"text/markdown","entrypoint":"content.md"}`)
-	writeServerFile(t, filepath.Join(root, "overview.fragment", "content.md"), "# Living overview {#living-overview}\n")
-	bundle := filepath.Join(root, saga.EmbeddedSlidesDir, "flow"+saga.EmbeddedDeckSuffix)
+	writeServerEpic(t, root)
+	writeServerFile(t, filepath.Join(serverEpicDir(root), "overview.fragment", "fragment.json"), `{"version":2,"id":"overview","title":"Living overview","media_type":"text/markdown","entrypoint":"content.md"}`)
+	writeServerFile(t, filepath.Join(serverEpicDir(root), "overview.fragment", "content.md"), "# Living overview {#living-overview}\n")
+	bundle := filepath.Join(serverEpicDir(root), saga.EmbeddedSlidesDir, "flow"+saga.EmbeddedDeckSuffix)
 	deckTarget := saga.DeckTarget("visual", "flow")
 	deckName, _ := saga.FlatDeckFilename(deckTarget, 0)
 	writeServerFile(t, filepath.Join(bundle, deckName), `{"version":4,"id":"flow","title":"Complex flow","role":"change","rank":0,"objective":"Explain the complex implementation."}`)

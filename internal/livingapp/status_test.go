@@ -10,6 +10,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/twentyideas/changesaga/internal/applayout"
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/coverage"
@@ -29,6 +30,9 @@ const (
 )
 
 var statusFixtureTime = time.Date(2026, 9, 17, 20, 0, 0, 0, time.UTC)
+
+// statusFixtureEpic holds every hand-authored status fixture record.
+const statusFixtureEpic = "refunds"
 
 func criterionURN(id string) string { return storyURN + ":criterion:" + id }
 func testURN(id string) string      { return "urn:change-saga:checkout:test-case:" + id }
@@ -74,7 +78,7 @@ func writeStatusJSON(t *testing.T, path string, value any) {
 	}
 }
 
-// newV5QualitySaga writes a v5 manifest and ___quality tree in a temp dir. The
+// newV5QualitySaga writes a v5 manifest and an epic's ___quality tree in a temp dir. The
 // core Saga loader does not accept v5 yet, so only quality.Load reads it.
 func newV5QualitySaga(t *testing.T, specs []testCaseSpec, policies []quality.Policy) string {
 	t.Helper()
@@ -83,16 +87,20 @@ func newV5QualitySaga(t *testing.T, specs []testCaseSpec, policies []quality.Pol
 		"$schema": quality.ManifestSchemaURL, "version": quality.Version, "id": fixtureSaga, "title": "Checkout",
 		"source": quality.SourceIdentity{Repository: fixtureRepo, Base: "base", Head: "head"},
 	})
+	if _, err := applayout.WriteEpic(root, applayout.EpicManifest{ID: statusFixtureEpic, Title: "Refunds", CreatedAt: statusFixtureTime}); err != nil {
+		t.Fatal(err)
+	}
+	qualityRoot := filepath.Join(applayout.EpicDir(root, statusFixtureEpic), quality.RootDir)
 	for _, dir := range []string{"policies", "test-cases"} {
-		if err := os.MkdirAll(filepath.Join(root, quality.RootDir, dir), 0o755); err != nil {
+		if err := os.MkdirAll(filepath.Join(qualityRoot, dir), 0o755); err != nil {
 			t.Fatal(err)
 		}
 	}
 	for _, policy := range policies {
-		writeStatusJSON(t, filepath.Join(root, quality.RootDir, "policies", policy.ID+".json"), policy)
+		writeStatusJSON(t, filepath.Join(qualityRoot, "policies", policy.ID+".json"), policy)
 	}
 	for _, spec := range specs {
-		dir := filepath.Join(root, quality.RootDir, "test-cases", spec.id+".test")
+		dir := filepath.Join(qualityRoot, "test-cases", spec.id+".test")
 		for _, sub := range []string{"revisions", "events", "evidence", "runs"} {
 			if err := os.MkdirAll(filepath.Join(dir, sub), 0o755); err != nil {
 				t.Fatal(err)

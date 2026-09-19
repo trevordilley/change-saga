@@ -6,12 +6,14 @@ package quality
 import (
 	"time"
 
+	"github.com/twentyideas/changesaga/internal/applayout"
 	"github.com/twentyideas/changesaga/internal/coderef"
 )
 
 const (
 	Version = 5
-	RootDir = "___quality"
+	// RootDir is the quality root beneath each epic directory.
+	RootDir = applayout.QualityDir
 
 	ManifestSchemaURL       = "https://changesaga.dev/schema/v5/saga.schema.json"
 	TestCaseSchemaURL       = "https://changesaga.dev/schema/v5/test-case.schema.json"
@@ -180,9 +182,16 @@ type Policy struct {
 	Rationale         string         `json:"rationale"`
 	CreatedAt         time.Time      `json:"created_at"`
 	RequestID         string         `json:"request_id,omitempty"`
+
+	// Epic is the epic whose directory holds the policy. It is where the
+	// record lives, never part of its identity.
+	Epic string `json:"-"`
 }
 
 type TestCase struct {
+	// Epic is the epic whose directory holds the test case. It is where the
+	// package lives, never part of its identity.
+	Epic      string
 	Identity  TestCaseIdentity
 	Revisions []Revision
 	Events    []LifecycleEvent
@@ -219,6 +228,7 @@ type Document struct {
 	SagaID     string
 	Source     SourceIdentity
 	Adoption   AdoptionState
+	Epics      []applayout.Epic
 	TestCases  []TestCase
 	Policies   []Policy
 	PolicySets []PolicySet

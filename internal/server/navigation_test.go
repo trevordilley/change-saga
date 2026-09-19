@@ -178,6 +178,23 @@ func TestDeckNavigationFoldsIntoDesignAndImplementationByRole(t *testing.T) {
 			t.Fatal("implementation decks must fill Implementation")
 		}
 	}
+
+	// The reviewer applies the same split inside each epic.
+	sources := appNavFixture(t)
+	uxDeck, uxRow := appNavDeck("billing-ux", "ux", "happy-path")
+	billing := sources.document.Epics[0]
+	billing.Decks = append(billing.Decks, uxDeck)
+	sources.decks = append(sources.decks, uxRow)
+	app := makeAppNavTree(sources)
+	if ux := findNav(t, app, "Epics", "Billing", "Design", "UX"); ux.Gap || len(ux.Children) != 1 || ux.Children[0] != uxRow {
+		t.Fatalf("an epic's ux deck must fill its Design > UX: %v", navTitles(ux.Children, 0))
+	}
+	if got := topTitles(findNav(t, app, "Epics", "Billing", "Implementation").Children); got != "charge|refund" {
+		t.Fatalf("a ux deck must leave the epic's Implementation to the change deck: %s", got)
+	}
+	if !findNav(t, app, "Epics", "Catalog", "Design", "UX").Gap {
+		t.Fatal("another epic's ux deck must not fill this epic's Design > UX")
+	}
 }
 
 // ___design is the only recorded signal that a chapter is technical design.
@@ -223,26 +240,26 @@ func TestPrototypeNavigationNamesPrototypesFromTheirCurrentRevision(t *testing.T
 	}
 }
 
-// The architecture sits directly below the report overview so it occupies the
-// same four rows on every Saga; narrative chapters, whose number varies, follow.
-func TestProductNavigationSitsBelowTheOverviewAndAboveNarrativeChapters(t *testing.T) {
-	narrative := []*navNodeView{{Title: "Overview"}, {Title: "Delivery"}, {Title: "Evidence"}}
-	nodes := spliceProductNav(narrative, makeProductNavTree(productNavSources{}))
-	var top []string
-	for _, node := range nodes {
-		top = append(top, node.Title)
+// The app-level list has the same six rows on every Saga, and each epic lists
+// its own report outline and then the same four places, so the architecture
+// sits at a stable place inside every epic whatever the app-level content is.
+func TestProductNavigationSitsInsideEveryEpicBelowItsReportOutline(t *testing.T) {
+	sources := appNavFixture(t)
+	billing := sources.document.Epics[0]
+	billing.Report.Children = []*saga.Section{
+		{Kind: "chapter", ID: "delivery", Title: "Delivery", Target: saga.ChapterTarget(appNavSaga, "delivery")},
+		{Kind: "chapter", ID: "evidence", Title: "Evidence", Target: saga.ChapterTarget(appNavSaga, "evidence")},
 	}
-	want := "Overview|Product|Design|Quality|Implementation|Delivery|Evidence"
-	if got := strings.Join(top, "|"); got != want {
+	nodes := makeAppNavTree(sources)
+	if got, want := topTitles(nodes), "Overview|Personas|Design system|Onboarding|Feature flags|Epics"; got != want {
 		t.Fatalf("sidebar = %s, want %s", got, want)
 	}
-	if got := strings.Join(func() (titles []string) {
-		for _, node := range spliceProductNav(nil, makeProductNavTree(productNavSources{})) {
-			titles = append(titles, node.Title)
-		}
-		return titles
-	}(), "|"); got != "Product|Design|Quality|Implementation" {
-		t.Fatalf("architecture without a narrative overview = %s", got)
+	if got, want := topTitles(findNav(t, nodes, "Epics", "Billing").Children), "Billing overview|Delivery|Evidence|Product|Design|Quality|Implementation"; got != want {
+		t.Fatalf("billing epic = %s, want %s", got, want)
+	}
+	billing.Report = nil
+	if got, want := topTitles(findNav(t, makeAppNavTree(sources), "Epics", "Billing").Children), "Product|Design|Quality|Implementation"; got != want {
+		t.Fatalf("epic without report content = %s, want %s", got, want)
 	}
 }
 

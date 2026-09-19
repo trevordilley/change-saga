@@ -1,0 +1,7 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/epic.schema.json",
+  "version": 5,
+  "id": "compact-saga-connectors",
+  "title": "Scaling Change Saga to whole-codebase reviews",
+  "created_at": "2026-09-18T00:00:00Z"
+}

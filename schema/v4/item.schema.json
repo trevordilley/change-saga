@@ -17,7 +17,8 @@
     "about": { "$ref": "#/$defs/id" },
     "body": { "type": "string", "minLength": 1, "maxLength": 240 },
     "placement": { "enum": ["top", "right", "bottom", "left", "overlay"] },
-    "leader": { "enum": ["none", "line", "arrow"] }
+    "leader": { "enum": ["none", "line", "arrow"] },
+    "record": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:(persona|epic|story):[A-Za-z0-9][A-Za-z0-9._-]{0,127}$", "description": "Onboarding Items only: the persona, epic, or story record the Item explains. Implementation Items reference code instead." }
   },
   "allOf": [
     {

@@ -10,6 +10,7 @@ import (
 	"sync"
 	"testing"
 
+	"github.com/twentyideas/changesaga/internal/applayout"
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/saga"
 	"github.com/twentyideas/changesaga/internal/store"
@@ -322,10 +323,10 @@ func TestMutationValidationDoesNotParseCoverageMappings(t *testing.T) {
 	// This file is deliberately not valid coverage JSON. Review mutations are
 	// guarded by the manifest/package skeleton and review-only state; parsing
 	// every mapping here would put a 529k-record saga back on the comment path.
-	if err := os.MkdirAll(filepath.Join(root, "overview.fragment", saga.CodeDirName), 0o755); err != nil {
+	if err := os.MkdirAll(filepath.Join(applayout.EpicDir(root, testEpic), "overview.fragment", saga.CodeDirName), 0o755); err != nil {
 		t.Fatal(err)
 	}
-	if err := os.WriteFile(filepath.Join(root, "overview.fragment", saga.CodeDirName, "large.json"), []byte("not parsed by review mutation\n"), 0o644); err != nil {
+	if err := os.WriteFile(filepath.Join(applayout.EpicDir(root, testEpic), "overview.fragment", saga.CodeDirName, "large.json"), []byte("not parsed by review mutation\n"), 0o644); err != nil {
 		t.Fatal(err)
 	}
 	if err := AddReview(root, root, "approved", "Review state is independent.", saga.ReviewerIdentity{Kind: "human"}); err != nil {
@@ -409,6 +410,10 @@ func assertNoCommittedOrTemporaryEntries(t *testing.T, path string) {
 // crosses repositories.
 const testRepository = "https://example.test/repo.git"
 
+// testEpic holds the test saga's report content; review records stay at the
+// app root.
+const testEpic = "core"
+
 // treeSnapshot renders every path and file size under root so a test can prove a
 // rejected mutation created, removed, or rewrote nothing at all.
 func treeSnapshot(t *testing.T, root string) string {
@@ -443,12 +448,19 @@ func treeSnapshot(t *testing.T, root string) string {
 func newTestSaga(t *testing.T) string {
 	t.Helper()
 	root := filepath.Join(t.TempDir(), "test.saga")
-	fragmentDir := filepath.Join(root, "overview.fragment")
-	if err := os.MkdirAll(fragmentDir, 0o755); err != nil {
+	if err := os.MkdirAll(root, 0o755); err != nil {
 		t.Fatal(err)
 	}
 	manifest := saga.Manifest{Schema: saga.SagaSchemaURL, Version: saga.SagaVersion, ID: "test", Title: "Test", Source: saga.Source{Repository: testRepository, Base: "main", Head: "HEAD"}}
 	if err := store.WriteJSON(filepath.Join(root, "saga.json"), manifest, true); err != nil {
+		t.Fatal(err)
+	}
+	epic, err := applayout.WriteEpic(root, applayout.EpicManifest{ID: testEpic, Title: "Core"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	fragmentDir := filepath.Join(epic.Dir, "overview.fragment")
+	if err := os.MkdirAll(fragmentDir, 0o755); err != nil {
 		t.Fatal(err)
 	}
 	fragment := saga.FragmentManifest{Version: saga.CurrentVersion, ID: "overview", Title: "Overview", MediaType: "text/markdown", Entrypoint: "content.md"}

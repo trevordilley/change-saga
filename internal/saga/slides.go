@@ -30,10 +30,10 @@ var slideMediaTypes = map[string]bool{
 }
 
 // loadEmbeddedDecks discovers the independently mergeable flat deck bundles
-// under ___slides/. The Saga manifest remains the only identity; deck, slide,
-// and Item URNs are derived from its ID.
-func loadEmbeddedDecks(root string, manifest Manifest, options loadOptions, validation *Validation) ([]*Deck, error) {
-	dir := filepath.Join(root, EmbeddedSlidesDir)
+// under dir: an epic's ___slides/ or the app's ___onboarding/. The Saga
+// manifest remains the only identity; deck, slide, and Item URNs are derived
+// from its ID, so they are unique across the app.
+func loadEmbeddedDecks(root, dir, role string, manifest Manifest, options loadOptions, validation *Validation) ([]*Deck, error) {
 	entries, err := os.ReadDir(dir)
 	if os.IsNotExist(err) {
 		return nil, nil
@@ -60,6 +60,7 @@ func loadEmbeddedDecks(root string, manifest Manifest, options loadOptions, vali
 		if strings.TrimSuffix(entry.Name(), EmbeddedDeckSuffix) != deck.ID {
 			addIssue(validation, "error", deck.Path, "embedded deck directory must match the deck id")
 		}
+		validateDeckRole(deck, role, manifest.ID, validation)
 		result = append(result, deck)
 	}
 	sort.Slice(result, func(i, j int) bool {
@@ -255,8 +256,8 @@ func validateDeckManifest(value DeckManifest, path, target string, validation *V
 	if err != nil || expected != path {
 		addIssue(validation, "error", path, "deck filename does not match its rank and stable target")
 	}
-	if value.Role != "change" {
-		addIssue(validation, "error", path, "deck role must be change")
+	if value.Role != DeckRoleChange && value.Role != DeckRoleOnboarding {
+		addIssue(validation, "error", path, "deck role must be change or onboarding")
 	}
 	if validFlatRank(value.Rank) != nil || strings.TrimSpace(value.Objective) == "" || utf8.RuneCountInString(value.Objective) > 240 {
 		addIssue(validation, "error", path, "deck rank must fit the portable range and objective must contain 1 to 240 characters")
@@ -388,4 +389,44 @@ func projectDecks(manifest Manifest, decks []*Deck) *Section {
 		root.Children = append(root.Children, section)
 	}
 	return root
+}
+
+// validateDeckRole enforces what each deck location may hold. An epic's
+// implementation deck explains code, so its Items own code evidence and never
+// reference records. The onboarding deck explains the app, so every Item
+// references a persona, epic, or story record and owns no code evidence.
+func validateDeckRole(deck *Deck, role, sagaID string, validation *Validation) {
+	if deck.Role != role {
+		addIssue(validation, "error", deck.Path, fmt.Sprintf("a deck in this location must use role %s", role))
+	}
+	for _, slide := range deck.Slides {
+		for _, item := range slide.Items {
+			switch role {
+			case DeckRoleOnboarding:
+				if !validRecordReference(sagaID, item.Record) {
+					addIssue(validation, "error", item.Path, "onboarding item record must be a canonical persona, epic, or story URN of this Saga")
+				}
+				if item.HasCode {
+					addIssue(validation, "error", item.Path, "onboarding items reference records, not code evidence")
+				}
+			default:
+				if item.Record != "" {
+					addIssue(validation, "error", item.Path, "record is an onboarding-only field; implementation items reference code")
+				}
+			}
+		}
+	}
+}
+
+// RecordReferenceKinds are the record kinds an onboarding Item may reference.
+var RecordReferenceKinds = []string{"persona", "epic", "story"}
+
+func validRecordReference(sagaID, value string) bool {
+	for _, kind := range RecordReferenceKinds {
+		prefix := "urn:change-saga:" + sagaID + ":" + kind + ":"
+		if id := strings.TrimPrefix(value, prefix); id != value && stableID.MatchString(id) {
+			return true
+		}
+	}
+	return false
 }

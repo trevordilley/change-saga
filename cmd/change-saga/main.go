@@ -37,6 +37,12 @@ func run(args []string, stdout, stderr io.Writer) int {
 		return 0
 	case "init":
 		err = cli.Init(ctx, args[1:], stdout)
+	case "epic":
+		err = cli.Epic(ctx, args[1:], stdout)
+	case "persona":
+		err = cli.Persona(ctx, args[1:], stdout)
+	case "flag":
+		err = cli.FeatureFlag(ctx, args[1:], stdout)
 	case "prototype":
 		err = cli.Prototype(ctx, args[1:], stdout)
 	case "story":

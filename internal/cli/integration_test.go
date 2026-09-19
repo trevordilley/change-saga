@@ -52,24 +52,28 @@ func TestAuthoringLoopAgainstGitDiff(t *testing.T) {
 			t.Errorf("reviewer bootstrap omitted %q", expected)
 		}
 	}
-	rootScaffold, err := os.ReadFile(filepath.Join(root, "overview.fragment", "content.md"))
+	rootScaffold, err := os.ReadFile(filepath.Join(overviewFragment(root), "content.md"))
 	if err != nil || len(rootScaffold) != 0 {
-		t.Fatalf("root overview should start empty, not expose authoring instructions: content=%q err=%v", rootScaffold, err)
+		t.Fatalf("app overview should start empty, not expose authoring instructions: content=%q err=%v", rootScaffold, err)
 	}
-	writeFile(t, filepath.Join(root, "overview.fragment", "content.md"), "# Feature {#feature}\n\nThe change at a glance.\n")
-	if err := AddChapter(context.Background(), []string{"--title", "Backend behavior", root, "backend"}, &output); err != nil {
+	if _, err := os.Stat(filepath.Join(root, "overview.fragment")); !os.IsNotExist(err) {
+		t.Fatalf("init wrote report content at the app root: %v", err)
+	}
+	writeFile(t, filepath.Join(overviewFragment(root), "content.md"), "# Feature {#feature}\n\nThe change at a glance.\n")
+	addTestApp(t, root)
+	if err := AddChapter(context.Background(), []string{"--epic", testEpic, "--title", "Backend behavior", root, "backend"}, &output); err != nil {
 		t.Fatal(err)
 	}
-	chapterScaffold, err := os.ReadFile(filepath.Join(root, "backend.chapter", "overview.fragment", "content.md"))
+	chapterScaffold, err := os.ReadFile(filepath.Join(testEpicDir(root), "backend.chapter", "overview.fragment", "content.md"))
 	if err != nil || len(chapterScaffold) != 0 {
 		t.Fatalf("chapter overview should start empty, not expose authoring instructions: content=%q err=%v", chapterScaffold, err)
 	}
-	chapterManifest, err := os.ReadFile(filepath.Join(root, "backend.chapter", "overview.fragment", "fragment.json"))
+	chapterManifest, err := os.ReadFile(filepath.Join(testEpicDir(root), "backend.chapter", "overview.fragment", "fragment.json"))
 	if err != nil || strings.Contains(string(chapterManifest), "Chapter overview") {
 		t.Fatalf("chapter overview leaked renderer-facing scaffold metadata: manifest=%q err=%v", chapterManifest, err)
 	}
-	writeFile(t, filepath.Join(root, "backend.chapter", "overview.fragment", "content.md"), "# Backend behavior {#backend-behavior}\n\nReview this boundary independently.\n")
-	if err := AddSection(context.Background(), []string{"--title", "Request flow", root, "backend.chapter/request-flow"}, &output); err != nil {
+	writeFile(t, filepath.Join(testEpicDir(root), "backend.chapter", "overview.fragment", "content.md"), "# Backend behavior {#backend-behavior}\n\nReview this boundary independently.\n")
+	if err := AddSection(context.Background(), []string{"--epic", testEpic, "--title", "Request flow", root, "backend.chapter/request-flow"}, &output); err != nil {
 		t.Fatal(err)
 	}
 	report, err := buildReport(context.Background(), root, repo)
@@ -80,10 +84,10 @@ func TestAuthoringLoopAgainstGitDiff(t *testing.T) {
 		t.Fatalf("expected an uncovered add event and three lines: %#v", report.Summary)
 	}
 	output.Reset()
-	if err := Cover(context.Background(), []string{"--repo", repo, "--target", "overview.fragment", "--path", "app.go", "--side", "new", "--lines", "1-3", root}, &output); err != nil {
+	if err := Cover(context.Background(), []string{"--repo", repo, "--target", "___overview/overview.fragment", "--path", "app.go", "--side", "new", "--lines", "1-3", root}, &output); err != nil {
 		t.Fatal(err)
 	}
-	if err := Cover(context.Background(), []string{"--repo", repo, "--target", "overview.fragment", "--path", "app.go", "--file", root}, &output); err != nil {
+	if err := Cover(context.Background(), []string{"--repo", repo, "--target", "___overview/overview.fragment", "--path", "app.go", "--file", root}, &output); err != nil {
 		t.Fatal(err)
 	}
 	report, err = buildReport(context.Background(), root, repo)
@@ -96,22 +100,22 @@ func TestAuthoringLoopAgainstGitDiff(t *testing.T) {
 	if len(report.Targets) != 1 || !strings.Contains(report.Targets[0].Target, ":fragment:") {
 		t.Fatalf("coverage should belong to a fragment: %#v", report.Targets)
 	}
-	if err := AddFragment(context.Background(), []string{"--section", ".", "--type", "html", "--title", "Interactive flow", root}, &output); err != nil {
+	if err := AddFragment(context.Background(), []string{"--epic", testEpic, "--section", ".", "--type", "html", "--title", "Interactive flow", root}, &output); err != nil {
 		t.Fatal(err)
 	}
-	writeFile(t, filepath.Join(root, "interactive-flow.fragment", "index.html"), `<!doctype html><title>Flow</title><p id="flow">Interactive behavior</p>`)
+	writeFile(t, filepath.Join(testEpicDir(root), "interactive-flow.fragment", "index.html"), `<!doctype html><title>Flow</title><p id="flow">Interactive behavior</p>`)
 	packageDir := filepath.Join(t.TempDir(), "demo")
 	writeFile(t, filepath.Join(packageDir, "index.html"), `<script src="app.js"></script>`)
 	writeFile(t, filepath.Join(packageDir, "app.js"), `document.body.append('interactive')`)
-	if err := AddFragment(context.Background(), []string{"--section", ".", "--type", "html", "--title", "Bundled demo", "--source", packageDir, root}, &output); err != nil {
+	if err := AddFragment(context.Background(), []string{"--epic", testEpic, "--section", ".", "--type", "html", "--title", "Bundled demo", "--source", packageDir, root}, &output); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := os.Stat(filepath.Join(root, "bundled-demo.fragment", "app.js")); err != nil {
+	if _, err := os.Stat(filepath.Join(testEpicDir(root), "bundled-demo.fragment", "app.js")); err != nil {
 		t.Fatalf("fragment package dependency was not copied: %v", err)
 	}
 	attachment := filepath.Join(t.TempDir(), "note.svg")
 	writeFile(t, attachment, `<svg xmlns="http://www.w3.org/2000/svg"><circle r="4"/></svg>`)
-	if err := Thread(context.Background(), []string{"--target", "overview.fragment", "--body", "Please clarify this.", "--attachment", attachment, root}, &output); err != nil {
+	if err := Thread(context.Background(), []string{"--target", "___overview/overview.fragment", "--body", "Please clarify this.", "--attachment", attachment, root}, &output); err != nil {
 		t.Fatal(err)
 	}
 	threadDocument, _, err := saga.Load(root)
@@ -128,7 +132,7 @@ func TestAuthoringLoopAgainstGitDiff(t *testing.T) {
 	if err := Review(context.Background(), []string{"--target", ".", "--state", "approved", "--reviewer-kind", "human", root}, &output); err != nil {
 		t.Fatal(err)
 	}
-	if err := Review(context.Background(), []string{"--target", "overview.fragment", "--state", "approved", "--reviewer-kind", "human", root}, &output); err != nil {
+	if err := Review(context.Background(), []string{"--target", "___overview/overview.fragment", "--state", "approved", "--reviewer-kind", "human", root}, &output); err != nil {
 		t.Fatal(err)
 	}
 	document, validation, err := saga.Load(root)

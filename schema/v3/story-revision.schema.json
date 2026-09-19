@@ -19,6 +19,12 @@
     "title": { "type": "string", "minLength": 1 },
     "statement": { "type": "string", "minLength": 1 },
     "priority": { "type": "string", "minLength": 1, "maxLength": 128 },
+    "personas": {
+      "type": "array",
+      "maxItems": 1000,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/persona_urn" }
+    },
     "citations": {
       "type": "array",
       "maxItems": 20000,
@@ -45,6 +51,7 @@
     "id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
     "story_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:story:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
     "revision_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:story:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:revision:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
+    "persona_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:persona:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
     "citation_urn": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:citation:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" }
   }
 }

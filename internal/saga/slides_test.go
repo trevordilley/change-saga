@@ -12,7 +12,7 @@ const embeddedDeckManifest = `{"$schema":"https://changesaga.dev/schema/v5/saga.
 func TestLoadEmbeddedDeckItemEvidence(t *testing.T) {
 	root := filepath.Join(t.TempDir(), "visual.saga")
 	writeTestFile(t, filepath.Join(root, ManifestName), embeddedDeckManifest)
-	bundle := filepath.Join(root, EmbeddedSlidesDir, "implementation"+EmbeddedDeckSuffix)
+	bundle := filepath.Join(root, testEpicDir, EmbeddedSlidesDir, "implementation"+EmbeddedDeckSuffix)
 	deckTarget := DeckTarget("visual", "implementation")
 	deckName, _ := FlatDeckFilename(deckTarget, 0)
 	writeTestFile(t, filepath.Join(bundle, deckName), `{"version":4,"id":"implementation","title":"Implementation","role":"change","rank":0,"objective":"Walk the reviewer through the change."}`)
@@ -78,7 +78,7 @@ func TestLoadEmbeddedDeckItemEvidence(t *testing.T) {
 func TestEmbeddedDeckRefusesNestedPackagesBroadEvidenceAndOverviewRole(t *testing.T) {
 	root := filepath.Join(t.TempDir(), "visual.saga")
 	writeTestFile(t, filepath.Join(root, ManifestName), embeddedDeckManifest)
-	bundle := filepath.Join(root, EmbeddedSlidesDir, "overview"+EmbeddedDeckSuffix)
+	bundle := filepath.Join(root, testEpicDir, EmbeddedSlidesDir, "overview"+EmbeddedDeckSuffix)
 	deckName, _ := FlatDeckFilename(DeckTarget("visual", "overview"), 0)
 	writeTestFile(t, filepath.Join(bundle, deckName), `{"version":4,"id":"overview","title":"Overview","role":"overview","rank":0,"objective":"Orient the reviewer."}`)
 	writeTestFile(t, filepath.Join(bundle, "nested.fragment", "fragment.json"), `{"version":2,"id":"nested","media_type":"text/markdown","entrypoint":"content.md"}`)

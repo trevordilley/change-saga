@@ -11,17 +11,17 @@ import (
 func TestLoadRecursiveFragmentsAndReviewOverlay(t *testing.T) {
 	root := filepath.Join(t.TempDir(), "test.saga")
 	writeTestFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"test","title":"A saga","source":{"repository":"https://example.test/acme/app.git","base":"main","head":"HEAD"}}`)
-	writeTestFile(t, filepath.Join(root, "overview.fragment", "fragment.json"), `{"version":2,"id":"overview","title":"Overview","media_type":"text/markdown","entrypoint":"content.md"}`)
-	writeTestFile(t, filepath.Join(root, "overview.fragment", "content.md"), "# The whole story\n")
-	writeTestFile(t, filepath.Join(root, "backend.chapter", "chapter.json"), `{"version":2,"id":"backend","title":"Backend"}`)
-	writeTestFile(t, filepath.Join(root, "backend.chapter", "request-flow", "section.json"), `{"version":2,"id":"request-flow","title":"Request flow"}`)
-	writeTestFile(t, filepath.Join(root, "backend.chapter", "request-flow", "flow.fragment", "fragment.json"), `{"version":2,"id":"flow","title":"Flow","media_type":"text/html","entrypoint":"index.html"}`)
-	writeTestFile(t, filepath.Join(root, "backend.chapter", "request-flow", "flow.fragment", "index.html"), `<button id="try-flow" onclick="this.textContent='ok'">Try it</button>`)
-	writeTestFile(t, filepath.Join(root, "backend.chapter", "request-flow", "flow.fragment", "___landmarks", "try-flow.landmark", "landmark.json"), `{"version":2,"id":"try-flow","label":"Try the flow","selector":{"type":"element","element_id":"try-flow"}}`)
+	writeTestFile(t, filepath.Join(root, testEpicDir, "overview.fragment", "fragment.json"), `{"version":2,"id":"overview","title":"Overview","media_type":"text/markdown","entrypoint":"content.md"}`)
+	writeTestFile(t, filepath.Join(root, testEpicDir, "overview.fragment", "content.md"), "# The whole story\n")
+	writeTestFile(t, filepath.Join(root, testEpicDir, "backend.chapter", "chapter.json"), `{"version":2,"id":"backend","title":"Backend"}`)
+	writeTestFile(t, filepath.Join(root, testEpicDir, "backend.chapter", "request-flow", "section.json"), `{"version":2,"id":"request-flow","title":"Request flow"}`)
+	writeTestFile(t, filepath.Join(root, testEpicDir, "backend.chapter", "request-flow", "flow.fragment", "fragment.json"), `{"version":2,"id":"flow","title":"Flow","media_type":"text/html","entrypoint":"index.html"}`)
+	writeTestFile(t, filepath.Join(root, testEpicDir, "backend.chapter", "request-flow", "flow.fragment", "index.html"), `<button id="try-flow" onclick="this.textContent='ok'">Try it</button>`)
+	writeTestFile(t, filepath.Join(root, testEpicDir, "backend.chapter", "request-flow", "flow.fragment", "___landmarks", "try-flow.landmark", "landmark.json"), `{"version":2,"id":"try-flow","label":"Try the flow","selector":{"type":"element","element_id":"try-flow"}}`)
 
 	diff := referenceJSON(t, testReference("api.go", 2, 4))
-	writeTestFile(t, filepath.Join(root, "backend.chapter", "request-flow", "flow.fragment", CodeDirName, "api.json"), fmt.Sprintf(`{"version":2,"references":%s}`, diff))
-	writeTestFile(t, filepath.Join(root, "backend.chapter", "request-flow", "flow.fragment", "___landmarks", "try-flow.landmark", CodeDirName, "api.json"), fmt.Sprintf(`{"version":2,"references":%s}`, diff))
+	writeTestFile(t, filepath.Join(root, testEpicDir, "backend.chapter", "request-flow", "flow.fragment", CodeDirName, "api.json"), fmt.Sprintf(`{"version":2,"references":%s}`, diff))
+	writeTestFile(t, filepath.Join(root, testEpicDir, "backend.chapter", "request-flow", "flow.fragment", "___landmarks", "try-flow.landmark", CodeDirName, "api.json"), fmt.Sprintf(`{"version":2,"references":%s}`, diff))
 	writeTestFile(t, filepath.Join(root, "___review", "threads", "thread-1.thread", "thread.json"), `{"version":2,"id":"thread-1","target":"urn:change-saga:test:fragment:flow","anchor":{"type":"region","coordinate_space":"normalized","shapes":[{"type":"rect","x":0.1,"y":0.2,"width":0.3,"height":0.4}]},"created_by":"Ada","created_at":"2026-08-19T12:00:00Z"}`)
 	writeTestFile(t, filepath.Join(root, "___review", "threads", "thread-1.thread", "messages", "message-1.message", "message.json"), `{"version":2,"id":"message-1","author":"Ada","created_at":"2026-08-19T12:00:00Z"}`)
 	writeTestFile(t, filepath.Join(root, "___review", "threads", "thread-1.thread", "messages", "message-1.message", "body.fragment", "fragment.json"), `{"version":2,"id":"message-body","media_type":"text/markdown","entrypoint":"content.md"}`)
@@ -55,10 +55,10 @@ func TestLoadRecursiveFragmentsAndReviewOverlay(t *testing.T) {
 func TestLoadOutlineDoesNotOpenCoverageOrContentTrees(t *testing.T) {
 	root := filepath.Join(t.TempDir(), "outline.saga")
 	writeTestFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"outline","title":"Outline","source":{"repository":"https://example.test/acme/app.git","base":"main","head":"HEAD"}}`)
-	writeTestFile(t, filepath.Join(root, "overview.fragment", "fragment.json"), `{"version":2,"id":"overview","title":"Overview","media_type":"text/markdown","entrypoint":"content.md"}`)
-	writeTestFile(t, filepath.Join(root, "overview.fragment", "content.md"), strings.Repeat("large narrative body\n", 1024))
-	writeTestFile(t, filepath.Join(root, "overview.fragment", CodeDirName, "broken.json"), `{this is deliberately not JSON`)
-	writeTestFile(t, filepath.Join(root, "overview.fragment", "___landmarks", "broken.landmark", "landmark.json"), `{this is deliberately not JSON`)
+	writeTestFile(t, filepath.Join(root, testEpicDir, "overview.fragment", "fragment.json"), `{"version":2,"id":"overview","title":"Overview","media_type":"text/markdown","entrypoint":"content.md"}`)
+	writeTestFile(t, filepath.Join(root, testEpicDir, "overview.fragment", "content.md"), strings.Repeat("large narrative body\n", 1024))
+	writeTestFile(t, filepath.Join(root, testEpicDir, "overview.fragment", CodeDirName, "broken.json"), `{this is deliberately not JSON`)
+	writeTestFile(t, filepath.Join(root, testEpicDir, "overview.fragment", "___landmarks", "broken.landmark", "landmark.json"), `{this is deliberately not JSON`)
 
 	document, validation, err := LoadOutline(root)
 	if err != nil || !validation.Valid {
@@ -76,11 +76,11 @@ func TestLoadOutlineDoesNotOpenCoverageOrContentTrees(t *testing.T) {
 func TestLoadNarrativeAdvertisesTargetEvidenceWithoutMaterializingIt(t *testing.T) {
 	root := filepath.Join(t.TempDir(), "narrative.saga")
 	writeTestFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"narrative","title":"Narrative","source":{"repository":"https://example.test/acme/app.git","base":"main","head":"HEAD"}}`)
-	writeTestFile(t, filepath.Join(root, "story.fragment", "fragment.json"), `{"version":2,"id":"story","title":"Story","media_type":"text/markdown","entrypoint":"content.md"}`)
-	writeTestFile(t, filepath.Join(root, "story.fragment", "content.md"), "# Story\n")
+	writeTestFile(t, filepath.Join(root, testEpicDir, "story.fragment", "fragment.json"), `{"version":2,"id":"story","title":"Story","media_type":"text/markdown","entrypoint":"content.md"}`)
+	writeTestFile(t, filepath.Join(root, testEpicDir, "story.fragment", "content.md"), "# Story\n")
 	reference := testReference("app.go", 1, 2)
 	reference.Note = "Implements the story."
-	writeTestFile(t, filepath.Join(root, "story.fragment", CodeDirName, "app.json"), fmt.Sprintf(`{"version":2,"references":%s}`, referenceJSON(t, reference)))
+	writeTestFile(t, filepath.Join(root, testEpicDir, "story.fragment", CodeDirName, "app.json"), fmt.Sprintf(`{"version":2,"references":%s}`, referenceJSON(t, reference)))
 
 	document, validation, err := LoadNarrative(root)
 	if err != nil || !validation.Valid {
@@ -99,8 +99,8 @@ func TestLoadNarrativeAdvertisesTargetEvidenceWithoutMaterializingIt(t *testing.
 func TestLoadRejectsNestedChapter(t *testing.T) {
 	root := filepath.Join(t.TempDir(), "test.saga")
 	writeTestFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"test","title":"A saga","source":{"repository":"https://example.test/a.git","base":"main","head":"HEAD"}}`)
-	writeTestFile(t, filepath.Join(root, "outer.chapter", "chapter.json"), `{"version":2,"id":"outer","title":"Outer"}`)
-	writeTestFile(t, filepath.Join(root, "outer.chapter", "inner.chapter", "chapter.json"), `{"version":2,"id":"inner","title":"Inner"}`)
+	writeTestFile(t, filepath.Join(root, testEpicDir, "outer.chapter", "chapter.json"), `{"version":2,"id":"outer","title":"Outer"}`)
+	writeTestFile(t, filepath.Join(root, testEpicDir, "outer.chapter", "inner.chapter", "chapter.json"), `{"version":2,"id":"inner","title":"Inner"}`)
 	_, validation, err := Load(root)
 	if err != nil {
 		t.Fatal(err)
@@ -121,15 +121,15 @@ func TestLoadRejectsUnknownJSONFields(t *testing.T) {
 func TestLoadDesignReusesAddressableHierarchyAndMutationIndex(t *testing.T) {
 	root := filepath.Join(t.TempDir(), "design.saga")
 	writeTestFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"design","title":"Living design","source":{"repository":"https://example.test/acme/app.git","base":"main","head":"HEAD"}}`)
-	writeTestFile(t, filepath.Join(root, "overview.fragment", "fragment.json"), `{"version":2,"id":"narrative-overview","title":"Overview","media_type":"text/markdown","entrypoint":"content.md"}`)
-	writeTestFile(t, filepath.Join(root, "overview.fragment", "content.md"), "Root narrative remains readable.\n")
-	writeTestFile(t, filepath.Join(root, "___design", "architecture.chapter", "chapter.json"), `{"version":2,"id":"architecture","title":"Architecture","order":2}`)
-	writeTestFile(t, filepath.Join(root, "___design", "architecture.chapter", "overview.fragment", "fragment.json"), `{"version":2,"id":"architecture-overview","title":"Architecture overview","media_type":"text/markdown","entrypoint":"content.md"}`)
-	writeTestFile(t, filepath.Join(root, "___design", "architecture.chapter", "overview.fragment", "content.md"), "Design overview.\n")
-	writeTestFile(t, filepath.Join(root, "___design", "architecture.chapter", "request-flow", "section.json"), `{"version":2,"id":"request-flow","title":"Request flow"}`)
-	writeTestFile(t, filepath.Join(root, "___design", "architecture.chapter", "request-flow", "sequence.fragment", "fragment.json"), `{"version":2,"id":"sequence","title":"Sequence","media_type":"image/svg+xml","entrypoint":"sequence.svg"}`)
-	writeTestFile(t, filepath.Join(root, "___design", "architecture.chapter", "request-flow", "sequence.fragment", "sequence.svg"), `<svg viewBox="0 0 10 10"><path id="retry-edge" d="M0 0 L10 10"/></svg>`)
-	writeTestFile(t, filepath.Join(root, "___design", "architecture.chapter", "request-flow", "sequence.fragment", "___landmarks", "retry-edge.landmark", "landmark.json"), `{"version":2,"id":"retry-edge","label":"Retry edge","description":"Retries failed requests.","selector":{"type":"element","element_id":"retry-edge"}}`)
+	writeTestFile(t, filepath.Join(root, testEpicDir, "overview.fragment", "fragment.json"), `{"version":2,"id":"narrative-overview","title":"Overview","media_type":"text/markdown","entrypoint":"content.md"}`)
+	writeTestFile(t, filepath.Join(root, testEpicDir, "overview.fragment", "content.md"), "Root narrative remains readable.\n")
+	writeTestFile(t, filepath.Join(root, testEpicDir, "___design", "architecture.chapter", "chapter.json"), `{"version":2,"id":"architecture","title":"Architecture","order":2}`)
+	writeTestFile(t, filepath.Join(root, testEpicDir, "___design", "architecture.chapter", "overview.fragment", "fragment.json"), `{"version":2,"id":"architecture-overview","title":"Architecture overview","media_type":"text/markdown","entrypoint":"content.md"}`)
+	writeTestFile(t, filepath.Join(root, testEpicDir, "___design", "architecture.chapter", "overview.fragment", "content.md"), "Design overview.\n")
+	writeTestFile(t, filepath.Join(root, testEpicDir, "___design", "architecture.chapter", "request-flow", "section.json"), `{"version":2,"id":"request-flow","title":"Request flow"}`)
+	writeTestFile(t, filepath.Join(root, testEpicDir, "___design", "architecture.chapter", "request-flow", "sequence.fragment", "fragment.json"), `{"version":2,"id":"sequence","title":"Sequence","media_type":"image/svg+xml","entrypoint":"sequence.svg"}`)
+	writeTestFile(t, filepath.Join(root, testEpicDir, "___design", "architecture.chapter", "request-flow", "sequence.fragment", "sequence.svg"), `<svg viewBox="0 0 10 10"><path id="retry-edge" d="M0 0 L10 10"/></svg>`)
+	writeTestFile(t, filepath.Join(root, testEpicDir, "___design", "architecture.chapter", "request-flow", "sequence.fragment", "___landmarks", "retry-edge.landmark", "landmark.json"), `{"version":2,"id":"retry-edge","label":"Retry edge","description":"Retries failed requests.","selector":{"type":"element","element_id":"retry-edge"}}`)
 
 	document, validation, err := Load(root)
 	if err != nil || !validation.Valid {
@@ -142,11 +142,11 @@ func TestLoadDesignReusesAddressableHierarchyAndMutationIndex(t *testing.T) {
 		t.Fatalf("design chapter was not joined to the authored hierarchy: %#v", document.Section.Children)
 	}
 	chapter := document.Section.Children[0]
-	if chapter.Path != "___design/architecture.chapter" || chapter.Target != ChapterTarget("design", "architecture") || len(chapter.Children) != 1 {
+	if chapter.Path != "___epics/core.epic/___design/architecture.chapter" || chapter.Target != ChapterTarget("design", "architecture") || len(chapter.Children) != 1 {
 		t.Fatalf("design chapter = %#v", chapter)
 	}
 	fragment := chapter.Children[0].Fragments[0]
-	if fragment.Path != "___design/architecture.chapter/request-flow/sequence.fragment" || fragment.Target != FragmentTarget("design", "sequence") || len(fragment.Landmarks) != 1 || fragment.Landmarks[0].Target != LandmarkTarget("design", "sequence", "retry-edge") {
+	if fragment.Path != "___epics/core.epic/___design/architecture.chapter/request-flow/sequence.fragment" || fragment.Target != FragmentTarget("design", "sequence") || len(fragment.Landmarks) != 1 || fragment.Landmarks[0].Target != LandmarkTarget("design", "sequence", "retry-edge") {
 		t.Fatalf("design fragment = %#v", fragment)
 	}
 
@@ -155,7 +155,7 @@ func TestLoadDesignReusesAddressableHierarchyAndMutationIndex(t *testing.T) {
 		t.Fatalf("LoadMutationIndex(design) = valid %v, err %v, issues %#v", indexValidation.Valid, err, indexValidation.Issues)
 	}
 	for target, wantDir := range map[string]string{
-		chapter.Target:               filepath.Join(root, "___design", "architecture.chapter"),
+		chapter.Target:               filepath.Join(root, testEpicDir, "___design", "architecture.chapter"),
 		fragment.Target:              fragment.Directory,
 		fragment.Landmarks[0].Target: fragment.Landmarks[0].Directory,
 	} {
@@ -169,8 +169,8 @@ func TestLoadDesignRejectsIDsDuplicatedByRootNarrative(t *testing.T) {
 	root := filepath.Join(t.TempDir(), "duplicate-design.saga")
 	writeTestFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"test","title":"A saga","source":{"repository":"https://example.test/acme/app.git","base":"main","head":"HEAD"}}`)
 	for _, base := range []string{"overview.fragment", filepath.Join("___design", "overview.fragment")} {
-		writeTestFile(t, filepath.Join(root, base, "fragment.json"), `{"version":2,"id":"shared","media_type":"text/markdown","entrypoint":"content.md"}`)
-		writeTestFile(t, filepath.Join(root, base, "content.md"), "Content.\n")
+		writeTestFile(t, filepath.Join(root, testEpicDir, base, "fragment.json"), `{"version":2,"id":"shared","media_type":"text/markdown","entrypoint":"content.md"}`)
+		writeTestFile(t, filepath.Join(root, testEpicDir, base, "content.md"), "Content.\n")
 	}
 	_, validation, err := Load(root)
 	if err != nil {
@@ -185,12 +185,22 @@ func TestLivingRootsAreReservedAndMustBeRealDirectories(t *testing.T) {
 	for _, name := range []string{"___requirements", "___design", "___workplan", QualityRootDir, EmbeddedSlidesDir} {
 		t.Run(name, func(t *testing.T) {
 			present := buildSaga(t, nil)
-			if err := os.MkdirAll(filepath.Join(present, name), 0o755); err != nil {
+			if err := os.MkdirAll(filepath.Join(present, testEpicDir, name), 0o755); err != nil {
 				t.Fatal(err)
 			}
 			validation, report := loadIssues(t, present)
 			if !validation.Valid {
 				t.Fatalf("rejected %s:\n%s", name, report)
+			}
+
+			// Epic content never sits at the app root.
+			atRoot := buildSaga(t, nil)
+			if err := os.MkdirAll(filepath.Join(atRoot, name), 0o755); err != nil {
+				t.Fatal(err)
+			}
+			validation, report = loadIssues(t, atRoot)
+			if validation.Valid || !strings.Contains(report, "unknown reserved directory") {
+				t.Fatalf("accepted %s at the app root:\n%s", name, report)
 			}
 
 			fileRoot := buildSaga(t, map[string]string{name: "not a directory\n"})
@@ -201,7 +211,7 @@ func TestLivingRootsAreReservedAndMustBeRealDirectories(t *testing.T) {
 
 			symlinkRoot := buildSaga(t, nil)
 			outside := t.TempDir()
-			if err := os.Symlink(outside, filepath.Join(symlinkRoot, name)); err != nil {
+			if err := os.Symlink(outside, filepath.Join(symlinkRoot, testEpicDir, name)); err != nil {
 				t.Skipf("symlinks unavailable: %v", err)
 			}
 			validation, report = loadIssues(t, symlinkRoot)
@@ -215,7 +225,7 @@ func TestLivingRootsAreReservedAndMustBeRealDirectories(t *testing.T) {
 func TestLoadRejectsMissingFragmentEntrypoint(t *testing.T) {
 	root := filepath.Join(t.TempDir(), "test.saga")
 	writeTestFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"test","title":"A saga","source":{"repository":"https://example.test/a.git","base":"main","head":"HEAD"}}`)
-	writeTestFile(t, filepath.Join(root, "broken.fragment", "fragment.json"), `{"version":2,"id":"broken","media_type":"text/html","entrypoint":"index.html"}`)
+	writeTestFile(t, filepath.Join(root, testEpicDir, "broken.fragment", "fragment.json"), `{"version":2,"id":"broken","media_type":"text/html","entrypoint":"index.html"}`)
 	_, validation, err := Load(root)
 	if err != nil {
 		t.Fatal(err)
@@ -225,8 +235,29 @@ func TestLoadRejectsMissingFragmentEntrypoint(t *testing.T) {
 	}
 }
 
+// testEpicDir is the one epic the package fixtures author report content,
+// design, and decks into.
+var testEpicDir = filepath.Join("___epics", "core.epic")
+
+const testEpicManifest = `{"$schema":"https://changesaga.dev/schema/v5/epic.schema.json","version":5,"id":"core","title":"Core","created_at":"2026-08-21T12:00:00Z"}`
+
+// inEpic places an app-relative fixture path inside the test epic unless it
+// names something that lives at the app root.
+func inEpic(rel string) string {
+	switch strings.SplitN(rel, "/", 2)[0] {
+	case "saga.json", "___review", "___claims", "___verifications", "___approvals", "___code", "___merges", "___overview", "___personas", "___designsystem", "___onboarding", "___featureflags", "___epics", "README.md":
+		return rel
+	}
+	return filepath.ToSlash(filepath.Join(testEpicDir, rel))
+}
+
+// writeTestFile writes one fixture file. Writing saga.json also creates the
+// test epic, since every fixture authors its content into that epic.
 func writeTestFile(t *testing.T, path, body string) {
 	t.Helper()
+	if filepath.Base(path) == "saga.json" {
+		defer writeTestFile(t, filepath.Join(filepath.Dir(path), testEpicDir, "epic.json"), testEpicManifest)
+	}
 	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
 		t.Fatal(err)
 	}

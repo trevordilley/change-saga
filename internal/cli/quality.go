@@ -103,6 +103,7 @@ func qualityTestCaseDefine(name string, args []string, out io.Writer, stdin io.R
 	from := flags.String("from", "", "read a structured request from a JSON file, or - for stdin")
 	requestID := flags.String("request-id", "", "idempotency key")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
+	epic := epicFlag(flags)
 	var parents, kinds, preconditions, steps stringList
 	flags.Var(&parents, "parent", "current revision head URN; repeatable")
 	flags.Var(&kinds, "kind", "coverage kind: positive, negative, or edge; repeatable")
@@ -145,8 +146,12 @@ func qualityTestCaseDefine(name string, args []string, out io.Writer, stdin io.R
 		if strings.TrimSpace(request.ID) == "" || request.TestCase != "" || len(request.Parents) != 0 {
 			return fmt.Errorf("usage: %s", commandUsage[name])
 		}
+		target, err := requireEpic(root, *epic)
+		if err != nil {
+			return err
+		}
 		result, err := quality.AddTestCase(root, quality.AddTestCaseInput{
-			ID: request.ID, RevisionID: request.Revision, EventID: request.Event,
+			Epic: target.ID, ID: request.ID, RevisionID: request.Revision, EventID: request.Event,
 			Definition: requestDefinition(quality.Definition{}, request), CreatedAt: request.CreatedAt, RequestID: request.RequestID,
 		})
 		if err != nil {
@@ -156,6 +161,9 @@ func qualityTestCaseDefine(name string, args []string, out io.Writer, stdin io.R
 	}
 	if strings.TrimSpace(request.TestCase) == "" || strings.TrimSpace(request.Revision) == "" || len(request.Parents) == 0 || request.ID != "" || request.Event != "" {
 		return fmt.Errorf("usage: %s", commandUsage[name])
+	}
+	if err := assertRecordEpic(root, *epic, request.TestCase); err != nil {
+		return err
 	}
 	base, err := singleParentDefinition(root, request.TestCase, request.Parents)
 	if err != nil {
@@ -235,6 +243,7 @@ func qualityTestCaseSetState(args []string, out io.Writer, stdin io.Reader) erro
 	from := flags.String("from", "", "read a structured request from a JSON file, or - for stdin")
 	requestID := flags.String("request-id", "", "idempotency key")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
+	epic := epicFlag(flags)
 	var parents stringList
 	flags.Var(&parents, "parent", "current lifecycle head URN; repeatable")
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
@@ -260,6 +269,9 @@ func qualityTestCaseSetState(args []string, out io.Writer, stdin io.Reader) erro
 	}
 	if strings.TrimSpace(request.TestCase) == "" || strings.TrimSpace(request.State) == "" || len(request.Parents) == 0 {
 		return fmt.Errorf("usage: %s", commandUsage[name])
+	}
+	if err := assertRecordEpic(flags.Arg(0), *epic, request.TestCase); err != nil {
+		return err
 	}
 	result, err := quality.SetTestCaseState(flags.Arg(0), quality.SetTestCaseStateInput{
 		TestCase: request.TestCase, EventID: request.Event, Parents: request.Parents,
@@ -294,6 +306,7 @@ func qualityPolicySet(args []string, out io.Writer, stdin io.Reader) error {
 	from := flags.String("from", "", "read a structured request from a JSON file, or - for stdin")
 	requestID := flags.String("request-id", "", "idempotency key")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
+	epic := epicFlag(flags)
 	var required, allowed, supersedes stringList
 	flags.Var(&required, "require", "required coverage kind: positive, negative, or edge; repeatable")
 	flags.Var(&allowed, "allow", "allowed automation: automated, hybrid, or manual; repeatable (default all)")
@@ -322,8 +335,13 @@ func qualityPolicySet(args []string, out io.Writer, stdin io.Reader) error {
 	if strings.TrimSpace(request.Criterion) == "" || strings.TrimSpace(request.StoryRevision) == "" || len(request.RequiredKinds) == 0 || strings.TrimSpace(request.Rationale) == "" {
 		return fmt.Errorf("usage: %s", commandUsage[name])
 	}
+	target, err := requireEpic(flags.Arg(0), *epic)
+	if err != nil {
+		return err
+	}
 	result, err := quality.SetPolicy(flags.Arg(0), quality.SetPolicyInput{
-		ID: request.ID, Criterion: request.Criterion, StoryRevision: request.StoryRevision,
+		Epic: target.ID,
+		ID:   request.ID, Criterion: request.Criterion, StoryRevision: request.StoryRevision,
 		RequiredKinds: request.RequiredKinds, AllowedAutomation: request.AllowedAutomation,
 		Supersedes: request.Supersedes, Rationale: request.Rationale,
 		CreatedAt: request.CreatedAt, RequestID: request.RequestID,
@@ -373,6 +391,7 @@ func qualityEvidenceAdd(args []string, out io.Writer, stdin io.Reader) error {
 	batch := flags.String("batch", "", "read a JSON array of requests from a file, or - for stdin; all or none are written")
 	requestID := flags.String("request-id", "", "idempotency key")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
+	epic := epicFlag(flags)
 	repoDir := flags.String("repo", "", "source repository checkout; required when separate")
 	var code, verifications, citations, supersedes stringList
 	flags.Var(&code, "code", "code location <commit>:<path>[#L<start>[-L<end>]]; repeatable")
@@ -406,6 +425,11 @@ func qualityEvidenceAdd(args []string, out io.Writer, stdin io.Reader) error {
 			}
 			inputs = append(inputs, input)
 		}
+		for _, input := range inputs {
+			if err := assertRecordEpic(root, *epic, input.TestCase); err != nil {
+				return err
+			}
+		}
 		results, err := quality.AddEvidenceBatch(root, inputs)
 		if err != nil {
 			return err
@@ -427,6 +451,9 @@ func qualityEvidenceAdd(args []string, out io.Writer, stdin io.Reader) error {
 	})
 	if strings.TrimSpace(request.TestCase) == "" || strings.TrimSpace(request.Role) == "" {
 		return fmt.Errorf("usage: %s", commandUsage[name])
+	}
+	if err := assertRecordEpic(root, *epic, request.TestCase); err != nil {
+		return err
 	}
 	input, err := request.input(firstNonEmpty(*repoDir, root))
 	if err != nil {
@@ -469,6 +496,7 @@ func qualityRunRecord(args []string, out io.Writer, stdin io.Reader) error {
 	from := flags.String("from", "", "read a structured request from a JSON file, or - for stdin")
 	requestID := flags.String("request-id", "", "idempotency key")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
+	epic := epicFlag(flags)
 	var parents, evidence stringList
 	flags.Var(&parents, "parent", "current run head URN; repeatable, omitted for the first run")
 	flags.Var(&evidence, "evidence", "evidence URN the run relied on; repeatable")
@@ -505,6 +533,9 @@ func qualityRunRecord(args []string, out io.Writer, stdin io.Reader) error {
 	}
 	if strings.TrimSpace(request.TestCase) == "" || strings.TrimSpace(request.Result) == "" || strings.TrimSpace(request.Summary) == "" || len(request.Evidence) == 0 {
 		return fmt.Errorf("usage: %s", commandUsage[name])
+	}
+	if err := assertRecordEpic(root, *epic, request.TestCase); err != nil {
+		return err
 	}
 	recorded, err := quality.RecordRun(root, quality.RecordRunInput{
 		ID: request.ID, TestCase: request.TestCase, TestRevision: request.TestRevision,
