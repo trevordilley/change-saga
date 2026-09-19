@@ -204,7 +204,8 @@ thing that happens is not "define the personas of this app".
   With `--against`, the scope is the change: what it changed and what it
   affected. Without it, the scope is the whole app. `--epic` narrows either.
 - **Nothing is locked in.** The first change's deck goes into an epic the author
-  names, defaulting to the pull request's title. Story, deck, and slide URNs
+  names; the first command that needs an epic creates one named after the
+  branch. Story, deck, and slide URNs
   carry no epic, so reorganizing later breaks nothing.
 - **The Saga can live in the code repository or in a companion repository, and
   both are first-class.** A companion repository lets a team document a

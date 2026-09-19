@@ -309,18 +309,15 @@ urn:change-saga:<saga-id>:slide:<slide-id>:item:<item-id>
 ```text
 checkout.saga/
   saga.json
-  overview.fragment/
-  ___requirements/
-  ___design/
-  ___workplan/
-  ___quality/
-  ___slides/
-    validation-flow.deck/
-      10-d-....json
-      20-s-....json
-      20-s-....svg
-      30-i-....json
-      40-e-....json
+  ___epics/checkout.epic/
+    epic.json
+    ___slides/
+      validation-flow.deck/
+        10-d-....json
+        20-s-....json
+        20-s-....svg
+        30-i-....json
+        40-e-....json
 ```
 
 `add-deck`, `add-slide`, `set-slide-content`, and `add-item` author the deck.

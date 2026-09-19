@@ -65,11 +65,12 @@ change-saga help
 
 ## See a Saga
 
-This repository keeps its own Saga for the change that defines this format.
+This repository documents itself with an app Saga: its overview, its terms and
+vocabulary linked to the code that defines them, personas, epics, and stories.
 After installing Change Saga, open it from a source checkout with:
 
 ```sh
-change-saga open requirements-design-quality-lifecycle.saga
+change-saga open app.saga
 ```
 
 ## Quick start
@@ -313,24 +314,27 @@ reasoning in its individual commits.
 ## Manual CLI workflow
 
 Most people should let their coding agent manage these commands. If you want to
-author a saga directly, the basic workflow is:
+author a Saga directly, a first change on a branch needs only its
+implementation explained:
 
 ```sh
-change-saga init --base main --head HEAD --title "Checkout rewrite" checkout.saga
-change-saga add-chapter --title "Backend" checkout.saga backend
-change-saga add-fragment --section backend.chapter --type markdown \
-  --id request-flow --title "Request flow" checkout.saga
-change-saga set-fragment-content --target request-flow --source ./request-flow.md \
-  checkout.saga
-change-saga add-landmark --target backend.chapter/request-flow.fragment \
-  --heading-id request-validation --label "Request validation" checkout.saga
+change-saga init app.saga
+change-saga add-deck --objective "Explain the checkout steps." app.saga checkout-flow
+change-saga add-slide --deck checkout-flow --intent explain --layout hero \
+  --title "Checkout flow" app.saga flow
+change-saga set-slide-content --target flow --source ./flow.svg app.saga
+change-saga add-item --slide flow --kind node --id steps --element-id steps \
+  --description "The checkout steps" app.saga
+change-saga cover --against main --target steps --path checkout/steps.go \
+  --changed-lines --note "Adds the checkout steps." app.saga
 ```
 
-Check for unexplained changes, then open the review UI:
+The first command that needs an epic creates one named after the branch. Then
+see what is covered and what could grow, and open the reviewer:
 
 ```sh
-change-saga status checkout.saga
-change-saga open checkout.saga
+change-saga status --against main app.saga
+change-saga open --against main app.saga
 ```
 
 `open` leaves the reviewer running in the background so it remains available
