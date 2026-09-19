@@ -1,508 +1,275 @@
+// Package reviewstore writes pull request reviews: the review record and its
+// deck, per-slide decisions, comments, and the frozen range after merge. It
+// records what reviewers did; it never decides whether a review is approved.
 package reviewstore
 
 import (
+	"errors"
 	"fmt"
-	"mime"
+	"io/fs"
 	"os"
 	"path/filepath"
 	"strings"
 	"time"
+	"unicode/utf8"
 
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/saga"
 	"github.com/twentyideas/changesaga/internal/store"
 )
 
-var mutationFaultHook func(string) error
+// MaxBodyRunes bounds a decision note or comment.
+const MaxBodyRunes = 20_000
 
-func AddThread(root, target, body string, anchor saga.Anchor, kind, replacement string, attachments []string) (id string, err error) {
-	if target == "" {
-		return "", fmt.Errorf("target is required")
-	}
-	if err := saga.ValidateAnchor(anchor); err != nil {
-		return "", err
-	}
-	if kind == "" {
-		kind = "comment"
-	}
-	if kind != "comment" && kind != "suggestion" {
-		return "", fmt.Errorf("thread kind must be comment or suggestion")
-	}
-	if kind == "suggestion" && (anchor.Type != "code" || strings.TrimSpace(replacement) == "") {
-		return "", fmt.Errorf("suggestions require a code anchor and replacement content")
-	}
-	if kind != "suggestion" && strings.TrimSpace(replacement) != "" {
-		return "", fmt.Errorf("replacement content is only valid for suggestions")
-	}
-	if strings.TrimSpace(body) == "" && len(attachments) == 0 {
-		return "", fmt.Errorf("message body or attachment is required")
-	}
-	if err := validateAttachments(attachments); err != nil {
-		return "", err
-	}
-	now := time.Now().UTC()
-	id = store.EventID(now)
-	err = mutate(root, func(index saga.MutationIndex) error {
-		if _, ok := index.Targets[target]; !ok {
-			return fmt.Errorf("target does not exist")
-		}
-		if index.FlatTargets[target] {
-			thread := saga.ThreadManifest{Version: saga.CurrentVersion, ID: id, Target: target, Anchor: anchor, Kind: kind, CreatedAt: now}
-			if kind == "suggestion" {
-				thread.Suggestion = &saga.Suggestion{Replacement: replacement}
-			}
-			threadPath := filepath.Join(root, saga.FlatThreadFilename(target, id))
-			if err := store.WriteJSON(threadPath, thread, true); err != nil {
-				return err
-			}
-			written := []string{threadPath}
-			if err := injectMutationFault("after-thread-manifest"); err != nil {
-				removeFlatFiles(written)
-				return err
-			}
-			_, messageFiles, err := addFlatMessage(root, id, "", body, attachments, now)
-			written = append(written, messageFiles...)
-			if err != nil {
-				removeFlatFiles(written)
-			}
-			return err
-		}
-		threadsDir, err := store.EnsureDirWithin(root, filepath.Join(root, "___review", "threads"))
-		if err != nil {
-			return err
-		}
-		threadDir := filepath.Join(threadsDir, id+".thread")
-		return store.CommitDir(root, threadDir, func(stage string) error {
-			thread := saga.ThreadManifest{Version: saga.CurrentVersion, ID: id, Target: target, Anchor: anchor, Kind: kind, CreatedAt: now}
-			if kind == "suggestion" {
-				thread.Suggestion = &saga.Suggestion{Replacement: replacement}
-			}
-			if err := store.WriteJSON(filepath.Join(stage, "thread.json"), thread, true); err != nil {
-				return err
-			}
-			if err := injectMutationFault("after-thread-manifest"); err != nil {
-				return err
-			}
-			_, err = addMessageToUncommittedThread(stage, body, attachments, now)
-			return err
-		})
-	})
-	if err != nil {
-		return "", err
-	}
-	return id, nil
-}
-
-// AddFileReview records a reviewed or unreviewed mark on a changed file. The
-// reference is a whole-file reference at the comparison commit holding the
-// file, so the mark stops applying once the file changes.
-func AddFileReview(root string, reference coderef.Reference, state string) error {
-	if err := coderef.Validate(reference); err != nil || !reference.WholeFile() || reference.Note != "" {
-		return fmt.Errorf("file review requires a whole-file code reference")
-	}
-	if state != "reviewed" && state != "unreviewed" {
-		return fmt.Errorf("file review requires reviewed or unreviewed state")
-	}
-	return mutate(root, func(index saga.MutationIndex) error {
-		now := time.Now().UTC()
-		id := store.EventID(now)
-		review := saga.FileReview{Version: saga.CurrentVersion, ID: id, Code: reference, State: state, CreatedAt: now}
-		dir, err := store.EnsureDirWithin(root, filepath.Join(root, "___review", saga.FileReviewDir))
-		if err != nil {
-			return err
-		}
-		return store.WriteJSON(filepath.Join(dir, id+"-"+state+".json"), review, true)
-	})
-}
-
-func AddReply(root, threadID, body string, attachments []string) (id string, err error) {
-	if strings.TrimSpace(threadID) == "" {
-		return "", fmt.Errorf("thread is required")
-	}
-	if strings.TrimSpace(body) == "" && len(attachments) == 0 {
-		return "", fmt.Errorf("message body or attachment is required")
-	}
-	if err := validateAttachments(attachments); err != nil {
-		return "", err
-	}
-	now := time.Now().UTC()
-	id = store.EventID(now)
-	err = mutate(root, func(index saga.MutationIndex) error {
-		if flatThreadExists(root, threadID) {
-			if _, err := flatThreadPath(root, threadID); err != nil {
-				return err
-			}
-			_, _, err := addFlatMessage(root, threadID, id, body, attachments, now)
-			return err
-		}
-		threadDir, err := existingThreadDir(root, threadID)
-		if err != nil {
-			return err
-		}
-		messagesDir, err := store.EnsureDirWithin(root, filepath.Join(threadDir, "messages"))
-		if err != nil {
-			return err
-		}
-		messageDir := filepath.Join(messagesDir, id+".message")
-		return store.CommitDir(root, messageDir, func(stage string) error {
-			return populateMessage(stage, id, body, attachments, now)
-		})
-	})
-	if err != nil {
-		return "", err
-	}
-	return id, nil
-}
-
-func SetState(root, threadID, state string) error {
-	if state != "open" && state != "resolved" && state != "withdrawn" {
-		return fmt.Errorf("thread state must be open, resolved, or withdrawn")
-	}
-	return mutate(root, func(index saga.MutationIndex) error {
-		if flatThreadExists(root, threadID) {
-			if _, err := flatThreadPath(root, threadID); err != nil {
-				return err
-			}
-			now := time.Now().UTC()
-			id := store.EventID(now)
-			event := saga.ThreadEvent{Version: saga.CurrentVersion, ID: id, State: state, CreatedAt: now}
-			return store.WriteJSON(filepath.Join(root, saga.FlatThreadEventFilename(threadID, id)), event, true)
-		}
-		threadDir, err := existingThreadDir(root, threadID)
-		if err != nil {
-			return err
-		}
-		eventsDir, err := store.EnsureDirWithin(root, filepath.Join(threadDir, "events"))
-		if err != nil {
-			return err
-		}
-		now := time.Now().UTC()
-		id := store.EventID(now)
-		event := saga.ThreadEvent{Version: saga.CurrentVersion, ID: id, State: state, CreatedAt: now}
-		return store.WriteJSON(filepath.Join(eventsDir, id+"-"+state+".json"), event, true)
-	})
-}
-
-func SetAnchor(root, threadID string, anchor saga.Anchor) error {
-	if err := saga.ValidateAnchor(anchor); err != nil {
-		return err
-	}
-	return mutate(root, func(index saga.MutationIndex) error {
-		if flatThreadExists(root, threadID) {
-			if _, err := flatThreadPath(root, threadID); err != nil {
-				return err
-			}
-			now := time.Now().UTC()
-			id := store.EventID(now)
-			event := saga.ThreadEvent{Version: saga.CurrentVersion, ID: id, Anchor: &anchor, CreatedAt: now}
-			return store.WriteJSON(filepath.Join(root, saga.FlatThreadEventFilename(threadID, id)), event, true)
-		}
-		threadDir, err := existingThreadDir(root, threadID)
-		if err != nil {
-			return err
-		}
-		eventsDir, err := store.EnsureDirWithin(root, filepath.Join(threadDir, "events"))
-		if err != nil {
-			return err
-		}
-		now := time.Now().UTC()
-		id := store.EventID(now)
-		event := saga.ThreadEvent{Version: saga.CurrentVersion, ID: id, Anchor: &anchor, CreatedAt: now}
-		return store.WriteJSON(filepath.Join(eventsDir, id+"-anchor.json"), event, true)
-	})
-}
-
-func AddReview(root, targetValue, state, body string, reviewer saga.ReviewerIdentity) error {
-	if state != "approved" && state != "rejected" && state != "closed" && state != "open" {
-		return fmt.Errorf("review requires approved, rejected, closed, or open state")
-	}
-	reviewer.Kind = strings.TrimSpace(reviewer.Kind)
-	reviewer.Name = strings.TrimSpace(reviewer.Name)
-	reviewer.Agent = strings.TrimSpace(reviewer.Agent)
-	reviewer.Model = strings.TrimSpace(reviewer.Model)
-	if err := saga.ValidateReviewerIdentity(&reviewer); err != nil {
-		return err
-	}
-	return mutate(root, func(index saga.MutationIndex) error {
-		if index.FlatTargets[targetValue] {
-			if _, ok := index.ReviewTargets[targetValue]; !ok {
-				return fmt.Errorf("review target does not exist")
-			}
-			now := time.Now().UTC()
-			id := store.EventID(now)
-			review := saga.Review{Version: saga.CurrentVersion, ID: id, Reviewer: &reviewer, State: state, Body: strings.TrimSpace(body), CreatedAt: now}
-			return store.WriteJSON(filepath.Join(root, saga.FlatReviewFilename(targetValue, id)), review, true)
-		}
-		cleanTarget, err := filepath.Abs(targetValue)
-		if err != nil {
-			return err
-		}
-		known := false
-		for _, dir := range index.ReviewTargets {
-			if dir == cleanTarget {
-				known = true
-				break
-			}
-		}
-		if !known {
-			return fmt.Errorf("review target does not exist")
-		}
-		dir, err := store.EnsureDirWithin(root, filepath.Join(targetValue, "___approvals"))
-		if err != nil {
-			return err
-		}
-		now := time.Now().UTC()
-		id := store.EventID(now)
-		review := saga.Review{Version: saga.CurrentVersion, ID: id, Reviewer: &reviewer, State: state, Body: strings.TrimSpace(body), CreatedAt: now}
-		return store.WriteJSON(filepath.Join(dir, id+"-"+state+".json"), review, true)
-	})
-}
-
-func flatThreadPath(root, threadID string) (string, error) {
-	if !saga.ValidID(threadID) {
-		return "", fmt.Errorf("thread %q is not a stable identifier", threadID)
-	}
-	entries, err := os.ReadDir(root)
-	if err != nil {
-		return "", err
-	}
-	suffix := "-" + saga.FlatKey("thread\x00"+threadID) + ".json"
-	for _, entry := range entries {
-		if strings.HasPrefix(entry.Name(), "80-t-") && strings.HasSuffix(entry.Name(), suffix) {
-			return filepath.Join(root, entry.Name()), nil
-		}
-	}
-	return "", fmt.Errorf("thread %q does not exist", threadID)
-}
-
-func flatThreadExists(root, threadID string) bool {
-	_, err := flatThreadPath(root, threadID)
-	return err == nil
-}
-
-func addFlatMessage(root, threadID, id, body string, attachments []string, now time.Time) (string, []string, error) {
-	if id == "" {
-		id = store.EventID(now)
-	}
-	messagePath := filepath.Join(root, saga.FlatMessageFilename(threadID, id))
-	message := saga.MessageManifest{Version: saga.CurrentVersion, ID: id, CreatedAt: now}
-	if err := store.WriteJSON(messagePath, message, true); err != nil {
-		return "", nil, err
-	}
-	written := []string{messagePath}
-	addFragment := func(order int, fragmentID, title, mediaType, extension string, data []byte) error {
-		manifestName, err := saga.FlatAttachmentFilename(id, order, fragmentID)
-		if err != nil {
-			return err
-		}
-		assetName, err := saga.FlatSlideAssetFilename(manifestName, extension)
-		if err != nil {
-			return err
-		}
-		assetPath := filepath.Join(root, assetName)
-		if err := store.WriteFile(assetPath, data, 0o644, true); err != nil {
-			return err
-		}
-		written = append(written, assetPath)
-		manifest := saga.FragmentManifest{Version: saga.CurrentVersion, ID: fragmentID, Title: title, MediaType: mediaType, Entrypoint: assetName, Order: order}
-		manifestPath := filepath.Join(root, manifestName)
-		if err := store.WriteJSON(manifestPath, manifest, true); err != nil {
-			return err
-		}
-		written = append(written, manifestPath)
-		return nil
-	}
-	order := 0
-	if strings.TrimSpace(body) != "" {
-		if err := addFragment(order, id+"-body", "", "text/markdown", ".md", []byte(body+"\n")); err != nil {
-			removeFlatFiles(written)
-			return "", nil, err
-		}
-		order++
-	}
-	for i, source := range attachments {
-		data, err := os.ReadFile(source)
-		if err != nil {
-			removeFlatFiles(written)
-			return "", nil, err
-		}
-		extension := strings.ToLower(filepath.Ext(source))
-		if extension == "" {
-			extension = ".bin"
-		}
-		if err := addFragment(order, fmt.Sprintf("%s-attachment-%d", id, i+1), filepath.Base(source), attachmentMediaType(source), extension, data); err != nil {
-			removeFlatFiles(written)
-			return "", nil, err
-		}
-		if err := injectMutationFault("after-attachment"); err != nil {
-			removeFlatFiles(written)
-			return "", nil, err
-		}
-		order++
-	}
-	return id, written, nil
-}
-
-func removeFlatFiles(paths []string) {
-	for i := len(paths) - 1; i >= 0; i-- {
-		_ = os.Remove(paths[i])
-	}
-}
-
-func mutate(root string, operation func(saga.MutationIndex) error) error {
-	if _, err := validateMutableSaga(root); err != nil {
-		return err
-	}
+// mutate runs operation on the freshly loaded, valid Saga under the writer
+// lock, so a decision is checked against exactly the records it joins.
+func mutate(root string, operation func(*saga.Saga) error) error {
 	return store.WithSagaLock(root, store.DefaultLockTimeout, func() error {
-		// Validate again under the writer lock so a concurrent supported writer or
-		// external edit cannot turn a previously valid snapshot into a mutation
-		// target between the check and the commit.
-		index, err := validateMutableSaga(root)
+		document, validation, err := saga.Load(root)
 		if err != nil {
 			return err
 		}
-		return operation(index)
+		if !validation.Valid {
+			return fmt.Errorf("cannot record into a structurally invalid Saga; run change-saga validate")
+		}
+		return operation(document)
 	})
 }
 
-func validateMutableSaga(root string) (saga.MutationIndex, error) {
-	index, validation, err := saga.LoadMutationIndex(root)
-	if err != nil {
-		return saga.MutationIndex{}, fmt.Errorf("cannot mutate saga: %w", err)
+// Create writes a new review: review.json and its deck record.
+func Create(root string, manifest saga.ReviewManifest, deck saga.DeckManifest) error {
+	manifest.Schema, manifest.Version = saga.ReviewSchemaURL, saga.ReviewVersion
+	if manifest.CreatedAt.IsZero() {
+		manifest.CreatedAt = time.Now().UTC()
 	}
-	if !validation.Valid {
-		return saga.MutationIndex{}, fmt.Errorf("cannot mutate structurally invalid saga; run change-saga validate")
-	}
-	_, reviewValidation, err := saga.LoadReviewState(index)
-	if err != nil {
-		return saga.MutationIndex{}, fmt.Errorf("cannot mutate saga review state: %w", err)
-	}
-	if !reviewValidation.Valid {
-		return saga.MutationIndex{}, fmt.Errorf("cannot mutate invalid saga review state; run change-saga validate")
-	}
-	return index, nil
-}
-
-func existingThreadDir(root, threadID string) (string, error) {
-	// A thread is addressed by its stable id. Accepting anything else and then
-	// reducing it with filepath.Base would silently retarget "../other" at a
-	// different record instead of reporting an unusable identifier.
-	if !saga.ValidID(threadID) {
-		return "", fmt.Errorf("thread %q is not a stable identifier", threadID)
-	}
-	threadDir := filepath.Join(root, "___review", "threads", threadID+".thread")
-	info, err := os.Lstat(filepath.Join(threadDir, "thread.json"))
-	if err != nil || info.IsDir() || info.Mode()&os.ModeSymlink != 0 {
-		return "", fmt.Errorf("thread %q does not exist", threadID)
-	}
-	if _, err := store.EnsureDirWithin(root, threadDir); err != nil {
-		return "", err
-	}
-	return threadDir, nil
-}
-
-func addMessageToUncommittedThread(threadDir, body string, attachments []string, now time.Time) (string, error) {
-	id := store.EventID(now)
-	messagesDir := filepath.Join(threadDir, "messages")
-	if err := os.Mkdir(messagesDir, 0o755); err != nil {
-		return "", err
-	}
-	messageDir := filepath.Join(messagesDir, id+".message")
-	if err := os.Mkdir(messageDir, 0o755); err != nil {
-		return "", err
-	}
-	if err := populateMessage(messageDir, id, body, attachments, now); err != nil {
-		return "", err
-	}
-	return id, nil
-}
-
-func populateMessage(messageDir, id, body string, attachments []string, now time.Time) error {
-	message := saga.MessageManifest{Version: saga.CurrentVersion, ID: id, CreatedAt: now}
-	if err := store.WriteJSON(filepath.Join(messageDir, "message.json"), message, true); err != nil {
+	if err := saga.ValidateReviewManifest(manifest); err != nil {
 		return err
 	}
-	if err := injectMutationFault("after-message-manifest"); err != nil {
-		return err
+	deck.Version, deck.Role = saga.DeckRecordVersion, saga.DeckRoleReview
+	if !saga.ValidID(deck.ID) || strings.TrimSpace(deck.Title) == "" || strings.TrimSpace(deck.Objective) == "" || utf8.RuneCountInString(deck.Objective) > 240 {
+		return fmt.Errorf("the review deck needs a stable id, a title, and an objective of 1 to 240 characters")
 	}
-	order := 0
-	if strings.TrimSpace(body) != "" {
-		fragmentID := id + "-body"
-		fragmentDir := filepath.Join(messageDir, "body.fragment")
-		if err := os.Mkdir(fragmentDir, 0o755); err != nil {
-			return err
+	return mutate(root, func(document *saga.Saga) error {
+		if document.FindReview(manifest.ID) != nil {
+			return fmt.Errorf("review %q already exists", manifest.ID)
 		}
-		manifest := saga.FragmentManifest{Version: saga.CurrentVersion, ID: fragmentID, MediaType: "text/markdown", Entrypoint: "content.md", Order: order}
-		if err := store.WriteJSON(filepath.Join(fragmentDir, "fragment.json"), manifest, true); err != nil {
-			return err
+		if number := prNumber(manifest); number != 0 {
+			for _, other := range document.Reviews {
+				if prNumber(other.ReviewManifest) == number {
+					return fmt.Errorf("pull request #%d already has review %q; a pull request has one review", number, other.ID)
+				}
+			}
 		}
-		if err := store.WriteFile(filepath.Join(fragmentDir, "content.md"), []byte(body+"\n"), 0o644, true); err != nil {
-			return err
-		}
-		order++
-	}
-	for i, source := range attachments {
-		name := filepath.Base(source)
-		if name == "fragment.json" || strings.HasPrefix(name, "___") {
-			return fmt.Errorf("attachment name %q is reserved", name)
-		}
-		mediaType := attachmentMediaType(source)
-		fragmentID := fmt.Sprintf("%s-attachment-%d", id, i+1)
-		fragmentDir := filepath.Join(messageDir, fmt.Sprintf("attachment-%02d.fragment", i+1))
-		if err := os.Mkdir(fragmentDir, 0o755); err != nil {
-			return err
-		}
-		manifest := saga.FragmentManifest{Version: saga.CurrentVersion, ID: fragmentID, Title: name, MediaType: mediaType, Entrypoint: name, Order: order}
-		if err := store.WriteJSON(filepath.Join(fragmentDir, "fragment.json"), manifest, true); err != nil {
-			return err
-		}
-		data, err := os.ReadFile(source)
+		deckTarget := saga.ReviewDeckTarget(document.Manifest.ID, manifest.ID, deck.ID)
+		name, err := saga.FlatDeckFilename(deckTarget, deck.Rank)
 		if err != nil {
 			return err
 		}
-		if err := store.WriteFile(filepath.Join(fragmentDir, name), data, 0o644, true); err != nil {
+		reviews, err := store.EnsureDirWithin(document.Root, filepath.Join(document.Root, saga.ReviewsDir))
+		if err != nil {
 			return err
 		}
-		if err := injectMutationFault("after-attachment"); err != nil {
+		dir := filepath.Join(reviews, manifest.ID+saga.ReviewSuffix)
+		if len(filepath.Join(dir, saga.ReviewDeckDir, strings.Repeat("x", saga.FlatMaxBasename))) > saga.FlatMaxPath {
+			return fmt.Errorf("review path exceeds the portable %d-character budget; choose a shorter review id or Saga location", saga.FlatMaxPath)
+		}
+		err = store.CommitDir(document.Root, dir, func(stage string) error {
+			if err := os.Chmod(stage, 0o755); err != nil {
+				return err
+			}
+			if err := store.WriteJSON(filepath.Join(stage, saga.ReviewManifestName), manifest, true); err != nil {
+				return err
+			}
+			if err := os.Mkdir(filepath.Join(stage, saga.ReviewDeckDir), 0o755); err != nil {
+				return err
+			}
+			return store.WriteJSON(filepath.Join(stage, saga.ReviewDeckDir, name), deck, true)
+		})
+		if errors.Is(err, fs.ErrExist) {
+			return fmt.Errorf("review %q already exists", manifest.ID)
+		}
+		return err
+	})
+}
+
+func prNumber(manifest saga.ReviewManifest) int {
+	if manifest.PullRequest == nil {
+		return 0
+	}
+	return manifest.PullRequest.Number
+}
+
+// Decision is one reviewer's decision on one review slide.
+type Decision struct {
+	Review   string
+	Slide    string
+	State    string
+	Reviewer saga.ReviewerIdentity
+	// Commit is the pull request head the decision is given at.
+	Commit string
+	Body   string
+}
+
+// Decide appends a per-slide decision, recording the slide's content digest
+// so a later edit to the slide puts the decision out of date.
+func Decide(root string, decision Decision) (saga.ReviewApproval, error) {
+	var written saga.ReviewApproval
+	if !saga.ValidReviewApprovalState(decision.State) {
+		return written, fmt.Errorf("a decision is approved, changes_requested, or none")
+	}
+	if err := saga.ValidateReviewerIdentity(&decision.Reviewer); err != nil {
+		return written, err
+	}
+	if !coderef.ValidCommit(decision.Commit) {
+		return written, fmt.Errorf("a decision records the full head commit it was given at")
+	}
+	if utf8.RuneCountInString(decision.Body) > MaxBodyRunes {
+		return written, fmt.Errorf("the note exceeds %d characters", MaxBodyRunes)
+	}
+	err := mutate(root, func(document *saga.Saga) error {
+		review, slide, err := findSlide(document, decision.Review, decision.Slide)
+		if err != nil {
 			return err
 		}
-		order++
-	}
-	return nil
-}
-
-func validateAttachments(attachments []string) error {
-	for _, source := range attachments {
-		info, err := os.Lstat(source)
-		if err != nil || !info.Mode().IsRegular() {
-			return fmt.Errorf("attachment %q must be a readable regular file", source)
+		if review.Merged != nil {
+			return fmt.Errorf("review %q is history: its change landed as %s", review.ID, review.Merged.Landed)
 		}
-		mediaType := attachmentMediaType(source)
-		if !supportedAttachmentType(mediaType) {
-			return fmt.Errorf("unsupported attachment type %q", mediaType)
+		digest, err := saga.SlideDigest(slide)
+		if err != nil {
+			return err
+		}
+		now := time.Now().UTC()
+		written = saga.ReviewApproval{
+			Schema: saga.ReviewApprovalSchemaURL, Version: saga.ReviewVersion, ID: store.EventID(now),
+			Slide: slide.ID, State: decision.State, Reviewer: decision.Reviewer, Commit: decision.Commit,
+			SlideDigest: digest, Body: strings.TrimSpace(decision.Body), CreatedAt: now,
+		}
+		dir, err := store.EnsureDirWithin(document.Root, filepath.Join(review.Directory, saga.ReviewApprovalsDir))
+		if err != nil {
+			return err
+		}
+		written.Path = filepath.Join(dir, written.ID+".json")
+		return store.WriteJSON(written.Path, written, true)
+	})
+	return written, err
+}
+
+// Remark is one comment to append.
+type Remark struct {
+	Review string
+	// Target is a review slide or Item: its ID, "slide/item", or its URN.
+	// It is ignored for a reply, which joins the thread it replies to.
+	Target   string
+	ReplyTo  string
+	Body     string
+	State    string
+	Reviewer saga.ReviewerIdentity
+	Commit   string
+}
+
+// Comment appends a comment on a review slide or Item, or a reply.
+func Comment(root string, remark Remark) (saga.ReviewComment, error) {
+	var written saga.ReviewComment
+	if strings.TrimSpace(remark.Body) == "" {
+		return written, fmt.Errorf("a comment needs a body")
+	}
+	if utf8.RuneCountInString(remark.Body) > MaxBodyRunes {
+		return written, fmt.Errorf("the comment exceeds %d characters", MaxBodyRunes)
+	}
+	if remark.State != "" && remark.State != saga.CommentOpen && remark.State != saga.CommentResolved {
+		return written, fmt.Errorf("a comment may set its thread open or resolved")
+	}
+	if err := saga.ValidateReviewerIdentity(&remark.Reviewer); err != nil {
+		return written, err
+	}
+	if remark.Commit != "" && !coderef.ValidCommit(remark.Commit) {
+		return written, fmt.Errorf("a comment's commit must be a full commit")
+	}
+	err := mutate(root, func(document *saga.Saga) error {
+		review := document.FindReview(remark.Review)
+		if review == nil {
+			return fmt.Errorf("review %q does not exist", remark.Review)
+		}
+		target := ""
+		if remark.ReplyTo != "" {
+			for _, comment := range review.Comments {
+				if comment.ID == remark.ReplyTo {
+					target = comment.Target
+				}
+			}
+			if target == "" {
+				return fmt.Errorf("comment %q does not exist in review %q", remark.ReplyTo, review.ID)
+			}
+		} else {
+			var err error
+			if target, err = resolveTarget(review, remark.Target); err != nil {
+				return err
+			}
+		}
+		now := time.Now().UTC()
+		written = saga.ReviewComment{
+			Schema: saga.ReviewCommentSchemaURL, Version: saga.ReviewVersion, ID: store.EventID(now),
+			Target: target, ReplyTo: remark.ReplyTo, Body: strings.TrimSpace(remark.Body), State: remark.State,
+			Reviewer: remark.Reviewer, Commit: remark.Commit, CreatedAt: now,
+		}
+		dir, err := store.EnsureDirWithin(document.Root, filepath.Join(review.Directory, saga.ReviewCommentsDir))
+		if err != nil {
+			return err
+		}
+		written.Path = filepath.Join(dir, written.ID+".json")
+		return store.WriteJSON(written.Path, written, true)
+	})
+	return written, err
+}
+
+// Freeze records the exact commits of a landed review in review.json.
+func Freeze(root, reviewID string, merged saga.ReviewMerge) error {
+	return mutate(root, func(document *saga.Saga) error {
+		review := document.FindReview(reviewID)
+		if review == nil {
+			return fmt.Errorf("review %q does not exist", reviewID)
+		}
+		return WriteFrozen(review, merged)
+	})
+}
+
+// WriteFrozen rewrites review.json with its frozen range. The caller holds
+// the Saga's writer lock.
+func WriteFrozen(review *saga.Review, merged saga.ReviewMerge) error {
+	manifest := review.ReviewManifest
+	manifest.Merged = &merged
+	if err := saga.ValidateReviewManifest(manifest); err != nil {
+		return err
+	}
+	return store.WriteJSON(filepath.Join(review.Directory, saga.ReviewManifestName), manifest, false)
+}
+
+func findSlide(document *saga.Saga, reviewID, slideID string) (*saga.Review, *saga.Slide, error) {
+	review := document.FindReview(reviewID)
+	if review == nil {
+		return nil, nil, fmt.Errorf("review %q does not exist", reviewID)
+	}
+	slide := review.Slide(slideID)
+	if slide == nil {
+		return nil, nil, fmt.Errorf("review %q has no slide %q", reviewID, slideID)
+	}
+	return review, slide, nil
+}
+
+// resolveTarget accepts a review slide or Item as its URN, its slide ID, or
+// "<slide>/<item>".
+func resolveTarget(review *saga.Review, value string) (string, error) {
+	if review.Deck != nil {
+		for _, slide := range review.Deck.Slides {
+			if value == slide.ID || value == slide.Target {
+				return slide.Target, nil
+			}
+			for _, item := range slide.Items {
+				if value == item.Target || value == slide.ID+"/"+item.ID {
+					return item.Target, nil
+				}
+			}
 		}
 	}
-	return nil
-}
-
-func attachmentMediaType(path string) string {
-	mediaType := mime.TypeByExtension(strings.ToLower(filepath.Ext(path)))
-	if mediaType == "" {
-		return "application/octet-stream"
-	}
-	if parsed, _, err := mime.ParseMediaType(mediaType); err == nil {
-		return parsed
-	}
-	return mediaType
-}
-
-func supportedAttachmentType(mediaType string) bool {
-	return strings.HasPrefix(mediaType, "image/") || mediaType == "text/html" || mediaType == "text/plain" || mediaType == "text/markdown"
-}
-
-func injectMutationFault(step string) error {
-	if mutationFaultHook != nil {
-		return mutationFaultHook(step)
-	}
-	return nil
+	return "", fmt.Errorf("review %q has no slide or Item %q; name a slide id, <slide>/<item>, or its URN", review.ID, value)
 }

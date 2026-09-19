@@ -1,0 +1,19 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/review.schema.json",
+  "version": 5,
+  "id": "pr-7",
+  "title": "Move the queue to Postgres",
+  "pull_request": {
+    "number": 7,
+    "url": "https://github.com/acme/app/pull/7"
+  },
+  "base": "main",
+  "head": "feature/pg",
+  "merged": {
+    "base": "534e7e4ac445d0f1a2b3c4d5e6f708192a3b4c5d",
+    "head": "0a103972ac26d8dfd8a4a1f3be0b1b9b5a2c4e61",
+    "landed": "9e2f7c1d0b3a4e5f60718293a4b5c6d7e8f90123",
+    "merged_at": "2026-09-19T04:00:00Z"
+  },
+  "created_at": "2026-09-18T21:00:00Z"
+}

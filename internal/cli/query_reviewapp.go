@@ -100,11 +100,6 @@ func (s *reviewAppQuerySession) DiffOwners(ctx context.Context, query diffOwnerQ
 	return queryPage{Data: value, Page: queryPageFromApplication(value.Page)}, err
 }
 
-func (s *reviewAppQuerySession) Reviews(ctx context.Context, query reviewQuery) (queryPage, error) {
-	value, err := s.session.Reviews(ctx, reviewapp.ReviewQuery{Target: query.Target, Thread: query.Thread, State: query.State, Cursor: query.Cursor, Limit: query.Limit})
-	return queryPage{Data: value, Page: queryPageFromApplication(value.Page)}, err
-}
-
 func (s *reviewAppQuerySession) Gaps(ctx context.Context, query gapQuery) (queryPage, error) {
 	value, err := s.session.Gaps(ctx, reviewapp.GapQuery{Kind: query.Kind, Cursor: query.Cursor, Limit: query.Limit})
 	return queryPage{Data: value, Page: queryPageFromApplication(value.Page)}, err

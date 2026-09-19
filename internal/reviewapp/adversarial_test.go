@@ -4,10 +4,11 @@ import (
 	"context"
 	"encoding/base64"
 	"encoding/json"
-	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"strings"
 	"testing"
 	"unicode/utf8"
+
+	"github.com/twentyideas/changesaga/internal/gitdiff"
 
 	"github.com/twentyideas/changesaga/internal/querytest"
 	"github.com/twentyideas/changesaga/internal/saga"

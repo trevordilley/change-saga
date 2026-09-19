@@ -26,7 +26,7 @@ export type SagaRepositories = {
   sourceRepo: string;
   sagaRepo: string;
   sagaRoot: string;
-  /** Private TMPDIR handed to every server subprocess so upload staging is observable. */
+  /** Private TMPDIR handed to every CLI and server subprocess so nothing escapes the fixture. */
   tempDir: string;
   identity: ComparisonIdentity;
 };
@@ -191,11 +191,16 @@ function buildSagaRepository(root: string, source: { sourceRepo: string; base: s
   return { sagaRepo, sagaRoot, identity };
 }
 
-export async function startSagaServer(repositories: SagaRepositories, extraArgs: string[] = []): Promise<SagaServer> {
-  const server = spawn(binaryPath, ["serve", "--addr", "127.0.0.1:0", "--repo", repositories.sourceRepo, "--against", "main", ...extraArgs, repositories.sagaRoot], {
+/**
+ * Serves the fixture. It compares the change against main, the way a pull
+ * request does, unless `against` is null, which observes the head commit.
+ */
+export async function startSagaServer(repositories: SagaRepositories, against: string | null = "main"): Promise<SagaServer> {
+  const comparison = against === null ? [] : ["--against", against];
+  const server = spawn(binaryPath, ["serve", "--addr", "127.0.0.1:0", "--repo", repositories.sourceRepo, ...comparison, repositories.sagaRoot], {
     cwd: dirname(repositories.sagaRoot),
-    // A private TMPDIR keeps every staged upload this process creates inside the
-    // fixture, so a test can prove rejected uploads leave nothing behind.
+    // A private TMPDIR keeps anything this process writes to temporary storage
+    // inside the fixture.
     env: { ...process.env, TMPDIR: repositories.tempDir },
     stdio: ["pipe", "pipe", "pipe"]
   });
@@ -342,17 +347,8 @@ export function treeSnapshot(root: string): string {
   return lines.sort().join("\n");
 }
 
-/** Upload staging files the server has left behind in its private TMPDIR. */
-export function stagedUploads(fixture: SagaRepositories): string[] {
-  return readdirSync(fixture.tempDir).filter((entry) => entry.startsWith("change-saga-attachment-")).sort();
-}
-
 export function readJSON<T = Record<string, unknown>>(path: string): T {
   return JSON.parse(readFileSync(path, "utf8")) as T;
-}
-
-export function relativeToSaga(fixture: Pick<SagaRepositories, "sagaRoot">, path: string): string {
-  return relative(fixture.sagaRoot, resolve(path)).split("\\").join("/");
 }
 
 export function fileName(path: string): string {
@@ -426,36 +422,6 @@ export function serverRequest(
     if (body) outgoing.write(body);
     outgoing.end();
   });
-}
-
-export async function readMutationToken(baseURL: string): Promise<string> {
-  const page = await serverRequest(baseURL, "/");
-  const match = page.body.match(/<meta name="change-saga-mutation-token" content="([^"]*)">/);
-  if (!match) throw new Error(`page did not carry a mutation token\n${page.body.slice(0, 400)}`);
-  return match[1];
-}
-
-export function formBody(fields: Record<string, string>): { body: string; headers: Record<string, string> } {
-  const parameters = new URLSearchParams(fields);
-  return { body: parameters.toString(), headers: { "Content-Type": "application/x-www-form-urlencoded" } };
-}
-
-export function multipartBody(
-  fields: Record<string, string>,
-  files: Array<{ field: string; filename: string; content: Buffer | string }> = []
-): { body: Buffer; headers: Record<string, string> } {
-  const boundary = "----changesagae2e0000000000000001";
-  const parts: Buffer[] = [];
-  for (const [name, value] of Object.entries(fields)) {
-    parts.push(Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="${name}"\r\n\r\n${value}\r\n`));
-  }
-  for (const file of files) {
-    parts.push(Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="${file.field}"; filename="${file.filename}"\r\nContent-Type: application/octet-stream\r\n\r\n`));
-    parts.push(Buffer.from(file.content));
-    parts.push(Buffer.from("\r\n"));
-  }
-  parts.push(Buffer.from(`--${boundary}--\r\n`));
-  return { body: Buffer.concat(parts), headers: { "Content-Type": `multipart/form-data; boundary=${boundary}` } };
 }
 
 /**

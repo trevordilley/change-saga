@@ -35,6 +35,7 @@ func grammarHelp(t *testing.T, name string) string {
 		"spec":       func() error { return Spec(args, &output) },
 		"quality":    func() error { return qualityCommand(ctx, args, &output, strings.NewReader("")) },
 		"epic":       func() error { return Epic(ctx, args, &output) },
+		"review":     func() error { return Review(ctx, args, &output) },
 		"persona":    func() error { return Persona(ctx, args, &output) },
 		"flag":       func() error { return FeatureFlag(ctx, args, &output) },
 	}[fields[0]]

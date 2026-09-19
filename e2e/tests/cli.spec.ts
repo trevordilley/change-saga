@@ -129,12 +129,12 @@ test("@critical exposes mapping scrutiny, claims, and verification as an AI revi
   expect(status.stdout).toMatch(/ready_for_review\s+blocked/);
 });
 
-test("@critical refuses to mutate or serve a structurally invalid saga with zero side effects", async ({ sagaRepositories }) => {
+test("@critical refuses to serve a structurally invalid saga with zero side effects", async ({ sagaRepositories }) => {
   const { sagaRoot, sourceRepo } = sagaRepositories;
   const manifestPath = join(sagaRoot, "saga.json");
   const manifest = JSON.parse(readFileSync(manifestPath, "utf8")) as Record<string, unknown>;
-  // A loadable manifest that fails schema validation: exactly the state the
-  // product promises never to write review records into.
+  // A loadable manifest that fails schema validation: the reviewer must not
+  // present it as if it were a valid Saga.
   writeFileSync(manifestPath, `${JSON.stringify({ ...manifest, title: "" }, null, 2)}\n`);
 
   const validation = runCLI(sagaRepositories, ["validate", sagaRoot]);
@@ -142,28 +142,13 @@ test("@critical refuses to mutate or serve a structurally invalid saga with zero
   expect(validation.stdout).toContain("Invalid saga");
 
   const before = treeSnapshot(sagaRoot);
-  const refused: Array<[string, string[]]> = [
-    ["comment", ["thread", "--target", "___overview/overview.fragment", "--body", "Should never be stored.", sagaRoot]],
-    ["reply", ["reply", "--thread", "20250101T000000000Z", "--body", "Should never be stored.", sagaRoot]],
-    ["approval", ["review", "--target", "___overview/overview.fragment", "--state", "approved", "--reviewer-kind", "human", "--body", "Should never be stored.", sagaRoot]],
-    ["rejection", ["review", "--target", ".", "--state", "rejected", "--reviewer-kind", "human", sagaRoot]]
-  ];
-  for (const [label, args] of refused) {
-    const result = runCLI(sagaRepositories, args);
-    expect(result.status, `${label} on an invalid saga`).not.toBe(0);
-    expect(`${result.stdout}${result.stderr}`, `${label} on an invalid saga`).toContain("structurally invalid");
-  }
-
   const serve = runCLI(sagaRepositories, ["serve", "--addr", "127.0.0.1:0", "--repo", sourceRepo, sagaRoot]);
   expect(serve.status, "serve on an invalid saga").not.toBe(0);
   expect(`${serve.stdout}${serve.stderr}`).toContain("structurally invalid");
   expect(serve.stdout).not.toContain("Change Saga is available at");
 
-  // `init` scaffolds the empty record directories, so the contract is that they
-  // stay empty and that nothing anywhere under the saga moved.
-  expect(reviewFiles(sagaRepositories, /___review\//), "review records after refused mutations").toEqual([]);
-  expect(reviewFiles(sagaRepositories, /___approvals\//), "approval records after refused mutations").toEqual([]);
-  expect(treeSnapshot(sagaRoot), "saga tree after refused mutations").toBe(before);
+  // Nothing anywhere under the saga moved.
+  expect(treeSnapshot(sagaRoot), "saga tree after the refused serve").toBe(before);
 });
 
 test("@critical refuses a checkout whose origin does not match the declared repository", async ({ sagaRepositories }) => {

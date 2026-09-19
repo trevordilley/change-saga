@@ -3,9 +3,11 @@ package cli
 import (
 	"context"
 	"fmt"
-	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"io"
 	"strings"
+
+	"github.com/twentyideas/changesaga/internal/coderesolve"
+	"github.com/twentyideas/changesaga/internal/reviewstate"
 
 	"github.com/twentyideas/changesaga/internal/changeview"
 	"github.com/twentyideas/changesaga/internal/coverage"
@@ -35,8 +37,12 @@ type statusDocument struct {
 	// opened with --against has them.
 	Comparison *changeview.Layers `json:"comparison,omitempty"`
 	livingapp.Status
-	NextActions   []nextaction.Action `json:"next_actions"`
-	AuthoringLoop nextaction.Loop     `json:"authoring_loop"`
+	// Reviews reports every open pull request review slide by slide: each
+	// reviewer's decision and whether it is out of date. It is a report,
+	// never part of the exit status.
+	Reviews       []reviewstate.Report `json:"reviews"`
+	NextActions   []nextaction.Action  `json:"next_actions"`
+	AuthoringLoop nextaction.Loop      `json:"authoring_loop"`
 }
 
 // opening names how a Saga was opened: observe one commit, or compare head
@@ -122,6 +128,15 @@ func buildStatus(ctx context.Context, root, repoDir string, rng gitdiff.Range, a
 		Report: value.report, Schema: StatusSchema, Opening: view, Status: living,
 		NextActions: nextaction.Derive(living, root), AuthoringLoop: nextaction.AuthoringLoop(root),
 	}
+	var open []*saga.Review
+	for _, review := range value.document.Reviews {
+		if review.Merged == nil {
+			open = append(open, review)
+		}
+	}
+	if document.Reviews, err = buildReviewReports(ctx, value.document, value.checkout, open); err != nil {
+		return statusDocument{}, err
+	}
 	if value.changes.Mode == gitdiff.ModeCompare {
 		layers, _, err := changeview.Open(ctx, changeview.OpenOptions{
 			SagaRoot: root, Document: value.document, Checkout: value.checkout,
@@ -137,9 +152,8 @@ func buildStatus(ctx context.Context, root, repoDir string, rng gitdiff.Range, a
 
 // readyForReview is status's pass/fail: the ready_for_review gate, which
 // requires every earlier gate (changed-source accounting included) plus no
-// conflicts, orphaned evidence, or failed required runs. review_complete is
-// reported but does not decide the exit code: it waits on reviewer decisions,
-// which authoring cannot supply.
+// conflicts, orphaned evidence, or failed required runs. Reviews are reported
+// slide by slide and never decide the exit code: the team decides.
 func (status statusDocument) readyForReview() bool {
 	gate, ok := status.Readiness.Gate(readiness.GateReadyForReview)
 	return ok && gate.Status == readiness.StatusReady
@@ -206,6 +220,10 @@ func printLivingStatus(out io.Writer, status statusDocument, maxItems int) {
 		fmt.Fprintln(out)
 	}
 	printAppStatus(out, status.Status)
+	if len(status.Reviews) > 0 {
+		fmt.Fprintln(out, "\nReviews (decisions per slide; the team decides what it requires):")
+		printReviewReports(out, status.Reviews)
+	}
 	if len(status.Stale) > 0 {
 		fmt.Fprintf(out, "\nStale pins: %d records must be revisited\n", len(status.Stale))
 	}
@@ -311,7 +329,7 @@ func livingSpec() map[string]any {
 			"changed_source":       "every changed atom must be owned by some target; transitivity proves criteria reach code but cannot prove nothing else changed",
 			"staleness":            "derived only from pins (story/test/prototype revisions, content digests, diff selectors, run source identity), never from Git history",
 			"no_reducing_numbers":  true,
-			"readiness_gate_order": []string{"requirements_ready", "product_ready", "design_ready", "implementation_trace_ready", "quality_ready", "ready_for_review", "review_complete"},
+			"readiness_gate_order": []string{"requirements_ready", "product_ready", "design_ready", "implementation_trace_ready", "quality_ready", "ready_for_review"},
 			"readiness_rule":       "every gate always applies and every axis is required; an axis is excused only by an explicit, pinned, cited coverage exception, and no exception excuses changed-source accounting",
 			"status_exit_codes":    map[string]string{"0": "ready_for_review is ready", "3": "ready_for_review is blocked"},
 		},

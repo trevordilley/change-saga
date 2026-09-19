@@ -4,11 +4,12 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"github.com/twentyideas/changesaga/internal/coderef"
 	"io"
 	"os"
 	"strings"
 	"time"
+
+	"github.com/twentyideas/changesaga/internal/coderef"
 
 	"github.com/twentyideas/changesaga/internal/quality"
 	"github.com/twentyideas/changesaga/internal/qualityid"

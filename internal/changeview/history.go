@@ -9,6 +9,7 @@ import (
 	"path"
 	"strings"
 
+	"github.com/twentyideas/changesaga/internal/reviewstate"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
@@ -24,6 +25,23 @@ type History struct {
 	// Uncommitted is set when the record's current files differ from the
 	// last commit that holds them, or were never committed.
 	Uncommitted bool `json:"uncommitted"`
+	// Reviews are the pull request reviews that changed the record: one of
+	// its commits is in the review's range or landed it, or a review Item
+	// points at it. The reasoning behind today's state is one step away.
+	Reviews []ReviewLink `json:"reviews"`
+}
+
+// ReviewLink names one review that changed a record.
+type ReviewLink struct {
+	ID          string            `json:"id"`
+	Title       string            `json:"title"`
+	PullRequest *saga.PullRequest `json:"pull_request,omitempty"`
+	// Merged is set once the review is history: its frozen range.
+	Merged *saga.ReviewMerge `json:"merged,omitempty"`
+	// Because says how the review changed the record.
+	Because []string `json:"because"`
+	// Open is the command that reports the review slide by slide.
+	Open []string `json:"open"`
 }
 
 // HistoryEvent is one commit that touched the record, with the comparison
@@ -54,7 +72,7 @@ func NodeHistory(ctx context.Context, root, urn string) (History, error) {
 	if node == nil {
 		return History{}, fmt.Errorf("no record %s in the Saga", urn)
 	}
-	history := History{NodeRef: refOf(node), Files: node.Files, Replaced: []string{}, Events: []HistoryEvent{}}
+	history := History{NodeRef: refOf(node), Files: node.Files, Replaced: []string{}, Events: []HistoryEvent{}, Reviews: []ReviewLink{}}
 	location, err := Locate(ctx, root)
 	if err != nil {
 		history.Uncommitted = true
@@ -93,6 +111,7 @@ func NodeHistory(ctx context.Context, root, urn string) (History, error) {
 		event.Open = append(event.Open, "--head", event.Head, root)
 		history.Events = append(history.Events, event)
 	}
+	history.Reviews = reviewLinks(ctx, location.Repo, root, document, node.URN, commits)
 	if len(history.Events) > 0 {
 		introduced := history.Events[len(history.Events)-1]
 		history.Introduced = &introduced
@@ -163,4 +182,60 @@ func replacedAt(ctx context.Context, location Location, introduced, urn string) 
 		}
 	}
 	return replaced
+}
+
+// reviewLinks finds the reviews that changed a record: a commit that touched
+// it lies in the review's range or is the commit the review landed as, or an
+// Item of the review deck points at it.
+func reviewLinks(ctx context.Context, repo, root string, document *saga.Saga, urn string, commits []commitInfo) []ReviewLink {
+	links := []ReviewLink{}
+	touched := map[string]bool{}
+	for _, commit := range commits {
+		touched[commit.Commit] = true
+	}
+	for _, review := range document.Reviews {
+		var because []string
+		base, head := "", ""
+		if review.Merged != nil {
+			base, head = review.Merged.Base, review.Merged.Head
+			if touched[review.Merged.Landed] {
+				because = append(because, "landed as "+shortCommit(review.Merged.Landed))
+			}
+		} else if rng, err := reviewstate.ResolveRange(ctx, repo, review); err == nil {
+			base, head = rng.BaseOID, rng.HeadOID
+		}
+		if base != "" && head != "" {
+			if output, err := exec.CommandContext(ctx, "git", "-C", repo, "rev-list", base+".."+head, "--").Output(); err == nil {
+				for _, commit := range strings.Fields(string(output)) {
+					if touched[commit] {
+						because = append(because, "changed in "+shortCommit(commit))
+					}
+				}
+			}
+		}
+		if review.Deck != nil {
+			for _, slide := range review.Deck.Slides {
+				for _, item := range slide.Items {
+					if item.Record == urn {
+						because = append(because, "slide "+slide.ID+" points at it")
+					}
+				}
+			}
+		}
+		if len(because) == 0 {
+			continue
+		}
+		links = append(links, ReviewLink{
+			ID: review.ID, Title: review.Title, PullRequest: review.PullRequest, Merged: review.Merged, Because: because,
+			Open: []string{"change-saga", "review", "list", "--review", review.ID, root},
+		})
+	}
+	return links
+}
+
+func shortCommit(commit string) string {
+	if len(commit) > 12 {
+		return commit[:12]
+	}
+	return commit
 }

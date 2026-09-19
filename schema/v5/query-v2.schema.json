@@ -250,7 +250,7 @@
     "readiness": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["policy", "requirements_ready", "product_ready", "design_ready", "implementation_trace_ready", "quality_ready", "ready_for_review", "review_complete", "axes", "counts", "criteria"],
+      "required": ["policy", "requirements_ready", "product_ready", "design_ready", "implementation_trace_ready", "quality_ready", "ready_for_review", "axes", "counts", "criteria"],
       "properties": {
         "policy": { "type": "string", "minLength": 1 },
         "requirements_ready": { "$ref": "#/$defs/gate" },
@@ -259,7 +259,6 @@
         "implementation_trace_ready": { "$ref": "#/$defs/gate" },
         "quality_ready": { "$ref": "#/$defs/gate" },
         "ready_for_review": { "$ref": "#/$defs/gate" },
-        "review_complete": { "$ref": "#/$defs/gate" },
         "axes": { "type": "array", "maxItems": 16, "items": { "$ref": "#/$defs/axis_counts" } },
         "counts": { "$ref": "#/$defs/counts" },
         "criteria": { "type": "array", "maxItems": 1000, "items": { "$ref": "#/$defs/coverage_comparison" } }

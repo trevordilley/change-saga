@@ -32,10 +32,13 @@ type appContent struct {
 }
 
 // DeckRoleChange is an epic's implementation deck; DeckRoleOnboarding is the
-// app's onboarding deck, whose Items reference records instead of code.
+// app's onboarding deck, whose Items reference records instead of code;
+// DeckRoleReview is a pull request review's deck, whose Items reference the
+// code the change touched and the records it revised.
 const (
 	DeckRoleChange     = "change"
 	DeckRoleOnboarding = "onboarding"
+	DeckRoleReview     = "review"
 )
 
 // loadAppContent loads the app-level report roots, every epic, and the

@@ -3,7 +3,6 @@ package server
 import (
 	"context"
 	"fmt"
-	"github.com/twentyideas/changesaga/internal/gitdiff"
 	stdhtml "html"
 	"net/http"
 	"net/http/httptest"
@@ -15,6 +14,8 @@ import (
 	"strconv"
 	"strings"
 	"testing"
+
+	"github.com/twentyideas/changesaga/internal/gitdiff"
 
 	"github.com/twentyideas/changesaga/internal/saga"
 	"github.com/twentyideas/changesaga/internal/testfixture"
@@ -106,7 +107,7 @@ func TestAsyncReviewSurfacesAreBoundedAndCursorPaginated(t *testing.T) {
 	options := testfixture.LargeSagaOptions{
 		Chapters: 4, SectionsPerChapter: 1, FragmentsPerSection: 1,
 		SourceFiles: 16, ChangedLinesPerFile: 64,
-		ReviewsPerFragment: 0, Threads: 0, DiffReviews: 0,
+
 		CoverageRangeWidth: 1, CoverageTargets: 4,
 	}
 	fixture, err := testfixture.GenerateLargeSaga(context.Background(), t.TempDir(), options)
@@ -322,7 +323,7 @@ func newIncrementalSSRFixture(tb testing.TB, diffRecords int) incrementalSSRFixt
 	options := testfixture.LargeSagaOptions{
 		Chapters: 4, SectionsPerChapter: 1, FragmentsPerSection: 1,
 		SourceFiles: 1, ChangedLinesPerFile: 2,
-		ReviewsPerFragment: 0, Threads: 0, DiffReviews: 0,
+
 		CoverageRangeWidth: 4, CoverageTargets: 1,
 	}
 	fixture, err := testfixture.GenerateLargeSaga(context.Background(), tb.TempDir(), options)
@@ -385,7 +386,7 @@ func newAsyncProjectionFixture(tb testing.TB, sourceFiles int) asyncProjectionFi
 	options := testfixture.LargeSagaOptions{
 		Chapters: 4, SectionsPerChapter: 1, FragmentsPerSection: 1,
 		SourceFiles: sourceFiles, ChangedLinesPerFile: 16,
-		ReviewsPerFragment: 0, Threads: 0, DiffReviews: 0,
+
 		CoverageRangeWidth: 1, CoverageTargets: 4,
 	}
 	fixture, err := testfixture.GenerateLargeSaga(context.Background(), tb.TempDir(), options)

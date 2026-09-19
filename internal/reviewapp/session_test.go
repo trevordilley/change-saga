@@ -98,7 +98,7 @@ func TestSessionReadOperations(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			if value.Kind != "line" || len(value.Atoms) != 1 || len(value.Atoms[0].Owners) != 2 || len(value.Atoms[0].Threads) != 1 || value.Atoms[0].Owners[0].Mapping == nil {
+			if value.Kind != "line" || len(value.Atoms) != 1 || len(value.Atoms[0].Owners) != 2 || value.Atoms[0].Owners[0].Mapping == nil {
 				t.Fatalf("unexpected atom ownership: %#v", value)
 			}
 		}},
@@ -106,28 +106,6 @@ func TestSessionReadOperations(t *testing.T) {
 			value, err := fixture.session.DiffOwners(ctx, DiffOwnerQuery{Ref: fixture.fileRef, Limit: 1})
 			if err != nil || value.Kind != "file" || len(value.Atoms) != 1 || value.Page.NextCursor == nil {
 				t.Fatalf("unexpected file ownership: %#v, err=%v", value, err)
-			}
-		}},
-		{name: "reviews normalize content and attribution", run: func(t *testing.T) {
-			value, err := fixture.session.Reviews(ctx, ReviewQuery{})
-			if err != nil {
-				t.Fatal(err)
-			}
-			if len(value.Items) != 3 {
-				t.Fatalf("review items = %#v", value.Items)
-			}
-			var targetReview *ReviewEvent
-			for _, item := range value.Items {
-				if item.Kind == "target_review" {
-					targetReview = item.Event
-				}
-			}
-			if targetReview == nil || targetReview.Reviewer == nil || targetReview.Reviewer.Kind != "ai" || targetReview.Reviewer.Name != "Codex 1" || targetReview.Reviewer.Agent != "codex" || targetReview.Reviewer.Model != "gpt-5.6-sol" {
-				t.Fatalf("target review provenance = %#v", targetReview)
-			}
-			filtered, err := fixture.session.Reviews(ctx, ReviewQuery{Thread: "thread-1", State: "open"})
-			if err != nil || len(filtered.Items) != 1 || filtered.Items[0].Thread == nil || filtered.Items[0].Thread.Attribution.Status != "committed" || filtered.Items[0].Thread.Messages[0].Fragments[0].Data != "Please clarify.\n" {
-				t.Fatalf("filtered reviews = %#v, err=%v", filtered, err)
 			}
 		}},
 		{name: "gaps expose public kinds", run: func(t *testing.T) {
@@ -277,7 +255,7 @@ func TestSessionStableErrorsSnapshotAndCursor(t *testing.T) {
 			return err
 		}},
 		{name: "oversize page", code: CodeInvalidArgument, run: func() error {
-			_, err := fixture.session.Reviews(ctx, ReviewQuery{Limit: MaxPageLimit + 1})
+			_, err := fixture.session.Gaps(ctx, GapQuery{Limit: MaxPageLimit + 1})
 			return err
 		}},
 		{name: "bad diff", code: CodeInvalidArgument, run: func() error {
@@ -349,7 +327,6 @@ func newServiceFixture(t *testing.T) serviceFixture {
 	}
 	// A reference to a path the head never had is stale at both sides.
 	stale := coderef.Reference{Commit: comparison.HeadOID, Path: "missing.go", Start: 99, End: 99, Digest: coderef.DigestBytes(nil), Note: "needs repair"}
-	fileReview := author(coderef.Location{Commit: comparison.HeadOID, Path: atomFilePath(current)}, "")
 	root := filepath.Join(repo, "review.saga")
 	fragmentTarget := saga.FragmentTarget("query-test", "overview")
 	writeJSON(t, filepath.Join(root, "saga.json"), saga.Manifest{
@@ -370,17 +347,9 @@ func newServiceFixture(t *testing.T) serviceFixture {
 	asset := filepath.Join(epicDir, "overview.fragment", "diagram.png")
 	writeFile(t, asset, "not-executed-image-bytes")
 	writeJSON(t, filepath.Join(epicDir, "overview.fragment", saga.CodeDirName, "coverage.json"), saga.CodeFile{Version: 2, References: []coderef.Reference{at(current, "fragment ownership"), stale}})
-	writeJSON(t, filepath.Join(epicDir, "overview.fragment", "___approvals", "review.json"), saga.Review{Version: 2, ID: "review-1", Reviewer: &saga.ReviewerIdentity{Kind: "ai", Name: "Codex 1", Agent: "codex", Model: "gpt-5.6-sol"}, State: "approved", Body: "Looks good.", CreatedAt: mustTime("2026-08-20T10:02:00Z")})
 	writeJSON(t, filepath.Join(epicDir, "details.chapter", "chapter.json"), saga.ChapterManifest{Version: 2, ID: "details", Title: "Details", Order: 2})
 	writeJSON(t, filepath.Join(epicDir, "details.chapter", "details.fragment", "fragment.json"), saga.FragmentManifest{Version: 2, ID: "details-body", Title: "Details body", MediaType: "text/plain", Entrypoint: "content.txt"})
 	writeFile(t, filepath.Join(epicDir, "details.chapter", "details.fragment", "content.txt"), "Details.\n")
-	threadDir := filepath.Join(root, "___review", "threads", "thread-1.thread")
-	writeJSON(t, filepath.Join(threadDir, "thread.json"), saga.ThreadManifest{Version: 2, ID: "thread-1", Target: fragmentTarget, Kind: "comment", Anchor: saga.Anchor{Type: "code", Code: func() *coderef.Reference { value := at(current, ""); return &value }()}, CreatedAt: mustTime("2026-08-20T10:00:00Z")})
-	messageDir := filepath.Join(threadDir, "messages", "message-1.message")
-	writeJSON(t, filepath.Join(messageDir, "message.json"), saga.MessageManifest{Version: 2, ID: "message-1", CreatedAt: mustTime("2026-08-20T10:00:00Z")})
-	writeJSON(t, filepath.Join(messageDir, "body.fragment", "fragment.json"), saga.FragmentManifest{Version: 2, ID: "message-body", MediaType: "text/markdown", Entrypoint: "content.md"})
-	writeFile(t, filepath.Join(messageDir, "body.fragment", "content.md"), "Please clarify.\n")
-	writeJSON(t, filepath.Join(root, "___review", saga.FileReviewDir, "file-review.json"), saga.FileReview{Version: 2, ID: "file-review-1", Code: fileReview, State: "reviewed", CreatedAt: mustTime("2026-08-20T10:03:00Z")})
 	writeJSON(t, filepath.Join(root, "___claims", "ready-claim.json"), saga.Claim{
 		Version: 2, ID: "ready-claim", Target: fragmentTarget, Kind: "behavior", Statement: "The readiness constant becomes true.",
 		Evidence: []coderef.Reference{at(current, "")}, CreatedAt: mustTime("2026-08-20T10:04:00Z"),

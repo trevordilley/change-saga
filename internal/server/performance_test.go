@@ -34,7 +34,7 @@ func TestLargeSagaCoverageAndDrawerNavigationContracts(t *testing.T) {
 	// The linked drawer is built at full scope: this measures the construction
 	// the /api/section and /api/fragment endpoints perform, not the shell.
 	rootView := makeSectionView(document.Section, viewScope{changes: changesByTarget})
-	nav := makeNavTree(document.Section, nil)
+	nav := makeNavTree(document.Section)
 	if len(nav) != benchmarkCoverageChapters+1 {
 		t.Fatalf("large navigation lost chapters: %d", len(nav))
 	}

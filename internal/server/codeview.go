@@ -33,23 +33,19 @@ type CodeReviewView struct {
 	RelatedSaga        []*RelatedSagaChapterView
 	RelatedEmpty       string
 	NarrativeOwnership []*FragmentOwnershipView
-	ReviewedFiles      int
 }
 
 type FileDiffView struct {
-	ID             string
-	Name           string
-	Path           string
-	Ref            string
-	Href           string
-	Atoms          []*diffAtomView
-	Lines          []*DiffLineView
-	Added          int
-	Deleted        int
-	Reviewed       bool
-	Reviewer       string
-	ReviewerDetail string
-	Selected       bool
+	ID       string
+	Name     string
+	Path     string
+	Ref      string
+	Href     string
+	Atoms    []*diffAtomView
+	Lines    []*DiffLineView
+	Added    int
+	Deleted  int
+	Selected bool
 }
 
 // reviewDiffSurfaceView is the shared template contract for a reviewable file
@@ -80,26 +76,24 @@ type DiffLineView struct {
 }
 
 type ChangedFileTreeView struct {
-	Nodes         []*ChangedFileTreeNode
-	FileCount     int
-	ReviewedCount int
-	Added         int
-	Deleted       int
+	Nodes     []*ChangedFileTreeNode
+	FileCount int
+	Added     int
+	Deleted   int
 }
 
 type ChangedFileTreeNode struct {
-	Name          string
-	Path          string
-	Kind          string
-	Depth         int
-	Children      []*ChangedFileTreeNode
-	File          *FileDiffView
-	FileCount     int
-	ReviewedCount int
-	Added         int
-	Deleted       int
-	Selected      bool
-	Expanded      bool
+	Name      string
+	Path      string
+	Kind      string
+	Depth     int
+	Children  []*ChangedFileTreeNode
+	File      *FileDiffView
+	FileCount int
+	Added     int
+	Deleted   int
+	Selected  bool
+	Expanded  bool
 }
 
 type RelatedSagaChapterView struct {
@@ -127,16 +121,15 @@ type RelatedSagaFragmentView struct {
 // outside the presentation surface. Evidence remains owned by Items, while
 // navigation rolls those references up to the slide a reviewer can recognize.
 type SlideReferenceView struct {
-	ID          string
-	Title       string
-	Section     string
-	Target      string
-	Anchor      string
-	Href        string
-	URL         string
-	MediaType   string
-	ReviewState string
-	ItemCount   int
+	ID        string
+	Title     string
+	Section   string
+	Target    string
+	Anchor    string
+	Href      string
+	URL       string
+	MediaType string
+	ItemCount int
 }
 
 // FragmentOwnershipView is the forward fragment-to-diff half of the ownership
@@ -211,15 +204,12 @@ func rebaseCodeReviewURLs(view *CodeReviewView, basePath string) {
 	}
 }
 
-func makeCodeReviewView(document *saga.Saga, changes gitdiff.ChangeSet, report coverage.Report, threads map[string][]*threadView, selection codeSelection) (*CodeReviewView, *selectionError) {
-	files := makeFileViews(changes, saga.SagaTarget(document.Manifest.ID), document.FileReviews, threads)
+func makeCodeReviewView(document *saga.Saga, changes gitdiff.ChangeSet, report coverage.Report, selection codeSelection) (*CodeReviewView, *selectionError) {
+	files := makeFileViews(changes, saga.SagaTarget(document.Manifest.ID))
 	view := &CodeReviewView{Files: files}
 	for _, file := range files {
 		file.Name = path.Base(file.Path)
 		file.Href = CodeDiffURL(file.Path, "")
-		if file.Reviewed {
-			view.ReviewedFiles++
-		}
 	}
 
 	selected, selectedAtoms, err := resolveCodeSelection(files, selection, changes.BaseOID, changes.HeadOID)
@@ -341,7 +331,7 @@ func makeChangedFileTree(files []*FileDiffView) ChangedFileTreeView {
 		}
 	}
 	finalizeTreeNode(root, -1)
-	return ChangedFileTreeView{Nodes: root.Children, FileCount: root.FileCount, ReviewedCount: root.ReviewedCount, Added: root.Added, Deleted: root.Deleted}
+	return ChangedFileTreeView{Nodes: root.Children, FileCount: root.FileCount, Added: root.Added, Deleted: root.Deleted}
 }
 
 func finalizeTreeNode(node *ChangedFileTreeNode, depth int) {
@@ -349,9 +339,6 @@ func finalizeTreeNode(node *ChangedFileTreeNode, depth int) {
 	if node.File != nil {
 		node.FileCount, node.Added, node.Deleted = 1, node.File.Added, node.File.Deleted
 		node.Selected = node.File.Selected
-		if node.File.Reviewed {
-			node.ReviewedCount = 1
-		}
 		return
 	}
 	sort.SliceStable(node.Children, func(i, j int) bool {
@@ -363,7 +350,6 @@ func finalizeTreeNode(node *ChangedFileTreeNode, depth int) {
 	for _, child := range node.Children {
 		finalizeTreeNode(child, depth+1)
 		node.FileCount += child.FileCount
-		node.ReviewedCount += child.ReviewedCount
 		node.Added += child.Added
 		node.Deleted += child.Deleted
 		node.Selected = node.Selected || child.Selected
@@ -374,28 +360,27 @@ func finalizeTreeNode(node *ChangedFileTreeNode, depth int) {
 }
 
 type narrativeLocation struct {
-	fragment         *saga.Fragment
-	target           string
-	itemID           string
-	title            string
-	diffs            []saga.CodeFile
-	hasDiffs         bool
-	chapterID        string
-	chapterTitle     string
-	chapterTarget    string
-	chapterHref      string
-	fragmentHref     string
-	deckID           string
-	deckTitle        string
-	deckTarget       string
-	deckHref         string
-	slideID          string
-	slideTitle       string
-	slideTarget      string
-	slideHref        string
-	slideURL         string
-	slideMediaType   string
-	slideReviewState string
+	fragment       *saga.Fragment
+	target         string
+	itemID         string
+	title          string
+	diffs          []saga.CodeFile
+	hasDiffs       bool
+	chapterID      string
+	chapterTitle   string
+	chapterTarget  string
+	chapterHref    string
+	fragmentHref   string
+	deckID         string
+	deckTitle      string
+	deckTarget     string
+	deckHref       string
+	slideID        string
+	slideTitle     string
+	slideTarget    string
+	slideHref      string
+	slideURL       string
+	slideMediaType string
 }
 
 func indexNarrativeFragments(document *saga.Saga) []narrativeLocation {
@@ -422,7 +407,6 @@ func indexNarrativeFragments(document *saga.Saga) []narrativeLocation {
 				location.slideHref = location.fragmentHref
 				location.slideURL = fragmentAssetURL(fragment)
 				location.slideMediaType = fragment.MediaType
-				location.slideReviewState, _, _, _ = latestReview(fragment.Reviews)
 			}
 			result = append(result, location)
 			for index := range fragment.Landmarks {
@@ -485,7 +469,7 @@ func makeRelatedSagaViewsForTargets(locations []narrativeLocation, ownedURIs map
 					Slide: &SlideReferenceView{
 						ID: location.slideID, Title: location.slideTitle, Target: location.slideTarget,
 						Anchor: strings.TrimPrefix(location.slideHref, "#"), Href: location.slideHref,
-						URL: location.slideURL, MediaType: location.slideMediaType, ReviewState: location.slideReviewState,
+						URL: location.slideURL, MediaType: location.slideMediaType,
 					},
 				}
 				slides[key] = view

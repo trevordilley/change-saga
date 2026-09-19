@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/review-comment.schema.json",
+  "version": 5,
+  "id": "20260919T035854.379081000Z-d9fa8aea",
+  "target": "urn:change-saga:app:review:pr-7:slide:table:item:table",
+  "body": "Is there an index on status?",
+  "state": "open",
+  "reviewer": {
+    "kind": "human"
+  },
+  "commit": "0a103972ac26d8dfd8a4a1f3be0b1b9b5a2c4e61",
+  "created_at": "2026-09-19T03:58:54.379081Z"
+}

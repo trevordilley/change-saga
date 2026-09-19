@@ -18,6 +18,14 @@ var (
 	headFlag    = Flag{Name: "head", Value: "REV", Description: "the commit to observe, or the head of the comparison; defaults to HEAD"}
 )
 
+// reviewDecisionFlags declare the reviewer seat of a review decision or
+// comment and where its commits live.
+var reviewDecisionFlags = []Flag{
+	required("reviewer-kind", "KIND", "human for your own decision, ai for an AI reviewer's"),
+	optional("reviewer-name", "NAME", "a distinct AI reviewer seat (AI only)"), optional("agent", "AGENT", "AI agent kind (AI only)"),
+	optional("model", "MODEL", "exact AI model name (AI only)"), optional("repo", "PATH", "code checkout when separate"), jsonFlag,
+}
+
 func required(name, value, description string) Flag {
 	return Flag{Name: name, Value: value, Required: true, Description: description}
 }
@@ -278,11 +286,12 @@ var commands = []Command{
 		Positionals: sagaOnly,
 	},
 	{
-		Name: "repin", Status: StatusImplemented, Mutates: true, Writes: []string{"code-evidence", "merge", "sync-cursor"},
-		Usage:   "change-saga repin --onto REV [--branch REV] [--dry-run] [--json] [--repo PATH] <saga>",
-		Summary: "after a change lands, re-pin evidence references to the landed commit and record the branch's commit messages",
+		Name: "repin", Status: StatusImplemented, Mutates: true, Writes: []string{"code-evidence", "merge", "sync-cursor", "review"},
+		Usage:   "change-saga repin --onto REV [--branch REV] [--review ID] [--dry-run] [--json] [--repo PATH] <saga>",
+		Summary: "after a change lands, re-pin evidence references to the landed commit, record the branch's commit messages, and freeze the change's review at its exact base and head",
 		Flags: []Flag{
 			required("onto", "REV", "the commit the change landed as"), optional("branch", "REV", "the branch's last commit when still available"),
+			optional("review", "ID", "the landed change's review; defaults to the Saga's only open review"),
 			optional("dry-run", "", "report without writing"), jsonFlag, optional("repo", "PATH", "source checkout when separate"),
 		},
 		Positionals: sagaOnly,
@@ -295,6 +304,56 @@ var commands = []Command{
 			required("repo", "PATH", "code repository checkout the Saga documents"), optional("commit", "REV", "code commit the Saga now documents; defaults to HEAD"),
 			jsonFlag, optional("allow-repository-mismatch", "", "accept a checkout whose origin differs"),
 		},
+		Positionals: sagaOnly,
+	},
+	{
+		Name: "review create", Status: StatusImplemented, Mutates: true, Writes: []string{"review"},
+		Usage:   "change-saga review create --id ID --base REV [--head REF] [--pr N] [--url URL] [--title TEXT] [flags] <saga>",
+		Summary: "create the one review of a pull request: a slide deck viewed from the merge-base of --base and the head it follows",
+		Flags: []Flag{
+			required("id", "ID", "stable review id, for example pr-42"), required("base", "REV", "the revision the pull request merges into"),
+			optional("head", "REF", "the ref the review follows as commits are pushed; defaults to the checkout's HEAD"),
+			optional("pr", "N", "pull request number"), optional("url", "URL", "pull request URL"), optional("title", "TEXT", "review title"),
+			optional("objective", "TEXT", "what the review deck explains"), optional("deck", "ID", "review deck id; defaults to the review id"), jsonFlag,
+		},
+		Positionals: sagaOnly,
+	},
+	{
+		Name: "review list", Status: StatusImplemented, Usage: "change-saga review list [--review ID] [--repo PATH] [--json] <saga>",
+		Summary:     "report every review slide's decisions, the head commit each was given at, and whether each is out of date; never a verdict",
+		Flags:       []Flag{optional("review", "ID", "report one review"), optional("repo", "PATH", "code checkout when separate"), jsonFlag},
+		Positionals: sagaOnly,
+	},
+	{
+		Name: "review approve", Status: StatusImplemented, Mutates: true, Writes: []string{"review-approval"},
+		Usage:       "change-saga review approve --review ID --slide ID --reviewer-kind human|ai [--body TEXT] [flags] <saga>",
+		Summary:     "approve one review slide at the pull request's current head; it goes out of date when the slide or its code changes",
+		Flags:       append([]Flag{required("review", "ID", "review id"), required("slide", "ID", "review slide id or URN"), optional("body", "TEXT", "note")}, reviewDecisionFlags...),
+		Positionals: sagaOnly,
+	},
+	{
+		Name: "review request-changes", Status: StatusImplemented, Mutates: true, Writes: []string{"review-approval"},
+		Usage:       "change-saga review request-changes --review ID --slide ID --reviewer-kind human|ai --body TEXT [flags] <saga>",
+		Summary:     "request changes on one review slide at the pull request's current head",
+		Flags:       append([]Flag{required("review", "ID", "review id"), required("slide", "ID", "review slide id or URN"), required("body", "TEXT", "what should change")}, reviewDecisionFlags...),
+		Positionals: sagaOnly,
+	},
+	{
+		Name: "review withdraw", Status: StatusImplemented, Mutates: true, Writes: []string{"review-approval"},
+		Usage:       "change-saga review withdraw --review ID --slide ID --reviewer-kind human|ai [flags] <saga>",
+		Summary:     "withdraw your current decision on one review slide",
+		Flags:       append([]Flag{required("review", "ID", "review id"), required("slide", "ID", "review slide id or URN"), optional("body", "TEXT", "note")}, reviewDecisionFlags...),
+		Positionals: sagaOnly,
+	},
+	{
+		Name: "review comment", Status: StatusImplemented, Mutates: true, Writes: []string{"review-comment"},
+		Usage:   "change-saga review comment --review ID (--target SLIDE[/ITEM] | --reply-to ID) --body TEXT --reviewer-kind human|ai [--resolve|--reopen] [flags] <saga>",
+		Summary: "comment on a review slide or Item, or reply to a comment; documentation has no comments",
+		Flags: append([]Flag{
+			required("review", "ID", "review id"), optional("target", "SLIDE[/ITEM]", "review slide or Item: id, <slide>/<item>, or URN"),
+			optional("reply-to", "ID", "comment this replies to"), required("body", "TEXT", "Markdown comment"),
+			optional("resolve", "", "resolve the thread"), optional("reopen", "", "reopen the thread"),
+		}, reviewDecisionFlags...),
 		Positionals: sagaOnly,
 	},
 	{

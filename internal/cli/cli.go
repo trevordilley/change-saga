@@ -25,7 +25,6 @@ import (
 	"github.com/twentyideas/changesaga/internal/prototypes"
 	"github.com/twentyideas/changesaga/internal/quality"
 	"github.com/twentyideas/changesaga/internal/requirements"
-	"github.com/twentyideas/changesaga/internal/reviewstore"
 	"github.com/twentyideas/changesaga/internal/saga"
 	reviewserver "github.com/twentyideas/changesaga/internal/server"
 	"github.com/twentyideas/changesaga/internal/store"
@@ -89,7 +88,7 @@ func (e *StatusError) Error() string { return "command reported a non-success st
 // overview, the per-command -h banner, and argument errors cannot drift apart.
 var commandOrder = []string{
 	"init", "epic", "persona", "flag", "prototype", "story", "criterion", "citation", "relation", "design", "plan", "quality", "add-deck", "add-slide", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "cover", "remove-coverage", "replace-coverage", "references", "repin", "sync", "add-claim", "verify-claim",
-	"thread", "reply", "review", "validate", "status", "query",
+	"review", "validate", "status", "query",
 	"serve", "open", "install-skill", "spec",
 }
 
@@ -152,9 +151,9 @@ var commandUsage = map[string]string{
 	"quality run":                 "change-saga quality run record [flags] <saga>",
 	"quality run record":          "change-saga quality run record --test URN --result RESULT --summary TEXT --evidence URN... [--parent RUN...] [--test-revision URN] [--command TEXT] [--commit REV] [--id ID] [flags] <saga>",
 	"add-deck":                    "change-saga add-deck (--epic ID | --role onboarding) [flags] <saga> <name>",
-	"add-slide":                   "change-saga add-slide --deck TARGET --intent INTENT --layout LAYOUT [flags] <saga> <name>",
-	"set-slide-content":           "change-saga set-slide-content --target TARGET --source FILE|- [--json|--quiet] <saga>",
-	"add-item":                    "change-saga add-item --slide TARGET --kind KIND [selector] [--record URN] [flags] <saga>",
+	"add-slide":                   "change-saga add-slide (--deck TARGET | --review ID) --intent INTENT --layout LAYOUT [flags] <saga> <name>",
+	"set-slide-content":           "change-saga set-slide-content [--review ID] --target TARGET --source FILE|- [--json|--quiet] <saga>",
+	"add-item":                    "change-saga add-item [--review ID] --slide TARGET --kind KIND [selector] [--record URN] [flags] <saga>",
 	"add-chapter":                 "change-saga add-chapter (--epic ID | --app overview|designsystem) [flags] <saga> <name>",
 	"add-section":                 "change-saga add-section [flags] <saga> <section/path>",
 	"add-fragment":                "change-saga add-fragment (--epic ID | --app overview|designsystem | --section TARGET) [flags] <saga>",
@@ -164,13 +163,17 @@ var commandUsage = map[string]string{
 	"remove-coverage":             "change-saga remove-coverage --record PATH [--dry-run] [--json|--quiet] <saga>",
 	"replace-coverage":            "change-saga replace-coverage --record PATH [coverage flags] [--batch FILE|-] [--dry-run] [--against REV [--head REV]] <saga>",
 	"references":                  "change-saga references [--stale] [--diff] [--json] [--repo PATH] [--against REV [--head REV]] <saga>",
-	"repin":                       "change-saga repin --onto REV [--branch REV] [--dry-run] [--json] [--repo PATH] <saga>",
+	"repin":                       "change-saga repin --onto REV [--branch REV] [--review ID] [--dry-run] [--json] [--repo PATH] <saga>",
 	"sync":                        "change-saga sync --repo PATH [--commit REV] [--json] <saga>",
 	"add-claim":                   "change-saga add-claim --target TARGET --kind KIND --statement TEXT --ref LOCATION [--ref LOCATION...] <saga>",
 	"verify-claim":                "change-saga verify-claim --claim ID --status STATUS --summary TEXT [flags] <saga>",
-	"thread":                      "change-saga thread [flags] <saga>",
-	"reply":                       "change-saga reply [flags] <saga>",
-	"review":                      "change-saga review [flags] <saga>",
+	"review":                      "change-saga review <create|list|approve|request-changes|withdraw|comment> [flags] <saga>",
+	"review create":               "change-saga review create --id ID --base REV [--head REF] [--pr N] [--url URL] [--title TEXT] [flags] <saga>",
+	"review list":                 "change-saga review list [--review ID] [--repo PATH] [--json] <saga>",
+	"review approve":              "change-saga review approve --review ID --slide ID --reviewer-kind human|ai [--body TEXT] [flags] <saga>",
+	"review request-changes":      "change-saga review request-changes --review ID --slide ID --reviewer-kind human|ai --body TEXT [flags] <saga>",
+	"review withdraw":             "change-saga review withdraw --review ID --slide ID --reviewer-kind human|ai [flags] <saga>",
+	"review comment":              "change-saga review comment --review ID (--target SLIDE[/ITEM] | --reply-to ID) --body TEXT --reviewer-kind human|ai [--resolve|--reopen] [flags] <saga>",
 	"validate":                    "change-saga validate [--json] [--fix] <saga>",
 	"status":                      "change-saga status [--json] [--repo PATH] [--against REV [--head REV]] <saga>",
 	"query":                       "change-saga query <operation> --saga PATH [--repo PATH] [operation flags]",
@@ -209,7 +212,13 @@ The workflow:
      ("add-deck", "add-slide", "add-item"). Every meaningful node, edge,
      region, and callout is an Item.
   5. Code: reference every changed line from the Item that explains it
-     ("cover"), then "validate", check "status", and "serve" the Saga for review.
+     ("cover"), then "validate", check "status", and "serve" the Saga.
+  6. Review: each pull request has one review, a slide deck explaining what
+     the change did and why ("review create", then "add-slide --review").
+     Approval and comments happen only on review slides ("review approve",
+     "review request-changes", "review comment"); "review list" and "status"
+     report each decision and whether it is out of date. The Saga itself is
+     documentation and carries no approvals.
 
 Stories, prototypes, design, test cases, and deck bundles are Git-native
 records partitioned so parallel workspaces can author them and merge cleanly;
@@ -306,6 +315,13 @@ var commandDescription = map[string]string{
 	"add-slide":                   "Add one visual argument to an implementation deck. Intent names the\nreviewer job; layout names geometry, not meaning. Establish the system model, then\nforeground consequential tradeoffs, hidden coupling, and deviations that may surprise a reviewer.",
 	"set-slide-content":           "Replace a slide's visual entrypoint while preserving its stable target and items.",
 	"add-item":                    "Add one semantic visual item, including an evidence-bearing callout overlay, and append\nit to the slide reading order. Code references attach here.",
+	"review":                      "A review is a pull request's slide deck: one review per pull request, viewed from the\nmerge-base of its base and its head, and following the head as commits are pushed. The deck\nexplains what the change did and why, the transition the current documentation no longer\nshows. Its Items reference the code the change touched (shown as a diff against the base)\nand the Saga records it revised. Approval and comments exist only here, per review slide:\nthe documentation itself has none. The tool records decisions and reports whether each is\nout of date for the current head; it never declares a review approved.",
+	"review create":               "Create the review for one pull request and its empty review deck. --base is what the pull\nrequest merges into; --head is the ref the review follows (the pull request's branch),\ndefaulting to the checkout's HEAD. Author the deck with add-slide --review, add-item --review,\nset-slide-content --review, and cover --target <review Item URN>.",
+	"review list":                 "Report every review slide by slide: each reviewer's current decision, the head commit it\nwas given at, and whether it is out of date because the slide or the code it references changed\nsince. There is no verdict; a team writes its own rule over the JSON.",
+	"review approve":              "Approve one review slide at the pull request's current head. Declare the reviewer seat:\n--reviewer-kind human for your own decision, or ai with --reviewer-name, --agent, and the exact\n--model. The decision goes out of date when the slide or the code it references changes.",
+	"review request-changes":      "Request changes on one review slide at the pull request's current head, saying what\nshould change.",
+	"review withdraw":             "Withdraw your current decision on one review slide.",
+	"review comment":              "Comment on a review slide or Item, or reply to a comment. --resolve or --reopen sets the\nthread's state. Documentation has no comments; discuss a change to it on the review slide\nor Item that references it.",
 	"set-fragment-content":        "Replace a fragment entrypoint through the supported authoring API. Use --source -\nto read content from standard input; the fragment media type and metadata are preserved.",
 	"add-chapter":                 "Add one independently reviewable narrative chapter to the Saga.",
 	"add-section":                 "Group related narrative content inside a chapter.",
@@ -324,11 +340,11 @@ untouched.`,
 	"remove-coverage":  "Delete one exact coverage record named by query mappings or fragment-diffs.",
 	"replace-coverage": "Atomically replace one coverage record with one or more newly resolved records.\nUse --batch to split or retarget broad evidence without leaving partial coverage.",
 	"references":       "List every code reference: current (remapped when its lines only moved), or stale with the\nreason its code changed. Observing, health is judged at --head; comparing, at both sides.\n--diff adds the patch since the pin.",
-	"repin":            "After a change lands, re-pin evidence references to the landed commit (following moved\nlines, or the content digest when the branch commit is gone) and record the branch's commit\nmessages in ___merges/<commit>.json so a squash merge keeps its reasoning.",
+	"repin":            "After a change lands, re-pin evidence references to the landed commit (following moved\nlines, or the content digest when the branch commit is gone) and record the branch's commit\nmessages in ___merges/<commit>.json so a squash merge keeps its reasoning. It also freezes the\nlanded change's review (--review, or the Saga's only open review) at its exact base and head\nin review.json, so the review stays viewable after the branch is gone.",
 	"sync":             "Move a companion Saga's sync cursor (sync.json) to the code commit it now documents,\ndefault HEAD of --repo. Move it in every Saga commit that updates the documentation, so a\ncomparison reads the Saga that documented its merge-base. A Saga in its code repository\nhas no cursor: it documents the commit it is read at. repin moves it too.",
 	"add-claim":        "Record one falsifiable author assertion and the code that supports it. Claims do not\ncount toward coverage and are independently verified.",
 	"verify-claim":     "Append an independent verification result without rewriting the claim or prior results.",
-	"open":             "Start a managed loopback reviewer, open it in a browser, and return after\nprinting the PID and active URL. Without --against it observes the app at --head: every\nnode current, stale references as health warnings, approvals shown only as history.\nWith --against it compares what --head changes since their merge-base, the way a pull\nrequest does, and highlights the Changed, Affected, and Code layers.",
+	"open":             "Start a managed loopback reviewer, open it in a browser, and return after\nprinting the PID and active URL. Without --against it observes the app at --head: every\nnode current and stale references as health warnings; a node's history links to the reviews\nthat changed it. With --against it compares what --head changes since their merge-base, the\nway a pull request does, and shows the Changed, Affected, and Code layers read-only beside the\npull request's review, where approvals happen. Documentation has no approval or comment\ncontrols in either mode.",
 	"serve":            "Serve the saga on loopback for review. Detached instances are managed with\nchange-saga serve status [SAGA] and change-saga serve stop [SAGA].",
 	"install-skill":    "Print the agent-agnostic prompt that installs the change-saga authoring skill.\nPipe it to a coding agent; it neither writes to this repository nor creates a saga.",
 	"validate":         "Check the format and authoring completeness, including a warning for every Markdown\nfootnote without an evidence-bearing exact-text landmark. --fix adds missing stable\nheading anchors and changes nothing else.",
@@ -406,7 +422,7 @@ func Init(ctx context.Context, args []string, out io.Writer) error {
 		if err := os.Chmod(stage, 0o755); err != nil {
 			return err
 		}
-		reservedDirs := []string{"___approvals", "___claims", "___verifications", filepath.Join("___review", "threads"), filepath.Join("___review", saga.FileReviewDir), saga.CodeDirName}
+		reservedDirs := []string{"___claims", "___verifications", saga.CodeDirName}
 		for _, dir := range reservedDirs {
 			if err := os.MkdirAll(filepath.Join(stage, dir), 0o755); err != nil {
 				return err
@@ -482,7 +498,7 @@ func addChapter(_ context.Context, args []string, out io.Writer, scope authoring
 			if err := os.Chmod(stage, 0o755); err != nil {
 				return err
 			}
-			for _, reserved := range []string{saga.CodeDirName, "___approvals"} {
+			for _, reserved := range []string{saga.CodeDirName} {
 				if err := os.Mkdir(filepath.Join(stage, reserved), 0o755); err != nil {
 					return err
 				}
@@ -558,7 +574,7 @@ func addSection(_ context.Context, args []string, out io.Writer, scope authoring
 			if err := os.Chmod(stage, 0o755); err != nil {
 				return err
 			}
-			for _, reserved := range []string{saga.CodeDirName, "___approvals"} {
+			for _, reserved := range []string{saga.CodeDirName} {
 				if err := os.Mkdir(filepath.Join(stage, reserved), 0o755); err != nil {
 					return err
 				}
@@ -672,120 +688,6 @@ type stringList []string
 func (s *stringList) String() string { return strings.Join(*s, ",") }
 func (s *stringList) Set(value string) error {
 	*s = append(*s, value)
-	return nil
-}
-
-func Thread(_ context.Context, args []string, out io.Writer) error {
-	flags := commandFlags("thread", commandUsage["thread"], out)
-	target := flags.String("target", ".", "section/fragment path or target URN")
-	body := flags.String("body", "", "initial Markdown comment")
-	anchorJSON := flags.String("anchor", `{"type":"target"}`, "anchor JSON")
-	kind := flags.String("kind", "comment", "comment or suggestion")
-	replacement := flags.String("replacement", "", "replacement code for a suggestion")
-	var attachments stringList
-	flags.Var(&attachments, "attachment", "image, SVG, HTML, or text attachment; repeatable")
-	if err := flags.Parse(args); err != nil {
-		return err
-	}
-	if flags.NArg() != 1 {
-		return fmt.Errorf("usage: %s", commandUsage["thread"])
-	}
-	document, _, err := saga.Load(flags.Arg(0))
-	if err != nil {
-		return err
-	}
-	_, targetURI, err := resolveTarget(document, *target, true)
-	if err != nil {
-		return err
-	}
-	var anchor saga.Anchor
-	if err := json.Unmarshal([]byte(*anchorJSON), &anchor); err != nil {
-		return fmt.Errorf("parse --anchor: %w", err)
-	}
-	id, err := reviewstore.AddThread(document.Root, targetURI, *body, anchor, *kind, *replacement, attachments)
-	if err != nil {
-		return err
-	}
-	fmt.Fprintf(out, "Created thread %s\n", id)
-	return nil
-}
-
-func Reply(_ context.Context, args []string, out io.Writer) error {
-	flags := commandFlags("reply", commandUsage["reply"], out)
-	threadID := flags.String("thread", "", "thread identifier")
-	body := flags.String("body", "", "Markdown reply")
-	state := flags.String("state", "", "optionally set thread to open, resolved, or withdrawn")
-	var attachments stringList
-	flags.Var(&attachments, "attachment", "attachment; repeatable")
-	if err := flags.Parse(args); err != nil {
-		return err
-	}
-	if flags.NArg() != 1 {
-		return fmt.Errorf("usage: %s", commandUsage["reply"])
-	}
-	document, _, err := saga.Load(flags.Arg(0))
-	if err != nil {
-		return err
-	}
-	if *body != "" || len(attachments) > 0 {
-		if _, err := reviewstore.AddReply(document.Root, *threadID, *body, attachments); err != nil {
-			return err
-		}
-	}
-	if *state != "" {
-		if err := reviewstore.SetState(document.Root, *threadID, *state); err != nil {
-			return err
-		}
-	}
-	if *body == "" && len(attachments) == 0 && *state == "" {
-		return fmt.Errorf("provide --body, --attachment, or --state")
-	}
-	fmt.Fprintf(out, "Updated thread %s\n", *threadID)
-	return nil
-}
-
-func Review(_ context.Context, args []string, out io.Writer) error {
-	flags := commandFlags("review", commandUsage["review"], out)
-	target := flags.String("target", ".", "review target path, ID, or URN; deck decisions are per slide")
-	state := flags.String("state", "", "approved, rejected, closed, or open")
-	body := flags.String("body", "", "optional review note")
-	reviewerKind := flags.String("reviewer-kind", "", "required reviewer persona: human or ai")
-	reviewerName := flags.String("reviewer-name", "", "distinct AI reviewer name, for example Claude 1 (required for AI reviews)")
-	agent := flags.String("agent", "", "AI agent kind, for example codex (required for AI reviews)")
-	model := flags.String("model", "", "AI model name (required for AI reviews)")
-	if err := flags.Parse(args); err != nil {
-		return err
-	}
-	if flags.NArg() != 1 {
-		return fmt.Errorf("usage: %s", commandUsage["review"])
-	}
-	if strings.TrimSpace(*reviewerKind) == "" {
-		return fmt.Errorf("review requires --reviewer-kind human or ai")
-	}
-	reviewer := saga.ReviewerIdentity{Kind: *reviewerKind, Name: *reviewerName, Agent: *agent, Model: *model}
-	if err := saga.ValidateReviewerIdentity(&reviewer); err != nil {
-		return err
-	}
-	document, _, err := saga.Load(flags.Arg(0))
-	if err != nil {
-		return err
-	}
-	targetDir, resolvedTarget, err := resolveTarget(document, *target, true)
-	if err != nil {
-		return err
-	}
-	reviewTarget := targetDir
-	mutationIndex := saga.MutationIndexFromDocument(document)
-	if mutationIndex.FlatTargets[resolvedTarget] {
-		if _, ok := mutationIndex.ReviewTargets[resolvedTarget]; !ok {
-			return fmt.Errorf("deck approval decisions must target a slide; use a thread to comment on an Item")
-		}
-		reviewTarget = resolvedTarget
-	}
-	if err := reviewstore.AddReview(document.Root, reviewTarget, *state, *body, reviewer); err != nil {
-		return err
-	}
-	fmt.Fprintf(out, "Recorded %s review for %s\n", *state, *target)
 	return nil
 }
 
@@ -909,8 +811,7 @@ type validationOutput struct {
 }
 
 // fixHeadingAnchors is the only mutating part of validate. It rewrites narrative
-// Markdown fragments in place and deliberately never touches review-overlay
-// fragments: thread messages are append-only history, not authored content.
+// Markdown fragments in place and nothing else.
 func fixHeadingAnchors(root string) ([]AnchorFix, error) {
 	var applied []AnchorFix
 	err := authorMutation(root, func(document *saga.Saga) error {
@@ -1163,10 +1064,8 @@ func Spec(args []string, out io.Writer) error {
 			"media_types":          []string{"text/markdown", "text/html", "text/plain", "image/svg+xml", "image/*"},
 			"target_scheme":        "urn:change-saga",
 			"code_reference":       map[string]any{"fields": []string{"commit", "path", "start", "end", "digest"}, "location": "<commit>:<path>[#L<start>[-L<end>]]", "digest": coderef.DigestPrefix + "<hex>"},
-			"anchors":              []string{"target", "region", "drawing", "text", "note", "code"},
-			"thread_kinds":         []string{"comment", "suggestion"},
 			"reviewer_bootstrap":   "README.md",
-			"reserved_directories": []string{saga.CodeDirName, "___approvals", "___claims", "___verifications", saga.MergesDir, "___review"},
+			"reserved_directories": []string{saga.CodeDirName, "___claims", "___verifications", saga.MergesDir},
 			"app_layout": map[string]any{
 				"app_roots":    applayout.AppRootDirs,
 				"epic_storage": applayout.EpicsDir + "/<id>" + applayout.EpicSuffix + "/" + applayout.EpicManifestName,
@@ -1175,10 +1074,20 @@ func Spec(args []string, out io.Writer) error {
 				"onboarding":   applayout.OnboardingDir + "/<id>" + saga.EmbeddedDeckSuffix + " with role onboarding; its Items carry a persona, epic, or story record instead of code evidence",
 			},
 			"author_assertions": "one claim per ___claims/*.json; one append-only result per ___verifications/*.json",
-			"review_storage":    "append-only; one thread, message, or event record per path",
+			"reviews": map[string]any{
+				"storage":         saga.ReviewsDir + "/<id>" + saga.ReviewSuffix + "/{" + saga.ReviewManifestName + "," + saga.ReviewDeckDir + "/," + saga.ReviewApprovalsDir + "/<event>.json," + saga.ReviewCommentsDir + "/<event>.json}",
+				"deck_role":       saga.DeckRoleReview,
+				"urns":            "urn:change-saga:<saga>:review:<review>[:deck:<deck>|:slide:<slide>[:item:<item>]]",
+				"decision_states": []string{saga.ApprovalApproved, saga.ApprovalChangesRequested, saga.ApprovalNone},
+				"comment_states":  []string{saga.CommentOpen, saga.CommentResolved},
+				"currency":        []string{"current", "out_of_date", "unknown"},
+				"item_records":    saga.ReviewRecordReferenceKinds,
+				"documentation":   "stories, designs, test cases, and decks carry no approvals and no comments",
+				"verdict":         "none; status and review list report each slide's decisions and currency, and the team decides",
+			},
 			"implementation_deck": map[string]any{
 				"storage": applayout.EpicsDir + "/<epic>" + applayout.EpicSuffix + "/" + saga.EmbeddedSlidesDir + "/<id>" + saga.EmbeddedDeckSuffix, "layout": "flat", "max_basename": saga.FlatMaxBasename, "max_absolute_path": saga.FlatMaxPath,
-				"categories": map[string]string{"10-d": "deck", "20-s": "slide", "30-i": "item", "40-e": "evidence", "80-85": "review"},
+				"categories": map[string]string{"10-d": "deck", "20-s": "slide", "30-i": "item", "40-e": "evidence"},
 				"content":    "one self-contained visual file sharing its slide manifest stem",
 				"visual_forms": map[string]string{
 					"system-context": "actors, external systems, boundaries, and changed interfaces", "architecture": "containment, dependencies, and responsibilities",
@@ -1350,6 +1259,9 @@ func resolveTarget(document *saga.Saga, value string, allowFragment bool) (strin
 			foundDir = document.Root
 		}
 		if foundDir == "" {
+			foundDir = reviewTargetDirectory(document, value)
+		}
+		if foundDir == "" {
 			return "", "", fmt.Errorf("target %q does not exist%s", value, targetHint(document, allowFragment))
 		}
 		return foundDir, value, nil
@@ -1399,6 +1311,27 @@ func resolveTarget(document *saga.Saga, value string, allowFragment bool) (strin
 		return "", "", fmt.Errorf("target %q is not a valid %s%s", value, targetKinds, targetHint(document, allowFragment))
 	}
 	return abs, foundTarget, nil
+}
+
+// reviewTargetDirectory finds a review slide or Item's deck bundle. A
+// review Item references the code the change touched, so cover accepts it.
+func reviewTargetDirectory(document *saga.Saga, target string) string {
+	for _, review := range document.Reviews {
+		if review.Deck == nil || !strings.HasPrefix(target, review.Target+":") {
+			continue
+		}
+		for _, slide := range review.Deck.Slides {
+			if slide.Target == target {
+				return slide.Directory
+			}
+			for _, item := range slide.Items {
+				if item.Target == target {
+					return item.Directory
+				}
+			}
+		}
+	}
+	return ""
 }
 
 // resolveTargetRecordPath recognizes the record filename printed by deck
@@ -1961,10 +1894,25 @@ processes, templates, issue context, conventions, and checks, but express the
 result as a Change Saga. Do not replace useful existing authoring discipline;
 extend it into this format.
 
-During authoring, speak as the change author and guide. Do not create review
-comments, findings, approvals, rejections, or other review-overlay records.
-Only perform those actions when the user explicitly asks to conduct a review of
-an already-authored saga.
+During authoring, speak as the change author and guide. Do not record review
+decisions or comments. Only perform those actions when the user explicitly asks
+to conduct a review of a pull request that has a review.
+
+The Saga is documentation: stories, designs, test cases, and decks carry no
+approvals and no comments. A pull request's review is where its change is
+explained, discussed, and approved. Create one review per pull request with
+"change-saga review create --id pr-<n> --pr <n> --url <url> --base <branch it
+merges into> --head <its branch>" and author its slide deck with "add-slide
+--review", "add-item --review", "set-slide-content --review", and "cover
+--target <review Item URN>". The review deck explains what the change did and
+why: the transition and its reasoning (why the queue moved from SQS to a
+Postgres table), which the current documentation no longer shows. Its Items
+reference the code the change touched, shown as a diff against the review's
+base, and may reference the records it revised with "--record" (a story, an
+epic slide) so a reviewer can open them beside the change. Review decks never
+count toward coverage; the implementation deck of each epic still explains the
+current code. After the change lands, "change-saga repin --onto <landed commit>"
+freezes the review at its exact base and head.
 
 Use the installed "change-saga" CLI as the source of truth. Begin with
 "change-saga --help" and "change-saga spec" when necessary. Resolve the exact PR, branch, commit range, or
@@ -2151,14 +2099,21 @@ one, first read the code diff independently and record provisional findings;
 then inspect mappings, claims, verifications, and narrative intent; finally
 reconcile contradictions and independently test author claims. Do not let the
 author's explanation anchor the first correctness pass.
+Decisions are per review slide: "change-saga review approve", "review
+request-changes" (say what should change), or "review withdraw", each with
+"--review" and "--slide"; discuss with "review comment" on a slide or Item.
 When recording a decision, always declare the reviewer persona. Use
 "--reviewer-kind human" only for a decision the human made directly. For the
 agent's own review, use "--reviewer-kind ai" together with an independent
 "--reviewer-name", "--agent", and the exact "--model"; never turn an AI pass
 into a human approval. Give simultaneous passes stable distinct names such as
 "Claude 1" and "Claude 2" even when their model is identical. Multiple reviewers
-may decide the same target, and one persona's later decision supersedes only
-that same persona's prior decision.
+may decide the same slide, and one persona's later decision supersedes only
+that same persona's prior decision. A decision records the pull request head it
+was given at and goes out of date when the slide or the code it references
+changes; "change-saga review list" and "status" report each one's currency.
+Never state that a review is approved: the tool records decisions and the team
+decides what it requires.
 `
 
 const defaultSVGFragment = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300" role="img" aria-label="Diagram placeholder">
@@ -2255,23 +2210,31 @@ Append-only ___verifications/<id>.json records mark them unverified, verified,
 failed, or inconclusive and preserve the method and reproducible command. Claim
 evidence never contributes to coverage. Git history supplies attribution.
 
-Review threads live under ___review/threads. They target stable
-urn:change-saga:* identifiers and anchor to a whole fragment, normalized shapes,
-freehand drawings, quoted text, a placed sticky note, or a code reference.
-A sticky note carries its visible text, a normalized centre point, and an
-optional color; moving, rewording, or recoloring it appends an anchor event. Thread messages contain
-fragments, so replies may include Markdown, HTML, SVG, and images. Suggestion
-threads include replacement code. Append-only whole-file reference events track reviewed
-state, and approvals may target the saga, a chapter, a section, or a fragment.
-Every comment owns a thread directory, every reply owns a message directory, and
-each state transition is a new file; review operations never update shared arrays.
-Approval events declare a human or AI reviewer persona in addition to their
-Git-derived author. AI personas name an independent review seat, their agent
-kind, and model. The latest event is projected per author and persona,
-preserving concurrent decisions by
-other reviewers; legacy events without persona metadata remain unspecified.
-Every decision is an independent file, so parallel review branches add records
-instead of rewriting a shared reviewer list.
+The Saga is documentation. Stories, designs, test cases, and decks carry no
+approvals and no comments. A pull request's review is where a change is
+explained and approved. Each review is ___reviews/<id>.review/: review.json
+names the pull request, the base it merges into, and the ref its head follows
+(the checkout's HEAD when omitted), and after merge the frozen base, head, and
+landed commits; deck/ is one flat deck bundle with role review, whose slide and
+Item URNs are urn:change-saga:<saga>:review:<id>:slide:<slide>[:item:<item>];
+approvals/<event>.json and comments/<event>.json are append-only records. A
+review is viewed from the merge-base of its base and head, so its Items' code
+references show as diffs; an Item may also carry a record URN (a persona,
+epic, story, test case, deck, slide, chapter, section, or fragment) to open
+beside the change. Review decks never count toward coverage.
+
+A decision (approved, changes_requested, or none to withdraw) names one review
+slide, the reviewer persona, the pull request head commit it was given at, and
+the slide's content digest. The latest decision per Git author and persona is
+current. It is out of date when the slide's records changed since, or when the
+code its Items reference changed between that commit and the current head.
+Comments attach to review slides and Items; a reply names its parent and may
+resolve or reopen the thread. Decisions declare a human or AI reviewer persona
+in addition to their Git-derived author; AI personas name an independent
+review seat, their agent kind, and model. status and review list report every
+slide's decisions and currency with no verdict: the team decides what it
+requires. repin freezes the landed change's review, and a record's history
+links to the reviews that changed it.
 
 All-atoms-mapped is an omission invariant, not a correctness or explanation-
 quality verdict. Use query mappings --sort scrutiny to inspect broad or thin

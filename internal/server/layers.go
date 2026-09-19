@@ -4,14 +4,13 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
-	"sort"
 	"strings"
 	"sync"
-	"time"
 
 	"github.com/twentyideas/changesaga/internal/changeview"
 	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
+	"github.com/twentyideas/changesaga/internal/saga"
 )
 
 // layersCache keeps the layers of the current comparison generation. The
@@ -25,17 +24,16 @@ type layersCache struct {
 }
 
 // layersResponse is /api/layers: how the reviewer was opened and, comparing,
-// which records the change edited or affected. Approval controls appear only
-// on those records.
+// which records the change edited or affected. The page marks those records
+// read-only; approvals happen only in the pull request's review.
 type layersResponse struct {
-	Mode       string   `json:"mode"`
-	Against    string   `json:"against,omitempty"`
-	Head       string   `json:"head"`
-	BaseOID    string   `json:"base_oid,omitempty"`
-	HeadOID    string   `json:"head_oid,omitempty"`
-	Changed    []string `json:"changed"`
-	Affected   []string `json:"affected"`
-	Approvable []string `json:"approvable"`
+	Mode     string   `json:"mode"`
+	Against  string   `json:"against,omitempty"`
+	Head     string   `json:"head"`
+	BaseOID  string   `json:"base_oid,omitempty"`
+	HeadOID  string   `json:"head_oid,omitempty"`
+	Changed  []string `json:"changed"`
+	Affected []string `json:"affected"`
 	// DOM maps each Changed and Affected record to its element id, so the
 	// page can mark it and quiet everything else.
 	DOM map[string]string `json:"dom"`
@@ -93,45 +91,8 @@ func (a *app) layersFor(ctx context.Context, current *reviewSnapshot) (*changevi
 	return a.layers.value, a.layers.err
 }
 
-// awaitLayers is comparisonLayers for a write: an approval cannot be asked
-// to retry, so it waits, bounded, for a comparison that is still building.
-func (a *app) awaitLayers(w http.ResponseWriter, r *http.Request) *changeview.Layers {
-	if a.layersLoader == nil {
-		deadline := time.Now().Add(2 * time.Minute)
-		for a.snapshot(r.Context()) == nil && time.Now().Before(deadline) {
-			if state, _ := a.snapshotState(); state != "building" {
-				break
-			}
-			select {
-			case <-r.Context().Done():
-				return nil
-			case <-time.After(50 * time.Millisecond):
-			}
-		}
-	}
-	return a.comparisonLayers(w, r)
-}
-
-// approvable is the set of records a compared reviewer may approve or reject:
-// the Changed and Affected layers.
-func approvable(layers *changeview.Layers) map[string]bool {
-	result := map[string]bool{}
-	if layers == nil {
-		return result
-	}
-	for _, change := range layers.Changed {
-		if !change.Removed {
-			result[change.URN] = true
-		}
-	}
-	for _, affected := range layers.Affected {
-		result[affected.URN] = true
-	}
-	return result
-}
-
 func (a *app) layersAPI(w http.ResponseWriter, r *http.Request) {
-	response := layersResponse{Mode: a.rng.Mode(), Against: a.rng.Against, Head: a.rng.HeadRevision(), Changed: []string{}, Affected: []string{}, Approvable: []string{}, DOM: map[string]string{}}
+	response := layersResponse{Mode: a.rng.Mode(), Against: a.rng.Against, Head: a.rng.HeadRevision(), Changed: []string{}, Affected: []string{}, DOM: map[string]string{}}
 	if !a.rng.Observe() {
 		layers := a.comparisonLayers(w, r)
 		if layers == nil {
@@ -144,10 +105,6 @@ func (a *app) layersAPI(w http.ResponseWriter, r *http.Request) {
 		for _, affected := range layers.Affected {
 			response.Affected = append(response.Affected, affected.URN)
 		}
-		for urn := range approvable(layers) {
-			response.Approvable = append(response.Approvable, urn)
-		}
-		sort.Strings(response.Approvable)
 		for _, urn := range append(append([]string{}, response.Changed...), response.Affected...) {
 			response.DOM[urn] = domID(urn)
 		}
@@ -161,6 +118,9 @@ func (a *app) layersAPI(w http.ResponseWriter, r *http.Request) {
 type changeView struct {
 	Layers *changeview.Layers
 	Titles map[string]string
+	// Reviews are the pull request reviews of the compared head. The layers
+	// are read-only documentation; approval happens on these review slides.
+	Reviews []reviewSummaryView
 }
 
 func (a *app) changePage(w http.ResponseWriter, r *http.Request) {
@@ -180,7 +140,11 @@ func (a *app) changePage(w http.ResponseWriter, r *http.Request) {
 		titles[affected.URN] = affected.Title
 	}
 	writeIncrementalHeaders(w, "text/html; charset=utf-8")
-	if err := a.template.ExecuteTemplate(w, "change-view", changeView{Layers: layers, Titles: titles}); err != nil {
+	view := changeView{Layers: layers, Titles: titles}
+	if document, validation, err := saga.Load(a.root); err == nil && validation.Valid {
+		view.Reviews = a.reviewsForHead(r.Context(), document, layers.HeadOID)
+	}
+	if err := a.template.ExecuteTemplate(w, "change-view", view); err != nil {
 		http.Error(w, "The change could not be rendered.", http.StatusInternalServerError)
 	}
 }
@@ -206,24 +170,6 @@ func (a *app) historyPage(w http.ResponseWriter, r *http.Request) {
 	if err := a.template.ExecuteTemplate(w, "history-view", historyView{History: history, Saga: a.root}); err != nil {
 		http.Error(w, "The history could not be rendered.", http.StatusInternalServerError)
 	}
-}
-
-// reviewAllowed enforces goal 6 on every approval write: approval exists only
-// in compare mode, and only for records in the Changed or Affected layer.
-func (a *app) reviewAllowed(w http.ResponseWriter, r *http.Request, target string) bool {
-	if a.rng.Observe() {
-		http.Error(w, "Approval belongs to a change: open the Saga with --against to approve or reject.", http.StatusForbidden)
-		return false
-	}
-	layers := a.awaitLayers(w, r)
-	if layers == nil {
-		return false
-	}
-	if !approvable(layers)[target] {
-		http.Error(w, "Only records this change edited or affected can be approved or rejected.", http.StatusForbidden)
-		return false
-	}
-	return true
 }
 
 // openingLabel describes how the reviewer was opened, for the shell.

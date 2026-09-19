@@ -15,21 +15,12 @@ import (
 // records safely. It reads manifests and package names, never coverage mappings
 // or authored bodies, so a comment does not parse the full saga diff index.
 type MutationIndex struct {
-	Root          string
-	Manifest      Manifest
-	Targets       map[string]string
-	ReviewTargets map[string]string
-	// FlatTargets marks embedded deck records whose mutable review overlay is
-	// stored as flat root-level records.
+	Root     string
+	Manifest Manifest
+	Targets  map[string]string
+	// FlatTargets marks embedded deck records, whose code evidence is stored
+	// as flat records inside their deck bundle.
 	FlatTargets map[string]bool
-}
-
-// ReviewState is the mutable overlay stored independently from source and
-// coverage indexes.
-type ReviewState struct {
-	Threads     []*Thread
-	FileReviews []FileReview
-	ByTarget    map[string][]Review
 }
 
 // MutationIndexFromDocument derives the compact mutation view from an already
@@ -37,9 +28,8 @@ type ReviewState struct {
 func MutationIndexFromDocument(document *Saga) MutationIndex {
 	index := MutationIndex{
 		Root: document.Root, Manifest: document.Manifest,
-		Targets:       map[string]string{},
-		ReviewTargets: map[string]string{},
-		FlatTargets:   map[string]bool{},
+		Targets:     map[string]string{},
+		FlatTargets: map[string]bool{},
 	}
 	var walk func(*Section)
 	walk = func(section *Section) {
@@ -50,16 +40,11 @@ func MutationIndexFromDocument(document *Saga) MutationIndex {
 		index.Targets[section.Target] = dir
 		if section.Kind == "deck" {
 			index.FlatTargets[section.Target] = true
-		} else {
-			index.ReviewTargets[section.Target] = dir
 		}
 		for _, fragment := range section.Fragments {
 			index.Targets[fragment.Target] = fragment.Directory
 			if fragment.SlideMeta != nil {
 				index.FlatTargets[fragment.Target] = true
-				index.ReviewTargets[fragment.Target] = fragment.Directory
-			} else {
-				index.ReviewTargets[fragment.Target] = fragment.Directory
 			}
 			for landmarkIndex := range fragment.Landmarks {
 				landmark := &fragment.Landmarks[landmarkIndex]
@@ -110,7 +95,7 @@ func LoadMutationIndex(root string) (MutationIndex, Validation, error) {
 		hasDecks = hasDecks || realDirectoryExists(filepath.Join(epic.Dir, EmbeddedSlidesDir))
 	}
 	if hasDecks {
-		document, loadedValidation, loadErr := load(abs, loadOptions{skipCoverage: true, skipReviews: true})
+		document, loadedValidation, loadErr := load(abs, loadOptions{skipCoverage: true})
 		if loadErr != nil {
 			return MutationIndex{}, loadedValidation, loadErr
 		}
@@ -118,9 +103,8 @@ func LoadMutationIndex(root string) (MutationIndex, Validation, error) {
 	}
 	index := MutationIndex{
 		Root: abs, Manifest: manifest,
-		Targets:       map[string]string{SagaTarget(manifest.ID): abs},
-		ReviewTargets: map[string]string{SagaTarget(manifest.ID): abs},
-		FlatTargets:   map[string]bool{},
+		Targets:     map[string]string{SagaTarget(manifest.ID): abs},
+		FlatTargets: map[string]bool{},
 	}
 	ids := map[string]string{}
 	if err := scanMutationSection(abs, abs, sagaHierarchy, manifest.ID, &index, ids, &validation); err != nil {
@@ -219,7 +203,7 @@ func scanMutationSection(root, dir string, hierarchy hierarchyRoot, sagaID strin
 			if kind == "chapter" {
 				target = ChapterTarget(sagaID, id)
 			}
-			index.Targets[target], index.ReviewTargets[target] = path, path
+			index.Targets[target] = path
 		}
 		if err := scanMutationSection(root, path, nestedHierarchy, sagaID, index, ids, validation); err != nil {
 			return err
@@ -254,7 +238,7 @@ func scanMutationFragment(root, dir, sagaID string, index *MutationIndex, ids ma
 	}
 	registerMutationID(value.ID, path, validation, ids)
 	target := FragmentTarget(sagaID, value.ID)
-	index.Targets[target], index.ReviewTargets[target] = dir, dir
+	index.Targets[target] = dir
 
 	entries, err := os.ReadDir(dir)
 	if err != nil {
@@ -267,7 +251,7 @@ func scanMutationFragment(root, dir, sagaID string, index *MutationIndex, ids ma
 		entryPath := filepath.Join(dir, entry.Name())
 		if entry.Type()&fs.ModeSymlink != 0 || !entry.IsDir() {
 			addIssue(validation, "error", relativePath(root, entryPath), "reserved metadata path must be a real directory")
-		} else if entry.Name() != CodeDirName && entry.Name() != "___landmarks" && entry.Name() != "___approvals" {
+		} else if entry.Name() != CodeDirName && entry.Name() != "___landmarks" {
 			addIssue(validation, "error", relativePath(root, filepath.Join(dir, entry.Name())), "unknown reserved directory in fragment")
 		}
 	}
@@ -322,65 +306,4 @@ func registerMutationID(id, path string, validation *Validation, ids map[string]
 		return
 	}
 	ids[id] = path
-}
-
-// LoadReviewState reads only review-owned paths named by a validated mutation
-// index. It never opens coverage mappings or ordinary authored fragments.
-func LoadReviewState(index MutationIndex) (ReviewState, Validation, error) {
-	validation := Validation{Valid: true, Issues: []Issue{}}
-	state := ReviewState{ByTarget: map[string][]Review{}}
-	for target, dir := range index.ReviewTargets {
-		if !metadataDirectorySafe(index.Root, dir, "___approvals", &validation) {
-			continue
-		}
-		reviews, err := loadReviews(index.Root, filepath.Join(dir, "___approvals"), &validation)
-		if err != nil {
-			return ReviewState{}, validation, err
-		}
-		if len(reviews) > 0 {
-			state.ByTarget[target] = reviews
-		}
-	}
-	if metadataDirectorySafe(index.Root, index.Root, "___review", &validation) {
-		reviewDir := filepath.Join(index.Root, "___review")
-		if metadataDirectorySafe(index.Root, reviewDir, "threads", &validation) {
-			threads, err := loadThreads(index.Root, index.Manifest.ID, loadOptions{}, &validation)
-			if err != nil {
-				return ReviewState{}, validation, err
-			}
-			state.Threads = threads
-		}
-		if metadataDirectorySafe(index.Root, reviewDir, FileReviewDir, &validation) {
-			reviews, err := loadFileReviews(index.Root, &validation)
-			if err != nil {
-				return ReviewState{}, validation, err
-			}
-			state.FileReviews = reviews
-		}
-	}
-	// Deck, slide, and Item review records are flat files at the Saga root.
-	if len(index.FlatTargets) > 0 {
-		flat, flatValidation, err := loadFlatReviewState(index, false)
-		if err != nil {
-			return ReviewState{}, validation, err
-		}
-		validation.Issues = append(validation.Issues, flatValidation.Issues...)
-		state.Threads = append(flat.Threads, state.Threads...)
-		state.FileReviews = append(flat.FileReviews, state.FileReviews...)
-		for target, reviews := range flat.ByTarget {
-			state.ByTarget[target] = append(state.ByTarget[target], reviews...)
-		}
-	}
-	for _, thread := range state.Threads {
-		path := thread.Path
-		if path == "" {
-			path = filepath.Join(thread.Directory, "thread.json")
-		}
-		path = relativePath(index.Root, path)
-		if _, ok := index.Targets[thread.Target]; !ok {
-			addIssue(&validation, "error", path, "thread target does not exist")
-		}
-	}
-	validation.Valid = !hasErrors(validation.Issues)
-	return state, validation, nil
 }

@@ -76,7 +76,6 @@ func TestQueryCLIRealSeparateRepositoriesAllOperations(t *testing.T) {
 		{name: "fragment-diffs", args: []string{"fragment-diffs", "--target", querytest.OverviewTarget}},
 		{name: "diff-owners-atom", args: []string{"diff-owners", "--ref", changes.Atoms[0].Ref}},
 		{name: "diff-owners-file", args: []string{"diff-owners", "--ref", fileLocation}},
-		{name: "reviews", args: []string{"reviews"}},
 		{name: "gaps", args: []string{"gaps", "--kind", "uncovered"}},
 		{name: "mappings", args: []string{"mappings", "--sort", "scrutiny"}},
 		{name: "claims", args: []string{"claims", "--status", "verified"}},

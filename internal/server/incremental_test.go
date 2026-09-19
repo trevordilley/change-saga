@@ -2,7 +2,6 @@ package server
 
 import (
 	"context"
-	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
@@ -12,6 +11,8 @@ import (
 	"sync/atomic"
 	"testing"
 	"time"
+
+	"github.com/twentyideas/changesaga/internal/gitdiff"
 
 	"github.com/twentyideas/changesaga/internal/saga"
 	"github.com/twentyideas/changesaga/internal/testfixture"
@@ -125,25 +126,9 @@ func TestCodeCatalogNeverCallsTheFullComparisonLoader(t *testing.T) {
 	if application.cache.builds != 0 || application.catalog.builds != 1 {
 		t.Fatalf("code and selected-file builds: full=%d catalog=%d", application.cache.builds, application.catalog.builds)
 	}
-	reviewFile, ok := catalogFile(application.catalog.value, filePath)
-	if !ok {
-		t.Fatalf("selected path %q was absent from its catalog", filePath)
-	}
-	reviewValues := url.Values{
-		"ref":   {catalogFileView(application.catalog.value, reviewFile, saga.FileReview{}).Ref},
-		"state": {"reviewed"},
-		"file":  {filePath},
-	}
-	reviewRequest := httptest.NewRequest(http.MethodPost, "/api/diff-review", strings.NewReader(reviewValues.Encode()))
-	reviewRequest.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	reviewResult := httptest.NewRecorder()
-	handler.ServeHTTP(reviewResult, reviewRequest)
-	if reviewResult.Code != http.StatusSeeOther {
-		t.Fatalf("file review = %d: %s", reviewResult.Code, reviewResult.Body.String())
-	}
 	warm := getPage(t, handler, "/api/code?limit=2")
-	if !strings.Contains(warm.Body.String(), "Reviewed") {
-		t.Fatal("bounded code catalog omitted the disk-backed file-review overlay")
+	if strings.Contains(warm.Body.String(), "Reviewed") || strings.Contains(warm.Body.String(), "/api/diff-review") {
+		t.Fatal("the code catalog still offered to mark files reviewed")
 	}
 	if application.cache.builds != 0 || application.catalog.builds != 1 {
 		t.Fatalf("warm code catalog rebuilt: full=%d catalog=%d", application.cache.builds, application.catalog.builds)

@@ -3,10 +3,8 @@ package server
 import (
 	"context"
 	"fmt"
-	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"net/http"
 	"net/http/httptest"
-	"net/url"
 	"os"
 	"runtime"
 	"sort"
@@ -14,7 +12,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/twentyideas/changesaga/internal/saga"
+	"github.com/twentyideas/changesaga/internal/gitdiff"
+
 	"github.com/twentyideas/changesaga/internal/testfixture"
 )
 
@@ -61,7 +60,6 @@ const (
 	rootRetainedGrowthSlack  = 2 * 1024 * 1024
 	rootRetainedCeiling      = 32 * 1024 * 1024
 
-	mutationWallCeiling             = 2 * time.Second
 	reviewPageAllocationGrowth      = 1.50
 	reviewPageAllocationGrowthSlack = 512 * 1024
 
@@ -88,9 +86,6 @@ func ciFirstLoadOptions() testfixture.LargeSagaOptions {
 		FragmentsPerSection: 2,
 		SourceFiles:         8,
 		ChangedLinesPerFile: 32,
-		ReviewsPerFragment:  1,
-		Threads:             4,
-		DiffReviews:         4,
 		CoverageRangeWidth:  8,
 	}
 }
@@ -270,73 +265,6 @@ func requireBoundedRoot(t *testing.T, shape firstLoadShape) {
 	}
 }
 
-// TestRootMutationStaysBoundedAndIsolated proves that the write path does not
-// smuggle review-surface construction back into the following root request and
-// does not perturb a separate served saga. It intentionally uses two app
-// instances: cache generations and mutation visibility are per saga, not
-// process-global.
-func TestRootMutationStaysBoundedAndIsolated(t *testing.T) {
-	first := newRootTestServer(t, t.TempDir(), ciFirstLoadOptions())
-	peer := newRootTestServer(t, t.TempDir(), ciFirstLoadOptions())
-
-	before := timedRootRequest(t, first.handler)
-	peerBefore := timedRootRequest(t, peer.handler)
-	requireRootMarkup(t, "mutation baseline", before.body)
-	requireRootMarkup(t, "peer baseline", peerBefore.body)
-
-	// Approval is offered only on the records the change edited or affected,
-	// so the page reads the comparison's layers before any approve control
-	// appears. That one build precedes the write; the write and the following
-	// root must not repeat it.
-	layersResponse := httptest.NewRecorder()
-	first.handler.ServeHTTP(layersResponse, httptest.NewRequest(http.MethodGet, "/api/layers", nil))
-	for attempt := 0; layersResponse.Code == http.StatusAccepted && attempt < 600; attempt++ {
-		time.Sleep(50 * time.Millisecond)
-		layersResponse = httptest.NewRecorder()
-		first.handler.ServeHTTP(layersResponse, httptest.NewRequest(http.MethodGet, "/api/layers", nil))
-	}
-	if layersResponse.Code != http.StatusOK {
-		t.Fatalf("layers = %d: %s", layersResponse.Code, firstLine(layersResponse.Body.String()))
-	}
-	warmBuilds := first.application.cache.builds
-	values := url.Values{
-		"target": {saga.FragmentTarget("large-benchmark", "overview")},
-		"state":  {"approved"},
-		"body":   {"Bounded mutation decision."},
-	}
-	started := time.Now()
-	request := httptest.NewRequest(http.MethodPost, "/api/review", strings.NewReader(values.Encode()))
-	request.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	recorder := httptest.NewRecorder()
-	first.handler.ServeHTTP(recorder, request)
-	mutationWall := time.Since(started)
-	if recorder.Code != http.StatusSeeOther {
-		t.Fatalf("review mutation = %d: %s", recorder.Code, firstLine(recorder.Body.String()))
-	}
-	if mutationWall > mutationWallCeiling {
-		t.Errorf("review mutation exceeded its smoke ceiling: %s > %s", mutationWall, mutationWallCeiling)
-	}
-
-	after := timedRootRequest(t, first.handler)
-	peerAfter := timedRootRequest(t, peer.handler)
-	requireRootMarkup(t, "root after mutation", after.body)
-	if !strings.Contains(after.body, "Bounded mutation decision.") {
-		t.Error("the bounded root did not expose the decision written immediately before it")
-	}
-	if peerAfter.body != peerBefore.body || strings.Contains(peerAfter.body, "Bounded mutation decision.") {
-		t.Error("mutating one saga changed the root response of a separate served saga")
-	}
-	if builds := first.application.cache.builds - warmBuilds; builds != 0 {
-		t.Errorf("mutation plus following root built the full comparison/coverage model %d times", builds)
-	}
-	if builds := peer.application.cache.builds; builds != 0 {
-		t.Errorf("unmodified peer root built the full comparison/coverage model %d times", builds)
-	}
-	checkMutationEnvelope(t, before, after)
-	t.Logf("mutation: %s; following root: %s, %d B, %d nodes; peer remained byte-identical",
-		mutationWall, after.wall, len(after.body), rootNodeCount(after.body))
-}
-
 type rootTestServer struct {
 	handler     *http.ServeMux
 	application *app
@@ -364,26 +292,6 @@ type timedResponse struct {
 	wall time.Duration
 }
 
-func timedRootRequest(tb testing.TB, handler *http.ServeMux) timedResponse {
-	tb.Helper()
-	started := time.Now()
-	body := firstLoadPage(tb, handler)
-	return timedResponse{body: body, wall: time.Since(started)}
-}
-
-func checkMutationEnvelope(t *testing.T, before, after timedResponse) {
-	t.Helper()
-	checkSimpleGrowth(t, "root response bytes after mutation", int64(len(before.body)), int64(len(after.body)),
-		rootResponseGrowthBudget, rootResponseGrowthSlack)
-	checkSimpleGrowth(t, "root materialized nodes after mutation", rootNodeCount(before.body), rootNodeCount(after.body),
-		rootNodeGrowthBudget, rootNodeGrowthSlack)
-	limit := time.Duration(float64(before.wall)*rootWallGrowthBudget) + rootWallGrowthSlack
-	if after.wall > limit || after.wall > rootWallCeiling {
-		t.Errorf("root wall time after mutation grew from %s to %s, budget %s and ceiling %s",
-			before.wall, after.wall, limit, rootWallCeiling)
-	}
-}
-
 // TestDaylightRootFirstLoadScale is an opt-in local harness, never ordinary CI.
 // The generated comparison closely matches the diagnosed 532,290-atom shape:
 // 2,666 files with 100 replaced lines produce 533,200 old/new line atoms, all
@@ -397,9 +305,6 @@ func TestDaylightRootFirstLoadScale(t *testing.T) {
 	options.ChangedLinesPerFile = 100
 	options.CoverageRangeWidth = 1
 	options.CoverageTargets = 8
-	options.ReviewsPerFragment = 0
-	options.Threads = 0
-	options.DiffReviews = 0
 
 	shape := measureRootFirstLoad(t, "daylight", options)
 	requireBoundedRoot(t, shape)
@@ -486,16 +391,6 @@ func measureRootFirstLoad(tb testing.TB, name string, options testfixture.LargeS
 		shape.wall, shape.retained, shape.fullBuilds)
 	runtime.KeepAlive(handler)
 	return shape
-}
-
-func requireRootMarkup(tb testing.TB, name, page string) {
-	tb.Helper()
-	if rows := strings.Count(page, `class="diff-row`); rows != 0 {
-		tb.Errorf("%s materialized %d diff rows", name, rows)
-	}
-	if rows := strings.Count(page, `class="manifest-range"`); rows != 0 {
-		tb.Errorf("%s materialized %d coverage rows", name, rows)
-	}
 }
 
 // rootNodeCount counts opening tags in the response. It deliberately avoids a

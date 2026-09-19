@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://changesaga.dev/schema/v5/review.schema.json",
+  "title": "Pull request review: the one review of one pull request, a slide deck viewed from the merge-base of its base and the head it follows",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "version",
+    "id",
+    "title",
+    "base",
+    "created_at"
+  ],
+  "properties": {
+    "$schema": {
+      "const": "https://changesaga.dev/schema/v5/review.schema.json"
+    },
+    "version": {
+      "const": 5
+    },
+    "id": {
+      "$ref": "#/$defs/id"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "pull_request": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "number": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "url": {
+          "type": "string",
+          "pattern": "^https?://"
+        }
+      }
+    },
+    "base": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[^-\\s][^\\s]*$"
+    },
+    "head": {
+      "type": "string",
+      "pattern": "^[^-\\s][^\\s]*$"
+    },
+    "merged": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "base",
+        "head",
+        "landed",
+        "merged_at"
+      ],
+      "properties": {
+        "base": {
+          "$ref": "#/$defs/commit"
+        },
+        "head": {
+          "$ref": "#/$defs/commit"
+        },
+        "landed": {
+          "$ref": "#/$defs/commit"
+        },
+        "merged_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "commit": {
+      "type": "string",
+      "pattern": "^([0-9a-f]{40}|[0-9a-f]{64})$"
+    }
+  }
+}

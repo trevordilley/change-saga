@@ -2,7 +2,6 @@ package server
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	stdhtml "html"
 	"net/http"
@@ -12,10 +11,7 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
-	"github.com/twentyideas/changesaga/internal/saga"
-	"github.com/twentyideas/changesaga/internal/snapshotcache"
 	"github.com/twentyideas/changesaga/internal/testfixture"
 )
 
@@ -135,13 +131,7 @@ func TestLargeSagaFirstLoadShipsOnlyTheChapterShell(t *testing.T) {
 		"every element here is parsed, laid out, and retained by the browser")
 
 	// The payload must shrink by deferring the story, not by losing it. Every
-	// destination is still named in the navigation outline. Every approval-
-	// bearing destination is counted in the review progress map; chapters are
-	// containers now and deliberately do not add decisions.
-	destinations := fixture.Sections + fixture.Fragments
-	if segments := strings.Count(page, "data-review-progress-target="); segments != destinations+1 {
-		t.Fatalf("review progress counted %d destinations, want %d including the overview", segments, destinations+1)
-	}
+	// destination is still named in the navigation outline.
 	if links := strings.Count(page, `class="doc-link"`); links < fixture.Chapters+fixture.Sections {
 		t.Fatalf("the navigation outline named %d destinations; it lost chapters or sections of %d", links, fixture.Chapters+fixture.Sections)
 	}
@@ -313,151 +303,6 @@ func busiestTarget(tb testing.TB, snapshot *reviewSnapshot) (string, []gitdiff.A
 	return best, bestAtoms
 }
 
-// TestReviewMutationAdvancesOnlyTheOverlayGeneration is a correctness budget.
-// A review write must be visible on the next request without rebuilding the
-// structural saga, Git comparison, or coverage report.
-func TestReviewMutationAdvancesOnlyTheOverlayGeneration(t *testing.T) {
-	fixture, application, handler := budgetFixture(t, testfixture.DefaultLargeSagaOptions())
-	generations, err := snapshotcache.Open(t.TempDir())
-	if err != nil {
-		t.Fatal(err)
-	}
-	application.generations = generations
-	path := url.QueryEscape(effectiveAtomPath(budgetChanges(t, application).Atoms[0]))
-	for i := 0; i < 4; i++ {
-		budgetRequest(t, handler, "/")
-	}
-	budgetRequest(t, handler, "/api/file-diff?file="+path)
-	if application.cache.builds != 1 {
-		t.Fatalf("the saga was loaded and compared %d times for requests that observed identical bytes; every file a reviewer opens would pay for a full rebuild", application.cache.builds)
-	}
-
-	snapshot := application.snapshot(context.Background())
-	target, _ := busiestTarget(t, snapshot)
-	fullLoadsBeforeMutations := saga.FullLoadCount()
-	if _, validation, err := saga.LoadMutationIndex(fixture.Root); err != nil || !validation.Valid {
-		t.Fatalf("large fixture mutation index is invalid: validation=%#v err=%v", validation, err)
-	}
-	values := url.Values{"target": {target}, "state": {"approved"}, "body": {"Budget test decision."}}
-	request := httptest.NewRequest(http.MethodPost, "/api/review", strings.NewReader(values.Encode()))
-	request.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	recorder := httptest.NewRecorder()
-	handler.ServeHTTP(recorder, request)
-	if recorder.Code != http.StatusSeeOther {
-		t.Fatalf("review decision failed: %d %s", recorder.Code, recorder.Body.String())
-	}
-
-	page := budgetRequest(t, handler, "/")
-	if application.cache.builds != 1 {
-		t.Fatalf("a review-only mutation rebuilt structural/source state (builds=%d); comments must not rerun coverage or Git diffs", application.cache.builds)
-	}
-	if !strings.Contains(page, "Budget test decision.") {
-		t.Fatal("the page served after a review decision did not contain it")
-	}
-	current := application.snapshot(context.Background())
-	initialDiffReviews := len(current.document.FileReviews)
-	filePath := effectiveAtomPath(current.changes.Atoms[0])
-	fileRef := coderef.Location{Commit: current.changes.HeadOID, Path: filePath}.String()
-	diffValues := url.Values{"ref": {fileRef}, "state": {"reviewed"}, "file": {filePath}}
-	diffRequest := httptest.NewRequest(http.MethodPost, "/api/diff-review", strings.NewReader(diffValues.Encode()))
-	diffRequest.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	diffResult := httptest.NewRecorder()
-	handler.ServeHTTP(diffResult, diffRequest)
-	current = application.snapshot(context.Background())
-	if diffResult.Code != http.StatusSeeOther || application.cache.builds != 1 || len(current.document.FileReviews) != initialDiffReviews+1 {
-		t.Fatalf("diff-review mutation crossed the structural boundary: status=%d builds=%d reviews=%d", diffResult.Code, application.cache.builds, len(current.document.FileReviews))
-	}
-
-	initialThreadCount := len(application.snapshot(context.Background()).document.Threads)
-	comment := multipartRequest(t, "/api/thread", map[string]string{
-		"target": target, "body": "Keep this comment across generations.",
-		"anchor": `{"type":"target"}`,
-	})
-	commentResult := httptest.NewRecorder()
-	handler.ServeHTTP(commentResult, comment)
-	if commentResult.Code != http.StatusSeeOther {
-		t.Fatalf("comment mutation failed: %d %s", commentResult.Code, commentResult.Body.String())
-	}
-	current = application.snapshot(context.Background())
-	if application.cache.builds != 1 || len(current.document.Threads) != initialThreadCount+1 {
-		t.Fatalf("adding a comment rebuilt structure or missed memory update: builds=%d threads=%d", application.cache.builds, len(current.document.Threads))
-	}
-	threadID := current.document.Threads[len(current.document.Threads)-1].ID
-
-	anchorValues := url.Values{
-		"thread": {threadID},
-		"anchor": {`{"type":"note","coordinate_space":"normalized","note":{"text":"Edited","x":0.25,"y":0.5}}`},
-	}
-	anchorRequest := httptest.NewRequest(http.MethodPost, "/api/thread-anchor", strings.NewReader(anchorValues.Encode()))
-	anchorRequest.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	anchorResult := httptest.NewRecorder()
-	handler.ServeHTTP(anchorResult, anchorRequest)
-	if anchorResult.Code != http.StatusNoContent {
-		t.Fatalf("comment edit failed: %d %s", anchorResult.Code, anchorResult.Body.String())
-	}
-	current = application.snapshot(context.Background())
-	edited := current.document.Threads[len(current.document.Threads)-1]
-	if application.cache.builds != 1 || edited.Anchor.Note == nil || edited.Anchor.Note.Text != "Edited" {
-		t.Fatalf("editing a comment rebuilt structure or missed memory update: builds=%d thread=%#v", application.cache.builds, edited)
-	}
-
-	stateValues := url.Values{"thread": {threadID}, "target": {target}, "state": {"withdrawn"}}
-	stateRequest := httptest.NewRequest(http.MethodPost, "/api/thread-state", strings.NewReader(stateValues.Encode()))
-	stateRequest.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	stateResult := httptest.NewRecorder()
-	handler.ServeHTTP(stateResult, stateRequest)
-	if stateResult.Code != http.StatusSeeOther {
-		t.Fatalf("comment removal failed: %d %s", stateResult.Code, stateResult.Body.String())
-	}
-	current = application.snapshot(context.Background())
-	removed := current.document.Threads[len(current.document.Threads)-1]
-	if application.cache.builds != 1 || removed.State != "withdrawn" {
-		t.Fatalf("removing a comment rebuilt structure or missed memory update: builds=%d state=%q", application.cache.builds, removed.State)
-	}
-
-	application.reviewRefreshHook = func() error { return errors.New("injected post-commit refresh failure") }
-	reply := multipartRequest(t, "/api/reply", map[string]string{
-		"thread": threadID, "target": target, "body": "Durable even if memory refresh fails.",
-	})
-	replyResult := httptest.NewRecorder()
-	handler.ServeHTTP(replyResult, reply)
-	if replyResult.Code != http.StatusSeeOther || replyResult.Header().Get("X-Change-Saga-Review-State") != "reload-pending" {
-		t.Fatalf("durable reply was reported as failed after refresh error: %d headers=%v body=%s", replyResult.Code, replyResult.Header(), replyResult.Body.String())
-	}
-	application.cache.mutex.Lock()
-	cachedMessages := len(application.cache.review.document.Threads[len(application.cache.review.document.Threads)-1].Messages)
-	application.cache.mutex.Unlock()
-	if cachedMessages != 1 {
-		t.Fatalf("failed refresh published speculative memory state with %d messages", cachedMessages)
-	}
-	persisted, persistedValidation, err := saga.LoadReviewState(application.cache.current.mutationIndex)
-	if err != nil || !persistedValidation.Valid || len(persisted.Threads[len(persisted.Threads)-1].Messages) != 2 {
-		t.Fatalf("acknowledged reply was not durable: validation=%#v err=%v", persistedValidation, err)
-	}
-	application.reviewRefreshHook = nil
-	if refreshed := application.snapshot(context.Background()); len(refreshed.document.Threads[len(refreshed.document.Threads)-1].Messages) != 2 || application.cache.builds != 1 {
-		t.Fatalf("pending overlay did not recover without structural rebuild: builds=%d", application.cache.builds)
-	}
-	if fullLoads := saga.FullLoadCount(); fullLoads != fullLoadsBeforeMutations {
-		t.Fatalf("review mutations performed %d full saga loads; want 0 (before=%d after=%d)", fullLoads-fullLoadsBeforeMutations, fullLoadsBeforeMutations, fullLoads)
-	}
-
-	// A fresh server owns no prior memory generation. Its first load must replay
-	// the atomic saga records and recover the final edited/withdrawn state.
-	restarted := &app{root: fixture.Root, sourceDir: fixture.Repository, rng: gitdiff.Range{Against: fixture.Base}, template: application.template, generations: generations}
-	restartedSnapshot := restarted.snapshot(context.Background())
-	if restartedSnapshot == nil || len(restartedSnapshot.document.Threads) != initialThreadCount+1 {
-		t.Fatalf("restart did not recover the persisted comment: %#v", restartedSnapshot)
-	}
-	recovered := restartedSnapshot.document.Threads[len(restartedSnapshot.document.Threads)-1]
-	if recovered.ID != threadID || recovered.State != "withdrawn" || recovered.Anchor.Note == nil || recovered.Anchor.Note.Text != "Edited" {
-		t.Fatalf("restart recovered the wrong review generation: %#v", recovered)
-	}
-	if restarted.cache.builds != 0 {
-		t.Fatalf("restart rebuilt cached coverage/diffs %d times; the structural generation should have been reused", restarted.cache.builds)
-	}
-}
-
 func BenchmarkLargeSagaRealisticHTTP(b *testing.B) {
 	options := testfixture.DefaultLargeSagaOptions()
 	fixture, err := testfixture.GenerateLargeSaga(context.Background(), b.TempDir(), options)
@@ -468,7 +313,7 @@ func BenchmarkLargeSagaRealisticHTTP(b *testing.B) {
 	if err != nil {
 		b.Fatal(err)
 	}
-	handler := newMux(&app{root: fixture.Root, sourceDir: fixture.Repository, rng: gitdiff.Range{Against: fixture.Base}, template: tmpl, mutationToken: "benchmark-token"})
+	handler := newMux(&app{root: fixture.Root, sourceDir: fixture.Repository, rng: gitdiff.Range{Against: fixture.Base}, template: tmpl})
 	path := ""
 	{
 		recorder := httptest.NewRecorder()

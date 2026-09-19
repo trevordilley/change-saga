@@ -24,7 +24,6 @@ const largeSagaRepository = "https://example.test/bench/large-saga.git"
 const coverageRangeWidth = 4
 
 // LargeSagaEpic is the one epic that holds the generated report content.
-// Review threads, claims, and diff reviews stay at the app root.
 const LargeSagaEpic = "core"
 
 // LargeSagaOptions controls the scale of a generated source comparison and
@@ -35,9 +34,6 @@ type LargeSagaOptions struct {
 	FragmentsPerSection int
 	SourceFiles         int
 	ChangedLinesPerFile int
-	ReviewsPerFragment  int
-	Threads             int
-	DiffReviews         int
 
 	// CoverageRangeWidth is how many consecutive changed lines one diff
 	// reference covers. Zero selects coverageRangeWidth. One deliberately
@@ -61,31 +57,25 @@ func DefaultLargeSagaOptions() LargeSagaOptions {
 		FragmentsPerSection: 3,
 		SourceFiles:         32,
 		ChangedLinesPerFile: 64,
-		ReviewsPerFragment:  2,
-		Threads:             48,
-		DiffReviews:         32,
 	}
 }
 
 // LargeSaga describes the generated fixture and its exact scale.
 type LargeSaga struct {
-	Root        string
-	Repository  string
-	Base        string
-	Head        string
-	Chapters    int
-	Sections    int
-	Fragments   int
-	Markdown    int
-	SVG         int
-	HTML        int
-	Atoms       int
-	Mappings    int
-	References  int
-	DiffFiles   int
-	Reviews     int
-	Threads     int
-	DiffReviews int
+	Root       string
+	Repository string
+	Base       string
+	Head       string
+	Chapters   int
+	Sections   int
+	Fragments  int
+	Markdown   int
+	SVG        int
+	HTML       int
+	Atoms      int
+	Mappings   int
+	References int
+	DiffFiles  int
 
 	// CoverageRangeWidth and CoverageTargets are the resolved shape, with
 	// zero-valued options replaced by the defaults they select.
@@ -154,14 +144,6 @@ func GenerateLargeSaga(ctx context.Context, parent string, options LargeSagaOpti
 	fixture.CoverageRangeWidth = resolveRangeWidth(options)
 	fixture.CoverageTargets = shape.diffFiles
 	fixture.MaxTargetReferences = shape.maxTargetReferences
-	if err := writeThreads(root, fragments, options.Threads); err != nil {
-		return LargeSaga{}, err
-	}
-	fixture.Threads = options.Threads
-	if err := writeFileReviews(ctx, repositoryDir, root, changes, options.DiffReviews); err != nil {
-		return LargeSaga{}, err
-	}
-	fixture.DiffReviews = options.DiffReviews
 	return fixture, nil
 }
 
@@ -180,21 +162,6 @@ func validateLargeSagaOptions(options LargeSagaOptions) error {
 		if value.value < 1 {
 			return fmt.Errorf("large saga %s must be positive", value.name)
 		}
-	}
-	for _, value := range []struct {
-		name  string
-		value int
-	}{
-		{"reviews per fragment", options.ReviewsPerFragment},
-		{"threads", options.Threads},
-		{"diff reviews", options.DiffReviews},
-	} {
-		if value.value < 0 {
-			return fmt.Errorf("large saga %s cannot be negative", value.name)
-		}
-	}
-	if options.DiffReviews > options.SourceFiles {
-		return fmt.Errorf("large saga diff reviews cannot exceed source files")
 	}
 	if options.CoverageRangeWidth < 0 {
 		return fmt.Errorf("large saga coverage range width cannot be negative")
@@ -307,12 +274,6 @@ func createSagaTree(root, base string, options LargeSagaOptions, fixture *LargeS
 				case "text/html":
 					fixture.HTML++
 				}
-				for review := 0; review < options.ReviewsPerFragment; review++ {
-					if err := writeApproval(fragmentDir, fragmentID, review); err != nil {
-						return nil, err
-					}
-					fixture.Reviews++
-				}
 				fragments = append(fragments, generatedFragment{dir: fragmentDir, target: saga.FragmentTarget("large-benchmark", fragmentID)})
 				fixture.Fragments++
 			}
@@ -347,18 +308,6 @@ func writeFragment(dir, id, title, mediaType, entrypoint, content, landmarkID st
 	}
 	landmark := saga.Landmark{Version: saga.CurrentVersion, ID: landmarkID, Label: "Review focus", Selector: selector}
 	return writeJSON(filepath.Join(dir, "___landmarks", landmarkID+".landmark", "landmark.json"), landmark)
-}
-
-func writeApproval(fragmentDir, fragmentID string, index int) error {
-	state := "approved"
-	if index%2 == 0 {
-		state = "open"
-	}
-	review := saga.Review{
-		Version: saga.CurrentVersion, ID: fmt.Sprintf("review-%s-%02d", fragmentID, index), Author: "Benchmark Reviewer",
-		State: state, Body: "Deterministic approval history.", CreatedAt: fixtureTime(index),
-	}
-	return writeJSON(filepath.Join(fragmentDir, "___approvals", fmt.Sprintf("review-%02d.json", index)), review)
 }
 
 type rangedMapping struct {
@@ -442,59 +391,6 @@ func coverageRanges(ctx context.Context, repositoryDir string, changes gitdiff.C
 
 func consecutiveLine(first, next gitdiff.Atom, offset int) bool {
 	return first.Kind == "line" && next.Kind == "line" && first.Path == next.Path && first.Side == next.Side && next.Line == first.Line+offset
-}
-
-func writeThreads(root string, fragments []generatedFragment, count int) error {
-	for index := 0; index < count; index++ {
-		threadID := fmt.Sprintf("thread-%03d", index)
-		messageID := fmt.Sprintf("message-%03d", index)
-		threadDir := filepath.Join(root, "___review", "threads", threadID+".thread")
-		manifest := saga.ThreadManifest{
-			Version: saga.CurrentVersion, ID: threadID, Target: fragments[index%len(fragments)].target,
-			Anchor: saga.Anchor{Type: "target"}, Kind: "comment", CreatedBy: "Benchmark Reviewer", CreatedAt: fixtureTime(index),
-		}
-		if err := writeJSON(filepath.Join(threadDir, "thread.json"), manifest); err != nil {
-			return err
-		}
-		messageDir := filepath.Join(threadDir, "messages", messageID+".message")
-		message := saga.MessageManifest{Version: saga.CurrentVersion, ID: messageID, Author: "Benchmark Reviewer", CreatedAt: fixtureTime(index)}
-		if err := writeJSON(filepath.Join(messageDir, "message.json"), message); err != nil {
-			return err
-		}
-		bodyID := fmt.Sprintf("thread-body-%03d", index)
-		landmarkID := fmt.Sprintf("comment-focus-%03d", index)
-		body := fmt.Sprintf("# Review comment {#%s}\n\nReview comment %03d.\n", landmarkID, index)
-		if err := writeFragment(filepath.Join(messageDir, "body.fragment"), bodyID, "Review comment", "text/markdown", "content.md", body, landmarkID); err != nil {
-			return err
-		}
-		event := saga.ThreadEvent{Version: saga.CurrentVersion, ID: fmt.Sprintf("event-%03d", index), Author: "Benchmark Reviewer", State: "resolved", CreatedAt: fixtureTime(index).Add(time.Second)}
-		if err := writeJSON(filepath.Join(threadDir, "events", fmt.Sprintf("event-%03d.json", index)), event); err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-func writeFileReviews(ctx context.Context, repositoryDir, root string, changes gitdiff.ChangeSet, count int) error {
-	resolver, err := coderesolve.New(ctx, repositoryDir)
-	if err != nil {
-		return err
-	}
-	defer resolver.Close()
-	for index := 0; index < count; index++ {
-		reference, err := resolver.Author(ctx, coderef.Location{Commit: changes.HeadOID, Path: filepath.ToSlash(sourcePath(index))}, "")
-		if err != nil {
-			return err
-		}
-		review := saga.FileReview{
-			Version: saga.CurrentVersion, ID: fmt.Sprintf("file-review-%03d", index), Code: reference,
-			Author: "Benchmark Reviewer", State: "reviewed", CreatedAt: fixtureTime(index),
-		}
-		if err := writeJSON(filepath.Join(root, "___review", saga.FileReviewDir, fmt.Sprintf("review-%03d.json", index)), review); err != nil {
-			return err
-		}
-	}
-	return nil
 }
 
 func fixtureTime(index int) time.Time {

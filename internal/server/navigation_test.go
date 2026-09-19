@@ -205,11 +205,11 @@ func TestDesignChaptersJoinTechnicalWithoutClaimingAFixedRole(t *testing.T) {
 		{Kind: "chapter", ID: "delivery", Title: "Delivery", Path: "delivery.chapter", Target: saga.ChapterTarget("test", "delivery")},
 		{Kind: "chapter", ID: "architecture", Title: "Technical architecture", Path: "___design/architecture.chapter", Target: saga.ChapterTarget("test", "architecture")},
 	}}
-	narrative := makeNavTree(root, nil)
+	narrative := makeNavTree(root)
 	if len(narrative) != 2 || narrative[1].Title != "Delivery" {
 		t.Fatalf("narrative chapters = %v", navTitles(narrative, 0))
 	}
-	technical := makeDesignChapterNav(root, nil)
+	technical := makeDesignChapterNav(root)
 	if len(technical) != 1 || technical[0].Href != sagaHref(saga.ChapterTarget("test", "architecture")) {
 		t.Fatalf("technical chapters = %#v", technical)
 	}

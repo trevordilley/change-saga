@@ -39,6 +39,8 @@ func run(args []string, stdout, stderr io.Writer) int {
 		err = cli.Init(ctx, args[1:], stdout)
 	case "epic":
 		err = cli.Epic(ctx, args[1:], stdout)
+	case "review":
+		err = cli.Review(ctx, args[1:], stdout)
 	case "persona":
 		err = cli.Persona(ctx, args[1:], stdout)
 	case "flag":
@@ -93,12 +95,6 @@ func run(args []string, stdout, stderr io.Writer) int {
 		err = cli.AddClaim(ctx, args[1:], stdout)
 	case "verify-claim":
 		err = cli.VerifyClaim(ctx, args[1:], stdout)
-	case "thread":
-		err = cli.Thread(ctx, args[1:], stdout)
-	case "reply":
-		err = cli.Reply(ctx, args[1:], stdout)
-	case "review":
-		err = cli.Review(ctx, args[1:], stdout)
 	case "validate":
 		err = cli.Validate(ctx, args[1:], stdout)
 	case "status", "check":

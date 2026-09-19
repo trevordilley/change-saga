@@ -63,10 +63,9 @@ func TestDeferredReviewBrowserSupportsBuildingPaginationAndDeepLinks(t *testing.
 		"destination.append(...inserted)",
 		"history.pushState({view}, '', destination)",
 		"history.pushState({view:'saga'}, '', sagaURL)",
-		"if (id) void activateLandmark().then(revealHashedAnnotationBubble)",
+		"if (id) void activateLandmark()",
 		"hydrateRelatedOwners(root)",
 		"/api/file-owners?file=",
-		"revealHashedAnnotationBubble()",
 		"previous?.controller.abort()",
 	} {
 		if !strings.Contains(appJavaScript, contract) {

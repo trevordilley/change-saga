@@ -23,7 +23,7 @@ func BenchmarkLargeSagaHTTP(b *testing.B) {
 	if err != nil {
 		b.Fatal(err)
 	}
-	handler := newMux(&app{root: root, sourceDir: repo, template: tmpl, mutationToken: "benchmark-token"})
+	handler := newMux(&app{root: root, sourceDir: repo, template: tmpl})
 
 	b.Run("first_load", func(b *testing.B) {
 		b.ReportAllocs()
@@ -70,8 +70,6 @@ func largeServerSaga(tb testing.TB) (repo, root string) {
 			fragmentDir := filepath.Join(chapterDir, fragmentID+".fragment")
 			writeBenchmarkFile(tb, filepath.Join(fragmentDir, "fragment.json"), fmt.Sprintf(`{"version":2,"id":%q,"title":%q,"media_type":"text/markdown","entrypoint":"content.md","order":%d}`, fragmentID, "Fragment "+fragmentID, fragment))
 			writeBenchmarkFile(tb, filepath.Join(fragmentDir, "content.md"), fmt.Sprintf("# %s\n\nDeterministic benchmark prose for a large saga chapter.\n", fragmentID))
-			reviewID := fmt.Sprintf("20260101T000000000000000-%04d", chapter*benchmarkFragmentsPerChapter+fragment)
-			writeBenchmarkFile(tb, filepath.Join(fragmentDir, "___approvals", reviewID+"-approved.json"), fmt.Sprintf(`{"version":2,"id":%q,"state":"approved","created_at":"2026-01-01T00:00:00Z"}`, reviewID))
 		}
 	}
 	runBenchmarkGit(tb, repo, "add", ".")

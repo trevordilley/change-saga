@@ -20,7 +20,6 @@ const (
 	GateImplementationTraceReady GateName = "implementation_trace_ready"
 	GateQualityReady             GateName = "quality_ready"
 	GateReadyForReview           GateName = "ready_for_review"
-	GateReviewComplete           GateName = "review_complete"
 )
 
 // GateStatus is the reported outcome. It is deliberately a small enumeration
@@ -176,16 +175,6 @@ type ChangedSourceAccounting struct {
 	Stale     []string
 }
 
-// ReviewDecision is one required review target under the review policy.
-type ReviewDecision struct {
-	Target       string
-	Kind         string
-	Required     bool
-	Decided      bool
-	Current      bool
-	StaleReasons []string
-}
-
 // GateInputs is the already validated graph projection the gates read. The
 // package performs no filesystem or transport access; every field here is a
 // fact a loader established.
@@ -199,7 +188,6 @@ type GateInputs struct {
 	Coverage       coverage.AxisProjection
 	QualityFacts   []QualityFact
 	ChangedSource  ChangedSourceAccounting
-	Reviews        []ReviewDecision
 }
 
 // notInferred is the gate table's "Not inferred" column, kept next to the gate
@@ -211,7 +199,6 @@ var notInferred = map[GateName][]string{
 	GateImplementationTraceReady: {"that the selected diff implements the criterion correctly"},
 	GateQualityReady:             {"test sufficiency or the absence of undiscovered defects"},
 	GateReadyForReview:           {"reviewer approval"},
-	GateReviewComplete:           {"merge authorization outside Change Saga"},
 }
 
 // EvaluateGates computes the gate table. Every gate returns the concrete
@@ -226,7 +213,6 @@ func EvaluateGates(inputs GateInputs) GateProjection {
 		qualityGate(inputs),
 	}
 	gates = append(gates, reviewGate(inputs, gates))
-	gates = append(gates, reviewCompleteGate(inputs, gates[len(gates)-1]))
 	for index := range gates {
 		finishGate(&gates[index])
 	}
@@ -402,41 +388,6 @@ func reviewGate(inputs GateInputs, preceding []Gate) Gate {
 		Code: "no_failed_required_run", Satisfied: len(failed) == 0,
 		Detail: orNone(uniqueSorted(failed)),
 	})
-	return gate
-}
-
-func reviewCompleteGate(inputs GateInputs, review Gate) Gate {
-	gate := newGate(GateReviewComplete)
-	satisfied, _ := gateVerdict(review)
-	gate.fact(Fact{Code: "ready_for_review", Resource: string(GateReadyForReview), Satisfied: satisfied, Detail: gateDetail(review, satisfied)})
-	decisions := append([]ReviewDecision(nil), inputs.Reviews...)
-	sort.Slice(decisions, func(i, j int) bool {
-		if decisions[i].Kind != decisions[j].Kind {
-			return decisions[i].Kind < decisions[j].Kind
-		}
-		return decisions[i].Target < decisions[j].Target
-	})
-	for _, decision := range decisions {
-		if !decision.Required {
-			continue
-		}
-		detail := decision.Kind + " decision"
-		if !decision.Decided {
-			detail += " is missing"
-		} else if !decision.Current {
-			detail += " is not current"
-		}
-		if len(decision.StaleReasons) > 0 {
-			stale := strings.Join(uniqueSorted(decision.StaleReasons), "; ")
-			detail += "; " + stale
-			gate.StalePins = append(gate.StalePins, decision.Target+": "+stale)
-		}
-		gate.fact(Fact{
-			Code: "required_review_decision", Resource: decision.Target,
-			Satisfied: decision.Decided && decision.Current && len(decision.StaleReasons) == 0,
-			Detail:    detail,
-		})
-	}
 	return gate
 }
 

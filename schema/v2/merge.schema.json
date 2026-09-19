@@ -55,6 +55,11 @@
     "pinned_at": {
       "type": "string",
       "format": "date-time"
+    },
+    "review": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$",
+      "description": "The pull request review of the landed change, frozen by the same repin."
     }
   }
 }

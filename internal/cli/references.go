@@ -20,6 +20,8 @@ import (
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/quality"
 	"github.com/twentyideas/changesaga/internal/qualityid"
+	"github.com/twentyideas/changesaga/internal/reviewstate"
+	"github.com/twentyideas/changesaga/internal/reviewstore"
 	"github.com/twentyideas/changesaga/internal/saga"
 	"github.com/twentyideas/changesaga/internal/store"
 )
@@ -213,6 +215,17 @@ type repinOutput struct {
 	MergeRecord string              `json:"merge_record,omitempty"`
 	// Cursor is the code commit a companion Saga's sync cursor moved to.
 	Cursor string `json:"cursor,omitempty"`
+	// Review is the pull request review frozen at the landed change's exact
+	// base and head, so it stays viewable after the branch is gone.
+	Review *repinReview `json:"review,omitempty"`
+	// OpenReviews are reviews still following a head, left unfrozen because
+	// the landed change's review could not be decided; pass --review.
+	OpenReviews []string `json:"open_reviews,omitempty"`
+}
+
+type repinReview struct {
+	ID string `json:"id"`
+	saga.ReviewMerge
 }
 
 // Repin moves every evidence reference to the commit a change landed as, so
@@ -226,6 +239,7 @@ func Repin(ctx context.Context, args []string, out io.Writer) error {
 	flags := commandFlags("repin", commandUsage["repin"], out)
 	onto := flags.String("onto", "", "the commit the change landed as on its target branch")
 	branch := flags.String("branch", "", "the branch's last commit, when it is still available; widens the recorded commit messages")
+	reviewID := flags.String("review", "", "the pull request review of the landed change to freeze; defaults to the Saga's only open review")
 	repoDir := flags.String("repo", "", "source repository checkout; required when separate")
 	dryRun := flags.Bool("dry-run", false, "report what would be re-pinned without writing")
 	jsonOutput := flags.Bool("json", false, "emit machine-readable JSON")
@@ -304,18 +318,31 @@ func Repin(ctx context.Context, args []string, out io.Writer) error {
 		}
 		pins[branchCommit] = true
 	}
+	// The landed change's review is frozen at its exact head, and that head
+	// is the branch whose commit messages the merge record keeps.
+	frozen, err := reviewToFreeze(ctx, document, checkout, ontoCommit, *branch, *reviewID, &result)
+	if err != nil {
+		return err
+	}
+	if frozen != nil {
+		pins[frozen.Head] = true
+	}
 	delete(pins, ontoCommit)
 	result.Commits, err = branchCommits(ctx, checkout, ontoCommit, pins)
 	if err != nil {
 		return err
 	}
-	result.Base = landedBase(ctx, checkout, ontoCommit, *branch)
+	forkedFrom := *branch
+	if forkedFrom == "" && frozen != nil {
+		forkedFrom = frozen.Head
+	}
+	result.Base = landedBase(ctx, checkout, ontoCommit, forkedFrom)
 	companion := companionCheckout(ctx, root, checkout)
 
 	if companion {
 		result.Cursor = ontoCommit
 	}
-	if !*dryRun && (len(updates) > 0 || len(result.Commits) > 0 || companion) {
+	if !*dryRun && (len(updates) > 0 || len(result.Commits) > 0 || companion || frozen != nil) {
 		err = authorMutation(root, func(locked *saga.Saga) error {
 			for relative, changed := range updates {
 				path := filepath.Join(locked.Root, filepath.FromSlash(relative))
@@ -339,6 +366,15 @@ func Repin(ctx context.Context, args []string, out io.Writer) error {
 					return err
 				}
 			}
+			if frozen != nil {
+				review := locked.FindReview(frozen.ID)
+				if review == nil || review.Merged != nil {
+					return fmt.Errorf("review %s changed while re-pinning; run repin again", frozen.ID)
+				}
+				if err := reviewstore.WriteFrozen(review, frozen.ReviewMerge); err != nil {
+					return err
+				}
+			}
 			if len(result.Commits) == 0 {
 				return nil
 			}
@@ -348,6 +384,9 @@ func Repin(ctx context.Context, args []string, out io.Writer) error {
 			}
 			path := filepath.Join(dir, saga.MergeFilename(ontoCommit))
 			record := saga.Merge{Version: saga.CurrentVersion, Commit: ontoCommit, Base: result.Base, Commits: result.Commits, PinnedAt: time.Now().UTC()}
+			if frozen != nil {
+				record.Review = frozen.ID
+			}
 			if err := store.WriteJSON(path, record, false); err != nil {
 				return err
 			}
@@ -373,6 +412,16 @@ func Repin(ctx context.Context, args []string, out io.Writer) error {
 	if result.Cursor != "" {
 		fmt.Fprintf(out, "Moved the sync cursor to %s\n", result.Cursor)
 	}
+	if result.Review != nil {
+		verb := "Froze"
+		if *dryRun {
+			verb = "Would freeze"
+		}
+		fmt.Fprintf(out, "%s review %s at %s..%s (landed as %s)\n", verb, result.Review.ID, shortOID(result.Review.Base), shortOID(result.Review.Head), shortOID(result.Review.Landed))
+	}
+	if len(result.OpenReviews) > 0 {
+		fmt.Fprintf(out, "Left reviews %s following their heads; pass --review to freeze the landed change's review\n", strings.Join(result.OpenReviews, ", "))
+	}
 	if len(result.Commits) > 0 {
 		fmt.Fprintf(out, "Recorded %d branch commit messages", len(result.Commits))
 		if result.MergeRecord != "" {
@@ -381,6 +430,57 @@ func Repin(ctx context.Context, args []string, out io.Writer) error {
 		fmt.Fprintln(out)
 	}
 	return nil
+}
+
+// reviewToFreeze decides which review a landing freezes and at which
+// commits: --review, or the Saga's only open review. Its head is --branch, or
+// else the ref it follows; its base is where that head forked from the
+// target branch as it was before the change landed.
+func reviewToFreeze(ctx context.Context, document *saga.Saga, checkout, onto, branch, reviewID string, result *repinOutput) (*repinReview, error) {
+	var review *saga.Review
+	if reviewID != "" {
+		if review = document.FindReview(reviewID); review == nil {
+			return nil, fmt.Errorf("review %q does not exist%s", reviewID, knownReviews(document))
+		}
+		if review.Merged != nil {
+			return nil, fmt.Errorf("review %q is already frozen: it landed as %s", reviewID, shortOID(review.Merged.Landed))
+		}
+	} else {
+		var open []*saga.Review
+		for _, candidate := range document.Reviews {
+			if candidate.Merged == nil {
+				open = append(open, candidate)
+			}
+		}
+		if len(open) != 1 {
+			for _, candidate := range open {
+				result.OpenReviews = append(result.OpenReviews, candidate.ID)
+			}
+			return nil, nil
+		}
+		review = open[0]
+	}
+	head := ""
+	if branch != "" {
+		value, err := resolveCommit(ctx, checkout, branch)
+		if err != nil {
+			return nil, err
+		}
+		head = value
+	} else {
+		rng, err := reviewstate.ResolveRange(ctx, checkout, review)
+		if err != nil {
+			return nil, fmt.Errorf("freeze review %s: %w; pass --branch with the pull request's last commit", review.ID, err)
+		}
+		head = rng.HeadOID
+	}
+	base := landedBase(ctx, checkout, onto, head)
+	if base == "" {
+		return nil, fmt.Errorf("freeze review %s: %s has no parent to compare from", review.ID, shortOID(onto))
+	}
+	frozen := &repinReview{ID: review.ID, ReviewMerge: saga.ReviewMerge{Base: base, Head: head, Landed: onto, MergedAt: time.Now().UTC()}}
+	result.Review = frozen
+	return frozen, nil
 }
 
 // landedBase is the commit the landed change is compared from: the target

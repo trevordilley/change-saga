@@ -4,11 +4,11 @@ package reviewapp
 
 import (
 	"context"
-	"github.com/twentyideas/changesaga/internal/coderef"
 	"time"
 
+	"github.com/twentyideas/changesaga/internal/coderef"
+
 	"github.com/twentyideas/changesaga/internal/gitdiff"
-	"github.com/twentyideas/changesaga/internal/saga"
 )
 
 const (
@@ -36,7 +36,6 @@ type Session interface {
 	ReadFragment(context.Context, FragmentQuery) (FragmentContent, error)
 	FragmentDiffs(context.Context, FragmentDiffQuery) (FragmentDiffs, error)
 	DiffOwners(context.Context, DiffOwnerQuery) (DiffOwnership, error)
-	Reviews(context.Context, ReviewQuery) (ReviewPage, error)
 	Gaps(context.Context, GapQuery) (GapPage, error)
 	Mappings(context.Context, MappingQuery) (MappingPage, error)
 	Claims(context.Context, ClaimQuery) (ClaimPage, error)
@@ -68,14 +67,6 @@ type FragmentDiffQuery struct {
 // inside it and a whole file selects every changed atom of that file.
 type DiffOwnerQuery struct {
 	Ref    string `json:"ref"`
-	Cursor string `json:"cursor,omitempty"`
-	Limit  int    `json:"limit,omitempty"`
-}
-
-type ReviewQuery struct {
-	Target string `json:"target,omitempty"`
-	Thread string `json:"thread,omitempty"`
-	State  string `json:"state,omitempty"`
 	Cursor string `json:"cursor,omitempty"`
 	Limit  int    `json:"limit,omitempty"`
 }
@@ -129,17 +120,6 @@ type SourceSnapshot struct {
 	HeadOID    string `json:"head_oid"`
 }
 
-type CompactReview struct {
-	// LatestState is retained as a wire-compatible name for the aggregate of
-	// every reviewer's current decision.
-	LatestState    string `json:"latest_state,omitempty"`
-	HumanApprovals int    `json:"human_approvals"`
-	AIApprovals    int    `json:"ai_approvals"`
-	Rejections     int    `json:"rejections"`
-	Unspecified    int    `json:"unspecified_decisions"`
-	OpenThreads    int    `json:"open_threads"`
-}
-
 type CompactDiffs struct {
 	Current           int `json:"current"`
 	Stale             int `json:"stale"`
@@ -158,7 +138,6 @@ type Node struct {
 	Description string         `json:"description,omitempty"`
 	Order       int            `json:"order,omitempty"`
 	HasChildren bool           `json:"has_children"`
-	Review      CompactReview  `json:"review"`
 	Diffs       CompactDiffs   `json:"diffs"`
 	MediaType   string         `json:"media_type,omitempty"`
 	Bytes       int64          `json:"bytes,omitempty"`
@@ -378,9 +357,8 @@ type VerificationPage struct {
 }
 
 type OwnedAtom struct {
-	Atom    gitdiff.Atom   `json:"atom"`
-	Owners  []DiffOwner    `json:"owners"`
-	Threads []ReviewThread `json:"threads"`
+	Atom   gitdiff.Atom `json:"atom"`
+	Owners []DiffOwner  `json:"owners"`
 }
 
 type DiffOwnership struct {
@@ -400,64 +378,6 @@ type Attribution struct {
 type Committer struct {
 	Name  string `json:"name"`
 	Email string `json:"email"`
-}
-
-type ReviewFragment struct {
-	Target    string `json:"target"`
-	ID        string `json:"id"`
-	Title     string `json:"title"`
-	MediaType string `json:"media_type"`
-	Encoding  string `json:"encoding,omitempty"`
-	Data      string `json:"data,omitempty"`
-	Bytes     int64  `json:"bytes"`
-	Truncated bool   `json:"truncated,omitempty"`
-}
-
-type ReviewMessage struct {
-	ID                  string           `json:"id"`
-	CreatedAt           time.Time        `json:"created_at"`
-	Attribution         Attribution      `json:"attribution"`
-	LegacyClaimedAuthor string           `json:"legacy_claimed_author,omitempty"`
-	Fragments           []ReviewFragment `json:"fragments"`
-}
-
-type ReviewEvent struct {
-	ID                  string                 `json:"id"`
-	Kind                string                 `json:"kind"`
-	Target              string                 `json:"target,omitempty"`
-	Code                *coderef.Reference     `json:"code,omitempty"`
-	State               string                 `json:"state,omitempty"`
-	Body                string                 `json:"body,omitempty"`
-	Anchor              *saga.Anchor           `json:"anchor,omitempty"`
-	CreatedAt           time.Time              `json:"created_at"`
-	Attribution         Attribution            `json:"attribution"`
-	LegacyClaimedAuthor string                 `json:"legacy_claimed_author,omitempty"`
-	Reviewer            *saga.ReviewerIdentity `json:"reviewer,omitempty"`
-}
-
-type ReviewThread struct {
-	ID                  string           `json:"id"`
-	Kind                string           `json:"kind"`
-	Target              string           `json:"target"`
-	Anchor              saga.Anchor      `json:"anchor"`
-	Suggestion          *saga.Suggestion `json:"suggestion,omitempty"`
-	State               string           `json:"state"`
-	CreatedAt           time.Time        `json:"created_at"`
-	Attribution         Attribution      `json:"attribution"`
-	LegacyClaimedAuthor string           `json:"legacy_claimed_author,omitempty"`
-	Messages            []ReviewMessage  `json:"messages"`
-	Events              []ReviewEvent    `json:"events"`
-}
-
-type ReviewItem struct {
-	Kind   string        `json:"kind"`
-	Thread *ReviewThread `json:"thread,omitempty"`
-	Event  *ReviewEvent  `json:"event,omitempty"`
-}
-
-type ReviewPage struct {
-	Items []ReviewItem `json:"items"`
-	Page  Page         `json:"-"`
 }
 
 type UncoveredGap struct {

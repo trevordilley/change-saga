@@ -54,7 +54,6 @@ func coveredInputs() GateInputs {
 			RunHeads: []string{"urn:change-saga:s:test-case:deadline:run:ci"}, EvidenceResolved: true,
 		}},
 		ChangedSource: ChangedSourceAccounting{Complete: true},
-		Reviews:       []ReviewDecision{{Target: "urn:change-saga:s:test-case:deadline", Kind: "test_case", Required: true, Decided: true, Current: true}},
 	}
 }
 
@@ -83,7 +82,7 @@ func TestGateTableReportsEveryGateInOrder(t *testing.T) {
 	}
 	want := []GateName{
 		GateRequirementsReady, GateProductReady, GateDesignReady,
-		GateImplementationTraceReady, GateQualityReady, GateReadyForReview, GateReviewComplete,
+		GateImplementationTraceReady, GateQualityReady, GateReadyForReview,
 	}
 	if !reflect.DeepEqual(got, want) {
 		t.Fatalf("gates = %v, want %v", got, want)
@@ -280,25 +279,6 @@ func TestStaleQualityRunIsReportedAsAStalePinNotAPass(t *testing.T) {
 	}
 	if len(quality.StalePins) != 1 || !strings.Contains(quality.StalePins[0], "older test revision") {
 		t.Fatalf("stale pins = %v", quality.StalePins)
-	}
-}
-
-func TestReviewCompleteNeedsCurrentRequiredDecisions(t *testing.T) {
-	inputs := coveredInputs()
-	inputs.Reviews = append(inputs.Reviews, ReviewDecision{
-		Target: "urn:change-saga:s:slide:decision", Kind: "slide", Required: true, Decided: true, Current: false,
-	})
-	projection := EvaluateGates(inputs)
-
-	if gate(t, projection, GateReadyForReview).Status != StatusReady {
-		t.Fatal("an outstanding review decision blocked ready_for_review")
-	}
-	complete := gate(t, projection, GateReviewComplete)
-	if complete.Status != StatusBlocked {
-		t.Fatalf("review_complete = %s", complete.Status)
-	}
-	if blockerCodes(complete)[0] != "required_review_decision" {
-		t.Fatalf("review_complete blockers = %v", blockerCodes(complete))
 	}
 }
 

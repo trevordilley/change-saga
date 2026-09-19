@@ -1,474 +1,160 @@
 package reviewstore
 
 import (
-	"bytes"
-	"fmt"
+	"encoding/json"
 	"os"
 	"path/filepath"
-	"sort"
 	"strings"
-	"sync"
 	"testing"
+	"time"
 
-	"github.com/twentyideas/changesaga/internal/applayout"
-	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/saga"
-	"github.com/twentyideas/changesaga/internal/store"
 )
 
-func TestReviewRecordsAreAppendOnlyAndFileGranular(t *testing.T) {
-	root := newTestSaga(t)
-	target := "urn:change-saga:test:fragment:overview"
-	first, err := AddThread(root, target, "First comment", saga.Anchor{Type: "target"}, "comment", "", nil)
+const commit = "0a103972ac26d8dfd8a4a1f3be0b1b9b5a2c4e61"
+
+func writeJSON(t *testing.T, path string, value any) {
+	t.Helper()
+	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	data, err := json.Marshal(value)
 	if err != nil {
 		t.Fatal(err)
 	}
-	threadDir := filepath.Join(root, "___review", "threads", first+".thread")
-	threadBefore := readReviewFile(t, filepath.Join(threadDir, "thread.json"))
-	messagesBefore, err := os.ReadDir(filepath.Join(threadDir, "messages"))
-	if err != nil || len(messagesBefore) != 1 {
-		t.Fatalf("initial comment should have one message directory: entries=%d err=%v", len(messagesBefore), err)
-	}
-	firstMessage := filepath.Join(threadDir, "messages", messagesBefore[0].Name(), "message.json")
-	messageBefore := readReviewFile(t, firstMessage)
-
-	runConcurrently(t,
-		func() error { _, err := AddReply(root, first, "Reply one", nil); return err },
-		func() error { _, err := AddReply(root, first, "Reply two", nil); return err },
-		func() error {
-			_, err := AddThread(root, target, "Second comment", saga.Anchor{Type: "target"}, "comment", "", nil)
-			return err
-		},
-		func() error {
-			_, err := AddThread(root, target, "Third comment", saga.Anchor{Type: "target"}, "comment", "", nil)
-			return err
-		},
-	)
-
-	if !bytes.Equal(threadBefore, readReviewFile(t, filepath.Join(threadDir, "thread.json"))) || !bytes.Equal(messageBefore, readReviewFile(t, firstMessage)) {
-		t.Fatal("adding comments or replies rewrote an existing record")
-	}
-	threads, err := os.ReadDir(filepath.Join(root, "___review", "threads"))
-	if err != nil || len(threads) != 3 {
-		t.Fatalf("comments should use three independent thread directories: entries=%d err=%v", len(threads), err)
-	}
-	messages, err := os.ReadDir(filepath.Join(threadDir, "messages"))
-	if err != nil || len(messages) != 3 {
-		t.Fatalf("comment and replies should use three independent message directories: entries=%d err=%v", len(messages), err)
-	}
-	commentFiles := 0
-	err = filepath.WalkDir(filepath.Join(root, "___review", "threads"), func(path string, entry os.DirEntry, err error) error {
-		if err == nil && !entry.IsDir() && filepath.Base(path) == "content.md" {
-			commentFiles++
-		}
-		return err
-	})
-	if err != nil || commentFiles != 5 {
-		t.Fatalf("each of five comments/replies should have its own content file: files=%d err=%v", commentFiles, err)
-	}
-
-	file := coderef.Reference{Commit: strings.Repeat("b", 40), Path: "app.go", Digest: coderef.DigestBytes([]byte("app"))}
-	runConcurrently(t,
-		func() error {
-			return AddReview(root, root, "approved", "Looks good", saga.ReviewerIdentity{Kind: "human"})
-		},
-		func() error {
-			return AddReview(root, root, "rejected", "One concern", saga.ReviewerIdentity{Kind: "human"})
-		},
-		func() error { return AddFileReview(root, file, "reviewed") },
-		func() error { return AddFileReview(root, file, "unreviewed") },
-	)
-	assertEntryCount(t, filepath.Join(root, "___approvals"), 2)
-	assertEntryCount(t, filepath.Join(root, "___review", saga.FileReviewDir), 2)
-	err = filepath.WalkDir(root, func(path string, entry os.DirEntry, err error) error {
-		if err != nil || entry.IsDir() || filepath.Ext(path) != ".json" {
-			return err
-		}
-		data := readReviewFile(t, path)
-		if bytes.Contains(data, []byte(`"author"`)) || bytes.Contains(data, []byte(`"created_by"`)) {
-			t.Fatalf("new review event duplicated editable identity in %s: %s", path, data)
-		}
-		return nil
-	})
-	if err != nil {
+	if err := os.WriteFile(path, data, 0o644); err != nil {
 		t.Fatal(err)
 	}
 }
 
-func TestAddReviewPersistsExplicitReviewerPersona(t *testing.T) {
-	root := newTestSaga(t)
-	if err := AddReview(root, root, "approved", "Human pass", saga.ReviewerIdentity{Kind: "human"}); err != nil {
+// reviewSaga is an app Saga with one review whose deck has one slide and Item.
+func reviewSaga(t *testing.T) string {
+	t.Helper()
+	root := filepath.Join(t.TempDir(), "app.saga")
+	writeJSON(t, filepath.Join(root, saga.ManifestName), saga.Manifest{Schema: saga.SagaSchemaURL, Version: saga.SagaVersion, ID: "app", Title: "App", Source: saga.Source{Repository: "https://example.test/acme/app.git"}})
+	if err := Create(root, saga.ReviewManifest{ID: "pr-7", Title: "PR 7", Base: "main", PullRequest: &saga.PullRequest{Number: 7}}, saga.DeckManifest{ID: "pr-7", Title: "PR 7", Objective: "Explain the change."}); err != nil {
 		t.Fatal(err)
 	}
-	if err := AddReview(root, root, "approved", "AI pass", saga.ReviewerIdentity{Kind: "ai", Name: "Codex 1", Agent: "codex", Model: "gpt-5.6-sol"}); err != nil {
+	deckDir := filepath.Join(saga.ReviewDir(root, "pr-7"), saga.ReviewDeckDir)
+	deck, slide := saga.ReviewDeckTarget("app", "pr-7", "pr-7"), saga.ReviewSlideTarget("app", "pr-7", "why")
+	slideName, _ := saga.FlatSlideFilename(deck, slide, 0)
+	asset, _ := saga.FlatSlideAssetFilename(slideName, ".svg")
+	writeJSON(t, filepath.Join(deckDir, slideName), saga.SlideManifest{Version: saga.DeckRecordVersion, ID: "why", DeckID: "pr-7", Title: "Why", Intent: "explain", Layout: "diagram", MediaType: "image/svg+xml", Entrypoint: asset, Takeaway: "Why it moved.", ReadingOrder: []string{"node"}})
+	if err := os.WriteFile(filepath.Join(deckDir, asset), []byte(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><rect id="node" width="5" height="5"/></svg>`), 0o644); err != nil {
 		t.Fatal(err)
 	}
-	document, validation, err := saga.Load(root)
-	if err != nil || !validation.Valid || len(document.Section.Reviews) != 2 {
-		t.Fatalf("reviews did not load: reviews=%#v validation=%#v err=%v", document.Section.Reviews, validation, err)
-	}
-	if document.Section.Reviews[0].Reviewer == nil || document.Section.Reviews[1].Reviewer == nil {
-		t.Fatalf("reviewer provenance was omitted: %#v", document.Section.Reviews)
-	}
+	item := saga.ReviewItemTarget("app", "pr-7", "why", "node")
+	itemName, _ := saga.FlatItemFilename(slide, item, 0)
+	writeJSON(t, filepath.Join(deckDir, itemName), saga.ItemManifest{Version: saga.DeckRecordVersion, ID: "node", SlideID: "why", Kind: "node", Label: "Node", Description: "The node.", Selector: saga.LandmarkSelector{Type: "element", ElementID: "node"}, Record: "urn:change-saga:app:story:enqueue"})
+	return root
 }
 
-func TestNamedAIReviewersAppendConcurrentlyWithoutSharedFiles(t *testing.T) {
-	root := newTestSaga(t)
-	identities := []saga.ReviewerIdentity{
-		{Kind: "ai", Name: "Claude 1", Agent: "claude-code", Model: "claude-opus-4.1"},
-		{Kind: "ai", Name: "Claude 2", Agent: "claude-code", Model: "claude-opus-4.1"},
-		{Kind: "ai", Name: "Codex 1", Agent: "codex", Model: "gpt-5.6-sol"},
-		{Kind: "ai", Name: "Codex 2", Agent: "codex", Model: "gpt-5.6-sol"},
+func loadIssues(t *testing.T, root string) string {
+	t.Helper()
+	_, validation, err := saga.Load(root)
+	if err != nil {
+		t.Fatal(err)
 	}
-	operations := make([]func() error, 0, len(identities))
-	for _, identity := range identities {
-		identity := identity
-		operations = append(operations, func() error {
-			return AddReview(root, root, "approved", identity.Name+" pass", identity)
-		})
+	var issues []string
+	for _, issue := range validation.Issues {
+		if issue.Severity == "error" {
+			issues = append(issues, issue.Message)
+		}
 	}
-	runConcurrently(t, operations...)
-	assertEntryCount(t, filepath.Join(root, "___approvals"), len(identities))
+	return strings.Join(issues, "\n")
+}
+
+func TestReviewRecordsRoundTripAndValidate(t *testing.T) {
+	root := reviewSaga(t)
+	if issues := loadIssues(t, root); issues != "" {
+		t.Fatalf("a fresh review is invalid:\n%s", issues)
+	}
+	human := saga.ReviewerIdentity{Kind: "human"}
+	approval, err := Decide(root, Decision{Review: "pr-7", Slide: "why", State: saga.ApprovalApproved, Reviewer: human, Commit: commit})
+	if err != nil {
+		t.Fatal(err)
+	}
+	if _, err := Comment(root, Remark{Review: "pr-7", Target: "why/node", Body: "Why here?", Reviewer: human}); err != nil {
+		t.Fatal(err)
+	}
 	document, validation, err := saga.Load(root)
 	if err != nil || !validation.Valid {
-		t.Fatalf("parallel AI reviews did not load: validation=%#v err=%v", validation, err)
+		t.Fatalf("load: %v %#v", err, validation.Issues)
 	}
-	current := saga.CurrentReviews(document.Section.Reviews)
-	if len(current) != len(identities) {
-		t.Fatalf("current AI decisions = %#v, want one per named reviewer", current)
+	review := document.FindReview("pr-7")
+	if review.Target != "urn:change-saga:app:review:pr-7" || len(review.Approvals) != 1 || review.Approvals[0].SlideDigest != approval.SlideDigest || len(review.Comments) != 1 || review.Comments[0].Target != saga.ReviewItemTarget("app", "pr-7", "why", "node") {
+		t.Fatalf("review = %#v", review)
+	}
+	if _, err := Decide(root, Decision{Review: "pr-7", Slide: "missing", State: saga.ApprovalApproved, Reviewer: human, Commit: commit}); err == nil {
+		t.Fatal("a decision on a missing slide was accepted")
+	}
+	if _, err := Decide(root, Decision{Review: "pr-7", Slide: "why", State: saga.ApprovalApproved, Reviewer: saga.ReviewerIdentity{Kind: "ai"}, Commit: commit}); err == nil {
+		t.Fatal("an AI decision without its seat was accepted")
+	}
+	if err := Freeze(root, "pr-7", saga.ReviewMerge{Base: commit, Head: commit, Landed: commit, MergedAt: time.Now().UTC()}); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := Decide(root, Decision{Review: "pr-7", Slide: "why", State: saga.ApprovalApproved, Reviewer: human, Commit: commit}); err == nil || !strings.Contains(err.Error(), "history") {
+		t.Fatalf("a decision on a merged review = %v", err)
 	}
 }
 
-func TestThreadUndoAndRedoAppendStateEvents(t *testing.T) {
-	root := newTestSaga(t)
-	threadID, err := AddThread(root, "urn:change-saga:test:fragment:overview", "Keep this history", saga.Anchor{Type: "target"}, "comment", "", nil)
-	if err != nil {
+func TestLoadRejectsMalformedReviewRecords(t *testing.T) {
+	now := time.Date(2026, 9, 18, 12, 0, 0, 0, time.UTC)
+	approval := func(mutate func(*saga.ReviewApproval)) saga.ReviewApproval {
+		value := saga.ReviewApproval{Schema: saga.ReviewApprovalSchemaURL, Version: saga.ReviewVersion, ID: "a1", Slide: "why", State: saga.ApprovalApproved, Reviewer: saga.ReviewerIdentity{Kind: "human"}, Commit: commit, SlideDigest: "sha256:" + strings.Repeat("ab", 32), CreatedAt: now}
+		mutate(&value)
+		return value
+	}
+	comment := func(mutate func(*saga.ReviewComment)) saga.ReviewComment {
+		value := saga.ReviewComment{Schema: saga.ReviewCommentSchemaURL, Version: saga.ReviewVersion, ID: "c1", Target: saga.ReviewSlideTarget("app", "pr-7", "why"), Body: "hi", Reviewer: saga.ReviewerIdentity{Kind: "human"}, CreatedAt: now}
+		mutate(&value)
+		return value
+	}
+	cases := []struct {
+		name  string
+		write func(t *testing.T, dir string)
+		want  string
+	}{
+		{"approval names a missing slide", func(t *testing.T, dir string) {
+			writeJSON(t, filepath.Join(dir, "approvals", "a1.json"), approval(func(a *saga.ReviewApproval) { a.Slide = "gone" }))
+		}, "not in this review's deck"},
+		{"approval has no head commit", func(t *testing.T, dir string) {
+			writeJSON(t, filepath.Join(dir, "approvals", "a1.json"), approval(func(a *saga.ReviewApproval) { a.Commit = "main" }))
+		}, "full head commit"},
+		{"approval state is a verdict word", func(t *testing.T, dir string) {
+			writeJSON(t, filepath.Join(dir, "approvals", "a1.json"), approval(func(a *saga.ReviewApproval) { a.State = "rejected" }))
+		}, "approved, changes_requested, or none"},
+		{"approval filename disagrees with its id", func(t *testing.T, dir string) {
+			writeJSON(t, filepath.Join(dir, "approvals", "other.json"), approval(func(*saga.ReviewApproval) {}))
+		}, "matching its filename"},
+		{"comment targets documentation", func(t *testing.T, dir string) {
+			writeJSON(t, filepath.Join(dir, "comments", "c1.json"), comment(func(c *saga.ReviewComment) { c.Target = saga.FragmentTarget("app", "overview") }))
+		}, "slide or Item of this review"},
+		{"comment replies to nothing", func(t *testing.T, dir string) {
+			writeJSON(t, filepath.Join(dir, "comments", "c1.json"), comment(func(c *saga.ReviewComment) { c.ReplyTo = "missing" }))
+		}, "unknown comment"},
+		{"review holds an unknown entry", func(t *testing.T, dir string) {
+			writeJSON(t, filepath.Join(dir, "notes.json"), map[string]string{})
+		}, "unknown entry in a review"},
+		{"review.json names another id", func(t *testing.T, dir string) {
+			writeJSON(t, filepath.Join(dir, saga.ReviewManifestName), saga.ReviewManifest{Schema: saga.ReviewSchemaURL, Version: saga.ReviewVersion, ID: "pr-8", Title: "x", Base: "main", CreatedAt: now})
+		}, "must match its directory"},
+	}
+	for _, test := range cases {
+		t.Run(test.name, func(t *testing.T) {
+			root := reviewSaga(t)
+			test.write(t, saga.ReviewDir(root, "pr-7"))
+			if issues := loadIssues(t, root); !strings.Contains(issues, test.want) {
+				t.Fatalf("issues do not mention %q:\n%s", test.want, issues)
+			}
+		})
+	}
+	root := reviewSaga(t)
+	if err := os.MkdirAll(filepath.Join(root, saga.ReviewsDir, "loose"), 0o755); err != nil {
 		t.Fatal(err)
 	}
-	threadDir := filepath.Join(root, "___review", "threads", threadID+".thread")
-	threadPath := filepath.Join(threadDir, "thread.json")
-	threadBefore := readReviewFile(t, threadPath)
-	messages, err := os.ReadDir(filepath.Join(threadDir, "messages"))
-	if err != nil || len(messages) != 1 {
-		t.Fatalf("initial thread messages: entries=%d err=%v", len(messages), err)
+	if issues := loadIssues(t, root); !strings.Contains(issues, "<id>.review") {
+		t.Fatalf("a non-review directory was accepted:\n%s", issues)
 	}
-	messagePath := filepath.Join(threadDir, "messages", messages[0].Name(), "message.json")
-	messageBefore := readReviewFile(t, messagePath)
-
-	if err := SetState(root, threadID, "withdrawn"); err != nil {
-		t.Fatal(err)
-	}
-	if err := SetState(root, threadID, "open"); err != nil {
-		t.Fatal(err)
-	}
-	if err := SetAnchor(root, threadID, saga.Anchor{Type: "region", Coordinate: "normalized", Shapes: []saga.Shape{{Type: "rect", X: .2, Y: .3, Width: .4, Height: .2}}}); err != nil {
-		t.Fatal(err)
-	}
-	assertEntryCount(t, filepath.Join(threadDir, "events"), 3)
-	if !bytes.Equal(threadBefore, readReviewFile(t, threadPath)) || !bytes.Equal(messageBefore, readReviewFile(t, messagePath)) {
-		t.Fatal("undo or redo rewrote the original thread")
-	}
-	if err := SetState(root, threadID, "deleted"); err == nil {
-		t.Fatal("unsupported thread state was accepted")
-	}
-	if err := SetAnchor(root, threadID, saga.Anchor{Type: "region"}); err == nil {
-		t.Fatal("invalid anchor edit was accepted")
-	}
-}
-
-func TestConcurrentStickyNotesStayFileGranular(t *testing.T) {
-	root := newTestSaga(t)
-	target := "urn:change-saga:test:fragment:overview"
-	note := func(text string, x, y float64) saga.Anchor {
-		return saga.Anchor{Type: "note", Coordinate: "normalized", Note: &saga.NoteSelector{Text: text, X: x, Y: y, Color: "#f2bd4b"}}
-	}
-	first, err := AddThread(root, target, "Rename this helper", note("Rename this helper", .25, .5), "comment", "", nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-	threadDir := filepath.Join(root, "___review", "threads", first+".thread")
-	threadBefore := readReviewFile(t, filepath.Join(threadDir, "thread.json"))
-
-	runConcurrently(t,
-		func() error { return SetAnchor(root, first, note("Rename this helper", .4, .6)) },
-		func() error { return SetAnchor(root, first, note("Renamed already", .25, .5)) },
-		func() error {
-			_, err := AddThread(root, target, "Second note", note("Second note", .8, .1), "comment", "", nil)
-			return err
-		},
-		func() error {
-			_, err := AddThread(root, target, "Third note", note("Third note", .1, .9), "comment", "", nil)
-			return err
-		},
-	)
-
-	assertEntryCount(t, filepath.Join(root, "___review", "threads"), 3)
-	assertEntryCount(t, filepath.Join(threadDir, "events"), 2)
-	if !bytes.Equal(threadBefore, readReviewFile(t, filepath.Join(threadDir, "thread.json"))) {
-		t.Fatal("moving or rewording a sticky note rewrote its original record")
-	}
-	if _, err := AddThread(root, target, "Blank", note("   ", .5, .5), "comment", "", nil); err == nil {
-		t.Fatal("a sticky note without visible text was accepted")
-	}
-	if err := SetAnchor(root, first, note("Off canvas", 1.5, .5)); err == nil {
-		t.Fatal("an off-canvas sticky note placement was accepted")
-	}
-}
-
-func TestFailedThreadAndReplyLeaveNoPartialEntity(t *testing.T) {
-	root := newTestSaga(t)
-	mutationFaultHook = func(step string) error {
-		if step == "after-message-manifest" {
-			return fmt.Errorf("injected message failure")
-		}
-		return nil
-	}
-	t.Cleanup(func() { mutationFaultHook = nil })
-	if _, err := AddThread(root, "urn:change-saga:test:fragment:overview", "partial", saga.Anchor{Type: "target"}, "comment", "", nil); err == nil {
-		t.Fatal("AddThread succeeded despite injected failure")
-	}
-	assertNoCommittedOrTemporaryEntries(t, filepath.Join(root, "___review", "threads"))
-
-	mutationFaultHook = nil
-	threadID, err := AddThread(root, "urn:change-saga:test:fragment:overview", "complete", saga.Anchor{Type: "target"}, "comment", "", nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-	messagesDir := filepath.Join(root, "___review", "threads", threadID+".thread", "messages")
-	before, err := os.ReadDir(messagesDir)
-	if err != nil {
-		t.Fatal(err)
-	}
-	mutationFaultHook = func(step string) error {
-		if step == "after-message-manifest" {
-			return fmt.Errorf("injected reply failure")
-		}
-		return nil
-	}
-	if _, err := AddReply(root, threadID, "partial reply", nil); err == nil {
-		t.Fatal("AddReply succeeded despite injected failure")
-	}
-	after, err := os.ReadDir(messagesDir)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if len(after) != len(before) {
-		t.Fatalf("failed reply left a committed message: before=%d after=%d", len(before), len(after))
-	}
-	for _, entry := range after {
-		if strings.HasPrefix(entry.Name(), ".change-saga-stage-") {
-			t.Fatalf("failed reply left temporary state %q", entry.Name())
-		}
-	}
-}
-
-func TestMutationRefusesMalformedCodeReferencesWithoutSideEffect(t *testing.T) {
-	root := newTestSaga(t)
-	target := "urn:change-saga:test:fragment:overview"
-	lines := coderef.Reference{Commit: strings.Repeat("b", 40), Path: "app.go", Start: 4, End: 4, Digest: coderef.DigestBytes([]byte("line"))}
-	undigested := lines
-	undigested.Digest = ""
-	own, err := AddThread(root, target, "Anchor me", saga.Anchor{Type: "target"}, "comment", "", nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-	before := treeSnapshot(t, root)
-
-	if err := AddFileReview(root, lines, "reviewed"); err == nil || !strings.Contains(err.Error(), "whole-file") {
-		t.Fatalf("file review of a line range error = %v, want whole-file refusal", err)
-	}
-	unpinned := saga.Anchor{Type: "code", Code: &undigested}
-	if _, err := AddThread(root, target, "Unpinned anchor", unpinned, "comment", "", nil); err == nil {
-		t.Fatal("thread anchored to a reference without a digest was accepted")
-	}
-	if err := SetAnchor(root, own, unpinned); err == nil {
-		t.Fatal("re-anchoring a thread to a reference without a digest was accepted")
-	}
-	if after := treeSnapshot(t, root); after != before {
-		t.Fatalf("rejected references changed the saga:\nbefore:\n%s\nafter:\n%s", before, after)
-	}
-	anchored := saga.Anchor{Type: "code", Code: &lines}
-	if _, err := AddThread(root, target, "On a line", anchored, "comment", "", nil); err != nil {
-		t.Fatalf("thread anchored to a code reference was refused: %v", err)
-	}
-}
-
-func TestMutationRefusesStructurallyInvalidSagaWithoutSideEffect(t *testing.T) {
-	root := newTestSaga(t)
-	manifest := saga.Manifest{Schema: saga.SagaSchemaURL, Version: 999, ID: "test", Title: "Test", Source: saga.Source{Repository: "https://example.test/repo.git"}}
-	if err := store.WriteJSON(filepath.Join(root, "saga.json"), manifest, false); err != nil {
-		t.Fatal(err)
-	}
-	before, err := os.ReadDir(root)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if err := AddReview(root, root, "approved", "should not exist", saga.ReviewerIdentity{Kind: "human"}); err == nil || !strings.Contains(err.Error(), "unsupported Saga version 999") {
-		t.Fatalf("AddReview error = %v, want invalid saga refusal", err)
-	}
-	after, err := os.ReadDir(root)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if len(after) != len(before) {
-		t.Fatalf("invalid saga mutation changed root entries: before=%d after=%d", len(before), len(after))
-	}
-	if _, err := os.Stat(filepath.Join(root, ".change-saga.lock")); !os.IsNotExist(err) {
-		t.Fatalf("invalid saga mutation created writer lock: %v", err)
-	}
-}
-
-func TestMutationValidationDoesNotParseCoverageMappings(t *testing.T) {
-	root := newTestSaga(t)
-	// This file is deliberately not valid coverage JSON. Review mutations are
-	// guarded by the manifest/package skeleton and review-only state; parsing
-	// every mapping here would put a 529k-record saga back on the comment path.
-	if err := os.MkdirAll(filepath.Join(applayout.EpicDir(root, testEpic), "overview.fragment", saga.CodeDirName), 0o755); err != nil {
-		t.Fatal(err)
-	}
-	if err := os.WriteFile(filepath.Join(applayout.EpicDir(root, testEpic), "overview.fragment", saga.CodeDirName, "large.json"), []byte("not parsed by review mutation\n"), 0o644); err != nil {
-		t.Fatal(err)
-	}
-	if err := AddReview(root, root, "approved", "Review state is independent.", saga.ReviewerIdentity{Kind: "human"}); err != nil {
-		t.Fatalf("review mutation parsed the coverage generation: %v", err)
-	}
-	assertEntryCount(t, filepath.Join(root, "___approvals"), 1)
-}
-
-func TestReservedSymlinkRejectionHasZeroOutsideSideEffects(t *testing.T) {
-	root := newTestSaga(t)
-	outside := filepath.Join(t.TempDir(), "outside")
-	if err := os.Mkdir(outside, 0o755); err != nil {
-		t.Fatal(err)
-	}
-	if err := os.Symlink(outside, filepath.Join(root, "___review")); err != nil {
-		t.Fatal(err)
-	}
-	_, err := AddThread(root, "urn:change-saga:test:fragment:overview", "escape", saga.Anchor{Type: "target"}, "comment", "", nil)
-	if err == nil {
-		t.Fatal("AddThread accepted symlinked reserved metadata directory")
-	}
-	entries, err := os.ReadDir(outside)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if len(entries) != 0 {
-		t.Fatalf("rejected symlink caused %d outside side effects, want zero", len(entries))
-	}
-}
-
-func runConcurrently(t *testing.T, operations ...func() error) {
-	t.Helper()
-	var group sync.WaitGroup
-	errors := make(chan error, len(operations))
-	for _, operation := range operations {
-		group.Add(1)
-		go func(operation func() error) {
-			defer group.Done()
-			errors <- operation()
-		}(operation)
-	}
-	group.Wait()
-	close(errors)
-	for err := range errors {
-		if err != nil {
-			t.Fatal(err)
-		}
-	}
-}
-
-func readReviewFile(t *testing.T, path string) []byte {
-	t.Helper()
-	data, err := os.ReadFile(path)
-	if err != nil {
-		t.Fatal(err)
-	}
-	return data
-}
-
-func assertEntryCount(t *testing.T, path string, want int) {
-	t.Helper()
-	entries, err := os.ReadDir(path)
-	if err != nil || len(entries) != want {
-		t.Fatalf("%s has %d entries, want %d (err=%v)", path, len(entries), want, err)
-	}
-}
-
-func assertNoCommittedOrTemporaryEntries(t *testing.T, path string) {
-	t.Helper()
-	entries, err := os.ReadDir(path)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if len(entries) != 0 {
-		t.Fatalf("failed entity left entries in %s: %v", path, entries)
-	}
-}
-
-// testRepository is the source repository every test saga declares, so diff
-// identities in these tests are the saga's own unless a test deliberately
-// crosses repositories.
-const testRepository = "https://example.test/repo.git"
-
-// testEpic holds the test saga's report content; review records stay at the
-// app root.
-const testEpic = "core"
-
-// treeSnapshot renders every path and file size under root so a test can prove a
-// rejected mutation created, removed, or rewrote nothing at all.
-func treeSnapshot(t *testing.T, root string) string {
-	t.Helper()
-	var lines []string
-	err := filepath.WalkDir(root, func(path string, entry os.DirEntry, err error) error {
-		if err != nil {
-			return err
-		}
-		rel, relErr := filepath.Rel(root, path)
-		if relErr != nil {
-			return relErr
-		}
-		if entry.IsDir() {
-			lines = append(lines, rel+"/")
-			return nil
-		}
-		info, infoErr := entry.Info()
-		if infoErr != nil {
-			return infoErr
-		}
-		lines = append(lines, fmt.Sprintf("%s %d", rel, info.Size()))
-		return nil
-	})
-	if err != nil {
-		t.Fatal(err)
-	}
-	sort.Strings(lines)
-	return strings.Join(lines, "\n")
-}
-
-func newTestSaga(t *testing.T) string {
-	t.Helper()
-	root := filepath.Join(t.TempDir(), "test.saga")
-	if err := os.MkdirAll(root, 0o755); err != nil {
-		t.Fatal(err)
-	}
-	manifest := saga.Manifest{Schema: saga.SagaSchemaURL, Version: saga.SagaVersion, ID: "test", Title: "Test", Source: saga.Source{Repository: testRepository}}
-	if err := store.WriteJSON(filepath.Join(root, "saga.json"), manifest, true); err != nil {
-		t.Fatal(err)
-	}
-	epic, err := applayout.WriteEpic(root, applayout.EpicManifest{ID: testEpic, Title: "Core"})
-	if err != nil {
-		t.Fatal(err)
-	}
-	fragmentDir := filepath.Join(epic.Dir, "overview.fragment")
-	if err := os.MkdirAll(fragmentDir, 0o755); err != nil {
-		t.Fatal(err)
-	}
-	fragment := saga.FragmentManifest{Version: saga.CurrentVersion, ID: "overview", Title: "Overview", MediaType: "text/markdown", Entrypoint: "content.md"}
-	if err := store.WriteJSON(filepath.Join(fragmentDir, "fragment.json"), fragment, true); err != nil {
-		t.Fatal(err)
-	}
-	if err := store.WriteFile(filepath.Join(fragmentDir, "content.md"), []byte("Overview\n"), 0o644, true); err != nil {
-		t.Fatal(err)
-	}
-	return root
 }

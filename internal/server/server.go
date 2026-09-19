@@ -2,16 +2,13 @@ package server
 
 import (
 	"context"
-	"crypto/rand"
 	"crypto/sha256"
 	"crypto/subtle"
-	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"html/template"
 	"io"
-	"math"
 	"mime"
 	"net"
 	"net/http"
@@ -28,10 +25,7 @@ import (
 	"time"
 
 	"github.com/twentyideas/changesaga/internal/changeview"
-	"github.com/twentyideas/changesaga/internal/coderef"
-	"github.com/twentyideas/changesaga/internal/gitattribution"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
-	"github.com/twentyideas/changesaga/internal/reviewstore"
 	"github.com/twentyideas/changesaga/internal/saga"
 	"github.com/twentyideas/changesaga/internal/snapshotcache"
 	"github.com/twentyideas/changesaga/internal/store"
@@ -44,8 +38,10 @@ type app struct {
 	// change against its merge-base. It never comes from the Saga.
 	rng           gitdiff.Range
 	template      *template.Template
-	mutationToken string
 	shutdownToken string
+	// mutationToken authorizes the review page's decision and comment forms.
+	// It is random per server process and rendered only into those forms.
+	mutationToken string
 	shutdown      func()
 	cache         snapshotCache
 	outline       outlineCache
@@ -61,11 +57,9 @@ type app struct {
 	// every source atom or the coverage ownership graph.
 	catalogLoader func(context.Context, saga.Manifest) (gitdiff.Catalog, error)
 	// layersLoader is the injectable boundary around the comparison's layers,
-	// which decide where approval is offered.
+	// which the page marks read-only beside the pull request's review.
 	layersLoader func(context.Context) (*changeview.Layers, error)
 	generations  *snapshotcache.Store
-	// reviewRefreshHook is a test seam for the post-commit failure boundary.
-	reviewRefreshHook func() error
 }
 
 // ManagedOptions lets the CLI supervise a detached loopback server without
@@ -106,17 +100,11 @@ type pageData struct {
 	Root             *sectionView
 	SlideRoot        *sectionView
 	Nav              []*navNodeView
-	ActivityCount    int
 	Diagnostic       string
 	Code             *CodeReviewView
 	Manifest         *CoverageManifestView
 	Error            string
 	Files            []*fileDiffView
-	ReviewedFiles    int
-	ReviewDecided    int
-	ReviewTotal      int
-	ReviewItems      []*reviewProgressItem
-	MutationToken    string
 	// CoverageTotals is the audit reduced to the numbers the shell states
 	// outright. The audit itself stays on the Coverage tab.
 	CoverageTotals *coverageTotalsView
@@ -147,53 +135,6 @@ func makeCoverageTotals(manifest *CoverageManifestView) *coverageTotalsView {
 	}
 }
 
-type reviewProgressItem struct {
-	Target     string
-	Title      string
-	Href       string
-	State      string
-	StateClass string
-	Status     string
-	Note       string
-}
-
-// chapterReviewItem is one approval-bearing destination inside a chapter. A
-// chapter is only a container: its own historical approval records remain
-// readable for compatibility but never become a row or contribute to current
-// completion. ReviewState is the storage-compatible decision used by the
-// shared controls; State is the deliberately smaller three-state UI contract.
-type chapterReviewItem struct {
-	Target          string
-	Title           string
-	Href            string
-	KindLabel       string
-	Depth           int
-	State           string
-	StateClass      string
-	Status          string
-	CommentCount    int
-	CommentLabel    string
-	ActivityHref    string
-	HasActivity     bool
-	ReviewState     string
-	ReviewAuthor    string
-	ReviewDetail    string
-	ReviewBody      string
-	ReviewDecisions []reviewDecisionView
-}
-
-type reviewDecisionView struct {
-	State     string
-	Author    string
-	Detail    string
-	Body      string
-	Kind      string
-	KindLabel string
-	Name      string
-	Agent     string
-	Model     string
-}
-
 // navNodeView is the sidebar documentation tree. It exposes titles, links and a
 // quiet review state only: never counts, never the storage hierarchy.
 type navNodeView struct {
@@ -210,36 +151,24 @@ type navNodeView struct {
 	// Gap marks a place the architecture reserves that nothing has been
 	// authored into yet. The row stays visible so a reviewer can see what is
 	// missing instead of having to know it should exist.
-	Gap        bool
-	Note       string
-	Slide      *SlideReferenceView
-	Active     bool
-	Expanded   bool
-	StateClass string
-	StateLabel string
-	StateIcon  string
-	Children   []*navNodeView
+	Gap      bool
+	Note     string
+	Slide    *SlideReferenceView
+	Active   bool
+	Expanded bool
+	Children []*navNodeView
 }
 
 type sectionView struct {
 	*saga.Section
 	// Deferred marks a chapter summary whose body has not been rendered. The
 	// body arrives from /api/section the first time the chapter is opened.
-	Deferred               bool
-	DOMID                  string
-	ChangeCount            int
-	Attached               *attachedCodeView
-	Threads                []*threadView
-	FragmentViews          []*fragmentView
-	ChildViews             []*sectionView
-	ReviewDirectory        []*chapterReviewItem
-	ReviewDirectoryDecided int
-	DirectoryManaged       bool
-	ReviewState            string
-	ReviewAuthor           string
-	ReviewDetail           string
-	ReviewBody             string
-	ReviewDecisions        []reviewDecisionView
+	Deferred      bool
+	DOMID         string
+	ChangeCount   int
+	Attached      *attachedCodeView
+	FragmentViews []*fragmentView
+	ChildViews    []*sectionView
 }
 
 type fragmentView struct {
@@ -258,63 +187,24 @@ type fragmentView struct {
 	LandmarkViews []*landmarkView
 	ChangeCount   int
 	Attached      *attachedCodeView
-	// Threads keeps its historical meaning: comments that belong to the
-	// fragment as a whole, listed under the content. Comments drawn onto the
-	// content move to AnnotationThreads and render as bubbles on the mark.
-	Threads           []*threadView
-	AnnotationThreads []*annotationThreadView
-	DirectoryManaged  bool
-	ReviewState       string
-	ReviewAuthor      string
-	ReviewDetail      string
-	ReviewBody        string
-	ReviewDecisions   []reviewDecisionView
 }
 
 type landmarkView struct {
 	saga.Landmark
-	DOMID        string
-	Title        string
-	ChangeCount  int
-	Attached     *attachedCodeView
-	Threads      []*threadView
-	Region       *saga.LandmarkRegion
-	ReviewState  string
-	ReviewAuthor string
-	ReviewDetail string
-	ReviewBody   string
+	DOMID       string
+	Title       string
+	ChangeCount int
+	Attached    *attachedCodeView
+	Region      *saga.LandmarkRegion
 }
 
 type diffAtomView struct {
 	gitdiff.Atom
-	Threads  []*threadView
 	Target   string
 	Selected bool
 }
 
 type fileDiffView = FileDiffView
-
-type threadView struct {
-	*saga.Thread
-	MessageViews [][]*fragmentView
-	StateAuthor  string
-	StateDetail  string
-}
-
-// annotationThreadView pins a comment to the visual mark it was drawn on. X and
-// Y are normalized stage coordinates for the bubble; Placed is false for a
-// highlight, whose position only exists once the browser has marked the text,
-// so the browser measures that one instead. Comments holds the single thread so
-// the bubble can reuse the same comment rendering as the list below the content.
-type annotationThreadView struct {
-	*threadView
-	Comments []*threadView
-	Label    string
-	PanelID  string
-	X        float64
-	Y        float64
-	Placed   bool
-}
 
 func Listen(ctx context.Context, root, sourceDir, addr string, openBrowser bool, out io.Writer) error {
 	return ListenManaged(ctx, root, sourceDir, addr, openBrowser, out, ManagedOptions{})
@@ -346,16 +236,16 @@ func ListenManaged(ctx context.Context, root, sourceDir, addr string, openBrowse
 	if err != nil {
 		return err
 	}
-	mutationToken, err := newMutationToken()
-	if err != nil {
-		return fmt.Errorf("create mutation token: %w", err)
-	}
 	generations, err := snapshotcache.Default()
 	if err != nil {
 		return fmt.Errorf("open review cache: %w", err)
 	}
 	stopCh := make(chan struct{}, 1)
-	application := &app{root: abs, sourceDir: sourceDir, rng: options.Range, template: tmpl, mutationToken: mutationToken, shutdownToken: options.ShutdownToken, generations: generations}
+	mutationToken, err := newMutationToken()
+	if err != nil {
+		return err
+	}
+	application := &app{root: abs, sourceDir: sourceDir, rng: options.Range, template: tmpl, shutdownToken: options.ShutdownToken, mutationToken: mutationToken, generations: generations}
 	application.shutdown = func() {
 		select {
 		case stopCh <- struct{}{}:
@@ -411,10 +301,14 @@ func newMux(application *app) *http.ServeMux {
 	mux.HandleFunc("GET /requirements", application.page)
 	mux.HandleFunc("GET /chapters/{chapter}", application.page)
 	mux.HandleFunc("GET /", application.page)
+	mux.HandleFunc("GET /reviews", application.reviewIndex)
+	mux.HandleFunc("GET /reviews/{id}", application.reviewPage)
+	mux.HandleFunc("GET /reviews/{id}/visual/{slide}", application.reviewVisual)
+	mux.HandleFunc("POST /reviews/{id}/decision", application.reviewDecision)
+	mux.HandleFunc("POST /reviews/{id}/comment", application.reviewComment)
 	mux.HandleFunc("GET /app.js", application.javascript)
 	mux.HandleFunc("GET /theme.js", application.themeScript)
 	mux.HandleFunc("GET /api/code", application.codePage)
-	mux.HandleFunc("GET /api/activity", application.reviewActivity)
 	mux.HandleFunc("GET /api/coverage", application.coveragePage)
 	mux.HandleFunc("GET /api/layers", application.layersAPI)
 	mux.HandleFunc("GET /api/change", application.changePage)
@@ -430,12 +324,6 @@ func newMux(application *app) *http.ServeMux {
 	mux.HandleFunc("GET /api/runtime", application.runtimeStatus)
 	mux.HandleFunc("POST /api/runtime-stop", application.runtimeStop)
 	mux.HandleFunc("GET /f/{id}/{path...}", application.fragmentFile)
-	mux.HandleFunc("POST /api/thread", application.createThread)
-	mux.HandleFunc("POST /api/reply", application.reply)
-	mux.HandleFunc("POST /api/thread-state", application.threadState)
-	mux.HandleFunc("POST /api/thread-anchor", application.threadAnchor)
-	mux.HandleFunc("POST /api/review", application.review)
-	mux.HandleFunc("POST /api/diff-review", application.diffReview)
 	return mux
 }
 
@@ -489,11 +377,7 @@ func (a *app) fileDiffFragment(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	manifestView := r.URL.Query().Get("view") == "manifest"
-	var threads map[string][]*threadView
-	if !manifestView {
-		_, threads = threadViews(document, catalog.BaseOID)
-	}
-	files := makeFileViews(changes, saga.SagaTarget(document.Manifest.ID), document.FileReviews, threads)
+	files := makeFileViews(changes, saga.SagaTarget(document.Manifest.ID))
 	var selected *FileDiffView
 	for _, candidate := range files {
 		if candidate.Path == filePath {
@@ -504,7 +388,7 @@ func (a *app) fileDiffFragment(w http.ResponseWriter, r *http.Request) {
 	if selected == nil {
 		// Binary and mode-only entries can have catalog metadata without text
 		// rows. They still render a stable, reviewable file shell.
-		selected = catalogFileView(catalog, file, latestReviewForCatalogFile(document, catalog, filePath))
+		selected = catalogFileView(catalog, file)
 	}
 	total := len(selected.Lines)
 	window, err := pageRequest(r, "file-diff\x00"+sourceCatalogIdentity(catalog)+"\x00"+filePath+"\x00\x00"+r.URL.Query().Get("view"), total, defaultDiffPageLimit, maxDiffPageLimit)
@@ -543,8 +427,7 @@ func (a *app) mappedFileDiffFragment(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "The linked file diff could not be loaded.", http.StatusInternalServerError)
 		return
 	}
-	_, diffThreads := threadViews(document, selection.catalog.BaseOID)
-	files := makeFileViews(selection.changes, target, document.FileReviews, diffThreads)
+	files := makeFileViews(selection.changes, target)
 	var selected *FileDiffView
 	for _, candidate := range files {
 		if candidate.Path == filePath {
@@ -558,7 +441,7 @@ func (a *app) mappedFileDiffFragment(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "changed file not found", http.StatusNotFound)
 			return
 		}
-		selected = catalogFileView(selection.catalog, file, latestReviewForCatalogFile(document, selection.catalog, filePath))
+		selected = catalogFileView(selection.catalog, file)
 	}
 	linked := make(map[string]bool, len(selection.matched))
 	for _, atom := range selection.matched {
@@ -586,31 +469,6 @@ func (a *app) mappedFileDiffFragment(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// threadViews indexes the live comments the way the renderer consumes them: by
-// the narrative target they belong to, and by the diff line they were written
-// on. The page and the incremental endpoints share it so a comment reads the
-// same whether it arrives on first load or with the chapter it lives in.
-//
-// Code-anchored threads are keyed by the comparison atom they sit on, which
-// needs the comparison's merge-base; callers that render no code pass "".
-func threadViews(document *saga.Saga, baseOID string) (byTarget, byDiff map[string][]*threadView) {
-	byTarget, byDiff = map[string][]*threadView{}, map[string][]*threadView{}
-	for _, thread := range document.Threads {
-		if thread.State == "withdrawn" {
-			continue
-		}
-		view := makeThreadView(thread)
-		if thread.Anchor.Type == "code" && thread.Anchor.Code != nil {
-			for _, key := range codeThreadKeys(thread.Anchor.Code, baseOID) {
-				byDiff[key] = append(byDiff[key], view)
-			}
-		} else {
-			byTarget[thread.Target] = append(byTarget[thread.Target], view)
-		}
-	}
-	return byTarget, byDiff
-}
-
 // sectionBody renders one chapter's body on demand: its comments, its
 // explanations as descriptors, and the sections nested inside it. It is bounded
 // by that one chapter, and it renders at the same scope the page renders its
@@ -626,11 +484,7 @@ func (a *app) sectionBody(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "unknown section", http.StatusNotFound)
 		return
 	}
-	threadsByTarget, _ := threadViews(document, "")
-	scope := viewScope{threads: threadsByTarget}.shell()
-	// The chapter response owns the one set of decision controls for everything
-	// inside it. Fragment bodies can then stay focused on the authored material.
-	scope.directoryManaged = section.Kind == "chapter"
+	scope := viewScope{}.shell()
 	writeIncrementalHeaders(w, "text/html; charset=utf-8")
 	if err := a.template.ExecuteTemplate(w, "section-body", makeSectionView(section, scope)); err != nil {
 		http.Error(w, "The chapter could not be rendered.", http.StatusInternalServerError)
@@ -652,8 +506,7 @@ func (a *app) fragmentContent(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "unknown fragment", http.StatusNotFound)
 		return
 	}
-	threadsByTarget, threadsByDiff := threadViews(document, "")
-	scope := viewScope{threads: threadsByTarget, diffThreads: threadsByDiff, directoryManaged: targetBelongsToChapter(document.Section, fragment.Target)}
+	scope := viewScope{}
 	writeIncrementalHeaders(w, "text/html; charset=utf-8")
 	if err := a.template.ExecuteTemplate(w, "fragment", makeFragmentView(fragment, scope)); err != nil {
 		http.Error(w, "The explanation could not be rendered.", http.StatusInternalServerError)
@@ -750,16 +603,6 @@ func anchorPlaces(document *saga.Saga) map[string]anchorPlace {
 		}
 	}
 	walk(document.Section, "")
-	for _, thread := range document.Threads {
-		place, ok := byTarget[thread.Target]
-		if !ok {
-			continue
-		}
-		places[domID("thread:"+thread.ID)] = place
-		for _, message := range thread.Messages {
-			places[domID("message:"+message.ID)] = place
-		}
-	}
 	return places
 }
 
@@ -799,31 +642,6 @@ func findFragmentByTarget(document *saga.Saga, target string) *saga.Fragment {
 	}
 	walk(document.Section)
 	return found
-}
-
-func targetBelongsToChapter(root *saga.Section, target string) bool {
-	var walk func(*saga.Section, bool) bool
-	walk = func(section *saga.Section, inChapter bool) bool {
-		if section == nil {
-			return false
-		}
-		inChapter = inChapter || section.Kind == "chapter"
-		if inChapter && section.Target == target {
-			return true
-		}
-		for _, fragment := range section.Fragments {
-			if inChapter && fragment.Target == target {
-				return true
-			}
-		}
-		for _, child := range section.Children {
-			if walk(child, inChapter) {
-				return true
-			}
-		}
-		return false
-	}
-	return walk(root, false)
 }
 
 // markLinkedEvidence flags the rows of a whole-file diff that a single
@@ -913,14 +731,6 @@ func loopbackListenAddress(address string) bool {
 	return ip != nil && ip.IsLoopback()
 }
 
-func newMutationToken() (string, error) {
-	var token [32]byte
-	if _, err := rand.Read(token[:]); err != nil {
-		return "", err
-	}
-	return base64.RawURLEncoding.EncodeToString(token[:]), nil
-}
-
 // newPageTemplate is the single definition of the renderer's template funcs so
 // tests exercise exactly the helpers the served page uses. It renders a
 // compared Saga; newPageTemplateFor renders the way a reviewer was opened.
@@ -928,9 +738,9 @@ func newPageTemplate() (*template.Template, error) {
 	return newPageTemplateFor(gitdiff.Range{Against: "HEAD"})
 }
 
-// newPageTemplateFor renders a reviewer opened with rng. Approval exists only
-// in compare mode, so an observing reviewer's template renders no approve or
-// reject control anywhere; decisions already recorded remain as history.
+// newPageTemplateFor renders a reviewer opened with rng: comparing adds the
+// Change tab. The documentation it renders carries no approval or comment
+// control in either mode; those live on the pull request's review pages.
 func newPageTemplateFor(rng gitdiff.Range) (*template.Template, error) {
 	funcs := templateFuncs()
 	comparing := !rng.Observe()
@@ -942,37 +752,15 @@ func newPageTemplateFor(rng gitdiff.Range) (*template.Template, error) {
 // presentation helper cannot be wired into one and forgotten in the other.
 func templateFuncs() template.FuncMap {
 	return template.FuncMap{
-		"comparing":   func() bool { return true },
-		"short":       shortCommit,
-		"join":        strings.Join,
-		"markdown":    markdown,
-		"domID":       domID,
-		"fileIcon":    fileIcon,
-		"anchorLabel": anchorLabel,
-		"lower":       strings.ToLower,
+		"comparing": func() bool { return true },
+		"short":     shortCommit,
+		"join":      strings.Join,
+		"markdown":  markdown,
+		"domID":     domID,
+		"fileIcon":  fileIcon,
+		"lower":     strings.ToLower,
 		"reviewDiffSurface": func(path, codeHref string) reviewDiffSurfaceView {
 			return reviewDiffSurfaceView{Path: path, CodeHref: codeHref}
-		},
-		"annotationColor": func(value string) string {
-			if validAnnotationColor(value) {
-				return value
-			}
-			return defaultAnnotationColor
-		},
-		"noteColor": func(value string) string {
-			if validAnnotationColor(value) {
-				return value
-			}
-			return defaultNoteColor
-		},
-		"percent": func(value float64) string { return strconv.FormatFloat(value*100, 'f', 4, 64) },
-		"coord":   func(value float64) string { return strconv.FormatFloat(value*1000, 'f', 2, 64) },
-		"points": func(values []saga.Point) string {
-			parts := make([]string, 0, len(values))
-			for _, point := range values {
-				parts = append(parts, fmt.Sprintf("%.2f,%.2f", point.X*1000, point.Y*1000))
-			}
-			return strings.Join(parts, " ")
 		},
 	}
 }
@@ -1008,12 +796,11 @@ func (a *app) page(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	threadsByTarget, _ := threadViews(document, "")
 	// The saga view is a shell: identity, coverage totals, the overview's
 	// fragments as descriptors, one summary per chapter, and the navigation
 	// outline. Everything below that arrives from /api/section and
 	// /api/fragment as a reviewer opens it.
-	scope := viewScope{threads: threadsByTarget}
+	scope := viewScope{}
 	reportRoot, slideRoot := splitReportAndDeckSections(document.Section)
 	rootView := makeSectionView(reportRoot, scope.shell())
 	data := pageData{
@@ -1022,7 +809,6 @@ func (a *app) page(w http.ResponseWriter, r *http.Request) {
 		Saga:           document,
 		EmbeddedDecks:  len(document.Decks)+len(document.Onboarding) > 0,
 		Root:           rootView,
-		MutationToken:  a.mutationToken,
 		CoverageTotals: a.cachedCoverageTotals(),
 	}
 	requirementsView, _, requirementsDocument, err := loadRequirementsSurface(a.root, document.Manifest.ID, r)
@@ -1041,7 +827,7 @@ func (a *app) page(w http.ResponseWriter, r *http.Request) {
 	data.Nav = makeAppNavTree(appNavSources{
 		document: document, requirements: requirementsDocument, page: requirementsView,
 		prototypes: prototypeDocument, prototypeNote: prototypeNote,
-		threads: threadsByTarget, decks: makeDeckNavTree(slideRoot),
+		decks: makeDeckNavTree(slideRoot),
 	})
 	if requirementsView.Active {
 		clearActiveNav(data.Nav)
@@ -1049,13 +835,9 @@ func (a *app) page(w http.ResponseWriter, r *http.Request) {
 			revealActive(node)
 		}
 	}
-	data.ReviewItems = makeReviewProgressItems(reportRoot)
 	if data.EmbeddedDecks {
 		data.SlideRoot = makeSectionView(slideRoot, scope)
-		data.ReviewItems = append(data.ReviewItems, makeSlideReviewProgressItems(slideRoot)...)
 	}
-	data.ReviewDecided, data.ReviewTotal = reviewProgressSummary(data.ReviewItems)
-	data.ActivityCount = reviewActivityCount(document)
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	if err := a.template.ExecuteTemplate(w, "page", data); err != nil {
 		http.Error(w, "The review page could not be rendered.", http.StatusInternalServerError)
@@ -1133,25 +915,16 @@ func (a *app) narrativeDocument(ctx context.Context) *saga.Saga {
 	if err != nil || !validation.Valid {
 		return nil
 	}
-	applyGitAttribution(ctx, gitattribution.New(ctx, a.root), document)
 	return document
 }
 
-// sourceReviewDocument adds the small, mutable file-review overlay to the
-// narrative generation without opening authored coverage mappings. Code and
-// ordinary file responses need this overlay, while prose-only requests keep
-// using narrativeDocument and never touch diff-review records.
+// sourceReviewDocument is the narrative generation code and file responses
+// read; it never opens authored coverage mappings.
 func (a *app) sourceReviewDocument(ctx context.Context) *saga.Saga {
 	document, validation, err := saga.LoadNarrative(a.root)
 	if err != nil || !validation.Valid {
 		return nil
 	}
-	state, reviewValidation, err := saga.LoadReviewState(saga.MutationIndexFromDocument(document))
-	if err != nil || !reviewValidation.Valid {
-		return nil
-	}
-	document.FileReviews = state.FileReviews
-	applyGitAttribution(ctx, gitattribution.New(ctx, a.root), document)
 	return document
 }
 
@@ -1167,49 +940,12 @@ func requestedChapter(r *http.Request) (string, bool) {
 	return value, value != "" && !strings.Contains(value, "/")
 }
 
-// reviewProgress reduces a chapter's directory to a quiet resume signal. The
-// chapter's own legacy approval is intentionally absent: completion belongs to
-// the individual approval-bearing things inside it.
-func reviewProgress(section *saga.Section, threads map[string][]*threadView) (status, class, icon string) {
-	items := makeChapterReviewDirectory(section, threads)
-	allApproved := len(items) > 0
-	allHumanApproved := len(items) > 0
-	hasUnspecifiedApproval := false
-	for _, item := range items {
-		if item.ReviewState == "rejected" {
-			return "Needs changes", "rejected", "reject"
-		}
-		if item.ReviewState != "approved" {
-			allApproved = false
-		}
-		if item.Status != "Approved" {
-			allHumanApproved = false
-		}
-		hasUnspecifiedApproval = hasUnspecifiedApproval || item.Status == "Approval recorded"
-	}
-	if allApproved {
-		if hasUnspecifiedApproval {
-			return "Approval recorded", "approved", "check"
-		}
-		if !allHumanApproved {
-			return "AI review complete", "approved", "check"
-		}
-		return "Approved", "approved", "check"
-	}
-	for _, item := range items {
-		if item.HasActivity {
-			return "In progress", "progress", "half"
-		}
-	}
-	return "Unreviewed", "", "circle"
-}
-
 // makeNavTree builds a documentation outline for the one-page saga. It reads the
 // document rather than the rendered views: the page ships chapter summaries, and
 // the outline still has to name every destination beneath them so a reviewer can
 // navigate into a chapter that has not been fetched yet. Titles and targets come
 // from the saga's own manifests, so building the whole outline reads no content.
-func makeNavTree(root *saga.Section, threads map[string][]*threadView) []*navNodeView {
+func makeNavTree(root *saga.Section) []*navNodeView {
 	overview := &navNodeView{Title: "Overview", Href: sagaHref(root.Target), NodeID: "nav-overview", Active: true}
 	overview.Children = withoutRedundantLead(fragmentOutline(root), overview.Title)
 	overview.Expanded = len(overview.Children) > 0
@@ -1220,20 +956,15 @@ func makeNavTree(root *saga.Section, threads map[string][]*threadView) []*navNod
 		if child.Kind != "chapter" || designSection(child) {
 			continue
 		}
-		nodes = append(nodes, makeChapterNav(child, threads))
+		nodes = append(nodes, makeChapterNav(child))
 	}
 	return nodes
 }
 
 // makeChapterNav is one chapter as a sidebar destination with its collapsed
 // outline beneath it, wherever the architecture places that chapter.
-func makeChapterNav(chapter *saga.Section, threads map[string][]*threadView) *navNodeView {
-	status, class, icon := reviewProgress(chapter, threads)
-	node := &navNodeView{
-		Title: chapter.Title, Href: sagaHref(chapter.Target),
-		NodeID:     "nav-" + domID(chapter.Target),
-		StateLabel: status, StateClass: class, StateIcon: icon,
-	}
+func makeChapterNav(chapter *saga.Section) *navNodeView {
+	node := &navNodeView{Title: chapter.Title, Href: sagaHref(chapter.Target), NodeID: "nav-" + domID(chapter.Target)}
 	node.Children = withoutRedundantLead(documentOutline(chapter), node.Title)
 	return node
 }
@@ -1260,7 +991,6 @@ func makeDeckNavTree(root *saga.Section) []*navNodeView {
 			if slide.Title == "" {
 				continue
 			}
-			reviewState, _, _, _ := latestReview(slide.Reviews)
 			section := ""
 			if slide.SlideMeta != nil {
 				section = strings.TrimSpace(slide.SlideMeta.Section)
@@ -1277,7 +1007,7 @@ func makeDeckNavTree(root *saga.Section) []*navNodeView {
 				Slide: &SlideReferenceView{
 					ID: slide.ID, Title: slide.Title, Section: sectionStart, Target: slide.Target,
 					Anchor: domID(slide.Target), Href: "?view=slides#" + domID(slide.Target),
-					URL: fragmentAssetURL(slide), MediaType: slide.MediaType, ReviewState: reviewState,
+					URL: fragmentAssetURL(slide), MediaType: slide.MediaType,
 				},
 			})
 		}
@@ -1330,279 +1060,6 @@ func withoutRedundantLead(nodes []*navNodeView, label string) []*navNodeView {
 	return nodes[1:]
 }
 
-// makeChapterReviewDirectory walks only authored metadata and the compact
-// thread index. It is therefore safe to build in /api/section without opening
-// fragment bodies, coverage mappings, or the source comparison.
-func makeChapterReviewDirectory(chapter *saga.Section, threads map[string][]*threadView) []*chapterReviewItem {
-	if chapter == nil {
-		return nil
-	}
-	var result []*chapterReviewItem
-	var walk func(*saga.Section, int, bool)
-	walk = func(section *saga.Section, depth int, includeSection bool) {
-		if section == nil {
-			return
-		}
-		if includeSection && section.Kind != "chapter" {
-			result = append(result, makeChapterReviewItem(section.Target, section.Title, "Section", depth, section.Reviews, len(threads[section.Target])))
-		}
-		for _, fragment := range section.Fragments {
-			title := fragment.Title
-			if title == "" {
-				title = fragment.ID
-			}
-			comments := len(threads[fragment.Target])
-			for _, landmark := range fragment.Landmarks {
-				comments += len(threads[landmark.Target])
-			}
-			result = append(result, makeChapterReviewItem(fragment.Target, title, "Explanation", depth, fragment.Reviews, comments))
-		}
-		for _, child := range section.Children {
-			walk(child, depth+1, true)
-		}
-	}
-	walk(chapter, 0, false)
-	return result
-}
-
-func makeChapterReviewItem(target, title, kind string, depth int, reviews []saga.Review, comments int) *chapterReviewItem {
-	rawState, author, detail, body := latestReview(reviews)
-	item := &chapterReviewItem{
-		Target: target, Title: title, Href: "#" + domID(target), KindLabel: kind, Depth: depth,
-		State: "unreviewed", StateClass: "unreviewed", Status: "Unreviewed",
-		CommentCount: comments, HasActivity: rawState != "" || comments > 0,
-		ReviewAuthor: author, ReviewDetail: detail, ReviewBody: body,
-		ReviewDecisions: reviewDecisionViews(reviews),
-	}
-	if comments > 0 {
-		item.ActivityHref = "/?activity=1&target=" + url.QueryEscape(target)
-	}
-	if comments == 1 {
-		item.CommentLabel = "1 comment or annotation"
-	} else {
-		item.CommentLabel = fmt.Sprintf("%d comments and annotations", comments)
-	}
-	switch rawState {
-	case "approved":
-		item.State, item.StateClass, item.Status, item.ReviewState = "approved", "approved", reviewApprovalStatus(reviews), "approved"
-	case "rejected":
-		item.State, item.StateClass, item.Status, item.ReviewState = "changes-requested", "changes-requested", "Changes requested", "rejected"
-	}
-	return item
-}
-
-// makeReviewProgressItems counts decisions over the whole document, not over the
-// part of it the page happens to have rendered. It reads review records and
-// titles only, so the progress map stays complete while chapter bodies are still
-// deferred.
-func makeReviewProgressItems(root *saga.Section) []*reviewProgressItem {
-	if root == nil {
-		return nil
-	}
-	var result []*reviewProgressItem
-	var walk func(*saga.Section)
-	walk = func(section *saga.Section) {
-		if section == nil {
-			return
-		}
-		if section.Kind != "chapter" {
-			title := section.Title
-			if title == "" {
-				title = section.ID
-			}
-			state, _, _, body := latestReview(section.Reviews)
-			item := makeReviewProgressItem(section.Target, title, "#"+domID(section.Target), state, body)
-			if state == "approved" {
-				item.Status = reviewApprovalStatus(section.Reviews)
-			}
-			result = append(result, item)
-		}
-		for _, fragment := range section.Fragments {
-			fragmentTitle := fragment.Title
-			if fragmentTitle == "" {
-				fragmentTitle = fragment.ID
-			}
-			fragmentState, _, _, fragmentBody := latestReview(fragment.Reviews)
-			item := makeReviewProgressItem(fragment.Target, fragmentTitle, "#"+domID(fragment.Target), fragmentState, fragmentBody)
-			if fragmentState == "approved" {
-				item.Status = reviewApprovalStatus(fragment.Reviews)
-			}
-			result = append(result, item)
-		}
-		for _, child := range section.Children {
-			walk(child)
-		}
-	}
-	walk(root)
-	return result
-}
-
-// makeSlideReviewProgressItems reflects the deck decision boundary: reviewers
-// approve complete visual arguments (slides), while Items remain precise
-// evidence and comment targets rather than becoming a checklist of approvals.
-func makeSlideReviewProgressItems(root *saga.Section) []*reviewProgressItem {
-	if root == nil {
-		return nil
-	}
-	var result []*reviewProgressItem
-	var walk func(*saga.Section)
-	walk = func(section *saga.Section) {
-		for _, fragment := range section.Fragments {
-			if fragment.SlideMeta == nil {
-				continue
-			}
-			title := fragment.Title
-			if title == "" {
-				title = fragment.ID
-			}
-			state, _, _, body := latestReview(fragment.Reviews)
-			result = append(result, makeReviewProgressItem(fragment.Target, title, "#"+domID(fragment.Target), state, body))
-		}
-		for _, child := range section.Children {
-			walk(child)
-		}
-	}
-	walk(root)
-	return result
-}
-
-func makeReviewProgressItem(target, title, href, state, note string) *reviewProgressItem {
-	item := &reviewProgressItem{Target: target, Title: title, Href: href, State: state, StateClass: "pending", Status: "Not reviewed", Note: note}
-	switch state {
-	case "approved":
-		item.StateClass, item.Status = "approved", "Approved"
-	case "rejected":
-		item.StateClass, item.Status = "rejected", "Changes requested"
-	}
-	return item
-}
-
-func reviewProgressSummary(items []*reviewProgressItem) (decided, total int) {
-	for _, item := range items {
-		total++
-		if item.State == "approved" || item.State == "rejected" {
-			decided++
-		}
-	}
-	return decided, total
-}
-
-// anchorLabel keeps thread metadata in the reviewer's vocabulary instead of
-// exposing the stored anchor discriminator.
-func anchorLabel(kind string) string {
-	switch kind {
-	case "region":
-		return "rectangle"
-	case "drawing":
-		return "freehand"
-	case "text":
-		return "highlight"
-	case "diff":
-		return "code"
-	case "target":
-		return "comment"
-	}
-	return "note"
-}
-
-// annotationAnchor reports whether a comment was drawn onto the content: a
-// rectangle, a freehand drawing, a highlight, or a sticky note. Those comments
-// render as bubbles pinned to the mark. Every other anchor — a whole fragment,
-// a section, a chapter, a diff line — keeps its place in the list below.
-func annotationAnchor(kind string) bool {
-	switch kind {
-	case "region", "drawing", "text", "note":
-		return true
-	}
-	return false
-}
-
-// annotationBubbleLabel names the mark a bubble belongs to, in the same
-// vocabulary the annotation toolbox uses. anchorLabel answers "note" for every
-// anchor it does not know, which is too vague to say out loud on a bubble.
-func annotationBubbleLabel(kind string) string {
-	if kind == "note" {
-		return "sticky note"
-	}
-	return anchorLabel(kind)
-}
-
-func clampUnit(value float64) float64 {
-	if value < 0 {
-		return 0
-	}
-	if value > 1 {
-		return 1
-	}
-	return value
-}
-
-// annotationShapeBounds is the normalized box a drawn shape occupies. It mirrors
-// shapeBounds in appjs.go, because the server places a bubble from the stored
-// anchor and the browser then refines it from the rendered mark; the two must
-// agree on where the shape is.
-func annotationShapeBounds(shape saga.Shape) (left, top, right, bottom float64, ok bool) {
-	switch shape.Type {
-	case "path":
-		if len(shape.Points) == 0 {
-			return 0, 0, 0, 0, false
-		}
-		left, right = shape.Points[0].X, shape.Points[0].X
-		top, bottom = shape.Points[0].Y, shape.Points[0].Y
-		for _, point := range shape.Points[1:] {
-			left, right = math.Min(left, point.X), math.Max(right, point.X)
-			top, bottom = math.Min(top, point.Y), math.Max(bottom, point.Y)
-		}
-		return left, top, right, bottom, true
-	case "line":
-		return math.Min(shape.X, shape.Width), math.Min(shape.Y, shape.Height),
-			math.Max(shape.X, shape.Width), math.Max(shape.Y, shape.Height), true
-	case "ellipse":
-		return shape.X - shape.Width, shape.Y - shape.Height, shape.X + shape.Width, shape.Y + shape.Height, true
-	case "rect":
-		return shape.X, shape.Y, shape.X + shape.Width, shape.Y + shape.Height, true
-	}
-	return 0, 0, 0, 0, false
-}
-
-// annotationBubblePoint is where a bubble sits before the browser has measured
-// anything: the top-right corner of the mark. A highlight reports no point
-// because its position is a property of the rendered text, not of the record.
-func annotationBubblePoint(anchor saga.Anchor) (x, y float64, ok bool) {
-	if anchor.Type == "note" {
-		if anchor.Note == nil {
-			return 0, 0, false
-		}
-		return clampUnit(anchor.Note.X), clampUnit(anchor.Note.Y), true
-	}
-	for _, shape := range anchor.Shapes {
-		_, shapeTop, shapeRight, _, valid := annotationShapeBounds(shape)
-		if !valid {
-			continue
-		}
-		if !ok {
-			x, y, ok = shapeRight, shapeTop, true
-			continue
-		}
-		x, y = math.Max(x, shapeRight), math.Min(y, shapeTop)
-	}
-	if !ok {
-		return 0, 0, false
-	}
-	return clampUnit(x), clampUnit(y), true
-}
-
-func makeAnnotationThreadView(thread *threadView) *annotationThreadView {
-	view := &annotationThreadView{
-		threadView: thread,
-		Comments:   []*threadView{thread},
-		Label:      annotationBubbleLabel(thread.Anchor.Type),
-		PanelID:    domID("thread:"+thread.ID) + "--bubble",
-	}
-	view.X, view.Y, view.Placed = annotationBubblePoint(thread.Anchor)
-	return view
-}
-
 // viewScope carries everything a narrative view needs from the snapshot, and how
 // much of the tree this render is allowed to materialise. The page renders a
 // shell — the overview, its fragments as descriptors, and one summary per
@@ -1612,10 +1069,8 @@ func makeAnnotationThreadView(thread *threadView) *annotationThreadView {
 // /api/section reuses the page's own scope so a chapter body is built by
 // exactly the code that built the page around it.
 type viewScope struct {
-	changes     map[string][]gitdiff.Atom
-	snapshot    *reviewSnapshot
-	threads     map[string][]*threadView
-	diffThreads map[string][]*threadView
+	changes  map[string][]gitdiff.Atom
+	snapshot *reviewSnapshot
 	// summary stops the render at this section's own head: its body arrives
 	// from /api/section when a reviewer opens it.
 	summary bool
@@ -1643,21 +1098,11 @@ func makeSectionView(section *saga.Section, scope viewScope) *sectionView {
 	changeCount = lazyChangeCount(section.HasCode, changeCount)
 	view := &sectionView{
 		Section: section, DOMID: domID(section.Target), ChangeCount: changeCount,
-		Attached: attached, Threads: scope.threads[section.Target], DirectoryManaged: scope.directoryManaged,
+		Attached: attached,
 	}
-	view.ReviewState, view.ReviewAuthor, view.ReviewDetail, view.ReviewBody = latestReview(section.Reviews)
-	view.ReviewDecisions = reviewDecisionViews(section.Reviews)
 	if scope.summary {
 		view.Deferred = true
 		return view
-	}
-	if section.Kind == "chapter" && scope.directoryManaged {
-		view.ReviewDirectory = makeChapterReviewDirectory(section, scope.threads)
-		for _, item := range view.ReviewDirectory {
-			if item.ReviewState == "approved" || item.ReviewState == "rejected" {
-				view.ReviewDirectoryDecided++
-			}
-		}
 	}
 	previousSlideSection := ""
 	for _, fragment := range section.Fragments {
@@ -1684,9 +1129,7 @@ func makeFragmentView(fragment *saga.Fragment, scope viewScope) *fragmentView {
 	if title == "" {
 		title = fragment.ID
 	}
-	view := &fragmentView{Fragment: fragment, DOMID: domID(fragment.Target), DirectoryManaged: scope.directoryManaged}
-	view.ReviewState, view.ReviewAuthor, view.ReviewDetail, view.ReviewBody = latestReview(fragment.Reviews)
-	view.ReviewDecisions = reviewDecisionViews(fragment.Reviews)
+	view := &fragmentView{Fragment: fragment, DOMID: domID(fragment.Target)}
 	view.URL = fragmentAssetURL(fragment)
 	if scope.deferContent {
 		// A descriptor names the explanation and carries its review controls.
@@ -1695,16 +1138,8 @@ func makeFragmentView(fragment *saga.Fragment, scope viewScope) *fragmentView {
 		view.Deferred = true
 		return view
 	}
-	threads := scope.threads[fragment.Target]
 	view.ChangeCount, view.Attached = scopedAttachedCode(scope, title, fragment.Target, fragment.Code)
 	view.ChangeCount = lazyChangeCount(fragment.HasCode, view.ChangeCount)
-	for _, thread := range threads {
-		if annotationAnchor(thread.Anchor.Type) {
-			view.AnnotationThreads = append(view.AnnotationThreads, makeAnnotationThreadView(thread))
-			continue
-		}
-		view.Threads = append(view.Threads, thread)
-	}
 	for _, landmark := range fragment.Landmarks {
 		region := landmark.Hotspot
 		if region == nil && landmark.Selector.Type == "region" {
@@ -1716,9 +1151,8 @@ func makeFragmentView(fragment *saga.Fragment, scope viewScope) *fragmentView {
 			Landmark: landmark, DOMID: view.DOMID + "--" + landmark.ID, Title: landmark.Label,
 			ChangeCount: changeCount,
 			Attached:    attached,
-			Threads:     scope.threads[landmark.Target], Region: region,
+			Region:      region,
 		}
-		landmarkView.ReviewState, landmarkView.ReviewAuthor, landmarkView.ReviewDetail, landmarkView.ReviewBody = latestReview(landmark.Reviews)
 		view.LandmarkViews = append(view.LandmarkViews, landmarkView)
 	}
 	switch fragment.MediaType {
@@ -1795,25 +1229,7 @@ func svgAspectRatio(source string) string {
 	return strconv.FormatFloat(width/height, 'f', 8, 64)
 }
 
-func makeThreadView(thread *saga.Thread) *threadView {
-	view := &threadView{Thread: thread}
-	for index := len(thread.Events) - 1; index >= 0; index-- {
-		if thread.Events[index].State != "" {
-			view.StateAuthor, view.StateDetail = thread.Events[index].Author, thread.Events[index].AttributionDetail
-			break
-		}
-	}
-	for _, message := range thread.Messages {
-		var fragments []*fragmentView
-		for _, fragment := range message.Fragments {
-			fragments = append(fragments, makeFragmentView(fragment, viewScope{}))
-		}
-		view.MessageViews = append(view.MessageViews, fragments)
-	}
-	return view
-}
-
-func makeFileViews(changes gitdiff.ChangeSet, target string, reviews []saga.FileReview, threads map[string][]*threadView) []*fileDiffView {
+func makeFileViews(changes gitdiff.ChangeSet, target string) []*fileDiffView {
 	byPath := map[string]*fileDiffView{}
 	renameTo := map[string]string{}
 	for _, atom := range changes.Atoms {
@@ -1821,7 +1237,6 @@ func makeFileViews(changes gitdiff.ChangeSet, target string, reviews []saga.File
 			renameTo[atom.OldPath] = atom.NewPath
 		}
 	}
-	latest := latestFileReviews(reviews)
 	deleted := map[string]bool{}
 	for _, atom := range changes.Atoms {
 		if atom.Kind == "event" && atom.Event == "delete" {
@@ -1840,12 +1255,9 @@ func makeFileViews(changes gitdiff.ChangeSet, target string, reviews []saga.File
 		if file == nil {
 			digest := sha256.Sum256([]byte(path))
 			file = &fileDiffView{ID: fmt.Sprintf("diff-%x", digest[:8]), Path: path, Ref: fileLocation(changes.BaseOID, changes.HeadOID, path, deleted[path])}
-			if review, ok := latest[path]; ok {
-				file.Reviewed, file.Reviewer, file.ReviewerDetail = review.State == "reviewed", review.Author, review.AttributionDetail
-			}
 			byPath[path] = file
 		}
-		file.Atoms = append(file.Atoms, &diffAtomView{Atom: atom, Threads: threads[atom.Key], Target: target})
+		file.Atoms = append(file.Atoms, &diffAtomView{Atom: atom, Target: target})
 		if atom.Side == "new" {
 			file.Added++
 		} else if atom.Side == "old" {
@@ -1903,148 +1315,6 @@ func makeFileViews(changes gitdiff.ChangeSet, target string, reviews []saga.File
 		result = append(result, byPath[path])
 	}
 	return result
-}
-
-func latestReview(reviews []saga.Review) (string, string, string, string) {
-	current := saga.CurrentReviews(reviews)
-	state := saga.AggregateReviewState(reviews)
-	if len(current) == 0 {
-		return "", "", "", ""
-	}
-	// Use the newest decision that determines the aggregate for compact notes.
-	last := current[len(current)-1]
-	for index := len(current) - 1; index >= 0; index-- {
-		if current[index].State == state {
-			last = current[index]
-			break
-		}
-	}
-	return state, last.Author, last.AttributionDetail, last.Body
-}
-
-func reviewApprovalStatus(reviews []saga.Review) string {
-	hasAI := false
-	for _, review := range saga.CurrentReviews(reviews) {
-		if review.State != "approved" || review.Reviewer == nil {
-			continue
-		}
-		if review.Reviewer.Kind == "human" {
-			return "Approved"
-		}
-		hasAI = true
-	}
-	if hasAI {
-		return "AI approved"
-	}
-	return "Approval recorded"
-}
-
-func reviewDecisionViews(reviews []saga.Review) []reviewDecisionView {
-	current := saga.CurrentReviews(reviews)
-	result := make([]reviewDecisionView, 0, len(current))
-	for _, review := range current {
-		// Legacy records keep their original aggregate affordance and remain in
-		// activity history, but do not masquerade as an explicit identity chip.
-		if review.Reviewer == nil {
-			continue
-		}
-		item := reviewDecisionView{
-			State: review.State, Author: review.Author, Detail: review.AttributionDetail, Body: review.Body,
-			Kind: review.Reviewer.Kind, Name: review.Reviewer.Name, Agent: review.Reviewer.Agent, Model: review.Reviewer.Model,
-		}
-		if review.Reviewer.Kind == "human" {
-			item.KindLabel = "Human"
-		} else {
-			item.KindLabel = "AI"
-		}
-		result = append(result, item)
-	}
-	return result
-}
-
-func applyGitAttribution(ctx context.Context, resolver *gitattribution.Resolver, document *saga.Saga) {
-	type target struct {
-		path     string
-		author   *string
-		detail   *string
-		identity *string
-	}
-	var targets []target
-	collect := func(path string, author *string, detail *string, identity ...*string) {
-		var key *string
-		if len(identity) > 0 {
-			key = identity[0]
-		}
-		targets = append(targets, target{path: path, author: author, detail: detail, identity: key})
-	}
-	var walk func(*saga.Section)
-	walk = func(section *saga.Section) {
-		for index := range section.Reviews {
-			review := &section.Reviews[index]
-			collect(review.Path, &review.Author, &review.AttributionDetail, &review.AttributionIdentity)
-		}
-		for _, fragment := range section.Fragments {
-			for index := range fragment.Reviews {
-				review := &fragment.Reviews[index]
-				collect(review.Path, &review.Author, &review.AttributionDetail, &review.AttributionIdentity)
-			}
-		}
-		for _, child := range section.Children {
-			walk(child)
-		}
-	}
-	walk(document.Section)
-	for _, thread := range document.Threads {
-		collect(filepath.Join(thread.Directory, "thread.json"), &thread.CreatedBy, &thread.AttributionDetail)
-		for _, message := range thread.Messages {
-			collect(message.Path, &message.Author, &message.AttributionDetail)
-		}
-		for index := range thread.Events {
-			event := &thread.Events[index]
-			collect(event.Path, &event.Author, &event.AttributionDetail)
-		}
-	}
-	for index := range document.FileReviews {
-		review := &document.FileReviews[index]
-		collect(review.Path, &review.Author, &review.AttributionDetail)
-	}
-	paths := make([]string, len(targets))
-	for index, target := range targets {
-		paths[index] = target.path
-	}
-	for index, value := range resolver.ResolveAll(ctx, paths) {
-		target := targets[index]
-		switch value.State {
-		case gitattribution.Committed:
-			*target.author = value.Name
-			if target.identity != nil {
-				*target.identity = "git:" + strings.ToLower(strings.TrimSpace(value.Email))
-			}
-			commitID := value.CommitID
-			if len(commitID) > 12 {
-				commitID = commitID[:12]
-			}
-			*target.detail = fmt.Sprintf("%s · committed %s · %s", value.Email, value.CommittedAt.Format("2006-01-02 15:04 MST"), commitID)
-		case gitattribution.Uncommitted:
-			*target.author = "Local / uncommitted"
-			if target.identity != nil {
-				*target.identity = "local"
-			}
-			*target.detail = "This review event has not been committed yet."
-		case gitattribution.Rewritten:
-			*target.author = "History rewritten"
-			if target.identity != nil {
-				*target.identity = "history-rewritten"
-			}
-			*target.detail = "Git history no longer contains the commit that introduced this review event. Stored legacy identity is not authoritative."
-		default:
-			*target.author = "Git history unavailable"
-			if target.identity != nil {
-				*target.identity = "history-unavailable"
-			}
-			*target.detail = "Git attribution is unavailable. Stored legacy identity is not authoritative."
-		}
-	}
 }
 
 func (a *app) fragmentFile(w http.ResponseWriter, r *http.Request) {
@@ -2113,366 +1383,6 @@ func (a *app) themeScript(w http.ResponseWriter, _ *http.Request) {
 	_, _ = io.WriteString(w, themeBoot)
 }
 
-func (a *app) createThread(w http.ResponseWriter, r *http.Request) {
-	attachments, cleanup, err := parseMultipart(r, w)
-	if err != nil {
-		writeMultipartError(w, err)
-		return
-	}
-	defer cleanup()
-	if !a.validMutationToken(r) {
-		http.Error(w, "Missing or invalid mutation token.", http.StatusForbidden)
-		return
-	}
-	index, validation, err := saga.LoadMutationIndex(a.root)
-	if err != nil || !validation.Valid {
-		http.Error(w, "The saga could not be loaded. Run change-saga validate for details.", http.StatusConflict)
-		return
-	}
-	target := r.FormValue("target")
-	if _, ok := index.Targets[target]; !ok {
-		http.Error(w, "target does not exist", http.StatusBadRequest)
-		return
-	}
-	var anchor saga.Anchor
-	if err := json.Unmarshal([]byte(r.FormValue("anchor")), &anchor); err != nil {
-		http.Error(w, "invalid annotation anchor", http.StatusBadRequest)
-		return
-	}
-	if err := a.authorAnchor(r.Context(), &anchor); err != nil {
-		http.Error(w, "invalid code anchor", http.StatusBadRequest)
-		return
-	}
-	if _, err := reviewstore.AddThread(a.root, target, r.FormValue("body"), anchor, r.FormValue("kind"), r.FormValue("replacement"), attachments); err != nil {
-		writeMutationError(w)
-		return
-	}
-	if !a.publishReviewsAfterMutation(r.Context()) {
-		w.Header().Set("X-Change-Saga-Review-State", "reload-pending")
-	}
-	if r.Header.Get("X-Change-Saga-Async") == "true" {
-		w.WriteHeader(http.StatusNoContent)
-		return
-	}
-	redirectAfterReview(w, r, "/#"+domID(target))
-}
-
-func (a *app) reply(w http.ResponseWriter, r *http.Request) {
-	attachments, cleanup, err := parseMultipart(r, w)
-	if err != nil {
-		writeMultipartError(w, err)
-		return
-	}
-	defer cleanup()
-	if !a.validMutationToken(r) {
-		http.Error(w, "Missing or invalid mutation token.", http.StatusForbidden)
-		return
-	}
-	if _, err := reviewstore.AddReply(a.root, r.FormValue("thread"), r.FormValue("body"), attachments); err != nil {
-		writeMutationError(w)
-		return
-	}
-	if !a.publishReviewsAfterMutation(r.Context()) {
-		w.Header().Set("X-Change-Saga-Review-State", "reload-pending")
-	}
-	if r.Header.Get("X-Change-Saga-Async") == "true" {
-		w.WriteHeader(http.StatusNoContent)
-		return
-	}
-	redirectAfterReview(w, r, "/#"+domID(r.FormValue("target")))
-}
-
-func (a *app) threadState(w http.ResponseWriter, r *http.Request) {
-	if err := parseForm(w, r, 64<<10); err != nil {
-		http.Error(w, "Invalid request body.", http.StatusBadRequest)
-		return
-	}
-	if !a.validMutationToken(r) {
-		http.Error(w, "Missing or invalid mutation token.", http.StatusForbidden)
-		return
-	}
-	if err := reviewstore.SetState(a.root, r.FormValue("thread"), r.FormValue("state")); err != nil {
-		writeMutationError(w)
-		return
-	}
-	if !a.publishReviewsAfterMutation(r.Context()) {
-		w.Header().Set("X-Change-Saga-Review-State", "reload-pending")
-	}
-	if r.Header.Get("X-Change-Saga-Async") == "true" {
-		w.WriteHeader(http.StatusNoContent)
-		return
-	}
-	redirectAfterReview(w, r, "/#"+domID(r.FormValue("target")))
-}
-
-func (a *app) threadAnchor(w http.ResponseWriter, r *http.Request) {
-	if err := parseForm(w, r, 2<<20); err != nil {
-		http.Error(w, "Invalid request body.", http.StatusBadRequest)
-		return
-	}
-	if !a.validMutationToken(r) {
-		http.Error(w, "Missing or invalid mutation token.", http.StatusForbidden)
-		return
-	}
-	var anchor saga.Anchor
-	if err := json.Unmarshal([]byte(r.FormValue("anchor")), &anchor); err != nil {
-		http.Error(w, "invalid annotation anchor", http.StatusBadRequest)
-		return
-	}
-	if err := a.authorAnchor(r.Context(), &anchor); err != nil {
-		http.Error(w, "invalid code anchor", http.StatusBadRequest)
-		return
-	}
-	if err := reviewstore.SetAnchor(a.root, r.FormValue("thread"), anchor); err != nil {
-		writeMutationError(w)
-		return
-	}
-	if !a.publishReviewsAfterMutation(r.Context()) {
-		w.Header().Set("X-Change-Saga-Review-State", "reload-pending")
-	}
-	w.WriteHeader(http.StatusNoContent)
-}
-
-func (a *app) review(w http.ResponseWriter, r *http.Request) {
-	if err := parseForm(w, r, 64<<10); err != nil {
-		http.Error(w, "Invalid request body.", http.StatusBadRequest)
-		return
-	}
-	if !a.validMutationToken(r) {
-		http.Error(w, "Missing or invalid mutation token.", http.StatusForbidden)
-		return
-	}
-	index, validation, err := saga.LoadMutationIndex(a.root)
-	if err != nil || !validation.Valid {
-		http.Error(w, "The saga could not be loaded. Run change-saga validate for details.", http.StatusConflict)
-		return
-	}
-	target := r.FormValue("target")
-	dir, ok := index.ReviewTargets[target]
-	if !ok {
-		http.Error(w, "review target does not exist", http.StatusBadRequest)
-		return
-	}
-	if !a.reviewAllowed(w, r, target) {
-		return
-	}
-	reviewTarget := dir
-	if index.FlatTargets[target] {
-		reviewTarget = target
-	}
-	if err := reviewstore.AddReview(a.root, reviewTarget, r.FormValue("state"), r.FormValue("body"), saga.ReviewerIdentity{Kind: "human"}); err != nil {
-		writeMutationError(w)
-		return
-	}
-	if !a.publishReviewsAfterMutation(r.Context()) {
-		w.Header().Set("X-Change-Saga-Review-State", "reload-pending")
-	}
-	if r.Header.Get("X-Change-Saga-Async") == "true" {
-		w.WriteHeader(http.StatusNoContent)
-		return
-	}
-	redirectAfterReview(w, r, "/#"+domID(r.FormValue("target")))
-}
-
-func (a *app) diffReview(w http.ResponseWriter, r *http.Request) {
-	if err := parseForm(w, r, 64<<10); err != nil {
-		http.Error(w, "Invalid request body.", http.StatusBadRequest)
-		return
-	}
-	if !a.validMutationToken(r) {
-		http.Error(w, "Missing or invalid mutation token.", http.StatusForbidden)
-		return
-	}
-	location, err := coderef.ParseLocation(r.FormValue("ref"))
-	if err != nil || !location.WholeFile() {
-		http.Error(w, "file review requires a whole-file code location", http.StatusBadRequest)
-		return
-	}
-	// A reviewer marks a file they were shown, so the location must be one of
-	// the comparison's two commits.
-	document := a.sourceReviewDocument(r.Context())
-	if document == nil {
-		http.Error(w, "The saga could not be loaded.", http.StatusInternalServerError)
-		return
-	}
-	catalog, err := a.sourceCatalog(r.Context(), document.Manifest)
-	if err != nil {
-		http.Error(w, "The source comparison could not be loaded.", http.StatusInternalServerError)
-		return
-	}
-	if location.Commit != catalog.BaseOID && location.Commit != catalog.HeadOID {
-		http.Error(w, "file review location is not part of the comparison", http.StatusNotFound)
-		return
-	}
-	reference, err := a.authorCode(r.Context(), location)
-	if err != nil && location.Commit == catalog.HeadOID {
-		// A deleted file exists only at the comparison's merge-base.
-		reference, err = a.authorCode(r.Context(), coderef.Location{Commit: catalog.BaseOID, Path: location.Path})
-	}
-	if err != nil {
-		writeMutationError(w)
-		return
-	}
-	if err := reviewstore.AddFileReview(a.root, reference, r.FormValue("state")); err != nil {
-		writeMutationError(w)
-		return
-	}
-	if !a.publishReviewsAfterMutation(r.Context()) {
-		w.Header().Set("X-Change-Saga-Review-State", "reload-pending")
-	}
-	if r.Header.Get("X-Change-Saga-Async") == "true" {
-		w.WriteHeader(http.StatusNoContent)
-		return
-	}
-	fallback := CodeDiffURL(location.Path, "")
-	redirectAfterReview(w, r, fallback)
-}
-
-func redirectAfterReview(w http.ResponseWriter, r *http.Request, fallback string) {
-	http.Redirect(w, r, reviewRedirectDestination(r.FormValue("return_to"), fallback), http.StatusSeeOther)
-}
-
-func reviewRedirectDestination(destination, fallback string) string {
-	parsed, err := url.Parse(destination)
-	if err != nil || destination == "" || !strings.HasPrefix(destination, "/") || strings.HasPrefix(destination, "//") || parsed.IsAbs() || parsed.Host != "" {
-		return fallback
-	}
-	return destination
-}
-
-const (
-	maxMultipartBytes  = 32 << 20
-	maxAttachmentBytes = 10 << 20
-	maxAttachments     = 8
-)
-
-var (
-	errUploadTooLarge = errors.New("upload too large")
-	errInvalidUpload  = errors.New("invalid upload")
-	attachmentTempDir string
-)
-
-func parseMultipart(r *http.Request, w http.ResponseWriter) ([]string, func(), error) {
-	r.Body = http.MaxBytesReader(w, r.Body, maxMultipartBytes)
-	var paths []string
-	cleanup := func() {
-		removeTemporary(paths)
-		if r.MultipartForm != nil {
-			_ = r.MultipartForm.RemoveAll()
-		}
-	}
-	if err := r.ParseMultipartForm(1 << 20); err != nil {
-		cleanup()
-		var maxBytes *http.MaxBytesError
-		if errors.As(err, &maxBytes) {
-			return nil, func() {}, errUploadTooLarge
-		}
-		return nil, func() {}, errInvalidUpload
-	}
-	files := r.MultipartForm.File["attachment"]
-	if len(files) > maxAttachments {
-		cleanup()
-		return nil, func() {}, errUploadTooLarge
-	}
-	for _, header := range files {
-		file, err := header.Open()
-		if err != nil {
-			cleanup()
-			return nil, func() {}, errInvalidUpload
-		}
-		ext := filepath.Ext(filepath.Base(header.Filename))
-		temp, err := os.CreateTemp(attachmentTempDir, "change-saga-attachment-*"+ext)
-		if err != nil {
-			_ = file.Close()
-			cleanup()
-			return nil, func() {}, errInvalidUpload
-		}
-		path := temp.Name()
-		paths = append(paths, path)
-		written, copyErr := io.Copy(temp, io.LimitReader(file, maxAttachmentBytes+1))
-		fileErr := file.Close()
-		closeErr := temp.Close()
-		if written > maxAttachmentBytes {
-			cleanup()
-			return nil, func() {}, errUploadTooLarge
-		}
-		if copyErr != nil || fileErr != nil || closeErr != nil || !validUploadedContent(path, header.Filename) {
-			cleanup()
-			return nil, func() {}, errInvalidUpload
-		}
-	}
-	return paths, cleanup, nil
-}
-
-func validUploadedContent(path, filename string) bool {
-	file, err := os.Open(path)
-	if err != nil {
-		return false
-	}
-	defer file.Close()
-	var sample [512]byte
-	n, err := file.Read(sample[:])
-	if err != nil && !errors.Is(err, io.EOF) {
-		return false
-	}
-	detected := http.DetectContentType(sample[:n])
-	if parsed, _, err := mime.ParseMediaType(detected); err == nil {
-		detected = parsed
-	}
-	declared := mime.TypeByExtension(strings.ToLower(filepath.Ext(filename)))
-	if parsed, _, err := mime.ParseMediaType(declared); err == nil {
-		declared = parsed
-	}
-	if declared == "image/svg+xml" {
-		lower := strings.ToLower(string(sample[:n]))
-		return (detected == "text/plain" || detected == "text/xml") && strings.Contains(lower, "<svg")
-	}
-	if strings.HasPrefix(declared, "image/") {
-		return detected == declared
-	}
-	if declared == "text/html" {
-		return detected == "text/html"
-	}
-	if declared == "text/plain" || declared == "text/markdown" {
-		return detected == "text/plain"
-	}
-	return false
-}
-
-func removeTemporary(paths []string) {
-	for _, path := range paths {
-		_ = os.Remove(path)
-	}
-}
-
-func parseForm(w http.ResponseWriter, r *http.Request, limit int64) error {
-	r.Body = http.MaxBytesReader(w, r.Body, limit)
-	return r.ParseForm()
-}
-
-func (a *app) validMutationToken(r *http.Request) bool {
-	if a.mutationToken == "" {
-		return true
-	}
-	provided := r.Header.Get("X-Change-Saga-Mutation-Token")
-	if provided == "" {
-		provided = r.FormValue("mutation_token")
-	}
-	return subtle.ConstantTimeCompare([]byte(provided), []byte(a.mutationToken)) == 1
-}
-
-func writeMutationError(w http.ResponseWriter) {
-	http.Error(w, "The review request was invalid or the saga could not be updated. Run change-saga validate and try again.", http.StatusBadRequest)
-}
-
-func writeMultipartError(w http.ResponseWriter, err error) {
-	if errors.Is(err, errUploadTooLarge) {
-		http.Error(w, "Upload exceeds the allowed size or file count.", http.StatusRequestEntityTooLarge)
-		return
-	}
-	http.Error(w, "Upload must be a supported image, HTML, Markdown, or plain-text file.", http.StatusBadRequest)
-}
-
 func findFragment(document *saga.Saga, id string) *saga.Fragment {
 	var found *saga.Fragment
 	matches := 0
@@ -2489,16 +1399,6 @@ func findFragment(document *saga.Saga, id string) *saga.Fragment {
 		}
 	}
 	walk(document.Section)
-	for _, thread := range document.Threads {
-		for _, message := range thread.Messages {
-			for _, fragment := range message.Fragments {
-				if fragment.ID == id {
-					found = fragment
-					matches++
-				}
-			}
-		}
-	}
 	if matches != 1 {
 		return nil
 	}
@@ -2530,15 +1430,6 @@ func targetExists(document *saga.Saga, target string) bool {
 		}
 	}
 	walk(document.Section)
-	for _, thread := range document.Threads {
-		for _, message := range thread.Messages {
-			for _, fragment := range message.Fragments {
-				if fragment.Target == target {
-					found = true
-				}
-			}
-		}
-	}
 	return found
 }
 
@@ -2600,8 +1491,6 @@ const defaultAnnotationColor = "#d04832"
 // Sticky notes default to the warm amber already used for landmark highlights so
 // a placed note reads as paper rather than as a drawing stroke.
 const defaultNoteColor = "#f2bd4b"
-
-func validAnnotationColor(value string) bool { return saga.ValidAnnotationColor(value) }
 
 func markdown(source string) template.HTML {
 	return markdownWithAnchors(source, "heading")

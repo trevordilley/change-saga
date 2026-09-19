@@ -193,7 +193,7 @@ func designSection(section *saga.Section) bool {
 // makeDesignChapterNav projects the ___design chapters into Technical. Which
 // of ERD, System, or Data Flows a chapter satisfies is not recorded, so the
 // chapter keeps its authored title and claims none of them.
-func makeDesignChapterNav(root *saga.Section, threads map[string][]*threadView) []*navNodeView {
+func makeDesignChapterNav(root *saga.Section) []*navNodeView {
 	if root == nil {
 		return nil
 	}
@@ -202,7 +202,7 @@ func makeDesignChapterNav(root *saga.Section, threads map[string][]*threadView) 
 		if child.Kind != "chapter" || !designSection(child) {
 			continue
 		}
-		nodes = append(nodes, makeChapterNav(child, threads))
+		nodes = append(nodes, makeChapterNav(child))
 	}
 	return nodes
 }

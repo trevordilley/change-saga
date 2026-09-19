@@ -24,11 +24,11 @@ func TestV3DesignChapterAndFragmentEnterExistingRenderTree(t *testing.T) {
 	}
 	// A ___design chapter is technical design, not narrative: it leaves the
 	// chapter list and reappears under Design > Technical.
-	nav := makeNavTree(document.Section, nil)
+	nav := makeNavTree(document.Section)
 	if len(nav) != 1 || nav[0].Title != "Overview" {
 		t.Fatalf("narrative navigation still carries the design chapter: %#v", nav)
 	}
-	technical := makeDesignChapterNav(document.Section, nil)
+	technical := makeDesignChapterNav(document.Section)
 	if len(technical) != 1 || technical[0].Title != "Technical architecture" || technical[0].Href != sagaHref(saga.ChapterTarget("render-design", "architecture")) {
 		t.Fatalf("design navigation = %#v", technical)
 	}
