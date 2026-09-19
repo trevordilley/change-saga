@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 	"errors"
+	"fmt"
 	"net/url"
 	"strings"
 
@@ -165,6 +166,12 @@ func recordLink(document requirements.Document, record string) termLinkView {
 // termCode renders each reference as code at the head, or at its pin when it
 // went stale.
 func (a *app) termCode(ctx context.Context, references []coderef.Reference) []*termCodeView {
+	return a.referenceCode(ctx, references, "term")
+}
+
+// referenceCode renders each reference as code at the head, or at its pin
+// when it went stale. subject names the record the references belong to.
+func (a *app) referenceCode(ctx context.Context, references []coderef.Reference, subject string) []*termCodeView {
 	var result []*termCodeView
 	resolver, err := coderesolve.New(ctx, a.sourceDir)
 	if err != nil {
@@ -183,7 +190,7 @@ func (a *app) termCode(ctx context.Context, references []coderef.Reference) []*t
 			location = at.Location
 		} else {
 			view.Stale = true
-			view.Note = "This code changed after the term was written (" + at.Reason + "). It is shown as it was pinned; revise the term to the code that defines it now."
+			view.Note = "This code changed after the " + subject + " was written (" + at.Reason + "). It is shown as it was pinned; revise the " + subject + " to the code as it is now."
 		}
 		view.Path = location.Path
 		content, found, err := resolver.Blob(ctx, location.Commit, location.Path)
@@ -193,6 +200,9 @@ func (a *app) termCode(ctx context.Context, references []coderef.Reference) []*t
 			continue
 		}
 		view.Lines = codeLines(content, location)
+		if last := view.Lines; len(last) > 0 && !location.WholeFile() && last[len(last)-1].Number < location.End {
+			view.Note = strings.TrimSpace(view.Note + fmt.Sprintf(" Showing lines %d–%d of the referenced %d–%d.", last[0].Number, last[len(last)-1].Number, location.Start, location.End))
+		}
 		result = append(result, view)
 	}
 	return result

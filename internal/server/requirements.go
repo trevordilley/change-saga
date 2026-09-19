@@ -223,8 +223,8 @@ func makeRequirementsNav(page *requirementsPageView) *navNodeView {
 }
 
 // makeEpicRequirementsNav lists one epic's stories, or every story when epic
-// is empty. Story numbering stays app-wide, so a label names one story
-// wherever it appears.
+// is empty. A story row reads as the story's title: an ordinal such as
+// "Story 03" named nothing a reader could recognize.
 func makeEpicRequirementsNav(page *requirementsPageView, epic, prefix string) *navNodeView {
 	root := &navNodeView{
 		Title: "Requirements", Href: "/requirements", NodeID: prefix + "-requirements",
@@ -236,7 +236,7 @@ func makeEpicRequirementsNav(page *requirementsPageView, epic, prefix string) *n
 		}
 		selectedStory := page.Story != nil && page.Story.ID == story.ID
 		node := &navNodeView{
-			Title: story.Label + " · " + story.Title, Href: story.Href, NodeID: "nav-" + story.DOMID,
+			Title: story.Title, Href: story.Href, NodeID: "nav-" + story.DOMID,
 			Icon: "story", Requirement: true, Active: selectedStory && page.FocusedCriterion == nil,
 			Expanded: selectedStory,
 		}

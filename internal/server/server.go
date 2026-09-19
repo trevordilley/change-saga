@@ -27,6 +27,7 @@ import (
 
 	"github.com/twentyideas/changesaga/internal/changeview"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
+	"github.com/twentyideas/changesaga/internal/quality"
 	"github.com/twentyideas/changesaga/internal/saga"
 	"github.com/twentyideas/changesaga/internal/snapshotcache"
 	"github.com/twentyideas/changesaga/internal/store"
@@ -99,8 +100,14 @@ type pageData struct {
 	RequirementsMode bool
 	Requirements     *requirementsPageView
 	// TermsMode shows the overview's Terms and vocabulary, or one term.
-	TermsMode  bool
-	Terms      *termsPageView
+	TermsMode bool
+	Terms     *termsPageView
+	// Persona, Epic, and TestCase are the app-level pages; at most one is set.
+	Persona  *personaPageView
+	Epic     *epicPageView
+	TestCase *testCasePageView
+	// Reviews is a review surface rendered inside the app shell.
+	Reviews    template.HTML
 	Root       *sectionView
 	SlideRoot  *sectionView
 	Nav        []*navNodeView
@@ -309,6 +316,9 @@ func newMux(application *app) *http.ServeMux {
 	mux.HandleFunc("GET /terms/{term}", application.page)
 	mux.HandleFunc("GET /terms", application.page)
 	mux.HandleFunc("GET /chapters/{chapter}", application.page)
+	mux.HandleFunc("GET /personas/{persona}", application.page)
+	mux.HandleFunc("GET /epics/{epic}", application.page)
+	mux.HandleFunc("GET /tests/{test}", application.page)
 	mux.HandleFunc("GET /", application.page)
 	mux.HandleFunc("GET /reviews", application.reviewIndex)
 	mux.HandleFunc("GET /reviews/{id}", application.reviewPage)
@@ -767,101 +777,228 @@ func templateFuncs() template.FuncMap {
 }
 
 func (a *app) page(w http.ResponseWriter, r *http.Request) {
-	document := a.outlineDocument(r.Context())
+	if chapterID, chapterRoute := requestedChapter(r); chapterRoute {
+		a.chapterRedirect(w, r, chapterID)
+		return
+	}
+	data, err := a.shell(r)
+	switch {
+	case errors.Is(err, errRequirementNotFound), errors.Is(err, errTermNotFound), errors.Is(err, errAppPageNotFound):
+		http.NotFound(w, r)
+		return
+	case err != nil:
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	renderHTML(w, a.template, "page", data, "The review page could not be rendered.")
+}
+
+// chapterRedirect keeps /chapters/{id} links working: an app chapter opens on
+// the overview, and an epic's chapter on that epic's page.
+func (a *app) chapterRedirect(w http.ResponseWriter, r *http.Request, chapterID string) {
+	document := a.narrativeDocument(r.Context())
 	if document == nil {
 		http.Error(w, "The saga could not be loaded. Run change-saga validate for details.", http.StatusInternalServerError)
 		return
 	}
+	for _, child := range document.Section.Children {
+		if child.Kind != "chapter" || child.ID != chapterID {
+			continue
+		}
+		destination := "/#" + domID(child.Target)
+		for _, epic := range document.Epics {
+			if epic.Design != nil && containsSection(epic.Design, child) || epic.Report != nil && containsSection(epic.Report, child) {
+				destination = epicHref(epic.ID) + "#" + domID(child.Target)
+			}
+		}
+		http.Redirect(w, r, destination, http.StatusFound)
+		return
+	}
+	http.NotFound(w, r)
+}
+
+func containsSection(root, wanted *saga.Section) bool {
+	if root.Target == wanted.Target {
+		return true
+	}
+	for _, child := range root.Children {
+		if containsSection(child, wanted) {
+			return true
+		}
+	}
+	return false
+}
+
+// appRoute says which page of the app shell a path asks for.
+type appRoute struct {
+	kind string
+	id   string
+}
+
+func routeOf(r *http.Request) (appRoute, bool) {
+	path := r.URL.Path
+	switch {
+	case path == "/":
+		return appRoute{kind: "overview"}, true
+	case isRequirementsPath(path):
+		return appRoute{kind: "requirements"}, true
+	case isTermsPath(path):
+		return appRoute{kind: "terms"}, true
+	case strings.HasPrefix(path, "/personas/") && r.PathValue("persona") != "":
+		return appRoute{kind: "persona", id: r.PathValue("persona")}, true
+	case strings.HasPrefix(path, "/epics/") && r.PathValue("epic") != "":
+		return appRoute{kind: "epic", id: r.PathValue("epic")}, true
+	case strings.HasPrefix(path, "/tests/") && r.PathValue("test") != "":
+		return appRoute{kind: "test", id: r.PathValue("test")}, true
+	case path == "/reviews" || strings.HasPrefix(path, "/reviews/"):
+		return appRoute{kind: "reviews"}, true
+	}
+	return appRoute{}, false
+}
+
+// shell builds the app shell for one request: the topbar, the sidebar, and
+// the page the path names. The overview is itself a shell: identity,
+// coverage totals, the overview's fragments as descriptors, one summary per
+// app chapter, and the navigation outline. Everything below that arrives from
+// /api/section and /api/fragment as a reviewer opens it.
+func (a *app) shell(r *http.Request) (*pageData, error) {
+	route, ok := routeOf(r)
+	if !ok {
+		return nil, errAppPageNotFound
+	}
+	document := a.outlineDocument(r.Context())
+	if document == nil {
+		return nil, errors.New("The saga could not be loaded. Run change-saga validate for details.")
+	}
 	if len(document.Decks)+len(document.Onboarding) > 0 {
 		document = a.narrativeDocument(r.Context())
 		if document == nil {
-			http.Error(w, "The slide deck could not be loaded. Run change-saga validate for details.", http.StatusInternalServerError)
-			return
+			return nil, errors.New("The slide deck could not be loaded. Run change-saga validate for details.")
 		}
 	}
-	chapterID, chapterRoute := requestedChapter(r)
-	requirementsRoute := isRequirementsPath(r.URL.Path)
-	termsRoute := isTermsPath(r.URL.Path)
-	if r.URL.Path != "/" {
-		if !chapterRoute && !requirementsRoute && !termsRoute {
-			http.NotFound(w, r)
-			return
-		}
-		if chapterRoute {
-			for _, child := range document.Section.Children {
-				if child.Kind == "chapter" && child.ID == chapterID {
-					http.Redirect(w, r, "/#"+domID(child.Target), http.StatusFound)
-					return
-				}
-			}
-			http.NotFound(w, r)
-			return
-		}
-	}
-	// The saga view is a shell: identity, coverage totals, the overview's
-	// fragments as descriptors, one summary per chapter, and the navigation
-	// outline. Everything below that arrives from /api/section and
-	// /api/fragment as a reviewer opens it.
 	scope := viewScope{}
 	reportRoot, slideRoot := splitReportAndDeckSections(document.Section)
-	rootView := makeSectionView(reportRoot, scope.shell())
-	data := pageData{
+	requirementsView, _, requirementsDocument, err := loadRequirementsSurface(a.root, document.Manifest.ID, r)
+	if err != nil {
+		if errors.Is(err, errRequirementNotFound) {
+			return nil, err
+		}
+		return nil, errors.New("The requirements could not be loaded. Run change-saga validate for details.")
+	}
+	tests, err := quality.Load(a.root)
+	if err != nil {
+		tests = quality.Document{SagaID: document.Manifest.ID}
+	}
+	graph := newAppGraph(document, requirementsDocument, tests)
+	// An epic's chapters and explanations belong to its page; the overview
+	// holds only the app's own.
+	appReport := *reportRoot
+	appReport.Children, appReport.Fragments = nil, nil
+	for _, fragment := range reportRoot.Fragments {
+		if _, epic := graph.targetEpic[fragment.Target]; !epic {
+			appReport.Fragments = append(appReport.Fragments, fragment)
+		}
+	}
+	for _, child := range reportRoot.Children {
+		if _, epic := graph.epicChapter(child); !epic {
+			appReport.Children = append(appReport.Children, child)
+		}
+	}
+	data := &pageData{
 		Opening:        openingLabel(a.rng),
 		Comparing:      !a.rng.Observe(),
 		Saga:           document,
 		EmbeddedDecks:  len(document.Decks)+len(document.Onboarding) > 0,
-		Root:           rootView,
+		Root:           makeSectionView(&appReport, scope.shell()),
 		CoverageTotals: a.cachedCoverageTotals(),
+		Requirements:   requirementsView,
 	}
-	requirementsView, _, requirementsDocument, err := loadRequirementsSurface(a.root, document.Manifest.ID, r)
-	if errors.Is(err, errRequirementNotFound) {
-		http.NotFound(w, r)
-		return
-	}
-	if err != nil {
-		http.Error(w, "The requirements could not be loaded. Run change-saga validate for details.", http.StatusInternalServerError)
-		return
-	}
-	data.Requirements = requirementsView
-	data.Requirements.Rationale = requirementsRationale(reportRoot)
 	data.RequirementsMode = requirementsView.Active
+	if data.RequirementsMode {
+		graph.decorateRequirements(requirementsView)
+	}
 	storyTitles := map[string]string{}
 	for _, story := range requirementsView.Stories {
 		storyTitles[story.Target] = story.Title
 	}
 	data.Terms, err = a.makeTermsPage(r.Context(), requirementsDocument, storyTitles, r.URL.Path, r.PathValue("term"))
-	if errors.Is(err, errTermNotFound) {
-		http.NotFound(w, r)
-		return
+	if err != nil {
+		return nil, err
 	}
 	data.TermsMode = data.Terms.Active
+	switch route.kind {
+	case "persona":
+		if data.Persona, err = graph.personaPage(route.id); err != nil {
+			return nil, err
+		}
+	case "epic":
+		if data.Epic, err = graph.epicPage(route.id); err != nil {
+			return nil, err
+		}
+	case "test":
+		if data.TestCase, err = a.testCasePage(r.Context(), graph, route.id); err != nil {
+			return nil, err
+		}
+	}
 	overviewActive := ""
 	switch {
 	case data.TermsMode && data.Terms.Term != nil:
 		overviewActive = data.Terms.Term.ID
 	case data.TermsMode:
 		overviewActive = "/terms"
-	case requirementsView.Active:
+	case route.kind != "overview":
 		overviewActive = "-"
 	}
 	prototypeDocument, prototypeNote := a.prototypeDocument(document.Manifest.ID)
 	data.Nav = makeAppNavTree(appNavSources{
 		document: document, requirements: requirementsDocument, page: requirementsView,
+		quality:    tests,
 		prototypes: prototypeDocument, prototypeNote: prototypeNote,
 		decks: makeDeckNavTree(slideRoot), overviewActive: overviewActive,
 	})
-	if requirementsView.Active {
-		clearActiveNav(data.Nav)
-		for _, node := range data.Nav {
-			revealActive(node)
+	if route.kind != "overview" {
+		// Off the overview, an in-page anchor would point into a page that is
+		// not there. Every such link opens the overview instead.
+		rootNavLinks(data.Nav)
+		if !data.TermsMode {
+			markActiveNav(data.Nav, r.URL.Path)
 		}
 	}
 	if data.EmbeddedDecks {
 		data.SlideRoot = makeSectionView(slideRoot, scope)
 		labelDeckRoles(data.SlideRoot, document)
 	}
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	renderHTML(w, a.template, "page", data, "The review page could not be rendered.")
+	return data, nil
+}
+
+// rootNavLinks points the sidebar's in-page anchors at the overview.
+func rootNavLinks(nodes []*navNodeView) {
+	for _, node := range nodes {
+		if strings.HasPrefix(node.Href, "#") || strings.HasPrefix(node.Href, "?") {
+			node.Href = "/" + node.Href
+		}
+		if node.Slide != nil && strings.HasPrefix(node.Slide.Href, "?") {
+			node.Slide.Href = "/" + node.Slide.Href
+		}
+		rootNavLinks(node.Children)
+	}
+}
+
+// markActiveNav makes the rows that open path the sidebar's current rows,
+// and opens the places around them.
+func markActiveNav(nodes []*navNodeView, path string) {
+	clearActiveNav(nodes)
+	var mark func([]*navNodeView)
+	mark = func(nodes []*navNodeView) {
+		for _, node := range nodes {
+			node.Active = node.Href == path
+			mark(node.Children)
+		}
+	}
+	mark(nodes)
+	for _, node := range nodes {
+		revealActive(node)
+	}
 }
 
 // labelDeckRoles records each projected deck's role on its view, so the slide

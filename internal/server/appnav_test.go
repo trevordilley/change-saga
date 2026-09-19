@@ -324,8 +324,8 @@ func TestOnboardingSlidesSitUnderOnboardingAndNotUnderAnyEpic(t *testing.T) {
 	}
 }
 
-// Story numbering is app-wide, but each story is listed only under the epic
-// whose directory holds it.
+// Each story is listed, by its title, only under the epic whose directory
+// holds it.
 func TestEpicStoriesAppearOnlyUnderThatEpicsRequirements(t *testing.T) {
 	nodes := makeAppNavTree(appNavFixture(t))
 	billing := findNav(t, nodes, "Epics", "Billing", "Product", "Requirements")
@@ -333,10 +333,10 @@ func TestEpicStoriesAppearOnlyUnderThatEpicsRequirements(t *testing.T) {
 	if billing.NodeID != epicNavID("billing")+"-requirements" || catalog.NodeID != epicNavID("catalog")+"-requirements" {
 		t.Fatalf("requirements node IDs = %q, %q", billing.NodeID, catalog.NodeID)
 	}
-	if got := topTitles(billing.Children); got != "Story 01 · pay" {
+	if got := topTitles(billing.Children); got != "pay" {
 		t.Fatalf("billing requirements = %s", got)
 	}
-	if got := topTitles(catalog.Children); got != "Story 02 · list-item" {
+	if got := topTitles(catalog.Children); got != "list-item" {
 		t.Fatalf("catalog requirements = %s", got)
 	}
 	if billing.Gap || catalog.Gap {

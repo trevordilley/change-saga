@@ -47,9 +47,7 @@ type productNavSources struct {
 	// dataFlows is individual flow diagrams.
 	// TODO: no diagram resource is recorded yet; nothing fills this.
 	dataFlows []*navNodeView
-	// testCases is the quality domain's test cases.
-	// TODO: quality.Load reads the test cases, but no reviewer view renders a
-	// test case yet, so nothing fills this.
+	// testCases is the epic's test cases, each opening its page.
 	testCases      []*navNodeView
 	implementation []*navNodeView
 }

@@ -68,7 +68,7 @@ a{color:var(--accent)}
 .slide-thumbnail-preview{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden;border:2px solid var(--line);border-radius:5px;background:#fff;box-shadow:0 1px 2px #1f23281f;transition:border-color .12s,box-shadow .12s}
 .slide-thumbnail-preview iframe,.slide-thumbnail-preview img{display:block;width:100%;height:100%;border:0;object-fit:contain;pointer-events:none}
 .slide-thumbnail-caption{display:flex;align-items:center;gap:5px;margin-top:4px}
-.slide-thumbnail-title{display:block;min-width:0;flex:1;color:inherit;font:11.5px/1.3 var(--ui);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.slide-thumbnail-title{display:block;min-width:0;flex:1;color:inherit;font:11.5px/1.3 var(--ui);overflow-wrap:anywhere}
 .slide-thumbnail-hit{position:absolute;z-index:2;inset:0;width:100%;padding:0;border:0;border-radius:5px;background:transparent}
 .slide-thumbnail-hit:hover,.slide-thumbnail-hit:active{background:transparent}
 .slide-thumbnail-hit:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
@@ -178,6 +178,8 @@ body.presentation-mode .deck-viewer-stage:hover .slide-exit-presentation,body.pr
 /* Documentation titles wrap rather than truncate: a sidebar that cuts a name
    short makes the reader open it to learn what it is. */
 .doc-tree .doc-link{white-space:normal;overflow-wrap:anywhere;line-height:1.35}
+.doc-tree a.doc-link:has(>.i){display:flex;align-items:flex-start;gap:6px}
+.doc-tree a.doc-link>.i{flex:none;width:13px;height:13px;margin-top:2px}
 
 /* Changed-file tree ------------------------------------------------------ */
 .tree-tools{display:flex;align-items:center;gap:4px;padding:2px 4px 6px}
@@ -224,6 +226,33 @@ body.presentation-mode .deck-viewer-stage:hover .slide-exit-presentation,body.pr
 /* Requirements ---------------------------------------------------------- */
 .requirements-page{max-width:940px;margin:0 auto}
 .terms-page{max-width:940px;margin:0 auto}
+.app-page{display:grid;grid-template-columns:minmax(0,1fr);gap:22px;max-width:940px;margin:0 auto}
+.app-page .term-code{overflow-x:auto}
+.test-case-page .term-code-list>h3::first-letter{text-transform:uppercase}
+.app-page-kind{margin:0 0 4px;color:var(--muted);font:650 11px/1.3 var(--ui);letter-spacing:.04em;text-transform:uppercase}
+.app-page-section>h2,.requirement-trace>h2{margin:0 0 10px;color:var(--muted);font:650 12px/1.3 var(--ui);letter-spacing:.04em;text-transform:uppercase}
+.app-page-section>h3,.requirement-trace h3{margin:14px 0 6px;font:650 14px/1.3 var(--ui)}
+.trace-links{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.trace-links>li{padding:10px 14px;border:1px solid var(--line-soft);border-radius:8px;background:var(--bg);font:14px/1.45 var(--ui)}
+.trace-links a{color:var(--accent);text-decoration:none;font-weight:600}
+.trace-links a:hover{text-decoration:underline}
+.trace-kind{margin-left:6px;padding:1px 7px;border-radius:999px;background:var(--bg-inset);color:var(--muted);font:600 11px var(--ui)}
+.trace-note{margin-left:6px;color:var(--muted);font:12px var(--ui)}
+.trace-rationale{margin:5px 0 0;color:var(--muted);font:13px/1.5 var(--ui)}
+.epic-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:0}
+.epic-summary>div{padding:10px 14px;border:1px solid var(--line-soft);border-radius:8px;background:var(--bg-subtle)}
+.epic-summary dt{color:var(--muted);font:650 11px/1.3 var(--ui);letter-spacing:.04em;text-transform:uppercase}
+.epic-summary dd{margin:4px 0 0;font:600 16px/1.4 var(--ui)}
+.epic-summary dd small{color:var(--muted);font:12px var(--ui)}
+.test-steps{display:grid;gap:8px;margin:0;padding-left:22px;font:14px/1.5 var(--ui)}
+.test-steps p{margin:0}
+.test-runs{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.test-run{padding:10px 14px;border:1px solid var(--line-soft);border-left:3px solid var(--line);border-radius:8px;font:14px/1.45 var(--ui)}
+.test-run.passed{border-left-color:var(--green)}.test-run.failed{border-left-color:var(--red)}.test-run.blocked,.test-run.skipped{border-left-color:var(--amber)}
+.test-run p{margin:5px 0 0}
+.requirement-trace{display:grid;gap:4px}
+.criterion-trace{margin-top:8px;font:12.5px/1.45 var(--ui);color:var(--muted)}
+.criterion-trace a{color:var(--accent);text-decoration:none}
 .terms-lede{margin:0 0 18px;color:var(--muted);font:14px/1.55 var(--ui)}
 .terms-list{display:grid;gap:10px;margin:0}
 .terms-entry{padding:13px 16px;border:1px solid var(--line);border-radius:9px;background:var(--bg)}

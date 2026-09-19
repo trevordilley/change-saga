@@ -2,14 +2,36 @@ package server
 
 import (
 	"errors"
+	"html/template"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
 	"path/filepath"
 	"strings"
 	"testing"
 
 	"github.com/twentyideas/changesaga/internal/gitdiff"
+	"github.com/twentyideas/changesaga/internal/quality"
+	"github.com/twentyideas/changesaga/internal/requirements"
+	"github.com/twentyideas/changesaga/internal/saga"
 )
+
+func dogfoodRecords(t *testing.T) (*saga.Saga, requirements.Document, quality.Document) {
+	t.Helper()
+	document, _, err := saga.LoadNarrative(dogfoodSaga)
+	if err != nil {
+		t.Fatal(err)
+	}
+	records, err := requirements.Load(dogfoodSaga, document.Manifest.ID)
+	if err != nil {
+		t.Fatal(err)
+	}
+	tests, err := quality.Load(dogfoodSaga)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return document, records, tests
+}
 
 // The repository's own app Saga is the real Saga these regressions were
 // found on. The tests assert shapes that hold for any content it grows.
@@ -95,6 +117,7 @@ func TestSidebarTitlesWrapInsteadOfTruncating(t *testing.T) {
 		".doc-tree .doc-link{white-space:normal;",
 		".doc-row:has(>.doc-note){flex-wrap:wrap}",
 		".doc-row:has(>.doc-note)>.doc-link{flex:0 0 auto;",
+		".doc-tree a.doc-link:has(>.i){display:flex;",
 	} {
 		if !strings.Contains(pageStyles, rule) {
 			t.Fatalf("styles lack %s", rule)
@@ -113,5 +136,127 @@ func TestVocabularyOpensOnlyOnTheTermsPages(t *testing.T) {
 	}
 	if !vocabularyOpen(dogfoodOK(t, "/terms")) {
 		t.Fatal("the vocabulary is shut on its own page")
+	}
+}
+
+func TestSlideThumbnailCaptionsWrap(t *testing.T) {
+	if strings.Contains(pageStyles, ".slide-thumbnail-title{display:block;min-width:0;flex:1;color:inherit;font:11.5px/1.3 var(--ui);overflow:hidden;text-overflow:ellipsis") {
+		t.Fatal("slide captions still truncate")
+	}
+}
+
+// Finding 28: every persona has a page with its description, the stories
+// that serve it, and its terms, and the sidebar links to it.
+func TestEveryPersonaHasAPage(t *testing.T) {
+	_, records, _ := dogfoodRecords(t)
+	if len(records.Personas) == 0 {
+		t.Skip("the app Saga names no personas")
+	}
+	root := dogfoodOK(t, "/")
+	for _, persona := range records.Personas {
+		href := personaHref(persona.Identity.ID)
+		if !strings.Contains(root, `href="`+href+`"`) {
+			t.Fatalf("the sidebar does not link %s", href)
+		}
+		page := dogfoodOK(t, href)
+		for _, want := range []string{"data-persona-page", "data-persona-served", "data-persona-terms", template.HTMLEscapeString(persona.CurrentRevision.Description)} {
+			if !strings.Contains(page, want) {
+				t.Fatalf("%s lacks %q", href, want)
+			}
+		}
+	}
+	if code, _ := dogfoodPage(t, personaHref("nobody")); code != http.StatusNotFound {
+		t.Fatalf("an unknown persona = %d", code)
+	}
+}
+
+// Findings 28 and 30: every epic has a page with its description, stories,
+// and summary, and an epic's design chapters render there, not as top-level
+// chapters of the app overview.
+func TestEveryEpicHasAPageHoldingItsDesign(t *testing.T) {
+	document, records, _ := dogfoodRecords(t)
+	root := dogfoodOK(t, "/")
+	for _, epic := range document.Epics {
+		href := epicHref(epic.ID)
+		if !strings.Contains(root, `href="`+href+`"`) {
+			t.Fatalf("the sidebar does not link %s", href)
+		}
+		page := dogfoodOK(t, href)
+		for _, want := range []string{"data-epic-page", "data-epic-summary", "data-epic-stories", "data-epic-design", "data-epic-quality", "data-epic-implementation"} {
+			if !strings.Contains(page, want) {
+				t.Fatalf("%s lacks %s", href, want)
+			}
+		}
+		for _, manifest := range records.Epics {
+			if manifest.ID == epic.ID && manifest.Description != "" && !strings.Contains(page, template.HTMLEscapeString(manifest.Description)) {
+				t.Fatalf("%s lacks its description", href)
+			}
+		}
+		if epic.Design == nil {
+			continue
+		}
+		for _, chapter := range epic.Design.Children {
+			fetch := `data-section-href="/api/section?target=` + template.HTMLEscapeString(url.QueryEscape(chapter.Target)) + `"`
+			if !strings.Contains(page, fetch) {
+				t.Fatalf("%s does not hold its chapter %s", href, chapter.ID)
+			}
+			if strings.Contains(root, fetch) {
+				t.Fatalf("the overview still lists the epic chapter %s", chapter.ID)
+			}
+			if !strings.Contains(root, `href="`+href+`#`+domID(chapter.Target)+`"`) {
+				t.Fatalf("the sidebar does not open %s on its epic's page", chapter.ID)
+			}
+		}
+	}
+}
+
+// Finding 27: every test case is a sidebar row under its epic's Quality and
+// has a page with its definition, the criteria it verifies, its evidence
+// code, and its runs.
+func TestEveryTestCaseHasARowAndAPage(t *testing.T) {
+	_, records, tests := dogfoodRecords(t)
+	if len(tests.TestCases) == 0 {
+		t.Skip("the app Saga has no test cases")
+	}
+	root := dogfoodOK(t, "/")
+	if strings.Contains(root, "no test cases yet") && len(tests.TestCases) == len(tests.Epics) {
+		t.Fatal("an epic with a test case still says it has none")
+	}
+	for _, testCase := range tests.TestCases {
+		href := testCaseHref(testCase.Identity.ID)
+		if !strings.Contains(root, `href="`+href+`"`) {
+			t.Fatalf("the sidebar does not list %s", href)
+		}
+		page := dogfoodOK(t, href)
+		for _, want := range []string{"data-test-definition", "data-test-verifies", "data-test-evidence", "data-test-runs", template.HTMLEscapeString(testCase.CurrentRevision.Title)} {
+			if !strings.Contains(page, want) {
+				t.Fatalf("%s lacks %q", href, want)
+			}
+		}
+		for _, step := range testCase.CurrentRevision.Steps {
+			if !strings.Contains(page, template.HTMLEscapeString(step.Action)) {
+				t.Fatalf("%s lacks step %q", href, step.Action)
+			}
+		}
+		urn := "urn:change-saga:" + tests.SagaID + ":test-case:" + testCase.Identity.ID
+		for _, relation := range records.Relations {
+			if relation.From == urn && relation.State == requirements.RelationActive {
+				parts := strings.Split(relation.To, ":")
+				if len(parts) == 7 && !strings.Contains(page, `href="`+requirementCriterionHref(parts[4], parts[6])+`"`) {
+					t.Fatalf("%s does not link the criterion it verifies: %s", href, relation.To)
+				}
+			}
+		}
+		if len(testCase.Evidence) > 0 && !strings.Contains(page, "data-test-code") {
+			t.Fatalf("%s renders none of its evidence code", href)
+		}
+		for _, run := range testCase.Runs {
+			if !strings.Contains(page, `data-test-run="`+run.ID+`"`) {
+				t.Fatalf("%s lacks run %s", href, run.ID)
+			}
+		}
+		if epicPage := dogfoodOK(t, epicHref(testCase.Epic)); !strings.Contains(epicPage, `href="`+href+`"`) {
+			t.Fatalf("the epic page does not list %s", href)
+		}
 	}
 }
