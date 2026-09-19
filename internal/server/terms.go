@@ -254,7 +254,9 @@ func overviewNav(document *saga.Saga, vocabulary requirements.Document, active s
 	if len(terms) == 0 {
 		vocabularyNode.Gap, vocabularyNode.Note = true, "no terms yet"
 	}
-	vocabularyNode.Expanded = active != "" && len(terms) > 0
+	// The vocabulary opens on the terms pages only. Opened on every other
+	// page, its dozens of rows pushed the epics out of sight.
+	vocabularyNode.Expanded = active == "/terms" || vocabulary.FindTerm(active) != nil
 	overview.Children = []*navNodeView{
 		name,
 		part("Elevator pitch", "nav-overview-pitch", applayout.OverviewPitch),

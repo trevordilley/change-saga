@@ -172,6 +172,12 @@ body.presentation-mode .deck-viewer-stage:hover .slide-exit-presentation,body.pr
 .doc-gap>.doc-row>.doc-link{color:var(--faint);font-weight:400}
 .doc-gap>.doc-row>.doc-link .i{color:var(--faint)}
 .doc-note{flex:none;padding:0 8px 0 4px;color:var(--faint);font-size:11px;white-space:nowrap}
+.doc-row:has(>.doc-note){flex-wrap:wrap}
+.doc-row:has(>.doc-note)>.doc-link{flex:0 0 auto;max-width:calc(100% - 24px)}
+.doc-row:has(>.doc-note)>.doc-note{flex:1 0 auto;text-align:right}
+/* Documentation titles wrap rather than truncate: a sidebar that cuts a name
+   short makes the reader open it to learn what it is. */
+.doc-tree .doc-link{white-space:normal;overflow-wrap:anywhere;line-height:1.35}
 
 /* Changed-file tree ------------------------------------------------------ */
 .tree-tools{display:flex;align-items:center;gap:4px;padding:2px 4px 6px}

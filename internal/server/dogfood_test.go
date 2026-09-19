@@ -87,3 +87,31 @@ func TestSlideViewerNamesSlidesByTheirDeckRole(t *testing.T) {
 		}
 	}
 }
+
+// Sidebar titles wrap instead of truncating, and a row's note never squeezes
+// its title: "Design system" read as "Design syste" beside its gap note.
+func TestSidebarTitlesWrapInsteadOfTruncating(t *testing.T) {
+	for _, rule := range []string{
+		".doc-tree .doc-link{white-space:normal;",
+		".doc-row:has(>.doc-note){flex-wrap:wrap}",
+		".doc-row:has(>.doc-note)>.doc-link{flex:0 0 auto;",
+	} {
+		if !strings.Contains(pageStyles, rule) {
+			t.Fatalf("styles lack %s", rule)
+		}
+	}
+}
+
+// Terms and vocabulary stays shut away from the terms pages, so a story page's
+// sidebar still shows the epics.
+func TestVocabularyOpensOnlyOnTheTermsPages(t *testing.T) {
+	vocabularyOpen := func(page string) bool {
+		return strings.Contains(page, `aria-expanded="true" aria-controls="nav-terms"`)
+	}
+	if vocabularyOpen(dogfoodOK(t, "/requirements")) {
+		t.Fatal("the vocabulary opened on the requirements page")
+	}
+	if !vocabularyOpen(dogfoodOK(t, "/terms")) {
+		t.Fatal("the vocabulary is shut on its own page")
+	}
+}
