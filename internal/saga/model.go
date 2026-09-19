@@ -275,9 +275,12 @@ type Merge struct {
 	// Base is the commit the change was compared from, so the comparison
 	// "--against <base> --head <commit>" reproduces the landed change. It is
 	// absent when the landed commit has no parent.
-	Base     string         `json:"base,omitempty"`
-	Commits  []MergedCommit `json:"commits"`
-	PinnedAt time.Time      `json:"pinned_at"`
+	Base    string         `json:"base,omitempty"`
+	Commits []MergedCommit `json:"commits"`
+	// Review is the pull request review of the landed change, frozen at the
+	// same time, when the Saga has one.
+	Review   string    `json:"review,omitempty"`
+	PinnedAt time.Time `json:"pinned_at"`
 }
 
 type MergedCommit struct {

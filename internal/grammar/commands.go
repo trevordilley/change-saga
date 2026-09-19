@@ -286,11 +286,12 @@ var commands = []Command{
 		Positionals: sagaOnly,
 	},
 	{
-		Name: "repin", Status: StatusImplemented, Mutates: true, Writes: []string{"code-evidence", "merge", "sync-cursor"},
-		Usage:   "change-saga repin --onto REV [--branch REV] [--dry-run] [--json] [--repo PATH] <saga>",
-		Summary: "after a change lands, re-pin evidence references to the landed commit and record the branch's commit messages",
+		Name: "repin", Status: StatusImplemented, Mutates: true, Writes: []string{"code-evidence", "merge", "sync-cursor", "review"},
+		Usage:   "change-saga repin --onto REV [--branch REV] [--review ID] [--dry-run] [--json] [--repo PATH] <saga>",
+		Summary: "after a change lands, re-pin evidence references to the landed commit, record the branch's commit messages, and freeze the change's review at its exact base and head",
 		Flags: []Flag{
 			required("onto", "REV", "the commit the change landed as"), optional("branch", "REV", "the branch's last commit when still available"),
+			optional("review", "ID", "the landed change's review; defaults to the Saga's only open review"),
 			optional("dry-run", "", "report without writing"), jsonFlag, optional("repo", "PATH", "source checkout when separate"),
 		},
 		Positionals: sagaOnly,

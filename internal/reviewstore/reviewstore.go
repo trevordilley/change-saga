@@ -229,13 +229,19 @@ func Freeze(root, reviewID string, merged saga.ReviewMerge) error {
 		if review == nil {
 			return fmt.Errorf("review %q does not exist", reviewID)
 		}
-		manifest := review.ReviewManifest
-		manifest.Merged = &merged
-		if err := saga.ValidateReviewManifest(manifest); err != nil {
-			return err
-		}
-		return store.WriteJSON(filepath.Join(review.Directory, saga.ReviewManifestName), manifest, false)
+		return WriteFrozen(review, merged)
 	})
+}
+
+// WriteFrozen rewrites review.json with its frozen range. The caller holds
+// the Saga's writer lock.
+func WriteFrozen(review *saga.Review, merged saga.ReviewMerge) error {
+	manifest := review.ReviewManifest
+	manifest.Merged = &merged
+	if err := saga.ValidateReviewManifest(manifest); err != nil {
+		return err
+	}
+	return store.WriteJSON(filepath.Join(review.Directory, saga.ReviewManifestName), manifest, false)
 }
 
 func findSlide(document *saga.Saga, reviewID, slideID string) (*saga.Review, *saga.Slide, error) {

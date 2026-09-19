@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/twentyideas/changesaga/internal/coderesolve"
+	"github.com/twentyideas/changesaga/internal/reviewstate"
 
 	"github.com/twentyideas/changesaga/internal/changeview"
 	"github.com/twentyideas/changesaga/internal/coverage"
@@ -36,8 +37,12 @@ type statusDocument struct {
 	// opened with --against has them.
 	Comparison *changeview.Layers `json:"comparison,omitempty"`
 	livingapp.Status
-	NextActions   []nextaction.Action `json:"next_actions"`
-	AuthoringLoop nextaction.Loop     `json:"authoring_loop"`
+	// Reviews reports every open pull request review slide by slide: each
+	// reviewer's decision and whether it is out of date. It is a report,
+	// never part of the exit status.
+	Reviews       []reviewstate.Report `json:"reviews"`
+	NextActions   []nextaction.Action  `json:"next_actions"`
+	AuthoringLoop nextaction.Loop      `json:"authoring_loop"`
 }
 
 // opening names how a Saga was opened: observe one commit, or compare head
@@ -123,6 +128,15 @@ func buildStatus(ctx context.Context, root, repoDir string, rng gitdiff.Range, a
 		Report: value.report, Schema: StatusSchema, Opening: view, Status: living,
 		NextActions: nextaction.Derive(living, root), AuthoringLoop: nextaction.AuthoringLoop(root),
 	}
+	var open []*saga.Review
+	for _, review := range value.document.Reviews {
+		if review.Merged == nil {
+			open = append(open, review)
+		}
+	}
+	if document.Reviews, err = buildReviewReports(ctx, value.document, value.checkout, open); err != nil {
+		return statusDocument{}, err
+	}
 	if value.changes.Mode == gitdiff.ModeCompare {
 		layers, _, err := changeview.Open(ctx, changeview.OpenOptions{
 			SagaRoot: root, Document: value.document, Checkout: value.checkout,
@@ -206,6 +220,10 @@ func printLivingStatus(out io.Writer, status statusDocument, maxItems int) {
 		fmt.Fprintln(out)
 	}
 	printAppStatus(out, status.Status)
+	if len(status.Reviews) > 0 {
+		fmt.Fprintln(out, "\nReviews (decisions per slide; the team decides what it requires):")
+		printReviewReports(out, status.Reviews)
+	}
 	if len(status.Stale) > 0 {
 		fmt.Fprintf(out, "\nStale pins: %d records must be revisited\n", len(status.Stale))
 	}

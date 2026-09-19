@@ -230,3 +230,53 @@ func TestOnePullRequestHasOneReview(t *testing.T) {
 		t.Fatalf("a refused review left files behind: %v", err)
 	}
 }
+
+func TestRepinFreezesTheLandedReviewAndHistoryLinksIt(t *testing.T) {
+	fixture := newReviewFixture(t)
+	persona := personaURNFor("app")
+	run(t, AddItem, "--review", "pr-7", "--slide", "table", "--kind", "statement", "--element-id", "note", "--description", "Who the jobs table serves", "--record", persona, fixture.root)
+	run(t, Review, "approve", "--review", "pr-7", "--slide", "queue", "--reviewer-kind", "human", fixture.root)
+	git(t, fixture.repo, "add", ".")
+	git(t, fixture.repo, "commit", "-m", "Review decisions")
+	head := strings.TrimSpace(git(t, fixture.repo, "rev-parse", "HEAD"))
+	fork := strings.TrimSpace(git(t, fixture.repo, "merge-base", "main", "HEAD"))
+	git(t, fixture.repo, "checkout", "main")
+	git(t, fixture.repo, "merge", "--squash", "feature/pg")
+	git(t, fixture.repo, "commit", "-m", "Move the queue to Postgres (#7)")
+	landed := strings.TrimSpace(git(t, fixture.repo, "rev-parse", "HEAD"))
+	output := run(t, Repin, "--onto", "HEAD", fixture.root)
+	if !strings.Contains(output, "Froze review pr-7") {
+		t.Fatalf("repin did not freeze the review:\n%s", output)
+	}
+	git(t, fixture.repo, "add", ".")
+	git(t, fixture.repo, "commit", "-m", "Re-pin after landing")
+	git(t, fixture.repo, "branch", "-D", "feature/pg")
+
+	report := reviewReport(t, fixture)
+	if report.Merged == nil || report.Merged.Base != fork || report.Merged.Head != head || report.Merged.Landed != landed || report.Range == nil || !report.Range.Frozen || report.Range.HeadOID != head {
+		t.Fatalf("frozen review = merged %#v range %#v", report.Merged, report.Range)
+	}
+	if queue := slideReport(t, report, "queue"); len(queue.Decisions) != 1 || queue.Decisions[0].Currency != reviewstate.Current {
+		t.Fatalf("the frozen review lost its decisions: %#v", queue.Decisions)
+	}
+	var refused bytes.Buffer
+	if err := Review(context.Background(), []string{"approve", "--review", "pr-7", "--slide", "table", "--reviewer-kind", "human", fixture.root}, &refused); err == nil {
+		t.Fatal("a merged review accepted a new decision")
+	}
+
+	var history bytes.Buffer
+	if err := Query(context.Background(), []string{"history", "--saga", fixture.root, "--node", persona}, &history); err != nil {
+		t.Fatalf("history: %v\n%s", err, history.String())
+	}
+	var envelope struct {
+		Data struct {
+			Reviews []struct {
+				ID      string   `json:"id"`
+				Because []string `json:"because"`
+			} `json:"reviews"`
+		} `json:"data"`
+	}
+	if err := json.Unmarshal(history.Bytes(), &envelope); err != nil || len(envelope.Data.Reviews) != 1 || envelope.Data.Reviews[0].ID != "pr-7" {
+		t.Fatalf("history did not link the review: %v\n%s", err, history.String())
+	}
+}

@@ -586,6 +586,9 @@ func validateMerge(value Merge, name string) error {
 	if value.Base != "" && !coderef.ValidCommit(value.Base) {
 		return fmt.Errorf("merge record base must be a full commit")
 	}
+	if value.Review != "" && !ValidID(value.Review) {
+		return fmt.Errorf("merge record review must be a review id")
+	}
 	for index, commit := range value.Commits {
 		if !coderef.ValidCommit(commit.Commit) || strings.TrimSpace(commit.Subject) == "" || commit.Date.IsZero() {
 			return fmt.Errorf("merged commit %d requires a full commit, a date, and a subject", index+1)
