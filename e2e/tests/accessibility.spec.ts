@@ -24,8 +24,8 @@ async function focusableDescendants(locator: import("@playwright/test").Locator,
 test("@critical exposes the workspace switcher as a real tablist with selection and keyboard movement", async ({ page, saga }) => {
   const tablist = page.getByRole("tablist", { name: "Workspace" });
   const tabs = tablist.getByRole("tab");
-  await expect(tabs).toHaveCount(3);
-  await expect(tabs).toHaveText([/Saga/, /Code Diff/, /Coverage/]);
+  await expect(tabs).toHaveCount(4);
+  await expect(tabs).toHaveText([/Saga/, /Change/, /Code Diff/, /Coverage/]);
 
   const sagaTab = page.getByRole("tab", { name: "Saga" });
   const codeTab = page.getByRole("tab", { name: "Code Diff" });
@@ -34,10 +34,10 @@ test("@critical exposes the workspace switcher as a real tablist with selection 
   const selection = async (): Promise<string[]> => tabs.evaluateAll((elements) => elements.map((element) => `${element.textContent?.trim()}:${element.getAttribute("aria-selected")}:${(element as HTMLElement).tabIndex}`));
   // Exactly one tab is selected, and only that tab is in the sequential tab
   // order; the rest are reached with the arrow keys.
-  expect(await selection()).toEqual(["Saga:true:0", "Code Diff:false:-1", "Coverage:false:-1"]);
+  expect(await selection()).toEqual(["Saga:true:0", "Change:false:-1", "Code Diff:false:-1", "Coverage:false:-1"]);
 
   // Every tab names the panel it controls, and that panel is the visible one.
-  for (const [tab, name] of [[sagaTab, "Saga"], [codeTab, "Code Diff"], [coverageTab, "Coverage"]] as const) {
+  for (const [tab, name] of [[sagaTab, "Saga"], [page.getByRole("tab", { name: "Change" }), "Change"], [codeTab, "Code Diff"], [coverageTab, "Coverage"]] as const) {
     const controls = await tab.getAttribute("aria-controls");
     await expect(page.locator(`#${controls}`)).toHaveAttribute("aria-labelledby", (await tab.getAttribute("id")) ?? "");
     expect(await page.locator(`#${controls}`).getAttribute("role")).toBe("tabpanel");
@@ -46,7 +46,7 @@ test("@critical exposes the workspace switcher as a real tablist with selection 
   await expect(page.getByRole("tabpanel", { name: "Saga" })).toBeVisible();
 
   await codeTab.click();
-  expect(await selection()).toEqual(["Saga:false:-1", "Code Diff:true:0", "Coverage:false:-1"]);
+  expect(await selection()).toEqual(["Saga:false:-1", "Change:false:-1", "Code Diff:true:0", "Coverage:false:-1"]);
   await expect(page.getByRole("tabpanel", { name: "Code Diff" })).toBeVisible();
   await expect(page.getByRole("tabpanel", { name: "Saga" })).toBeHidden();
   await expect(page).toHaveURL(/[?&]view=code/);
@@ -65,7 +65,7 @@ test("@critical exposes the workspace switcher as a real tablist with selection 
   await expect(sagaTab).toBeFocused();
   await page.keyboard.press("End");
   await expect(coverageTab).toBeFocused();
-  expect(await selection()).toEqual(["Saga:false:-1", "Code Diff:false:-1", "Coverage:true:0"]);
+  expect(await selection()).toEqual(["Saga:false:-1", "Change:false:-1", "Code Diff:false:-1", "Coverage:true:0"]);
 
   await sagaTab.click();
   await expect(page.getByRole("tabpanel", { name: "Saga" })).toBeVisible();

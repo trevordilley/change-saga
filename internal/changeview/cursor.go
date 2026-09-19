@@ -23,11 +23,15 @@ type CursorCommit struct {
 // cursor and the code commit it named.
 func CursorHistory(ctx context.Context, location Location) ([]CursorCommit, error) {
 	file := path.Join(location.Path, saga.CursorName)
+	history := []CursorCommit{}
+	if _, err := revParse(ctx, location.Repo, "HEAD"); err != nil {
+		// A Saga repository with no commits yet has no cursor history.
+		return history, nil
+	}
 	output, err := exec.CommandContext(ctx, "git", "-C", location.Repo, "log", "--format=%H", "--", file).Output()
 	if err != nil {
 		return nil, err
 	}
-	history := []CursorCommit{}
 	for _, commit := range strings.Fields(string(output)) {
 		data, err := exec.CommandContext(ctx, "git", "-C", location.Repo, "show", commit+":"+file).Output()
 		if err != nil {

@@ -7,6 +7,7 @@ import (
 	"sort"
 	"strings"
 	"sync"
+	"time"
 
 	"github.com/twentyideas/changesaga/internal/changeview"
 	"github.com/twentyideas/changesaga/internal/coderesolve"
@@ -90,6 +91,25 @@ func (a *app) layersFor(ctx context.Context, current *reviewSnapshot) (*changevi
 		a.layers.value = &layers
 	}
 	return a.layers.value, a.layers.err
+}
+
+// awaitLayers is comparisonLayers for a write: an approval cannot be asked
+// to retry, so it waits, bounded, for a comparison that is still building.
+func (a *app) awaitLayers(w http.ResponseWriter, r *http.Request) *changeview.Layers {
+	if a.layersLoader == nil {
+		deadline := time.Now().Add(2 * time.Minute)
+		for a.snapshot(r.Context()) == nil && time.Now().Before(deadline) {
+			if state, _ := a.snapshotState(); state != "building" {
+				break
+			}
+			select {
+			case <-r.Context().Done():
+				return nil
+			case <-time.After(50 * time.Millisecond):
+			}
+		}
+	}
+	return a.comparisonLayers(w, r)
 }
 
 // approvable is the set of records a compared reviewer may approve or reject:
@@ -195,7 +215,7 @@ func (a *app) reviewAllowed(w http.ResponseWriter, r *http.Request, target strin
 		http.Error(w, "Approval belongs to a change: open the Saga with --against to approve or reject.", http.StatusForbidden)
 		return false
 	}
-	layers := a.comparisonLayers(w, r)
+	layers := a.awaitLayers(w, r)
 	if layers == nil {
 		return false
 	}

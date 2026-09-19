@@ -64,9 +64,11 @@ func NodeHistory(ctx context.Context, root, urn string) (History, error) {
 	for _, file := range node.Files {
 		paths = append(paths, path.Join(location.Path, file))
 	}
-	commits, err := readCommits(ctx, location.Repo, "", "HEAD", paths...)
-	if err != nil {
-		return History{}, err
+	commits := []commitInfo{}
+	if _, err := revParse(ctx, location.Repo, "HEAD"); err == nil {
+		if commits, err = readCommits(ctx, location.Repo, "", "HEAD", paths...); err != nil {
+			return History{}, err
+		}
 	}
 	status, _ := exec.CommandContext(ctx, "git", append([]string{"-C", location.Repo, "status", "--porcelain", "--"}, paths...)...).Output()
 	history.Uncommitted = len(commits) == 0 || len(strings.TrimSpace(string(status))) > 0

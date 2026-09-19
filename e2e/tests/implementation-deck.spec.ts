@@ -25,12 +25,12 @@ test("a Saga opens several implementation decks without paginating its documenta
       if (slide === "request-enters") run("add-item", "--slide", slide, "--kind", "node", "--id", "no-diff", "--element-id", "unlinked-node", "--description", "A nearby element without exact diff evidence.", saga.sagaRoot);
     }
   }
-  run("cover", "--repo", saga.sourceRepo, "--target", "urn:change-saga:wave-one:slide:request-enters:item:surprise", "--path", "src/app.go", "--side", "new", "--lines", "3", "--name", "request-slide-item", saga.sagaRoot);
+  run("cover", "--repo", saga.sourceRepo, "--against", "main", "--target", "urn:change-saga:wave-one:slide:request-enters:item:surprise", "--path", "src/app.go", "--side", "new", "--lines", "3", "--name", "request-slide-item", saga.sagaRoot);
 
   await page.reload();
   await waitForSettledSaga(page);
 
-  await expect(page.getByRole("tablist", { name: "Workspace" }).getByRole("tab")).toHaveText([/Saga/, /Code Diff/, /Coverage/]);
+  await expect(page.getByRole("tablist", { name: "Workspace" }).getByRole("tab")).toHaveText([/Saga/, /Change/, /Code Diff/, /Coverage/]);
   await expect(page.getByRole("tabpanel", { name: "Saga" })).toBeVisible();
   await expect(page.getByText("Wave 1 connects the story")).toBeVisible();
 

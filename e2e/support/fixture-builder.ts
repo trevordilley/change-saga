@@ -81,7 +81,7 @@ function runSaga(args: string[], cwd: string): string {
 }
 
 function statusReport(sourceRepo: string, sagaRoot: string): StatusReport {
-  const result = spawnSync(binaryPath, ["status", "--json", "--repo", sourceRepo, sagaRoot], {
+  const result = spawnSync(binaryPath, ["status", "--json", "--repo", sourceRepo, "--against", "main", sagaRoot], {
     cwd: dirname(sagaRoot),
     encoding: "utf8"
   });
@@ -163,7 +163,7 @@ function buildSagaRepository(root: string, source: { sourceRepo: string; base: s
 
   runSaga([
     "init", "--repo", source.sourceRepo, "--repository", declaredRepository,
-    "--base", source.base, "--head", source.head, "--id", "wave-one", "--title", "Wave One Review", sagaRoot
+    "--id", "wave-one", "--title", "Wave One Review", sagaRoot
   ], sagaRepo);
   // The app overview carries the review narrative; the architecture chapter
   // belongs to the one epic this change touches.
@@ -192,7 +192,7 @@ function buildSagaRepository(root: string, source: { sourceRepo: string; base: s
 }
 
 export async function startSagaServer(repositories: SagaRepositories, extraArgs: string[] = []): Promise<SagaServer> {
-  const server = spawn(binaryPath, ["serve", "--addr", "127.0.0.1:0", "--repo", repositories.sourceRepo, ...extraArgs, repositories.sagaRoot], {
+  const server = spawn(binaryPath, ["serve", "--addr", "127.0.0.1:0", "--repo", repositories.sourceRepo, "--against", "main", ...extraArgs, repositories.sagaRoot], {
     cwd: dirname(repositories.sagaRoot),
     // A private TMPDIR keeps every staged upload this process creates inside the
     // fixture, so a test can prove rejected uploads leave nothing behind.
@@ -516,7 +516,7 @@ function buildLargeSagaRepository(root: string, source: { sourceRepo: string; ba
   configureGit(sagaRepo, reviewer);
   runSaga([
     "init", "--repo", source.sourceRepo, "--repository", declaredRepository,
-    "--base", source.base, "--head", source.head, "--id", "large", "--title", "Large Saga", sagaRoot
+    "--id", "large", "--title", "Large Saga", sagaRoot
   ], sagaRepo);
   runSaga(["epic", "add", "--id", "large", "--title", "Large change", sagaRoot], sagaRepo);
   write(join(sagaRoot, "___overview", "overview.fragment", "content.md"), "# Large change overview {#large-overview}\n\nThis change rewrites every component module.\n");
@@ -557,7 +557,7 @@ function buildLargeSagaRepository(root: string, source: { sourceRepo: string; ba
   }
   const batch = join(root, "coverage-batch.json");
   write(batch, `${JSON.stringify(records)}\n`);
-  runSaga(["cover", "--repo", source.sourceRepo, "--batch", batch, sagaRoot], sagaRepo);
+  runSaga(["cover", "--repo", source.sourceRepo, "--against", "main", "--batch", batch, sagaRoot], sagaRepo);
 
   const report = statusReport(source.sourceRepo, sagaRoot);
   if ((report.uncovered ?? []).length !== 0) throw new Error(`large fixture left ${report.uncovered?.length ?? 0} atoms uncovered`);

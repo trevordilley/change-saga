@@ -95,34 +95,34 @@ test("@critical exposes mapping scrutiny, claims, and verification as an AI revi
   git(sagaRepo, "add", ".");
   git(sagaRepo, "commit", "-m", "record author claim and verification");
 
-  const mappings = runCLI(sagaRepositories, ["query", "mappings", "--saga", sagaRoot, "--repo", sourceRepo, "--sort", "scrutiny"]);
+  const mappings = runCLI(sagaRepositories, ["query", "mappings", "--saga", sagaRoot, "--repo", sourceRepo, "--against", "main", "--sort", "scrutiny"]);
   expect(mappings.status, mappings.stderr).toBe(0);
   const mappingEnvelope = JSON.parse(mappings.stdout) as { data: { mappings: Array<{ scrutiny_score: number; atoms_per_note: number; target_file_count: number; reasons: unknown[] }> } };
   expect(mappingEnvelope.data.mappings.length).toBeGreaterThan(0);
   expect(mappingEnvelope.data.mappings[0]).toEqual(expect.objectContaining({ scrutiny_score: expect.any(Number), atoms_per_note: expect.any(Number), target_file_count: expect.any(Number), reasons: expect.any(Array) }));
 
-  const claims = runCLI(sagaRepositories, ["query", "claims", "--saga", sagaRoot, "--repo", sourceRepo, "--status", "verified"]);
+  const claims = runCLI(sagaRepositories, ["query", "claims", "--saga", sagaRoot, "--repo", sourceRepo, "--against", "main", "--status", "verified"]);
   expect(claims.status, claims.stderr).toBe(0);
   const claimEnvelope = JSON.parse(claims.stdout) as { data: { claims: Array<{ id: string; verification_status: string; attribution: { status: string }; evidence: Array<{ mapped_to_target: boolean }> }> } };
   expect(claimEnvelope.data.claims).toHaveLength(1);
   expect(claimEnvelope.data.claims[0]).toEqual(expect.objectContaining({ id: "greeting-behavior", verification_status: "verified", attribution: expect.objectContaining({ status: "committed" }) }));
   expect(claimEnvelope.data.claims[0].evidence.every((item) => item.mapped_to_target)).toBe(true);
 
-  const verifications = runCLI(sagaRepositories, ["query", "verifications", "--saga", sagaRoot, "--repo", sourceRepo, "--claim", "greeting-behavior"]);
+  const verifications = runCLI(sagaRepositories, ["query", "verifications", "--saga", sagaRoot, "--repo", sourceRepo, "--against", "main", "--claim", "greeting-behavior"]);
   expect(verifications.status, verifications.stderr).toBe(0);
   const verificationEnvelope = JSON.parse(verifications.stdout) as { data: { verifications: Array<{ id: string; status: string; attribution: { status: string } }> } };
   expect(verificationEnvelope.data.verifications).toEqual([
     expect.objectContaining({ id: "greeting-inspection", status: "verified", attribution: expect.objectContaining({ status: "committed" }) })
   ]);
 
-  const owners = runCLI(sagaRepositories, ["query", "diff-owners", "--saga", sagaRoot, "--repo", sourceRepo, "--ref", evidence]);
+  const owners = runCLI(sagaRepositories, ["query", "diff-owners", "--saga", sagaRoot, "--repo", sourceRepo, "--against", "main", "--ref", evidence]);
   expect(owners.status, owners.stderr).toBe(0);
   const ownerEnvelope = JSON.parse(owners.stdout) as { data: { atoms: Array<{ owners: Array<{ mapping?: { scrutiny_score: number } }> }> } };
   expect(ownerEnvelope.data.atoms.flatMap((atom) => atom.owners).some((owner) => typeof owner.mapping?.scrutiny_score === "number")).toBe(true);
 
   // Mapping every changed line is necessary but not sufficient: this Saga has
   // no accepted stories, so it is not ready for review, and status says why.
-  const status = runCLI(sagaRepositories, ["status", "--repo", sourceRepo, sagaRoot]);
+  const status = runCLI(sagaRepositories, ["status", "--repo", sourceRepo, "--against", "main", sagaRoot]);
   expect(status.status, status.stderr).toBe(3);
   expect(status.stdout).toContain("ALL ATOMS MAPPED");
   expect(status.stdout).toContain("does not establish explanation quality or correctness");
@@ -171,67 +171,57 @@ test("@critical refuses a checkout whose origin does not match the declared repo
   git(sourceRepo, "remote", "set-url", "origin", "https://example.test/acme/impostor.git");
   const before = treeSnapshot(sagaRoot);
 
-  const status = runCLI(sagaRepositories, ["status", "--repo", sourceRepo, sagaRoot]);
+  const status = runCLI(sagaRepositories, ["status", "--repo", sourceRepo, "--against", "main", sagaRoot]);
   expect(status.status, "status against a mismatched checkout").not.toBe(0);
   expect(`${status.stdout}${status.stderr}`).toContain("does not match declared repository");
 
-  const cover = runCLI(sagaRepositories, ["cover", "--repo", sourceRepo, "--target", "___overview/overview.fragment", "--path", "src/app.go", "--side", "new", "--lines", "3", "--name", "must-not-exist", sagaRoot]);
+  const cover = runCLI(sagaRepositories, ["cover", "--repo", sourceRepo, "--against", "main", "--target", "___overview/overview.fragment", "--path", "src/app.go", "--side", "new", "--lines", "3", "--name", "must-not-exist", sagaRoot]);
   expect(cover.status, "cover against a mismatched checkout").not.toBe(0);
   expect(`${cover.stdout}${cover.stderr}`).toContain("does not match declared repository");
   expect(treeSnapshot(sagaRoot), "saga tree after a refused mismatched checkout").toBe(before);
 
   // The override exists and is explicit; nothing else unblocks the check.
-  const overridden = runCLI(sagaRepositories, ["cover", "--repo", sourceRepo, "--allow-repository-mismatch", "--target", "___overview/overview.fragment", "--path", "src/app.go", "--side", "new", "--lines", "3", "--name", "explicit-override", sagaRoot]);
+  const overridden = runCLI(sagaRepositories, ["cover", "--repo", sourceRepo, "--against", "main", "--allow-repository-mismatch", "--target", "___overview/overview.fragment", "--path", "src/app.go", "--side", "new", "--lines", "3", "--name", "explicit-override", sagaRoot]);
   expect(overridden.status, overridden.stderr).toBe(0);
 
   git(sourceRepo, "remote", "set-url", "origin", declaredRepository);
 });
 
-test("@critical projects a PR diff and PR Saga onto the codebase Saga without comparing authored content", async ({ sagaRepositories }) => {
+test("@critical compares a change: the code it touched lights up the records that reference it", async ({ sagaRepositories }) => {
   const { sagaRepo, sagaRoot, sourceRepo } = sagaRepositories;
   const incomingBase = git(sourceRepo, "rev-parse", "HEAD");
+  // The Saga lives in its own repository, so its sync cursor records the code
+  // commit it documents; a comparison reads the Saga that documented its base.
+  const synced = runCLI(sagaRepositories, ["sync", "--repo", sourceRepo, sagaRoot]);
+  expect(synced.status, synced.stderr).toBe(0);
+  git(sagaRepo, "add", ".");
+  git(sagaRepo, "commit", "-m", "document the incoming base");
   writeFileSync(join(sourceRepo, "src", "app.go"), `package demo\n\nfunc Greeting(name string) string {\n\treturn "welcome, " + name\n}\n\nfunc Ready() bool {\n\treturn true\n}\n\nfunc Audited() bool {\n\treturn true\n}\n`);
   writeFileSync(join(sourceRepo, "new-capability.go"), "package demo\n\nconst NewCapability = true\n");
   git(sourceRepo, "add", ".");
   git(sourceRepo, "commit", "-m", "change greeting and add capability");
 
-  const direct = runCLI(sagaRepositories, [
-    "compare", "--json", "--repo", sourceRepo, "--base", incomingBase, "--head", "HEAD", sagaRoot
-  ]);
-  expect(direct.status, direct.stderr).toBe(0);
-  const directResult = JSON.parse(direct.stdout) as {
-    schema: string;
-    mode: string;
-    basis: string;
-    content_compared: boolean;
-    baseline: { complete: boolean };
-    summary: { direct_intersections: number; contextual_additions: number; new_content_required: number; targets_must_update: number };
-    targets: Array<{ action: string; target: string; content_path?: string; changes: Array<{ relationship: string }> }>;
-    new_content: Array<{ atom: { path: string } }>;
+  const compared = runCLI(sagaRepositories, ["status", "--json", "--repo", sourceRepo, "--against", incomingBase, sagaRoot]);
+  const result = JSON.parse(compared.stdout) as {
+    opening: { mode: string; base_oid: string };
+    comparison: {
+      changed: Array<{ urn: string }>;
+      affected: Array<{ urn: string; because: Array<{ kind: string }>; reasons: Array<{ subject: string }> }>;
+      code: { groups: Array<{ urn: string }>; unreferenced: Array<{ path: string }> };
+    };
   };
-  expect(directResult.schema).toBe("change-saga.impact/v1");
-  expect(directResult.mode).toBe("saga_to_diff");
-  expect(directResult.basis).toBe("code_references");
-  expect(directResult.content_compared).toBe(false);
-  expect(directResult.baseline.complete).toBe(true);
-  expect(directResult.summary.direct_intersections).toBeGreaterThan(0);
-  expect(directResult.summary.contextual_additions).toBeGreaterThan(0);
-  expect(directResult.summary.targets_must_update).toBeGreaterThan(0);
-  expect(directResult.targets.some((target) => target.action === "must_update" && target.content_path?.endsWith("content.md"))).toBe(true);
-  expect(directResult.new_content.some((change) => change.atom.path === "new-capability.go")).toBe(true);
+  expect(result.opening.mode).toBe("compare");
+  expect(result.opening.base_oid).toBe(incomingBase);
+  // The Saga did not change, so nothing is Changed; the greeting's owners are
+  // Affected by code, with the commit that changed it beside them.
+  expect(result.comparison.changed).toEqual([]);
+  const greeting = result.comparison.affected.find((record) => record.urn.includes(":fragment:") && record.urn.includes("overview"));
+  expect(greeting?.because.some((cause) => cause.kind === "code")).toBe(true);
+  expect(greeting?.reasons.map((reason) => reason.subject)).toContain("change greeting and add capability");
+  expect(result.comparison.code.unreferenced.some((hunk) => hunk.path === "new-capability.go")).toBe(true);
 
-  const prSaga = join(sagaRepo, "incoming-pr.saga");
-  const initialized = runCLI(sagaRepositories, [
-    "init", "--repo", sourceRepo, "--repository", declaredRepository, "--base", incomingBase, "--head", "HEAD",
-    "--id", "incoming-pr", "--title", "Incoming PR", prSaga
-  ]);
-  expect(initialized.status, initialized.stderr).toBe(0);
-  const sagaComparison = runCLI(sagaRepositories, [
-    "compare", "--json", "--repo", sourceRepo, "--against-repo", sourceRepo, "--against-saga", prSaga, sagaRoot
-  ]);
-  expect(sagaComparison.status, sagaComparison.stderr).toBe(0);
-  const sagaResult = JSON.parse(sagaComparison.stdout) as { mode: string; incoming: { saga_id: string }; summary: typeof directResult.summary };
-  expect(sagaResult.mode).toBe("saga_to_saga");
-  expect(sagaResult.incoming.saga_id).toBe("incoming-pr");
-  expect(sagaResult.summary).toEqual(directResult.summary);
+  const observed = runCLI(sagaRepositories, ["status", "--json", "--repo", sourceRepo, sagaRoot]);
+  const observation = JSON.parse(observed.stdout) as { opening: { mode: string }; comparison?: unknown };
+  expect(observation.opening.mode).toBe("observe");
+  expect(observation.comparison).toBeUndefined();
 });
