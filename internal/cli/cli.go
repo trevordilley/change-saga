@@ -335,6 +335,10 @@ deleted lines); --commit pins any revision; --ref names a location directly. --f
 references a whole file (renames, mode and binary changes). In the implementation deck
 the target is an Item. Narrative targets are section/fragment paths, target URNs, and
 <fragment-path>#<landmark-id>.
+A pull request review's Item explains its review's change, so with neither --against nor
+--head, cover on a review Item compares the review's own range: the merge-base of its base
+and the head it follows (its frozen range after merge). --changed-lines then needs no
+--against. Pass --against to compare anything else.
 --batch reads newline-delimited JSON records (or one JSON array) with the per-record
 fields target, path, side, lines, changed_lines, file, commit, refs, note, and name; the
 whole batch is resolved before anything is written, and a failing record leaves the saga

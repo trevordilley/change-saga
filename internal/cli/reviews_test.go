@@ -349,3 +349,34 @@ func TestReviewListUncoveredListsOnlyGaps(t *testing.T) {
 		t.Fatalf("review list --uncovered --json = %#v, %v", result, err)
 	}
 }
+
+// TestCoverOnAReviewItemComparesTheReviewsRange needs no --against: a review
+// Item explains its review's change, so cover reads the review's own range.
+func TestCoverOnAReviewItemComparesTheReviewsRange(t *testing.T) {
+	fixture := newReviewFixture(t)
+	git(t, fixture.repo, "remote", "add", "origin", "https://example.test/acme/app.git")
+	// The checkout moves past the review's head; cover reads the head the
+	// review follows, not the checkout's.
+	git(t, fixture.repo, "checkout", "-b", "elsewhere")
+	writeFile(t, filepath.Join(fixture.repo, "queue.go"), "package queue\n\nfunc Enqueue() string { return \"elsewhere\" }\n")
+	git(t, fixture.repo, "commit", "-am", "Unrelated work")
+	queue := saga.ReviewItemTarget("app", "pr-7", "queue", "node")
+	table := saga.ReviewItemTarget("app", "pr-7", "table", "node")
+	run(t, Cover, "--target", queue, "--path", "queue.go", "--changed-lines", "--repo", fixture.repo, fixture.root)
+	run(t, Cover, "--target", table, "--path", "store.go", "--side", "old", "--lines", "3", "--repo", fixture.repo, fixture.root)
+	covered := reviewReport(t, fixture).Coverage
+	if covered == nil || covered.Summary.Covered != 4 || covered.Summary.Total != 4 || covered.Summary.Overlapping != 1 {
+		t.Fatalf("coverage after covering from the review's range = %#v", covered)
+	}
+
+	var output bytes.Buffer
+	if err := Cover(context.Background(), []string{"--target", "app-overview", "--path", "queue.go", "--changed-lines", "--repo", fixture.repo, fixture.root}, &output); err == nil || !strings.Contains(err.Error(), "--against") {
+		t.Fatalf("--changed-lines on documentation without --against = %v", err)
+	}
+	batch := `{"target":"` + queue + `","path":"queue.go","changed_lines":true,"name":"again"}
+{"target":"app-overview","path":"queue.go","changed_lines":true}`
+	if err := cover(context.Background(), []string{"--batch", "-", "--repo", fixture.repo, fixture.root}, &output, strings.NewReader(batch)); err == nil || !strings.Contains(err.Error(), "comparisons differ") {
+		t.Fatalf("a batch mixing a review Item and documentation = %v", err)
+	}
+	assertValid(t, fixture.root)
+}

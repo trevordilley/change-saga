@@ -263,7 +263,7 @@ var commands = []Command{
 	{
 		Name: "cover", Status: StatusImplemented, Mutates: true, Writes: []string{"code-evidence"},
 		Usage:   "change-saga cover [flags] [--batch FILE|-] [--dry-run] [--against REV [--head REV]] <saga>",
-		Summary: "reference the code a target explains, pinned at a commit, from the smallest target that explains it",
+		Summary: "reference the code a target explains, pinned at a commit, from the smallest target that explains it; a review Item compares its review's own range unless --against is given",
 		Flags: []Flag{
 			optional("target", "TARGET", "section, fragment, landmark, or Item receiving the evidence"), optional("repo", "PATH", "source checkout when separate"),
 			optional("path", "PATH", "repository path"), optional("side", "SIDE", "new (head) or old (merge-base)"), optional("lines", "RANGES", "line ranges such as 4-9,12"),

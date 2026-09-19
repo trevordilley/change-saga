@@ -109,7 +109,7 @@ func replaceCoverage(ctx context.Context, args []string, out io.Writer, stdin io
 	if err != nil {
 		return err
 	}
-	files, err := buildCoverageFiles(ctx, document, records, *options.repoDir, options.opening.rng(), *options.allowMismatch)
+	files, err := buildCoverageFiles(ctx, document, records, *options.repoDir, options.opening.rng(), flagWasSet(flags, "head"), *options.allowMismatch)
 	if err != nil {
 		return err
 	}
