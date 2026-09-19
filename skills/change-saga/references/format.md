@@ -16,7 +16,7 @@ other version.
   ___workplan/
   ___quality/
     policies/  test-cases/<id>.test/
-  ___claims/  ___verifications/  ___review/
+  ___claims/  ___verifications/  ___merges/  ___reviews/
 ```
 
 `change-saga spec --json` publishes the resources, the legal relation endpoint
@@ -85,9 +85,7 @@ Report content belongs to an epic (or to the application's `___overview` and
     <claim-id>.json
   ___verifications/
     <verification-id>.json
-  ___review/
-    files/
-    threads/
+  ___reviews/<id>.review/
   ___epics/<epic>.epic/
     epic.json
     overview.fragment/
@@ -153,7 +151,7 @@ clients receive it so they do not need to interpret raw SVG or HTML geometry.
 
 ```sh
 change-saga install-skill
-change-saga init --repo <source-checkout> --base <rev> --head <rev> --title "Title" <name>.saga
+change-saga init --repo <source-checkout> --title "Title" <name>.saga
 change-saga epic add --id <epic> --title "Title" <name>.saga
 change-saga add-chapter --epic <epic> --title "Title" <name>.saga backend
 change-saga add-section --title "Title" <name>.saga backend.chapter/path/to/section
@@ -178,25 +176,31 @@ change-saga repin --onto <landed-commit> --branch <branch> --repo <source-checko
 change-saga query claims --saga <name>.saga --status unverified
 change-saga validate --json <name>.saga
 change-saga status --json --repo <source-checkout> <name>.saga
-change-saga compare --json --repo <source-checkout> --base <incoming-base> --head <incoming-head> <maintained.saga>
-change-saga compare --json --repo <source-checkout> --against-saga <incoming.saga> <maintained.saga>
+change-saga status --json --repo <source-checkout> --against <base> --head <head> <name>.saga
+change-saga query layers --saga <name>.saga --against <base> --layer affected
+change-saga query history --saga <name>.saga --node <urn>
 change-saga open --repo <source-checkout> <name>.saga
 change-saga serve status <name>.saga
 change-saga serve stop <name>.saga
-change-saga review --target path/to/demo.fragment --state approved --reviewer-kind human <name>.saga
-change-saga review --target path/to/demo.fragment --state approved --reviewer-kind ai --reviewer-name "Codex 1" --agent codex --model gpt-5.6-sol <name>.saga
-change-saga reply --thread <id> --state withdrawn <name>.saga
+change-saga review create --id pr-<n> --pr <n> --url <url> --base <branch> --head <pr-branch> <name>.saga
+change-saga add-slide --review pr-<n> --intent explain --layout sequence --title "Why the queue moved" <name>.saga queue-move
+change-saga add-item --review pr-<n> --slide queue-move --kind node --id table --element-id table --record <story-urn> --description "The new queue table." <name>.saga
+change-saga cover --against <branch> --target <review Item URN> --path queue.go --changed-lines --note "Replaces SQS with a table." <name>.saga
+change-saga review approve --review pr-<n> --slide queue-move --reviewer-kind human <name>.saga
+change-saga review request-changes --review pr-<n> --slide queue-move --reviewer-kind ai --reviewer-name "Codex 1" --agent codex --model gpt-5.6-sol --body "Explain the migration." <name>.saga
+change-saga review list --review pr-<n> <name>.saga
 ```
 
 `--repo` may be omitted when the saga is inside the source checkout. Flags
-precede positional arguments. `status` exits 0 when every current product atom
-is mapped and 3 when mapping gaps or stale selectors remain. That exit status
-describes omission coverage only, not correctness or explanation quality.
+precede positional arguments. Without `--against`, a command observes the Saga
+at its head; with it, the command compares the merge-base of the two revisions
+through the head, as a pull request does. Coverage describes omission only, not
+correctness or explanation quality.
 
 ## Claims and verification
 
 `___claims/<id>.json` stores one falsifiable author assertion, its narrative
-target, and exact supporting line/event URIs. Claims never contribute to
+target, and the code references that support it. Claims never contribute to
 coverage. `___verifications/<id>.json` stores one append-only result for a
 claim: `unverified`, `verified`, `failed`, or `inconclusive`, plus the method,
 summary, and optional reproducible command. Git attribution identifies who
@@ -229,41 +233,27 @@ and why the narrative target owns that code. The Saga drawer groups references
 by source file and displays these notes before the reviewer expands the linked
 ranges.
 
-## Review overlay
+## Reviews
 
-Threads live under `___review/threads/<id>.thread/`. Anchors use `target`,
-`region`, `drawing`, `text`, `note`, or `diff`. Region/drawing coordinates are
-normalized to `[0,1]`; shapes may carry color and stroke hints. Text anchors
-retain an exact quote and may carry a highlight color. A `note` anchor is a
-sticky note: it holds up to 2000 characters of plain `text`, a normalized `x`/`y`
-centre on the fragment stage, and an optional `color`. A sticky is an ordinary
-`comment` thread rather than a new thread kind, so it keeps replies, state, and
-a permalink; because its text lives in the anchor, rewording it appends an anchor
-event instead of rewriting a message. Messages contain `.fragment`
-packages, enabling Markdown, image, SVG, or sandboxed HTML replies. Treat thread
-roots, messages, reviewed-file records, approvals, and state events as
-append-only history. Diff threads may be comments or suggestions; suggestions
-include explicit replacement text.
+The Saga is documentation: its stories, designs, test cases, and decks carry no
+approvals and no comments. A review is a pull request's slide deck under
+`___reviews/<id>.review/`, one per pull request. Its base is what the pull
+request merges into and its head follows the pull request's branch. The review
+deck explains what the change did and why; its Items reference the code the
+change touched, shown as a diff against the base, and may reference the records
+it revised.
 
-Thread state events are `open`, `resolved`, or `withdrawn`. A withdrawn thread
-is hidden from the active review while its files remain in history; a later
-`open` event restores it. A thread event may instead carry an `anchor` to record
-new geometry, note text, or color for a committed annotation. Undo/redo before
-submission is transient UI state; committed removal and editing append events. Never
-delete or rewrite the original thread or message.
+Decisions are per review slide (`approved`, `changes_requested`, or `none` to
+withdraw) and comments attach to review slides and Items. Each decision and
+comment is its own append-only file; never consolidate them into shared files or
+rewrite them. A decision records the reviewer and the pull request head it was
+given at. The reviewer is `human` or `ai`; an AI reviewer names a distinct seat,
+the agent, and the exact model, so `Claude 1` and `Claude 2` stay independent
+even on the same model. Git supplies the authoritative author identity, and a
+reviewer's latest decision on a slide is current.
 
-Every top-level comment has its own `.thread` directory; every initial comment
-or reply has its own `.message` directory; and each state or approval transition
-is a new JSON file. Never consolidate these records into shared arrays.
-
-Do not supply or persist reviewer names. Canonical identity is the committer
-name and email, commit OID, and committer timestamp of the commit that first
-introduced each individual event file. Legacy `author` and `created_by` fields
-remain loadable but are not authoritative.
-Approval events additionally declare whether the committer reviewed directly
-as a human or through an AI. AI reviews name a distinct review seat, the agent
-kind, and exact model, allowing `Claude 1` and `Claude 2` to retain independent
-decisions even when they share a model. Multiple authors and personas can hold
-concurrent decisions on one target; a later event supersedes only the same
-author's matching persona. Each event remains its own file, so parallel review
-branches add files instead of editing a shared reviewer list.
+A decision goes out of date when its slide, or the code the slide's Items
+reference, changed after the commit it was given at; `review list` and `status`
+report each decision's currency. The tool never declares a review approved: it
+records decisions and the team decides what it requires. After the change
+lands, `repin` freezes the review at its exact base and head.
