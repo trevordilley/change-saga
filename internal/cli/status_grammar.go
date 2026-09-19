@@ -256,9 +256,11 @@ func printLivingStatus(out io.Writer, status statusDocument, maxItems int) {
 	}
 }
 
-// printAppStatus prints the app-level facts: epics, persona coverage, the
-// questions persona retirements raise, and stories gated off by flags.
+// printAppStatus prints the app-level facts: the overview and its terms,
+// epics, persona coverage, the questions persona retirements raise, and
+// stories gated off by flags.
 func printAppStatus(out io.Writer, status livingapp.Status) {
+	printOverviewStatus(out, status)
 	if len(status.Epics) > 0 {
 		fmt.Fprintln(out, "\nEpics:")
 		for _, epic := range status.Epics {
@@ -292,6 +294,48 @@ func printAppStatus(out io.Writer, status livingapp.Status) {
 	for _, story := range status.Stories {
 		if story.Availability == livingapp.AvailabilityImplementedNotEnabled {
 			fmt.Fprintf(out, "\nImplemented, not enabled: %s (gated by %s)\n", story.Story, strings.Join(story.GatedBy, ", "))
+		}
+	}
+}
+
+// printOverviewStatus prints the overview's parts, each absent one as a gap,
+// every term whose code went stale, and a comparison's new terminology. None
+// of it is required.
+func printOverviewStatus(out io.Writer, status livingapp.Status) {
+	overview := status.Overview
+	if overview.Name == "" {
+		return
+	}
+	part := func(value *livingapp.OverviewPart, command string) string {
+		if value == nil {
+			return "gap (optional; change-saga overview " + command + ")"
+		}
+		return value.Path
+	}
+	fmt.Fprintln(out, "\nOverview:")
+	fmt.Fprintf(out, "  %-28s %s\n", "name", overview.Name)
+	fmt.Fprintf(out, "  %-28s %s\n", "elevator pitch", part(overview.Pitch, "set-pitch"))
+	fmt.Fprintf(out, "  %-28s %s\n", "description", part(overview.Description, "set-description"))
+	terms := fmt.Sprintf("%d active", overview.Terms)
+	if overview.Terms == 0 {
+		terms = "gap (optional; change-saga term add)"
+	}
+	fmt.Fprintf(out, "  %-28s %s\n", "terms and vocabulary", terms)
+	for _, term := range status.Terms {
+		for _, code := range term.Code {
+			if code.State == coderesolve.Stale {
+				fmt.Fprintf(out, "  stale term %s (%s): %s — %s\n", term.ID, term.Name, code.Pinned, code.Reason)
+			}
+		}
+	}
+	if len(status.NewTerminology) > 0 {
+		fmt.Fprintf(out, "\nNew terminology (%d suggestions; optional, never blocking):\n", len(status.NewTerminology))
+		for _, suggestion := range status.NewTerminology {
+			name := suggestion.Name
+			if suggestion.Container != "" {
+				name = suggestion.Container + "." + name
+			}
+			fmt.Fprintf(out, "  %-28s %s#L%d\n", name, suggestion.Location.Path, suggestion.Location.Start)
 		}
 	}
 }
@@ -340,7 +384,7 @@ func livingSpec() map[string]any {
 		"next_actions": map[string]any{
 			"kinds":      []string{string(nextaction.KindCommand), string(nextaction.KindQuestion)},
 			"needs":      []string{string(nextaction.NeedProductJudgment), string(nextaction.NeedExternalAccess), string(nextaction.NeedExplicitExclusion)},
-			"categories": []string{"invalid_saga", "conflict", "invalid", "stale", "changed_source", "requirements", "coverage", "orphan", "review"},
+			"categories": []string{"invalid_saga", "conflict", "invalid", "stale", "changed_source", "requirements", "coverage", "orphan", "review", "growth"},
 			"contract":   "a command action carries a grammar invocation whose inputs the author supplies; a question action carries one focused question and the invocation each answer leads to",
 			"loop":       "inspect status --json, ask or mutate, validate, re-evaluate; an empty list is the fixed point and never a claim of correctness",
 		},

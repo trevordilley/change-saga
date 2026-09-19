@@ -162,7 +162,7 @@ func TestReferencesSurviveShiftsGoStaleOnEditsAndRepinAfterSquash(t *testing.T) 
 	if err := Init(context.Background(), []string{"--repo", repo, "--title", "Feature B", root}, &output); err != nil {
 		t.Fatal(err)
 	}
-	writeFile(t, filepath.Join(root, "___overview", "overview.fragment", "content.md"), "# Feature B {#feature-b}\n\nAdds B and U.\n")
+	writeFile(t, filepath.Join(overviewFragment(root), "content.md"), "# Feature B {#feature-b}\n\nAdds B and U.\n")
 	coverJSON(t, "--path", "app.go", "--changed-lines", "--name", "app", "--note", "B returns a value", root)
 	coverJSON(t, "--path", "util.go", "--changed-lines", "--name", "util", root)
 	app := readCodeFile(t, filepath.Join(root, saga.CodeDirName, "app.json"))
@@ -233,7 +233,7 @@ func TestReferencesSurviveShiftsGoStaleOnEditsAndRepinAfterSquash(t *testing.T) 
 		t.Fatalf("replace-coverage: %v\n%s", err, replaced.String())
 	}
 	edit := strings.TrimSpace(git(t, repo, "rev-parse", "HEAD"))
-	if err := AddClaim(context.Background(), []string{"--id", "b-returns-two", "--target", "___overview/overview.fragment", "--statement", "B returns two.", "--ref", edit + ":app.go#L7-L9", root}, &output); err != nil {
+	if err := AddClaim(context.Background(), []string{"--id", "b-returns-two", "--target", "___overview/description.fragment", "--statement", "B returns two.", "--ref", edit + ":app.go#L7-L9", root}, &output); err != nil {
 		t.Fatal(err)
 	}
 	commitAll(t, repo, "Re-author evidence")

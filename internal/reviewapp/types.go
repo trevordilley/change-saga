@@ -359,6 +359,9 @@ type VerificationPage struct {
 type OwnedAtom struct {
 	Atom   gitdiff.Atom `json:"atom"`
 	Owners []DiffOwner  `json:"owners"`
+	// Terms are the terms whose code references contain the line: the
+	// project vocabulary it defines. They never own the line for coverage.
+	Terms []string `json:"terms"`
 }
 
 type DiffOwnership struct {

@@ -10,6 +10,8 @@ import (
 	"testing"
 
 	"github.com/santhosh-tekuri/jsonschema/v6"
+
+	"github.com/twentyideas/changesaga/internal/coderef"
 )
 
 // Every app-level record and every story revision the writers produce must
@@ -23,6 +25,13 @@ func TestAppRecordsValidateAgainstTheirPublishedSchemas(t *testing.T) {
 	}
 	if _, err := AddFlag(root, "test", AddFlagInput{ID: "new-checkout", RevisionID: "r1", EventID: "off", Description: "New checkout",
 		Targets: []string{"urn:change-saga:test:story:checkout", "urn:change-saga:test:epic:core"}, CreatedAt: testTime}); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := AddTerm(root, "test", testtakerInput()); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := ReviseTerm(root, "test", ReviseTermInput{Term: testTermURN, ID: "r2", Parents: []string{testTermURN + ":revision:r1"}, CreatedAt: testTime,
+		TermDefinition: TermDefinition{Name: "Testtaker", Definition: "One sitting.", Code: []coderef.Reference{{Commit: strings.Repeat("c", 40), Path: "a.go", Digest: "sha256:" + strings.Repeat("d", 64), Note: "the whole file"}}}}); err != nil {
 		t.Fatal(err)
 	}
 	compiler := jsonschema.NewCompiler()
@@ -59,7 +68,8 @@ func TestAppRecordsValidateAgainstTheirPublishedSchemas(t *testing.T) {
 		t.Fatal(err)
 	}
 	for _, name := range []string{"v5/epic.schema.json", "v5/persona.schema.json", "v5/persona-revision.schema.json", "v5/persona-event.schema.json",
-		"v5/flag.schema.json", "v5/flag-revision.schema.json", "v5/flag-event.schema.json", "v3/story-revision.schema.json"} {
+		"v5/flag.schema.json", "v5/flag-revision.schema.json", "v5/flag-event.schema.json", "v3/story-revision.schema.json",
+		"v5/term.schema.json", "v5/term-revision.schema.json", "v5/term-event.schema.json"} {
 		if !checked[name] {
 			t.Errorf("no written record exercised %s", name)
 		}

@@ -53,11 +53,15 @@ const (
 	// CategoryReview is a pull request review whose deck does not yet explain
 	// every changed line of its range. It is reported, never gating.
 	CategoryReview Category = "review"
+	// CategoryGrowth is an optional suggestion that grows the Saga, such as
+	// defining terminology a comparison introduced. It names no gate, never
+	// blocks, and comes after everything that does.
+	CategoryGrowth Category = "growth"
 )
 
 var categoryRank = map[Category]int{
 	CategoryInvalidSaga: 0, CategoryConflict: 1, CategoryInvalid: 2, CategoryStale: 3, CategorySource: 4,
-	CategoryRequirements: 5, CategoryCoverage: 6, CategoryOrphan: 7, CategoryReview: 8,
+	CategoryRequirements: 5, CategoryCoverage: 6, CategoryOrphan: 7, CategoryReview: 8, CategoryGrowth: 9,
 }
 
 // Action is one ordered next step.
@@ -104,7 +108,7 @@ func AuthoringLoop(sagaPath string) Loop {
 			grammar.MustInvoke("validate", sagaPath, grammar.V("json", "true")),
 			grammar.MustInvoke("status", sagaPath, grammar.V("json", "true")),
 		},
-		FixedPoint: "next_actions is empty; that means no required current gap remains, never that the change is correct",
+		FixedPoint: "next_actions is empty apart from optional growth suggestions; that means no required current gap remains, never that the change is correct",
 	}
 }
 
@@ -149,6 +153,7 @@ func Derive(status livingapp.Status, sagaPath string) []Action {
 	b.prototypes()
 	b.testCases()
 	b.personas()
+	b.terms()
 	result := make([]Action, 0, len(b.actions))
 	for _, action := range b.actions {
 		sort.Strings(action.Gates)

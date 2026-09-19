@@ -208,6 +208,7 @@ var queryOperations = []string{
 	"readiness",
 	"layers",
 	"history",
+	"terms",
 }
 
 // queryPurpose says what each operation answers. It is keyed by the same
@@ -222,7 +223,7 @@ var queryPurpose = map[string]string{
 	"fragment-diffs":      "the changed atoms a saga, chapter, section, fragment, or landmark references, and its stale references",
 	"slide":               "bounded visual slide content and its ordered semantic Items",
 	"slide-diffs":         "the changed atoms a slide Item references",
-	"diff-owners":         "the narrative targets whose code references hold the changed lines or file at a code location",
+	"diff-owners":         "the narrative targets whose code references hold the changed lines or file at a code location, and the terms whose code contains each line",
 	"gaps":                "uncovered atoms, stale selectors, and overlapping coverage",
 	"mappings":            "coverage records ranked by breadth and justification signals so scrutiny starts at the weakest mappings",
 	"claims":              "falsifiable author assertions, exact evidence, current mapping state, and latest verification result",
@@ -238,6 +239,7 @@ var queryPurpose = map[string]string{
 	"traceability":        "current story-to-design/work/review/code paths, reverse code-location/commit lookup, and transitive blockers",
 	"readiness":           "independent requirement, plan, and delivery coverage axes; only immutable delivery evidence gates peer-review readiness",
 	"history":             "when a record was introduced, what it replaced, and every commit that changed it, each with the command that opens that comparison",
+	"terms":               "the project's vocabulary: each term's definition, aliases, stories, records, and code health at the head; filter by term, by story, or by a code location at any commit to find the terms a line of code defines",
 	"layers":              "one comparison's Changed records (each with before and after), Affected records (with why), and Code (hunks grouped under the records that reference them, plus unreferenced lines)",
 }
 
@@ -266,6 +268,7 @@ var queryUsage = map[string]string{
 	"traceability":        "change-saga query traceability --saga PATH [--requirement ID|URN] [--criterion ID|URN] [--ref LOCATION | --commit OID] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
 	"readiness":           "change-saga query readiness --saga PATH [--requirement ID|URN] [--status ready|blocked] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
 	"history":             "change-saga query history --saga PATH --node URN",
+	"terms":               "change-saga query terms --saga PATH [--term ID|URN] [--story ID|URN] [--ref LOCATION] [--repo PATH] [--against REV [--head REV]]",
 	"layers":              "change-saga query layers --saga PATH --against REV [--head REV] [--layer changed|affected|code] [--repo PATH]",
 }
 
@@ -298,6 +301,12 @@ func queryWithOpener(ctx context.Context, args []string, out io.Writer, open que
 			return writeQuerySuccess(out, "", queryHelpFor(operation), nil)
 		}
 		return queryHistory(ctx, args[1:], out)
+	}
+	if operation == "terms" {
+		if len(args) > 1 && isHelpArg(args[1]) {
+			return writeQuerySuccess(out, "", queryHelpFor(operation), nil)
+		}
+		return queryTerms(ctx, args[1:], out)
 	}
 	if operation == "layers" {
 		if len(args) > 1 && isHelpArg(args[1]) {
@@ -418,7 +427,7 @@ func querySchemaFor(operation string) querySchemaDescription {
 		"fragment-diffs":      {"data.selectors", "data.atoms", "data.stale"},
 		"slide":               {"data.target", "data.intent", "data.layout", "data.section", "data.takeaway", "data.content.data", "data.assets", "data.items", "data.reading_order"},
 		"slide-diffs":         {"data.selectors", "data.atoms", "data.stale"},
-		"diff-owners":         {"data.atoms"},
+		"diff-owners":         {"data.atoms", "data.atoms[].terms"},
 		"gaps":                {"data.gaps"},
 		"mappings":            {"data.mappings"},
 		"claims":              {"data.claims"},
@@ -434,6 +443,7 @@ func querySchemaFor(operation string) querySchemaDescription {
 		"traceability":        {"data.criteria", "data.unlinked_code_evidence"},
 		"readiness":           {"data.summary", "data.requirements"},
 		"history":             {"data.introduced", "data.replaced", "data.events", "data.uncommitted"},
+		"terms":               {"data.head_oid", "data.ref", "data.terms"},
 		"layers":              {"data.summary", "data.changed", "data.affected", "data.code.groups", "data.code.unreferenced", "data.saga", "data.diagnostics"},
 	}
 	countedPaths := map[string]string{
@@ -459,7 +469,7 @@ func querySchemaFor(operation string) querySchemaDescription {
 	pagination := queryPaginationDescription{Kind: "none"}
 	if operation == "fragment" || operation == "slide" {
 		pagination = queryPaginationDescription{Kind: "byte-offset", NextOffsetPath: "data.content.next_offset"}
-	} else if operation != "overview" && operation != "layers" && operation != "history" {
+	} else if operation != "overview" && operation != "layers" && operation != "history" && operation != "terms" {
 		pagination = queryPaginationDescription{
 			Kind: "cursor", CountedPath: countedPaths[operation], TotalPath: "page.total", ReturnedPath: "page.returned",
 			HasMorePath: "page.has_more", NextCursorPath: "page.next_cursor",

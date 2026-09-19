@@ -59,7 +59,7 @@ func loadAppContent(root string, manifest Manifest, section *Section, options lo
 		section.Children = append(section.Children, part.Children...)
 	}
 	var err error
-	if app.overview, err = loadReportRoot(root, filepath.Join(root, applayout.OverviewDir), manifest, "overview", "Overview", options, validation); err != nil {
+	if app.overview, err = loadReportRootAs(root, filepath.Join(root, applayout.OverviewDir), manifest, overviewHierarchy, "overview", "Overview", options, validation); err != nil {
 		return app, nil, err
 	}
 	join(app.overview)
@@ -114,6 +114,10 @@ func loadAppContent(root string, manifest Manifest, section *Section, options lo
 // loadReportRoot loads one authored report root that is not an epic, or nil
 // when it is absent.
 func loadReportRoot(root, dir string, manifest Manifest, kind, title string, options loadOptions, validation *Validation) (*Section, error) {
+	return loadReportRootAs(root, dir, manifest, designHierarchy, kind, title, options, validation)
+}
+
+func loadReportRootAs(root, dir string, manifest Manifest, hierarchy hierarchyRoot, kind, title string, options loadOptions, validation *Validation) (*Section, error) {
 	info, err := os.Lstat(dir)
 	if err != nil || !info.IsDir() || info.Mode()&os.ModeSymlink != 0 {
 		if err == nil {
@@ -121,7 +125,7 @@ func loadReportRoot(root, dir string, manifest Manifest, kind, title string, opt
 		}
 		return nil, nil
 	}
-	section, err := loadSection(root, dir, manifest, designHierarchy, options, validation)
+	section, err := loadSection(root, dir, manifest, hierarchy, options, validation)
 	if err != nil {
 		return nil, err
 	}
@@ -143,6 +147,22 @@ func IsOverviewPath(path string) bool {
 
 func IsDesignSystemPath(path string) bool {
 	return path == applayout.DesignSystemDir || strings.HasPrefix(path, applayout.DesignSystemDir+"/")
+}
+
+// OverviewPart returns the overview's elevator pitch (applayout.OverviewPitch)
+// or description (applayout.OverviewDescription) fragment, or nil when that
+// part is not written yet. An absent part is a visible gap, never an error.
+func (document *Saga) OverviewPart(name string) *Fragment {
+	if document == nil || document.Overview == nil {
+		return nil
+	}
+	want := applayout.OverviewDir + "/" + name
+	for _, fragment := range document.Overview.Fragments {
+		if fragment.Path == want {
+			return fragment
+		}
+	}
+	return nil
 }
 
 // EpicOf returns the epic that holds an app-relative node path, or "".

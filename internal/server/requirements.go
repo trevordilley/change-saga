@@ -58,6 +58,8 @@ type requirementStoryView struct {
 	Revisions          []requirementHistoryView
 	LifecycleEvents    []requirementHistoryView
 	Criteria           []*requirementCriterionView
+	// Terms are the project vocabulary that names this story.
+	Terms []termLinkView
 }
 
 type requirementCriterionView struct {
@@ -133,6 +135,12 @@ func makeRequirementsSurface(document requirements.Document, route requirementRo
 		}
 	}
 	page.StoryCount = len(page.Stories)
+	naming := document.TermsNaming()
+	for _, view := range page.Stories {
+		for _, urn := range naming[view.Target] {
+			view.Terms = append(view.Terms, recordLink(document, urn))
+		}
+	}
 
 	if route.active && route.storyID != "" && page.Story == nil {
 		return nil, nil, errRequirementNotFound

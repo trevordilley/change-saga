@@ -63,6 +63,35 @@ var resources = []Resource{
 		Notes:   "holds the domain's report content, requirements, design, quality, work plan, and implementation deck; no resource URN names its epic, so IDs are unique across the app",
 	},
 	{
+		Kind: "overview-pitch", URN: "urn:change-saga:<saga>:fragment:<saga>-pitch", Storage: "___overview/pitch.fragment/{fragment.json,content.md}",
+		Schema: schemaBase + "v2/fragment.schema.json", Versions: []int{5}, History: "current Markdown content; Git holds its history",
+		Writers: []string{"overview set-pitch"},
+		Notes:   "the overview's elevator pitch; the overview is the project name (saga.json title), elevator pitch, description, and terms and vocabulary, each optional and shown as a gap when absent",
+	},
+	{
+		Kind: "overview-description", URN: "urn:change-saga:<saga>:fragment:<saga>-description", Storage: "___overview/description.fragment/{fragment.json,content.md}",
+		Schema: schemaBase + "v2/fragment.schema.json", Versions: []int{5}, History: "current Markdown content; Git holds its history",
+		Writers: []string{"overview set-description"},
+		Notes:   "the overview's description: a short essay on what the application does",
+	},
+	{
+		Kind: "term", URN: "urn:change-saga:<saga>:term:<term>", Storage: "___overview/terms/<term>.term/term.json",
+		Schema: schemaBase + "v5/term.schema.json", Versions: []int{5}, History: "immutable identity",
+		Writers: []string{"term add"},
+		Notes:   "the project's own vocabulary; a story page and a line of code both reach the terms that name them",
+	},
+	{
+		Kind: "term-revision", URN: "urn:change-saga:<saga>:term:<term>:revision:<revision>", Storage: "___overview/terms/<term>.term/revisions/<revision>.json",
+		Schema: schemaBase + "v5/term-revision.schema.json", Versions: []int{5}, History: "append-only complete snapshots with parent heads; multiple heads are a conflict",
+		Writers: []string{"term add", "term revise"},
+		Notes:   "name, definition, aliases, the stories and records it names, and code references pinned at a commit; the code is watched for renames and never counts toward changed-line coverage",
+	},
+	{
+		Kind: "term-event", URN: "urn:change-saga:<saga>:term:<term>:event:<event>", Storage: "___overview/terms/<term>.term/events/<event>.json",
+		Schema: schemaBase + "v5/term-event.schema.json", Versions: []int{5}, History: "append-only lifecycle graph with parent heads",
+		Lifecycle: []string{"active", "retired"}, Writers: []string{"term add", "term set-state"},
+	},
+	{
 		Kind: "persona", URN: "urn:change-saga:<saga>:persona:<persona>", Storage: "___personas/<persona>.persona/persona.json",
 		Schema: schemaBase + "v5/persona.schema.json", Versions: []int{5}, History: "immutable identity",
 		Writers: []string{"persona add"},

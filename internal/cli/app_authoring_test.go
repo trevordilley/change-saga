@@ -126,7 +126,7 @@ func acceptStory(t *testing.T, root, story string) {
 		"--parent", story+":event:proposed", "--state", "accepted")
 }
 
-func TestInitCreatesOnlyTheAppWithItsOverview(t *testing.T) {
+func TestInitCreatesOnlyTheAppWithEveryOverviewPartAGap(t *testing.T) {
 	repo := t.TempDir()
 	git(t, repo, "init", "-b", "main")
 	git(t, repo, "config", "user.name", "Test Author")
@@ -139,15 +139,12 @@ func TestInitCreatesOnlyTheAppWithItsOverview(t *testing.T) {
 	if err := Init(context.Background(), []string{"--repo", repo, "--repository", "https://example.test/acme/app.git", root}, &output); err != nil {
 		t.Fatal(err)
 	}
-	for _, want := range []string{"epic add", "story add --epic ID", "Personas are optional", "persona add"} {
+	for _, want := range []string{"epic add", "story add --epic ID", "optional", "persona add", "overview set-pitch", "term add"} {
 		if !strings.Contains(output.String(), want) {
 			t.Fatalf("init output does not lead to %q:\n%s", want, output.String())
 		}
 	}
-	if info, err := os.Stat(filepath.Join(overviewFragment(root), "fragment.json")); err != nil || !info.Mode().IsRegular() {
-		t.Fatalf("init did not write the app overview under ___overview: %v", err)
-	}
-	for _, absent := range []string{"overview.fragment", applayout.EpicsDir, applayout.PersonasDir, "___requirements"} {
+	for _, absent := range []string{"overview.fragment", applayout.OverviewDir, applayout.EpicsDir, applayout.PersonasDir, "___requirements"} {
 		if _, err := os.Stat(filepath.Join(root, absent)); !os.IsNotExist(err) {
 			t.Fatalf("init created %s: %v", absent, err)
 		}
@@ -157,7 +154,9 @@ func TestInitCreatesOnlyTheAppWithItsOverview(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(document.Epics) != 0 || len(document.Section.Fragments) != 1 || document.Section.Fragments[0].Path != "___overview/overview.fragment" {
+	// The overview's name is the manifest title; its pitch, description, and
+	// terms are gaps until they are written.
+	if len(document.Epics) != 0 || len(document.Section.Fragments) != 0 || document.OverviewPart(applayout.OverviewPitch) != nil {
 		t.Fatalf("init app = epics %d, fragments %#v", len(document.Epics), document.Section.Fragments)
 	}
 }

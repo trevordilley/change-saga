@@ -113,7 +113,7 @@ func LoadMutationIndex(root string) (MutationIndex, Validation, error) {
 	roots := []struct {
 		dir       string
 		hierarchy hierarchyRoot
-	}{{filepath.Join(abs, applayout.OverviewDir), designHierarchy}, {filepath.Join(abs, applayout.DesignSystemDir), designHierarchy}}
+	}{{filepath.Join(abs, applayout.OverviewDir), overviewHierarchy}, {filepath.Join(abs, applayout.DesignSystemDir), designHierarchy}}
 	for _, epic := range epics {
 		roots = append(roots, struct {
 			dir       string
@@ -158,6 +158,16 @@ func scanMutationSection(root, dir string, hierarchy hierarchyRoot, sagaID strin
 				}
 			}
 			continue
+		}
+		if hierarchy == overviewHierarchy {
+			allowed, fragment := overviewEntry(name)
+			if !allowed || entry.Type()&fs.ModeSymlink != 0 {
+				addIssue(validation, "error", relativePath(root, path), overviewPartError)
+				continue
+			}
+			if !fragment {
+				continue
+			}
 		}
 		if hierarchy == sagaHierarchy {
 			addIssue(validation, "error", relativePath(root, path), "report content belongs in ___overview, ___designsystem, or an epic under ___epics, not at the app root")

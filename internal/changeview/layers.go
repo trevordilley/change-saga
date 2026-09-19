@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/twentyideas/changesaga/internal/coderef"
 	"os"
 	"sort"
 	"strconv"
@@ -285,6 +286,12 @@ func Compute(ctx context.Context, options Options) (Layers, *Inventory, error) {
 		affected.add(node.URN, Cause{Kind: CauseCode, Detail: detail})
 		seeds = append(seeds, node.URN)
 	}
+	// A term's code is not coverage, so the impact projection never sees it;
+	// a change to the code a term names affects the term directly.
+	termAtoms := termImpact(ctx, head.inventory, options.Changes, options.Resolver)
+	for urn := range termAtoms {
+		affected.add(urn, Cause{Kind: CauseCode, Detail: strconv.Itoa(len(termAtoms[urn])) + " changed lines in the code that defines it; renamed or redefined?"})
+	}
 	pinned(head.inventory, changedByURN, affected)
 	for urn := range affected.causes {
 		seeds = append(seeds, urn)
@@ -292,7 +299,7 @@ func Compute(ctx context.Context, options Options) (Layers, *Inventory, error) {
 	chain(head.inventory, uniqueSorted(seeds), affected)
 	layers.Affected = affected.list()
 
-	layers.Code = codeLayer(options.Changes, report, projection, head.inventory, changedByURN, affected)
+	layers.Code = codeLayer(options.Changes, report, projection, termAtoms, head.inventory, changedByURN, affected)
 	sources := reasonSources{
 		codeRepo: options.Checkout, codeFrom: options.Changes.BaseOID, codeTo: options.Changes.HeadOID,
 		sagaRepo: options.Location.Repo, sagaPath: options.Location.Path, sagaFrom: options.Base, sagaTo: firstNonEmpty(options.Head, "HEAD"),
@@ -480,7 +487,7 @@ func chain(inventory *Inventory, seeds []string, affected *affectedSet) {
 // codeLayer groups every changed line under the records that reference it:
 // references current where the line lives (coverage ownership), and the
 // references the change touched at the merge-base (impact projection).
-func codeLayer(changes gitdiff.ChangeSet, report coverage.Report, projection impact.Result, inventory *Inventory, changed map[string]*Change, affected *affectedSet) CodeLayer {
+func codeLayer(changes gitdiff.ChangeSet, report coverage.Report, projection impact.Result, termAtoms map[string][]string, inventory *Inventory, changed map[string]*Change, affected *affectedSet) CodeLayer {
 	byNode := map[string]map[string]bool{}
 	attach := func(target, key string) {
 		node := inventory.Resolve(target)
@@ -501,6 +508,11 @@ func codeLayer(changes gitdiff.ChangeSet, report coverage.Report, projection imp
 	for _, target := range projection.Targets {
 		for _, change := range target.Changes {
 			attach(target.Target, change.Atom.Key)
+		}
+	}
+	for urn, keys := range termAtoms {
+		for _, key := range keys {
+			attach(urn, key)
 		}
 	}
 	layer := CodeLayer{Groups: []CodeGroup{}, Unreferenced: hunks(changes, keySet(report.Uncovered))}
@@ -573,6 +585,43 @@ func hunks(changes gitdiff.ChangeSet, keys map[string]bool) []Hunk {
 			continue
 		}
 		result = append(result, Hunk{Path: atom.Path, Lines: []HunkLine{{Side: atom.Side, Line: atom.Line, Content: atom.Content, Key: atom.Key}}})
+	}
+	return result
+}
+
+// termImpact returns, for every term whose code the comparison changed, the
+// changed lines inside that code: removed or modified lines where the code
+// lay at the merge-base, and lines added inside it at the head.
+func termImpact(ctx context.Context, inventory *Inventory, changes gitdiff.ChangeSet, resolver coverage.Resolver) map[string][]string {
+	result := map[string][]string{}
+	if resolver == nil || len(changes.Atoms) == 0 {
+		return result
+	}
+	for _, node := range inventory.Sorted() {
+		if node.Kind != KindTerm || len(node.Code) == 0 {
+			continue
+		}
+		seen := map[string]bool{}
+		for _, reference := range node.Code {
+			var locations []coderef.Location
+			for _, commit := range []string{changes.BaseOID, changes.HeadOID} {
+				if at := resolver.Resolve(ctx, reference, commit); at.Current() {
+					locations = append(locations, at.Location)
+				}
+			}
+			for _, atom := range changes.Atoms {
+				if atom.Kind != "line" || seen[atom.Key] {
+					continue
+				}
+				for _, location := range locations {
+					if location.Contains(changes.Location(atom)) {
+						seen[atom.Key] = true
+						result[node.URN] = append(result[node.URN], atom.Key)
+						break
+					}
+				}
+			}
+		}
 	}
 	return result
 }

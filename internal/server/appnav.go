@@ -10,7 +10,7 @@ import (
 
 // The reviewer's app-level list sits above the epics:
 //
-//	Overview        the app's elevator pitch
+//	Overview        name, elevator pitch, description, terms and vocabulary
 //	Personas        who the app serves
 //	Design system   Figma links and references
 //	Onboarding      the deck that gets people up to speed
@@ -32,16 +32,13 @@ type appNavSources struct {
 	prototypeNote string
 	// decks is every projected deck row, implementation and onboarding.
 	decks []*navNodeView
+	// overviewActive says which overview row the page shows; see overviewNav.
+	overviewActive string
 }
 
 func makeAppNavTree(sources appNavSources) []*navNodeView {
 	document := sources.document
-	overview := &navNodeView{Title: "Overview", Href: sagaHref(document.Section.Target), NodeID: "nav-overview", Active: true}
-	overview.Children = reportRootNav(document.Overview)
-	overview.Expanded = len(overview.Children) > 0
-	if len(overview.Children) == 0 {
-		overview.Gap, overview.Note = true, "no overview yet"
-	}
+	overview := overviewNav(document, sources.requirements, sources.overviewActive)
 
 	deckRows := map[string]*navNodeView{}
 	for _, row := range sources.decks {

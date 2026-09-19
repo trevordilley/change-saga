@@ -40,7 +40,27 @@ const (
 	// epicHierarchy is one epic directory: report content plus the epic's
 	// capability roots.
 	epicHierarchy
+	// overviewHierarchy is the app's ___overview. It is formal rather than
+	// free report content: an elevator pitch fragment, a description fragment,
+	// and the terms directory the requirements loader owns. The project name
+	// is saga.json's title. Every part is optional.
+	overviewHierarchy
 )
+
+// overviewPartError is the one message for anything else in ___overview.
+const overviewPartError = "the overview holds only " + applayout.OverviewPitch + ", " + applayout.OverviewDescription + ", and " + applayout.OverviewTerms + "/"
+
+// overviewEntry reports whether a directory named name belongs in ___overview,
+// and whether it is a fragment the report loader reads.
+func overviewEntry(name string) (allowed, fragment bool) {
+	switch name {
+	case applayout.OverviewPitch, applayout.OverviewDescription:
+		return true, true
+	case applayout.OverviewTerms:
+		return true, false
+	}
+	return false, false
+}
 
 var fullLoadCount atomic.Uint64
 
@@ -179,6 +199,10 @@ func loadSection(root, dir string, manifest Manifest, hierarchy hierarchyRoot, o
 		section.ID = manifest.ID + "-root"
 		section.Title = manifest.Title
 		section.Target = SagaTarget(manifest.ID)
+	} else if hierarchy == overviewHierarchy {
+		section.Kind = "overview"
+		section.ID = manifest.ID + "-overview-root"
+		section.Title = "Overview"
 	} else if hierarchy == designHierarchy {
 		// This synthetic node is used only while the shared loader scans the
 		// physical root. Its children and fragments are joined to the Saga root
@@ -259,6 +283,16 @@ func loadSection(root, dir string, manifest Manifest, hierarchy hierarchyRoot, o
 		path := filepath.Join(dir, name)
 		if reason := PortabilityWarning(name); reason != "" {
 			addIssue(validation, "warning", displayPath(rel, name), fmt.Sprintf("directory name %q %s", name, reason))
+		}
+		if hierarchy == overviewHierarchy {
+			allowed, fragment := overviewEntry(name)
+			if !allowed || entry.Type()&fs.ModeSymlink != 0 {
+				addIssue(validation, "error", displayPath(rel, name), overviewPartError)
+				continue
+			}
+			if !fragment {
+				continue
+			}
 		}
 		if hierarchy == sagaHierarchy {
 			addIssue(validation, "error", displayPath(rel, name), "report content belongs in ___overview, ___designsystem, or an epic under ___epics, not at the app root")

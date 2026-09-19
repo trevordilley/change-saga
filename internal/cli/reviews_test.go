@@ -176,7 +176,7 @@ func TestReviewCommentsThreadOnSlidesAndItemsOnly(t *testing.T) {
 		t.Fatalf("resolved discussion = %#v", got)
 	}
 	var refused bytes.Buffer
-	for _, target := range []string{saga.FragmentTarget("app", "app-overview"), "missing"} {
+	for _, target := range []string{saga.FragmentTarget("app", "app-description"), "missing"} {
 		if err := Review(context.Background(), []string{"comment", "--review", "pr-7", "--target", target, "--body", "no", "--reviewer-kind", "human", fixture.root}, &refused); err == nil {
 			t.Fatalf("a comment on %q was accepted", target)
 		}
@@ -370,11 +370,11 @@ func TestCoverOnAReviewItemComparesTheReviewsRange(t *testing.T) {
 	}
 
 	var output bytes.Buffer
-	if err := Cover(context.Background(), []string{"--target", "app-overview", "--path", "queue.go", "--changed-lines", "--repo", fixture.repo, fixture.root}, &output); err == nil || !strings.Contains(err.Error(), "--against") {
+	if err := Cover(context.Background(), []string{"--target", "app-description", "--path", "queue.go", "--changed-lines", "--repo", fixture.repo, fixture.root}, &output); err == nil || !strings.Contains(err.Error(), "--against") {
 		t.Fatalf("--changed-lines on documentation without --against = %v", err)
 	}
 	batch := `{"target":"` + queue + `","path":"queue.go","changed_lines":true,"name":"again"}
-{"target":"app-overview","path":"queue.go","changed_lines":true}`
+{"target":"app-description","path":"queue.go","changed_lines":true}`
 	if err := cover(context.Background(), []string{"--batch", "-", "--repo", fixture.repo, fixture.root}, &output, strings.NewReader(batch)); err == nil || !strings.Contains(err.Error(), "comparisons differ") {
 		t.Fatalf("a batch mixing a review Item and documentation = %v", err)
 	}

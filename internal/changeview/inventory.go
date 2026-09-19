@@ -45,6 +45,7 @@ const (
 	KindDeck      = "deck"
 	KindSlide     = "slide"
 	KindItem      = "item"
+	KindTerm      = "term"
 )
 
 // maxText bounds the authored text a node carries for before and after.
@@ -218,6 +219,23 @@ func (b *inventoryBuilder) app(inputs livingapp.StatusInputs) {
 		}
 		if persona.CurrentLifecycle != nil {
 			node.State = string(persona.CurrentLifecycle.State)
+		}
+		b.add(node)
+	}
+	for _, term := range inputs.Terms {
+		urn, _ := requirements.TermURN(b.sagaID, term.Identity.ID)
+		node := &Node{URN: urn, Kind: KindTerm, Title: term.Identity.ID, Files: b.tree(requirements.TermPackagePath(term.Identity.ID))}
+		if revision := term.CurrentRevision; revision != nil {
+			node.Title = revision.Name
+			node.Text = revision.Name + "\n\n" + revision.Definition
+			if len(revision.Aliases) > 0 {
+				node.Text += "\n\nalso: " + strings.Join(revision.Aliases, ", ")
+			}
+			node.Links = append(append(node.Links, revision.Stories...), revision.Records...)
+			node.Code = append(node.Code, revision.Code...)
+		}
+		if term.CurrentLifecycle != nil {
+			node.State = string(term.CurrentLifecycle.State)
 		}
 		b.add(node)
 	}

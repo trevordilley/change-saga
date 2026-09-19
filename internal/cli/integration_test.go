@@ -53,9 +53,8 @@ func TestAuthoringLoopAgainstGitDiff(t *testing.T) {
 			t.Errorf("reviewer bootstrap omitted %q", expected)
 		}
 	}
-	rootScaffold, err := os.ReadFile(filepath.Join(overviewFragment(root), "content.md"))
-	if err != nil || len(rootScaffold) != 0 {
-		t.Fatalf("app overview should start empty, not expose authoring instructions: content=%q err=%v", rootScaffold, err)
+	if _, err := os.Stat(filepath.Join(root, "___overview")); !os.IsNotExist(err) {
+		t.Fatalf("init wrote an overview part; each is a gap until authored: %v", err)
 	}
 	if _, err := os.Stat(filepath.Join(root, "overview.fragment")); !os.IsNotExist(err) {
 		t.Fatalf("init wrote report content at the app root: %v", err)
@@ -85,10 +84,10 @@ func TestAuthoringLoopAgainstGitDiff(t *testing.T) {
 		t.Fatalf("expected an uncovered add event and three lines: %#v", report.Summary)
 	}
 	output.Reset()
-	if err := Cover(context.Background(), []string{"--against", "main", "--repo", repo, "--target", "___overview/overview.fragment", "--path", "app.go", "--side", "new", "--lines", "1-3", root}, &output); err != nil {
+	if err := Cover(context.Background(), []string{"--against", "main", "--repo", repo, "--target", "___overview/description.fragment", "--path", "app.go", "--side", "new", "--lines", "1-3", root}, &output); err != nil {
 		t.Fatal(err)
 	}
-	if err := Cover(context.Background(), []string{"--against", "main", "--repo", repo, "--target", "___overview/overview.fragment", "--path", "app.go", "--file", root}, &output); err != nil {
+	if err := Cover(context.Background(), []string{"--against", "main", "--repo", repo, "--target", "___overview/description.fragment", "--path", "app.go", "--file", root}, &output); err != nil {
 		t.Fatal(err)
 	}
 	report, err = buildReport(context.Background(), root, repo, gitdiff.Range{Against: "main"})

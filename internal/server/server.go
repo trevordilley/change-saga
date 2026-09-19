@@ -97,14 +97,17 @@ type pageData struct {
 	EmbeddedDecks    bool
 	RequirementsMode bool
 	Requirements     *requirementsPageView
-	Root             *sectionView
-	SlideRoot        *sectionView
-	Nav              []*navNodeView
-	Diagnostic       string
-	Code             *CodeReviewView
-	Manifest         *CoverageManifestView
-	Error            string
-	Files            []*fileDiffView
+	// TermsMode shows the overview's Terms and vocabulary, or one term.
+	TermsMode  bool
+	Terms      *termsPageView
+	Root       *sectionView
+	SlideRoot  *sectionView
+	Nav        []*navNodeView
+	Diagnostic string
+	Code       *CodeReviewView
+	Manifest   *CoverageManifestView
+	Error      string
+	Files      []*fileDiffView
 	// CoverageTotals is the audit reduced to the numbers the shell states
 	// outright. The audit itself stays on the Coverage tab.
 	CoverageTotals *coverageTotalsView
@@ -299,6 +302,8 @@ func newMux(application *app) *http.ServeMux {
 	mux.HandleFunc("GET /requirements/{story}/criteria/{criterion}", application.page)
 	mux.HandleFunc("GET /requirements/{story}", application.page)
 	mux.HandleFunc("GET /requirements", application.page)
+	mux.HandleFunc("GET /terms/{term}", application.page)
+	mux.HandleFunc("GET /terms", application.page)
 	mux.HandleFunc("GET /chapters/{chapter}", application.page)
 	mux.HandleFunc("GET /", application.page)
 	mux.HandleFunc("GET /reviews", application.reviewIndex)
@@ -780,8 +785,9 @@ func (a *app) page(w http.ResponseWriter, r *http.Request) {
 	}
 	chapterID, chapterRoute := requestedChapter(r)
 	requirementsRoute := isRequirementsPath(r.URL.Path)
+	termsRoute := isTermsPath(r.URL.Path)
 	if r.URL.Path != "/" {
-		if !chapterRoute && !requirementsRoute {
+		if !chapterRoute && !requirementsRoute && !termsRoute {
 			http.NotFound(w, r)
 			return
 		}
@@ -823,11 +829,30 @@ func (a *app) page(w http.ResponseWriter, r *http.Request) {
 	data.Requirements = requirementsView
 	data.Requirements.Rationale = requirementsRationale(reportRoot)
 	data.RequirementsMode = requirementsView.Active
+	storyTitles := map[string]string{}
+	for _, story := range requirementsView.Stories {
+		storyTitles[story.Target] = story.Title
+	}
+	data.Terms, err = a.makeTermsPage(r.Context(), requirementsDocument, storyTitles, r.URL.Path, r.PathValue("term"))
+	if errors.Is(err, errTermNotFound) {
+		http.NotFound(w, r)
+		return
+	}
+	data.TermsMode = data.Terms.Active
+	overviewActive := ""
+	switch {
+	case data.TermsMode && data.Terms.Term != nil:
+		overviewActive = data.Terms.Term.ID
+	case data.TermsMode:
+		overviewActive = "/terms"
+	case requirementsView.Active:
+		overviewActive = "-"
+	}
 	prototypeDocument, prototypeNote := a.prototypeDocument(document.Manifest.ID)
 	data.Nav = makeAppNavTree(appNavSources{
 		document: document, requirements: requirementsDocument, page: requirementsView,
 		prototypes: prototypeDocument, prototypeNote: prototypeNote,
-		decks: makeDeckNavTree(slideRoot),
+		decks: makeDeckNavTree(slideRoot), overviewActive: overviewActive,
 	})
 	if requirementsView.Active {
 		clearActiveNav(data.Nav)

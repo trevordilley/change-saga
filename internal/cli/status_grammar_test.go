@@ -37,6 +37,8 @@ func grammarHelp(t *testing.T, name string) string {
 		"epic":       func() error { return Epic(ctx, args, &output) },
 		"review":     func() error { return Review(ctx, args, &output) },
 		"persona":    func() error { return Persona(ctx, args, &output) },
+		"term":       func() error { return Term(ctx, args, &output) },
+		"overview":   func() error { return overviewCommand(ctx, args, &output, strings.NewReader("")) },
 		"flag":       func() error { return FeatureFlag(ctx, args, &output) },
 	}[fields[0]]
 	if run == nil {
