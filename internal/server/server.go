@@ -39,6 +39,9 @@ type app struct {
 	rng           gitdiff.Range
 	template      *template.Template
 	shutdownToken string
+	// mutationToken authorizes the review page's decision and comment forms.
+	// It is random per server process and rendered only into those forms.
+	mutationToken string
 	shutdown      func()
 	cache         snapshotCache
 	outline       outlineCache
@@ -238,7 +241,11 @@ func ListenManaged(ctx context.Context, root, sourceDir, addr string, openBrowse
 		return fmt.Errorf("open review cache: %w", err)
 	}
 	stopCh := make(chan struct{}, 1)
-	application := &app{root: abs, sourceDir: sourceDir, rng: options.Range, template: tmpl, shutdownToken: options.ShutdownToken, generations: generations}
+	mutationToken, err := newMutationToken()
+	if err != nil {
+		return err
+	}
+	application := &app{root: abs, sourceDir: sourceDir, rng: options.Range, template: tmpl, shutdownToken: options.ShutdownToken, mutationToken: mutationToken, generations: generations}
 	application.shutdown = func() {
 		select {
 		case stopCh <- struct{}{}:
@@ -294,6 +301,11 @@ func newMux(application *app) *http.ServeMux {
 	mux.HandleFunc("GET /requirements", application.page)
 	mux.HandleFunc("GET /chapters/{chapter}", application.page)
 	mux.HandleFunc("GET /", application.page)
+	mux.HandleFunc("GET /reviews", application.reviewIndex)
+	mux.HandleFunc("GET /reviews/{id}", application.reviewPage)
+	mux.HandleFunc("GET /reviews/{id}/visual/{slide}", application.reviewVisual)
+	mux.HandleFunc("POST /reviews/{id}/decision", application.reviewDecision)
+	mux.HandleFunc("POST /reviews/{id}/comment", application.reviewComment)
 	mux.HandleFunc("GET /app.js", application.javascript)
 	mux.HandleFunc("GET /theme.js", application.themeScript)
 	mux.HandleFunc("GET /api/code", application.codePage)

@@ -10,6 +10,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/changeview"
 	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
+	"github.com/twentyideas/changesaga/internal/saga"
 )
 
 // layersCache keeps the layers of the current comparison generation. The
@@ -117,6 +118,9 @@ func (a *app) layersAPI(w http.ResponseWriter, r *http.Request) {
 type changeView struct {
 	Layers *changeview.Layers
 	Titles map[string]string
+	// Reviews are the pull request reviews of the compared head. The layers
+	// are read-only documentation; approval happens on these review slides.
+	Reviews []reviewSummaryView
 }
 
 func (a *app) changePage(w http.ResponseWriter, r *http.Request) {
@@ -136,7 +140,11 @@ func (a *app) changePage(w http.ResponseWriter, r *http.Request) {
 		titles[affected.URN] = affected.Title
 	}
 	writeIncrementalHeaders(w, "text/html; charset=utf-8")
-	if err := a.template.ExecuteTemplate(w, "change-view", changeView{Layers: layers, Titles: titles}); err != nil {
+	view := changeView{Layers: layers, Titles: titles}
+	if document, validation, err := saga.Load(a.root); err == nil && validation.Valid {
+		view.Reviews = a.reviewsForHead(r.Context(), document, layers.HeadOID)
+	}
+	if err := a.template.ExecuteTemplate(w, "change-view", view); err != nil {
 		http.Error(w, "The change could not be rendered.", http.StatusInternalServerError)
 	}
 }
