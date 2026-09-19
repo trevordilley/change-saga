@@ -12,14 +12,15 @@ import (
 	"strings"
 
 	"github.com/twentyideas/changesaga/internal/coderef"
+	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/livingapp"
 	"github.com/twentyideas/changesaga/internal/reviewapp"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
+// querySchema is the one envelope every query operation writes.
 const querySchema = "change-saga.ai/v1"
-const slideQuerySchema = "change-saga.ai/v2"
 
 const (
 	maxQueryPageSize     = 1000
@@ -223,7 +224,7 @@ var queryPurpose = map[string]string{
 	"fragment-diffs":      "the changed atoms a saga, chapter, section, fragment, or landmark references, and its stale references",
 	"slide":               "bounded visual slide content and its ordered semantic Items",
 	"slide-diffs":         "the changed atoms a slide Item references",
-	"diff-owners":         "the narrative targets whose code references hold the changed lines or file at a code location, and the terms whose code contains each line",
+	"diff-owners":         "in a comparison (--against), the narrative targets whose code references hold the changed lines or file at a code location, and the terms whose code contains each line; for any line, use traceability --ref",
 	"gaps":                "uncovered atoms, stale selectors, and overlapping coverage",
 	"mappings":            "coverage records ranked by breadth and justification signals so scrutiny starts at the weakest mappings",
 	"claims":              "falsifiable author assertions, exact evidence, current mapping state, and latest verification result",
@@ -236,7 +237,7 @@ var queryPurpose = map[string]string{
 	"work-items":          "current work-item definitions, progress, explicit dependency blockers, workspaces, and merge evidence",
 	"work-events":         "normalized append-only progress, workspace, merge, and contract events",
 	"work-conflicts":      "deterministically identified work-plan conflicts and competing heads",
-	"traceability":        "current story-to-design/work/review/code paths, reverse code-location/commit lookup, and transitive blockers",
+	"traceability":        "current story-to-design/work/review/code/test paths (design that addresses the whole story is also listed as broad), reverse lookup by a code location at any revision (remapped as staleness is) or by pinned commit, and transitive blockers",
 	"readiness":           "independent requirement, plan, and delivery coverage axes; only immutable delivery evidence gates peer-review readiness",
 	"history":             "when a record was introduced, what it replaced, and every commit that changed it, each with the command that opens that comparison",
 	"terms":               "the project's vocabulary: each term's definition, aliases, stories, records, and code health at the head; filter by term, by story, or by a code location at any commit to find the terms a line of code defines",
@@ -265,7 +266,7 @@ var queryUsage = map[string]string{
 	"work-items":          "change-saga query work-items --saga PATH [--item ID|URN] [--wave ID|URN] [--status STATE] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
 	"work-events":         "change-saga query work-events --saga PATH [--item ID|URN] [--kind KIND] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
 	"work-conflicts":      "change-saga query work-conflicts --saga PATH [--item ID|URN] [--wave ID|URN] [--kind KIND] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
-	"traceability":        "change-saga query traceability --saga PATH [--requirement ID|URN] [--criterion ID|URN] [--ref LOCATION | --commit OID] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
+	"traceability":        "change-saga query traceability --saga PATH [--requirement ID|URN] [--criterion ID|URN] [--ref LOCATION | --commit OID] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]",
 	"readiness":           "change-saga query readiness --saga PATH [--requirement ID|URN] [--status ready|blocked] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
 	"history":             "change-saga query history --saga PATH --node URN",
 	"terms":               "change-saga query terms --saga PATH [--term ID|URN] [--story ID|URN] [--ref LOCATION] [--repo PATH] [--against REV [--head REV]]",
@@ -317,25 +318,22 @@ func queryWithOpener(ctx context.Context, args []string, out io.Writer, open que
 
 	request, options, help, err := parseQuery(operation, args[1:])
 	if help {
-		if operation == "slide" || operation == "slide-diffs" {
-			return writeQuerySuccessSchema(out, slideQuerySchema, "", queryHelpFor(operation), nil)
-		}
 		return writeQuerySuccess(out, "", queryHelpFor(operation), nil)
 	}
 	if err != nil {
-		return writeQueryOperationFailure(out, operation, &queryError{Code: "invalid_argument", Message: err.Error()})
+		return writeQueryFailure(out, &queryError{Code: "invalid_argument", Message: err.Error()})
 	}
 	options.SummaryOnly = operation == "overview" || operation == "children"
 	options.Operation = operation
 	if operation == "slide" || operation == "slide-diffs" {
 		if _, err := saga.ReadManifest(options.SagaRoot); err != nil {
-			return writeQueryOperationFailure(out, operation, normalizeQueryError(err))
+			return writeQueryFailure(out, normalizeQueryError(err))
 		}
 	}
 
 	session, err := open(ctx, options)
 	if err != nil {
-		return writeQueryOperationFailure(out, operation, normalizeQueryError(err))
+		return writeQueryFailure(out, normalizeQueryError(err))
 	}
 
 	var result any
@@ -354,6 +352,11 @@ func queryWithOpener(ctx context.Context, args []string, out io.Writer, open que
 		page, err = session.FragmentDiffs(ctx, request)
 		result, responsePage = page.Data, &page.Page
 	case diffOwnerQuery:
+		// The ref's commit may be any revision, as everywhere a location is
+		// accepted; an unresolvable one is left for the session to refuse.
+		if location, resolveErr := resolveLocation(ctx, firstNonEmpty(options.SourceDir, options.SagaRoot), request.Ref); resolveErr == nil {
+			request.Ref = location.String()
+		}
 		var page queryPage
 		page, err = session.DiffOwners(ctx, request)
 		result, responsePage = page.Data, &page.Page
@@ -374,6 +377,14 @@ func queryWithOpener(ctx context.Context, args []string, out io.Writer, open que
 		page, err = session.Verifications(ctx, request)
 		result, responsePage = page.Data, &page.Page
 	case livingQuery:
+		if request.Filters.Ref != "" {
+			checkout := firstNonEmpty(options.SourceDir, options.SagaRoot)
+			resolver, locateErr := locateReferences(ctx, checkout, &request.Filters)
+			if locateErr != nil {
+				return writeQueryFailure(out, locateErr)
+			}
+			defer resolver.Close()
+		}
 		var page queryPage
 		page, err = session.Living(ctx, request)
 		result, responsePage = page.Data, &page.Page
@@ -381,12 +392,35 @@ func queryWithOpener(ctx context.Context, args []string, out io.Writer, open que
 		err = errors.New("unsupported query request")
 	}
 	if err != nil {
-		return writeQueryOperationFailure(out, operation, normalizeQueryError(err))
-	}
-	if operation == "slide" || operation == "slide-diffs" {
-		return writeQuerySuccessSchema(out, slideQuerySchema, session.Snapshot(), result, responsePage)
+		return writeQueryFailure(out, normalizeQueryError(err))
 	}
 	return writeQuerySuccess(out, session.Snapshot(), result, responsePage)
+}
+
+// locateReferences resolves a --ref at any revision to its commit and places
+// every reference there through the same remapping that decides staleness,
+// so a current location finds the evidence pinned at an older commit.
+func locateReferences(ctx context.Context, checkout string, filters *livingapp.Filters) (*coderesolve.Resolver, *queryError) {
+	location, err := resolveLocation(ctx, checkout, filters.Ref)
+	if err != nil {
+		return nil, &queryError{Code: "invalid_argument", Message: "--ref: " + err.Error()}
+	}
+	resolver, err := coderesolve.New(ctx, checkout)
+	if err != nil {
+		return nil, &queryError{Code: "source_unavailable", Message: err.Error(), Retryable: true}
+	}
+	filters.Ref = location.String()
+	located := map[string]coderesolve.Resolution{}
+	filters.Locate = func(reference coderef.Reference) (coderef.Location, bool) {
+		key := reference.Key()
+		at, seen := located[key]
+		if !seen {
+			at = resolver.Resolve(ctx, reference, location.Commit)
+			located[key] = at
+		}
+		return at.Location, at.Current()
+	}
+	return resolver, nil
 }
 
 func writeQuerySchema(args []string, out io.Writer) error {
@@ -400,11 +434,7 @@ func writeQuerySchema(args []string, out io.Writer) error {
 	if operation == "schema" || queryUsage[operation] == "" {
 		return writeQueryFailure(out, &queryError{Code: "invalid_argument", Message: "unknown schema operation", Details: map[string]any{"allowed": queryDataOperations()}})
 	}
-	description := querySchemaFor(operation)
-	if operation == "slide" || operation == "slide-diffs" {
-		return writeQuerySuccessSchema(out, slideQuerySchema, "", description, nil)
-	}
-	return writeQuerySuccess(out, "", description, nil)
+	return writeQuerySuccess(out, "", querySchemaFor(operation), nil)
 }
 
 func queryDataOperations() []string {
@@ -576,7 +606,7 @@ func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, e
 	case "traceability":
 		flags.StringVar(&requirement, "requirement", "", "optional requirement ID or URN")
 		flags.StringVar(&criterion, "criterion", "", "optional criterion ID or URN")
-		flags.StringVar(&ref, "ref", "", "optional code location; selects evidence whose pinned location overlaps it")
+		flags.StringVar(&ref, "ref", "", "optional code location at any revision; selects evidence whose lines, remapped to that commit, overlap it")
 		flags.StringVar(&commit, "commit", "", "optional Git commit; selects evidence pinned at it")
 		flags.StringVar(&cursor, "cursor", "", "pagination cursor")
 		flags.Var(&limit, "limit", "page size")
@@ -652,10 +682,8 @@ func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, e
 		if ref != "" && commit != "" {
 			return nil, queryOpenOptions{}, false, fmt.Errorf("--ref and --commit are mutually exclusive")
 		}
-		if ref != "" {
-			if _, parseErr := coderef.ParseLocation(ref); parseErr != nil {
-				return nil, queryOpenOptions{}, false, fmt.Errorf("--ref must be a code location <commit>:<path>[#L<start>[-L<end>]]")
-			}
+		if revision, _, found := strings.Cut(ref, ":"); ref != "" && (!found || revision == "") {
+			return nil, queryOpenOptions{}, false, fmt.Errorf("--ref must be a code location <commit>:<path>[#L<start>[-L<end>]]")
 		}
 		if commit != "" {
 			decoded, decodeErr := hex.DecodeString(commit)
@@ -739,15 +767,11 @@ func firstNonempty(values ...string) string {
 }
 
 func writeQuerySuccess(out io.Writer, snapshot string, data any, page *queryPageEnvelope) error {
-	return writeQuerySuccessSchema(out, querySchema, snapshot, data, page)
-}
-
-func writeQuerySuccessSchema(out io.Writer, schema string, snapshot string, data any, page *queryPageEnvelope) error {
 	if page == nil {
 		page = &queryPageEnvelope{Total: 1, Returned: 1}
 	}
 	return encodeQueryEnvelope(out, queryEnvelope{
-		Schema:   schema,
+		Schema:   querySchema,
 		OK:       true,
 		Snapshot: snapshot,
 		Data:     data,
@@ -756,20 +780,8 @@ func writeQuerySuccessSchema(out io.Writer, schema string, snapshot string, data
 }
 
 func writeQueryFailure(out io.Writer, queryErr *queryError) error {
-	return writeQueryFailureSchema(out, querySchema, queryErr)
-}
-
-func writeQueryOperationFailure(out io.Writer, operation string, queryErr *queryError) error {
-	schema := querySchema
-	if operation == "slide" || operation == "slide-diffs" {
-		schema = slideQuerySchema
-	}
-	return writeQueryFailureSchema(out, schema, queryErr)
-}
-
-func writeQueryFailureSchema(out io.Writer, schema string, queryErr *queryError) error {
 	if err := encodeQueryEnvelope(out, queryEnvelope{
-		Schema: schema,
+		Schema: querySchema,
 		OK:     false,
 		Error: &queryErrorEnvelope{
 			Code:      queryErr.Code,

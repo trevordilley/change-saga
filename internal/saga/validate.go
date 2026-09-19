@@ -502,12 +502,12 @@ func validateVisualMappings(fragment *Fragment, result *Validation) {
 	if !visual {
 		return
 	}
+	if fragment.SlideMeta != nil && len(fragment.Landmarks) == 0 {
+		// Slide composition already reports an empty slide once.
+		return
+	}
 	if len(fragment.Landmarks) == 0 {
-		message := "visual fragment has no addressable landmarks; mark meaningful nodes or regions so reviewers can link them to code"
-		if fragment.SlideMeta != nil {
-			message = "slide has no semantic Items; mark every meaningful node, edge, region, transition, and callout"
-		}
-		addIssue(result, "warning", fragment.Path, message)
+		addIssue(result, "warning", fragment.Path, "visual fragment has no addressable landmarks; mark meaningful nodes or regions so reviewers can link them to code")
 	}
 	mapped := len(fragment.Code) > 0
 	for _, landmark := range fragment.Landmarks {
@@ -528,7 +528,10 @@ func validateVisualMappings(fragment *Fragment, result *Validation) {
 			}
 		}
 	}
-	if !mapped {
+	// Only an implementation deck's Items own code. Onboarding Items reference
+	// records, and a review's coverage is reported per review, so their slides
+	// are never asked for code.
+	if !mapped && (fragment.SlideMeta == nil || fragment.DeckRole == DeckRoleChange) {
 		message := "visual fragment has no directly linked code; reference the code it explains from the fragment or its landmarks"
 		if fragment.SlideMeta != nil {
 			message = "slide has no Item-linked code; reference every changed line from the Item it realizes"

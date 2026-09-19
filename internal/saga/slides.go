@@ -353,7 +353,9 @@ func validateItem(item *Item, slide *Slide, validation *Validation) {
 
 func validateSlideComposition(slide *Slide, validation *Validation) {
 	if len(slide.Items) == 0 {
-		addIssue(validation, "error", slide.Path, "slide has no semantic items; every slide must expose its meaningful visual elements")
+		// A new slide is work in progress until its Items are added, so an
+		// empty slide is reported once and never makes the Saga invalid.
+		addIssue(validation, "warning", slide.Path, "slide has no semantic Items yet; add an Item for every meaningful node, edge, region, transition, and callout")
 	}
 	if len(slide.Items) > 7 {
 		severity := "error"
@@ -395,7 +397,7 @@ func projectDecks(manifest Manifest, decks []*Deck) *Section {
 		section := &Section{Path: deck.Path, Kind: "deck", ID: deck.ID, Title: deck.Title, Order: deck.Rank, Target: deck.Target}
 		for _, slide := range deck.Slides {
 			meta := slide.SlideManifest
-			fragment := &Fragment{Path: slide.Path, Directory: slide.Directory, ID: slide.ID, Title: slide.Title, MediaType: slide.MediaType, Entrypoint: slide.Entrypoint, Order: slide.Rank, Target: slide.Target, SlideMeta: &meta}
+			fragment := &Fragment{Path: slide.Path, Directory: slide.Directory, ID: slide.ID, Title: slide.Title, MediaType: slide.MediaType, Entrypoint: slide.Entrypoint, Order: slide.Rank, Target: slide.Target, SlideMeta: &meta, DeckRole: deck.Role}
 			for _, item := range slide.Items {
 				meta := item.ItemManifest
 				fragment.Landmarks = append(fragment.Landmarks, Landmark{Path: item.Path, Directory: item.Directory, Version: item.Version, ID: item.ID, Label: item.Label, Description: item.Description, Selector: item.Selector, Hotspot: item.Hotspot, Target: item.Target, Code: item.Code, HasCode: item.HasCode, ItemMeta: &meta})

@@ -175,11 +175,15 @@ func testCaseHeads(root string) (map[string][]string, error) {
 	if err != nil {
 		return nil, err
 	}
+	return revisionHeads(document), nil
+}
+
+func revisionHeads(document quality.Document) map[string][]string {
 	heads := map[string][]string{}
 	for _, testCase := range document.TestCases {
 		heads[testCase.Identity.ID] = copyStrings(testCase.RevisionHeads)
 	}
-	return heads, nil
+	return heads
 }
 
 // loadLivingGraph is the one composition path for requirements, work plan,

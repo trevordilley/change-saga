@@ -180,6 +180,7 @@ function buildSagaRepository(root: string, source: { sourceRepo: string; base: s
   write(join(sagaRoot, "___epics", "wave-one.epic", "overview.fragment", "content.md"), `# Review overview {#review-overview}\n\nWave 1 connects the story to the exact source changes. The greeting accepts a caller-provided name.[^greeting-input]\n\n## Reviewer path {#reviewer-path}\n\nStart with **the behavior**, then follow the \`linked code\`.\n\n| Before | After |\n| --- | --- |\n| Flat prose | Linked narrative |\n\n1. Read the story.\n2. Inspect its code.\n\n[^greeting-input]: The function signature and returned greeting now use the supplied name.\n`);
   runSaga(["add-landmark", "--target", "___epics/wave-one.epic/overview.fragment", "--id", "greeting-input", "--text", "The function signature and returned greeting now use the supplied name.", "--label", "Greeting input evidence", sagaRoot], sagaRepo);
   runSaga(["add-chapter", "--epic", "wave-one", "--id", "architecture", "--title", "Architecture", sagaRoot, "architecture"], sagaRepo);
+  runSaga(["add-fragment", "--epic", "wave-one", "--section", "architecture", "--name", "overview", "--id", "architecture-overview", sagaRoot], sagaRepo);
   write(join(sagaRoot, "___epics", "wave-one.epic", "architecture.chapter", "overview.fragment", "content.md"), `# Architecture path {#architecture-path}\n\nThe renderer and persistence boundary stay independent.\n`);
 
   const mediaRoot = join(root, "media");

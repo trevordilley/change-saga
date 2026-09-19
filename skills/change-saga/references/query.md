@@ -56,7 +56,7 @@ for a node with no explained code.
   `change-saga query slide --saga PATH --target SLIDE [--offset N] [--limit N] [--repo PATH] [--against REV [--head REV]]`
 - `slide-diffs`: the changed atoms a slide Item references.
   `change-saga query slide-diffs --saga PATH --target ITEM [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]`
-- `diff-owners`: the narrative targets whose code references hold the changed lines or file at a code location, and the terms whose code contains each line.
+- `diff-owners`: in a comparison (--against), the narrative targets whose code references hold the changed lines or file at a code location, and the terms whose code contains each line; for any line, use traceability --ref.
   `change-saga query diff-owners --saga PATH --ref LOCATION [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]`
 - `gaps`: uncovered atoms, stale selectors, and overlapping coverage.
   `change-saga query gaps --saga PATH [--kind uncovered|stale|overlap] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]`
@@ -82,8 +82,8 @@ for a node with no explained code.
   `change-saga query work-events --saga PATH [--item ID|URN] [--kind KIND] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]`
 - `work-conflicts`: deterministically identified work-plan conflicts and competing heads.
   `change-saga query work-conflicts --saga PATH [--item ID|URN] [--wave ID|URN] [--kind KIND] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]`
-- `traceability`: current story-to-design/work/review/code paths, reverse code-location/commit lookup, and transitive blockers.
-  `change-saga query traceability --saga PATH [--requirement ID|URN] [--criterion ID|URN] [--ref LOCATION | --commit OID] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]`
+- `traceability`: current story-to-design/work/review/code/test paths (design that addresses the whole story is also listed as broad), reverse lookup by a code location at any revision (remapped as staleness is) or by pinned commit, and transitive blockers.
+  `change-saga query traceability --saga PATH [--requirement ID|URN] [--criterion ID|URN] [--ref LOCATION | --commit OID] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]`
 - `readiness`: independent requirement, plan, and delivery coverage axes; only immutable delivery evidence gates peer-review readiness.
   `change-saga query readiness --saga PATH [--requirement ID|URN] [--status ready|blocked] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]`
 - `layers`: one comparison's Changed records (each with before and after), Affected records (with why), and Code (hunks grouped under the records that reference them, plus unreferenced lines).

@@ -396,7 +396,7 @@ func qualityEvidenceAdd(args []string, out io.Writer, stdin io.Reader) error {
 	epic := epicFlag(flags)
 	repoDir := flags.String("repo", "", "source repository checkout; required when separate")
 	var code, verifications, citations, supersedes stringList
-	flags.Var(&code, "code", "code location <commit>:<path>[#L<start>[-L<end>]]; repeatable")
+	flags.Var(&code, "code", "code location <commit>:<path>[#L<start>[-L<end>]], the commit any revision; repeatable")
 	flags.Var(&verifications, "verification", "verification URN; repeatable")
 	flags.Var(&citations, "citation", "citation URN; repeatable")
 	flags.Var(&supersedes, "supersedes", "current evidence head URN this replaces; repeatable")

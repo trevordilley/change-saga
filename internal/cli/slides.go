@@ -122,7 +122,13 @@ func AddDeck(_ context.Context, args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
-	fmt.Fprintf(out, "Added deck %s\nTarget: %s\nNext: change-saga add-slide --deck %s --intent explain --layout diagram %s first-slide\n", filepath.ToSlash(created), target, *id, flags.Arg(0))
+	// An onboarding deck orients a newcomer; an implementation deck explains
+	// the change.
+	intent := "explain"
+	if *role == saga.DeckRoleOnboarding {
+		intent = "orient"
+	}
+	fmt.Fprintf(out, "Added deck %s\nTarget: %s\nNext: change-saga add-slide --deck %s --intent %s --layout diagram %s first-slide\n", filepath.ToSlash(created), target, *id, intent, flags.Arg(0))
 	return nil
 }
 
@@ -258,12 +264,27 @@ func AddSlide(_ context.Context, args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
+	fmt.Fprintf(out, "Added slide %s\nTarget: %s\n", filepath.ToSlash(created), target)
+	review, slideTarget := "", target
 	if *reviewID != "" {
-		fmt.Fprintf(out, "Added slide %s\nTarget: %s\nNext: change-saga set-slide-content --review %s --target %s --source FILE %s\n", filepath.ToSlash(created), target, *reviewID, *id, flags.Arg(0))
+		review, slideTarget = "--review "+*reviewID+" ", *id
+	}
+	// A slide written from --source already has its content; what it lacks
+	// is the Items that name its meaningful elements.
+	if *source != "" {
+		fmt.Fprintf(out, "Next: change-saga add-item %s--slide %s --kind KIND %s --label TEXT --description TEXT %s\n", review, slideTarget, selectorHint(*mediaType), flags.Arg(0))
 		return nil
 	}
-	fmt.Fprintf(out, "Added slide %s\nTarget: %s\nNext: change-saga set-slide-content --target %s --source FILE %s\n", filepath.ToSlash(created), target, target, flags.Arg(0))
+	fmt.Fprintf(out, "Next: change-saga set-slide-content %s--target %s --source FILE %s\n", review, slideTarget, flags.Arg(0))
 	return nil
+}
+
+// selectorHint names the selector a visual of this media type is addressed by.
+func selectorHint(mediaType string) string {
+	if mediaType == "text/html" || mediaType == "image/svg+xml" {
+		return "--element-id ID"
+	}
+	return "--region X,Y,W,H"
 }
 
 func AddItem(_ context.Context, args []string, out io.Writer) error {

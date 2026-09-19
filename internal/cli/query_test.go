@@ -247,7 +247,6 @@ func TestQueryRejectsAdversarialArgumentsBeforeOpening(t *testing.T) {
 		{"bad requirement state", []string{"requirements", "--saga", "x", "--state", "done"}},
 		{"bad relation state", []string{"relations", "--saga", "x", "--state", "fresh"}},
 		{"bad traceability ref", []string{"traceability", "--saga", "x", "--ref", "not-a-location"}},
-		{"abbreviated traceability ref", []string{"traceability", "--saga", "x", "--ref", "abc123:app.go"}},
 		{"retired traceability diff flag", []string{"traceability", "--saga", "x", "--diff", "saga-diff://v1/file?x"}},
 		{"retired diff-owners diff flag", []string{"diff-owners", "--saga", "x", "--diff", "saga-diff://v1/file?x"}},
 		{"bad traceability commit", []string{"traceability", "--saga", "x", "--commit", "abc123"}},

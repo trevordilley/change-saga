@@ -102,7 +102,7 @@ func TestImplementationDeckAuthoringLoop(t *testing.T) {
 		t.Fatal(err)
 	}
 	data, _ := envelope["data"].(map[string]any)
-	if envelope["schema"] != slideQuerySchema || data["items"] == nil || data["landmarks"] != nil || data["section"] != "Overview" || data["takeaway"] != "Validation now happens first." {
+	if envelope["schema"] != querySchema || data["items"] == nil || data["landmarks"] != nil || data["section"] != "Overview" || data["takeaway"] != "Validation now happens first." {
 		t.Fatalf("slide query leaked report vocabulary or metadata: %#v", envelope)
 	}
 	if !strings.Contains(output.String(), "change-saga cover") {
@@ -253,7 +253,7 @@ func TestSagaEmbedsSeveralIndependentSlideDecks(t *testing.T) {
 		t.Fatal(err)
 	}
 	data, _ = envelope["data"].(map[string]any)
-	if envelope["schema"] != slideQuerySchema || data["items"] == nil || data["landmarks"] != nil {
+	if envelope["schema"] != querySchema || data["items"] == nil || data["landmarks"] != nil {
 		t.Fatalf("embedded slide query leaked report semantics: %#v", envelope)
 	}
 }

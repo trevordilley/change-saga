@@ -22,10 +22,7 @@ test("@critical refuses malformed, non-canonical, and unresolvable code location
     ["not a location", "no-location-here"],
     ["missing path", `${head}:`],
     ["missing commit", ":src/app.go#L3-L4"],
-    ["abbreviated commit", `${head.slice(0, 12)}:src/app.go#L3-L4`],
     ["over-long commit", `${head}ab:src/app.go#L3-L4`],
-    ["uppercase commit", `${head.toUpperCase()}:src/app.go#L3-L4`],
-    ["symbolic revision", "HEAD:src/app.go#L3-L4"],
     ["legacy diff URI", `saga-diff://v1/line?head=${head}&path=src%2Fapp.go&side=new&start=3&end=4`],
     ["non-canonical single-line range", `${head}:src/app.go#L3-L3`],
     ["inverted range", `${head}:src/app.go#L9-L2`],
@@ -68,6 +65,21 @@ test("@critical refuses malformed, non-canonical, and unresolvable code location
     version: 2,
     references: [{ commit: head, path: "src/app.go", start: 3, end: 4, digest: codeDigest(sourceRepo, head, "src/app.go", 3, 4) }]
   });
+
+  // Every command that accepts a location resolves its revision: an
+  // abbreviated, uppercase, or symbolic spelling pins the full commit.
+  const revisions: Array<[string, string]> = [
+    ["abbreviated", `${head.slice(0, 12)}:src/app.go#L3-L4`],
+    ["uppercase", `${head.toUpperCase()}:src/app.go#L3-L4`],
+    ["symbolic", "HEAD:src/app.go#L3-L4"]
+  ];
+  for (const [label, ref] of revisions) {
+    const resolved = runCLI(sagaRepositories, ["cover", "--repo", sourceRepo, "--target", "___epics/wave-one.epic/overview.fragment", "--name", `${label}-evidence`, "--ref", ref, sagaRoot]);
+    expect(resolved.status, `${label} revision: ${resolved.stderr}`).toBe(0);
+    const written = reviewFiles(sagaRepositories, new RegExp(`___code/${label}-evidence\\.json$`));
+    expect(written, `${label} revision`).toHaveLength(1);
+    expect(readJSON<{ references: Array<{ commit: string }> }>(written[0]).references[0].commit, `${label} revision`).toBe(head);
+  }
 });
 
 test("@critical exposes mapping scrutiny, claims, and verification as an AI review harness", async ({ sagaRepositories }) => {

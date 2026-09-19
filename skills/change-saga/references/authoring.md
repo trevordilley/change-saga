@@ -186,7 +186,9 @@ overviews, walkthroughs) and the app-level design system. Create them with
 `change-saga add-fragment` (Markdown, SVG, image, text, or a self-contained
 HTML package). Write or replace an entrypoint only with `change-saga
 set-fragment-content --target <fragment> --source FILE|-`; do not edit fragment
-package files directly. Pass the target URN each command prints (or that `query
+package files directly. Fix a title or order with `revise-chapter`,
+`revise-section`, or `revise-fragment --target <target>`, and delete a record
+with the matching `remove-*`. Pass the target URN each command prints (or that `query
 children` reports) as `--target`.
 
 Organize chapters by behavior, risk, architecture, or reviewer intent rather
@@ -194,7 +196,8 @@ than file type, and use Markdown to orient and connect visual artifacts rather
 than as the default container. Lead with a picture: a substantial chapter
 begins with an SVG diagram, a self-contained interactive HTML walkthrough, or a
 concrete before/after example, and makes its workflows, data flows, data
-models, boundaries, and failure paths explicit. A chapter's overview states its
+models, boundaries, and failure paths explicit. A new chapter holds no fragment;
+add its first with `add-fragment --section <chapter>`. That overview states its
 purpose and boundary, its invariants, notable decisions and rejected
 alternatives, risks and compatibility concerns, and how it is verified. Split a
 chapter when it contains independently understandable behavior with a different

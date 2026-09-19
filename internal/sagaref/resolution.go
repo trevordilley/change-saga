@@ -30,8 +30,8 @@ type Resolver interface {
 	Resolve(context.Context, Reference) (Resolution, error)
 }
 
+// QueryAPIVersion is the envelope of every query operation.
 const QueryAPIVersion = "change-saga.ai/v1"
-const SlideQueryAPIVersion = "change-saga.ai/v2"
 
 // QueryRequest is the transport-neutral request made against the referenced
 // Saga's versioned query API. Revision always carries the pinned Git OID;
@@ -68,12 +68,8 @@ func NewQueryRequest(reference Reference) (QueryRequest, error) {
 	if err := Validate(reference); err != nil {
 		return QueryRequest{}, err
 	}
-	schema := QueryAPIVersion
-	if target, err := ParseTarget(reference.TargetURN); err == nil && (target.Kind == TargetDeck || target.Kind == TargetSlide || target.Kind == TargetItem) {
-		schema = SlideQueryAPIVersion
-	}
 	return QueryRequest{
-		Schema:         schema,
+		Schema:         QueryAPIVersion,
 		SagaPath:       reference.SagaPath,
 		SagaID:         reference.SagaID,
 		Revision:       reference.Revision,

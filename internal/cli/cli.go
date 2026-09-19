@@ -89,7 +89,7 @@ func (e *StatusError) Error() string { return "command reported a non-success st
 // commandUsage is the single source of each command's usage line so the
 // overview, the per-command -h banner, and argument errors cannot drift apart.
 var commandOrder = []string{
-	"init", "epic", "overview", "term", "persona", "flag", "prototype", "story", "criterion", "citation", "relation", "design", "plan", "quality", "add-deck", "add-slide", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "cover", "remove-coverage", "replace-coverage", "references", "repin", "sync", "add-claim", "verify-claim",
+	"init", "epic", "overview", "term", "persona", "flag", "prototype", "story", "criterion", "citation", "relation", "design", "plan", "quality", "add-deck", "add-slide", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "revise-deck", "remove-deck", "revise-slide", "remove-slide", "revise-item", "remove-item", "revise-chapter", "remove-chapter", "revise-section", "remove-section", "revise-fragment", "remove-fragment", "cover", "remove-coverage", "replace-coverage", "references", "repin", "sync", "add-claim", "verify-claim",
 	"review", "validate", "status", "check", "query",
 	"serve", "open", "install-skill", "spec",
 }
@@ -168,6 +168,18 @@ var commandUsage = map[string]string{
 	"add-fragment":                "change-saga add-fragment (--epic ID | --app designsystem | --section TARGET) [flags] <saga>",
 	"set-fragment-content":        "change-saga set-fragment-content --target TARGET --source FILE|- [--json|--quiet] <saga>",
 	"add-landmark":                "change-saga add-landmark [flags] <saga>",
+	"revise-deck":                 "change-saga revise-deck --deck TARGET [--title TEXT] [--objective TEXT] [--rank N] [--dry-run] [--json] <saga>",
+	"remove-deck":                 "change-saga remove-deck --deck TARGET [--dry-run] [--json] <saga>",
+	"revise-slide":                "change-saga revise-slide [--review ID] --slide TARGET [--title TEXT] [--section TEXT] [--intent INTENT] [--layout LAYOUT] [--takeaway TEXT] [--exception-rationale TEXT] [--rank N] [--dry-run] [--json] <saga>",
+	"remove-slide":                "change-saga remove-slide --slide TARGET [--dry-run] [--json] <saga>",
+	"revise-item":                 "change-saga revise-item [--review ID] --item URN|ID [--slide TARGET] [--kind KIND] [--label TEXT] [--description TEXT] [selector] [callout flags] [--record URN] [--rank N] [--dry-run] [--json] <saga>",
+	"remove-item":                 "change-saga remove-item --item URN|ID [--slide TARGET] [--dry-run] [--json] <saga>",
+	"revise-chapter":              "change-saga revise-chapter --target TARGET [--title TEXT] [--order N] [--dry-run] [--json] <saga>",
+	"remove-chapter":              "change-saga remove-chapter --target TARGET [--dry-run] [--json] <saga>",
+	"revise-section":              "change-saga revise-section --target TARGET [--title TEXT] [--order N] [--dry-run] [--json] <saga>",
+	"remove-section":              "change-saga remove-section --target TARGET [--dry-run] [--json] <saga>",
+	"revise-fragment":             "change-saga revise-fragment --target TARGET [--title TEXT] [--order N] [--dry-run] [--json] <saga>",
+	"remove-fragment":             "change-saga remove-fragment --target TARGET [--dry-run] [--json] <saga>",
 	"cover":                       "change-saga cover [flags] [--batch FILE|-] [--dry-run] [--against REV [--head REV]] <saga>",
 	"remove-coverage":             "change-saga remove-coverage --record PATH [--dry-run] [--json|--quiet] <saga>",
 	"replace-coverage":            "change-saga replace-coverage --record PATH [coverage flags] [--batch FILE|-] [--dry-run] [--against REV [--head REV]] <saga>",
@@ -316,7 +328,7 @@ var commandDescription = map[string]string{
 	"criterion revise":            "Revise one criterion's wording without changing its stable identity. Use --edit to\ninspect the complete proposed story revision in $EDITOR.",
 	"criterion remove":            "Remove one criterion through a complete story revision. The required reason is\nreturned as commit guidance; no mutable tombstone is stored.",
 	"citation":                    "Create immutable provenance records for requirements and design decisions.",
-	"citation add":                "Record where a requirement or decision came from: an external URL, issue, document,\nrepository commit, or recorded decision. Provenance is context, not delivery evidence.",
+	"citation add":                "Record where a requirement or decision came from: an external URL, issue, document,\nrepository commit, or recorded decision. Provenance is context, not delivery evidence.\n--epic only chooses where the citation is stored: its URN names no epic, so a\nstory in any epic may cite it.",
 	"relation":                    "Create, explicitly supersede, or check the currency of pinned traceability relations.",
 	"relation add":                "Link stories and criteria to design, work items, slide explanations, and verification\nevidence with a typed rationale. Pin mutable requirement endpoints so their links go stale\nafter later edits. Test cases may verify criteria,\nscope is self unless a Deck/Slide source declares descendants, and each omitted required\nrevision pin defaults to the endpoint's unique current head (reported as it is pinned).",
 	"relation supersede":          "Retire one relation without erasing it. Add its corrected replacement separately;\na pivot is represented by normal requirement, design, plan, and relation revisions.",
@@ -367,6 +379,18 @@ fields target, path, side, lines, changed_lines, file, commit, refs, note, and n
 whole batch is resolved before anything is written, and a failing record leaves the saga
 untouched.`,
 	"remove-coverage":  "Delete one exact coverage record named by query mappings or fragment-diffs.",
+	"revise-deck":      "Correct a deck's title, objective, or rank in place. Its identity and slides are\nunchanged. Repeating a revise is a no-op reported as replayed.",
+	"remove-deck":      "Delete a deck with its slides, Items, and their code evidence. Relations that\npointed at them are listed; status reports them stale until superseded.",
+	"revise-slide":     "Correct a slide's title, section, intent, layout, takeaway, or rank in place;\nset-slide-content replaces its visual. Its identity and Items are unchanged.",
+	"remove-slide":     "Delete a slide with its Items and their code evidence. A review's slides carry\nits approvals and comments, so they are not removed.",
+	"revise-item":      "Correct an Item's label, description, kind, selector, callout fields, record, or\nrank in place. Its identity and code evidence are unchanged.",
+	"remove-item":      "Delete an Item and its code evidence, and drop it from its slide's reading order.\nA callout about the Item must be revised or removed first.",
+	"revise-chapter":   "Correct a chapter's title or display order in place. Its identity and content are\nunchanged.",
+	"remove-chapter":   "Delete a chapter with its sections and fragments. Relations that pointed at them\nare listed; status reports them stale until superseded.",
+	"revise-section":   "Correct a section's title or display order in place. Its identity and content are\nunchanged.",
+	"remove-section":   "Delete a section with its sections and fragments. Relations that pointed at them\nare listed; status reports them stale until superseded.",
+	"revise-fragment":  "Correct a fragment's title or display order in place. Its identity and content are\nunchanged.",
+	"remove-fragment":  "Delete a fragment with its landmarks and code evidence. Relations that pointed at them\nare listed; status reports them stale until superseded.",
 	"replace-coverage": "Atomically replace one coverage record with one or more newly resolved records.\nUse --batch to split or retarget broad evidence without leaving partial coverage.",
 	"references":       "List every code reference: current (remapped when its lines only moved), or stale with the\nreason its code changed. Observing, health is judged at --head; comparing, at both sides.\n--diff adds the patch since the pin.",
 	"repin":            "After a change lands, re-pin evidence references to the landed commit (following moved\nlines, or the content digest when the branch commit is gone) and record the branch's commit\nmessages in ___merges/<commit>.json so a squash merge keeps its reasoning. It also freezes the\nlanded change's review (--review, or the Saga's only open review) at its exact base and head\nin review.json, so the review stays viewable after the branch is gone.",
@@ -532,13 +556,11 @@ func addChapter(_ context.Context, args []string, out io.Writer, scope authoring
 		if chapterID == "" {
 			chapterID = store.Slug(name)
 		}
-		overviewID := chapterID + "-overview"
-		if !saga.ValidID(chapterID) || !saga.ValidID(overviewID) || targetIDExists(document, chapterID) || targetIDExists(document, overviewID) {
-			return fmt.Errorf("chapter id %q or its overview id is invalid or already used", chapterID)
+		if !saga.ValidID(chapterID) || targetIDExists(document, chapterID) {
+			return fmt.Errorf("chapter id %q is invalid or already used", chapterID)
 		}
 		dir := filepath.Join(hierarchyRoot, store.Slug(name)+".chapter")
 		manifest := saga.ChapterManifest{Version: saga.CurrentVersion, ID: chapterID, Title: chapterTitle, Order: *order}
-		overview := saga.FragmentManifest{Version: saga.CurrentVersion, ID: overviewID, MediaType: "text/markdown", Entrypoint: "content.md"}
 		// One staged rename: a failed chapter never leaves a manifest-less
 		// directory behind that would invalidate the saga for every later
 		// command.
@@ -551,10 +573,9 @@ func addChapter(_ context.Context, args []string, out io.Writer, scope authoring
 					return err
 				}
 			}
-			if err := store.WriteJSON(filepath.Join(stage, "chapter.json"), manifest, true); err != nil {
-				return err
-			}
-			return populateFragment(filepath.Join(stage, "overview.fragment"), overview, "", nil)
+			// A chapter starts with no fragment: an empty one would only be
+			// a warning to author or remove it.
+			return store.WriteJSON(filepath.Join(stage, "chapter.json"), manifest, true)
 		})
 		if errors.Is(err, fs.ErrExist) {
 			return fmt.Errorf("chapter %s already exists", filepath.Base(dir))
@@ -570,7 +591,9 @@ func addChapter(_ context.Context, args []string, out io.Writer, scope authoring
 	}
 	fmt.Fprintf(out, "Added chapter %s\n", created)
 	fmt.Fprintf(out, "Target: %s\n", createdTarget)
-	fmt.Fprintf(out, "Next: %s --title \"Section title\" %s%s %s/section-name\n", scope.commandText("add-section"), scope.placeArguments(), flags.Arg(0), createdID)
+	fmt.Fprintf(out, "Next: write the chapter's content, directly or in a section:\n")
+	fmt.Fprintf(out, "  %s --section %s --title \"Fragment title\" --source FILE %s%s\n", scope.commandText("add-fragment"), createdID, scope.placeArguments(), flags.Arg(0))
+	fmt.Fprintf(out, "  %s --title \"Section title\" %s%s %s/section-name\n", scope.commandText("add-section"), scope.placeArguments(), flags.Arg(0), createdID)
 	return nil
 }
 
@@ -727,7 +750,14 @@ func addFragment(_ context.Context, args []string, out io.Writer, scope authorin
 	}
 	fmt.Fprintf(out, "Added fragment %s\n", created)
 	fmt.Fprintf(out, "Target: %s\n", createdTarget)
-	fmt.Fprintf(out, "Next: %s --target %s --source FILE|- %s\n", scope.commandText("set-fragment-content"), createdTarget, flags.Arg(0))
+	switch {
+	case *source == "":
+		fmt.Fprintf(out, "Next: %s --target %s --source FILE|- %s\n", scope.commandText("set-fragment-content"), createdTarget, flags.Arg(0))
+	case resolvedType == "text/html" || strings.HasPrefix(resolvedType, "image/"):
+		// Written content that is visual still needs its meaningful elements
+		// named so they can be linked.
+		fmt.Fprintf(out, "Next: change-saga add-landmark --target %s %s --label TEXT --description TEXT %s\n", createdTarget, selectorHint(resolvedType), flags.Arg(0))
+	}
 	return nil
 }
 
@@ -1355,7 +1385,7 @@ func resolveTarget(document *saga.Saga, value string, allowFragment bool) (strin
 	if directTarget != "" {
 		return candidateAbs, directTarget, nil
 	}
-	targetKinds := map[bool]string{true: "chapter, section, fragment, or landmark", false: "chapter or section"}[allowFragment]
+	targetKinds := map[bool]string{true: "chapter, section, fragment, landmark, or Item", false: "chapter or section"}[allowFragment]
 	dir, err := store.ResolveSection(document.Root, value)
 	if err != nil {
 		// Report content lives beneath reserved roots (___epics, ___overview),

@@ -176,6 +176,7 @@ type Fragment struct {
 	HasCode    bool           `json:"-"`
 	Landmarks  []Landmark     `json:"landmarks,omitempty"`
 	SlideMeta  *SlideManifest `json:"-"`
+	DeckRole   string         `json:"-"`
 }
 
 type Landmark struct {
