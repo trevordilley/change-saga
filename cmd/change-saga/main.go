@@ -101,8 +101,10 @@ func run(args []string, stdout, stderr io.Writer) int {
 		err = cli.VerifyClaim(ctx, args[1:], stdout)
 	case "validate":
 		err = cli.Validate(ctx, args[1:], stdout)
-	case "status", "check":
+	case "status":
 		err = cli.Status(ctx, args[1:], stdout)
+	case "check":
+		err = cli.Check(ctx, args[1:], stdout)
 	case "query":
 		err = cli.Query(ctx, args[1:], stdout)
 	case "serve", "open":

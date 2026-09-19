@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"errors"
 	"os"
 	"path/filepath"
 	"strings"
@@ -227,24 +226,28 @@ func TestTopLevelHelpRecommendsTheAuthoringSkill(t *testing.T) {
 	}
 }
 
-func TestTopLevelHelpDescribesOneBigChangeWorkflow(t *testing.T) {
+// The help teaches incremental adoption: a first change is init, cover, and
+// status, and everything else is growth that never blocks.
+func TestTopLevelHelpDescribesIncrementalAdoption(t *testing.T) {
 	var output bytes.Buffer
 	PrintHelp(&output)
 	text := output.String()
 	for _, want := range []string{
-		"big change",
+		"one app Saga", "Start small", "implementation deck", "cover",
+		"status --against main", "no verdict", "check --covers implementation",
 		"Product:", "prototype", "user stories",
 		"Design:", "UX, UI, and technical design",
 		"Quality:", "test cases",
-		"Implementation:", "implementation deck",
-		"Code:", "cover",
 		"dependency-aware waves",
 	} {
 		if !strings.Contains(text, want) {
 			t.Fatalf("top-level help omitted workflow guidance %q:\n%s", want, text)
 		}
 	}
-	for _, unwanted := range []string{"Choose the workflow", "normal PR may be enough", "optional", "--mode", "upgrade"} {
+	if strings.Index(text, "A first change:") > strings.Index(text, "Growing the Saga") {
+		t.Fatalf("the first change comes before growth:\n%s", text)
+	}
+	for _, unwanted := range []string{"big change", "starts with the big work", "Choose the workflow", "normal PR may be enough", "--mode", "upgrade"} {
 		if strings.Contains(text, unwanted) {
 			t.Fatalf("top-level help still offers %q:\n%s", unwanted, text)
 		}
@@ -261,7 +264,7 @@ func TestLivingCommandHelpExplainsParallelWorkflow(t *testing.T) {
 			var output bytes.Buffer
 			_ = Init(context.Background(), []string{"-h"}, &output)
 			return output.String()
-		}, want: []string{"app Saga", "___overview", "epic", "personas", "optional"}},
+		}, want: []string{"app Saga", "___overview", "cover the change", "implementation deck", "optional"}},
 		{name: "story add", run: func() string {
 			var output bytes.Buffer
 			_ = Story(context.Background(), []string{"add", "-h"}, &output)
@@ -393,8 +396,8 @@ func TestValidateFixIsANoOpWhenNothingIsMissing(t *testing.T) {
 
 // The end-to-end shape matters as much as the in-memory one: an agent polls
 // status --json until "uncovered" is empty, and a null there is a crash.
-// Complete changed-source accounting is not readiness: this Saga records no
-// story, so ready_for_review is blocked and status exits 3.
+// Status has no verdict: this Saga records no story, and status still exits
+// zero because its report can be trusted.
 func TestStatusJSONReportsEmptyCollectionsOnSuccess(t *testing.T) {
 	root, repo := coveredSaga(t)
 	// One record references the add event and the added lines exactly, so
@@ -405,9 +408,8 @@ func TestStatusJSONReportsEmptyCollectionsOnSuccess(t *testing.T) {
 	}
 
 	var output bytes.Buffer
-	var exit *StatusError
-	if err := Status(context.Background(), []string{"--against", "main", "--json", "--repo", repo, root}, &output); !errors.As(err, &exit) || exit.Code != 3 {
-		t.Fatalf("status with no accepted story = %v, want exit 3\n%s", err, output.String())
+	if err := Status(context.Background(), []string{"--against", "main", "--json", "--repo", repo, root}, &output); err != nil {
+		t.Fatalf("status with no story = %v, want exit 0\n%s", err, output.String())
 	}
 	var report map[string]json.RawMessage
 	if err := json.Unmarshal(output.Bytes(), &report); err != nil {

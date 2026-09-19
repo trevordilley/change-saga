@@ -1,11 +1,8 @@
-// Package readiness computes living-Saga delivery projections and the v5
-// readiness gate table from an already validated graph. It reads the six-axis
-// coverage vocabulary from internal/coverage but still performs no filesystem
-// or transport access of its own: every input is a fact a loader established.
-//
-// EvaluateGates in gates.go is the readiness verdict. Evaluate below is the
-// per-criterion delivery trace behind the query API's readiness page; it never
-// feeds the gate table.
+// Package readiness computes living-Saga delivery projections from an already
+// validated graph: the per-criterion delivery trace behind the query API's
+// readiness page, and persona coverage. It performs no filesystem or transport
+// access of its own: every input is a fact a loader established. Nothing here
+// is a verdict; status reports coverage areas, and teams decide what to require.
 package readiness
 
 import "sort"

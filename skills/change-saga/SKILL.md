@@ -1,6 +1,6 @@
 ---
 name: change-saga
-description: 'Author, update, validate, and open a Change Saga: the Git-native documentation of an application, organized into durable epics that carry prototypes, user stories and acceptance criteria, UX/UI and technical design, test cases, and implementation decks whose Items reference the exact code they explain, plus one review deck per pull request. Drive the work with status --json next actions. A first change is asked only for implementation coverage; everything else grows over time. The primary purpose is to author what is submitted for human review, not to perform the review; only conduct review actions when explicitly requested.'
+description: 'Author, update, validate, and open a Change Saga: the Git-native documentation of an application, organized into durable epics that carry prototypes, user stories and acceptance criteria, UX/UI and technical design, test cases, and implementation decks whose Items reference the exact code they explain, plus one review deck per pull request. Drive the work with status --json next actions and ask yes/no coverage questions with check --covers. A first change is asked only for implementation coverage; everything else is growth, offered and never required. The primary purpose is to author what is submitted for human review, not to perform the review; only conduct review actions when explicitly requested.'
 ---
 
 # Change Saga
@@ -96,43 +96,70 @@ does not make parallel edits conflict-free.
 ## Grow the Saga incrementally
 
 The one thing asked of a change is that its implementation covers it: every
-changed line is referenced by an Item in the implementation deck of the epic
-the change belongs to. That is the whole first run: initialize, add the epic,
-cover the change, done.
+changed line is referenced by an Item in an epic's implementation deck. That
+is the whole first run: `init`, cover the change, done. Do not start by
+defining personas, stories, or an epic structure. The first command that
+needs an epic creates one named after the branch (pass `--epic` to name it
+yourself), and with exactly one epic `--epic` is implied; the command says
+which epic it chose. Nothing is locked in: no story, deck, or slide URN names
+its epic, so content can move later.
 
 Everything else is growth, not debt. Personas, stories, design, test cases,
 the overview, and terms are never demanded up front, and their absence is not
-failure. After the change is covered, offer the growth that `status` reports,
-one contextual step at a time ("this change touched checkout; capture the
-checkout story?"), with the one command that acts on the answer. Recover
-product intent from the source material and the user; never invent a story,
-criterion, persona, or definition the user did not give you.
+failure. After the change is covered, offer the growth `status` suggests, one
+contextual step at a time ("this change touched checkout; capture the
+checkout story?"), each with the practice it teaches and the command that acts
+on the answer. The user may decline any of it. Recover product intent from
+the source material and the user; never invent a story, criterion, persona,
+or definition the user did not give you.
 
 What exists must stay healthy. Once a story is accepted or a design references
-code, a change that makes that link stale or leaves its code uncovered needs
-reconciling in the same change. Coverage only ratchets up.
+code, a change that makes that link stale or breaks it shows up in the
+`health` area and in the next actions, and is reconciled in the same change.
+Coverage only ratchets up.
 
 ## Drive the work with status
 
-`change-saga status --json <saga>` is the work queue. It reports the readiness
-gates, each accepted criterion's coverage on the prototype, UX, UI, technical,
-quality, and implementation axes, the stale set with pinned and current
-revisions, changed-source accounting, overview gaps, reviews, and ordered
-`next_actions`. With `--against` it is scoped to one change. Loop:
+`change-saga status --json <saga>` is the work queue, and it has no verdict.
+Its `coverage.areas` report, for each area of the chain, how many things in
+scope are covered, with the lists of what is and is not:
+
+| Area | Covered when |
+| --- | --- |
+| `implementation` | every changed line is referenced by the implementation deck |
+| `stories` | every changed line reaches a story through the chain |
+| `personas` | every changed line reaches a persona |
+| `design` | every story in scope has design |
+| `quality` | every acceptance criterion in scope has a test |
+| `health` | nothing that already existed went stale or broke |
+
+With `--against` the scope is the change (what it changed and what it
+affected); without it, the whole app; `--epic` narrows either. Status exits 0
+whenever it can produce a trustworthy report, and non-zero only for a
+malformed Saga (such as a duplicate ID), unreadable records, or a checkout
+that does not match the declared repository. Every gap is a finding, never a
+failure. To ask a yes/no question, use `change-saga check --against <base>
+--covers implementation[,stories,...] app.saga`: it exits 0 when every named
+area is fully covered and 3 with only those areas' gaps. Teams write their own
+rules over `check` and the JSON; see [references/ci.md](references/ci.md).
+
+`next_actions` are ordered: health first (conflicts, invalid and stale
+records, failed runs), then `changed_source` (cover every changed line), then
+reviews, then `growth`. Each action names the `area` it advances; a growth
+action also carries the `practice` it teaches. Loop:
 
 1. run `change-saga spec --json` once to learn the resources, legal relations,
    and command shapes;
-2. run `status --json` and take the first next action;
+2. run `status --json --against <base>` and take the first next action;
 3. a `command` action carries a valid command shape: fill in its author inputs
    and run it; a `question` action needs product judgment, external access, or
    an explicit exclusion: ask the user its one question and run the command for
-   their answer. An action in the `growth` category is an offer the user may
-   decline;
+   their answer. A `growth` action is an offer the user may decline;
 4. run `validate`, then repeat from step 2.
 
-Stop when no required gap remains. A clean status proves nothing is missing or
-stale; it never proves the Saga is good. Status never reduces coverage to a
-score, and neither should you.
+Stop when only growth remains, or earlier if the user's team requires less.
+A clean status proves nothing is missing or stale; it never proves the Saga
+is good. Status never reduces coverage to a score, and neither should you.
 
 ## Locate the CLI
 
@@ -172,11 +199,13 @@ operation are in [references/query.md](references/query.md).
 
    ```sh
    change-saga init --title "<app name>" app.saga
-   change-saga epic add --id <epic> --title "<product domain>" app.saga
    ```
 
-   Put the change in the epic it belongs to, adding one only for a new product
-   domain. Comparisons are between commits, so commit in-progress work before
+   Put the change in the epic it belongs to. With no epic yet, the first
+   command that needs one creates it from the branch name; name it yourself
+   with `change-saga epic add --id <epic> --title "<product domain>"` when the
+   user has a better name, and add another only for a new product domain.
+   Comparisons are between commits, so commit in-progress work before
    covering it; uncommitted changes are not part of any comparison.
 4. **Page the coverage work queue** with `change-saga query gaps --kind
    uncovered --against <base> --saga app.saga`. Use `--kind stale` for
@@ -227,10 +256,11 @@ operation are in [references/query.md](references/query.md).
     coverage, and prose confidence is not verification.
 11. **Close the loop.** Repeat the three gap views until no changed line is
     uncovered, no reference is stale, and every overlap has a defensible
-    reviewer reason. Page `query traceability` and offer a story for each
-    entry in `data.unlinked_code_evidence`. Run `change-saga validate --json`
-    and `change-saga status --json --against <base>`, then perform the audits
-    in [references/authoring.md](references/authoring.md). A structurally
+    reviewer reason; `change-saga check --against <base> --covers
+    implementation app.saga` then exits 0. Run `change-saga validate --json`
+    and `change-saga status --json --against <base>`, offer the growth it
+    suggests (starting with the stories the change implies), and perform the
+    audits in [references/authoring.md](references/authoring.md). A structurally
     valid deck that still makes the reviewer read paragraphs or decode
     decorative diagrams is not ready.
 

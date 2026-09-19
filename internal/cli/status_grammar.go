@@ -2,7 +2,10 @@ package cli
 
 import (
 	"context"
+
 	"fmt"
+	"github.com/twentyideas/changesaga/internal/applayout"
+	"github.com/twentyideas/changesaga/internal/areas"
 	"io"
 	"strings"
 
@@ -15,24 +18,28 @@ import (
 	"github.com/twentyideas/changesaga/internal/grammar"
 	"github.com/twentyideas/changesaga/internal/livingapp"
 	"github.com/twentyideas/changesaga/internal/nextaction"
-	"github.com/twentyideas/changesaga/internal/readiness"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
-// StatusSchema names the machine-readable status contract. Version 2 adds the
-// living authoring grammar to the version 1 changed-source report; every
-// version 1 key keeps its meaning and position.
-const StatusSchema = "change-saga.status/v2"
+// StatusSchema names the machine-readable status contract. Version 3
+// replaces the readiness gate table with the coverage report: status has no
+// verdict, and "coverage" is the part teams write their own rules over.
+const StatusSchema = "change-saga.status/v3"
 
-// statusDocument is the `status --json` contract. The embedded report is the
-// unchanged version 1 changed-source accounting; the embedded living status
-// adds the gate table, axis cells, stale pins, and quality domain; the next
-// actions are derived from both and built from the published grammar.
+// statusDocument is the `status --json` contract. Coverage is the report
+// teams script against: every area's counts and lists, in scope. The embedded
+// report is the changed-line accounting behind it; the embedded living status
+// adds axis cells, stale pins, and the quality domain; the next actions are
+// derived from all of them and built from the published grammar.
 type statusDocument struct {
 	coverage.Report
 	Schema string `json:"status_schema"`
 	// Opening is how the Saga was opened. It is never read from the Saga.
 	Opening opening `json:"opening"`
+	// Coverage is the coverage report: for each area, how many things in
+	// scope are covered, with the lists of what is and is not. It has no
+	// verdict and no blended score.
+	Coverage areas.Report `json:"coverage"`
 	// Comparison is the Changed, Affected, and Code layers; only a Saga
 	// opened with --against has them.
 	Comparison *changeview.Layers `json:"comparison,omitempty"`
@@ -99,10 +106,17 @@ func readComparison(ctx context.Context, root, repoDir string, rng gitdiff.Range
 // buildStatus composes the complete status document. A living-record load
 // failure never hides changed-source accounting: it becomes a diagnostic and
 // the first next action.
-func buildStatus(ctx context.Context, root, repoDir string, rng gitdiff.Range, allowMismatch bool) (statusDocument, error) {
+func buildStatus(ctx context.Context, root, repoDir string, rng gitdiff.Range, allowMismatch bool, epic string) (statusDocument, error) {
 	value, err := readComparison(ctx, root, repoDir, rng, allowMismatch)
 	if err != nil {
 		return statusDocument{}, err
+	}
+	if epic != "" {
+		resolved, err := applayout.Require(value.document.Root, value.document.Manifest.ID, epic)
+		if err != nil {
+			return statusDocument{}, err
+		}
+		epic = resolved.ID
 	}
 	resolver, err := coderesolve.New(ctx, value.checkout)
 	if err != nil {
@@ -127,7 +141,7 @@ func buildStatus(ctx context.Context, root, repoDir string, rng gitdiff.Range, a
 	}
 	document := statusDocument{
 		Report: value.report, Schema: StatusSchema, Opening: view, Status: living,
-		NextActions: nextaction.Derive(living, root), AuthoringLoop: nextaction.AuthoringLoop(root),
+		AuthoringLoop: nextaction.AuthoringLoop(root),
 	}
 	var open []*saga.Review
 	for _, review := range value.document.Reviews {
@@ -138,8 +152,9 @@ func buildStatus(ctx context.Context, root, repoDir string, rng gitdiff.Range, a
 	if document.Reviews, err = buildReviewReports(ctx, value.document, value.checkout, open); err != nil {
 		return statusDocument{}, err
 	}
-	document.NextActions = append(document.NextActions, nextaction.Reviews(document.Reviews, root)...)
-	if value.changes.Mode == gitdiff.ModeCompare {
+	// A Saga whose records cannot be composed has no layers to open; status
+	// reports what it can and then says the report cannot be trusted.
+	if value.changes.Mode == gitdiff.ModeCompare && len(living.Diagnostics) == 0 {
 		layers, _, err := changeview.Open(ctx, changeview.OpenOptions{
 			SagaRoot: root, Document: value.document, Checkout: value.checkout,
 			Changes: value.changes, Report: value.report, Resolver: resolver,
@@ -149,16 +164,30 @@ func buildStatus(ctx context.Context, root, repoDir string, rng gitdiff.Range, a
 		}
 		document.Comparison = &layers
 	}
+	document.Coverage = areas.Evaluate(coverageInputs(value.document, value.changes, value.report, living, document.Comparison, epic))
+	document.NextActions = nextaction.Derive(living, root, nextaction.Context{Coverage: document.Coverage, Places: storyPlaces(value.document)})
+	document.NextActions = append(document.NextActions, nextaction.Reviews(document.Reviews, root)...)
 	return document, nil
 }
 
-// readyForReview is status's pass/fail: the ready_for_review gate, which
-// requires every earlier gate (changed-source accounting included) plus no
-// conflicts, orphaned evidence, or failed required runs. Reviews are reported
-// slide by slide and never decide the exit code: the team decides.
-func (status statusDocument) readyForReview() bool {
-	gate, ok := status.Readiness.Gate(readiness.GateReadyForReview)
-	return ok && gate.Status == readiness.StatusReady
+// trustworthy reports why the status report cannot be trusted, if it
+// cannot: the Saga is malformed (a schema error, such as a duplicate ID), or
+// its living records could not be composed. Every gap is a finding and never
+// makes the report untrustworthy.
+func (status statusDocument) trustworthy(root string) error {
+	errors := 0
+	for _, issue := range status.SchemaIssues {
+		if issue.Severity == "error" {
+			errors++
+		}
+	}
+	if errors > 0 || !status.SchemaValid {
+		return fmt.Errorf("the Saga is malformed (%d schema errors), so this report cannot be trusted; fix them and re-run: change-saga validate %s", errors, root)
+	}
+	for _, diagnostic := range status.Diagnostics {
+		return fmt.Errorf("the Saga's records could not be read (%s), so this report cannot be trusted: %s; run change-saga validate %s for details", diagnostic.Code, diagnostic.Message, root)
+	}
+	return nil
 }
 
 // printReasons prints the commits beside a record, each squash merge with
@@ -213,14 +242,7 @@ func printComparison(out io.Writer, layers *changeview.Layers, maxItems int) {
 }
 
 func printLivingStatus(out io.Writer, status statusDocument, maxItems int) {
-	fmt.Fprintln(out, "\nReadiness:")
-	for _, gate := range status.Readiness.Gates {
-		fmt.Fprintf(out, "  %-28s %s", gate.Name, gate.Status)
-		if len(gate.Blockers) > 0 {
-			fmt.Fprintf(out, " — %d blocking facts", len(gate.Blockers))
-		}
-		fmt.Fprintln(out)
-	}
+	printCoverage(out, status.Coverage)
 	printAppStatus(out, status.Status)
 	if len(status.Reviews) > 0 {
 		fmt.Fprintln(out, "\nReviews (decisions per slide and each deck's coverage of its range; the team decides what it requires):")
@@ -229,30 +251,54 @@ func printLivingStatus(out io.Writer, status statusDocument, maxItems int) {
 	if len(status.Stale) > 0 {
 		fmt.Fprintf(out, "\nStale pins: %d records must be revisited\n", len(status.Stale))
 	}
-	if len(status.NextActions) == 0 {
-		fmt.Fprintln(out, "\nNo next actions: no required current gap remains. That is not a claim of correctness.")
-		return
+	work, growth := []nextaction.Action{}, []nextaction.Action{}
+	for _, action := range status.NextActions {
+		if action.Category == nextaction.CategoryGrowth {
+			growth = append(growth, action)
+		} else {
+			work = append(work, action)
+		}
 	}
-	fmt.Fprintf(out, "\nNext actions (%d, in order):\n", len(status.NextActions))
-	limit := len(status.NextActions)
+	if len(work) == 0 {
+		fmt.Fprintln(out, "\nNext actions: none. Every changed line is covered and nothing existing is stale or broken; that is not a claim of correctness.")
+	} else {
+		fmt.Fprintf(out, "\nNext actions (%d, in order):\n", len(work))
+		printActions(out, work, maxItems, false)
+	}
+	if len(growth) > 0 {
+		fmt.Fprintf(out, "\nGrowth (%d optional suggestions, most valuable to this change first; take them a step at a time or ignore them):\n", len(growth))
+		printActions(out, growth, maxItems, true)
+	}
+}
+
+func printActions(out io.Writer, actions []nextaction.Action, maxItems int, practice bool) {
+	limit := len(actions)
 	if maxItems > 0 && maxItems < limit {
 		limit = maxItems
 	}
-	for index, action := range status.NextActions[:limit] {
+	for index, action := range actions[:limit] {
 		scope := string(action.Category)
+		if action.Area != "" && action.Category == nextaction.CategoryGrowth {
+			scope = action.Area
+		}
 		if action.Epic != "" {
 			scope += " · epic " + action.Epic
 		}
 		fmt.Fprintf(out, "  %d. [%s] %s\n", index+1, scope, firstLine(action.Reason))
+		if practice && action.Practice != "" {
+			fmt.Fprintf(out, "     why: %s\n", action.Practice)
+		}
 		switch {
 		case action.Command != nil:
-			fmt.Fprintf(out, "     $ %s\n", strings.Join(action.Command.Argv, " "))
+			fmt.Fprintf(out, "     $ %s\n", shellJoin(action.Command.Argv))
+		case action.Question != nil && practice && len(action.Question.Options) > 0 && len(action.Question.Options[0].Commands) > 0:
+			fmt.Fprintf(out, "     $ %s\n", shellJoin(action.Question.Options[0].Commands[0].Argv))
 		case action.Question != nil:
 			fmt.Fprintf(out, "     ? %s\n", action.Question.Text)
 		}
 	}
-	if limit < len(status.NextActions) {
-		fmt.Fprintf(out, "  … and %d more (use --max 0 or --json)\n", len(status.NextActions)-limit)
+	if limit < len(actions) {
+		fmt.Fprintf(out, "  … and %d more (use --max 0 or --json)\n", len(actions)-limit)
 	}
 }
 
@@ -340,6 +386,36 @@ func printOverviewStatus(out io.Writer, status livingapp.Status) {
 	}
 }
 
+// shellJoin prints argv so it can be pasted into a shell: an argument with
+// spaces or shell metacharacters is single-quoted.
+func shellJoin(argv []string) string {
+	quoted := make([]string, len(argv))
+	for index, arg := range argv {
+		if arg != "" && !strings.ContainsAny(arg, " \t\n'\"\\$`&|;<>()*?[]{}!#~") {
+			quoted[index] = arg
+			continue
+		}
+		quoted[index] = "'" + strings.ReplaceAll(arg, "'", `'\''`) + "'"
+	}
+	return strings.Join(quoted, " ")
+}
+
+func areaNames() []string {
+	result := []string{}
+	for _, name := range areas.Names() {
+		result = append(result, string(name))
+	}
+	return result
+}
+
+func categoryNames() []string {
+	result := []string{}
+	for _, category := range nextaction.Categories() {
+		result = append(result, string(category))
+	}
+	return result
+}
+
 func firstLine(value string) string {
 	if index := strings.IndexByte(value, '\n'); index >= 0 {
 		return value[:index]
@@ -371,22 +447,37 @@ func livingSpec() map[string]any {
 			"quality_kind_states": []string{
 				"covered", "missing_kind", "not_run", "failed", "blocked", "skipped", "stale", "inactive", "invalid", "conflicted", "excluded", "automation_not_allowed",
 			},
-			"exceptions":           "a cited, revision-pinned decision that one axis does not apply to one criterion; never excuses changed-source accounting",
-			"changed_source":       "every changed atom must be owned by some target; transitivity proves criteria reach code but cannot prove nothing else changed",
-			"review_coverage":      "every changed line of a review's own range must be covered by its deck's Items; reported per review with next actions, never part of the exit status or the documentation's coverage",
-			"staleness":            "derived only from pins (story/test/prototype revisions, content digests, diff selectors, run source identity), never from Git history",
-			"no_reducing_numbers":  true,
-			"readiness_gate_order": []string{"requirements_ready", "product_ready", "design_ready", "implementation_trace_ready", "quality_ready", "ready_for_review"},
-			"readiness_rule":       "every gate always applies and every axis is required; an axis is excused only by an explicit, pinned, cited coverage exception, and no exception excuses changed-source accounting",
-			"status_exit_codes":    map[string]string{"0": "ready_for_review is ready", "3": "ready_for_review is blocked"},
+			"exceptions":          "a cited, revision-pinned decision that one axis does not apply to one criterion; never excuses changed-source accounting",
+			"changed_source":      "every changed atom must be owned by some target; transitivity proves criteria reach code but cannot prove nothing else changed",
+			"review_coverage":     "every changed line of a review's own range must be covered by its deck's Items; reported per review with next actions, never part of the exit status or the documentation's coverage",
+			"staleness":           "derived only from pins (story/test/prototype revisions, content digests, diff selectors, run source identity), never from Git history",
+			"no_reducing_numbers": true,
+		},
+		"coverage_report": map[string]any{
+			"areas": areaNames(),
+			"area_rules": map[string]string{
+				"implementation": "every changed line is referenced by the implementation deck",
+				"stories":        "every changed line reaches a story through the chain",
+				"personas":       "every changed line reaches a persona",
+				"design":         "every story in scope has design",
+				"quality":        "every acceptance criterion in scope has a test",
+				"health":         "nothing that already existed went stale or broke",
+			},
+			"units":             []string{string(areas.UnitChangedLine), string(areas.UnitCodeTarget), string(areas.UnitStory), string(areas.UnitCriterion), string(areas.UnitRecord)},
+			"scope":             "with --against, the change: what it changed and what it affected; without, the whole app, where the line areas count documented code targets instead of changed lines; --epic narrows either, keeping changed lines no record owns",
+			"shape":             "status --json .coverage.areas.<area> has total, covered, uncovered, complete, covered_entries, and uncovered_entries; counts are the sums of the entries' counts; never a blended score",
+			"verdict":           "none: status reports every gap as a finding; a team that wants a gap to fail its build asks check --covers or writes its own rule over the JSON",
+			"status_exit_codes": map[string]string{"0": "the report was produced; every gap is a finding", "1": "the report cannot be trusted: a malformed Saga (such as a duplicate ID), unreadable records, or a checkout that does not match the declared repository"},
+			"check_exit_codes":  map[string]string{"0": "every named area is fully covered in scope", "3": "a named area has a gap; only the named areas' gaps are printed", "1": "the report cannot be trusted, as for status"},
+			"check_schema":      CheckSchema,
 		},
 		"commands": grammar.Commands(),
 		"next_actions": map[string]any{
 			"kinds":      []string{string(nextaction.KindCommand), string(nextaction.KindQuestion)},
 			"needs":      []string{string(nextaction.NeedProductJudgment), string(nextaction.NeedExternalAccess), string(nextaction.NeedExplicitExclusion)},
-			"categories": []string{"invalid_saga", "conflict", "invalid", "stale", "changed_source", "requirements", "coverage", "orphan", "review", "growth"},
-			"contract":   "a command action carries a grammar invocation whose inputs the author supplies; a question action carries one focused question and the invocation each answer leads to",
-			"loop":       "inspect status --json, ask or mutate, validate, re-evaluate; an empty list is the fixed point and never a claim of correctness",
+			"categories": categoryNames(),
+			"contract":   "a command action carries a grammar invocation whose inputs the author supplies; a question action carries one focused question and the invocation each answer leads to; area names the coverage area it advances; a growth action is optional and carries the practice it teaches",
+			"loop":       "inspect status --json, ask or mutate, validate, re-evaluate; a list of growth suggestions only is the fixed point and never a claim of correctness",
 		},
 		"status_schema": StatusSchema,
 	}

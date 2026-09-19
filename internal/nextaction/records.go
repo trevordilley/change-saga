@@ -18,8 +18,7 @@ func (b *builder) staleRecords() {
 			continue // handled once by changed-source accounting
 		}
 		action := Action{
-			ID: "stale:" + record.Record, Kind: KindQuestion, Category: CategoryStale, Resource: record.Record,
-			Gates:  gatesForStale(record.Kind),
+			ID: "stale:" + record.Record, Kind: KindQuestion, Category: CategoryStale, Area: AreaHealth, Resource: record.Record,
 			Reason: record.Kind + " is stale (" + strings.Join(record.Reasons, "; ") + ")" + pinSummary(record.Pins) + affectsSummary(record.Affects),
 		}
 		switch record.Kind {
@@ -93,17 +92,6 @@ func (b *builder) subjects(criteria []string) string {
 	return strings.Join(criteria, ", ")
 }
 
-func gatesForStale(kind string) []string {
-	switch kind {
-	case "prototype_annotation":
-		return []string{"product_ready", "ready_for_review"}
-	case "quality_policy", "test_run", "quality_evidence":
-		return []string{"quality_ready", "ready_for_review"}
-	default:
-		return []string{"design_ready", "implementation_trace_ready", "quality_ready", "ready_for_review"}
-	}
-}
-
 func pinSummary(pins []livingapp.Pin) string {
 	parts := []string{}
 	for _, pin := range pins {
@@ -153,14 +141,13 @@ func testCaseOf(urn string) string {
 // exception is ever offered here.
 func (b *builder) changedSource() {
 	source := b.status.ChangedSource
-	gates := []string{"implementation_trace_ready", "ready_for_review"}
 	if len(source.Stale) > 0 {
 		affected := []string{}
 		for _, stale := range source.Stale {
 			affected = append(affected, stale.Affects...)
 		}
 		b.add(Action{
-			ID: "source:stale", Kind: KindCommand, Category: CategorySource, Gates: gates,
+			ID: "source:stale", Kind: KindCommand, Category: CategoryStale, Area: AreaHealth,
 			Reason: itoa(len(source.Stale)) + " code references are stale because their code changed since they were pinned" + affectsSummary(unique(affected)) +
 				"; read what changed, then re-author each one with replace-coverage",
 			Command: ptr(b.invoke("references", grammar.V("stale", "true"), grammar.V("diff", "true"), grammar.V("json", "true"))),
@@ -168,9 +155,9 @@ func (b *builder) changedSource() {
 	}
 	for _, uncovered := range source.Uncovered {
 		b.add(Action{
-			ID: "source:uncovered:" + uncovered.Path, Kind: KindCommand, Category: CategorySource, Resource: uncovered.Path, Gates: gates,
+			ID: "source:uncovered:" + uncovered.Path, Kind: KindCommand, Category: CategorySource, Area: AreaImplementation, Resource: uncovered.Path,
 			Reason:  itoa(uncovered.Atoms) + " changed atoms in " + uncovered.Path + " are owned by no target; choose the smallest target that explains them",
-			Command: ptr(b.invoke("cover", grammar.V("target", ""), grammar.V("path", uncovered.Path), grammar.V("changed-lines", "true"))),
+			Command: ptr(b.invoke("cover", b.compared(grammar.V("target", ""), grammar.V("path", uncovered.Path), grammar.V("changed-lines", "true"))...)),
 		})
 	}
 	for _, implicated := range source.Implicated {
@@ -178,8 +165,7 @@ func (b *builder) changedSource() {
 			continue
 		}
 		b.add(Action{
-			ID: "source:test-case:" + implicated.Resource, Kind: KindQuestion, Category: CategorySource, Resource: implicated.Resource,
-			Gates:  []string{"quality_ready", "ready_for_review"},
+			ID: "source:test-case:" + implicated.Resource, Kind: KindQuestion, Category: CategoryStale, Area: AreaHealth, Resource: implicated.Resource,
 			Reason: "a source change touched this test case's evidence: " + strings.Join(implicated.Via, "; "),
 			Question: question("Does "+implicated.Resource+" still verify its criteria after the source change? Re-run it and re-record its evidence.", NeedExternalAccess,
 				option("recorded", "new evidence and a new run pinned to the current source comparison",
@@ -189,47 +175,22 @@ func (b *builder) changedSource() {
 	}
 }
 
-// requirements asks for the story decisions readiness needs before any axis
-// can be evaluated.
+// requirements suggests acceptance criteria for an accepted story that has
+// none: without them, nothing can say the story is met.
 func (b *builder) requirements() {
-	gates := []string{"requirements_ready", "ready_for_review"}
-	accepted := 0
 	for _, story := range b.status.Stories {
-		if story.State == "accepted" {
-			accepted++
-			if len(story.Criteria) == 0 && story.CurrentRevision != "" {
-				b.add(Action{
-					ID: "requirements:criteria:" + story.Story, Kind: KindQuestion, Category: CategoryRequirements, Resource: story.Story, Gates: gates,
-					Reason: "an accepted story needs at least one acceptance criterion",
-					Question: question("What observable acceptance criteria does \""+story.Title+"\" have?", NeedProductJudgment,
-						option("add a criterion", "a complete story revision with the new criterion",
-							b.invoke("criterion add", grammar.V("story", story.Story), grammar.V("parent", story.CurrentRevision)))),
-				})
-			}
-			continue
-		}
-		if story.State != "proposed" || len(story.LifecycleHeads) != 1 {
+		if story.State != "accepted" || len(story.Criteria) > 0 || story.CurrentRevision == "" {
 			continue
 		}
 		b.add(Action{
-			ID: "requirements:accept:" + story.Story, Kind: KindQuestion, Category: CategoryRequirements, Resource: story.Story, Gates: gates,
-			Reason: "a proposed story contributes no criteria to readiness",
-			Question: question("Is \""+story.Title+"\" accepted into this change's scope?", NeedProductJudgment,
-				option("accepted", "its current criteria become the traceability backbone",
-					b.invoke("story set-state", grammar.V("story", story.Story), grammar.V("parent", story.LifecycleHeads[0]), grammar.V("state", "accepted"))),
-				option("deferred", "it stays recorded and out of scope",
-					b.invoke("story set-state", grammar.V("story", story.Story), grammar.V("parent", story.LifecycleHeads[0]), grammar.V("state", "deferred")))),
+			ID: "growth:criteria:" + story.Story, Kind: KindQuestion, Category: CategoryGrowth, Area: AreaQuality, Resource: story.Story,
+			Reason: "\"" + story.Title + "\" has no acceptance criteria, so nothing can say when it is met", Practice: practiceCriteria,
+			value: b.valueOf(story.Story),
+			Question: question("What observable acceptance criteria does \""+story.Title+"\" have?", NeedProductJudgment,
+				option("add a criterion", "a complete story revision with the new criterion",
+					b.invoke("criterion add", grammar.V("story", story.Story), grammar.V("parent", story.CurrentRevision)))),
 		})
 	}
-	if accepted > 0 {
-		return
-	}
-	b.add(Action{
-		ID: "requirements:accepted-story", Kind: KindQuestion, Category: CategoryRequirements, Gates: gates,
-		Reason: "no accepted story exists, so no criterion anchors the transitive code -> design -> criterion trace",
-		Question: question("Which user stories, with acceptance criteria, does this change deliver?", NeedProductJudgment,
-			option("record a story", "a story with criteria; accept it once it is in scope", b.invoke("story add"))),
-	})
 }
 
 func (b *builder) prototypes() {
@@ -238,9 +199,9 @@ func (b *builder) prototypes() {
 			continue
 		}
 		b.add(Action{
-			ID: "orphan:prototype:" + prototype.Prototype, Kind: KindQuestion, Category: CategoryOrphan, Resource: prototype.Prototype,
-			Gates:  []string{"product_ready", "ready_for_review"},
-			Reason: "a retained prototype has no current story or criterion annotation, so it cannot contribute to readiness",
+			ID: "growth:prototype:" + prototype.Prototype, Kind: KindQuestion, Category: CategoryGrowth, Area: AreaDesign, Resource: prototype.Prototype,
+			Reason: "a retained prototype has no current story or criterion annotation, so no story says what it shows", Practice: practicePrototype,
+			value: b.valueOf(prototype.Prototype),
 			Question: question("Which story or criterion does "+prototype.Prototype+" express, or should it be retired?", NeedProductJudgment,
 				option("it expresses a requirement", "a pinned annotation", b.invoke("prototype annotate", grammar.V("prototype", prototype.Prototype)))),
 		})
@@ -253,9 +214,9 @@ func (b *builder) testCases() {
 			continue
 		}
 		b.add(Action{
-			ID: "orphan:test-case:" + testCase.TestCase, Kind: KindQuestion, Category: CategoryOrphan, Resource: testCase.TestCase,
-			Gates:  []string{"quality_ready"},
-			Reason: "no active verifies relation connects this test case to a criterion, so it proves nothing about any story",
+			ID: "growth:test-case:" + testCase.TestCase, Kind: KindQuestion, Category: CategoryGrowth, Area: AreaQuality, Resource: testCase.TestCase,
+			Reason: "no active verifies relation connects this test case to a criterion, so it proves nothing about any story", Practice: practiceQuality,
+			value: b.valueOf(testCase.TestCase),
 			Question: question("Which criterion does "+testCase.TestCase+" verify, or should it be retired?", NeedProductJudgment,
 				option("it verifies a criterion", "a pinned verifies relation",
 					b.invoke("relation add", grammar.V("type", "verifies"), grammar.V("from", testCase.TestCase), grammar.V("from-revision", testCase.CurrentRevision), grammar.V("to", ""), grammar.V("to-revision", ""))),
@@ -263,6 +224,18 @@ func (b *builder) testCases() {
 					b.invoke("quality test-case set-state", grammar.V("test", testCase.TestCase), grammar.V("state", "retired")))),
 		})
 	}
+}
+
+// compared adds the comparison status was opened with, so a cover shape
+// selects the same changed lines status reported.
+func (b *builder) compared(values ...grammar.Value) []grammar.Value {
+	if scope := b.context.Coverage.Scope; scope.Kind == "change" && scope.Against != "" {
+		values = append(values, grammar.V("against", scope.Against))
+		if scope.Head != "" && scope.Head != "HEAD" {
+			values = append(values, grammar.V("head", scope.Head))
+		}
+	}
+	return values
 }
 
 func itoa(value int) string { return strconv.Itoa(value) }

@@ -47,8 +47,6 @@ func (b *builder) inEpic(action Action) Action {
 // accepted story serves is a gap, and the stories left serving only retired
 // personas are one question.
 func (b *builder) personas() {
-	// Persona coverage is reported, never gating: these actions name no gate.
-	gates := []string{}
 	for _, persona := range b.status.Personas {
 		if !persona.Gap {
 			continue
@@ -73,8 +71,9 @@ func (b *builder) personas() {
 				b.invoke("persona set-state", grammar.V("persona", persona.Persona), grammar.V("parent", persona.LifecycleHead), grammar.V("state", "retired"))))
 		}
 		b.add(Action{
-			ID: "requirements:persona:" + persona.Persona, Kind: KindQuestion, Category: CategoryRequirements, Resource: persona.Persona, Gates: gates,
+			ID: "growth:persona:" + persona.Persona, Kind: KindQuestion, Category: CategoryGrowth, Area: AreaPersonas, Resource: persona.Persona,
 			Reason:   "no accepted story serves this active persona, so the persona -> story link is a gap",
+			Practice: practicePersonas, value: 1,
 			Question: question("Which accepted story serves "+name+", or does the app no longer serve them?", NeedProductJudgment, options...),
 		})
 	}
@@ -92,7 +91,8 @@ func (b *builder) personas() {
 		}
 		personas := strings.Join(group.Personas, ", ")
 		b.add(Action{
-			ID: "requirements:retired-personas:" + personas, Kind: KindQuestion, Category: CategoryRequirements, Resource: personas, Gates: gates,
+			ID: "growth:retired-personas:" + personas, Kind: KindQuestion, Category: CategoryGrowth, Area: AreaPersonas, Resource: personas,
+			Practice: practicePersonas, value: 1,
 			Reason: itoa(len(group.Stories)) + " stories serve only retired personas " + personas + ": " + strings.Join(group.Stories, ", "),
 			Question: question("The stories that served only "+personas+" have no active persona. Retire them, or reassign them to the personas they serve now?", NeedProductJudgment,
 				option("retire them", "each story's lifecycle ends; it stays as history", retire...),

@@ -80,7 +80,7 @@ func Assemble(in StatusInputs) Status {
 	a.indexQuality()
 
 	links := a.linksByCriterion()
-	protoStatus, protoLinks, protoInputs := a.prototypeAxis()
+	protoStatus, protoLinks := a.prototypeAxis()
 	status.Prototypes = protoStatus
 	for criterion, values := range protoLinks {
 		links[criterion] = append(links[criterion], values...)
@@ -117,33 +117,8 @@ func Assemble(in StatusInputs) Status {
 	status.NewTerminology = append([]TermSuggestion{}, in.TermSuggestions...)
 	status.PersonaCoverage = PersonaCoverage{Facts: readiness.PersonaCoverage(personas, personaOrphans)}
 
-	stories := make([]readiness.Story, 0, len(in.Stories))
-	for _, row := range status.Stories {
-		story := readiness.Story{
-			URN: row.Story, State: row.State, RevisionHeads: copyStrings(row.RevisionHeads), LifecycleHeads: copyStrings(row.LifecycleHeads),
-			CurrentRevision: row.CurrentRevision, Criteria: []string{}, IdentityIssues: []string{},
-		}
-		for _, criterion := range row.Criteria {
-			story.Criteria = append(story.Criteria, criterion.Criterion)
-		}
-		stories = append(stories, story)
-	}
-	facts := make([]readiness.QualityFact, 0, len(status.Quality.Facts))
-	for _, fact := range status.Quality.Facts {
-		facts = append(facts, readiness.QualityFact{
-			Criterion: fact.Criterion, Kind: fact.Kind, Required: fact.Required, TestCase: fact.TestCase, RunResult: fact.RunResult,
-			RunHeads: copyStrings(fact.RunHeads), EvidenceResolved: fact.EvidenceResolved, StaleReasons: copyStrings(fact.StaleReasons),
-		})
-	}
-	staleReferences := make([]string, 0, len(status.ChangedSource.Stale))
-	for _, stale := range status.ChangedSource.Stale {
-		staleReferences = append(staleReferences, stale.EvidenceFile+"#"+itoa(stale.Reference))
-	}
-	status.Readiness = readiness.EvaluateGates(readiness.GateInputs{
-		Stories: stories, Prototypes: protoInputs, Coverage: status.Axes, QualityFacts: facts,
-		ChangedSource: readiness.ChangedSourceAccounting{Complete: status.ChangedSource.Complete, Uncovered: status.ChangedSource.uncoveredRefs, Stale: staleReferences},
-	})
 	status.Stale = a.staleRecords()
+	status.Chain = a.chain()
 	return status
 }
 
@@ -402,8 +377,8 @@ func (a *assembler) currentRevision(endpoint string) string {
 }
 
 // prototypeAxis projects current prototype annotations onto the prototype
-// axis and derives the product_ready prototype inputs.
-func (a *assembler) prototypeAxis() ([]PrototypeStatus, map[string][]coverage.AxisLink, []readiness.Prototype) {
+// axis.
+func (a *assembler) prototypeAxis() ([]PrototypeStatus, map[string][]coverage.AxisLink) {
 	stories := []prototypes.StoryInput{}
 	storyCriteria := map[string][]string{}
 	for _, frame := range a.criteria {
@@ -455,27 +430,21 @@ func (a *assembler) prototypeAxis() ([]PrototypeStatus, map[string][]coverage.Ax
 		}
 	}
 	rows := []PrototypeStatus{}
-	inputs := []readiness.Prototype{}
 	for _, prototype := range a.in.Prototypes.Prototypes {
 		urn, _ := prototypes.PrototypeURN(a.in.SagaID, prototype.Identity.ID)
 		row := PrototypeStatus{
 			Prototype: urn, Epic: prototype.Epic, State: "conflicted", Retained: true, RevisionHeads: copyStrings(prototype.RevisionHeads),
 			CurrentLinks: uniqueSorted(current[urn]), StaleLinks: uniqueSorted(staleLinks[urn]),
 		}
-		input := readiness.Prototype{URN: urn, Retained: true, CurrentLinks: row.CurrentLinks, StaleReasons: []string{}}
 		if prototype.CurrentRevision != nil {
 			row.State = string(prototype.CurrentRevision.State)
 			row.CurrentRevision, _ = prototypes.RevisionURN(a.in.SagaID, prototype.Identity.ID, prototype.CurrentRevision.ID)
 			row.Retained = prototype.CurrentRevision.State != prototypes.StateRetired
-			input.Retained = row.Retained
-		} else {
-			input.StaleReasons = append(input.StaleReasons, "prototype has multiple revision heads")
 		}
 		rows = append(rows, row)
-		inputs = append(inputs, input)
 	}
 	sort.Slice(rows, func(i, j int) bool { return rows[i].Prototype < rows[j].Prototype })
-	return rows, links, inputs
+	return rows, links
 }
 
 // exceptionCitations resolves exception citations against recorded citations;

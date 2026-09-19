@@ -5,10 +5,10 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/twentyideas/changesaga/internal/areas"
 	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/grammar"
 	"github.com/twentyideas/changesaga/internal/livingapp"
-	"github.com/twentyideas/changesaga/internal/readiness"
 )
 
 const saga = "checkout.saga"
@@ -65,7 +65,6 @@ func statusFixture() livingapp.Status {
 			Uncovered: []livingapp.UncoveredPath{{Path: "internal/other.go", Atoms: 1}}, UncoveredAtoms: 1,
 			Stale: []livingapp.StaleReference{{Target: "item", EvidenceFile: "40-e.json", Reference: 1, Affects: []string{criterion("done")}}},
 		},
-		Readiness: readiness.GateProjection{},
 	}
 }
 
@@ -128,8 +127,8 @@ func assertGrammarShape(t *testing.T, invocation grammar.Invocation) {
 
 func TestFailingRunAsksForJudgmentAndStaleRunNeedsExternalAccess(t *testing.T) {
 	actions := byID(Derive(statusFixture(), saga))
-	failing := actions["gap:quality:"+criterion("failing")]
-	if failing.Question == nil || failing.Question.Needs != NeedProductJudgment || !strings.Contains(failing.Question.Text, "product or the test") {
+	failing := actions["failed:quality:"+criterion("failing")]
+	if failing.Category != CategoryFailed || failing.Area != AreaHealth || failing.Question == nil || failing.Question.Needs != NeedProductJudgment || !strings.Contains(failing.Question.Text, "product or the test") {
 		t.Fatalf("a failing run asks whether the product or the test is wrong: %#v", failing)
 	}
 	run := actions["stale:urn:change-saga:checkout:test-case:revised:run:ci-1"]
@@ -169,57 +168,48 @@ func TestExclusionsAreNeverOfferedForSourceOrImplementation(t *testing.T) {
 		}
 	}
 	actions := byID(Derive(statusFixture(), saga))
-	if stale := actions["source:stale"]; stale.Command == nil || stale.Command.Command != "references" || !hasArgument(*stale.Command, "stale", "true") || !hasArgument(*stale.Command, "diff", "true") {
+	if stale := actions["source:stale"]; stale.Category != CategoryStale || stale.Area != AreaHealth || stale.Command == nil || stale.Command.Command != "references" || !hasArgument(*stale.Command, "stale", "true") || !hasArgument(*stale.Command, "diff", "true") {
 		t.Fatalf("stale references get the references shape: %#v", actions["source:stale"])
 	}
-	if cover := actions["source:uncovered:internal/other.go"]; cover.Command == nil || !hasArgument(*cover.Command, "path", "internal/other.go") {
+	if cover := actions["source:uncovered:internal/other.go"]; cover.Area != AreaImplementation || cover.Command == nil || !hasArgument(*cover.Command, "path", "internal/other.go") {
 		t.Fatalf("an uncovered file gets a cover shape for its path: %#v", cover)
 	}
-	ui := actions["gap:ui:"+criterion("failing")]
-	if ui.Question == nil || ui.Question.Needs != NeedExplicitExclusion {
-		t.Fatalf("a ui gap can only be resolved by an explicit exclusion today: %#v", ui)
-	}
-}
-
-func TestCoveredCriterionProducesNoAction(t *testing.T) {
-	for _, action := range Derive(statusFixture(), saga) {
-		if action.Resource == criterion("done") && action.Category == CategoryCoverage {
-			t.Fatalf("a fully covered criterion has no coverage action: %#v", action)
-		}
-	}
-}
-
-// A Saga with no quality records is not exempt from quality. Each accepted
-// criterion's quality gap is its own next action asking for a test case.
-func TestNoQualityRecordsIsAGapPerCriterionWithANextAction(t *testing.T) {
-	status := statusFixture()
-	status.Quality = livingapp.QualityStatus{}
-	status.Axes.Criteria[1].Axes[4] = coverage.AxisCoverage{
-		Criterion: criterion("done"), Axis: coverage.AxisQuality, State: coverage.StateGap, Resolution: coverage.ResolutionGap,
-		Gap: &coverage.AxisGap{Criterion: criterion("done"), Axis: coverage.AxisQuality, Reasons: []string{"required positive test: missing_kind"}},
-	}
-	actions := byID(Derive(status, saga))
-	for _, id := range []string{"gap:quality:" + criterion("failing"), "gap:quality:" + criterion("done")} {
-		action, ok := actions[id]
-		if !ok || action.Category != CategoryCoverage || action.Question == nil {
-			t.Fatalf("missing quality gap action %s: %#v", id, action)
-		}
-		if !strings.Contains(strings.Join(action.Gates, ","), "quality_ready") {
-			t.Fatalf("quality gap does not name quality_ready: %#v", action.Gates)
-		}
-		found := false
-		for _, invocation := range commandsOf(action) {
-			if invocation.Command == "quality test-case add" {
-				found = true
-			}
-		}
-		if !found {
-			t.Fatalf("quality gap does not offer to record a test case: %#v", action.Question)
-		}
-	}
 	for id := range actions {
-		if strings.HasPrefix(id, "capability:") {
-			t.Fatalf("a missing record family is a gap, not a capability decision: %s", id)
+		if strings.HasPrefix(id, "gap:") {
+			t.Fatalf("an axis gap is never demanded; growth suggests it from the coverage report: %s", id)
+		}
+	}
+}
+
+// Growth is offered and never demanded: every suggestion comes after all
+// required work, names its area and practice, and those about the current
+// change come first.
+func TestGrowthComesLastAndTeachesItsPractice(t *testing.T) {
+	status := statusFixture()
+	report := areas.Evaluate(areas.Inputs{
+		Scope: areas.Scope{Kind: areas.ScopeChange},
+		Stories: []areas.Story{{URN: "urn:change-saga:checkout:story:refund", Title: "Refund", Active: true,
+			Criteria: []areas.Criterion{{URN: criterion("failing"), Statement: "Rejects late refunds."}}}},
+		InScope: map[string]bool{"urn:change-saga:checkout:story:refund": true},
+	})
+	actions := Derive(status, saga, Context{Coverage: report})
+	growth := false
+	for _, action := range actions {
+		if action.Category != CategoryGrowth {
+			if growth {
+				t.Fatalf("required work %s follows growth", action.ID)
+			}
+			continue
+		}
+		growth = true
+		if action.Practice == "" && !strings.HasPrefix(action.ID, "growth:term:") {
+			t.Fatalf("growth %s explains no practice", action.ID)
+		}
+	}
+	ids := byID(actions)
+	for _, id := range []string{"growth:design:urn:change-saga:checkout:story:refund", "growth:quality:" + criterion("failing"), "growth:persona:unnamed"} {
+		if _, ok := ids[id]; !ok {
+			t.Fatalf("missing growth suggestion %s in %v", id, actions)
 		}
 	}
 }

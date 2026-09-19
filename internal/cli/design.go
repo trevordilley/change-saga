@@ -91,7 +91,7 @@ func (scope authoringScope) hierarchyRoot(document *saga.Saga) (string, error) {
 	if scope.app != "" {
 		dir = filepath.Join(document.Root, appReportRoots[scope.app])
 	} else {
-		epic, err := applayout.Require(document.Root, document.Manifest.ID, scope.epic)
+		epic, err := requireEpic(document.Root, scope.epic)
 		if err != nil {
 			if scope.design {
 				return "", err

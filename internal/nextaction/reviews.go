@@ -21,7 +21,7 @@ func Reviews(reports []reviewstate.Report, sagaPath string) []Action {
 		for _, file := range report.Coverage.UncoveredFiles {
 			actions = append(actions, Action{
 				ID: "review:uncovered:" + report.ID + ":" + file.Path, Kind: KindCommand, Category: CategoryReview,
-				Resource: report.Target, Gates: []string{},
+				Resource: report.Target,
 				Reason: itoa(file.Atoms) + " changed lines or file events of " + file.Path + " in review " + report.ID +
 					"'s range are explained by no review Item; cover them from the review Item that explains them (" + report.Target + ":slide:<slide>:item:<item>)",
 				Command: ptr(grammar.MustInvoke("cover", sagaPath, grammar.V("target", ""), grammar.V("path", file.Path), grammar.V("changed-lines", "true"))),

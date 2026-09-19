@@ -1,7 +1,6 @@
 package readiness
 
 import (
-	"reflect"
 	"strings"
 	"testing"
 )
@@ -10,6 +9,7 @@ const (
 	shopperURN = "urn:change-saga:s:persona:shopper"
 	clerkURN   = "urn:change-saga:s:persona:clerk"
 	legacyURN  = "urn:change-saga:s:persona:legacy"
+	storyURN   = "urn:change-saga:s:story:checkout"
 )
 
 func factsWithCode(facts []Fact, code string) []Fact {
@@ -20,20 +20,6 @@ func factsWithCode(facts []Fact, code string) []Fact {
 		}
 	}
 	return result
-}
-
-// Persona coverage is a report. No gate reads it, so the gate table is the
-// same with or without personas.
-func TestPersonaCoverageNeverChangesAGate(t *testing.T) {
-	inputs := coveredInputs()
-	want := EvaluateGates(inputs)
-	facts := PersonaCoverage([]Persona{{URN: shopperURN, Active: true}}, []PersonaOrphans{{Personas: []string{legacyURN}, Stories: []string{storyURN}}})
-	if len(facts) != 2 {
-		t.Fatalf("persona coverage facts = %+v", facts)
-	}
-	if got := EvaluateGates(inputs); !reflect.DeepEqual(got, want) {
-		t.Fatalf("persona coverage changed the gate table")
-	}
 }
 
 func TestActivePersonaWithNoAcceptedStoryIsAnUnsatisfiedFact(t *testing.T) {

@@ -5,6 +5,8 @@ import (
 	"flag"
 	"fmt"
 	"io"
+	"os"
+	"os/exec"
 	"strings"
 	"time"
 
@@ -17,15 +19,21 @@ import (
 	"github.com/twentyideas/changesaga/internal/workplan"
 )
 
-// Epic content is always written to a named epic. Every command that authors
-// epic content accepts --epic: a command that creates a new top-level record
-// requires it, and a command that changes an existing record accepts it as an
-// assertion, since the record's own location already decides its epic.
-const epicFlagHelp = "epic id or URN; required when creating epic content, otherwise it must name the epic that holds the record"
+// Epic content is always written to an epic. Every command that authors epic
+// content accepts --epic: a command that creates a new top-level record
+// writes into it, and a command that changes an existing record accepts it as
+// an assertion, since the record's own location already decides its epic.
+// A creating command without --epic uses the app's only epic, or creates the
+// first one from the branch name, and says which it chose.
+const epicFlagHelp = "epic id or URN; when creating epic content it defaults to the app's only epic (or a first epic named after the branch), otherwise it must name the epic that holds the record"
 
 func epicFlag(flags *flag.FlagSet) *string {
 	return flags.String("epic", "", epicFlagHelp)
 }
+
+// epicNotices receives what an omitted --epic resolved to. It is stderr, so
+// a --json result on stdout stays one JSON value.
+var epicNotices io.Writer = os.Stderr
 
 // requireEpic resolves the epic a creating command writes into.
 func requireEpic(root, value string) (applayout.Epic, error) {
@@ -33,7 +41,75 @@ func requireEpic(root, value string) (applayout.Epic, error) {
 	if err != nil {
 		return applayout.Epic{}, err
 	}
-	return applayout.Require(root, manifest.ID, value)
+	if strings.TrimSpace(value) != "" {
+		return applayout.Require(root, manifest.ID, value)
+	}
+	return defaultEpic(root, manifest)
+}
+
+// defaultEpic is the epic a creating command uses when --epic is omitted:
+// the app's only epic, or, when the app has none, a first epic named after
+// the branch (the closest thing to the pull request's title that is always
+// at hand). With several epics the author must choose. Nothing is locked in:
+// no story, deck, or slide URN names its epic, so stories can move later.
+func defaultEpic(root string, manifest saga.Manifest) (applayout.Epic, error) {
+	epics, err := applayout.Epics(root)
+	if err != nil {
+		return applayout.Epic{}, err
+	}
+	switch len(epics) {
+	case 1:
+		fmt.Fprintf(epicNotices, "Using epic %q, the app's only epic (pass --epic to choose another)\n", epics[0].ID)
+		return epics[0], nil
+	case 0:
+		id, title, source := firstEpicName(root, manifest)
+		epic, err := applayout.WriteEpic(root, applayout.EpicManifest{ID: id, Title: title, CreatedAt: time.Now().UTC()})
+		if err != nil {
+			// A concurrent command may have created the same first epic.
+			if again, findErr := applayout.Epics(root); findErr == nil {
+				if found, ok := applayout.Find(again, id); ok {
+					return found, nil
+				}
+			}
+			return applayout.Epic{}, err
+		}
+		fmt.Fprintf(epicNotices, "Created epic %q (%q), named after %s, for this content; stories can move to other epics later without breaking a link\n", id, title, source)
+		return epic, nil
+	}
+	return applayout.Require(root, manifest.ID, "")
+}
+
+// firstEpicName derives the first epic's id and title from the current
+// branch, ignoring prefixes such as feature/; on a default branch, or outside
+// Git, it falls back to the app's own name.
+func firstEpicName(root string, manifest saga.Manifest) (id, title, source string) {
+	output, err := exec.Command("git", "-C", root, "symbolic-ref", "--short", "-q", "HEAD").Output()
+	branch := strings.TrimSpace(string(output))
+	if err == nil && branch != "" {
+		switch branch {
+		case "HEAD", "main", "master", "trunk", "develop", "development":
+		default:
+			name := branch[strings.LastIndex(branch, "/")+1:]
+			if id := store.Slug(name); applayout.ValidID(id) {
+				return id, humanTitle(id), "branch " + branch
+			}
+		}
+	}
+	id = store.Slug(firstNonEmpty(manifest.Title, manifest.ID))
+	if !applayout.ValidID(id) {
+		id = "app"
+	}
+	return id, firstNonEmpty(manifest.Title, humanTitle(id)), "the app"
+}
+
+// humanTitle turns a slug into a title: "checkout-flow" is "Checkout flow".
+func humanTitle(id string) string {
+	words := strings.Fields(strings.NewReplacer("-", " ", "_", " ", ".", " ").Replace(id))
+	if len(words) == 0 {
+		return id
+	}
+	words[0] = strings.ToUpper(words[0][:1]) + words[0][1:]
+	return strings.Join(words, " ")
 }
 
 // assertEpic checks an optional --epic against the epic that holds an

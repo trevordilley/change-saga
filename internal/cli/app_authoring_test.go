@@ -11,6 +11,7 @@ import (
 	"testing"
 
 	"github.com/twentyideas/changesaga/internal/applayout"
+	"github.com/twentyideas/changesaga/internal/nextaction"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
@@ -139,10 +140,14 @@ func TestInitCreatesOnlyTheAppWithEveryOverviewPartAGap(t *testing.T) {
 	if err := Init(context.Background(), []string{"--repo", repo, "--repository", "https://example.test/acme/app.git", root}, &output); err != nil {
 		t.Fatal(err)
 	}
-	for _, want := range []string{"epic add", "story add --epic ID", "optional", "persona add", "overview set-pitch", "term add"} {
-		if !strings.Contains(output.String(), want) {
-			t.Fatalf("init output does not lead to %q:\n%s", want, output.String())
+	text := output.String()
+	for _, want := range []string{"Next: cover the change", "add-deck", "cover --against main", "status --against main", "optional"} {
+		if !strings.Contains(text, want) {
+			t.Fatalf("init output does not lead to %q:\n%s", want, text)
 		}
+	}
+	if strings.Index(text, "cover --against main") > strings.Index(text, "optional") {
+		t.Fatalf("init leads with covering the change before anything optional:\n%s", text)
 	}
 	for _, absent := range []string{"overview.fragment", applayout.OverviewDir, applayout.EpicsDir, applayout.PersonasDir, "___requirements"} {
 		if _, err := os.Stat(filepath.Join(root, absent)); !os.IsNotExist(err) {
@@ -244,11 +249,12 @@ func TestPersonaAddReviseAndSetState(t *testing.T) {
 	assertValid(t, root)
 }
 
-// Every command that creates a top-level epic record names its epic; it is
-// never implied, even when the app has exactly one epic.
-func TestCreateCommandsRequireAnEpic(t *testing.T) {
+// When the app has several epics, every command that creates a top-level
+// epic record must name its epic: the choice is the author's.
+func TestCreateCommandsRequireAnEpicAmongSeveral(t *testing.T) {
 	root := newAuthoredSaga(t)
 	story := addStory(t, root, testEpic, "checkout", testPersonaURN).Resource
+	mustLiving(t, "epic add", epicCommand, "add", root, "--id", "billing", "--title", "Billing")
 	source := newPrototypeSource(t, "<p>prototype</p>")
 	ctx := context.Background()
 	commands := []struct {
@@ -306,7 +312,7 @@ func TestCreateCommandsRequireAnEpic(t *testing.T) {
 	for _, command := range commands {
 		var output bytes.Buffer
 		err := command.run(&output)
-		if err == nil || !strings.Contains(err.Error(), "--epic is required") || !strings.Contains(err.Error(), "known epics: "+testEpic) {
+		if err == nil || !strings.Contains(err.Error(), "--epic is required") || !strings.Contains(err.Error(), "known epics: billing, "+testEpic) {
 			t.Errorf("%s without --epic = %v", command.name, err)
 		}
 	}
@@ -322,7 +328,7 @@ func TestCreateCommandsRequireAnEpic(t *testing.T) {
 	}
 	// An unknown epic lists the known ones.
 	err := AddChapter(ctx, []string{"--epic", "missing", "--title", "C", root, "chapter"}, &output)
-	if err == nil || !strings.Contains(err.Error(), `epic "missing" does not exist`) || !strings.Contains(err.Error(), "known epics: "+testEpic) {
+	if err == nil || !strings.Contains(err.Error(), `epic "missing" does not exist`) || !strings.Contains(err.Error(), "known epics: billing, "+testEpic) {
 		t.Fatalf("unknown epic = %v", err)
 	}
 }
@@ -516,7 +522,7 @@ func TestStatusReportsPersonaGapsAndOneQuestionPerRetirement(t *testing.T) {
 	}
 	gapAction := false
 	for _, action := range status.NextActions {
-		gapAction = gapAction || (action.ID == "requirements:persona:"+user && action.Resource == user)
+		gapAction = gapAction || (action.ID == "growth:persona:"+user && action.Resource == user)
 	}
 	if !gapAction {
 		t.Fatalf("no next action asks which story serves the persona:\n%s", raw)
@@ -545,14 +551,14 @@ func TestStatusReportsPersonaGapsAndOneQuestionPerRetirement(t *testing.T) {
 	}
 	questions := 0
 	for _, action := range status.NextActions {
-		if strings.HasPrefix(action.ID, "requirements:retired-personas:") {
+		if strings.HasPrefix(action.ID, "growth:retired-personas:") {
 			questions++
 			if action.Resource != user || action.Question == nil || len(action.Question.Options) != 2 {
 				t.Fatalf("retirement question = %#v", action)
 			}
 		}
 		for _, story := range []string{first, second} {
-			if action.Resource == story && !strings.HasPrefix(action.ID, "requirements:retired-personas:") && strings.Contains(action.ID, "persona") {
+			if action.Resource == story && !strings.HasPrefix(action.ID, "growth:retired-personas:") && strings.Contains(action.ID, "persona") {
 				t.Fatalf("an orphaned story got its own persona action %q", action.ID)
 			}
 		}
@@ -702,8 +708,7 @@ func TestFlagGatedStoryIsImplementedButNotEnabled(t *testing.T) {
 
 // The incremental case: a first change names an epic, writes one story, and
 // explains itself with a deck, without defining a single persona. It is
-// valid, and requirements_ready answers exactly what it would without the
-// persona feature: blocked only until the story is accepted.
+// valid, status reports it and exits zero, and personas are only ever growth.
 func TestFirstChangeNeedsNoPersonas(t *testing.T) {
 	repo := t.TempDir()
 	git(t, repo, "init", "-b", "main")
@@ -730,53 +735,73 @@ func TestFirstChangeNeedsNoPersonas(t *testing.T) {
 		t.Fatalf("a first change without personas is invalid: %v\n%s", err, output.String())
 	}
 
-	requirementsReady := func() (string, []string, bool, int) {
-		t.Helper()
-		var document struct {
-			Readiness struct {
-				Gates []struct {
-					Name   string `json:"name"`
-					Status string `json:"status"`
-					Facts  []struct {
-						Code string `json:"code"`
-					} `json:"facts"`
-				} `json:"gates"`
-			} `json:"readiness"`
-			PersonaCoverage struct {
-				Blocking bool              `json:"blocking"`
-				Facts    []json.RawMessage `json:"facts"`
-			} `json:"persona_coverage"`
-		}
-		var status bytes.Buffer
-		if err := Status(ctx, []string{"--against", "main", "--json", "--repo", repo, root}, &status); err != nil && status.Len() == 0 {
-			t.Fatalf("status: %v", err)
-		}
-		if err := json.Unmarshal(status.Bytes(), &document); err != nil {
-			t.Fatalf("status --json: %v\n%s", err, status.String())
-		}
-		for _, gate := range document.Readiness.Gates {
-			if gate.Name == "requirements_ready" {
-				codes := []string{}
-				for _, fact := range gate.Facts {
-					codes = append(codes, fact.Code)
-				}
-				return gate.Status, codes, document.PersonaCoverage.Blocking, len(document.PersonaCoverage.Facts)
-			}
-		}
-		t.Fatal("status has no requirements_ready gate")
-		return "", nil, false, 0
+	var status bytes.Buffer
+	if err := Status(ctx, []string{"--against", "main", "--json", "--repo", repo, root}, &status); err != nil {
+		t.Fatalf("status reports and exits zero for a first change with no personas: %v\n%s", err, status.String())
 	}
-	state, codes, blocking, personaFacts := requirementsReady()
-	if state != "blocked" || blocking || personaFacts != 0 {
-		t.Fatalf("a proposed story blocks requirements_ready on its own: %s %v blocking=%v persona facts=%d", state, codes, blocking, personaFacts)
+	var document struct {
+		Coverage struct {
+			Areas map[string]struct {
+				Total    int  `json:"total"`
+				Complete bool `json:"complete"`
+			} `json:"areas"`
+		} `json:"coverage"`
+		PersonaCoverage struct {
+			Blocking bool              `json:"blocking"`
+			Facts    []json.RawMessage `json:"facts"`
+		} `json:"persona_coverage"`
+		NextActions []nextaction.Action `json:"next_actions"`
 	}
-	for _, code := range codes {
-		if strings.Contains(code, "persona") {
-			t.Fatalf("requirements_ready asks about personas: %v", codes)
+	if err := json.Unmarshal(status.Bytes(), &document); err != nil {
+		t.Fatalf("status --json: %v\n%s", err, status.String())
+	}
+	if document.PersonaCoverage.Blocking || len(document.PersonaCoverage.Facts) != 0 {
+		t.Fatalf("persona coverage with no personas: %+v", document.PersonaCoverage)
+	}
+	if design := document.Coverage.Areas["design"]; design.Total != 1 || design.Complete {
+		t.Fatalf("the story the change added is in scope for design: %+v", design)
+	}
+	for _, action := range document.NextActions {
+		if action.Area == "personas" && action.Category != nextaction.CategoryGrowth {
+			t.Fatalf("personas are never demanded: %#v", action)
 		}
 	}
-	acceptStory(t, root, story)
-	if state, codes, _, _ := requirementsReady(); state != "ready" {
-		t.Fatalf("an accepted story with no personas leaves requirements_ready ready, got %s %v", state, codes)
+	_ = story
+}
+
+// An omitted --epic uses the app's only epic, and when the app has none, the
+// first command that needs one creates it, named after the branch. Either
+// way the choice is reported.
+func TestOmittedEpicDefaultsAndSaysWhatItChose(t *testing.T) {
+	repo := t.TempDir()
+	git(t, repo, "init", "-b", "main")
+	git(t, repo, "checkout", "-b", "feature/checkout-flow")
+	root := filepath.Join(repo, "app.saga")
+	ctx := context.Background()
+	if err := Init(ctx, []string{"--repo", repo, "--repository", "https://example.test/acme/app.git", "--allow-repository-mismatch", root}, &bytes.Buffer{}); err != nil {
+		t.Fatal(err)
 	}
+	var notices bytes.Buffer
+	previous := epicNotices
+	epicNotices = &notices
+	defer func() { epicNotices = previous }()
+
+	if err := AddDeck(ctx, []string{"--objective", "Explain.", root, "implementation"}, &bytes.Buffer{}); err != nil {
+		t.Fatalf("add-deck with no epic yet: %v", err)
+	}
+	epics, err := applayout.Epics(root)
+	if err != nil || len(epics) != 1 || epics[0].ID != "checkout-flow" || epics[0].Title != "Checkout flow" {
+		t.Fatalf("the first epic is named after the branch: %+v %v", epics, err)
+	}
+	if !strings.Contains(notices.String(), `Created epic "checkout-flow"`) || !strings.Contains(notices.String(), "branch feature/checkout-flow") {
+		t.Fatalf("the created epic is reported: %q", notices.String())
+	}
+	notices.Reset()
+	if err := Story(ctx, []string{"add", root, "--id", "pay", "--revision", "r1", "--event", "proposed", "--title", "Pay", "--statement", "S", "--priority", "must"}, &bytes.Buffer{}); err != nil {
+		t.Fatalf("story add with one epic: %v", err)
+	}
+	if !strings.Contains(notices.String(), `Using epic "checkout-flow", the app's only epic`) {
+		t.Fatalf("the implied epic is reported: %q", notices.String())
+	}
+	assertValid(t, root)
 }

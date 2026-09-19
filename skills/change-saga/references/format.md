@@ -24,9 +24,10 @@ app.saga/
 ```
 
 `change-saga spec --json` publishes the resources, the legal relation endpoint
-matrix, and every command shape. `change-saga status --json` returns the gates,
-per-criterion axis coverage, the stale set, changed-source accounting, overview
-gaps, reviews, and ordered `next_actions`.
+matrix, and every command shape. `change-saga status --json` returns the
+coverage report by area (`coverage.areas`), per-criterion axis coverage, the
+stale set, changed-source accounting, overview gaps, reviews, and ordered
+`next_actions`; it has no verdict (see [ci.md](ci.md) for team rules).
 
 No URN names its epic, so story, deck, slide, and Item IDs are unique across
 the app and reorganizing epics breaks no link.
