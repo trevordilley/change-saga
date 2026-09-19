@@ -361,9 +361,7 @@ A saga root ends in `.saga` and contains `saga.json` conforming to
   "id": "checkout-rewrite",
   "title": "Checkout rewrite",
   "source": {
-    "repository": "https://github.com/acme/payments.git",
-    "base": "main",
-    "head": "HEAD"
+    "repository": "https://github.com/acme/payments.git"
   }
 }
 ```
@@ -380,13 +378,25 @@ executing software.
 repository, not necessarily the repository containing the saga. Repository
 identities never contain URL userinfo; credentials in a remote URL are removed
 before the identity is persisted, and a persisted identity that still carries
-userinfo is invalid rather than silently stripped on read. An optional `pr`
-records a positive `number`, an absolute `url`, or both.
+userinfo is invalid rather than silently stripped on read.
 
-`base` and `head` select the comparison to evaluate. Commit comparisons resolve
-both revisions and record their actual Git merge base. Comparisons are always
-between commits: code references pin commits, so uncommitted working-tree
-changes are not a comparison.
+The manifest holds no comparison. A comparison is how a Saga is opened: commands
+that read one take `--against REV` and an optional `--head REV` (default
+`HEAD`), and compare the merge-base of the two through the head, exactly as a
+pull request does. Without `--against`, a command observes the Saga at its head
+with no changed-line accounting. Comparisons are always between commits: code
+references pin commits, so uncommitted working-tree changes are not a
+comparison. A pull request belongs to its review (section 8), not to the
+manifest.
+
+A Saga that lives in a companion repository, separate from its code, records a
+sync cursor in `sync.json`, conforming to
+[`schema/v5/sync.schema.json`](schema/v5/sync.schema.json): the code commit the
+Saga currently documents. Every Saga commit that updates the documentation moves
+the cursor, with `change-saga sync` or `repin`. When such a Saga is compared, the
+code delta comes from the code repository and the Saga delta from the Saga
+commit whose cursor matched the base. A Saga in its code repository has no
+cursor: it documents the commit it is read at.
 
 `change-saga init` uses the canonical portable `origin` identity when available.
 Without an origin, or when origin is itself a local path, the author must provide
@@ -662,36 +672,39 @@ Changes under a `.saga` path in the source repository are classified separately
 as saga-only changes. When source and saga are different repositories, all saga
 history is naturally outside the source comparison.
 
-### 6.1 Maintenance impact
+### 6.1 Observing and comparing
 
-`change-saga compare` is a read-only evidence projection for maintaining a Saga
-as its source evolves. It MUST NOT compare fragment bytes, rendered prose,
-diagram geometry, review comments, or other authored content.
+Opened without a comparison, a Saga is **observed**: everything is shown as of
+its head, and each code reference's health is judged against that commit.
 
-The first Saga is the maintained document. An incoming Git comparison may be
-provided directly or through another Saga's `source` declaration. The engine
-views the maintained Saga's references at the incoming comparison's resolved
-base and evaluates its evidence there. It then classifies
-incoming source atoms as:
+Opened with `--against`, a Saga is **compared**, and the comparison is reported
+in three layers (`status --json` under `comparison`, `query layers`, and the
+reviewer's Change view):
 
-- `conflicting_intersection` when a removed line or destructive file event
-  intersects source evidence already owned by a Saga target;
-- `additive_near_owned_code` when a new line belongs to the same replacement
-  block or is immediately adjacent to owned baseline code; or
-- `new_content_required` when no existing evidence owner can be derived.
+1. **Changed:** Saga records added, revised, or retired between the Saga at the
+   merge-base and the Saga at the head, each with its before and after.
+2. **Affected:** records the change did not edit but invalidated: records whose
+   referenced code the change touched, records pinned to a revision the change
+   revised, and records reached through the persona → story → design → code
+   chain, so a change to code alone still reaches the stories and personas it
+   touches. A removed line or destructive file event that intersects code a
+   record references means that record must be revisited; a new line adjacent to
+   referenced code is a prompt for consideration, not proof that the record is
+   stale; a change no record can own requires new or expanded documentation.
+3. **Code:** the diff, grouped under the records whose references it touches,
+   plus every changed line no record references.
 
-The result identifies stable target URNs, target kinds, content locations,
-evidence files, and exact incoming atoms. A direct intersection means the
-target MUST be revisited. An adjacent addition is a prompt for consideration,
-not proof that narrative content is stale. An ownerless change requires a new
-or newly expanded narrative target. If the maintained Saga is incomplete or
-stale at the incoming base, the result carries a `baseline_incomplete`
-diagnostic and the command exits 3; an implementation MUST NOT claim exhaustive
-impact in that state.
+A comparison never compares authored prose, rendered content, or diagram
+geometry, and it never rewrites evidence.
 
-This projection does not rewrite evidence or advance the Saga's declared head.
-Its purpose is to produce the formal maintenance work queue before content and
-coverage are reconciled against the new source state.
+**Why things changed.** When a slide, design, or test case drops out and
+another takes its place, the comparison pairs them: the pairing is inferred from
+a shared story or criterion, an explicit `supersedes` relation wins, and an
+ambiguous case lists its candidates. The commit messages in the comparison are
+attached to the records whose files or referenced code each commit touched,
+including the messages a squash merge preserved in `___merges`. `query history
+--node URN` reports when a record was introduced, what it replaced, the reviews
+that changed it, and the command that opens each of those comparisons.
 
 ### 6.2 Re-pinning at merge
 
@@ -705,7 +718,9 @@ rules and digest fallback.
 
 `repin` also writes `___merges/<landed-commit>.json`, conforming to
 [`schema/v2/merge.schema.json`](schema/v2/merge.schema.json). It records the
-landed commit and the branch's commit messages, ancestors first, so the
+landed commit, the merge-base it was compared from (so `--against <base> --head
+<commit>` reproduces the change), the review it froze, and the branch's commit
+messages, ancestors first, so the
 reasoning in individual commits survives a squash merge. `--branch` must be
 given while the branch still exists. `--dry-run` reports the complete impact
 without writing.
@@ -855,9 +870,12 @@ hide authored content behind a valid-looking saga. Other names beginning with
   Each action is either a command shape from the same grammar `spec --json`
   publishes, or one focused question for the author. Nothing is reduced to a
   score or percentage.
-- `change-saga compare` projects a direct Git range or another Saga's source
-  comparison onto a maintained Saga's evidence owners. It compares source
-  diffs only and emits stable update locations plus ownerless changes.
+- `--against REV [--head REV]` opens `status`, `references`, `cover`,
+  `replace-coverage`, every `query` operation, `serve`, and `open` in compare
+  mode; without it they observe. `query layers` returns the three comparison
+  layers and `query history --node URN` a record's history.
+- `change-saga sync --repo PATH [--commit REV]` moves a companion Saga's sync
+  cursor.
 - `change-saga query mappings --sort scrutiny` ranks broad or thin evidence
   records without claiming that a low score proves correctness. `query claims`
   and `query verifications` expose assertions, exact evidence, attribution, and
