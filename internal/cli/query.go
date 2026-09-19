@@ -213,7 +213,7 @@ var queryOperations = []string{
 
 // queryPurpose says what each operation answers. It is keyed by the same
 // operation names the dispatcher uses so documentation generated from it — the
-// install-skill prompt in particular — cannot describe an operation the CLI
+// skill's query reference in particular — cannot describe an operation the CLI
 // does not have, or omit one it does.
 var queryPurpose = map[string]string{
 	"schema":              "the response paths and pagination contract for a query operation; no saga is required",
