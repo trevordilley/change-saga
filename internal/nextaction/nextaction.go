@@ -50,6 +50,9 @@ const (
 	CategoryRequirements Category = "requirements"
 	CategoryCoverage     Category = "coverage"
 	CategoryOrphan       Category = "orphan"
+	// CategoryReview is a pull request review whose deck does not yet explain
+	// every changed line of its range. It is reported, never gating.
+	CategoryReview Category = "review"
 	// CategoryGrowth is an optional suggestion that grows the Saga, such as
 	// defining terminology a comparison introduced. It names no gate, never
 	// blocks, and comes after everything that does.
@@ -58,7 +61,7 @@ const (
 
 var categoryRank = map[Category]int{
 	CategoryInvalidSaga: 0, CategoryConflict: 1, CategoryInvalid: 2, CategoryStale: 3, CategorySource: 4,
-	CategoryRequirements: 5, CategoryCoverage: 6, CategoryOrphan: 7, CategoryGrowth: 8,
+	CategoryRequirements: 5, CategoryCoverage: 6, CategoryOrphan: 7, CategoryReview: 8, CategoryGrowth: 9,
 }
 
 // Action is one ordered next step.

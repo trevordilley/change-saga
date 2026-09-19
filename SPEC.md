@@ -784,6 +784,18 @@ URN of a persona, epic, story, test case, deck, slide, chapter, section, or
 fragment in the documentation. Review decks never join the documentation's
 structure, so they have no effect on coverage, readiness, or comparison layers.
 
+**A review deck must account for its change.** Review coverage is computed,
+never stored, over the review's own range with the same rules as documentation
+coverage (section 6): every added or modified line must be covered by a review
+Item reference current at the head, every deleted line by one current at the
+base, and every file event by a whole-file reference. It is reported per review
+(`review list`, `status` under `reviews[].coverage`, and the review page) as
+covered and total counts, the uncovered lines with ready-to-use locations,
+stale references, and overlap. It is a report, not a verdict; `review list
+--uncovered` lists only reviews with gaps. Review decks never count toward the
+documentation's own coverage. `cover` on a review Item defaults to the review's
+range, so it needs no `--against`.
+
 **Approvals are per slide.** Each decision is an append-only record in
 `approvals/`, conforming to
 [`schema/v5/review-approval.schema.json`](schema/v5/review-approval.schema.json):

@@ -98,10 +98,17 @@ type atomIndex struct {
 }
 
 func Evaluate(ctx context.Context, document *saga.Saga, validation saga.Validation, changes gitdiff.ChangeSet, resolver Resolver) Report {
+	return EvaluateTargets(ctx, func(visit func(string, []saga.CodeFile)) { WalkDocumentCode(document, visit) }, validation, changes, resolver)
+}
+
+// EvaluateTargets computes coverage over the targets walk visits, with
+// exactly Evaluate's semantics. A pull request review evaluates its own deck's
+// Items this way, against its own range, apart from the documentation tree.
+func EvaluateTargets(ctx context.Context, walk func(visit func(string, []saga.CodeFile)), validation saga.Validation, changes gitdiff.ChangeSet, resolver Resolver) Report {
 	report := newReport(validation, changes)
 	assignments := make([][]Assignment, len(changes.Atoms))
 	index := buildIndex(changes)
-	WalkDocumentCode(document, func(target string, files []saga.CodeFile) {
+	walk(func(target string, files []saga.CodeFile) {
 		visitReferences(ctx, target, files, index, changes, resolver, &report, func(atom int, assignment Assignment) {
 			assignments[atom] = append(assignments[atom], assignment)
 		})

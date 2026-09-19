@@ -320,7 +320,7 @@ var commands = []Command{
 	{
 		Name: "cover", Status: StatusImplemented, Mutates: true, Writes: []string{"code-evidence"},
 		Usage:   "change-saga cover [flags] [--batch FILE|-] [--dry-run] [--against REV [--head REV]] <saga>",
-		Summary: "reference the code a target explains, pinned at a commit, from the smallest target that explains it",
+		Summary: "reference the code a target explains, pinned at a commit, from the smallest target that explains it; a review Item compares its review's own range unless --against is given",
 		Flags: []Flag{
 			optional("target", "TARGET", "section, fragment, landmark, or Item receiving the evidence"), optional("repo", "PATH", "source checkout when separate"),
 			optional("path", "PATH", "repository path"), optional("side", "SIDE", "new (head) or old (merge-base)"), optional("lines", "RANGES", "line ranges such as 4-9,12"),
@@ -376,9 +376,11 @@ var commands = []Command{
 		Positionals: sagaOnly,
 	},
 	{
-		Name: "review list", Status: StatusImplemented, Usage: "change-saga review list [--review ID] [--repo PATH] [--json] <saga>",
-		Summary:     "report every review slide's decisions, the head commit each was given at, and whether each is out of date; never a verdict",
-		Flags:       []Flag{optional("review", "ID", "report one review"), optional("repo", "PATH", "code checkout when separate"), jsonFlag},
+		Name: "review list", Status: StatusImplemented, Usage: "change-saga review list [--review ID] [--uncovered] [--repo PATH] [--json] <saga>",
+		Summary: "report every review slide's decisions, the head commit each was given at, and whether each is out of date, and how completely each deck covers its review's range; never a verdict",
+		Flags: []Flag{optional("review", "ID", "report one review"),
+			optional("uncovered", "", "list only reviews whose deck leaves changes of their range uncovered, and only those gaps"),
+			optional("repo", "PATH", "code checkout when separate"), jsonFlag},
 		Positionals: sagaOnly,
 	},
 	{
