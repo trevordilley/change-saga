@@ -188,9 +188,7 @@ func (a *app) reviewIndex(w http.ResponseWriter, r *http.Request) {
 		view.Reviews = append(view.Reviews, reviewSummaryView{Report: report, Href: reviewHref(report.ID), Matches: matchingReview(report, head)})
 	}
 	writeIncrementalHeaders(w, "text/html; charset=utf-8")
-	if err := reviewTemplates.ExecuteTemplate(w, "review-index", view); err != nil {
-		http.Error(w, "The reviews could not be rendered.", http.StatusInternalServerError)
-	}
+	renderHTML(w, reviewTemplates, "review-index", view, "The reviews could not be rendered.")
 }
 
 func (a *app) reviewPage(w http.ResponseWriter, r *http.Request) {
@@ -249,9 +247,7 @@ func (a *app) reviewPage(w http.ResponseWriter, r *http.Request) {
 		view.Slides = append(view.Slides, slideView)
 	}
 	writeIncrementalHeaders(w, "text/html; charset=utf-8")
-	if err := reviewTemplates.ExecuteTemplate(w, "review-page", view); err != nil {
-		http.Error(w, "The review could not be rendered.", http.StatusInternalServerError)
-	}
+	renderHTML(w, reviewTemplates, "review-page", view, "The review could not be rendered.")
 }
 
 // reviewCoverage renders every uncovered change as the diff row it is: a

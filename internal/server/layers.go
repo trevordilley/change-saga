@@ -144,9 +144,7 @@ func (a *app) changePage(w http.ResponseWriter, r *http.Request) {
 	if document, validation, err := saga.Load(a.root); err == nil && validation.Valid {
 		view.Reviews = a.reviewsForHead(r.Context(), document, layers.HeadOID)
 	}
-	if err := a.template.ExecuteTemplate(w, "change-view", view); err != nil {
-		http.Error(w, "The change could not be rendered.", http.StatusInternalServerError)
-	}
+	renderHTML(w, a.template, "change-view", view, "The change could not be rendered.")
 }
 
 // historyView is one record's history in the drawer.
@@ -167,9 +165,7 @@ func (a *app) historyPage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	writeIncrementalHeaders(w, "text/html; charset=utf-8")
-	if err := a.template.ExecuteTemplate(w, "history-view", historyView{History: history, Saga: a.root}); err != nil {
-		http.Error(w, "The history could not be rendered.", http.StatusInternalServerError)
-	}
+	renderHTML(w, a.template, "history-view", historyView{History: history, Saga: a.root}, "The history could not be rendered.")
 }
 
 // openingLabel describes how the reviewer was opened, for the shell.

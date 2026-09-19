@@ -215,9 +215,7 @@ func (a *app) codePage(w http.ResponseWriter, r *http.Request) {
 	}
 	writeIncrementalHeaders(w, "text/html; charset=utf-8")
 	writePageHeaders(w, window)
-	if err := a.template.ExecuteTemplate(w, "code-page", result); err != nil {
-		http.Error(w, "The code page could not be rendered.", http.StatusInternalServerError)
-	}
+	renderHTML(w, a.template, "code-page", result, "The code page could not be rendered.")
 }
 
 type fileOwnersView struct {
@@ -250,9 +248,7 @@ func (a *app) fileOwners(w http.ResponseWriter, r *http.Request) {
 	}
 	terms := a.fileTerms(r.Context(), document.Manifest.ID, []string{catalog.BaseOID, catalog.HeadOID}, filePath)
 	writeIncrementalHeaders(w, "text/html; charset=utf-8")
-	if err := a.template.ExecuteTemplate(w, "file-owners", fileOwnersView{Groups: groups, RelatedEmpty: "Nothing in the story explains this file yet.", Terms: terms}); err != nil {
-		http.Error(w, "The explanations for this file could not be rendered.", http.StatusInternalServerError)
-	}
+	renderHTML(w, a.template, "file-owners", fileOwnersView{Groups: groups, RelatedEmpty: "Nothing in the story explains this file yet.", Terms: terms}, "The explanations for this file could not be rendered.")
 }
 
 type coveragePageView struct {
@@ -354,9 +350,7 @@ func (a *app) coveragePage(w http.ResponseWriter, r *http.Request) {
 	}
 	writeIncrementalHeaders(w, "text/html; charset=utf-8")
 	writePageHeaders(w, window)
-	if err := a.template.ExecuteTemplate(w, "coverage-page", result); err != nil {
-		http.Error(w, "The coverage page could not be rendered.", http.StatusInternalServerError)
-	}
+	renderHTML(w, a.template, "coverage-page", result, "The coverage page could not be rendered.")
 }
 
 func (a *app) coverageFilePage(w http.ResponseWriter, r *http.Request) {
@@ -381,9 +375,7 @@ func (a *app) coverageFilePage(w http.ResponseWriter, r *http.Request) {
 	}
 	writeIncrementalHeaders(w, "text/html; charset=utf-8")
 	writePageHeaders(w, window)
-	if err := a.template.ExecuteTemplate(w, "coverage-file-page", result); err != nil {
-		http.Error(w, "The file coverage could not be rendered.", http.StatusInternalServerError)
-	}
+	renderHTML(w, a.template, "coverage-file-page", result, "The file coverage could not be rendered.")
 }
 
 func (a *app) coverageTargetPage(w http.ResponseWriter, r *http.Request) {
@@ -422,9 +414,7 @@ func (a *app) coverageTargetPage(w http.ResponseWriter, r *http.Request) {
 	}
 	writeIncrementalHeaders(w, "text/html; charset=utf-8")
 	writePageHeaders(w, window)
-	if err := a.template.ExecuteTemplate(w, "coverage-target-page", result); err != nil {
-		http.Error(w, "The target coverage could not be rendered.", http.StatusInternalServerError)
-	}
+	renderHTML(w, a.template, "coverage-target-page", result, "The target coverage could not be rendered.")
 }
 
 func atomsForIndexes(current *reviewSnapshot, indexes []int) []gitdiff.Atom {

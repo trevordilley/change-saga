@@ -67,9 +67,7 @@ func (a *app) targetCode(w http.ResponseWriter, r *http.Request) {
 	}
 	view := targetCodeView{DOMID: domID(target), Target: target, Title: title, ChangeCount: changeCount, Attached: attached}
 	writeIncrementalHeaders(w, "text/html; charset=utf-8")
-	if err := a.template.ExecuteTemplate(w, "target-code", view); err != nil {
-		http.Error(w, "Linked code could not be rendered.", http.StatusInternalServerError)
-	}
+	renderHTML(w, a.template, "target-code", view, "Linked code could not be rendered.")
 }
 
 // selectTargetCode is the shared bounded mapping path for the summary and one

@@ -1,6 +1,7 @@
 package server
 
 import (
+	"bytes"
 	"context"
 	"crypto/sha256"
 	"crypto/subtle"
@@ -409,9 +410,7 @@ func (a *app) fileDiffFragment(w http.ResponseWriter, r *http.Request) {
 	writeIncrementalHeaders(w, "text/html; charset=utf-8")
 	writePageHeaders(w, window)
 	page := fileDiffPageView{File: selected, NextCursor: window.next, HasMore: window.hasMore(), Returned: window.end - window.start}
-	if err := a.template.ExecuteTemplate(w, name, page); err != nil {
-		http.Error(w, "The file diff could not be rendered.", http.StatusInternalServerError)
-	}
+	renderHTML(w, a.template, name, page, "The file diff could not be rendered.")
 }
 
 func (a *app) mappedFileDiffFragment(w http.ResponseWriter, r *http.Request) {
@@ -469,9 +468,7 @@ func (a *app) mappedFileDiffFragment(w http.ResponseWriter, r *http.Request) {
 	writeIncrementalHeaders(w, "text/html; charset=utf-8")
 	writePageHeaders(w, window)
 	page := fileDiffPageView{File: selected, NextCursor: window.next, HasMore: window.hasMore(), Returned: window.end - window.start}
-	if err := a.template.ExecuteTemplate(w, name, page); err != nil {
-		http.Error(w, "The file diff could not be rendered.", http.StatusInternalServerError)
-	}
+	renderHTML(w, a.template, name, page, "The file diff could not be rendered.")
 }
 
 // sectionBody renders one chapter's body on demand: its comments, its
@@ -491,9 +488,7 @@ func (a *app) sectionBody(w http.ResponseWriter, r *http.Request) {
 	}
 	scope := viewScope{}.shell()
 	writeIncrementalHeaders(w, "text/html; charset=utf-8")
-	if err := a.template.ExecuteTemplate(w, "section-body", makeSectionView(section, scope)); err != nil {
-		http.Error(w, "The chapter could not be rendered.", http.StatusInternalServerError)
-	}
+	renderHTML(w, a.template, "section-body", makeSectionView(section, scope), "The chapter could not be rendered.")
 }
 
 // fragmentContent renders one explanation's narrative content, marked places,
@@ -513,9 +508,7 @@ func (a *app) fragmentContent(w http.ResponseWriter, r *http.Request) {
 	}
 	scope := viewScope{}
 	writeIncrementalHeaders(w, "text/html; charset=utf-8")
-	if err := a.template.ExecuteTemplate(w, "fragment", makeFragmentView(fragment, scope)); err != nil {
-		http.Error(w, "The explanation could not be rendered.", http.StatusInternalServerError)
-	}
+	renderHTML(w, a.template, "fragment", makeFragmentView(fragment, scope), "The explanation could not be rendered.")
 }
 
 // locateAnchor answers where a page anchor lives. A permalink can name a
@@ -864,9 +857,7 @@ func (a *app) page(w http.ResponseWriter, r *http.Request) {
 		data.SlideRoot = makeSectionView(slideRoot, scope)
 	}
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	if err := a.template.ExecuteTemplate(w, "page", data); err != nil {
-		http.Error(w, "The review page could not be rendered.", http.StatusInternalServerError)
-	}
+	renderHTML(w, a.template, "page", data, "The review page could not be rendered.")
 }
 
 // requirementsRationale projects the first authored overview paragraph into
@@ -1545,4 +1536,21 @@ func securityHeaders(next http.Handler) http.Handler {
 		}
 		next.ServeHTTP(w, r)
 	})
+}
+
+// renderHTML executes one template into memory and only then writes it. A
+// template that failed halfway, or a browser that went away mid-response,
+// used to leave a 200 already sent when the handler reported the failure,
+// which net/http logs as a superfluous WriteHeader. Rendering first means a
+// failure is a clean 500 and a disconnect is nothing at all.
+func renderHTML(w http.ResponseWriter, tmpl *template.Template, name string, data any, failure string) {
+	var body bytes.Buffer
+	if err := tmpl.ExecuteTemplate(&body, name, data); err != nil {
+		http.Error(w, failure, http.StatusInternalServerError)
+		return
+	}
+	if w.Header().Get("Content-Type") == "" {
+		w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	}
+	_, _ = body.WriteTo(w)
 }
