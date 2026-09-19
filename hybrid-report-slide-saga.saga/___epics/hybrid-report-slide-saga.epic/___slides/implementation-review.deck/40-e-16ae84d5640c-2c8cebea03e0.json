@@ -1,45 +1,85 @@
 {
-  "version": 2,
-  "diffs": [
+  "references": [
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=170\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fsaga%2Fload.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=158",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/saga/load.go",
+      "start": 158,
+      "end": 170,
+      "digest": "sha256:aed83ae3d5a13e5238127d5cf1edc158f50b587956d71e39e445fdb215740dc0",
       "note": "Loads embedded deck bundles into a v3 report while preserving its report root, coverage, and legacy review records."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=173\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fsaga%2Fload.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=173",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/saga/load.go",
+      "start": 173,
+      "end": 173,
+      "digest": "sha256:cd91e6efc0c77924a7bb94b80d59626f8118be09f7a83aa9500fa6ca7158eb69",
       "note": "Loads embedded deck bundles into a v3 report while preserving its report root, coverage, and legacy review records."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=220\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fsaga%2Fload.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=218",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/saga/load.go",
+      "start": 218,
+      "end": 220,
+      "digest": "sha256:8b0c05b5c80c2e7071bb080619a053c7150f350c14c74154a1b0c166325fa1c9",
       "note": "Loads embedded deck bundles into a v3 report while preserving its report root, coverage, and legacy review records."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=224\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fsaga%2Fload.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=222",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/saga/load.go",
+      "start": 222,
+      "end": 224,
+      "digest": "sha256:b96f83b50378c13156dbadaeceac58fb4cf510d52abb0050b76f3cc20102c51d",
       "note": "Loads embedded deck bundles into a v3 report while preserving its report root, coverage, and legacy review records."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=233\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fsaga%2Fload.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=231",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/saga/load.go",
+      "start": 231,
+      "end": 233,
+      "digest": "sha256:2638a24b53de686167d230d08d3e430b331940205b8d623e9b0cbd4892fd7928",
       "note": "Loads embedded deck bundles into a v3 report while preserving its report root, coverage, and legacy review records."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=547\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fsaga%2Fload.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=547",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/saga/load.go",
+      "start": 547,
+      "end": 547,
+      "digest": "sha256:8aed5d3d4590cfb97ce8dcb42a201dba47319a80c95abae73c00b2466e3d4cdb",
       "note": "Loads embedded deck bundles into a v3 report while preserving its report root, coverage, and legacy review records."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=550\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fsaga%2Fload.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=549",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/saga/load.go",
+      "start": 549,
+      "end": 550,
+      "digest": "sha256:6132ea096c44bd22327502f45e8e75b9e7246ed34fc8e829696c4c3081b19358",
       "note": "Loads embedded deck bundles into a v3 report while preserving its report root, coverage, and legacy review records."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=560\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fsaga%2Fload.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=560",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/saga/load.go",
+      "start": 560,
+      "end": 560,
+      "digest": "sha256:5336769377170125a95eeaf18a57b01c9c207fb3463aace8ac3593f0cd92a5eb",
       "note": "Loads embedded deck bundles into a v3 report while preserving its report root, coverage, and legacy review records."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=564\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fsaga%2Fload.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=564",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/saga/load.go",
+      "start": 564,
+      "end": 564,
+      "digest": "sha256:f9ad15dd972d39a6ba224dee587e4fbbbc68a1fd93f2d05a11abb55c1708a9c0",
       "note": "Loads embedded deck bundles into a v3 report while preserving its report root, coverage, and legacy review records."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=1030\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fsaga%2Fload.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=1028",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/saga/load.go",
+      "start": 1028,
+      "end": 1030,
+      "digest": "sha256:96a992a982fbb6023529db660e45f37246c0b50f761ec121f16411b7d059a00a",
       "note": "Loads embedded deck bundles into a v3 report while preserving its report root, coverage, and legacy review records."
     }
-  ]
+  ],
+  "version": 2
 }

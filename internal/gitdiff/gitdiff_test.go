@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/twentyideas/changesaga/internal/diffuri"
+	"github.com/twentyideas/changesaga/internal/coderef"
 )
 
 func TestParseLinesAndEvents(t *testing.T) {
@@ -123,7 +123,7 @@ func TestIsSagaPath(t *testing.T) {
 	}
 }
 
-func TestProductIdentityIgnoresSagaOnlyCommits(t *testing.T) {
+func TestSagaOnlyCommitsLeaveProductAtomsUnchanged(t *testing.T) {
 	repo := t.TempDir()
 	gitTest(t, repo, "init", "-b", "main")
 	gitTest(t, repo, "config", "user.name", "Test")
@@ -149,8 +149,13 @@ func TestProductIdentityIgnoresSagaOnlyCommits(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if before.HeadOID != after.HeadOID || len(before.Atoms) != 2 || len(after.Atoms) != 2 || before.Atoms[0].URI != after.Atoms[0].URI || before.Atoms[1].URI != after.Atoms[1].URI {
-		t.Fatalf("saga-only commit changed product identity: before=%#v after=%#v", before, after)
+	// The head is now a commit, so its identity moves; the product atoms and
+	// their line numbers do not, which is what keeps references current.
+	if before.HeadOID == after.HeadOID || len(before.Atoms) != 2 || len(after.Atoms) != 2 || before.Atoms[0].Key != after.Atoms[0].Key || before.Atoms[1].Key != after.Atoms[1].Key {
+		t.Fatalf("saga-only commit changed product atoms: before=%#v after=%#v", before, after)
+	}
+	if changes, err := TreeChanges(context.Background(), repo, productHead, after.HeadOID); err != nil || len(changes) != 0 {
+		t.Fatalf("saga-only commit changed product code: %v %#v", err, changes)
 	}
 	if len(after.SagaChanges) != 2 {
 		t.Fatalf("saga-only change should still be reported: %#v", after.SagaChanges)
@@ -335,8 +340,8 @@ func TestAdversarialGitFixtureCorpus(t *testing.T) {
 		paths[atom.Path] = true
 		paths[atom.OldPath] = true
 		paths[atom.NewPath] = true
-		if _, err := diffuri.Parse(atom.URI); err != nil {
-			t.Errorf("atom %q has invalid canonical URI: %v", atom.Key, err)
+		if location, err := coderef.ParseLocation(atom.Ref); err != nil || location != changes.Location(atom) {
+			t.Errorf("atom %q has invalid code location %q: %v", atom.Key, atom.Ref, err)
 		}
 	}
 	for _, key := range []string{
@@ -408,7 +413,7 @@ func TestEmptyFileAddAndDeleteProduceLifecycleAtoms(t *testing.T) {
 	}
 }
 
-func TestCommittedAndWorktreeComparisonsUseActualMergeBase(t *testing.T) {
+func TestCommittedComparisonsUseActualMergeBase(t *testing.T) {
 	repo := newGitTestRepo(t)
 	gitTest(t, repo, "remote", "add", "origin", "https://example.test/acme/topology.git")
 	writeGitTestFile(t, filepath.Join(repo, "root.txt"), "root\n")
@@ -429,32 +434,13 @@ func TestCommittedAndWorktreeComparisonsUseActualMergeBase(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if committed.BaseOID != root || committed.HeadCommit != feature || hasAtomPath(committed.Atoms, "advanced-base.txt") || !hasAtomPath(committed.Atoms, "feature.txt") {
+	if committed.BaseOID != root || committed.HeadOID != feature || hasAtomPath(committed.Atoms, "advanced-base.txt") || !hasAtomPath(committed.Atoms, "feature.txt") {
 		t.Fatalf("committed comparison did not use merge base %s: %#v", root, committed)
 	}
 
-	gitTest(t, repo, "checkout", "feature")
-	writeGitTestFile(t, filepath.Join(repo, "worktree.txt"), "uncommitted\n")
-	writeGitTestFile(t, filepath.Join(repo, "untracked.txt"), "excluded\n")
-	gitTest(t, repo, "add", "worktree.txt")
-	worktree, err := Read(context.Background(), repo, "https://example.test/acme/topology.git", "main", "WORKTREE")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if worktree.BaseOID != root || worktree.HeadCommit != "" || hasAtomPath(worktree.Atoms, "advanced-base.txt") || hasAtomPath(worktree.Atoms, "untracked.txt") || !hasAtomPath(worktree.Atoms, "feature.txt") || !hasAtomPath(worktree.Atoms, "worktree.txt") {
-		t.Fatalf("worktree comparison did not diff merge-base tree to worktree: %#v", worktree)
-	}
-	gitTest(t, repo, "commit", "-m", "worktree committed")
-	head, err := Read(context.Background(), repo, "https://example.test/acme/topology.git", "main", "HEAD")
-	if err != nil {
-		t.Fatal(err)
-	}
-	cleanWorktree, err := Read(context.Background(), repo, "https://example.test/acme/topology.git", "main", "WORKTREE")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if head.HeadOID != cleanWorktree.HeadOID {
-		t.Fatalf("clean HEAD and WORKTREE identities differ: %s != %s", head.HeadOID, cleanWorktree.HeadOID)
+	// References pin commits, so uncommitted work cannot be compared.
+	if _, err := Read(context.Background(), repo, "https://example.test/acme/topology.git", "main", "WORKTREE"); err == nil || !strings.Contains(err.Error(), "WORKTREE is not supported") {
+		t.Fatalf("WORKTREE head was accepted: %v", err)
 	}
 }
 
@@ -477,34 +463,6 @@ func TestRenameAcrossSagaBoundaryRemainsAProductAtom(t *testing.T) {
 	key := "event:rename:review.saga/product.txt:product.txt:review.saga/product.txt"
 	if !hasAtomKey(changes.Atoms, key) || !hasAtomKey(changes.SagaChanges, key) {
 		t.Fatalf("cross-boundary rename must be both product and saga-visible: %#v", changes)
-	}
-}
-
-func TestProductIdentitySurvivesRebaseLikeCommitIdentityChange(t *testing.T) {
-	repo := newGitTestRepo(t)
-	gitTest(t, repo, "remote", "add", "origin", "https://example.test/acme/rebase.git")
-	writeGitTestFile(t, filepath.Join(repo, "base.txt"), "base\n")
-	gitTest(t, repo, "add", ".")
-	gitTest(t, repo, "commit", "-m", "base")
-	base := strings.TrimSpace(gitTest(t, repo, "rev-parse", "HEAD"))
-	gitTest(t, repo, "checkout", "-b", "first")
-	writeGitTestFile(t, filepath.Join(repo, "same.txt"), "same patch\n")
-	gitTest(t, repo, "add", ".")
-	gitTest(t, repo, "commit", "-m", "first identity")
-	first, err := Read(context.Background(), repo, "https://example.test/acme/rebase.git", base, "HEAD")
-	if err != nil {
-		t.Fatal(err)
-	}
-	gitTest(t, repo, "checkout", "-b", "second", base)
-	writeGitTestFile(t, filepath.Join(repo, "same.txt"), "same patch\n")
-	gitTest(t, repo, "add", ".")
-	gitTest(t, repo, "commit", "-m", "different commit identity")
-	second, err := Read(context.Background(), repo, "https://example.test/acme/rebase.git", base, "HEAD")
-	if err != nil {
-		t.Fatal(err)
-	}
-	if first.HeadOID != second.HeadOID || len(first.Atoms) != len(second.Atoms) {
-		t.Fatalf("equivalent rebased product patch changed identity: %#v %#v", first, second)
 	}
 }
 

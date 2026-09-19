@@ -60,7 +60,7 @@ func (a *app) outlineFingerprint(ctx context.Context) (string, error) {
 }
 
 // outlineFingerprint commits only to files LoadOutline consumes. In
-// particular, ___diffs directories and fragment bodies are skipped as
+// particular, ___code directories and fragment bodies are skipped as
 // directories/files rather than merely omitted from the digest after a full
 // walk. A root request therefore does not scale with per-line evidence or code
 // attachment size even during freshness checks.
@@ -101,7 +101,7 @@ func outlineFingerprint(root string) (string, error) {
 
 func skipOutlineDirectory(rel, base string) bool {
 	switch base {
-	case "___diffs", "___claims", "___verifications", "___landmarks", "messages":
+	case saga.CodeDirName, "___claims", "___verifications", "___landmarks", "messages":
 		return true
 	}
 	if strings.HasSuffix(base, ".message") {

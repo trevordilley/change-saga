@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/cover.go",
+      "start": 1,
+      "end": 72,
+      "digest": "sha256:d81ac9ce528d62149a4bd5529f60b767086f369c4ba199cfea586954d235665f",
+      "note": "Defines exact coverage input, planned record, output, and command entry shapes."
+    }
+  ],
+  "version": 2
+}

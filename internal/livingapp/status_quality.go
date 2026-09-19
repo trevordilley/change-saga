@@ -1,13 +1,13 @@
 package livingapp
 
 import (
+	"github.com/twentyideas/changesaga/internal/coderef"
 	"sort"
 
 	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/quality"
 	"github.com/twentyideas/changesaga/internal/qualityid"
 	"github.com/twentyideas/changesaga/internal/requirements"
-	"github.com/twentyideas/changesaga/internal/saga"
 )
 
 // Quality kind states. They extend the design state vocabulary with the run
@@ -75,10 +75,10 @@ func (a *assembler) indexQuality() {
 			evidenceURN, _ := qualityid.Evidence(a.in.SagaID, testCase.Identity.ID, evidence.ID)
 			reasons := append([]string{}, evidence.StaleReasons...)
 			if evidence.Current {
-				for _, uri := range evidence.Diffs {
-					if !a.matchesComparison(uri) {
-						reasons = append(reasons, "diff "+uri+" does not match the current source comparison")
-						a.addImplicated(urn, "test_case", evidenceURN+": diff no longer matches the source comparison")
+				for _, reference := range evidence.Code {
+					if resolved := a.in.QualityCode[reference.Key()]; len(resolved.Current) == 0 {
+						reasons = append(reasons, "code "+reference.Location().String()+" is stale: "+resolved.Reason)
+						a.addImplicated(urn, "test_case", evidenceURN+": code reference is stale")
 					}
 				}
 			}
@@ -88,14 +88,6 @@ func (a *assembler) indexQuality() {
 			}
 		}
 	}
-}
-
-// matchesComparison reports whether one exact selector still selects atoms in
-// the current source comparison. It uses the same selector semantics as
-// changed-source accounting.
-func (a *assembler) matchesComparison(uri string) bool {
-	matched := coverage.SelectTarget([]saga.DiffFile{{Diffs: []saga.DiffReference{{URI: uri}}}}, a.in.Changes)
-	return len(matched) > 0
 }
 
 // testOwnedAtoms returns the changed atoms owned by current test-code evidence.
@@ -113,11 +105,11 @@ func (a *assembler) testOwnedAtoms() map[string]TestOwned {
 			if evidence.Role != quality.EvidenceTestImplementation || !evidence.Current || len(a.evidenceStale[evidenceURN]) > 0 {
 				continue
 			}
-			files := []saga.DiffFile{{Path: evidenceURN}}
-			for _, uri := range evidence.Diffs {
-				files[0].Diffs = append(files[0].Diffs, saga.DiffReference{URI: uri})
+			var locations []coderef.Location
+			for _, reference := range evidence.Code {
+				locations = append(locations, a.in.QualityCode[reference.Key()].Current...)
 			}
-			for _, atom := range coverage.SelectTarget(files, a.in.Changes) {
+			for _, atom := range coverage.SelectLocations(a.in.Changes, locations) {
 				if _, exists := result[atom.Key]; !exists {
 					result[atom.Key] = TestOwned{TestCase: urn, Evidence: evidenceURN}
 				}
@@ -154,7 +146,7 @@ func (a *assembler) qualityAxis() qualityEvaluation {
 			})
 			result.links[frame.urn] = append(result.links[frame.urn], coverage.AxisLink{
 				Axis: coverage.AxisQuality, Relation: eval.relation, Source: eval.testCase, Broad: eval.broad, PinnedRevision: eval.pinned,
-				Paths: eval.paths, Diffs: eval.diffs, StaleReasons: eval.stale, InvalidReasons: eval.invalid,
+				Paths: eval.paths, Code: eval.diffs, StaleReasons: eval.stale, InvalidReasons: eval.invalid,
 				ConflictReasons: eval.conflicts, Unsatisfied: eval.unsatisfied,
 			})
 		}
@@ -375,9 +367,10 @@ func (a *assembler) evaluateTest(link Link, criterion string, broad bool, relati
 			if !contains(head.Evidence, evidenceURN) {
 				continue
 			}
-			for _, uri := range evidence.Diffs {
-				eval.diffs = append(eval.diffs, uri)
-				eval.paths = append(eval.paths, append(append([]string{}, path...), evidenceURN, uri))
+			for _, reference := range evidence.Code {
+				location := reference.Location().String()
+				eval.diffs = append(eval.diffs, location)
+				eval.paths = append(eval.paths, append(append([]string{}, path...), evidenceURN, location))
 			}
 		}
 	} else if len(testCase.RunHeads) == 0 {

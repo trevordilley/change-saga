@@ -125,7 +125,7 @@ type AxisLink struct {
 	Broad           bool       `json:"broad"`
 	PinnedRevision  string     `json:"pinned_revision,omitempty"`
 	Paths           [][]string `json:"paths,omitempty"`
-	Diffs           []string   `json:"diffs,omitempty"`
+	Code            []string   `json:"code,omitempty"`
 	StaleReasons    []string   `json:"stale_reasons,omitempty"`
 	InvalidReasons  []string   `json:"invalid_reasons,omitempty"`
 	ConflictReasons []string   `json:"conflict_reasons,omitempty"`

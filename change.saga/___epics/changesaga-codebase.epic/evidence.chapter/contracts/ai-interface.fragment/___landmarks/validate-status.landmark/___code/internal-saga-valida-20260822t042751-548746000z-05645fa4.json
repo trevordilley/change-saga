@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/saga/validate.go",
+      "start": 521,
+      "end": 608,
+      "digest": "sha256:d1ce67267cda7fe07dc27a40111950dd656f25be57abbfcf722749f788a5838a",
+      "note": "Keeps anchor repair narrow and distinguishes authored-format validation from omission status."
+    }
+  ],
+  "version": 2
+}

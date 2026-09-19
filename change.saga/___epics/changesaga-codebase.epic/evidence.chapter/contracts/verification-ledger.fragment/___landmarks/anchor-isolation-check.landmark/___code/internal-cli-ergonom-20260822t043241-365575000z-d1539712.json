@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/ergonomics_test.go",
+      "start": 269,
+      "end": 315,
+      "digest": "sha256:b53ff7df52dccdbd11ddad4954fa7d9dfa28ae8fd93cb7889f1e9dbbfe33e38d",
+      "note": "Verifies that validate --fix leaves review-overlay Markdown byte-identical."
+    }
+  ],
+  "version": 2
+}

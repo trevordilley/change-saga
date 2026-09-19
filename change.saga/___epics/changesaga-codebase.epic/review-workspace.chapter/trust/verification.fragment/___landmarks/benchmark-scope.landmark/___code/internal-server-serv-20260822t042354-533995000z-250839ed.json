@@ -1,0 +1,803 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "digest": "sha256:a03b3962105fe071c06f685320505a4a13f01bfa860613f8b43a6c4fd1360fb9",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:0b0d4d1f5fbec17d7732f29ccf38d3ed9e3587229f0a04824e1096d25f930f7a",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:71e37b6cd48ad477cbb12624b757ee1dc4975711b78237a85f508bfdd723af77",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:9d321d278769fb32c7c6820e1c992ebb53b04e39def0f158cbf1d84e27d34c18",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:033727e32775e03cd68232ac6618ab5bb1491d758ed4936ec7cd00aeca9ead64",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:763a04ff74d16e99de0771b9504ae52588af724fbd39ebb230390d183a30a8e6",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:171b756171ff8240f94ccb83de837ed4242449df3ecef3a3762523d1f5ae0348",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:15d9390e6e92e6e6c76e70f40a1594fb94b72e55f7358c02092c0253f2f46abf",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:57e084ab258e81b1e20f6e9b9f72b556c4838b3517e76da7edd5b6e7546090a2",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:1b649ecbf085fe223589d7f842defd5e2c82ec06b02b4f7827a31625fd09316e",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:d28863555fbc7eb2c1b3aca9fb2fc5690456651523e934989c30dfd95f77129b",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:fafba0527c3953c4b6e0e5b5739ba83612f8053bcdc9466730193cd1d590b408",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:d0d986b0df7e9c47aa782b06609469bc8eeca47612b838cf829dda4bcddd3329",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:9f8d97527fa45de168dbdcec9bd6ac92c78ecb7694f0fa4291d93e4e47166dd6",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:e46fc702cb4ed669ae2494e11b9731dd60967c35b541233ea5d4673c33f5b499",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:fafba0527c3953c4b6e0e5b5739ba83612f8053bcdc9466730193cd1d590b408",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:1201c85a57b49bfd3b67c2dc0d51b121cc5aadac8023678c4b4f1b5e529b6a21",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:67125d99a183f2394469d2e9dcfea331fad51bf116b3840b765920871a28e693",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:f7fe61cd344f973e7e137049069577969f54aaf9ef19c9778b4de42798e16781",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:1972e6f053d3382d472946b33e56892a0329ea7b66e569553246729bd892e8ee",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:7a71f29725aa5cbfe3b52485bf0b70df9772d9cdbdcc463a53c292d62e4ff8e9",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:1417f9a4be3727d5d87184b482dc3867008f433bad4255ed4ac7831052f1d948",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:d7067505ffc8639ee0742b20886ebd084a252c063abb2fdf58c1cc645a4c6b30",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:6f01d09378b64c8fd3e9ba3411cac96b9a20f194a3ec76832d6bc546ce345f14",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:2734e7b1260c69de6330f8e4b278d53022a98376d4016218cc5ed07d22999e74",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:da1ea0f7ac2aedafc306b5d9b2d77c3d7761c0e35ad3e4756ac6768abc921c0c",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:a714770bd24945f4d0e7ac42cd645bf7575df149c7b85751b77a01bd618662f1",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:737475732d94e1646eae6d5bd4e8a54944847ef64a920bb6d52901c4b5d452ee",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:6119c274ffe596416b4d0729b858a417e4669738c65c5de0f9e29d8cb0ab5103",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:77a9b5e9019c8db8783ec9c3febb0a2c9862f61a05c308fe895e4a9bed03edb3",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:984cf9a6039d86a7572fb58c5733056171acb46312ed43e6fcdbb01931d2bee9",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:d7067505ffc8639ee0742b20886ebd084a252c063abb2fdf58c1cc645a4c6b30",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:6f01d09378b64c8fd3e9ba3411cac96b9a20f194a3ec76832d6bc546ce345f14",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:2734e7b1260c69de6330f8e4b278d53022a98376d4016218cc5ed07d22999e74",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:2c3fbbc0ed0de66c8994dc31351647be7d72fc709a8b4fd428fc26110f0ed6bd",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:ab0eddeef544749303cc17cb7b572218f0fe9ee2747cf4bca54b0554dbc12c2d",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:e9ea364fa257b38fa25e8ad66dc1d4e4734fb60a8e77e8e43aa5d2c9d2eb35c5",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:77a9b5e9019c8db8783ec9c3febb0a2c9862f61a05c308fe895e4a9bed03edb3",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:1ffc0ea1235043dc6963f4532dc4728c6a40688ae0a641713c6213595bd60e27",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:b78965732ff426fa34666c49f54a095c6f9bcc559854134cfd4aa86128ac763c",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:13110b490297740506566fd9c10ddb726618ac73140aea02ec41c29369e30661",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:35edcc12b5901e8f12474111d981fa6e4fdd8f72e69c69684d2fddf667b3c57a",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:c6347cffac71c31f6786dfd6f8539d7271f60aa6cd0260368255fea502a361b1",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:4be3e5f6269dd725f8a51e608d5e1bb49a6cd2f167401ba5f4ef788fbfe5982f",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:690c0c98e766ab65acacc756370448435b866baea56f2a4930d97a190ee955f8",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:53f8d05a5cbd60dc44b40cbca076df211eb6e08461ff160ab5e20fb38e179e78",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:bf36995d5333c38b8e96682844f57d26f9cfd7aa3d0d3c0cab6820869e2fb137",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:72b4421f354e54564a02327046ae84a9147b08793fedb668184400bc88b03acb",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:d7c8a192bb5c322ba6984ea8656b3d9290e3d0997555ab4e4846c7cce165bedc",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:cc772598c4ab493c57db3bcbac8ec65882ab90df079fff789b72dcca11c96ecc",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:5976da8959f0275367dfa41ed26c30a237cf84e6f32e8d21dca335e7f0fe9784",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:5f234cc96876c51210fc8a21e906f51accaf99c38abfba54d7982399191c5e84",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 68,
+      "end": 68,
+      "digest": "sha256:958cb493c07fe502ad86c3c09910dd6f7befd158d7e577d3d20b1034f5a33a7f",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:54e2cf8f8262486fce9a4b3cab383f80b6cb0601340b62d7689e41b6c48c1c45",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 70,
+      "end": 70,
+      "digest": "sha256:a5d8dc9d5905fca5259efc0c7fbacbf5e27e1b31aa9a8dab6660bff42e07dde6",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 71,
+      "end": 71,
+      "digest": "sha256:df6ef734d7803608c33e007652855c795f174eb4c87d83acad77fd158ed31e7a",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 72,
+      "end": 72,
+      "digest": "sha256:31203687107a05c356a3d2fbf2b5d38f1cd5c8b059126e7f91d03cb0dceccccf",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 73,
+      "end": 73,
+      "digest": "sha256:b818d45a7489b522aa57604e29000899e96a2e48b65c09226fb0d153ad8e2c0c",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 74,
+      "end": 74,
+      "digest": "sha256:ee39f2ae0e178635dace30ff88f9bd18652ce5898dd3c59e2427677f742f6859",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 75,
+      "end": 75,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 76,
+      "end": 76,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 77,
+      "end": 77,
+      "digest": "sha256:7447602230d031aeb3d057811645bdcfd1a11d156fe7d796316ffb6e7118f59c",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 78,
+      "end": 78,
+      "digest": "sha256:51abef220d993d02377f958d2c5422d8473f41f30fda1b219f82608a51c4c385",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 79,
+      "end": 79,
+      "digest": "sha256:1f0c0107722d63cef830992a53ab389b934d7718a69b8da2bce880023b1dc562",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 80,
+      "end": 80,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 81,
+      "end": 81,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 82,
+      "end": 82,
+      "digest": "sha256:ac11853c2af66651cb2b4779cbebc8c990ec90f34656dd52ec834b691ce82bde",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 83,
+      "end": 83,
+      "digest": "sha256:b78965732ff426fa34666c49f54a095c6f9bcc559854134cfd4aa86128ac763c",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 84,
+      "end": 84,
+      "digest": "sha256:110fe7549bcac981f4267bfbcad2199e474d5e038077a7dda890d6ceaa27dd27",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 85,
+      "end": 85,
+      "digest": "sha256:53f8d05a5cbd60dc44b40cbca076df211eb6e08461ff160ab5e20fb38e179e78",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 86,
+      "end": 86,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 87,
+      "end": 87,
+      "digest": "sha256:04929ce3e4147349165dedb24ebecbd30f9706b88c1891173934705e5f62b972",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 88,
+      "end": 88,
+      "digest": "sha256:53f8d05a5cbd60dc44b40cbca076df211eb6e08461ff160ab5e20fb38e179e78",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 89,
+      "end": 89,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 90,
+      "end": 90,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 91,
+      "end": 91,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 92,
+      "end": 92,
+      "digest": "sha256:21dfce4786f6c2c7941713056820ff536ab335aeec275c16af33ce8dc520bbef",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 93,
+      "end": 93,
+      "digest": "sha256:b78965732ff426fa34666c49f54a095c6f9bcc559854134cfd4aa86128ac763c",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 94,
+      "end": 94,
+      "digest": "sha256:fe7466f988a38810db6d8f8a170141de4ff47beab595493a6228ce08ac6b9d32",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 95,
+      "end": 95,
+      "digest": "sha256:32171ee2a0e9e6f44c35e00cde9683cb7e18947b1c903e98620b719c1d9b2d1c",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 96,
+      "end": 96,
+      "digest": "sha256:ca0e1e9fdb72055b3a9fabdf2c6a04632a6e10be228629dbf53140217b43ab6e",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 97,
+      "end": 97,
+      "digest": "sha256:d90ade66e141495fe286bdda614461252416cfa245db6268e5f0cbf1d7fd0806",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 98,
+      "end": 98,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_benchmark_test.go",
+      "start": 99,
+      "end": 99,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Benchmarks the complete local HTTP page for a large generated Saga."
+    }
+  ],
+  "version": 2
+}

@@ -1,0 +1,11 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/install_windows_test.ps1",
+      "digest": "sha256:31ee8a55b3f3fc7af6756a22444f72143f7541d5c230929ff7323bf239a58697",
+      "note": "Introduces the executable Windows installer contract suite."
+    }
+  ],
+  "version": 2
+}

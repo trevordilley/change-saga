@@ -1,0 +1,4003 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "digest": "sha256:ba8d683ef815d49a1034bf3a8eaa7a4433d86d3a129dae786a36d6e1fa808dd8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:a6fb08fda1acb957b6116bd37811a1fe41a01611c0631edbf786d6889a27a55c",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:50278a385937f51ad94ce41d1e0296fe522dd7c28b8284b0141cd692ab8a3ab3",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:0cb95ae8ba8ffe939c9b6a26db99ffaa758fb2829be51507b98bcce6e58bf95d",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:04a95ed28d9bf7b30a7bed46f17198fb286082d69d876621f11e6e98ffa5b30d",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:e14ae0e85efa7bf6cdb942db333c2d9ad4f7c847b27a99bed9edfb9d41980c44",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:92c0047f7cc4c971cadab4c29575276dcbb12dfc23a7d90eae542e575fe20c9a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:2997929210eb3588a4070d44748fa0d44e3425eb6893f27a70bcfb06c2435fbd",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:87861d4084228f32e8dba0f8d85400de7827a5c47454546ab244e310ce5b92a7",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:ba94d32fbac1077fcdce7fd62ebced7fc7e600c59087f199753167ac214f8933",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:7a5f0b1baf13b3ea82acf9fc30b610e5599b564c642adf0ed3ab638dcc0dcdc3",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:7b2ea51bb76fd2d4ca5e5802f4ebfe94b982e8e781952414b2700afe5fb7b302",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:584c6de5a6eee347552ed8ea4e097d3b2efe6d7320a489d78ceb1cf436457b09",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:17f22d449f770811253597000a4886682eb71e26db5ef34664e05703d4c6bae3",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:4a5c21c2aabc948f7ff3438993ea437aa31a18ade9a9a5fc3f6770255cc717ff",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:b978e2503b8cf37a06f7d6f0a3a6b6fe35691fbcab50b8775cab6fabc71c592b",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:af54f8e35577b1ecae0470e26e764aa5a5964e27a5a81eebcb5a9fa34e1261c8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:53fa16792cb921102b6d25dcdd939ec1cc456778622ac8f89cf8f312fb7ac3d4",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:9b62f60d8590a579cf46f8d67378c4c572b962ceccdb90c7a5f7b42b960782a4",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:1f0cdb972a7bfb7ed246f9ff672385e55f4968fc11043dc5b684d51dfa31dbcb",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:b80426ba87f1e9a7b169e8a34931f7116c5d2aecd6fe2198e8e8e5b83fc01e91",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:028e8d7352021f247d75457d3c3a928d2d342f703a505fe53d0d5b0facd03abc",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:4dcc22c42c1f402e6132a13575339f6bdc507fecb60faa4150d6cc0b2b624053",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:e8302c243dc77acfaed43aa242e941b3cd9c23a87315834357a114c8d4fbeb90",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:61bd511c7e864ac53033b7ff637d998959a795a250916fa0374a7b133abeacf8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:b0640d2f6467a0671ffa49afc2ea7534473c4ad7e1d847aeaad98da9b5381609",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:8b9acd2d68c057aaadd4140eb7a5dff096277bc34c365748c4d2c876d7eddfca",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:5b3c0c1ea711eec9da2d7ce2f91f0357db47724923f70fc719ac0a9362e05e2c",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:b978e2503b8cf37a06f7d6f0a3a6b6fe35691fbcab50b8775cab6fabc71c592b",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:a409dca83589a481e921bcc640ec8c1d8f7212216e5931a588a2e7f96c8af2a2",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:2124d662b76b526f978de6dc5f3baf74e8a2724513b63846a2941e29801ae5a6",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:9b62f60d8590a579cf46f8d67378c4c572b962ceccdb90c7a5f7b42b960782a4",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:1f0cdb972a7bfb7ed246f9ff672385e55f4968fc11043dc5b684d51dfa31dbcb",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:fbb5934ba51c02e02e60391824446d954013cdf28111902f0817df58d61765d0",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:787ae368277384403b3a2d2f416586bb6850d74aad578da32feb0200e6326e0d",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:cdb3e9af793aac3c2ec4b1ff5c367e9fcf38f342fddc10709113f17b7b03592e",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:760e2dd9f404e26067e2a24c416c212f6cabd3dae36ebc0f605528974261b16f",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:61bd511c7e864ac53033b7ff637d998959a795a250916fa0374a7b133abeacf8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:fe013732de57255fdc65f487d6b749d5c69a0ead00593b3c3211f40fef1457f1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:8b9acd2d68c057aaadd4140eb7a5dff096277bc34c365748c4d2c876d7eddfca",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:9e5504ba8c424af33a9a4cb092cb14ac8ee637b2526b070c49982b9e5167bc94",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:b978e2503b8cf37a06f7d6f0a3a6b6fe35691fbcab50b8775cab6fabc71c592b",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:4313839cd82adb5b18d2c05db3a280c50a1bd1f7233aa3e3c31340801de381e7",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:38f6a0dd277ece1c6c9aa3aeb91198efef91df6c7d215fa5cbb12d421eb6a796",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:b978e2503b8cf37a06f7d6f0a3a6b6fe35691fbcab50b8775cab6fabc71c592b",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:af54f8e35577b1ecae0470e26e764aa5a5964e27a5a81eebcb5a9fa34e1261c8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:0003c92cc9a2a567255aaa1d480b0b5d2642df34f40588f82e7e728223f13e1f",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:9b62f60d8590a579cf46f8d67378c4c572b962ceccdb90c7a5f7b42b960782a4",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:1f0cdb972a7bfb7ed246f9ff672385e55f4968fc11043dc5b684d51dfa31dbcb",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:504324c7bb86586841ddd89e32b689e2d8d24f204ce2ae7c5bbcda0e349ef455",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:f72b37c2eb2b3e3cf09b1cb73965724402dd9bcc9251d266236858bbb267b6f7",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:7dce454517da9f1bdbe401e700a6780d7e8db4f3855145d02a7fff12273b6469",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:37a7368e142a1732c2ef9afa919ff3c6246ea7a94155b3585c828fe085a15025",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:61bd511c7e864ac53033b7ff637d998959a795a250916fa0374a7b133abeacf8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:9f81b918d826a104ddbb8cbded6cb5d7eb4030bb48473170a37546c4b85065b7",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:8b9acd2d68c057aaadd4140eb7a5dff096277bc34c365748c4d2c876d7eddfca",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:741f3680684ce16ed22e43190823329f939fd84693f2d81ddd6c0cab6673856d",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:9b62f60d8590a579cf46f8d67378c4c572b962ceccdb90c7a5f7b42b960782a4",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:1f0cdb972a7bfb7ed246f9ff672385e55f4968fc11043dc5b684d51dfa31dbcb",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:42eaa3b7e6f578c8add1c1838e7e58c31bae27e8df354a26b72c25904f93f870",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:dcd8ff453c131507a302e6e26389a0cbe23eb7345855de4b1bc968b594e9ac0b",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:483c6fab8930925d8125a1e7f7eedb546f24cce31ade4b00905a40eceef29733",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:0fbdca3013ed9c7bc54212ad57e21ef2226cff003ab527c4012a01bbafdef8a7",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:3d61f981fb485fcaa17271e6c4a565b0d9cd2aac39ae92865333d511956622b1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:70db598be01008b0ef34fd34fe1f9951924fb2815c614590f22c03f202f6b176",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:89419119799a5045f9f9991cf1f910a48fcbce4582de0176c832a64abc7ff36a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:61bd511c7e864ac53033b7ff637d998959a795a250916fa0374a7b133abeacf8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:fe013732de57255fdc65f487d6b749d5c69a0ead00593b3c3211f40fef1457f1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 68,
+      "end": 68,
+      "digest": "sha256:b8a547626b953d5456657fc7f86fdc6d0d5686673a3365cc3f7a1a104931fb2d",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:0187189d81e723cb661dfbce87347779f356520d60034fe5354d99b585a0767f",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 70,
+      "end": 70,
+      "digest": "sha256:9fa874a37577fc2b1a2bdb289aba731d638eacf9de32041799388b222b1807f9",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 71,
+      "end": 71,
+      "digest": "sha256:89419119799a5045f9f9991cf1f910a48fcbce4582de0176c832a64abc7ff36a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 72,
+      "end": 72,
+      "digest": "sha256:af54f8e35577b1ecae0470e26e764aa5a5964e27a5a81eebcb5a9fa34e1261c8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 73,
+      "end": 73,
+      "digest": "sha256:0cebc572378a943eb3e4c3726717df5824373a2065f2885f2c4f39fdbe8c7069",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 74,
+      "end": 74,
+      "digest": "sha256:9b62f60d8590a579cf46f8d67378c4c572b962ceccdb90c7a5f7b42b960782a4",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 75,
+      "end": 75,
+      "digest": "sha256:1f0cdb972a7bfb7ed246f9ff672385e55f4968fc11043dc5b684d51dfa31dbcb",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 76,
+      "end": 76,
+      "digest": "sha256:77874d3e1b21d4a6d3655dec6cf3cdd8e9f51a744db25908b6f8cc8770d788be",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 77,
+      "end": 77,
+      "digest": "sha256:dcd8ff453c131507a302e6e26389a0cbe23eb7345855de4b1bc968b594e9ac0b",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 78,
+      "end": 78,
+      "digest": "sha256:3dca4459d368aa47f55fe79a8c54245df9d6c5051271d96a91a09db9c7935d91",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 79,
+      "end": 79,
+      "digest": "sha256:1352da2531eeadaeaac53c836c0c6a62e9e5656cf55a47bc9c4bbd71ddefb371",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 80,
+      "end": 80,
+      "digest": "sha256:3d61f981fb485fcaa17271e6c4a565b0d9cd2aac39ae92865333d511956622b1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 81,
+      "end": 81,
+      "digest": "sha256:3400dd0077ad1e2fdd3382912302a84ce880f6216ae84f48d5e3515b84c5e733",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 82,
+      "end": 82,
+      "digest": "sha256:89419119799a5045f9f9991cf1f910a48fcbce4582de0176c832a64abc7ff36a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 83,
+      "end": 83,
+      "digest": "sha256:61bd511c7e864ac53033b7ff637d998959a795a250916fa0374a7b133abeacf8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 84,
+      "end": 84,
+      "digest": "sha256:fe013732de57255fdc65f487d6b749d5c69a0ead00593b3c3211f40fef1457f1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 85,
+      "end": 85,
+      "digest": "sha256:b8a547626b953d5456657fc7f86fdc6d0d5686673a3365cc3f7a1a104931fb2d",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 86,
+      "end": 86,
+      "digest": "sha256:0187189d81e723cb661dfbce87347779f356520d60034fe5354d99b585a0767f",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 87,
+      "end": 87,
+      "digest": "sha256:dea1c1f8899f852a3b632b448e73defd6cf500d6c95ffb5840714d8aed69cbba",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 88,
+      "end": 88,
+      "digest": "sha256:89419119799a5045f9f9991cf1f910a48fcbce4582de0176c832a64abc7ff36a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 89,
+      "end": 89,
+      "digest": "sha256:af54f8e35577b1ecae0470e26e764aa5a5964e27a5a81eebcb5a9fa34e1261c8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 90,
+      "end": 90,
+      "digest": "sha256:0cebc572378a943eb3e4c3726717df5824373a2065f2885f2c4f39fdbe8c7069",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 91,
+      "end": 91,
+      "digest": "sha256:9b62f60d8590a579cf46f8d67378c4c572b962ceccdb90c7a5f7b42b960782a4",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 92,
+      "end": 92,
+      "digest": "sha256:1f0cdb972a7bfb7ed246f9ff672385e55f4968fc11043dc5b684d51dfa31dbcb",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 93,
+      "end": 93,
+      "digest": "sha256:cc9bc20574124772a8e7ec5ef5a8655e1cff3f307c0629ea71f512ddc5450efe",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 94,
+      "end": 94,
+      "digest": "sha256:dcd8ff453c131507a302e6e26389a0cbe23eb7345855de4b1bc968b594e9ac0b",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 95,
+      "end": 95,
+      "digest": "sha256:f5c3e6d6a96c0f9e51c86d596ece4186eee8a454598667a38496f18f88033775",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 96,
+      "end": 96,
+      "digest": "sha256:59291c476677dab3deba61760c126cb61eb5e20b8b8fbe7271d4929040f89ab2",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 97,
+      "end": 97,
+      "digest": "sha256:3d61f981fb485fcaa17271e6c4a565b0d9cd2aac39ae92865333d511956622b1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 98,
+      "end": 98,
+      "digest": "sha256:6657d686c73d0e12634bf06c3adf401ad3f39100f4b8c557fcbebef18c6a4a9a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 99,
+      "end": 99,
+      "digest": "sha256:89419119799a5045f9f9991cf1f910a48fcbce4582de0176c832a64abc7ff36a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 100,
+      "end": 100,
+      "digest": "sha256:61bd511c7e864ac53033b7ff637d998959a795a250916fa0374a7b133abeacf8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 101,
+      "end": 101,
+      "digest": "sha256:fe013732de57255fdc65f487d6b749d5c69a0ead00593b3c3211f40fef1457f1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 102,
+      "end": 102,
+      "digest": "sha256:b8a547626b953d5456657fc7f86fdc6d0d5686673a3365cc3f7a1a104931fb2d",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 103,
+      "end": 103,
+      "digest": "sha256:0187189d81e723cb661dfbce87347779f356520d60034fe5354d99b585a0767f",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 104,
+      "end": 104,
+      "digest": "sha256:dea1c1f8899f852a3b632b448e73defd6cf500d6c95ffb5840714d8aed69cbba",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 105,
+      "end": 105,
+      "digest": "sha256:89419119799a5045f9f9991cf1f910a48fcbce4582de0176c832a64abc7ff36a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 106,
+      "end": 106,
+      "digest": "sha256:af54f8e35577b1ecae0470e26e764aa5a5964e27a5a81eebcb5a9fa34e1261c8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 107,
+      "end": 107,
+      "digest": "sha256:0cebc572378a943eb3e4c3726717df5824373a2065f2885f2c4f39fdbe8c7069",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 108,
+      "end": 108,
+      "digest": "sha256:9b62f60d8590a579cf46f8d67378c4c572b962ceccdb90c7a5f7b42b960782a4",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 109,
+      "end": 109,
+      "digest": "sha256:1f0cdb972a7bfb7ed246f9ff672385e55f4968fc11043dc5b684d51dfa31dbcb",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 110,
+      "end": 110,
+      "digest": "sha256:ceae4072f2dbc4b5ff26fc7078aa8b9d8491fa306414baf5c2704f90fc72b133",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 111,
+      "end": 111,
+      "digest": "sha256:dcd8ff453c131507a302e6e26389a0cbe23eb7345855de4b1bc968b594e9ac0b",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 112,
+      "end": 112,
+      "digest": "sha256:588594235c350666394e88e0f36a4704c11bb98dc09a7277a8854f0fc8aa9850",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 113,
+      "end": 113,
+      "digest": "sha256:6a9057cb658ab44035d841af3aa4b37c7a297665630f5eb9378590ea0edf59f1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 114,
+      "end": 114,
+      "digest": "sha256:3d61f981fb485fcaa17271e6c4a565b0d9cd2aac39ae92865333d511956622b1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 115,
+      "end": 115,
+      "digest": "sha256:3400dd0077ad1e2fdd3382912302a84ce880f6216ae84f48d5e3515b84c5e733",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 116,
+      "end": 116,
+      "digest": "sha256:89419119799a5045f9f9991cf1f910a48fcbce4582de0176c832a64abc7ff36a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 117,
+      "end": 117,
+      "digest": "sha256:61bd511c7e864ac53033b7ff637d998959a795a250916fa0374a7b133abeacf8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 118,
+      "end": 118,
+      "digest": "sha256:fe013732de57255fdc65f487d6b749d5c69a0ead00593b3c3211f40fef1457f1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 119,
+      "end": 119,
+      "digest": "sha256:b8a547626b953d5456657fc7f86fdc6d0d5686673a3365cc3f7a1a104931fb2d",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 120,
+      "end": 120,
+      "digest": "sha256:0187189d81e723cb661dfbce87347779f356520d60034fe5354d99b585a0767f",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 121,
+      "end": 121,
+      "digest": "sha256:db8dcfe2fc74f5e71bc6bdf1d0a227823a32b2fc9094ffb271600f517181dcd4",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 122,
+      "end": 122,
+      "digest": "sha256:89419119799a5045f9f9991cf1f910a48fcbce4582de0176c832a64abc7ff36a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 123,
+      "end": 123,
+      "digest": "sha256:af54f8e35577b1ecae0470e26e764aa5a5964e27a5a81eebcb5a9fa34e1261c8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 124,
+      "end": 124,
+      "digest": "sha256:0cebc572378a943eb3e4c3726717df5824373a2065f2885f2c4f39fdbe8c7069",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 125,
+      "end": 125,
+      "digest": "sha256:9b62f60d8590a579cf46f8d67378c4c572b962ceccdb90c7a5f7b42b960782a4",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 126,
+      "end": 126,
+      "digest": "sha256:1f0cdb972a7bfb7ed246f9ff672385e55f4968fc11043dc5b684d51dfa31dbcb",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 127,
+      "end": 127,
+      "digest": "sha256:f3e2c0943650c16419c49b1b87bd012f19efe65ee45ef3a71fccb17c5886a401",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 128,
+      "end": 128,
+      "digest": "sha256:dcd8ff453c131507a302e6e26389a0cbe23eb7345855de4b1bc968b594e9ac0b",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 129,
+      "end": 129,
+      "digest": "sha256:7bab328edca67b1c69f1fbf3cb5e16ae8c9db842f68d5c39b6ca47fbd6af3353",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 130,
+      "end": 130,
+      "digest": "sha256:532b554826966d1c1586cc4041b1f350eaa3c520f830da6c9678efdd8a13638b",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 131,
+      "end": 131,
+      "digest": "sha256:3d61f981fb485fcaa17271e6c4a565b0d9cd2aac39ae92865333d511956622b1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 132,
+      "end": 132,
+      "digest": "sha256:6657d686c73d0e12634bf06c3adf401ad3f39100f4b8c557fcbebef18c6a4a9a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 133,
+      "end": 133,
+      "digest": "sha256:89419119799a5045f9f9991cf1f910a48fcbce4582de0176c832a64abc7ff36a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 134,
+      "end": 134,
+      "digest": "sha256:61bd511c7e864ac53033b7ff637d998959a795a250916fa0374a7b133abeacf8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 135,
+      "end": 135,
+      "digest": "sha256:fe013732de57255fdc65f487d6b749d5c69a0ead00593b3c3211f40fef1457f1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 136,
+      "end": 136,
+      "digest": "sha256:b8a547626b953d5456657fc7f86fdc6d0d5686673a3365cc3f7a1a104931fb2d",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 137,
+      "end": 137,
+      "digest": "sha256:0187189d81e723cb661dfbce87347779f356520d60034fe5354d99b585a0767f",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 138,
+      "end": 138,
+      "digest": "sha256:db8dcfe2fc74f5e71bc6bdf1d0a227823a32b2fc9094ffb271600f517181dcd4",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 139,
+      "end": 139,
+      "digest": "sha256:89419119799a5045f9f9991cf1f910a48fcbce4582de0176c832a64abc7ff36a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 140,
+      "end": 140,
+      "digest": "sha256:af54f8e35577b1ecae0470e26e764aa5a5964e27a5a81eebcb5a9fa34e1261c8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 141,
+      "end": 141,
+      "digest": "sha256:0cebc572378a943eb3e4c3726717df5824373a2065f2885f2c4f39fdbe8c7069",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 142,
+      "end": 142,
+      "digest": "sha256:9b62f60d8590a579cf46f8d67378c4c572b962ceccdb90c7a5f7b42b960782a4",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 143,
+      "end": 143,
+      "digest": "sha256:1f0cdb972a7bfb7ed246f9ff672385e55f4968fc11043dc5b684d51dfa31dbcb",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 144,
+      "end": 144,
+      "digest": "sha256:407e76013e3c2a4185a7d03bf45b57d850bdfc6c839748c21ed64e7797d0efa3",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 145,
+      "end": 145,
+      "digest": "sha256:dcd8ff453c131507a302e6e26389a0cbe23eb7345855de4b1bc968b594e9ac0b",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 146,
+      "end": 146,
+      "digest": "sha256:cfb089766c0b3990b3856faf8a87378a4862f5406d9d0d37192d9406eb4070c7",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 147,
+      "end": 147,
+      "digest": "sha256:3c795345c5762ff2680c148f7ba523836c308f586fa35dac75fcec2648ebdfd8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 148,
+      "end": 148,
+      "digest": "sha256:3d61f981fb485fcaa17271e6c4a565b0d9cd2aac39ae92865333d511956622b1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 149,
+      "end": 149,
+      "digest": "sha256:a4b1ca94e16c3e4f651951a031b7985b9396aeed33c33f3ab4d25ad7c997c80c",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 150,
+      "end": 150,
+      "digest": "sha256:89419119799a5045f9f9991cf1f910a48fcbce4582de0176c832a64abc7ff36a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 151,
+      "end": 151,
+      "digest": "sha256:61bd511c7e864ac53033b7ff637d998959a795a250916fa0374a7b133abeacf8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 152,
+      "end": 152,
+      "digest": "sha256:fe013732de57255fdc65f487d6b749d5c69a0ead00593b3c3211f40fef1457f1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 153,
+      "end": 153,
+      "digest": "sha256:b8a547626b953d5456657fc7f86fdc6d0d5686673a3365cc3f7a1a104931fb2d",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 154,
+      "end": 154,
+      "digest": "sha256:0187189d81e723cb661dfbce87347779f356520d60034fe5354d99b585a0767f",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 155,
+      "end": 155,
+      "digest": "sha256:6b8b7362331367a346a50abbde729d2c3420a363fe929c24659709725265f59b",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 156,
+      "end": 156,
+      "digest": "sha256:89419119799a5045f9f9991cf1f910a48fcbce4582de0176c832a64abc7ff36a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 157,
+      "end": 157,
+      "digest": "sha256:af54f8e35577b1ecae0470e26e764aa5a5964e27a5a81eebcb5a9fa34e1261c8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 158,
+      "end": 158,
+      "digest": "sha256:0cebc572378a943eb3e4c3726717df5824373a2065f2885f2c4f39fdbe8c7069",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 159,
+      "end": 159,
+      "digest": "sha256:9b62f60d8590a579cf46f8d67378c4c572b962ceccdb90c7a5f7b42b960782a4",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 160,
+      "end": 160,
+      "digest": "sha256:1f0cdb972a7bfb7ed246f9ff672385e55f4968fc11043dc5b684d51dfa31dbcb",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 161,
+      "end": 161,
+      "digest": "sha256:f8c71a78a1ff66945a0c70b6d89db76e43e9d9a358e3033dd00d5d932a0f245b",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 162,
+      "end": 162,
+      "digest": "sha256:dcd8ff453c131507a302e6e26389a0cbe23eb7345855de4b1bc968b594e9ac0b",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 163,
+      "end": 163,
+      "digest": "sha256:373f9c72a50762068e96134c7dcfa6b677c94c9dc4ca5a110e84cb353cdb7e11",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 164,
+      "end": 164,
+      "digest": "sha256:73e5a974125a145f69a74830a9f0638b55b8a5152d8c7743385eb59a003475cc",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 165,
+      "end": 165,
+      "digest": "sha256:3d61f981fb485fcaa17271e6c4a565b0d9cd2aac39ae92865333d511956622b1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 166,
+      "end": 166,
+      "digest": "sha256:3400dd0077ad1e2fdd3382912302a84ce880f6216ae84f48d5e3515b84c5e733",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 167,
+      "end": 167,
+      "digest": "sha256:89419119799a5045f9f9991cf1f910a48fcbce4582de0176c832a64abc7ff36a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 168,
+      "end": 168,
+      "digest": "sha256:61bd511c7e864ac53033b7ff637d998959a795a250916fa0374a7b133abeacf8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 169,
+      "end": 169,
+      "digest": "sha256:fe013732de57255fdc65f487d6b749d5c69a0ead00593b3c3211f40fef1457f1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 170,
+      "end": 170,
+      "digest": "sha256:b8a547626b953d5456657fc7f86fdc6d0d5686673a3365cc3f7a1a104931fb2d",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 171,
+      "end": 171,
+      "digest": "sha256:0187189d81e723cb661dfbce87347779f356520d60034fe5354d99b585a0767f",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 172,
+      "end": 172,
+      "digest": "sha256:6b8b7362331367a346a50abbde729d2c3420a363fe929c24659709725265f59b",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 173,
+      "end": 173,
+      "digest": "sha256:89419119799a5045f9f9991cf1f910a48fcbce4582de0176c832a64abc7ff36a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 174,
+      "end": 174,
+      "digest": "sha256:af54f8e35577b1ecae0470e26e764aa5a5964e27a5a81eebcb5a9fa34e1261c8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 175,
+      "end": 175,
+      "digest": "sha256:0cebc572378a943eb3e4c3726717df5824373a2065f2885f2c4f39fdbe8c7069",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 176,
+      "end": 176,
+      "digest": "sha256:9b62f60d8590a579cf46f8d67378c4c572b962ceccdb90c7a5f7b42b960782a4",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 177,
+      "end": 177,
+      "digest": "sha256:1f0cdb972a7bfb7ed246f9ff672385e55f4968fc11043dc5b684d51dfa31dbcb",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 178,
+      "end": 178,
+      "digest": "sha256:5ea020d3aec52858b9f96f002ddbe2b2d7de77d7724288c237f7d6622ba1ad66",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 179,
+      "end": 179,
+      "digest": "sha256:dcd8ff453c131507a302e6e26389a0cbe23eb7345855de4b1bc968b594e9ac0b",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 180,
+      "end": 180,
+      "digest": "sha256:673d65c07f22e2676081f1f1d3ece636be0e7ce497cc8853b4e92bdf8bb1e8f6",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 181,
+      "end": 181,
+      "digest": "sha256:b34df44bfd40736750ef4409dbf2b0d93cb7b6f972cad19792c621abde94ecec",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 182,
+      "end": 182,
+      "digest": "sha256:3d61f981fb485fcaa17271e6c4a565b0d9cd2aac39ae92865333d511956622b1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 183,
+      "end": 183,
+      "digest": "sha256:93a4ca22d0ecd3da70974f62b7b62462650da8a594876b257d22e3a06fc0cc00",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 184,
+      "end": 184,
+      "digest": "sha256:89419119799a5045f9f9991cf1f910a48fcbce4582de0176c832a64abc7ff36a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 185,
+      "end": 185,
+      "digest": "sha256:61bd511c7e864ac53033b7ff637d998959a795a250916fa0374a7b133abeacf8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 186,
+      "end": 186,
+      "digest": "sha256:fe013732de57255fdc65f487d6b749d5c69a0ead00593b3c3211f40fef1457f1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 187,
+      "end": 187,
+      "digest": "sha256:b8a547626b953d5456657fc7f86fdc6d0d5686673a3365cc3f7a1a104931fb2d",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 188,
+      "end": 188,
+      "digest": "sha256:0187189d81e723cb661dfbce87347779f356520d60034fe5354d99b585a0767f",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 189,
+      "end": 189,
+      "digest": "sha256:6b8b7362331367a346a50abbde729d2c3420a363fe929c24659709725265f59b",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 190,
+      "end": 190,
+      "digest": "sha256:89419119799a5045f9f9991cf1f910a48fcbce4582de0176c832a64abc7ff36a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 191,
+      "end": 191,
+      "digest": "sha256:af54f8e35577b1ecae0470e26e764aa5a5964e27a5a81eebcb5a9fa34e1261c8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 192,
+      "end": 192,
+      "digest": "sha256:0cebc572378a943eb3e4c3726717df5824373a2065f2885f2c4f39fdbe8c7069",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 193,
+      "end": 193,
+      "digest": "sha256:9b62f60d8590a579cf46f8d67378c4c572b962ceccdb90c7a5f7b42b960782a4",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 194,
+      "end": 194,
+      "digest": "sha256:1f0cdb972a7bfb7ed246f9ff672385e55f4968fc11043dc5b684d51dfa31dbcb",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 195,
+      "end": 195,
+      "digest": "sha256:8b43c7a7cad8d8638dfb4d472ca0d1ddf34e03ca99ab228bb60a2ddc5f9d0109",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 196,
+      "end": 196,
+      "digest": "sha256:dcd8ff453c131507a302e6e26389a0cbe23eb7345855de4b1bc968b594e9ac0b",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 197,
+      "end": 197,
+      "digest": "sha256:3f49a4348429c6227d361bf6b6cb1a298d74f30548464b8d867437409dd6ec98",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 198,
+      "end": 198,
+      "digest": "sha256:f0ef5248fc36194c9aca18612b29f305c8e42d0e7e6bf818a547c2597a8a0dac",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 199,
+      "end": 199,
+      "digest": "sha256:3d61f981fb485fcaa17271e6c4a565b0d9cd2aac39ae92865333d511956622b1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 200,
+      "end": 200,
+      "digest": "sha256:425450ab95a4b53842f4558f2df1ef366f1074cfa848a64dc190abfb5b7d7c33",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 201,
+      "end": 201,
+      "digest": "sha256:89419119799a5045f9f9991cf1f910a48fcbce4582de0176c832a64abc7ff36a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 202,
+      "end": 202,
+      "digest": "sha256:61bd511c7e864ac53033b7ff637d998959a795a250916fa0374a7b133abeacf8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 203,
+      "end": 203,
+      "digest": "sha256:fe013732de57255fdc65f487d6b749d5c69a0ead00593b3c3211f40fef1457f1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 204,
+      "end": 204,
+      "digest": "sha256:b8a547626b953d5456657fc7f86fdc6d0d5686673a3365cc3f7a1a104931fb2d",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 205,
+      "end": 205,
+      "digest": "sha256:0187189d81e723cb661dfbce87347779f356520d60034fe5354d99b585a0767f",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 206,
+      "end": 206,
+      "digest": "sha256:6b8b7362331367a346a50abbde729d2c3420a363fe929c24659709725265f59b",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 207,
+      "end": 207,
+      "digest": "sha256:89419119799a5045f9f9991cf1f910a48fcbce4582de0176c832a64abc7ff36a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 208,
+      "end": 208,
+      "digest": "sha256:af54f8e35577b1ecae0470e26e764aa5a5964e27a5a81eebcb5a9fa34e1261c8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 209,
+      "end": 209,
+      "digest": "sha256:0cebc572378a943eb3e4c3726717df5824373a2065f2885f2c4f39fdbe8c7069",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 210,
+      "end": 210,
+      "digest": "sha256:9b62f60d8590a579cf46f8d67378c4c572b962ceccdb90c7a5f7b42b960782a4",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 211,
+      "end": 211,
+      "digest": "sha256:1f0cdb972a7bfb7ed246f9ff672385e55f4968fc11043dc5b684d51dfa31dbcb",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 212,
+      "end": 212,
+      "digest": "sha256:24b5bec4fa21114f9f8279d718c32cb0533625d2c0f3d90e5b450b19ff5059df",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 213,
+      "end": 213,
+      "digest": "sha256:dcd8ff453c131507a302e6e26389a0cbe23eb7345855de4b1bc968b594e9ac0b",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 214,
+      "end": 214,
+      "digest": "sha256:eb57b5dc77ba1cf30daf5567b21ee898d1d8aa3d38f3ab93da8a2b1aa0458091",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 215,
+      "end": 215,
+      "digest": "sha256:ccec34ede0eedd68467de30f5063dbbfebcabd54801766234a0065f1834d67ab",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 216,
+      "end": 216,
+      "digest": "sha256:3d61f981fb485fcaa17271e6c4a565b0d9cd2aac39ae92865333d511956622b1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 217,
+      "end": 217,
+      "digest": "sha256:70db598be01008b0ef34fd34fe1f9951924fb2815c614590f22c03f202f6b176",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 218,
+      "end": 218,
+      "digest": "sha256:89419119799a5045f9f9991cf1f910a48fcbce4582de0176c832a64abc7ff36a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 219,
+      "end": 219,
+      "digest": "sha256:61bd511c7e864ac53033b7ff637d998959a795a250916fa0374a7b133abeacf8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 220,
+      "end": 220,
+      "digest": "sha256:fe013732de57255fdc65f487d6b749d5c69a0ead00593b3c3211f40fef1457f1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 221,
+      "end": 221,
+      "digest": "sha256:b8a547626b953d5456657fc7f86fdc6d0d5686673a3365cc3f7a1a104931fb2d",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 222,
+      "end": 222,
+      "digest": "sha256:0187189d81e723cb661dfbce87347779f356520d60034fe5354d99b585a0767f",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 223,
+      "end": 223,
+      "digest": "sha256:6b8b7362331367a346a50abbde729d2c3420a363fe929c24659709725265f59b",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 224,
+      "end": 224,
+      "digest": "sha256:89419119799a5045f9f9991cf1f910a48fcbce4582de0176c832a64abc7ff36a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 225,
+      "end": 225,
+      "digest": "sha256:af54f8e35577b1ecae0470e26e764aa5a5964e27a5a81eebcb5a9fa34e1261c8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 226,
+      "end": 226,
+      "digest": "sha256:0cebc572378a943eb3e4c3726717df5824373a2065f2885f2c4f39fdbe8c7069",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 227,
+      "end": 227,
+      "digest": "sha256:9b62f60d8590a579cf46f8d67378c4c572b962ceccdb90c7a5f7b42b960782a4",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 228,
+      "end": 228,
+      "digest": "sha256:1f0cdb972a7bfb7ed246f9ff672385e55f4968fc11043dc5b684d51dfa31dbcb",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 229,
+      "end": 229,
+      "digest": "sha256:3a61348eae0789ffa9ae6192c71e5030b0ce173807f6a7120e00aee247733703",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 230,
+      "end": 230,
+      "digest": "sha256:dcd8ff453c131507a302e6e26389a0cbe23eb7345855de4b1bc968b594e9ac0b",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 231,
+      "end": 231,
+      "digest": "sha256:f823216242cb02b0cbdc5b2e9eedc84804c12e14ad98ce4982bb70fa810430f3",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 232,
+      "end": 232,
+      "digest": "sha256:66f409e799e02d4a7b6be01b07cb40f3c81887522722b20cc9c7cd198fdc897f",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 233,
+      "end": 233,
+      "digest": "sha256:3d61f981fb485fcaa17271e6c4a565b0d9cd2aac39ae92865333d511956622b1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 234,
+      "end": 234,
+      "digest": "sha256:75abd8dd7e3f0e7ed03101798acf77a89fbb7852e20cdf35eb0e7afd5949703b",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 235,
+      "end": 235,
+      "digest": "sha256:89419119799a5045f9f9991cf1f910a48fcbce4582de0176c832a64abc7ff36a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 236,
+      "end": 236,
+      "digest": "sha256:61bd511c7e864ac53033b7ff637d998959a795a250916fa0374a7b133abeacf8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 237,
+      "end": 237,
+      "digest": "sha256:fe013732de57255fdc65f487d6b749d5c69a0ead00593b3c3211f40fef1457f1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 238,
+      "end": 238,
+      "digest": "sha256:b8a547626b953d5456657fc7f86fdc6d0d5686673a3365cc3f7a1a104931fb2d",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 239,
+      "end": 239,
+      "digest": "sha256:0187189d81e723cb661dfbce87347779f356520d60034fe5354d99b585a0767f",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 240,
+      "end": 240,
+      "digest": "sha256:6b8b7362331367a346a50abbde729d2c3420a363fe929c24659709725265f59b",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 241,
+      "end": 241,
+      "digest": "sha256:89419119799a5045f9f9991cf1f910a48fcbce4582de0176c832a64abc7ff36a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 242,
+      "end": 242,
+      "digest": "sha256:af54f8e35577b1ecae0470e26e764aa5a5964e27a5a81eebcb5a9fa34e1261c8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 243,
+      "end": 243,
+      "digest": "sha256:0cebc572378a943eb3e4c3726717df5824373a2065f2885f2c4f39fdbe8c7069",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 244,
+      "end": 244,
+      "digest": "sha256:9b62f60d8590a579cf46f8d67378c4c572b962ceccdb90c7a5f7b42b960782a4",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 245,
+      "end": 245,
+      "digest": "sha256:1f0cdb972a7bfb7ed246f9ff672385e55f4968fc11043dc5b684d51dfa31dbcb",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 246,
+      "end": 246,
+      "digest": "sha256:41e5e1b0c4a1e5a01e96d4b8c948788d33c39842c72b494417d9ecbab3c73ba9",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 247,
+      "end": 247,
+      "digest": "sha256:dcd8ff453c131507a302e6e26389a0cbe23eb7345855de4b1bc968b594e9ac0b",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 248,
+      "end": 248,
+      "digest": "sha256:8bac38138026f599857ef8f18b20d116ace864131ace2f677273fc9789111f14",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 249,
+      "end": 249,
+      "digest": "sha256:a3d3c5822e562f552fe62c92c36cd851a2e29c4b47fcfcd953b55012c2ab4db1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 250,
+      "end": 250,
+      "digest": "sha256:3d61f981fb485fcaa17271e6c4a565b0d9cd2aac39ae92865333d511956622b1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 251,
+      "end": 251,
+      "digest": "sha256:71807957b0c22b4bb35c9f472d707a2d1f4a5b29e92ec96984592de26a2ad0b3",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 252,
+      "end": 252,
+      "digest": "sha256:89419119799a5045f9f9991cf1f910a48fcbce4582de0176c832a64abc7ff36a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 253,
+      "end": 253,
+      "digest": "sha256:61bd511c7e864ac53033b7ff637d998959a795a250916fa0374a7b133abeacf8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 254,
+      "end": 254,
+      "digest": "sha256:fe013732de57255fdc65f487d6b749d5c69a0ead00593b3c3211f40fef1457f1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 255,
+      "end": 255,
+      "digest": "sha256:b8a547626b953d5456657fc7f86fdc6d0d5686673a3365cc3f7a1a104931fb2d",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 256,
+      "end": 256,
+      "digest": "sha256:0187189d81e723cb661dfbce87347779f356520d60034fe5354d99b585a0767f",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 257,
+      "end": 257,
+      "digest": "sha256:6b8b7362331367a346a50abbde729d2c3420a363fe929c24659709725265f59b",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 258,
+      "end": 258,
+      "digest": "sha256:89419119799a5045f9f9991cf1f910a48fcbce4582de0176c832a64abc7ff36a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 259,
+      "end": 259,
+      "digest": "sha256:af54f8e35577b1ecae0470e26e764aa5a5964e27a5a81eebcb5a9fa34e1261c8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 260,
+      "end": 260,
+      "digest": "sha256:0cebc572378a943eb3e4c3726717df5824373a2065f2885f2c4f39fdbe8c7069",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 261,
+      "end": 261,
+      "digest": "sha256:9b62f60d8590a579cf46f8d67378c4c572b962ceccdb90c7a5f7b42b960782a4",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 262,
+      "end": 262,
+      "digest": "sha256:1f0cdb972a7bfb7ed246f9ff672385e55f4968fc11043dc5b684d51dfa31dbcb",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 263,
+      "end": 263,
+      "digest": "sha256:2cab1b160757166f0662a0a5c91e9f4772d918ff81660c6036232275198c2ff3",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 264,
+      "end": 264,
+      "digest": "sha256:dcd8ff453c131507a302e6e26389a0cbe23eb7345855de4b1bc968b594e9ac0b",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 265,
+      "end": 265,
+      "digest": "sha256:c654baf8587358ee84e20cdf6e6dec8e48e67576ee838b54c443e65993f85a32",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 266,
+      "end": 266,
+      "digest": "sha256:88d966a29379c97a07aa8225d1e706a12a18198c8839ea5b28b9e4b532beacd2",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 267,
+      "end": 267,
+      "digest": "sha256:3d61f981fb485fcaa17271e6c4a565b0d9cd2aac39ae92865333d511956622b1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 268,
+      "end": 268,
+      "digest": "sha256:6657d686c73d0e12634bf06c3adf401ad3f39100f4b8c557fcbebef18c6a4a9a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 269,
+      "end": 269,
+      "digest": "sha256:89419119799a5045f9f9991cf1f910a48fcbce4582de0176c832a64abc7ff36a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 270,
+      "end": 270,
+      "digest": "sha256:61bd511c7e864ac53033b7ff637d998959a795a250916fa0374a7b133abeacf8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 271,
+      "end": 271,
+      "digest": "sha256:fe013732de57255fdc65f487d6b749d5c69a0ead00593b3c3211f40fef1457f1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 272,
+      "end": 272,
+      "digest": "sha256:b8a547626b953d5456657fc7f86fdc6d0d5686673a3365cc3f7a1a104931fb2d",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 273,
+      "end": 273,
+      "digest": "sha256:0187189d81e723cb661dfbce87347779f356520d60034fe5354d99b585a0767f",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 274,
+      "end": 274,
+      "digest": "sha256:6b8b7362331367a346a50abbde729d2c3420a363fe929c24659709725265f59b",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 275,
+      "end": 275,
+      "digest": "sha256:89419119799a5045f9f9991cf1f910a48fcbce4582de0176c832a64abc7ff36a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 276,
+      "end": 276,
+      "digest": "sha256:af54f8e35577b1ecae0470e26e764aa5a5964e27a5a81eebcb5a9fa34e1261c8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 277,
+      "end": 277,
+      "digest": "sha256:0cebc572378a943eb3e4c3726717df5824373a2065f2885f2c4f39fdbe8c7069",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 278,
+      "end": 278,
+      "digest": "sha256:9b62f60d8590a579cf46f8d67378c4c572b962ceccdb90c7a5f7b42b960782a4",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 279,
+      "end": 279,
+      "digest": "sha256:1f0cdb972a7bfb7ed246f9ff672385e55f4968fc11043dc5b684d51dfa31dbcb",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 280,
+      "end": 280,
+      "digest": "sha256:47fec008d95e1a71e1456cefb37286c1859b0439c2964b88ebd780558f48dc0a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 281,
+      "end": 281,
+      "digest": "sha256:dcd8ff453c131507a302e6e26389a0cbe23eb7345855de4b1bc968b594e9ac0b",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 282,
+      "end": 282,
+      "digest": "sha256:e5cbffb6156abc3aa559e73f17faa1ff18179b988be3d2425a38c330bff9eae2",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 283,
+      "end": 283,
+      "digest": "sha256:a4ad2c3d78aa0fb244335d92302c310545e10f11cda0ab00d4eb2f8e66d38d5a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 284,
+      "end": 284,
+      "digest": "sha256:3d61f981fb485fcaa17271e6c4a565b0d9cd2aac39ae92865333d511956622b1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 285,
+      "end": 285,
+      "digest": "sha256:3400dd0077ad1e2fdd3382912302a84ce880f6216ae84f48d5e3515b84c5e733",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 286,
+      "end": 286,
+      "digest": "sha256:89419119799a5045f9f9991cf1f910a48fcbce4582de0176c832a64abc7ff36a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 287,
+      "end": 287,
+      "digest": "sha256:61bd511c7e864ac53033b7ff637d998959a795a250916fa0374a7b133abeacf8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 288,
+      "end": 288,
+      "digest": "sha256:fe013732de57255fdc65f487d6b749d5c69a0ead00593b3c3211f40fef1457f1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 289,
+      "end": 289,
+      "digest": "sha256:b8a547626b953d5456657fc7f86fdc6d0d5686673a3365cc3f7a1a104931fb2d",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 290,
+      "end": 290,
+      "digest": "sha256:0187189d81e723cb661dfbce87347779f356520d60034fe5354d99b585a0767f",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 291,
+      "end": 291,
+      "digest": "sha256:214970b6e780cf40b3afcf0daa5b58bce5e5cf587676206c506c797108f56e07",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 292,
+      "end": 292,
+      "digest": "sha256:89419119799a5045f9f9991cf1f910a48fcbce4582de0176c832a64abc7ff36a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 293,
+      "end": 293,
+      "digest": "sha256:af54f8e35577b1ecae0470e26e764aa5a5964e27a5a81eebcb5a9fa34e1261c8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 294,
+      "end": 294,
+      "digest": "sha256:0cebc572378a943eb3e4c3726717df5824373a2065f2885f2c4f39fdbe8c7069",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 295,
+      "end": 295,
+      "digest": "sha256:9b62f60d8590a579cf46f8d67378c4c572b962ceccdb90c7a5f7b42b960782a4",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 296,
+      "end": 296,
+      "digest": "sha256:1f0cdb972a7bfb7ed246f9ff672385e55f4968fc11043dc5b684d51dfa31dbcb",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 297,
+      "end": 297,
+      "digest": "sha256:fc7941c51029b771a6eff70691772cb9d8d1b5d2c31391a716e82d232ddee765",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 298,
+      "end": 298,
+      "digest": "sha256:dcd8ff453c131507a302e6e26389a0cbe23eb7345855de4b1bc968b594e9ac0b",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 299,
+      "end": 299,
+      "digest": "sha256:6ba5c4ffccb32ca6c2ac14db1670fd2e8bf15c4fc7715db9f6a5c69a65a98008",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 300,
+      "end": 300,
+      "digest": "sha256:762447804859193049e805395db153b7374ef27fff33534e4314d527d500b5ff",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 301,
+      "end": 301,
+      "digest": "sha256:3d61f981fb485fcaa17271e6c4a565b0d9cd2aac39ae92865333d511956622b1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 302,
+      "end": 302,
+      "digest": "sha256:6657d686c73d0e12634bf06c3adf401ad3f39100f4b8c557fcbebef18c6a4a9a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 303,
+      "end": 303,
+      "digest": "sha256:89419119799a5045f9f9991cf1f910a48fcbce4582de0176c832a64abc7ff36a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 304,
+      "end": 304,
+      "digest": "sha256:61bd511c7e864ac53033b7ff637d998959a795a250916fa0374a7b133abeacf8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 305,
+      "end": 305,
+      "digest": "sha256:fe013732de57255fdc65f487d6b749d5c69a0ead00593b3c3211f40fef1457f1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 306,
+      "end": 306,
+      "digest": "sha256:b8a547626b953d5456657fc7f86fdc6d0d5686673a3365cc3f7a1a104931fb2d",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 307,
+      "end": 307,
+      "digest": "sha256:0187189d81e723cb661dfbce87347779f356520d60034fe5354d99b585a0767f",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 308,
+      "end": 308,
+      "digest": "sha256:214970b6e780cf40b3afcf0daa5b58bce5e5cf587676206c506c797108f56e07",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 309,
+      "end": 309,
+      "digest": "sha256:89419119799a5045f9f9991cf1f910a48fcbce4582de0176c832a64abc7ff36a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 310,
+      "end": 310,
+      "digest": "sha256:af54f8e35577b1ecae0470e26e764aa5a5964e27a5a81eebcb5a9fa34e1261c8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 311,
+      "end": 311,
+      "digest": "sha256:0cebc572378a943eb3e4c3726717df5824373a2065f2885f2c4f39fdbe8c7069",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 312,
+      "end": 312,
+      "digest": "sha256:9b62f60d8590a579cf46f8d67378c4c572b962ceccdb90c7a5f7b42b960782a4",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 313,
+      "end": 313,
+      "digest": "sha256:1f0cdb972a7bfb7ed246f9ff672385e55f4968fc11043dc5b684d51dfa31dbcb",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 314,
+      "end": 314,
+      "digest": "sha256:c58cfe668e22c4ea177ecf694b0c3983c8ed34a8c3dd2dc3937b2aff3373e3e5",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 315,
+      "end": 315,
+      "digest": "sha256:dcd8ff453c131507a302e6e26389a0cbe23eb7345855de4b1bc968b594e9ac0b",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 316,
+      "end": 316,
+      "digest": "sha256:8aaaddf8cff7a01cc5e49714172e962d3de7be25c5f6f9dfe1d6d3eec4f4d855",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 317,
+      "end": 317,
+      "digest": "sha256:8123fdf3f811f125554587ae8559978a9cec73076c2eb12f4fc2035e54eea79f",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 318,
+      "end": 318,
+      "digest": "sha256:3d61f981fb485fcaa17271e6c4a565b0d9cd2aac39ae92865333d511956622b1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 319,
+      "end": 319,
+      "digest": "sha256:3400dd0077ad1e2fdd3382912302a84ce880f6216ae84f48d5e3515b84c5e733",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 320,
+      "end": 320,
+      "digest": "sha256:89419119799a5045f9f9991cf1f910a48fcbce4582de0176c832a64abc7ff36a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 321,
+      "end": 321,
+      "digest": "sha256:61bd511c7e864ac53033b7ff637d998959a795a250916fa0374a7b133abeacf8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 322,
+      "end": 322,
+      "digest": "sha256:fe013732de57255fdc65f487d6b749d5c69a0ead00593b3c3211f40fef1457f1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 323,
+      "end": 323,
+      "digest": "sha256:b8a547626b953d5456657fc7f86fdc6d0d5686673a3365cc3f7a1a104931fb2d",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 324,
+      "end": 324,
+      "digest": "sha256:0187189d81e723cb661dfbce87347779f356520d60034fe5354d99b585a0767f",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 325,
+      "end": 325,
+      "digest": "sha256:06257de88500c7e5bd8b54a3c9a681e0b10e996dd31abf584342634c316f2471",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 326,
+      "end": 326,
+      "digest": "sha256:89419119799a5045f9f9991cf1f910a48fcbce4582de0176c832a64abc7ff36a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 327,
+      "end": 327,
+      "digest": "sha256:af54f8e35577b1ecae0470e26e764aa5a5964e27a5a81eebcb5a9fa34e1261c8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 328,
+      "end": 328,
+      "digest": "sha256:0cebc572378a943eb3e4c3726717df5824373a2065f2885f2c4f39fdbe8c7069",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 329,
+      "end": 329,
+      "digest": "sha256:9b62f60d8590a579cf46f8d67378c4c572b962ceccdb90c7a5f7b42b960782a4",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 330,
+      "end": 330,
+      "digest": "sha256:1f0cdb972a7bfb7ed246f9ff672385e55f4968fc11043dc5b684d51dfa31dbcb",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 331,
+      "end": 331,
+      "digest": "sha256:ef4bb1e7001fc694d55352cc608360d9677ed394bb6190a9ccb443a8bf86e4b5",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 332,
+      "end": 332,
+      "digest": "sha256:dcd8ff453c131507a302e6e26389a0cbe23eb7345855de4b1bc968b594e9ac0b",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 333,
+      "end": 333,
+      "digest": "sha256:55bea37258fc3ce30167ed234ed9b37fd24e5201d09cfeaff203fd7932a267bd",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 334,
+      "end": 334,
+      "digest": "sha256:a35373ff2cdfcfb9faaa368c6e2c14090972b35cf3f1ea7ccd2fc34cc46a81cb",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 335,
+      "end": 335,
+      "digest": "sha256:3d61f981fb485fcaa17271e6c4a565b0d9cd2aac39ae92865333d511956622b1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 336,
+      "end": 336,
+      "digest": "sha256:6657d686c73d0e12634bf06c3adf401ad3f39100f4b8c557fcbebef18c6a4a9a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 337,
+      "end": 337,
+      "digest": "sha256:89419119799a5045f9f9991cf1f910a48fcbce4582de0176c832a64abc7ff36a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 338,
+      "end": 338,
+      "digest": "sha256:61bd511c7e864ac53033b7ff637d998959a795a250916fa0374a7b133abeacf8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 339,
+      "end": 339,
+      "digest": "sha256:fe013732de57255fdc65f487d6b749d5c69a0ead00593b3c3211f40fef1457f1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 340,
+      "end": 340,
+      "digest": "sha256:b8a547626b953d5456657fc7f86fdc6d0d5686673a3365cc3f7a1a104931fb2d",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 341,
+      "end": 341,
+      "digest": "sha256:0187189d81e723cb661dfbce87347779f356520d60034fe5354d99b585a0767f",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 342,
+      "end": 342,
+      "digest": "sha256:06257de88500c7e5bd8b54a3c9a681e0b10e996dd31abf584342634c316f2471",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 343,
+      "end": 343,
+      "digest": "sha256:89419119799a5045f9f9991cf1f910a48fcbce4582de0176c832a64abc7ff36a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 344,
+      "end": 344,
+      "digest": "sha256:af54f8e35577b1ecae0470e26e764aa5a5964e27a5a81eebcb5a9fa34e1261c8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 345,
+      "end": 345,
+      "digest": "sha256:0cebc572378a943eb3e4c3726717df5824373a2065f2885f2c4f39fdbe8c7069",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 346,
+      "end": 346,
+      "digest": "sha256:9b62f60d8590a579cf46f8d67378c4c572b962ceccdb90c7a5f7b42b960782a4",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 347,
+      "end": 347,
+      "digest": "sha256:1f0cdb972a7bfb7ed246f9ff672385e55f4968fc11043dc5b684d51dfa31dbcb",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 348,
+      "end": 348,
+      "digest": "sha256:3040f41a91a303f94d7389a3aff0dfe31e12e7ab5adbad79436e750bea5f97a4",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 349,
+      "end": 349,
+      "digest": "sha256:dcd8ff453c131507a302e6e26389a0cbe23eb7345855de4b1bc968b594e9ac0b",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 350,
+      "end": 350,
+      "digest": "sha256:d014b062df8f5ad7142d0df29eaf878c6dcf13f8e096cea6ef5de3f85953ef03",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 351,
+      "end": 351,
+      "digest": "sha256:9640d9e6332d0e3bc929e396855e081bec39ea88d70b2efa114c1df840dfa3e1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 352,
+      "end": 352,
+      "digest": "sha256:3d61f981fb485fcaa17271e6c4a565b0d9cd2aac39ae92865333d511956622b1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 353,
+      "end": 353,
+      "digest": "sha256:6657d686c73d0e12634bf06c3adf401ad3f39100f4b8c557fcbebef18c6a4a9a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 354,
+      "end": 354,
+      "digest": "sha256:89419119799a5045f9f9991cf1f910a48fcbce4582de0176c832a64abc7ff36a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 355,
+      "end": 355,
+      "digest": "sha256:61bd511c7e864ac53033b7ff637d998959a795a250916fa0374a7b133abeacf8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 356,
+      "end": 356,
+      "digest": "sha256:fe013732de57255fdc65f487d6b749d5c69a0ead00593b3c3211f40fef1457f1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 357,
+      "end": 357,
+      "digest": "sha256:b8a547626b953d5456657fc7f86fdc6d0d5686673a3365cc3f7a1a104931fb2d",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 358,
+      "end": 358,
+      "digest": "sha256:0187189d81e723cb661dfbce87347779f356520d60034fe5354d99b585a0767f",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 359,
+      "end": 359,
+      "digest": "sha256:61cebfe4dafc1c9f3de48e30a6682ec19a8f7c721a0fbfdbc49f787850351790",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 360,
+      "end": 360,
+      "digest": "sha256:89419119799a5045f9f9991cf1f910a48fcbce4582de0176c832a64abc7ff36a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 361,
+      "end": 361,
+      "digest": "sha256:af54f8e35577b1ecae0470e26e764aa5a5964e27a5a81eebcb5a9fa34e1261c8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 362,
+      "end": 362,
+      "digest": "sha256:0cebc572378a943eb3e4c3726717df5824373a2065f2885f2c4f39fdbe8c7069",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 363,
+      "end": 363,
+      "digest": "sha256:9b62f60d8590a579cf46f8d67378c4c572b962ceccdb90c7a5f7b42b960782a4",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 364,
+      "end": 364,
+      "digest": "sha256:1f0cdb972a7bfb7ed246f9ff672385e55f4968fc11043dc5b684d51dfa31dbcb",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 365,
+      "end": 365,
+      "digest": "sha256:3e6305713c8fa7ea68d0ed640c02b8bb4f70f093507661b6968580506d1bd906",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 366,
+      "end": 366,
+      "digest": "sha256:dcd8ff453c131507a302e6e26389a0cbe23eb7345855de4b1bc968b594e9ac0b",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 367,
+      "end": 367,
+      "digest": "sha256:474e6f84d99e2a1f3ca0230db889e682d606b3ea9534f41ef985918063e79710",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 368,
+      "end": 368,
+      "digest": "sha256:9ef37f98f9d56e89e489a34ee7cb2bc9c7af30db54e46848217366009289cdf8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 369,
+      "end": 369,
+      "digest": "sha256:3d61f981fb485fcaa17271e6c4a565b0d9cd2aac39ae92865333d511956622b1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 370,
+      "end": 370,
+      "digest": "sha256:3400dd0077ad1e2fdd3382912302a84ce880f6216ae84f48d5e3515b84c5e733",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 371,
+      "end": 371,
+      "digest": "sha256:89419119799a5045f9f9991cf1f910a48fcbce4582de0176c832a64abc7ff36a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 372,
+      "end": 372,
+      "digest": "sha256:61bd511c7e864ac53033b7ff637d998959a795a250916fa0374a7b133abeacf8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 373,
+      "end": 373,
+      "digest": "sha256:fe013732de57255fdc65f487d6b749d5c69a0ead00593b3c3211f40fef1457f1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 374,
+      "end": 374,
+      "digest": "sha256:b8a547626b953d5456657fc7f86fdc6d0d5686673a3365cc3f7a1a104931fb2d",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 375,
+      "end": 375,
+      "digest": "sha256:0187189d81e723cb661dfbce87347779f356520d60034fe5354d99b585a0767f",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 376,
+      "end": 376,
+      "digest": "sha256:5c72ee260eac6e5ef8e70b346c5b00e755b000e02babc4a5cef5ebcec4d9bf58",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 377,
+      "end": 377,
+      "digest": "sha256:89419119799a5045f9f9991cf1f910a48fcbce4582de0176c832a64abc7ff36a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 378,
+      "end": 378,
+      "digest": "sha256:af54f8e35577b1ecae0470e26e764aa5a5964e27a5a81eebcb5a9fa34e1261c8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 379,
+      "end": 379,
+      "digest": "sha256:0cebc572378a943eb3e4c3726717df5824373a2065f2885f2c4f39fdbe8c7069",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 380,
+      "end": 380,
+      "digest": "sha256:9b62f60d8590a579cf46f8d67378c4c572b962ceccdb90c7a5f7b42b960782a4",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 381,
+      "end": 381,
+      "digest": "sha256:1f0cdb972a7bfb7ed246f9ff672385e55f4968fc11043dc5b684d51dfa31dbcb",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 382,
+      "end": 382,
+      "digest": "sha256:e3f4e855c8291351d2d04d7753b1a9873912c27615d0cff1f8ca81c16e707c33",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 383,
+      "end": 383,
+      "digest": "sha256:dcd8ff453c131507a302e6e26389a0cbe23eb7345855de4b1bc968b594e9ac0b",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 384,
+      "end": 384,
+      "digest": "sha256:3c43818c714283a9f661b18c4f669d3194a624ea302a150bdb8aa58ad427bbe3",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 385,
+      "end": 385,
+      "digest": "sha256:1743af01885da4440c1f5c618806dd86a536bd87430f1415fdf095706580dcf5",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 386,
+      "end": 386,
+      "digest": "sha256:3d61f981fb485fcaa17271e6c4a565b0d9cd2aac39ae92865333d511956622b1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 387,
+      "end": 387,
+      "digest": "sha256:6657d686c73d0e12634bf06c3adf401ad3f39100f4b8c557fcbebef18c6a4a9a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 388,
+      "end": 388,
+      "digest": "sha256:89419119799a5045f9f9991cf1f910a48fcbce4582de0176c832a64abc7ff36a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 389,
+      "end": 389,
+      "digest": "sha256:61bd511c7e864ac53033b7ff637d998959a795a250916fa0374a7b133abeacf8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 390,
+      "end": 390,
+      "digest": "sha256:fe013732de57255fdc65f487d6b749d5c69a0ead00593b3c3211f40fef1457f1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 391,
+      "end": 391,
+      "digest": "sha256:b8a547626b953d5456657fc7f86fdc6d0d5686673a3365cc3f7a1a104931fb2d",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 392,
+      "end": 392,
+      "digest": "sha256:0187189d81e723cb661dfbce87347779f356520d60034fe5354d99b585a0767f",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 393,
+      "end": 393,
+      "digest": "sha256:5c72ee260eac6e5ef8e70b346c5b00e755b000e02babc4a5cef5ebcec4d9bf58",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 394,
+      "end": 394,
+      "digest": "sha256:89419119799a5045f9f9991cf1f910a48fcbce4582de0176c832a64abc7ff36a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 395,
+      "end": 395,
+      "digest": "sha256:af54f8e35577b1ecae0470e26e764aa5a5964e27a5a81eebcb5a9fa34e1261c8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 396,
+      "end": 396,
+      "digest": "sha256:0cebc572378a943eb3e4c3726717df5824373a2065f2885f2c4f39fdbe8c7069",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 397,
+      "end": 397,
+      "digest": "sha256:9b62f60d8590a579cf46f8d67378c4c572b962ceccdb90c7a5f7b42b960782a4",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 398,
+      "end": 398,
+      "digest": "sha256:1f0cdb972a7bfb7ed246f9ff672385e55f4968fc11043dc5b684d51dfa31dbcb",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 399,
+      "end": 399,
+      "digest": "sha256:bcfc7a76afc94c20df57f33588d408c5acaaf5f4944c6b1cee8c246d399747d1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 400,
+      "end": 400,
+      "digest": "sha256:028e8d7352021f247d75457d3c3a928d2d342f703a505fe53d0d5b0facd03abc",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 401,
+      "end": 401,
+      "digest": "sha256:ff1c73d4753b5fb160cfb3120e5971573c057a575e5fda4f68728990b228d9e1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 402,
+      "end": 402,
+      "digest": "sha256:43cd9d1362d54c5c8527f36810659c488cb1010c63f14dd93eefb456b227ec81",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 403,
+      "end": 403,
+      "digest": "sha256:61bd511c7e864ac53033b7ff637d998959a795a250916fa0374a7b133abeacf8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 404,
+      "end": 404,
+      "digest": "sha256:b0640d2f6467a0671ffa49afc2ea7534473c4ad7e1d847aeaad98da9b5381609",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 405,
+      "end": 405,
+      "digest": "sha256:af54f8e35577b1ecae0470e26e764aa5a5964e27a5a81eebcb5a9fa34e1261c8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 406,
+      "end": 406,
+      "digest": "sha256:20fcd11c5ae9e29945f095417fc9ecde9a2668720c369d3972705c521800aba9",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 407,
+      "end": 407,
+      "digest": "sha256:9b62f60d8590a579cf46f8d67378c4c572b962ceccdb90c7a5f7b42b960782a4",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 408,
+      "end": 408,
+      "digest": "sha256:1f0cdb972a7bfb7ed246f9ff672385e55f4968fc11043dc5b684d51dfa31dbcb",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 409,
+      "end": 409,
+      "digest": "sha256:f0af993b66884744d70b87375e6dacecad4219f56d458874643766902781b363",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 410,
+      "end": 410,
+      "digest": "sha256:b09695edf669f5f7189aec30116cf8b0933837347da5edaeb095b241640886c2",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 411,
+      "end": 411,
+      "digest": "sha256:5dc9fa3a4eb522fd851951e691589fd8d39753026c46d09e0fabcba252e8f134",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 412,
+      "end": 412,
+      "digest": "sha256:9d127aa3b3cacb555134cc48fbf98020876f999212b150a2e6f34db6c754b76c",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 413,
+      "end": 413,
+      "digest": "sha256:61bd511c7e864ac53033b7ff637d998959a795a250916fa0374a7b133abeacf8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 414,
+      "end": 414,
+      "digest": "sha256:e0757dd1d6c6feb3e99f9bef99111a453be6a0d0782d861dcf2c95a653ec9755",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 415,
+      "end": 415,
+      "digest": "sha256:9f81b918d826a104ddbb8cbded6cb5d7eb4030bb48473170a37546c4b85065b7",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 416,
+      "end": 416,
+      "digest": "sha256:b8a547626b953d5456657fc7f86fdc6d0d5686673a3365cc3f7a1a104931fb2d",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 417,
+      "end": 417,
+      "digest": "sha256:0187189d81e723cb661dfbce87347779f356520d60034fe5354d99b585a0767f",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 418,
+      "end": 418,
+      "digest": "sha256:dea1c1f8899f852a3b632b448e73defd6cf500d6c95ffb5840714d8aed69cbba",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 419,
+      "end": 419,
+      "digest": "sha256:89419119799a5045f9f9991cf1f910a48fcbce4582de0176c832a64abc7ff36a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 420,
+      "end": 420,
+      "digest": "sha256:af54f8e35577b1ecae0470e26e764aa5a5964e27a5a81eebcb5a9fa34e1261c8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 421,
+      "end": 421,
+      "digest": "sha256:3c15d8c0f99f15e81103ef04084157ccece388bcdf1948862fc817e2f3436f98",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 422,
+      "end": 422,
+      "digest": "sha256:9b62f60d8590a579cf46f8d67378c4c572b962ceccdb90c7a5f7b42b960782a4",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 423,
+      "end": 423,
+      "digest": "sha256:1f0cdb972a7bfb7ed246f9ff672385e55f4968fc11043dc5b684d51dfa31dbcb",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 424,
+      "end": 424,
+      "digest": "sha256:df50505e74876fe3c7f92964f33cfa8de13f23cbbe6cb786fc0c01814a2b4a87",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 425,
+      "end": 425,
+      "digest": "sha256:787ae368277384403b3a2d2f416586bb6850d74aad578da32feb0200e6326e0d",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 426,
+      "end": 426,
+      "digest": "sha256:1be923ad9b93627404c32a5e215f6864dc70f546aacdd58fa438eb0e49b51230",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 427,
+      "end": 427,
+      "digest": "sha256:57b90ea06a40e9b02a31d43eddb374360bf07caa71c12e0f418750bc47dec1a7",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 428,
+      "end": 428,
+      "digest": "sha256:61bd511c7e864ac53033b7ff637d998959a795a250916fa0374a7b133abeacf8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 429,
+      "end": 429,
+      "digest": "sha256:fe013732de57255fdc65f487d6b749d5c69a0ead00593b3c3211f40fef1457f1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 430,
+      "end": 430,
+      "digest": "sha256:8b9acd2d68c057aaadd4140eb7a5dff096277bc34c365748c4d2c876d7eddfca",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 431,
+      "end": 431,
+      "digest": "sha256:206eb4eba5b9013becc7567c4897591aee03195c18e17aee6ad45e150bd7056b",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 432,
+      "end": 432,
+      "digest": "sha256:b978e2503b8cf37a06f7d6f0a3a6b6fe35691fbcab50b8775cab6fabc71c592b",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 433,
+      "end": 433,
+      "digest": "sha256:4313839cd82adb5b18d2c05db3a280c50a1bd1f7233aa3e3c31340801de381e7",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 434,
+      "end": 434,
+      "digest": "sha256:38f6a0dd277ece1c6c9aa3aeb91198efef91df6c7d215fa5cbb12d421eb6a796",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 435,
+      "end": 435,
+      "digest": "sha256:b978e2503b8cf37a06f7d6f0a3a6b6fe35691fbcab50b8775cab6fabc71c592b",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 436,
+      "end": 436,
+      "digest": "sha256:af54f8e35577b1ecae0470e26e764aa5a5964e27a5a81eebcb5a9fa34e1261c8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 437,
+      "end": 437,
+      "digest": "sha256:0003c92cc9a2a567255aaa1d480b0b5d2642df34f40588f82e7e728223f13e1f",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 438,
+      "end": 438,
+      "digest": "sha256:b978e2503b8cf37a06f7d6f0a3a6b6fe35691fbcab50b8775cab6fabc71c592b",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 439,
+      "end": 439,
+      "digest": "sha256:6169b8e1b33b7cb5bdeb74077068734da398f37f21665511a83a652bb7c47513",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 440,
+      "end": 440,
+      "digest": "sha256:4e97183afddaf294f5fa66623c480a75e58e32216a5f1b5d999feb29d419a724",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 441,
+      "end": 441,
+      "digest": "sha256:9b62f60d8590a579cf46f8d67378c4c572b962ceccdb90c7a5f7b42b960782a4",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 442,
+      "end": 442,
+      "digest": "sha256:1f0cdb972a7bfb7ed246f9ff672385e55f4968fc11043dc5b684d51dfa31dbcb",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 443,
+      "end": 443,
+      "digest": "sha256:3c053971880a648887b5b15c00d787db17ab4dedf23442139ef30c964dca30cc",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 444,
+      "end": 444,
+      "digest": "sha256:787ae368277384403b3a2d2f416586bb6850d74aad578da32feb0200e6326e0d",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 445,
+      "end": 445,
+      "digest": "sha256:c726e99d45e3852927c6a2642fee54045a387d008d5dcbf58f4cb1d04787d0aa",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 446,
+      "end": 446,
+      "digest": "sha256:f2e98df923974f0adc26598ef074a71782dcaff80ce48a509da0cf8d1b0c1756",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 447,
+      "end": 447,
+      "digest": "sha256:61bd511c7e864ac53033b7ff637d998959a795a250916fa0374a7b133abeacf8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 448,
+      "end": 448,
+      "digest": "sha256:fe013732de57255fdc65f487d6b749d5c69a0ead00593b3c3211f40fef1457f1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 449,
+      "end": 449,
+      "digest": "sha256:4313839cd82adb5b18d2c05db3a280c50a1bd1f7233aa3e3c31340801de381e7",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 450,
+      "end": 450,
+      "digest": "sha256:5bd493280b3c78cc66d370fc571140d67119b7811929281b4cfd0cc0cf5928b1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 451,
+      "end": 451,
+      "digest": "sha256:b978e2503b8cf37a06f7d6f0a3a6b6fe35691fbcab50b8775cab6fabc71c592b",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 452,
+      "end": 452,
+      "digest": "sha256:af54f8e35577b1ecae0470e26e764aa5a5964e27a5a81eebcb5a9fa34e1261c8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 453,
+      "end": 453,
+      "digest": "sha256:0003c92cc9a2a567255aaa1d480b0b5d2642df34f40588f82e7e728223f13e1f",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 454,
+      "end": 454,
+      "digest": "sha256:9b62f60d8590a579cf46f8d67378c4c572b962ceccdb90c7a5f7b42b960782a4",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 455,
+      "end": 455,
+      "digest": "sha256:1f0cdb972a7bfb7ed246f9ff672385e55f4968fc11043dc5b684d51dfa31dbcb",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 456,
+      "end": 456,
+      "digest": "sha256:e6191224e7d0f10596e379c923eba719ff505e5725b137d92eaa94dcb43b7758",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 457,
+      "end": 457,
+      "digest": "sha256:dcd8ff453c131507a302e6e26389a0cbe23eb7345855de4b1bc968b594e9ac0b",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 458,
+      "end": 458,
+      "digest": "sha256:613b7a538b8a4cf4b3edf2f65139513f98b568b82bda41c7676ba8d5e5416c53",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 459,
+      "end": 459,
+      "digest": "sha256:672d752e7414419cd1d1117c141c59d7a86a2527c19ec8721bf3f4009b59b082",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 460,
+      "end": 460,
+      "digest": "sha256:61bd511c7e864ac53033b7ff637d998959a795a250916fa0374a7b133abeacf8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 461,
+      "end": 461,
+      "digest": "sha256:fe013732de57255fdc65f487d6b749d5c69a0ead00593b3c3211f40fef1457f1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 462,
+      "end": 462,
+      "digest": "sha256:4313839cd82adb5b18d2c05db3a280c50a1bd1f7233aa3e3c31340801de381e7",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 463,
+      "end": 463,
+      "digest": "sha256:2090235039bcc2d695504f5cd183282fe96c4d0648f5a6acd85abd8dd63ffc80",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 464,
+      "end": 464,
+      "digest": "sha256:b978e2503b8cf37a06f7d6f0a3a6b6fe35691fbcab50b8775cab6fabc71c592b",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 465,
+      "end": 465,
+      "digest": "sha256:af54f8e35577b1ecae0470e26e764aa5a5964e27a5a81eebcb5a9fa34e1261c8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 466,
+      "end": 466,
+      "digest": "sha256:0cebc572378a943eb3e4c3726717df5824373a2065f2885f2c4f39fdbe8c7069",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 467,
+      "end": 467,
+      "digest": "sha256:b978e2503b8cf37a06f7d6f0a3a6b6fe35691fbcab50b8775cab6fabc71c592b",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 468,
+      "end": 468,
+      "digest": "sha256:6169b8e1b33b7cb5bdeb74077068734da398f37f21665511a83a652bb7c47513",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 469,
+      "end": 469,
+      "digest": "sha256:ab3dd038b0877e162fe4a6c96d004230286b47e44f2801a76f14734709672e03",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 470,
+      "end": 470,
+      "digest": "sha256:b6a4e1679fc1b056c32fac1b2cb2db9da1e60c968e6480d71175270a41c3e95c",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 471,
+      "end": 471,
+      "digest": "sha256:bd8305432d939d6a6ec57d042ab01460496b775fd9a67738f2493769152e29b3",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 472,
+      "end": 472,
+      "digest": "sha256:a292ae7e3bd70ae1947d303177503e357c490523edf5f6bf8dff554130b18236",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 473,
+      "end": 473,
+      "digest": "sha256:50498b076df0e6de09623682b08a468f4f2cf2dd3399d5e4b9bc56314ff1de58",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 474,
+      "end": 474,
+      "digest": "sha256:baf3cb36c85394de0d6ed377b924de43887e4caa9d3eb1af67b8ab0a2dbb8cf7",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 475,
+      "end": 475,
+      "digest": "sha256:c5ef28b116db93b95793188d1dba9f3d69467991c3bdbacce43a742277e083ce",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 476,
+      "end": 476,
+      "digest": "sha256:b9b9a5e5c35dfe7f765cd359134c1521eeb483efd6513a6f42594c1cd3dcf932",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 477,
+      "end": 477,
+      "digest": "sha256:e03d7826b40dc7767a5378328296bda8360b91e81a608d13d7c016b5acaeae1a",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 478,
+      "end": 478,
+      "digest": "sha256:5292c7b86fcb07cdda84e13d4b3c8ccc6b917015648bf8abd306c9fc286b4ca2",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 479,
+      "end": 479,
+      "digest": "sha256:ffbc0021768f793d49bb4abf1a4f796bed4a23af60789ba6a0dfe86e88146fc6",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 480,
+      "end": 480,
+      "digest": "sha256:028e0c26d3464d432d7d172a8adbd0ed2779a8f8e07aaf2187696d83a1e9f2e7",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 481,
+      "end": 481,
+      "digest": "sha256:e5f0e552398415ada98975c46e476b4e4af61bae2e8f35e2c834c265ad9bc258",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 482,
+      "end": 482,
+      "digest": "sha256:42c76d51278878e374399cc1b437d54aca54b46e75e55f88c10ec7f1766f4d88",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 483,
+      "end": 483,
+      "digest": "sha256:679fd6f72e590f1b00e3d641f92825d732338b119f45046639f8e2dc38d490d6",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 484,
+      "end": 484,
+      "digest": "sha256:7293a50bb8e193293592ae903e88f1e27fc39a5ab80dfea820c89f47d9abf2cb",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 485,
+      "end": 485,
+      "digest": "sha256:bf5337ec8aea4c3d4e76a258ecc01019ff114099afa3c5f20ea1bef6d2a645c8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 486,
+      "end": 486,
+      "digest": "sha256:eee03032ff47bbe1984a188ebb12ec4d714f229a883267fb74cfba6c678cb728",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 487,
+      "end": 487,
+      "digest": "sha256:6152f432b488ea77a8cdef5c9fc316de5cd92ce13a4c284a7b527fec61061730",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 488,
+      "end": 488,
+      "digest": "sha256:969756a9664073894e9624c60f040112e518fed1e53b10a633548eccd84a7757",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 489,
+      "end": 489,
+      "digest": "sha256:9b62f60d8590a579cf46f8d67378c4c572b962ceccdb90c7a5f7b42b960782a4",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 490,
+      "end": 490,
+      "digest": "sha256:1f0cdb972a7bfb7ed246f9ff672385e55f4968fc11043dc5b684d51dfa31dbcb",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 491,
+      "end": 491,
+      "digest": "sha256:43a68f287a5d3dc6e0ab75c52caf94711ce596a3fc6d1bdd267349af4422d880",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 492,
+      "end": 492,
+      "digest": "sha256:135ee925662f031ff413d095c42ad0eada63e92404aaaf4f8d1f62f96b95a1a2",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 493,
+      "end": 493,
+      "digest": "sha256:0aa24af6dc6874d920374b7d2db4ce55803b36d91a15058d191756d249dee8e1",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 494,
+      "end": 494,
+      "digest": "sha256:5fcc62f377eb6282a3492946894300f9a41962dd90236d90e5baaa0243b6de79",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 495,
+      "end": 495,
+      "digest": "sha256:61bd511c7e864ac53033b7ff637d998959a795a250916fa0374a7b133abeacf8",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 496,
+      "end": 496,
+      "digest": "sha256:774789521178ee45fc1e87ec209c5269d4437cf9bbb3212000eb294848440029",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 497,
+      "end": 497,
+      "digest": "sha256:4893f40e3781eb896c82d046a08067a11e35cdf2f1dfaf26fea90b8db6676413",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 498,
+      "end": 498,
+      "digest": "sha256:27e5788d5d9d73d24a81dbc0a5a74bfa82c9c3b3af99e52af796e90b468a8a3d",
+      "note": "Pins the exact browser-test dependency graph."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/package-lock.json",
+      "start": 499,
+      "end": 499,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Pins the exact browser-test dependency graph."
+    }
+  ],
+  "version": 2
+}

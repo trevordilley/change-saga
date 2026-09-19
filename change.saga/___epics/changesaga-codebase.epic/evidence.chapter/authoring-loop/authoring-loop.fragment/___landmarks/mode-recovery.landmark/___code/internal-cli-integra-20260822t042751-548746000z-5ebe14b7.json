@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/integration_test.go",
+      "start": 175,
+      "end": 266,
+      "digest": "sha256:66805039c443622907adcb316d8d590091657ef9d2699d0ea1de23936113796d",
+      "note": "Exercises refusal and recovery paths for invalid, ambiguous, stale, or unsafe authoring state."
+    }
+  ],
+  "version": 2
+}

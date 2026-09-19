@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/impact/impact_test.go",
+      "start": 69,
+      "end": 75,
+      "digest": "sha256:a7e805b65e2ab8b75a4524b95832e26cc6b7a9b4d9c208beac9371e0042bb8fd",
+      "note": "Verifies that an incomplete baseline is reported explicitly instead of treated as exhaustive."
+    }
+  ],
+  "version": 2
+}

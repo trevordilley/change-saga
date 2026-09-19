@@ -9,11 +9,13 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"sort"
 	"strings"
 
-	"github.com/twentyideas/changesaga/internal/diffuri"
+	"github.com/twentyideas/changesaga/internal/coderef"
+	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/saga"
 	"github.com/twentyideas/changesaga/internal/store"
@@ -21,21 +23,26 @@ import (
 
 // coverRecord is one coverage instruction. Its fields are the batch spelling of
 // the cover flags, so an author who already knows the flags does not learn a
-// second vocabulary to use stdin. A record maps exact atoms exactly as a single
+// second vocabulary to use stdin. A record references code exactly as a single
 // invocation does; batching changes how many instructions are delivered, never
-// how precisely each one selects.
+// what each one references.
 type coverRecord struct {
 	Target       string   `json:"target,omitempty"`
 	Path         string   `json:"path,omitempty"`
 	Side         string   `json:"side,omitempty"`
 	Lines        string   `json:"lines,omitempty"`
 	ChangedLines bool     `json:"changed_lines,omitempty"`
-	Event        string   `json:"event,omitempty"`
-	OldPath      string   `json:"old_path,omitempty"`
-	NewPath      string   `json:"new_path,omitempty"`
+	File         bool     `json:"file,omitempty"`
+	Commit       string   `json:"commit,omitempty"`
+	Refs         []string `json:"refs,omitempty"`
 	Note         string   `json:"note,omitempty"`
 	Name         string   `json:"name,omitempty"`
-	URIs         []string `json:"uris,omitempty"`
+}
+
+// needsComparison reports whether the record addresses the comparison's
+// sides instead of naming explicit commits.
+func (record coverRecord) needsComparison() bool {
+	return record.ChangedLines || record.Path != "" && record.Commit == ""
 }
 
 // plannedRecord is a fully resolved write that has not happened yet. Planning
@@ -44,7 +51,7 @@ type coverRecord struct {
 // untouched.
 type plannedRecord struct {
 	targetID string
-	file     saga.DiffFile
+	file     saga.CodeFile
 	dir      string
 	path     string
 	relative string
@@ -54,12 +61,50 @@ type coverageMutationOutput struct {
 	OK            bool     `json:"ok"`
 	DryRun        bool     `json:"dry_run"`
 	Records       int      `json:"records"`
-	Selectors     int      `json:"selectors"`
+	References    int      `json:"references"`
 	EvidenceFiles []string `json:"evidence_files"`
 }
 
-// Cover attaches diff evidence to a narrative target. os.Stdin is bound here
-// rather than read inside the command so tests drive --batch deterministically.
+// coverFlags are the reference-selecting flags cover and replace-coverage
+// share.
+type coverFlags struct {
+	target, repoDir, path, side, lines, commit, note, name, batch *string
+	changedLines, file, dryRun, jsonOutput, quiet, allowMismatch  *bool
+	refs                                                          stringList
+}
+
+func registerCoverFlags(flags *flag.FlagSet) *coverFlags {
+	value := &coverFlags{
+		target:        flags.String("target", ".", "section, .fragment, landmark, or Item receiving evidence; accepts <fragment>#<landmark-id>"),
+		repoDir:       flags.String("repo", "", "source repository checkout; required when separate"),
+		path:          flags.String("path", "", "repository path"),
+		side:          flags.String("side", "", "comparison side: new (the head commit) or old (the merge-base, for deleted code)"),
+		lines:         flags.String("lines", "", "line ranges on that side, for example 4-9,12"),
+		changedLines:  flags.Bool("changed-lines", false, "reference every changed line of --path, and the whole file for file events; optionally one --side"),
+		file:          flags.Bool("file", false, "reference the whole file at --path: renames, mode and binary changes, and whole added or deleted files"),
+		commit:        flags.String("commit", "", "pin at this revision instead of a comparison side"),
+		note:          flags.String("note", "", "optional explanation for report authors"),
+		name:          flags.String("name", "", "coverage filename without .json"),
+		batch:         flags.String("batch", "", "read coverage records from a JSON file, or - for stdin"),
+		dryRun:        flags.Bool("dry-run", false, "resolve and report the coverage records without writing them"),
+		jsonOutput:    flags.Bool("json", false, "emit one machine-readable summary instead of every reference"),
+		quiet:         flags.Bool("quiet", false, "suppress successful output"),
+		allowMismatch: flags.Bool("allow-repository-mismatch", false, "use a checkout whose origin differs from the declared repository"),
+	}
+	flags.Var(&value.refs, "ref", "code location <commit>:<path>[#L<start>[-L<end>]]; repeatable")
+	return value
+}
+
+func (value *coverFlags) record() coverRecord {
+	return coverRecord{
+		Target: *value.target, Path: *value.path, Side: *value.side, Lines: *value.lines, ChangedLines: *value.changedLines,
+		File: *value.file, Commit: *value.commit, Refs: value.refs, Note: *value.note, Name: *value.name,
+	}
+}
+
+// Cover attaches code references to a narrative target. os.Stdin is bound
+// here rather than read inside the command so tests drive --batch
+// deterministically.
 func Cover(ctx context.Context, args []string, out io.Writer) error {
 	err := cover(ctx, args, out, os.Stdin)
 	if err != nil && jsonFlagRequested(args) {
@@ -70,74 +115,27 @@ func Cover(ctx context.Context, args []string, out io.Writer) error {
 
 func cover(ctx context.Context, args []string, out io.Writer, stdin io.Reader) error {
 	flags := commandFlags("cover", commandUsage["cover"], out)
-	target := flags.String("target", ".", "section, .fragment, or landmark target receiving evidence; accepts <fragment>#<landmark-id>")
-	repoDir := flags.String("repo", "", "source repository checkout; required when separate")
-	path := flags.String("path", "", "changed repository path")
-	side := flags.String("side", "", "line side: old or new")
-	lines := flags.String("lines", "", "line ranges, for example 4-9,12")
-	changedLines := flags.Bool("changed-lines", false, "select every exact changed line and file event for --path; optionally filter lines with --side")
-	event := flags.String("event", "", "file event: add, delete, type-change, rename, mode, binary, or modify")
-	oldPath := flags.String("old-path", "", "old path for a rename event")
-	newPath := flags.String("new-path", "", "new path for a rename event")
-	note := flags.String("note", "", "optional explanation for report authors")
-	name := flags.String("name", "", "coverage filename without .json")
-	batch := flags.String("batch", "", "read coverage records from a JSON file, or - for stdin")
-	dryRun := flags.Bool("dry-run", false, "resolve and report the coverage records without writing them")
-	jsonOutput := flags.Bool("json", false, "emit one machine-readable summary instead of every selector")
-	quiet := flags.Bool("quiet", false, "suppress successful output")
-	allowRepositoryMismatch := flags.Bool("allow-repository-mismatch", false, "use a checkout whose origin differs from the declared repository")
-	var uris stringList
-	flags.Var(&uris, "uri", "absolute saga-diff URI; repeatable")
+	options := registerCoverFlags(flags)
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
 	if flags.NArg() != 1 {
 		return fmt.Errorf("usage: %s", commandUsage["cover"])
 	}
-	if *jsonOutput && *quiet {
+	if *options.jsonOutput && *options.quiet {
 		return fmt.Errorf("--json and --quiet cannot be combined")
 	}
 	document, _, err := saga.Load(flags.Arg(0))
 	if err != nil {
 		return err
 	}
-
-	records, err := coverRecords(*batch, stdin, coverRecord{
-		Target: *target, Path: *path, Side: *side, Lines: *lines, ChangedLines: *changedLines, Event: *event,
-		OldPath: *oldPath, NewPath: *newPath, Note: *note, Name: *name, URIs: uris,
-	}, flags)
+	records, err := coverRecords(*options.batch, stdin, options.record(), flags)
 	if err != nil {
 		return err
 	}
-
-	// The Git comparison is read once for the whole batch, and before the lock
-	// is taken, so a slow diff neither repeats per record nor stalls other
-	// writers. Only target resolution and the record writes are serialized.
-	var changes *gitdiff.ChangeSet
-	for _, record := range records {
-		if record.Path == "" && record.Event == "" && !record.ChangedLines {
-			continue
-		}
-		checkout := firstNonEmpty(*repoDir, document.Root)
-		read, readErr := gitdiff.ReadWithOptions(ctx, checkout, document.Manifest.Source.Repository, document.Manifest.Source.Base, document.Manifest.Source.Head, gitdiff.ReadOptions{AllowRepositoryMismatch: *allowRepositoryMismatch})
-		if readErr != nil {
-			return fmt.Errorf("read source diff (use --repo for a separate saga repository): %w", readErr)
-		}
-		changes = &read
-		break
-	}
-
-	repository, err := diffuri.CanonicalRepository(document.Manifest.Source.Repository)
+	files, err := buildCoverageFiles(ctx, document, records, *options.repoDir, *options.allowMismatch)
 	if err != nil {
-		return fmt.Errorf("invalid declared source repository: %w", err)
-	}
-	files := make([]saga.DiffFile, len(records))
-	for i, record := range records {
-		file, buildErr := buildCoverageFile(record, changes, repository)
-		if buildErr != nil {
-			return recordError(records, i, buildErr)
-		}
-		files[i] = file
+		return err
 	}
 
 	var planned []plannedRecord
@@ -146,23 +144,23 @@ func cover(ctx context.Context, args []string, out io.Writer, stdin io.Reader) e
 		planned, planErr = planCoverage(locked, records, files)
 		return planErr
 	}
-	if *dryRun {
+	if *options.dryRun {
 		// A dry run still resolves targets and names against the real saga so
 		// its report matches what a real run would do, but it takes no lock and
 		// creates nothing.
 		if err := plan(document); err != nil {
 			return err
 		}
-		if *quiet {
+		if *options.quiet {
 			return nil
 		}
-		if *jsonOutput {
+		if *options.jsonOutput {
 			return writeJSON(out, coverageOutput(planned, true))
 		}
 		for _, record := range planned {
 			fmt.Fprintf(out, "Would add %s (%s)\n", record.relative, record.targetID)
-			for _, reference := range record.file.Diffs {
-				fmt.Fprintf(out, "  %s\n", reference.URI)
+			for _, reference := range record.file.References {
+				fmt.Fprintf(out, "  %s\n", reference.Location())
 			}
 		}
 		fmt.Fprintf(out, "Dry run: %d coverage record(s) resolved, nothing written\n", len(planned))
@@ -180,10 +178,10 @@ func cover(ctx context.Context, args []string, out io.Writer, stdin io.Reader) e
 	}); err != nil {
 		return err
 	}
-	if *quiet {
+	if *options.quiet {
 		return nil
 	}
-	if *jsonOutput {
+	if *options.jsonOutput {
 		return writeJSON(out, coverageOutput(planned, false))
 	}
 	for _, record := range planned {
@@ -196,22 +194,205 @@ func coverageOutput(planned []plannedRecord, dryRun bool) coverageMutationOutput
 	result := coverageMutationOutput{OK: true, DryRun: dryRun, Records: len(planned), EvidenceFiles: make([]string, 0, len(planned))}
 	for _, record := range planned {
 		result.EvidenceFiles = append(result.EvidenceFiles, record.relative)
-		result.Selectors += len(record.file.Diffs)
+		result.References += len(record.file.References)
 	}
 	return result
 }
 
+// buildCoverageFiles resolves every record into the evidence file it will
+// write. The comparison is read once for the whole batch, and before any lock
+// is taken, so a slow diff neither repeats per record nor stalls other
+// writers; each reference's digest is read from the repository here.
+func buildCoverageFiles(ctx context.Context, document *saga.Saga, records []coverRecord, repoDir string, allowMismatch bool) ([]saga.CodeFile, error) {
+	checkout := firstNonEmpty(repoDir, document.Root)
+	var changes *gitdiff.ChangeSet
+	for _, record := range records {
+		if !record.needsComparison() {
+			continue
+		}
+		read, err := gitdiff.ReadWithOptions(ctx, checkout, document.Manifest.Source.Repository, document.Manifest.Source.Base, document.Manifest.Source.Head, gitdiff.ReadOptions{AllowRepositoryMismatch: allowMismatch})
+		if err != nil {
+			return nil, fmt.Errorf("read source comparison (use --repo for a separate saga repository): %w", err)
+		}
+		changes = &read
+		break
+	}
+	resolver, err := coderesolve.New(ctx, checkout)
+	if err != nil {
+		return nil, fmt.Errorf("open source repository (use --repo for a separate saga repository): %w", err)
+	}
+	defer resolver.Close()
+	files := make([]saga.CodeFile, len(records))
+	for i, record := range records {
+		locations, err := recordLocations(ctx, record, changes, checkout)
+		if err != nil {
+			return nil, recordError(records, i, err)
+		}
+		file := saga.CodeFile{Version: saga.CurrentVersion}
+		seen := map[string]bool{}
+		for _, location := range locations {
+			if seen[location.String()] {
+				continue
+			}
+			seen[location.String()] = true
+			reference, err := resolver.Author(ctx, location, record.Note)
+			if err != nil {
+				return nil, recordError(records, i, err)
+			}
+			file.References = append(file.References, reference)
+		}
+		files[i] = file
+	}
+	return files, nil
+}
+
+// recordLocations turns one record into the code locations it references.
+func recordLocations(ctx context.Context, record coverRecord, changes *gitdiff.ChangeSet, checkout string) ([]coderef.Location, error) {
+	var locations []coderef.Location
+	for _, value := range record.Refs {
+		location, err := coderef.ParseLocation(value)
+		if err != nil {
+			return nil, fmt.Errorf("invalid --ref: %w", err)
+		}
+		locations = append(locations, location)
+	}
+	if record.Side != "" && record.Side != "old" && record.Side != "new" {
+		return nil, errors.New("--side must be old or new")
+	}
+	path := filepath.ToSlash(record.Path)
+	switch {
+	case record.ChangedLines:
+		if path == "" {
+			return nil, errors.New("--changed-lines requires --path")
+		}
+		if record.Lines != "" || record.File || record.Commit != "" || len(record.Refs) != 0 {
+			return nil, errors.New("--changed-lines cannot be combined with --lines, --file, --commit, or --ref")
+		}
+		selected := changedLocations(*changes, path, record.Side)
+		if len(selected) == 0 {
+			return nil, fmt.Errorf("--path %q has no changed atoms%s", path, map[bool]string{true: " on side " + record.Side, false: ""}[record.Side != ""])
+		}
+		locations = append(locations, selected...)
+	case path != "":
+		commit := record.Commit
+		if commit == "" {
+			commit = changes.HeadOID
+			if record.Side == "old" {
+				commit = changes.BaseOID
+			}
+		} else {
+			if record.Side != "" {
+				return nil, errors.New("--side names a comparison commit; it cannot be combined with --commit")
+			}
+			resolved, err := resolveCommit(ctx, checkout, commit)
+			if err != nil {
+				return nil, err
+			}
+			commit = resolved
+		}
+		if record.File {
+			if record.Lines != "" {
+				return nil, errors.New("--file references a whole file; it cannot be combined with --lines")
+			}
+			locations = append(locations, coderef.Location{Commit: commit, Path: path})
+			break
+		}
+		if record.Commit == "" && record.Side == "" {
+			return nil, errors.New("line references need --side new or old (or --commit)")
+		}
+		ranges, err := parseRanges(record.Lines)
+		if err != nil {
+			return nil, err
+		}
+		for _, lineRange := range ranges {
+			locations = append(locations, coderef.Location{Commit: commit, Path: path, Start: lineRange.Start, End: lineRange.End})
+		}
+	case record.File || record.Lines != "" || record.Side != "" || record.Commit != "":
+		return nil, errors.New("--lines, --file, --side, and --commit require --path")
+	}
+	if len(locations) == 0 {
+		return nil, errors.New("provide --ref, or --path with --lines, --file, or --changed-lines")
+	}
+	return locations, nil
+}
+
+// changedLocations references exactly the changed atoms of one path with the
+// fewest locations. A file event is referenced as the whole file on the side
+// it exists; changed lines coalesce into dense ranges per side. A dense range
+// is not a widened reference: every line it spans is a changed line.
+func changedLocations(changes gitdiff.ChangeSet, path, side string) []coderef.Location {
+	// A renamed file is one file: either of its paths selects the lines on
+	// both sides.
+	paths := map[string]bool{path: true}
+	for _, atom := range changes.Atoms {
+		if atom.Kind == "event" && atom.Event == "rename" && (atom.OldPath == path || atom.NewPath == path) {
+			paths[atom.OldPath], paths[atom.NewPath] = true, true
+		}
+	}
+	var locations []coderef.Location
+	whole := map[string]bool{}
+	lines := map[string][]int{}
+	var order []string
+	for _, atom := range changes.Atoms {
+		if !paths[atom.Path] && !paths[atom.OldPath] && !paths[atom.NewPath] {
+			continue
+		}
+		location := changes.Location(atom)
+		atomSide := "new"
+		if location.Commit == changes.BaseOID && location.Commit != changes.HeadOID {
+			atomSide = "old"
+		}
+		if side != "" && side != atomSide {
+			continue
+		}
+		key := location.Commit + "\x00" + location.Path
+		if atom.Kind == "event" {
+			if !whole[key] {
+				whole[key] = true
+				locations = append(locations, location)
+			}
+			continue
+		}
+		if _, ok := lines[key]; !ok {
+			order = append(order, key)
+		}
+		lines[key] = append(lines[key], atom.Line)
+	}
+	for _, key := range order {
+		commit, file, _ := strings.Cut(key, "\x00")
+		values := append([]int(nil), lines[key]...)
+		sort.Ints(values)
+		for index := 0; index < len(values); {
+			end := index
+			for end+1 < len(values) && values[end+1] <= values[end]+1 {
+				end++
+			}
+			locations = append(locations, coderef.Location{Commit: commit, Path: file, Start: values[index], End: values[end]})
+			index = end + 1
+		}
+	}
+	return locations
+}
+
+func resolveCommit(ctx context.Context, checkout, revision string) (string, error) {
+	output, err := exec.CommandContext(ctx, "git", "-C", checkout, "rev-parse", "--verify", "--end-of-options", revision+"^{commit}").CombinedOutput()
+	if err != nil {
+		return "", fmt.Errorf("resolve --commit %q: %s", revision, strings.TrimSpace(string(output)))
+	}
+	return strings.TrimSpace(string(output)), nil
+}
+
 // coverRecords returns the batch records, or the single record built from the
 // flags. Per-record flags are rejected alongside --batch instead of silently
-// losing to the file, because a dropped selector would quietly under-cover.
+// losing to the file, because a dropped reference would quietly under-cover.
 func coverRecords(batch string, stdin io.Reader, single coverRecord, flags *flag.FlagSet) ([]coverRecord, error) {
 	if batch == "" {
-		if len(single.URIs) == 0 && single.Path == "" && single.Event == "" && !single.ChangedLines {
-			return nil, fmt.Errorf("provide --uri or --path/--lines (or --event), or --batch for many records at once")
+		if len(single.Refs) == 0 && single.Path == "" && !single.ChangedLines {
+			return nil, fmt.Errorf("provide --ref or --path with --lines, --file, or --changed-lines, or --batch for many records at once")
 		}
 		return []coverRecord{single}, nil
 	}
-	for _, conflicting := range []string{"path", "side", "lines", "changed-lines", "event", "old-path", "new-path", "name", "uri"} {
+	for _, conflicting := range []string{"path", "side", "lines", "changed-lines", "file", "commit", "name", "ref"} {
 		if flagWasSet(flags, conflicting) {
 			return nil, fmt.Errorf("--%s cannot be combined with --batch; put it in the batch record instead", conflicting)
 		}
@@ -225,7 +406,7 @@ func coverRecords(batch string, stdin io.Reader, single coverRecord, flags *flag
 		return nil, err
 	}
 	// --target and --note stay usable as batch-wide defaults: a batch is
-	// usually many selectors for one narrative target.
+	// usually many references for one narrative target.
 	for i := range records {
 		if strings.TrimSpace(records[i].Target) == "" {
 			records[i].Target = single.Target
@@ -284,188 +465,11 @@ func parseCoverRecords(data []byte) ([]coverRecord, error) {
 	return records, nil
 }
 
-// buildCoverageFile turns one record into the diff file that will be written.
-// Selector construction is identical to the single-invocation path, so batching
-// cannot widen a mapping.
-func buildCoverageFile(record coverRecord, changes *gitdiff.ChangeSet, repository string) (saga.DiffFile, error) {
-	uris := append([]string(nil), record.URIs...)
-	for _, value := range uris {
-		reference, err := diffuri.Parse(value)
-		if err != nil {
-			return saga.DiffFile{}, fmt.Errorf("invalid --uri: %w", err)
-		}
-		if reference.Repository != repository {
-			return saga.DiffFile{}, fmt.Errorf("invalid --uri: repository %q does not match saga source repository %q", reference.Repository, repository)
-		}
-	}
-	if record.ChangedLines {
-		if record.Path == "" {
-			return saga.DiffFile{}, errors.New("--changed-lines requires --path")
-		}
-		if record.Lines != "" || record.Event != "" || record.OldPath != "" || record.NewPath != "" || len(record.URIs) != 0 {
-			return saga.DiffFile{}, errors.New("--changed-lines cannot be combined with --lines, --event, --old-path, --new-path, or --uri")
-		}
-		if record.Side != "" && record.Side != "old" && record.Side != "new" {
-			return saga.DiffFile{}, errors.New("--side must be old or new when used with --changed-lines")
-		}
-		if changes == nil {
-			return saga.DiffFile{}, errors.New("--changed-lines requires the source comparison")
-		}
-		path := filepath.ToSlash(record.Path)
-		var selected []gitdiff.Atom
-		for _, atom := range changes.Atoms {
-			matchesPath := atom.Path == path || atom.OldPath == path || atom.NewPath == path
-			if !matchesPath || atom.Kind == "line" && record.Side != "" && atom.Side != record.Side {
-				continue
-			}
-			selected = append(selected, atom)
-		}
-		selectors, err := changedLineSelectors(selected)
-		if err != nil {
-			return saga.DiffFile{}, err
-		}
-		uris = append(uris, selectors...)
-		if len(uris) == 0 {
-			return saga.DiffFile{}, fmt.Errorf("--path %q has no changed atoms%s", path, map[bool]string{true: " on side " + record.Side, false: ""}[record.Side != ""])
-		}
-	} else if record.Path != "" || record.Event != "" {
-		if changes == nil {
-			return saga.DiffFile{}, errors.New("path and event coverage require the source comparison")
-		}
-		if record.Event == "" {
-			if record.Side != "old" && record.Side != "new" {
-				return saga.DiffFile{}, errors.New("line coverage requires side old or new")
-			}
-			ranges, err := parseRanges(record.Lines)
-			if err != nil {
-				return saga.DiffFile{}, err
-			}
-			for _, lineRange := range ranges {
-				value, err := diffuri.Build(diffuri.Reference{Repository: changes.Repository, Base: changes.BaseOID, Head: changes.HeadOID, Kind: "line", Path: filepath.ToSlash(record.Path), Side: record.Side, Start: lineRange.Start, End: lineRange.End})
-				if err != nil {
-					return saga.DiffFile{}, err
-				}
-				uris = append(uris, value)
-			}
-		} else {
-			value, err := diffuri.Build(diffuri.Reference{Repository: changes.Repository, Base: changes.BaseOID, Head: changes.HeadOID, Kind: "event", Event: record.Event, Path: filepath.ToSlash(record.Path), OldPath: filepath.ToSlash(record.OldPath), NewPath: filepath.ToSlash(record.NewPath)})
-			if err != nil {
-				return saga.DiffFile{}, err
-			}
-			uris = append(uris, value)
-		}
-	}
-	if len(uris) == 0 {
-		return saga.DiffFile{}, errors.New("provide uris or path/lines (or event)")
-	}
-	file := saga.DiffFile{Version: saga.CurrentVersion}
-	for _, value := range uris {
-		file.Diffs = append(file.Diffs, saga.DiffReference{URI: value, Note: record.Note})
-	}
-	return file, nil
-}
-
-// changedLineGroup accumulates every line one identity contributed, in the
-// order the identity was first seen. Identity is the whole comparison address
-// minus the line numbers, so two groups can never be merged with each other.
-type changedLineGroup struct {
-	reference diffuri.Reference
-	lines     []int
-	seen      map[int]bool
-}
-
-// changedLineSelectors names exactly the atoms it is given, using the fewest
-// URIs that can name them. Consecutive line atoms coalesce into one ranged URI
-// only when their repository, base, head, path, and side are identical and
-// their line numbers are dense. A dense range is not a widened selector: every
-// line it spans is an atom that was already going to be written, so coverage,
-// ownership, and overlap are byte-identical to emitting one URI per line.
-// Events never coalesce -- an event is not a line and has no range spelling.
-func changedLineSelectors(atoms []gitdiff.Atom) ([]string, error) {
-	// A slot is one position in the output. Event slots carry their URI
-	// verbatim; a line slot stands in for the group's first atom and expands to
-	// that group's ranges, so relative order survives coalescing.
-	type slot struct {
-		uri   string
-		group *changedLineGroup
-	}
-	var slots []slot
-	groups := map[string]*changedLineGroup{}
-	for _, atom := range atoms {
-		reference, err := diffuri.Parse(atom.URI)
-		if err != nil {
-			return nil, fmt.Errorf("parse changed atom URI %q: %w", atom.URI, err)
-		}
-		if reference.Kind != "line" {
-			slots = append(slots, slot{uri: atom.URI})
-			continue
-		}
-		key := changedLineGroupKey(reference)
-		group, ok := groups[key]
-		if !ok {
-			group = &changedLineGroup{reference: reference, seen: map[int]bool{}}
-			groups[key] = group
-			slots = append(slots, slot{group: group})
-		}
-		for line := reference.Start; line <= reference.End; line++ {
-			if group.seen[line] {
-				continue
-			}
-			group.seen[line] = true
-			group.lines = append(group.lines, line)
-		}
-	}
-	uris := make([]string, 0, len(slots))
-	for _, current := range slots {
-		if current.group == nil {
-			uris = append(uris, current.uri)
-			continue
-		}
-		values, err := current.group.selectors()
-		if err != nil {
-			return nil, err
-		}
-		uris = append(uris, values...)
-	}
-	return uris, nil
-}
-
-// changedLineGroupKey is every part of a line reference except the range. Two
-// references share a key only when a range spanning both would address the same
-// file, on the same side, of the same comparison.
-func changedLineGroupKey(reference diffuri.Reference) string {
-	return strings.Join([]string{reference.Repository, reference.Base, reference.Head, reference.Path, reference.Side}, "\x00")
-}
-
-// selectors emits one ranged URI per dense run, ascending. A gap of even one
-// line ends the run, so a range never spans a line that was not selected.
-func (group *changedLineGroup) selectors() ([]string, error) {
-	lines := append([]int(nil), group.lines...)
-	sort.Ints(lines)
-	var uris []string
-	for index := 0; index < len(lines); {
-		end := index
-		for end+1 < len(lines) && lines[end+1] == lines[end]+1 {
-			end++
-		}
-		reference := group.reference
-		reference.Start = lines[index]
-		reference.End = lines[end]
-		value, err := diffuri.Build(reference)
-		if err != nil {
-			return nil, err
-		}
-		uris = append(uris, value)
-		index = end + 1
-	}
-	return uris, nil
-}
-
 // planCoverage resolves every target and destination filename up front. Names
 // are reserved across the whole batch, so two records in one batch collide with
 // each other exactly as loudly as one record collides with a record already on
 // disk.
-func planCoverage(document *saga.Saga, records []coverRecord, files []saga.DiffFile, replaceable ...string) ([]plannedRecord, error) {
+func planCoverage(document *saga.Saga, records []coverRecord, files []saga.CodeFile, replaceable ...string) ([]plannedRecord, error) {
 	planned := make([]plannedRecord, 0, len(records))
 	claimed := map[string]int{}
 	allowed := map[string]bool{}
@@ -503,7 +507,7 @@ func planCoverage(document *saga.Saga, records []coverRecord, files []saga.DiffF
 			planned = append(planned, plannedRecord{targetID: targetID, file: files[i], dir: targetDir, path: full, relative: filepath.ToSlash(relative)})
 			continue
 		}
-		diffDir := filepath.Join(targetDir, "___diffs")
+		diffDir := filepath.Join(targetDir, saga.CodeDirName)
 		name, err := coverageName(record, files[i], diffDir, claimed, allowed)
 		if err != nil {
 			return nil, recordError(records, i, err)
@@ -555,7 +559,7 @@ func ensureCoverageDirectories(root string, planned []plannedRecord) error {
 // stable handle. A generated name is the selector identity: it deliberately
 // collides when two authors explain the same selectors differently so Git
 // exposes the disagreement instead of manufacturing an overlap.
-func coverageName(record coverRecord, file saga.DiffFile, dir string, claimed map[string]int, replaceable map[string]bool) (string, error) {
+func coverageName(record coverRecord, file saga.CodeFile, dir string, claimed map[string]int, replaceable map[string]bool) (string, error) {
 	if strings.TrimSpace(record.Name) != "" {
 		name := store.Slug(record.Name)
 		full := filepath.Join(dir, name+".json")

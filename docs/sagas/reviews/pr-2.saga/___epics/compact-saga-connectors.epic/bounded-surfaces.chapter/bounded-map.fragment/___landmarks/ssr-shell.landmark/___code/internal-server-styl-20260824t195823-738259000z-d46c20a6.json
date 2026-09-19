@@ -1,0 +1,133 @@
+{
+  "references": [
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/styles.go",
+      "start": 121,
+      "end": 121,
+      "digest": "sha256:c538cacb997fb28ce82179fa267215cf28f3ce505c00233e140ed30b7e54483c",
+      "note": "Progressive shell and bounded-surface presentation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/styles.go",
+      "start": 122,
+      "end": 122,
+      "digest": "sha256:bbe0b84d52056c9af82a15f4ec448c373f8ab947b16d4337d7f87e7777414f48",
+      "note": "Progressive shell and bounded-surface presentation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/styles.go",
+      "start": 123,
+      "end": 123,
+      "digest": "sha256:a10d6f3ff02b736a3f576523122f08a55a7741bf6edaccd39c94a8925a07c238",
+      "note": "Progressive shell and bounded-surface presentation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/styles.go",
+      "start": 463,
+      "end": 463,
+      "digest": "sha256:43180ccebaf0a250128b94e1ce6d0ae31866c7955c321c13bd4b80d5d9fa5965",
+      "note": "Progressive shell and bounded-surface presentation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/styles.go",
+      "start": 464,
+      "end": 464,
+      "digest": "sha256:c4c9b139309bd79021f2db76c051ef9758bfe320216ed52d12a99841473dda77",
+      "note": "Progressive shell and bounded-surface presentation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/styles.go",
+      "start": 465,
+      "end": 465,
+      "digest": "sha256:f97e167242095c4a686f890c5fd53200f7b303913b68e45f075d114e11304f16",
+      "note": "Progressive shell and bounded-surface presentation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/styles.go",
+      "start": 466,
+      "end": 466,
+      "digest": "sha256:14cf3a944bc435946feb57de0039217e27f96b2b91be6d82c8e2e1a43aa24a5d",
+      "note": "Progressive shell and bounded-surface presentation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/styles.go",
+      "start": 467,
+      "end": 467,
+      "digest": "sha256:3f590197f87f6df6e72eba704254fd6c0e2d83158fb5ac74cfe0e40ddf688c09",
+      "note": "Progressive shell and bounded-surface presentation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/styles.go",
+      "start": 468,
+      "end": 468,
+      "digest": "sha256:1be4c3ea930d271f311f6d56ad656ce52697c091cc648f099dfea99b325483da",
+      "note": "Progressive shell and bounded-surface presentation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/styles.go",
+      "start": 469,
+      "end": 469,
+      "digest": "sha256:df7615c483cfe2cebf714484db0bf6cc8a9d3b8de8f0e83c86e7c32f038566cf",
+      "note": "Progressive shell and bounded-surface presentation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/styles.go",
+      "start": 470,
+      "end": 470,
+      "digest": "sha256:0e135eb2e214ce67c0b79558b31dec2a55ac8fa4aee42411d763ad1fa4f374c4",
+      "note": "Progressive shell and bounded-surface presentation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/styles.go",
+      "start": 471,
+      "end": 471,
+      "digest": "sha256:8dee0be6440f8f5df21b8520f4b22fe33fd32c45c5163859774631a9cf401ade",
+      "note": "Progressive shell and bounded-surface presentation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/styles.go",
+      "start": 472,
+      "end": 472,
+      "digest": "sha256:de5abd1bc0947a4638409138ab62364028d88553aac57093424c9d3d07d5e19b",
+      "note": "Progressive shell and bounded-surface presentation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/styles.go",
+      "start": 473,
+      "end": 473,
+      "digest": "sha256:69e73a650dc669fdd084a45b819982cc0b3f65cd552de015999664b6f95628cb",
+      "note": "Progressive shell and bounded-surface presentation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/styles.go",
+      "start": 474,
+      "end": 474,
+      "digest": "sha256:e9db3f9198fc1cc37d2e1c9bcab563aa6f91579f24e46613e0ea2769a0a06943",
+      "note": "Progressive shell and bounded-surface presentation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/styles.go",
+      "start": 475,
+      "end": 475,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Progressive shell and bounded-surface presentation."
+    }
+  ],
+  "version": 2
+}

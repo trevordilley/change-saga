@@ -1,0 +1,21 @@
+{
+  "references": [
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/server/appjs_test.go",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:9dbbadfbe96ec15dece6dec1007df8b125d6cba5b97690050a94b19d0fdaa224",
+      "note": "Embedded client contract assertions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/appjs_test.go",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:b772fd71730e6f8db09b9a71236525dd1e9d32fc154798b691c7736f0f9c4f4f",
+      "note": "Embedded client contract assertions."
+    }
+  ],
+  "version": 2
+}

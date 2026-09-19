@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewapp/session_test.go",
+      "start": 1,
+      "end": 167,
+      "digest": "sha256:b9414b821d53e5975471a89f9024c9ea82833e35e069926b61755f2141f2c1ec",
+      "note": "Defines one versioned query envelope, stable operations, typed responses, and machine error codes."
+    }
+  ],
+  "version": 2
+}

@@ -1,25 +1,45 @@
 {
-  "version": 2,
-  "diffs": [
+  "references": [
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=32\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fcli%2Fquery_reviewapp.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=32",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/cli/query_reviewapp.go",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:4d7c94ac3e38fde2512194febd4263bd0938e3ad889fb46ce2b63619f72cf763",
       "note": "Carries committed source identity and optional slide section labels through the distinct living and slide query contracts."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=51\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fcli%2Fquery_reviewapp.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=50",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/cli/query_reviewapp.go",
+      "start": 50,
+      "end": 51,
+      "digest": "sha256:9bdfbca9fac325b4aa2fcb015fe153d98fbc84d8f80c015992ba18cbca093ebb",
       "note": "Carries committed source identity and optional slide section labels through the distinct living and slide query contracts."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=86\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fcli%2Fquery_reviewapp.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=86",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/cli/query_reviewapp.go",
+      "start": 86,
+      "end": 86,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
       "note": "Carries committed source identity and optional slide section labels through the distinct living and slide query contracts."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=98\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fcli%2Fquery_reviewapp.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=89",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/cli/query_reviewapp.go",
+      "start": 89,
+      "end": 98,
+      "digest": "sha256:aeb02be973792bfe57acd6309427bf3197d4ff82224b688fa4a3d353b4c757f3",
       "note": "Carries committed source identity and optional slide section labels through the distinct living and slide query contracts."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=107\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fcli%2Fquery_reviewapp.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=105",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/cli/query_reviewapp.go",
+      "start": 105,
+      "end": 107,
+      "digest": "sha256:e136f8ac252dcae3ec4fd88c388571e93f97a65076bda139f73cf8b34f709abb",
       "note": "Carries committed source identity and optional slide section labels through the distinct living and slide query contracts."
     }
-  ]
+  ],
+  "version": 2
 }

@@ -1,0 +1,11 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/appjs.go",
+      "digest": "sha256:c575117250af86b64485a35ed0e850b073a823af7613af0fe2674bb9d3294684",
+      "note": "Adds the browser-side reviewer workspace interaction runtime."
+    }
+  ],
+  "version": 2
+}

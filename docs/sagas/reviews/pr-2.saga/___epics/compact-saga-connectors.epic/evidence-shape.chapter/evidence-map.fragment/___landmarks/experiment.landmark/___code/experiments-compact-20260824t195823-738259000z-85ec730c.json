@@ -1,0 +1,1979 @@
+{
+  "references": [
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "digest": "sha256:212837a9e59ee659eb2e5e12fed71e2df6e21bc52601eca1477c8aca13f3d27a",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:5f135a8565d492d0e760e8aa4396440d6f92cb53528e84643b2c30ab3242fa28",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:71e37b6cd48ad477cbb12624b757ee1dc4975711b78237a85f508bfdd723af77",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:27ebf5086f3779bf42ffab9cd30faffeaad4a2b05aa145b61c7d9436fc9adfdd",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:9d321d278769fb32c7c6820e1c992ebb53b04e39def0f158cbf1d84e27d34c18",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:30846666d2ce47f9ec32160922192466e9cd4450f31dee0061811ca48bb8ccb0",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:d7c13472432b49bc3449735b494389e2fbf6bab4fb98ea35c40aedb55cc0d0a9",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:f05b48055b78db9e9e8993848d47169d7abd312df35886aa83d4014d37eb4009",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:fafba0527c3953c4b6e0e5b5739ba83612f8053bcdc9466730193cd1d590b408",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:6ed6fc1108d612a2275c256ac2aab70b8b9174836d33cd9453839e587979bee0",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:1401ad8cf479e742c93f8c9c68b48c29f2ff52ed26f989988b04dc62ec202cba",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:289e32b0d3fbac108c4243afcddc900f1a2f1c5dcef5391f93b5e41ac0d71b31",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:71d6e58185a282afb1d34e7663ee7151624076654489000c597db8f482cab775",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:57ab32d31367d714197b0f963e2417688f0e09fae1e6422c7abe86009686936d",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:0dc6582a8ab83f50309cef73fd30c41914ac52521a1958a28e832f5a48650964",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:c50b2c6ef106cf1c0aea4053571ede7136e26a546e04cd78f6c73d1c5cd18cac",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:35a64578e5c91e8c423b7425b2435e40590858cd50bbe2832d68b12e26b8362b",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:7e4e7b5bcf66e43fd026ff399582e0f58e34f345ec88ab5cf044bc0576efb2e2",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:34b65da685b3bef8e40329212cfddd988fe2b0d3cbc041787d5f74eca10d4d37",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:835d93708da748e36bf9e54c55872ab3342c797dfa6a553a97773c021c0d6ba8",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:0311bd280458e2f742763a6421c5086c3f18d5a0b542f9ea53c01d85f2852259",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:05029d0afad4e39b0bbbe107be64e8ea5305c51826c9d41bb890ffdedee69487",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:f5d707b28bbe48c1b7960ed90aca49f3534a692d7176a6bbd6e2e28484b21eb6",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:ec80860f667155c199ac421c22108cdc4eda4a44f4cf526dbf610b3fcf543f5b",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:cb0e7d289161cc248bbf614052efb9a1ab43806717990a0b7e396e9274166d87",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:a754546e362f5d97eb15c9446d0745459a98c1b44336b97c6258ffc7decbaaec",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:7a20dafe3ad437c4518a8e38ca0fe3c20144acb9ae22095ccd9695e0e08937bc",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:56227d37b1011853241b9a60e1e9dc3e4ce513325fe699e04b0d0a3fad75c645",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:9df43d3f6e523654ea5cd25d8288ab165a4954ddadf59207a5507bbf81f458da",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:42a57081051f4682a7db3e590b4dd5413d53dc9a01551276dacb521a7e1db9a5",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:5e7679f7c3ace087c581d6832676c3432101c662d6af6fd69a4d4e6e5321ef30",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:42a57081051f4682a7db3e590b4dd5413d53dc9a01551276dacb521a7e1db9a5",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:152a3f543da31ac88dd3ef096c897dbad36315f2ee62df497dd90da3b91b108b",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:36382d4f3df170f1dcd72cb7510d6924083fcc4c6417b316f2cec7b57dee5fbb",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:41f215a67d050e7d048269258cb34faf0939258eb502d5dcaa247d432160cb9e",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:9f621f2cb7bef49d052f8b0fa753e245cea57685fceb00cf501e4d938f5255f6",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:7f022e6ad3617fe9be435e020f611b2d857f6f2f3bbaec00b6ed103ed06a05eb",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:d5542cf253b75c253eb1dcaf31760783a23cfaedf5a9a13b1e46a778308c925b",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:f877f590bf4d67756951fa459b91621545cace12622e498ffce3e199916a6fea",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:082390aa380e981b0e8a5d68f8b82f700a7b137fd74f88af755fac7e1cb4e754",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:4dc76020bae70577e64b330dca83fdf24f3d7593a0154d8abec6dc63f5897fd9",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:569e94fc8a0b3070684bbbfa59d95114d988df79a5c424cc1736d1e9156cb7fb",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:a5ca7d9dc9e33dcb250e8c2b2d2334f684d763dd7aa802ad0e3807d39397c3cc",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:3dadfab2673c93eb5c3174229b4a1df66febfb4310e1591dfd2302776815e526",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:4dc76020bae70577e64b330dca83fdf24f3d7593a0154d8abec6dc63f5897fd9",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:0e8b0894e41d114b27deefa99d1dd1c351b81b658cbd97eea846602757559f90",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:ce80af347b8afd12e446f8f03829f62449ba1819f4b0e485db0981847740a17f",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:c7d5491f0b2e2c393126517c91132cae03c8abf1232230ed461b430ef185a1a3",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:78ac2e6181d098df1d83d6b36c0cad54309ad5d218302a3f67d0568fb5ff2061",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:c5f6ef4931a43daa3eff3b4302b64a374c3e61167171da34ef3812a2ffc67b38",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:05aeb138a10be594c4608e414e2a67ab06d5e4890b3e6e34c5defc8819155ee5",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:d5dc205d3d4189c8b514b20b44ff5566e5384d2dea914f96caca5c3139c7ab56",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:c758f801fa9aec2b1107b4ab98d14c15bcebea31cd7b5b1812b3e448819ea443",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:114e7414f28c773611f6f21a42fdc44cf43113320ae49f77e4ce56795fd52a05",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:fe7b817c7c42adf3da7eced13e8fc9b8c92d1b0bc0bd71fb48a0780db713349c",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:4dc76020bae70577e64b330dca83fdf24f3d7593a0154d8abec6dc63f5897fd9",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:7d54216012847c0dc3f0f9812194a73fb34212680de74e5f980ad23c975d8659",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:5c92479b27c4bcc2ceb54f31570b1697cf14404930bc3ff4dd368806099d0efd",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 68,
+      "end": 68,
+      "digest": "sha256:77a17c35f13d3a2d5b163744d7398c8f3227785afe969aadbfe45541d1187706",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:a5ca7d9dc9e33dcb250e8c2b2d2334f684d763dd7aa802ad0e3807d39397c3cc",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 70,
+      "end": 70,
+      "digest": "sha256:3dadfab2673c93eb5c3174229b4a1df66febfb4310e1591dfd2302776815e526",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 71,
+      "end": 71,
+      "digest": "sha256:4dc76020bae70577e64b330dca83fdf24f3d7593a0154d8abec6dc63f5897fd9",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 72,
+      "end": 72,
+      "digest": "sha256:7a9a20fcfd8428fc8163910a9c033ebe51565e47223b20c0cc3e8d3969ad6a06",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 73,
+      "end": 73,
+      "digest": "sha256:0b42032a1e8add1690c554d7c34a1713b02964c365d1fc84cd3e826ab96c1e9b",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 74,
+      "end": 74,
+      "digest": "sha256:9d2cce1495be9fe197e03753e8d08b56f74d19c5ce5c96d862488f6817729ed5",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 75,
+      "end": 75,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 76,
+      "end": 76,
+      "digest": "sha256:42a57081051f4682a7db3e590b4dd5413d53dc9a01551276dacb521a7e1db9a5",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 77,
+      "end": 77,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 78,
+      "end": 78,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 79,
+      "end": 79,
+      "digest": "sha256:f64be925b5274d1167675d35df22fa9af4b901f3b9f7104ae6ff1c9d4c1ebaa4",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 80,
+      "end": 80,
+      "digest": "sha256:3c760501ae1104481bbf4f203d02628cce8b3b5dfeb8e2d3382c98e45d8b51cb",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 81,
+      "end": 81,
+      "digest": "sha256:57243fed0ab9c6394217192d298d2c3baad4bab5c4e20b5ca5c6a276d2597c9f",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 82,
+      "end": 82,
+      "digest": "sha256:57b5f606561830179a60ac5f76faa9fd269cdfcc5c4490b50e4c6173fcbdd096",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 83,
+      "end": 83,
+      "digest": "sha256:3573bdebfbee29f97e24dc07255dd30f2312a39f4839ecb86a5f34cf18df65d0",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 84,
+      "end": 84,
+      "digest": "sha256:5c95910130a0a0a109958f1b44898c461fa8b20e3a60237f005f2f1dffd711d8",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 85,
+      "end": 85,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 86,
+      "end": 86,
+      "digest": "sha256:1d4aad3cbf4d3c95366c1961b8f467238a4ec8e9c99bd826bbbb980ab0b0deb0",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 87,
+      "end": 87,
+      "digest": "sha256:9710e93e6e7eab1349efcadf7e5798de11419a841db4467467aca39546e0dce4",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 88,
+      "end": 88,
+      "digest": "sha256:d29ca1b3ee6bdf1c91b990b5b4cf24293d85f6da323105e9d0acaea8eb5b96df",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 89,
+      "end": 89,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 90,
+      "end": 90,
+      "digest": "sha256:4470c19bcc8b3dc8eef15a173707a05e248845fa23a5a5ff62bfa0f99dfdad7e",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 91,
+      "end": 91,
+      "digest": "sha256:6d516b98f01f18f49fc42a04e39d97c953c3bcdcdd820edb63aa6eeed272f55b",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 92,
+      "end": 92,
+      "digest": "sha256:e98766bc49d2cf8fef36818fd748232b7ee83517fc39bcebe4e5a23351e1550f",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 93,
+      "end": 93,
+      "digest": "sha256:f198e295cdd3b5813b15f82990144bcc96e6683bf505e3ad1ac1b9bfff4d148b",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 94,
+      "end": 94,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 95,
+      "end": 95,
+      "digest": "sha256:e3a96f292c96d0ab566cc556de5d1213a602865a7c26be8adbf0aafc50d85849",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 96,
+      "end": 96,
+      "digest": "sha256:ace2384b9b4d6b1f643f11ee1a0c234c99e2497d100b16cb77993689dad71396",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 97,
+      "end": 97,
+      "digest": "sha256:a59ef3b2da85539d057a72c03e55f0e5ad219d521db8aa50c233d84ae5d7f628",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 98,
+      "end": 98,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 99,
+      "end": 99,
+      "digest": "sha256:a362b4dd2e3727d2546e9fd0ca828adae954ec89ccda038d44e2f6e9f385eb7c",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 100,
+      "end": 100,
+      "digest": "sha256:f824c872ec6a62fe86c78fbe27f2f6c71b00e61273d58b820740f19e09642784",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 101,
+      "end": 101,
+      "digest": "sha256:e3a96f292c96d0ab566cc556de5d1213a602865a7c26be8adbf0aafc50d85849",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 102,
+      "end": 102,
+      "digest": "sha256:ace2384b9b4d6b1f643f11ee1a0c234c99e2497d100b16cb77993689dad71396",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 103,
+      "end": 103,
+      "digest": "sha256:a59ef3b2da85539d057a72c03e55f0e5ad219d521db8aa50c233d84ae5d7f628",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 104,
+      "end": 104,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 105,
+      "end": 105,
+      "digest": "sha256:c732b330ca6eb5ae9aaaf6349ffb2c3d3cec2d7b1165c77638d4dd211f83d796",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 106,
+      "end": 106,
+      "digest": "sha256:946a11ecde3bd11cf2de55e21aca79e63350e3973b430c4948da4c58cef14dfc",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 107,
+      "end": 107,
+      "digest": "sha256:1c2f054f361fa4ee6dff826ff623b8fa463aef7b3546a45aa710392fd99dd4e3",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 108,
+      "end": 108,
+      "digest": "sha256:6143df40a095fc771b463d7667c008f404f66894464d621575c32b8a724aa8bc",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 109,
+      "end": 109,
+      "digest": "sha256:142661119867ec216bd5c09a323e95be4e64e1cd33b75d99851341bc201c91dc",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 110,
+      "end": 110,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 111,
+      "end": 111,
+      "digest": "sha256:263861df86b6f6e83ce9968c043870a1bc08827019da4e93d464ef0994fe2af6",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 112,
+      "end": 112,
+      "digest": "sha256:907183ccd451012a362047f1e53659ce075367a9fab813da4a97ef68521fc5a9",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 113,
+      "end": 113,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 114,
+      "end": 114,
+      "digest": "sha256:12e159d17e30508e3eb70bf0bef84aadd5930e6ce8a5774cb247e2e5329991d8",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 115,
+      "end": 115,
+      "digest": "sha256:7f2c9f5fb9fe3fd18f8eef5b856e80f393a6354d22dfa1c8881a996b38350639",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 116,
+      "end": 116,
+      "digest": "sha256:d0a798f6553b5efdc4fa30d3d82e4605a1e4c3829bca17dc656c4b00ca97cd01",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 117,
+      "end": 117,
+      "digest": "sha256:1c2f054f361fa4ee6dff826ff623b8fa463aef7b3546a45aa710392fd99dd4e3",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 118,
+      "end": 118,
+      "digest": "sha256:6143df40a095fc771b463d7667c008f404f66894464d621575c32b8a724aa8bc",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 119,
+      "end": 119,
+      "digest": "sha256:85523170a36231029f65a02aa13555004a05c085b89423151126cb3ca5c3f009",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 120,
+      "end": 120,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 121,
+      "end": 121,
+      "digest": "sha256:6053fddf12c39fefde1789e44e9d32182ac96265d8adb44031bbe6f40a5ec6d7",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 122,
+      "end": 122,
+      "digest": "sha256:0bbc80f59dec03763e095b0c9e3d4c9fd78b9ce17ae53ae4fd4e9f778cecf152",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 123,
+      "end": 123,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 124,
+      "end": 124,
+      "digest": "sha256:11b2dfd26f10b705f96280b4c6b2dd8fd33b906362e109a90189812a59fe3701",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 125,
+      "end": 125,
+      "digest": "sha256:51d7b21dd9305466eeedfbd37c7874c6b823f791459c51aa0c89482ed7cee94a",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 126,
+      "end": 126,
+      "digest": "sha256:0e5f2ec6f3fb190ff52bc05fd403584918df4f6672d48b6795394fb1eaab7214",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 127,
+      "end": 127,
+      "digest": "sha256:8a55114e4d5b42f836c2fb02f790c10c58c2ef7fd4174962181ef0556dcef809",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 128,
+      "end": 128,
+      "digest": "sha256:ace2384b9b4d6b1f643f11ee1a0c234c99e2497d100b16cb77993689dad71396",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 129,
+      "end": 129,
+      "digest": "sha256:a59ef3b2da85539d057a72c03e55f0e5ad219d521db8aa50c233d84ae5d7f628",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 130,
+      "end": 130,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 131,
+      "end": 131,
+      "digest": "sha256:ddd1eea66a651bf138c429adc190d78db89bd54305e2a159df8e6bb0f9859fcb",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 132,
+      "end": 132,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 133,
+      "end": 133,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 134,
+      "end": 134,
+      "digest": "sha256:f373aec502e8aa1a012f1053fbdaeb5a5ffbb948b7c9a2b9bfca0b6d9b42a03f",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 135,
+      "end": 135,
+      "digest": "sha256:23a5dd7942d14a37e2ae76eccaa0ef3c0236794e46ebe1cf9e6ece29af7d6023",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 136,
+      "end": 136,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 137,
+      "end": 137,
+      "digest": "sha256:c15068bc7c2b7458741a76269d16bca0caa04eaa0ae4a6a149c9c8a78d672484",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 138,
+      "end": 138,
+      "digest": "sha256:637577fa2dc264c388523530e51520625e0959533feb446691cd9cc3eedb7f05",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 139,
+      "end": 139,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 140,
+      "end": 140,
+      "digest": "sha256:353210166691fd3858d623052a76940122c6f1f7e71cc19cc11221cda8ba98d4",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 141,
+      "end": 141,
+      "digest": "sha256:d703b3a08681fe7633f4a254ddc87ef9c503041300a683675e0a1b49c5459154",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 142,
+      "end": 142,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 143,
+      "end": 143,
+      "digest": "sha256:6e5ce2308c15728d355b7b7941600eb4f8962eba77d4c02b584e9cd53a16a6ae",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 144,
+      "end": 144,
+      "digest": "sha256:72ff1c6d082387b512c98071f1dee518ccfe40bbcfa85176bd5b7c56b01e63df",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 145,
+      "end": 145,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 146,
+      "end": 146,
+      "digest": "sha256:ded5cf5d51c83fe02efcb10124d8aabcf27541aac07d046cf05c29155dda040d",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 147,
+      "end": 147,
+      "digest": "sha256:d7702ce44797b7910f44ae2772dd6b582a82e8f145173a962d64b7c6a9c2f859",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 148,
+      "end": 148,
+      "digest": "sha256:764bc588e0378c68b4f7314e6b38116563421c4aab96981ac0f9371a5d413f32",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 149,
+      "end": 149,
+      "digest": "sha256:ada97ab641bacbdbd14a65cbf969a3e501c65bbbfdbb96923bd3ff542fefc599",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 150,
+      "end": 150,
+      "digest": "sha256:3965077beb91fe81906e209778f130fbc8cfc7b1bd8a9f3ec08fe292ecc48173",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 151,
+      "end": 151,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 152,
+      "end": 152,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 153,
+      "end": 153,
+      "digest": "sha256:eb0b4db3279a7e0d8c97efb0236a6363c094b711d9b0be8c5130c6c0b46b3b07",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 154,
+      "end": 154,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 155,
+      "end": 155,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 156,
+      "end": 156,
+      "digest": "sha256:cc9293cc63d1a312e4daccebc717fb55bf732f1876a7a5be3acb1ecacb52e1c5",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 157,
+      "end": 157,
+      "digest": "sha256:f5f84d53b4f50b5a2110a1fb710b3dd6dce2f8ed9c006d9b017318d621f6a3bf",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 158,
+      "end": 158,
+      "digest": "sha256:8d19b726b8e397f763fc5bb14d655a7f90ca9431fa64caeac9a496d9f7ce3d4a",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 159,
+      "end": 159,
+      "digest": "sha256:879649ccd910f5b039d1bbdcc3a1fcef2fca223e3961e06f48349ae0663adc75",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 160,
+      "end": 160,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 161,
+      "end": 161,
+      "digest": "sha256:c3816410a83b72d32388517ccac3fc5617fa53bc77bb79f2efb53feb1e4739f3",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 162,
+      "end": 162,
+      "digest": "sha256:c080487abc12a10856a65040163c04143c69a05853a5f210a762bdaac39b48c5",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 163,
+      "end": 163,
+      "digest": "sha256:922547282bc66c4eb1a39b6bf2aaf3adeff956abd1d51f42dd3c0eed2e64d547",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 164,
+      "end": 164,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 165,
+      "end": 165,
+      "digest": "sha256:3b2b0e482b821c99ffac8840874510c2fb4326b4c72d9ad43a01d04e1984eabd",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 166,
+      "end": 166,
+      "digest": "sha256:ebae013ceefbc33a652061578ae54c157938010015658d6dfd846dbda4554f6a",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 167,
+      "end": 167,
+      "digest": "sha256:ecd3d216a00ed795537ad6c69b1a9368b6fc64a1c103ca350040949ed02047a5",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 168,
+      "end": 168,
+      "digest": "sha256:9d70731eb4a4a9a6498dcd86b2f8f593391efeb5e7f5ffac578c59e6bf1cfee4",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 169,
+      "end": 169,
+      "digest": "sha256:65364c461d5ce181efcc99579f33c30d9dbd0c37c620a2dffb9b133c0990ec09",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 170,
+      "end": 170,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 171,
+      "end": 171,
+      "digest": "sha256:c09339cf19583b6458dc86fe1a8170f1227e2852ad0ba232c7ada68b69846bd6",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 172,
+      "end": 172,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 173,
+      "end": 173,
+      "digest": "sha256:b44b9652a603b83d94c1857e3a5c7bfc4c4572dde26c6f26c9e318e212b1a3f4",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 174,
+      "end": 174,
+      "digest": "sha256:f8bbd97dbade9f2ba3ab19c18abc3b626a7f09ed537b08d791dfc811ecc3be18",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 175,
+      "end": 175,
+      "digest": "sha256:122880dda79715400fbc7fb1af3ceafbdae68382bfb98972b277b21108e5aefb",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 176,
+      "end": 176,
+      "digest": "sha256:31b783e40b03fe9aa055389af9fe934fdcfe85e0ae18a4ccccf810733b4b5909",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 177,
+      "end": 177,
+      "digest": "sha256:abe43b740db0a56cc5b878de3facfddc5e6121fb7e240d169aa9b5ce805ecbc6",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 178,
+      "end": 178,
+      "digest": "sha256:d62e5d04f1c0205d2d93d4e2d10d196f2c89b15a5e49b85fe8ae022d4b40ffb8",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 179,
+      "end": 179,
+      "digest": "sha256:3b0fc9bdf382bc53dc1a65fefd33039736157324cc380fd8d0fc73f2870caab3",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 180,
+      "end": 180,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 181,
+      "end": 181,
+      "digest": "sha256:d329d2c177b14859442e02dc9a1d26954f878ae91d1143092898aca8995ada8f",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 182,
+      "end": 182,
+      "digest": "sha256:ace2384b9b4d6b1f643f11ee1a0c234c99e2497d100b16cb77993689dad71396",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 183,
+      "end": 183,
+      "digest": "sha256:35e3160a640a7d82c18ac58d5cac2a48c296eed295fe1970d74a706fed035b33",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 184,
+      "end": 184,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 185,
+      "end": 185,
+      "digest": "sha256:42804d3a1ef2cbb1b54feffad55f7e9bf859306fdba0a17d66301e46055f7eca",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 186,
+      "end": 186,
+      "digest": "sha256:ace2384b9b4d6b1f643f11ee1a0c234c99e2497d100b16cb77993689dad71396",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 187,
+      "end": 187,
+      "digest": "sha256:35e3160a640a7d82c18ac58d5cac2a48c296eed295fe1970d74a706fed035b33",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 188,
+      "end": 188,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 189,
+      "end": 189,
+      "digest": "sha256:63dd7e87491a29e500d40b691cd334accb9cac28246203283776d9fc25cf30d0",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 190,
+      "end": 190,
+      "digest": "sha256:eb6bb34290c9f778f1391626d1bdd05e38408b4a33ab994e48aa8477533fe544",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 191,
+      "end": 191,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 192,
+      "end": 192,
+      "digest": "sha256:ad947d3d9cfd20a65e7a2f90300b267b1306a7cbb3c976234ead6f01cf3c065c",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 193,
+      "end": 193,
+      "digest": "sha256:1880bf3b392fd1693e82032e981339ee715c06e23a6aa8def90a87f47e2f3404",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 194,
+      "end": 194,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 195,
+      "end": 195,
+      "digest": "sha256:0b5443fdc04779da85e0e7aeda523dc4484efba91f8aac1b34f2f65d78dd2725",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 196,
+      "end": 196,
+      "digest": "sha256:4c154cdaef82ba33866af83a0fb4627709fde0adf6b35ece16355f457f55ed74",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 197,
+      "end": 197,
+      "digest": "sha256:82270c4444aef5a10b600dd792964fdd40b48d6338409927e46cfc16fe80c469",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 198,
+      "end": 198,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 199,
+      "end": 199,
+      "digest": "sha256:6ac0970e5ce02034b1bc9ac4b81270adddf6e49c6fa1d560f09f95b7bae754fa",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 200,
+      "end": 200,
+      "digest": "sha256:850832182c30cfcec8b4acd7575acf4ac0039d76054df82b809ff481938e85c7",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 201,
+      "end": 201,
+      "digest": "sha256:c2563ab0e3f264d2c92e54e07e0610def6f1d55ad1f8cf4f39e2b217a90c2b06",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 202,
+      "end": 202,
+      "digest": "sha256:8e0bf99633b9afc491dc18ab2cad7e4444d5eb54d5cb3732c8ec759706a1ff50",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 203,
+      "end": 203,
+      "digest": "sha256:ad947d3d9cfd20a65e7a2f90300b267b1306a7cbb3c976234ead6f01cf3c065c",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 204,
+      "end": 204,
+      "digest": "sha256:6abf78158d1d4f5b1b0045a480558f8bfb86e51e34e087219bea654616eb8e75",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 205,
+      "end": 205,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 206,
+      "end": 206,
+      "digest": "sha256:0a2fe764cb7ed5539a59c6776bbda8033df39046f901dacafbb782300c6acf98",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 207,
+      "end": 207,
+      "digest": "sha256:7e4bb9baf91f35d212843057d92b89f487ae42825133fe313239cfc67ac3986a",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 208,
+      "end": 208,
+      "digest": "sha256:f200542e93e1e0926fb1286129db471318f5c170d39c83112da22f0a26574a69",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 209,
+      "end": 209,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 210,
+      "end": 210,
+      "digest": "sha256:5947f12a415073a0db87462e13d86dbc4cc7b3cf8e5cc2e70c08f460af58c9d0",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 211,
+      "end": 211,
+      "digest": "sha256:4c154cdaef82ba33866af83a0fb4627709fde0adf6b35ece16355f457f55ed74",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 212,
+      "end": 212,
+      "digest": "sha256:82270c4444aef5a10b600dd792964fdd40b48d6338409927e46cfc16fe80c469",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 213,
+      "end": 213,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 214,
+      "end": 214,
+      "digest": "sha256:a07f06671865b30c9828733907641d252abac5bec9beed34ceade731517a0bb9",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 215,
+      "end": 215,
+      "digest": "sha256:850832182c30cfcec8b4acd7575acf4ac0039d76054df82b809ff481938e85c7",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 216,
+      "end": 216,
+      "digest": "sha256:10d732295ab439daa095b9183cc74e6b4f5d6b8ddd6c354030a3112e72b32b17",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 217,
+      "end": 217,
+      "digest": "sha256:7c64865296eafcf01a43e1b15aab047c6b7a4dbc94f45558812777428c71771e",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 218,
+      "end": 218,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 219,
+      "end": 219,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 220,
+      "end": 220,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 221,
+      "end": 221,
+      "digest": "sha256:c7d075b6725a26d779b8575fb29866da76145bb9141a7e00071642a183e43f01",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 222,
+      "end": 222,
+      "digest": "sha256:8604e5d1921e7164bf78a71eb8518635efb67ceef237a8ef943fb1416d194023",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 223,
+      "end": 223,
+      "digest": "sha256:9b0885c067198b08b5d1c6184c0a29eb672c081176ac3502351b883615275669",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 224,
+      "end": 224,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 225,
+      "end": 225,
+      "digest": "sha256:df1dbd37f4e22859ee07ed8d330dd3a66e5f30df9cf0dfa348622c1648950dcd",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 226,
+      "end": 226,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 227,
+      "end": 227,
+      "digest": "sha256:6b3cd1ce9b551d00a6bfd17014c5ab639e181a4afd1c5d3508a133e71fd37776",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 228,
+      "end": 228,
+      "digest": "sha256:4ea774fc4a1b7b66efbf40fed9d03a677e6613d8e2895813c8a8a69020cdfe2d",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 229,
+      "end": 229,
+      "digest": "sha256:3abffd33197b4a26191656d8062f251a6c92a5735138c0b7c9d16a728f36465a",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 230,
+      "end": 230,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 231,
+      "end": 231,
+      "digest": "sha256:93f45a5eed6c1145480e5ddacdb6e126999eec9a6c21d8cbe7ed14219306c3f0",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 232,
+      "end": 232,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 233,
+      "end": 233,
+      "digest": "sha256:0d22310d0b4a6fed473b4ebebd9a63c0fed549d7cb8391916695744ee8279ffc",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 234,
+      "end": 234,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 235,
+      "end": 235,
+      "digest": "sha256:96847283297e1fb6c6393d1cd38642366e19767f79ec87efd13f259d069619bf",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 236,
+      "end": 236,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 237,
+      "end": 237,
+      "digest": "sha256:bde16168b015bd85d986d0d97fac04fa1f43d7ffe317a65ff0df2fdbe052431d",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 238,
+      "end": 238,
+      "digest": "sha256:a0abbdec3f18f0186e757675c51ab9200f059d586cf95d6042299122fb7fbc25",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 239,
+      "end": 239,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 240,
+      "end": 240,
+      "digest": "sha256:856254c325c2c29225630fb4bbc8b2446dba0e432db1a826c16663c364fb362e",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 241,
+      "end": 241,
+      "digest": "sha256:2eaa6daa5bc38fad87919739ce5c5e947e670f9e9d92696c161b3efd8027184a",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 242,
+      "end": 242,
+      "digest": "sha256:2806209a2c011c7bdc45623814eea6d364c0b62f60364972c3b11dc958e49f9f",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 243,
+      "end": 243,
+      "digest": "sha256:12948437ae37fa418b82e416a5e0ef147d6b6a31f428c6dd2600999643d7f9d1",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 244,
+      "end": 244,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 245,
+      "end": 245,
+      "digest": "sha256:1054ba8529b0056fb7e11431b0829e8ae1ff417eaed1aff7ce31a13a2d37b246",
+      "note": "Strict connector parser."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/parse.go",
+      "start": 246,
+      "end": 246,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Strict connector parser."
+    }
+  ],
+  "version": 2
+}

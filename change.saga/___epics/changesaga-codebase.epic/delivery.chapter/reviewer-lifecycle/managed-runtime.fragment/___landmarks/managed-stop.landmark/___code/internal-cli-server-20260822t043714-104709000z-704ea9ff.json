@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime.go",
+      "start": 302,
+      "end": 350,
+      "digest": "sha256:aee7f354c67fe5ecdfcf9c6330a5038c9c4450b362078a883dcdc8b4bc3c36f3",
+      "note": "Authenticates loopback liveness and shutdown, waits for exit, and deletes state only for the recorded PID."
+    }
+  ],
+  "version": 2
+}

@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/querytest/fixture_test.go",
+      "start": 115,
+      "end": 141,
+      "digest": "sha256:69be60496e5dd40bbe013d902cb2d872492dcca6b06151dcd590d464e938362e",
+      "note": "Tests absolute-path leak detection and tampered cursor generation after the isolation assertion."
+    }
+  ],
+  "version": 2
+}

@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/appjs.go",
+      "start": 1136,
+      "end": 1704,
+      "digest": "sha256:879249079acbaee922c2b9488d4510ecae7e0f8a54715fe17b4f85b6024b296f",
+      "note": "Implements annotation shape and sticky-note editing, draft histories, movement, recoloring, persistence, and withdrawal."
+    }
+  ],
+  "version": 2
+}

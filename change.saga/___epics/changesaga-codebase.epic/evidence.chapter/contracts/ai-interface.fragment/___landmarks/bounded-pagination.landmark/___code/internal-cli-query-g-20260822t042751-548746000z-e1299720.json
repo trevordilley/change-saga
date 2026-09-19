@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/query.go",
+      "start": 374,
+      "end": 508,
+      "digest": "sha256:54a353b66b1b83e1474a043e08c4220bf70daba6908726f162f5730e91122c1c",
+      "note": "Bounds content and list reads with UTF-8-safe chunks and snapshot-bound integrity-checked cursors."
+    }
+  ],
+  "version": 2
+}

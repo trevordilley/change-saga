@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/install_test.sh",
+      "start": 217,
+      "end": 300,
+      "digest": "sha256:906e42653383e807ce5f0fc0866d5fe974cba144a4d44f28f5fd34f8811aa2a6",
+      "note": "Exercises missing or ambiguous manifests, unsafe archive topology, and embedded-version mismatch."
+    }
+  ],
+  "version": 2
+}

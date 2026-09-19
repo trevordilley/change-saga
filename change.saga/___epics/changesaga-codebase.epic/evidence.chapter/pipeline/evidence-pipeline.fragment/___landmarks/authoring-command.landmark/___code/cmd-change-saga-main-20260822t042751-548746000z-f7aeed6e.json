@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "cmd/change-saga/main.go",
+      "start": 1,
+      "end": 103,
+      "digest": "sha256:e20bcafad3393ce35cafcb87afaea3be363b3ee087b6e1fa31a6750de752ba50",
+      "note": "Introduces the stable CLI command surface and dispatch that starts portable authoring workflows."
+    }
+  ],
+  "version": 2
+}

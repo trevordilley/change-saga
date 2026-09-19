@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/cli.go",
+      "start": 1013,
+      "end": 1073,
+      "digest": "sha256:f85e5e2e926d7c822978bab5e773f081559f88e26e6a98e9c64b53dc721205d1",
+      "note": "Resolves stable IDs and splits fragment landmark shorthand without ambiguity."
+    }
+  ],
+  "version": 2
+}

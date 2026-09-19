@@ -5,9 +5,27 @@
   "kind": "ux",
   "statement": "Comment, reply, thread-state, file-review, and slide-decision mutations complete without main-frame navigation, preserve the active review context, and store hybrid slide decisions in the parent flat review overlay.",
   "evidence": [
-    "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=2350\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=2350",
-    "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=2137\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fserver%2Fserver.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=2137",
-    "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=100\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=e2e%2Ftests%2Fhybrid-slides.spec.ts\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=100"
+    {
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/server/appjs.go",
+      "start": 2350,
+      "end": 2350,
+      "digest": "sha256:ba7e885d9089ad7403f7117bc48a0c2ef27e5fc6feb417a5316c0972fb16febe"
+    },
+    {
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/server/server.go",
+      "start": 2137,
+      "end": 2137,
+      "digest": "sha256:1fceae70b48a2ff16c6492d5ac69ae54a59340828429c12eea8c5da6d501ad66"
+    },
+    {
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "e2e/tests/hybrid-slides.spec.ts",
+      "start": 100,
+      "end": 100,
+      "digest": "sha256:c2087d16109df79a0ae5c38fc264f2edfc8e9e95c30c47ea3c2ec5d44ef60d63"
+    }
   ],
   "created_at": "2026-09-17T04:46:23.770023Z"
 }

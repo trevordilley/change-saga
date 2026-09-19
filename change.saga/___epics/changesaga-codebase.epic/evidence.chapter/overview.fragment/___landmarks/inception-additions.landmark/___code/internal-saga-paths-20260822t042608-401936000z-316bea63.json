@@ -1,0 +1,11 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/saga/paths.go",
+      "digest": "sha256:a9b5c43be9a396bdc1322003b141e7bc55dd5fbfc8299a51fb90cf3a58f8fa3f",
+      "note": "Records this owned authoring path as newly introduced in the since-inception comparison."
+    }
+  ],
+  "version": 2
+}

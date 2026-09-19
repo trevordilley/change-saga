@@ -17,8 +17,8 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/coverage"
-	"github.com/twentyideas/changesaga/internal/diffuri"
 	"github.com/twentyideas/changesaga/internal/gitattribution"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/saga"
@@ -46,7 +46,7 @@ type reviewSnapshot struct {
 	targetOrder     []string
 	targetFiles     map[string][]string
 	targetFileAtoms map[string]map[string][]int
-	fileReviews     map[string]saga.DiffReview
+	fileReviews     map[string]saga.FileReview
 	reviewedFiles   int
 	fileOwners      map[string][]string
 	fileSummaries   map[string]FileDiffView
@@ -60,7 +60,7 @@ type reviewSnapshot struct {
 // comment can advance this generation without touching coverage or Git diffs.
 type reviewState struct {
 	threads     []*saga.Thread
-	diffReviews []saga.DiffReview
+	diffReviews []saga.FileReview
 	byTarget    map[string][]saga.Review
 	fingerprint string
 }
@@ -194,22 +194,13 @@ func (a *app) loadComparison(ctx context.Context) (*reviewSnapshot, reviewState,
 func snapshotWithReviews(structural *reviewSnapshot, document *saga.Saga) *reviewSnapshot {
 	result := *structural
 	result.document = document
-	result.fileReviews = map[string]saga.DiffReview{}
+	result.fileReviews = map[string]saga.FileReview{}
 	result.reviewedFiles = 0
 	result.fileSummaries = make(map[string]FileDiffView, len(structural.fileSummaries))
 	for path, summary := range structural.fileSummaries {
 		result.fileSummaries[path] = summary
 	}
-	for _, review := range document.DiffReviews {
-		reference, err := diffuri.Parse(review.URI)
-		if err != nil || reference.Kind != "file" {
-			continue
-		}
-		previous, ok := result.fileReviews[reference.Path]
-		if !ok || previous.CreatedAt.Before(review.CreatedAt) || previous.CreatedAt.Equal(review.CreatedAt) && previous.ID < review.ID {
-			result.fileReviews[reference.Path] = review
-		}
-	}
+	result.fileReviews = latestFileReviews(document.FileReviews)
 	for path, review := range result.fileReviews {
 		if review.State == "reviewed" {
 			result.reviewedFiles++
@@ -237,7 +228,7 @@ func (a *app) cachedCoverageTotals() *coverageTotalsView {
 	return &coverageTotalsView{
 		Files: len(current.fileOrder), Total: current.report.Summary.Total,
 		Covered: current.report.Summary.Covered, Uncovered: current.report.Summary.Uncovered,
-		Overlapping: current.report.Summary.Overlapping, Orphaned: current.report.Summary.Orphaned,
+		Overlapping: current.report.Summary.Overlapping, Orphaned: current.report.Summary.Stale,
 		Complete: current.report.Complete,
 	}
 }
@@ -315,7 +306,7 @@ func (a *app) reloadReviewsLocked(ctx context.Context, structural *reviewSnapsho
 	if !validation.Valid {
 		return fmt.Errorf("saga became structurally invalid while loading review state")
 	}
-	state := reviewState{threads: loaded.Threads, diffReviews: loaded.DiffReviews, byTarget: loaded.ByTarget, fingerprint: print}
+	state := reviewState{threads: loaded.Threads, diffReviews: loaded.FileReviews, byTarget: loaded.ByTarget, fingerprint: print}
 	document := composeReviewDocument(structural.document, state)
 	applyGitAttribution(ctx, gitattribution.New(ctx, a.root), document)
 	a.cache.review = reviewGeneration{fingerprint: print, document: document}
@@ -393,7 +384,13 @@ func (a *app) populateDerivedSnapshot(ctx context.Context, built *reviewSnapshot
 	if built.diffErr != nil {
 		return built.diffErr
 	}
-	built.report = coverage.Evaluate(built.document, built.validation, built.changes)
+	resolver, err := coderesolve.New(ctx, a.sourceDir)
+	if err != nil {
+		built.diffErr = err
+		return err
+	}
+	defer resolver.Close()
+	built.report = coverage.Evaluate(ctx, built.document, built.validation, built.changes, resolver)
 	digest := sha256.Sum256([]byte(built.changes.Repository + "\x00" + built.changes.BaseOID + "\x00" + built.changes.HeadOID))
 	built.identity = hex.EncodeToString(digest[:16])
 	built.indexComparison()
@@ -416,7 +413,7 @@ func (s *reviewSnapshot) indexComparison() {
 	s.fileLines = map[string][]int{}
 	s.atomByKey = make(map[string]int, len(s.changes.Atoms))
 	s.atomPathByURI = make(map[string]string, len(s.changes.Atoms))
-	s.fileReviews = map[string]saga.DiffReview{}
+	s.fileReviews = map[string]saga.FileReview{}
 	renameTo := map[string]string{}
 	for index := range s.changes.Atoms {
 		atom := &s.changes.Atoms[index]
@@ -434,7 +431,7 @@ func (s *reviewSnapshot) indexComparison() {
 			path = renamed
 		}
 		s.fileAtoms[path] = append(s.fileAtoms[path], index)
-		s.atomByKey[atom.Key], s.atomPathByURI[atom.URI] = index, path
+		s.atomByKey[atom.Key], s.atomPathByURI[atom.Ref] = index, path
 	}
 	for index := range s.changes.DisplayLines {
 		line := &s.changes.DisplayLines[index]
@@ -449,16 +446,7 @@ func (s *reviewSnapshot) indexComparison() {
 		s.fileOrder = append(s.fileOrder, path)
 	}
 	sort.Strings(s.fileOrder)
-	for _, review := range s.document.DiffReviews {
-		reference, err := diffuri.Parse(review.URI)
-		if err != nil || reference.Kind != "file" {
-			continue
-		}
-		previous, ok := s.fileReviews[reference.Path]
-		if !ok || previous.CreatedAt.Before(review.CreatedAt) || previous.CreatedAt.Equal(review.CreatedAt) && previous.ID < review.ID {
-			s.fileReviews[reference.Path] = review
-		}
-	}
+	s.fileReviews = latestFileReviews(s.document.FileReviews)
 	for _, review := range s.fileReviews {
 		if review.State == "reviewed" {
 			s.reviewedFiles++
@@ -467,9 +455,8 @@ func (s *reviewSnapshot) indexComparison() {
 	s.fileSummaries = make(map[string]FileDiffView, len(s.fileOrder))
 	s.fileCoverage = make(map[string]ManifestFileView, len(s.fileOrder))
 	for _, path := range s.fileOrder {
-		uri, _ := diffuri.Build(diffuri.Reference{Repository: s.changes.Repository, Base: s.changes.BaseOID, Head: s.changes.HeadOID, Kind: "file", Path: path})
 		digest := sha256.Sum256([]byte(path))
-		file := FileDiffView{ID: fmt.Sprintf("diff-%x", digest[:8]), Path: path, URI: uri}
+		file := FileDiffView{ID: fmt.Sprintf("diff-%x", digest[:8]), Path: path, Ref: fileLocation(s.changes.BaseOID, s.changes.HeadOID, path, s.fileDeleted(path))}
 		for _, index := range s.fileAtoms[path] {
 			atom := &s.changes.Atoms[index]
 			if atom.Side == "new" {
@@ -626,7 +613,7 @@ func readDerivedSnapshot(path string, snapshot *reviewSnapshot) error {
 
 func extractReviewState(document *saga.Saga) reviewState {
 	state := reviewState{
-		threads: document.Threads, diffReviews: document.DiffReviews,
+		threads: document.Threads, diffReviews: document.FileReviews,
 		byTarget: map[string][]saga.Review{},
 	}
 	var walk func(*saga.Section)
@@ -664,7 +651,7 @@ func structuralDocument(document *saga.Saga) *saga.Saga {
 func composeReviewDocument(structural *saga.Saga, reviews reviewState) *saga.Saga {
 	result := *structural
 	result.Threads = reviews.threads
-	result.DiffReviews = reviews.diffReviews
+	result.FileReviews = reviews.diffReviews
 	result.Section = composeReviewSection(structural.Section, reviews.byTarget)
 	return &result
 }
@@ -912,4 +899,14 @@ func gitOutput(ctx context.Context, dir string, args ...string) (string, error) 
 		return "", err
 	}
 	return strings.TrimSpace(string(output)), nil
+}
+
+// fileDeleted reports whether the comparison deletes path.
+func (s *reviewSnapshot) fileDeleted(path string) bool {
+	for _, index := range s.fileAtoms[path] {
+		if atom := &s.changes.Atoms[index]; atom.Kind == "event" && atom.Event == "delete" {
+			return true
+		}
+	}
+	return false
 }

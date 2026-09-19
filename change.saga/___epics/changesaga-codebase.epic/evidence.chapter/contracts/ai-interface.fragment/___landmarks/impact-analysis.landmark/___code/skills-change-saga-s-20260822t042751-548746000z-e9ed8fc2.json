@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "skills/change-saga/SKILL.md",
+      "start": 214,
+      "end": 252,
+      "digest": "sha256:f8bdb24350e87223d6f1b784a65b6f701f03aa3ec1683d97b1a8772e76e44d44",
+      "note": "Classifies source-derived maintenance impact and refuses exhaustive claims from incomplete baselines."
+    }
+  ],
+  "version": 2
+}

@@ -1,0 +1,1027 @@
+{
+  "references": [
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "digest": "sha256:fd28efd196e062f78912f17dbd470221da4cc9ac76d53bf9782590eb0856c277",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:0b0d4d1f5fbec17d7732f29ccf38d3ed9e3587229f0a04824e1096d25f930f7a",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:71e37b6cd48ad477cbb12624b757ee1dc4975711b78237a85f508bfdd723af77",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:dc94db91287ede614bfe3a0ee2e2b567400c33fbbb5566199f17b7f6235ec46d",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:88b2b63df1b22d7cb9359d4a10a5e357a697e72f0d3f3dc2887843958558ca4b",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:d01aa323829d06b5023aa663d61d45371f4198cc7f8a770199fe5e4dc0c5ba39",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:9d321d278769fb32c7c6820e1c992ebb53b04e39def0f158cbf1d84e27d34c18",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:c38b872e8f16669d10170776c2f60b599323949e1cae090c6134635c999923a0",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:57e084ab258e81b1e20f6e9b9f72b556c4838b3517e76da7edd5b6e7546090a2",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:f05b48055b78db9e9e8993848d47169d7abd312df35886aa83d4014d37eb4009",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:226f37da536b12b86af70e3b5777877ac58882a6b0e30be1d9fc591badf849e2",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:5085ffacd240fc15039d153724b33a008f63303d0084e22d14471031aea075b9",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:ab6f6be8e5963a10d31f1044691aa6beceed5a59d04cd8247f259497075d8b4d",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:fafba0527c3953c4b6e0e5b5739ba83612f8053bcdc9466730193cd1d590b408",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:bcaf058cdea2dd6779095121a9efd7935b6611ccbed6e9f5a1e52c0d3ecc8b7e",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:7b02881b73d87256977b4544fe4c3b34a736a25d7444a1281d9087480be92548",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:8de9e6ff55d2521f458747600dacc7d3e9489f9a24d3c331a872a8c8542c7a8e",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:8c5d36c257050e40d4b9ecef80ce192cf6c1507b0fa6d5860ed27bab52976dd6",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:127a8c854a4b1ca0fc9aff21b8d7b3187fd4d7868ab82443b31ec5ca7960e83b",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:9f09996a8aba7b386e39706a244a8301480fd67c494e8c7f14bd35eeafe2906f",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:5dd34dfb28f56f35b837378392883751942193e77df31e487f506b9ebc632551",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:8840bdf94521fa060dafaaf12e4b7069320957461075f0b2f555d5e6e1f7c139",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:f09c69542ba0f07c682726e95547410fe41eecbd294ba5dd96eb60f89af9ff84",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:63a68e93e4c2bea48611a400186c62bf100e0fd6150297875dbd57d465a1e0b8",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:080e27aa3a8910b03f86ed71a1ee93624073c28ef0b02fdfcb7f144dc24d821d",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:4b8528588b260b663ade40842a81a4efcb9c6bedb5b0508eb3b3f79d73840174",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:790abc4e40cac256ccb7c2ec0b7a5dd3d193b4ada19a15c084a6f46517e2c858",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:4a71ce00ee93b841d5c67d8ef1f30eb850ef21d1f759d3026896e786c33b320f",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:abb2b04ff6ed71947f6a3d521d013c42bf342a9e5192b74c9cd85d710c6cb0eb",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:c572eb0c18b1f0685b67fd09fdafd2761c091ecfc45afb87bfacc43421e7e3ed",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:bd893808228850f55a346ac375a4b03f81ea3e7170fc1b5ff2654811f07cc7b1",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:790abc4e40cac256ccb7c2ec0b7a5dd3d193b4ada19a15c084a6f46517e2c858",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:80dd48ca7ceaeaa5cbfeb52b2181e46cb6063ea0cf056de055ccc28831f71663",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:874c50e617805374fe80f2cfc4e3e9765e4bc36e17c4adff388af035d8b9577f",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:20a4613e1991464d32f56e9342146aaa8910933f1cd2264e142ff69b2c7661ef",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:95ac0e1219f6ee81b77a731d8a6f9b62a6a16c5a9fc4f0417050b3b9a9ecbcf9",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:dfc5fbb605979eb7648793611f955d5da30ae812ba74aea90905debe2fbb05af",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:46082205d0e4800fad710847986f51779b6bc9bad9b912a0d6621294642f640c",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:76624b206825441f71556f4cb335b4b49c8a833e6b05195f572604f5a85fb627",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:277bb10c6cc2e235982f65779925f3f0b443268ad6f95b2e96dcfd47df7a4462",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:510c344ac7fb0fb714ff4edac5a0aa4634a5f209807248e3726d85fb970ffa41",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:a69f7d094289c049d774decb3a2bec9a7c6c61cce43e4e392a971fd37028f1a5",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:662c7fb340d0d1fba69251b15903e58a60c594d05ea64ac7158f40a41c195660",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:c9822759d49eccd205b8367842fb79605f55be3fc4f18e1a43c51d99a7fbe27a",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:24d6b3e9f653cd719bad9b2748ce55af7f794f9c758b52e0dae542409c75dde4",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:e9411bba6fb62b1c59bb618162043bcc255be47d06863479eb0c78580742ee30",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:6d3b9e09a49e676c429cef6632b7ccfb6bbc3e82d6d091b45833f433df2703c0",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:1359bee8a24c0efa54c9011f772e3f6a9753f327bfcc30a0adcaa12a8a813dc8",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:f766ff5ec46c9c4d3ecee837de5f9095777772985176475f93047ecbcacbd63e",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:d67106f0a59e7868029e6772c028cc15e276bccb591d423e2448dc7224312db1",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:06ee57611717f5914c13c3ffde9e5e6e37e24bc91dd8496a782d752352627f2b",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 68,
+      "end": 68,
+      "digest": "sha256:b54e9f80cd7b70994b96697a7a6133740b139fa16be0d60bd8a9eec84b4911d8",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:26ee0a46f26a58e5df52c3721500d461e5e4772fece6259d7764a6e7648f667c",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 70,
+      "end": 70,
+      "digest": "sha256:6d5e1387cc29d9f785b271753369c44baea60006038bdf55f666951ada2e433b",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 71,
+      "end": 71,
+      "digest": "sha256:7d05eb0e9464fc3e351d0f3b7737d8ab3e2f6b0721ec1a1bb353d546164bbb54",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 72,
+      "end": 72,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 73,
+      "end": 73,
+      "digest": "sha256:2f3108b84c42ff6a40e22744bca2561da23d5b5578ccda5c74f5fc96ef5ab125",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 74,
+      "end": 74,
+      "digest": "sha256:4c154cdaef82ba33866af83a0fb4627709fde0adf6b35ece16355f457f55ed74",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 75,
+      "end": 75,
+      "digest": "sha256:0e4e78d2eb683e84fa9d113d26e3913b225682a40e4b4181758ce247e53fbe80",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 76,
+      "end": 76,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 77,
+      "end": 77,
+      "digest": "sha256:4198e98caa4954dceb9a27b0be0114b9c0ebae4cc0850df8b4feaa6be6c7f48d",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 78,
+      "end": 78,
+      "digest": "sha256:ff5f4a4ec1813a5e973ac9c0de535c948a7cb3be85ec66df29c717f628a4eb2a",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 79,
+      "end": 79,
+      "digest": "sha256:2d4d5841a4a26922fda189f4d53d58bcf7e3018ff5243b93be0e3e7934db043c",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 80,
+      "end": 80,
+      "digest": "sha256:d5a3b2952b630639619bc0802609d63806b901105e83fce9e39d60aa44518544",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 81,
+      "end": 81,
+      "digest": "sha256:4805e812cd868f3a1a4ea46bd99b848d016958e15eabb16aeb0720bba7b462c5",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 82,
+      "end": 82,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 83,
+      "end": 83,
+      "digest": "sha256:9346b8e907e08c30a44b71609f84265a2729ca6646465255b037f964a43169db",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 84,
+      "end": 84,
+      "digest": "sha256:42b11bf5388249d9f3b5c037f88de276f0a86221dae40f589d11fc6a5f4e2eba",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 85,
+      "end": 85,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 86,
+      "end": 86,
+      "digest": "sha256:9791718f69d16f4b70c0ec1a3c88dbb780571c8f05bfb69912d9f6bec315e80e",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 87,
+      "end": 87,
+      "digest": "sha256:42b11bf5388249d9f3b5c037f88de276f0a86221dae40f589d11fc6a5f4e2eba",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 88,
+      "end": 88,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 89,
+      "end": 89,
+      "digest": "sha256:fb05fb9f10f16856e354fc8b81d563751d0f1459636b04a3cd3a164a169014d6",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 90,
+      "end": 90,
+      "digest": "sha256:4c154cdaef82ba33866af83a0fb4627709fde0adf6b35ece16355f457f55ed74",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 91,
+      "end": 91,
+      "digest": "sha256:0e4e78d2eb683e84fa9d113d26e3913b225682a40e4b4181758ce247e53fbe80",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 92,
+      "end": 92,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 93,
+      "end": 93,
+      "digest": "sha256:d2fd030e6a829fbfb75611b21e8445d2310b62f9a95d1b06e5b14498543b454c",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 94,
+      "end": 94,
+      "digest": "sha256:790abc4e40cac256ccb7c2ec0b7a5dd3d193b4ada19a15c084a6f46517e2c858",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 95,
+      "end": 95,
+      "digest": "sha256:77a9b5e9019c8db8783ec9c3febb0a2c9862f61a05c308fe895e4a9bed03edb3",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 96,
+      "end": 96,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 97,
+      "end": 97,
+      "digest": "sha256:662c7fb340d0d1fba69251b15903e58a60c594d05ea64ac7158f40a41c195660",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 98,
+      "end": 98,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 99,
+      "end": 99,
+      "digest": "sha256:280c267e1458242581233e6e74a5a63ca8180e186323ac955ab1e1eef909a4b2",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 100,
+      "end": 100,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 101,
+      "end": 101,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 102,
+      "end": 102,
+      "digest": "sha256:051a6447f65c911fa8ffb2aaffb1fb8b28ae65b4f725f1fd83d7fb922c02e463",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 103,
+      "end": 103,
+      "digest": "sha256:62a453958163e4d285380b522d4d1761e493f6b6d6f35c9cf79ccf69be4fbd64",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 104,
+      "end": 104,
+      "digest": "sha256:9d22a7356d34faa84119fb5d3aef0e256b9820e45da41439f709add390e5b781",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 105,
+      "end": 105,
+      "digest": "sha256:2228d3af19d99d99c618691aa25cabacda1e7a1150c7ba3852a3e65d33f28118",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 106,
+      "end": 106,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 107,
+      "end": 107,
+      "digest": "sha256:b4d9db282a0effbb0d1fc3ce9ee546bd8fbf4da74fae9ebd18c50a8a2a64831b",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 108,
+      "end": 108,
+      "digest": "sha256:2228d3af19d99d99c618691aa25cabacda1e7a1150c7ba3852a3e65d33f28118",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 109,
+      "end": 109,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 110,
+      "end": 110,
+      "digest": "sha256:4747858f5b4437a45540a397ac2eb128f6b625b578fd466c23de862bb27d7d91",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 111,
+      "end": 111,
+      "digest": "sha256:b372dbb42ff53d7a954cf7932f732b0375e4570f80b3451f5517dd4b655087c4",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 112,
+      "end": 112,
+      "digest": "sha256:b266537d2caf3046d51c05fbcdaef0d694d75a9d717aef0955055bfd2337ab9c",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 113,
+      "end": 113,
+      "digest": "sha256:26df8f17d44f501ec142c47e836eacfff56b9d74e272a3c07ff658d9a8877b86",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 114,
+      "end": 114,
+      "digest": "sha256:a46498a8fc8138fd27a8d55849e2f7f763e02ab4128998da963b3f9987b5f2d2",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 115,
+      "end": 115,
+      "digest": "sha256:bbe13e61a799a9d2c600cc3031ddbc1d38f99d17ee9f256631649a9aca07c3e8",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 116,
+      "end": 116,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 117,
+      "end": 117,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 118,
+      "end": 118,
+      "digest": "sha256:72253290b55a2f2fc2688f2cb64229bec9a182f0834a6d72f68d4bc6bf610b19",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 119,
+      "end": 119,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 120,
+      "end": 120,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 121,
+      "end": 121,
+      "digest": "sha256:92e88f0cbe75f3488f7216c066954b5ccf039fe167c6bd4aa5e53fbbdabb58f4",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 122,
+      "end": 122,
+      "digest": "sha256:62a453958163e4d285380b522d4d1761e493f6b6d6f35c9cf79ccf69be4fbd64",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 123,
+      "end": 123,
+      "digest": "sha256:76dad1b8bafd52d10813b54cb55d322131574f7d0fcdb8ce45e48f9b8b0a0072",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 124,
+      "end": 124,
+      "digest": "sha256:2228d3af19d99d99c618691aa25cabacda1e7a1150c7ba3852a3e65d33f28118",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 125,
+      "end": 125,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 126,
+      "end": 126,
+      "digest": "sha256:8e9d70a90b7ae439934bf465575c84897bdc6b2ccbdb637620b333cc6e4c947e",
+      "note": "Structural navigation outline."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/outline.go",
+      "start": 127,
+      "end": 127,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Structural navigation outline."
+    }
+  ],
+  "version": 2
+}

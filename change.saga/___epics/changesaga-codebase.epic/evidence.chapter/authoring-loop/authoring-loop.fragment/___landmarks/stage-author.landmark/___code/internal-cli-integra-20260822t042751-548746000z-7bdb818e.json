@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/integration_test.go",
+      "start": 146,
+      "end": 174,
+      "digest": "sha256:7c2030e2cfffdfa8e67c9830571e95eb79d0dce1ec835669134419494a5d91a2",
+      "note": "Creates focused hierarchy and fragment content through supported portable authoring mutations."
+    }
+  ],
+  "version": 2
+}

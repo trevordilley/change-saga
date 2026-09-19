@@ -11,7 +11,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/twentyideas/changesaga/internal/diffuri"
+	"github.com/twentyideas/changesaga/internal/coderef"
+	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/querytest"
 	"github.com/twentyideas/changesaga/internal/saga"
@@ -25,14 +26,29 @@ func TestQueryCLIRealSeparateRepositoriesAllOperations(t *testing.T) {
 	if err != nil || len(changes.Atoms) == 0 {
 		t.Fatalf("read fixture comparison: atoms=%d err=%v", len(changes.Atoms), err)
 	}
-	evidence, err := json.Marshal(saga.DiffFile{Version: saga.CurrentVersion, Diffs: []saga.DiffReference{{URI: changes.Atoms[0].URI, Note: "query integration"}}})
+	resolver, err := coderesolve.New(context.Background(), fixture.SourceDir)
 	if err != nil {
 		t.Fatal(err)
 	}
-	fixture.WriteEpic("overview.fragment/___diffs/coverage.json", string(evidence))
+	defer resolver.Close()
+	atomLocation := changes.Location(changes.Atoms[0])
+	if atomLocation.String() != changes.Atoms[0].Ref {
+		t.Fatalf("atom ref %q is not its location %q", changes.Atoms[0].Ref, atomLocation)
+	}
+	atomReference, err := resolver.Author(context.Background(), atomLocation, "query integration")
+	if err != nil {
+		t.Fatal(err)
+	}
+	claimReference := atomReference
+	claimReference.Note = ""
+	evidence, err := json.Marshal(saga.CodeFile{Version: saga.CurrentVersion, References: []coderef.Reference{atomReference}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	fixture.WriteEpic("overview.fragment/___code/coverage.json", string(evidence))
 	claim, err := json.Marshal(saga.Claim{
 		Version: saga.CurrentVersion, ID: "secure-default", Target: querytest.OverviewTarget, Kind: "security",
-		Statement: "The secure default is enabled.", Evidence: []string{changes.Atoms[0].URI}, CreatedAt: time.Date(2026, 8, 21, 10, 0, 0, 0, time.UTC),
+		Statement: "The secure default is enabled.", Evidence: []coderef.Reference{claimReference}, CreatedAt: time.Date(2026, 8, 21, 10, 0, 0, 0, time.UTC),
 	})
 	if err != nil {
 		t.Fatal(err)
@@ -46,13 +62,7 @@ func TestQueryCLIRealSeparateRepositoriesAllOperations(t *testing.T) {
 		t.Fatal(err)
 	}
 	fixture.WriteSaga("___verifications/secure-default-check.json", string(verification))
-	fileURI, err := diffuri.Build(diffuri.Reference{
-		Repository: changes.Repository, Base: changes.BaseOID, Head: changes.HeadOID,
-		Kind: "file", Path: changes.Atoms[0].Path,
-	})
-	if err != nil {
-		t.Fatal(err)
-	}
+	fileLocation := coderef.Location{Commit: atomLocation.Commit, Path: atomLocation.Path}.String()
 	before := fixture.State()
 	common := []string{"--saga", fixture.SagaRoot, "--repo", fixture.SourceDir}
 
@@ -64,8 +74,8 @@ func TestQueryCLIRealSeparateRepositoriesAllOperations(t *testing.T) {
 		{name: "children", args: []string{"children", "--parent", saga.SagaTarget("security"), "--limit", "2"}},
 		{name: "fragment", args: []string{"fragment", "--target", querytest.OverviewTarget, "--limit", "8"}},
 		{name: "fragment-diffs", args: []string{"fragment-diffs", "--target", querytest.OverviewTarget}},
-		{name: "diff-owners-atom", args: []string{"diff-owners", "--diff", changes.Atoms[0].URI}},
-		{name: "diff-owners-file", args: []string{"diff-owners", "--diff", fileURI}},
+		{name: "diff-owners-atom", args: []string{"diff-owners", "--ref", changes.Atoms[0].Ref}},
+		{name: "diff-owners-file", args: []string{"diff-owners", "--ref", fileLocation}},
 		{name: "reviews", args: []string{"reviews"}},
 		{name: "gaps", args: []string{"gaps", "--kind", "uncovered"}},
 		{name: "mappings", args: []string{"mappings", "--sort", "scrutiny"}},

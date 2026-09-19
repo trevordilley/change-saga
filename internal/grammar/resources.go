@@ -197,7 +197,7 @@ var relations = []Relation{
 	{
 		Type: "addresses", Sources: []string{reportDesign, "deck", "slide", item}, Targets: []string{story, criterion}, Scopes: []string{"self", "descendants"},
 		RequiredPins: []string{"from_content_digest", "to_revision"}, Axes: []string{"ux", "technical", "implementation"},
-		Meaning: "counts design coverage; descendants is legal only for a deck or slide source and lets the path reach contained Items and their exact diffs",
+		Meaning: "counts design coverage; descendants is legal only for a deck or slide source and lets the path reach contained Items and their code references",
 	},
 	{
 		Type: "implements", Sources: []string{"work-item"}, Targets: []string{reportDesign, criterion}, Scopes: []string{"self"},
@@ -207,7 +207,7 @@ var relations = []Relation{
 	{
 		Type: "explains", Sources: []string{deckSlide, item}, Targets: []string{story, criterion}, Scopes: []string{"self", "descendants"},
 		RequiredPins: []string{"to_revision"}, Axes: []string{"implementation"},
-		Meaning: "reviewer explanation (legacy_review_explanation); reaches exact diffs through Items but never counts as design coverage",
+		Meaning: "reviewer explanation (legacy_review_explanation); reaches code through Items but never counts as design coverage",
 	},
 	{
 		Type: "verifies", Sources: []string{"claim", "verification", "test-case"}, Targets: []string{criterion}, Scopes: []string{"self"},
@@ -228,9 +228,9 @@ var relations = []Relation{
 
 var derivedEdges = []DerivedEdge{
 	{Edge: "contains", Source: "deck -> slide -> item", Target: "item", Rule: "exact parent ids in validated v4 records"},
-	{Edge: "owns_diff", Source: "item", Target: "saga-diff URI", Rule: "valid current 40-e record in the Item's embedded bundle"},
+	{Edge: "owns_code", Source: "item", Target: "code reference", Rule: "valid 40-e record in the Item's embedded bundle whose reference is current in the comparison"},
 	{Edge: "has_quality_evidence", Source: "test-case revision or run", Target: "quality-evidence", Rule: "exact URN reference in validated v5 records"},
-	{Edge: "matches_item_diff", Source: "implementation_under_test evidence", Target: "item", Rule: "exact canonical diff URI equality in the same current source comparison"},
+	{Edge: "matches_item_code", Source: "implementation_under_test evidence", Target: "item", Rule: "both reference the same changed atoms once resolved in the current comparison"},
 }
 
 var axisRules = []AxisRule{
@@ -239,5 +239,5 @@ var axisRules = []AxisRule{
 	{Axis: "ui", Covered: "no UI reference resource is recorded yet; only an explicit ui coverage exception resolves this axis", Gate: "design_ready"},
 	{Axis: "technical", Covered: "a current addresses relation from a report design target or a non-ux deck, slide, or Item", Gate: "design_ready"},
 	{Axis: "quality", Covered: "active test cases linked by current verifies relations whose current passing runs cover every required kind", Gate: "quality_ready"},
-	{Axis: "implementation", Covered: "a current addresses or explains path through an Item to an exact diff in the current source comparison", Gate: "implementation_trace_ready"},
+	{Axis: "implementation", Covered: "a current addresses or explains path through an Item to a current code reference", Gate: "implementation_trace_ready"},
 }

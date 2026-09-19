@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/reviewer_bootstrap.go",
+      "start": 1,
+      "end": 78,
+      "digest": "sha256:842ea71a6e53407347259044fe2c9f26114c54f41889cfdbe9270f4af9380d8b",
+      "note": "Introduces the stable CLI command surface and dispatch that starts portable authoring workflows."
+    }
+  ],
+  "version": 2
+}

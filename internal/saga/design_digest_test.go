@@ -2,6 +2,7 @@ package saga
 
 import (
 	"fmt"
+	"github.com/twentyideas/changesaga/internal/coderef"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -40,7 +41,7 @@ func TestCurrentDesignContentDigestsTrackAuthoredContentOnly(t *testing.T) {
 		t.Fatal("root narrative was indexed as technical design")
 	}
 
-	writeTestFile(t, filepath.Join(fragmentDir, "___diffs", "evidence.json"), `{"version":2,"diffs":[]}`)
+	writeTestFile(t, filepath.Join(fragmentDir, CodeDirName, "evidence.json"), `{"version":2,"references":[]}`)
 	document, _, err = Load(root)
 	if err != nil {
 		t.Fatal(err)
@@ -212,15 +213,15 @@ func TestEmbeddedVisualDigestsExcludeEvidenceAndReviewOverlays(t *testing.T) {
 	deck := document.Decks[0]
 	slide := deck.Slides[0]
 	item := slide.Items[0]
-	item.Diffs = []DiffFile{{Version: ComponentVersion, Diffs: []DiffReference{{URI: "saga-diff://overlay"}}}}
-	item.HasDiffs = true
+	item.Code = []CodeFile{{Version: ComponentVersion, References: []coderef.Reference{testReference("overlay.go", 1, 1)}}}
+	item.HasCode = true
 	item.Reviews = []Review{{ID: "item-comment", Body: "Comment overlay"}}
 	slide.Reviews = []Review{{ID: "slide-approval", State: "approved", Body: "Approval overlay"}}
 	deck.Reviews = []Review{{ID: "deck-review", Body: "Derived review overlay"}}
 	document.Claims = []Claim{{ID: "claim-overlay", Target: item.Target, Statement: "Claim overlay"}}
 	document.Verifications = []Verification{{ID: "verification-overlay", Claim: "claim-overlay", Summary: "Verification overlay"}}
 	document.Threads = []*Thread{{ID: "thread-overlay", Target: item.Target, Messages: []*Message{{ID: "comment-overlay"}}}}
-	document.DiffReviews = []DiffReview{{ID: "diff-review-overlay", State: "reviewed"}}
+	document.FileReviews = []FileReview{{ID: "diff-review-overlay", State: "reviewed"}}
 
 	after, err := CurrentDesignContentDigests(document)
 	if err != nil {

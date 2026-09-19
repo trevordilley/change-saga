@@ -1,17 +1,29 @@
 {
-  "version": 2,
-  "diffs": [
+  "references": [
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=295\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Frequirements%2Fvalidate.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=295",
+      "commit": "b6042a5b85057c8f2f892dabc9d06cb1bfa155fd",
+      "path": "internal/requirements/validate.go",
+      "start": 295,
+      "end": 295,
+      "digest": "sha256:5199d208930df79c5bb9087a9b2027cc8eefda24a431eb9d4082448c9563c111",
       "note": "Constrains explains to visual sources and story or criterion targets with a required story revision pin."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=297\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Frequirements%2Fvalidate.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=297",
+      "commit": "b6042a5b85057c8f2f892dabc9d06cb1bfa155fd",
+      "path": "internal/requirements/validate.go",
+      "start": 297,
+      "end": 297,
+      "digest": "sha256:ff9420c78a81d1aa5b4cda221dd7bee472b6ba8c866962e4d182f0cbfa58745a",
       "note": "Constrains explains to visual sources and story or criterion targets with a required story revision pin."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=648\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Frequirements%2Fvalidate.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=648",
+      "commit": "b6042a5b85057c8f2f892dabc9d06cb1bfa155fd",
+      "path": "internal/requirements/validate.go",
+      "start": 648,
+      "end": 648,
+      "digest": "sha256:2ca731f1be5bec5980eb7c8a93d3b452b7e35faf582fc38b053256e124a8385a",
       "note": "Constrains explains to visual sources and story or criterion targets with a required story revision pin."
     }
-  ]
+  ],
+  "version": 2
 }

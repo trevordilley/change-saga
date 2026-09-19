@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_test.go",
+      "start": 253,
+      "end": 714,
+      "digest": "sha256:4af81e85ab2b5f7652d87b8194b3fb13cbba1ac06d89383eb53263d812a63e89",
+      "note": "Tests annotation persistence and projection, sticky-note edits, withdrawal and reopening, suggestions, and review decisions."
+    }
+  ],
+  "version": 2
+}

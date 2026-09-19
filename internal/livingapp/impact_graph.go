@@ -3,6 +3,8 @@ package livingapp
 import (
 	"sort"
 
+	"github.com/twentyideas/changesaga/internal/coderef"
+
 	"github.com/twentyideas/changesaga/internal/impact"
 	"github.com/twentyideas/changesaga/internal/quality"
 	"github.com/twentyideas/changesaga/internal/qualityid"
@@ -52,11 +54,11 @@ func ImpactGraph(in StatusInputs) impact.Graph {
 		}
 		for _, evidence := range testCase.Evidence {
 			evidenceURN, _ := qualityid.Evidence(in.SagaID, testCase.Identity.ID, evidence.ID)
-			if !heads[evidenceURN] || len(evidence.Diffs) == 0 || evidence.Role == quality.EvidenceExecutionArtifact {
+			if !heads[evidenceURN] || len(evidence.Code) == 0 || evidence.Role == quality.EvidenceExecutionArtifact {
 				continue
 			}
 			graph.TestCases = append(graph.TestCases, impact.TestCaseEvidence{
-				TestCase: urn, Evidence: evidenceURN, Role: string(evidence.Role), Diffs: copyStrings(evidence.Diffs), Criteria: uniqueSorted(verifies[urn]),
+				TestCase: urn, Evidence: evidenceURN, Role: string(evidence.Role), Code: append([]coderef.Reference{}, evidence.Code...), Criteria: uniqueSorted(verifies[urn]),
 			})
 		}
 	}

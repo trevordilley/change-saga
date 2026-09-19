@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/store/store.go",
+      "start": 169,
+      "end": 204,
+      "digest": "sha256:18140b4ba32bc1a54245f427a08ffdea0938d5d063ebe08c6ff709e218152971",
+      "note": "Serializes supported writers with a bounded advisory lock on the real Saga directory."
+    }
+  ],
+  "version": 2
+}

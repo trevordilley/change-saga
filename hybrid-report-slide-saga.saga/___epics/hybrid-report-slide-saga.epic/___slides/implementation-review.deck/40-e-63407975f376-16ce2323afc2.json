@@ -1,17 +1,29 @@
 {
-  "version": 2,
-  "diffs": [
+  "references": [
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=403\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fserver%2Fstyles.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=403",
+      "commit": "b6042a5b85057c8f2f892dabc9d06cb1bfa155fd",
+      "path": "internal/server/styles.go",
+      "start": 403,
+      "end": 403,
+      "digest": "sha256:8cc1fe101b1cee5e3ba8ab349cab39d3905e903847b317f2b04dd742d50aa4ac",
       "note": "Reuses the normal Item hover outline and affordance only for evidence-bearing Items while the slide diff total is previewed."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=406\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fserver%2Fstyles.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=406",
+      "commit": "b6042a5b85057c8f2f892dabc9d06cb1bfa155fd",
+      "path": "internal/server/styles.go",
+      "start": 406,
+      "end": 406,
+      "digest": "sha256:df9d42120bf7f5439df5bffdbf2c487774dc391f2cc46edadf673f1b4f3898e7",
       "note": "Reuses the normal Item hover outline and affordance only for evidence-bearing Items while the slide diff total is previewed."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=410\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fserver%2Fstyles.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=409",
+      "commit": "b6042a5b85057c8f2f892dabc9d06cb1bfa155fd",
+      "path": "internal/server/styles.go",
+      "start": 409,
+      "end": 410,
+      "digest": "sha256:eab78d54f2c371163d5befa2bf003c78bd73baf41cc76eb80559c24e4878fd23",
       "note": "Reuses the normal Item hover outline and affordance only for evidence-bearing Items while the slide diff total is previewed."
     }
-  ]
+  ],
+  "version": 2
 }

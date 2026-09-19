@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/testdata/query/overview.golden",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:e43394f1a146234536ff8a997f33ee09dc3cb563666c86846d160dfb523f986c",
+      "note": "Tests bounded inert queries, separate repositories, cursor attacks, side effects, and path leakage."
+    }
+  ],
+  "version": 2
+}

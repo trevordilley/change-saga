@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/codeview.go",
+      "start": 398,
+      "end": 433,
+      "digest": "sha256:de49cb4049e2449fa5dd5c98c8d05c2266ac85e142e197247846ecaec1bd6401",
+      "note": "Groups selected atoms by their narrative chapter and fragment owners for the reverse journey."
+    }
+  ],
+  "version": 2
+}

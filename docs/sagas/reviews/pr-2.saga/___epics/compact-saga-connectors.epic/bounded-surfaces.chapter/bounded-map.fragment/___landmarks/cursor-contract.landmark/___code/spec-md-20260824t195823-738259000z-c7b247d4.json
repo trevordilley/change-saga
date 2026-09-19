@@ -1,0 +1,85 @@
+{
+  "references": [
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "SPEC.md",
+      "start": 324,
+      "end": 324,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Format-level scale and query contracts."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "SPEC.md",
+      "start": 325,
+      "end": 325,
+      "digest": "sha256:c3f6acb2e26f5827c2c85a070d719e44f6c4d5afdbe03175b313deac6c010cac",
+      "note": "Format-level scale and query contracts."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "SPEC.md",
+      "start": 326,
+      "end": 326,
+      "digest": "sha256:5fa131a1b014a0e49d27f07b5a60257aebf4389b3a93f40130969e1a6fce67b4",
+      "note": "Format-level scale and query contracts."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "SPEC.md",
+      "start": 327,
+      "end": 327,
+      "digest": "sha256:a50dbc1ea23d42e41e081d949025960cb68fc8b5a4df3345c15f4a0b3c5e07f1",
+      "note": "Format-level scale and query contracts."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "SPEC.md",
+      "start": 328,
+      "end": 328,
+      "digest": "sha256:91d4b69fd6215ab56198df45395176b7a92eed2ce7935a844040e76122c2cf6c",
+      "note": "Format-level scale and query contracts."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "SPEC.md",
+      "start": 329,
+      "end": 329,
+      "digest": "sha256:6a64333eca543347ab896c17effc9cb6589c3c9c0d49c60a634524dc35cec23a",
+      "note": "Format-level scale and query contracts."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "SPEC.md",
+      "start": 330,
+      "end": 330,
+      "digest": "sha256:c6b5267d79c749eae5626eba18aca0b2379587be25095f4020bde5a36d5fd2d1",
+      "note": "Format-level scale and query contracts."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "SPEC.md",
+      "start": 331,
+      "end": 331,
+      "digest": "sha256:432d3fa6d82ccc9e5f2b8521ea5da8323ce56500cbce9f06d930eb37f3139656",
+      "note": "Format-level scale and query contracts."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "SPEC.md",
+      "start": 332,
+      "end": 332,
+      "digest": "sha256:f20130610d9725d29e4663157a24a781b73fcd776f1afb192f197f31621d07c3",
+      "note": "Format-level scale and query contracts."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "SPEC.md",
+      "start": 333,
+      "end": 333,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Format-level scale and query contracts."
+    }
+  ],
+  "version": 2
+}

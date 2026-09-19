@@ -6,8 +6,8 @@ import (
 	"net/url"
 	"testing"
 
+	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coverage"
-	"github.com/twentyideas/changesaga/internal/diffuri"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
@@ -26,8 +26,8 @@ func TestLargeSagaCoverageAndDrawerNavigationContracts(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	selection, err := diffuri.Parse(chunkURL.Query().Get("diff"))
-	if err != nil || chunkURL.Query().Get("view") != "code" || selection.Start != 1 || selection.End != benchmarkCoverageLinesPerFragment {
+	selection, err := coderef.ParseLocation(chunkURL.Query().Get("ref"))
+	if err != nil || chunkURL.Query().Get("view") != "code" || selection.Commit != changes.HeadOID || selection.Path != firstTarget.Files[0].Path || selection.Start != 1 || selection.End != benchmarkCoverageLinesPerFragment {
 		t.Fatalf("large target range lost its exact deep link: url=%q selection=%#v error=%v", chunkURL, selection, err)
 	}
 
@@ -105,11 +105,8 @@ func BenchmarkLargeSagaLinkedDrawerConstruction(b *testing.B) {
 // and the comparison contains 4,096 changed lines in total. Keeping it wholly
 // in memory makes allocation changes attributable to the view code under test.
 func benchmarkCoverageFixture() (*saga.Saga, gitdiff.ChangeSet, coverage.Report, map[string][]gitdiff.Atom) {
-	const (
-		repository = "https://example.test/large.git"
-		base       = "base-oid"
-		head       = "head-oid"
-	)
+	const repository = "https://example.test/large.git"
+	base, head := testBaseCommit, testHeadCommit
 	root := &saga.Section{Kind: "saga", ID: "large", Title: "Large saga", Target: saga.SagaTarget("large")}
 	document := &saga.Saga{
 		Manifest: saga.Manifest{ID: "large", Title: "Large saga", Source: saga.Source{Repository: repository, Base: base, Head: head}},
@@ -134,31 +131,21 @@ func benchmarkCoverageFixture() (*saga.Saga, gitdiff.ChangeSet, coverage.Report,
 			end := start + benchmarkCoverageLinesPerFragment - 1
 			fragment := &saga.Fragment{
 				ID: fragmentID, Title: "Fragment " + fragmentID, Target: target, MediaType: "text/html", Entrypoint: "index.html",
-				Diffs: []saga.DiffFile{{}},
+				Code: []saga.CodeFile{{}},
 			}
 			chapter.Fragments = append(chapter.Fragments, fragment)
 			for line := start; line <= end; line++ {
-				uri := benchmarkDiffURI(diffuri.Reference{
-					Repository: repository, Base: base, Head: head, Kind: "line", Path: path, Side: "new", Start: line, End: line,
-				})
-				atom := gitdiff.Atom{Kind: "line", Path: path, Side: "new", Line: line, Content: fmt.Sprintf("value_%04d := %d", len(changes.Atoms), line), URI: uri}
+				atom := gitdiff.Atom{Kind: "line", Path: path, Side: "new", Line: line, Content: fmt.Sprintf("value_%04d := %d", len(changes.Atoms), line)}
 				atom.Key = gitdiff.Key(atom)
+				atom.Ref = changes.Location(atom).String()
 				changes.Atoms = append(changes.Atoms, atom)
 				changesByTarget[target] = append(changesByTarget[target], atom)
 				report.Ownership[atom.Key] = []coverage.Assignment{{Target: target}}
-				fragment.Diffs[0].Diffs = append(fragment.Diffs[0].Diffs, saga.DiffReference{URI: uri, Note: "Explains " + fragmentID})
+				fragment.Code[0].References = append(fragment.Code[0].References, testReference(head, path, line, line, "Explains "+fragmentID))
 			}
 			targetIndex++
 		}
 	}
 	report.Summary = coverage.Summary{Total: len(changes.Atoms), Covered: len(changes.Atoms)}
 	return document, changes, report, changesByTarget
-}
-
-func benchmarkDiffURI(reference diffuri.Reference) string {
-	uri, err := diffuri.Build(reference)
-	if err != nil {
-		panic(err)
-	}
-	return uri
 }

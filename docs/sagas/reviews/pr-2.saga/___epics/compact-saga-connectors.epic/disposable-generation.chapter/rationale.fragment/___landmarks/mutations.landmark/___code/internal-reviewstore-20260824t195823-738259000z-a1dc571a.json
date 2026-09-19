@@ -1,0 +1,141 @@
+{
+  "references": [
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 279,
+      "end": 279,
+      "digest": "sha256:982b3127d0555695b5ac2743843f3cbabc45953c8e43463b469043856bd62353",
+      "note": "Focused review-store mutation tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 280,
+      "end": 280,
+      "digest": "sha256:4d31909ce96fbc200604c03e8465ec5fbb1ef2846087603967bf8af8b6a7e07f",
+      "note": "Focused review-store mutation tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 281,
+      "end": 281,
+      "digest": "sha256:b0046a016b7096462ec02bea785d99740bd263d7c41f9f52886fd2ac7cd4b841",
+      "note": "Focused review-store mutation tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 282,
+      "end": 282,
+      "digest": "sha256:cf97b3beabf95e3c3626a33121d9430173e1deaa3c641c012b56c64cbe5b34fe",
+      "note": "Focused review-store mutation tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 283,
+      "end": 283,
+      "digest": "sha256:4c86d52a760070c85953b1ad805580958281edf6d36b6bbae8e04e7d0af44f79",
+      "note": "Focused review-store mutation tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 284,
+      "end": 284,
+      "digest": "sha256:18442294333f241d2c71e9ad10c1dfb99f44a0945caab25a3cd3a79949d60ac2",
+      "note": "Focused review-store mutation tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 285,
+      "end": 285,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Focused review-store mutation tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 286,
+      "end": 286,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Focused review-store mutation tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 287,
+      "end": 287,
+      "digest": "sha256:837954490f095a458268366d8eeb2defea759a6b9ab843742c49b901a3251340",
+      "note": "Focused review-store mutation tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 288,
+      "end": 288,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Focused review-store mutation tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 289,
+      "end": 289,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Focused review-store mutation tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 290,
+      "end": 290,
+      "digest": "sha256:15f5ff3a6368926ba3475e4dc1f4e6643b3c4a876c48cfd60102186e9874f6e4",
+      "note": "Focused review-store mutation tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 291,
+      "end": 291,
+      "digest": "sha256:aa972d7b0400c22ddc2310fdea7a3ed34720cad317dab0928325c7a9e84032e6",
+      "note": "Focused review-store mutation tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 292,
+      "end": 292,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Focused review-store mutation tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 293,
+      "end": 293,
+      "digest": "sha256:7776bd13d1c18649968ef482be39242e304fc10473660d2a1fcb391db76aa622",
+      "note": "Focused review-store mutation tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 294,
+      "end": 294,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Focused review-store mutation tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 295,
+      "end": 295,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Focused review-store mutation tests."
+    }
+  ],
+  "version": 2
+}

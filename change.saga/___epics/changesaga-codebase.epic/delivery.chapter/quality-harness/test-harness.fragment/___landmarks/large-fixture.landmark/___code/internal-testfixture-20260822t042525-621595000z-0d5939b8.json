@@ -1,0 +1,1123 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "digest": "sha256:9c03b99e0f2168c95207ce478cc0935e0c53758b4b8006c1647eabcf7a38ffce",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:03c8d18c4c5a36b5ac87a60daec87ea007d98bcc165d52356ef8b372b7cb70c2",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:71e37b6cd48ad477cbb12624b757ee1dc4975711b78237a85f508bfdd723af77",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:dc94db91287ede614bfe3a0ee2e2b567400c33fbbb5566199f17b7f6235ec46d",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:88b2b63df1b22d7cb9359d4a10a5e357a697e72f0d3f3dc2887843958558ca4b",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:9d321d278769fb32c7c6820e1c992ebb53b04e39def0f158cbf1d84e27d34c18",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:30846666d2ce47f9ec32160922192466e9cd4450f31dee0061811ca48bb8ccb0",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:171b756171ff8240f94ccb83de837ed4242449df3ecef3a3762523d1f5ae0348",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:57e084ab258e81b1e20f6e9b9f72b556c4838b3517e76da7edd5b6e7546090a2",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:74432b77763c6cfa9171fc3fd13832ff241f4c996771aa8caccfe84199cb372f",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:1b649ecbf085fe223589d7f842defd5e2c82ec06b02b4f7827a31625fd09316e",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:ff2c0ea95d76cbc00801be44ecfc5884dca46f0b7febe0b6b2a9a5e1afd73944",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:4251f63298670483bdac18904e47ecc02d2c2d19b3f7d8e42f79cb371a7c684e",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:ab6f6be8e5963a10d31f1044691aa6beceed5a59d04cd8247f259497075d8b4d",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:fafba0527c3953c4b6e0e5b5739ba83612f8053bcdc9466730193cd1d590b408",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:2de7a8c288ceab82ac58c692db31a2a10cf13ddd3d5956b486f0d5bbb49c15b8",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:039d3b64da504ec9d3f7f15ba883c9c7fcf0cde8c7046569fc62879b671e9552",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:c3933253152e0f247125dd5347e7c08062f260656aa73f16aeaac3d9dd3f6ea8",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:8ae68603ec0164aa832fb3db2b85392e24945aadca9b6759172c7e2664c8928e",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:3ab2b61f8644bd49cbd507a2c9828e6c4ac7f111883200ae08fab4f1eaea3907",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:0a74cdc7ce0890764f92428cd1ae59e42006b096942492c3d93cb6a501518e59",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:b5ecb30c06b089b48fdaacac58b44219a93c8a6502b76e30152a917970cba76b",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:18feebf162ff1ce1b8b75339f7f2e0e876061ab79484d6c9ab1d9ad6026442d3",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:088db14af96fe374748d8c5211e8f067bd0e2698fe6fc15c6411035709f03faa",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:9f4e2f620bdacd72e8cfc68d58d1028e84599fab3cfe81e1f6e76ac3641769cc",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:3350d234e817ffd1662b34a237e958c10770d4c3133ed25efdc476f79cf7086a",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:8e4e7d2f6a30048f40c595f8749cc183084a11bc150b79745adf3db49d748610",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:24828b36c7a325fa82a7bf8a5d5d59be1094d5b89c2ea61d6daf7d020bcc82f8",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:6edfc115dabea5c539181dbb75e6717b24a3c5f814ca82078a288115ca1ca641",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:c1580766b2c4e409d181da7abeff90970a08e3ea34b5b9a266d32e4a329f3446",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:63c14c7b68a573885f30014660da62887d187d37b57bf7be448927ced77d3a51",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:fc6638f0be85691b27279e174aaeb277c66956f8a993b458ef1dd8f2db0f3d45",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:c22c96b6ed86287fcd018b19c5feff4d25508e98c8680acb66f9e59847aa9a4e",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:b97eca24797d18624942e56ff8f7d35132f02197f8cc0e23fde9ab6beb856362",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:913f5c2b130e020397a76ed1740b274702870a1511567261d3f9ee972e6c68b5",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:eedc07f4cd668f865d34e46660c771dbec9b52a324c4a50e459a0afb0badc392",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:ac5a1dc3bf7732820dca48c26e8347b269a5ebad62b2c400ae4aed1ff01e2eff",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:fbdc22d1145b1fef28c4ef04889bef32178037b3e6c34c210e873eed7d92f5d3",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:8fa5c57a88c6912faad452dc2bfad92e5258a731dd8a1dcd7540d968c16e4815",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:f5ac19bb3b7218d4a9ec87c78f216d071acaa0b03b303a6de275cea3d270d478",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:5a97f02fc77b1e41d69ffab7b485c0e7a09ca6cf7fb48e9bdd72cb8956d10693",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:df44296cda51c97b4806ca379b9cdd4098d34a1e9714ccf50a64ce7cceb26f87",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:194f15ddd085ff30ba2dcb2748f17f4fc74bdc7f5de6dd6a7f14eee22900dc35",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:163b9570443379e06121087c8fece979bcb2ab4f9b46d442dbfb2eef5db23651",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 68,
+      "end": 68,
+      "digest": "sha256:1b36df3063fd030895dad34af2cc7cf71246bb67371a66de1b9b2e9dd86e96c6",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 70,
+      "end": 70,
+      "digest": "sha256:8e864e77097ae5997ddcad71eacd10ee8e2058b42605f9b62ea1423c92ff7558",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 71,
+      "end": 71,
+      "digest": "sha256:4036928a734860530129c7740cfb8cf106055fda9ffffbe3b6ecd6b91fc458e4",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 72,
+      "end": 72,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 73,
+      "end": 73,
+      "digest": "sha256:92f7b195914f5b6044ec9d0f5d1af32248862d8fea119281e104d4b3db8e3afb",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 74,
+      "end": 74,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 75,
+      "end": 75,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 76,
+      "end": 76,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 77,
+      "end": 77,
+      "digest": "sha256:ed6c1e355d992f6aa2a479547bf4ae55589596edd382d6d756d7ec389f55ac27",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 78,
+      "end": 78,
+      "digest": "sha256:3c038b4b639a3a6d7d13eff6bff3ace6604a64855f1a7044bb1464bdca0f1b66",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 79,
+      "end": 79,
+      "digest": "sha256:3c03b96ad7c66007e948074f03d92428b28f9b8bab46e07b4c2f2262ad8f51e9",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 80,
+      "end": 80,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 81,
+      "end": 81,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 82,
+      "end": 82,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 83,
+      "end": 83,
+      "digest": "sha256:ebc09a4296bf6d7450a769a65f9b97c65109fdbef2bf319ba087e9fcdc556652",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 84,
+      "end": 84,
+      "digest": "sha256:1a87f1a9119762787109832313bddd518c98058535ac722934a8fbe3245b7494",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 85,
+      "end": 85,
+      "digest": "sha256:d3de9243fdbed5abb7c84e03e11e0c0177adcdbea1add58a25f3d769960c8a1f",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 86,
+      "end": 86,
+      "digest": "sha256:490a708597c01645d58fbf495dd786a491e52afc63ff26707a64b887c1b11f01",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 87,
+      "end": 87,
+      "digest": "sha256:80458035605ad1b27de739d5a111529d39ba8294b70ecde5b1205e52acb18aa5",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 88,
+      "end": 88,
+      "digest": "sha256:54fe0fd884a4e2435502265e5ff0526b13d4380b97f4970c6c25df1ea566a635",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 89,
+      "end": 89,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 90,
+      "end": 90,
+      "digest": "sha256:a4c24e62e0a78d4d10fa12d1310062a0c2822a4ec2da8a13a305682637c708a3",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 91,
+      "end": 91,
+      "digest": "sha256:4f09511927bbdeedae5065ac69f9418f5d2cdfb23d39466b22b0d338e1377c4a",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 92,
+      "end": 92,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 93,
+      "end": 93,
+      "digest": "sha256:3f4ac1e4ad58397c41c93e2670a88f5805e2027c4b94b3993e461ad2d3731fac",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 94,
+      "end": 94,
+      "digest": "sha256:cfc1f55918e3b9778b66f91a074b8371f9e493596792e4c245b31e5b8bfccd42",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 95,
+      "end": 95,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 96,
+      "end": 96,
+      "digest": "sha256:4f9334589053cba29146f8d24ba54a1db8a23db534988ab5a7831840800e3708",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 97,
+      "end": 97,
+      "digest": "sha256:b0601de2b4a8ed771a1a449e2fef5855a8256888236a648fb580decdcd9f1eea",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 98,
+      "end": 98,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 99,
+      "end": 99,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 100,
+      "end": 100,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 101,
+      "end": 101,
+      "digest": "sha256:a83adcc23aa340e4fa7d0ea37445e50a3522d8390a8e2ea7f7d3e0badca8e5a4",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 102,
+      "end": 102,
+      "digest": "sha256:ece523c7d95d420d4ff49e42b4fb263847bfb194d96eebb9f9472a2b0266a7e4",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 103,
+      "end": 103,
+      "digest": "sha256:5300cbe4f71c21e04e80d475d04600f02fc495f8f4dea3e0888f2847a0b233b7",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 104,
+      "end": 104,
+      "digest": "sha256:800f2a9e86b4cff2c1b9e3fcfa9c71f253af2f95ae119aa175b5562eaba3c146",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 105,
+      "end": 105,
+      "digest": "sha256:4c154cdaef82ba33866af83a0fb4627709fde0adf6b35ece16355f457f55ed74",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 106,
+      "end": 106,
+      "digest": "sha256:0e4e78d2eb683e84fa9d113d26e3913b225682a40e4b4181758ce247e53fbe80",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 107,
+      "end": 107,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 108,
+      "end": 108,
+      "digest": "sha256:bdf8345633f77a4e6c01e5b58276ac41a16c1ac8e829a3957fd6f76d15109803",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 109,
+      "end": 109,
+      "digest": "sha256:2519e705b1c026627a29a3f6e6c72456d7326dea51bcabe69b72ed00df1ab4fc",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 110,
+      "end": 110,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 111,
+      "end": 111,
+      "digest": "sha256:790abc4e40cac256ccb7c2ec0b7a5dd3d193b4ada19a15c084a6f46517e2c858",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 112,
+      "end": 112,
+      "digest": "sha256:77a9b5e9019c8db8783ec9c3febb0a2c9862f61a05c308fe895e4a9bed03edb3",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 113,
+      "end": 113,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 114,
+      "end": 114,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 115,
+      "end": 115,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 116,
+      "end": 116,
+      "digest": "sha256:0f9cd589221b78e9f27fdc15ac46394f9d84d0f592b65bd914c944385f4d32ae",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 117,
+      "end": 117,
+      "digest": "sha256:e4f184d16cc24cd56f336e72ebf3b03aebc2c5d8b118ea1ce4f87c09f2bfd575",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 118,
+      "end": 118,
+      "digest": "sha256:390009937d3f54ef3e3ac3e36eb73cbdd8b6b7062d25856ff2440ab689313dab",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 119,
+      "end": 119,
+      "digest": "sha256:04f14e9a21de133d3597b13e9d4e5d366a730f5c102ce8287b35c15cfb878db3",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 120,
+      "end": 120,
+      "digest": "sha256:4c154cdaef82ba33866af83a0fb4627709fde0adf6b35ece16355f457f55ed74",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 121,
+      "end": 121,
+      "digest": "sha256:b9a659681da55a28b6a6c1eeb32b508b76693e75a1d9d419d6d2f45686dba100",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 122,
+      "end": 122,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 123,
+      "end": 123,
+      "digest": "sha256:54e2cd1d49df75a624e4c9c47cad2623647f9bc57ea5fc2bff23f81ff4a34a11",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 124,
+      "end": 124,
+      "digest": "sha256:615c7343ebb4593eea8bb952be09b8612ba0397ccae9587dfe9f76a387dbdb21",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 125,
+      "end": 125,
+      "digest": "sha256:4c154cdaef82ba33866af83a0fb4627709fde0adf6b35ece16355f457f55ed74",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 126,
+      "end": 126,
+      "digest": "sha256:b9a659681da55a28b6a6c1eeb32b508b76693e75a1d9d419d6d2f45686dba100",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 127,
+      "end": 127,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 128,
+      "end": 128,
+      "digest": "sha256:edd38a25be1fbeebce474a9bfeb9de6ebc12794ba75df176ad02a2ad198618ef",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 129,
+      "end": 129,
+      "digest": "sha256:50d2e227de62a80536fb8590b2efa53f2c4a682d4277631d06d08d4747f91290",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 130,
+      "end": 130,
+      "digest": "sha256:b9a659681da55a28b6a6c1eeb32b508b76693e75a1d9d419d6d2f45686dba100",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 131,
+      "end": 131,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 132,
+      "end": 132,
+      "digest": "sha256:ad6e527e72f3f6dd143d0959e4e93449c280d272048aa37d18c8dfd3fd342ffd",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 133,
+      "end": 133,
+      "digest": "sha256:b9a659681da55a28b6a6c1eeb32b508b76693e75a1d9d419d6d2f45686dba100",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 134,
+      "end": 134,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 135,
+      "end": 135,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 136,
+      "end": 136,
+      "digest": "sha256:2ee80577392aaa96be06180a7bb1b5764940ec359566382f798ecca308dae1c3",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 137,
+      "end": 137,
+      "digest": "sha256:cfebb2bb5743361d4e1200b7f6a2a8f5ed980eaccb483bf2b5a0f4da211440aa",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 138,
+      "end": 138,
+      "digest": "sha256:50e2a242450fbf1ae7ee77cc1fad4e6f6ac33410c9e783c6d7d91dafa39e5548",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 139,
+      "end": 139,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Checks determinism, validity, exact coverage, mixed assets, review counts, and minimum scale."
+    }
+  ],
+  "version": 2
+}

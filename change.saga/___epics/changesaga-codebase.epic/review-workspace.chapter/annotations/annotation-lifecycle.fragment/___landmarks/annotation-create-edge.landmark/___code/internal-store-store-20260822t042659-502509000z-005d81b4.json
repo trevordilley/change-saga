@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/store/store.go",
+      "start": 100,
+      "end": 168,
+      "digest": "sha256:48bfce01bcc12a5fdabc9bb9707a721b8d065a904ed695bc87b1e80d9a8ad828",
+      "note": "Builds a complete hidden entity, syncs it, and publishes its directory name with one rename."
+    }
+  ],
+  "version": 2
+}

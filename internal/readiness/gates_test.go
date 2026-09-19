@@ -23,12 +23,12 @@ func acceptedStory() Story {
 	}
 }
 
-func link(axis coverage.Axis, diffs ...string) coverage.AxisLink {
+func link(axis coverage.Axis, code ...string) coverage.AxisLink {
 	return coverage.AxisLink{
 		Axis: axis, Relation: "urn:change-saga:s:relation:" + string(axis),
 		Source: "urn:change-saga:s:slide:decision:item:" + string(axis),
-		Paths:  [][]string{{criterionURN, "addresses", "item", "owns_diff"}},
-		Diffs:  diffs,
+		Paths:  [][]string{{criterionURN, "addresses", "item", "owns_code"}},
+		Code:   code,
 	}
 }
 
@@ -208,7 +208,7 @@ func TestNoExceptionExcusesChangedSourceAccounting(t *testing.T) {
 			Citations: []string{"urn:change-saga:s:citation:support-policy"},
 		}},
 	)
-	inputs.ChangedSource = ChangedSourceAccounting{Uncovered: []string{"docs/playbook.md:12"}, Orphans: []string{"saga-diff://v1/line?path=gone.go"}}
+	inputs.ChangedSource = ChangedSourceAccounting{Uncovered: []string{"docs/playbook.md:12"}, Stale: []string{"___code/gone.json#1"}}
 	trace := gate(t, EvaluateGates(inputs), GateImplementationTraceReady)
 
 	if trace.Status != StatusBlocked {
@@ -228,7 +228,7 @@ func TestNoExceptionExcusesChangedSourceAccounting(t *testing.T) {
 	}
 }
 
-func TestImplementationTraceNeedsAPathThatEndsAtAnExactDiff(t *testing.T) {
+func TestImplementationTraceNeedsAPathThatEndsAtCode(t *testing.T) {
 	inputs := coveredInputs()
 	inputs.Coverage = coverage.ProjectAxes([]coverage.CriterionInput{{
 		URN: criterionURN, Story: storyURN, CurrentStoryRevision: revisionURN,
@@ -238,11 +238,11 @@ func TestImplementationTraceNeedsAPathThatEndsAtAnExactDiff(t *testing.T) {
 	trace := gate(t, EvaluateGates(inputs), GateImplementationTraceReady)
 
 	if trace.Status != StatusBlocked {
-		t.Fatalf("a link with no exact diff satisfied the trace gate: %+v", trace)
+		t.Fatalf("a link with no code reference satisfied the trace gate: %+v", trace)
 	}
 	found := false
 	for _, blocker := range trace.Blockers {
-		if blocker.Code == "implementation_path_ends_at_diff" {
+		if blocker.Code == "implementation_path_ends_at_code" {
 			found = true
 			if len(blocker.Path) == 0 {
 				t.Error("the blocker did not carry the candidate path")

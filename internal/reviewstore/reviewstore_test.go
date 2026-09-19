@@ -11,7 +11,7 @@ import (
 	"testing"
 
 	"github.com/twentyideas/changesaga/internal/applayout"
-	"github.com/twentyideas/changesaga/internal/diffuri"
+	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/saga"
 	"github.com/twentyideas/changesaga/internal/store"
 )
@@ -67,10 +67,7 @@ func TestReviewRecordsAreAppendOnlyAndFileGranular(t *testing.T) {
 		t.Fatalf("each of five comments/replies should have its own content file: files=%d err=%v", commentFiles, err)
 	}
 
-	fileURI, err := diffuri.Build(diffuri.Reference{Repository: testRepository, Base: "aaa", Head: "bbb", Kind: "file", Path: "app.go"})
-	if err != nil {
-		t.Fatal(err)
-	}
+	file := coderef.Reference{Commit: strings.Repeat("b", 40), Path: "app.go", Digest: coderef.DigestBytes([]byte("app"))}
 	runConcurrently(t,
 		func() error {
 			return AddReview(root, root, "approved", "Looks good", saga.ReviewerIdentity{Kind: "human"})
@@ -78,11 +75,11 @@ func TestReviewRecordsAreAppendOnlyAndFileGranular(t *testing.T) {
 		func() error {
 			return AddReview(root, root, "rejected", "One concern", saga.ReviewerIdentity{Kind: "human"})
 		},
-		func() error { return AddDiffReview(root, fileURI, "reviewed") },
-		func() error { return AddDiffReview(root, fileURI, "unreviewed") },
+		func() error { return AddFileReview(root, file, "reviewed") },
+		func() error { return AddFileReview(root, file, "unreviewed") },
 	)
 	assertEntryCount(t, filepath.Join(root, "___approvals"), 2)
-	assertEntryCount(t, filepath.Join(root, "___review", "diffs"), 2)
+	assertEntryCount(t, filepath.Join(root, "___review", saga.FileReviewDir), 2)
 	err = filepath.WalkDir(root, func(path string, entry os.DirEntry, err error) error {
 		if err != nil || entry.IsDir() || filepath.Ext(path) != ".json" {
 			return err
@@ -265,38 +262,34 @@ func TestFailedThreadAndReplyLeaveNoPartialEntity(t *testing.T) {
 	}
 }
 
-func TestMutationRefusesForeignRepositoryDiffIdentityWithoutSideEffect(t *testing.T) {
+func TestMutationRefusesMalformedCodeReferencesWithoutSideEffect(t *testing.T) {
 	root := newTestSaga(t)
 	target := "urn:change-saga:test:fragment:overview"
-	foreign := func(kind, path string, line int) string {
-		reference := diffuri.Reference{Repository: "https://example.test/other.git", Base: "aaa", Head: "bbb", Kind: kind, Path: path}
-		if kind == "line" {
-			reference.Side, reference.Start, reference.End = "new", line, line
-		}
-		uri, err := diffuri.Build(reference)
-		if err != nil {
-			t.Fatal(err)
-		}
-		return uri
-	}
+	lines := coderef.Reference{Commit: strings.Repeat("b", 40), Path: "app.go", Start: 4, End: 4, Digest: coderef.DigestBytes([]byte("line"))}
+	undigested := lines
+	undigested.Digest = ""
 	own, err := AddThread(root, target, "Anchor me", saga.Anchor{Type: "target"}, "comment", "", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 	before := treeSnapshot(t, root)
 
-	foreignAnchor := saga.Anchor{Type: "diff", Diff: &saga.DiffSelector{URI: foreign("line", "app.go", 4)}}
-	if err := AddDiffReview(root, foreign("file", "app.go", 0), "reviewed"); err == nil || !strings.Contains(err.Error(), "does not match the saga source repository") {
-		t.Fatalf("foreign diff review error = %v, want repository mismatch", err)
+	if err := AddFileReview(root, lines, "reviewed"); err == nil || !strings.Contains(err.Error(), "whole-file") {
+		t.Fatalf("file review of a line range error = %v, want whole-file refusal", err)
 	}
-	if _, err := AddThread(root, target, "Foreign anchor", foreignAnchor, "comment", "", nil); err == nil {
-		t.Fatal("thread anchored to a foreign repository was accepted")
+	unpinned := saga.Anchor{Type: "code", Code: &undigested}
+	if _, err := AddThread(root, target, "Unpinned anchor", unpinned, "comment", "", nil); err == nil {
+		t.Fatal("thread anchored to a reference without a digest was accepted")
 	}
-	if err := SetAnchor(root, own, foreignAnchor); err == nil {
-		t.Fatal("re-anchoring a thread to a foreign repository was accepted")
+	if err := SetAnchor(root, own, unpinned); err == nil {
+		t.Fatal("re-anchoring a thread to a reference without a digest was accepted")
 	}
 	if after := treeSnapshot(t, root); after != before {
-		t.Fatalf("rejected foreign diff identity changed the saga:\nbefore:\n%s\nafter:\n%s", before, after)
+		t.Fatalf("rejected references changed the saga:\nbefore:\n%s\nafter:\n%s", before, after)
+	}
+	anchored := saga.Anchor{Type: "code", Code: &lines}
+	if _, err := AddThread(root, target, "On a line", anchored, "comment", "", nil); err != nil {
+		t.Fatalf("thread anchored to a code reference was refused: %v", err)
 	}
 }
 
@@ -330,10 +323,10 @@ func TestMutationValidationDoesNotParseCoverageMappings(t *testing.T) {
 	// This file is deliberately not valid coverage JSON. Review mutations are
 	// guarded by the manifest/package skeleton and review-only state; parsing
 	// every mapping here would put a 529k-record saga back on the comment path.
-	if err := os.MkdirAll(filepath.Join(applayout.EpicDir(root, testEpic), "overview.fragment", "___diffs"), 0o755); err != nil {
+	if err := os.MkdirAll(filepath.Join(applayout.EpicDir(root, testEpic), "overview.fragment", saga.CodeDirName), 0o755); err != nil {
 		t.Fatal(err)
 	}
-	if err := os.WriteFile(filepath.Join(applayout.EpicDir(root, testEpic), "overview.fragment", "___diffs", "large.json"), []byte("not parsed by review mutation\n"), 0o644); err != nil {
+	if err := os.WriteFile(filepath.Join(applayout.EpicDir(root, testEpic), "overview.fragment", saga.CodeDirName, "large.json"), []byte("not parsed by review mutation\n"), 0o644); err != nil {
 		t.Fatal(err)
 	}
 	if err := AddReview(root, root, "approved", "Review state is independent.", saga.ReviewerIdentity{Kind: "human"}); err != nil {

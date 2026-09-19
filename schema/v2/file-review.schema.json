@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://changesaga.dev/schema/v2/file-review.schema.json",
+  "title": "Change Saga file review event",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "id",
+    "code",
+    "state",
+    "created_at"
+  ],
+  "properties": {
+    "version": {
+      "const": 2
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "code": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/code_reference"
+        }
+      ],
+      "not": {
+        "required": [
+          "start"
+        ]
+      },
+      "description": "Whole-file reference to the reviewed file at the comparison commit holding it."
+    },
+    "author": {
+      "type": "string",
+      "minLength": 1
+    },
+    "state": {
+      "enum": [
+        "reviewed",
+        "unreviewed"
+      ]
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "$defs": {
+    "code_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "commit",
+        "path",
+        "digest"
+      ],
+      "properties": {
+        "commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$",
+          "description": "Full Git object name the reference is pinned at."
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Normalized repository-relative slash path at that commit."
+        },
+        "start": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "First referenced line, 1-based. Absent for a whole file."
+        },
+        "end": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Last referenced line, inclusive. Absent for a whole file."
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "description": "SHA-256 of the referenced bytes: the lines start..end including their newlines, or the whole file."
+        }
+      },
+      "dependentRequired": {
+        "start": [
+          "end"
+        ],
+        "end": [
+          "start"
+        ]
+      }
+    }
+  }
+}

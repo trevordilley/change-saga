@@ -1,9 +1,13 @@
 {
-  "version": 2,
-  "diffs": [
+  "references": [
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=42\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=skills%2Fchange-saga%2Freferences%2Fformat.md\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=3",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "skills/change-saga/references/format.md",
+      "start": 3,
+      "end": 42,
+      "digest": "sha256:be3a410aca425a6f52099ee995ca5b51016827fef0ce3068473baa6e516029f8",
       "note": "Documents the hybrid record layout and exact relation/query commands used by authors."
     }
-  ]
+  ],
+  "version": 2
 }

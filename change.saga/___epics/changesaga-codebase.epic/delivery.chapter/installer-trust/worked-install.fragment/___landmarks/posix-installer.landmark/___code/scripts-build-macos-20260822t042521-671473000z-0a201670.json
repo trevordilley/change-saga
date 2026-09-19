@@ -1,0 +1,1515 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "digest": "sha256:043825de3c70020bc784c65aaf5f7321283006175bd0419b28b0f9f56695c96a",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:1d95fc04a80c952f49ce4188627c53b0fbe8c44041b952d592acd1de99861466",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:def28cd13084722a1ccf85c8ccdd8c6d946928927da692fe48dea9b7a5762bf2",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:32c4858e22cc2c967b42150fa550562a2c839c2cebcaab91cabdf6f4da020022",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:269e75154c441bfe27b2709b73d214bf13af63a2dc82d0e285ce3308fde871ae",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:32c4858e22cc2c967b42150fa550562a2c839c2cebcaab91cabdf6f4da020022",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:21f9624cd9ab1b8ce73136ec255dae59cf0769865dc088ed633fad15f2b3040b",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:de17387f2268f676d33568ed8cf6dc52d99f5f589512797ace07c454a5f5b7d4",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:329dc8f3bb665aecb1569a7bf73a47dcd0870cb751767f57a420b60e99c2bdea",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:88fc633667d0300731bdd84472dc424e1f9c64175ea2badb666472d91aeb4efc",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:1d456359dc9c6224ff13d57fad600b7631e89dbfd2e29c297ab5a065686a7fe7",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:a0f8991cf7736cd6e3942fc299f4d9357179d3047397843db2f303b37b91f183",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:314aacc8627d4040a2fb1e8eca098fadf261fad10ff4113a38ece9a656282bb9",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:3769d237cd420b9d38b981a0a4f6770190a4a83dca1fe56c4f5ba1e2cbc0ef76",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:f2d064f4ca3aa44d9a13ce08c574906c86b7f548d0dc507f0f8542d7e07ac9c0",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:f36e817518aa636a642a441bf6a1b22206e8fc9cdb48fcaf3045a8da9549b961",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:8561113b298280c0e874d31e1caa14353db4ecedb293616286b4bd0497d86165",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:7bab1038256996fab943fea351c336f002c775ca16e629a4f1801ca2e4d637a9",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:b83f21dfe9bf4d38ef7e61826009faa07a41018be58209dc90eda4c9dce33d33",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:ee35925ed6c9794633aeab331aa7c349cef3de010a01fd6eceb358cb157e3a8c",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:cc801154c6a40498078ced0afa0104a66bb70d4fd8c535d4c3fa1d3372c2bfd7",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:dbb5b164bc3df44e65440206ac7cfe6aa6e7633a17cd183ec058f9f37246be83",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:314aacc8627d4040a2fb1e8eca098fadf261fad10ff4113a38ece9a656282bb9",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:3769d237cd420b9d38b981a0a4f6770190a4a83dca1fe56c4f5ba1e2cbc0ef76",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:8c90233421df0674ab935d7c680cfa07f92113719a5754b466d1ac081f8e343c",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:de496cd2d45df25cbe8686f20d170520854f26ea88b644b8182f955b04aa663a",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:211492c535210546c327fac97c9774071357b1fa201d51d9eba4fc9f22fb2c30",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:ea85c495830305b8f38402b6289e0688986e161c408ab922cdc27fd9a831e3a6",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:314aacc8627d4040a2fb1e8eca098fadf261fad10ff4113a38ece9a656282bb9",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:3769d237cd420b9d38b981a0a4f6770190a4a83dca1fe56c4f5ba1e2cbc0ef76",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:55000888cc2d6f4f4acbc8003bf0401d57b1a8d0965a96b6d81092ebc0f6fa9a",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:4e4de4390c97e0fff4073ac7cb83819cec627a8242c2d2997bca46ed62b13fb1",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:d7c84c363b460e386c494eb4ebe6cb59610a3cb900d0553f9be62004293368bc",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:72dff39adcc25f420113181da6eaf78558acfb1813b20ac23431b58c631e9c6e",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:46e234b3e42cd74177edb5bffbd9392e5d42c94bfb97b14d9eeb5efb83a8ee2e",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:104e9e9a2886ac766c9e9458d6cccbef085f521e70106c939080e0939d0148bc",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:28f92aa13384d67177767631ba95ec051e989e28d97c13058c5c7efb03763a4a",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:314aacc8627d4040a2fb1e8eca098fadf261fad10ff4113a38ece9a656282bb9",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:3769d237cd420b9d38b981a0a4f6770190a4a83dca1fe56c4f5ba1e2cbc0ef76",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:561e9ff9f31c131439bd739fd4498a89c2eac9ccd72341a8e3399e0ef3058d1c",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:2c16434fc4fa57542f528950e2dd1e903dc744cc58eb6f3f509b61feb475c5d6",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:314aacc8627d4040a2fb1e8eca098fadf261fad10ff4113a38ece9a656282bb9",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:3769d237cd420b9d38b981a0a4f6770190a4a83dca1fe56c4f5ba1e2cbc0ef76",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:cc01ef175fba3d0acedbad9e32cb94f1e1164ea3e8564e3c9a7ad07672c33778",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:f42367d919c426cf6bd550a84573dfa7a3c4f4b57d721e9710660c0f82949150",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:62b4b3a169ff4ae7d218ba42d17a55a5b570755bac4754d7e6e81f5d42356ebc",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:1ac9140b92b96479e003a078f75bbba647895f661444bbb258a9a43448a9bc9b",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:95840d2445bb92c792d77ffbda570218c4d44d515663fbc56745d461db1b5a23",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:8b7f3572ca2b4134759367e0430970c9cac8da4c63bdeba85e06641b90faf45b",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:ef33e6fcabcbb91a3b5c0080e2cd531cafaf7f3654fb9775f5858dfbff91ee57",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:2cde3ff3d041073f7bbf2042c6eb96e6704bf5c93f847bba3c22c700024c10d9",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:5b93cf503036cae938e0bd3a56f463ddd1d5f1e9a48f86ad2751b1462c2c3a9d",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:314aacc8627d4040a2fb1e8eca098fadf261fad10ff4113a38ece9a656282bb9",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:f824665ba161fb0be2ffb6ce44c1b118d671b06323562987a20fa6a93c413f5b",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:e43801a1a0787339a3e645189474501df0de8a0412ffc033d7310bb2dea12a82",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:314aacc8627d4040a2fb1e8eca098fadf261fad10ff4113a38ece9a656282bb9",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:51c9b36523789c8e1caff38140e5266919e38c63055d22cc938c5513bbb44b1a",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:191fb45658549fb45948eacb0d8fd2a288e71bbd35c19a75d43642cc07282947",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 68,
+      "end": 68,
+      "digest": "sha256:314aacc8627d4040a2fb1e8eca098fadf261fad10ff4113a38ece9a656282bb9",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:3769d237cd420b9d38b981a0a4f6770190a4a83dca1fe56c4f5ba1e2cbc0ef76",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 70,
+      "end": 70,
+      "digest": "sha256:6ee6a48929f081d9f08df567b9666e9cffa342cb20fdfa60e5ed1617d3e435a6",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 71,
+      "end": 71,
+      "digest": "sha256:a175a6ad5427ed6455379500ab765fce0633052cf11991e09016be59b3122fdf",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 72,
+      "end": 72,
+      "digest": "sha256:c0d78ce3321bd38f273349348178cd4bab36bd536aaabf9daf412f13c60b477c",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 73,
+      "end": 73,
+      "digest": "sha256:6986410da1ce57a3c4c223f46d6a2ed3a489a7e80d64969cf7e95f3bf957e258",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 74,
+      "end": 74,
+      "digest": "sha256:becb381ab792d823f013f82c7067fcf061456ccb6856e2fa3d36d40686bf8eb6",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 75,
+      "end": 75,
+      "digest": "sha256:d117fa006ba9208500b2930ce69cbde436c647afa917cb7396a9bc9111a46dd2",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 76,
+      "end": 76,
+      "digest": "sha256:cb5045a3cb8333445fc9691afb3d316e29058620421048d5a95aabdedd91ff8d",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 77,
+      "end": 77,
+      "digest": "sha256:73ea34821775e4ea95c1d29553bce9937c904db997d4e9d0567a74fa2db91df3",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 78,
+      "end": 78,
+      "digest": "sha256:314aacc8627d4040a2fb1e8eca098fadf261fad10ff4113a38ece9a656282bb9",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 79,
+      "end": 79,
+      "digest": "sha256:3769d237cd420b9d38b981a0a4f6770190a4a83dca1fe56c4f5ba1e2cbc0ef76",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 80,
+      "end": 80,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 81,
+      "end": 81,
+      "digest": "sha256:f16a4fdee08ec53fe796a3d99d62cb638a2979e6ce054c306582232be1b7ac04",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 82,
+      "end": 82,
+      "digest": "sha256:bdb1c575a6930026c5c690e72cd08fb4f00bdba37518ef9257530607b2b733d8",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 83,
+      "end": 83,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 84,
+      "end": 84,
+      "digest": "sha256:513414810282a0481da4c98dc0537de240863e4c23d4d873be815e2541b6b85c",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 85,
+      "end": 85,
+      "digest": "sha256:a8076d3d28d21e02012b20eaf7dbf75409a6277134439025f282e368e3305abf",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 86,
+      "end": 86,
+      "digest": "sha256:784635c10642c7f311bbc9fe771adc3e3b51fe42a8d3d72ca19758a6ca918c56",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 87,
+      "end": 87,
+      "digest": "sha256:3c73e8c0f87e4aee575a60cce78b2a0a680af1ba985faac6f5e9e70ea2fa482c",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 88,
+      "end": 88,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 89,
+      "end": 89,
+      "digest": "sha256:2c138e669f6bd2560a6780da7cbfd7155a1bd1f3548aaf80d11acd7776e7f864",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 90,
+      "end": 90,
+      "digest": "sha256:525e31b778b1859878d6e95316515b79e3258e850516b1b7b4dc7ff3fd3de8da",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 91,
+      "end": 91,
+      "digest": "sha256:3f57492d0ab50c72f21172f36e556abc64160ae6db649e561e19c490b30a29dc",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 92,
+      "end": 92,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 93,
+      "end": 93,
+      "digest": "sha256:be99f45060391c23b712b440a4c9954751e72465af27f02071306d2c4dcc2b25",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 94,
+      "end": 94,
+      "digest": "sha256:ba85de21156d50196b2351a8a3a20de71e5fdc37aeb69dbe9da9abb498c959b0",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 95,
+      "end": 95,
+      "digest": "sha256:f8c0b027d5844b57b8a223d4d69bb55b158eba63c51b790f8f4631e7556258dd",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 96,
+      "end": 96,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 97,
+      "end": 97,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 98,
+      "end": 98,
+      "digest": "sha256:2c2097f5483f8b03a5d47d049729463934f1167915ee6356592138d9898fe10b",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 99,
+      "end": 99,
+      "digest": "sha256:17d9ea17e3a70e80ffbf92fdf1c36e97d9b3827fd3f0505af1bfff683bddf534",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 100,
+      "end": 100,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 101,
+      "end": 101,
+      "digest": "sha256:312e0b8d599f5bbb952620fc9b16f8382d444262e6eec9eb58fef11dc68ee0eb",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 102,
+      "end": 102,
+      "digest": "sha256:4ba8f582d6e86fbea918a4addb2dc65347725adccc1df84d9771f17dc5601a0d",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 103,
+      "end": 103,
+      "digest": "sha256:15df255000a9fdf56699ec38c7025931975446ffd64eabad867fa6cdac3c6a77",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 104,
+      "end": 104,
+      "digest": "sha256:360e2c169a3c0aa7ab9cf937652e2051a3cd782e2680317ab74b2fc56c05ed6d",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 105,
+      "end": 105,
+      "digest": "sha256:c212cbac2880e9308bd63ec570abfc64978fe27710d3f18328bb8b173344b5e4",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 106,
+      "end": 106,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 107,
+      "end": 107,
+      "digest": "sha256:8481eec3db5c8e105a6f12bd5887cd4f4d9d271ca0870cc2bf4cce2df25c2854",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 108,
+      "end": 108,
+      "digest": "sha256:d8b004d4620e3f454d9923a31aaf2363fc1d25cd8bdd40d03bfc886eb0fb7eb9",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 109,
+      "end": 109,
+      "digest": "sha256:488d4acbb79648187b39aa1d450b46c74d0bc214327c00312cbb4015c7a5e84f",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 110,
+      "end": 110,
+      "digest": "sha256:0808478ada985d1772c298407f919da1887e09fac94224f7a1353d021bc5cff5",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 111,
+      "end": 111,
+      "digest": "sha256:9748e1dd02a5720c52cb6bd303841ebe83f292c9e0cddcf7154ad2db88a6d47f",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 112,
+      "end": 112,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 113,
+      "end": 113,
+      "digest": "sha256:ded010c5ee402c10d91efb96809b4eb688d708b81389ded1ba5b2024b64fbba5",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 114,
+      "end": 114,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 115,
+      "end": 115,
+      "digest": "sha256:828216b2be5a1d6b0c605005e9f0d357622a3ae270adc8e0a6ace2e46f36a39e",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 116,
+      "end": 116,
+      "digest": "sha256:8dc466f8867f4f9670fb25c18745ae98b86c4390a9b8bb7ed84024cd30bb2db9",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 117,
+      "end": 117,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 118,
+      "end": 118,
+      "digest": "sha256:014a1dc37a1ec4fc1700a97f453a763d83728d8ca66482dc78882d95fef4cb51",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 119,
+      "end": 119,
+      "digest": "sha256:d7f79033b232ecba62dc8960e076880300a2ca4cb57af8cfbc37f879879b5520",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 120,
+      "end": 120,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 121,
+      "end": 121,
+      "digest": "sha256:87788707f2720b33243f5f65f0b36e2f9ac14d5b0d24b52ac692ffdf7c3103bb",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 122,
+      "end": 122,
+      "digest": "sha256:0fc4d398372a6604f3d72985a2647be57fcad329103e7c5a9537602812ba5aaf",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 123,
+      "end": 123,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 124,
+      "end": 124,
+      "digest": "sha256:ea7d7a2b87f7a099b99d1151c1b37fd41475831f0503fcb3698d06c5e507dd6d",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 125,
+      "end": 125,
+      "digest": "sha256:69bc902d9655716f62886239038c7b1b8242967a1c561d2a556c1426514dee61",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 126,
+      "end": 126,
+      "digest": "sha256:3f696d7d498e59e69cf919840a23ab64244f0d7a273631867de8ba098a39ee37",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 127,
+      "end": 127,
+      "digest": "sha256:686219f73adc9afbf57bf4288a6fa245dcbd69168310f4f77f7be2dd6a91c690",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 128,
+      "end": 128,
+      "digest": "sha256:958ea78c0cb43ba32dceadc72ad6c6ab4172908d24d0e8a9c36a593d78be427f",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 129,
+      "end": 129,
+      "digest": "sha256:6f286573e5b632940e63c273ea2211c40bea7a7e4893b0f8c23e1b004be039ea",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 130,
+      "end": 130,
+      "digest": "sha256:d0824b6fce141c10fc370d208458fdf3bbe6254eac90316b4f3f9b1da68ec67b",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 131,
+      "end": 131,
+      "digest": "sha256:084424bd947e43e43c8471ed3b17ea9997950c9b90e15e19e16eb8e989d9d83a",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 132,
+      "end": 132,
+      "digest": "sha256:882b2fcf9ab0bca94191431faf14fcf93ea906ad8be875100e8dfdc7d9c25a11",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 133,
+      "end": 133,
+      "digest": "sha256:d117fa006ba9208500b2930ce69cbde436c647afa917cb7396a9bc9111a46dd2",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 134,
+      "end": 134,
+      "digest": "sha256:af943ba6b25fc73f8ad664cfc0e263da6bc11a3ca12fc430db09db2d6df507b5",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 135,
+      "end": 135,
+      "digest": "sha256:d3b9c56124440b7c2f85a574b376ee9e1e2a00ccbc5fde9b1ec5efdc381fd31f",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 136,
+      "end": 136,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 137,
+      "end": 137,
+      "digest": "sha256:33716301c0be23a5d6e2ff2e51bd04140de084b883be0d60f729bb6b331c39c9",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 138,
+      "end": 138,
+      "digest": "sha256:7ee3a38f2e0f96139547c005065b4d21f2b627671124f5d1c350603ffc97d39e",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 139,
+      "end": 139,
+      "digest": "sha256:2e4b600df0de56abadeb278571227f3d71ba2b00cf8ffedee05618d9abc416a7",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 140,
+      "end": 140,
+      "digest": "sha256:07fad8e23316b0f72ff9ad2fdf03d6aab4a304af174aa89bb2139f652c37abbf",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 141,
+      "end": 141,
+      "digest": "sha256:fbd68f9c70906f66c4a71f60836adbf6eb9e1a03fdb4a0ccefa9d1e9216e48d5",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 142,
+      "end": 142,
+      "digest": "sha256:016c5bb2658b116f47bc1a033a45d595e99e8e8a937058ce7174339a82756deb",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 143,
+      "end": 143,
+      "digest": "sha256:e19e7b3ab8a82f45c964a7cc2e630a704ec2b4c5b6256f4235aa08d59405917e",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 144,
+      "end": 144,
+      "digest": "sha256:87e9634eef452cfc23dc5b4b27101254166a6a241e57d563de9aa16e2ae95998",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 145,
+      "end": 145,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 146,
+      "end": 146,
+      "digest": "sha256:14c9f44fc5c6d9e750ba6653e9b4d99ea8108074dbfa017fd24e27c925b6902e",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 147,
+      "end": 147,
+      "digest": "sha256:43aa375f0e526e351effc4a0c25cbd87769aa0a56ff2371c9912d0db34b54f9f",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 148,
+      "end": 148,
+      "digest": "sha256:3beb36e28999c2eae74d89a2038e6c021ad471668998eb69bdce9a6fc199394e",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 149,
+      "end": 149,
+      "digest": "sha256:cb939b4959a78709f385b449c2d26b82beca2b7eb202544c63cf20ceb283c3b2",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 150,
+      "end": 150,
+      "digest": "sha256:235df3f729dfa7eee6f91767d045b96b6d3aa3c283a184cc389dba4696de14e0",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 151,
+      "end": 151,
+      "digest": "sha256:2281c28e10c43d14357dd4ebe94b5b848f4997f472215b5c918462669db70c56",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 152,
+      "end": 152,
+      "digest": "sha256:3769d237cd420b9d38b981a0a4f6770190a4a83dca1fe56c4f5ba1e2cbc0ef76",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 153,
+      "end": 153,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 154,
+      "end": 154,
+      "digest": "sha256:68f9468c25d119342c98238e231ab39a6830ae49628141517b7e405c57a063d4",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 155,
+      "end": 155,
+      "digest": "sha256:e8bda8c7f04eb5d9978370f71f1896457ae97d69d3a9ff1e3b78c27184b2e440",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 156,
+      "end": 156,
+      "digest": "sha256:439f6fe5e0743b3329dc19c409b5b1cbbcdce79bebfdf84ba9f88ae548067946",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 157,
+      "end": 157,
+      "digest": "sha256:9a4b09ae7b195961019009cfa5ed0b9ad950cecf3a60fad3e1ae8665fadb5947",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 158,
+      "end": 158,
+      "digest": "sha256:dbd5055106fa1247fd04d57ecc98f53c0df234b9ce15e01738a4060f45713c1f",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 159,
+      "end": 159,
+      "digest": "sha256:af826e09fb491dd68d8323c91f8d6454a2c3b86343debb104775b6f54ed3899c",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 160,
+      "end": 160,
+      "digest": "sha256:dbd5055106fa1247fd04d57ecc98f53c0df234b9ce15e01738a4060f45713c1f",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 161,
+      "end": 161,
+      "digest": "sha256:4f37263c5f8a6f67ff6d126e0f6ee342843407ad200adcae9e4249f0234467f7",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 162,
+      "end": 162,
+      "digest": "sha256:4b8db390e00438d46b6d35a7b08ec97d1ac0f1eb3e228c22c4a5bf5ab5cef65a",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 163,
+      "end": 163,
+      "digest": "sha256:835f79f8fe1a81903ae77312eccc27e53e899201caa8613f82168fa0c9690808",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 164,
+      "end": 164,
+      "digest": "sha256:d8b004d4620e3f454d9923a31aaf2363fc1d25cd8bdd40d03bfc886eb0fb7eb9",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 165,
+      "end": 165,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 166,
+      "end": 166,
+      "digest": "sha256:92a56b02cc645e1a77bd38ecde6f6318e6a702d870216fd1c5f9133fe4ffb5c3",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 167,
+      "end": 167,
+      "digest": "sha256:aebb5f610363100c749290e29d07e2a7a5bf4578e014fb7bf02c26ba83914799",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 168,
+      "end": 168,
+      "digest": "sha256:5743ee65cd26c477515595396ade1f8529ca924343a7e25db2df772a1d3325e4",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 169,
+      "end": 169,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 170,
+      "end": 170,
+      "digest": "sha256:331173378450475a55583d62745e42cd0da97550ca08561c7058dfb6a7277b1f",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 171,
+      "end": 171,
+      "digest": "sha256:ff103e4352382ab511434e594793ad4b187256faedd841c5574884c6709abd91",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 172,
+      "end": 172,
+      "digest": "sha256:db16b53476c96a3c330a786fa1d412b039984da43d0fd1679c6d62a098a4a81c",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 173,
+      "end": 173,
+      "digest": "sha256:6b67387833676d557fa804245b655ef9e91f66944c19e711e74ea66e26af37bb",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 174,
+      "end": 174,
+      "digest": "sha256:17ed28ac7c4fe10bf09fee604656d6e6ee9d0aaf995f09a965e3964c3ae8fa7c",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 175,
+      "end": 175,
+      "digest": "sha256:fd6ff7a7c7c84ca0804a637dd00ce126599f07a4aea2e7b6e23a4a798eb57734",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 176,
+      "end": 176,
+      "digest": "sha256:c4a2becff8afb34db260dabc96915ffecfde848929541c6193de6d164c21e8da",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 177,
+      "end": 177,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 178,
+      "end": 178,
+      "digest": "sha256:28d3b9e880a77975493dc7e359144c0295a4f694cfe0af4f928c22307bc5c320",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 179,
+      "end": 179,
+      "digest": "sha256:023f93cb8b81e6260410f5492c145672cf208e453f836c87e54c5b8b700299f8",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 180,
+      "end": 180,
+      "digest": "sha256:d00da639fc80dbbe39888a303a9202d413a0283b3086288bcaa1e29d121061ed",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 181,
+      "end": 181,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 182,
+      "end": 182,
+      "digest": "sha256:4ca9f7e2c0e99f68779a83618ad226515602911429cb659fdf8fe34486735ef8",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 183,
+      "end": 183,
+      "digest": "sha256:3b2f6e4e6ec68be1e8b59f6bb1e3dbdb97e3cf87fee15e86b4fcf33e4e61c1f6",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 184,
+      "end": 184,
+      "digest": "sha256:b56b3a8661bd6676a76c983d52c152e2375ae81e8282fd59d11587fada2ae850",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 185,
+      "end": 185,
+      "digest": "sha256:f42367d919c426cf6bd550a84573dfa7a3c4f4b57d721e9710660c0f82949150",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 186,
+      "end": 186,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 187,
+      "end": 187,
+      "digest": "sha256:79e8a1180b24c0eb413920a0f4b04859b92e8a7f1e535134f12173875f05730e",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-macos-standalone-installer.sh",
+      "start": 188,
+      "end": 188,
+      "digest": "sha256:3f8cd44fe11bfdc07f969f616efc4b3a7461f10c420ac3c74e293560b45e3814",
+      "note": "Builds a self-contained handoff installer that embeds verified bytes and repeats member-safety checks."
+    }
+  ],
+  "version": 2
+}

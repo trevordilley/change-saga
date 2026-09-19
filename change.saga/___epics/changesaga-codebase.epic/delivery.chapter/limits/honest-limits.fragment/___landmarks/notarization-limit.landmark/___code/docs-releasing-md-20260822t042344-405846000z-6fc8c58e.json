@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/releasing.md",
+      "start": 361,
+      "end": 385,
+      "digest": "sha256:ae9c42c96002195e5b6c466c926b21e3e57130777f0d9ada3cf6ce86f65d451a",
+      "note": "States unsigned platform limits and local rehearsal procedures."
+    }
+  ],
+  "version": 2
+}

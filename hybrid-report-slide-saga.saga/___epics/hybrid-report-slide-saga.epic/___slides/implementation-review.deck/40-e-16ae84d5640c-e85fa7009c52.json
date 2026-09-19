@@ -1,9 +1,13 @@
 {
-  "version": 2,
-  "diffs": [
+  "references": [
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=20\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fsaga%2Fflat.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=15",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/saga/flat.go",
+      "start": 15,
+      "end": 20,
+      "digest": "sha256:0d5187900a976bf21cdcbd139ed114f375d6bd42690712618e4ed673381a4c56",
       "note": "Reserves deterministic names for the embedded deck directory and bundle suffix."
     }
-  ]
+  ],
+  "version": 2
 }

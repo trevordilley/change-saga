@@ -5,8 +5,6 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
-
-	"github.com/twentyideas/changesaga/internal/diffuri"
 )
 
 const embeddedDeckManifest = `{"$schema":"https://changesaga.dev/schema/v5/saga.schema.json","version":5,"id":"visual","title":"Visual review","source":{"repository":"https://example.test/acme/app.git","base":"main","head":"feature"}}`
@@ -29,11 +27,8 @@ func TestLoadEmbeddedDeckItemEvidence(t *testing.T) {
 	whyTarget := ItemTarget("visual", "change", "why")
 	whyName, _ := FlatItemFilename(slideTarget, whyTarget, 10)
 	writeTestFile(t, filepath.Join(bundle, whyName), `{"version":4,"id":"why","slide":"change","rank":10,"kind":"callout","label":"Why here","description":"Explains why validation moved.","selector":{"type":"element","element_id":"why"},"about":"validate","body":"Reject before any write.","placement":"right","leader":"arrow"}`)
-	uri, err := diffuri.Build(diffuri.Reference{Repository: "https://example.test/acme/app.git", Base: "main", Head: "feature", Kind: "line", Path: "handler.go", Side: "new", Start: 12, End: 12})
-	if err != nil {
-		t.Fatal(err)
-	}
-	writeTestFile(t, filepath.Join(bundle, FlatEvidenceFilename(whyTarget, "handler")), fmt.Sprintf(`{"version":2,"diffs":[{"uri":%q}]}`, uri))
+	code := referenceJSON(t, testReference("handler.go", 12, 12))
+	writeTestFile(t, filepath.Join(bundle, FlatEvidenceFilename(whyTarget, "handler")), fmt.Sprintf(`{"version":2,"references":%s}`, code))
 
 	document, validation, err := Load(root)
 	if err != nil || !validation.Valid {
@@ -43,14 +38,14 @@ func TestLoadEmbeddedDeckItemEvidence(t *testing.T) {
 		t.Fatalf("embedded deck hierarchy not loaded: %#v", document.Decks)
 	}
 	item := document.Decks[0].Slides[0].Items[1]
-	if item.Kind != "callout" || len(item.Diffs) != 1 || item.Target != ItemTarget("visual", "change", "why") {
+	if item.Kind != "callout" || len(item.Code) != 1 || item.Target != ItemTarget("visual", "change", "why") {
 		t.Fatalf("callout evidence not preserved: %#v", item)
 	}
 	projected := document.Section.Children[0].Fragments[0].Landmarks[1]
-	if projected.Target != item.Target || len(projected.Diffs) != 1 {
+	if projected.Target != item.Target || len(projected.Code) != 1 {
 		t.Fatalf("review projection lost Item identity or evidence: %#v", projected)
 	}
-	if !document.Section.Children[0].Fragments[0].HasDiffs {
+	if !document.Section.Children[0].Fragments[0].HasCode {
 		t.Fatal("slide projection did not advertise its Item evidence")
 	}
 	index := MutationIndexFromDocument(document)
@@ -87,7 +82,7 @@ func TestEmbeddedDeckRefusesNestedPackagesBroadEvidenceAndOverviewRole(t *testin
 	deckName, _ := FlatDeckFilename(DeckTarget("visual", "overview"), 0)
 	writeTestFile(t, filepath.Join(bundle, deckName), `{"version":4,"id":"overview","title":"Overview","role":"overview","rank":0,"objective":"Orient the reviewer."}`)
 	writeTestFile(t, filepath.Join(bundle, "nested.fragment", "fragment.json"), `{"version":2,"id":"nested","media_type":"text/markdown","entrypoint":"content.md"}`)
-	writeTestFile(t, filepath.Join(bundle, FlatEvidenceFilename(SagaTarget("visual"), "broad")), `{"version":2,"diffs":[]}`)
+	writeTestFile(t, filepath.Join(bundle, FlatEvidenceFilename(SagaTarget("visual"), "broad")), `{"version":2,"references":[]}`)
 	_, validation, err := Load(root)
 	if err != nil {
 		t.Fatal(err)

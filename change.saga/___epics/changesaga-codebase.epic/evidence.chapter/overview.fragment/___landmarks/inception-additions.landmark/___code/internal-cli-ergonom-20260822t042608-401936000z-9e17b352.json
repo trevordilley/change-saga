@@ -1,0 +1,11 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/ergonomics_test.go",
+      "digest": "sha256:55cfb1fa9f861ada380bcd83943e906623e215fc9a0789f5d16602ac910c0b25",
+      "note": "Records this owned authoring path as newly introduced in the since-inception comparison."
+    }
+  ],
+  "version": 2
+}

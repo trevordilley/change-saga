@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/releasing.md",
+      "start": 237,
+      "end": 360,
+      "digest": "sha256:044a0fb91cf9813d6d09288f50ebeefa8cf6e4836683f98af6e508b4628752c9",
+      "note": "Documents protected macOS credentials, signing, notarization, and unstapled-ticket tradeoffs."
+    }
+  ],
+  "version": 2
+}

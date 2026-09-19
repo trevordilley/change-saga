@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/twentyideas/changesaga/internal/diffuri"
+	"github.com/twentyideas/changesaga/internal/coderef"
 )
 
 const (
@@ -55,7 +55,7 @@ func largeServerSaga(tb testing.TB) (repo, root string) {
 	runBenchmarkGit(tb, repo, "init", "-b", "main")
 	runBenchmarkGit(tb, repo, "config", "user.name", "Benchmark")
 	runBenchmarkGit(tb, repo, "config", "user.email", "benchmark@example.test")
-	repository, err := diffuri.FileRepository(repo)
+	repository, err := coderef.FileRepository(repo)
 	if err != nil {
 		tb.Fatal(err)
 	}

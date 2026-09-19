@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewapp/session.go",
+      "start": 269,
+      "end": 392,
+      "digest": "sha256:52493412a1125c35e4e32b80af82e42ef395e935061e8b06f7c08915c2b681bf",
+      "note": "Serves deterministic, bounded AI-facing reads through the versioned query API."
+    }
+  ],
+  "version": 2
+}

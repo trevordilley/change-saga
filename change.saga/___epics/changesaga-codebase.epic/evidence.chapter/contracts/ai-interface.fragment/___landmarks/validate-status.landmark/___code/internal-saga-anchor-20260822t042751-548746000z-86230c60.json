@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/saga/anchorfix.go",
+      "start": 1,
+      "end": 88,
+      "digest": "sha256:a6db76a67e3a7374fea770c65a58f04a861ff6f43c1f5d4cbd92a6e62b0e6c3c",
+      "note": "Keeps anchor repair narrow and distinguishes authored-format validation from omission status."
+    }
+  ],
+  "version": 2
+}

@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/install.ps1",
+      "start": 132,
+      "end": 203,
+      "digest": "sha256:bd397f918bc6704f2e0b5353b8be0f607126a375a89ebcf9536ed465dd8ec787",
+      "note": "Rejects unsafe ZIP topology, streams only the executable, and verifies embedded version identity."
+    }
+  ],
+  "version": 2
+}

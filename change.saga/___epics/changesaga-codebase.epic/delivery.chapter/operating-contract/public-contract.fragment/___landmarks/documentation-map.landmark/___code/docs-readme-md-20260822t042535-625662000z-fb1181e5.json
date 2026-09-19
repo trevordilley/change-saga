@@ -1,0 +1,363 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/README.md",
+      "digest": "sha256:8049077d617e968f9bedf97efd731b87b61921965cb7c9f1c42d0b1651001133",
+      "note": "Indexes format, release, performance, renderer, security, audit, and UX documents."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/README.md",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:9f6639bac642224885675abc3e4aa73007b7be2ab6b661523c8969551f6a58b0",
+      "note": "Indexes format, release, performance, renderer, security, audit, and UX documents."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/README.md",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Indexes format, release, performance, renderer, security, audit, and UX documents."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/README.md",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:342f3c01f6910df209e276729626d7983228a183b4c8cd3135458c30d80692c3",
+      "note": "Indexes format, release, performance, renderer, security, audit, and UX documents."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/README.md",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:d81335f1bc38bb83c93d99b8790781a706f5a492537d18b11b801eba006cdeb3",
+      "note": "Indexes format, release, performance, renderer, security, audit, and UX documents."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/README.md",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Indexes format, release, performance, renderer, security, audit, and UX documents."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/README.md",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:2ca2508aee9817531564246a34a8ea6cee85b3aac3c61216497d68fa35978316",
+      "note": "Indexes format, release, performance, renderer, security, audit, and UX documents."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/README.md",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Indexes format, release, performance, renderer, security, audit, and UX documents."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/README.md",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:e17961a3fcbe870c9affc8c5570768d7bfa7a7ef6398f5da3fd6dfdc53f6ce72",
+      "note": "Indexes format, release, performance, renderer, security, audit, and UX documents."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/README.md",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:3491e014f5503eb5b2fca81db42f6f72765980ba5b5e48ef135b6cf69d7f92cc",
+      "note": "Indexes format, release, performance, renderer, security, audit, and UX documents."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/README.md",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:cafa230cbe4e1b8b3309e81787d4d89b0dc0d88d146ce397dcf04680d0cbb57c",
+      "note": "Indexes format, release, performance, renderer, security, audit, and UX documents."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/README.md",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:31f2392161c0aa19207625cea61cf4ef8d2661b47bbd3c414938f216f4041e99",
+      "note": "Indexes format, release, performance, renderer, security, audit, and UX documents."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/README.md",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:8350d3ab9631ccb035df4a910edc7cf9f5af6dad8c7a54c5e8537fdf0aba3f6a",
+      "note": "Indexes format, release, performance, renderer, security, audit, and UX documents."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/README.md",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Indexes format, release, performance, renderer, security, audit, and UX documents."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/README.md",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:75a792f71c064e4f52c17f5da3dd5000b6ff92b1cd3ae8e2f943aaa1909c6a6e",
+      "note": "Indexes format, release, performance, renderer, security, audit, and UX documents."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/README.md",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Indexes format, release, performance, renderer, security, audit, and UX documents."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/README.md",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:e17961a3fcbe870c9affc8c5570768d7bfa7a7ef6398f5da3fd6dfdc53f6ce72",
+      "note": "Indexes format, release, performance, renderer, security, audit, and UX documents."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/README.md",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:3491e014f5503eb5b2fca81db42f6f72765980ba5b5e48ef135b6cf69d7f92cc",
+      "note": "Indexes format, release, performance, renderer, security, audit, and UX documents."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/README.md",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:f73d8f13fa99ad1b07e1c6f21cc135b6eb9645054e93788e2f2e2be37124231e",
+      "note": "Indexes format, release, performance, renderer, security, audit, and UX documents."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/README.md",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:8f0838883355dd880a274b3c189a37785eae33f7be0e9e76c87a183226fc52f3",
+      "note": "Indexes format, release, performance, renderer, security, audit, and UX documents."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/README.md",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:a64fd18623483bb8cb420bb08362b4b7f77d0209d0178f0afe39767ed900c991",
+      "note": "Indexes format, release, performance, renderer, security, audit, and UX documents."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/README.md",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Indexes format, release, performance, renderer, security, audit, and UX documents."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/README.md",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:3a51c17d4c1e573964d87f7fe0ae81be913ab75b0c245895760d07f222683bee",
+      "note": "Indexes format, release, performance, renderer, security, audit, and UX documents."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/README.md",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Indexes format, release, performance, renderer, security, audit, and UX documents."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/README.md",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:b51ef4f4e9ffe4865651fb147fdee9b56da59d436b3656936a16d988e357b29a",
+      "note": "Indexes format, release, performance, renderer, security, audit, and UX documents."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/README.md",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:1d501c51f3c4798788f2555bc1b7aab9dffc17acd92020ffdcc6823c1614b42d",
+      "note": "Indexes format, release, performance, renderer, security, audit, and UX documents."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/README.md",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Indexes format, release, performance, renderer, security, audit, and UX documents."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/README.md",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:e17961a3fcbe870c9affc8c5570768d7bfa7a7ef6398f5da3fd6dfdc53f6ce72",
+      "note": "Indexes format, release, performance, renderer, security, audit, and UX documents."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/README.md",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:3491e014f5503eb5b2fca81db42f6f72765980ba5b5e48ef135b6cf69d7f92cc",
+      "note": "Indexes format, release, performance, renderer, security, audit, and UX documents."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/README.md",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:57df6685c1689ee7cd7c3ce294106dddd5021152d9db098380ea2e49173748a3",
+      "note": "Indexes format, release, performance, renderer, security, audit, and UX documents."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/README.md",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:20dcaf8d8f79a80d88eeedcdf59b121465230691076261048f131a39c87ad8da",
+      "note": "Indexes format, release, performance, renderer, security, audit, and UX documents."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/README.md",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:f80a71a956d97b2a3336023fa6376063b7abc8c2ee698118e6449c0f0d67224e",
+      "note": "Indexes format, release, performance, renderer, security, audit, and UX documents."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/README.md",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:f142d329c317f258f8926022f8fe63133dc214210966a99e12be963333022b82",
+      "note": "Indexes format, release, performance, renderer, security, audit, and UX documents."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/README.md",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:0d9cd08b4390d4bab2ba00f470169f4a4cf97247ce9e1c012185124df3fdebb7",
+      "note": "Indexes format, release, performance, renderer, security, audit, and UX documents."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/README.md",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Indexes format, release, performance, renderer, security, audit, and UX documents."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/README.md",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:cc5de52d35ee3091508c7e2f0056d5638b60bab3d1a89b705196eb66d0c79f15",
+      "note": "Indexes format, release, performance, renderer, security, audit, and UX documents."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/README.md",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Indexes format, release, performance, renderer, security, audit, and UX documents."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/README.md",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:e17961a3fcbe870c9affc8c5570768d7bfa7a7ef6398f5da3fd6dfdc53f6ce72",
+      "note": "Indexes format, release, performance, renderer, security, audit, and UX documents."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/README.md",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:3491e014f5503eb5b2fca81db42f6f72765980ba5b5e48ef135b6cf69d7f92cc",
+      "note": "Indexes format, release, performance, renderer, security, audit, and UX documents."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/README.md",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:ec5f6600a9d34aa7c7b2e5ffc19a8badd3a7e95296c51137983e5ba52e16138f",
+      "note": "Indexes format, release, performance, renderer, security, audit, and UX documents."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/README.md",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:47397e2b9edb3247dfc7ff52c8e2ef641360ad050829ea5f982e033467612c56",
+      "note": "Indexes format, release, performance, renderer, security, audit, and UX documents."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/README.md",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:6a4a119b666bf2aee1282200a3d81f6b115df3ed03bc91f865230483f6019a69",
+      "note": "Indexes format, release, performance, renderer, security, audit, and UX documents."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/README.md",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:cd6f949e9ffdd4cca990aedf4be1096312659fabd942462d97a3d00ed94e956a",
+      "note": "Indexes format, release, performance, renderer, security, audit, and UX documents."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/README.md",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:1e975a20d8b0cd766f60f08188959a0b89ef6282a52459c3a4efc2e7c8c00309",
+      "note": "Indexes format, release, performance, renderer, security, audit, and UX documents."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/README.md",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:9d7fa3e238c7dbd703b05142376bb22573ffd417dec21f98763a3e0232dea159",
+      "note": "Indexes format, release, performance, renderer, security, audit, and UX documents."
+    }
+  ],
+  "version": 2
+}

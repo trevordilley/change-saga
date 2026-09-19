@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/saga/load.go",
+      "start": 312,
+      "end": 420,
+      "digest": "sha256:12e9d2b805d2426a39b8f0930f9256fc86431da5f6da15df9ae274cba3b8aff9",
+      "note": "Defines strict independent hierarchy and history records that compose the portable filesystem format."
+    }
+  ],
+  "version": 2
+}

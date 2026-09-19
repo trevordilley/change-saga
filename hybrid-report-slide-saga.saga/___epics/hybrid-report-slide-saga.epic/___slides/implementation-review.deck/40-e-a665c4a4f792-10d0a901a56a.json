@@ -1,37 +1,69 @@
 {
-  "version": 2,
-  "diffs": [
+  "references": [
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=10\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=e2e%2Ftests%2Freview.spec.ts\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=3",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "e2e/tests/review.spec.ts",
+      "start": 3,
+      "end": 10,
+      "digest": "sha256:98ecd581b316a0a39a6fdda7c9504fa433b8a23e59e338d964023524fe080ae1",
       "note": "Keeps comments, replies, thread state, file review, and slide decisions in place while refreshing only the affected review surface."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=25\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=e2e%2Ftests%2Freview.spec.ts\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=25",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "e2e/tests/review.spec.ts",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:9d2372e94f823afa8d8757b37b3736890f33262e92414f3e69b395da4e3646f8",
       "note": "Keeps comments, replies, thread state, file review, and slide decisions in place while refreshing only the affected review surface."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=47\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=e2e%2Ftests%2Freview.spec.ts\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=47",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "e2e/tests/review.spec.ts",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:b260db982f79315fb512d038e84f18a9b4710775f1bac015fa19a3f9132b5077",
       "note": "Keeps comments, replies, thread state, file review, and slide decisions in place while refreshing only the affected review surface."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=71\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=e2e%2Ftests%2Freview.spec.ts\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=71",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "e2e/tests/review.spec.ts",
+      "start": 71,
+      "end": 71,
+      "digest": "sha256:971aaeb5ca78e4baa5158bbf836569518ad0757f1300199a074fba77026a1991",
       "note": "Keeps comments, replies, thread state, file review, and slide decisions in place while refreshing only the affected review surface."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=73\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=e2e%2Ftests%2Freview.spec.ts\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=73",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "e2e/tests/review.spec.ts",
+      "start": 73,
+      "end": 73,
+      "digest": "sha256:55f241b7cc742d755931021913c5adb7c5998261ed8365e18d4b02415bd1cdcd",
       "note": "Keeps comments, replies, thread state, file review, and slide decisions in place while refreshing only the affected review surface."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=120\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=e2e%2Ftests%2Freview.spec.ts\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=120",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "e2e/tests/review.spec.ts",
+      "start": 120,
+      "end": 120,
+      "digest": "sha256:a1366d2d09fc7ce66df160cc09493dfede905288fe423e86acbc22c0c8752066",
       "note": "Keeps comments, replies, thread state, file review, and slide decisions in place while refreshing only the affected review surface."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=142\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=e2e%2Ftests%2Freview.spec.ts\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=142",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "e2e/tests/review.spec.ts",
+      "start": 142,
+      "end": 142,
+      "digest": "sha256:9d2372e94f823afa8d8757b37b3736890f33262e92414f3e69b395da4e3646f8",
       "note": "Keeps comments, replies, thread state, file review, and slide decisions in place while refreshing only the affected review surface."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=181\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=e2e%2Ftests%2Freview.spec.ts\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=181",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "e2e/tests/review.spec.ts",
+      "start": 181,
+      "end": 181,
+      "digest": "sha256:e2e0a8476c284302bf995d39a9427b45c849a6312b2bbaa474f96a67437845af",
       "note": "Keeps comments, replies, thread state, file review, and slide decisions in place while refreshing only the affected review surface."
     }
-  ]
+  ],
+  "version": 2
 }

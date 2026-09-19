@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/cli.spec.ts",
+      "start": 110,
+      "end": 167,
+      "digest": "sha256:775a1a1192b7092d01a80593cb480a94e58c009d955f01b2860fe2dbdbdf0a82",
+      "note": "Proves invalid Sagas and repository-identity mismatches fail with zero side effects."
+    }
+  ],
+  "version": 2
+}

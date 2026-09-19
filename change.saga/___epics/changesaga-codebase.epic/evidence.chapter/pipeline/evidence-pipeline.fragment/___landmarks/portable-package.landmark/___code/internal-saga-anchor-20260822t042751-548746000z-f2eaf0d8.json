@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/saga/anchor_test.go",
+      "start": 1,
+      "end": 41,
+      "digest": "sha256:5ff83fbfa4ce9fb9f00e359291423345c5a18bffc2fc805395331696a0e8d4c3",
+      "note": "Defines or loads the independent package records that make a Saga portable and Git-mergeable."
+    }
+  ],
+  "version": 2
+}

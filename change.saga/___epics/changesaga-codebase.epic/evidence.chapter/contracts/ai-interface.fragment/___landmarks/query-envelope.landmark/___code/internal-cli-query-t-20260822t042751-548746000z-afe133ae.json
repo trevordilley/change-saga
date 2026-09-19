@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/query_test.go",
+      "start": 1,
+      "end": 172,
+      "digest": "sha256:a248e9f6b9d18ed90e6be5d98bcd04ea5940b6ad5a3e82f67157184b605d53c1",
+      "note": "Defines one versioned query envelope, stable operations, typed responses, and machine error codes."
+    }
+  ],
+  "version": 2
+}

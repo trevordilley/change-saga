@@ -1,0 +1,11 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SPEC.md",
+      "digest": "sha256:b9c85c22cb8bea156d844464ab41ffcc62ada20a86541459c465c89c0eb256e7",
+      "note": "Records this owned authoring path as newly introduced in the since-inception comparison."
+    }
+  ],
+  "version": 2
+}

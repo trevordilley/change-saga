@@ -1,0 +1,2411 @@
+{
+  "references": [
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "digest": "sha256:aef88fbefb67a4ce91db44fb7b17e9ba18cae227412b4f637da3a62452f523f0",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:b9e0bc81621c4ffc04d4f54493a9f868b242d79146793b3952d8e5930c99c9b7",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:32b966cc257d5deb76c6f6c5c2881e5a57665443547addee58d07dc441616f7c",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:101ead936a2281d53dcc064b7e2a2ab0d53b92ef3ef7b34b668673007895c860",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:9fddd97a1bd15b5c0cb523302caaaf5728a261c367e2e666e57274f08f7dcb6f",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:8c08ec92db83eafc0170bdeb258e1576c058080783f677624d1a8142ea3487ed",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:d25a8b49cb41d32783d90fcd73ccb4477de494ef6a6efa595ee97f82704fc05a",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:4c56934253604e09e6cfaf96602e198b17929ad5bc636407063f3252ad825db8",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:e28dd333e8f2aa45206653f3ae3d3e418fca8b6a7e5783883e6098ac1cf55b19",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:34490b018244994cc0ab23b7709bf444a9fd8dce72897f291dd2be26e0d6c749",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:101ead936a2281d53dcc064b7e2a2ab0d53b92ef3ef7b34b668673007895c860",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:fe11af2e25da304918af4286fe341f701901fa93329bfb3efbed1894d7f290e1",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:e54c67c5fee82130be908f20ef46636f2af827b68a0cd63d54dbdc603776c14d",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:2e38545cd1ec2aceb94254ed4597a3aef3e22dcd6de09100255db1b3e44b5d9f",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:6494d98ba52dea8c6f48d5096bf92cdeb5d5c11306458d0927df1527a7652ca0",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:101ead936a2281d53dcc064b7e2a2ab0d53b92ef3ef7b34b668673007895c860",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:2d42b3f08cd1fe33021cebd56803a6ab22cacfb2432ef67a92a0e26c512c870c",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:793521230829a101b6eb2b8e04658f59e88e5862ebc289f0a4fef41a9f663d72",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:e3429bab530cf7c7664ae9573370dff7e79594da858957718fb9542618b20a23",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:16c897077be1be39352d86beea3b51eb130a74f874eceb77d04704c2d7a3e26c",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:5f135a8565d492d0e760e8aa4396440d6f92cb53528e84643b2c30ab3242fa28",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:71e37b6cd48ad477cbb12624b757ee1dc4975711b78237a85f508bfdd723af77",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:27ebf5086f3779bf42ffab9cd30faffeaad4a2b05aa145b61c7d9436fc9adfdd",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:88b2b63df1b22d7cb9359d4a10a5e357a697e72f0d3f3dc2887843958558ca4b",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:d01aa323829d06b5023aa663d61d45371f4198cc7f8a770199fe5e4dc0c5ba39",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:9d321d278769fb32c7c6820e1c992ebb53b04e39def0f158cbf1d84e27d34c18",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:30846666d2ce47f9ec32160922192466e9cd4450f31dee0061811ca48bb8ccb0",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:74432b77763c6cfa9171fc3fd13832ff241f4c996771aa8caccfe84199cb372f",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:d7c13472432b49bc3449735b494389e2fbf6bab4fb98ea35c40aedb55cc0d0a9",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:f05b48055b78db9e9e8993848d47169d7abd312df35886aa83d4014d37eb4009",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:fafba0527c3953c4b6e0e5b5739ba83612f8053bcdc9466730193cd1d590b408",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:a3c76ac14422a85fcdb723facd5b28ed4e73410a39dc7888cc0749e1f13d9cc1",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:0dc8982a2cfc7e3791dbcbfaabfcf155fd49fe5ec2883a3fe0a9d27a432eaf96",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:e94f3f735728fbc758ef632d457ad1bf72a67f7036f2f6bb57ee63d20a4b35dc",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:d0d986b0df7e9c47aa782b06609469bc8eeca47612b838cf829dda4bcddd3329",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:9a78f839b31755a8dbec05c38e5c2b62bf477f0c7cf5b8db216b88a93e789070",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:aa8e01e667248c2984fe7c41753d9df48233cf8ddad0eed31cd914e5ef91f5e2",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:aa930fa4589e049ef611690e9332c11695d05ee934c4db190e6ff4a9cce51f13",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:88451b2149670b9f7e4830549595ced1ae95417da53635a24aadc52bbb382139",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:3b08597116bc022db62b32ce3580e601d054beffe21c22d351973d641d545061",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:b45b6b15451fd6837ba9192f0f5f63b49133f057ffaaa5b6fee9cb953a582b4a",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:d1312e5c86fefb409ca5877128690a1cc48855ff97bfb3160c6c4ae516a8dde6",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:42eab2ec2247af3dca8c23c3d66d1dddb2d110162c279adabc3994e024ef3e70",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:121c272c850a2060664eab8dc14c8e8ddbd88a750814cc0d2b50c801b21057fa",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:9e8d2cd11d2b223518a8ab1622e039b123df0ae311e38a08d3643752255c8b50",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:68d073a3dd6ccc471e572de44a97dd139520dce16a4d028304069ad2491b1690",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:e5b5af9b83ad312bb27f9027a8dcb4302a7046c68f2e0d3022b6f377f7a0dbcb",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:fafba0527c3953c4b6e0e5b5739ba83612f8053bcdc9466730193cd1d590b408",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:2aba7ae1f2523d0d33e2b3d08b11e5615fc617c079d375e20d2fdab3cca76b4b",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:b000eb94e3a6caf26dea9e9f832c154095262319fd914ed11ccf6973f6a4a7aa",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:59c25f0bf9aa963ff64391f3a30c7bc2c2fa14255f073f1ccc30dc9c1d26374b",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:29da05c4a2f6faa590e50798e6fb33ba29cafc9ca76c8770b4c6a1f7e27eb161",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:2e413a6a9226205e1a756f78ab93244f488079aaf806477d76a3d5553a5acab3",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:c7aca3fc74ab7dca1704d368695d95d50401a6b5dc2a106f7b9a0e76af455080",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:9d7533a5bc31e04c625f67debd148e7cc3ad076b64922ea14bc7fd53f803df03",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:d43047c228c921b9fbb79c69886306560d1e38bed55455d7bd7d557e67b45427",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:3de6d772777bf8d94b8afad5f6c45967dea045cd5a484a75cfea2ef4c521ac77",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:4c0932b47a34672e85e022c2858599783546ef54cebfb991c253b370ba7cd941",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:dca316afbabf2a54a2e68334795918cfbc13f5b97dbf8b08867686a4f0e05942",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:95092201a7340dacaa435fba67daebec08d2084e50c9db9c5792ddb7d3a02e0a",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:f0a1e8c26f0ce528956f232eb0102578356283a6a702c92e9eab9ba99e095d6e",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 68,
+      "end": 68,
+      "digest": "sha256:7e8700aa949f36232f147c6cfb964c588d3b7ea5a8f16c1d7e1ca4608c07d98d",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:f433fa0f90bd8d0d9157240caa00dccc6527737bebaba51a4257f98324851bdd",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 70,
+      "end": 70,
+      "digest": "sha256:889f0304e5186752a4fbc1d0e57bb792ffdd3d416eaf80bd9fa24002a3271b4f",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 71,
+      "end": 71,
+      "digest": "sha256:9261a3c29e07a64635abc5405bea3528f8adc722c9980ae1d9bd815e2bddf06c",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 72,
+      "end": 72,
+      "digest": "sha256:89fe1bfc2480d13477871c76fabbd445e465b616a5f36fc60e1463689403754a",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 73,
+      "end": 73,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 74,
+      "end": 74,
+      "digest": "sha256:86e3b75f9fd7ba394ec6e75e22a1967d323df8e3d8d1dc75c417b6cd12659080",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 75,
+      "end": 75,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 76,
+      "end": 76,
+      "digest": "sha256:63760b69c5c7d41cbc6fc65d6d5355664cdcd7aa7700cf3e1f3a79a7d14eb1e6",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 77,
+      "end": 77,
+      "digest": "sha256:bba0b892d6e5a2ef67a04a0905af4059a461853f990097c84d379538b60a3523",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 78,
+      "end": 78,
+      "digest": "sha256:eb4614504a228c2678605cb94e98569d49420be1bac24b812df57ec181308fd5",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 79,
+      "end": 79,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 80,
+      "end": 80,
+      "digest": "sha256:59464899de59bd21f326b3fe1075dfbe47c437757d23a4952c25dd445932b5cf",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 81,
+      "end": 81,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 82,
+      "end": 82,
+      "digest": "sha256:772c0fc2ee4c8de8573272485a7f5e59d032b110c1eed834bfc2f420f98e2529",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 83,
+      "end": 83,
+      "digest": "sha256:45580149979a8fe7cacf52b4666db5895488942647eb97b48c024d5ff6a8a048",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 84,
+      "end": 84,
+      "digest": "sha256:a4728f0e88c9a1f9796da1ec6178ad0cf34b27caa1fa3ff9385e4903665c095d",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 85,
+      "end": 85,
+      "digest": "sha256:ca25b6f367c2a905127b5c5c592a36d728eb4daae560313b7c1d095d8b2cbe7d",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 86,
+      "end": 86,
+      "digest": "sha256:238a7a77ad469e8db670015e8ce63b0d99197264547395b5abd6174a52c28d79",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 87,
+      "end": 87,
+      "digest": "sha256:a47526779d501e7392eedf9e432c39d32f425fbab2a38fb73354f8113b991c63",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 88,
+      "end": 88,
+      "digest": "sha256:6b8c5212c743bd03830b1e59ce45e9118d0d39c6964aeb155c56e2224316b3f9",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 89,
+      "end": 89,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 90,
+      "end": 90,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 91,
+      "end": 91,
+      "digest": "sha256:11b35aa74c2f762853df5c2eb4d8cec985f7d7c6913e3a04da040e53ace2b57e",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 92,
+      "end": 92,
+      "digest": "sha256:62385317ce7bbf1c40da298ee3736910631f9fd2a2a1c8b38b3b2ca4720bb790",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 93,
+      "end": 93,
+      "digest": "sha256:172b12333b8b56c1f714e194e9739c9b72b9453c6f7b9d9c83410d0151e5b6d8",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 94,
+      "end": 94,
+      "digest": "sha256:12eda215eac14298323f7867f42582edf6f57a5c4cd606bc693df38f505266a9",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 95,
+      "end": 95,
+      "digest": "sha256:4d3717822998b6f4f735ecf666016ade5945835af8f5edee4249c97c5f49b528",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 96,
+      "end": 96,
+      "digest": "sha256:edcd3b42897d6f74836068f41958ebb2cad833fe313f4c84d6571236c7437c7f",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 97,
+      "end": 97,
+      "digest": "sha256:0ad1a8e9c2d85df75c0a63decfe32dfcfc0a65e1a3c37b1431797033ef526c21",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 98,
+      "end": 98,
+      "digest": "sha256:95bbb564f43aca3422eb18eac06b4aa296155798ce0362220ae8ac8caed0b606",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 99,
+      "end": 99,
+      "digest": "sha256:515f307b85235d5768324b73024387bd8abb252f0075f73c3b4e3c56b91dd1f2",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 100,
+      "end": 100,
+      "digest": "sha256:4cccbed3c9aef9e8cc2c00ee71f8763111476d7cc77534250910ed13ad61c757",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 101,
+      "end": 101,
+      "digest": "sha256:52e357ee8eede85fd617013937552ae20dd598c82288d3eca289132f11a89685",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 102,
+      "end": 102,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 103,
+      "end": 103,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 104,
+      "end": 104,
+      "digest": "sha256:42ba4f6e3d79a0683bd81c677a102cd9ff8dec8c125d1aaf83d4d50d3d478db6",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 105,
+      "end": 105,
+      "digest": "sha256:595082f2e3217811747dee1b71f3c638649c63d7e1a32af2087923a09db40a91",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 106,
+      "end": 106,
+      "digest": "sha256:38ea6043b7b7d3a5e2fbccb5b989d956b7636621d4be989cd801fa3e1d95819d",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 107,
+      "end": 107,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 108,
+      "end": 108,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 109,
+      "end": 109,
+      "digest": "sha256:5c4de63a0ae68f8a167e9d43cf1dbf064251e19e36f4bc44cd1b28ba74f87ffa",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 110,
+      "end": 110,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 111,
+      "end": 111,
+      "digest": "sha256:849449e9b9bccbc9027556f1ef502c91cb8bda0bc9fb9e1fc4fbb85acec662c1",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 112,
+      "end": 112,
+      "digest": "sha256:582dcf962bba68dc86005123347bb988c61fc2cedf7c514ed320f97ddce38478",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 113,
+      "end": 113,
+      "digest": "sha256:3ee55fb1778bbb045379e4055085d8d9fef11463bec716261d902b76a22e8833",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 114,
+      "end": 114,
+      "digest": "sha256:5b6a20ad0a0d857675b8ac28be5c22f78f48970f22ac92c54cf2bc67fbb14afb",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 115,
+      "end": 115,
+      "digest": "sha256:4eebed92ed8718699b8f42542f24693472bb0889555c0f390fdcbe1ea032c429",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 116,
+      "end": 116,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 117,
+      "end": 117,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 118,
+      "end": 118,
+      "digest": "sha256:604b1768bd8f7b9e9e89a812015a39f05320bb646f8a44aa5ba99456256c8912",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 119,
+      "end": 119,
+      "digest": "sha256:015452520279a0c85acb850dbf8d7f615157b20d90843197a55189145041376c",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 120,
+      "end": 120,
+      "digest": "sha256:a200dd3f18b5edff89f6c8c270875e7c9c5a8565ee9b0d9970673d4a1834bd2f",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 121,
+      "end": 121,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 122,
+      "end": 122,
+      "digest": "sha256:39cc326548737146f26ad73510c00e6c50c0879402c08aa4067de9222922e5bc",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 123,
+      "end": 123,
+      "digest": "sha256:f08f43df17094da5ef8edc4dd3a391f57a10750a07d97aedafc337b1c327e7ad",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 124,
+      "end": 124,
+      "digest": "sha256:e8ecef0474cedd3e091bb9faf7bfb28362fd2247f3e699eb33647e588c512a46",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 125,
+      "end": 125,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 126,
+      "end": 126,
+      "digest": "sha256:afcb953699d4bb7e53c8aaf7f7814c1db0a3360b31118ce65436e972c6ddbba4",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 127,
+      "end": 127,
+      "digest": "sha256:5642e807641c8c2a3cceebe20fc77f8e6d127022ca9c244b3f5f4f83b89f4e1e",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 128,
+      "end": 128,
+      "digest": "sha256:4d530a67e8e172a6d63781855cd4d931bf7802691134fb2a525dcf7d26a369f7",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 129,
+      "end": 129,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 130,
+      "end": 130,
+      "digest": "sha256:fbb65bd110adecd91df398d6015c2e8bf3dd52e10e1fe861edd968ab63129083",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 131,
+      "end": 131,
+      "digest": "sha256:e6a3d8b9732c66f1736011c9a072d07beb44d26d8fafb72f63e60b23dd99b0eb",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 132,
+      "end": 132,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 133,
+      "end": 133,
+      "digest": "sha256:ac496834082fbafceebf52a7a3f24e6f8ac7db55f34f2ed1a50924eb0a2f7f3c",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 134,
+      "end": 134,
+      "digest": "sha256:8f4b533c3b82ef101cebf4dc45b436e7a1a0efd4a7426b9a2e0afdd5754ab66a",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 135,
+      "end": 135,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 136,
+      "end": 136,
+      "digest": "sha256:23dc4dc4cddf3121ab4bd53f362d421126a510b34c54363f69d25404ffec02e5",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 137,
+      "end": 137,
+      "digest": "sha256:db73a47e3501ba106c55cae34dfb3d20284eb2e3bc0d60edc00f2daa1e01544b",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 138,
+      "end": 138,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 139,
+      "end": 139,
+      "digest": "sha256:82e7daeabc77d585f4376044d79ab12e503bc0998a64c279edc4d0a3b44abfe2",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 140,
+      "end": 140,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 141,
+      "end": 141,
+      "digest": "sha256:147087e8af2fa3bf92bd04f35558839451a05aa5d9c2faa2877c3b29b34f1c1a",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 142,
+      "end": 142,
+      "digest": "sha256:94f08f769f5a9a81e9c076981add4da0cf5471aec0c74f39e1daa634778cf1ec",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 143,
+      "end": 143,
+      "digest": "sha256:d44e0791a83f5a45140ef700b8f49c042663783568dbf2c17d356ff16c495dd1",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 144,
+      "end": 144,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 145,
+      "end": 145,
+      "digest": "sha256:20add68afa5641d06202e9441a5489d9e6c8ab2adee573d356a28ccd429905c3",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 146,
+      "end": 146,
+      "digest": "sha256:66490bbc766c1e4b40be53dcac992b90df30ab1d8283ccf30d56679c0206da21",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 147,
+      "end": 147,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 148,
+      "end": 148,
+      "digest": "sha256:15f3c2f4b408298ef0db03339bd1f6e6125fb272c735959d837b13cbb7129688",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 149,
+      "end": 149,
+      "digest": "sha256:5d07ed7e8362b0b35c2a2c9e1e6b5140bee72a1df82f323e417081956e02db0a",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 150,
+      "end": 150,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 151,
+      "end": 151,
+      "digest": "sha256:b6b75ebdf0090d640f501acc3e72aa8fc6e379ebc798cb35b90d01c0dd41dfc4",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 152,
+      "end": 152,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 153,
+      "end": 153,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 154,
+      "end": 154,
+      "digest": "sha256:650784eae0a9408726a9fd3af5eb2064d728e46ff10e6c7fe99e126d464544c7",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 155,
+      "end": 155,
+      "digest": "sha256:a36c915452fe1b74f9ad3a319c6d1e12e0e0e61b9bb0514e5a6501c26766b4d7",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 156,
+      "end": 156,
+      "digest": "sha256:26a17c6c5eafdc326f4c6ada864a61a54cfd88d26aa03eab0216f868300ee86c",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 157,
+      "end": 157,
+      "digest": "sha256:691bd56398cc3ae6378d0060007602277c968ec3bc11b8db5f2e60b0ce572ec7",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 158,
+      "end": 158,
+      "digest": "sha256:5ed61ec18b3c6252ee5c02d4f5a3f14bc5f32a9d721a8e28e1b24bb7c754fcc3",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 159,
+      "end": 159,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 160,
+      "end": 160,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 161,
+      "end": 161,
+      "digest": "sha256:a4246e127b527ae953ba0e9f62cb8dd7145c62497243a98fc25126e3f6caf482",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 162,
+      "end": 162,
+      "digest": "sha256:20c152e09c31911b3787b0ba92937128c870bdf13d0299d8f6a8fa990253040e",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 163,
+      "end": 163,
+      "digest": "sha256:0ad6e05ea4aa7889e06da132029d6cd139ffd3b5fe1e6fe7b5ed73df62e8d0dd",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 164,
+      "end": 164,
+      "digest": "sha256:319d0f352911f177202333c620b18d0c7b635f94ff135845e469f8c9cd024a15",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 165,
+      "end": 165,
+      "digest": "sha256:07ef8a14fdad099a5cc91ecb98112b70cd2a15a8f0271a2271dadeda9edf2810",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 166,
+      "end": 166,
+      "digest": "sha256:e0cdcc70d2882d975951b1f8428251294ae9dd1d821eefc43b69a8a9e3436af9",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 167,
+      "end": 167,
+      "digest": "sha256:7ad3cbe6f36c6da0b921938c96cb6619bf798cef940d7e1ebc7e72e91ff8de43",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 168,
+      "end": 168,
+      "digest": "sha256:c883b4adc6ddfad83a8a0275f355afb111c66608ad193d7f743f54576ecd5c27",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 169,
+      "end": 169,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 170,
+      "end": 170,
+      "digest": "sha256:7e4e7b5bcf66e43fd026ff399582e0f58e34f345ec88ab5cf044bc0576efb2e2",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 171,
+      "end": 171,
+      "digest": "sha256:02a7745be0b8d20a463cb9de10614d743052c935146acf0cec63044d38c5ab1a",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 172,
+      "end": 172,
+      "digest": "sha256:af738d857211fb8383d13a1a92b00d60cfedb9340444e20a0c4de0141527f483",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 173,
+      "end": 173,
+      "digest": "sha256:fdf760d01b9a10b86467a6cd3b1b4fd337679bdaf7764a9168572afb4c3a7fdb",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 174,
+      "end": 174,
+      "digest": "sha256:06a16f21b70a95630256000879a6ce7c112c13d40ccec145052e4a85af334fcd",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 175,
+      "end": 175,
+      "digest": "sha256:916ee0c5901e813a70da21c3d6d5be3bc7318407c8c39ed28375a913972b5667",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 176,
+      "end": 176,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 177,
+      "end": 177,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 178,
+      "end": 178,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 179,
+      "end": 179,
+      "digest": "sha256:86ac80b6053a7d47887c9e22f69490dbb2e9b4bc890c161de36eda4f4c58ed0f",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 180,
+      "end": 180,
+      "digest": "sha256:7e39b504c1c6cdcb7a0eda407b753b50a27b7276d744e6e617fa98da77bfb992",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 181,
+      "end": 181,
+      "digest": "sha256:0e57298ed3f27e32230f3611ed25bd0e5a9e6293f07c416dfbeffb7bfe1e8968",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 182,
+      "end": 182,
+      "digest": "sha256:76b9dda91169f1c0b023a66afc60b06181269939070ab349f789334cda853076",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 183,
+      "end": 183,
+      "digest": "sha256:35bbac82cf973063c6e17ea65c5f52b4fde6499945cf610fe2b9f36349535f3e",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 184,
+      "end": 184,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 185,
+      "end": 185,
+      "digest": "sha256:e483f8fe215422317b176006e22edbd535cf4bd940e83ad3110407fbda7884f0",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 186,
+      "end": 186,
+      "digest": "sha256:72457fcfae27caed6f4aa90a3aeeec6458280da2a032998b8bf04d39b9d85719",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 187,
+      "end": 187,
+      "digest": "sha256:ca731227eb461cb98b3e0894efca827f75d05f33a0afbb46c2753e0e2254538e",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 188,
+      "end": 188,
+      "digest": "sha256:106778a3ed332f6f90394b0de3f0e7d46afecb76f2bf0caee00b9ae31b5bbe44",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 189,
+      "end": 189,
+      "digest": "sha256:c86a66f5d08ac22a4e8a64b0ed34687d6c747846dd73033047fcdd1ec60077ca",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 190,
+      "end": 190,
+      "digest": "sha256:193eda3db71f446db4efac3c4d421f870c7ae7a979c6275fdf2e96f185c428e4",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 191,
+      "end": 191,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 192,
+      "end": 192,
+      "digest": "sha256:94b746ad596c79a43d48f2c42ca85a539adb7f5fde5ac8a1e083c3df47937ce8",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 193,
+      "end": 193,
+      "digest": "sha256:0fc5a3d5a7d482b16c4b79568aeafc8282fb5baf987d9c04004cf809712c1ec9",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 194,
+      "end": 194,
+      "digest": "sha256:5c7f0387b2c322e735d723819e83bf9a0a77816b07ec1cc072e6e4a3c0ab0ed5",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 195,
+      "end": 195,
+      "digest": "sha256:f4374c33e65d1ad822f140c7135a54b1e3518b29e0064fb0d5813be64a22d283",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 196,
+      "end": 196,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 197,
+      "end": 197,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 198,
+      "end": 198,
+      "digest": "sha256:ffe412fdd9b99f2c82c266bbdcf97b35c554bec748fc77ca49e92de8e5f8bcc7",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 199,
+      "end": 199,
+      "digest": "sha256:fd80629240c0d65afac41a35aac3d3ad5d79c48ed0d561387f72ad6c7ba70af0",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 200,
+      "end": 200,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 201,
+      "end": 201,
+      "digest": "sha256:83cfcae704e170a9bc33f5249f983aafffbea4afd9f0fc178e230969ef640ae1",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 202,
+      "end": 202,
+      "digest": "sha256:a278b29f2c5f0e308e3c041025b4cbf8c95d9ed0692850ef5e8924a0ef4bb86d",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 203,
+      "end": 203,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 204,
+      "end": 204,
+      "digest": "sha256:deece160d9fed590467020a7d4e421a2fa759b63bc2383b000f53c5144f640a4",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 205,
+      "end": 205,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 206,
+      "end": 206,
+      "digest": "sha256:af738d857211fb8383d13a1a92b00d60cfedb9340444e20a0c4de0141527f483",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 207,
+      "end": 207,
+      "digest": "sha256:bd13ec76ae355d3c01e254acb65e61be59fa752b7602bebc8916b19ae27e09b3",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 208,
+      "end": 208,
+      "digest": "sha256:06a16f21b70a95630256000879a6ce7c112c13d40ccec145052e4a85af334fcd",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 209,
+      "end": 209,
+      "digest": "sha256:12b8ed488a32e0ef48e1d59ff67a0fb0d188fb2cc7042b4bdc33ae0464ffd67a",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 210,
+      "end": 210,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 211,
+      "end": 211,
+      "digest": "sha256:d10dc49e15bbc2b5d1975431bde53c952f5d6dae6527e55fe95ef078171207c3",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 212,
+      "end": 212,
+      "digest": "sha256:4f6fc8ac9589c9934058952a0808c89b5fc8b81948cd06edb002eb51919d0a1c",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 213,
+      "end": 213,
+      "digest": "sha256:1a1b542ffca314e477f6d63454148c8b97ea205ec419bfd9fff8f0db806ea263",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 214,
+      "end": 214,
+      "digest": "sha256:cea9982878adf5eacc1ed2502f3f058c1310a451565d9b3201696d96c75e8c26",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 215,
+      "end": 215,
+      "digest": "sha256:af3d02f4e7aff0621eb815d24fd9ed96ea066b167806192afad13f9218eb53ab",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 216,
+      "end": 216,
+      "digest": "sha256:f461709e1f00c15abea7b9aa72b5c74931ab1d56c4f92486a635924f2762e0b8",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 217,
+      "end": 217,
+      "digest": "sha256:0e5f2ec6f3fb190ff52bc05fd403584918df4f6672d48b6795394fb1eaab7214",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 218,
+      "end": 218,
+      "digest": "sha256:573ad4fff68551be6ce51627af897be429455154667880e5315f0e89a4707174",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 219,
+      "end": 219,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 220,
+      "end": 220,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 221,
+      "end": 221,
+      "digest": "sha256:83cfcae704e170a9bc33f5249f983aafffbea4afd9f0fc178e230969ef640ae1",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 222,
+      "end": 222,
+      "digest": "sha256:5a47875a4929cff442e048c2ef18f834d723b65fc5cf39bb14537746da0d75a3",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 223,
+      "end": 223,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 224,
+      "end": 224,
+      "digest": "sha256:51451a3e24836d562bd1aee4dfa40c9696436420f6f317d28cc42e4497854d28",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 225,
+      "end": 225,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 226,
+      "end": 226,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 227,
+      "end": 227,
+      "digest": "sha256:c1b162a1af0704ae478f5d2af037f9db581733b85763a3d2e0ef826e85407c94",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 228,
+      "end": 228,
+      "digest": "sha256:92a7a04508164d2fd8ab80557d9dbb096906c634a163fa5b144b7ce749607392",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 229,
+      "end": 229,
+      "digest": "sha256:75e18b947facef17bcdec701c94e7bc72deee37e61ef9a10dc51194c1a69014b",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 230,
+      "end": 230,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 231,
+      "end": 231,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 232,
+      "end": 232,
+      "digest": "sha256:da59b70a64154ed98d6a79f88b28f542f0a307862b5e1e1e40b5798e39ad1bd5",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 233,
+      "end": 233,
+      "digest": "sha256:b2657b45b431a1a89c8190f3ae80149d979396ec533fefe4129e8ac088fe0ae6",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 234,
+      "end": 234,
+      "digest": "sha256:4bd6699cf53ee7708545a6de2d22890d5f8e7bd9baa3e6bd1321cd29796f6255",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 235,
+      "end": 235,
+      "digest": "sha256:9b6b5b7dc97381b97abcc66f9a34e97204ead375e40551e6a9c3032e58cc6bfe",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 236,
+      "end": 236,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 237,
+      "end": 237,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 238,
+      "end": 238,
+      "digest": "sha256:b7b5b5400608088f0edf19fca964f322b1220d6bf4274824dadba71043fee60e",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 239,
+      "end": 239,
+      "digest": "sha256:856254c325c2c29225630fb4bbc8b2446dba0e432db1a826c16663c364fb362e",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 240,
+      "end": 240,
+      "digest": "sha256:1b5a042414b029731abcc942ba17aed8fa7eca4aa5af9928e40fa334613070ae",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 241,
+      "end": 241,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 242,
+      "end": 242,
+      "digest": "sha256:a4c91dc11967b7e9a67a26c141a784bed6af22c5686e694d9f19009b139ef2d5",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 243,
+      "end": 243,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 244,
+      "end": 244,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 245,
+      "end": 245,
+      "digest": "sha256:0569b747c44c37f1e0471bfd580626208be55f9910d3c4784e30bd19c7f178ad",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 246,
+      "end": 246,
+      "digest": "sha256:e18b8b20801305ff8308c2287689652678d0917f3b5671c7388bb2d5fcd78745",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 247,
+      "end": 247,
+      "digest": "sha256:9de048fdb52a45efaf914ee71185c738385218983d8bfb24cbe0eb86902b36e4",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 248,
+      "end": 248,
+      "digest": "sha256:3e37a0c6d5021b32a5690396c1d80a25a9f58371d638fc682781a727b56bf5eb",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 249,
+      "end": 249,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 250,
+      "end": 250,
+      "digest": "sha256:f617583bdd59a8f9b6efbfa833ce726ab8f2a63f009ec98b17ca6e58ea7fd56f",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 251,
+      "end": 251,
+      "digest": "sha256:9d824d8a5d51c0c2d70f2ff1f5fb3b1f3eff33c9abeae2da685b85035901572b",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 252,
+      "end": 252,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 253,
+      "end": 253,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 254,
+      "end": 254,
+      "digest": "sha256:448e861e413d392290a7e111ff79c92bca067d72d808f8a1095b9afa0c7de2f9",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 255,
+      "end": 255,
+      "digest": "sha256:33236b086de8405046c6136d49c25153641da6fddfce5f12b92a52681931d958",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 256,
+      "end": 256,
+      "digest": "sha256:ac63f8c0a694f34a815e835f62502194ed50a962e0eda1499215dce6266781f6",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 257,
+      "end": 257,
+      "digest": "sha256:052f9951ea67f15d518bed0ec9bc46610749f0898f10b987de24b0580f47c0b4",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 258,
+      "end": 258,
+      "digest": "sha256:1a92a240c89eb2545da6d18856b50171d504a11725f8287f2628cab5dde3bd03",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 259,
+      "end": 259,
+      "digest": "sha256:511483e98cfbb30bd4bc7fef1cb32c6d035f9d59dab8a4ee459fb922cf7f863e",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 260,
+      "end": 260,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 261,
+      "end": 261,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 262,
+      "end": 262,
+      "digest": "sha256:4ffb13c462723f99b689d009a2c997e66495e5b646cfef4c95e14f49abeb2735",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 263,
+      "end": 263,
+      "digest": "sha256:b2b4f34fd8788fb789d0f2786fe29bb6f634059595ec980358994727e8275c73",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 264,
+      "end": 264,
+      "digest": "sha256:d0a521f1fa4f4a62b8bbce012cfd4385222577e06a74b2c0d6a43d560b3f1fe1",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 265,
+      "end": 265,
+      "digest": "sha256:29606d264c732965f68cd2ea63e68dc38de02fb41cece13652b45dfa75f453fb",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 266,
+      "end": 266,
+      "digest": "sha256:eaa8ddb424fe1f792875f0ceeed9c765b03f9344016289fc77226e9d6a2c5f77",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 267,
+      "end": 267,
+      "digest": "sha256:511483e98cfbb30bd4bc7fef1cb32c6d035f9d59dab8a4ee459fb922cf7f863e",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 268,
+      "end": 268,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 269,
+      "end": 269,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 270,
+      "end": 270,
+      "digest": "sha256:77ccb1ca26f4fef682861292753ec1de152b4dae86081f07dfb0c2ebd43271e9",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 271,
+      "end": 271,
+      "digest": "sha256:e46dc197570f7d3875701b55bc034a3c2e5593f7c56aecf45d323ab9e283e67a",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 272,
+      "end": 272,
+      "digest": "sha256:f827d4db0916bdb9027cf8f29347d5cdf9a2a4cc4a4cd2e36c38c6acd8f3e0ec",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 273,
+      "end": 273,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 274,
+      "end": 274,
+      "digest": "sha256:4a57476ad3e3c26ad34e2df21a14b20903e1a994966f86f321ff088bf71fe9dd",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 275,
+      "end": 275,
+      "digest": "sha256:f41ac469f5d0ce3de48a2ca59c2af313892701dcf9eb376a398e1fb85f99e5c4",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 276,
+      "end": 276,
+      "digest": "sha256:1768d3613600ed8cd303ad5577b37e73fd0bc5172050ed4fdc681df9d82fe870",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 277,
+      "end": 277,
+      "digest": "sha256:ef726cfffc3ef3c0f423755181dcdb8fb2b9c53ee1f8bcbab9ec1a1e2d285267",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 278,
+      "end": 278,
+      "digest": "sha256:42a57081051f4682a7db3e590b4dd5413d53dc9a01551276dacb521a7e1db9a5",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 279,
+      "end": 279,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 280,
+      "end": 280,
+      "digest": "sha256:18537456228baf77a543bade8421f050bd45325c293905461b1f3346b2a530c8",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 281,
+      "end": 281,
+      "digest": "sha256:4b3c831c87064da975a41aea2790253aaae959c94a31f76a6592fc5412c0e9e6",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 282,
+      "end": 282,
+      "digest": "sha256:1267329c947f44ca1fa2ae772410487db77a0c88c54f97ca80ef46e1a27e35cf",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 283,
+      "end": 283,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 284,
+      "end": 284,
+      "digest": "sha256:218ce6096eaa5cc43f5458fb98a79507d5fbc9ddb3d933314c56acf68e478697",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 285,
+      "end": 285,
+      "digest": "sha256:34f1e353fe39ec8dd47a89ca97d00692afe62a5165a79df6c1cb6cadc7e2a2a0",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 286,
+      "end": 286,
+      "digest": "sha256:e9efc50eecb8da0c74ac269b9c9ad11784b11302f2e0d7e991ef9c76401f54b8",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 287,
+      "end": 287,
+      "digest": "sha256:0de6603662ec9e18ef8080e126fe13ecc27f94ab776479aa0a5160fed63a88a2",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 288,
+      "end": 288,
+      "digest": "sha256:b3bdfb3f0064d998227cdc7b677c4d4f73500b2466e14e0bd9b214a3f2ff1c6f",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 289,
+      "end": 289,
+      "digest": "sha256:f7ded4d84760402b0a1969e8761c24e1172f7b6d0cc0167cf9e015ae4dca0e07",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 290,
+      "end": 290,
+      "digest": "sha256:9650be90ff7e33933450e325be55f457430f640aba72651f6d643dcdb2cffe02",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 291,
+      "end": 291,
+      "digest": "sha256:3c1541accf22474656eb8969091963584e906225c39b5d6aade5dcf842eec425",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 292,
+      "end": 292,
+      "digest": "sha256:eb1b46ab37959eb073e96a3d0620adeaca6ecb64c062caf54d1f94709d9a1976",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 293,
+      "end": 293,
+      "digest": "sha256:e0808dc0beea494289382b63e675510a5ff1060270cef68ebbaafc62bb2d6647",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 294,
+      "end": 294,
+      "digest": "sha256:329e321d08cdb0f379958f7c5b8a302240576707d5084c13eb355f5029ef0df1",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 295,
+      "end": 295,
+      "digest": "sha256:0e5f2ec6f3fb190ff52bc05fd403584918df4f6672d48b6795394fb1eaab7214",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 296,
+      "end": 296,
+      "digest": "sha256:f043eabe35a81e17a008ff43e6e58cb0691d6b86a26814d665913fc6094fb390",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 297,
+      "end": 297,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 298,
+      "end": 298,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 299,
+      "end": 299,
+      "digest": "sha256:5c73c467305e3a69ae41344902f05e2679f60f55110ddafe9ff4a41207177d4d",
+      "note": "Compact connector encoding."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/connector.go",
+      "start": 300,
+      "end": 300,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Compact connector encoding."
+    }
+  ],
+  "version": 2
+}

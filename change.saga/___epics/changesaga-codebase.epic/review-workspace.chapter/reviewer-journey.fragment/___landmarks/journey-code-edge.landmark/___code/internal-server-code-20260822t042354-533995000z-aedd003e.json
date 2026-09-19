@@ -1,0 +1,419 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "digest": "sha256:62ddcdd44fc0b1293fdfac61157e217ac36f73fefd77f4dfe4a7c12b386657a6",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:0b0d4d1f5fbec17d7732f29ccf38d3ed9e3587229f0a04824e1096d25f930f7a",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:71e37b6cd48ad477cbb12624b757ee1dc4975711b78237a85f508bfdd723af77",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:6c7872f7e7aba7ceb14de93a1613a51c5b446ca889744d3b529463bd245c0953",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:f05b48055b78db9e9e8993848d47169d7abd312df35886aa83d4014d37eb4009",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:1b649ecbf085fe223589d7f842defd5e2c82ec06b02b4f7827a31625fd09316e",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:4251f63298670483bdac18904e47ecc02d2c2d19b3f7d8e42f79cb371a7c684e",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:ab6f6be8e5963a10d31f1044691aa6beceed5a59d04cd8247f259497075d8b4d",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:fafba0527c3953c4b6e0e5b5739ba83612f8053bcdc9466730193cd1d590b408",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:923ec5c100b51fcc457d139c8224c48155c3cc07df44558b359fc53fd249791d",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:cd8d9ce324ff2d511b378fa961354bc5bc6548056ef663e8d57fe404792f35f4",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:f0cda76905d6c7bca53b818bf27cdbcd715fd8f5473d23de9b68f92f37a12dfc",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:abf012efe639bc84c313a02e0ca67dd0bf789aa0712f11a29e107f4f4cafbce7",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:ed52892dd56b4e1311f3553f925e2374a75e362740740e635832331d55f140ac",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:903b6a1c65c21fe1bf064fa6916f37ad37410d74d762b12267dc23d0dc018d6f",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:3d51957a84c4b893b463720a20ff80149549fbae8b06113e621ea7a909a58eec",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:40dfdeef7538a0c8732a8eba5096e5fec7927f622aa6073eb26c00919bc699a7",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:304411baf30b34f1135b34ad3d4e0a6cf886cd70357d7187f39b642383719786",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:10ff52a0887491ea34fc8944c4b1c1ab6142f464adce55e992bdc2a292616070",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:b68f9371af0b5995dd38771da4d10ff0ae3e0c3c27f3611e6a7a0c01577dca6f",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:a8b4d19ade5e572203f35366fbea83eedddbdc1996f73218600a966bffdd994b",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:a391b372b20395248b2c5b0ca35dfecdb2ad02118d72d01919ca313e6d658dc0",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:13429ee9b978639a2ae711b119af7a4426607ab2a4afb74bf2c87c5de190143d",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:df5263fcccdac36a96a6c2842f79e98f4e6c3bd22e634f497b6fb917ca3b6229",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:4973169175658f1d44f915823411a68c8e759874683f5616080ad221bb25b901",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:7ce66a6d522011d8fbd6be4fa0752264c5f42ebaf3ec59e9992d50c356deff89",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:d03f875d3b9119c6767c138f84ee7fe81092e755422cb7f34b067610fed20d2d",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:7685a2fabe0f5b3c5d71d1ea9b3b4a363b0ee53dab6b619d394fd30bd20ec941",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:1a6e4e6b198289863fe1999107fc36745fbdba475664fcd7eeb291b2c8f93f87",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:0028ebc64d313b801e38e9195bbaf1502a5a6faf1e8bd4e9457eec781c6d8b5f",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:86be723c9f0d8082c314bfdffed3fa212e7bb501b916265ebc96b9b9d30af6a8",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:c18aaf61c20c2e0f81aa30fe25e0eb7fa7ecc620a720531ada8a8ca97e82bb7a",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:8d504c1816c07f5820b668442509ab43e800e118718a5cd02c4bb21fdc8561b0",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:d0cb32aee034cda1aea967724e8f4566cfd4418f8afa2a47a946019fc8473d60",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:60a9fae1e72373c234e5cec21b8d71c3ec2f9a4be1daa97a875f5749f1d68a73",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:5a418ceaf296cf6b5666508e57c5a3314182636c8e83ac3c6c8e56ce0c16eceb",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:92cbea85a0a160f7226ed1358420059c899a2ea3099831405f88c55f57040501",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:e06d278800942738242cbbca7b0e88b7f2316bac4724a07798b3ed76ba961dee",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:00d66e373b7d4620eb5654ee15508aec74059f861efff5ae215c120190f7374c",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:f2e242bab3b9acec7bf664bebcf13f2ce005c1b7e5f5ab8af0367e7688417341",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:8f8690b91ecc7ae8f18ae06b0f86d123debf24416e5269448f3b3fcfa66c75b4",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Checks accessible focused diff controls and local code-rendering behavior."
+    }
+  ],
+  "version": 2
+}

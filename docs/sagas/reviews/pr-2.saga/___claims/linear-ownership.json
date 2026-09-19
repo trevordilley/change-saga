@@ -5,7 +5,13 @@
   "kind": "invariant",
   "statement": "Review ownership construction uses a prebuilt selector key and no longer performs a selector scan inside the per-atom ownership loop.",
   "evidence": [
-    "saga-diff://v1/line?base=4823e6887676cda35cc43bd9acdfef9cd2cd8c83\u0026end=218\u0026head=product-69f17dbfa02c8c52a36544f168efb85c5ed68f9a55ceec2ecb195dd376374bb0\u0026path=internal%2Freviewapp%2Fsession.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftwentyideas%2Fchangesaga.git\u0026side=new\u0026start=159"
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/session.go",
+      "start": 159,
+      "end": 218,
+      "digest": "sha256:75c73030876334f88b7c37bf2f9148d85aa69530942906001c866d307e275f2d"
+    }
   ],
   "created_at": "2026-08-24T20:01:25.719804Z"
 }

@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "README.md",
+      "start": 91,
+      "end": 96,
+      "digest": "sha256:039759a3ac383df7f91d27f0b78408313c19a3d8fb613419dbe70367f24715cd",
+      "note": "Connects Saga explanations to code drawers and reverses source diffs back to their explanations."
+    }
+  ],
+  "version": 2
+}

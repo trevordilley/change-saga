@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/diffuri/diffuri.go",
+      "start": 328,
+      "end": 345,
+      "digest": "sha256:066c777ddd23fbf2ae397e59692c3fe714f14484069bc2ec4f806cb8253b1246",
+      "note": "Binds portable narrative targets to canonical exact source selectors without widening ownership."
+    }
+  ],
+  "version": 2
+}

@@ -19,7 +19,8 @@ import (
 	"time"
 
 	"github.com/twentyideas/changesaga/internal/applayout"
-	"github.com/twentyideas/changesaga/internal/diffuri"
+	"github.com/twentyideas/changesaga/internal/coderef"
+	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/gitattribution"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/reviewstore"
@@ -725,28 +726,33 @@ func TestStickyNoteOverlayRendersSafelyAndDeepLinks(t *testing.T) {
 
 func TestCreateDiffSuggestionAndMarkFileReviewed(t *testing.T) {
 	root := validServerSaga(t)
-	lineURI, err := diffuri.Build(diffuri.Reference{Repository: "https://example.test/a.git", Base: "aaa", Head: "bbb", Kind: "line", Path: "app.go", Side: "new", Start: 4, End: 4})
-	if err != nil {
-		t.Fatal(err)
-	}
-	application := &app{root: root}
+	repo := t.TempDir()
+	serverGit(t, repo, "init", "-b", "main")
+	serverGit(t, repo, "config", "user.name", "Test")
+	serverGit(t, repo, "config", "user.email", "test@example.test")
+	source := "package app\n\nfunc Ready() error {\n\treturn nil\n}\n"
+	writeServerFile(t, filepath.Join(repo, "app.go"), source)
+	serverGit(t, repo, "add", "app.go")
+	serverGit(t, repo, "commit", "-m", "feature")
+	head := strings.TrimSpace(serverGit(t, repo, "rev-parse", "HEAD"))
+	application := &app{root: root, sourceDir: repo, catalogLoader: func(context.Context, saga.Manifest) (gitdiff.Catalog, error) {
+		return gitdiff.Catalog{BaseOID: strings.Repeat("b", 40), HeadOID: head}, nil
+	}}
+	// The server reads the digest of the referenced bytes from the source
+	// repository; a digest supplied by the browser is never trusted.
 	request := multipartRequest(t, "/api/thread", map[string]string{
 		"target":      "urn:change-saga:test:fragment:overview",
 		"body":        "Prefer the guarded form.",
 		"kind":        "suggestion",
 		"replacement": "if ready { return nil }",
-		"anchor":      `{"type":"diff","diff":{"uri":"` + lineURI + `"}}`,
+		"anchor":      `{"type":"code","code":{"commit":"` + head + `","path":"app.go","start":4,"end":4,"digest":"sha256:` + strings.Repeat("0", 64) + `"}}`,
 	})
 	recorder := httptest.NewRecorder()
 	application.createThread(recorder, request)
 	if recorder.Code != http.StatusSeeOther {
 		t.Fatalf("suggestion status = %d: %s", recorder.Code, recorder.Body.String())
 	}
-	fileURI, err := diffuri.Build(diffuri.Reference{Repository: "https://example.test/a.git", Base: "aaa", Head: "bbb", Kind: "file", Path: "app.go"})
-	if err != nil {
-		t.Fatal(err)
-	}
-	values := url.Values{"uri": {fileURI}, "state": {"reviewed"}, "file": {"diff-app-go"}}
+	values := url.Values{"ref": {coderef.Location{Commit: head, Path: "app.go"}.String()}, "state": {"reviewed"}, "file": {"diff-app-go"}}
 	request = httptest.NewRequest(http.MethodPost, "/api/diff-review", strings.NewReader(values.Encode()))
 	request.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	recorder = httptest.NewRecorder()
@@ -761,8 +767,39 @@ func TestCreateDiffSuggestionAndMarkFileReviewed(t *testing.T) {
 	if err != nil || !validation.Valid {
 		t.Fatalf("review data should validate: validation=%#v err=%v", validation, err)
 	}
-	if len(document.Threads) != 1 || document.Threads[0].Kind != "suggestion" || document.Threads[0].Suggestion == nil || len(document.DiffReviews) != 1 || document.DiffReviews[0].State != "reviewed" {
-		t.Fatalf("unexpected persisted diff review: threads=%#v reviews=%#v", document.Threads, document.DiffReviews)
+	if len(document.Threads) != 1 || document.Threads[0].Kind != "suggestion" || document.Threads[0].Suggestion == nil || len(document.FileReviews) != 1 || document.FileReviews[0].State != "reviewed" {
+		t.Fatalf("unexpected persisted diff review: threads=%#v reviews=%#v", document.Threads, document.FileReviews)
+	}
+	lineDigest, err := coderef.DigestRange([]byte(source), 4, 4)
+	if err != nil {
+		t.Fatal(err)
+	}
+	anchor := document.Threads[0].Anchor
+	if anchor.Type != "code" || anchor.Code == nil || *anchor.Code != (coderef.Reference{Commit: head, Path: "app.go", Start: 4, End: 4, Digest: lineDigest}) {
+		t.Fatalf("suggestion anchor was not authored at the exact line: %#v", anchor.Code)
+	}
+	if review := document.FileReviews[0].Code; review != (coderef.Reference{Commit: head, Path: "app.go", Digest: coderef.DigestBytes([]byte(source))}) {
+		t.Fatalf("file review was not authored as a whole-file reference: %#v", review)
+	}
+
+	// A location outside the file cannot be authored.
+	request = multipartRequest(t, "/api/thread", map[string]string{
+		"target": "urn:change-saga:test:fragment:overview",
+		"body":   "Out of range.",
+		"anchor": `{"type":"code","code":{"commit":"` + head + `","path":"app.go","start":40,"end":40}}`,
+	})
+	recorder = httptest.NewRecorder()
+	application.createThread(recorder, request)
+	if recorder.Code != http.StatusBadRequest {
+		t.Fatalf("an unauthorable code anchor status = %d: %s", recorder.Code, recorder.Body.String())
+	}
+	values = url.Values{"ref": {coderef.Location{Commit: head, Path: "app.go", Start: 1, End: 1}.String()}, "state": {"reviewed"}}
+	request = httptest.NewRequest(http.MethodPost, "/api/diff-review", strings.NewReader(values.Encode()))
+	request.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+	recorder = httptest.NewRecorder()
+	application.diffReview(recorder, request)
+	if recorder.Code != http.StatusBadRequest {
+		t.Fatalf("a line range was accepted as a file review: %d", recorder.Code)
 	}
 }
 
@@ -860,7 +897,7 @@ func TestCommittingReviewRecordsInvalidatesTheReviewSnapshot(t *testing.T) {
 	serverGit(t, source, "add", ".")
 	serverGit(t, source, "commit", "-m", "feature")
 	head := strings.TrimSpace(serverGit(t, source, "rev-parse", "HEAD"))
-	repository, err := diffuri.FileRepository(source)
+	repository, err := coderef.FileRepository(source)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -928,7 +965,7 @@ func TestUnavailableHistoryNeverFallsBackToPayloadIdentityOrChangesEventTime(t *
 			Messages: []*saga.Message{{Path: path, Author: "Payload Reply", CreatedAt: eventTime}},
 			Events:   []saga.ThreadEvent{{Path: path, Author: "Payload State", CreatedAt: eventTime}},
 		}},
-		DiffReviews: []saga.DiffReview{{Path: path, Author: "Payload Diff", CreatedAt: eventTime}},
+		FileReviews: []saga.FileReview{{Path: path, Author: "Payload Diff", CreatedAt: eventTime}},
 	}
 	applyGitAttribution(t.Context(), gitattribution.New(t.Context(), root), document)
 	authors := []string{
@@ -936,14 +973,14 @@ func TestUnavailableHistoryNeverFallsBackToPayloadIdentityOrChangesEventTime(t *
 		document.Threads[0].CreatedBy,
 		document.Threads[0].Messages[0].Author,
 		document.Threads[0].Events[0].Author,
-		document.DiffReviews[0].Author,
+		document.FileReviews[0].Author,
 	}
 	for _, author := range authors {
 		if author != "Git history unavailable" {
 			t.Fatalf("unavailable history trusted payload identity: %q", author)
 		}
 	}
-	if !document.Section.Reviews[0].CreatedAt.Equal(eventTime) || !document.Threads[0].CreatedAt.Equal(eventTime) || !document.DiffReviews[0].CreatedAt.Equal(eventTime) {
+	if !document.Section.Reviews[0].CreatedAt.Equal(eventTime) || !document.Threads[0].CreatedAt.Equal(eventTime) || !document.FileReviews[0].CreatedAt.Equal(eventTime) {
 		t.Fatal("attribution changed event ordering timestamps")
 	}
 }
@@ -999,19 +1036,19 @@ func TestPageTemplateAndMarkdown(t *testing.T) {
 	emptyFragment := &saga.Fragment{ID: "empty", Title: "No changes", Target: "urn:change-saga:test:fragment:empty", Directory: fragmentDir, MediaType: "text/plain", Entrypoint: "missing.txt"}
 	section := &saga.Section{Kind: "chapter", ID: "root", Title: "Test", Target: "urn:change-saga:test:saga", Path: "private/root.chapter", Fragments: []*saga.Fragment{fragment, emptyFragment}}
 	thread := &saga.Thread{ID: "thread", Target: fragment.Target, Anchor: saga.Anchor{Type: "region", Coordinate: "normalized", Shapes: []saga.Shape{{Type: "rect", X: .1, Y: .2, Width: .3, Height: .4, Color: "#336699"}}}, State: "open", Messages: []*saga.Message{{ID: "message", CreatedAt: time.Date(2026, 8, 19, 12, 0, 0, 0, time.UTC)}}}
-	lineURI := "saga-diff://v1/line?base=aaa&end=1&head=product-bbb&path=app.go&repository=https%3A%2F%2Fexample.test%2Fa.git&side=new&start=1"
-	fragment.Diffs = []saga.DiffFile{{Version: 2, Diffs: []saga.DiffReference{{URI: lineURI, Note: "Adds the package entrypoint so the example compiles."}}}}
-	manifestFiles := []*ManifestFileView{{Path: "internal/app.go", AtomCount: 1, Added: 1, Covered: 1, HasDiff: true, Chunks: []*ManifestChunkView{{Label: "+1", Path: "internal/app.go", AtomCount: 1, Excerpt: "package app", Href: CodeDiffURL("internal/app.go", lineURI), Covered: true, Owners: []*ManifestOwnerView{{Title: "Overview", Kind: "Fragment", Chapter: "Test", Href: "#overview"}}}}}}
+	lineRef := testLocation(testHeadCommit, "app.go", 1, 1)
+	fragment.Code = []saga.CodeFile{{Version: 2, References: []coderef.Reference{testReference(testHeadCommit, "app.go", 1, 1, "Adds the package entrypoint so the example compiles.")}}}
+	manifestFiles := []*ManifestFileView{{Path: "internal/app.go", AtomCount: 1, Added: 1, Covered: 1, HasDiff: true, Chunks: []*ManifestChunkView{{Label: "+1", Path: "internal/app.go", AtomCount: 1, Excerpt: "package app", Href: CodeDiffURL("internal/app.go", lineRef), Covered: true, Owners: []*ManifestOwnerView{{Title: "Overview", Kind: "Fragment", Chapter: "Test", Href: "#overview"}}}}}}
 	manifestFixture := &CoverageManifestView{
 		Complete: true, Total: 1, Covered: 1, MappingCount: 1, Files: manifestFiles, Tree: makeManifestTree(manifestFiles),
-		Targets: []*ManifestTargetView{{ManifestOwnerView: ManifestOwnerView{Title: "Overview", Kind: "Fragment", Chapter: "Test", Href: "#overview"}, AtomCount: 1, Chunks: []*ManifestChunkView{{Label: "+1", Path: "internal/app.go", Excerpt: "package app", Href: CodeDiffURL("internal/app.go", lineURI)}}, Files: []*ManifestTargetFileView{{Path: "internal/app.go", AtomCount: 1, Added: 1, Href: CodeDiffURL("internal/app.go", ""), HasDiff: true, Chunks: []*ManifestChunkView{{Label: "+1", Path: "internal/app.go", AtomCount: 1, Href: CodeDiffURL("internal/app.go", lineURI)}}}}}},
+		Targets: []*ManifestTargetView{{ManifestOwnerView: ManifestOwnerView{Title: "Overview", Kind: "Fragment", Chapter: "Test", Href: "#overview"}, AtomCount: 1, Chunks: []*ManifestChunkView{{Label: "+1", Path: "internal/app.go", Excerpt: "package app", Href: CodeDiffURL("internal/app.go", lineRef)}}, Files: []*ManifestTargetFileView{{Path: "internal/app.go", AtomCount: 1, Added: 1, Href: CodeDiffURL("internal/app.go", ""), HasDiff: true, Chunks: []*ManifestChunkView{{Label: "+1", Path: "internal/app.go", AtomCount: 1, Href: CodeDiffURL("internal/app.go", lineRef)}}}}}},
 	}
 	data := pageData{
 		Saga: &saga.Saga{Manifest: saga.Manifest{ID: "test", Title: "Test", Source: saga.Source{Repository: "https://example.test/a.git", Base: "main", Head: "HEAD"}}, Section: section},
 		Root: makeSectionView(section, viewScope{
 			changes: map[string][]gitdiff.Atom{
-				fragment.Target: {{Kind: "line", URI: lineURI, Path: "app.go", Side: "new", Line: 1, Content: "package app"}},
-				landmarkTarget:  {{Kind: "line", URI: lineURI, Path: "app.go", Side: "new", Line: 1, Content: "package app"}},
+				fragment.Target: {{Kind: "line", Ref: lineRef, Path: "app.go", Side: "new", Line: 1, Content: "package app"}},
+				landmarkTarget:  {{Kind: "line", Ref: lineRef, Path: "app.go", Side: "new", Line: 1, Content: "package app"}},
 			},
 			threads: map[string][]*threadView{fragment.Target: {makeThreadView(thread)}},
 		}),
@@ -1027,8 +1064,8 @@ func TestPageTemplateAndMarkdown(t *testing.T) {
 		t.Fatal(err)
 	}
 	renderedPage := output.String()
-	// The page no longer carries diff rows, so the `saga-diff://` scheme it must
-	// keep unmangled is asserted where those rows are now produced, in
+	// The page no longer carries diff rows, so the code locations it must keep
+	// unmangled are asserted where those rows are now produced, in
 	// TestFileDiffEndpointServesCoverageAndTargetedBodies.
 	if strings.Contains(renderedPage, "ZgotmplZ") {
 		t.Fatal("template produced an unsafe URL sentinel")
@@ -1292,7 +1329,7 @@ func TestPageHandlerRendersRealGitComparison(t *testing.T) {
 	serverGit(t, repo, "add", "web/view.js")
 	serverGit(t, repo, "commit", "-m", "feature")
 	root := filepath.Join(repo, "pr-1.saga")
-	repository, err := diffuri.FileRepository(repo)
+	repository, err := coderef.FileRepository(repo)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -1318,17 +1355,17 @@ func TestPageHandlerRendersRealGitComparison(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	var selectedURI string
+	var selectedRef string
 	for _, atom := range changes.Atoms {
 		if atom.Path == "web/view.js" {
-			selectedURI = atom.URI
+			selectedRef = atom.Ref
 			break
 		}
 	}
-	if selectedURI == "" {
+	if selectedRef == "" {
 		t.Fatal("missing web/view.js atom")
 	}
-	request = httptest.NewRequest(http.MethodGet, "/api/code?diff="+url.QueryEscape(selectedURI), nil)
+	request = httptest.NewRequest(http.MethodGet, "/api/code?ref="+url.QueryEscape(selectedRef), nil)
 	recorder = httptest.NewRecorder()
 	handler.ServeHTTP(recorder, request)
 	if recorder.Code != http.StatusOK || !strings.Contains(recorder.Body.String(), `data-file-path="web/view.js"`) {
@@ -1355,7 +1392,7 @@ func TestTargetCodeLoadsOneNarrativeMappingWithoutGlobalSnapshot(t *testing.T) {
 	writeServerFile(t, filepath.Join(repo, "unrelated.go"), "package app\n")
 	serverGit(t, repo, "add", "app.go", "unrelated.go")
 	serverGit(t, repo, "commit", "-m", "feature")
-	repository, err := diffuri.FileRepository(repo)
+	repository, err := coderef.FileRepository(repo)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -1363,14 +1400,14 @@ func TestTargetCodeLoadsOneNarrativeMappingWithoutGlobalSnapshot(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	var appURI string
+	var appRef string
 	for _, atom := range changes.Atoms {
 		if atom.Path == "app.go" && atom.Kind == "line" {
-			appURI = atom.URI
+			appRef = atom.Ref
 			break
 		}
 	}
-	if appURI == "" {
+	if appRef == "" {
 		t.Fatal("fixture has no app.go change")
 	}
 
@@ -1379,7 +1416,7 @@ func TestTargetCodeLoadsOneNarrativeMappingWithoutGlobalSnapshot(t *testing.T) {
 	writeServerEpic(t, root)
 	writeServerFile(t, filepath.Join(serverEpicDir(root), "story.fragment", "fragment.json"), `{"version":2,"id":"story","title":"Story","media_type":"text/markdown","entrypoint":"content.md"}`)
 	writeServerFile(t, filepath.Join(serverEpicDir(root), "story.fragment", "content.md"), "# Story\n")
-	writeServerFile(t, filepath.Join(serverEpicDir(root), "story.fragment", "___diffs", "app.json"), fmt.Sprintf(`{"version":2,"diffs":[{"uri":%q,"note":"Implements the ready path."}]}`, appURI))
+	writeServerFile(t, filepath.Join(serverEpicDir(root), "story.fragment", saga.CodeDirName, "app.json"), codeRecordJSON(t, repo, [2]string{appRef, "Implements the ready path."}))
 	target := saga.FragmentTarget("linked", "story")
 	application := &app{root: root, sourceDir: repo, template: serverTemplate(t)}
 	application.comparisonLoader = func(context.Context) (*reviewSnapshot, error) {
@@ -1420,7 +1457,7 @@ func TestSlideTargetCodeRollsUpItemFiles(t *testing.T) {
 	writeServerFile(t, filepath.Join(repo, "guide.md"), "# Guide\n\nReady.\n")
 	serverGit(t, repo, "add", "app.go", "guide.md")
 	serverGit(t, repo, "commit", "-m", "feature")
-	repository, err := diffuri.FileRepository(repo)
+	repository, err := coderef.FileRepository(repo)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -1428,10 +1465,10 @@ func TestSlideTargetCodeRollsUpItemFiles(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	uriByPath := map[string]string{}
+	refByPath := map[string]string{}
 	for _, atom := range changes.Atoms {
-		if atom.Kind == "line" && uriByPath[atom.Path] == "" {
-			uriByPath[atom.Path] = atom.URI
+		if atom.Kind == "line" && refByPath[atom.Path] == "" {
+			refByPath[atom.Path] = atom.Ref
 		}
 	}
 
@@ -1456,12 +1493,12 @@ func TestSlideTargetCodeRollsUpItemFiles(t *testing.T) {
 		itemTarget := saga.ItemTarget("slides", "summary", fixture.id)
 		itemName, _ := saga.FlatItemFilename(slideTarget, itemTarget, rank*10)
 		writeServerFile(t, filepath.Join(bundle, itemName), fmt.Sprintf(`{"version":4,"id":%q,"slide":"summary","rank":%d,"kind":"node","label":%q,"description":%q,"selector":{"type":"element","element_id":%q}}`, fixture.id, rank*10, fixture.label, fixture.note, fixture.id))
-		evidence := fmt.Sprintf(`{"version":2,"diffs":[{"uri":%q,"note":%q}]}`, uriByPath[fixture.path], fixture.note)
+		evidence := codeRecordJSON(t, repo, [2]string{refByPath[fixture.path], fixture.note})
 		if fixture.id == "guide" {
-			// Repeating one exact diff on a second Item must not inflate the
-			// slide's file totals, even though coverage validation will surface
-			// the overlapping ownership to the author.
-			evidence = fmt.Sprintf(`{"version":2,"diffs":[{"uri":%q,"note":%q},{"uri":%q,"note":"Also mentioned by the guide."}]}`, uriByPath[fixture.path], fixture.note, uriByPath["app.go"])
+			// Repeating one exact reference on a second Item must not inflate
+			// the slide's file totals, even though coverage validation will
+			// surface the overlapping ownership to the author.
+			evidence = codeRecordJSON(t, repo, [2]string{refByPath[fixture.path], fixture.note}, [2]string{refByPath["app.go"], "Also mentioned by the guide."})
 		}
 		writeServerFile(t, filepath.Join(bundle, saga.FlatEvidenceFilename(itemTarget, fixture.id)), evidence)
 	}
@@ -1734,6 +1771,34 @@ func TestFileViewsGroupRenameAndUseDistinctAnchors(t *testing.T) {
 			t.Fatalf("renamed file has %d atoms, want 3", len(file.Atoms))
 		}
 	}
+}
+
+// codeRecordJSON authors an evidence record from {location, note} pairs,
+// reading each digest from repo exactly as an author's tooling would.
+func codeRecordJSON(t *testing.T, repo string, entries ...[2]string) string {
+	t.Helper()
+	resolver, err := coderesolve.New(t.Context(), repo)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer resolver.Close()
+	record := saga.CodeFile{Version: 2}
+	for _, entry := range entries {
+		location, err := coderef.ParseLocation(entry[0])
+		if err != nil {
+			t.Fatal(err)
+		}
+		reference, err := resolver.Author(t.Context(), location, entry[1])
+		if err != nil {
+			t.Fatal(err)
+		}
+		record.References = append(record.References, reference)
+	}
+	data, err := json.Marshal(record)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return string(data)
 }
 
 func validServerSaga(t *testing.T) string {

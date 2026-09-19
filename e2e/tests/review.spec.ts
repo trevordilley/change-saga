@@ -1,5 +1,5 @@
 import { readFileSync } from "node:fs";
-import { canonicalLineURI, git, readJSON, relativeToSaga, reviewFiles } from "../support/fixture-builder.js";
+import { codeDigest, git, readJSON, relativeToSaga, reviewFiles } from "../support/fixture-builder.js";
 import { expect, test } from "../support/test.js";
 
 async function submitWithoutNavigation(page: import("@playwright/test").Page, path: string, action: () => Promise<void>): Promise<void> {
@@ -119,12 +119,15 @@ test("appends and replaces one human review without erasing other reviewers, upd
   await fileMenu.click();
   await submitWithoutNavigation(page, "/api/diff-review", () => page.getByRole("button", { name: "Mark reviewed" }).click());
   await expect(page.getByText(/Reviewed · Local \/ uncommitted/)).toBeVisible();
-  const diffReviews = reviewFiles(saga, /\/___review\/diffs\/.*-reviewed\.json$/);
-  expect(diffReviews).toHaveLength(1);
-  expect(readJSON(diffReviews[0])).toEqual({
+  const fileReviews = reviewFiles(saga, /\/___review\/files\/.*-reviewed\.json$/);
+  expect(fileReviews).toHaveLength(1);
+  // The mark is a whole-file reference at the comparison head, digested over
+  // the exact file content the reviewer saw, so it lapses once the file changes.
+  const fileReview = readJSON<{ code: { path: string } }>(fileReviews[0]);
+  expect(fileReview).toEqual({
     version: 2,
     id: expect.stringMatching(/^\d{8}T/),
-    uri: expect.stringMatching(/^saga-diff:\/\/v1\/file\?/),
+    code: { commit: saga.identity.head, path: expect.any(String), digest: codeDigest(saga.sourceRepo, saga.identity.head, fileReview.code.path) },
     state: "reviewed",
     created_at: expect.stringMatching(/Z$/)
   });
@@ -159,7 +162,7 @@ test("@critical keeps saga and source repositories separate and reloads Git-deri
   await expect(page.locator('[data-review-controls][data-review-title="Overview"]')).toHaveAttribute("data-review-detail", /reviewer@example\.test.*committed/);
 });
 
-test("@critical comments on a selected diff line and stores this saga's exact line identity", async ({ page, saga }) => {
+test("@critical comments on a selected diff line and stores a code reference to that exact line", async ({ page, saga }) => {
   await page.goto(`${saga.baseURL}/?view=code&file=${encodeURIComponent("src/app.go")}`);
   const file = page.locator('article.file-diff[data-file-path="src/app.go"]');
   const row = file.locator('[data-diff-row][data-side="new"]').first();
@@ -181,10 +184,12 @@ test("@critical comments on a selected diff line and stores this saga's exact li
   await submitWithoutNavigation(page, "/api/thread", () => composer.getByRole("button", { name: "Add" }).click());
   await expect(page.getByText("This line needs a rollback note.")).toBeVisible();
 
-  const threads = reviewFiles(saga, /\/thread\.json$/).map((path) => readJSON<{ anchor: { type: string; diff?: { uri: string } } }>(path));
+  const threads = reviewFiles(saga, /\/thread\.json$/).map((path) => readJSON<{ anchor: unknown }>(path));
   expect(threads).toHaveLength(1);
-  expect(threads[0].anchor.type).toBe("diff");
-  // The stored identity is this saga's declared repository and comparison, in
-  // the one canonical spelling the product accepts back.
-  expect(threads[0].anchor.diff?.uri).toBe(canonicalLineURI(saga.identity, "src/app.go", "new", line, line));
+  // The stored anchor is a code reference pinned to the comparison head, with
+  // the digest of exactly the selected line's bytes filled in by the server.
+  expect(threads[0].anchor).toEqual({
+    type: "code",
+    code: { commit: saga.identity.head, path: "src/app.go", start: line, end: line, digest: codeDigest(saga.sourceRepo, saga.identity.head, "src/app.go", line) }
+  });
 });

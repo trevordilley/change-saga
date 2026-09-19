@@ -1,0 +1,2821 @@
+{
+  "references": [
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:becbead116efb065a7e22c2308385a5a4cc94844a36137f677b5660d8b725576",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:e71e9a962fcb68d5a2f1959b3ad818ddad5e38497de026b269a0e6a4965d68f8",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:9de08496c687270bd96cf9e88cb42dcad7e7485c57bf53e26a9789e33cbe3af1",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:bb039c2cb93c084c8d5afb8c334c1f8bc23d725ca95496be886ed29e822a7cff",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:663b2c320cb403e16d7ff2318bb8e1b49e67106734f12616adbed64bada6520a",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:1429a61b5e37f41727efe6d89ffe71057e885dce5712a22f0d5977f82b47e02e",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:ed6ef75a34d964247fa73bc3069a4c7e34519c5c006d6c6836695e84b6c546f8",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:a66f7fc44a0824faf9596c73ff431c7167ccf3ba01923576c0328e0594f64752",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:a18759414e2f24018dca41d7f65d58e3c9ae5e93fe5b4d3875105a048c44c823",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:23e578fbf378c5adcd797e4015b5ab034b5576f6ea1957afe9779c540c3986be",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:2992b686ac92d21d78a8cd3df5cc9d3c2b4f5a7df61e232adf2c5b120b0797b9",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:f1f7e44b00086fbfc018cfe1e39284880231ca28dbee8d2b297ec2ee7610661a",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:10a58892ea4799bc0b9e2ffb2225a80b32c6e45548c0af2161baf6cc842bbe9c",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:935b4666092a1d1fc692b11a280b802c8f8385c784fed5260af4a9ddee1f3197",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:da0d6d21a1ef8ccc39f0b58216372c7f6eb47b9743a26d865f8a0189cbd45fb6",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:a9e436d2babd638ade86791e162e7de5a6b1b3128c6ae9ed93504fbf3c53dc93",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:cf56abf97e8fa47342636fb8175e6231b710be603e7bc0195afd2817d30fbfec",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:809c504141acde1cddf204c16c1472d608c98ea1cf3bc9c05dca4dba17c05368",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:829c6c1fe3a7721a3a84cb7d21482cd7df16683e9ad1efd14a169a0fc0e6769e",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:72d57eabf3de7bb04158ed8bda4c310f82d9b40c03d74d90b1e0db7afd3ee531",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:e8c0aa6963fa80dce992bfc7aba8d605cf05e05bd6ff3938df5175098009f466",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:637ad62606a811f895f750def7506198081067ce090d72f6cb87a0045d9dfc3a",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:43b652790cca51a0cb345342a5e2864ebdf611051e2b728bb37c4053343b0321",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:207d0151ec900453d0740224aa183429dcd9686f066d56f73bca89804e09839f",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:889f32b55f7f668f9ca38aeb7195536a1a363a8270592c27d15261a225956f5b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:e201945c1ae3b9091e81035a9a5230349ba0b786ba505e0f7c3d4cd8f38787e8",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:5e912ff988406fb8c7ea4eaa6ceb52e1b40bc4748b790111c51101c30c31be3f",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:b7a04be4cd27417a8eab88f7366f6b1f235cc2faf78e264d3f141bc347e052aa",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:073561a15fc659698edf15dfedd0049c48a8f0fbc8e73422b8bd68abbf7dd6cf",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:ce09c499d165ec2a115f3d1b17290a25ffa3bd19469c45176551899b942097d6",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:3667f03db1bf8261932c0aa0261c66c2d35636079cabe532c7c8a7d43c129ca9",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:9f484113234fdd3a952257ffa70defc035dd47c1710a7c4cf690802a49fdd48f",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:7dfa722b0c71dcb5a55e27e0b808e86a77c8b52d2c0f67fe6d923f46314e9d46",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:c50f22ea7802c91b7eb60e064aa0d532ad068ecc5681492fefb6ebc8e97a5636",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:a4df97d6bb36d0d752c8630fd6dc451f9acff807cb1f45c660234ca8f22ad4e3",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:58e5fc2257e3f811cebed5f6b5bfd5c8a32304c5562859d3f7aa07cb0cc4b7e4",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:88128cc333dc1b55f5f979f9ffd16b53e05588eeaf8c865a8ccc50cd461b1999",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:473f80bc4cbb604f317ae469f9d836457eaf309073f951c95de8008c1ce352c0",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:dd5d1430123a2fb4f64605415c661152d20fdbf5222a10a9fdd9151a7900f9c3",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:eeecbf854bf402b430f0fe0d0bb5e70a5d28ad6e958da64066071fc8e04b8dab",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:dd12905cb2a5eaac0f02d5dcd42fcb552aa767f48146c1f2f0abde3c09b717bb",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:b6156eb006961f31d61732a5e99906e3a9a67f4bbfe55f5f9743fd5d541dc767",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:e7debbebb5dadb122ae6204f564ed0197c425f4aa7ed88c7a63d322aa0cffd23",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:7ed4d703470700e1d7dea5c9711a325ffdd018fdc7c3dafed04b46aec2b03d96",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:399daf805d5547109e1878a3cb7e9805dbf8aa35cfb52dc0ae194cc65156250a",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:bde44499c6b1fda7b771ea869501dfbe8bc9b834d4c17ca8f59a14bf50be4984",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:eeab950c6749394e8a9c6bb46822d289ce3ef33fac85c8b048ec720866640c74",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:dc4ed123a33f8abab2c0a82974c4cfbfb58152215f69cfdc42dd8662aa6b32a6",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:a06a92275c590b41578f628534bba119b1232116bae4f07931296389790960f2",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:e22fe5bb0d8284f93ad7130f29443ffde14a7be3ab09701754c08b597a8b903c",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:5a19f2025e83a0e18b6aecf21e1b547a3de7218ce114d9e181f787c723c90c87",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 68,
+      "end": 68,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:839bf6c939d8f4c27c9747dc9895b36973464165daedf89f50eb8616f9c6b41f",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 79,
+      "end": 79,
+      "digest": "sha256:32cba6789dca89abea7fb0824d0c7ad95f06a5431cc4c77f12c71316e8b0cc52",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:5bad6f408e6868d441e49247dbc275df3c07fcfd7c30a23496256df024288c15",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:6488bdd93b2450034b213e95ac5b044163aa047f73d44984ba679cf0583316b6",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:c9365dcfa61f74dd2ef742cde61bfdd8b1620e2a7e3f5baca7285423e52e5c9d",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:2fcb71df1567b3fdb81fa265a5e6d169adc0fd11a0afcb6c9b2184a746feb7f7",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:e9be7640d7e794288195e36a52a358dc021ab84a42faa219b009c0743460ef60",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:f9d2912d03fe30f87a89a8ffc710fe45a436dd3bd9d191a522ebc26c7c42d3a4",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 81,
+      "end": 81,
+      "digest": "sha256:9de379ea8468712cd12adf51c1bfda2442fe501818c823304bdc1bcac0a7bd97",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 82,
+      "end": 82,
+      "digest": "sha256:242d7a6a93a89f3992cf1ce1b3697159af65a761810a35308b0ddec1ab96b718",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 83,
+      "end": 83,
+      "digest": "sha256:ac7c4356e6ae438ba6725dae095d832ad9a88539d179eb622871d1b77ad096a2",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 84,
+      "end": 84,
+      "digest": "sha256:40a7e20f3b1ca3157d72a3d16a5068ae55c1fa0793b99f1868d3e668d31deab3",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 85,
+      "end": 85,
+      "digest": "sha256:5a458794efa74f22a1ebf9f249bae5db60ef305aee50627088ce7e97700eb86d",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 86,
+      "end": 86,
+      "digest": "sha256:5e78ac43bd8fcb115f19c5372220cb821a9eb803d3f72f35b4dcc493218e1915",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:cad3c11f1aef9d2a97d00ab229d1f6681901941bd2b9faec1f466908c78a1630",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:a1d5ac2598162138884a12154da5f11279cc473fd8ca5a8f1bb72757d869492a",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:b0ef592a68753d1363cdd4cc404376c8c7e0fea3964109aef5a560064c0ed4b4",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:5c6bde606f32f75ef8b24a446016d225ff918ab60199e6e5a286ca9b7607f20b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:189b95820ba44375c56f47595a731a67c83bf4ed03a33092f5129e6507b21ec8",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:deb28d9102aa30dd97700d5ea3b24654c677b7c7063e308cc7ac65126fd336c5",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 88,
+      "end": 88,
+      "digest": "sha256:34b0c4cbaa5fb825333aa6786d8576fe3002b10d242c28187867995579e76bd8",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 89,
+      "end": 89,
+      "digest": "sha256:ac8bbfa5b435b148d9a4e26e02d12099587ea2e50d6e4b86a7c9446a506d990c",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 90,
+      "end": 90,
+      "digest": "sha256:7b4bce11c350af3936f3b670bb0977c73e10004b75c29d99edda082b00a31366",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 91,
+      "end": 91,
+      "digest": "sha256:30f97b9a80403abaaa960371335a5ed55e520f06269ffcbf097c52fbed52df1d",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 92,
+      "end": 92,
+      "digest": "sha256:825796574cd9da79a79ed3844a527ed438c37652b822d277dfad725c5a91e7e7",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 93,
+      "end": 93,
+      "digest": "sha256:50e47b0ba40de0f7a52f27194e9b25d589a4e1c30f9e5a1df3dd802fbc85d80f",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 94,
+      "end": 94,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 95,
+      "end": 95,
+      "digest": "sha256:f5e0dc4c5573977753d7ec7db354a8fc78cd605a7bc8a3b5d6140a644f557bee",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 96,
+      "end": 96,
+      "digest": "sha256:549868e0064e9dc43c7d157e30f69a0157d1a285be20ce82961ce3d9c8aae62f",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 97,
+      "end": 97,
+      "digest": "sha256:e33f7ccf9ae56ff961eb902320e9da04115b13752943d6b82d35a025c11742e9",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 98,
+      "end": 98,
+      "digest": "sha256:c7264acccc3f1fb4910a1d880709696fd0ec0503b87644c08981aa59ced53567",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:adb55838c3f1abd57404afbc35559fec76dae3ec0566b3c60742a4f210b2cad8",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:1ce4b03cb7c9454d020da61765d78627fe934e43a276b405902f3042f6e7a89a",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:e8d00412f0256c357a2c8d0a850178c15bd2a17a66d5b50a3c145f24e667e82d",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 104,
+      "end": 104,
+      "digest": "sha256:7a5a71717965693f796da366bb481b3f21482337698ed979259c1ad23b5655d3",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 105,
+      "end": 105,
+      "digest": "sha256:afb8c41014cf64588792f41d5ebd5b15deb7b72c7dd8cd6189e46140470e79a0",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 106,
+      "end": 106,
+      "digest": "sha256:8537eadde9e72b2ff0bd14c3d889fadc951b210b234f63ca9f0fa53e8b387f63",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 107,
+      "end": 107,
+      "digest": "sha256:566047f409b05dc32af1098d029a133c1642bf1229ef5242120ff1ccfdaddce9",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 108,
+      "end": 108,
+      "digest": "sha256:be64ecb63ff2f6abc0bf290a31d3416a1136f3feb0243d5e96efe5edfd3f8570",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 109,
+      "end": 109,
+      "digest": "sha256:a6587344f5e58ca8763dcc9e6e061b7a6aa81df96e7a70f51b4c382110440506",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 110,
+      "end": 110,
+      "digest": "sha256:29a981e1bd3da714a3fc4ecfde3a1c9e8c787d73b06330f7c27a4eee788d3254",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 111,
+      "end": 111,
+      "digest": "sha256:b3b4b741342c05a16b63025f98c3c45f94cf379148152f9209cb944b06022ec8",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 112,
+      "end": 112,
+      "digest": "sha256:58e7c55de3c01c7f42d06a18eb84f072c9bf364633242033ca66ee30ffa49db1",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:6d775b6fe96e86da72f1dac15fbce435249654de9135f587b2ef8d09d5cb75c6",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 68,
+      "end": 68,
+      "digest": "sha256:0fbc731dbe48029fa428853aa42c13d3eb39b83db598ad3dd47046ab547fa0f8",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:b9759f1e126b1eebcdbeaccad50e618367bf4802565b32db4f1c52361451db9e",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 70,
+      "end": 70,
+      "digest": "sha256:348d565cfba79a3bc2578b340fdaef25bda632eb75a514a1ce658ff8367602d4",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 71,
+      "end": 71,
+      "digest": "sha256:e41a64d5317a454cd267db569e1c01ccf06b0fb97eab6e335b883b8760b2b016",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 116,
+      "end": 116,
+      "digest": "sha256:312634cbe233f0e2d397e85833f8726ab976b1f1d67e3e2d5ca98027445833a1",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 117,
+      "end": 117,
+      "digest": "sha256:471d1d60729efa803882a26104fb1b5cf4d96b7de5164689f9a144e811472e7d",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 118,
+      "end": 118,
+      "digest": "sha256:720f72d6fd275271e4c11001ab36a5e98d0232e0e7dbede4c9a17c8262aa764d",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 119,
+      "end": 119,
+      "digest": "sha256:6da4ca11486a322a738799b161fbe4b14bba24d5df491087c6b186daa239810b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 120,
+      "end": 120,
+      "digest": "sha256:89ac25f7ea5335436fe82fb03859043cd01ea31af2e546eeadc21e07d9c0ad08",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 121,
+      "end": 121,
+      "digest": "sha256:c5de76d2809ac5ec5cd59c90471eff7609764f3897ac49ebadb8b151c0de9aa8",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 124,
+      "end": 124,
+      "digest": "sha256:4229c94fac431207395e02c47eecc3cccb753ebe629dfcf3d6458102d2d4a3b6",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 125,
+      "end": 125,
+      "digest": "sha256:027db234fcfcf2a02933c4868e9971bd71ce492ff3ba202cb5503f521dee6f86",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 126,
+      "end": 126,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 127,
+      "end": 127,
+      "digest": "sha256:705ed63e041001aa56a093ade29d0b415f6c8d6900fd0c7f10047b5dde3f386d",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 128,
+      "end": 128,
+      "digest": "sha256:9752fd573166453c105afe4e5b8acf91886d42893f35d82a3fff36b7796b900b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 129,
+      "end": 129,
+      "digest": "sha256:21273377d7587bb72ef63c3844d3662710bcfff8f8b16a46a2c7482dbceb5ecf",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 130,
+      "end": 130,
+      "digest": "sha256:05644c1c32bf2710328b78c1cd9308da4879fb6304d8e2f53ffe764a138f64d8",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 131,
+      "end": 131,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 132,
+      "end": 132,
+      "digest": "sha256:3ec8a3f33a06d75bef44b3fbb00fc9596414c018ddef379c4356b20c95bd1f09",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 133,
+      "end": 133,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 134,
+      "end": 134,
+      "digest": "sha256:d0369556904fd11fb327dc3eab0475f353333b1b0152b242de9c0f5443aa2c3a",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 135,
+      "end": 135,
+      "digest": "sha256:743143eda3167cba0400adfe23ce0f5ab624f4a64166a42a6e41d9a502d2493c",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 136,
+      "end": 136,
+      "digest": "sha256:e9bde98ee814f42de54d7e3d66729275618019ac945cd2db5246becd3f41b801",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 137,
+      "end": 137,
+      "digest": "sha256:627eba5b5e6756ea30c55a64a11484c628fc208fdf73b2a0af0f9cc2dfbcb27b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 138,
+      "end": 138,
+      "digest": "sha256:9987332764dd15c95dc9ce3b7f5f2041ac62744200656a043c37053d1df6b590",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 139,
+      "end": 139,
+      "digest": "sha256:c603ff6574ac3896da0d878676f4331bf1eb263e6b5041628d1fb3dcf49975b4",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 140,
+      "end": 140,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 141,
+      "end": 141,
+      "digest": "sha256:4c560d2f10b068cb869a4b558e53f238f4211ec38152b7a68334a6babb92730c",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 142,
+      "end": 142,
+      "digest": "sha256:5bf28cd01370d02a0bdc25320295f4ba69692caf2d8d863ee4053e065bb04035",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 143,
+      "end": 143,
+      "digest": "sha256:bfa44d4cd9e46ce670065429fd19be015e3e8eb88babd71dc2cd1234c40a9f26",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 144,
+      "end": 144,
+      "digest": "sha256:d51c6a368be35e2775dc55a7491762c03dfb59b0b55fabae1260bd88e5dbf0d4",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 145,
+      "end": 145,
+      "digest": "sha256:5bfcd528e882624a4fc221b9d94c791d91fc3083f70dea0f191adc2fd4d672b4",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 146,
+      "end": 146,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 147,
+      "end": 147,
+      "digest": "sha256:c0a47d402ed6244560f13f832d13b88a75f0f039be25abd890b923354820c50f",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 148,
+      "end": 148,
+      "digest": "sha256:9174dee4e9cc376d6385eb1935486f1961f0086311d172e9dd01f58856ef2e38",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 149,
+      "end": 149,
+      "digest": "sha256:1191c112b79c3eb0b3bbcf283a902ff39f69c33e0721b89d0c730a6bea51f03a",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 150,
+      "end": 150,
+      "digest": "sha256:0614cb072c298fa7eb469904b463f90927526249581fa05adf1b37c14bd91d1f",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 151,
+      "end": 151,
+      "digest": "sha256:225903e85a44901a98daa66cf4f15c2ce4c0f82de1db3fb04d300b54e691f6a8",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 152,
+      "end": 152,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 153,
+      "end": 153,
+      "digest": "sha256:58aa17dd43cf6c7f19f1eabab6ddc7a661d3e775325111a3724f6ad16237931f",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 154,
+      "end": 154,
+      "digest": "sha256:0707a6580149822b96ec0faa2df6cedb50cc6dd1689086e66e6cff0ceef5ee5f",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 155,
+      "end": 155,
+      "digest": "sha256:0784ef118f202b32b0c217cab1d48c57fae223c14641629d2f67d332ac79d7eb",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 156,
+      "end": 156,
+      "digest": "sha256:584fee9a1279b0dfb3c1ce0fe4cdc32e9846eea1efe394a93ccb0e4f973b0d0e",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 157,
+      "end": 157,
+      "digest": "sha256:121c9a5af9e2b44eddf1255f57108ccb0194104c31f8653455182ebd7d3944e4",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 158,
+      "end": 158,
+      "digest": "sha256:e4bfef95fe51900f5ec10de537e14db7cd5d0b76c2ff26ae00fde1ba7c1648a8",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 159,
+      "end": 159,
+      "digest": "sha256:d38832a995988f78ffbf6bee2a93dbca46562b2efb07688e5212b791037e9e31",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 160,
+      "end": 160,
+      "digest": "sha256:6c6100117ecd96877a48cf1bbc3465316dd57a0bfc96935329e04cf8187fabbe",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 161,
+      "end": 161,
+      "digest": "sha256:715d237901d34d10ccd353cd992fafe4e9bc118f2439bb56ec8c6dda8cac1e2f",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 162,
+      "end": 162,
+      "digest": "sha256:ec0f5ddd01ff83feaf151adc1d58a12eee7611724b8063c61cf67d39405b16f0",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 163,
+      "end": 163,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 164,
+      "end": 164,
+      "digest": "sha256:5a6323195086aececc9ba1c0e5e164eb3606354014dfa101c2c3b51c13b80e52",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 165,
+      "end": 165,
+      "digest": "sha256:2a017f791cab6f9907b01bf57c44d35beeea625ba4197b0d785ebb261c46c8d0",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 166,
+      "end": 166,
+      "digest": "sha256:cb52ade1648b81099126d1823c783a23979dce4b37bf0cc37f2f0a17152ede5b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 167,
+      "end": 167,
+      "digest": "sha256:8e32a9a68af2b16f755224183cd5802a25c4af01e7ae2b393eebe3a8294888da",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 168,
+      "end": 168,
+      "digest": "sha256:60d26e5cd24ac147a74cea30aa355b81910166218a8aab2970cc360e147784ac",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 169,
+      "end": 169,
+      "digest": "sha256:2b5e3bbfbdd5479f0cabe405033de5fbb0c7d7e998aced2556862c527b36c553",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 170,
+      "end": 170,
+      "digest": "sha256:90c70103f6648f333a6300cc5dd9ff27d6b23eebdecc9fb8bed69751e68a2995",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 171,
+      "end": 171,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 172,
+      "end": 172,
+      "digest": "sha256:c0e378612eb0e01b78336d68950858dfd1758ddb2fc047df1db336c67a174f82",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 173,
+      "end": 173,
+      "digest": "sha256:74fa7c81477a6e95c288ec1393f7ada86c374523af1300285b2e7849be75a73a",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 174,
+      "end": 174,
+      "digest": "sha256:0d9ef6676df243a733f2bc4928174afd4b5d48ffa3a6f3a11601c3b875748be3",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 175,
+      "end": 175,
+      "digest": "sha256:3256d6b8455fde640a6c710f50382a75b92871f0c271af2c0679548f869e8da3",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 176,
+      "end": 176,
+      "digest": "sha256:6b0cce5a335e36dcb3391b6e3397e05110648b171ea1c84974f4fecce78baa6b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 177,
+      "end": 177,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 178,
+      "end": 178,
+      "digest": "sha256:1e0f835c450f464b256b151b2d331824ed2717cbd3fd6f86360b0c145e433e09",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 179,
+      "end": 179,
+      "digest": "sha256:76db70d01c5ebdda5bf503fbf612fd47f5778e6d680c57b1fde66826adbafada",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 180,
+      "end": 180,
+      "digest": "sha256:d3401261c435b673e9c381cc1043cdb0d0529aca786468e3f99c248a4f4a3deb",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 181,
+      "end": 181,
+      "digest": "sha256:e151e7844b302afd6bd6825821253fa85334574621c392d1faa89ae076645061",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 182,
+      "end": 182,
+      "digest": "sha256:13d4acf11ed1f601a04d45a032e7c71ccdae8f5d0ae200dac6678761fd468bcd",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 183,
+      "end": 183,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 184,
+      "end": 184,
+      "digest": "sha256:2751f705040289a00e7798e5f725cce0eea45ff1071cef566343c54457a2e9b9",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 185,
+      "end": 185,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 186,
+      "end": 186,
+      "digest": "sha256:28ab5ec8e9b40b5924cf15ee704254e158278c42bc16bc0d9652538bad032349",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 187,
+      "end": 187,
+      "digest": "sha256:0129b31012e320dfa935743fbe0676c1bebed95e4fcc8c6fc35f352b34426dbd",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 188,
+      "end": 188,
+      "digest": "sha256:193ad18ff2c80b21c004878534407eee2f74a748bac447e5a67478774daa9f30",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 189,
+      "end": 189,
+      "digest": "sha256:b71ebcf4c7f5e49f0e8d459206099d62e458434b73b1a4dd4b85365f284945aa",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 75,
+      "end": 75,
+      "digest": "sha256:f0380aeac41d0d230adcdc909ab23e3a69231b37c133b4d7da8a3988694651a3",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 76,
+      "end": 76,
+      "digest": "sha256:5c59f78153d37b0c041508bcf0dd5fdfbeba321b5a21b716d179243c8da91171",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 77,
+      "end": 77,
+      "digest": "sha256:6dfff09e2542af73bb38ee64e24d5ab9fc9502312584166cb8a08e87c42040f9",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 191,
+      "end": 191,
+      "digest": "sha256:dc43fb89dd71391706bb655337139ae66ac10facc4262bcd248c229cf0e25d05",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 192,
+      "end": 192,
+      "digest": "sha256:63207f9e7cb715e317f60899cee36315f665f75f624bf864e41293ed85c89a17",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 193,
+      "end": 193,
+      "digest": "sha256:430e3c09bb73996a7b59d16331c1eaf9afd75329fd610b1c5925554c47741fb1",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 194,
+      "end": 194,
+      "digest": "sha256:47c06c561d5c327343685268a46b3391f3998eee890d2be51f0d21cc4a53ae6d",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 79,
+      "end": 79,
+      "digest": "sha256:952880a420d42f70030559b57e4c69b82e786b537738f5efbbc76368cea91019",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 80,
+      "end": 80,
+      "digest": "sha256:99f5a671c3e5ae81c33ac77a77113eb15aa7d82469613032a7b688eef61c6919",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 81,
+      "end": 81,
+      "digest": "sha256:d8904675937b251b58afb59b071fa5698c8e0612f7ca3d7cf3e323878a571d08",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 196,
+      "end": 196,
+      "digest": "sha256:4663f12179b0facfa78045400ccfbeaf52e196c2c6bf2286cf6de4555b8f5811",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 197,
+      "end": 197,
+      "digest": "sha256:c46b238706008182b9c69ae68f7e22d77ae3122cf72fa8e63fc339001b95c2eb",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 198,
+      "end": 198,
+      "digest": "sha256:c8cee1d9ed1c3efdefaf703c18853a1b0feec4eea13f6390a15bc923b67d476c",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 199,
+      "end": 199,
+      "digest": "sha256:66b02c9f739121565f61b08d38c53e0a2a26ef61ac6231ba61e29232d2c58212",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 200,
+      "end": 200,
+      "digest": "sha256:ba6a2ad6eaef606eb64a68d8b7fac57e533cdb581d4fad343060bcfd4ef0c246",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 201,
+      "end": 201,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 202,
+      "end": 202,
+      "digest": "sha256:fa0f287870f4c83dfa1b93f7ef41033427033c1efe5f3fec31e887f2ac587ae2",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 203,
+      "end": 203,
+      "digest": "sha256:2535840eed9e0c4501ac344117468b11e68313d7cb337dd89d7559ba9268f142",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 204,
+      "end": 204,
+      "digest": "sha256:fc7cfb194c18d01116c32cffd4ad4312772694f3daf826771c0933caba66b259",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 205,
+      "end": 205,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 206,
+      "end": 206,
+      "digest": "sha256:13738ac5bbfacd4d469e1c0f84ab62cbae5c6cc7580df3cf5b7f07706750bd86",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 207,
+      "end": 207,
+      "digest": "sha256:68d5d2430e1e4dc47e0eeaf3a4988a6b73e5693f9bca7889f13cb717ff83317a",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 208,
+      "end": 208,
+      "digest": "sha256:dcc73122c6899e0959154f7990b0a58494aa4111a416fa3e12e78f0e1266ca59",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 209,
+      "end": 209,
+      "digest": "sha256:438b84dd3f335ac6f6d22cc890f01eec22cd4bd9d8e5fd29927dd6b9485fdd34",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 210,
+      "end": 210,
+      "digest": "sha256:06535249043f961dca80cd0b4ee56cc50b8409c6f9c677b43204a232f2f18160",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 211,
+      "end": 211,
+      "digest": "sha256:3e2ba7ede916e54cfcc2ff8e8f665a9e401f4529db9a2ef932632cc935f75276",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 212,
+      "end": 212,
+      "digest": "sha256:a8717ab23339f6dd65d106991dfdeafb0445f41f2c2930591092476cc45b1551",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 213,
+      "end": 213,
+      "digest": "sha256:9557afa5abbe2197e37b5c48058ecaa4e4ba35c55d4054afd93649320859e9d8",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 214,
+      "end": 214,
+      "digest": "sha256:2256341314ac36874f401a861200236330316d847e9a6fc356686512441e9f48",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 215,
+      "end": 215,
+      "digest": "sha256:4e20852a556968ad0a9931ac45d777a095f58d599b7f27043a06c63e8ef1ac7a",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 216,
+      "end": 216,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 217,
+      "end": 217,
+      "digest": "sha256:7122f7aba9028bc8187166bb811105e850a480e39ffc76b5516b9fa9774b026f",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 218,
+      "end": 218,
+      "digest": "sha256:a4bf6e8b1b0a47fa15799bc3ccc85e98d27da1401dd20998a8509fa307b99d78",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 219,
+      "end": 219,
+      "digest": "sha256:49ae2d73220f45c231c1e1e515c90d6b8f747fbb7eee820615aaa6a3fdc42c13",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 220,
+      "end": 220,
+      "digest": "sha256:d6225323ec07d08a1d4bdf4745fa11d13e536da00f219e2bce91cac5c7e9c04d",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 221,
+      "end": 221,
+      "digest": "sha256:09770e214b782f5a341ed6fc0e1cfe79480c32cfd72372f5cbbc3a354808d796",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 89,
+      "end": 89,
+      "digest": "sha256:ddea926aa24c91066e014142df7ee482205b5a4ce8f1abb285d60df620fcf94d",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 90,
+      "end": 90,
+      "digest": "sha256:11e1d2bfc430ce1896ef72c4f5286fbefd10a394dae7e7e8bac1260606d28d5d",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 229,
+      "end": 229,
+      "digest": "sha256:91d9af9b3c87c886cb289419e277d2c10bbc7751934db1b618a49fd343650ffb",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 230,
+      "end": 230,
+      "digest": "sha256:5fd7ea2e298e801488763c3577a951bc11c3932a7703e52c7ba74a21bcf13c2b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 95,
+      "end": 95,
+      "digest": "sha256:d4762802d1ab79a27f99b367a69058c0f66730b00d7813d2ccf4b9e44108d028",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 98,
+      "end": 98,
+      "digest": "sha256:c4faffa52768dfa529c49b1a3e0f1fab6d280cecd5096c124395c54975bb9099",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 108,
+      "end": 108,
+      "digest": "sha256:87dcf04b209252f413d081c7e6c07c784a8db58041c3b798f9b6c406fd47c5dd",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 109,
+      "end": 109,
+      "digest": "sha256:0a122e2dba0c68584c286343a1cd2aa418385427cd6e16f2d39dbe776ce0e11a",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 110,
+      "end": 110,
+      "digest": "sha256:9a64b37eaad22760f069b386ce28adfbd490eb9e015d7408cbf449f7ab25f0eb",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 111,
+      "end": 111,
+      "digest": "sha256:d77bf9a443166e3ed253a3fc5962ed8e899553ef941485e1646947c1e4ca973d",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 112,
+      "end": 112,
+      "digest": "sha256:f2a77adc12c3c3012fe576562b895c95eac0df54f39bca935d0c5d381f6acd1e",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 246,
+      "end": 246,
+      "digest": "sha256:6c0b9e6be06112407f09ef5b09c01a1a1afac5e9ffa99ba8e0bdac88f525f871",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 247,
+      "end": 247,
+      "digest": "sha256:c7e13a6a51be8edfdfcdcac1abb3a4bbd9f1ea98f2bb1a5e8cce860a4ede1047",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 248,
+      "end": 248,
+      "digest": "sha256:7360ba1e2ff25b6da33fbb15dcd9e5a515d8e67f63dae71ab0f2bb99851d8578",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 249,
+      "end": 249,
+      "digest": "sha256:079e91d9e3c2cc464c785afc188c857ae7522031df980aea316ff083b7afb4c0",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 250,
+      "end": 250,
+      "digest": "sha256:3e7ca11549d1f3140490b1fb86337dc9a3dc475ca78addcd10e9b496db844de4",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 251,
+      "end": 251,
+      "digest": "sha256:ef891962931c782f7cd63647b5f9b93b6552233ef9cc51ad6c2443de14507c66",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 252,
+      "end": 252,
+      "digest": "sha256:59e07ed9c4463e3b262841a1807cf3d54aa7787f760f2ae1665206b26a3b49ae",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 253,
+      "end": 253,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 254,
+      "end": 254,
+      "digest": "sha256:c57a94f95f9c2091d36ca3552a99f65fe4e2a8e31c266c5ecf4875f8246fe2a2",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 255,
+      "end": 255,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 256,
+      "end": 256,
+      "digest": "sha256:ae5ba75d58616a89c38b2d20dc81663215b51bc8cb1877c713bc9a1fa1e2d987",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 257,
+      "end": 257,
+      "digest": "sha256:3a938bab234aadba082db7e2bc5c704c573f786d7e8d906a642141e547a98b32",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 258,
+      "end": 258,
+      "digest": "sha256:502ed5932e5fe5a3137bcedfe3ff6af8b0137a7050075f8ffebb9412ae890db1",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 259,
+      "end": 259,
+      "digest": "sha256:d59e1bd719ce45d0440b90075f7ec16d421668d7457e0451ad095deb7f7b6b54",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 260,
+      "end": 260,
+      "digest": "sha256:6fdc45e827487738ff95555f7af3bcc723ded426ab32ab6f141deee87a1f795f",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 261,
+      "end": 261,
+      "digest": "sha256:6b2fca5b5c4dda5435e234a14ecc8e6e934b1f92e93beb51d157847045d0592e",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 262,
+      "end": 262,
+      "digest": "sha256:ec08384cda14715d61e0732e6e7a1eb27bc599daee26ffc0c95b08487ca20fe2",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 263,
+      "end": 263,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 264,
+      "end": 264,
+      "digest": "sha256:9b26c65e4cf76e8b909de621529e3b43ec1b3a9df7b1b9974aa012d5eb82d511",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 265,
+      "end": 265,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 266,
+      "end": 266,
+      "digest": "sha256:4cddf265e6b5a02bfc99dd6ad5ffd6a4d2d9f56af0472a5e5712b8d878189760",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 267,
+      "end": 267,
+      "digest": "sha256:3cd6cf1513b9a8b44fbbc710f72b935b639112e29d46732e75890cde39d1f5c7",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 268,
+      "end": 268,
+      "digest": "sha256:ef0234f7da93887df3c31470debe1d5d99cfaf60b84059df30675e5fa4acbcce",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 269,
+      "end": 269,
+      "digest": "sha256:17176431a7f8d1986ccb2921c6f21db5a812129ed1b622c00642260512a1486d",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 270,
+      "end": 270,
+      "digest": "sha256:a435d3cce52e18c0f06037f99e216dc6b59ddf888b34bde66e2937e87f758f21",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 271,
+      "end": 271,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 272,
+      "end": 272,
+      "digest": "sha256:d969eeb7d22f2a26484974fdc944e5ac7addf403577fec0e092ca5a2c81534a4",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 273,
+      "end": 273,
+      "digest": "sha256:acdaba80c771371c169e5b9910773c11a1145e2f84a5cb5bffc6bddaead98de8",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 274,
+      "end": 274,
+      "digest": "sha256:95ba0b7ac24db736dd4f9a145bc67f51572587b239ae187d10ab303b5ac21bb9",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 275,
+      "end": 275,
+      "digest": "sha256:63d41bca5f044d2cd002a78834ef54bb3f899ad3c8757ba86708b58c78ca5bec",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 276,
+      "end": 276,
+      "digest": "sha256:71246e88a56e1e2e6ab99e85271f819cbd033d65edf90cd43683b90c9c7ccc2f",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 277,
+      "end": 277,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 278,
+      "end": 278,
+      "digest": "sha256:db5e5c85fdf2f32d6ab881bf7136726764ac9ee23b5765df635bb40d80019e61",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 279,
+      "end": 279,
+      "digest": "sha256:da93715d4ccd2f08f091b62a377b36351b06312bc98c0eb79af6c188cd5796f2",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 280,
+      "end": 280,
+      "digest": "sha256:11f27027e1a7b92f6479fe24bb721a84cecc0a76716af80f3ede554d66402472",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 281,
+      "end": 281,
+      "digest": "sha256:e279fa1957db3a76cc337c58ef1d4b1655e75cc91f6c127ee7b77625fbe85c0a",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 282,
+      "end": 282,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 283,
+      "end": 283,
+      "digest": "sha256:043fac84cd62531899d396752a131e4effe18328aacbdaf742ddbb8eb0c0e355",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 284,
+      "end": 284,
+      "digest": "sha256:fe419640af9fa96b356bef8f33c343b591e3ffa8eccc1a01168644d7999b9049",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 285,
+      "end": 285,
+      "digest": "sha256:55488587c0988f9069c9be68351a5b186d93eba4cd9b461b50e00bac20eb8176",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 286,
+      "end": 286,
+      "digest": "sha256:6aaeaf4c3164641016a167a4f47b21af662f8a992c6ad4497b196452f0208f7a",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 287,
+      "end": 287,
+      "digest": "sha256:3e02d908707b26c2642ec1dcac447293a4900221a78e2ce8c3f4736911b76724",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 288,
+      "end": 288,
+      "digest": "sha256:0aa59673fa564e000ed4644be791724fafea49741ceabfb01a15e4e2eda6e629",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 289,
+      "end": 289,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 290,
+      "end": 290,
+      "digest": "sha256:2f565eef29881a8677bc60bb9bb12a5890ce789d0701500474dc2ee97f2e4c37",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 291,
+      "end": 291,
+      "digest": "sha256:c8ffe75a56315996da870ffedb097ffd0642162d7d852e867044942653156aed",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 292,
+      "end": 292,
+      "digest": "sha256:ec281318bec658383df7cf3cf72365c7e50d345ee7791fe46d3da29bce3b92ba",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 293,
+      "end": 293,
+      "digest": "sha256:9ae2cf420bb1ef5dc13c4c87c024401f39c367a3338239f07acd5d93b606d8da",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 294,
+      "end": 294,
+      "digest": "sha256:86f9394001fe62167660891c26e91fab3f4c354b55ff09a5590d75a8c8429bf0",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 304,
+      "end": 304,
+      "digest": "sha256:628baf0609d5441798a51c80c35d24553fd9702e653e543e440c35bb00670701",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 305,
+      "end": 305,
+      "digest": "sha256:9d791f20c40e5a07020b04b1096ad21d60a13fd6e4c4a425ee6138281cdd1c80",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 306,
+      "end": 306,
+      "digest": "sha256:73eefbdf7c8529776c0f7102cc1ff806f8830ee9287955189c8aba61d8161039",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 307,
+      "end": 307,
+      "digest": "sha256:dfb1e96eab179126aee7dd538c96570a2d4e6a77241587ab6ed0e090c6a67833",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 308,
+      "end": 308,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 348,
+      "end": 348,
+      "digest": "sha256:d8bb6227798a855e284088d1374d08cef02b4fede5fc7fe33469ac77700941cd",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 349,
+      "end": 349,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 350,
+      "end": 350,
+      "digest": "sha256:b8c37edd519eec851d5b97619cd92d147e570d3a8f07fd787d9c35d6662810cf",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 351,
+      "end": 351,
+      "digest": "sha256:2089b7f3d59ca378fe8a56feab8e2faba4eb211c5160e8cd04727474bef7a733",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 352,
+      "end": 352,
+      "digest": "sha256:994fdedeb211be9a4dd51e1a5ec36aa71aa75023eefbe4dd3e9311a0acc41a1d",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 353,
+      "end": 353,
+      "digest": "sha256:8ec9c636da0c8fc014684be500b198982b7cada9c2d1b6b464345abff5b7044b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 354,
+      "end": 354,
+      "digest": "sha256:8605be667a0abc2bd93f57360c6d097a400c6b061d12c4305447286f7bf7c5ef",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 355,
+      "end": 355,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 356,
+      "end": 356,
+      "digest": "sha256:514bdd68c87e1824edfc4d5d1de2187151ef86428a87c5fbbdc0899fdc3570b4",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 357,
+      "end": 357,
+      "digest": "sha256:cf94a6e8c504fd6c0d75e1da1ee5fd6ce3304993fe2e08d8cc6af51f06a78400",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 358,
+      "end": 358,
+      "digest": "sha256:c020babcc0ced349eaf572ea625f4b8674ed4b52b80ed74889d79fdf84395244",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 359,
+      "end": 359,
+      "digest": "sha256:01e9fae5efe5007717b19f6ae9a9cf910b2dce88de7eeb7e346295cdbb34667f",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 360,
+      "end": 360,
+      "digest": "sha256:44132d5ff4149643abb57e131e3e66f1b62cc61c4c78752a77d18c41adf8eeb7",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 361,
+      "end": 361,
+      "digest": "sha256:31461ad88401b35a614f64820980cf1a17175f179f5c518637325db15e378a4b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 362,
+      "end": 362,
+      "digest": "sha256:1a8ba512ee5c31351d2499486014bb928c07f59b1243c13679253628cf6c5a24",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 363,
+      "end": 363,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 364,
+      "end": 364,
+      "digest": "sha256:910056a72d101d383b707bfb304105c2a419add46a8f453fcff53e69b6c98043",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 365,
+      "end": 365,
+      "digest": "sha256:e55e702a972cc6dcc4647b69302aaa8e6140f20111e750c142f6ca4bba8251f4",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 366,
+      "end": 366,
+      "digest": "sha256:71a83b1aca99765e035b9a2fcb3408d8964e87389f20227ec25e72def7915e36",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 367,
+      "end": 367,
+      "digest": "sha256:e45fb581696d12a8fcde2064a9c7f627a7943cbe7bdfbda31b3c1d839aba3d1e",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 368,
+      "end": 368,
+      "digest": "sha256:5760036f77fc150c6bbce061ac854711821e285761eb26de3b47a15169d6ae93",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 369,
+      "end": 369,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 370,
+      "end": 370,
+      "digest": "sha256:114f1a50ced5728002c94da9b0c2c854842b572fc1d2ba1c6c8af9b4edccc95b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 371,
+      "end": 371,
+      "digest": "sha256:a2b3b6011766fcb628328362b038b209e45b13969f5b7904179de799b4a1a73e",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 372,
+      "end": 372,
+      "digest": "sha256:ec9fa9e536cff2cac1ead742146dd02aca985584023b205a8f3f42ee8578cdd0",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 373,
+      "end": 373,
+      "digest": "sha256:e03474704b08604495b87ad4ac5fb8f43af90c2d56b86c62742b9ad323c2f866",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 374,
+      "end": 374,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 163,
+      "end": 163,
+      "digest": "sha256:6b836d9d3ef3f69d0f421d75f357406b8bdfff63f366c022977e31afc5a502bb",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 164,
+      "end": 164,
+      "digest": "sha256:2ed27fde317ae2143c6993594f2f1a049a4791c8c635d599cf37ef9dbfe7cda5",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 165,
+      "end": 165,
+      "digest": "sha256:d48803d3aa1eb977470bfbd5d587ccf0a3e094a1ce5e48df80ed37468f034fbd",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 166,
+      "end": 166,
+      "digest": "sha256:dbc3cea4b03d1b04cabb4f60dd532bf7e92fbf978fc73ba9ddea0b846a299d66",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 167,
+      "end": 167,
+      "digest": "sha256:a1c14d783edce7442ca8b8bec997453ca4e9d87c413090cb5fde0e188b4c852a",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 168,
+      "end": 168,
+      "digest": "sha256:7a6b0b7281349b11ce9d30df1093f94c41723d714411418a8a03ee96739acbcd",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 169,
+      "end": 169,
+      "digest": "sha256:747b0ce17cf5bb493c6bd08bc762f23e42d36bfff9935caca4b15467cdfc7bd8",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 170,
+      "end": 170,
+      "digest": "sha256:b93536deb7acc691d9b54d686395921781deb7d40336695580426edd137d9478",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 171,
+      "end": 171,
+      "digest": "sha256:de6cf27dd6ba0aca1cfbcefd33fc7e0adcae60b8a35522aac49e64a9f824c1ba",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 172,
+      "end": 172,
+      "digest": "sha256:3de4a63a7fe86d213354281ad168282f43ba20d707f426b8d641f5f2318f51bf",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 173,
+      "end": 173,
+      "digest": "sha256:1886efe42582d7c86d9a3cbae3e841e12b53128fcfa35d9dbb18a3d864b8c7c6",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 377,
+      "end": 377,
+      "digest": "sha256:16bf93d07c82e09e824bb3348beb241822d42d715a8517ee35fadcf0dcdb9637",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 378,
+      "end": 378,
+      "digest": "sha256:ae9969486e18ed9f88993f55b78ffd86f6352894548475ec9a48c3eff0c2e41b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 379,
+      "end": 379,
+      "digest": "sha256:72082fdda5b3dacfb73c8d24c55e8a013f25f1dff465ca650054eccb709cdb5d",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 380,
+      "end": 380,
+      "digest": "sha256:d6dcfe73e9a533d775ea90fb3ef2028916b69ee4441c282893ba5267aa319ece",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 381,
+      "end": 381,
+      "digest": "sha256:17702dbcb550b90f9d561d4e44cbea9f3f220ad87cb718b7392ba2846ba79073",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 382,
+      "end": 382,
+      "digest": "sha256:6458d0f0e5c1178172900732f0acde330c61a7a527f30c7894bd20e53299a1d7",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 195,
+      "end": 195,
+      "digest": "sha256:77608b80f75d91fdb68ddc76d526bf08d3a4cd5a695431ed4dbf97f560f0010d",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 196,
+      "end": 196,
+      "digest": "sha256:ffc9187a1b7011026102c661bac1a416a348bd76dd25267580807309cebf12f6",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 197,
+      "end": 197,
+      "digest": "sha256:ef103818d099764771bc232b11d2baf0c6be35f0eeb233b9bc83c3a534f9822a",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 198,
+      "end": 198,
+      "digest": "sha256:c757c12a68fb21366d1db9b8fbc44a0ac5d93d7b518aa604e62745cc79e85867",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 199,
+      "end": 199,
+      "digest": "sha256:4adf31761ad7d2b757f18936e930e9204e11ae81141149c73067a1132aa62692",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 200,
+      "end": 200,
+      "digest": "sha256:b88b88c473943b7170b5e9d7c958c33dc286f48386fecf82fced3869a63a1b84",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 404,
+      "end": 404,
+      "digest": "sha256:95a4f31949f1704da5660a32c7a0dd8e39fb256eb34a39718117cb4b1c7a3080",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 405,
+      "end": 405,
+      "digest": "sha256:ca8611c115ab940a62948c37640a06680c0ccf136e6052132bcc103d6f6f6d06",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 406,
+      "end": 406,
+      "digest": "sha256:538bd8e4a29aa818925d87131ba56ac53d4a17142e8bdbaf84359990f5ab751e",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 407,
+      "end": 407,
+      "digest": "sha256:6b4b26eb6994a5cedc16cbd11568791cde0c437f746f0a4bd04481d50d7858c8",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 408,
+      "end": 408,
+      "digest": "sha256:a987873d5f0b0da28e949705c7bd910516659adce5e8d05f24fb36725735a233",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 409,
+      "end": 409,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 410,
+      "end": 410,
+      "digest": "sha256:d35983ce3fa31fa671d70acf032570d95641db902a0a6e7556649a0279d8198d",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 411,
+      "end": 411,
+      "digest": "sha256:feee2f677554ef800eb11ab467f9445e49f77569daab200aaa8d0b73ec0b3bd6",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 412,
+      "end": 412,
+      "digest": "sha256:05e24a9ef51d02d62b63c98960891506e0f9466f8aab9f6c50df4448ab387405",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 413,
+      "end": 413,
+      "digest": "sha256:0a28aa9ef1b72143ab09d182ee3cade7ad958c0455096ea0d9ef2dfa8c1e28e8",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 414,
+      "end": 414,
+      "digest": "sha256:2a9439771d5e743f5adad9b1c403dfd92e57b08d86cc97e994f2e9c2167c402c",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 209,
+      "end": 209,
+      "digest": "sha256:55d62d498e011ad70f3260dbd15c4e61ab8b2e2ec3cdfb6a8d9be222a07488f6",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 210,
+      "end": 210,
+      "digest": "sha256:840920eb02b489428615451f4df294cb6a6a489a52ed4fe18748f7beaa9835ae",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 211,
+      "end": 211,
+      "digest": "sha256:000a2ca70fdcc5542c8d1ef06b429f133385476352bab1c27f8de32f46422086",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 212,
+      "end": 212,
+      "digest": "sha256:37e1c020b19c93152f44c661736a5b322ee0f8393ae20f5dc5aa613254c2986e",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 213,
+      "end": 213,
+      "digest": "sha256:997d1d4866086024274240430b991fa9b830c5839e28e85eb8c03df5cdb72694",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 214,
+      "end": 214,
+      "digest": "sha256:e79406d7a923fdba62cbb8b81e4121b3b10ab6a7b2ffc1c97805df160196c601",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/performance.md",
+      "start": 215,
+      "end": 215,
+      "digest": "sha256:8bf352676d222351dd088356494df5c403d0fb08fe7044de98369dbff1a3b014",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 423,
+      "end": 423,
+      "digest": "sha256:011e6e5e533ff95a00258d57516676778e216ebf382c2b458eb06914311e2c7e",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 424,
+      "end": 424,
+      "digest": "sha256:9e882ff7b5ecfc49cc20a35e4c78a6fd61a4e77c28369537933a050667fda520",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 425,
+      "end": 425,
+      "digest": "sha256:ba9a1ba402f28e4a6fe765b86809e713db84c7ab41f5ce73cd2470646cfba2e8",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 426,
+      "end": 426,
+      "digest": "sha256:95cb234deceff2b4456cd436995f08901795b936e907b03023339a415df7c400",
+      "note": "Performance budgets and reference workloads."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/performance.md",
+      "start": 427,
+      "end": 427,
+      "digest": "sha256:50c27cb3dca17825c1dae2b0c1853a17f6d02305ff9057b2ba595416da136269",
+      "note": "Performance budgets and reference workloads."
+    }
+  ],
+  "version": 2
+}

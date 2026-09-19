@@ -16,7 +16,7 @@ const saga = "checkout.saga"
 func criterion(id string) string { return "urn:change-saga:checkout:story:refund:criterion:" + id }
 
 // statusFixture is a small projection with one failing quality kind, one stale
-// run, one stale relation, one orphaned selector, one uncovered file, and gaps.
+// run, one stale relation, one stale code reference, one uncovered file, and gaps.
 func statusFixture() livingapp.Status {
 	cells := func(id string, states map[coverage.Axis]coverage.AxisCoverage) coverage.CriterionCoverage {
 		row := coverage.CriterionCoverage{Criterion: criterion(id), Story: "urn:change-saga:checkout:story:refund", Axes: []coverage.AxisCoverage{}}
@@ -63,7 +63,7 @@ func statusFixture() livingapp.Status {
 		},
 		ChangedSource: livingapp.ChangedSource{
 			Uncovered: []livingapp.UncoveredPath{{Path: "internal/other.go", Atoms: 1}}, UncoveredAtoms: 1,
-			Orphans: []livingapp.OrphanRef{{Target: "item", DiffFile: "40-e.json", Diff: 1, Affects: []string{criterion("done")}}},
+			Stale: []livingapp.StaleReference{{Target: "item", EvidenceFile: "40-e.json", Reference: 1, Affects: []string{criterion("done")}}},
 		},
 		Readiness: readiness.GateProjection{},
 	}
@@ -169,8 +169,8 @@ func TestExclusionsAreNeverOfferedForSourceOrImplementation(t *testing.T) {
 		}
 	}
 	actions := byID(Derive(statusFixture(), saga))
-	if actions["source:orphans"].Command == nil || actions["source:orphans"].Command.Command != "rebase-evidence" {
-		t.Fatalf("orphaned selectors get the deterministic rebase shape: %#v", actions["source:orphans"])
+	if stale := actions["source:stale"]; stale.Command == nil || stale.Command.Command != "references" || !hasArgument(*stale.Command, "stale", "true") || !hasArgument(*stale.Command, "diff", "true") {
+		t.Fatalf("stale references get the references shape: %#v", actions["source:stale"])
 	}
 	if cover := actions["source:uncovered:internal/other.go"]; cover.Command == nil || !hasArgument(*cover.Command, "path", "internal/other.go") {
 		t.Fatalf("an uncovered file gets a cover shape for its path: %#v", cover)
@@ -229,7 +229,7 @@ func TestEmptyActionsAreTheFixedPoint(t *testing.T) {
 		Stories: []livingapp.StoryStatus{{Story: "urn:change-saga:checkout:story:refund", State: "accepted", CurrentRevision: "r", Criteria: []livingapp.CriterionStatus{{Criterion: criterion("done")}}}},
 		Axes:    coverage.AxisProjection{Criteria: []coverage.CriterionCoverage{}},
 		ChangedSource: livingapp.ChangedSource{
-			Complete: true, Uncovered: []livingapp.UncoveredPath{}, Orphans: []livingapp.OrphanRef{}, TestOwned: []livingapp.TestOwned{},
+			Complete: true, Uncovered: []livingapp.UncoveredPath{}, Stale: []livingapp.StaleReference{}, TestOwned: []livingapp.TestOwned{},
 		},
 	}
 	if actions := Derive(status, saga); len(actions) != 0 {

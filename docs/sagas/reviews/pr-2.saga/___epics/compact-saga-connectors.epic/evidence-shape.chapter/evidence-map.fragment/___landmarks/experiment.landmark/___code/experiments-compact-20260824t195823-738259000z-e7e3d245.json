@@ -1,0 +1,1323 @@
+{
+  "references": [
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "digest": "sha256:9cc05a20826e38248308e91271c2e22ca2b8927a2b9d5c980b723a77914a54ed",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:f5bb94641a2ba6d2681cd4c579e990e4dc7e48fb0dc80244b627ee1e89d48fda",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:4caacbb439535326c86ab8e5d48185c8fffdc7116c0127b3de7f7692452bb936",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:564a0ed5ec76f8449ac389c685c56d5a375fcb3137b9982ab5fd068f2cad0298",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:13ed3c264555c3c07593a0852aff1ce440e9a3e440d46eebe0d9e784800bd7a2",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:9a08f89467ff310c23ba7f028342d193d00d009c3d96d1b095280625fd227178",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:fa2486c6e4927b22d8811e44317190e7ffed87a601583a64c5f6b35293094287",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:bdd632b59b86761f504882111c5d93375e84af43cd761a01bbda7093f13f85bf",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:bac0aeb0178dec1df7494a79960c572ff43d56c427fdfd2d925ccf43a83f555a",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:e266108dfda02a169ee0912c96417a24c67b30a0d11b4f1926ad72737c254f6f",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:097ca0824172b5c34354bab901569b6621e4447942e0826fb196a2a37e227e21",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:a6fb08fda1acb957b6116bd37811a1fe41a01611c0631edbf786d6889a27a55c",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:54772b039f85954659c1876759bf18ff99c9a1716b6d6f76c0dfad44bb91414f",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:344b40cb41c3484c049a5353d876d0486f852f0e88f78a9c586884c4e42900b8",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:f9ca891bff7ac1f7ceaae40ef051066be9efe47b4e4281e86c319be2c55ebce4",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:c6c2c42178e87764cbb2807b2d6786080b71f957ca3b544cc2abc222c13c3a3e",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:d49b9796c51e0eec1b183df18b17ff71166e3a7754eb9f6e89458c2282fb8d0d",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:4893f40e3781eb896c82d046a08067a11e35cdf2f1dfaf26fea90b8db6676413",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:30648f77fd5a9c63b3cdd0af49daa1299220b7541e88ca17efe1a6a114b9ff2a",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:47c06c561d5c327343685268a46b3391f3998eee890d2be51f0d21cc4a53ae6d",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:aaa03933dc4339f319e9945fff253d5c6475d56886e8870472ac7858666413e6",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:15d977512d9440870f95fb7f2cf8509132873e83f92670abded8d3e389ea4cdf",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:2df8c9881bf2b88ff22abeb19af258e7564a215fe44ebab1924a2f658332c7c4",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:7953814f7b90852ee8fe0839d6a206d1096487b409ccf12f4500c3405613bb18",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:ae7931748b5b0cead7669654eca97ead04c7e5580347ae9fb7664a7f454aee56",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:d8c35526441069595dcc4fbd977f7a58d7b8d1defe460858e53b3cbaf22bcb26",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:2d289f1707ace360a3451641b9011fd2954db345e79a6133b93fd38086a437a8",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:ae817e58d57ee673a7abb05e621179f4d3a1103a2a7ed943175d0c334964c50e",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:9ed8e20613c57501fccaaa4b12488b0c146d668a79ab5be481657c8ae70b58dc",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:ed824781888d1acc2c298c35d494a6738e6e646478d0c1c8716b3ff209dabb1a",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:69f98800c1291a56cee46ab6e776752036faae9f64cae093f434884d1eab6da0",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:c7a99858e06acb6978d6ac419302c2eddf52d8d85de98d965c8534fa77fa0a92",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:2b998d540873248524609ebc22db657b7a467e7ef7e8533c663223a8a72a951a",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:d6f1fa7b57337afbb66754f2ed1e7eb7c1afb830e9efef50b338105bf948bac6",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:e2b0fd28a3c68f7d9dc7e468e35436f574a7fe35ceda8e0b2c3f21b7bc8033a8",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:b1769f818a6dc91083033f0c9caa4bcd5a30fba132ce5879fe6b95242548c059",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:47c06c561d5c327343685268a46b3391f3998eee890d2be51f0d21cc4a53ae6d",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:d6f1fa7b57337afbb66754f2ed1e7eb7c1afb830e9efef50b338105bf948bac6",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:951605bafb30015797b9e6e85ee57192d2e920e1ef9b2210f5ba76a8970e0024",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:b4feb32c691bb31583525089b57b751c05a4b09a82c3250fb4dff471f1b75007",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:7e16e757368bc4fa6d9207ca367988c97f02d216600de825d96c63ff7ae8dded",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:b5f1cab7ffd43a2b8b634174ac28df8a64c42b58874a83f33eaa0e29b1d92f15",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:b31d6fd87b233d43fd502446bf63455c2b8cdbc65693e93b84369e2665b8157e",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:09a09f9daeb65cd01355a47c5cd88b806a616dc2ecffb122d749a187bfcb200c",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:1c1b078855c96cd285f7c6bd970b83db7706b3189d7d499c305f2444bf26c956",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:d6e391ea8acf91e25a805c1ce941a92fc9e4996b9dfc518a96f804420cba7cbf",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:880e19ffea313fb04866c15494aa7b97f0903e908cb6fa2c049fe72cd5236642",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:24059cf202e85c7a75d007d1ee4bebbb2f95d00ccf64e4aed53f500a4706c2d8",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:6b7d3342261b7146af75ae98c7caad1988803294cb9392da08aef932196fd44e",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:47c06c561d5c327343685268a46b3391f3998eee890d2be51f0d21cc4a53ae6d",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:1de204ed871c96fdcd76a212e16f1cda48b53c493028bf755d8b2720a85de537",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:f5da3f532acff51175b657266df0939161a66a3878d47ffe585fb475733f212e",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 68,
+      "end": 68,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:d6f1fa7b57337afbb66754f2ed1e7eb7c1afb830e9efef50b338105bf948bac6",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 70,
+      "end": 70,
+      "digest": "sha256:ffaa086304ce619a3bf0f132ad2be677a9fa677c5c76cd69cc4c8234e3c5519e",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 71,
+      "end": 71,
+      "digest": "sha256:01fff97c54229c659e6930098d653879763a3b2728226fdf81b5f7d7a54a187b",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 72,
+      "end": 72,
+      "digest": "sha256:10919fdddf5069ca21e4be59863df74c04401f40a0fcf22afd02a913769d3e70",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 73,
+      "end": 73,
+      "digest": "sha256:02589a59e14790a53760dfc8eb0f89ed8f0b30f56a1df2b2eea0dc159d91e0e8",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 74,
+      "end": 74,
+      "digest": "sha256:eb6e7e0ebf3b6e732527e8a41151bc6631bbb7054f2b8437ae1e480c04fed9fc",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 75,
+      "end": 75,
+      "digest": "sha256:26d31f4cf020b682295e5c319f00fe2ca789fd98d9080554925fb087e3df256b",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 76,
+      "end": 76,
+      "digest": "sha256:694674702f275a5fd37fd12aec3c75e21df807ec5cdcf65767352b1d8de829e3",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 77,
+      "end": 77,
+      "digest": "sha256:6187c1213ae021bf177a8874d7404675c5c521a956db647c5185bbad8e333816",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 78,
+      "end": 78,
+      "digest": "sha256:502cb050adbed142232a65e7c592746bf823e10d135ea3e9fe2613e102c8aeb8",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 79,
+      "end": 79,
+      "digest": "sha256:58fc0b1a2e0bbab15330d790abed6789c6cc5cd5eb054b1bac43cf1a302a9d43",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 80,
+      "end": 80,
+      "digest": "sha256:a696eb25b7b887449e03ac734fbf4a9fb0ac153f63bec1d0cf6becb3a816fe28",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 81,
+      "end": 81,
+      "digest": "sha256:51930bca572ab57fcc128241062fb9acff005a4b5ecf359b73bf8c611333939a",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 82,
+      "end": 82,
+      "digest": "sha256:47c06c561d5c327343685268a46b3391f3998eee890d2be51f0d21cc4a53ae6d",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 83,
+      "end": 83,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 84,
+      "end": 84,
+      "digest": "sha256:4fe10cd82006e7022ebbbdeaa3cf3dcb020a7e5b9a74425cb98d3da2a405c68a",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 85,
+      "end": 85,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 86,
+      "end": 86,
+      "digest": "sha256:701df197b8e8083481008f102aa74d8203d44ba21854e3406abd3cca2213917a",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 87,
+      "end": 87,
+      "digest": "sha256:0caa8bc193384b5904b6499273d175fab8921bdc96e5886ea58e69995d4bb452",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 88,
+      "end": 88,
+      "digest": "sha256:484c6ffb3bba49d87371a651a07bec35c98ba011e08acf44a397a993a2a48159",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 89,
+      "end": 89,
+      "digest": "sha256:9966499366d8ce4c2fcc2264f090517d23b25a68c9e170bde87de53b5998fac6",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 90,
+      "end": 90,
+      "digest": "sha256:8b965205b547acac496711fbdc88eae0cbf67ad5f5730dd22d62b7ce9d526182",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 91,
+      "end": 91,
+      "digest": "sha256:e5199bbdd69aa3cdd6d96efef69aab8bb1162bf290196db35346e35ddf6e6944",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 92,
+      "end": 92,
+      "digest": "sha256:6191af3243f3d0e411174922da111e7d21b48563a0fd6ec86a9409238c60d4b1",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 93,
+      "end": 93,
+      "digest": "sha256:f8e4f121990e0822de4e7b80933e06e521988483df0e9ae59f3509370ee8132c",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 94,
+      "end": 94,
+      "digest": "sha256:51f18ee86fd27bf32d6a9c648e8a59d06ef8f4e89ecd7f74dc3705fa7ec59508",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 95,
+      "end": 95,
+      "digest": "sha256:1f64eb311c1d7681e2683a96a3582ed34ed4b5c22680e0ff7d4a46971248cff2",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 96,
+      "end": 96,
+      "digest": "sha256:68f71989d9d899eac895d549162a5fb958e9c920b655e988e809dfe4c10bde8e",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 97,
+      "end": 97,
+      "digest": "sha256:5a545db715d52a305b82aac03f365182857e1d807665f99730f7284725d5ae07",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 98,
+      "end": 98,
+      "digest": "sha256:7059b2dc7e1d1f08e5316b6761dd8bfcde487ece1a65660529ed974724fa714b",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 99,
+      "end": 99,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 100,
+      "end": 100,
+      "digest": "sha256:9eead1c1b4268940e5ef403d90c7a1cb37d1bf1938b02e523b3a8112e59fd634",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 101,
+      "end": 101,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 102,
+      "end": 102,
+      "digest": "sha256:355cc3813b045c3ed33c82781de56e23b8125cf4400186b4c687532271e099c4",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 103,
+      "end": 103,
+      "digest": "sha256:ae69b97add3e3d9ed8e9a0154ca1a9d5857758fc039acda2d392a3a142b9a0e6",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 104,
+      "end": 104,
+      "digest": "sha256:731917f4ab1b8f785c14cabde0fea2256dfe4e22d60d7074b583be562b0d6373",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 105,
+      "end": 105,
+      "digest": "sha256:606117f09c149cfd22d296015243842609a3d4c829e3f10d129306994602120a",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 106,
+      "end": 106,
+      "digest": "sha256:841a8b432382a67feb6338fbea00eb75a4ca08824442a7f2a882f49f6594a890",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 107,
+      "end": 107,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 108,
+      "end": 108,
+      "digest": "sha256:dab03c422f8e310c3d1818e7990c362d0b10975da40ae17d60c17f80a814f6a7",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 109,
+      "end": 109,
+      "digest": "sha256:adfa9cc5ebc93ab3873862e6d9877559edf3e54534ccaa80d29460f5245957a0",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 110,
+      "end": 110,
+      "digest": "sha256:a1468a185f10790b09bc54e95323e295f1b1b3023fd2c13be5b60e19ac1f0f62",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 111,
+      "end": 111,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 112,
+      "end": 112,
+      "digest": "sha256:a935297f51ccca7e6b7d41c424656280f80020a89d20454fe0e746b801b1acb5",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 113,
+      "end": 113,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 114,
+      "end": 114,
+      "digest": "sha256:44d56228f8d32f2763826b261ac8cbf730c6f5a47c920c043d5cad0d2112fa35",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 115,
+      "end": 115,
+      "digest": "sha256:693fbc145438e34ba6e13591c3658faba4e445906ed9c256c5c5577e84ae2192",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 116,
+      "end": 116,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 117,
+      "end": 117,
+      "digest": "sha256:d3865d20f9657e42a02bfa95aecc6dadb5644612275bb0a9c2dde695500c77ab",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 118,
+      "end": 118,
+      "digest": "sha256:a9e436d2babd638ade86791e162e7de5a6b1b3128c6ae9ed93504fbf3c53dc93",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 119,
+      "end": 119,
+      "digest": "sha256:cf3c93fbae914a8a472758edeb954a74302163e88ab81acdf4ed90ebb0d93314",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 120,
+      "end": 120,
+      "digest": "sha256:990f2390d3ed594034558baa1c5ef0dc93c3554a4e0e81d70e8b461a0712a77e",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 121,
+      "end": 121,
+      "digest": "sha256:364c595bfd92d1025a2489e7f08f72f4151c8bbf65c166d8a3f345dbfda4f0eb",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 122,
+      "end": 122,
+      "digest": "sha256:9e608bbea938a0e5d522bc91009e1072217ce80b8ab4c38924ab77be6bca1459",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 123,
+      "end": 123,
+      "digest": "sha256:9992a66327a53c68e62c3349b2ac9505854b4bd96531384bb7c028c31d024b2b",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 124,
+      "end": 124,
+      "digest": "sha256:569bfa54d49c881d651cdb589f7b35656e69785a9c97c5788bd11d444ca85def",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 125,
+      "end": 125,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 126,
+      "end": 126,
+      "digest": "sha256:04768bf0a27ce8cacc1ccb18919375c7a204ab6af979a6a8e33732d98855875f",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 127,
+      "end": 127,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 128,
+      "end": 128,
+      "digest": "sha256:90eb8eb07d125a76bb45582cdc6e1aa5dd491daa475bb8ee789b4042f17b1b3f",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 129,
+      "end": 129,
+      "digest": "sha256:6536fc7ed327fbaf013fae9fb8eff5901e0c8a4b747d6f4d8ff9d76413486069",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 130,
+      "end": 130,
+      "digest": "sha256:1b181231b96dd770e8fd5af326091b1337fa3c2e50f5984a7341a15443c2f9a8",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 131,
+      "end": 131,
+      "digest": "sha256:281f7a8166ad1f6e675c820a71744ec5a21d18395d6f2e50b5f6cd3e86fb87fe",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 132,
+      "end": 132,
+      "digest": "sha256:923b6226160ce842c5ddb644fb66e193e412fcc6f287434917e1a0c26275a929",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 133,
+      "end": 133,
+      "digest": "sha256:74c20204e6271a9f2ea7b4d9a35f60458bc24107514420e25ad920c0be65dd82",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 134,
+      "end": 134,
+      "digest": "sha256:f2ddd36f697d77a39ca99d86c09367484191c96297b75ff13ade56e4ac2410a7",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 135,
+      "end": 135,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 136,
+      "end": 136,
+      "digest": "sha256:b33f6ee9018478d336e6161ba6768c8d2204447c18170c4b0074cbd17668d667",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 137,
+      "end": 137,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 138,
+      "end": 138,
+      "digest": "sha256:8de1f212df5c774dd39da1e7117bd92a901f524044d24435a089d211e03d5144",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 139,
+      "end": 139,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 140,
+      "end": 140,
+      "digest": "sha256:a50a113a03931822aae46c7a46f1db040f86012434624f253175d1306d840349",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 141,
+      "end": 141,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 142,
+      "end": 142,
+      "digest": "sha256:796f819fa5f9645b30d6fe128fbc77c058e6f2a23a0e32797ed95074e1be8b48",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 143,
+      "end": 143,
+      "digest": "sha256:3491e014f5503eb5b2fca81db42f6f72765980ba5b5e48ef135b6cf69d7f92cc",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 144,
+      "end": 144,
+      "digest": "sha256:c0fcc6b91e23884a91e3ecae71cbfce16b743c324e1be497b89aa2aa429b2e0b",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 145,
+      "end": 145,
+      "digest": "sha256:a37b152789c931d4f53a51e3196763aa7a210e1257bce2a2df5f2b6468b958a3",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 146,
+      "end": 146,
+      "digest": "sha256:21c1ec77d67357690dbe07f38e4f39a017769d617a211eaea16714e9ac404118",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 147,
+      "end": 147,
+      "digest": "sha256:aa1d3a5c6bcefe876471d7185c45c7ea043f9a96b6a096bbd1ff9a24e10e248d",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 148,
+      "end": 148,
+      "digest": "sha256:8fc05c71ca53af285fcd2cea5518f98b319bedee6b82f3c5276f84c8fba8ff28",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 149,
+      "end": 149,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 150,
+      "end": 150,
+      "digest": "sha256:a3cced1c0f7078230e519e37b267770e96fb3655bc1dcf439322ba9c956d1eac",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 151,
+      "end": 151,
+      "digest": "sha256:45b3156ca40f4cb8a6e77a32f4a6a22e79314c45b1f0512476ee8038bd956ca6",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 152,
+      "end": 152,
+      "digest": "sha256:68cb65c835fa100af4e6f3e8e5149f22cc4869bccc0503264e798680a2fa20a6",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 153,
+      "end": 153,
+      "digest": "sha256:75e457491a4ce893966ce72f8e59b3c94b4bcb34e4c5efc6e42ae9dab2ef0aac",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 154,
+      "end": 154,
+      "digest": "sha256:5ea3d2e237185bc3dc2ff84040523a16205f0cbd3c75948e1142e336ceb32bf6",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 155,
+      "end": 155,
+      "digest": "sha256:ecdd9e64bf59db556342eedcebba418b4bf6a25a18f58117fc1314c9bcb41100",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 156,
+      "end": 156,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 157,
+      "end": 157,
+      "digest": "sha256:0ccf7af8259ea7ac11ac979306b87a182774ebd2c6a6c37d52f7eab63a6940e7",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 158,
+      "end": 158,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 159,
+      "end": 159,
+      "digest": "sha256:d33c28f321be8e154e9c4c5e780d7560e27facc8698d0c86257ec1fabf655214",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 160,
+      "end": 160,
+      "digest": "sha256:f60cd61a34c89511e15d7b1f3a0dba8a21450369ff4b66f70d127f4ec3bfa081",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 161,
+      "end": 161,
+      "digest": "sha256:f273f3adfbe239d3052308a57176fe58533473b33f2f258fa224ba1dc9d74348",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 162,
+      "end": 162,
+      "digest": "sha256:ecdc5153b8ab360286816835e2673c6735d2a52cecce31559045cf113f95f412",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 163,
+      "end": 163,
+      "digest": "sha256:63a09ec0c19eb03bf3f2b2f14dca6df04d8a392b9d5cadf2ae4a8a8014e0e31c",
+      "note": "Experimental connector format specification."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/format.md",
+      "start": 164,
+      "end": 164,
+      "digest": "sha256:8a84ff36331492dd45f2e11e6eae3b8151dce763ea719f71cf056615c2311918",
+      "note": "Experimental connector format specification."
+    }
+  ],
+  "version": 2
+}

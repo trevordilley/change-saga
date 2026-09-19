@@ -1,0 +1,11 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/release_artifact_test.sh",
+      "digest": "sha256:b67da01b161fd38fcfd45b1e143930408f61d8744953b1f29775cff1ff61664a",
+      "note": "Introduces the staged release-bundle audit."
+    }
+  ],
+  "version": 2
+}

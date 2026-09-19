@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "schema/v1/review.schema.json",
+      "start": 1,
+      "end": 15,
+      "digest": "sha256:37f295d1f5318b03f85b938b9aca0750edf7fb91125da6320ae43a799e5e21e1",
+      "note": "Defines strict independent hierarchy and history records that compose the portable filesystem format."
+    }
+  ],
+  "version": 2
+}

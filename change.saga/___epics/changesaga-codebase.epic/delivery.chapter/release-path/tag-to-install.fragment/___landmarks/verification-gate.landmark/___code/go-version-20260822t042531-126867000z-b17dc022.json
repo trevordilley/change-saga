@@ -1,0 +1,19 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".go-version",
+      "digest": "sha256:55f4221aa0e36b70cbfc65ccc26728d31f6510eb1ead635badc007cdb5cd2bed",
+      "note": "Pins the Go toolchain consumed by CI and release builders."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".go-version",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:55f4221aa0e36b70cbfc65ccc26728d31f6510eb1ead635badc007cdb5cd2bed",
+      "note": "Pins the Go toolchain consumed by CI and release builders."
+    }
+  ],
+  "version": 2
+}

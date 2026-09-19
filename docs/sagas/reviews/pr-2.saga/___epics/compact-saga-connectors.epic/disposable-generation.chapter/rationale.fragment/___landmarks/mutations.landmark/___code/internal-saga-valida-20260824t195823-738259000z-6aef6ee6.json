@@ -1,0 +1,293 @@
+{
+  "references": [
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/validate.go",
+      "start": 105,
+      "end": 105,
+      "digest": "sha256:5d98c3d4aab6f2d6e6576b41e00edd526e51ddf00ce59784f5da5fa514f9944a",
+      "note": "Validation over lazily loaded state."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/validate.go",
+      "start": 106,
+      "end": 106,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Validation over lazily loaded state."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/validate.go",
+      "start": 107,
+      "end": 107,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Validation over lazily loaded state."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/validate.go",
+      "start": 108,
+      "end": 108,
+      "digest": "sha256:b14bf8c12fb01fde72f5880fa984eb7b7478c0d27694f017128d0b346ce1c8f3",
+      "note": "Validation over lazily loaded state."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/validate.go",
+      "start": 109,
+      "end": 109,
+      "digest": "sha256:d8b82fc601eb7f5cb4ef3757f197b5e33218fe314fe560b088e9c53f0ce3e503",
+      "note": "Validation over lazily loaded state."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/validate.go",
+      "start": 110,
+      "end": 110,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Validation over lazily loaded state."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/validate.go",
+      "start": 111,
+      "end": 111,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Validation over lazily loaded state."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/validate.go",
+      "start": 112,
+      "end": 112,
+      "digest": "sha256:7dfb47a416329f4cf6755e0197583b002dbd051e1d123e493d7c6699ace4daa9",
+      "note": "Validation over lazily loaded state."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/validate.go",
+      "start": 146,
+      "end": 146,
+      "digest": "sha256:429070fb5cbd6b560a8f7e21481dc76fd28eeffd865212886a9803897e7d63ab",
+      "note": "Validation over lazily loaded state."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/validate.go",
+      "start": 147,
+      "end": 147,
+      "digest": "sha256:c66a34241dfd7de22386567d15ee17deeb2ff94f4b113401ea76532d2a0d957d",
+      "note": "Validation over lazily loaded state."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/validate.go",
+      "start": 148,
+      "end": 148,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Validation over lazily loaded state."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/validate.go",
+      "start": 620,
+      "end": 620,
+      "digest": "sha256:25593f06fd5c408a9514fd7190a1777e09360ae9b7acddf8abeb9d5d0f6cbdfb",
+      "note": "Validation over lazily loaded state."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/validate.go",
+      "start": 621,
+      "end": 621,
+      "digest": "sha256:7d34292af3c6d540b95ff3fa9d6e885de791638b645a323bb192bf139fe5a3ac",
+      "note": "Validation over lazily loaded state."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/validate.go",
+      "start": 622,
+      "end": 622,
+      "digest": "sha256:fa77cd68adc3d6c2fcdb9366c5041aca690039fc37b11b2c012182472898b3ba",
+      "note": "Validation over lazily loaded state."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/validate.go",
+      "start": 623,
+      "end": 623,
+      "digest": "sha256:ea356422146eef7192a5f949ee07843314895faad46a71ca701765c2b5384ebc",
+      "note": "Validation over lazily loaded state."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/validate.go",
+      "start": 624,
+      "end": 624,
+      "digest": "sha256:b9910d827e69e7aa7b7843fa085d9815b1c29846b3d574dfd9dd3a330b6aa51a",
+      "note": "Validation over lazily loaded state."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/validate.go",
+      "start": 625,
+      "end": 625,
+      "digest": "sha256:3b4c701f1acb2f094d8720221225c6bb5ce2bcfd9362cfc2e5be928758a2d2cc",
+      "note": "Validation over lazily loaded state."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/validate.go",
+      "start": 626,
+      "end": 626,
+      "digest": "sha256:1f783a48f6ee62fdc11b115cb2fadfbb1672a45711002d0f5f67020ae30d3fae",
+      "note": "Validation over lazily loaded state."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/validate.go",
+      "start": 627,
+      "end": 627,
+      "digest": "sha256:0d7d0a5cefc7cd5c48aa602988b7ea22fc1f100b4b1f5a5123b1f071ba455c50",
+      "note": "Validation over lazily loaded state."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/validate.go",
+      "start": 628,
+      "end": 628,
+      "digest": "sha256:9e066c816560512ec27afdfbd94119428582bf66dd7e60ea7d139be2463d2db4",
+      "note": "Validation over lazily loaded state."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/validate.go",
+      "start": 629,
+      "end": 629,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Validation over lazily loaded state."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/validate.go",
+      "start": 630,
+      "end": 630,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Validation over lazily loaded state."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/validate.go",
+      "start": 631,
+      "end": 631,
+      "digest": "sha256:51a3cf506dcc9d6d21ecec798702857e47a476c6d8ab418f1307d8f8538bd39b",
+      "note": "Validation over lazily loaded state."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/validate.go",
+      "start": 632,
+      "end": 632,
+      "digest": "sha256:270d0b425b45539241ca07c2ff88a39a77d43017fd0aa068dd60339cf6ae0d6c",
+      "note": "Validation over lazily loaded state."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/validate.go",
+      "start": 633,
+      "end": 633,
+      "digest": "sha256:29d80dbf8e76634a7c6a7852637f13564e5af65aed82ffdd6f147deb2a2eaccf",
+      "note": "Validation over lazily loaded state."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/validate.go",
+      "start": 634,
+      "end": 634,
+      "digest": "sha256:0d7d0a5cefc7cd5c48aa602988b7ea22fc1f100b4b1f5a5123b1f071ba455c50",
+      "note": "Validation over lazily loaded state."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/validate.go",
+      "start": 635,
+      "end": 635,
+      "digest": "sha256:e2ed32e580c8f3e20954bf8276c8b669ab0887a0246da8397cc90624d8da8a99",
+      "note": "Validation over lazily loaded state."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/validate.go",
+      "start": 636,
+      "end": 636,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Validation over lazily loaded state."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/validate.go",
+      "start": 637,
+      "end": 637,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Validation over lazily loaded state."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/validate.go",
+      "start": 638,
+      "end": 638,
+      "digest": "sha256:56ca0f8cb6e8b24a3b47d384ea8ef6c01c15b0c7cc63c910d824fda683976dbd",
+      "note": "Validation over lazily loaded state."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/validate.go",
+      "start": 639,
+      "end": 639,
+      "digest": "sha256:3a79f1a7b2e748d76b5a431c509b7fb1a35d08783f137748c7f587360945462f",
+      "note": "Validation over lazily loaded state."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/validate.go",
+      "start": 640,
+      "end": 640,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Validation over lazily loaded state."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/validate.go",
+      "start": 641,
+      "end": 641,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Validation over lazily loaded state."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/validate.go",
+      "start": 642,
+      "end": 642,
+      "digest": "sha256:0a8423923782b4fb558222c2a3e8079e1154c4ee9f3c486eb7996a1d9d067f57",
+      "note": "Validation over lazily loaded state."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/validate.go",
+      "start": 643,
+      "end": 643,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Validation over lazily loaded state."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/validate.go",
+      "start": 644,
+      "end": 644,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Validation over lazily loaded state."
+    }
+  ],
+  "version": 2
+}

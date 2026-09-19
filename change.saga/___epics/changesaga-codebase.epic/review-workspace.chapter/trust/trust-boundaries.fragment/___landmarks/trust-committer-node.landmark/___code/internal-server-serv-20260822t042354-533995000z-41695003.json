@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_test.go",
+      "start": 715,
+      "end": 768,
+      "digest": "sha256:23848600c0a0a721ec09381572f951a30776327d07f04003d44a2db24dbc8f11",
+      "note": "Tests that workspace identity comes from the Saga repository and never falls back to mutable payload identity."
+    }
+  ],
+  "version": 2
+}

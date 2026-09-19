@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/releasing.md",
+      "start": 184,
+      "end": 236,
+      "digest": "sha256:54504dfe157c7c7a552bc06eac8a50d81506457bc13b6adee6fdb976e7920f28",
+      "note": "Documents installer transport, checksum, layout, destination, and failure guarantees."
+    }
+  ],
+  "version": 2
+}

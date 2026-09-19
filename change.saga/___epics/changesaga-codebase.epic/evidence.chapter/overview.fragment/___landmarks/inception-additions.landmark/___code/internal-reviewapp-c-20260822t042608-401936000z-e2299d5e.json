@@ -1,0 +1,11 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewapp/claims.go",
+      "digest": "sha256:02dfaa75de7f3cb4d1a5d96a322f2c6080d159772343bd6d351aa72a72927484",
+      "note": "Records this owned authoring path as newly introduced in the since-inception comparison."
+    }
+  ],
+  "version": 2
+}

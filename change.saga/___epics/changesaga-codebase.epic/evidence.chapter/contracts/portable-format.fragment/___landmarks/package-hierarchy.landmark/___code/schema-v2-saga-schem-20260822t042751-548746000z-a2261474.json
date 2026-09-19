@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "schema/v2/saga.schema.json",
+      "start": 1,
+      "end": 40,
+      "digest": "sha256:cdc837b7fb6759311ec9420ca1d7c5d08c5c15a4097dd9a0825e39e85ec21cc0",
+      "note": "Defines strict independent hierarchy and history records that compose the portable filesystem format."
+    }
+  ],
+  "version": 2
+}

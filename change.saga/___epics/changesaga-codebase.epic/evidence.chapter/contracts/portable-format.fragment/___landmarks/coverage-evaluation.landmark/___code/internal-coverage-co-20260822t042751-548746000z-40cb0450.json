@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/coverage/coverage_test.go",
+      "start": 60,
+      "end": 168,
+      "digest": "sha256:b383a13d85c7f660e97bca3d35bfbaf806dd9ffa6d71e9d084875791aea70bc7",
+      "note": "Tests exact coverage evaluation as an omission invariant rather than a correctness judgment."
+    }
+  ],
+  "version": 2
+}

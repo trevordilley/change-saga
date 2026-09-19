@@ -1,0 +1,11 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/query.go",
+      "digest": "sha256:becf87177c6ec5102d12df2c771f83c4c8f5a653e9f0c902f38ca440c3077960",
+      "note": "Records this owned authoring path as newly introduced in the since-inception comparison."
+    }
+  ],
+  "version": 2
+}

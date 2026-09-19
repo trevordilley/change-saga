@@ -5,8 +5,20 @@
   "kind": "invariant",
   "statement": "Every supported review mutation revalidates the Saga under a bounded writer lock before it writes.",
   "evidence": [
-    "saga-diff://v1/line?base=14afd0526c471d9ccad5825fadda735094e599e4\u0026end=263\u0026head=product-964a0b07e1a68460c0d665e55100f062a506f951b593593984d44517f040f9bb\u0026path=internal%2Freviewstore%2Freviewstore.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftwentyideas%2Fchange-saga.git\u0026side=new\u0026start=220",
-    "saga-diff://v1/line?base=14afd0526c471d9ccad5825fadda735094e599e4\u0026end=204\u0026head=product-964a0b07e1a68460c0d665e55100f062a506f951b593593984d44517f040f9bb\u0026path=internal%2Fstore%2Fstore.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftwentyideas%2Fchange-saga.git\u0026side=new\u0026start=169"
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore.go",
+      "start": 220,
+      "end": 263,
+      "digest": "sha256:e69ae93bdfad0735f8d3aaf3672c2a62660d66568e7972e6d332dcec0390cfdf"
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/store/store.go",
+      "start": 169,
+      "end": 204,
+      "digest": "sha256:18140b4ba32bc1a54245f427a08ffdea0938d5d063ebe08c6ff709e218152971"
+    }
   ],
   "created_at": "2026-08-22T04:24:49.583144Z"
 }

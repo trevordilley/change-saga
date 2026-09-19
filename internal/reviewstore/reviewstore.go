@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/twentyideas/changesaga/internal/diffuri"
+	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/saga"
 	"github.com/twentyideas/changesaga/internal/store"
 )
@@ -28,8 +28,8 @@ func AddThread(root, target, body string, anchor saga.Anchor, kind, replacement 
 	if kind != "comment" && kind != "suggestion" {
 		return "", fmt.Errorf("thread kind must be comment or suggestion")
 	}
-	if kind == "suggestion" && (anchor.Type != "diff" || strings.TrimSpace(replacement) == "") {
-		return "", fmt.Errorf("suggestions require a diff anchor and replacement content")
+	if kind == "suggestion" && (anchor.Type != "code" || strings.TrimSpace(replacement) == "") {
+		return "", fmt.Errorf("suggestions require a code anchor and replacement content")
 	}
 	if kind != "suggestion" && strings.TrimSpace(replacement) != "" {
 		return "", fmt.Errorf("replacement content is only valid for suggestions")
@@ -45,9 +45,6 @@ func AddThread(root, target, body string, anchor saga.Anchor, kind, replacement 
 	err = mutate(root, func(index saga.MutationIndex) error {
 		if _, ok := index.Targets[target]; !ok {
 			return fmt.Errorf("target does not exist")
-		}
-		if err := verifyAnchorRepository(index, anchor); err != nil {
-			return err
 		}
 		if index.FlatTargets[target] {
 			thread := saga.ThreadManifest{Version: saga.CurrentVersion, ID: id, Target: target, Anchor: anchor, Kind: kind, CreatedAt: now}
@@ -96,22 +93,21 @@ func AddThread(root, target, body string, anchor saga.Anchor, kind, replacement 
 	return id, nil
 }
 
-func AddDiffReview(root, uri, state string) error {
-	reference, err := diffuri.Parse(uri)
-	if err != nil || reference.Kind != "file" {
-		return fmt.Errorf("diff review requires a valid file diff URI")
+// AddFileReview records a reviewed or unreviewed mark on a changed file. The
+// reference is a whole-file reference at the comparison commit holding the
+// file, so the mark stops applying once the file changes.
+func AddFileReview(root string, reference coderef.Reference, state string) error {
+	if err := coderef.Validate(reference); err != nil || !reference.WholeFile() || reference.Note != "" {
+		return fmt.Errorf("file review requires a whole-file code reference")
 	}
 	if state != "reviewed" && state != "unreviewed" {
-		return fmt.Errorf("diff review requires reviewed or unreviewed state")
+		return fmt.Errorf("file review requires reviewed or unreviewed state")
 	}
 	return mutate(root, func(index saga.MutationIndex) error {
-		if err := verifySagaRepository(index, reference); err != nil {
-			return err
-		}
 		now := time.Now().UTC()
 		id := store.EventID(now)
-		review := saga.DiffReview{Version: saga.CurrentVersion, ID: id, URI: uri, State: state, CreatedAt: now}
-		dir, err := store.EnsureDirWithin(root, filepath.Join(root, "___review", "diffs"))
+		review := saga.FileReview{Version: saga.CurrentVersion, ID: id, Code: reference, State: state, CreatedAt: now}
+		dir, err := store.EnsureDirWithin(root, filepath.Join(root, "___review", saga.FileReviewDir))
 		if err != nil {
 			return err
 		}
@@ -192,9 +188,6 @@ func SetAnchor(root, threadID string, anchor saga.Anchor) error {
 		return err
 	}
 	return mutate(root, func(index saga.MutationIndex) error {
-		if err := verifyAnchorRepository(index, anchor); err != nil {
-			return err
-		}
 		if flatThreadExists(root, threadID) {
 			if _, err := flatThreadPath(root, threadID); err != nil {
 				return err
@@ -354,33 +347,6 @@ func removeFlatFiles(paths []string) {
 	for i := len(paths) - 1; i >= 0; i-- {
 		_ = os.Remove(paths[i])
 	}
-}
-
-// verifySagaRepository refuses review records whose diff identity belongs to a
-// different source repository than the saga declares. Diff URIs carry their own
-// repository, base, and head, so without this check a review decision could be
-// filed against a comparison this saga never describes. It runs inside the
-// writer lock and before any write, so a rejected mutation leaves nothing behind.
-func verifySagaRepository(index saga.MutationIndex, reference diffuri.Reference) error {
-	repository, err := diffuri.CanonicalRepository(index.Manifest.Source.Repository)
-	if err != nil {
-		return fmt.Errorf("saga declares an invalid source repository: %w", err)
-	}
-	if reference.Repository != repository {
-		return fmt.Errorf("diff URI repository %q does not match the saga source repository %q", reference.Repository, repository)
-	}
-	return nil
-}
-
-func verifyAnchorRepository(index saga.MutationIndex, anchor saga.Anchor) error {
-	if anchor.Type != "diff" || anchor.Diff == nil {
-		return nil
-	}
-	reference, err := diffuri.Parse(anchor.Diff.URI)
-	if err != nil {
-		return fmt.Errorf("diff anchor requires a valid diff URI: %w", err)
-	}
-	return verifySagaRepository(index, reference)
 }
 
 func mutate(root string, operation func(saga.MutationIndex) error) error {

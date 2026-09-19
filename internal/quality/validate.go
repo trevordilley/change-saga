@@ -7,7 +7,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/twentyideas/changesaga/internal/diffuri"
+	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/livingid"
 	"github.com/twentyideas/changesaga/internal/qualityid"
 )
@@ -141,13 +141,13 @@ func validateEvidence(value Evidence, sagaID, testCaseID string) error {
 	if !validEvidenceRole(value.Role) {
 		problems.add("role must be test_implementation, implementation_under_test, or execution_artifact")
 	}
-	if total := len(value.Diffs) + len(value.Verifications) + len(value.Citations); total == 0 {
-		problems.add("evidence must contain at least one diff, verification, or citation")
+	if total := len(value.Code) + len(value.Verifications) + len(value.Citations); total == 0 {
+		problems.add("evidence must contain at least one code reference, verification, or citation")
 	} else if total > MaxReferencesPerRecord {
 		problems.add("evidence contains %d references; maximum is %d", total, MaxReferencesPerRecord)
 	}
 	for name, count := range map[string]int{
-		"diffs": len(value.Diffs), "verifications": len(value.Verifications), "citations": len(value.Citations),
+		"code": len(value.Code), "verifications": len(value.Verifications), "citations": len(value.Citations),
 	} {
 		if count > 20_000 {
 			problems.add("%s contains %d references; maximum is 20000", name, count)
@@ -156,16 +156,16 @@ func validateEvidence(value Evidence, sagaID, testCaseID string) error {
 	if len(value.Supersedes) > 10_000 {
 		problems.add("supersedes contains %d references; maximum is 10000", len(value.Supersedes))
 	}
-	if (value.Role == EvidenceTestImplementation || value.Role == EvidenceImplementationUnderTest) && len(value.Diffs) == 0 {
-		problems.add("%s evidence requires at least one exact diff selector", value.Role)
+	if (value.Role == EvidenceTestImplementation || value.Role == EvidenceImplementationUnderTest) && len(value.Code) == 0 {
+		problems.add("%s evidence requires at least one code reference", value.Role)
 	}
 	if value.Role == EvidenceExecutionArtifact && len(value.Verifications)+len(value.Citations) == 0 {
 		problems.add("execution_artifact evidence requires a verification or citation")
 	}
-	if value.Role == EvidenceExecutionArtifact && len(value.Diffs) != 0 {
-		problems.add("execution_artifact evidence cannot contain diff selectors")
+	if value.Role == EvidenceExecutionArtifact && len(value.Code) != 0 {
+		problems.add("execution_artifact evidence cannot contain code references")
 	}
-	validateDiffs(&problems, value.Diffs)
+	validateCode(&problems, value.Code)
 	validateExternalURNs(&problems, value.Verifications, sagaID, "verification")
 	validateExternalURNs(&problems, value.Citations, sagaID, "citation")
 	validateQualityRefs(&problems, value.Supersedes, qualityid.KindEvidence, sagaID, testCaseID, value.ID, "supersedes")
@@ -430,13 +430,6 @@ func validateTestCaseGraphs(testCase *TestCase, sagaID string, source SourceIden
 		} else if value.TestRevision != currentRevisionURN {
 			reasons = append(reasons, "test revision changed")
 		}
-		for _, selector := range value.Diffs {
-			ref, err := diffuri.Parse(selector)
-			if err == nil && (ref.Repository != source.Repository || ref.Base != source.Base || ref.Head != source.Head) {
-				reasons = append(reasons, "diff source comparison changed")
-				break
-			}
-		}
 		value.StaleReasons = reasons
 		value.Current = len(reasons) == 0
 		if value.Current {
@@ -667,25 +660,22 @@ func validateQualityRefs(problems *validationErrors, values []string, kind quali
 	}
 }
 
-func validateDiffs(problems *validationErrors, values []string) {
+// validateCode checks reference shape only. Whether each reference is still
+// current is a property of the comparison being viewed, not of the record.
+func validateCode(problems *validationErrors, values []coderef.Reference) {
 	seen := map[string]bool{}
-	var comparison *SourceIdentity
 	for _, value := range values {
-		ref, err := diffuri.Parse(value)
-		if err != nil || ref.Kind == "file" {
-			problems.add("diff %q must be a canonical exact line or event selector", value)
+		if err := coderef.Validate(value); err != nil {
+			problems.add("code reference %s: %v", value.Location(), err)
 			continue
 		}
-		if seen[value] {
-			problems.add("diff %q is duplicated", value)
+		if value.Note != "" {
+			problems.add("code reference %s cannot carry a note", value.Location())
 		}
-		seen[value] = true
-		current := SourceIdentity{Repository: ref.Repository, Base: ref.Base, Head: ref.Head}
-		if comparison == nil {
-			comparison = &current
-		} else if *comparison != current {
-			problems.add("all evidence diffs must use one source comparison identity")
+		if seen[value.Key()] {
+			problems.add("code reference %s is duplicated", value.Location())
 		}
+		seen[value.Key()] = true
 	}
 }
 
@@ -710,7 +700,7 @@ func validateExternalURNs(problems *validationErrors, values []string, sagaID, k
 }
 
 func validateSource(problems *validationErrors, source SourceIdentity) {
-	canonical, err := diffuri.CanonicalRepository(source.Repository)
+	canonical, err := coderef.CanonicalRepository(source.Repository)
 	if err != nil || canonical != source.Repository {
 		problems.add("source.repository must be a canonical absolute repository URI")
 	}

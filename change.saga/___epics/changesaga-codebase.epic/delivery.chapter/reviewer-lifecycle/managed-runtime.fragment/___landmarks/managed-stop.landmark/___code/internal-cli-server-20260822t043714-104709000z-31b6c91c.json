@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime.go",
+      "start": 144,
+      "end": 215,
+      "digest": "sha256:281c4e09d6eb50557a45a697148dcd2231ecbfcfec54430943fd5436678a1130",
+      "note": "Parses status or stop requests, selects a Saga state record, and reports only public runtime fields."
+    }
+  ],
+  "version": 2
+}

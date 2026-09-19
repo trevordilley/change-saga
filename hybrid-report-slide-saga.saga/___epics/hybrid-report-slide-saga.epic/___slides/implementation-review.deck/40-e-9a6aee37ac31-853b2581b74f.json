@@ -1,17 +1,29 @@
 {
-  "version": 2,
-  "diffs": [
+  "references": [
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=3\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=e2e%2Ftests%2Fhybrid-slides.spec.ts\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=2",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "e2e/tests/hybrid-slides.spec.ts",
+      "start": 2,
+      "end": 3,
+      "digest": "sha256:1f8e86fdb1e63c660bf12ff21b9bb0222f24915cc4c32ea282ff4c54b74dd26f",
       "note": "Exercises section dividers inside a deck, real slide previews, transparent thumbnail hover, linked-only Item previews from the slide diff total, expansion, selection, full main-area mode, deck-local boundaries, URL state, and keyboard isolation."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=75\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=e2e%2Ftests%2Fhybrid-slides.spec.ts\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=5",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "e2e/tests/hybrid-slides.spec.ts",
+      "start": 5,
+      "end": 75,
+      "digest": "sha256:65be12541004a5fb5bf3ddeeeaea81e05e26df38057444128835265f58a65d31",
       "note": "Exercises section dividers inside a deck, real slide previews, transparent thumbnail hover, linked-only Item previews from the slide diff total, expansion, selection, full main-area mode, deck-local boundaries, URL state, and keyboard isolation."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=152\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=e2e%2Ftests%2Fhybrid-slides.spec.ts\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=130",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "e2e/tests/hybrid-slides.spec.ts",
+      "start": 130,
+      "end": 152,
+      "digest": "sha256:0b32068aaa12ed63cadcf72d7ac5a2979b9c91830860d3a6e0656a9cd20d28cc",
       "note": "Exercises section dividers inside a deck, real slide previews, transparent thumbnail hover, linked-only Item previews from the slide diff total, expansion, selection, full main-area mode, deck-local boundaries, URL state, and keyboard isolation."
     }
-  ]
+  ],
+  "version": 2
 }

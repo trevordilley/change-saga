@@ -1,0 +1,11 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution.go",
+      "digest": "sha256:bf52367abba4b142e866f185f3eaefaad663c30c0c74b4a0d1f52ccd5d42f885",
+      "note": "Introduces Git-derived attribution for independent Saga record files."
+    }
+  ],
+  "version": 2
+}

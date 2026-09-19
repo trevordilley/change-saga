@@ -40,7 +40,7 @@ func TestCoverResolvesLandmarkShorthand(t *testing.T) {
 		"--path", "internal/service/handler.go", "--side", "new", "--lines", "3", "--name", "submit", root); err != nil {
 		t.Fatalf("landmark shorthand: %v\n%s", err, output)
 	}
-	recorded := filepath.Join(testEpicDir(root), "service.chapter", "overview.fragment", "___landmarks", "submit-action.landmark", "___diffs", "submit.json")
+	recorded := filepath.Join(testEpicDir(root), "service.chapter", "overview.fragment", "___landmarks", "submit-action.landmark", saga.CodeDirName, "submit.json")
 	if _, err := os.Stat(recorded); err != nil {
 		t.Fatalf("evidence was not attached to the landmark: %v", err)
 	}
@@ -235,7 +235,7 @@ func TestTopLevelHelpDescribesOneBigChangeWorkflow(t *testing.T) {
 		"Design:", "UX, UI, and technical design",
 		"Quality:", "test cases",
 		"Implementation:", "implementation deck",
-		"Exact diffs:", "cover",
+		"Code:", "cover",
 		"dependency-aware waves",
 	} {
 		if !strings.Contains(text, want) {
@@ -442,8 +442,9 @@ func TestValidateFixLeavesReviewOverlayFragmentsAlone(t *testing.T) {
 // story, so ready_for_review is blocked and status exits 3.
 func TestStatusJSONReportsEmptyCollectionsOnSuccess(t *testing.T) {
 	root, repo := coveredSaga(t)
-	batch := `{"path":"internal/service/handler.go","side":"new","lines":"1-5","note":"the whole new file"}
-{"path":"internal/service/handler.go","event":"add","note":"file added"}`
+	// One record references the add event and the added lines exactly, so
+	// nothing overlaps.
+	batch := `{"path":"internal/service/handler.go","changed_lines":true,"note":"the whole new file"}`
 	if out, err := runCover(t, batch, "--repo", repo, "--batch", "-", root); err != nil {
 		t.Fatalf("cover: %v\n%s", err, out)
 	}
@@ -460,7 +461,7 @@ func TestStatusJSONReportsEmptyCollectionsOnSuccess(t *testing.T) {
 	if string(report["complete"]) != "true" {
 		t.Fatalf("expected a complete saga:\n%s", output.String())
 	}
-	for _, field := range []string{"uncovered", "overlaps", "orphans", "saga_changes", "schema_issues"} {
+	for _, field := range []string{"uncovered", "overlaps", "stale_references", "saga_changes", "schema_issues"} {
 		value, present := report[field]
 		if !present || string(value) != "[]" {
 			t.Fatalf("status --json %q = %s (present=%v), want []", field, value, present)

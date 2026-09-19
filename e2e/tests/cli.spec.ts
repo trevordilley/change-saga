@@ -1,68 +1,82 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import {
-  canonicalFileURI,
-  canonicalLineURI,
+  codeDigest,
+  codeLocation,
   declaredRepository,
-  diffURI,
   git,
+  readJSON,
   reviewFiles,
   runCLI,
   treeSnapshot
 } from "../support/fixture-builder.js";
 import { expect, test } from "../support/test.js";
 
-test("@critical refuses malformed, non-canonical, and cross-repository coverage URIs without writing", async ({ sagaRepositories }) => {
+test("@critical refuses malformed, non-canonical, and unresolvable code locations without writing", async ({ sagaRepositories }) => {
   const { identity, sagaRoot, sourceRepo } = sagaRepositories;
-  const canonical = canonicalLineURI(identity, "src/app.go", "new", 3, 4);
-  expect(canonical).toContain("path=src%2Fapp.go");
-  const [, query] = canonical.split("?");
+  const { head } = identity;
+  const canonical = codeLocation(head, "src/app.go", 3, 4);
+  expect(canonical).toBe(`${head}:src/app.go#L3-L4`);
 
-  const rejected: Array<[string, string]> = [
-    ["not a URI", "no-scheme-here"],
-    ["wrong scheme", canonical.replace("saga-diff://", "http://")],
-    ["wrong version host", canonical.replace("saga-diff://v1/", "saga-diff://v9/")],
-    ["unknown kind", canonical.replace("/line?", "/hunk?")],
-    ["reordered parameters", `saga-diff://v1/line?${query.split("&").reverse().join("&")}`],
-    ["unescaped path separator", canonical.replace("path=src%2Fapp.go", "path=src/app.go")],
-    ["lowercase percent escape", canonical.replace("path=src%2Fapp.go", "path=src%2fapp.go")],
-    ["extra parameter", `${canonical}&note=hi`],
-    ["duplicated parameter", `${canonical}&side=new`],
-    ["trailing fragment", `${canonical}#L3`],
-    ["inverted range", canonicalLineURI(identity, "src/app.go", "new", 9, 2)],
-    ["missing side", `saga-diff://v1/line?${query.split("&").filter((pair) => !pair.startsWith("side=")).join("&")}`],
-    ["path traversal", diffURI("line", { repository: identity.repository, base: identity.base, head: identity.head, path: "../../etc/passwd", side: "new", start: 1, end: 1 })],
-    ["non-canonical repository casing", canonicalLineURI({ ...identity, repository: `${declaredRepository.toUpperCase()}` }, "src/app.go", "new", 3, 4)],
-    ["repository with credentials", canonicalLineURI({ ...identity, repository: "https://token@example.test/acme/change-saga-demo.git" }, "src/app.go", "new", 3, 4)],
-    ["repository with trailing slash", canonicalLineURI({ ...identity, repository: `${declaredRepository}/` }, "src/app.go", "new", 3, 4)],
-    ["cross-repository", canonicalLineURI({ ...identity, repository: "https://example.test/acme/other-service.git" }, "src/app.go", "new", 3, 4)],
-    ["cross-host repository", canonicalLineURI({ ...identity, repository: "https://evil.test/acme/change-saga-demo.git" }, "src/app.go", "new", 3, 4)],
-    ["file identity used as evidence", canonicalFileURI({ ...identity, repository: "https://example.test/acme/other-service.git" }, "src/app.go")]
+  const malformed: Array<[string, string]> = [
+    ["not a location", "no-location-here"],
+    ["missing path", `${head}:`],
+    ["missing commit", ":src/app.go#L3-L4"],
+    ["abbreviated commit", `${head.slice(0, 12)}:src/app.go#L3-L4`],
+    ["over-long commit", `${head}ab:src/app.go#L3-L4`],
+    ["uppercase commit", `${head.toUpperCase()}:src/app.go#L3-L4`],
+    ["symbolic revision", "HEAD:src/app.go#L3-L4"],
+    ["legacy diff URI", `saga-diff://v1/line?head=${head}&path=src%2Fapp.go&side=new&start=3&end=4`],
+    ["non-canonical single-line range", `${head}:src/app.go#L3-L3`],
+    ["inverted range", `${head}:src/app.go#L9-L2`],
+    ["path traversal", `${head}:../../etc/passwd#L1`],
+    ["embedded traversal", `${head}:src/../src/app.go#L3-L4`],
+    ["absolute path", `${head}:/etc/passwd#L1`]
+  ];
+  // Well-formed locations the source repository cannot resolve. A suffix that
+  // is not a canonical line range is part of the path, so it names no file.
+  const unresolvable: Array<[string, string]> = [
+    ["zero line", `${head}:src/app.go#L0-L4`],
+    ["GitHub-style range", `${head}:src/app.go#L3-4`],
+    ["unknown commit", codeLocation("0".repeat(40), "src/app.go", 3, 4)],
+    ["path absent at the commit", codeLocation(head, "src/missing.go", 1, 1)],
+    ["range past the end of the file", codeLocation(head, "src/app.go", 3, 400)]
   ];
 
   const before = treeSnapshot(sagaRoot);
-  for (const [label, uri] of rejected) {
-    const result = runCLI(sagaRepositories, ["cover", "--repo", sourceRepo, "--target", "___overview/overview.fragment", "--name", "must-not-exist", "--uri", uri, sagaRoot]);
-    expect(result.status, `cover with ${label} URI`).not.toBe(0);
-    expect(`${result.stdout}${result.stderr}`, `cover with ${label} URI`).toMatch(/invalid --uri|does not match the saga source repository/);
+  for (const [label, ref] of malformed) {
+    const result = runCLI(sagaRepositories, ["cover", "--repo", sourceRepo, "--target", "___overview/overview.fragment", "--name", "must-not-exist", "--ref", ref, sagaRoot]);
+    expect(result.status, `cover with ${label} location`).not.toBe(0);
+    expect(`${result.stdout}${result.stderr}`, `cover with ${label} location`).toContain("invalid --ref");
   }
-  expect(treeSnapshot(sagaRoot), "saga tree after rejected coverage URIs").toBe(before);
+  for (const [label, ref] of unresolvable) {
+    const result = runCLI(sagaRepositories, ["cover", "--repo", sourceRepo, "--target", "overview.fragment", "--name", "must-not-exist", "--ref", ref, sagaRoot]);
+    expect(result.status, `cover with ${label}`).not.toBe(0);
+    expect(`${result.stdout}${result.stderr}`, `cover with ${label}`).not.toContain(sagaRepositories.root);
+  }
+  expect(treeSnapshot(sagaRoot), "saga tree after rejected code locations").toBe(before);
   expect(reviewFiles(sagaRepositories, /must-not-exist/)).toEqual([]);
 
-  // Positive control: the same shape of URI, with this saga's own identity, is
-  // accepted and written, so the rejections above are the identity check.
-  const accepted = runCLI(sagaRepositories, ["cover", "--repo", sourceRepo, "--target", "___overview/overview.fragment", "--name", "accepted-evidence", "--uri", canonical, sagaRoot]);
+  // Positive control: the same location, canonically spelled at a commit the
+  // repository holds, is accepted and written with the digest of exactly the
+  // referenced bytes, so the rejections above are the location check.
+  const accepted = runCLI(sagaRepositories, ["cover", "--repo", sourceRepo, "--target", "___overview/overview.fragment", "--name", "accepted-evidence", "--ref", canonical, sagaRoot]);
   expect(accepted.status, accepted.stderr).toBe(0);
-  expect(reviewFiles(sagaRepositories, /___diffs\/accepted-evidence\.json$/)).toHaveLength(1);
+  const records = reviewFiles(sagaRepositories, /___code\/accepted-evidence\.json$/);
+  expect(records).toHaveLength(1);
+  expect(readJSON(records[0])).toEqual({
+    version: 2,
+    references: [{ commit: head, path: "src/app.go", start: 3, end: 4, digest: codeDigest(sourceRepo, head, "src/app.go", 3, 4) }]
+  });
 });
 
 test("@critical exposes mapping scrutiny, claims, and verification as an AI review harness", async ({ sagaRepositories }) => {
   const { identity, sagaRepo, sagaRoot, sourceRepo } = sagaRepositories;
-  const evidence = canonicalLineURI(identity, "src/app.go", "new", 3, 3);
+  const evidence = codeLocation(identity.head, "src/app.go", 3);
 
   const claim = runCLI(sagaRepositories, [
-    "add-claim", "--id", "greeting-behavior", "--target", "___overview/overview.fragment#greeting-input", "--kind", "behavior",
-    "--statement", "Greeting accepts a name in its function signature.", "--diff", evidence, sagaRoot
+    "add-claim", "--repo", sourceRepo, "--id", "greeting-behavior", "--target", "___overview/overview.fragment#greeting-input", "--kind", "behavior",
+    "--statement", "Greeting accepts a name in its function signature.", "--ref", evidence, sagaRoot
   ]);
   expect(claim.status, claim.stderr).toBe(0);
   const verification = runCLI(sagaRepositories, [
@@ -70,7 +84,12 @@ test("@critical exposes mapping scrutiny, claims, and verification as an AI revi
     "--method", "inspection", "--summary", "The changed function signature and return expression were inspected.", sagaRoot
   ]);
   expect(verification.status, verification.stderr).toBe(0);
-  expect(reviewFiles(sagaRepositories, /___claims\/greeting-behavior\.json$/)).toHaveLength(1);
+  const claimRecords = reviewFiles(sagaRepositories, /___claims\/greeting-behavior\.json$/);
+  expect(claimRecords).toHaveLength(1);
+  // The claim's evidence is the code reference itself, digested by the CLI.
+  expect(readJSON<{ evidence: unknown[] }>(claimRecords[0]).evidence).toEqual([
+    { commit: identity.head, path: "src/app.go", start: 3, end: 3, digest: codeDigest(sourceRepo, identity.head, "src/app.go", 3) }
+  ]);
   expect(reviewFiles(sagaRepositories, /___verifications\/greeting-inspection\.json$/)).toHaveLength(1);
 
   git(sagaRepo, "add", ".");
@@ -96,7 +115,7 @@ test("@critical exposes mapping scrutiny, claims, and verification as an AI revi
     expect.objectContaining({ id: "greeting-inspection", status: "verified", attribution: expect.objectContaining({ status: "committed" }) })
   ]);
 
-  const owners = runCLI(sagaRepositories, ["query", "diff-owners", "--saga", sagaRoot, "--repo", sourceRepo, "--diff", evidence]);
+  const owners = runCLI(sagaRepositories, ["query", "diff-owners", "--saga", sagaRoot, "--repo", sourceRepo, "--ref", evidence]);
   expect(owners.status, owners.stderr).toBe(0);
   const ownerEnvelope = JSON.parse(owners.stdout) as { data: { atoms: Array<{ owners: Array<{ mapping?: { scrutiny_score: number } }> }> } };
   expect(ownerEnvelope.data.atoms.flatMap((atom) => atom.owners).some((owner) => typeof owner.mapping?.scrutiny_score === "number")).toBe(true);
@@ -192,7 +211,7 @@ test("@critical projects a PR diff and PR Saga onto the codebase Saga without co
   };
   expect(directResult.schema).toBe("change-saga.impact/v1");
   expect(directResult.mode).toBe("saga_to_diff");
-  expect(directResult.basis).toBe("source_diffs_only");
+  expect(directResult.basis).toBe("code_references");
   expect(directResult.content_compared).toBe(false);
   expect(directResult.baseline.complete).toBe(true);
   expect(directResult.summary.direct_intersections).toBeGreaterThan(0);

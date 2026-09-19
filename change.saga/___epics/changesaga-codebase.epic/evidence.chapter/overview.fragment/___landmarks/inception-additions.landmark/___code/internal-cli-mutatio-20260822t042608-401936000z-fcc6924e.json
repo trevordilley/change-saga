@@ -1,0 +1,11 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/mutation_test.go",
+      "digest": "sha256:245a2d9f2c4391e516b5f88decfc4701630c56aa6865dee64d83b51e13880609",
+      "note": "Records this owned authoring path as newly introduced in the since-inception comparison."
+    }
+  ],
+  "version": 2
+}

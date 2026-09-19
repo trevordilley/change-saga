@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server.go",
+      "start": 1282,
+      "end": 1422,
+      "digest": "sha256:bbb52a6b7143ea7288336c570cda8bf735de9f12f4c5eab8fb7eb6b5ec4c7bd6",
+      "note": "Bounds form and multipart bodies, validates uploaded content, injects mutation tokens, and emits controlled mutation errors."
+    }
+  ],
+  "version": 2
+}

@@ -23,7 +23,7 @@ var entrypointProbes = []string{
 	"C:/index.html", "c:/index.html", "Z:/x", "C:index.html",
 
 	"fragment.json", "sub/fragment.json", "___landmarks/x.landmark/landmark.json",
-	"___diffs/a.json", "sub/___diffs/a.json", "___approvals/x.json",
+	"___code/a.json", "sub/___code/a.json", "___approvals/x.json",
 
 	"a\x00b.html", "CON", "aux.html", "trailing.", "trailing ", "a<b>.html",
 	"question?.html", "star*.html", "pipe|.html", `quote".html`, "colon:.html",
@@ -74,7 +74,7 @@ func TestEntrypointAcceptedPathsStayInsideThePackage(t *testing.T) {
 // segment alphabet that traversal bugs are built from and asserts the invariant
 // directly, rather than trusting an enumerated table to be complete.
 func TestEntrypointFuzzNeverAcceptsEscape(t *testing.T) {
-	segments := []string{"a", "b", "..", ".", "", "___diffs", "fragment.json", `x\y`, "C:", "sub"}
+	segments := []string{"a", "b", "..", ".", "", CodeDirName, "fragment.json", `x\y`, "C:", "sub"}
 	random := rand.New(rand.NewSource(20260820))
 	for i := 0; i < 20000; i++ {
 		count := 1 + random.Intn(4)

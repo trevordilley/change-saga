@@ -4,21 +4,99 @@
   "title": "Change Saga author claim",
   "type": "object",
   "additionalProperties": false,
-  "required": ["version", "id", "target", "kind", "statement", "evidence", "created_at"],
+  "required": [
+    "version",
+    "id",
+    "target",
+    "kind",
+    "statement",
+    "evidence",
+    "created_at"
+  ],
   "properties": {
-    "version": { "const": 2 },
-    "id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$" },
-    "target": { "type": "string", "pattern": "^urn:change-saga:" },
-    "kind": {
-      "enum": ["behavior", "invariant", "performance", "compatibility", "security", "data", "ux", "test"]
+    "version": {
+      "const": 2
     },
-    "statement": { "type": "string", "minLength": 1 },
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "target": {
+      "type": "string",
+      "pattern": "^urn:change-saga:"
+    },
+    "kind": {
+      "enum": [
+        "behavior",
+        "invariant",
+        "performance",
+        "compatibility",
+        "security",
+        "data",
+        "ux",
+        "test"
+      ]
+    },
+    "statement": {
+      "type": "string",
+      "minLength": 1
+    },
     "evidence": {
       "type": "array",
       "minItems": 1,
-      "uniqueItems": true,
-      "items": { "type": "string", "pattern": "^saga-diff://v1/" }
+      "items": {
+        "$ref": "#/$defs/code_reference"
+      }
     },
-    "created_at": { "type": "string", "format": "date-time" }
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "$defs": {
+    "code_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "commit",
+        "path",
+        "digest"
+      ],
+      "properties": {
+        "commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$",
+          "description": "Full Git object name the reference is pinned at."
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Normalized repository-relative slash path at that commit."
+        },
+        "start": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "First referenced line, 1-based. Absent for a whole file."
+        },
+        "end": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Last referenced line, inclusive. Absent for a whole file."
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "description": "SHA-256 of the referenced bytes: the lines start..end including their newlines, or the whole file."
+        }
+      },
+      "dependentRequired": {
+        "start": [
+          "end"
+        ],
+        "end": [
+          "start"
+        ]
+      }
+    }
   }
 }

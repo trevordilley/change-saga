@@ -1,0 +1,179 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "LICENSE",
+      "digest": "sha256:c7f38903d9df79a56f2afbe24732484149c6b01857fb75e4f8581006d787b59b",
+      "note": "Publishes Apache 2.0 terms for use and contribution."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "LICENSE",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:267f7a2e19dfa9df99af774520985a0e521925293ea5b7e767ab06969d06bf91",
+      "note": "Publishes Apache 2.0 terms for use and contribution."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "LICENSE",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Publishes Apache 2.0 terms for use and contribution."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "LICENSE",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:1a456dc2f8d9cb1e77a2d183abfec9692f6d3e1f8e3572334529b4beb66bf72c",
+      "note": "Publishes Apache 2.0 terms for use and contribution."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "LICENSE",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Publishes Apache 2.0 terms for use and contribution."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "LICENSE",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:7a6680c94bd2199c1e09ce248b2160aea7871c77de170c36e354732d08b0797c",
+      "note": "Publishes Apache 2.0 terms for use and contribution."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "LICENSE",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:96fe2ff09fb18563ffa1d4a98e93afbdc22446802160f8bb032ab052b1d698f2",
+      "note": "Publishes Apache 2.0 terms for use and contribution."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "LICENSE",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:c76fbb5e7ebc62d94afa7dfeff9c115a689c4f9292578dcacc1bf7fbefb87c7f",
+      "note": "Publishes Apache 2.0 terms for use and contribution."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "LICENSE",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:63badd697bb6a5931822c96494dfe41369a1e7a0362c4d968ecda0cfc731a705",
+      "note": "Publishes Apache 2.0 terms for use and contribution."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "LICENSE",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:68841ee41166ac9731a285b5060beaf216f3d55e0cfeacaa8d83ef5bbdfa26fa",
+      "note": "Publishes Apache 2.0 terms for use and contribution."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "LICENSE",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:5db899e83c63c6dc8731eacddc98baedf444090bccd1a7541ea3e5b638aef5ac",
+      "note": "Publishes Apache 2.0 terms for use and contribution."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "LICENSE",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Publishes Apache 2.0 terms for use and contribution."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "LICENSE",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:9180d71c05dafaff354eef847f28239c01c7ad5409d395bd2301c27a6aa0edf5",
+      "note": "Publishes Apache 2.0 terms for use and contribution."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "LICENSE",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:24858065839e3415464640dc30d6022eb464434569b287b7f0d5fd4da0d15060",
+      "note": "Publishes Apache 2.0 terms for use and contribution."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "LICENSE",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Publishes Apache 2.0 terms for use and contribution."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "LICENSE",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:51c6e469efeeb39e1a15338db9ce5683f3ade0c5497d766cc4f2859c1c5a9f1d",
+      "note": "Publishes Apache 2.0 terms for use and contribution."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "LICENSE",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:a33d3f7e83ef6612d27a399eecbe129199f48d9c55e7282370b4f98452e14946",
+      "note": "Publishes Apache 2.0 terms for use and contribution."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "LICENSE",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:ccb13367a07784ec35c14b486f25e24cf2b92b6c03e55dbcae7da3f88bf2e0f4",
+      "note": "Publishes Apache 2.0 terms for use and contribution."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "LICENSE",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:9c5a8212cad2ef99e996aba026589210957c1bd9ecd68a0fa548aac622aa4eb8",
+      "note": "Publishes Apache 2.0 terms for use and contribution."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "LICENSE",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:8164fed0d14b602715f2e318719d1b4bea6958769b3a8967e92a72bbc6c29f48",
+      "note": "Publishes Apache 2.0 terms for use and contribution."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "LICENSE",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:4587a37043c07e22f95b7c6afef474537a3ce342c10feca06a802a4793d83a8e",
+      "note": "Publishes Apache 2.0 terms for use and contribution."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "LICENSE",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:5e4536cda7f27e11a237e8ae5a3aa37727a065fa1c1533e4940dd8b3fcaf445b",
+      "note": "Publishes Apache 2.0 terms for use and contribution."
+    }
+  ],
+  "version": 2
+}

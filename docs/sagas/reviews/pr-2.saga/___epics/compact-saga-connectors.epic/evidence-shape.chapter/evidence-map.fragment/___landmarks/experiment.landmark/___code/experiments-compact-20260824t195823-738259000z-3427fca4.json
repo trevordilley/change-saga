@@ -1,0 +1,2491 @@
+{
+  "references": [
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "digest": "sha256:71c6576d7d55671ff183658e9354283472d62deac533d7e81d664de98bb86cf4",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:99510d27c0c5679efb1c52aea120537fbd02ba28a6eca5524b533385d124ba9f",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:71e37b6cd48ad477cbb12624b757ee1dc4975711b78237a85f508bfdd723af77",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:dc94db91287ede614bfe3a0ee2e2b567400c33fbbb5566199f17b7f6235ec46d",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:171b756171ff8240f94ccb83de837ed4242449df3ecef3a3762523d1f5ae0348",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:57e084ab258e81b1e20f6e9b9f72b556c4838b3517e76da7edd5b6e7546090a2",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:1b649ecbf085fe223589d7f842defd5e2c82ec06b02b4f7827a31625fd09316e",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:dce87b6818a2884e83d31c73980f4824699871bd0d1b0b2cd9b7c3f5b15b116d",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:8fbccf5ddb1f4aa074d4872ffaa17e418832f2e06dcb8788f6dfc78c9b4ba0df",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:b3c0d13ea10f8c2df2aef0275d68e21986bba81a44e81e3b37a71dc5d76d8a6e",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:f2718a9bd8719c24b98ab7251c6c0938ff0d3de46a480ad0a29f26d8689fc476",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:0742d1cd200a13ed7ed27e4ff61777b7ade3baa51067e0c053705d72f6e0f822",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:ff2c0ea95d76cbc00801be44ecfc5884dca46f0b7febe0b6b2a9a5e1afd73944",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:4251f63298670483bdac18904e47ecc02d2c2d19b3f7d8e42f79cb371a7c684e",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:ab6f6be8e5963a10d31f1044691aa6beceed5a59d04cd8247f259497075d8b4d",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:3f118bdcbc85a6ae9a5779dd9c6c2e6aa10f6e1b8236a1a029c846af4b5273b9",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:fafba0527c3953c4b6e0e5b5739ba83612f8053bcdc9466730193cd1d590b408",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:40250311416501e5e4a1af16382ca9fec18bb094e889dd3c83e76c59431d742f",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:d4ce27b4593d887fe90e4ae045819500107da3df36b22f918d78717998ff9c3f",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:06485d22b4dfdf0ebde1a316d986ab5993dfe401f4a4c85da19901a147634d9f",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:19a591e6593e479a712629c7a95a7674dc55cb8176f39a2f98c62ca258fef1cc",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:ece523c7d95d420d4ff49e42b4fb263847bfb194d96eebb9f9472a2b0266a7e4",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:c597e3d9b05dca020c9b05d6c86991c5dfba5c7fb81213237fc5c1cb15a97f4c",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:522b2e56b14d51a15519e96ddba767406a26979364b085ccb09e535500afaf51",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:c2b6aa1de46be508cfe825e11f644e9c35772a3dabf71ded4e6ee5c9b3e4544f",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:7251052a41ce1e4b7479417991af2bd0f939e5888e5c602a7b8c1ff7d0dfaccd",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:b27a69382af75557528bb48c610bce44ea6378b467495d9cff4e7600d5ac291f",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:27890699e90b23816fc998dc23ae38ebe341b1325e6b420d2b848e4da3de3db6",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:06935c960dc20ee9d4d82cbd7b6da34b9382ac1b0f0a95a432826d82ea316c0b",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:9bcd68b71342af85f280136bde329faa6d7dadfb5e36fe2d6e4b38f10e3f8ec8",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:0769732e25241d44b0065e69edbfde892cca410272eddaa2f41bd476c83e552d",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:c55d03a28177912d89f773d5a40b2cd1aee75d3fc636940acdba87d664367012",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:47dee87f960f61d6f9bbda058465f3368ab7680650580494b39949e447d123b6",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:6193a20440af4595aa73b01f95035798d4b30185fa621afc04964eae1dc940b0",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:d14dd0f319fb99542ac9f4bef0dcba369fa5cce68482f68305ca1611ca77ef28",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:0bd5bfabb69c1aabd6fea958dfe9967eb04f9ef2eda7c3eba6c4e7dd511efd74",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:58efc0da949c4b3129457a9a4112f5a67fcead82b3ebfacd509ffabfda8cbb44",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:627fc48601760cf0a6baafd85597ed622d72ae974dc06237362c0f018e285379",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:c158b63410e11332e450ad58755973cdcdf7dd1d1222484c4e14288d49fc4172",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:8e9d8b08f302f0d36d7eca93913301aae17f177b8f1039caff0411b59d7c464f",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:2938fd7044dad74961bd89b4fa2c11aabb500d574dfeb0e7de75d331c37c4cbe",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:c520701232a2f8e9432efa7fb12abfca105b37c7a20b54b93fe6b4e959760adc",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:50fd1509c40653c8622609746eb0966eac6d1f12b431616fc7e31691c2eb1d0b",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:211af587b487f78fb36f8268048d54ba8b9eda261bf2fdc70315311ae78bc4db",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:f2349152bfc2db25ae5d5bd769503614e52f54a04b56db92ca3d237bc7912e3f",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:272e0acabe7728b2ea7e7f833e88c47f5630fc989074d2ff869794af5ecfe5d7",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:3e21c8d96ebc620fa6bd05dac062aeba61bfbce8a19ea2a4dee552a02b37ee27",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:33149787479b7268f32adfeb46de0967e70caa535fd715398413815787473bd1",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 68,
+      "end": 68,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 70,
+      "end": 70,
+      "digest": "sha256:04ea640e7cb202c66c6e31dc2505a175d6894c5b47894c42adf905ff68161738",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 71,
+      "end": 71,
+      "digest": "sha256:094e405dbd293a86fe4fd2417fc1f76750b835bcf783191a504b74178a21d9d8",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 72,
+      "end": 72,
+      "digest": "sha256:7eacc5daf493c5ddddfabff873ced4f691c1c076b6b4214ab97b5d621717a27b",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 73,
+      "end": 73,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 74,
+      "end": 74,
+      "digest": "sha256:b37f4c4664f45fac0b13d446667c9f1359af43eeed15e7c10c923f6869da550e",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 75,
+      "end": 75,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 76,
+      "end": 76,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 77,
+      "end": 77,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 78,
+      "end": 78,
+      "digest": "sha256:f834753fe5681dce3a87720dc30df9b14acece2b2835e0b37e333900c3218535",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 79,
+      "end": 79,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 80,
+      "end": 80,
+      "digest": "sha256:a8fb394c41fbd0e7015a713316feaab61a8cb01f50a1f8572257e4d22e81e4aa",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 81,
+      "end": 81,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 82,
+      "end": 82,
+      "digest": "sha256:b099954099f5217a996c38798d604185b19ff72f4525d3baaf4d03f0187d6d33",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 83,
+      "end": 83,
+      "digest": "sha256:a9a0dc70c4d6d0622acb1cddb9261835713f816234a3e2953711cc0202781473",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 84,
+      "end": 84,
+      "digest": "sha256:09fb6afe44b35892aac95a04886ee98a1bc1517135ea95b192e280caecd99f9f",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 85,
+      "end": 85,
+      "digest": "sha256:6d6ab05e6063aea68fd1813a0d0ce237c99420f34ee3600e028378b0970c0c10",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 86,
+      "end": 86,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 87,
+      "end": 87,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 88,
+      "end": 88,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 89,
+      "end": 89,
+      "digest": "sha256:1d9ddadadd31fd6543608bc39a418f15da5686b7ded6dfdab6afa35e57c36734",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 90,
+      "end": 90,
+      "digest": "sha256:e47443ccd8e1ba5818784005c9f821c1ffc859d396e086830124b139ff0c2a6a",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 91,
+      "end": 91,
+      "digest": "sha256:d21841832f1ccbf7d0021c20341248c4b6efe30b3ee4d7fd9149de1423ded39d",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 92,
+      "end": 92,
+      "digest": "sha256:211af587b487f78fb36f8268048d54ba8b9eda261bf2fdc70315311ae78bc4db",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 93,
+      "end": 93,
+      "digest": "sha256:f2349152bfc2db25ae5d5bd769503614e52f54a04b56db92ca3d237bc7912e3f",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 94,
+      "end": 94,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 95,
+      "end": 95,
+      "digest": "sha256:d81dc072230832ce123b80e7a4441c99320b22a29ed9a54d54482cc668cbbf90",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 96,
+      "end": 96,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 97,
+      "end": 97,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 98,
+      "end": 98,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 99,
+      "end": 99,
+      "digest": "sha256:cf800e96f215da8ab04129d37e85790334597b7c24ba19706dcd28bb91426dc2",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 100,
+      "end": 100,
+      "digest": "sha256:e9a88485f1cdcf91097f2f55a06f4b0e0cbf1653e615fd32275054a55a4382b7",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 101,
+      "end": 101,
+      "digest": "sha256:6e85a79656edf0cc5833b9dae015e31a5be61b419fec1d5821f71bd919c3eda9",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 102,
+      "end": 102,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 103,
+      "end": 103,
+      "digest": "sha256:cd65ff1a18228d4efa4632569521ab194fdab12999b33c5cd6d11f42fc307e36",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 104,
+      "end": 104,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 105,
+      "end": 105,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 106,
+      "end": 106,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 107,
+      "end": 107,
+      "digest": "sha256:33149787479b7268f32adfeb46de0967e70caa535fd715398413815787473bd1",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 108,
+      "end": 108,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 109,
+      "end": 109,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 110,
+      "end": 110,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 111,
+      "end": 111,
+      "digest": "sha256:57e93edb0fe546606ef057073ebe7f31d3d6531de3c822e6307e7343a66b3148",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 112,
+      "end": 112,
+      "digest": "sha256:a58d5be29c3e63a430ef8245772c5e7670dd4b55d07ee1f24acab56fd534c5ab",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 113,
+      "end": 113,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 114,
+      "end": 114,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 115,
+      "end": 115,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 116,
+      "end": 116,
+      "digest": "sha256:fca85979188bee2a15f747f44f927022a2543e3ef8e5f4c73b30f34c87c066d6",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 117,
+      "end": 117,
+      "digest": "sha256:bd7592654c48d7d9e9a5bcb7eebe281a897db9ee3ea747a8ada5cdb5eb9ac953",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 118,
+      "end": 118,
+      "digest": "sha256:6130f4a815c64c90af8892f641be39be10569e18cf94ccf2b6ebc677a9ad73ca",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 119,
+      "end": 119,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 120,
+      "end": 120,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 121,
+      "end": 121,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 122,
+      "end": 122,
+      "digest": "sha256:623fa93373ac08ef06321c2cca093ccb0cc2aa8ed8a8fcfb8c96e0ec07518fcd",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 123,
+      "end": 123,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 124,
+      "end": 124,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 125,
+      "end": 125,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 126,
+      "end": 126,
+      "digest": "sha256:7dca113e1e8a26043fd4fa67351d2bc987b46ad16cc48402cf99a56db233cc9b",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 127,
+      "end": 127,
+      "digest": "sha256:8a566d54d07bf4972413d670075e20be99d2718f7f6355372f6a575127d579a9",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 128,
+      "end": 128,
+      "digest": "sha256:3383080b7f43050a8b9780cc0f94fc1fbb82941cac48d08a88a20906cab462c8",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 129,
+      "end": 129,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 130,
+      "end": 130,
+      "digest": "sha256:f0b98c1e656f10bf807349e472ee9d28dc8a60f8e2ac7dbaea32f56354738cab",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 131,
+      "end": 131,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 132,
+      "end": 132,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 133,
+      "end": 133,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 134,
+      "end": 134,
+      "digest": "sha256:fec3e6e44091bf3605df75f720f2644917784c2af7617b9ba34e3ac733601176",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 135,
+      "end": 135,
+      "digest": "sha256:46dec428f566fb3ada220d6e1a3b4888c25e0b7d7079eb4be3c5f28e874d4b06",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 136,
+      "end": 136,
+      "digest": "sha256:37b53ad1009c20b54ef62ad29e9579b6a70a2cdc498e235032ba400d71def4f6",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 137,
+      "end": 137,
+      "digest": "sha256:dbce4a731eaddbadc6ef1b764f62bef99f31182cca68656a234ecc23cd981d3c",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 138,
+      "end": 138,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 139,
+      "end": 139,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 140,
+      "end": 140,
+      "digest": "sha256:6c76a6e1c92b340a6676c69d83aca381d73057b11d21681073ad4049701e3577",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 141,
+      "end": 141,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 142,
+      "end": 142,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 143,
+      "end": 143,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 144,
+      "end": 144,
+      "digest": "sha256:9a7430eb907b492be5ef9ac9ba2e7e6279c277ca642073437da80c2b8011548b",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 145,
+      "end": 145,
+      "digest": "sha256:792b3dbc3f77ecaf20b81a8ee5f244ff334a0e3a75b17c058f030757b89da063",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 146,
+      "end": 146,
+      "digest": "sha256:0ec5a0b494f76f392ee3159ec04867577cd4c76cb4388480285c85f79550576b",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 147,
+      "end": 147,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 148,
+      "end": 148,
+      "digest": "sha256:3a4627a1d7d9542235f8f4d571cffa360ca0c4c2a045940ed51535bbeb9b3933",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 149,
+      "end": 149,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 150,
+      "end": 150,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 151,
+      "end": 151,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 152,
+      "end": 152,
+      "digest": "sha256:af7d02798157f3c682a7230b10282c79dfdf966a6604a2d1f1e4dffe91e59548",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 153,
+      "end": 153,
+      "digest": "sha256:859c510eec3c6e64db039efc63ce633c16c4f4e6f546a279c1f2acb80584f495",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 154,
+      "end": 154,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 155,
+      "end": 155,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 156,
+      "end": 156,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 157,
+      "end": 157,
+      "digest": "sha256:de772cc61761319eaa3534620692abdb10bf62d00f2231f71602cb1f7b3dbb77",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 158,
+      "end": 158,
+      "digest": "sha256:e867f7a40ffa4864e255850546e4bb1c550f95d30264d90b6ed4832b772a620f",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 159,
+      "end": 159,
+      "digest": "sha256:211af587b487f78fb36f8268048d54ba8b9eda261bf2fdc70315311ae78bc4db",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 160,
+      "end": 160,
+      "digest": "sha256:f2349152bfc2db25ae5d5bd769503614e52f54a04b56db92ca3d237bc7912e3f",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 161,
+      "end": 161,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 162,
+      "end": 162,
+      "digest": "sha256:d81dc072230832ce123b80e7a4441c99320b22a29ed9a54d54482cc668cbbf90",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 163,
+      "end": 163,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 164,
+      "end": 164,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 165,
+      "end": 165,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 166,
+      "end": 166,
+      "digest": "sha256:e1ef041740fdc642b40ed96eeb0e13ac274f4c1b0a11caed24e459318ddd3956",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 167,
+      "end": 167,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 168,
+      "end": 168,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 169,
+      "end": 169,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 170,
+      "end": 170,
+      "digest": "sha256:3896707a71a9912973fa2e5c72647909141ba79aded46e85e7ea4b9583233cfc",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 171,
+      "end": 171,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 172,
+      "end": 172,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 173,
+      "end": 173,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 174,
+      "end": 174,
+      "digest": "sha256:79463465efa2c21702c2871d8683c78fa41d756a0e9cb2b6e622557be89d6ef0",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 175,
+      "end": 175,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 176,
+      "end": 176,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 177,
+      "end": 177,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 178,
+      "end": 178,
+      "digest": "sha256:99c60a20ef3eba892500fb8e1d440c27c8f5dcf406a6acae8864a33283972c64",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 179,
+      "end": 179,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 180,
+      "end": 180,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 181,
+      "end": 181,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 182,
+      "end": 182,
+      "digest": "sha256:2c67ba3abc7749f9ebf5d20afc83ac14136c0050d60e1b3bd0f3320a658393ea",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 183,
+      "end": 183,
+      "digest": "sha256:d000411ce42d6f18bb9c7b5dba2fc2872e1b0413ab6651495d32684d0613bec5",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 184,
+      "end": 184,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 185,
+      "end": 185,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 186,
+      "end": 186,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 187,
+      "end": 187,
+      "digest": "sha256:275b5ad6722e3b7d46cb233bf225c49e1e8b0a6dbff059169cd43638082f401d",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 188,
+      "end": 188,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 189,
+      "end": 189,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 190,
+      "end": 190,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 191,
+      "end": 191,
+      "digest": "sha256:74356c2040145fa7c9af347e2f599c1ff457bb6e19b979b30e12bf3085a6e930",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 192,
+      "end": 192,
+      "digest": "sha256:ce101b50bee37b4aa5b4a4fabd44125dbeb230bc75cca00a8fa04e72b846b835",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 193,
+      "end": 193,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 194,
+      "end": 194,
+      "digest": "sha256:9746c6b297f42f298e835904c4e7eba5f615a9feaecdbba5a86178f77a06ff96",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 195,
+      "end": 195,
+      "digest": "sha256:1c2087e7e3d44206aef2445358a949f0ce5fd71556bf71ea5edfdb1f2293500f",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 196,
+      "end": 196,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 197,
+      "end": 197,
+      "digest": "sha256:7ab969dcf22688f0daf802d4a6f9e21d1029889706c31f1c5780ac2c045a8796",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 198,
+      "end": 198,
+      "digest": "sha256:277d179f32640ffd1837c2d3a28cf8654220a137902749bc9a854ee63851354e",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 199,
+      "end": 199,
+      "digest": "sha256:fa415119b77cb4aad9590aab1cc2c5edfee2a890f9e7272b5c551f3c02cd3018",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 200,
+      "end": 200,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 201,
+      "end": 201,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 202,
+      "end": 202,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 203,
+      "end": 203,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 204,
+      "end": 204,
+      "digest": "sha256:b46e9c906ad41848d4d99228440d5991593565d518f3e969fdd89cf567ced158",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 205,
+      "end": 205,
+      "digest": "sha256:edb02cf70756b60c3cc59224efaefa326885ec3e9726be9a91319ace7e6a4efb",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 206,
+      "end": 206,
+      "digest": "sha256:190c5a66ed257b6390584ea8361465ad41088f4700b5d6cd738f935e18295937",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 207,
+      "end": 207,
+      "digest": "sha256:30696f4a48af1ee798788592b67ae753e56562c3db1a6c17b55bdd767d637891",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 208,
+      "end": 208,
+      "digest": "sha256:f2349152bfc2db25ae5d5bd769503614e52f54a04b56db92ca3d237bc7912e3f",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 209,
+      "end": 209,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 210,
+      "end": 210,
+      "digest": "sha256:07c4c342cee6be54dfae1f86c3a56fda9fdde71c271502d95362115a79652263",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 211,
+      "end": 211,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 212,
+      "end": 212,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 213,
+      "end": 213,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 214,
+      "end": 214,
+      "digest": "sha256:ed6c1e355d992f6aa2a479547bf4ae55589596edd382d6d756d7ec389f55ac27",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 215,
+      "end": 215,
+      "digest": "sha256:17ae61365c3d550f5d199f12eceb924d8d3ac7c049993d3afb480cb3bae5ab03",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 216,
+      "end": 216,
+      "digest": "sha256:b0099a7e6301eb19d907aa3b1d081be521fd239c2633e25bbc21c53e9a20d12c",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 217,
+      "end": 217,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 218,
+      "end": 218,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 219,
+      "end": 219,
+      "digest": "sha256:e9aa77a272775678b703a190eefc4a129c85b7c8f293db934a7f17233e3abeb6",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 220,
+      "end": 220,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 221,
+      "end": 221,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 222,
+      "end": 222,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 223,
+      "end": 223,
+      "digest": "sha256:1f312699c1fb33703595385ec0205a4098e8657250f449c650bd39990789dc7b",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 224,
+      "end": 224,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 225,
+      "end": 225,
+      "digest": "sha256:791b63424dc97556d0fe21db65c3bd3e6aedea8608a77df83053c0561cdd8e30",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 226,
+      "end": 226,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 227,
+      "end": 227,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 228,
+      "end": 228,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 229,
+      "end": 229,
+      "digest": "sha256:282c9fab61ecc1520bcb3d16c7a05dc3749dde1013d036956fc5a91f076338be",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 230,
+      "end": 230,
+      "digest": "sha256:88cacedd6156cf2d6542b928d1f27e60037588a1032ce29da8c1b74ba2ae67bf",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 231,
+      "end": 231,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 232,
+      "end": 232,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 233,
+      "end": 233,
+      "digest": "sha256:410f10d83877fba10fb94ba7291fdc12a979b1ad70ed5e6408a4d7618f926e96",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 234,
+      "end": 234,
+      "digest": "sha256:2fb8aeec6bbabbe51e198e65bf5f83c204fd1c0af18034249c0f9e1c23b69066",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 235,
+      "end": 235,
+      "digest": "sha256:02356b71eb1b1ffaf982aaa6f6aff337cb54ca2408e4ab6220e74be5c04141d7",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 236,
+      "end": 236,
+      "digest": "sha256:42a57081051f4682a7db3e590b4dd5413d53dc9a01551276dacb521a7e1db9a5",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 237,
+      "end": 237,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 238,
+      "end": 238,
+      "digest": "sha256:f40759915abf9d2d63c1c8b86f4060f30c69050243b25f9f5c1334386fe93a9c",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 239,
+      "end": 239,
+      "digest": "sha256:4c154cdaef82ba33866af83a0fb4627709fde0adf6b35ece16355f457f55ed74",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 240,
+      "end": 240,
+      "digest": "sha256:b9a659681da55a28b6a6c1eeb32b508b76693e75a1d9d419d6d2f45686dba100",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 241,
+      "end": 241,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 242,
+      "end": 242,
+      "digest": "sha256:5ecb2af50ab164cef47daf53cd117311a32f0e6a3762ee4ffa513215b802f2bb",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 243,
+      "end": 243,
+      "digest": "sha256:8f3a03865b4a394b3a9994cd29822d132b2ac67d5caa9ffbae8613b2f6db3165",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 244,
+      "end": 244,
+      "digest": "sha256:bf83fe55effe3636b0bc27567d6205fc28694d114c0757db48a2e48a818145c0",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 245,
+      "end": 245,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 246,
+      "end": 246,
+      "digest": "sha256:a1d9c2389c0d7670cffcb431bef2202e489d69045add06104cadac82c8bed48c",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 247,
+      "end": 247,
+      "digest": "sha256:609d36c8a9bcdb280d7b8f578606f34fc8b1317381fbe62609e0394727e49f10",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 248,
+      "end": 248,
+      "digest": "sha256:dddec61faf0c40cf81d884adf107c682b642a550a30b146f79deedd5740c861a",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 249,
+      "end": 249,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 250,
+      "end": 250,
+      "digest": "sha256:af43b120b99a1aa74c0a417dddec6ac03f659fa03f3741ba2a59648affc96871",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 251,
+      "end": 251,
+      "digest": "sha256:8a367f8a89797670e3f53f7022663f3bbe8a1e6378bf5d005bb51a71a1aec526",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 252,
+      "end": 252,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 253,
+      "end": 253,
+      "digest": "sha256:34e65e8fe90167e99a4c0abfaf930e67040bee6d39c39db3f6a868727490701a",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 254,
+      "end": 254,
+      "digest": "sha256:df19edfba57ddb4e575cd4373f5076dbc742ae249dd12975e6d501a29be53d14",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 255,
+      "end": 255,
+      "digest": "sha256:ef50cb9cd6517569f009411d5265162cd2aac9ed28f4e2265d9ff316c69fa0c2",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 256,
+      "end": 256,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 257,
+      "end": 257,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 258,
+      "end": 258,
+      "digest": "sha256:c06a2ecf4fa012a5e0acff109e469bb30517cfee692ebe3c6a32a7b52ff21eaf",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 259,
+      "end": 259,
+      "digest": "sha256:2a8ee67957ce506c0ea5308e82de1884102b3808cca91e0e2061342fc4d19ffc",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 260,
+      "end": 260,
+      "digest": "sha256:9b0b14c78739e7716cf173a07c42b3867ae16225b52649b7f71e24049ca4412d",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 261,
+      "end": 261,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 262,
+      "end": 262,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 263,
+      "end": 263,
+      "digest": "sha256:58a0c717149bb05bddc636c6173390f30bd1021148b9aa05dd54a1e99e73ab47",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 264,
+      "end": 264,
+      "digest": "sha256:82a57ea75dda6b882b88cbf02b1f475412da1ad9178e8ce9af6229313dcff2ae",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 265,
+      "end": 265,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 266,
+      "end": 266,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 267,
+      "end": 267,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 268,
+      "end": 268,
+      "digest": "sha256:7f9cf7346b925a44547d612e8a8589fabfbc3875519c4fcfcd33eacfa0f1effb",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 269,
+      "end": 269,
+      "digest": "sha256:4b0a36aec6f830f4b124c516f4e2f036b5fcd4e4e4d0ecbc3d77d02fc7fcceea",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 270,
+      "end": 270,
+      "digest": "sha256:d4aba99fac60adaa1072a66ec0edccae2cc260c76fbaa4ef3544f50f4c1eabae",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 271,
+      "end": 271,
+      "digest": "sha256:5d330044786d598ef8b1f4087ca00e1d4fed4d7e333602aabc637b8ab690c9f7",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 272,
+      "end": 272,
+      "digest": "sha256:211af587b487f78fb36f8268048d54ba8b9eda261bf2fdc70315311ae78bc4db",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 273,
+      "end": 273,
+      "digest": "sha256:f2349152bfc2db25ae5d5bd769503614e52f54a04b56db92ca3d237bc7912e3f",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 274,
+      "end": 274,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 275,
+      "end": 275,
+      "digest": "sha256:fbd605b7c7ce2cba11dfda44a6af868f1f15c33472a178e91e100e1fa5fd23f6",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 276,
+      "end": 276,
+      "digest": "sha256:272e0acabe7728b2ea7e7f833e88c47f5630fc989074d2ff869794af5ecfe5d7",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 277,
+      "end": 277,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 278,
+      "end": 278,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 279,
+      "end": 279,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 280,
+      "end": 280,
+      "digest": "sha256:e34097135ec28b35ced340c1b04cefb0f080ec1621d4c87210e7cdc2014d55c5",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 281,
+      "end": 281,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 282,
+      "end": 282,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 283,
+      "end": 283,
+      "digest": "sha256:730c1041b0bc9c82cebaeea09dfd2be3f9bf5c73c1947292722cb1ac88e6d945",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 284,
+      "end": 284,
+      "digest": "sha256:b37f4c4664f45fac0b13d446667c9f1359af43eeed15e7c10c923f6869da550e",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 285,
+      "end": 285,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 286,
+      "end": 286,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 287,
+      "end": 287,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 288,
+      "end": 288,
+      "digest": "sha256:2985740c3334fb4dffd645b54b24d98e9e609764d8874be0993b1efbf516e3f3",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 289,
+      "end": 289,
+      "digest": "sha256:5aae7eb317868c484a04e8a0b0e9a3e2003bea159f8794a27496ba637837bf59",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 290,
+      "end": 290,
+      "digest": "sha256:aff1be4421aea432886b2b59d208cbe5c59c9c37af5d24e96512248793ddbf20",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 291,
+      "end": 291,
+      "digest": "sha256:4153e16d15e011714e674803a5f48c3edbda6c4bf704dfd13e1acd452267899d",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 292,
+      "end": 292,
+      "digest": "sha256:4c154cdaef82ba33866af83a0fb4627709fde0adf6b35ece16355f457f55ed74",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 293,
+      "end": 293,
+      "digest": "sha256:b9a659681da55a28b6a6c1eeb32b508b76693e75a1d9d419d6d2f45686dba100",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 294,
+      "end": 294,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 295,
+      "end": 295,
+      "digest": "sha256:f0de7a0ae5bd16b7864b49be5d4edb9723f878198fae65c93209005b41f86a87",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 296,
+      "end": 296,
+      "digest": "sha256:b9a659681da55a28b6a6c1eeb32b508b76693e75a1d9d419d6d2f45686dba100",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 297,
+      "end": 297,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 298,
+      "end": 298,
+      "digest": "sha256:205c84ba2fbadd600a97c28adeeab81b6f4837721efaff444a791d5eb713d539",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 299,
+      "end": 299,
+      "digest": "sha256:1efc303907e6674e3c27572ad94f46b73cc3c3d18051babc3f2ce6fdb80af029",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 300,
+      "end": 300,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 301,
+      "end": 301,
+      "digest": "sha256:80d14dc201467f7621a6c6cece32c45261108fc63bc4dffe9131686124e3b3cc",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 302,
+      "end": 302,
+      "digest": "sha256:b9a659681da55a28b6a6c1eeb32b508b76693e75a1d9d419d6d2f45686dba100",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 303,
+      "end": 303,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 304,
+      "end": 304,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 305,
+      "end": 305,
+      "digest": "sha256:378b275e15a26b45ee7e3fe3ad466afdea768b313a670a8bbacc668c590fcf45",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 306,
+      "end": 306,
+      "digest": "sha256:28162278558ce896495a9d5e955746c365f33fb85a4badadc35ff5a52b99bdc0",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 307,
+      "end": 307,
+      "digest": "sha256:1ce20417918fac8e357fcf3053443666f67ec989032a21bb9dfc1754a467ec8d",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 308,
+      "end": 308,
+      "digest": "sha256:ed65c88717fa9360f87d8276b5a0dcc99b4ea4f4158ad5c278c41c7c154f9cf3",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 309,
+      "end": 309,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Index invalidation and rebuild tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/index/index_test.go",
+      "start": 310,
+      "end": 310,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Index invalidation and rebuild tests."
+    }
+  ],
+  "version": 2
+}

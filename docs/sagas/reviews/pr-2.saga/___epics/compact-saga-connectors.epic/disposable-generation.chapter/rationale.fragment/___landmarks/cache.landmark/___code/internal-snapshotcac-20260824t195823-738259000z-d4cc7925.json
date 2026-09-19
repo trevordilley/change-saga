@@ -1,0 +1,4235 @@
+{
+  "references": [
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "digest": "sha256:7448b5f729ceb050d7fb018b25368e7274eeaaad55cd2a5a7e4dd2cce8e4dcb3",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:48ade0184d2a4a12073a953c0d89ccd2153ac08ed85a28edb334d8d94f0fc2f3",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:71e37b6cd48ad477cbb12624b757ee1dc4975711b78237a85f508bfdd723af77",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:685cee49599a9c34054ff01a772039f6d7f6d02a2468fcccedd8b3a60f3b87d9",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:171b756171ff8240f94ccb83de837ed4242449df3ecef3a3762523d1f5ae0348",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:57e084ab258e81b1e20f6e9b9f72b556c4838b3517e76da7edd5b6e7546090a2",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:f05b48055b78db9e9e8993848d47169d7abd312df35886aa83d4014d37eb4009",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:226f37da536b12b86af70e3b5777877ac58882a6b0e30be1d9fc591badf849e2",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:6f254d4720bc72a26cea4089bb3f8713017aeacfb50e353961a443c896e7b578",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:1b649ecbf085fe223589d7f842defd5e2c82ec06b02b4f7827a31625fd09316e",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:fafba0527c3953c4b6e0e5b5739ba83612f8053bcdc9466730193cd1d590b408",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:d7263606326d19add33d696231a809d715c0b5cbbf9fd09fe4534c798f055a75",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:ece523c7d95d420d4ff49e42b4fb263847bfb194d96eebb9f9472a2b0266a7e4",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:8a3eaad3aa7dee4d0ad4198b6892e08be462cd02c360f1c59d5d9d786088b920",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:8ef9e8339446f9748674631553c464b59d816ac630fc3c6439b34cd742f6b77d",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:ec30acf6f48e96c9f5c1ee407d849cd70b110e7e84847332ab184684de364c13",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:4eff8778b87396d85a49951fe815f70aacd4e30bcc06bda750cc0b24b2f04593",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:f390dfb60b37dbe5128507cc57872ea24c26e1ef261f325e03df03643635a4f0",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:08e6718aba94500730bea97829413a19966f43a7175293a1aa47c52ab4eac365",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:62b52c2447aa2cbd7873411c6de2bdf10a6aea028e0b6242ab55176ebbeadb1f",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:97ad9aadeeb94a53ac094f19776c95235ae9a6f603732c2c0616d9faf0bf0237",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:ece523c7d95d420d4ff49e42b4fb263847bfb194d96eebb9f9472a2b0266a7e4",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:fa9ae35f9a18aa9213e4337d4847626b9b378e9bd502d5c64fad54e53d5524c2",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:7b5702a0eb9db0fec1b7ec2cecd3510f3937393029e6416610ab2d5a2875ea8a",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:cdf3b423287a4a1b700da95f313a148ac1aaf481f7865a883e28f854386afca4",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:937da8d8c7d13dee0a17b08f25d80326307a9a868085c1ae3986c17fe84d6e68",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:e4bc1082ecf61bc735aabf849383d91d009493b323c6038845b2789192674746",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:03ce6585c0299d6694078eeb87b7220079f6e951102ee359746e9474ccf1243a",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:d4e33994d87cfcbea2da4c050711ae4499da52e419f1c6c13ec00f580b67e8dd",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:a7148d4583ad12c0d14cb2746837301150ca990173fb3d92927c09a239a91874",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:283db496be6b148c6d2dd61b6a1942b4bcffe5ee9cf27bdd4bf2028d0bfd0178",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:c20a81a5aad851467a8658c65207ef8ed1e9c1ac3f73593368b182f0dcb1794a",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:78d52575ba06c379ed2b28b02a7a10204b8e3e7c87c1fbb2b30447385b9bcbdf",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:ee92e9d9b3c2b1db589140a6d5088d96529d57fb8fcc5da6be5752cbd115d333",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:64f500415f31cf0255b161bc8dedaf066ebf22e5e63f97a18f9f79d6bf73aae7",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:0c18c2bb49200d53139dbb3e9787fa5a81d37928eb1e0bd2693a3f554a50e847",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:5bf4ce1854616ce268827da447d78d38f96c780ebf50011853e81aed7d01d1f8",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:fa7f993613ab6092cb72115270087e173460508a3d4ab5e84548afeb62dde22b",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:0de9d69ef0fa700343505dbedd430a9f1a750e72013f6f98548dc5ba5c57a327",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:413af56fbc1a2b8ec7136263df7edac352f6c2301e72084e52718308ddc64d6c",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:cc1417d7edea105d796faf2c163444bbca597ff2ac857962cb5fda22d56cbdd1",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 68,
+      "end": 68,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:dfd81c169ef2b2b6b61479949d54a992a2bba6b37144ec66f92b485a7893a7ab",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 70,
+      "end": 70,
+      "digest": "sha256:b07a451ef153f4759493f46689dc5f9699bc30a6320c2f34814638569c8dc5b2",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 71,
+      "end": 71,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 72,
+      "end": 72,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 73,
+      "end": 73,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 74,
+      "end": 74,
+      "digest": "sha256:0f74087cf909feda522752bdb0608aa8f4643486cefe9901325a5f6a02872edd",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 75,
+      "end": 75,
+      "digest": "sha256:94d65e280d02ab4aa0ade92cc040730fe8dede28467feb9b79543b46ac6fd752",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 76,
+      "end": 76,
+      "digest": "sha256:235ade1f23250f2cf429305d96176d3f39fbb7db39af5e4e20c94735d1935422",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 77,
+      "end": 77,
+      "digest": "sha256:40de0b1a31f876c533e70e6e31ab7fcddc17cad4862d076afc4b55067eee7cc3",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 78,
+      "end": 78,
+      "digest": "sha256:03ce6585c0299d6694078eeb87b7220079f6e951102ee359746e9474ccf1243a",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 79,
+      "end": 79,
+      "digest": "sha256:5dc1846070c9925c54a6200abc6b18f7a1157077203ed0a0ac45c42a6e995f65",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 80,
+      "end": 80,
+      "digest": "sha256:250503fabaf438e4404e24dd5aa6c075208d224cd7d0f3c2dd8818c2afe955ba",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 81,
+      "end": 81,
+      "digest": "sha256:9ecbeadc2f64ab128304aa55247e07a0f62952d84fafa1382ad995fc62683d07",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 82,
+      "end": 82,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 83,
+      "end": 83,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 84,
+      "end": 84,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 85,
+      "end": 85,
+      "digest": "sha256:0c6cb5d07fd3697faf411cb0b1865feaa165bf0703c93a78e542837a33a97409",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 86,
+      "end": 86,
+      "digest": "sha256:d93c523972fb183e875153d579e863586eabc9dd60107faa0316cd6c7029a191",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 87,
+      "end": 87,
+      "digest": "sha256:d123ddae2085d3fce5a834589329e838f6de1af0afd40e292f6eef11ffc88bfd",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 88,
+      "end": 88,
+      "digest": "sha256:90b6e14641517ad4f5559408813a1fe93ec6f68ad685ede16f78180ca34f4e93",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 89,
+      "end": 89,
+      "digest": "sha256:60a9fae1e72373c234e5cec21b8d71c3ec2f9a4be1daa97a875f5749f1d68a73",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 90,
+      "end": 90,
+      "digest": "sha256:3b077feea2a74acfdf1430ba8c26185c2d9fe595d08e75751b0b01cb1217a76e",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 91,
+      "end": 91,
+      "digest": "sha256:934a0eea263b0090374872f0eb146eb59faeba12fc05d0b0fbeac36777bb5581",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 92,
+      "end": 92,
+      "digest": "sha256:bc284d72f5d4ab1528f8ee71b72dd9d5fd0827dc08049861b85b49002a22198e",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 93,
+      "end": 93,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 94,
+      "end": 94,
+      "digest": "sha256:4170ca6b8902f7ea7aaa6a3d6b1d4de3434942b7c8b999a27feb9c52d315dcd4",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 95,
+      "end": 95,
+      "digest": "sha256:ace2384b9b4d6b1f643f11ee1a0c234c99e2497d100b16cb77993689dad71396",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 96,
+      "end": 96,
+      "digest": "sha256:997244172afdff7f1eb6cf59317a5aeb7e543485c344e0c68443de36b6d2986f",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 97,
+      "end": 97,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 98,
+      "end": 98,
+      "digest": "sha256:e908f3ee0e1764eeca1fb7d244e87333e3b36cd28af5f1eb3d30c1d7b7fd8abc",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 99,
+      "end": 99,
+      "digest": "sha256:718ab6638d9ac366a227da562691325c7c590c8e4577ee6248ec6f8d5a446ea2",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 100,
+      "end": 100,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 101,
+      "end": 101,
+      "digest": "sha256:e7e1c7ea3c7062499e723457e3e063022a33c09a008ede78da2e850a0b09dc27",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 102,
+      "end": 102,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 103,
+      "end": 103,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 104,
+      "end": 104,
+      "digest": "sha256:3beb403040bf6c6fc877c345cbe3bba8a850e80343ef63337becded645a3c652",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 105,
+      "end": 105,
+      "digest": "sha256:bdbd6b52e88b5d9c4bf26fb967c795cc19113de74df0b5ec007a304921c5d8ff",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 106,
+      "end": 106,
+      "digest": "sha256:98cc1e857fa08fc0006adf0b66ab736c5fc59986afb088fe1bfea50db1a6ea83",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 107,
+      "end": 107,
+      "digest": "sha256:c080487abc12a10856a65040163c04143c69a05853a5f210a762bdaac39b48c5",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 108,
+      "end": 108,
+      "digest": "sha256:0982b551d9b5c8a848c80e84581ebc79b668983f8b2fa2e23e44f9c76cabbac4",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 109,
+      "end": 109,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 110,
+      "end": 110,
+      "digest": "sha256:fd0dbcfe8d5393d167fc2d540caedb3491358dcc2cb98ea5a57da340292da4e2",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 111,
+      "end": 111,
+      "digest": "sha256:9d87142a4e26ebedc4184512eff180ff6ef7ef646e114d7ae1fdf5d1ffc0696c",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 112,
+      "end": 112,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 113,
+      "end": 113,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 114,
+      "end": 114,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 115,
+      "end": 115,
+      "digest": "sha256:823ff5423faea33c5506556f474a6f556e26301535fec7d414551f4263d8c696",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 116,
+      "end": 116,
+      "digest": "sha256:506eadd606ca833abe3d419bd74692d02a6368e21146b3afbf3f812d899e1e63",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 117,
+      "end": 117,
+      "digest": "sha256:03ce6585c0299d6694078eeb87b7220079f6e951102ee359746e9474ccf1243a",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 118,
+      "end": 118,
+      "digest": "sha256:d4e33994d87cfcbea2da4c050711ae4499da52e419f1c6c13ec00f580b67e8dd",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 119,
+      "end": 119,
+      "digest": "sha256:a08abe93decdc955fc3e570dd813091bab088f911df92ba3f8aca8a5807d2a93",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 120,
+      "end": 120,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 121,
+      "end": 121,
+      "digest": "sha256:069ed8ccce6b3cbce3e947503cd9df40dcc109113f875b7d6604f32696ee9a03",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 122,
+      "end": 122,
+      "digest": "sha256:92a508f439a450ebe01525a7a993b45f1564423ce681de0b7a4608b74bb359e4",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 123,
+      "end": 123,
+      "digest": "sha256:4ed108aa00207eb187efff85df8fc68ed0ec9e2d62793cdf37ee75bba226fca2",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 124,
+      "end": 124,
+      "digest": "sha256:2747163b335a6e5e12ace3e49c9fe94b09d1c3d6de083bcb2a5411884b0862c8",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 125,
+      "end": 125,
+      "digest": "sha256:0e4e78d2eb683e84fa9d113d26e3913b225682a40e4b4181758ce247e53fbe80",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 126,
+      "end": 126,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 127,
+      "end": 127,
+      "digest": "sha256:04ca4a9a40bbe280367bbd72e2c3051eb73b95b945c1a59a45d93e5c270770bb",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 128,
+      "end": 128,
+      "digest": "sha256:77a9b5e9019c8db8783ec9c3febb0a2c9862f61a05c308fe895e4a9bed03edb3",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 129,
+      "end": 129,
+      "digest": "sha256:aab617fbce1c3b0696947312c83bd6bad19d210dff5db522826eee4a3f44fc58",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 130,
+      "end": 130,
+      "digest": "sha256:3ccc84fafe039d0b5d0ed59890378cb48a2e60ea4313d6e0134db9c771815583",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 131,
+      "end": 131,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 132,
+      "end": 132,
+      "digest": "sha256:2e80afebd6634b75f5902f7434e09dea4fb2a21f52cda1f42e5beb81ce25e6dd",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 133,
+      "end": 133,
+      "digest": "sha256:1eae5c4d6631a8e683b77c9bebe64c31fb7d953421ef94e455daabb1586bf9cb",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 134,
+      "end": 134,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 135,
+      "end": 135,
+      "digest": "sha256:4edd607dc4f61e4c55d8107852c52e526c0052113030ed6dbf016bdf9a602fbf",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 136,
+      "end": 136,
+      "digest": "sha256:39765b5247c80b78ef291ac6a3b3fe6200faa3e6245d10d371bdc3f6066c7a8e",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 137,
+      "end": 137,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 138,
+      "end": 138,
+      "digest": "sha256:84db524fe16c3576dd9abdf287094fbf44de6f3c924a02470fc173fb1fcf26b8",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 139,
+      "end": 139,
+      "digest": "sha256:b8f29db98ca184991074c755b06401a4a671061254d31e0847901e2bb1d74080",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 140,
+      "end": 140,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 141,
+      "end": 141,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 142,
+      "end": 142,
+      "digest": "sha256:99b9dd64415a0dafd2ff734d0bc8decb557299a51f6d0e2179a4da10ffc823f0",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 143,
+      "end": 143,
+      "digest": "sha256:e6a4451d8575d10d5fc53de209cb3f8d9f8ee696a7a25b80e0756cb54f18b969",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 144,
+      "end": 144,
+      "digest": "sha256:7d117dd113ebb18d50472ff9f2e67cbeb2bb07e04bd78d5c3e58567954e41872",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 145,
+      "end": 145,
+      "digest": "sha256:e5f620a270576ac9138a4b93d612eeb700aef1c2f33707e6d7c93fe6b52cc243",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 146,
+      "end": 146,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 147,
+      "end": 147,
+      "digest": "sha256:ca75b919b50d4275fdeb175c0f54a41bc692faa8f33dc379ebbc1e9e26cb745e",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 148,
+      "end": 148,
+      "digest": "sha256:c4922e02fcee2facee3da96b716c7cfc12500c53f426d5507cf7f93ffbb2d74e",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 149,
+      "end": 149,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 150,
+      "end": 150,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 151,
+      "end": 151,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 152,
+      "end": 152,
+      "digest": "sha256:d77dfc5aad8afeff056a126417b5c93943bb517d97a7a98996dc36a669083f60",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 153,
+      "end": 153,
+      "digest": "sha256:909d6705c69fc3d6e81996cabb7fd25fc940d7bfea7a6af365cc9ee8b18fc6fd",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 154,
+      "end": 154,
+      "digest": "sha256:3358917dc98611bc3f33283dd4e10a4de48e1d8c18a944d19851bc9b0cd548c8",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 155,
+      "end": 155,
+      "digest": "sha256:84fac50ff9f499e92bcea6fde46829209a25a8cf5b5365ced6d8f3adfa08a076",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 156,
+      "end": 156,
+      "digest": "sha256:03ce6585c0299d6694078eeb87b7220079f6e951102ee359746e9474ccf1243a",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 157,
+      "end": 157,
+      "digest": "sha256:d4e33994d87cfcbea2da4c050711ae4499da52e419f1c6c13ec00f580b67e8dd",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 158,
+      "end": 158,
+      "digest": "sha256:8db655dad223061efd044ce7fad42cf928beb4c868599740173e67099854502a",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 159,
+      "end": 159,
+      "digest": "sha256:164517f9bd02496a676e7b6eb0eb53b0acbef1e09ce961be546253a83c93b879",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 160,
+      "end": 160,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 161,
+      "end": 161,
+      "digest": "sha256:a1bbc13db857242d05a6d46a4392b90b98108d59aa47c8321fa24b13f746f24f",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 162,
+      "end": 162,
+      "digest": "sha256:62aaecb25e46092e494eb313f2c7ee427154c6db71f6655c2cdc90fe848c93ba",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 163,
+      "end": 163,
+      "digest": "sha256:c1d1b9b3f23875ec547be692e6ae260625d6bbc6114b3b276b36b1f75cf98e8c",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 164,
+      "end": 164,
+      "digest": "sha256:1610db4c582595a1326ea976348babfd883514afd87170131c2c84fbf082a35e",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 165,
+      "end": 165,
+      "digest": "sha256:8adaedc63cdc706a7cb3856441e195298ef7c3e72c1f480f6f125f7ab4874048",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 166,
+      "end": 166,
+      "digest": "sha256:86c241afb277342a4e421f0b3e841f11bcc72cecb04dd07ed95891a24b4c71cc",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 167,
+      "end": 167,
+      "digest": "sha256:a0c3218200c9b36d5f62409435bd9aa67ec46bdbde056211e998cbeee8c6777e",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 168,
+      "end": 168,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 169,
+      "end": 169,
+      "digest": "sha256:be1115e5cf8dfe178ab90e376f7fdf04be613e5e6fced72c5263a4b9df1b6dda",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 170,
+      "end": 170,
+      "digest": "sha256:c81bec618c0e8a6532d219a2f1598d392be80271ac72101380ac4c9dae5b3386",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 171,
+      "end": 171,
+      "digest": "sha256:5bdf1c1146dc34cb2f981b9335d4d12f58aae66ae6eae0f8a128c5a14cf139d3",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 172,
+      "end": 172,
+      "digest": "sha256:e7e1c7ea3c7062499e723457e3e063022a33c09a008ede78da2e850a0b09dc27",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 173,
+      "end": 173,
+      "digest": "sha256:c830d54a0bfb19f1de4ca8a90bf1cbc9a0a33346e3e4f1a1e92609cff78dbbf7",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 174,
+      "end": 174,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 175,
+      "end": 175,
+      "digest": "sha256:bc45cd223ac9926d75f3ee95552bdfd4b7c2832fad42078fde116478c2f633ef",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 176,
+      "end": 176,
+      "digest": "sha256:4edd607dc4f61e4c55d8107852c52e526c0052113030ed6dbf016bdf9a602fbf",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 177,
+      "end": 177,
+      "digest": "sha256:36730435f21012f4b882dd11445432d913b18367083cc1125c9e6f1f5d563163",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 178,
+      "end": 178,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 179,
+      "end": 179,
+      "digest": "sha256:5b76f794ec881b1c9f5c79559382175289de27dca7df1cac40e104de84b9d81c",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 180,
+      "end": 180,
+      "digest": "sha256:70b997cb069e5406650dcc23473e4a76bce964dd7790d413bef4e8ae29dae801",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 181,
+      "end": 181,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 182,
+      "end": 182,
+      "digest": "sha256:6327d1a90ca5a54c25715dc52ca457cbc8a3d5e1f5425e573020b33d6efe4cae",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 183,
+      "end": 183,
+      "digest": "sha256:b7c45ab6699a3f7ac9c5d950f212c9047b7f860938e60a0561f5a8c30216b2a6",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 184,
+      "end": 184,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 185,
+      "end": 185,
+      "digest": "sha256:4edd607dc4f61e4c55d8107852c52e526c0052113030ed6dbf016bdf9a602fbf",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 186,
+      "end": 186,
+      "digest": "sha256:633435c583db2fb87d62fb843f2a19f06fc41d7fe05699d51354769b95d50e8f",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 187,
+      "end": 187,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 188,
+      "end": 188,
+      "digest": "sha256:b49bc9360f5f1431d0cb61a6165ded030819564db5858263e4c913715eb9eb2a",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 189,
+      "end": 189,
+      "digest": "sha256:1e70ffa1ac0f867a035191ec5f73bbc49136dc77942c8aeff38f3a38d5353b0a",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 190,
+      "end": 190,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 191,
+      "end": 191,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 192,
+      "end": 192,
+      "digest": "sha256:2d745fd30c6e8f64f2218dea9664ec6b2d02d533a51a458389d4c5ccf6061d72",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 193,
+      "end": 193,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 194,
+      "end": 194,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 195,
+      "end": 195,
+      "digest": "sha256:6f967b3a57b8806f89947eeab7d55dd9ebaf2251ede229d5d329635bd716b4fc",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 196,
+      "end": 196,
+      "digest": "sha256:5340ae19677211576ad31ca284273e6b30540cb34b6dd5a9b53a168e07e23a19",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 197,
+      "end": 197,
+      "digest": "sha256:82a447a3d5d6f0783d6a87cea367235abce5e2bba5bafdc8fbe03858abfe8760",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 198,
+      "end": 198,
+      "digest": "sha256:03ce6585c0299d6694078eeb87b7220079f6e951102ee359746e9474ccf1243a",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 199,
+      "end": 199,
+      "digest": "sha256:d4e33994d87cfcbea2da4c050711ae4499da52e419f1c6c13ec00f580b67e8dd",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 200,
+      "end": 200,
+      "digest": "sha256:3f65814083aaba44ed70a63d9d00f64e85935914bbb09bffe2673d336bcdf34e",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 201,
+      "end": 201,
+      "digest": "sha256:1c1c333c7d747a0b97e1bfe6fb2f8d545bde6b1ad5680afcd8e9d269704bf78d",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 202,
+      "end": 202,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 203,
+      "end": 203,
+      "digest": "sha256:d3befd151dfa70b220d663ed03ea9b2de95f6231bbb8aee3b02dc6d6e8ab6162",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 204,
+      "end": 204,
+      "digest": "sha256:89e8e1058697ff1166fd57be415e99145f3217c38d0b815075f4ff4df2b88ceb",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 205,
+      "end": 205,
+      "digest": "sha256:e7cfd70367eb8964db04d33022346abaed00f3970a492c8050c555c0178be880",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 206,
+      "end": 206,
+      "digest": "sha256:a1bbc13db857242d05a6d46a4392b90b98108d59aa47c8321fa24b13f746f24f",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 207,
+      "end": 207,
+      "digest": "sha256:5327168336d9a02d79243e0b20159c0826be1c61350e359d0f79d4a9575966e0",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 208,
+      "end": 208,
+      "digest": "sha256:55cbcf4a61ce1465d7729ce39763b960071104c5e208d86fe074d73b2d0b171e",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 209,
+      "end": 209,
+      "digest": "sha256:0bdc9b08cdfbd193f309c08b6bf8ebd027d7cf7a20153c311b2869e182f8e4a2",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 210,
+      "end": 210,
+      "digest": "sha256:03e41209d463a6041dc7560a7a7aff3ff62cf1c8514d399ef7ad5b48e0eb96e0",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 211,
+      "end": 211,
+      "digest": "sha256:7ed072050d74f3311c2cc0fc5948b4f5a8ad8c494043857763c9b0312db95c11",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 212,
+      "end": 212,
+      "digest": "sha256:88080b73cfb1358f285b8f5b747c1d2b7ca3bb048d7135c135c9f7937d6abba8",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 213,
+      "end": 213,
+      "digest": "sha256:47df1ecc0a57799c6e45749844fb4cd19a70978d5710e740bd82103cd76b1679",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 214,
+      "end": 214,
+      "digest": "sha256:e1f76bdc204984e3d062001a252f8ef3fa408459615522b92d06096bc0eff18e",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 215,
+      "end": 215,
+      "digest": "sha256:222e8d3d761f31ed7ab6a24b4e0c382fdaf760c4a082b2b257a1801af2379a22",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 216,
+      "end": 216,
+      "digest": "sha256:f6209c4ef87d7bfcdc4657a0662ca9aedc9d4ad5c42e25f4ab9f1cd076969d1e",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 217,
+      "end": 217,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 218,
+      "end": 218,
+      "digest": "sha256:603b71df774c87fb7a58a67f2cf91495b5d5aba57a337c32b49e3884c7e7264b",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 219,
+      "end": 219,
+      "digest": "sha256:b7c45ab6699a3f7ac9c5d950f212c9047b7f860938e60a0561f5a8c30216b2a6",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 220,
+      "end": 220,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 221,
+      "end": 221,
+      "digest": "sha256:06fcce7e2070f68401a9a7e0342a9d0cc2dd2ad36aba6e3d3c431f2c9308c94d",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 222,
+      "end": 222,
+      "digest": "sha256:262add189c1b01a6adb5561e1d71e08bebf654274a12828af6229ec1b636a070",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 223,
+      "end": 223,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 224,
+      "end": 224,
+      "digest": "sha256:5327168336d9a02d79243e0b20159c0826be1c61350e359d0f79d4a9575966e0",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 225,
+      "end": 225,
+      "digest": "sha256:fd9a024445becca546e06795b6a432b4d3d763ef4171225eb62db689dddc7d6c",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 226,
+      "end": 226,
+      "digest": "sha256:1e7c993dffe13d4fd8700f03b981f29ad83ed46a125317e67030ae7747690527",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 227,
+      "end": 227,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 228,
+      "end": 228,
+      "digest": "sha256:0f0af691f668008c87ff2421a7b989e4c05e95b0f5d87ed1d970c9d059cfe54a",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 229,
+      "end": 229,
+      "digest": "sha256:460ddbd8435edb89704b8df2d517ed1d8919574f0866007900048ce8ba5fe56b",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 230,
+      "end": 230,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 231,
+      "end": 231,
+      "digest": "sha256:f9cdb30042aca770c94689117ebff886c796fcadfaf5c4218a0ca28f9885c3a5",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 232,
+      "end": 232,
+      "digest": "sha256:fe1eeffb258c28f42c7ff4356a332b6ea48b26e8fd1658cfd79fa76c19ed6e9c",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 233,
+      "end": 233,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 234,
+      "end": 234,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 235,
+      "end": 235,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 236,
+      "end": 236,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 237,
+      "end": 237,
+      "digest": "sha256:857c7ff6f23ad135990946c20e1066cac2b297b88ea794471e11455af5aba0bd",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 238,
+      "end": 238,
+      "digest": "sha256:d995b9f91340561ae5b63604b90887f04140cc9e1eca2a2dbf13fa992f714e34",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 239,
+      "end": 239,
+      "digest": "sha256:6f64a131b9b43ea09dcb187ea6d0ff3ce9240b1fa5a700f604b017058e352d88",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 240,
+      "end": 240,
+      "digest": "sha256:6e7fde8ecad0471303ce9e87907ea95aa79d69b7200bd17e34c38ebaded2a14a",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 241,
+      "end": 241,
+      "digest": "sha256:03ce6585c0299d6694078eeb87b7220079f6e951102ee359746e9474ccf1243a",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 242,
+      "end": 242,
+      "digest": "sha256:e48d077dc1094a5367d5e4d2acd636f65620c5e78cb5772ed0529ed1e123f512",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 243,
+      "end": 243,
+      "digest": "sha256:15e6abd550c9f4349359f958e6d9f9d2e547cfa7c9c6eadaa9e58034a3ffd81a",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 244,
+      "end": 244,
+      "digest": "sha256:4b5d03cf81fdf1fdda97a34fabd067822c4341fe256dfc902d8e3c57c94281d7",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 245,
+      "end": 245,
+      "digest": "sha256:83fb1cfbcd3609f45e88b4bf72138964a31966b8b01f474cf860f4a23e43dca5",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 246,
+      "end": 246,
+      "digest": "sha256:60a9fae1e72373c234e5cec21b8d71c3ec2f9a4be1daa97a875f5749f1d68a73",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 247,
+      "end": 247,
+      "digest": "sha256:3b077feea2a74acfdf1430ba8c26185c2d9fe595d08e75751b0b01cb1217a76e",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 248,
+      "end": 248,
+      "digest": "sha256:0c0ab11fbf820daa3e471cae2d8ae54a248f0283ec914b60c71047084ad6f3f7",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 249,
+      "end": 249,
+      "digest": "sha256:c77da88c5dc783b4b615f601b61555908628412dbce49bf5699d0d7d9ca76b76",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 250,
+      "end": 250,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 251,
+      "end": 251,
+      "digest": "sha256:900f022d7795d1870f3173183b997f1db4e109e3d1935e31df49dabb63fc227d",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 252,
+      "end": 252,
+      "digest": "sha256:fbbf5de0c87446e7053d492e6aae815097d7b206b88a557f3bf2548567e55cad",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 253,
+      "end": 253,
+      "digest": "sha256:48ef9530c0f03b0771e73eccfeb75d0d4109bbb86512dc91a7180426fb776dfc",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 254,
+      "end": 254,
+      "digest": "sha256:57a1d21cc1dff8c56291bcad4f320b9cea8108f49144ca4725add0e35777cf5b",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 255,
+      "end": 255,
+      "digest": "sha256:222e8d3d761f31ed7ab6a24b4e0c382fdaf760c4a082b2b257a1801af2379a22",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 256,
+      "end": 256,
+      "digest": "sha256:ace2384b9b4d6b1f643f11ee1a0c234c99e2497d100b16cb77993689dad71396",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 257,
+      "end": 257,
+      "digest": "sha256:997244172afdff7f1eb6cf59317a5aeb7e543485c344e0c68443de36b6d2986f",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 258,
+      "end": 258,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 259,
+      "end": 259,
+      "digest": "sha256:0c2401222a6b5b733d8d6180da169ed6246be8f46b85521039db4daafd4d7510",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 260,
+      "end": 260,
+      "digest": "sha256:6ddf69cbf73b5f84a5a38a8b4fafd8ced5fd09bf1af056650fa34e31b8fb14f2",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 261,
+      "end": 261,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 262,
+      "end": 262,
+      "digest": "sha256:9f9e865b25b660cd6df934f2f096cd425c60059903317b195c89bb4d4ee0c185",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 263,
+      "end": 263,
+      "digest": "sha256:8a733715d346d916d9772d801139371c32112e6ad09def681c0059a227cc9d0b",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 264,
+      "end": 264,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 265,
+      "end": 265,
+      "digest": "sha256:88cd557a467f84266405c75d7a543dd4d856ec4d37e4dc93e1c93e45123a0cc6",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 266,
+      "end": 266,
+      "digest": "sha256:276abbb82033c848311ed73f745f78f8ed604e2b97e8cf5ce96451406964d62e",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 267,
+      "end": 267,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 268,
+      "end": 268,
+      "digest": "sha256:5f8240fc8574f64c626fd7c78a69ff8d5a8996b74048e67513652b4b2c89a5cd",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 269,
+      "end": 269,
+      "digest": "sha256:0ae37e0f54124645a7309d0326471ecb9485d2287565bb24b33a81d95933fe6d",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 270,
+      "end": 270,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 271,
+      "end": 271,
+      "digest": "sha256:e7e1c7ea3c7062499e723457e3e063022a33c09a008ede78da2e850a0b09dc27",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 272,
+      "end": 272,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 273,
+      "end": 273,
+      "digest": "sha256:2d745fd30c6e8f64f2218dea9664ec6b2d02d533a51a458389d4c5ccf6061d72",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 274,
+      "end": 274,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 275,
+      "end": 275,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 276,
+      "end": 276,
+      "digest": "sha256:8be9e187e488d581a85d191d75dcd371b55c73cbf6e9b2e68c1651b96084b93e",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 277,
+      "end": 277,
+      "digest": "sha256:aed5c9cc83a298cf99968b68df4de2dd00c3c197fbc7909719989789699e3cd0",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 278,
+      "end": 278,
+      "digest": "sha256:188b626050e7658af84f4f52bb49daeccc5720be30acc7900820c296ef5c786f",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 279,
+      "end": 279,
+      "digest": "sha256:03ce6585c0299d6694078eeb87b7220079f6e951102ee359746e9474ccf1243a",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 280,
+      "end": 280,
+      "digest": "sha256:d4e33994d87cfcbea2da4c050711ae4499da52e419f1c6c13ec00f580b67e8dd",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 281,
+      "end": 281,
+      "digest": "sha256:3bd7d516eedfb0061acd50a79d3e3b3c16c416822f07ce2db5b71043a63d13f5",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 282,
+      "end": 282,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 283,
+      "end": 283,
+      "digest": "sha256:5cbea3455473d3076d9182e1acbc99b4f381105ec37b4e50814b4fe973f97b36",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 284,
+      "end": 284,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 285,
+      "end": 285,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 286,
+      "end": 286,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 287,
+      "end": 287,
+      "digest": "sha256:e2f45fe185399df6345ae99f10758b6301cf6596946cd75a41d8d5ee7ab11334",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 288,
+      "end": 288,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 289,
+      "end": 289,
+      "digest": "sha256:891ddf46f412225178fe11dc1176b7e1e4f5bd5fe0381e48cc2e2caf0f8d5583",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 290,
+      "end": 290,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 291,
+      "end": 291,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 292,
+      "end": 292,
+      "digest": "sha256:4edd607dc4f61e4c55d8107852c52e526c0052113030ed6dbf016bdf9a602fbf",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 293,
+      "end": 293,
+      "digest": "sha256:4ef8871b89d0d680da512aee3fbad8e1cd7aa10293d521ddefdc0c714fd52e68",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 294,
+      "end": 294,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 295,
+      "end": 295,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 296,
+      "end": 296,
+      "digest": "sha256:e8635fee90df95ae93984bf732c722189dfaa9397f6a6a3e4ed939c2b46d97b0",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 297,
+      "end": 297,
+      "digest": "sha256:7d117dd113ebb18d50472ff9f2e67cbeb2bb07e04bd78d5c3e58567954e41872",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 298,
+      "end": 298,
+      "digest": "sha256:9042916d10c4e35cfbc72e20f253c371cacf65c27880dce32822b754214b3ba3",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 299,
+      "end": 299,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 300,
+      "end": 300,
+      "digest": "sha256:f26e669a10fe9152870d4ece9dabb3c46f1491400c25cee0372a5945fc3f8c18",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 301,
+      "end": 301,
+      "digest": "sha256:6551b7478f4c8338eb4298871713b2a514990d2e22f0acf73a51711eed90bfd6",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 302,
+      "end": 302,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 303,
+      "end": 303,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 304,
+      "end": 304,
+      "digest": "sha256:88c13d2bdc4f5c396832251db0de00eb1d89726b9f9b438d2f73e2130bf99344",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 305,
+      "end": 305,
+      "digest": "sha256:5fdd2aafca17dff7b2fe19fa24bc4bc8576741b5e9a753cd65cccf087eadd2eb",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 306,
+      "end": 306,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 307,
+      "end": 307,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 308,
+      "end": 308,
+      "digest": "sha256:3bde25f96a8b7ed3cebdb9f3c8a4f578e3f2ca77dfdf948969ba42ddb5cb5dc4",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 309,
+      "end": 309,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 310,
+      "end": 310,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 311,
+      "end": 311,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 312,
+      "end": 312,
+      "digest": "sha256:632c682a9d10154909f7b5ddcb3b09e078162414092de97fc160b2663e5ad03a",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 313,
+      "end": 313,
+      "digest": "sha256:de81ab1a40108713f6f09d04b68388b3b88714f5fdaf0d456b4e767252006bf2",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 314,
+      "end": 314,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 315,
+      "end": 315,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 316,
+      "end": 316,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 317,
+      "end": 317,
+      "digest": "sha256:6e97d19a1099c42d8d5f824c090bf042c361512b3c34eaeebf5d74f32748c7a9",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 318,
+      "end": 318,
+      "digest": "sha256:fc23244eda34cc3452db049d59f150dbb37dae94b30c53dc05b43e5ddf958857",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 319,
+      "end": 319,
+      "digest": "sha256:733628db1039c1f1de920b4a5a870a2ddb400cfebf28c118bcaad2709622f477",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 320,
+      "end": 320,
+      "digest": "sha256:03ce6585c0299d6694078eeb87b7220079f6e951102ee359746e9474ccf1243a",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 321,
+      "end": 321,
+      "digest": "sha256:5dc1846070c9925c54a6200abc6b18f7a1157077203ed0a0ac45c42a6e995f65",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 322,
+      "end": 322,
+      "digest": "sha256:b9e5432e191a11ebdeb2b0adb9ce19550b1e4d97bce06e598ee049f656a8b966",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 323,
+      "end": 323,
+      "digest": "sha256:32afa4c30df57263c02e439cfbbccbe3df11b3d336b2fdeaac2a0ab033ea3d41",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 324,
+      "end": 324,
+      "digest": "sha256:c976fc03e677e41ab18237c9e769b08c9896b38bc19fac59ed8e8923ec3d1884",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 325,
+      "end": 325,
+      "digest": "sha256:5fb4119828c509c36159cd99304b9aa65b562a3b7cf069f3adc54aacb72e8ee4",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 326,
+      "end": 326,
+      "digest": "sha256:b9a659681da55a28b6a6c1eeb32b508b76693e75a1d9d419d6d2f45686dba100",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 327,
+      "end": 327,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 328,
+      "end": 328,
+      "digest": "sha256:3e37a0c6d5021b32a5690396c1d80a25a9f58371d638fc682781a727b56bf5eb",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 329,
+      "end": 329,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 330,
+      "end": 330,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 331,
+      "end": 331,
+      "digest": "sha256:1161147e42e71747a6dab9bb1ae458c20c964fa8763fafbac88e33a689b84ecd",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 332,
+      "end": 332,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 333,
+      "end": 333,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 334,
+      "end": 334,
+      "digest": "sha256:342457d286b1e346dbc144db1b7d007b54579598d01b86c9286216f31df0eb12",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 335,
+      "end": 335,
+      "digest": "sha256:d25b3cd38c7c96e002a80cd3fa08db697542508a7e2e8274cb8094f43afd001d",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 336,
+      "end": 336,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 337,
+      "end": 337,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 338,
+      "end": 338,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 339,
+      "end": 339,
+      "digest": "sha256:d386dea1b4d74c39239e9e6fb868055f21fdc2d7620b27400b5af2631ec818ac",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 340,
+      "end": 340,
+      "digest": "sha256:24862401621fe3b9c0e849871e2453df13794f6a2f57a9f82945032daef30461",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 341,
+      "end": 341,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 342,
+      "end": 342,
+      "digest": "sha256:ff89e593e81d365d521d4fc7519c5e188a7ae8af795b4d1783f45955bd68d8fd",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 343,
+      "end": 343,
+      "digest": "sha256:43bfbd5a0b7af59370e6ad3733008aad72f895ff96dbab9d6ee09ccbc7ee1bb0",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 344,
+      "end": 344,
+      "digest": "sha256:efa8bd74d1d5f99692e79e26f1d2642f6034c765a5905e390adb837455f58da8",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 345,
+      "end": 345,
+      "digest": "sha256:acf6f66f1158660c50bdae71a22fbf424cd1a1ec8a918afe4c2768c570a1d66f",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 346,
+      "end": 346,
+      "digest": "sha256:d44a2f5fd2e24a8ab384e58f945a6c4da797d244a9687a4fe6fc8383420155d3",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 347,
+      "end": 347,
+      "digest": "sha256:9d70731eb4a4a9a6498dcd86b2f8f593391efeb5e7f5ffac578c59e6bf1cfee4",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 348,
+      "end": 348,
+      "digest": "sha256:42a57081051f4682a7db3e590b4dd5413d53dc9a01551276dacb521a7e1db9a5",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 349,
+      "end": 349,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 350,
+      "end": 350,
+      "digest": "sha256:812b7f5017f5d18fa579b00528589db51b52a6fc0932fd1b6538d6d178fdc4bc",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 351,
+      "end": 351,
+      "digest": "sha256:6e98ecef6a35b98ab9f05274bfb95e2d98e6b33219c7099d68bf990a38e6c9ce",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 352,
+      "end": 352,
+      "digest": "sha256:a2480d449a4a19124e32545954d35d6873abbce4eae664ca0ca99c9ad8cb48c2",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 353,
+      "end": 353,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 354,
+      "end": 354,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 355,
+      "end": 355,
+      "digest": "sha256:6aa6b022613c32840e628833823ccdcb9fc91deb797f9c1f266ddcd92f65c540",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 356,
+      "end": 356,
+      "digest": "sha256:bbde69bf082ee1ca90f4c38fc32c6b921d09073505a281012e92aacaf8240f61",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 357,
+      "end": 357,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 358,
+      "end": 358,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 359,
+      "end": 359,
+      "digest": "sha256:51faaaa4c631d5757ba0d7f39fd697ed2d80b65cebf9e2f5c98291f5899f869e",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 360,
+      "end": 360,
+      "digest": "sha256:5d2f4dbb9d762983d898b6176c081bcba33004c8a7d59b6a07fbb51c4ff9f9ed",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 361,
+      "end": 361,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 362,
+      "end": 362,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 363,
+      "end": 363,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 364,
+      "end": 364,
+      "digest": "sha256:164354b2ad2d7a756d9135f89781f7ac39874a8c9a81beb3f4d41e963c4de37f",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 365,
+      "end": 365,
+      "digest": "sha256:3e1d628f7388b0f0bd91f03b51f1ed19cf6596fb0fbca9aefd36f75bbb95dc91",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 366,
+      "end": 366,
+      "digest": "sha256:4f13771a7eb38a7585802336450ff83eb974df74e7980805f993d323f4a9469d",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 367,
+      "end": 367,
+      "digest": "sha256:03ce6585c0299d6694078eeb87b7220079f6e951102ee359746e9474ccf1243a",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 368,
+      "end": 368,
+      "digest": "sha256:2f2d2441f9b8cc547e3b39bf470064c98f19155a732e3605e0f8af817b97bbe4",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 369,
+      "end": 369,
+      "digest": "sha256:3100f62d6c2485ae7286ac5558d80b1dc234a0f2fda8072c108b7baf6fa37774",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 370,
+      "end": 370,
+      "digest": "sha256:87df15db7d33ed68b96d92301dc12d0bd638bd00e9ee2398c2b7a2b485a52d41",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 371,
+      "end": 371,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 372,
+      "end": 372,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 373,
+      "end": 373,
+      "digest": "sha256:37af459ed00e6f1614936a0399f37f58c3c3c11c03f8cec5a9d93139a45aee58",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 374,
+      "end": 374,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 375,
+      "end": 375,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 376,
+      "end": 376,
+      "digest": "sha256:c2e4188f8eb79583abb138460514545a3ee25cec00c4c9630ff3e36a02910eb6",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 377,
+      "end": 377,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 378,
+      "end": 378,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 379,
+      "end": 379,
+      "digest": "sha256:62eedf7d73bbbfa17f64d9ffa15cb1483bf56783b8f82ddcc9bde0825e96ab82",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 380,
+      "end": 380,
+      "digest": "sha256:c080487abc12a10856a65040163c04143c69a05853a5f210a762bdaac39b48c5",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 381,
+      "end": 381,
+      "digest": "sha256:de7546bfc4c46f1e9ebe707a89f8e3dc0d3aef8d967f04e96ef5ee647ca4ea2e",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 382,
+      "end": 382,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 383,
+      "end": 383,
+      "digest": "sha256:38f2d0568b11fa7737c51308ff3768431d280a2f23c9ed0111ec31104a4800ae",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 384,
+      "end": 384,
+      "digest": "sha256:736ce77da1a0d13b40204537fb7a2e78e7bdf01b9f6ab7e6f1c0c7d7844fa41c",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 385,
+      "end": 385,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 386,
+      "end": 386,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 387,
+      "end": 387,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 388,
+      "end": 388,
+      "digest": "sha256:7d73833a09de7b7e62a85cc4fb61aaa24e3a85d0e05d95fc94e192151dcfe06b",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 389,
+      "end": 389,
+      "digest": "sha256:6bfc4e0dbbe1b94a84b0c90b255bab24b201f7a08bd1571d74306622f57a5565",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 390,
+      "end": 390,
+      "digest": "sha256:b4751a0897bcf2106807a1e3bfe1f0c4eab31575da8c0150248a096b68720188",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 391,
+      "end": 391,
+      "digest": "sha256:7d9f118aacb6e09861dc21396e9287c7642958cfe472006b0d2d7ced2704857b",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 392,
+      "end": 392,
+      "digest": "sha256:f1ce49a6d4e3376b304ff7b48a38001d6410d4b5509ac10701455eda2957e8ad",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 393,
+      "end": 393,
+      "digest": "sha256:9c7b8efb7e4997cafc06d780830d239dc153a3c6cfcc380c698db56bf7975032",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 394,
+      "end": 394,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 395,
+      "end": 395,
+      "digest": "sha256:213e9a58d80cf14ce2a1f48a736ba1acd22f14bd19727906122bdf54fa0c3c5d",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 396,
+      "end": 396,
+      "digest": "sha256:45bb9732699c9bd039eca2ddf37e6679c8d57b274d92b2b13622016728512ff2",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 397,
+      "end": 397,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 398,
+      "end": 398,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 399,
+      "end": 399,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 400,
+      "end": 400,
+      "digest": "sha256:7e389b9d8ada8e0dd0512ef8e5438e19ca9dbcba43f2b880262690ac4c7b809a",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 401,
+      "end": 401,
+      "digest": "sha256:fca6098214eaa888494ee140ee5ba96ad355bd1f2610671937bc5adf94c21c15",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 402,
+      "end": 402,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 403,
+      "end": 403,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 404,
+      "end": 404,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 405,
+      "end": 405,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 406,
+      "end": 406,
+      "digest": "sha256:33a9830b0cb50251266fc156552ab23312bbabaf8420f2ca4e321d107e78f72e",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 407,
+      "end": 407,
+      "digest": "sha256:6ad3df08890ba8e54fff47eeba9f4d9aa78e6e514e44660c7dece2f993836506",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 408,
+      "end": 408,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 409,
+      "end": 409,
+      "digest": "sha256:56fff016029b882ff84f42571c34f3c5c1c596a52c639a4e8fe6f5e20d292355",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 410,
+      "end": 410,
+      "digest": "sha256:68272ebb8627ace51aeb5ee706b62fddaf3934458d8e72bbc1f72a96f334cc7c",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 411,
+      "end": 411,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 412,
+      "end": 412,
+      "digest": "sha256:0c4f6c83b709b0ddefa085e6bf3901a6f1ceea93fb4d5da3fe3148adb5ed10d3",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 413,
+      "end": 413,
+      "digest": "sha256:936407fea515099558adc2ed78e9fdb09e4bba19e5a449e67a97fd2963e1041e",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 414,
+      "end": 414,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 415,
+      "end": 415,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 416,
+      "end": 416,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 417,
+      "end": 417,
+      "digest": "sha256:cf78d14b9ea9494254d820cbd8984fde61948f96e5baee52a1f3ac8b7d4f2f93",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 418,
+      "end": 418,
+      "digest": "sha256:a3a4eba76c3bea692c183bb8d39845464fca0a8593c92145c6f6fdf325765138",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 419,
+      "end": 419,
+      "digest": "sha256:60a2221c9c622961f385d5c8f9e6a6d5bc8b9c8fbd7afc71122f33dfcea630d8",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 420,
+      "end": 420,
+      "digest": "sha256:3650f355a704831470a46873119ed2c463fc95c6d8bd0d011136fb620dbb587d",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 421,
+      "end": 421,
+      "digest": "sha256:74560cc637b4e0ea51cf3fe0295155e321c6dcd73b502aabdda0bfe4ed584cbd",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 422,
+      "end": 422,
+      "digest": "sha256:45bb9732699c9bd039eca2ddf37e6679c8d57b274d92b2b13622016728512ff2",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 423,
+      "end": 423,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 424,
+      "end": 424,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 425,
+      "end": 425,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 426,
+      "end": 426,
+      "digest": "sha256:06cdd916c4a6fdb9742a0626324ccd3778dbb77d90dfb5fb8939a43cd7428604",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 427,
+      "end": 427,
+      "digest": "sha256:748b6a0dd2f0e6b5984fed8f7711b82f1b7d26b99bcb0d4dbb4524017ffddb62",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 428,
+      "end": 428,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 429,
+      "end": 429,
+      "digest": "sha256:0ec8e15a1bb8ec6d397a14fde3ff78a61d8cf50d5f5c32e3e848f00310cc128a",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 430,
+      "end": 430,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 431,
+      "end": 431,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 432,
+      "end": 432,
+      "digest": "sha256:80401b7c174360b77c9eb865784c93a378faf3da5f66a06e2d9d1aadae2e0878",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 433,
+      "end": 433,
+      "digest": "sha256:48d29348ada4cdd51c017ef4e13f35a99f3a27d13d05d1f8d7ade78e233d63ca",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 434,
+      "end": 434,
+      "digest": "sha256:989f3ab1fcf7330d6376114f0be19089e06ad46ee46d947fb4bf23334c5ec3a2",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 435,
+      "end": 435,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 436,
+      "end": 436,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 437,
+      "end": 437,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 438,
+      "end": 438,
+      "digest": "sha256:4d0df885424e13d0f20c579543cdb3f3a3151e4d352b80b18e8871b82eca7e27",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 439,
+      "end": 439,
+      "digest": "sha256:1d723fe0ef6a2e2d46597ca3c810a8f815cffa400c929ad745f0e9b190d521dd",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 440,
+      "end": 440,
+      "digest": "sha256:a9a45c9f7ac6dfac67c973292fd113a6a5a6632a3c8e8921934b080ee1758d93",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 441,
+      "end": 441,
+      "digest": "sha256:970ac60690d71ca6e0955e5785212a940a338e56c4e4e2e60ab3afb5b019167a",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 442,
+      "end": 442,
+      "digest": "sha256:03ce6585c0299d6694078eeb87b7220079f6e951102ee359746e9474ccf1243a",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 443,
+      "end": 443,
+      "digest": "sha256:d4e33994d87cfcbea2da4c050711ae4499da52e419f1c6c13ec00f580b67e8dd",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 444,
+      "end": 444,
+      "digest": "sha256:f31b0b51f4ba2d542845c664f50ff1e5cd15eaefddfda071cc88e0f78d615576",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 445,
+      "end": 445,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 446,
+      "end": 446,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 447,
+      "end": 447,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 448,
+      "end": 448,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 449,
+      "end": 449,
+      "digest": "sha256:d402b7664679e5ee5f19b4108ab7c3d990cdeebb6f59bb0e3e22caff6c7c443d",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 450,
+      "end": 450,
+      "digest": "sha256:39ea455cf995544b24ce28cc27c52b91971405e62d6f26fe421109336cfd5987",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 451,
+      "end": 451,
+      "digest": "sha256:ab60b968cd47a8fdcbbfa8592139014e91676c691007e2d0cdac6540fd157a0c",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 452,
+      "end": 452,
+      "digest": "sha256:5b56020100cf5b04cf672d93d924c921034bc246d4348a039e7b8af1b90e1d1b",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 453,
+      "end": 453,
+      "digest": "sha256:3a8ed181db13ce45f78da52feed36e9c3f8327c9a57a5719607df974acee4549",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 454,
+      "end": 454,
+      "digest": "sha256:fe377ce001a8d10b7764ee35afd1d314c4e8c7c192bde187d8c19cb5628cdf78",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 455,
+      "end": 455,
+      "digest": "sha256:5bad7cc2dfafc2175fa2d9704e0202f94083a9da69a585b0b18c48bea236275e",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 456,
+      "end": 456,
+      "digest": "sha256:60a9fae1e72373c234e5cec21b8d71c3ec2f9a4be1daa97a875f5749f1d68a73",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 457,
+      "end": 457,
+      "digest": "sha256:3b077feea2a74acfdf1430ba8c26185c2d9fe595d08e75751b0b01cb1217a76e",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 458,
+      "end": 458,
+      "digest": "sha256:0c6c1f2a12777c1590dcd2f90a3e1f5e0a66efea817133317cf21efa71718ec8",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 459,
+      "end": 459,
+      "digest": "sha256:997244172afdff7f1eb6cf59317a5aeb7e543485c344e0c68443de36b6d2986f",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 460,
+      "end": 460,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 461,
+      "end": 461,
+      "digest": "sha256:5e5ca2e23e8fd9a5f6801c4db4383e8f5a198519cf8651d43fd66d4e0c2e27d2",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 462,
+      "end": 462,
+      "digest": "sha256:9f9e865b25b660cd6df934f2f096cd425c60059903317b195c89bb4d4ee0c185",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 463,
+      "end": 463,
+      "digest": "sha256:35a9db67a7f9173fcf2c646377a0fbea0a577beaf06201d4af10d4c0aef8bb24",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 464,
+      "end": 464,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 465,
+      "end": 465,
+      "digest": "sha256:88cd557a467f84266405c75d7a543dd4d856ec4d37e4dc93e1c93e45123a0cc6",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 466,
+      "end": 466,
+      "digest": "sha256:5073eb4211caacd7fd7401e88d29bd5aac76a67335eaeca1ae9cc696d3809c3e",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 467,
+      "end": 467,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 468,
+      "end": 468,
+      "digest": "sha256:36c0c1590a47683ea7a3992852343463793d0b3d50ae0ef80a98ae0d4b1063e4",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 469,
+      "end": 469,
+      "digest": "sha256:8a0dc12621adfa52a57d624c10bd53e2d1df9cbb4d6353d26a999549b257df60",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 470,
+      "end": 470,
+      "digest": "sha256:ebb502f3aa333c373e88bfaca08b280b08fcfc2dc65aed8910142dbe01ba173d",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 471,
+      "end": 471,
+      "digest": "sha256:7d57a765ac3d8a4e2a80c2bbd243b31705035eb14e511b2fd0543bb16e811d0a",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 472,
+      "end": 472,
+      "digest": "sha256:73db207abe54b13bb045872f06db045cdbc26ef7af00dc9665ca594b15573900",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 473,
+      "end": 473,
+      "digest": "sha256:ace2384b9b4d6b1f643f11ee1a0c234c99e2497d100b16cb77993689dad71396",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 474,
+      "end": 474,
+      "digest": "sha256:9421ab7a54e0a9244a77c1f94c0b892a2fc5b192cdfe5a5fbc24765da815fd74",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 475,
+      "end": 475,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 476,
+      "end": 476,
+      "digest": "sha256:f967b440acf99e588a7534f6b47199c0bb6acbab73b25ef0b4b15295c15f55b4",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 477,
+      "end": 477,
+      "digest": "sha256:4b03034ef3d34abe4a626567316af93ad9fa35e1ef1bf22404e41866075272d2",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 478,
+      "end": 478,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 479,
+      "end": 479,
+      "digest": "sha256:7fe179ddcc2c99dd9b6d39fb62ce7c72848088cf3ac64a32736dc948d5e6de74",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 480,
+      "end": 480,
+      "digest": "sha256:e97fb9ad03e91f02ccc60850eff7c9ffc9d39703c64cbeacf513a476c996a403",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 481,
+      "end": 481,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 482,
+      "end": 482,
+      "digest": "sha256:86d6aa7cb4171e6b618ad4018695c93d235640aa375d68f426c794a3d36a3920",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 483,
+      "end": 483,
+      "digest": "sha256:978315ea04f8f65c2239c2fb242a4c3859b04426b514769c0d094fb5f40660c0",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 484,
+      "end": 484,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 485,
+      "end": 485,
+      "digest": "sha256:e7e1c7ea3c7062499e723457e3e063022a33c09a008ede78da2e850a0b09dc27",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 486,
+      "end": 486,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 487,
+      "end": 487,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 488,
+      "end": 488,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 489,
+      "end": 489,
+      "digest": "sha256:7936635604502a898ef9829f6ae1e6c3c8dc48e9cdb0c5ec2a6f8025183d3fc3",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 490,
+      "end": 490,
+      "digest": "sha256:a910f06077da143b82b66bf1d48c4b5d9c5bd589ed550991c394055a37ab3237",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 491,
+      "end": 491,
+      "digest": "sha256:d4f820ece5eca66103299f06cf46431b18fda4820f8177616ebc65c784e90db3",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 492,
+      "end": 492,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 493,
+      "end": 493,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 494,
+      "end": 494,
+      "digest": "sha256:d164788d9328623c32c67d27b200cf06013a1fe77e36cb9415e9cd37165bfc0a",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 495,
+      "end": 495,
+      "digest": "sha256:ece523c7d95d420d4ff49e42b4fb263847bfb194d96eebb9f9472a2b0266a7e4",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 496,
+      "end": 496,
+      "digest": "sha256:800f2a9e86b4cff2c1b9e3fcfa9c71f253af2f95ae119aa175b5562eaba3c146",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 497,
+      "end": 497,
+      "digest": "sha256:4c154cdaef82ba33866af83a0fb4627709fde0adf6b35ece16355f457f55ed74",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 498,
+      "end": 498,
+      "digest": "sha256:0e4e78d2eb683e84fa9d113d26e3913b225682a40e4b4181758ce247e53fbe80",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 499,
+      "end": 499,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 500,
+      "end": 500,
+      "digest": "sha256:22f65d99d54bb7cbbf6c5c2df22a0d85988f57b109c777733108d6358d9df8f9",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 501,
+      "end": 501,
+      "digest": "sha256:b31615c5c2695a1147d589b0a50d4970409bc468f6d67f22c962816ed729f119",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 502,
+      "end": 502,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 503,
+      "end": 503,
+      "digest": "sha256:790abc4e40cac256ccb7c2ec0b7a5dd3d193b4ada19a15c084a6f46517e2c858",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 504,
+      "end": 504,
+      "digest": "sha256:77a9b5e9019c8db8783ec9c3febb0a2c9862f61a05c308fe895e4a9bed03edb3",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 505,
+      "end": 505,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 506,
+      "end": 506,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 507,
+      "end": 507,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 508,
+      "end": 508,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 509,
+      "end": 509,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 510,
+      "end": 510,
+      "digest": "sha256:5df8631b9600509223833fe3243656aa0e1d066657e617fe4480841ac490ae10",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 511,
+      "end": 511,
+      "digest": "sha256:ece523c7d95d420d4ff49e42b4fb263847bfb194d96eebb9f9472a2b0266a7e4",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 512,
+      "end": 512,
+      "digest": "sha256:c365ed14b1ce12d4b1352483fc4aa4148c8be6c528711b279c65076a30757b69",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 513,
+      "end": 513,
+      "digest": "sha256:800f2a9e86b4cff2c1b9e3fcfa9c71f253af2f95ae119aa175b5562eaba3c146",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 514,
+      "end": 514,
+      "digest": "sha256:4c154cdaef82ba33866af83a0fb4627709fde0adf6b35ece16355f457f55ed74",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 515,
+      "end": 515,
+      "digest": "sha256:0e4e78d2eb683e84fa9d113d26e3913b225682a40e4b4181758ce247e53fbe80",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 516,
+      "end": 516,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 517,
+      "end": 517,
+      "digest": "sha256:04f14e9a21de133d3597b13e9d4e5d366a730f5c102ce8287b35c15cfb878db3",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 518,
+      "end": 518,
+      "digest": "sha256:4c154cdaef82ba33866af83a0fb4627709fde0adf6b35ece16355f457f55ed74",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 519,
+      "end": 519,
+      "digest": "sha256:0e4e78d2eb683e84fa9d113d26e3913b225682a40e4b4181758ce247e53fbe80",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 520,
+      "end": 520,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 521,
+      "end": 521,
+      "digest": "sha256:76408ff4844e2177f2a7ff68007e8d094f139ec14c189963275282aa75320d4e",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 522,
+      "end": 522,
+      "digest": "sha256:790abc4e40cac256ccb7c2ec0b7a5dd3d193b4ada19a15c084a6f46517e2c858",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 523,
+      "end": 523,
+      "digest": "sha256:77a9b5e9019c8db8783ec9c3febb0a2c9862f61a05c308fe895e4a9bed03edb3",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 524,
+      "end": 524,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 525,
+      "end": 525,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 526,
+      "end": 526,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 527,
+      "end": 527,
+      "digest": "sha256:e6a464c19103059bca9068c9241878b8029d8942f07751dacdd8dc562caaaec5",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/snapshotcache/snapshotcache_test.go",
+      "start": 528,
+      "end": 528,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Generation identity, atomicity, invalidation, and compression tests."
+    }
+  ],
+  "version": 2
+}

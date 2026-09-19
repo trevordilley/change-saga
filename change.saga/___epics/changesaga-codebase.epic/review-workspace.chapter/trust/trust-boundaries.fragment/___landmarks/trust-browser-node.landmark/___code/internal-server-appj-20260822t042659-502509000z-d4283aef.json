@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/appjs.go",
+      "start": 79,
+      "end": 95,
+      "digest": "sha256:e7c9817de8a6667b8282b1228c59163d98564f12cb391b5b4027ff6f82bfaa27",
+      "note": "Builds local mutation forms and includes the generated session mutation token on submission."
+    }
+  ],
+  "version": 2
+}

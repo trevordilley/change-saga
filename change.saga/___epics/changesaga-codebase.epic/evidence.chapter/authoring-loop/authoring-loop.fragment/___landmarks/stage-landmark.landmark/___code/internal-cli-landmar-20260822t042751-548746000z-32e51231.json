@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/landmark_test.go",
+      "start": 1,
+      "end": 119,
+      "digest": "sha256:622ae4d37db95031757e70e083d4c6c4c179a40853d2cf34802d335e068e1084",
+      "note": "Creates and validates stable semantic targets for visual elements, headings, and exact citations."
+    }
+  ],
+  "version": 2
+}

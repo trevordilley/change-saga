@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 221,
+      "end": 324,
+      "digest": "sha256:5d8edf7fbb9957126b9666f911949ff933b5658039b7ab61dd2ca5526d006502",
+      "note": "Builds mixed-media Saga hierarchy, landmarks, and approvals."
+    }
+  ],
+  "version": 2
+}

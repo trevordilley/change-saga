@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/install_test.sh",
+      "start": 216,
+      "end": 216,
+      "digest": "sha256:00ca774f3ff106f242f3d2930f07c049cad2604ca114b3f2698d166f206ef672",
+      "note": "Asserts the pre-existing executable remains unchanged after checksum rejection."
+    }
+  ],
+  "version": 2
+}

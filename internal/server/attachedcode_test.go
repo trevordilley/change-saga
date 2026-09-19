@@ -12,8 +12,8 @@ func TestAttachedCodeGroupsExactChangesByFileWithAuthoredReason(t *testing.T) {
 	document, changes, _, _, _ := codeViewFixture(t)
 	flow := document.Section.Children[0].Fragments[0]
 	linked := changes.Atoms[:2]
-	full := append(append([]gitdiff.Atom{}, linked...), gitdiff.Atom{Key: "extra", Kind: "line", Path: "src/api/handler.go", Side: "old", Line: 9, Content: "old", URI: "uri-extra"})
-	view := makeAttachedCodeView(flow.Title, flow.Target, linked, full, flow.Diffs)
+	full := append(append([]gitdiff.Atom{}, linked...), gitdiff.Atom{Key: "extra", Kind: "line", Path: "src/api/handler.go", Side: "old", Line: 9, Content: "old", Ref: testLocation(testBaseCommit, "src/api/handler.go", 9, 9)})
+	view := makeAttachedCodeView(flow.Title, flow.Target, linked, full, flow.Code)
 
 	if view == nil || view.Title != "Request flow" || view.ChangeCount != 3 || view.LineCount != 3 || view.Added != 2 || view.Deleted != 1 || view.LinkedLineCount != 2 || len(view.Files) != 1 {
 		t.Fatalf("unexpected attached code view: %#v", view)
@@ -29,10 +29,10 @@ func TestAttachedCodeGroupsExactChangesByFileWithAuthoredReason(t *testing.T) {
 
 func TestAttachedCodeKeepsFilesSeparateAndFlagsMissingSummaries(t *testing.T) {
 	atoms := []gitdiff.Atom{
-		{Key: "a", Kind: "line", Path: "b.go", Side: "new", Line: 2, Content: "b", URI: "uri-b"},
-		{Key: "b", Kind: "line", Path: "a.go", Side: "old", Line: 1, Content: "a", URI: "uri-a"},
+		{Key: "a", Kind: "line", Path: "b.go", Side: "new", Line: 2, Content: "b", Ref: testLocation(testHeadCommit, "b.go", 2, 2)},
+		{Key: "b", Kind: "line", Path: "a.go", Side: "old", Line: 1, Content: "a", Ref: testLocation(testBaseCommit, "a.go", 1, 1)},
 	}
-	view := makeAttachedCodeView("Target", "urn:target", atoms, atoms, []saga.DiffFile{})
+	view := makeAttachedCodeView("Target", "urn:target", atoms, atoms, []saga.CodeFile{})
 	if len(view.Files) != 2 || view.Files[0].Path != "a.go" || view.Files[1].Path != "b.go" {
 		t.Fatalf("files were not kept separate and sorted: %#v", view.Files)
 	}

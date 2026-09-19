@@ -8,8 +8,6 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/twentyideas/changesaga/internal/diffuri"
-	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/saga"
 	"github.com/twentyideas/changesaga/internal/store"
 )
@@ -20,7 +18,7 @@ type coverageRepairOutput struct {
 	Removed       string   `json:"removed"`
 	DryRun        bool     `json:"dry_run"`
 	Records       int      `json:"records"`
-	Selectors     int      `json:"selectors"`
+	References    int      `json:"references"`
 	EvidenceFiles []string `json:"evidence_files"`
 }
 
@@ -88,31 +86,14 @@ func ReplaceCoverage(ctx context.Context, args []string, out io.Writer) error {
 func replaceCoverage(ctx context.Context, args []string, out io.Writer, stdin io.Reader) error {
 	flags := commandFlags("replace-coverage", commandUsage["replace-coverage"], out)
 	recordPath := flags.String("record", "", "evidence_file returned by query mappings or fragment-diffs")
-	target := flags.String("target", ".", "new section, fragment, landmark, ID, or target URN")
-	repoDir := flags.String("repo", "", "source repository checkout; required when separate")
-	path := flags.String("path", "", "changed repository path")
-	side := flags.String("side", "", "line side: old or new")
-	lines := flags.String("lines", "", "line ranges, for example 4-9,12")
-	changedLines := flags.Bool("changed-lines", false, "select every exact changed line and file event for --path")
-	event := flags.String("event", "", "file event: add, delete, type-change, rename, mode, binary, or modify")
-	oldPath := flags.String("old-path", "", "old path for a rename event")
-	newPath := flags.String("new-path", "", "new path for a rename event")
-	note := flags.String("note", "", "optional reviewer-facing explanation")
-	name := flags.String("name", "", "coverage filename without .json")
-	batch := flags.String("batch", "", "read replacement records from a JSON file, or - for stdin")
-	dryRun := flags.Bool("dry-run", false, "resolve the replacement without writing")
-	jsonOutput := flags.Bool("json", false, "emit one machine-readable summary")
-	quiet := flags.Bool("quiet", false, "suppress successful output")
-	allowRepositoryMismatch := flags.Bool("allow-repository-mismatch", false, "use a checkout whose origin differs from the declared repository")
-	var uris stringList
-	flags.Var(&uris, "uri", "absolute saga-diff URI; repeatable")
+	options := registerCoverFlags(flags)
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
 	if flags.NArg() != 1 || strings.TrimSpace(*recordPath) == "" {
 		return fmt.Errorf("usage: %s", commandUsage["replace-coverage"])
 	}
-	if *jsonOutput && *quiet {
+	if *options.jsonOutput && *options.quiet {
 		return fmt.Errorf("--json and --quiet cannot be combined")
 	}
 	root := flags.Arg(0)
@@ -124,36 +105,13 @@ func replaceCoverage(ctx context.Context, args []string, out io.Writer, stdin io
 	if err != nil {
 		return err
 	}
-	records, err := coverRecords(*batch, stdin, coverRecord{
-		Target: *target, Path: *path, Side: *side, Lines: *lines, ChangedLines: *changedLines,
-		Event: *event, OldPath: *oldPath, NewPath: *newPath, Note: *note, Name: *name, URIs: uris,
-	}, flags)
+	records, err := coverRecords(*options.batch, stdin, options.record(), flags)
 	if err != nil {
 		return err
 	}
-	var changes *gitdiff.ChangeSet
-	for _, record := range records {
-		if record.Path == "" && record.Event == "" && !record.ChangedLines {
-			continue
-		}
-		checkout := firstNonEmpty(*repoDir, document.Root)
-		read, readErr := gitdiff.ReadWithOptions(ctx, checkout, document.Manifest.Source.Repository, document.Manifest.Source.Base, document.Manifest.Source.Head, gitdiff.ReadOptions{AllowRepositoryMismatch: *allowRepositoryMismatch})
-		if readErr != nil {
-			return fmt.Errorf("read source diff (use --repo for a separate saga repository): %w", readErr)
-		}
-		changes = &read
-		break
-	}
-	repository, err := diffuri.CanonicalRepository(document.Manifest.Source.Repository)
+	files, err := buildCoverageFiles(ctx, document, records, *options.repoDir, *options.allowMismatch)
 	if err != nil {
-		return fmt.Errorf("invalid declared source repository: %w", err)
-	}
-	files := make([]saga.DiffFile, len(records))
-	for i, record := range records {
-		files[i], err = buildCoverageFile(record, changes, repository)
-		if err != nil {
-			return recordError(records, i, err)
-		}
+		return err
 	}
 	var planned []plannedRecord
 	plan := func(locked *saga.Saga, replaceable string) error {
@@ -161,12 +119,12 @@ func replaceCoverage(ctx context.Context, args []string, out io.Writer, stdin io
 		planned, planErr = planCoverage(locked, records, files, replaceable)
 		return planErr
 	}
-	if *dryRun {
+	if *options.dryRun {
 		if err := plan(document, old.absolute); err != nil {
 			return err
 		}
 		result := repairOutput("replace", old.relative, planned, true)
-		return writeCoverageRepairResult(out, result, *jsonOutput, *quiet)
+		return writeCoverageRepairResult(out, result, *options.jsonOutput, *options.quiet)
 	}
 	err = authorMutation(root, func(locked *saga.Saga) error {
 		current, locateErr := locateCoverageRecord(locked, *recordPath)
@@ -184,7 +142,7 @@ func replaceCoverage(ctx context.Context, args []string, out io.Writer, stdin io
 	if err != nil {
 		return err
 	}
-	return writeCoverageRepairResult(out, repairOutput("replace", old.relative, planned, false), *jsonOutput, *quiet)
+	return writeCoverageRepairResult(out, repairOutput("replace", old.relative, planned, false), *options.jsonOutput, *options.quiet)
 }
 
 func locateCoverageRecord(document *saga.Saga, requested string) (coverageRecordLocation, error) {
@@ -196,7 +154,7 @@ func locateCoverageRecord(document *saga.Saga, requested string) (coverageRecord
 		return coverageRecordLocation{}, fmt.Errorf("--record must stay within the saga")
 	}
 	var found string
-	consider := func(files []saga.DiffFile) {
+	consider := func(files []saga.CodeFile) {
 		for _, file := range files {
 			if filepath.ToSlash(file.Path) == clean {
 				found = clean
@@ -205,11 +163,11 @@ func locateCoverageRecord(document *saga.Saga, requested string) (coverageRecord
 	}
 	var walk func(*saga.Section)
 	walk = func(section *saga.Section) {
-		consider(section.Diffs)
+		consider(section.Code)
 		for _, fragment := range section.Fragments {
-			consider(fragment.Diffs)
+			consider(fragment.Code)
 			for index := range fragment.Landmarks {
-				consider(fragment.Landmarks[index].Diffs)
+				consider(fragment.Landmarks[index].Code)
 			}
 		}
 		for _, child := range section.Children {
@@ -280,7 +238,7 @@ func replaceCoverageFile(oldPath string, planned []plannedRecord) error {
 
 func repairOutput(action, removed string, planned []plannedRecord, dryRun bool) coverageRepairOutput {
 	base := coverageOutput(planned, dryRun)
-	return coverageRepairOutput{OK: true, Action: action, Removed: removed, DryRun: dryRun, Records: base.Records, Selectors: base.Selectors, EvidenceFiles: base.EvidenceFiles}
+	return coverageRepairOutput{OK: true, Action: action, Removed: removed, DryRun: dryRun, Records: base.Records, References: base.References, EvidenceFiles: base.EvidenceFiles}
 }
 
 func writeCoverageRepairResult(out io.Writer, result coverageRepairOutput, jsonOutput, quiet bool) error {

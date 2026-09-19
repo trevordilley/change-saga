@@ -1,0 +1,427 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "digest": "sha256:d3453d8d8a338cd819c95ec66027f2df726ac8aca8bb9ffc1c3e6362d3706cfd",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:aca24f1aab1d69c2f9500ecb4bf624996d5ee8c7ec2adddcbff1df1175e5e97a",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:5a0d0bd69e665c10cdb26ef70816dfee1f7e45a24a740cc8d5b493cbcaa0320b",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:9c0f52c1679557ad475a67203fdf6a4e4e3544adf57d14fae0fe0d78061a6b23",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:ef11a719d9b7dd4649d0dd5f348a309d7a32609943586bfff4f2b5c8a2ff2000",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:79c4294071e81a00c24521f61180f7dc5ab4d3e929b1bdada99bfdb0e76f97d8",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:521c1c9cb6a9217fcaf876dce5f0a57adc27ff48190f7e7b300ddfc97a4d01a0",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:7ebe3f44783694dd0823bc4992646d9b7cc606364decd0745517128ad99369ec",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:cef6b4bf11e422fef0e5736bb9b9284fa10379368cddd9dc39b6dee0b7143fdc",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:b1a46af1d1f88caf4d01c2360d646b2424111d03846c39d4505078f42cc432de",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:54a3daf8fa8912c2c7835801e8bde88df2bb121e479fb0b43ec2b998e077e990",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:a5812f67b9e4a29ebf59dad82c4312c9064f1a244ed7fc57a8ea91aa3bb9bae3",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:e36f3a8261b62f0dfa72d6413fd2050ff8e55d177115e9d33c355be23f0035e0",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:363bd24549467dad3ffc3ceb4a9a212d989bc9960bef96de6482492d1561b250",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:e89101f98937993f316c038c0886e37f592d12e165d0c857532860e940d4fb26",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:9654ea9ede8fee45846aaf6193b059c2c1dda8384dbe207254dc806551ddbfb1",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:e2b76f848b30af8c4a4017375b8d896f8b256bbbc680bc8a54cd71c5b9132da2",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:0e8a1c6bb5b0dcfe75dd2587666ebf0a43370dfb5ea83e9d090b2362322123fa",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:521c1c9cb6a9217fcaf876dce5f0a57adc27ff48190f7e7b300ddfc97a4d01a0",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:7974dbb1c502f1c2e5e2e0d5b3c6cd3061b825617f2ff82a6c900a96b548410a",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:320b832baf462da0039cb8642602a9d22d0242f0be7d5b29aa83c387fbaa4685",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:e9588310fac15fe00355bd95cc89f141a1ed38973bff3f73adcf9c4883e69b59",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:0019e31814cea2f416a4ef837720cefcdc722971820d4059bffc91c43388bdb0",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:d1a1c7f5c678d7005b3b0f5fdc23cd1a120071bf8516301f0e1c599cb4359a45",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:e6d57138520969a711d25af5a38b8f5dcf68253be8473384b2e3326ea2b34af9",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:e2b76f848b30af8c4a4017375b8d896f8b256bbbc680bc8a54cd71c5b9132da2",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:31fd9e675be0ef0bc2cde57dfd6bc6d19e4601f2bb0097f6837752d12a89c1df",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:521c1c9cb6a9217fcaf876dce5f0a57adc27ff48190f7e7b300ddfc97a4d01a0",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:d11256a82ec5c60cfd46b1f538ac307f2b0a2bcccd941c03006b06a8f7f8ef28",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:19cee85df9b18a9569af7dbc615c15dec917404488f61311f06cf22c682cdd47",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:d1a1c7f5c678d7005b3b0f5fdc23cd1a120071bf8516301f0e1c599cb4359a45",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:e6d57138520969a711d25af5a38b8f5dcf68253be8473384b2e3326ea2b34af9",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:0627edede93c2d5d6bcecaa13aba8ed72042573595efd576b97157ecc99d0831",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:e93bf76f9c80e7b1fdb4bdb43db08fee68a8031ae16d51fe5d20d2247de9bd3e",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:521c1c9cb6a9217fcaf876dce5f0a57adc27ff48190f7e7b300ddfc97a4d01a0",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:70eb38c3fc83f4cdbd1e55862edfd013546201e5e0a8e0791113654e65588b10",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:320b832baf462da0039cb8642602a9d22d0242f0be7d5b29aa83c387fbaa4685",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:50572f78acf30c70addb9517fc9d216927c254fecc7bc83f0b04f9b9caf923db",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:3d300c033d1c87308278b4189d807a2cc69823cb16b247e2fa8c8736a2272efe",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:6bfcabdb6e685288ca2e2cc5dc809a3df6ad99e684600f940260d87c372ddaef",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:87468bc8b6c7c0302e4088fb42cdda250e6ed75d2fb1847d93654207afb8cf6b",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:ba02ef1f252f4035743f3c3bc4780586404a49c15a2084dd519bba5db315ab77",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:2dd0614baa2a87ada0906e649b8c9125388624ca348e82c79339547fb4591093",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:4a57e52c9a50083c5527cee1dccee915b64413e31f52dadfcc93f0fad9966916",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:d1a1c7f5c678d7005b3b0f5fdc23cd1a120071bf8516301f0e1c599cb4359a45",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:e6d57138520969a711d25af5a38b8f5dcf68253be8473384b2e3326ea2b34af9",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:e2b76f848b30af8c4a4017375b8d896f8b256bbbc680bc8a54cd71c5b9132da2",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:43ba7614388fac80b7feb2a310fac3dca6f9665bd9164eb53359127d4905b8af",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:521c1c9cb6a9217fcaf876dce5f0a57adc27ff48190f7e7b300ddfc97a4d01a0",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:7a2081403c8ce55f4d77c6f4b8658faad2a6a8ec3b2e3c38803989f3f7f7468e",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/idea.yml",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:ce5ff633d02e26d657e8d2882f45c4b77e30985ca7f0f8cc6bf5dc7b3c40ae03",
+      "note": "Structures proposals around problem, outcome, alternatives, scope, and contribution intent."
+    }
+  ],
+  "version": 2
+}

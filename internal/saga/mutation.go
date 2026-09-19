@@ -9,7 +9,6 @@ import (
 	"strings"
 
 	"github.com/twentyideas/changesaga/internal/applayout"
-	"github.com/twentyideas/changesaga/internal/diffuri"
 )
 
 // MutationIndex is the small structural contract needed to append review
@@ -29,7 +28,7 @@ type MutationIndex struct {
 // coverage indexes.
 type ReviewState struct {
 	Threads     []*Thread
-	DiffReviews []DiffReview
+	FileReviews []FileReview
 	ByTarget    map[string][]Review
 }
 
@@ -268,7 +267,7 @@ func scanMutationFragment(root, dir, sagaID string, index *MutationIndex, ids ma
 		entryPath := filepath.Join(dir, entry.Name())
 		if entry.Type()&fs.ModeSymlink != 0 || !entry.IsDir() {
 			addIssue(validation, "error", relativePath(root, entryPath), "reserved metadata path must be a real directory")
-		} else if entry.Name() != "___diffs" && entry.Name() != "___landmarks" && entry.Name() != "___approvals" {
+		} else if entry.Name() != CodeDirName && entry.Name() != "___landmarks" && entry.Name() != "___approvals" {
 			addIssue(validation, "error", relativePath(root, filepath.Join(dir, entry.Name())), "unknown reserved directory in fragment")
 		}
 	}
@@ -351,12 +350,12 @@ func LoadReviewState(index MutationIndex) (ReviewState, Validation, error) {
 			}
 			state.Threads = threads
 		}
-		if metadataDirectorySafe(index.Root, reviewDir, "diffs", &validation) {
-			reviews, err := loadDiffReviews(index.Root, &validation)
+		if metadataDirectorySafe(index.Root, reviewDir, FileReviewDir, &validation) {
+			reviews, err := loadFileReviews(index.Root, &validation)
 			if err != nil {
 				return ReviewState{}, validation, err
 			}
-			state.DiffReviews = reviews
+			state.FileReviews = reviews
 		}
 	}
 	// Deck, slide, and Item review records are flat files at the Saga root.
@@ -367,12 +366,11 @@ func LoadReviewState(index MutationIndex) (ReviewState, Validation, error) {
 		}
 		validation.Issues = append(validation.Issues, flatValidation.Issues...)
 		state.Threads = append(flat.Threads, state.Threads...)
-		state.DiffReviews = append(flat.DiffReviews, state.DiffReviews...)
+		state.FileReviews = append(flat.FileReviews, state.FileReviews...)
 		for target, reviews := range flat.ByTarget {
 			state.ByTarget[target] = append(state.ByTarget[target], reviews...)
 		}
 	}
-	repository, _ := diffuri.CanonicalRepository(index.Manifest.Source.Repository)
 	for _, thread := range state.Threads {
 		path := thread.Path
 		if path == "" {
@@ -381,11 +379,6 @@ func LoadReviewState(index MutationIndex) (ReviewState, Validation, error) {
 		path = relativePath(index.Root, path)
 		if _, ok := index.Targets[thread.Target]; !ok {
 			addIssue(&validation, "error", path, "thread target does not exist")
-		}
-		if thread.Anchor.Type == "diff" && thread.Anchor.Diff != nil {
-			if reference, err := diffuri.Parse(thread.Anchor.Diff.URI); err == nil && reference.Repository != repository {
-				addIssue(&validation, "error", path, "thread diff anchor belongs to a different source repository")
-			}
 		}
 	}
 	validation.Valid = !hasErrors(validation.Issues)

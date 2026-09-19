@@ -1,0 +1,21 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/install.sh",
+      "start": 170,
+      "end": 184,
+      "digest": "sha256:246d42dd1989fa073e39b7568f23213855ff79e5fb7e53ad35ecefc4f4d269cc",
+      "note": "Resolves the expected digest, computes the local digest, and rejects absent or mismatched verification before the transition to layout inspection."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/install.sh",
+      "start": 209,
+      "end": 243,
+      "digest": "sha256:5a727e58d9e0731ce45604e00b3ea019cf9bbec062f43e8e84dda3c751941e6b",
+      "note": "Resolves the expected digest, computes the local digest, and rejects absent or mismatched verification before the transition to layout inspection."
+    }
+  ],
+  "version": 2
+}

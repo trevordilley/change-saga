@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/saga/markdown_test.go",
+      "start": 1,
+      "end": 83,
+      "digest": "sha256:211c3f1f2e0cab2064bc134eac3a069972e87544cec87710ea1cb43bd3820cf9",
+      "note": "Keeps anchor repair narrow and distinguishes authored-format validation from omission status."
+    }
+  ],
+  "version": 2
+}

@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/workflows/release.yml",
+      "start": 223,
+      "end": 234,
+      "digest": "sha256:6fa8cdfed75d916fd932dad2a05349a9b94cfd558320551c729599360bd0fe24",
+      "note": "Collects platform outputs into read-only bundle preparation."
+    }
+  ],
+  "version": 2
+}

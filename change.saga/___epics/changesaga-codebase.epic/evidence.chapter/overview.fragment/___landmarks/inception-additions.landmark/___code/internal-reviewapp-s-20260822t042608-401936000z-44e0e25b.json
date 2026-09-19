@@ -1,0 +1,11 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewapp/session_test.go",
+      "digest": "sha256:fa4e7bc35e9559ea2be7c139016ff2a4eff31eb8be75d14b5bdec258e5a6cad6",
+      "note": "Records this owned authoring path as newly introduced in the since-inception comparison."
+    }
+  ],
+  "version": 2
+}

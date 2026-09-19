@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/mutation_test.go",
+      "start": 189,
+      "end": 257,
+      "digest": "sha256:7604aef7d7320d40cc0a58bce18420e46e378d61bf4d7f19f08252242633117f",
+      "note": "Exercises refusal and recovery paths for invalid, ambiguous, stale, or unsafe authoring state."
+    }
+  ],
+  "version": 2
+}

@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore.go",
+      "start": 75,
+      "end": 193,
+      "digest": "sha256:5735b3699c8bc51d257dc35c75cae279a9b19f99a1e8edccca868ff1c325e95c",
+      "note": "Appends independent file-review, reply, state, anchor, and decision records without rewriting prior events."
+    }
+  ],
+  "version": 2
+}

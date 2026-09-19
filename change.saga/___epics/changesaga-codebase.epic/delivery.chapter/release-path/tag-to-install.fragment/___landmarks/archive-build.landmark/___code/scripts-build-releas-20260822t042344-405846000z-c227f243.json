@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build-release.sh",
+      "start": 1,
+      "end": 178,
+      "digest": "sha256:28a239492ec9f868121a59ce48dc5d900035fcd3a61f74f5c0cb57d47e95cae1",
+      "note": "Validates inputs, binds embedded provenance, stages files, and signs before archival when configured."
+    }
+  ],
+  "version": 2
+}

@@ -1,0 +1,11 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_test.go",
+      "digest": "sha256:226f9043ee58a027af3f586aff775fda7d3631706f263bd1ad54f7e76bd3fc30",
+      "note": "Adds end-to-end workspace, annotation, navigation, attribution, and server-boundary verification."
+    }
+  ],
+  "version": 2
+}

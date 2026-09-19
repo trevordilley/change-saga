@@ -1,0 +1,11 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/fixture-builder.ts",
+      "digest": "sha256:8fafe70840ed8824cfefd8751c4b921a44043289f480b847f9fe5a35dfbada62",
+      "note": "Introduces the isolated browser-test fixture builder."
+    }
+  ],
+  "version": 2
+}

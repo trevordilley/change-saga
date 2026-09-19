@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server.go",
+      "start": 1,
+      "end": 434,
+      "digest": "sha256:b71223d1e05274981bbff1141653859fada8e594b3806b298112a7ce847c765b",
+      "note": "Defines local runtime state, bounded server startup, route wiring, host checks, session tokens, and template helpers."
+    }
+  ],
+  "version": 2
+}

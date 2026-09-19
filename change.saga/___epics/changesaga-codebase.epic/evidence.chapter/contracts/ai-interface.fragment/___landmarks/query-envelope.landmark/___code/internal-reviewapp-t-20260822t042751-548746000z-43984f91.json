@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewapp/types.go",
+      "start": 347,
+      "end": 448,
+      "digest": "sha256:8b39277cb281564f2ce1b885916c81f91317fd74916e562ac6bd3d61f511a023",
+      "note": "Defines one versioned query envelope, stable operations, typed responses, and machine error codes."
+    }
+  ],
+  "version": 2
+}

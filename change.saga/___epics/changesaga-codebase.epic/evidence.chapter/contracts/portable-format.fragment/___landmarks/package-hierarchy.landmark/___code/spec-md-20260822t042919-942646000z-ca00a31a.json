@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SPEC.md",
+      "start": 151,
+      "end": 219,
+      "digest": "sha256:93f893ceaba8b939936858ee0c2132f736ae22d38c63ad91194455ae176a0e2a",
+      "note": "Specifies explicit heading anchors and semantic landmark packages for addressable content."
+    }
+  ],
+  "version": 2
+}

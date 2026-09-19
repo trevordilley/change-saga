@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewapp/claims.go",
+      "start": 1,
+      "end": 150,
+      "digest": "sha256:02dfaa75de7f3cb4d1a5d96a322f2c6080d159772343bd6d351aa72a72927484",
+      "note": "Appends falsifiable claims and honest verification results independently from omission coverage."
+    }
+  ],
+  "version": 2
+}

@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/install_test.sh",
+      "start": 210,
+      "end": 215,
+      "digest": "sha256:04d25e607bd176efa43e5b4350bb1285e7eaa58451ce54d36579f8e7a59ac279",
+      "note": "Demonstrates that a corrupted archive takes the nonzero checksum-failure transition."
+    }
+  ],
+  "version": 2
+}

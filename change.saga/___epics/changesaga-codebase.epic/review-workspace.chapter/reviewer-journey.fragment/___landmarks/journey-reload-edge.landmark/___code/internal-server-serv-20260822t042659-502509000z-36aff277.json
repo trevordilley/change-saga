@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server.go",
+      "start": 1020,
+      "end": 1087,
+      "digest": "sha256:0030eca29a4baae025af4167fb8e439091fd1f2691f0e68e90513dfd153e32ad",
+      "note": "Batches record paths through Git attribution and applies resulting identity to reloaded review history."
+    }
+  ],
+  "version": 2
+}

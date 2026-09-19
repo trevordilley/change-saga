@@ -1,0 +1,11 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/releasing.md",
+      "digest": "sha256:f6f3a28ce387206825ba8e9e11e4e912fd26159af692ef83b0b5dde17a571876",
+      "note": "Introduces the maintained release runbook and provenance contract."
+    }
+  ],
+  "version": 2
+}

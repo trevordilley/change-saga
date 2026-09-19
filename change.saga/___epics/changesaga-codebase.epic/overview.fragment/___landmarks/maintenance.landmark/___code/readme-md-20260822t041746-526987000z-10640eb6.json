@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "README.md",
+      "start": 111,
+      "end": 130,
+      "digest": "sha256:c3916c2f72587861c586aeeba0d1aeff8909163544188da5e140342152ace2c3",
+      "note": "Defines the codebase-wide maintenance workflow as AI-managed projection of new changes onto existing evidence."
+    }
+  ],
+  "version": 2
+}

@@ -24,13 +24,11 @@ import (
 )
 
 type session struct {
-	snapshot           string
-	sourceHeadIdentity string
-	sourceHeadCommit   string
-	requirements       requirements.Document
-	plan               workplan.Plan
-	saga               *saga.Saga
-	adopted            bool
+	snapshot     string
+	requirements requirements.Document
+	plan         workplan.Plan
+	saga         *saga.Saga
+	adopted      bool
 }
 
 func Open(_ context.Context, options OpenOptions) (Session, error) {
@@ -72,7 +70,7 @@ func Open(_ context.Context, options OpenOptions) (Session, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &session{snapshot: snapshot, sourceHeadIdentity: options.SourceHeadIdentity, sourceHeadCommit: options.SourceHeadCommit, requirements: graph.requirements, plan: graph.plan, saga: doc, adopted: adopted}, nil
+	return &session{snapshot: snapshot, requirements: graph.requirements, plan: graph.plan, saga: doc, adopted: adopted}, nil
 }
 
 func livingRootPresent(root, name string) bool {
@@ -226,9 +224,6 @@ func (s *session) readinessResult(query Query) (Result, error) {
 }
 
 func (s *session) traceabilityResult(query Query) (Result, error) {
-	if query.Filters.Commit != "" && s.sourceHeadCommit == "" {
-		return Result{}, appError(CodeInvalidArgument, "commit lookup requires a committed source comparison", false, nil, nil)
-	}
 	rows, _ := s.traceRows(query.Filters)
 	unlinked := s.unlinkedReviewEvidence(query.Filters)
 	start, end, page, err := s.page(query.Operation, normalizedQueryKey(query.Filters), query.Cursor, query.Limit, len(rows))

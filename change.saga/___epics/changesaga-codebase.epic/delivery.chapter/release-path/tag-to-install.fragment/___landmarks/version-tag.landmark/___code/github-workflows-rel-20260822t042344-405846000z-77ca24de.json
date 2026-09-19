@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/workflows/release.yml",
+      "start": 18,
+      "end": 32,
+      "digest": "sha256:ee8d8cc27ef98763262a5fe23109269052148e3db0b3214078ed366c2dd9efec",
+      "note": "Defines version-tag and rehearsal entry points with read-only permissions and serialization."
+    }
+  ],
+  "version": 2
+}

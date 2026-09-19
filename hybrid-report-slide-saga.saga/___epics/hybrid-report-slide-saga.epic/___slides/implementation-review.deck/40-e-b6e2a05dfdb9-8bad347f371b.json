@@ -1,9 +1,13 @@
 {
-  "version": 2,
-  "diffs": [
+  "references": [
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=236\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fcli%2Fliving_requirements.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=236",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/cli/living_requirements.go",
+      "start": 236,
+      "end": 236,
+      "digest": "sha256:baadc2d599ae065ef31d690a4771d53e3caefeb0658765a8f5f7ae022e53c7ed",
       "note": "Exposes explains as a supported typed traceability relation in the public requirements CLI."
     }
-  ]
+  ],
+  "version": 2
 }

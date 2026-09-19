@@ -1,0 +1,11 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/integration_test.go",
+      "digest": "sha256:91ffe2e1c34042d49030f8b2fc61fb4027e1a5cae9dd95ad61b0217a56bc3781",
+      "note": "Records this owned authoring path as newly introduced in the since-inception comparison."
+    }
+  ],
+  "version": 2
+}

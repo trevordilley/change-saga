@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server.go",
+      "start": 346,
+      "end": 376,
+      "digest": "sha256:70ea3a95fe4b4e1cf6127263dbbf48fea4dd3388be1f2a7bd43296fd51f65cf3",
+      "note": "Rejects cross-site requests and unrecognized Host values before the application handler runs."
+    }
+  ],
+  "version": 2
+}

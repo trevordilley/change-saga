@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/twentyideas/changesaga/internal/applayout"
+	"github.com/twentyideas/changesaga/internal/coderef"
 )
 
 const (
@@ -124,18 +125,18 @@ const (
 )
 
 type Evidence struct {
-	Schema        string       `json:"$schema"`
-	Version       int          `json:"version"`
-	ID            string       `json:"id"`
-	TestCase      string       `json:"test_case"`
-	TestRevision  string       `json:"test_revision"`
-	Role          EvidenceRole `json:"role"`
-	Diffs         []string     `json:"diffs"`
-	Verifications []string     `json:"verifications"`
-	Citations     []string     `json:"citations"`
-	Supersedes    []string     `json:"supersedes"`
-	CreatedAt     time.Time    `json:"created_at"`
-	RequestID     string       `json:"request_id,omitempty"`
+	Schema        string              `json:"$schema"`
+	Version       int                 `json:"version"`
+	ID            string              `json:"id"`
+	TestCase      string              `json:"test_case"`
+	TestRevision  string              `json:"test_revision"`
+	Role          EvidenceRole        `json:"role"`
+	Code          []coderef.Reference `json:"code"`
+	Verifications []string            `json:"verifications"`
+	Citations     []string            `json:"citations"`
+	Supersedes    []string            `json:"supersedes"`
+	CreatedAt     time.Time           `json:"created_at"`
+	RequestID     string              `json:"request_id,omitempty"`
 
 	Current      bool     `json:"-"`
 	StaleReasons []string `json:"-"`

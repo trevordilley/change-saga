@@ -1,0 +1,11 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server.go",
+      "digest": "sha256:fd56c2bec3f123cbf5df6eac54d04e2dbd85b246d7a248502d98af832095b0e5",
+      "note": "Introduces the local review HTTP server that hosts the complete reviewer workspace."
+    }
+  ],
+  "version": 2
+}

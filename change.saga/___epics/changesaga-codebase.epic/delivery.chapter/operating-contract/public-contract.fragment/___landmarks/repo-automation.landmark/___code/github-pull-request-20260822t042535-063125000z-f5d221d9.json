@@ -1,0 +1,395 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "digest": "sha256:2b2156d77cfb8e39d65af34e754ee49d400bbcc7e28dac77b8c4623d135bae92",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:9d1f91a6f58704d556c64a210a669cf8d8e0af43ca1b880f7139a0566e5fe1ce",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:473f2449bbd3c159519fcdd9ef944a8da55cec90ffe3c421e064c9fe47e1dba0",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:396d674ad81c022c3777471d21fde38ecb518fc2697b97e07b6e9189999a85c7",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:a86a926163fb2926c547068a3e543b3ebda7db234b356070e2ebacf1b668406a",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:1388b572a08d829dcae08cb469448aa5e617ce0791beae46b487a1d872fee558",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:e98670fbe954c32f17b1249b7cc144c147fcbd4bdea10924e9217754b30ba297",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:2e2d8b09c20a89e2fa1f79514f081f44d19682ade8e8c139a89177f0dcaff8ee",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:bac0aeb0178dec1df7494a79960c572ff43d56c427fdfd2d925ccf43a83f555a",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:8069bdaab8ea8a6318abcbd9d0f6a0b3fc6524545fb689183600f67144aa9114",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:d184b8485120cb21b06d2dab6de900d2955d1cd4daab758062daaf8e8e02537a",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:f008cdb32e157dda4b719f0751c05e3d6b2986070fc585dca75671cc6c62c651",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:dc43fb89dd71391706bb655337139ae66ac10facc4262bcd248c229cf0e25d05",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:47c06c561d5c327343685268a46b3391f3998eee890d2be51f0d21cc4a53ae6d",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:ac47f2a1e5d0363e11b8c0d8e21c414707ea1d3388414101b9c41bbeb7b8c8b3",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:de8823e93ee9b630252dfc0a3ab53dd6cec84402247d4157df14f3235a2da8e6",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:3661cb3b396a9ee522290a269c631d6d40f9cbdd1d10fdc7e997b94594e04de9",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:eb919108f79671cdf3a77f7e39094a505debfc96d99b955e7cbd68bbe68c9e9c",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:158f2d7cd2ba4e6a64c2a183344ac9b41284fc43036f63f4b94488cf1886c8c5",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:f8117b61ed6306aa41116b6318880ab68bbcfe6a48d0cacf75b6323f49be95d7",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:b3483c487101e20425ea556994d63cd2357a2c3c55235f86c34c2f138a180034",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:507acbb1d143d1aba9368865354c46279a353e0f5874ea83f8ad0a484e179821",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:67537a95e7778f8d59187d7443df527dd92a7b2570aed70c44456dc2dfe524a7",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:07fb1ec70185deffe20cf4e5aa1ae80b31a7aeebd640e7d660e79d8f6adb7c0c",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:409741ac18efb444f85612a7191101ea08e63c3ec50e5dc6a830fbac70e93d28",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:5ea31a20691a7d4e6e5afb97469acd661de763488f02fb0592c8918b4c5bb46b",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:1c1f6642773673d7b7efd17aeac1f7eb0cf6d305b35c9016181bf7caa1fd03dc",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:3a08743750d53a294d16395fcd64dabbbfc5a1749e09b442b7c406757c695854",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:eed9c86575cc069acf8d396bc7140977d14b52aed445ea49124666a9a6efb282",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:c81541fe48f7f051e41dfe2366f13a283d13d2f8491fe3699a87330d6c70a88f",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:d3f462a472ba4efc338a440fc2adf0be78616b55dc799c639b65b48827e2e825",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:293d2c6bb9df0a97037a066c97f99106fd9c8f77f87171a9ae7e1b51cd4777d4",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:6441c0f262797b34be6221c54943720774b933c2ed4c637b95f162af455ac9d0",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/PULL_REQUEST_TEMPLATE.md",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:bf815cb780feecf65f5ef8e277f4dd27d60d33790deea3df2fd2b451a5aa5e4b",
+      "note": "Prompts for motivation, tests, compatibility, docs, security impact, and reviewer steps."
+    }
+  ],
+  "version": 2
+}

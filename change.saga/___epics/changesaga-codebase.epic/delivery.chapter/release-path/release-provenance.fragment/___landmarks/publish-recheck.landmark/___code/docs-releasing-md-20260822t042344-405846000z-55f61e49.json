@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/releasing.md",
+      "start": 128,
+      "end": 183,
+      "digest": "sha256:449448b57a950bd6ab518c37684053ce785a919345565a5d08a74f6c9c5c2bdf",
+      "note": "Documents canonical artifacts, checksum manifests, attestations, and manual verification."
+    }
+  ],
+  "version": 2
+}

@@ -1,0 +1,11 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/cli.spec.ts",
+      "digest": "sha256:948fb326a605325c6fecd41559ff92111d0c63997015ab20458331d0fef0550e",
+      "note": "Introduces structured CLI end-to-end scenarios."
+    }
+  ],
+  "version": 2
+}

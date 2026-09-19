@@ -1,0 +1,11 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/testdata/query/help.golden",
+      "digest": "sha256:74602d7a3dc953309fc0b9a5b4c59d9a26ff6ffc30ed77b1b2e7935175b30d41",
+      "note": "Records this owned authoring path as newly introduced in the since-inception comparison."
+    }
+  ],
+  "version": 2
+}

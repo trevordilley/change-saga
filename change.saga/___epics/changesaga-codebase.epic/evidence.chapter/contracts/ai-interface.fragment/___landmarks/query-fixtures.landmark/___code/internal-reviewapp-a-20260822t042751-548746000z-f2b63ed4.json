@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewapp/adversarial_test.go",
+      "start": 1,
+      "end": 149,
+      "digest": "sha256:b8ede6e5d285365046fce758c5b0be74ca41c45f24cdc50ea305b09c74a9965e",
+      "note": "Tests bounded inert queries, separate repositories, cursor attacks, side effects, and path leakage."
+    }
+  ],
+  "version": 2
+}

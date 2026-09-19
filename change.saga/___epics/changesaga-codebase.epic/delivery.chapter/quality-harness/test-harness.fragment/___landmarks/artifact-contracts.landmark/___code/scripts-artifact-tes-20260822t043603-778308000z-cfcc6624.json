@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/artifact_test.sh",
+      "start": 134,
+      "end": 219,
+      "digest": "sha256:48167aface25cdbbb0ecbf39e686e408a7596e788f03baa54287a686e758da9e",
+      "note": "Exercises host and Windows archives plus restrictive-umask independence."
+    }
+  ],
+  "version": 2
+}

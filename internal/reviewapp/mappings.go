@@ -76,19 +76,19 @@ func (s *session) mappingAssessments() []MappingAssessment {
 				groups[key] = group
 			}
 			group.assessment.SelectorCount++
-			if len(entry.selector.Atoms) == 0 {
+			if entry.stale != nil {
 				group.assessment.StaleSelectorCount++
 			}
-			note := strings.TrimSpace(entry.selector.Note)
+			note := strings.TrimSpace(entry.selector.Reference.Note)
 			group.notes[note] = true
 			if targetAtoms[target] == nil {
 				targetAtoms[target] = map[string]gitdiff.Atom{}
 				targetFiles[target] = map[string]bool{}
 			}
 			for _, atom := range entry.selector.Atoms {
-				group.atoms[atom.URI] = atom
+				group.atoms[atom.Key] = atom
 				group.files[atomFilePath(atom)] = true
-				targetAtoms[target][atom.URI] = atom
+				targetAtoms[target][atom.Key] = atom
 				targetFiles[target][atomFilePath(atom)] = true
 			}
 		}
@@ -149,7 +149,7 @@ func mappingReasons(item MappingAssessment) []MappingReason {
 		reasons = append(reasons, MappingReason{Code: "generic_note", Weight: 20, Message: "the evidence note is generic and does not explain what changed or why this target owns it"})
 	}
 	if item.StaleSelectorCount > 0 {
-		reasons = append(reasons, MappingReason{Code: "stale_selector", Weight: 50, Message: "at least one selector in this evidence record resolves to no current diff atoms"})
+		reasons = append(reasons, MappingReason{Code: "stale_selector", Weight: 50, Message: "at least one reference in this evidence record is stale: its code changed since it was pinned"})
 	}
 	if item.AtomCount > 200 {
 		reasons = append(reasons, MappingReason{Code: "very_broad_record", Weight: 35, Message: "one evidence record claims more than 200 atoms"})

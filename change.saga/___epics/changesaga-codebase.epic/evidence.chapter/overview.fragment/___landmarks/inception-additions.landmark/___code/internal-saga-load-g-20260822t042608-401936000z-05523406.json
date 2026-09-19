@@ -1,0 +1,11 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/saga/load.go",
+      "digest": "sha256:4471a0d76b5bdbaa19ebe5782488fc0571884371d0964ed92b4704d09d125f4f",
+      "note": "Records this owned authoring path as newly introduced in the since-inception comparison."
+    }
+  ],
+  "version": 2
+}

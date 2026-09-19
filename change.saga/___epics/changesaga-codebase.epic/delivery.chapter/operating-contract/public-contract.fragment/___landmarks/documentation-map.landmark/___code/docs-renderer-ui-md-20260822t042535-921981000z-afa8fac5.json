@@ -1,0 +1,771 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "digest": "sha256:55abde2acad7a6d2a34ba4568477cfe66bda4157669678d8eecc42c42c6ba264",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:7a7e927efb0c41548d4aea5bac7b6bdafe3f29ee08abec6c96250da2fad89dba",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:d69343259d969153b3e46f1b5cd57ab7409bafd8bda8c1e8a4bd5d36b3f0f999",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:982c6e5ec5ef1ea7268dc18fcb076961f40269feca6aaa99c952dd8ccc407dd4",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:8eef4795e0ec82d0a9906a04cdfc849433c18d0b6e5fa1fe08a5476f2ed8d93f",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:d44e8c0a7ebff5e0f33a1680d35c7ce2c1987637d1d464c24c54c7daa0021e7b",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:89e8476142901e1582467cf4851eb3ab59841eb0ae2321e6beda36f6ac963b48",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:c1c3460fda2c49131caac52928b7dda4fdb82ed57d901c4d2e1d6adc1355cf07",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:04227cba6f228fd372add998ab7d1d521d43d1938be91345299c590c6a9662c5",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:276525c21125f4f5501bd897f5e052d490299ee26eb3611210f58d02a58c5a56",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:030e3fb86788d3e88ba9dc63ec1350c4a78801a9c8ba7dbe4f7e67cdd5c1c53c",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:02acfa5f7c791cac3ddf186cc47a603ad4e19817eada04794caa84247eefbdca",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:c1696575bd89a526b664f9f9e8b6c414324cb87f4c137b8ff70f20f5e383c0fb",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:adb11fa8aabe44e9c4ffbf19619d0de8b848c613b87b170f5bee124cbe6f910b",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:fee758eeb5d33a801eb50a5ee9462ae6eaab200d670ec68a1496bf884a326865",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:f38e13640012f823e2e4dbc070dac7746dfafea45c40aaa541aac12aee044efe",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:9c79b5d7252da0a3cc49ac1b094bb96e8e7860fe00ec6266ac8a4fa4e86868e2",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:6f5d59d434bbb2fc6ebeed0088707f9ff110b2d430f0b237dd30ded7675916f5",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:4be50dd45f35f48a035a2f22cfe9f12e934f708159fb146cfe5050d4a5cd5aa7",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:2339e44074bbcc6d5db5386b0964d6752ce259a441b84ebe3a99104c0e33e947",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:000eb2dfa285581d218e98c6144a4df29eb013c96302f04c9fe95e02855f12e1",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:689333e758ecd87de06fb70519419d2901b797090656cf6d1321a0433880ffcf",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:b615eaf99ad2b87a8fb9d2ab1e5bfc2ed7147524361b3d3e6392c889635c8c37",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:e5b62493d2ff3d4c0d3daf05a598f3bd8437dba3d205b4c33a9f6c2f0e5298bd",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:48dba82431dbe7e5c4385a34acbeffc38ccf002492718632dc903595cf02fc49",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:0a39076ed8465e3f394954c18b8d49583d66f9241a1f92da62ea777f70b0bf1c",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:74588b08331464ce273dc48cd746156594852d48ba02e22c578d9502b1f5ea91",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:236cfc41c68ddfa240fdccdb64ea5fa0cd1ab3b7b28f945096189a1cded505d5",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:779c0be6af485b0756961facca8ce95e4fc384bca4876d02a43727d8fcfb6a04",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:0b9df58655777dc6f2c52d07ed66c94dce5cca3b601f03de44366f79cdf30ee3",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:70c1638c3acbcdbf6a2435d87b0cabe9353d52d4cf59e8870404c0ccb0415c44",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:918459626271c7cb55446a635faf561dc7b99c84ffc546acad19db4128117554",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:f0c1ad7981e7d6dc68e437077cdd7263c742b258bd23610e0aa94efef00ca4cb",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:99e7650bc8b4915f02ea2c57c0f5a73ea71312d9c4f97e1eb90fbfa65bc686ba",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:3fa99d8d8503a01c4d6a8f18cbca0b61b5bc62084c9f6e39f00d089d2ede3cdb",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:c51dcfc0c54cd80cd9c90a2699342b0c846d24e26409bb2f71401186aed93ca2",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:ff239baaddc49adff03dbe7d82ad82bad9fa0a8ad315f0ef29c9ae399877c6f4",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:3d84087f26d8a627cd0540a0164284d2291a4ee964f1326caaf85268bbeec1e1",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:044ac1835b1ed8aba7c2257bfc084464b9e1306cbb4b7fa50640ad00839f90a1",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:fa1df11b82d97a99ac974e408c696fb3dd8606dcdd36d65a9590c407ec0b2909",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:b27c9bed0c25afcc46ebc0ab98b24581c8510008c0b1912554c18e91b9b9bc5c",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:768f59abeb5ca9cc7e4ffe03909068e112745fb2db560ce2252e076f49b7d4a7",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:d3b4d969fbd5ed18cd78a958d2af3937151fd0709c65447a646bf73dda5b4488",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:e24205c9db15652cdcf986fdf587cd65f60b63c954712b547634642aa6e26dfc",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:6e4e461ff813b9daaca333242dfa650b1e13f579d3c887063de3ac941df60f89",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:5a2f4c87a3b581f5a97d5ebba2538c63f7570b5c8af1bac5651fa5529925f57b",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:161c019f77c8becbbfdb8f70e2082b14dad7038789d8faeba303c62650bf24af",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:67ba74149e667a086e65530c10b141ff479ab8799cab4b146bf4cc8fd25bf965",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:8a7d9e0190de4a89e1f9050bfa20ec8b495d62416b5e00e8fcba12b5b7a483af",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:8c889c970bfe28f72a6a850557c2e3349b517a7ec457584d23a5748d62c0c769",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:2e577e5b75dad68348a7d2f36567e64eb67450caa7c7c601488feb75d6979565",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 68,
+      "end": 68,
+      "digest": "sha256:e916e607dee64e1826d8ee43b6f602554ee34dfc230cbd544fca5fef4b1d4bc1",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:a56a808b6bb94985ef8bcf80f58636a9af1ae0bb8d1b014d1be848d00d7a2377",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 70,
+      "end": 70,
+      "digest": "sha256:469fcc333640464f598698b255326a44d0154a8c4db5a9ba2ac2d63f564bfebc",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 71,
+      "end": 71,
+      "digest": "sha256:dad4f6e9c1f7fa3d25f270f720f8cbdac5668957c2634f5c1ac520520808c373",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 72,
+      "end": 72,
+      "digest": "sha256:49b5da8bcc4c8ec6a7d792b269a6d99672407094573d3ef9232603cc3cfdc446",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 73,
+      "end": 73,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 74,
+      "end": 74,
+      "digest": "sha256:bfb449e1a5a426508988b42c158310a437e994098fe8c2d71645372f4003e02a",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 75,
+      "end": 75,
+      "digest": "sha256:7bd34be27ef9c4b67a4235abf4091a4f3f64de604c5d613989f04d333f317584",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 76,
+      "end": 76,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 77,
+      "end": 77,
+      "digest": "sha256:f07f729f028bdaf312cd4c1dec373f6dddc5bf072063fa82a5f5adf86b8aea15",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 78,
+      "end": 78,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 79,
+      "end": 79,
+      "digest": "sha256:42a3701ebbad5d8c643804c99de5874ab220b933650a34223729e4be0932a4f7",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 80,
+      "end": 80,
+      "digest": "sha256:d05a477c3454a197fb4701058f3449a757a8f6783ccd8cc43c410ba2b306045d",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 81,
+      "end": 81,
+      "digest": "sha256:7afc07484ea41255880fdf17073e6991c226a52e2b429bde50debfa83a1f59b3",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 82,
+      "end": 82,
+      "digest": "sha256:15a7657556ab0a86df2395a80b2b4e71ff908c760c57779aaad3596cb2e6bc84",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 83,
+      "end": 83,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 84,
+      "end": 84,
+      "digest": "sha256:31ebf8b25c09ba4b1e57904c1b69bfbc2f85a960aa53f96e759720c9986c3459",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 85,
+      "end": 85,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 86,
+      "end": 86,
+      "digest": "sha256:595a9e8be2ba1b950d36b21e66dca9c263ae6bdef839862ec360767e0246d22b",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 87,
+      "end": 87,
+      "digest": "sha256:8f1bf7d95327a23b095db060c38a84ec538a2d66dedebe7f7ab991752638d083",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 88,
+      "end": 88,
+      "digest": "sha256:c28fdd09c07e2034a00e29d2ca0ba21a5d46a90a5343ec1c43664ba6d4465829",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 89,
+      "end": 89,
+      "digest": "sha256:6fec566c5f4b8c867011095bff94d318eb63f0654244db18c668378d3b3e53f5",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 90,
+      "end": 90,
+      "digest": "sha256:379af20fc27ec8a1d6a453d0d3952d97bdb2cc8ad8ecc59dc6fe4ec426131e95",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 91,
+      "end": 91,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 92,
+      "end": 92,
+      "digest": "sha256:21d1931a332d9b7f509d0637a459922427a666e44b8a7f19d1a912664edf66f7",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 93,
+      "end": 93,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 94,
+      "end": 94,
+      "digest": "sha256:a000cf93234e08da6c1596139a1b94a398f1c7632be32dee3c3e8eb1a6fefa64",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/renderer-ui.md",
+      "start": 95,
+      "end": 95,
+      "digest": "sha256:ec0444f3c2dc2b6cb2109603207777d2ee2f4d0de3288c3cdf02d7ab57f80c1f",
+      "note": "Defines content-first renderer vocabulary, navigation, annotations, diagnostics, and dependencies."
+    }
+  ],
+  "version": 2
+}

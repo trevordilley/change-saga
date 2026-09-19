@@ -1,0 +1,77 @@
+{
+  "references": [
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "skills/change-saga/SKILL.md",
+      "start": 162,
+      "end": 162,
+      "digest": "sha256:b8dba9cf78213f2ca899f897472836d22d9a20fa26f959c8f96f4078cbcd50a5",
+      "note": "Author guidance for scale-safe saga workflows."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "skills/change-saga/SKILL.md",
+      "start": 163,
+      "end": 163,
+      "digest": "sha256:6101a429ff0d8881f8ec7fe33208510168968fd6ce250394088be3d49cec4818",
+      "note": "Author guidance for scale-safe saga workflows."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "skills/change-saga/SKILL.md",
+      "start": 164,
+      "end": 164,
+      "digest": "sha256:22ba9e11220e0656980c59b975698372a9cdbdbc4c7ffef16f4bc773bbd738af",
+      "note": "Author guidance for scale-safe saga workflows."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "skills/change-saga/SKILL.md",
+      "start": 162,
+      "end": 162,
+      "digest": "sha256:016f76125eeb830e5c0076d8ad3de34e2b5c9ec51886f545e95dc8e7938cce7b",
+      "note": "Author guidance for scale-safe saga workflows."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "skills/change-saga/SKILL.md",
+      "start": 163,
+      "end": 163,
+      "digest": "sha256:6c2f48751ccbcc89e693222fa0b4260d755a6159bd36cd261627e697861eeb03",
+      "note": "Author guidance for scale-safe saga workflows."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "skills/change-saga/SKILL.md",
+      "start": 164,
+      "end": 164,
+      "digest": "sha256:adf356f7a5d62864b331460f066d01bbaa122d8e9c7c7740baad9bf590c80a92",
+      "note": "Author guidance for scale-safe saga workflows."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "skills/change-saga/SKILL.md",
+      "start": 165,
+      "end": 165,
+      "digest": "sha256:e7783fa3959df25835422be6b785c76960d253fbce3afb8ad93a74d6e5e7574e",
+      "note": "Author guidance for scale-safe saga workflows."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "skills/change-saga/SKILL.md",
+      "start": 166,
+      "end": 166,
+      "digest": "sha256:c636d79fa915d838d508f965e4f42f2910e1cb116b404991e1c09948670d9931",
+      "note": "Author guidance for scale-safe saga workflows."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "skills/change-saga/SKILL.md",
+      "start": 167,
+      "end": 167,
+      "digest": "sha256:cb0b61454b4def0d6baf2a2df2683f113eca12fb3cf81cb4b2cb7c14f0f2c622",
+      "note": "Author guidance for scale-safe saga workflows."
+    }
+  ],
+  "version": 2
+}

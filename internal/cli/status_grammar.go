@@ -3,6 +3,7 @@ package cli
 import (
 	"context"
 	"fmt"
+	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"io"
 	"strings"
 
@@ -38,6 +39,7 @@ type comparison struct {
 	validation saga.Validation
 	changes    gitdiff.ChangeSet
 	report     coverage.Report
+	checkout   string
 }
 
 func readComparison(ctx context.Context, root, repoDir string, allowMismatch bool) (comparison, error) {
@@ -50,7 +52,13 @@ func readComparison(ctx context.Context, root, repoDir string, allowMismatch boo
 	if err != nil {
 		return comparison{}, fmt.Errorf("read source diff (use --repo for a separate saga repository): %w", err)
 	}
-	return comparison{document: document, validation: validation, changes: changes, report: coverage.Evaluate(document, validation, changes)}, nil
+	resolver, err := coderesolve.New(ctx, checkout)
+	if err != nil {
+		return comparison{}, fmt.Errorf("open source repository: %w", err)
+	}
+	defer resolver.Close()
+	report := coverage.Evaluate(ctx, document, validation, changes, resolver)
+	return comparison{document: document, validation: validation, changes: changes, report: report, checkout: checkout}, nil
 }
 
 // buildStatus composes the complete status document. A living-record load
@@ -61,7 +69,12 @@ func buildStatus(ctx context.Context, root, repoDir string, allowMismatch bool) 
 	if err != nil {
 		return statusDocument{}, err
 	}
-	options := livingapp.StatusOptions{SagaRoot: root, Document: value.document, Report: value.report, Changes: value.changes}
+	resolver, err := coderesolve.New(ctx, value.checkout)
+	if err != nil {
+		return statusDocument{}, fmt.Errorf("open source repository: %w", err)
+	}
+	defer resolver.Close()
+	options := livingapp.StatusOptions{SagaRoot: root, Document: value.document, Report: value.report, Changes: value.changes, Resolver: resolver}
 	living, err := livingapp.LoadStatus(ctx, options)
 	if err != nil {
 		living = livingapp.Assemble(livingapp.StatusInputs{
@@ -187,7 +200,7 @@ func livingSpec() map[string]any {
 		"derived_edges":   grammar.DerivedEdges(),
 		"relation_scopes": map[string]string{
 			"self":        "only the source target is asserted to address the requirement",
-			"descendants": "a deck or slide source reaches contained Items and their exact diffs",
+			"descendants": "a deck or slide source reaches contained Items and their code references",
 		},
 		"coverage": map[string]any{
 			"axes":        axes,

@@ -1,0 +1,915 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "digest": "sha256:4222733c9b4f54a208dea2b7169fd7ede6a68934f98fb160abdead3921d48f63",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:1d95fc04a80c952f49ce4188627c53b0fbe8c44041b952d592acd1de99861466",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:2a3053968c035ce2fc33e1c11f55e99cde4c25e74c5b5c1bfefdaadba9fccaec",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:88fc633667d0300731bdd84472dc424e1f9c64175ea2badb666472d91aeb4efc",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:55000888cc2d6f4f4acbc8003bf0401d57b1a8d0965a96b6d81092ebc0f6fa9a",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:57a3d0f8be5fd5c15882414fd8cf43c80ec46cfebebeec8d6526e9e926f3ab62",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:1e81936308f50a86a9d840fa83939d4023b365b2682d9813b74dcff18bcf2afc",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:25a655d9089ea0ebedc41d2b401baedffb4870e6cc63d1cc1609c713998cf759",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:1bacbb48cde7e86c3e80a3bf6c2a904f0feacbf56ed47e1c2dc5df413dcd2e98",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:7d69380bac0bf863a1999a76c98af31b8e138f27376d5ae6f385a68407442d82",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:3d854fbb3d2705071b7b20b0a2254da933b0092af34f4abe27682885305d5b3a",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:54b93a9e69e2b30444a121b7bb154ff3549458d6c3e042304a83fe99f786d7bd",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:974f4695f2710d9775df6f0120fb1f1421c1da2b75ac27362fb1b7760f6d07e3",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:9c4ed0a95a37c77e75db0e36c1bf4a006deee445be6b83e7c20ebb8ccdfe8584",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:78ab031d26307a9818e4c49de6092e5168ba76eb46dc23b38ff64fff950332e1",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:7420a43680904b5681853f4ea2fa84a5e559de09a87f203e88cd11cadcbb600e",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:f4a15250811ef682464052e586f59718a60cfb6f6bb3c1545d5beeb12d852d06",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:16f26b1d51a419123ba75ba207145d811d77f343b7e201443b0f496a23f30854",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:235df3f729dfa7eee6f91767d045b96b6d3aa3c283a184cc389dba4696de14e0",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:ce3c9b39e00f7fdd00749d7ff02ca0caa2f7b765f88d2a0de536b8dcf1b1a09e",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:79bf9345106f44e738ae3d42be0ea246fa9e9f226a7680eec6655da91c783c1a",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:3769d237cd420b9d38b981a0a4f6770190a4a83dca1fe56c4f5ba1e2cbc0ef76",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:0ad797cc924c50b2a6596f9640704ee74229a471cf8d93b4839986365b8c5abc",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:56a6b100555bdeff98875fefeedb712bce5571e4dc81f4ee85d89d22c591a551",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:205a597e0e2745031c20ffed81b5671ab580f1da53e3a1c4f49dcb6feb642301",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:4fccff32b7033c05c593b5bd2e22f2b4b57530950f1ab2eace9f35ceb8499b96",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:130910c37d8d8f392585973df34017e66d423f07be43729771bbc3a8706329f7",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:b1347f6219f2aec0409c79af167e83666d82d63bace3d2eacd3390b6df698979",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:d27970bde1aae005768eac919a0af9c9e32bab8f884517fce5a8be6197a15b12",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:47412e89167328f9116a239186192a127568fc4c4f74ab5962279756ff21afbc",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:ac96469638e152a73cadbf62d44e2f39517e1c31d41eb6206f138d0206444d7b",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:f38d14537e2f4d6a088350050fbde5166f62319e1bcfca0aed5c09cfc7259009",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:b0be1d8386b5a796735c120edc800a5dab72bc5ee4c8e36d35430591a13c61ae",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:1298ffdf15dab6f77262780e965464b9d5f93b6076a45db7e2d98a7dfa83102a",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:fafba0527c3953c4b6e0e5b5739ba83612f8053bcdc9466730193cd1d590b408",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:2b7579d57d65f0c9267eb58e758aee4483cbec957c21091fbd6687f78a39804b",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:f905fb63acb2a9397a0cf5fc95ed3bd090b84fb98503e0a5f8e1d57cadb05cd5",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:cfc38cb25e1b44796990aeab9e591deb4245423e0b84dc82bfa5d756f4bc51d0",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:7420a43680904b5681853f4ea2fa84a5e559de09a87f203e88cd11cadcbb600e",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:88728db1f9e5ba9c39caa96c16ed9d0df1fa95e4834e150399349e4004a54ab0",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:235df3f729dfa7eee6f91767d045b96b6d3aa3c283a184cc389dba4696de14e0",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:27fccc3931a6f0294b8c779c529cc090565bc244d7cf168dbf91590e97c6f037",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:3769d237cd420b9d38b981a0a4f6770190a4a83dca1fe56c4f5ba1e2cbc0ef76",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:dfc0d475dc8c54edc98e460a6cacef120fb8edda33ba3cbe061af21e5d7c86a9",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:96a95436e57daf1dc07f04b682aeb3a3a863007160d69dc3bf7625c9db231764",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:388c675484c7702b337f62b1359183baf4b004e0160fced67907bef0cf8c75cb",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:2ff3f22baef97d944e04a9863ba4f9474c11aaa0415fbd734c9e56632b1c065d",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:366a000617ee7568f8b116f82f0f7c62b4d4845b68df7f036d99aee447656488",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:f8c0b027d5844b57b8a223d4d69bb55b158eba63c51b790f8f4631e7556258dd",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:3769d237cd420b9d38b981a0a4f6770190a4a83dca1fe56c4f5ba1e2cbc0ef76",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:2a14d1f026085665caf55c43a814f28cb532c6b659c2fe3bf8b5c87e27dee351",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:d354b869475368cea22ba35ad3047596a7e1f30b5d188bf35f0e539f5e5a8566",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:f8c0b027d5844b57b8a223d4d69bb55b158eba63c51b790f8f4631e7556258dd",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:3769d237cd420b9d38b981a0a4f6770190a4a83dca1fe56c4f5ba1e2cbc0ef76",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:35a37bf4b1faf31a3d4ee9af366228b3b94d15288592d2f6419eca4e7caba5ed",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:03c8d97c91e4d797223ab583aa265a1cadc9a2089045fb300fc48beff1906080",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:437f59fa43cedf32a283187a264e66828bc49ba928e9af3a63468092ed1bbcff",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:f8c0b027d5844b57b8a223d4d69bb55b158eba63c51b790f8f4631e7556258dd",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:3769d237cd420b9d38b981a0a4f6770190a4a83dca1fe56c4f5ba1e2cbc0ef76",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 68,
+      "end": 68,
+      "digest": "sha256:ab1e8921403cb1a8ef64b7e5b7384e9cd1e83f495741fe9c3a470a68c8eec3b4",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:cc48e149b785418352f30f815a03faceba3e41ca5600dbfb8823ddb02e62e3c0",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 70,
+      "end": 70,
+      "digest": "sha256:46f9920baebe1798cf74902acb35885b035c3b2cb96f5dcccad177bfb58a30ed",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 71,
+      "end": 71,
+      "digest": "sha256:f8c0b027d5844b57b8a223d4d69bb55b158eba63c51b790f8f4631e7556258dd",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 72,
+      "end": 72,
+      "digest": "sha256:3769d237cd420b9d38b981a0a4f6770190a4a83dca1fe56c4f5ba1e2cbc0ef76",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 73,
+      "end": 73,
+      "digest": "sha256:a5556686cc9bcbcc4b933a8626700face2a3628bbb85ed09e746b8a6a4fc7bf1",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 74,
+      "end": 74,
+      "digest": "sha256:8cc8d6c8ea29ab2d1220d8c349215f822d8783a78701ce7f26cbe5b8c20df3f8",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 75,
+      "end": 75,
+      "digest": "sha256:b664d14434c92cfc7dc402fce9363d05a06e0f66585b1599e619435b6f086267",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 76,
+      "end": 76,
+      "digest": "sha256:0f1bd1a8aeef19680f089eb79a8f6fb0ef09afe666064480b828f8ddbbd84e68",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 77,
+      "end": 77,
+      "digest": "sha256:f8c0b027d5844b57b8a223d4d69bb55b158eba63c51b790f8f4631e7556258dd",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 78,
+      "end": 78,
+      "digest": "sha256:3769d237cd420b9d38b981a0a4f6770190a4a83dca1fe56c4f5ba1e2cbc0ef76",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 79,
+      "end": 79,
+      "digest": "sha256:2ad355cabfb328ded0b13f3565db079df5ac05683c4a9dff4cedb9709c54a96b",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 80,
+      "end": 80,
+      "digest": "sha256:1f2c16e92d295ceb0e8df1dd356fa49ff3a85b27db0962b29d7f6cbfb74627d9",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 81,
+      "end": 81,
+      "digest": "sha256:bc03490d86183c6426833eafaac5981aafbe1eb196dd9fec190c98d00b1dd488",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 82,
+      "end": 82,
+      "digest": "sha256:1a2194d4bf86409b4375a2a20b94dd419b4e6119dc7e08a2109b755b1c4b51c9",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 83,
+      "end": 83,
+      "digest": "sha256:f8c0b027d5844b57b8a223d4d69bb55b158eba63c51b790f8f4631e7556258dd",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 84,
+      "end": 84,
+      "digest": "sha256:3769d237cd420b9d38b981a0a4f6770190a4a83dca1fe56c4f5ba1e2cbc0ef76",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 85,
+      "end": 85,
+      "digest": "sha256:073378734380474e993b6e28d96fb6a7341de5cf46d3aca0215db0a622e01330",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 86,
+      "end": 86,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 87,
+      "end": 87,
+      "digest": "sha256:af716fc7abbd00ba23919c00e2f56631634875c6e6311b087a9053fa9f7b120c",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 88,
+      "end": 88,
+      "digest": "sha256:e376b1a3514068b87797902141f6555720be4dacb13f13b05850ff828e4d4aaa",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 89,
+      "end": 89,
+      "digest": "sha256:ac15bdf8d75f668aa5c280a520558a1993c2e2d0593651859e02df5cb6df1276",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 90,
+      "end": 90,
+      "digest": "sha256:a8076d3d28d21e02012b20eaf7dbf75409a6277134439025f282e368e3305abf",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 91,
+      "end": 91,
+      "digest": "sha256:0c6868c2c44f053619cef1cc383e1d530743b574ca192ace9168a9ccf46a86e3",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 92,
+      "end": 92,
+      "digest": "sha256:a2a448df4cd670e9046dce3ffd4cc36cfbddd2661de83fce2cf0a619110f4576",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 93,
+      "end": 93,
+      "digest": "sha256:addcdd5a7ec7fcecdbbd0b78f721bb074749ed574aa29a33eb275fe7afbfcc44",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 94,
+      "end": 94,
+      "digest": "sha256:8a19db1bb0b2da418c6bea2ab0e1362c4690517a63093c447427b5b216b9c0de",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 95,
+      "end": 95,
+      "digest": "sha256:01bb44802bdb031d4d629378d45f28173b6e8c512c1e0eeabd67e5794b46b471",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 96,
+      "end": 96,
+      "digest": "sha256:3143327f55f869b4d1b84ed224924b0a3ceef91449d06e0d53a872f766cda0d7",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 97,
+      "end": 97,
+      "digest": "sha256:9b8b1d3204b836ccc7489dd1ce08b6f6f431c653f621f7b94727b059b0bfe0b1",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 98,
+      "end": 98,
+      "digest": "sha256:f8c0b027d5844b57b8a223d4d69bb55b158eba63c51b790f8f4631e7556258dd",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 99,
+      "end": 99,
+      "digest": "sha256:3769d237cd420b9d38b981a0a4f6770190a4a83dca1fe56c4f5ba1e2cbc0ef76",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 100,
+      "end": 100,
+      "digest": "sha256:9f7b29462d9111bc1b3119898dff06be3c6b6c5286a9b6536b0aec9ee6521537",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 101,
+      "end": 101,
+      "digest": "sha256:926f979bff28d6bda316409922b01ef69e498fbe3111766d73270d5da0e996db",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 102,
+      "end": 102,
+      "digest": "sha256:c1ff5a11cf5aff4c866ee4e90828e56070bfef52f88d205f61679cf92d07dbc6",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 103,
+      "end": 103,
+      "digest": "sha256:995cff34f3991ae82ac781e65373818fe381a8cf1f4aec1b93e96fce6b3f4759",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 104,
+      "end": 104,
+      "digest": "sha256:f8c0b027d5844b57b8a223d4d69bb55b158eba63c51b790f8f4631e7556258dd",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 105,
+      "end": 105,
+      "digest": "sha256:3769d237cd420b9d38b981a0a4f6770190a4a83dca1fe56c4f5ba1e2cbc0ef76",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 106,
+      "end": 106,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 107,
+      "end": 107,
+      "digest": "sha256:29732c4ebe0255e8281662f1c09914d6cce5364c86bb4f2bc6ea67f29ba531d7",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 108,
+      "end": 108,
+      "digest": "sha256:01bb44802bdb031d4d629378d45f28173b6e8c512c1e0eeabd67e5794b46b471",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 109,
+      "end": 109,
+      "digest": "sha256:a438e9f4594fa92f090a9b8c85ee9099f041b6582a2d2e2c26591129707baa94",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 110,
+      "end": 110,
+      "digest": "sha256:d842a9fd4b50c42fd75e52922f0b5f0d19a5361571833afc4781373892501cd7",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 111,
+      "end": 111,
+      "digest": "sha256:c591cf4a9e1be215855777a5e53db75c79270640373137fef49b39a7301d24ee",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 112,
+      "end": 112,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/build_release_test.sh",
+      "start": 113,
+      "end": 113,
+      "digest": "sha256:a0ea09a39c96b309b2e32e25f1b62ef9cd9bbe2ff65aae5d5e46257990986d5c",
+      "note": "Proves release byte reproducibility, exact embedded provenance, and failed-build preservation."
+    }
+  ],
+  "version": 2
+}

@@ -12,7 +12,7 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/twentyideas/changesaga/internal/diffuri"
+	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/saga"
 	"github.com/twentyideas/changesaga/internal/snapshotcache"
@@ -284,10 +284,10 @@ func TestFileDiffEndpointServesCoverageAndTargetedBodies(t *testing.T) {
 	if strings.Contains(unscoped, "linked-evidence") {
 		t.Fatal("an unscoped body marked evidence it has no target for")
 	}
-	// The saga-diff scheme must survive templating intact wherever rows are
+	// The exact code location must survive templating intact wherever rows are
 	// produced; the page itself no longer contains any.
-	if strings.Contains(scoped, "ZgotmplZ") || !strings.Contains(scoped, `data-diff-ref="saga-diff://v1/line?`) {
-		t.Fatal("diff rows lost their exact saga-diff identity")
+	if strings.Contains(scoped, "ZgotmplZ") || !strings.Contains(scoped, `data-diff-ref="`+owned[0].Ref+`"`) {
+		t.Fatal("diff rows lost their exact code location")
 	}
 
 	recorder := httptest.NewRecorder()
@@ -355,23 +355,17 @@ func TestReviewMutationAdvancesOnlyTheOverlayGeneration(t *testing.T) {
 		t.Fatal("the page served after a review decision did not contain it")
 	}
 	current := application.snapshot(context.Background())
-	initialDiffReviews := len(current.document.DiffReviews)
+	initialDiffReviews := len(current.document.FileReviews)
 	filePath := effectiveAtomPath(current.changes.Atoms[0])
-	fileURI, err := diffuri.Build(diffuri.Reference{
-		Repository: current.changes.Repository, Base: current.changes.BaseOID, Head: current.changes.HeadOID,
-		Kind: "file", Path: filePath,
-	})
-	if err != nil {
-		t.Fatal(err)
-	}
-	diffValues := url.Values{"uri": {fileURI}, "state": {"reviewed"}, "file": {filePath}}
+	fileRef := coderef.Location{Commit: current.changes.HeadOID, Path: filePath}.String()
+	diffValues := url.Values{"ref": {fileRef}, "state": {"reviewed"}, "file": {filePath}}
 	diffRequest := httptest.NewRequest(http.MethodPost, "/api/diff-review", strings.NewReader(diffValues.Encode()))
 	diffRequest.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	diffResult := httptest.NewRecorder()
 	handler.ServeHTTP(diffResult, diffRequest)
 	current = application.snapshot(context.Background())
-	if diffResult.Code != http.StatusSeeOther || application.cache.builds != 1 || len(current.document.DiffReviews) != initialDiffReviews+1 {
-		t.Fatalf("diff-review mutation crossed the structural boundary: status=%d builds=%d reviews=%d", diffResult.Code, application.cache.builds, len(current.document.DiffReviews))
+	if diffResult.Code != http.StatusSeeOther || application.cache.builds != 1 || len(current.document.FileReviews) != initialDiffReviews+1 {
+		t.Fatalf("diff-review mutation crossed the structural boundary: status=%d builds=%d reviews=%d", diffResult.Code, application.cache.builds, len(current.document.FileReviews))
 	}
 
 	initialThreadCount := len(application.snapshot(context.Background()).document.Threads)

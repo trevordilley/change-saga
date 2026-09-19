@@ -1,0 +1,627 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "digest": "sha256:69d2162f3a7b6fac4e30c1292d6affe276c75e184960234469ebc470db8efe1f",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:6be010e81174a21f16860e962824208900acb66a07b5684101e80d50ce094d52",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:9fd740d886180afa11df3d852485d100811d76cdb23cff0c7dab2f2dbb249862",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:a9942abc8621fa3edb5f8aab2f05c8e1aff014f0092bd5c6b4e3fd210e5bdac3",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:725e6ad713a1234bb39a625dbbe401c265aad438b3ee7169909c12b8ef9b1482",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:47641af8a7e7474a76dd01f493910ed55cfdd8f388536b9584f75c8e67ca378b",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:b0bd3fdb8c01d76a47bd5425af4ce8d9ac227d51ab742ec3481834474f43f1e2",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:7c509042ba5cad9e7f1f6a742dc529f075e3bbe7a90feda0e4dc822b51ffc357",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:dc43fb89dd71391706bb655337139ae66ac10facc4262bcd248c229cf0e25d05",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:c2c663b8f694dce366b91a792891bf819c89e0eea4895622b7eadafe6704b7d6",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:284b6bb05d9aebc471b172457ccb8b64799f940f88fbf9f53fd928957d3e4419",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:f135f9fa4f38fd0c92563221116e2f79df0838f5ff86440ae44d4b428576fc62",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:47c06c561d5c327343685268a46b3391f3998eee890d2be51f0d21cc4a53ae6d",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:74f7795ab31c5973bb973ec0c92785eee55b8e03eed86e6e93cc41916b680af6",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:2539ed590dc401bab0820107bdd1a92197047b2043f35492bb8c3b7c7c61507b",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:a6838ce4d4e43ecb808874586183a411e9c0621a503c450851c5aa93b0ce0f7f",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:4bec62f6b086b74693b0c15c57536525ec77daaa877bbbd5e7a49f842eb17836",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:362f02d0f34e15f46319737df79fbdc966748163fbe6e7ff5decf670d12dd43b",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:23ae5584ea3e252b5a43fecefa3fe4de9b95c36b9dad978a409699248524ce0f",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:afbbc2f02870153c59be06c2310d432c672e850c2d749efef68b7ed23e419e7b",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:7e76e5cce59e5f6d1d1c5b48552e0235029fdba3f901848b95a25a39012462d6",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:f088c1a136a8a00eb824f96b43e8ee7ed2c1ef60fc41749839c976c083749237",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:92ea775144aafef94fc94aea89892d6ab32149623eeb9b6fe4a14d52b3db6a43",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:7b153fa0401ea81a7adc9cdf0505f98abad22441cc96f72b81c53178f66270a1",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:fe503927076f54849ca952ac8ec5955417d2a8e0087b7cea62c72c093b60e31a",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:05796ebf46512136818bca36bbd49066384433cdd5b422be1a136c0c8723e7ce",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:94a32a6da857081fe8952c0f163d3833fb04488de9a760f7f1467d995a6ba6b1",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:e9b2c9eacd98eb5ef80e492bfeb8db6249199cce26cbaba3ff163e5a4c1be236",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:cbea28806714eaf5c8fb195404252a3c4c3a8045f8937d0939cc595d229da6fd",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:4fe84066826305b045492f8ebf241aab86445642ddc8e2d69bf20f16cad81b51",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:510f1e5dfdc35e11f38489e0e34bc7bd049ff568be98024027e5bbc96c10ff07",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:3e666387283f442c1faf47eff685aa3cca68e47dbfdc6c4b9c3be9a930bddf2e",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:647451bf3d8d9499af028e4ea23e67392d7fbcc809e3d152fd65df6e9dc405a8",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:a88d7b962f19fe4ba69671495087f2e4faf2256050fb49a5aae59ae8e7042e48",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:45a855f12577e1389dfc27665cdeccf73822df1c8dd055c759f1d5cc5cbac7e6",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:da1dbb9df1f7c71fd0303946fb12ef45d2a032d1ce8071a441a2dfbb26633ab0",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:e1c991d5f1b75a06130322de2c515d87ddef25bbbdc9e30e980ef6102166a046",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:4f8175f42135dc898cabe5cac4cc0c144b9b9b6809431b180f0f7ea284f2f095",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:ee8374cb59c20935f6ecd2aac5b28c029f73b7fe728bc2c434081611e0a29f90",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:339df6e4b80aec610f89750ba8ae066a779e1fee9cf357d226caad309e4146c5",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:daf0b7646722752a2927d9e885c4d8b1fa2bfed46b3e0adf0c2277d6569b40dc",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:199e77e651137cb03a50dafec92fc932432ba8a1884a151f005ea5a63aa0ffad",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:4a969140886e423d703ebd3015fd9218e89b4f42f8af29429257ad7db9b0da02",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:39e572a20ac1e263f6c9e079cd5ccca4419b17506f1e7880f708bd67068dee85",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:79e58456d985555f2c878ed8f1bf18e91589dbf94ef94e93cd3c845bb066c136",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:9210c327082f4798f3bd7ae25a70484b500b3eab6c9d6b850d2c26d610f50770",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:de88b1e193c90aa640ce1ba684973d37763b34930294c20f7224ec1fe839de93",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:0f2d4eae1aa7879a4152b6226d23b51c5173356d5d2570195f1ef7ae594d1e4a",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:3c96b756be7cec7e60ba7ca6917e5f16aa9f47ef743374629cbd3ebb481e65c6",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:65111302595fac2b46913559a2bdd9739338b1367dd2197520f2e0c0fe2d1808",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:78c4ee4d6340a031957c4e9efa078e8407da6be19c7f0ecf0e5fb8c4147f3412",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:31ea86de3e4e9468470cb8b6bdcdb6ca0d778fbe8a7d28830f6dba2162852b1f",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 68,
+      "end": 68,
+      "digest": "sha256:d299158bf1e817046a8f29ed233d1f9d9375177e83baf5cbb27a61b72694e865",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:7d327f73cf64aecc78b1bd2de90164c026a61d053cf31d85dd42aab4c5d1bdef",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 70,
+      "end": 70,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 71,
+      "end": 71,
+      "digest": "sha256:7a235f3b6064dcf103491d494aa140d10d9eac8918ae5b95ced1ffde5f806b62",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 72,
+      "end": 72,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 73,
+      "end": 73,
+      "digest": "sha256:96ed856515a5b8cdc845198a94b62e4e0f0466e2845bf7b9f7785aa19b2d3fb0",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 74,
+      "end": 74,
+      "digest": "sha256:2721c9567c02ff45a75f6500599394f387727e0cf43247e39544315b3ce49163",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 75,
+      "end": 75,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 76,
+      "end": 76,
+      "digest": "sha256:bd32fce20fe377c56a5377f5f2de27319ea7c0c62ab53a8ce4bb361b13d641d3",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/README.md",
+      "start": 77,
+      "end": 77,
+      "digest": "sha256:6a593696ecf967de82801b1c69bcf8f182221628b86ec63ad0f799b3a4651941",
+      "note": "Documents browser prerequisites, critical scenarios, artifacts, and isolation guarantees."
+    }
+  ],
+  "version": 2
+}

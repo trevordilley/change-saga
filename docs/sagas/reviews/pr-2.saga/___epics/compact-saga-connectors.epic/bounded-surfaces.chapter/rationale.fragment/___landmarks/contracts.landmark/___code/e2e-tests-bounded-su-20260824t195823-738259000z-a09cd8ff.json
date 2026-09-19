@@ -1,0 +1,779 @@
+{
+  "references": [
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "digest": "sha256:beda57e18e2a707549696546b425482d514be7c94825943734c58ff025ae02b0",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:bacd3cb1729147f0a96d7b3c8e2a1b3198e6b534d160dc36d1d0dcc89c9f0a5a",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:0e2ea40f15e2f10c23fb7fe0af0417590a2c33bf8b12cb4bc92166b04981fce0",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:c942aba25d35b3d90ab889f52836d63250b2bb9837f11aaeabef37130a93302a",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:37288f247485f2a1f790be128a2762ce810f9d87694616211a81879d87e33901",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:ae76e83b83c32c39306418ee0c9795c98c25890b59093dc069020966e8522202",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:f11d84bb260a57caf2fe3aada7a6e1977c54ae8f44c10842fb9383ec23ab9a08",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:85cb8b463b871d603044ab779152bdc3e9d85091b72f43aa4244902700a85e7b",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:40b6990a9995adc75388c3816a9727dd5bf73762280551db7d2e3a0b2cdca5b6",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:c7f26d6d51102a1877b0dd22e63905c3984b58ee7e038d6cb656719dbc12db45",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:e47e6e7253e12920f89a0dbf069d6703b61d5c523a6c1e8d4d20fb5128b45703",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:f13f94b8837ca1e65c3ef00dcbbb2cd376e6ff08ad6fd5c3461d64d504b15267",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:e435771121997afa260ddd1f0b5ea2d4d01a24c8003d30edee5cf4df7bc2b2cb",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:78bbcb373279fe121d3c461dee9a823b660edff1eb2c9fd6ee640c275a1fb470",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:30efbbfcd6ced10b8c1a0e7f1a168b9faf2123496517326cd5fcac3f42f77e5e",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:22d11caf43e97ef369e6beed1a268bd05838f29b9dd254bf69ba64884147234a",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:3a3e46f94276b6f6f4ed1f02af78bef6a2ee1c439dd5584b973948313214d2b7",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:f8099212c1377f96f8ad531e8b00a22274ef88fc48174199466c691ebbee6404",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:40b6990a9995adc75388c3816a9727dd5bf73762280551db7d2e3a0b2cdca5b6",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:9cd515ad5bb0f6b79242b7492f12135405e077733d60cf56d60656d8d4974660",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:5114a5a153eac6400308198e00c242367fe5d463a6cc11a90056a10dbf82bf79",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:10527f63c1c5d2387ccd3692f83c106a84a2e90aca0551816a3c4df600c0b768",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:1792f847bb21cb292dd09f7fa6e7cac4a8c14d97d389633b3d1520ea14b5b1dc",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:4893f40e3781eb896c82d046a08067a11e35cdf2f1dfaf26fea90b8db6676413",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:f13f94b8837ca1e65c3ef00dcbbb2cd376e6ff08ad6fd5c3461d64d504b15267",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:e435771121997afa260ddd1f0b5ea2d4d01a24c8003d30edee5cf4df7bc2b2cb",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:2abbc85a8506b5dd7140b13af55fd035893cc6ec922bbc774d18d93db052858f",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:cc3a487a1e9d93039b0629ff34b05611285cf5e4e67262d2434d427120e1d61f",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:229bbce5a89cdd8aa04ff4b8d8a1740632a8635268790a8a2952ec7ea99f288a",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:e9a04fac2794624d5269ac5b665fd58f0256c82622b85128d07395a737ef11ee",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:22d11caf43e97ef369e6beed1a268bd05838f29b9dd254bf69ba64884147234a",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:3a3e46f94276b6f6f4ed1f02af78bef6a2ee1c439dd5584b973948313214d2b7",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:d92e86dc59de748dc2414c7b73f77d0a7aaf114852ebe00712632aac8d341e67",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:a26557cfa00fcb0d0a799857875f0f8e7b84993160b49dd68f1e708d8597791a",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:bfaeff245d85a3efd55862d9af3afeed51cc983ed8708adf689274a8a7fb95b8",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:c3b822b01ea72a0176f705bf9217b5849e83b5549ae8f5d6b7cc60fbd2280cdb",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:35a3e13e67f0223d69f83e4869f867dd16d02d40aa167a2892346386d5ef2f84",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:41a3d5f2505aced929616b4c5d7764d3a9b77ce7705d7a3dd3570cb43cf42a0e",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:18d1424da7207ff47aba132444bdefa27c5bd825f95f899aff69d40c05d3cec3",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:eebef446a35b42ab860ca16075d4b6b05b196f9e371257e84e8763970f0de45c",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:f002a31950b58fa8cda994520397d645fb1c57f9dca0992ca969c7f44fce1b89",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:35a3e13e67f0223d69f83e4869f867dd16d02d40aa167a2892346386d5ef2f84",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:9e98af5c914060bcc22f8cda31d3a51367c90bf71aacd845680e31cd314fc2bd",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:a75255fcbddcad10a110a463454786f6845cd060313291116e7f0b36d6d684b6",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:700a76c0fdab61dd02844687a6e413ef502054a7356213f9c28899c503bee29b",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:99e5d3d349c76a9d56864cfbf5a36ec5183841336da7627765260af13c80ff10",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:73dfdbea0d2cf5983f9dfaf7b3739039f3249ffb1879b899ffdec66aeecb86ca",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:08c80be8103f5208c35b8ecb6086c140e6944dbe8b4072ed3cc2cfacc7cbf2a9",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:8cc6d4153dd6c7de13687c503a1513a837414a9de673c9b2f30115726a0ea56e",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:d81d7d16d82af991bb2abe1b09bde413672fe799206c7deb50aafcdf36adac09",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:f6f5b40b158457d17864f21790786dd5a2ecdb64b66a651f788d4e25cd3303d2",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:f18d9c4295af9d6d87a5a3fbb23b0d189585c24e6dc588e8aef2a55964a9d763",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:ae76e83b83c32c39306418ee0c9795c98c25890b59093dc069020966e8522202",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:5b63377085c1d4e35746d49161cb2ca3a77e33a29bc6aba7c72767a76e8cf54a",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:40b6990a9995adc75388c3816a9727dd5bf73762280551db7d2e3a0b2cdca5b6",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:9cd515ad5bb0f6b79242b7492f12135405e077733d60cf56d60656d8d4974660",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:2a63dd30f69729312cd3ecd2787993277dc29e3924fa3c54b44edb966cc1b19d",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:7d6c2e10865ea3dbdfceb3c87e4084d78006d6093e0e553e4b81685875680a1b",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:49eaf1a6f8ead34c215dec9e72eb70aa5cfedc98354460e2ee2e1bc1129b2a04",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:61d2c9aa9fdf6fd57ed99321d6beca1a86d5e734eb807a867b16fcbba588e22e",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:11cc56aada6dc0a54dc73a79bb72dcb1b9a32eda598c8e5bd4d920fb72ef55e5",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:42928b4ff28a3b72a8d8986e4a7133a0bfaec5070260232172c14a4152f8d505",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:717af1101c97b7c2f52540782e634cc4440f0e970341e52f9752311d78b7d7d0",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 68,
+      "end": 68,
+      "digest": "sha256:1792f847bb21cb292dd09f7fa6e7cac4a8c14d97d389633b3d1520ea14b5b1dc",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:4893f40e3781eb896c82d046a08067a11e35cdf2f1dfaf26fea90b8db6676413",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 70,
+      "end": 70,
+      "digest": "sha256:f13f94b8837ca1e65c3ef00dcbbb2cd376e6ff08ad6fd5c3461d64d504b15267",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 71,
+      "end": 71,
+      "digest": "sha256:e435771121997afa260ddd1f0b5ea2d4d01a24c8003d30edee5cf4df7bc2b2cb",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 72,
+      "end": 72,
+      "digest": "sha256:524f9cf6df64d28fb2e225456d83e14f240ca4c35c41c2344fe1e29b3462ac11",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 73,
+      "end": 73,
+      "digest": "sha256:146227e3fc4c275a16c097b31eb369cba0e4acb42b9aca972e427abe7d0f62b9",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 74,
+      "end": 74,
+      "digest": "sha256:ec029c199a80985f6427c4c8de5a7e9f8b1194fd72446d8bca8c8f29badf0552",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 75,
+      "end": 75,
+      "digest": "sha256:8f41bfb4699aba2abb3962f72a146202deefb6c6caf5661165572f8dbf7d2f9d",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 76,
+      "end": 76,
+      "digest": "sha256:29718ebe6d9322173eb0eff097ed143a979e8170324371959f1356e9dde1df6d",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 77,
+      "end": 77,
+      "digest": "sha256:22d11caf43e97ef369e6beed1a268bd05838f29b9dd254bf69ba64884147234a",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 78,
+      "end": 78,
+      "digest": "sha256:3a3e46f94276b6f6f4ed1f02af78bef6a2ee1c439dd5584b973948313214d2b7",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 79,
+      "end": 79,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 80,
+      "end": 80,
+      "digest": "sha256:37e068ad7cf413fe5101e16f9139c16130e9bd31beccbb2c89a8042affe25716",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 81,
+      "end": 81,
+      "digest": "sha256:62f53e6ebc2e8f18009fa8e5cade6db0d5305e83f4f36904a927c68b86a82afe",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 82,
+      "end": 82,
+      "digest": "sha256:28dadae1231c27067b0b6579b837541f51ed9ea3935d53a7c9519537fa43d3d0",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 83,
+      "end": 83,
+      "digest": "sha256:f854df4b81ccbc9adb401336f9b7f822a5a8f4e060ff32ae4e6d4b823bdf7cce",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 84,
+      "end": 84,
+      "digest": "sha256:2163b4aab0fbbb0613d5252ee4f3fee7305cba464ab5b0f65171a779ef6dee3f",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 85,
+      "end": 85,
+      "digest": "sha256:87b25c4708b6141ad9cdbb08b388100a64c8c23ad9fed370bdb3d9a50b5119e0",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 86,
+      "end": 86,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 87,
+      "end": 87,
+      "digest": "sha256:49aa5f1c3e092154e904e0914f69f895fef1783e3b737c9f893313500b7817e2",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 88,
+      "end": 88,
+      "digest": "sha256:a958ae85f0fca0b9c16573c8e01bf69f6e9c595d72be93d663902e7336cf12ee",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 89,
+      "end": 89,
+      "digest": "sha256:af21c3bda840c4a8c3f993853dff3eee977d9d93c8303671f7523f45a6f032f6",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 90,
+      "end": 90,
+      "digest": "sha256:9e416fe6eda86444202ccc2a41e9edd2882212298c38b39cb51f4ebd9b652db8",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 91,
+      "end": 91,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 92,
+      "end": 92,
+      "digest": "sha256:4349d05438f9126526b2d26a74fd3cc34e632d8448d7c898047abf93312d4f7d",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 93,
+      "end": 93,
+      "digest": "sha256:5af495db771513dade5f6532dc5d1ca42c8387931e1ea3b3bdf0e45536ab9cca",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 94,
+      "end": 94,
+      "digest": "sha256:dbedf6e502418e49c3bf6a77ea0a2508271a67c3f04f13f24ec44794764e36fb",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 95,
+      "end": 95,
+      "digest": "sha256:d957250d81d84892c1769f9ff7560b8306127eeed0cb6cb1f08e926f5847562f",
+      "note": "End-to-end bounded navigation and continuation contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/tests/bounded-surfaces.spec.ts",
+      "start": 96,
+      "end": 96,
+      "digest": "sha256:f6f5b40b158457d17864f21790786dd5a2ecdb64b66a651f788d4e25cd3303d2",
+      "note": "End-to-end bounded navigation and continuation contract."
+    }
+  ],
+  "version": 2
+}

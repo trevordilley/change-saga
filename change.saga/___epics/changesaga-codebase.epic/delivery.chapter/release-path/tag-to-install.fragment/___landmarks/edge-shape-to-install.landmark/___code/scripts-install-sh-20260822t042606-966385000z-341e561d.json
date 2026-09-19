@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/install.sh",
+      "start": 327,
+      "end": 342,
+      "digest": "sha256:a994db7422cd2dfa0205e31c84db9e88a01cd4889d79ef9aa98e2e77d95e908e",
+      "note": "Carries the single extracted and version-checked binary from staging into destination preparation."
+    }
+  ],
+  "version": 2
+}

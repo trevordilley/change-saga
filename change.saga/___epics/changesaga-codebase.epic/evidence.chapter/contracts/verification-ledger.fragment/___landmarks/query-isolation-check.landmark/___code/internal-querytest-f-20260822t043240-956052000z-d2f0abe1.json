@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/querytest/fixture_test.go",
+      "start": 103,
+      "end": 114,
+      "digest": "sha256:e9b9609ecfa8a83972db4eb3104b06d635512f8b131a03b575b4901519eaa7ac",
+      "note": "Verifies that the fixture detects any file creation, deletion, or content mutation by a query."
+    }
+  ],
+  "version": 2
+}

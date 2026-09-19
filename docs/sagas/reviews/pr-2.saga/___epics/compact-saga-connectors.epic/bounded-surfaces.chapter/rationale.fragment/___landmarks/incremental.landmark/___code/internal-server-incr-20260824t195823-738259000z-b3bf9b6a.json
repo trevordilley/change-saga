@@ -1,0 +1,3611 @@
+{
+  "references": [
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "digest": "sha256:5d1cd6fa17fce2452696c5affab3889277611f8c3934d382283b718950c1478f",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:0b0d4d1f5fbec17d7732f29ccf38d3ed9e3587229f0a04824e1096d25f930f7a",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:71e37b6cd48ad477cbb12624b757ee1dc4975711b78237a85f508bfdd723af77",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:88b2b63df1b22d7cb9359d4a10a5e357a697e72f0d3f3dc2887843958558ca4b",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:9e7ae2c0ecda7f45f6bbd392ee98eb1ba3c11992dee699ef9aceabdf57f1c8cb",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:538f445325080e2cb330ce21f0e24823b95551a8f24cb6a5016c6bbe0afd5c18",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:d01aa323829d06b5023aa663d61d45371f4198cc7f8a770199fe5e4dc0c5ba39",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:926ebc76318f711b7e6fce77071eb1a689adb7f244f8cbde070b2852db74b02e",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:9d321d278769fb32c7c6820e1c992ebb53b04e39def0f158cbf1d84e27d34c18",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:033727e32775e03cd68232ac6618ab5bb1491d758ed4936ec7cd00aeca9ead64",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:5477249feb9c6e0d0e73f83266b79ef392128e0ce67daae9b528cbcc4db7b552",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:74432b77763c6cfa9171fc3fd13832ff241f4c996771aa8caccfe84199cb372f",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:d7c13472432b49bc3449735b494389e2fbf6bab4fb98ea35c40aedb55cc0d0a9",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:4251f63298670483bdac18904e47ecc02d2c2d19b3f7d8e42f79cb371a7c684e",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:fafba0527c3953c4b6e0e5b5739ba83612f8053bcdc9466730193cd1d590b408",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:d0d986b0df7e9c47aa782b06609469bc8eeca47612b838cf829dda4bcddd3329",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:fd84d47c8c5000d8029210047bfd17995ee1d48ee2dacb4de8ba97aba70e831e",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:b56f1bbfbf1b5afc987b398c2345d325e836678f095c5a790ef11219ff7f9c4a",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:fd7f23ac647b0a659fca02aa0ce1f3a56994ef40d7e27aec4e6de4d151881bf9",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:375908a80e00b414e081ffad71b37b4048c6495ffb75c1404b24f93fc48075b7",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:fafba0527c3953c4b6e0e5b5739ba83612f8053bcdc9466730193cd1d590b408",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:f9143b18ae08f15eca3903634f8391920c6e1c60a3389f2f8626238bee45d65b",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:5cc30d7e4ca12f3b4b2aae5ef0041295435e8356988e4b178e553c64f3095a80",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:bbb90e039f1674eae05f87d487f25a88478b99e2ca1402f423afd1c429d36a44",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:50104d3b94260cac8e293b842e9bbea0f97c4cd22ab1e4d7e8249aea51fb5adf",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:3616e85b50c53273a7ddd77e3f46ae4689089b3fe5980bc43aec8392d8ce0ecc",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:589da0208eebe80a3812ac790b75147bffcc24c16bd5cb12f8b649ed19bdcefb",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:9a9dca30bc86693f39c7d55643ae532806f25eb78888e85bac5ae6cf99e00dc2",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:2c610157d2be29c8930c8bbc9284825406163ee2bc876c048c6d357ad127299d",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:b8012f8f68fde2e578a411f7cb0e4dadad639505a88a52875e1adbc56b9f434e",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:b06247845c34ee53f900520b97736cbdefc616e82e7058ff9ee6102ff9bfbd1e",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:a8268172c1e89456263d20ed6dcaa553ab02725b371d1e097af4277ce4678942",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:c252de1fc3d9d2a6dfa7a803d6b9d9a24aa6416ecfee92cabc7a02bcd06394e0",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:da2b22767d916bd44a8076994ea75331e1ae5d8eff7d40e2ec45413c9cba35c9",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:7ffffeee16f94434512dd1024dd0567ecd967a1b0dfc5a3e720e6d99439e5ab0",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:92a3bd7a3929dc61395ea1f417b5d019ed8c5ab0df15dae985c7cca626046101",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:5247c670e8f913533e2f8a43edf8337bd7a30825302f94c0afcc47ea2ecd7a8e",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:c0dde1845b216e99ec84e110e88e5db1dd8417c556e1617e03647521cc34e090",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:c82f9da1846bd7ae491e874ffe11ffe0714ecb877ff44c0f82efc63405fe94ee",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:d91afeda15353916eca0da1c57a0860dbc52b8990bc6d2cabd2fdfa79c2c27f2",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:a723ec4237f96e9dae718becb708b320736f46615109a7472c718e943b0c51d1",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:49e315b55f008015acd77bb204cf7dddf8db31daec13a761077ae1886a99e5f3",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:bc9ea27d63940c651ac36386c6416d0913aac49a07e0aff8f330a9440f0e5c88",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:a932f832856e54677c0d495df078c33884edf3b6020519024a8ef27e447bf8b9",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:6003f7c3da86bf75cab33cc9bdb6c14f91f6775aef09f66f0d58199cf20761bf",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:4b294971488f941dab15ea7f4cb69816383813985da2de0d98660ca7cc459c9f",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:db4cb1b89cc79672f07fd473ac3c3b509be70d8773ee5b3f66065c61b056bebb",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:0d7d0a5cefc7cd5c48aa602988b7ea22fc1f100b4b1f5a5123b1f071ba455c50",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:d2332f79c6772384adfcc54ae4e0b8cc2c44f541e932cf1ccb48443ac552ea21",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:1e579ee14a61d2856f62ff9c0265d43ba0a01bfd10c3c126cad4d99ad7eadd09",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:cf8fa8ec9c7f18940dfeafc261405bd08ad98df7bf0cf0c4f7075b78178fdcea",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:ab9748e76128b13d05d4de31fa71a6dde4d61cc4c3fa423062b4edc867ccae04",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:28f3a5cec0602318c74f2a9d4b2f2c6db24d533d22e91934f29b7f5d1c84cac8",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:65e775842a8c9f06b96828ba2ee6cf16a12e95b5d71567afa44edf5b33f31005",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 68,
+      "end": 68,
+      "digest": "sha256:398be8fd95c1a681ec0610909676dc1c21d14214fafbb3ad194c83724a0be52e",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:d3edea61c57e0d14226e6b4a210c359d1711f81192ea8c7e2c368ecd7292915e",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 70,
+      "end": 70,
+      "digest": "sha256:4ed06e9ffc82cfbbe8ddde61301412d769e65e0f1f56aeacea916dddda846786",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 71,
+      "end": 71,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 72,
+      "end": 72,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 73,
+      "end": 73,
+      "digest": "sha256:0378b9e1d3bf0cb9220c500b7ab28164a247c70be0c466ef2ea24b8da6a6e339",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 74,
+      "end": 74,
+      "digest": "sha256:6b00911fad8de5e520bfb6999f1ab0a6c5f71d43fdc22a2f2224cae63e7a3d7c",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 75,
+      "end": 75,
+      "digest": "sha256:c3e8fdf1789d3441faaf88dd18e4820cf7e0e5ffd3cd1ba07240a1829a38cbf4",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 76,
+      "end": 76,
+      "digest": "sha256:867cc5644f5ac2aafdb432a77e12e6d12ce7d278849e211063dd760dff6b1483",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 77,
+      "end": 77,
+      "digest": "sha256:9d5181c72394fc2edfc3426e3b31f2bb07f41c7ecff2cb86993b7dcca143b189",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 78,
+      "end": 78,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 79,
+      "end": 79,
+      "digest": "sha256:bda84d0c674314e403261a304e5bf321872dab6a3ceb0b6fd7d6cc6c7ddace9b",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 80,
+      "end": 80,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 81,
+      "end": 81,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 82,
+      "end": 82,
+      "digest": "sha256:398be8fd95c1a681ec0610909676dc1c21d14214fafbb3ad194c83724a0be52e",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 83,
+      "end": 83,
+      "digest": "sha256:9de02b5ffe100846a1ca3d5e3ab7a1652078df85b0206c1c2e4bd6264b7a15ce",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 84,
+      "end": 84,
+      "digest": "sha256:d3edea61c57e0d14226e6b4a210c359d1711f81192ea8c7e2c368ecd7292915e",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 85,
+      "end": 85,
+      "digest": "sha256:15f738f0081cf66d70c110c5092e0ea451c7b31d038500a16d22359489d4b037",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 86,
+      "end": 86,
+      "digest": "sha256:0940bf327f768101be4e25a4ab2954e9c0f8584b3ba0f963c41711da9edbe1d8",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 87,
+      "end": 87,
+      "digest": "sha256:d389dd9ffe1af2224c5435a2578b002d3d666ccc051e0eb90afe6bf4135b8898",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 88,
+      "end": 88,
+      "digest": "sha256:9711a9a6e78f8df20274509f6846f1311ee613744cf704b87bf97ff6cc801437",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 89,
+      "end": 89,
+      "digest": "sha256:07fb56f41b7286e1553d07ca662a78c921aac5e357693efdc75cc1558f81a2da",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 90,
+      "end": 90,
+      "digest": "sha256:3443ef35c3d41fdbe3625792c6590b5404e38707b41cd25f1ab0ab26a78fc9d5",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 91,
+      "end": 91,
+      "digest": "sha256:bbbc60964012e96ae5a74d53d94f08f42aa12fc918b4aa7e01ec801b8dd3edd6",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 92,
+      "end": 92,
+      "digest": "sha256:10df81b046f58065938d494eae12e57c0402dee55660f60d360946068eec23c5",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 93,
+      "end": 93,
+      "digest": "sha256:4dc76020bae70577e64b330dca83fdf24f3d7593a0154d8abec6dc63f5897fd9",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 94,
+      "end": 94,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 95,
+      "end": 95,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 96,
+      "end": 96,
+      "digest": "sha256:aba6bbb6db65acf4dd203fe2913edd726edc4b31ed285fdd8bd14746c58a1808",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 97,
+      "end": 97,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 98,
+      "end": 98,
+      "digest": "sha256:6d21be8eb50796b8cbd971ec14fc0daa51ddc83d7e558797e30d87f4f6cd3c3c",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 99,
+      "end": 99,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 100,
+      "end": 100,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 101,
+      "end": 101,
+      "digest": "sha256:bf51c9c6ecc3eef43524ddb15f2bee051a94f42b7747b26918ca522fe3c0bd47",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 102,
+      "end": 102,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 103,
+      "end": 103,
+      "digest": "sha256:4dffaa016a7150544ec366f8f9df9a441acca9be1c0fa2b5ee68434584207819",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 104,
+      "end": 104,
+      "digest": "sha256:0c146fe7b70ae20ecd802243bd218679d1c22f7f5f92de63ae2a7cf75b6d8198",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 105,
+      "end": 105,
+      "digest": "sha256:635a42fcd035fa990bd49d42267c4e8ecc6f2dfb9a9e18d8b2caef266544c63d",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 106,
+      "end": 106,
+      "digest": "sha256:be5581345efbb6cde954df57a9292cf64cf78fe5d93912a8a3ac1f5ad9f8b4f2",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 107,
+      "end": 107,
+      "digest": "sha256:aee3436bd6b9d3c2caadc5b22deaa97604cae2913dce56f9e510c53df710db64",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 108,
+      "end": 108,
+      "digest": "sha256:3016b5eb6977e3314f54d6687a87705bf313fff5699b338ece875863a4da9bf6",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 109,
+      "end": 109,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 110,
+      "end": 110,
+      "digest": "sha256:aedcb136062d0139780e55389c6fe6da2136096c7e3cc9ab2e26b3438713fb78",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 111,
+      "end": 111,
+      "digest": "sha256:339e9b586f525eec63ad5bfe8cac8901d1fea7bd6673c7bd66b7ecebb41c2c57",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 112,
+      "end": 112,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 113,
+      "end": 113,
+      "digest": "sha256:12e82b53875057840f301ac2403ea27f9afcf814dc091b15e12f722c2ccf293f",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 114,
+      "end": 114,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 115,
+      "end": 115,
+      "digest": "sha256:1a13a1d75cacc1de55b03fe63b51d7001dbf82112f708df93171d895b5be43e7",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 116,
+      "end": 116,
+      "digest": "sha256:60e09602d5e2ce2bf2085d81acfbdcb87908cc4960ee0796b39b81e67aed53b7",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 117,
+      "end": 117,
+      "digest": "sha256:df351039172eb5cf29c4f9faaa10f7a638db94a6cb05bcf1b3ec94e7cc10cf5a",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 118,
+      "end": 118,
+      "digest": "sha256:4c154cdaef82ba33866af83a0fb4627709fde0adf6b35ece16355f457f55ed74",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 119,
+      "end": 119,
+      "digest": "sha256:8f48e36adf3c942ceb7c85b5b6ed464cb85c3c93e557623e6e79e63f8d5cf0c2",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 120,
+      "end": 120,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 121,
+      "end": 121,
+      "digest": "sha256:685eef552d5b3c521c5c75200dab5b8313d6b6781433a48907dcd62ff6e1757f",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 122,
+      "end": 122,
+      "digest": "sha256:3b3345a4c8e478202950bfac4cf21eb4ba2a44efa83f334ca0e8f784d5d39298",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 123,
+      "end": 123,
+      "digest": "sha256:bc1a5e93c3d063529689aa6d3dfaad69819ed1185684fa112665a0494d949317",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 124,
+      "end": 124,
+      "digest": "sha256:656b81e80fc6c861c5a2062c252b8efa3f56e534d87b610f15c2ef673e3fcc96",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 125,
+      "end": 125,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 126,
+      "end": 126,
+      "digest": "sha256:89c604be48423fedd463e16308611dd6f509f762a95dad3b790a151f8e65fa84",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 127,
+      "end": 127,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 128,
+      "end": 128,
+      "digest": "sha256:0dd7531580ddbeee456adb696c2cbfa99b0ce5a934d0de4f929fb4a846aea7ae",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 129,
+      "end": 129,
+      "digest": "sha256:238895e7affffe3ac4749553ca4263e345a9b2fd796247c408c3a7343be45b22",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 130,
+      "end": 130,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 131,
+      "end": 131,
+      "digest": "sha256:3f3cf9117ba42c2aa6d35ad64720db5b6c10c7172f1438ccbfb3184a847b634d",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 132,
+      "end": 132,
+      "digest": "sha256:6e479aea47d21e40ce30db106013db9e48844a043d693fe8aa7408cd63f3b79c",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 133,
+      "end": 133,
+      "digest": "sha256:c92337c798d580a4f81dcc28fecf36d504603ede0734d18880fa7860e7cb959c",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 134,
+      "end": 134,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 135,
+      "end": 135,
+      "digest": "sha256:712823762c63b086f26889e7b88e946281ab98ea2f086b90abe081e5bde6679e",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 136,
+      "end": 136,
+      "digest": "sha256:d56a8910137efa6c52147c42d038cb62df4e85f5ad2d91afb66d5ab7a2e5eb65",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 137,
+      "end": 137,
+      "digest": "sha256:ddeb3d9948874c7959ec21ae672b5c33107ee6b32c4ace94df1f0a95ba83a7f2",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 138,
+      "end": 138,
+      "digest": "sha256:bd44bc6eaf5b46254f235c22b5150737ad48f3565efa6e1007ea0cae815de387",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 139,
+      "end": 139,
+      "digest": "sha256:4ccab1d6f99ad60376e65a5f6ac903dc23aa2e7e267564d563124a87d0a54b40",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 140,
+      "end": 140,
+      "digest": "sha256:568b95f60726bbf173f46fde2000aaec3ae6995e6b1e148907ea372b4406728a",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 141,
+      "end": 141,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 142,
+      "end": 142,
+      "digest": "sha256:d029891e68b57ad2b54a5bf1e24214b7ed4410f0b7fa13225abb959802500265",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 143,
+      "end": 143,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 144,
+      "end": 144,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 145,
+      "end": 145,
+      "digest": "sha256:ac98b2422a691bfd67475127eb09fbc30ef9435c44d768e70023296015528153",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 146,
+      "end": 146,
+      "digest": "sha256:3d3c5afa94ee2b94fa157395f5d6646ec8bb2bc04ef34e40dc395771e2aa8afa",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 147,
+      "end": 147,
+      "digest": "sha256:17a5bd48cb1e155f91b98115931084ed78690629f57eb0da67ef0b6d06477da9",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 148,
+      "end": 148,
+      "digest": "sha256:4937a4a538936b7f85f937a399faa51ca6ca73cd63bc5b750fceebd58c00753c",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 149,
+      "end": 149,
+      "digest": "sha256:e80599a33df63296dc946f7fb9e6388708b41aa3b6b485a594bfe150b45149a2",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 150,
+      "end": 150,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 151,
+      "end": 151,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 152,
+      "end": 152,
+      "digest": "sha256:98ef689ae2cad3beb472dbd639eb9100df29daaca969c74accbef4693a25c8a1",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 153,
+      "end": 153,
+      "digest": "sha256:5676248f7b0055a6d6e656b7a0e6819692f675663e2ae8543f23395ccd9d9b8c",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 154,
+      "end": 154,
+      "digest": "sha256:93dc64554505dd524700f3508f872565741827e644e6ed712f8e8c6cd750c369",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 155,
+      "end": 155,
+      "digest": "sha256:1efa92d62c2af68b43fd781d48ce5a236e82639826d7bbe9e7ffce3ffcbb56a2",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 156,
+      "end": 156,
+      "digest": "sha256:db8f6c98c55a0d35dffc7308cbe040a2a8c642f1dae761803829d0197e883041",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 157,
+      "end": 157,
+      "digest": "sha256:820a350dea0784c6d4b2e47b6edc680ba0e40d2ea1e30bd3d744f073c84f8220",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 158,
+      "end": 158,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 159,
+      "end": 159,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 160,
+      "end": 160,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 161,
+      "end": 161,
+      "digest": "sha256:4779c45309a0d841b4c1bcba0bf9cfb6984555e89a9c8ab04389a619aaedefeb",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 162,
+      "end": 162,
+      "digest": "sha256:897d2c48ffa7e59e511307c44763cc7774e95ad196a5738a30dc187c051c2d81",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 163,
+      "end": 163,
+      "digest": "sha256:3e0884b53032c41dfd78f9436d5986ecd0d47ad2e7dcfe95d56f3941124ff3c1",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 164,
+      "end": 164,
+      "digest": "sha256:b101a0d81d6ebc8aafcda4292370a0208f6c6a05127a767ff96fd37896aa0b63",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 165,
+      "end": 165,
+      "digest": "sha256:9a5a5a3cb3fca690f6c20416f56b7a79d3d0a8fe31567b81bd218cb7865621f8",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 166,
+      "end": 166,
+      "digest": "sha256:85ac53716335fe876285c7a2cc3f7bfceafeb423b80f731b9052573f4e283a8d",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 167,
+      "end": 167,
+      "digest": "sha256:a0b2f0f3a86e3f7a7c198a0d6aab4e968dedfa3f86dbc701d652df9e0d71afce",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 168,
+      "end": 168,
+      "digest": "sha256:0bc2fc55c1f02bb4ab492a6c290fc9e8e08ffe137852575d8f4e37aaf410020f",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 169,
+      "end": 169,
+      "digest": "sha256:c66e259a8bd2a701932f3e7c65ceaf7554614d89e03139545d5f0727185e8142",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 170,
+      "end": 170,
+      "digest": "sha256:31f3ec5690874d6930e35c3eb4cbc7e158a8ac44bc0fe7b7c41f76a360f4f264",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 171,
+      "end": 171,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 172,
+      "end": 172,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 173,
+      "end": 173,
+      "digest": "sha256:d67291f3bf499c9d0fe83d6a4f9d39f6e4acf6c04360a1bf4293fae94a7b39e3",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 174,
+      "end": 174,
+      "digest": "sha256:94742bd3b3bac89b63ce1ba047fc6fd6a6b5bd16784941e39d4b427a52020b3c",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 175,
+      "end": 175,
+      "digest": "sha256:e22ef14e2e45a4271de40fd5d8e39ffeb582235325257cccc49a0116d72444be",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 176,
+      "end": 176,
+      "digest": "sha256:e510faab376def96b08c01d8be4a482d6afeab3a25796f000345068f6a62f219",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 177,
+      "end": 177,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 178,
+      "end": 178,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 179,
+      "end": 179,
+      "digest": "sha256:cb19b3fec20a9f8699a3dc6a3f75b9c5b764522632a3ee63517a83e0982c77a8",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 180,
+      "end": 180,
+      "digest": "sha256:97b9c98f09d31b1b050f7321f1e0870eb4b6309583a02d6f9d0716d71125f8b8",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 181,
+      "end": 181,
+      "digest": "sha256:df5c6bfa2d556d3c01429a43527ed3e9926115eb30b5f5ba982d6842a8f123da",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 182,
+      "end": 182,
+      "digest": "sha256:444d3f1848de9496b04dfc09b6f54ed937e8923b5b41abea883911747f40cc5a",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 183,
+      "end": 183,
+      "digest": "sha256:c66a34241dfd7de22386567d15ee17deeb2ff94f4b113401ea76532d2a0d957d",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 184,
+      "end": 184,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 185,
+      "end": 185,
+      "digest": "sha256:c075e816f05ae7a3e1a668f8dcc75387ab8979d3d14ef521488f826ef4695c61",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 186,
+      "end": 186,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 187,
+      "end": 187,
+      "digest": "sha256:c5368ee9f6ed9defa80b204438f97ee8e847a2851647cd90cff510f8dbc817f5",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 188,
+      "end": 188,
+      "digest": "sha256:c66a34241dfd7de22386567d15ee17deeb2ff94f4b113401ea76532d2a0d957d",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 189,
+      "end": 189,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 190,
+      "end": 190,
+      "digest": "sha256:bf7b533a24c91313471d639061ef2a114df691cc4b646cbf20a9ee33843a7193",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 191,
+      "end": 191,
+      "digest": "sha256:a1fdb60aff3a58199409ce8a724d78cdef1d7f10b6894bee3eb3b510684d64bf",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 192,
+      "end": 192,
+      "digest": "sha256:4082eecd74256b2dd3045cacb779d14ae43791ca33660047fc57eabe14c97ed4",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 193,
+      "end": 193,
+      "digest": "sha256:c66a34241dfd7de22386567d15ee17deeb2ff94f4b113401ea76532d2a0d957d",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 194,
+      "end": 194,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 195,
+      "end": 195,
+      "digest": "sha256:0cbb6d986371923247c36ca955c311a001975986a9960801820f3fbe8d2133eb",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 196,
+      "end": 196,
+      "digest": "sha256:c8ed59cb23b6b2e9be2cfea5a208c72f1f0070783a9154f71d58fce7a2f8eddf",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 197,
+      "end": 197,
+      "digest": "sha256:6d2ca46ba17b6e10944a0464dd05778321035a9f6a6c3f1d8801aec207aaecad",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 198,
+      "end": 198,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 199,
+      "end": 199,
+      "digest": "sha256:fd557fb63d8aa02b9f6fa90c959f5ca3de7a9ca0117efb70a1546d711be84fea",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 200,
+      "end": 200,
+      "digest": "sha256:c66a34241dfd7de22386567d15ee17deeb2ff94f4b113401ea76532d2a0d957d",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 201,
+      "end": 201,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 202,
+      "end": 202,
+      "digest": "sha256:4a02901e38c79a618dfafa79adeee99f28f5f62c5768bf58087fa4591fb157f4",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 203,
+      "end": 203,
+      "digest": "sha256:2976705cac485ce2c3db12a3c9621fd34341f264295e31b2ce6ecf9b55635a3a",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 204,
+      "end": 204,
+      "digest": "sha256:f543af7cd71497768992c560b2c45f267135fd670162798761bd195ee6be7415",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 205,
+      "end": 205,
+      "digest": "sha256:fac1378e6e47127e7badb61faaf8f6d48142af67c35ff0ec767c6e24561590e2",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 206,
+      "end": 206,
+      "digest": "sha256:9e8ee3305c8d271fe8190d116b62e5c9b140bcaffcc1ab5a036e7c6dd60cd2ff",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 207,
+      "end": 207,
+      "digest": "sha256:c17151ff3dec7dd462d3c4a934ef413fa4542f9d2e5533a0490a4623a8c212cb",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 208,
+      "end": 208,
+      "digest": "sha256:0ae4bbfc84ea311b76c2408b9a48a4acb7f2d8e3aec9185577a69d68a33a348c",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 209,
+      "end": 209,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 210,
+      "end": 210,
+      "digest": "sha256:ef06850ae5c36ca66a8ebbdaed132f18cb8b8748b2c08004700cda2bb368d886",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 211,
+      "end": 211,
+      "digest": "sha256:d1603cf112758fe598b5e5926864cea461f930ba1b01713c845d161e8a9f88cc",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 212,
+      "end": 212,
+      "digest": "sha256:d1cc0eb501e3f19ed6424edce63a7c83e6a1afdbdf07080380f71b51cc53f8fe",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 213,
+      "end": 213,
+      "digest": "sha256:0a9680ee353a4f3cf5700b6a671d479f060ee650ba792367595feae769326a83",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 214,
+      "end": 214,
+      "digest": "sha256:afd86f825ed24633e2a2ab5d56a3d9332a9459fb2bffc24e72cb4dc7a37d5738",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 215,
+      "end": 215,
+      "digest": "sha256:d5874ed2bab18d745d762819701118c2eefa122ec65aaf1b74c76902dedb820c",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 216,
+      "end": 216,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 217,
+      "end": 217,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 218,
+      "end": 218,
+      "digest": "sha256:763410b0657fb8ce053003c67eb75a8d5a04a65aa8fc98b2cea8e47f2c238b31",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 219,
+      "end": 219,
+      "digest": "sha256:2fa1adf8e8d7726fcd9dccba8114c447bb4e800219bc52fcc80c04f1b39580bc",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 220,
+      "end": 220,
+      "digest": "sha256:86c50de869bee99089b3ce471ae407950b61b8c73e3fa67b72d0b15cd5e3bc07",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 221,
+      "end": 221,
+      "digest": "sha256:2d1db3bb496e36b9b9c3a182da7aa5bb1d09f703b19078ed0ddcf64b9693e77d",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 222,
+      "end": 222,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 223,
+      "end": 223,
+      "digest": "sha256:313dee7284ccd930361322422d2990bb50ea42c52702a04de725aa5d2ded8f09",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 224,
+      "end": 224,
+      "digest": "sha256:d80a0f65e4af5026f242df65d5be65814a19972630da8aff23cc2b560092e182",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 225,
+      "end": 225,
+      "digest": "sha256:2152a0cc349e692a0576bea20c6cc5687259af4354a786fbe250786d95546300",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 226,
+      "end": 226,
+      "digest": "sha256:f86504bc95049e18c4a9b29c0c6f9cbbe719e37edc836dc6e4a755a8ecf1fdfe",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 227,
+      "end": 227,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 228,
+      "end": 228,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 229,
+      "end": 229,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 230,
+      "end": 230,
+      "digest": "sha256:62355b9c136428ff25da0d73d406c675f1ee05538055f97c039ab4ce05163de9",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 231,
+      "end": 231,
+      "digest": "sha256:bb363c3c59d08d057a927703d3c6d207bc2e1e292e50eeba523e2893d8e277c3",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 232,
+      "end": 232,
+      "digest": "sha256:002a747010be4e852dbf60eff130809d90ca301657231efe670f02920cc7090e",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 233,
+      "end": 233,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 234,
+      "end": 234,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 235,
+      "end": 235,
+      "digest": "sha256:da652652b950340cf2d7a61a2cf0eb3ec77358c007911b742d756bd5db558df0",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 236,
+      "end": 236,
+      "digest": "sha256:9ff5c7fa3d593acc4ec0b8b5241346466bb72c52f6019dc78b980586f1c061cf",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 237,
+      "end": 237,
+      "digest": "sha256:df5c6bfa2d556d3c01429a43527ed3e9926115eb30b5f5ba982d6842a8f123da",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 238,
+      "end": 238,
+      "digest": "sha256:444d3f1848de9496b04dfc09b6f54ed937e8923b5b41abea883911747f40cc5a",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 239,
+      "end": 239,
+      "digest": "sha256:c66a34241dfd7de22386567d15ee17deeb2ff94f4b113401ea76532d2a0d957d",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 240,
+      "end": 240,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 241,
+      "end": 241,
+      "digest": "sha256:c075e816f05ae7a3e1a668f8dcc75387ab8979d3d14ef521488f826ef4695c61",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 242,
+      "end": 242,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 243,
+      "end": 243,
+      "digest": "sha256:c5368ee9f6ed9defa80b204438f97ee8e847a2851647cd90cff510f8dbc817f5",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 244,
+      "end": 244,
+      "digest": "sha256:c66a34241dfd7de22386567d15ee17deeb2ff94f4b113401ea76532d2a0d957d",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 245,
+      "end": 245,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 246,
+      "end": 246,
+      "digest": "sha256:d363b2c831a6eeaff89b75083c7576d5f22ed5f05daee67a5d747dff0c3eaf35",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 247,
+      "end": 247,
+      "digest": "sha256:3a1429a934cad7f4a0399f47d05565f72e3dd158b081cea34c65411e124405b9",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 248,
+      "end": 248,
+      "digest": "sha256:5a967f64d33ed12c3e7dc5112eee141385d3215b95bb989acd4c71524eacade2",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 249,
+      "end": 249,
+      "digest": "sha256:c66a34241dfd7de22386567d15ee17deeb2ff94f4b113401ea76532d2a0d957d",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 250,
+      "end": 250,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 251,
+      "end": 251,
+      "digest": "sha256:4e79cad30fe2c34c2c57d0eda6270c243ed431fb71d52b354fdc6e1cec7033b3",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 252,
+      "end": 252,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 253,
+      "end": 253,
+      "digest": "sha256:7e275b20fc313f2c7e9f45ef0bd33c80b9d0b837284df83082ac8e190471b09a",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 254,
+      "end": 254,
+      "digest": "sha256:c66a34241dfd7de22386567d15ee17deeb2ff94f4b113401ea76532d2a0d957d",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 255,
+      "end": 255,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 256,
+      "end": 256,
+      "digest": "sha256:313dee7284ccd930361322422d2990bb50ea42c52702a04de725aa5d2ded8f09",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 257,
+      "end": 257,
+      "digest": "sha256:cc81e4718d7fe9245bd1c3580b7a01104cbaeb9b90d7411455326fba082a745e",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 258,
+      "end": 258,
+      "digest": "sha256:3d7fe7d5f1628aa88527c88d19d3366cc6b5be9cab4853d84009f433c22cb935",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 259,
+      "end": 259,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 260,
+      "end": 260,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 261,
+      "end": 261,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 262,
+      "end": 262,
+      "digest": "sha256:33ab39a16688aa5ad26e2db14befd206a5f2dcb2e879b9369b24dfba4967b016",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 263,
+      "end": 263,
+      "digest": "sha256:3b80a68cd69b4add60266683e175f7ac54e328a11b176a287970c291a6e2fdf6",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 264,
+      "end": 264,
+      "digest": "sha256:bc9f104bb79885a975572011e2be2242dd28d2c08883c1681394152595773ed2",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 265,
+      "end": 265,
+      "digest": "sha256:4338a595b04f080c20fb6be50c2b8a382b33fb95e9b41d65634923afa603bdf8",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 266,
+      "end": 266,
+      "digest": "sha256:693fd551bf11ed821269f5b7e34ba79a3f12320c35463b0188d73744437aa014",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 267,
+      "end": 267,
+      "digest": "sha256:dccaa80a5ad132702b94894aeb56269f95582cce26e0ccf0d97ee65593c208e1",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 268,
+      "end": 268,
+      "digest": "sha256:c252de1fc3d9d2a6dfa7a803d6b9d9a24aa6416ecfee92cabc7a02bcd06394e0",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 269,
+      "end": 269,
+      "digest": "sha256:da2b22767d916bd44a8076994ea75331e1ae5d8eff7d40e2ec45413c9cba35c9",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 270,
+      "end": 270,
+      "digest": "sha256:7ffffeee16f94434512dd1024dd0567ecd967a1b0dfc5a3e720e6d99439e5ab0",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 271,
+      "end": 271,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 272,
+      "end": 272,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 273,
+      "end": 273,
+      "digest": "sha256:2021264d598f44b22cc87d678a42493a473a99dc1b5eb1a827530ad5fb0bba67",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 274,
+      "end": 274,
+      "digest": "sha256:c5adf9ca63402450b7048d291b84b4152be8f63fb33a70b233dfa43f76323a50",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 275,
+      "end": 275,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 276,
+      "end": 276,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 277,
+      "end": 277,
+      "digest": "sha256:8d42fa3fff4f6f322f22c6a88bfe9fdd7b037d61aa181cff8b14282fa4a34b48",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 278,
+      "end": 278,
+      "digest": "sha256:32f1f0f9e158cb975debd2b8c6dd5583aac5d0a7dc1f16d97672bade3f14c4df",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 279,
+      "end": 279,
+      "digest": "sha256:e133315a72aa6680a1e0b04b7f5364e63a04a0ad18a44cb5a4be38410d414b50",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 280,
+      "end": 280,
+      "digest": "sha256:6bc5f0e7b1b42a6869f0c22fb8f6f4e7798626759cdbebaf00c7a55a9f77a6a2",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 281,
+      "end": 281,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 282,
+      "end": 282,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 283,
+      "end": 283,
+      "digest": "sha256:4e83200894e1b444f6123093dbe1474e7458e7f18f16a66cf7fedc37f7db6068",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 284,
+      "end": 284,
+      "digest": "sha256:55920c4c1c577308c56d8742a079213d59ee63493558344d0896de75c724ba8f",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 285,
+      "end": 285,
+      "digest": "sha256:4572c909e692fd8ede15ba57522091aa3f496f4b866db57ca84f8f1645b9dc43",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 286,
+      "end": 286,
+      "digest": "sha256:c252de1fc3d9d2a6dfa7a803d6b9d9a24aa6416ecfee92cabc7a02bcd06394e0",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 287,
+      "end": 287,
+      "digest": "sha256:da2b22767d916bd44a8076994ea75331e1ae5d8eff7d40e2ec45413c9cba35c9",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 288,
+      "end": 288,
+      "digest": "sha256:7ffffeee16f94434512dd1024dd0567ecd967a1b0dfc5a3e720e6d99439e5ab0",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 289,
+      "end": 289,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 290,
+      "end": 290,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 291,
+      "end": 291,
+      "digest": "sha256:8ef1d8473ed1e087a82521199f0ac6ec529aa50553b2cd7ae8c6ffe320224675",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 292,
+      "end": 292,
+      "digest": "sha256:acb59b18932e0d332cba2369012cd80894d9390aa36f11b23a554a512b39a7db",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 293,
+      "end": 293,
+      "digest": "sha256:c7556056e461e92d2cf596e000d7b0a9bf62dcac61433d63dd5d66216b4f5feb",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 294,
+      "end": 294,
+      "digest": "sha256:c252de1fc3d9d2a6dfa7a803d6b9d9a24aa6416ecfee92cabc7a02bcd06394e0",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 295,
+      "end": 295,
+      "digest": "sha256:da2b22767d916bd44a8076994ea75331e1ae5d8eff7d40e2ec45413c9cba35c9",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 296,
+      "end": 296,
+      "digest": "sha256:7ffffeee16f94434512dd1024dd0567ecd967a1b0dfc5a3e720e6d99439e5ab0",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 297,
+      "end": 297,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 298,
+      "end": 298,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 299,
+      "end": 299,
+      "digest": "sha256:7d1857484b4fe80f02ff16c02b740f0c9087a6e48aebf238674890b5d36f2d2f",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 300,
+      "end": 300,
+      "digest": "sha256:52681ef215f9c16f047c43f08959572399b7542db7fcd635bce7ac978b509a44",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 301,
+      "end": 301,
+      "digest": "sha256:ec45e7f6c2b3d4e821f9e24c7a210b18adae3f939fa733638c71706d9136d2e6",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 302,
+      "end": 302,
+      "digest": "sha256:08e72eb3a35f3a0c13fd14d71e18840a0d85b9ff1ad81bcf4007506adff7675c",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 303,
+      "end": 303,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 304,
+      "end": 304,
+      "digest": "sha256:d46e4abc8270e0e13f7e5c451fe07a31201dfa60eb026a9a968a6291b6986885",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 305,
+      "end": 305,
+      "digest": "sha256:09d1c7eec0056d5d552c2b351f010ab42d3f271c04122a186755f5fdb318920c",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 306,
+      "end": 306,
+      "digest": "sha256:c66a34241dfd7de22386567d15ee17deeb2ff94f4b113401ea76532d2a0d957d",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 307,
+      "end": 307,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 308,
+      "end": 308,
+      "digest": "sha256:888976dc8b129457ca753f428ced2fa746c84e034649f678692d5c20fbb7a0bc",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 309,
+      "end": 309,
+      "digest": "sha256:b70ed294c1b844c5742594bf4fe602e2b886da5ab5a4a60b59e6454d5cba2f45",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 310,
+      "end": 310,
+      "digest": "sha256:c66a34241dfd7de22386567d15ee17deeb2ff94f4b113401ea76532d2a0d957d",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 311,
+      "end": 311,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 312,
+      "end": 312,
+      "digest": "sha256:f9922a1a19550a93391ced19e879a9fb8ffc718b3967579f3d01175271bfbf9a",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 313,
+      "end": 313,
+      "digest": "sha256:c5368ee9f6ed9defa80b204438f97ee8e847a2851647cd90cff510f8dbc817f5",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 314,
+      "end": 314,
+      "digest": "sha256:c66a34241dfd7de22386567d15ee17deeb2ff94f4b113401ea76532d2a0d957d",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 315,
+      "end": 315,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 316,
+      "end": 316,
+      "digest": "sha256:d8124b7bcf7c24a7dcc90851d652d8dcf89a943be76a41aef19c22021e2d57b0",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 317,
+      "end": 317,
+      "digest": "sha256:a02ae38b0209483fbebe604a6e2e6991f63aedbaf949b22b99149b7ca9cfe35d",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 318,
+      "end": 318,
+      "digest": "sha256:5e17684fc917138d397601639ba8c7e68a68ed2cbcb5a62f4712fd9c8bab8ec6",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 319,
+      "end": 319,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 320,
+      "end": 320,
+      "digest": "sha256:4887f129e8c31adf9657dade5e8d9ccc6f952fe12914a07db06596fd7bb75734",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 321,
+      "end": 321,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 322,
+      "end": 322,
+      "digest": "sha256:fd557fb63d8aa02b9f6fa90c959f5ca3de7a9ca0117efb70a1546d711be84fea",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 323,
+      "end": 323,
+      "digest": "sha256:c66a34241dfd7de22386567d15ee17deeb2ff94f4b113401ea76532d2a0d957d",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 324,
+      "end": 324,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 325,
+      "end": 325,
+      "digest": "sha256:9f62b549ad8d4ce476107d804e5e1cddf2504bc56d5d613cf6d0d270b7eddfec",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 326,
+      "end": 326,
+      "digest": "sha256:5ccc04d3397ec1fcf3b1c91a2496bb58bd0ebbc9a3712eba89c8702aab29cf51",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 327,
+      "end": 327,
+      "digest": "sha256:be3018e68da319e601bdccb5189b6b4fb05252b5e025d23ea515daaacadb6159",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 328,
+      "end": 328,
+      "digest": "sha256:82c89f44372198b028025a2038e664484243b7550182a4840eee6c28a760019b",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 329,
+      "end": 329,
+      "digest": "sha256:3470dde541bf9b43f4296a002fbad4f000b06dacf0dc87803e70066735f85356",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 330,
+      "end": 330,
+      "digest": "sha256:3e7d8e63a767005b78cacf1627d1432311a103300fb5294bdd8884ce826159ca",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 331,
+      "end": 331,
+      "digest": "sha256:32eaed5615d1732dfd9ffb4cce18b9a66cb68e1f76c9bca46241f6ddc46d7fbe",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 332,
+      "end": 332,
+      "digest": "sha256:ffe33386a9d313b01ff45821663628aa31e9b14f674468e1611bb081aa7846d3",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 333,
+      "end": 333,
+      "digest": "sha256:694b71027b2574cc3899fd060e2fb4e802d47a883d5a6d2eec923ea5f99b1325",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 334,
+      "end": 334,
+      "digest": "sha256:2946aae85a5d2d5a760e9c8213a4d43bfe1bbfb0b6885e42299f99412be4dac6",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 335,
+      "end": 335,
+      "digest": "sha256:e6dc7e41d8be7d702b40d09a32667afa30994befdc7ea60b730e89939fc85e67",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 336,
+      "end": 336,
+      "digest": "sha256:602f2608cac68439923a1dbcb36d467894fad562463f73637ed6475882482e00",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 337,
+      "end": 337,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 338,
+      "end": 338,
+      "digest": "sha256:cf8fa8ec9c7f18940dfeafc261405bd08ad98df7bf0cf0c4f7075b78178fdcea",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 339,
+      "end": 339,
+      "digest": "sha256:c49f9cc06a0e4238dc7e65fee4730ec5f84ea88483a5fc27e67ca9cbf556ee65",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 340,
+      "end": 340,
+      "digest": "sha256:2634d7ba173db8c3acec99be31f9dd2062f73c7f79f4051a29275672c1e85193",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 341,
+      "end": 341,
+      "digest": "sha256:7f63d3102441a3705b8cc4068626c718e380140d36ae403f67eb35df87cdae06",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 342,
+      "end": 342,
+      "digest": "sha256:13285d9859ee418bb574205cc012f2fce47480125d362c2886fbbe88d550f893",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 343,
+      "end": 343,
+      "digest": "sha256:a5ef6634a5756cd1c992f385c43db9c0f0dc4212e4270e125212eb97ab4bdbf1",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 344,
+      "end": 344,
+      "digest": "sha256:222e8d3d761f31ed7ab6a24b4e0c382fdaf760c4a082b2b257a1801af2379a22",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 345,
+      "end": 345,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 346,
+      "end": 346,
+      "digest": "sha256:04fd0cb25c764531d358eb69be12bc7dc38ef7794bd759ec02d699113bcc0844",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 347,
+      "end": 347,
+      "digest": "sha256:f1e959c96414ca6b11bd0275efa3e75d43f27a09669c910327ed237266d9a2f6",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 348,
+      "end": 348,
+      "digest": "sha256:f56bf719e2d12a89f3b15f9c1121f5d28fb905e9c912d2fad56f6b72e97b7791",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 349,
+      "end": 349,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 350,
+      "end": 350,
+      "digest": "sha256:6d73457260e5b2918ce5d10ca6a9be5d09605c3ba4b03a7b8e2eabdbb132bf18",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 351,
+      "end": 351,
+      "digest": "sha256:e1a470971ace61b40d228c6df088a54002864b36759c3a02834d7c6d48917604",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 352,
+      "end": 352,
+      "digest": "sha256:79fea841750c7b9f66768a414784e24200757237b2735c306a72eee722b1a1ec",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 353,
+      "end": 353,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 354,
+      "end": 354,
+      "digest": "sha256:d004af9ba1fb545dd7db730f629e6f1df7bd99dfc336125f048a892179accd03",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 355,
+      "end": 355,
+      "digest": "sha256:015b6da8fea82e814d826ef0d06629eefe8e8c8411d42459f78793d7defe649e",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 356,
+      "end": 356,
+      "digest": "sha256:206ccefefe75f73267f9b611e8ab35c7fb29058d2a402b63c87aedcd8c3145ca",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 357,
+      "end": 357,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 358,
+      "end": 358,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 359,
+      "end": 359,
+      "digest": "sha256:313dee7284ccd930361322422d2990bb50ea42c52702a04de725aa5d2ded8f09",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 360,
+      "end": 360,
+      "digest": "sha256:d80a0f65e4af5026f242df65d5be65814a19972630da8aff23cc2b560092e182",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 361,
+      "end": 361,
+      "digest": "sha256:737e7dfc45eff736b715f77aa96688cfb7f88ea53f6c2b6f88302e7afa8cc6c3",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 362,
+      "end": 362,
+      "digest": "sha256:4caca613bec6777601fcacd32b1505508e78470cf1e06fd0643ac74bd383885f",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 363,
+      "end": 363,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 364,
+      "end": 364,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 365,
+      "end": 365,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 366,
+      "end": 366,
+      "digest": "sha256:3032573d12b555bdaa8583567a06304469998980100bfd22e1b0a98ef9635579",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 367,
+      "end": 367,
+      "digest": "sha256:888976dc8b129457ca753f428ced2fa746c84e034649f678692d5c20fbb7a0bc",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 368,
+      "end": 368,
+      "digest": "sha256:b70ed294c1b844c5742594bf4fe602e2b886da5ab5a4a60b59e6454d5cba2f45",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 369,
+      "end": 369,
+      "digest": "sha256:c66a34241dfd7de22386567d15ee17deeb2ff94f4b113401ea76532d2a0d957d",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 370,
+      "end": 370,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 371,
+      "end": 371,
+      "digest": "sha256:d363b2c831a6eeaff89b75083c7576d5f22ed5f05daee67a5d747dff0c3eaf35",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 372,
+      "end": 372,
+      "digest": "sha256:a7eaf0ad0d6824ab1b9e9d9f769bef284281b4a571731b359c9de6102a086ef3",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 373,
+      "end": 373,
+      "digest": "sha256:c080487abc12a10856a65040163c04143c69a05853a5f210a762bdaac39b48c5",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 374,
+      "end": 374,
+      "digest": "sha256:f462d882ed89640d208446915b2e20d6db8690ed829f504509b7a5aebd003b3c",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 375,
+      "end": 375,
+      "digest": "sha256:c66a34241dfd7de22386567d15ee17deeb2ff94f4b113401ea76532d2a0d957d",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 376,
+      "end": 376,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 377,
+      "end": 377,
+      "digest": "sha256:7612efe634df622dd5d5bc6cb14806b1749ff5e72dafa3e05a352322f0837351",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 378,
+      "end": 378,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 379,
+      "end": 379,
+      "digest": "sha256:fd557fb63d8aa02b9f6fa90c959f5ca3de7a9ca0117efb70a1546d711be84fea",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 380,
+      "end": 380,
+      "digest": "sha256:c66a34241dfd7de22386567d15ee17deeb2ff94f4b113401ea76532d2a0d957d",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 381,
+      "end": 381,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 382,
+      "end": 382,
+      "digest": "sha256:440d1cec4660f173b16956db030d22b554aa198324d3d1af983d9ea50f4b0955",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 383,
+      "end": 383,
+      "digest": "sha256:445ab8615ded451aad3e405810d2ba6853b9b24069f923ec07527ac9ffe1807c",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 384,
+      "end": 384,
+      "digest": "sha256:a11dcf220261e79673748f6450447adf822e65d69d4901c8efac1f4620e96066",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 385,
+      "end": 385,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 386,
+      "end": 386,
+      "digest": "sha256:313dee7284ccd930361322422d2990bb50ea42c52702a04de725aa5d2ded8f09",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 387,
+      "end": 387,
+      "digest": "sha256:d80a0f65e4af5026f242df65d5be65814a19972630da8aff23cc2b560092e182",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 388,
+      "end": 388,
+      "digest": "sha256:ff61d6753db71000ca85444d1f04eac5e77e0214164b33e240582c694e12288b",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 389,
+      "end": 389,
+      "digest": "sha256:4639f60b4a46d8c9047827cdd60c78f0809bf22505c1450ebd890571d32f9f2c",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 390,
+      "end": 390,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 391,
+      "end": 391,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 392,
+      "end": 392,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 393,
+      "end": 393,
+      "digest": "sha256:9527504c71f1e4656ec750e733a793af745a2785a3545b80018f79a77a3cda46",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 394,
+      "end": 394,
+      "digest": "sha256:888976dc8b129457ca753f428ced2fa746c84e034649f678692d5c20fbb7a0bc",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 395,
+      "end": 395,
+      "digest": "sha256:b70ed294c1b844c5742594bf4fe602e2b886da5ab5a4a60b59e6454d5cba2f45",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 396,
+      "end": 396,
+      "digest": "sha256:c66a34241dfd7de22386567d15ee17deeb2ff94f4b113401ea76532d2a0d957d",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 397,
+      "end": 397,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 398,
+      "end": 398,
+      "digest": "sha256:27489b7075b3529200be15f8b5e7a25ed86050592ddeea644a40c470417dd067",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 399,
+      "end": 399,
+      "digest": "sha256:ecac751ec692c3308dc59eed64bf4c11426097e03b2208fe4d0ba05a883ed7ec",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 400,
+      "end": 400,
+      "digest": "sha256:c080487abc12a10856a65040163c04143c69a05853a5f210a762bdaac39b48c5",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 401,
+      "end": 401,
+      "digest": "sha256:166ded54f4bb9db2e90e24503c240b338901c415eec648a9a034307fdc47b8dc",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 402,
+      "end": 402,
+      "digest": "sha256:c66a34241dfd7de22386567d15ee17deeb2ff94f4b113401ea76532d2a0d957d",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 403,
+      "end": 403,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 404,
+      "end": 404,
+      "digest": "sha256:04f8f942b7270b761765e159da57dd84fcf9e6793d86ab903058fc08bd62145f",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 405,
+      "end": 405,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 406,
+      "end": 406,
+      "digest": "sha256:fd557fb63d8aa02b9f6fa90c959f5ca3de7a9ca0117efb70a1546d711be84fea",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 407,
+      "end": 407,
+      "digest": "sha256:c66a34241dfd7de22386567d15ee17deeb2ff94f4b113401ea76532d2a0d957d",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 408,
+      "end": 408,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 409,
+      "end": 409,
+      "digest": "sha256:37c019a111573d1b5de0d442ec28fb8968cbd35794131442ebe1c9236c6c48aa",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 410,
+      "end": 410,
+      "digest": "sha256:b4c6808342b553ff104dd787197b2e77e5491ee64b9c964f367d847c6bf2ba8b",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 411,
+      "end": 411,
+      "digest": "sha256:b74d7d634ffc1b2968d0256196552f7c8ab858a3e0803f1bd57e591b22c0332e",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 412,
+      "end": 412,
+      "digest": "sha256:ebcafa0bbac71201a99d2112088707bbd7817c25b40b375c8bf3765e53366d97",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 413,
+      "end": 413,
+      "digest": "sha256:a7a3ae28ee97f1438eb72fd3259c8cb49783e04fa0e01f819a7f6a15929bbfc7",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 414,
+      "end": 414,
+      "digest": "sha256:f5a288ea94ef3f2ed67fbc1cd68fb3a1c198773b5094b8ffa224a0d83b6064ab",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 415,
+      "end": 415,
+      "digest": "sha256:709fcac5c43e47291299e28ac19b9805b7542946253ad9104f11d34b89b965b8",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 416,
+      "end": 416,
+      "digest": "sha256:9f621f2cb7bef49d052f8b0fa753e245cea57685fceb00cf501e4d938f5255f6",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 417,
+      "end": 417,
+      "digest": "sha256:945cd01f85fc52a429fe0f38d2e929ea9369bcd14f13d16c74005a6893ee215a",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 418,
+      "end": 418,
+      "digest": "sha256:e235ecf07b107d62be372a9144d4974e071cdb5461136a6430efa6d1189f8939",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 419,
+      "end": 419,
+      "digest": "sha256:f39e6d4b5fee5e56ef6183adc9522958c30be9a8867a60a7c78081368f5bcba7",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 420,
+      "end": 420,
+      "digest": "sha256:03cbb7b4e7433b01df667beb4952bc1f6910e41abb273b05f78a8f510195a0dd",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 421,
+      "end": 421,
+      "digest": "sha256:0b42032a1e8add1690c554d7c34a1713b02964c365d1fc84cd3e826ab96c1e9b",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 422,
+      "end": 422,
+      "digest": "sha256:707d5554b524ab9162421b2061e01ae8b88949c6fd045e092d429b5e59cf8d5c",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 423,
+      "end": 423,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 424,
+      "end": 424,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 425,
+      "end": 425,
+      "digest": "sha256:6ee687d95bfce5f479fac33d380c33f7e030ced32e3cbb4967e93b65ba29e62b",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 426,
+      "end": 426,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 427,
+      "end": 427,
+      "digest": "sha256:313dee7284ccd930361322422d2990bb50ea42c52702a04de725aa5d2ded8f09",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 428,
+      "end": 428,
+      "digest": "sha256:d80a0f65e4af5026f242df65d5be65814a19972630da8aff23cc2b560092e182",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 429,
+      "end": 429,
+      "digest": "sha256:dcaddd320f864c3a04dd748152b46c9a8fc00b3382dc683f6e55e95d88745376",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 430,
+      "end": 430,
+      "digest": "sha256:0354805991a1ae0611c4c951cfcaa517a6e3885d682ddd53c0e25ce0b62b9023",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 431,
+      "end": 431,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 432,
+      "end": 432,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 433,
+      "end": 433,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 434,
+      "end": 434,
+      "digest": "sha256:39bbffcad624f3e7863c4039b73d838148c31c1a4acecd8b1324073f4bbe8bcc",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 435,
+      "end": 435,
+      "digest": "sha256:8cceea3a2839b13cb2f67d359efac1cd6a9c77fdbf7df5f281c9762783c0bca6",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 436,
+      "end": 436,
+      "digest": "sha256:5f85750c4418bf13b285e21e9058d6078a9bf93c573696316c6fee2be1f56d21",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 437,
+      "end": 437,
+      "digest": "sha256:36fd4abb495358cb803de3706fbf861a1ea345bd4d6b57c6d4de4590c660e863",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 438,
+      "end": 438,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 439,
+      "end": 439,
+      "digest": "sha256:48cbeda6946f26a3251be78bfd8f51b768e2ed92ade8d73fb806353eebe72b01",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 440,
+      "end": 440,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 441,
+      "end": 441,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 442,
+      "end": 442,
+      "digest": "sha256:978bb9ddde8033bc626699db47d6d963e5c1e853ff0646cf9f75889d175403e1",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 443,
+      "end": 443,
+      "digest": "sha256:a18c2a27f96f63660265c9a9b70ddef580c3430cd6d1195ca849f1755fd2bdcc",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 444,
+      "end": 444,
+      "digest": "sha256:01e3fd530bf7a3ce77386d76765b5d6752a692cebc09d128696f4fcb1198525e",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 445,
+      "end": 445,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 446,
+      "end": 446,
+      "digest": "sha256:feeaff096b9c5d34c42dc73e61d6f43eb2627bf1c64cfdd11f0b69ab475b4087",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 447,
+      "end": 447,
+      "digest": "sha256:158de052ad3cc1c3c8059968f0a532515c75066c0f0c4e7371df44acc6d379ec",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 448,
+      "end": 448,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 449,
+      "end": 449,
+      "digest": "sha256:7d292f249813db10b15593eb455d2931e5f8e2982de39b89da9e7384b7c534c5",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental.go",
+      "start": 450,
+      "end": 450,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Cursor-bounded narrative, code, target, and coverage endpoints."
+    }
+  ],
+  "version": 2
+}

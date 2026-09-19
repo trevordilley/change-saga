@@ -1,0 +1,435 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "digest": "sha256:2bb6717dab575e8bda0eeba9fc9ca3b8986c7a442cfb3309ec9986dddae75b3f",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:1d95fc04a80c952f49ce4188627c53b0fbe8c44041b952d592acd1de99861466",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:df359c10800e4a9101141196a2f44cff994ec60d8dd7b8bd34c0a27f746b29e0",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:b7db83f9f6f4325fb860b6549e8d7bfd76a0b53402c281c34a32bd7e3834426d",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:88fc633667d0300731bdd84472dc424e1f9c64175ea2badb666472d91aeb4efc",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:30e52a83ada62c671cc6fc271fb929f1abe5b4f5e84a5e270fa9f6c2b9a572d7",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:ff2edc14f9642416ec6d520a5917fe85865549079f26c753d277aa02cc143e48",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:e951dbccc44fa468f5a40a355ac889b5b354bc7fa1866be12ab6b62fceaa08fa",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:5289c65da88295b668e9c46d3b170bf2711a968aa77daace62850dc8b51af5f8",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:98de435519c748f5d3b68839ee9e4841521d9b59c24011282381785d1bbc5e8b",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:b62de15a8ea446dc99dc6f1e9adb5716f8c36c7365918e4fc459ad5f8a570a08",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:9c3eec462b234714314a5d4e26871a67f232e61f7719c3479241a162ce0430ad",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:69391d724ec61eb230dc3da25af79f7c9510f7d59b71b4b266ec5ef5d6c5bfe0",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:d117fa006ba9208500b2930ce69cbde436c647afa917cb7396a9bc9111a46dd2",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:5289c65da88295b668e9c46d3b170bf2711a968aa77daace62850dc8b51af5f8",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:469cacf2051d6636b983eb138257467a56bdbb3def76b4d3d6fe5e811e0a0964",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:e33cb8750f5ed3f4ed1041125f2ac058b867d0cde138dd1950cb9215238ac213",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:3cc95df7bc87bb3aa52714eb4de51bfa7eefb7dca6e05a97d85fcc030d733454",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:f4a7f09d029403779c0a51a96d34db8e5b22f7cd58af182d04c57e2ab3ef1cbf",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:d117fa006ba9208500b2930ce69cbde436c647afa917cb7396a9bc9111a46dd2",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:7eb50cba1582aecad429a7399ef8458b39a26c9201fed60de7ff717fd599c98f",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:0f58e971e79f6f999eb1c279d30c51da94f331e876efd74eeb73634072885506",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:dfd49de99733781b7eb54e5a51c7beafda617ce26721d0927154e16dad105088",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:735956ae283f9939793421ea1341ba90211078e213dc3ab40340ee8996905e19",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:f8c0b027d5844b57b8a223d4d69bb55b158eba63c51b790f8f4631e7556258dd",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:5df33205b11ee45959b772ce6e9f32a02b3c5581682c7eee41fcaccc194fddf9",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:b834c79a12f6a87b6f3ba2de97e2e2a8e5920acaf6b9c332a5bea04510aef568",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:f8c0b027d5844b57b8a223d4d69bb55b158eba63c51b790f8f4631e7556258dd",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:235df3f729dfa7eee6f91767d045b96b6d3aa3c283a184cc389dba4696de14e0",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:f88831a1e0516db9f2a0f1486e13a8d3df63a7cd9b8878a39523f9ef12cc9578",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:58fdc9e93a88abd9e4a28e769b5da5a0f1103acdbf15ce245a03dfb931c0fdea",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:3769d237cd420b9d38b981a0a4f6770190a4a83dca1fe56c4f5ba1e2cbc0ef76",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:c1f2407725284133a7eb56a3a244d7968d75df771cd7b9bb3b587194f291050d",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:18a177dc749c6473b5c48ba6180df328c3153d6e1498636c4ae967280b68c26e",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:650ec3f1086cf60589e30b135fdaaca14959ea4e4abed2e876c1d8473dc5ce4c",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:b20225682939a3dcf4834b991badf036f9e1012abbefbef0e5e815137f692f29",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:becb381ab792d823f013f82c7067fcf061456ccb6856e2fa3d36d40686bf8eb6",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:069f44551ad4fec27a783ffcf076d0d9a868d759d1358e39089cd726875ae039",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:7fd050eeadc8561abe45e081cb750c21e26acb3740a0551a5d828f74f172d6ae",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:171e341ca8f25af59aab6cff09480b7947d023d0352e405fa30b69e45219e0dc",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:f8c0b027d5844b57b8a223d4d69bb55b158eba63c51b790f8f4631e7556258dd",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:2f98d7514206707297daa0f2d68ed0151a5a6506c068cd1f1b848459df8daa43",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:5768777954d549c10a6b9cf3073bf3cc64aedbaf5db602dfad6d2ea501053d45",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:f8c0b027d5844b57b8a223d4d69bb55b158eba63c51b790f8f4631e7556258dd",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:235df3f729dfa7eee6f91767d045b96b6d3aa3c283a184cc389dba4696de14e0",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:7c39fb927ad982bd95056b282b35faf57a640c1e9c0bfcafa3ad149994b576c0",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:7aaa3b427ea836a26bd2e8e71cf3aee04da271ed8a34c986b5f7efb611badd24",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:159d98e4a037b78b5898416674539c7ec2ca398d785449d5f6723bde243c2713",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:becb381ab792d823f013f82c7067fcf061456ccb6856e2fa3d36d40686bf8eb6",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-release-credentials.sh",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:3769d237cd420b9d38b981a0a4f6770190a4a83dca1fe56c4f5ba1e2cbc0ef76",
+      "note": "Classifies credential availability without printing secrets and enforces required policies."
+    }
+  ],
+  "version": 2
+}

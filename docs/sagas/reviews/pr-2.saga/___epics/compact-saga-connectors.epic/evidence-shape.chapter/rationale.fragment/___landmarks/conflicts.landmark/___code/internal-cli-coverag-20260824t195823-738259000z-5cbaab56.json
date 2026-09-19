@@ -1,0 +1,315 @@
+{
+  "references": [
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/coverage_naming.go",
+      "digest": "sha256:e710723ad655cc9efe7a0c0a85f24630a1ac275519eea879326795fdeda8d2b7",
+      "note": "Selector-derived coverage record names."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/coverage_naming.go",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:55feb8da8d74ead61adcf05dfbc90d4ec717e9510e8f14e0e89bf1e838d3bd23",
+      "note": "Selector-derived coverage record names."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/coverage_naming.go",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Selector-derived coverage record names."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/coverage_naming.go",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:71e37b6cd48ad477cbb12624b757ee1dc4975711b78237a85f508bfdd723af77",
+      "note": "Selector-derived coverage record names."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/coverage_naming.go",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:88b2b63df1b22d7cb9359d4a10a5e357a697e72f0d3f3dc2887843958558ca4b",
+      "note": "Selector-derived coverage record names."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/coverage_naming.go",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:d01aa323829d06b5023aa663d61d45371f4198cc7f8a770199fe5e4dc0c5ba39",
+      "note": "Selector-derived coverage record names."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/coverage_naming.go",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:74432b77763c6cfa9171fc3fd13832ff241f4c996771aa8caccfe84199cb372f",
+      "note": "Selector-derived coverage record names."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/coverage_naming.go",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:f05b48055b78db9e9e8993848d47169d7abd312df35886aa83d4014d37eb4009",
+      "note": "Selector-derived coverage record names."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/coverage_naming.go",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Selector-derived coverage record names."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/coverage_naming.go",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:ab6f6be8e5963a10d31f1044691aa6beceed5a59d04cd8247f259497075d8b4d",
+      "note": "Selector-derived coverage record names."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/coverage_naming.go",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:5848092e881d6728ee9dbcea8d7a1d95fd61173d37db11915f72c75e342dbe49",
+      "note": "Selector-derived coverage record names."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/coverage_naming.go",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:fafba0527c3953c4b6e0e5b5739ba83612f8053bcdc9466730193cd1d590b408",
+      "note": "Selector-derived coverage record names."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/coverage_naming.go",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Selector-derived coverage record names."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/coverage_naming.go",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:6a40cdf6604497ac5dd723e216bdc55869eacfc3ea7ef0a1f549c9c1c306de21",
+      "note": "Selector-derived coverage record names."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/coverage_naming.go",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:f15a11e454f4486df03e45fd15b1926344d8cb859f88cdb7a2d3059c0232f0f9",
+      "note": "Selector-derived coverage record names."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/coverage_naming.go",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:0793a20b9b1ac4843093140873983765e616a8a8cea451ef07cc0e892b1b022f",
+      "note": "Selector-derived coverage record names."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/coverage_naming.go",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:84911b4b353b22784e7f2e3863ea091aac55e8b27cbf5a19ebeb0dadc7fc537a",
+      "note": "Selector-derived coverage record names."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/coverage_naming.go",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:e4c05ff767fe7476499cbfc1599ceaf5ed1d590ddad39b2f2ef65ae3fc3069d2",
+      "note": "Selector-derived coverage record names."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/coverage_naming.go",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:0046b4d2f54a84a2a795a19e24d898abf83ca2a9f4e6634da79f535722587eb8",
+      "note": "Selector-derived coverage record names."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/coverage_naming.go",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:57931d5eabf2ac8690aa54683f091054c4c6e06f3873c4719bfb3fd3555d12d4",
+      "note": "Selector-derived coverage record names."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/coverage_naming.go",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:b5538f4c00069169f0b5af648d2208cf67fc5c6f0e15bc4e78eedf5bbc46bc33",
+      "note": "Selector-derived coverage record names."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/coverage_naming.go",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Selector-derived coverage record names."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/coverage_naming.go",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:0784c73295caa332cca72699aac6b2869a4ba8408b7a0dfa9edfeb12151ca22a",
+      "note": "Selector-derived coverage record names."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/coverage_naming.go",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:3b217a3ff7e8e229f9641f2fb8468c6c7a845250fe49e41d490c8d6582b6499f",
+      "note": "Selector-derived coverage record names."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/coverage_naming.go",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Selector-derived coverage record names."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/coverage_naming.go",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Selector-derived coverage record names."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/coverage_naming.go",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:d37288313c47a6178858497b9d79b6009ac71a70164c329d6d2f9da4c08b631f",
+      "note": "Selector-derived coverage record names."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/coverage_naming.go",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:bd5d5066861c605f20dc2ef6c9ee17ac659af19d51117604a05819fcea1cc433",
+      "note": "Selector-derived coverage record names."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/coverage_naming.go",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:526cd320c460607d819882fd4a2ec2fc55c43fd93e4f6f817c00aaf826ba0c4f",
+      "note": "Selector-derived coverage record names."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/coverage_naming.go",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Selector-derived coverage record names."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/coverage_naming.go",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:4cd94e8cc124ea4cf77f6d50f4c033b3d714a9ca396e1c39bca7de5bfadb19fd",
+      "note": "Selector-derived coverage record names."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/coverage_naming.go",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:e4f184d16cc24cd56f336e72ebf3b03aebc2c5d8b118ea1ce4f87c09f2bfd575",
+      "note": "Selector-derived coverage record names."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/coverage_naming.go",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:81c8234d7bd61ac9d002e722243475f7d11de2d601ccc889919b3e30f1dd813c",
+      "note": "Selector-derived coverage record names."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/coverage_naming.go",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:ef296bb776eea78d423af8b9be6e469b518b30f1d2b1ea31a41992d4caa5dd96",
+      "note": "Selector-derived coverage record names."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/coverage_naming.go",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:4543b0cea7c88d8de508453cb8685ce332c16b55c06aa1b004edfb4721cc11b1",
+      "note": "Selector-derived coverage record names."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/coverage_naming.go",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Selector-derived coverage record names."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/coverage_naming.go",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:918418533fa76e7e39990b7f72e3865d35145c7090d4d3ad839387331407e975",
+      "note": "Selector-derived coverage record names."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/coverage_naming.go",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:1d37e54739c91d7a10d43a9dc1bbd3a972e56bbf5d1d39b4124d7a239b22c113",
+      "note": "Selector-derived coverage record names."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/coverage_naming.go",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Selector-derived coverage record names."
+    }
+  ],
+  "version": 2
+}

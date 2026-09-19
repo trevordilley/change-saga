@@ -1,0 +1,3563 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "digest": "sha256:f660f8e26d98416a5932fddb51caf63787f88992fce37707ee451522e5a42ada",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:0b0d4d1f5fbec17d7732f29ccf38d3ed9e3587229f0a04824e1096d25f930f7a",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:71e37b6cd48ad477cbb12624b757ee1dc4975711b78237a85f508bfdd723af77",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:9d321d278769fb32c7c6820e1c992ebb53b04e39def0f158cbf1d84e27d34c18",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:2687cf8ba8737b6155548121841a1a74c90dce6633adb6429b325cd1e9f2cc58",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:74432b77763c6cfa9171fc3fd13832ff241f4c996771aa8caccfe84199cb372f",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:f05b48055b78db9e9e8993848d47169d7abd312df35886aa83d4014d37eb4009",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:7e65bbb22590037f8798cd04b6cde7866012c92bae40334d8edc2a4317eee5c4",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:644c9ea48a269a070cb1d1584536d5d9d9a2866a8eb800399e172a21a09c0ae0",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:ff2c0ea95d76cbc00801be44ecfc5884dca46f0b7febe0b6b2a9a5e1afd73944",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:d28863555fbc7eb2c1b3aca9fb2fc5690456651523e934989c30dfd95f77129b",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:4251f63298670483bdac18904e47ecc02d2c2d19b3f7d8e42f79cb371a7c684e",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:ab6f6be8e5963a10d31f1044691aa6beceed5a59d04cd8247f259497075d8b4d",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:fafba0527c3953c4b6e0e5b5739ba83612f8053bcdc9466730193cd1d590b408",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:7e068d151ab7a73d7f92113399e3647aa3266ed70492c891439d79ce80523a29",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:8cc1c8ed6abf0fb22f1f23974e00de92aa61bd9f2b969a4b440ab31289c639bd",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:e2944f9929ce92f3fe6bb55d5afb0a6517f4388693a0bc6ef6b2d31e0df68e39",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:9cfa3ea2546ce0660854a623019220830f618985560dc1399b7e180b9d9f0060",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:180a191bd2d33c7024108cc79876f3123d2bc1529706041c3b79972aeddd33d1",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:cdc21a836b692fbe028b951fc85e41e92b63d94ff04d2b644d32fcbe0f527a2d",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:2c4a2264d903480808abb20a954c7d80d060944e06679893f4b32a7b3973b193",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:cf4474cd77a3626c36159db13ee3197ec5d328ed76bccb724a87810d7d2985d9",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:beba71d8e7da15a025a68d0154ef8dbfabd17cbf6f208679f367253ea0533d43",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:9e7223680a2a6c277f9febe696ea1f6a9bdeafa36e33893fd59133695e1bb9bc",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:a136c92c5ca5580469d0a25f3fbfca47b500d189e157034caf75bc72cf8d72a2",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:baf53898347d34abef90a1491295a28703b6e753b0f54d6549e0bd5289802ae8",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:a605346892c91080d9862c1ef0414ebed0b6fdf20690e01d7dce025658b5e6a0",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:f6c784ea71695148b158fac8e8e2e6df0e9acf1026b0b38d48b80ee3da3f0ac1",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:74d20ab896c14f01b58c6be1773cf338dfca62adef20d00444e82010a9ad20ac",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:ac591fbad87f78df039ff2648ce8765f2aac8c818abbb6448ef48ce0c36eb7f6",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:a0e0a30290ad33a3c7f8eaad6b6733bac3959fbfa9cb5b2a60fa4920fbf2486c",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:196f316e357da4cf8a59efbd773141819b419b2331b7f57eb7ab2ac11d116cb6",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:66d34ccb48410fadcf17567e167f33bb06c4f6400b4eae88cd5e13f1b4fbc94b",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:2cdccfbb5c12788e8c78833cc4aa5c67b6502e1f0a17214e49763f1889bae4f3",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:c991c1bf1d76e7559cf0b03696eec9f762a3d8120bc5b781d6a9d7c03f71ce3c",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:977f47c1c581f1a9efb2679910aac16f617571e3d09e5304c624a6d653de1a4c",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:2fd8dfc2460517132fb24449ea2346072b7949b1d1620ff52851372a7cd3d2d5",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:00980c7905a0c88a70a4575dc82cd4458b7f281a96adef77868b466e5fd3606a",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:b641d15a6ce2c1ffc1a980e3f881ea9d3498ba1e4939749cf6b080026121b495",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:e133315a72aa6680a1e0b04b7f5364e63a04a0ad18a44cb5a4be38410d414b50",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:6b64f324d4bffadc3d1072ca8a163ae4290e82a398844b5bddc72935ecd0c556",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:2c9feb12b2492a92f4e3f481646be6ef7a5a01091ec82adb85d30b8171f14dad",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:a8c85d8d037dba05bacbf4b620b874552af688726bffc4a22a1e640a13fb6d5f",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:2eeff33a4126d17d59845f69ceaf10fe70c167588fa6238b2abcb7b8fe3660f1",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:c991c1bf1d76e7559cf0b03696eec9f762a3d8120bc5b781d6a9d7c03f71ce3c",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:e133315a72aa6680a1e0b04b7f5364e63a04a0ad18a44cb5a4be38410d414b50",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:6b64f324d4bffadc3d1072ca8a163ae4290e82a398844b5bddc72935ecd0c556",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:2c9feb12b2492a92f4e3f481646be6ef7a5a01091ec82adb85d30b8171f14dad",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:ad4da27ef9bb8ef212795a6aceca340d235d592839e8e1cdf4a1460a5d1d57fc",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:d9e7ca2c59ec23c64ae7f647601962a0a562896e18b38d23832aa6a28315f9cd",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:a8c85d8d037dba05bacbf4b620b874552af688726bffc4a22a1e640a13fb6d5f",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:f312dffa318f890d8e80edeabb2d61e99a993f5cc234e6364a62d6b3f28ca891",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:3ddd8569a55f7ff309358f1a27b07a2cb8df0878cef122c49b22fe0eaba6d675",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:836bdbbc487712cb5888a1efa94dbafa51b9661ea99df1ffc989838f2a467b98",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:8d13713350d5f00165c54073816f470bd8568989c1a5df847e6a4701667fbe6e",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:977f47c1c581f1a9efb2679910aac16f617571e3d09e5304c624a6d653de1a4c",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:ab2a27fcd04c91f5ff2584afd0812a86573624c4cbff44d1c2725c1b6666c0d7",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:c991c1bf1d76e7559cf0b03696eec9f762a3d8120bc5b781d6a9d7c03f71ce3c",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:61dd4c16dc0a411185c2d0779c3b960bb6817acf3c993329d4ab8e0c06852be2",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 68,
+      "end": 68,
+      "digest": "sha256:53554d4ba9404f3c502be2dd13a449da5f134258be515333bb53f13d09a081e9",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:e133315a72aa6680a1e0b04b7f5364e63a04a0ad18a44cb5a4be38410d414b50",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 70,
+      "end": 70,
+      "digest": "sha256:f95929c87d9807dc0753d1c46325aa48f173f58ec8fafd5313300a14b9be9739",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 71,
+      "end": 71,
+      "digest": "sha256:c46fe4088fb22f508d20bc997054b2d0f2062b1c2d7e0f836e472fb9f246dce6",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 72,
+      "end": 72,
+      "digest": "sha256:08d21a0847df1b11180006cb19a5aa59a512de33adf07c76a7c7b6cc69e4cdc3",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 73,
+      "end": 73,
+      "digest": "sha256:76e07f7b1399b1e3c00087d00cd21a752293668789be0a480cd041388ef67a18",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 74,
+      "end": 74,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 75,
+      "end": 75,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 76,
+      "end": 76,
+      "digest": "sha256:4b94c6f3ce33a3282e1f1f674fc4c0a0669badf0b63e13ee2a9357316430d5c0",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 77,
+      "end": 77,
+      "digest": "sha256:bfa69ecf557aa7052af88780ba0c61f487ae2ca0ec30171370ce2013a99a8f85",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 78,
+      "end": 78,
+      "digest": "sha256:d8ec1278fa15fb1ac294a20897e4c2836a4e809849dfefcf17726ac5bbb0e7cc",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 79,
+      "end": 79,
+      "digest": "sha256:0b199d7d3ee2888d84d86f8792d458ccac2d1c14acab4c442dd236dc83c64fc4",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 80,
+      "end": 80,
+      "digest": "sha256:6dd31082fa5ef067af9fe6b8135a19d01bc872b5e7c9d5f1f4b5d2e4c7c6b7ac",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 81,
+      "end": 81,
+      "digest": "sha256:868257f54d6314681900e2b91c76b174e9f71e0ab14600297d3957aba1ae8443",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 82,
+      "end": 82,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 83,
+      "end": 83,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 84,
+      "end": 84,
+      "digest": "sha256:4931c302969acad34466e138663da37c29f4cb2c87e939a5088a7edd5b864671",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 85,
+      "end": 85,
+      "digest": "sha256:0e7cf94f1429c03532bee56827bc1ad79223b179b309d10ae88de58f136227a1",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 86,
+      "end": 86,
+      "digest": "sha256:e133315a72aa6680a1e0b04b7f5364e63a04a0ad18a44cb5a4be38410d414b50",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 87,
+      "end": 87,
+      "digest": "sha256:f312dffa318f890d8e80edeabb2d61e99a993f5cc234e6364a62d6b3f28ca891",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 88,
+      "end": 88,
+      "digest": "sha256:1c1bb8beee5580ee932b11bac944e1f28b30ce99d885c1c89c889b0536ddc6ca",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 89,
+      "end": 89,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 90,
+      "end": 90,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 91,
+      "end": 91,
+      "digest": "sha256:b12d85bed141093690108be12c2a23725f293503cbba28489b4a0095fb26b73e",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 92,
+      "end": 92,
+      "digest": "sha256:c991c1bf1d76e7559cf0b03696eec9f762a3d8120bc5b781d6a9d7c03f71ce3c",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 93,
+      "end": 93,
+      "digest": "sha256:e133315a72aa6680a1e0b04b7f5364e63a04a0ad18a44cb5a4be38410d414b50",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 94,
+      "end": 94,
+      "digest": "sha256:6b64f324d4bffadc3d1072ca8a163ae4290e82a398844b5bddc72935ecd0c556",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 95,
+      "end": 95,
+      "digest": "sha256:2c9feb12b2492a92f4e3f481646be6ef7a5a01091ec82adb85d30b8171f14dad",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 96,
+      "end": 96,
+      "digest": "sha256:ad4da27ef9bb8ef212795a6aceca340d235d592839e8e1cdf4a1460a5d1d57fc",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 97,
+      "end": 97,
+      "digest": "sha256:53554d4ba9404f3c502be2dd13a449da5f134258be515333bb53f13d09a081e9",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 98,
+      "end": 98,
+      "digest": "sha256:f312dffa318f890d8e80edeabb2d61e99a993f5cc234e6364a62d6b3f28ca891",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 99,
+      "end": 99,
+      "digest": "sha256:3ddd8569a55f7ff309358f1a27b07a2cb8df0878cef122c49b22fe0eaba6d675",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 100,
+      "end": 100,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 101,
+      "end": 101,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 102,
+      "end": 102,
+      "digest": "sha256:19f500f4d28d8ebe2d5a59eb233fb97142d11ed11407aa31fbef1b336580b674",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 103,
+      "end": 103,
+      "digest": "sha256:c0b3a55f40eaf82757e8e85721a6f9ce55dae816f53ae75e231157b9dbcb8992",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 104,
+      "end": 104,
+      "digest": "sha256:2e77a91538e07746eb53bd9ea8a7b41a7396a4f4e487f010b5bc64c753d4fdc7",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 105,
+      "end": 105,
+      "digest": "sha256:d04b4f5dab7da2c48606d9cc22d4e385269b942c10be32070e2187fc8b841726",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 106,
+      "end": 106,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 107,
+      "end": 107,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 108,
+      "end": 108,
+      "digest": "sha256:fe639d658e452fcbffeff8b570c35f8a4825cb10dc1a570dc0df1f57f6ce1828",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 109,
+      "end": 109,
+      "digest": "sha256:0e7cf94f1429c03532bee56827bc1ad79223b179b309d10ae88de58f136227a1",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 110,
+      "end": 110,
+      "digest": "sha256:103fbbba8a24efa3e5e1a93a81af4d1af30e0721fe71d722ee19ec64fe04bf56",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 111,
+      "end": 111,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 112,
+      "end": 112,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 113,
+      "end": 113,
+      "digest": "sha256:b9cf41f0a31faeced50736f7030781e326499ca8237ddd36c19c91c2ba4e859a",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 114,
+      "end": 114,
+      "digest": "sha256:b3b575841a5db410bd9bd12fa3e054cd87322b0138a979b0d0acfafcd2740a5b",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 115,
+      "end": 115,
+      "digest": "sha256:72e231a75fbebe4848e3d581e60566960876db376e83bd525648e604b9533ae1",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 116,
+      "end": 116,
+      "digest": "sha256:c2e1810d1d74aec4bb3e72c2168b25e2f212a11dfac8f7ced6251f43e3baeea6",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 117,
+      "end": 117,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 118,
+      "end": 118,
+      "digest": "sha256:b593f8ce385a9b1024ad9cde19eb2f8031687ecc78846f5eba3f71818bd649d9",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 119,
+      "end": 119,
+      "digest": "sha256:1df823d4a239377ffec4c3523ef436c67b7bedadc244e182c13456d172074a79",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 120,
+      "end": 120,
+      "digest": "sha256:2255c65b13e1e8ae87a01131232640405a88d94d11d80ac04d29ca72997d852b",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 121,
+      "end": 121,
+      "digest": "sha256:1599d2e14e3f0da499fb42661c6cf521350ad749f500bfc14e502b7f42e2b01c",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 122,
+      "end": 122,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 123,
+      "end": 123,
+      "digest": "sha256:8a7ec83ef194109e70e64f9166cb8e3f669b39b444fa313ef5df60b41ecb58af",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 124,
+      "end": 124,
+      "digest": "sha256:ef39e5856755e7426044bf6e458ef1e101cf4d39fc51e6a8160af69ea2961b4a",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 125,
+      "end": 125,
+      "digest": "sha256:53d8f92194af6202dc39e5bc1209ff916c33840f23c5613ed88a803234a645a0",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 126,
+      "end": 126,
+      "digest": "sha256:2fb8aeec6bbabbe51e198e65bf5f83c204fd1c0af18034249c0f9e1c23b69066",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 127,
+      "end": 127,
+      "digest": "sha256:bc4356e08e4af94760871658974a4a24e17b25585694a43722d17799b83f3bad",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 128,
+      "end": 128,
+      "digest": "sha256:83072c7773876496c08bb369bc6e8f9d8f701edbe2328a8c197f951dfc4c929e",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 129,
+      "end": 129,
+      "digest": "sha256:87aa756ab720dcd86c0ac30788f0a170bc11e02100e88cd940481d6422a2c9fc",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 130,
+      "end": 130,
+      "digest": "sha256:947593ba3092c894869aa827b78de03e075a03e28833230cb44c1cf16886cff8",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 131,
+      "end": 131,
+      "digest": "sha256:436a26316de6888f09cc39af196215090341bf15504d06283e919e615ddd667d",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 132,
+      "end": 132,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 133,
+      "end": 133,
+      "digest": "sha256:afbacd09fe45a922becb9ead437a155a5f663d4b33b77d4d260160d7bcd437cc",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 134,
+      "end": 134,
+      "digest": "sha256:9bb71af1a777a70400e60b7020542fda07b370c7c552459f1fdaf84b2b5bd3d3",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 135,
+      "end": 135,
+      "digest": "sha256:d10dc49e15bbc2b5d1975431bde53c952f5d6dae6527e55fe95ef078171207c3",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 136,
+      "end": 136,
+      "digest": "sha256:234aaa710e33d3636a03463eb13cfc6795eea43be3d25096099050511aa9ca74",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 137,
+      "end": 137,
+      "digest": "sha256:65769f1c785aadbae6f223d287d160c74ccd350139fde4e75f542593c81d1ed1",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 138,
+      "end": 138,
+      "digest": "sha256:ca775a5e729b5a32a5c06b0cef530177d8c10c8c40c6ccfab5ddc68e8aa33f02",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 139,
+      "end": 139,
+      "digest": "sha256:66ad7d77e18001b6488e0daa35e9d8c245294eb1f940ba8b16c52b993083acc1",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 140,
+      "end": 140,
+      "digest": "sha256:0e5f2ec6f3fb190ff52bc05fd403584918df4f6672d48b6795394fb1eaab7214",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 141,
+      "end": 141,
+      "digest": "sha256:78fd0e4a31c15388a022857575c5fa10798e853b92a831894778ced54430d1c7",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 142,
+      "end": 142,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 143,
+      "end": 143,
+      "digest": "sha256:efeb07da0b1f9f831af642274b3debdc3a63a60b94c95daa10ad2c74db11f966",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 144,
+      "end": 144,
+      "digest": "sha256:865642d721f1c5273a25a9e0bb937b2b131ec33675f13509c5f66440c27deb39",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 145,
+      "end": 145,
+      "digest": "sha256:ab6841b653e90d0e1746f5b1b505fbac718f7018a5562047c019e2c2bc61b393",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 146,
+      "end": 146,
+      "digest": "sha256:abe3f5fbf7a77a6dcd91fb1416907a72754442ac06f6cfa941a7d714604c00f4",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 147,
+      "end": 147,
+      "digest": "sha256:39e4af2048d784b25ed0e16c983c82a586d7c24b40689f417e4510e1e74d7703",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 148,
+      "end": 148,
+      "digest": "sha256:5dcd4331456e5dc78dc9230227ef5ba80880b48708e57bc6c3560bc1b8944a83",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 149,
+      "end": 149,
+      "digest": "sha256:61492f31d1f56b0a424bc2d076815a57ad3bfb694e35801bc620fac2b2ed18b4",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 150,
+      "end": 150,
+      "digest": "sha256:ea0c8b354a5fafe011938401102962c60653d29133d73bf5e6d63fa79af90f99",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 151,
+      "end": 151,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 152,
+      "end": 152,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 153,
+      "end": 153,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 154,
+      "end": 154,
+      "digest": "sha256:f906d8468f294045c156cc434eaf56674bed5d53a4ee5cc8debf5493d6212923",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 155,
+      "end": 155,
+      "digest": "sha256:83072c7773876496c08bb369bc6e8f9d8f701edbe2328a8c197f951dfc4c929e",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 156,
+      "end": 156,
+      "digest": "sha256:8f43a84f3af26df6cea29182244adf721fb5bb8b7acb51c76a024d4a3a7b18ae",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 157,
+      "end": 157,
+      "digest": "sha256:a61185722bcc5aaf67c8b69dc231c0ee3967ed758b0cc55bb72a104b790022d5",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 158,
+      "end": 158,
+      "digest": "sha256:d2642ffa5771865889d449517cdae3ba67a712bf33824a7edb595d663504c8b3",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 159,
+      "end": 159,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 160,
+      "end": 160,
+      "digest": "sha256:33335ad0dccbf8ba635a947e0993d75b1be6344127b9af2819c7893baeb4d891",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 161,
+      "end": 161,
+      "digest": "sha256:237d79fada4946d859dd7b2e8c712cb783177dccca5c4ba29b97db4169c02571",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 162,
+      "end": 162,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 163,
+      "end": 163,
+      "digest": "sha256:310cd8f740e0ba60f81651c8725da8c490b0a9ebaff9870d17dedbc6ca7d0eed",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 164,
+      "end": 164,
+      "digest": "sha256:bf50d7443aabfe88a0dbc58a4ba9028868e16a12965e6674108f1982ebcee4b6",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 165,
+      "end": 165,
+      "digest": "sha256:bf319915551a979286204de855b2ca4ca72b4593bab0175a37994c16e7916cd4",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 166,
+      "end": 166,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 167,
+      "end": 167,
+      "digest": "sha256:cdf8035d1729c503304e65ab5abc7a21a83288423e5fa56ebf37ae8306fe0f82",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 168,
+      "end": 168,
+      "digest": "sha256:78ad2ca0186f605034a465c150657c807b0ef6a6f9743b296d9cdf44253da06e",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 169,
+      "end": 169,
+      "digest": "sha256:08134950f561212dd6adf15016e0a378ab46a91c0caf2ca430893f0868540efa",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 170,
+      "end": 170,
+      "digest": "sha256:3f93191566556f092e047c274179040658765a0a9ab205300a6437f0711d0d93",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 171,
+      "end": 171,
+      "digest": "sha256:5d2c2c560e9fa8da5943e3a5aa4cd3bd239f1dc8049779c11b0b7bc93ec98e4f",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 172,
+      "end": 172,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 173,
+      "end": 173,
+      "digest": "sha256:0d14c1a363ce3a06f8ebe80cc5785c4d0ab2b9eac24e08550458376b861f1b65",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 174,
+      "end": 174,
+      "digest": "sha256:77a9b5e9019c8db8783ec9c3febb0a2c9862f61a05c308fe895e4a9bed03edb3",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 175,
+      "end": 175,
+      "digest": "sha256:c6fa602c00494822c8ba171c28d451a1cd06928d661129d80831ee06624eba19",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 176,
+      "end": 176,
+      "digest": "sha256:3a04cdbf086926f66ce57577ba1d485fc74ddba3fcecfd8691763e1027e7a0db",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 177,
+      "end": 177,
+      "digest": "sha256:3629dd45613d1fd034791a61c87b7f398e5f22f0ea4509f1d55b8fdcec2bf773",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 178,
+      "end": 178,
+      "digest": "sha256:719b6e131f50ef713c6644466a57bac9f431f13500d82bac683ec9650dffdc3a",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 179,
+      "end": 179,
+      "digest": "sha256:a7b193f80adbbc3924eef904f0afe10b3f6220178bc188857d3b5e01564eded5",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 180,
+      "end": 180,
+      "digest": "sha256:1a6ec3a74f329fbdb4f4c28db32c7e352937aad86efa9b5d8df00ad2e3a63481",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 181,
+      "end": 181,
+      "digest": "sha256:fe1988143dbea14b4eb4425368e9e63d1d0c9099f6c91a16469f3b1806954273",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 182,
+      "end": 182,
+      "digest": "sha256:e7e1c7ea3c7062499e723457e3e063022a33c09a008ede78da2e850a0b09dc27",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 183,
+      "end": 183,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 184,
+      "end": 184,
+      "digest": "sha256:29bfb80620500854e538e0f09aeef4a9c1bf9e5bfeccfb7acfb2c75970a89a12",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 185,
+      "end": 185,
+      "digest": "sha256:8e692e5a76c4ad513406fcafcd0c29c6b441ea9b453e1d95d793db77fc8c36e6",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 186,
+      "end": 186,
+      "digest": "sha256:3b751d4d7948f4d15e10a95bc9a76206c63e75d43e8fa650a41ae289e6c677dd",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 187,
+      "end": 187,
+      "digest": "sha256:e7e1c7ea3c7062499e723457e3e063022a33c09a008ede78da2e850a0b09dc27",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 188,
+      "end": 188,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 189,
+      "end": 189,
+      "digest": "sha256:a5c704c7235461283fbc4eb84b453d822d2a3ee7db106b121c4f3082844cba3e",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 190,
+      "end": 190,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 191,
+      "end": 191,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 192,
+      "end": 192,
+      "digest": "sha256:cb42de03536231f2f0aa74851e6249be40da073e8bcb63ccc7a8b644b379e2f6",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 193,
+      "end": 193,
+      "digest": "sha256:28eda49ac97d7a0af1ad9dda1c6ecc335f9f5520f955bfe2010c680de56b327e",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 194,
+      "end": 194,
+      "digest": "sha256:ef39e5856755e7426044bf6e458ef1e101cf4d39fc51e6a8160af69ea2961b4a",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 195,
+      "end": 195,
+      "digest": "sha256:e54e36771992ae37f5fc9fb08af90925a4d88607a49873554fb4474f1568a1dd",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 196,
+      "end": 196,
+      "digest": "sha256:bc4356e08e4af94760871658974a4a24e17b25585694a43722d17799b83f3bad",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 197,
+      "end": 197,
+      "digest": "sha256:1654d05f9e705e61825298739659871dcee2085dc6836c571ead42cf270b89b2",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 198,
+      "end": 198,
+      "digest": "sha256:87aa756ab720dcd86c0ac30788f0a170bc11e02100e88cd940481d6422a2c9fc",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 199,
+      "end": 199,
+      "digest": "sha256:b349b4108112d0429d03b07a85f9eca2a0f9c5eb6b508e7e392cd0fd9f5c6906",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 200,
+      "end": 200,
+      "digest": "sha256:8d12135301e3a837fa17cad050d8561892c77a5672c2d611f1c81688e1a4a77a",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 201,
+      "end": 201,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 202,
+      "end": 202,
+      "digest": "sha256:afbacd09fe45a922becb9ead437a155a5f663d4b33b77d4d260160d7bcd437cc",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 203,
+      "end": 203,
+      "digest": "sha256:9bb71af1a777a70400e60b7020542fda07b370c7c552459f1fdaf84b2b5bd3d3",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 204,
+      "end": 204,
+      "digest": "sha256:d10dc49e15bbc2b5d1975431bde53c952f5d6dae6527e55fe95ef078171207c3",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 205,
+      "end": 205,
+      "digest": "sha256:234aaa710e33d3636a03463eb13cfc6795eea43be3d25096099050511aa9ca74",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 206,
+      "end": 206,
+      "digest": "sha256:65769f1c785aadbae6f223d287d160c74ccd350139fde4e75f542593c81d1ed1",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 207,
+      "end": 207,
+      "digest": "sha256:ca775a5e729b5a32a5c06b0cef530177d8c10c8c40c6ccfab5ddc68e8aa33f02",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 208,
+      "end": 208,
+      "digest": "sha256:66ad7d77e18001b6488e0daa35e9d8c245294eb1f940ba8b16c52b993083acc1",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 209,
+      "end": 209,
+      "digest": "sha256:0e5f2ec6f3fb190ff52bc05fd403584918df4f6672d48b6795394fb1eaab7214",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 210,
+      "end": 210,
+      "digest": "sha256:78fd0e4a31c15388a022857575c5fa10798e853b92a831894778ced54430d1c7",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 211,
+      "end": 211,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 212,
+      "end": 212,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 213,
+      "end": 213,
+      "digest": "sha256:b67476c6034861b3859bc03b199513f496c6d92e51ebaa260832c66a742690f1",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 214,
+      "end": 214,
+      "digest": "sha256:fdd36802d99d3dad52fdc20b1677f3082e5435a9986d0c503a5660f2f541e0af",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 215,
+      "end": 215,
+      "digest": "sha256:03622534f74388bb848c2cf5a8ce4f2ed4aaa0d39a891ea8c00ae4416512aea3",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 216,
+      "end": 216,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 217,
+      "end": 217,
+      "digest": "sha256:0f9cd589221b78e9f27fdc15ac46394f9d84d0f592b65bd914c944385f4d32ae",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 218,
+      "end": 218,
+      "digest": "sha256:bae870014d52673625fd2890dc6df50de487a54a796ebf577e31a2b66e8866e5",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 219,
+      "end": 219,
+      "digest": "sha256:390009937d3f54ef3e3ac3e36eb73cbdd8b6b7062d25856ff2440ab689313dab",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 220,
+      "end": 220,
+      "digest": "sha256:1654d05f9e705e61825298739659871dcee2085dc6836c571ead42cf270b89b2",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 221,
+      "end": 221,
+      "digest": "sha256:fb3790e8a90d0f0bdf95f4d988008a82e8eb706ab8ca8e7f74375d536b3c2a4c",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 222,
+      "end": 222,
+      "digest": "sha256:f97154a8016954eceb20f1a1c938944666dc5fcb218d4305ee0d5b3c4e602768",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 223,
+      "end": 223,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 224,
+      "end": 224,
+      "digest": "sha256:50e2a242450fbf1ae7ee77cc1fad4e6f6ac33410c9e783c6d7d91dafa39e5548",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 225,
+      "end": 225,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 226,
+      "end": 226,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 227,
+      "end": 227,
+      "digest": "sha256:46862adffb3a8e0ebd005e8b9b9f9c5fc39963d9aff8d3ce4d92b82ae8713647",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 228,
+      "end": 228,
+      "digest": "sha256:11a3d2548c735e59353a20def55bad87e5cbbbd4cc9a956d535ad806e34f5197",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 229,
+      "end": 229,
+      "digest": "sha256:65d61c7ece7bcf02906947c22c9503f46b5158978a9a6ce07cc59f530c3e8c32",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 230,
+      "end": 230,
+      "digest": "sha256:e52f32955e7ed22f452720b1b9dfed114358d148fc9bd98bf8acc71cca242f03",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 231,
+      "end": 231,
+      "digest": "sha256:d41296b16dfc4f29ac0ebc90c769973c6681f33214d65c008b5597a3322a4301",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 232,
+      "end": 232,
+      "digest": "sha256:ffab7c7179f807ea1a1f79f3688b54efc3005321e2d7771af450e5f0db81e8b5",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 233,
+      "end": 233,
+      "digest": "sha256:2c5d0144c228655d2ca9f8f196beafabd369b7f47e905e390a1a588558ccd6ae",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 234,
+      "end": 234,
+      "digest": "sha256:024376dd4984d14cbf826885f662127f680289a3097e1f9ae08931cf0e507e30",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 235,
+      "end": 235,
+      "digest": "sha256:0a52afe3c96fb621dd350bb3711dab66fbb25929fe794d2c1872ee5f0ac615b7",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 236,
+      "end": 236,
+      "digest": "sha256:c98df32657830716dd8a38b9d3790af843fc530b98bd474eb798d6f1d30ca78e",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 237,
+      "end": 237,
+      "digest": "sha256:ce55d6ed3e600bb42960a2e8dea3bb3611bc34b82f918e5acc54ac9a53a62ce8",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 238,
+      "end": 238,
+      "digest": "sha256:9d5181c72394fc2edfc3426e3b31f2bb07f41c7ecff2cb86993b7dcca143b189",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 239,
+      "end": 239,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 240,
+      "end": 240,
+      "digest": "sha256:2ae59403f6d9a03384646d02b8c0b51093e8bcebebfdbb39de5c20f842f4a6e6",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 241,
+      "end": 241,
+      "digest": "sha256:ad8e42a6f4605e9145560eb841059652033acbfc1a8d81f9749a933302827a8a",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 242,
+      "end": 242,
+      "digest": "sha256:2dc795826b8d6a4d107a4a8120c01c11486f8a9ec963a2653a8c714e75720222",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 243,
+      "end": 243,
+      "digest": "sha256:1a986bedbf8f8f02eb85a97eac5fcb7fec7fa74861076fcffe0cca37cd9b0559",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 244,
+      "end": 244,
+      "digest": "sha256:dc131c3fc0a15b940dc9fcbabd7567a45b515a373b1474ad7e40585067bf95f0",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 245,
+      "end": 245,
+      "digest": "sha256:356763df1132782d9c623bfe7d20c3a6f44767e0a2ba7182d12f1e78f174b488",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 246,
+      "end": 246,
+      "digest": "sha256:4dc76020bae70577e64b330dca83fdf24f3d7593a0154d8abec6dc63f5897fd9",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 247,
+      "end": 247,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 248,
+      "end": 248,
+      "digest": "sha256:33657c78a560801d9f354ec654a083490c3d693717665bb6464c6dae9954df7d",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 249,
+      "end": 249,
+      "digest": "sha256:22f3839e4dbaf9814b0cd45dcedc8be596603d5eeb4e0999b7c4da40f66798f7",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 250,
+      "end": 250,
+      "digest": "sha256:e83838325b301344ee4988e6d493e78dc9067423cd1632569e25a148fd53182c",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 251,
+      "end": 251,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 252,
+      "end": 252,
+      "digest": "sha256:cf498cc139621ad7878f9d0ae50c0abce0e85debeec8a1e4a9cb24ea53739506",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 253,
+      "end": 253,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 254,
+      "end": 254,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 255,
+      "end": 255,
+      "digest": "sha256:d039586726c856787d79d72737d726d696f6ca062a7f0623fb3e4c4ffe4d5992",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 256,
+      "end": 256,
+      "digest": "sha256:3c946c22ed6e4e59bae471aa1c57f8ea4e6132617956227a675b535ecf742579",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 257,
+      "end": 257,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 258,
+      "end": 258,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 259,
+      "end": 259,
+      "digest": "sha256:e593856397cbd41574b3c2d24bf7e4b1646431ca252dea3ae19e7f37c497f035",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 260,
+      "end": 260,
+      "digest": "sha256:84638c26ba96e6c10a03ef3836b0998316f222ab5d99d4d6474809183f48f480",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 261,
+      "end": 261,
+      "digest": "sha256:f0363819f004d66d3b756cb55ee08dca320e7d8417ad88499e23cb346ded95f7",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 262,
+      "end": 262,
+      "digest": "sha256:f2f0b24e2dc4cce2402ffe44879ac5c9426a8f20765fbcc5a882e255bd1563e4",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 263,
+      "end": 263,
+      "digest": "sha256:c66a34241dfd7de22386567d15ee17deeb2ff94f4b113401ea76532d2a0d957d",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 264,
+      "end": 264,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 265,
+      "end": 265,
+      "digest": "sha256:6c01852785e0c3c8dad118cbd883e6f70c0dc5aea9c554b54346c304bf6d3e6f",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 266,
+      "end": 266,
+      "digest": "sha256:37fdb36ec8fa0364f622288e5cf8431ca57efb6a55d365e1b117767d61cb7da4",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 267,
+      "end": 267,
+      "digest": "sha256:7c7aa049904961ef306e0d3c8131d523f0c4f7510bfe0444e1743f581c908e9c",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 268,
+      "end": 268,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 269,
+      "end": 269,
+      "digest": "sha256:505df8ff5d12c44d1e6edb013b748cfbc565fdca804dc1525503b431eddcd4f6",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 270,
+      "end": 270,
+      "digest": "sha256:77a9b5e9019c8db8783ec9c3febb0a2c9862f61a05c308fe895e4a9bed03edb3",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 271,
+      "end": 271,
+      "digest": "sha256:e44bc18e6c5271879b952facace50b0c110cdde128a5757b7b0b397ed1a1ba07",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 272,
+      "end": 272,
+      "digest": "sha256:ee12fc31f8b88527a8c2582536f8989795eddc9f5076bb76fbb0c8ff7368e79b",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 273,
+      "end": 273,
+      "digest": "sha256:47139bb473ad3d648c5a898a0d3f61533fe62fa8328968d48c0543acbf21b800",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 274,
+      "end": 274,
+      "digest": "sha256:5a109e2010d29b7af323861bf763e3c0f6a77b52014262c071a1ebb16e3b5642",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 275,
+      "end": 275,
+      "digest": "sha256:d02cc6546f2bd7964e68a4fdfed9ab1be78cc452c10c9a88c373c5fa3b2bac21",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 276,
+      "end": 276,
+      "digest": "sha256:d92a0a2f6a3729f00de11239a42313a266a0bf6c9a2737fc8417a0d316d5ae15",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 277,
+      "end": 277,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 278,
+      "end": 278,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 279,
+      "end": 279,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 280,
+      "end": 280,
+      "digest": "sha256:63d681bbcddfc06d945446e93450fe3f1e1f3f79c45fcd9cf7b79846d9ec8c73",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 281,
+      "end": 281,
+      "digest": "sha256:1d022f0a86f9b7e31d0e4294279ad2eb6bde847899db40be15300ed5213b93cc",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 282,
+      "end": 282,
+      "digest": "sha256:5fe50817e61c0de0e86a879905ef84028510f2ed5e6796991841f2e51d208fa5",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 283,
+      "end": 283,
+      "digest": "sha256:2fb377470085bb97104d26bc978a12f8ba3feeed279dd73f53d4752eefdcfddd",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 284,
+      "end": 284,
+      "digest": "sha256:52b28518039e23b2f283a5ca2717d42e127e0f9ac62fe7a94504971ba1bea777",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 285,
+      "end": 285,
+      "digest": "sha256:42a57081051f4682a7db3e590b4dd5413d53dc9a01551276dacb521a7e1db9a5",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 286,
+      "end": 286,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 287,
+      "end": 287,
+      "digest": "sha256:7bda14dfc42225bde2800c2b2f53894cfd5032e0a687b5a27144a9138352aa84",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 288,
+      "end": 288,
+      "digest": "sha256:430691457068a1b5d54628f420cfb8d6ed990a62b6290d2c40c37afe5d749df4",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 289,
+      "end": 289,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 290,
+      "end": 290,
+      "digest": "sha256:a51d79efaa37587e1abdff37bd8abaf2d3c18baf035072e27842a6207daa6c61",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 291,
+      "end": 291,
+      "digest": "sha256:50e2a242450fbf1ae7ee77cc1fad4e6f6ac33410c9e783c6d7d91dafa39e5548",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 292,
+      "end": 292,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 293,
+      "end": 293,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 294,
+      "end": 294,
+      "digest": "sha256:95674bf5fd622beb793760893bdd84974d9bc65472ef891bf775f63ffe91b89d",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 295,
+      "end": 295,
+      "digest": "sha256:0d2fc1eccda274bf7e75c1e6a5e17a8b040830a01ce5f1b1b9078859fc5325f7",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 296,
+      "end": 296,
+      "digest": "sha256:e54e36771992ae37f5fc9fb08af90925a4d88607a49873554fb4474f1568a1dd",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 297,
+      "end": 297,
+      "digest": "sha256:44b7f4a9cb299724640d11b8b90c57bec71ff9fe2e433a29914e2a33e69b69f9",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 298,
+      "end": 298,
+      "digest": "sha256:c423d19eaac0afba3469c9b269d0769767a88c1b69f00c5449ee608df318d923",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 299,
+      "end": 299,
+      "digest": "sha256:1e043bbec61e702dbe1ab018921aa4dc7dce084cb3162e05ce04d52a0417bb8d",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 300,
+      "end": 300,
+      "digest": "sha256:bdf08f74a47ec68e315ccb1ca5a2497888067e5a8340c38e1706df37b1d40940",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 301,
+      "end": 301,
+      "digest": "sha256:666bfb089e8a72c2e5da5af5b59cc775f790e2b83075162a10b117bbeda6871c",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 302,
+      "end": 302,
+      "digest": "sha256:61492f31d1f56b0a424bc2d076815a57ad3bfb694e35801bc620fac2b2ed18b4",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 303,
+      "end": 303,
+      "digest": "sha256:5c3d1d92c7f5e5133a871087ba517b461d7f3ae72be1ba0a23926f8b9562cfc7",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 304,
+      "end": 304,
+      "digest": "sha256:1c4eb09958e9e5cd573af59f76254beef9a4132217bbf7e931e4fef5843c1481",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 305,
+      "end": 305,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 306,
+      "end": 306,
+      "digest": "sha256:3253a0757a1f295e35577ceb9d5ed210969aa6cd1e985ca2cdf91f50f4d06ab4",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 307,
+      "end": 307,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 308,
+      "end": 308,
+      "digest": "sha256:e37e3ec397fbc9fd9ad4c25a49a2ff50bfe7a0dd97a98768afe3a4c4bc166427",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 309,
+      "end": 309,
+      "digest": "sha256:46ab06f888a253208f256035bef48619ea463fa0f96b52808ab77a9b2b12fb8c",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 310,
+      "end": 310,
+      "digest": "sha256:42a57081051f4682a7db3e590b4dd5413d53dc9a01551276dacb521a7e1db9a5",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 311,
+      "end": 311,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 312,
+      "end": 312,
+      "digest": "sha256:cf398691f785151aa1c5ebc0fb110941babb652a1d818c5f78afee48263bafbf",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 313,
+      "end": 313,
+      "digest": "sha256:1402f14f223bf259e6e36a0b46d7e4da4c4b31e6d06830317e86d40a7185ab11",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 314,
+      "end": 314,
+      "digest": "sha256:6fe32c5d157e30269e26594ef63d8f144bc8e6ec16f230da9c4bce38fa2a7e5b",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 315,
+      "end": 315,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 316,
+      "end": 316,
+      "digest": "sha256:3ecf01fe72e774ecb164623e950dbfaf258781280efd80df8c7b24f4365ef1cf",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 317,
+      "end": 317,
+      "digest": "sha256:1cd6c2eb497c7a4b5586be3131e96592d9e74616a43e9543a28b1141161f3bd3",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 318,
+      "end": 318,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 319,
+      "end": 319,
+      "digest": "sha256:5719404c21af97d4eb1c7d157afb97e0f3f3ab570711cfef10f74cfb8711438e",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 320,
+      "end": 320,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 321,
+      "end": 321,
+      "digest": "sha256:d0c6560fad49bf82fdada060230e0ebf8e8fab1aa5066f21b08ed83fbc2f9bb6",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 322,
+      "end": 322,
+      "digest": "sha256:790fd2d8e6f6f11756736e0874013a1906f2b528011be8b27afec61ac2d7630b",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 323,
+      "end": 323,
+      "digest": "sha256:97a36b26f9c548989c086908af31552c69c150972c04cdece54f6f25fba3580b",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 324,
+      "end": 324,
+      "digest": "sha256:71a92fbf47483da0f46b808a9c2fc6d1502d001afa8e05f664aca6dd76c47b01",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 325,
+      "end": 325,
+      "digest": "sha256:350559ab2656a7ab08c105d8a83dcbaca3a66e402149c8da8b7e7f0d121eb6f4",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 326,
+      "end": 326,
+      "digest": "sha256:42a57081051f4682a7db3e590b4dd5413d53dc9a01551276dacb521a7e1db9a5",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 327,
+      "end": 327,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 328,
+      "end": 328,
+      "digest": "sha256:cb78b9f55aed6f12e39c0d76ede06ad7c992ce3786e1a682c5663cf50698a5f8",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 329,
+      "end": 329,
+      "digest": "sha256:891f5f20e19060c12c887cfb92b66923745c41724b1eadf71b831f144a6c4b84",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 330,
+      "end": 330,
+      "digest": "sha256:a80f7630d6c94ac55e15aba82c4e03583f9ece80637a0d3d86c17daaf067dec2",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 331,
+      "end": 331,
+      "digest": "sha256:9f7556305ba51cd29c6dfe4ffdf5232499d79589df34951520ce394c65965c55",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 332,
+      "end": 332,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 333,
+      "end": 333,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 334,
+      "end": 334,
+      "digest": "sha256:50e2a242450fbf1ae7ee77cc1fad4e6f6ac33410c9e783c6d7d91dafa39e5548",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 335,
+      "end": 335,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 336,
+      "end": 336,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 337,
+      "end": 337,
+      "digest": "sha256:3d132d6d08b6af1cb2f3610208edc555d832a62b0a795cee76c0f380954c033f",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 338,
+      "end": 338,
+      "digest": "sha256:35627a928b6ae1d7ad437d9ab7d5fb54087d43ee7fce6ab3f51f3dc4daa3ea02",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 339,
+      "end": 339,
+      "digest": "sha256:b22f298419f9bae8d2582a3659060c4620e676b92bafae1dc7e1cbb7647d9ee7",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 340,
+      "end": 340,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 341,
+      "end": 341,
+      "digest": "sha256:328cae6da51379c9be0bbfd078a8600b3cf57f63d9c84298d7b317809d79e5ca",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 342,
+      "end": 342,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 343,
+      "end": 343,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 344,
+      "end": 344,
+      "digest": "sha256:5926261faf9c75de74477a9ac37bf50b7f7433c5e72a2c717a3c6158ac902684",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 345,
+      "end": 345,
+      "digest": "sha256:b568b9e0b0f2a39e4c59d343a0fbf527fde0df6f6554c1b689dfd39986d0a067",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 346,
+      "end": 346,
+      "digest": "sha256:cfcc032fe022865e086167de4b52c4d27ad19d0f4226fdd747f18d99600cb9d3",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 347,
+      "end": 347,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 348,
+      "end": 348,
+      "digest": "sha256:8b41d3249f0f4466b8f950a7220c11498291e9ec735bff749fd7ae943ee5cf99",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 349,
+      "end": 349,
+      "digest": "sha256:dbccb1a65e55fd251f533cf814f4d2946d7ff436c2c6d48fd25b4c2c4edde2d8",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 350,
+      "end": 350,
+      "digest": "sha256:3643aa7ea93875a558c6a4e6eb8365ab4e40332092855e3851af73be97b3fd2a",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 351,
+      "end": 351,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 352,
+      "end": 352,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 353,
+      "end": 353,
+      "digest": "sha256:ca8734fb4be666168b8a8d0fdf4697f070be50cfd09d69cfe961806e639d4913",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 354,
+      "end": 354,
+      "digest": "sha256:95d155b824799427176e79d52f73b6dd44ad59522167b3fdb15ea91846b37e43",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 355,
+      "end": 355,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 356,
+      "end": 356,
+      "digest": "sha256:e283e76e23e4f7198cf488b8b4bd934e1a0bba6defa901ad67b749b43433d5ba",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 357,
+      "end": 357,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 358,
+      "end": 358,
+      "digest": "sha256:f70e77e3f3a1264182e5196c8853e164e52be2b7991064fc72872ceeaee9a46b",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 359,
+      "end": 359,
+      "digest": "sha256:c776f2ee6f1ecba6f3e0b67bd73a79bff426c561b3416431457399601f36b22d",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 360,
+      "end": 360,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 361,
+      "end": 361,
+      "digest": "sha256:e283e76e23e4f7198cf488b8b4bd934e1a0bba6defa901ad67b749b43433d5ba",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 362,
+      "end": 362,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 363,
+      "end": 363,
+      "digest": "sha256:c354d6b3c97e03fc82372c14ec3aeee212bfde22f52413abefce93dda8cd3018",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 364,
+      "end": 364,
+      "digest": "sha256:1c010225fa2575dbfb41bb664223f6657e50eac6477713e3ce810c70db4065f4",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 365,
+      "end": 365,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 366,
+      "end": 366,
+      "digest": "sha256:e283e76e23e4f7198cf488b8b4bd934e1a0bba6defa901ad67b749b43433d5ba",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 367,
+      "end": 367,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 368,
+      "end": 368,
+      "digest": "sha256:998cd9f0fb3737d1e30fd23b5201bef828c0a5bc291449645e8fe1b693a0a05f",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 369,
+      "end": 369,
+      "digest": "sha256:3ea9b742a252482b56a679f7143a496b8e9e3968b62c978ad2fe084121a0990c",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 370,
+      "end": 370,
+      "digest": "sha256:80b08e59792f9256b1da0ff416e9d091b07d54a6c94e5f1196b48561d0d7bea3",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 371,
+      "end": 371,
+      "digest": "sha256:4679e08fe83f63481089f9e3d267060f29b89c233f275ea37592137b73e90016",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 372,
+      "end": 372,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 373,
+      "end": 373,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 374,
+      "end": 374,
+      "digest": "sha256:e4da2374b14b3d9a3b6936dca7fb36f828e316744ebcea676d7acdf45793a079",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 375,
+      "end": 375,
+      "digest": "sha256:e04c70561d7ee2adac5359a112ce87edcf533341b46dc758ce9528515991a136",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 376,
+      "end": 376,
+      "digest": "sha256:30861581bb56eb675427a9181798c727af0b1dc287d7c0f2745ca8078c6c4f20",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 377,
+      "end": 377,
+      "digest": "sha256:cd6fb42b44dbbb76ef507734a371b06dcaf2610acdcd14d4e134688fa29934a6",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 378,
+      "end": 378,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 379,
+      "end": 379,
+      "digest": "sha256:856254c325c2c29225630fb4bbc8b2446dba0e432db1a826c16663c364fb362e",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 380,
+      "end": 380,
+      "digest": "sha256:4968a89a16aa9a1dae7bda91d8c1d2f2e54918fc45db0d057926f2a93ed2bcaf",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 381,
+      "end": 381,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 382,
+      "end": 382,
+      "digest": "sha256:7eb076ead9bec71c9e9d8f1644d9596276fe95090d63f2923d34ccb8466e8cc9",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 383,
+      "end": 383,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 384,
+      "end": 384,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 385,
+      "end": 385,
+      "digest": "sha256:f95da3f3939a1e89d89c6419b7540f84e313d93c348c96ada77e846b0e1738c6",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 386,
+      "end": 386,
+      "digest": "sha256:87214486e5952c482a4d82799ce763fd6233bc8581f0d3cf277f93276f457752",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 387,
+      "end": 387,
+      "digest": "sha256:cd3e62ee16e5cd499537d00b9a7e1b54c51b8b14a3ef65abce18bf805840bbf0",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 388,
+      "end": 388,
+      "digest": "sha256:3460b8f79eacb502a6f87e73db048ffa52b8988bd516d003bca99454107cc767",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 389,
+      "end": 389,
+      "digest": "sha256:9f4f28e4c92171b2a7e02ef8a9419b413d8096dc3e2cd6ea20eab73cc4553be1",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 390,
+      "end": 390,
+      "digest": "sha256:8c90b31d2f7808c132ec14aa28c989b3021ecd9eef0de20aaf4080fba463ca1a",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 391,
+      "end": 391,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 392,
+      "end": 392,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 393,
+      "end": 393,
+      "digest": "sha256:87faf46117924efa1d0b9e3e219666d3ec23e393402a4144c03e5b098cbd6822",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 394,
+      "end": 394,
+      "digest": "sha256:851f53f4373c849c9d9a2687d9200646f10d0994cb62f2ebbae21b95199f07e1",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 395,
+      "end": 395,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 396,
+      "end": 396,
+      "digest": "sha256:d041a06985dc13ca94e78cfcf6d397964dce6fe9c677334a8e6eb3679043c7fa",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 397,
+      "end": 397,
+      "digest": "sha256:d2bd6a0e001d263b894193e12e32b7d4e0f040625367def201547798daed1b11",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 398,
+      "end": 398,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 399,
+      "end": 399,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 400,
+      "end": 400,
+      "digest": "sha256:675b6a35db209c87d6c82a3e4cdacd0f05d144f5c7818249d51ea494023ba2d3",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 401,
+      "end": 401,
+      "digest": "sha256:bbeb64e4086aed14040fb38af6939b923d334538e8916d5af3e58b595a0e1348",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 402,
+      "end": 402,
+      "digest": "sha256:9f3396f48448fbdf653185ee989e204df984adac2350cebea60df6300643f3db",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 403,
+      "end": 403,
+      "digest": "sha256:42c37b895cb56e5fd96e33e49383dc765e092117868445efd8a1969cecd9f0d3",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 404,
+      "end": 404,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 405,
+      "end": 405,
+      "digest": "sha256:58bb2dfe923e5fde7f5af0ca83fefb90b9c93255f77ab589bed4e060a9c8a3b2",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 406,
+      "end": 406,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 407,
+      "end": 407,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 408,
+      "end": 408,
+      "digest": "sha256:29a3ef06d5091bff1cb1bcefd5a7cd7b020981ba2ecff8baed135b9290077d94",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 409,
+      "end": 409,
+      "digest": "sha256:e08badb96a6c62f7fd9223e78636e0d9ee0cdbefad2f0e338d71c099236dda71",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 410,
+      "end": 410,
+      "digest": "sha256:fec5b1f8a181305d338a9c4556c710dd0a8993a5fdbd893b06ed7084cf98c169",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 411,
+      "end": 411,
+      "digest": "sha256:de6d3e056b653b5ac7b93ddd4497e9b9f69db91181548b0ca856845e754c36bb",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 412,
+      "end": 412,
+      "digest": "sha256:d9efa8142ff8f871978693297ab72ace450253e2412fa64c883a36f2677b8861",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 413,
+      "end": 413,
+      "digest": "sha256:42caae5bb6020cc9f77aa3a048ab34c1a7fe59457b18c4504ec3d04f1d30d8a9",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 414,
+      "end": 414,
+      "digest": "sha256:a6bfeca693d8f6d0f6ffd81953b694c20221a85715782cded449c9a9231e3a0e",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 415,
+      "end": 415,
+      "digest": "sha256:d1e588228077df701e8eb371819116be9c1ba9a0e4c84ae49c69a5ea33cfc02b",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 416,
+      "end": 416,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 417,
+      "end": 417,
+      "digest": "sha256:64ba0d0f8de0c2487abda334eaf726720dc2222417d4f4c1b80b2c7ca9ab62bc",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 418,
+      "end": 418,
+      "digest": "sha256:262d7c1cb4ec48eb4345bf5c6948a1bd84b563e458a01b48332fc5e624ffd838",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 419,
+      "end": 419,
+      "digest": "sha256:ebd6cfbc7ec120fdf6e4e8ded05ea3d092144d54de610a199ef02b645761e7d3",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 420,
+      "end": 420,
+      "digest": "sha256:c19e3dc1b37ad6b5db8b296959d4497d3ea548c471f1dce8260db83804b9bf61",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 421,
+      "end": 421,
+      "digest": "sha256:a71547b1e08253b0ca2775c5ca07a363eb665a63af0d76e72560b629b8f49809",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 422,
+      "end": 422,
+      "digest": "sha256:2e05c9b2875bb09054aa2f85f4b0fd8297f34c10d0a4e5d77342c37c992f60ef",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 423,
+      "end": 423,
+      "digest": "sha256:9cfede75b88321eafc470dcf55cf056a4854c964e3fc380ec1a4827992e31b7b",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 424,
+      "end": 424,
+      "digest": "sha256:fa268a26d59dd82b93bf42945275014b7d374332dcf155d4f0dbfb1f4435617c",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 425,
+      "end": 425,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 426,
+      "end": 426,
+      "digest": "sha256:51a3cf506dcc9d6d21ecec798702857e47a476c6d8ab418f1307d8f8538bd39b",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 427,
+      "end": 427,
+      "digest": "sha256:334e2f0d71de3c5fe2e3c4917d6301df8d9e6ea591d9fa72a9457e5f1d7d5dc7",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 428,
+      "end": 428,
+      "digest": "sha256:c295dded0aa45e381646fc98409bf425e1bcdb2f2d7e37724353fc0a04a885ef",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 429,
+      "end": 429,
+      "digest": "sha256:203fe68a1e21fc15d2794ea98049c9250a9e7fa8c1ee0962d79773135995bda2",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 430,
+      "end": 430,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 431,
+      "end": 431,
+      "digest": "sha256:ab99452e5683faec67fff038f74f8e162bcb918a40d7f926f39b9e3333483e8b",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 432,
+      "end": 432,
+      "digest": "sha256:98425aefcaafd1d6d3b253b5f8998c21fecae2eed0525672bd33f3a066a4b518",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 433,
+      "end": 433,
+      "digest": "sha256:bf64da4ddc02be4d999596d5f28ed30377b867f4a0737f84a263f8d9e727080d",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 434,
+      "end": 434,
+      "digest": "sha256:5b47df91668daf638f0b7c86e5e245213ee4315885dc24e3bd710ad0d5f56e9d",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 435,
+      "end": 435,
+      "digest": "sha256:783c5b7ac0072ab60c402e0c393e3243e8893126bb36231e829c478030e25852",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 436,
+      "end": 436,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 437,
+      "end": 437,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 438,
+      "end": 438,
+      "digest": "sha256:56ca0f8cb6e8b24a3b47d384ea8ef6c01c15b0c7cc63c910d824fda683976dbd",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 439,
+      "end": 439,
+      "digest": "sha256:7881d047b2232480b12f8dfa3248284bc3e794de786b30c5efa7c19450d41396",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 440,
+      "end": 440,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 441,
+      "end": 441,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 442,
+      "end": 442,
+      "digest": "sha256:c265fcd95ca4573b853e3871936220ce038e769877853b622bf326ecb9c8a258",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 443,
+      "end": 443,
+      "digest": "sha256:50e2a242450fbf1ae7ee77cc1fad4e6f6ac33410c9e783c6d7d91dafa39e5548",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 444,
+      "end": 444,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Projects one coverage report into repository-first and narrative-target-first trees with exact contiguous chunks."
+    }
+  ],
+  "version": 2
+}

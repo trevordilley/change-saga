@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/sha256"
 	"fmt"
+	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"io"
 	"os"
 	"path/filepath"
@@ -67,15 +68,20 @@ func TestGenerateLargeSagaIsDeterministicAndValid(t *testing.T) {
 	if got, want := first.Reviews, (first.Fragments-1)*options.ReviewsPerFragment; got != want {
 		t.Fatalf("reviews = %d, want %d", got, want)
 	}
-	if len(document.Threads) != options.Threads || len(document.DiffReviews) != options.DiffReviews {
-		t.Fatalf("review overlay counts differ: threads=%d diff reviews=%d", len(document.Threads), len(document.DiffReviews))
+	if len(document.Threads) != options.Threads || len(document.FileReviews) != options.DiffReviews {
+		t.Fatalf("review overlay counts differ: threads=%d diff reviews=%d", len(document.Threads), len(document.FileReviews))
 	}
 	changes, err := gitdiff.Read(context.Background(), first.Repository, document.Manifest.Source.Repository, first.Base, first.Head)
 	if err != nil {
 		t.Fatal(err)
 	}
-	report := coverage.Evaluate(document, validation, changes)
-	if !report.Complete || report.Summary.Covered != first.Atoms || report.Summary.Overlapping != 0 || report.Summary.Orphaned != 0 {
+	resolver, err := coderesolve.New(context.Background(), first.Repository)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer resolver.Close()
+	report := coverage.Evaluate(context.Background(), document, validation, changes, resolver)
+	if !report.Complete || report.Summary.Covered != first.Atoms || report.Summary.Overlapping != 0 || report.Summary.Stale != 0 {
 		t.Fatalf("ranged mappings do not cover the fixture exactly once: %#v", report.Summary)
 	}
 }
@@ -115,8 +121,13 @@ func TestGenerateLargeSagaCoverageShapeIsSelectable(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	report := coverage.Evaluate(document, validation, changes)
-	if !report.Complete || report.Summary.Covered != fixture.Atoms || report.Summary.Overlapping != 0 || report.Summary.Orphaned != 0 {
+	resolver, err := coderesolve.New(context.Background(), fixture.Repository)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer resolver.Close()
+	report := coverage.Evaluate(context.Background(), document, validation, changes, resolver)
+	if !report.Complete || report.Summary.Covered != fixture.Atoms || report.Summary.Overlapping != 0 || report.Summary.Stale != 0 {
 		t.Fatalf("concentrating evidence changed what it covers: %#v", report.Summary)
 	}
 }
@@ -260,9 +271,9 @@ func TestScalingChangedLinesWithRangeWidthHoldsEvidenceConstant(t *testing.T) {
 		if err != nil {
 			t.Fatal(err)
 		}
-		report := coverage.Evaluate(document, validation, changes)
+		report := evaluateCoverage(t, fixture.Repository, document, validation, changes)
 		if !report.Complete || report.Summary.Covered != fixture.Atoms ||
-			report.Summary.Uncovered != 0 || report.Summary.Overlapping != 0 || report.Summary.Orphaned != 0 {
+			report.Summary.Uncovered != 0 || report.Summary.Overlapping != 0 || report.Summary.Stale != 0 {
 			t.Fatalf("%s: scaling the fixture stopped covering it exactly once: %#v", name, report.Summary)
 		}
 		references[name] = fixture.References
@@ -273,4 +284,14 @@ func TestScalingChangedLinesWithRangeWidthHoldsEvidenceConstant(t *testing.T) {
 			"  the server's first-load budgets read a change in page size as inlined code, and this would make it mean coverage instead",
 			references["deeper"], references["base"])
 	}
+}
+
+func evaluateCoverage(t *testing.T, repository string, document *saga.Saga, validation saga.Validation, changes gitdiff.ChangeSet) coverage.Report {
+	t.Helper()
+	resolver, err := coderesolve.New(context.Background(), repository)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer resolver.Close()
+	return coverage.Evaluate(context.Background(), document, validation, changes, resolver)
 }

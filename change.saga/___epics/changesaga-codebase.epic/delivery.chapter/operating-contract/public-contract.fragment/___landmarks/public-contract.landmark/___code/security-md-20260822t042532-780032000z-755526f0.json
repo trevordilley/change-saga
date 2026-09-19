@@ -1,0 +1,595 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "digest": "sha256:b9c8344f03067e1e6dcbca7321f5c3d75073eca445637e5300f26718672ce759",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:9efcc3ccba113a86dcca90b2b899588159b48b270014ffb47558b04ae2fef1b3",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:672b339ba88c8d346d7c8ad5e06e432fa6608b7382945f62cb94f75ef443815c",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:9ed51e20d5c1f8b81ae4747c5e7c5412e661032e2fb16e5a2ad5ab2b0819e791",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:4d21817a913db204b4432b899bbe18f6021e6c615a48b1885c9c377a658fc957",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:95785ca10e21edbd68b50227d49d80b8b5eb625327537dd5717dadd30fac578a",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:02370588136709fe439960761da938b837322c9d8f9e5c8714b90d4f6499cd3f",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:295d2bf11870ecc59383a62e6615fa47703cf239cbecda91a743bb35ecdefb2d",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:9d1f91a6f58704d556c64a210a669cf8d8e0af43ca1b880f7139a0566e5fe1ce",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:3c5791eb9ca169e8933b31ea9fce5016e5a93df91f0a59c16f1272d794a66088",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:d83a082e8d41bad174cdc16ae6ce229d59dfb70738df191daac9feaf18b60af3",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:ac6b310c4487da67fcaf8395fe1e2b4815b12df6a6987930036dca18c6eebbd9",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:614f1087a8a6c6c6d8071e44c62a34ad8451d2a77daac6d2f1f91e38de415bb0",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:a86a926163fb2926c547068a3e543b3ebda7db234b356070e2ebacf1b668406a",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:d0ba698aec18cd703d9037c380c79b0aa06256aaa8d9f0d93d053d4dee948a80",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:604547199ac87f1b237b77d60f924b26da31901b02baae508dca30a17bfd1042",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:1b697479a2d37a7228951de7b74f772c10484972b0f2c1f81a000ed8ba0be907",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:04723ea3d2cf51ceea8b17c09d34b637f7b6ab21f8e1b78a71c13d77d830b821",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:cfe75c9cd7fe23a88c81736d1692de57113784054c9e24fe9b08aa608ddc600a",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:6a152be7104c60092080a59a80208cad1e89d0c58e69a5744f98c4b6106bbfdc",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:2e5ec5274d6f55f95400cbda86862070bbce6be9bff8fd448eae2689fef08df4",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:60edcf8264e05a1c4943c14558cdd1513f31641b5af793a0c8c74f6d130cec6d",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:4111ad810fb42d61fa0cde76385dd96433bd1d29121119dea0c622d07fdc7c62",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:65d2cda8fbbb7bcddd699ef833c6d4a01f0ef22dfab701de9612118446c4da1d",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:9b6195c33982d0e5fc7e28b6c842292f7606595b78698f67396642df6dfb9f81",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:2b613c6b46e0de2f28aa5dfbed3159ca7e3e97911b0efa507d1b9db2aee42f85",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:a1ccdc25e3fdfaa257b6a5f7538d6c5d005f2248693472dc861184dbbc4047a9",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:78fd5647eb24d5a57b0d5db291a9a2ce307c90eebabd4070addf58ba5ebb4234",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:eef62b84bcc47beccad769348a218b15b39613482d6b10ee33d35aa307f2443e",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:6dafd4d1517c3b70f6ada010df6410995ccf56dea40b92d26418340925cdd3c1",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:1e8f78ed06c585d440cbfab1442760a0fbc484d88c76d0bec533e0c275b9a75a",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:d6f3186922a2d3351f041eb41d549a130dc987674ad415e832d3218e96369e2e",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:ccb3950f69e0aa6cf1485281b58c01011b164a629c66478320672032975af351",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:3491e014f5503eb5b2fca81db42f6f72765980ba5b5e48ef135b6cf69d7f92cc",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:2a68ad9ff21e8e65b284768281f91022ca685690400e9a761525b09c1080bfb7",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:68ace6685b9574d9cbcf311c6ab5c25a7fc3062c536457be3fdbd4d875dd6ce3",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:a353a829fff1f3a95c4badc474b7fcd48f58ddb60d41d8a492b89a8a9a8e78f4",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:b9e48a0b834a8d84abec178b4afc0701221c494d4fd524f396a014edeeda7bbc",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:db5ecb875a0e44b6726529bf97c0b04e44bb6535291f864e01d809cf64e7780b",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:5d536488acc86131e3cefdbef07b85c62a70d0beef12bcca2724ad26ab19cf69",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:7681bc5f67432a1cfe13ca1994d6e5c55ad031fd516afa6fa5e811cf6dfc1dd5",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:6349ed830437f75a1f56700ef6a5e82d11e7031c1d36dac606cf4a4883556ea1",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:08a932b354dbe3fad82031ecab7a015a21c70ab623a0ae73dded61254e1ab4db",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:301d37da7ef5d460d305d11b8672c71c84cd5067dc91aa67527919cd5fce677f",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:6a54bfddf33cb7c733c168617475ec94cb465bd6b0fae6786c9b2e19647431a7",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:a5ccb207b1842c51c19dc6f480d83ccedd94cc31a5ea1a35f2e9fe1437204780",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:c7cb430e9248107a30065d2d68d93962dbb2835758dae2be58af94ff8f52bbba",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:b328323cfdfb0b99f3a5f4b9751b32fe6a58eb051a1878220754bef1121f77c3",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:44d1e448a12fb2cb6b8f48a1a96be2113bf0891a14b1ab89c159379e912ea05b",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:c2b4c0515277f6f278e8563bb1be2923c9df0aff5286ffcb6246f8a55b7a8769",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:0409e842e18a232ed0834d262a664b7f521c1774ffa901e27fc4997a93f5ffc5",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:b5c8c6b4a3bfa95266576dba69d02786d7b194a8eaaa14aa40e0722faf44caf6",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:7b20628e8de5071478a925f189d6d0d0f992daa4303b51641e19a507379ab99c",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 68,
+      "end": 68,
+      "digest": "sha256:953112ad081c756c0a449b6937fbb8cc5250e5570a73758a7c87a7634a7f4c6a",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 70,
+      "end": 70,
+      "digest": "sha256:4d73468627b92a8bd88651f17a35db39c7351f0336c509b54724e36d03e60862",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 71,
+      "end": 71,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 72,
+      "end": 72,
+      "digest": "sha256:b2175a26dcc6370d86136d69cec89f90796b04feeabbd1de6c0872bec887d16e",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SECURITY.md",
+      "start": 73,
+      "end": 73,
+      "digest": "sha256:8f00fb6a075892d354d552a30546c2580c1a0dd7f85cfed548436f50d5b12fa1",
+      "note": "Defines confidential reporting, supported versions, trust boundaries, and ordinary bug routing."
+    }
+  ],
+  "version": 2
+}

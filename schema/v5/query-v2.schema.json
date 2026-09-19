@@ -61,7 +61,7 @@
       "additionalProperties": false,
       "required": ["type", "from", "to", "status"],
       "properties": {
-        "type": { "enum": ["relation", "contains", "owns_diff", "has_quality_evidence", "matches_item_diff"] },
+        "type": { "enum": ["relation", "contains", "owns_code", "has_quality_evidence", "matches_item_code"] },
         "from": { "type": "string", "minLength": 1 },
         "to": { "type": "string", "minLength": 1 },
         "status": { "enum": ["current", "stale", "invalid", "conflicted"] },
@@ -79,7 +79,7 @@
         "precision": { "enum": ["direct", "broad", "none"] },
         "relation": { "type": "string", "minLength": 1 },
         "evidence_file": { "type": "string", "minLength": 1 },
-        "shared_diff": { "type": "boolean" },
+        "shared_code": { "type": "boolean" },
         "hops": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/hop" } },
         "diagnostics": { "type": "array", "items": { "$ref": "#/$defs/diagnostic" } }
       }
@@ -122,10 +122,10 @@
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["item", "diff", "evidence_file"],
+            "required": ["item", "reference", "evidence_file"],
             "properties": {
               "item": { "type": "string", "minLength": 1 },
-              "diff": { "type": "string", "minLength": 1 },
+              "reference": { "type": "string", "minLength": 1 },
               "evidence_file": { "type": "string", "minLength": 1 }
             }
           }
@@ -179,10 +179,10 @@
     "implementation_comparison": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["status", "diffs"],
+      "required": ["status", "code"],
       "properties": {
         "status": { "type": "string", "minLength": 1 },
-        "diffs": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } }
+        "code": { "type": "array", "uniqueItems": true, "items": { "type": "string", "minLength": 1 } }
       }
     },
     "quality_comparison": {

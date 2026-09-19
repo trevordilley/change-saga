@@ -6,7 +6,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/twentyideas/changesaga/internal/diffuri"
+	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/livingid"
 	"github.com/twentyideas/changesaga/internal/readiness"
 	"github.com/twentyideas/changesaga/internal/requirements"
@@ -393,14 +393,14 @@ func (s *session) criterionInputs(filters Filters) ([]readiness.Criterion, []Tra
 						continue
 					}
 					matchedEvidence = true
-					codeEvidence = append(codeEvidence, reviewEvidence.URI)
+					codeEvidence = append(codeEvidence, reviewEvidence.Ref)
 					prefix := []string{criterionURN}
 					if r.To == storyURN {
 						prefix = append(prefix, storyURN)
 					}
 					paths = append(paths, append(prefix, reviewEvidence.Path...))
 				}
-				if filters.Diff == "" && filters.Commit == "" || matchedEvidence {
+				if filters.Ref == "" && filters.Commit == "" || matchedEvidence {
 					reviewTargets = append(reviewTargets, r.From)
 					if !matchedEvidence {
 						path := []string{criterionURN}
@@ -411,7 +411,7 @@ func (s *session) criterionInputs(filters Filters) ([]readiness.Criterion, []Tra
 					}
 				}
 			}
-			if (filters.Diff != "" || filters.Commit != "") && len(codeEvidence) == 0 {
+			if (filters.Ref != "" || filters.Commit != "") && len(codeEvidence) == 0 {
 				continue
 			}
 			for _, r := range active {
@@ -435,9 +435,10 @@ func (s *session) criterionInputs(filters Filters) ([]readiness.Criterion, []Tra
 					continue
 				}
 				if claim, ok := claimByURN[r.From]; ok && len(claim.Evidence) > 0 {
-					evidence = append(evidence, claim.Evidence...)
-					for _, ev := range claim.Evidence {
-						paths = append(paths, []string{criterionURN, r.From, ev})
+					for _, reference := range claim.Evidence {
+						location := reference.Location().String()
+						evidence = append(evidence, location)
+						paths = append(paths, []string{criterionURN, r.From, location})
 					}
 				}
 				if v, ok := verificationByURN[r.From]; ok && v.Status == "verified" {
@@ -486,7 +487,8 @@ type reviewEvidence struct {
 	Deck         string
 	Slide        string
 	Item         string
-	URI          string
+	Ref          string
+	Location     coderef.Location
 	EvidenceFile string
 	Path         []string
 }
@@ -497,15 +499,17 @@ func (s *session) reviewEvidenceIndex() (map[string][]reviewEvidence, []reviewEv
 	for _, deck := range s.saga.Decks {
 		for _, slide := range deck.Slides {
 			for _, item := range slide.Items {
-				for _, file := range item.Diffs {
-					for _, diff := range file.Diffs {
-						value := reviewEvidence{Deck: deck.Target, Slide: slide.Target, Item: item.Target, URI: diff.URI, EvidenceFile: file.Path}
-						value.Key = value.Item + "\x00" + value.EvidenceFile + "\x00" + value.URI
+				for _, file := range item.Code {
+					for _, reference := range file.References {
+						location := reference.Location()
+						ref := location.String()
+						value := reviewEvidence{Deck: deck.Target, Slide: slide.Target, Item: item.Target, Ref: ref, Location: location, EvidenceFile: file.Path}
+						value.Key = value.Item + "\x00" + value.EvidenceFile + "\x00" + value.Ref
 						all = append(all, value)
 						for target, path := range map[string][]string{
-							deck.Target:  {deck.Target, slide.Target, item.Target, diff.URI},
-							slide.Target: {slide.Target, item.Target, diff.URI},
-							item.Target:  {item.Target, diff.URI},
+							deck.Target:  {deck.Target, slide.Target, item.Target, ref},
+							slide.Target: {slide.Target, item.Target, ref},
+							item.Target:  {item.Target, ref},
 						} {
 							copy := value
 							copy.Path = path
@@ -520,16 +524,28 @@ func (s *session) reviewEvidenceIndex() (map[string][]reviewEvidence, []reviewEv
 }
 
 func (s *session) reviewEvidenceMatches(value reviewEvidence, filters Filters) bool {
-	if filters.Diff != "" && filters.Diff != value.URI {
-		return false
-	}
-	if filters.Commit != "" {
-		reference, err := diffuri.Parse(value.URI)
-		if err != nil || !strings.EqualFold(s.sourceHeadCommit, filters.Commit) || reference.Head != s.sourceHeadIdentity {
+	if filters.Ref != "" {
+		wanted, err := coderef.ParseLocation(filters.Ref)
+		if err != nil || !overlaps(wanted, value.Location) {
 			return false
 		}
 	}
+	if filters.Commit != "" && !strings.EqualFold(value.Location.Commit, filters.Commit) {
+		return false
+	}
 	return true
+}
+
+// overlaps reports whether two locations share a commit, a path, and at least
+// one line. A whole file overlaps every location in it.
+func overlaps(left, right coderef.Location) bool {
+	if left.Commit != right.Commit || left.Path != right.Path {
+		return false
+	}
+	if left.WholeFile() || right.WholeFile() {
+		return true
+	}
+	return left.Start <= right.End && right.Start <= left.End
 }
 
 func (s *session) unlinkedReviewEvidence(filters Filters) []UnlinkedCodeEvidence {
@@ -560,14 +576,14 @@ func (s *session) unlinkedReviewEvidence(filters Filters) []UnlinkedCodeEvidence
 		if linked[value.Key] || !s.reviewEvidenceMatches(value, filters) {
 			continue
 		}
-		result = append(result, UnlinkedCodeEvidence{Deck: value.Deck, Slide: value.Slide, Item: value.Item, URI: value.URI, EvidenceFile: value.EvidenceFile})
+		result = append(result, UnlinkedCodeEvidence{Deck: value.Deck, Slide: value.Slide, Item: value.Item, Reference: value.Ref, EvidenceFile: value.EvidenceFile})
 	}
 	sort.Slice(result, func(i, j int) bool {
 		if result[i].Item == result[j].Item {
-			if result[i].URI == result[j].URI {
+			if result[i].Reference == result[j].Reference {
 				return result[i].EvidenceFile < result[j].EvidenceFile
 			}
-			return result[i].URI < result[j].URI
+			return result[i].Reference < result[j].Reference
 		}
 		return result[i].Item < result[j].Item
 	})

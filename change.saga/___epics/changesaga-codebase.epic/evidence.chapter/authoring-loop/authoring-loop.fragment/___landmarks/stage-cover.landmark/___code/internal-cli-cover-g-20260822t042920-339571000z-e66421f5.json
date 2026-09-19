@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/cover.go",
+      "start": 73,
+      "end": 197,
+      "digest": "sha256:a2b6a006f48bc1b3492cd33bae374dcfb67cfffaf96ee86a20c1ba5d21e11060",
+      "note": "Validates selectors, resolves the full coverage batch, and supports dry-run before atomic writes."
+    }
+  ],
+  "version": 2
+}

@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/cli.go",
+      "start": 847,
+      "end": 948,
+      "digest": "sha256:e44689a3a443f2dfe32e900e8760e5bde2a30e4200c7fbd930c7978aebf9de69",
+      "note": "Resolves and verifies repository, revision, merge-base, and product-patch identity before authoring."
+    }
+  ],
+  "version": 2
+}

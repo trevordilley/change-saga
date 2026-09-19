@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/appjs.go",
+      "start": 226,
+      "end": 248,
+      "digest": "sha256:5406fbb7a6df68a6c01d40918fce0d865ee9dc8b6dba62de7df7557431627293",
+      "note": "Sends a same-origin token-bearing asynchronous review mutation and handles a rejected response."
+    }
+  ],
+  "version": 2
+}

@@ -133,7 +133,10 @@ test("renders Markdown, SVG, raster, and interactive HTML fragments", async ({ p
   await elementFile.locator("summary").click();
   await expect(elementFile.locator("[data-file-diff-status]")).toHaveText("All changed hunks · linked lines highlighted");
   await expect(elementFile.locator(".diff-row.new")).toHaveCount(3);
+  // The node's whole-file reference accounts only for the add-file event; the
+  // added lines stay unhighlighted context owned by other explanations.
   await expect(elementFile.locator(".diff-row.linked-evidence")).toHaveCount(1);
+  await expect(elementFile.locator(".diff-row.new.linked-evidence")).toHaveCount(0);
   await expect(elementFile).toContainText(".review {");
   await expect(elementFile).not.toContainText("Linked ranges only");
   await elementDrawer.getByRole("button", { name: "Close linked code" }).click();

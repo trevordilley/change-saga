@@ -1,0 +1,147 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/global-setup.ts",
+      "digest": "sha256:e1c8f10ed4ac625acf88fa45f9e6a4afb41eb1d12a8aa93fe5eb9ce607de210d",
+      "note": "Builds the current CLI once before the browser suite."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/global-setup.ts",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:adfafac700ed3c08b997150c15f9ebe94fb5dbe6da0aa9f48b7a64ab707bdf2c",
+      "note": "Builds the current CLI once before the browser suite."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/global-setup.ts",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:4e6c70489caefb881096983ddedc986ea5e9bea6f17ef492083f4b20f0303f51",
+      "note": "Builds the current CLI once before the browser suite."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/global-setup.ts",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:3cab101d81fc47a4f102b8d6eb7bca574327a58806d7445e39ee33d2c70bec80",
+      "note": "Builds the current CLI once before the browser suite."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/global-setup.ts",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:60acbafb7874c349e14ec86497b23d2f957e3ed61fc35d4d6faa1739301ad2c7",
+      "note": "Builds the current CLI once before the browser suite."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/global-setup.ts",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Builds the current CLI once before the browser suite."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/global-setup.ts",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:5095ec432d23ca6c01aa832a5fe8ddeabd40000e4ec639d9e74579662ea93ccc",
+      "note": "Builds the current CLI once before the browser suite."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/global-setup.ts",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:3c56a7fed868659a4222606851e550bc377cca008b92b931295a1b9d00f3d5d5",
+      "note": "Builds the current CLI once before the browser suite."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/global-setup.ts",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:229174ad00f12ff735e81eabcfd3113941a8095d8fbccd15c62f1eea3e94f1fd",
+      "note": "Builds the current CLI once before the browser suite."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/global-setup.ts",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:ae5e94b944ceaac6516ba97e3348d72f2bc5e9fb6ec763b5113bdec50638f440",
+      "note": "Builds the current CLI once before the browser suite."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/global-setup.ts",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Builds the current CLI once before the browser suite."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/global-setup.ts",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:0957b83529b69cb7c53de2c2321380656ba3696c971fae4917cdb667a4c406cc",
+      "note": "Builds the current CLI once before the browser suite."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/global-setup.ts",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:ea40616a0c164ebff27865f24e835f7dc946eccf68fa4051aa21436a113e88aa",
+      "note": "Builds the current CLI once before the browser suite."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/global-setup.ts",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:49b0c274221a00d2d1c7bac1cd1d5cbece77c6ce4ce4d9a45bbef9739ecfa0ab",
+      "note": "Builds the current CLI once before the browser suite."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/global-setup.ts",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:f0f422ce3862b1072a0db280d973c1f1363658d069571ebb66205679956e744e",
+      "note": "Builds the current CLI once before the browser suite."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/global-setup.ts",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:b811b4fc5260c61a5c6586565c12f628a770e4a879cc367e6b6b382012e943d5",
+      "note": "Builds the current CLI once before the browser suite."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/global-setup.ts",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:3a3e46f94276b6f6f4ed1f02af78bef6a2ee1c439dd5584b973948313214d2b7",
+      "note": "Builds the current CLI once before the browser suite."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/global-setup.ts",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Builds the current CLI once before the browser suite."
+    }
+  ],
+  "version": 2
+}

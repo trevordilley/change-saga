@@ -1,0 +1,3787 @@
+{
+  "references": [
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "digest": "sha256:cdf1347e73770d7f0ed7a7788551bc54c7d428f17a7da9eb82a2c36cd1ae4697",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:770516662a6aa8106529459aa99dd5447ba7d9b98c6ac3a97b28fd6322c7aa6d",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:2dd82a01137bda0c0afefebaab15d3c5943e5bd557378db82843820c960410ba",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:2ef1b4bf32426c71c4e9f9247fbc8021cfe2f2021f66ba7ab14f1ba350c414f3",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:9e268568000d75060a8ef8e427be91508ceddd456562e410918e0b62258812eb",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:a6313e1059c47be15ad81d31103376b0437d608c6fcf4c9dca214500af506237",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:d53865d22340c2e7e465592633d523952ecdcc303b4fee97eb103fda13d4cfb7",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:e500b3f129c9005a736b414c620da07cfa8b1e41639c1d69df9ac0bd966ad9c5",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:fcf6a47e0a3005d588ef9301a49ff654cc129c7fcd651ed3def876633318a9d0",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:3dd97bdf1afcf4e694e6e099056d3444fd08cf93a536cacaf383c901b7255cdf",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:3c61aea866cd4c39fc06d47c2467b896b3eb979fb5f170b128a8aa9acda01ae5",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:30470c78a1f88ff0629806c0154bca94365ff31282337a80fb5550d088c6d35c",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:b5324d15f379a1df5e49cb2bf3a5272d81178bee99e7036b1500d451a10fa6c2",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:f7ac6750fb28be3d01541232b6e3e0eaa7bc468c043b1bbfae0e09e2e66fb5e4",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:3a9702802e29f80618cba62096cc4b136795810b00be1d94002dc5b52d282f41",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:b890be2b70f30458d118c0b8754ad3d11dd649e2bd2f10cb27e73df87e6cd7af",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:9a75dc04d27d67a4fe5de7f160e9ce8f7844f0dbc57767982a9494d36c4dd318",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:21b2856a16001623b97eb719e3f1397ff6005d904e466cd1b000ed72df5ecec2",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:cf42854c2bd6e121bd9d1ea180f6d84303d4552186682dc57df6de9499e44588",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:963e22a6decc3a8c2cb84f19ddccc59d1d0f2cd1d8ab621a49e3c0b59616a034",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:fba8442d304390c9786c459ed3639307f079760f0b13df7ce5fb04dcbf90d157",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:e17961a3fcbe870c9affc8c5570768d7bfa7a7ef6398f5da3fd6dfdc53f6ce72",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:68d5d2430e1e4dc47e0eeaf3a4988a6b73e5693f9bca7889f13cb717ff83317a",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:dc77badc5327581fdfc56b2badbe251dff2dd42284e762da3cc87034894163b0",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:8d141f929b99c3bea747669ed78523d9cfb4962b71b929dbbc7eec040aa499e2",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:a293c8d5fb928b469b6eb25908faadc576a20b986a585d7055ddb6df00197619",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:3ac32999854bf239e22fbe2febda321788447a625b3e8f6c5ea48f2fc6e16032",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:a62b01e24524b013bff4120bbc53566ab520496dd49413e239ee816f74579855",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:2b5cd78e36dd3a1cd1d4934ec142e8002ce3e372e844a4001ea0c7c48f328fd5",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:4e343244275de2944d950fd0a07d2f02056df72fa61b6f69bd6661051eb10891",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:fdae79c68116d5bf5bf6bc46e6448efb13f8efa708047195fe438ac6fb5cd873",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:7007e1579062c0416f4a71d1617155fc26e1d50a7c7607b35c0789738000e740",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:c2a3716b313437b9073988f3fad294a350be74b4386aca9de224d14b2cf268c9",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:dcaa746e0322938dd7d2383225056c6b082d3c342dbf7df7266fe91f54022e5c",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:da88e26c7e839a6a5f3545662f8fdc9e2db09a74314803106c8e1a6ee70b2dcb",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:403ee1d546eba9415ee05b01346e0eec4b43cf6aa50e8bec3255441ba733c9b6",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:5b2115ca36e87fff94943712bef1cb8f361406ac4ab67203e6274502330d2948",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:50f44bc54eb7a0ebd1f99e97a3363dc0b1c7b219eb90357cd4122fe4d833e3f4",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:04c669e9c6f08a68aefdc2807a1f4e01896ae5fcb1c19c4429bb23944e646249",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:b29c0e7aae1d0286651c01c9518f98020e85b617be8178aaeb4a957f7c68adfb",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:dc04d48944c1093e71f04c4fef7963ed79ba7fdac16819cbd4eeace70c0e5240",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:9123fe257d3813031870347c5f3fafb7aaaf718539e211d1843c717744861005",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:06fa8fce5689e59bf7bb0f39c9199fc6a9917f85a03994e9313eae31b0cbe434",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:2df4d7d68c3a3b3ee714d66c892fb7826e2b2816d016aefc820939de3dd759ae",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:f6da11d43f00a21e8018a765e75cd114ad763e0964ec11d1c8fb2f8921cad33b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:b011617c27b69ea99d7d58f0bc7363e52f04add28fec4bf4be3e5d17d5547f40",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:ca009c506d3186450c7af3879c3fbcc1d63df4dc0cd892671f447ce82ae7c421",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:ae8ebf36840f021b2a7395199cd915e383a2085bdcccee2c02224f5e2408495e",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:3c892853650ce84e40d7cb411a36eeca14d8a4b9fd3f3c85293448dab2296c87",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:843881ee33b0a6d1e2ae49f4089d2c818d88e0c5d18740d8ca954f602496f17a",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:b14f9aae12d5928754c7657e57beed87f809b2e1191fdbde7ef93aa1ee23952d",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:5e94ddd9ebddb21031721e5daa208159d6d085268bae738b34fcb4f567195bb7",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:c5672d0cb28b800627d2ea1a2ca25cacb17e9fbb2c0a8cad50623b005063e09d",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 68,
+      "end": 68,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:d5385e96d43439c7b5600eff99973d8a2637267d3197a864de3cfe9545b54922",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 70,
+      "end": 70,
+      "digest": "sha256:b011617c27b69ea99d7d58f0bc7363e52f04add28fec4bf4be3e5d17d5547f40",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 71,
+      "end": 71,
+      "digest": "sha256:1a165c4c7456a7a735909380e00d0555a90ef3f390ed2e4e4653cd803ee31012",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 72,
+      "end": 72,
+      "digest": "sha256:0599daa0bc54d1bb89177e67f64c07433e7780c9c92aeee36ca03563180f35f4",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 73,
+      "end": 73,
+      "digest": "sha256:e2b41921e438d76a9658ecc3bcf6ea8f719b3284c5646f0624cbf650ccd4900f",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 74,
+      "end": 74,
+      "digest": "sha256:c8b6473628267d7ec578b3107b48b41a540ff389563ee39b650fa998f853b04e",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 75,
+      "end": 75,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 76,
+      "end": 76,
+      "digest": "sha256:eb15480a2965baed7bc694fbe63d4b19fcdcd6e3bf365633b09ae5c463aa0b47",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 77,
+      "end": 77,
+      "digest": "sha256:3a190829f034168d3715e12b03a6e3f9284c6b97eb4749dd46d4a268018be234",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 78,
+      "end": 78,
+      "digest": "sha256:26fae1d75b5776bf78d9b6aba235cd08090e48eef8666b46e726be430cbc096b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 79,
+      "end": 79,
+      "digest": "sha256:76e9d9f05e81a3469dbf490d1f4d550361946a5c9c77e79a995317e491090cfb",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 80,
+      "end": 80,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 81,
+      "end": 81,
+      "digest": "sha256:8748e0cfb41ae1a2357bd1df9acccb13efdf9e63fc3ccea9ce2fd08afe5600e3",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 82,
+      "end": 82,
+      "digest": "sha256:39c2a3b05175baf85e6dd9e6e157d1619880968e514bbc1287c1588723300877",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 83,
+      "end": 83,
+      "digest": "sha256:f418ab8724f29e1951afe2890fb3e10d5a7e470fb86da4c6b87b09992338128f",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 84,
+      "end": 84,
+      "digest": "sha256:27411cc3e34e45cdaacf2123a97723211a85791cf3a1f753647341068343667c",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 85,
+      "end": 85,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 86,
+      "end": 86,
+      "digest": "sha256:9e7be8711833d745c3283984f871d9384980aeedfa57690187e77ade3eae8b0d",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 87,
+      "end": 87,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 88,
+      "end": 88,
+      "digest": "sha256:6a616e54c10a1a46577b4296a9a1464a3d7bbc166c5dabd29c244117a728afdd",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 89,
+      "end": 89,
+      "digest": "sha256:8a7aa93778d1a13850a9753ef41c80f473104f5dfa9fec39de08a23096bc33c1",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 90,
+      "end": 90,
+      "digest": "sha256:ed5f1adf6c25c260a6f358263d3ec3e54dbbadba9b2e14d8ddbf3a97942140d9",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 91,
+      "end": 91,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 92,
+      "end": 92,
+      "digest": "sha256:7b7c86df345f703fd23badbc460ed55407cf0a74cd4569cf91b17322fa918eb9",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 93,
+      "end": 93,
+      "digest": "sha256:50a59142dde6cde1a32b27c6f0c2af94e90c8c3c9304fae467dfe4fdc11de6f4",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 94,
+      "end": 94,
+      "digest": "sha256:1ddd0c1a3ffffbc4f1784bfb0fa48fd81e79b0b765f453ddec473744fc71fb2d",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 95,
+      "end": 95,
+      "digest": "sha256:9ede6483e9af984cdb21b1b380181eda33baa217e981b1fc440b3d3673044d38",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 96,
+      "end": 96,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 97,
+      "end": 97,
+      "digest": "sha256:656cabce04cd6fb683aa9ff73645cb3fab51aefbfdb95da1c0f28324d16e5d07",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 98,
+      "end": 98,
+      "digest": "sha256:98329bafc3cedf26ba8e0a219bf081fb4bd6d1393102e8beed62f44e8ef11ec6",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 99,
+      "end": 99,
+      "digest": "sha256:9add8af7a3dca583948e50fdc9e6e345fa4beeb7b10fa1c55a53dfae383f8a01",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 100,
+      "end": 100,
+      "digest": "sha256:7f3e944082e51ca770892e09ee6fe1e3870cedaa60adda4a8c17ad22a3fdc8df",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 101,
+      "end": 101,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 102,
+      "end": 102,
+      "digest": "sha256:36a5a64b249ca9e4a5d79f1f31c7b6ec54fe3856ad1f6b38c7950fb5fd1cbc22",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 103,
+      "end": 103,
+      "digest": "sha256:bf09677005939ff1421b5e11e6bf9117d81ab3e6a6070754b12777d490b4c276",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 104,
+      "end": 104,
+      "digest": "sha256:8f8e5d9243e86756ac85fd88d4cffff85dc80bcf93a9c0eb9e8f818522d60bc1",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 105,
+      "end": 105,
+      "digest": "sha256:c261bdac873f72c68ab9be13e8116e33ed693eb4c0143a748857a2947e81b2e1",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 106,
+      "end": 106,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 107,
+      "end": 107,
+      "digest": "sha256:7b7c86df345f703fd23badbc460ed55407cf0a74cd4569cf91b17322fa918eb9",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 108,
+      "end": 108,
+      "digest": "sha256:50a59142dde6cde1a32b27c6f0c2af94e90c8c3c9304fae467dfe4fdc11de6f4",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 109,
+      "end": 109,
+      "digest": "sha256:ff501b159ad664362ed80b0b3f42bc134506a60ea915b1bbd1dfb908417ced12",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 110,
+      "end": 110,
+      "digest": "sha256:63186b42adc9466b46ddd66cbab93e79ed86142e329f5c48d8c0cb158749d97e",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 111,
+      "end": 111,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 112,
+      "end": 112,
+      "digest": "sha256:993537f0def2b5ed4b12dc0cf29367799c51f51a8c90ebb65212afc511bfdbbf",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 113,
+      "end": 113,
+      "digest": "sha256:043961e234693b75eb9bd572eb1c05f18b203429f1d06b51be1e7659e91679f5",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 114,
+      "end": 114,
+      "digest": "sha256:b2fd5a2d9d03cc78b668e807512044bcfbc44c09daf60c9c27f7e325ab481d8e",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 115,
+      "end": 115,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 116,
+      "end": 116,
+      "digest": "sha256:92352d7c1a4d6c3a25d6be2070b70d1b3d4e78e0bad9e4622c2be25d96f02009",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 117,
+      "end": 117,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 118,
+      "end": 118,
+      "digest": "sha256:a72e345030ccef6ef20b7c91d9df7dd12ec540f40ad12fcc987637b4a5369ad3",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 119,
+      "end": 119,
+      "digest": "sha256:727af83b154857e1c84439426379b4130a1c1f2b385852a7893c4f37621ea523",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 120,
+      "end": 120,
+      "digest": "sha256:d992970a6e4cb0fc2bd1124f9e2c05570524f09a4d9627e4abf9aad028321da6",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 121,
+      "end": 121,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 122,
+      "end": 122,
+      "digest": "sha256:40a5640494995392131298cafa5101fb72af2d288ac5fd2a4aeb51cbecc23426",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 123,
+      "end": 123,
+      "digest": "sha256:b011617c27b69ea99d7d58f0bc7363e52f04add28fec4bf4be3e5d17d5547f40",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 124,
+      "end": 124,
+      "digest": "sha256:961dd35e35f884033aceb6bec5ae82864bb862fccf7f56e4106f05b95980d338",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 125,
+      "end": 125,
+      "digest": "sha256:aa079da7baad1a817de04f38bfae61a2b3b112e90e653bee6933a07c10491a29",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 126,
+      "end": 126,
+      "digest": "sha256:8f40c3abe39ffecb9ffaf57afd3ef9ec1a8ed1d03e19dc0e98be3ced63dc6765",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 127,
+      "end": 127,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 128,
+      "end": 128,
+      "digest": "sha256:a0f7364566711805a7c9def7248e7f7b20a96c59746096f0c9abe748d133506b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 129,
+      "end": 129,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 130,
+      "end": 130,
+      "digest": "sha256:703084c1d0fcb67b4e2392f66d8b52f22dfcad5ef257f3887ad393661931fee7",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 131,
+      "end": 131,
+      "digest": "sha256:e29e50e3d63422fb39764487e25622939243a661f4ea361437069f59849e2f02",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 132,
+      "end": 132,
+      "digest": "sha256:446a9041ee128e4ca87f150289b66d10036073ce4ee40d1165783d0fefb7aabd",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 133,
+      "end": 133,
+      "digest": "sha256:d343dfc83b71dc181eafe7a4b74a3c3f7a94cbb0dc44368a0c57462d68c52774",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 134,
+      "end": 134,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 135,
+      "end": 135,
+      "digest": "sha256:aed47bd81c03d40991a122eb0d8c0cd8495a12e2b3baa9fb64e57357aa5b697e",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 136,
+      "end": 136,
+      "digest": "sha256:2c18ed852e3ec9d69b6f28e47e1b272d5641cf561526beff5bb11ad6b5a13976",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 137,
+      "end": 137,
+      "digest": "sha256:b0ddce3b583a9ea15c5b72533145a63598297c5ff6261e3d55fbd54f1a1371d1",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 138,
+      "end": 138,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 139,
+      "end": 139,
+      "digest": "sha256:1be3060c7259aed082e63a7f9b58614a61fb24578e821b966abe32c9bc4f48dc",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 140,
+      "end": 140,
+      "digest": "sha256:b4f7f84d7be60ee9d751576310282e6f8c74ab7ea8dc159ab7943ec2fc2903ed",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 141,
+      "end": 141,
+      "digest": "sha256:387611f195b437e39859a76d89913ece7b20c2620882bfbbc9d68c4cd4c5c156",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 142,
+      "end": 142,
+      "digest": "sha256:3a8301c28f4894743b34cd8b9d0972386ac9c4cffe4879228e5489fa49889fb5",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 143,
+      "end": 143,
+      "digest": "sha256:6de20eecabc911ca6b33edcaa9752bbd6cc3f113bf5259da4e3391c6b719e303",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 144,
+      "end": 144,
+      "digest": "sha256:04c00e41999911ca5080c4cf65cb96f3159d2592b19a927416dbf9bab1729f90",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 145,
+      "end": 145,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 146,
+      "end": 146,
+      "digest": "sha256:c963b9d3d04fcb8ecc039d0ea1af970b3f4c9c4c4f08043d33b7939871a4baf5",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 147,
+      "end": 147,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 148,
+      "end": 148,
+      "digest": "sha256:a82e8cbce6813c700f53eb079a7adab005b15fed1b63d36244c9288bebd101ff",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 149,
+      "end": 149,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 150,
+      "end": 150,
+      "digest": "sha256:7f2fbd6db0f1af511d21264470668ace3a73d50dec06dfe4f03865533db91530",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 151,
+      "end": 151,
+      "digest": "sha256:afa39f89b65f74dc127316436aee71a8d810085086d6f303545c6093f64c72cb",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 152,
+      "end": 152,
+      "digest": "sha256:68fe491fbda1e54b4273c4736437694b4e014c89c1aa5619b1cf9d1aa05a40ac",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 153,
+      "end": 153,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 154,
+      "end": 154,
+      "digest": "sha256:e795ee392e0cddc97ffcca233b511b7d905f77d9cd9c25de0e2ae2da1eff1a2c",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 155,
+      "end": 155,
+      "digest": "sha256:f437ed7f012643a5ff0fa2868edbcfaa9f9116358f5429e6a9410c8b1c2ec65b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 156,
+      "end": 156,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 157,
+      "end": 157,
+      "digest": "sha256:e6bd094c01ee4f6d206fe3984871ed8c8de8a4957574c2dfa4a2437e3b679498",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 158,
+      "end": 158,
+      "digest": "sha256:c858dc84254ca4bd4e78c70e0c7d8e7678cd24dcd593913a36e6404bfe3a51df",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 159,
+      "end": 159,
+      "digest": "sha256:825ac04e2b28bc420e2376cce3475ef8794ee301b3687076659189bbd2c9db10",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 160,
+      "end": 160,
+      "digest": "sha256:9dd291130536a87f7270fdb14e7d8d085f2acaec5c04dbfba6f2be0c37118133",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 161,
+      "end": 161,
+      "digest": "sha256:599ab8eae240ee1db3deb514b077bd74eace2f01c4edfa00556e3b5a1a96ce48",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 162,
+      "end": 162,
+      "digest": "sha256:47c06c561d5c327343685268a46b3391f3998eee890d2be51f0d21cc4a53ae6d",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 163,
+      "end": 163,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 164,
+      "end": 164,
+      "digest": "sha256:c3a5cffe6e8f423b444689c469a37976c57cd2cae6562f062a89185e21240c2d",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 165,
+      "end": 165,
+      "digest": "sha256:6a547b8b4722be42e2430c480a5cbf8576af8e6c89e7fb4f42fabfe45f4d5eac",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 166,
+      "end": 166,
+      "digest": "sha256:03a17bc9f6601411c9dd40f5b542ac70ae4c83cf6a937acda259ac27d1de2826",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 167,
+      "end": 167,
+      "digest": "sha256:ea3c53d6488acd5167c13d82a23f0a8aa947324a7f95106e1cb4251ef34c5f7d",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 168,
+      "end": 168,
+      "digest": "sha256:ff3a50163a81847198e5cb7aa2ae009e074c921e613a79e24c9224faf243f451",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 169,
+      "end": 169,
+      "digest": "sha256:cdbcced2184ad2c197f9c81cfb7c587d4e526e931914ab12e9c3d93a5ccb1e89",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 170,
+      "end": 170,
+      "digest": "sha256:40cc7198f86579872d0c0f9e2c1bf92cd83bea5bf545bc993938ca581c88302c",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 171,
+      "end": 171,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 172,
+      "end": 172,
+      "digest": "sha256:bdda3920dc79c42c90b0f85ef5e9e50f1d81b4fdc5989420fdc5d414e802fd6e",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 173,
+      "end": 173,
+      "digest": "sha256:4ed0917fc8d0da8fdcf16f339393cc2ee346a9073b199621ef68c88484113d04",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 174,
+      "end": 174,
+      "digest": "sha256:75890df680c09269bba1c8e92e947f3523919d3c759c7c2793069ad281fe1c4c",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 175,
+      "end": 175,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 176,
+      "end": 176,
+      "digest": "sha256:80fcf90254f7afd1c3b231e28b8f612dd166483387b5bc1ef980ef9bfcf8890b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 177,
+      "end": 177,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 178,
+      "end": 178,
+      "digest": "sha256:27b32ff4b1f66fca7ca1588087bdb3045b59f656cd22925c514078285ca560c8",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 179,
+      "end": 179,
+      "digest": "sha256:75e257da17b86639748103f10859882be0c891dcd9667d1ce0ea30d06ee9e906",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 180,
+      "end": 180,
+      "digest": "sha256:e00023182ac27cb1733a927b7db18f9bcb5e034dede852eadbc1dfd92d1e80e4",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 181,
+      "end": 181,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 182,
+      "end": 182,
+      "digest": "sha256:75fabc0748f14947d56a545b57f2f37ed9941b3a76460687d26c645fca8f34a5",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 183,
+      "end": 183,
+      "digest": "sha256:50a59142dde6cde1a32b27c6f0c2af94e90c8c3c9304fae467dfe4fdc11de6f4",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 184,
+      "end": 184,
+      "digest": "sha256:8fc5ba3bfca27bbd4b6464b4b14613bc77dbf2bad15472c7e3df370ec6481902",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 185,
+      "end": 185,
+      "digest": "sha256:05c030d1c16ab1b2a4236e08e8b541b113980a3abb900f3cee425d0f32519b9c",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 186,
+      "end": 186,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 187,
+      "end": 187,
+      "digest": "sha256:772c89eb6768cc031143ab82a91c7c2a1fb37e8e7363ef97ce44bb44f992b6dd",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 188,
+      "end": 188,
+      "digest": "sha256:27f91c42427f0eaf5ecda4e00fcf7d5ad694fcc38b56526f952d5a9efca08bf6",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 189,
+      "end": 189,
+      "digest": "sha256:144fcaaf83d1942dc3316ca543c74047a6471db5716f4c250976b04c75863fee",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 190,
+      "end": 190,
+      "digest": "sha256:e245b3497f951c7fc6f7e2593f1c8e2c08ce0c8176c2e0e5641e562fa077beaa",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 191,
+      "end": 191,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 192,
+      "end": 192,
+      "digest": "sha256:ea9ae376191c85d960feb8dbd53e3fd31c7236ff288e366c46a0f8d5ac3e01a9",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 193,
+      "end": 193,
+      "digest": "sha256:4bf77ac091ddf87f8baa50db23b383b9207d887824ae2b6e6653003ba206be72",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 194,
+      "end": 194,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 195,
+      "end": 195,
+      "digest": "sha256:78bdeeced39df981d3c26138415549125263b538c49dae03fc628e47820d988c",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 196,
+      "end": 196,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 197,
+      "end": 197,
+      "digest": "sha256:7da950bed5eac2f17f3b9566f1856c72bf986616059411aa1c3b7b56b514a535",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 198,
+      "end": 198,
+      "digest": "sha256:e25beaf9e296c8431bf4ea53d62895c6fcfd3e3e05c610b40d29f49dfbccfb83",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 199,
+      "end": 199,
+      "digest": "sha256:b3a45082f486bc7ca793c616e880392381c613e360aad038ea9374eae644ce6e",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 200,
+      "end": 200,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 201,
+      "end": 201,
+      "digest": "sha256:610a58904df9a3365144e9a4caf139f36999d6046d4ef89e394a4a8a8e77161c",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 202,
+      "end": 202,
+      "digest": "sha256:b011617c27b69ea99d7d58f0bc7363e52f04add28fec4bf4be3e5d17d5547f40",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 203,
+      "end": 203,
+      "digest": "sha256:e348acd9523d7bca5706aa726026e611dc1b8491740beb342f51f99a61a91df8",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 204,
+      "end": 204,
+      "digest": "sha256:055fdf3da4a85e9f0fb66a54ba3b80e138e3dbf5773a4957c8a0aef0ba3aed90",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 205,
+      "end": 205,
+      "digest": "sha256:bd442dde9e0e9f9f54b91b905a7e10fde024635d903c1c242200bb22e8fade4d",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 206,
+      "end": 206,
+      "digest": "sha256:f043f500a3b2225e9626b6362b56b5c073ccb74a5f318a94054d66366e59b12f",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 207,
+      "end": 207,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 208,
+      "end": 208,
+      "digest": "sha256:f7e5617a67b114d5ef9a256e30e559d96f1eb01a73e1d1dbc97ac609c228e1fd",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 209,
+      "end": 209,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 210,
+      "end": 210,
+      "digest": "sha256:2bdf038249d2710de2680c113223b95b4fa805bcf1233b7755d2911ec15ac019",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 211,
+      "end": 211,
+      "digest": "sha256:9c9e606b5f4b080cfecbad051288148d782a80c942e78764cd81ac1b95d07c03",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 212,
+      "end": 212,
+      "digest": "sha256:4e8ba3c67faf86835bdb425a5de8804b4262f867fe217e924ae4217103ef00e4",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 213,
+      "end": 213,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 214,
+      "end": 214,
+      "digest": "sha256:332ba5e763260bd6dde6452235d5a4dc49d7de2a0dcc02394810a76a65acaed2",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 215,
+      "end": 215,
+      "digest": "sha256:8c92dab2275cf2f8277d0c37f2d7a4dea209b40febf83f492dea410da96619c8",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 216,
+      "end": 216,
+      "digest": "sha256:f83ae7209b5f5e28a5838a1482cf376191caa1372b6e83db9a98eeeae744a2b9",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 217,
+      "end": 217,
+      "digest": "sha256:c3d96e25ed50b520395da45e9288c2cc966f7e0eb26bbdf4705c252a3e0a4271",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 218,
+      "end": 218,
+      "digest": "sha256:b459d77cda9e0edc9787dd0e838160de41a7f2ca46453d25487a67f7c6c6ae09",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 219,
+      "end": 219,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 220,
+      "end": 220,
+      "digest": "sha256:a94ca47d7e1d9d3429108b2056288ea03c21d2ccadc6a8c01059b1368412858b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 221,
+      "end": 221,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 222,
+      "end": 222,
+      "digest": "sha256:176f9550c9a59dbba3caf7c99e6f09da1bc2271fae3739cbbd5dff0d40d3dde0",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 223,
+      "end": 223,
+      "digest": "sha256:696069ae1547ed2be655a9c87fb265d79e2b3cc0c6177ae94d9795f5ca871d7b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 224,
+      "end": 224,
+      "digest": "sha256:69ef39194f42d394c6b68f401d1e4485d4287d61be5bc301271cc3aa8be05dab",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 225,
+      "end": 225,
+      "digest": "sha256:435b4cd1e743e565eb337e7da3fe43ba213547086b08cb8e8e666d7fa2a08c18",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 226,
+      "end": 226,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 227,
+      "end": 227,
+      "digest": "sha256:e17961a3fcbe870c9affc8c5570768d7bfa7a7ef6398f5da3fd6dfdc53f6ce72",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 228,
+      "end": 228,
+      "digest": "sha256:68d5d2430e1e4dc47e0eeaf3a4988a6b73e5693f9bca7889f13cb717ff83317a",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 229,
+      "end": 229,
+      "digest": "sha256:b0dd327cb633785289a4b5c00f7b502e74d7230eed96688d0bf0969ecabd1460",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 230,
+      "end": 230,
+      "digest": "sha256:7c9d08ddf0d4d5717d470a88302e452a0b5beee605e7ffe0a0c7c7b1d2ee861c",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 231,
+      "end": 231,
+      "digest": "sha256:bd73e33345d294665f85e058409e75690baa4c6090e0f3821586b458dc59eb45",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 232,
+      "end": 232,
+      "digest": "sha256:d81619245f55bb4681c5bc0f057840db790661230168adbeadd26b755f30d051",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 233,
+      "end": 233,
+      "digest": "sha256:3c0649241ed216b1c22386fbe5f233ba414be77d17e44e78684cdf46bf572e8a",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 234,
+      "end": 234,
+      "digest": "sha256:bcf3a8c463e6ce176a779ea03bfaa1722ad5feecbf6cd7dc8fcb5e7b9b2d975e",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 235,
+      "end": 235,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 236,
+      "end": 236,
+      "digest": "sha256:cfc616abf0ca20811bfc26caed757ece02b27b3feed835d358f88c04e95ad370",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 237,
+      "end": 237,
+      "digest": "sha256:cb1892350bfae1fb0ee5217064bf632f1aa50816229851dd51ee0c337e12e542",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 238,
+      "end": 238,
+      "digest": "sha256:18f58a07b0bcd82e02a525f53cbd21ca6f7ff43dbfd67ff37ed13eaba6b7c1ca",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 239,
+      "end": 239,
+      "digest": "sha256:d250cf6c47243760f91a94df5e7c170b8ef3a82231d1f5f07ab3ca549202a102",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 240,
+      "end": 240,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 241,
+      "end": 241,
+      "digest": "sha256:a9d5a2c845eeeb9145e9286cf4003e15a9f98c7523b09a40b930b8ffdadb19d6",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 242,
+      "end": 242,
+      "digest": "sha256:e71f5ec7a43edf287f72ddf90d94da5d2bb6d807046068f66ce0faa5854ad319",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 243,
+      "end": 243,
+      "digest": "sha256:767369500198fdbcf29858c82ea7df8ba245e907020e543760264c65d601cb84",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 244,
+      "end": 244,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 245,
+      "end": 245,
+      "digest": "sha256:0571536703a209465d1cd1cf869c3c14ce76f2b5b8736c9a2034d54920e4f56e",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 246,
+      "end": 246,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 247,
+      "end": 247,
+      "digest": "sha256:3acd2868e05ca0a9f8793714be2fe7e77f81e0b278e6767b11d0dd5ba4b51ef1",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 248,
+      "end": 248,
+      "digest": "sha256:b784f5aee2b6057dd05b7025bc4b152164f4c7b8c6f79cc6e1d2bbf4d06d3f2f",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 249,
+      "end": 249,
+      "digest": "sha256:ed7c026b5c16bb50dd83a1c209dc19ebda94ae6379510ea24ed957272a14c4bd",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 250,
+      "end": 250,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 251,
+      "end": 251,
+      "digest": "sha256:c79e70c259a085658199533d633de26830b233b5f2329066dbf5f724c1585778",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 252,
+      "end": 252,
+      "digest": "sha256:50a59142dde6cde1a32b27c6f0c2af94e90c8c3c9304fae467dfe4fdc11de6f4",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 253,
+      "end": 253,
+      "digest": "sha256:5841c92d7fb636e46ffc1c039d7683391b1fb0def91f52e8b40a101a2efd98ed",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 254,
+      "end": 254,
+      "digest": "sha256:a5ef45740000bf978d1d30ca550aa733808a13f845426393047ca9bf1b90e727",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 255,
+      "end": 255,
+      "digest": "sha256:57231428d0f0efc0a23718f81dc1bb145acefce4d86315e0fe385637aa2e4819",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 256,
+      "end": 256,
+      "digest": "sha256:2353fce4fb1413bcac389ac369a933338a5d45d2b51003ad336bb2470d2903e6",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 257,
+      "end": 257,
+      "digest": "sha256:bf4d0feb5c059713bd020ff8c4c990d70ad73b32433e4dcde986d287a32a8d36",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 258,
+      "end": 258,
+      "digest": "sha256:b21f96a3e6f43363cd04878990f97b727c71fa4fe8caaec54446d81dad0b680e",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 259,
+      "end": 259,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 260,
+      "end": 260,
+      "digest": "sha256:5f3c7747323ad1f242ba9f44004e6bd6e3f6473a3c3e37afbe4a26b5ef9c1c30",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 261,
+      "end": 261,
+      "digest": "sha256:3a73c4d637e6a13c6390553d8a1656919a2eb27db5a16273234a1e41b9e87011",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 262,
+      "end": 262,
+      "digest": "sha256:c7d0f160d3be9e275743aafa4cc47308e59df6a53c9046659abd509c9bbd9808",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 263,
+      "end": 263,
+      "digest": "sha256:0b28114f142319047d67c4a7a7a8aab748f993681837a00bca82ef3bdb103ab5",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 264,
+      "end": 264,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 265,
+      "end": 265,
+      "digest": "sha256:9d66cc53281d92edaf1553dc9f42686c51795b5aa3d1b572b95ae9044ba3f3fb",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 266,
+      "end": 266,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 267,
+      "end": 267,
+      "digest": "sha256:4f8c7a72b5737c840ac2bb62b6aa97985f84b5566bef2c2b56742cc5e2c916f3",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 268,
+      "end": 268,
+      "digest": "sha256:8a60b5ab1a5c385ad3cdb6af4c07c88268de42370ad16741e36535a6fbb38f1b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 269,
+      "end": 269,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 270,
+      "end": 270,
+      "digest": "sha256:d6f1fa7b57337afbb66754f2ed1e7eb7c1afb830e9efef50b338105bf948bac6",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 271,
+      "end": 271,
+      "digest": "sha256:345875d4183cffaab4507a3908a5d53957a2b878ebd0e37ed8dec4a0b9561ae9",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 272,
+      "end": 272,
+      "digest": "sha256:6e926235732d78c55374e20ebf1ca54b5114c658d4f3d17cf27b291bb84c73d0",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 273,
+      "end": 273,
+      "digest": "sha256:1dd4a51b6b9962bfa10aceb0090e8a050fcd7f1c01eac1489a1b49bbd4188c9d",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 274,
+      "end": 274,
+      "digest": "sha256:47c06c561d5c327343685268a46b3391f3998eee890d2be51f0d21cc4a53ae6d",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 275,
+      "end": 275,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 276,
+      "end": 276,
+      "digest": "sha256:4759d0035d5b0776ff5515d09fb3934064a7ffcc0e5be5082694180692757897",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 277,
+      "end": 277,
+      "digest": "sha256:afcacc6b28d52d774dbdf1c17df164f3b6c34cf2878497631e88203749fff935",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 278,
+      "end": 278,
+      "digest": "sha256:74b6144bf4fbab795fa8ac25d56edcbc1404bfa7862b946fe82d12ccc4633410",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 279,
+      "end": 279,
+      "digest": "sha256:ae796726daf4b6dbad5957a20f54d4dc271cb0afb45fe642fde983bbc5d6e4f0",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 280,
+      "end": 280,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 281,
+      "end": 281,
+      "digest": "sha256:8cda7decb35e9e451b3ffee69bfa4ab2be03b114adf946d0baa8a3d5b161574c",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 282,
+      "end": 282,
+      "digest": "sha256:aedd63b02d9ae459fd90aecaf87203bbf58188797406f147d71da800cfd06413",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 283,
+      "end": 283,
+      "digest": "sha256:c6df9340cf675ac05e9a31646092c7644c8fbea595366a3ad427c61614f24702",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 284,
+      "end": 284,
+      "digest": "sha256:d98002d980246e990bb1ca7e4afd257c207864656596d5c68ee8a5183fa16deb",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 285,
+      "end": 285,
+      "digest": "sha256:a7da2b90a9ef65e304597c7228c112c02ff9422ac2b3bc39dab636d4b0d9ef8d",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 286,
+      "end": 286,
+      "digest": "sha256:7fcfe08b8afc13460bf342ccb13c7ea781f89404c2af2bdca7951850ce22e65c",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 287,
+      "end": 287,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 288,
+      "end": 288,
+      "digest": "sha256:8c0b77710a6d764bf02e1786a97cd201fda7f02e7edfb9a13266e12fd5c29507",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 289,
+      "end": 289,
+      "digest": "sha256:7e7aafd6b4c946daa85d8cc407b30b882d69a30d784d5e8164149974ce357917",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 290,
+      "end": 290,
+      "digest": "sha256:bde454f834888cae6c98c3c7a62256c961c1b3545cfd72c494cca829f7c43ea2",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 291,
+      "end": 291,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 292,
+      "end": 292,
+      "digest": "sha256:bc9af3555d86dec35464810f85b412df9c972e4c384df909b9839adf15b31c2f",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 293,
+      "end": 293,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 294,
+      "end": 294,
+      "digest": "sha256:f547156f70f9a8985c89b0a26f3c3aba2fc2b223a77e352a138dff1bdae7c0d5",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 295,
+      "end": 295,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 296,
+      "end": 296,
+      "digest": "sha256:cc46db8ecfbdc9e9fd5a890d46830f8a83075f0afa4667f4ee8ebfd0ca4f9d19",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 297,
+      "end": 297,
+      "digest": "sha256:a9e436d2babd638ade86791e162e7de5a6b1b3128c6ae9ed93504fbf3c53dc93",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 298,
+      "end": 298,
+      "digest": "sha256:ba36a15872577136a27aa262c3633e27e8e8a82db8cd3bb0511c581ba4a150ec",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 299,
+      "end": 299,
+      "digest": "sha256:78edda6eed72bf4f35e1270fed0cb74992bb5084ab4052ad86a24487e0b65121",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 300,
+      "end": 300,
+      "digest": "sha256:2bbb9e841de1474b1d4dad8b9666ab1bcadbf7df693ad028509890ee51733e74",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 301,
+      "end": 301,
+      "digest": "sha256:36f50812188eb2c92bea5803cc97568d03be1339334ccc53afbe499d5be15cad",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 302,
+      "end": 302,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 303,
+      "end": 303,
+      "digest": "sha256:acbd9a8e5913548a002d0b94d2ec8ed01d39f57e5cb55cfa25397e7cd80da1ca",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 304,
+      "end": 304,
+      "digest": "sha256:c618e9dd89dda280135c2797247306264615ca7b1cb8f831634f466ce5a5282c",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 305,
+      "end": 305,
+      "digest": "sha256:63deab67f2f8d2ef7cedafd425332ecb3ce57b0a4b5ef85cb4d37c522884ebd1",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 306,
+      "end": 306,
+      "digest": "sha256:bad64004f1d0722c1d3162bc9605533fc13fe9b9d3e4d4bc8f8bfab2cf80dd89",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 307,
+      "end": 307,
+      "digest": "sha256:bf0c6a3917ade9fc41ed9d4ea6395855df134c2da8b39ce7660fadc45ea9f0cb",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 308,
+      "end": 308,
+      "digest": "sha256:23949a98900215504802890196c51431ec92084b4987b0c2bb80e6543a18146a",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 309,
+      "end": 309,
+      "digest": "sha256:af004f79061d0eb6a645522ac000fd7d8f7bbbf74c78adeb1d76080ffa3b3dc3",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 310,
+      "end": 310,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 311,
+      "end": 311,
+      "digest": "sha256:b35461bbb00f8c31fc632c7135665a33e830902d3fc65a8421f56f2fb4f953f8",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 312,
+      "end": 312,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 313,
+      "end": 313,
+      "digest": "sha256:6fe5d3d22a0e3532982a4dbd7e28e7c7afec9ac4721a28a0efd4a979a583b52f",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 314,
+      "end": 314,
+      "digest": "sha256:723b5e1ce742939648767ec75616662d5efd99866c55499178551205092e8227",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 315,
+      "end": 315,
+      "digest": "sha256:91fbec63138c9a6a8bd098738249283650ba579510558a231ca4fc994ee4b40e",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 316,
+      "end": 316,
+      "digest": "sha256:29a68f078931b3914b8478d04c332e5da6c3d5663826c3761b41d0f15f55b4b0",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 317,
+      "end": 317,
+      "digest": "sha256:51f0d8bcab8b4be897c51df38dc43e54b83f8028500821cb94e37a47dc5db8e5",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 318,
+      "end": 318,
+      "digest": "sha256:af41398b201bb02dfb1802ae511f68e676aa74f2937a26093a12541fcd009fd7",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 319,
+      "end": 319,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 320,
+      "end": 320,
+      "digest": "sha256:42ada4d45ae71ca72f4cd8cac5a0e8ef003b5c0097c19de73e69ad5e3f26305b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 321,
+      "end": 321,
+      "digest": "sha256:4215fcf9af6b3d36494946c737e8c02e5daf8cb932f85b2ef004e76d60459518",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 322,
+      "end": 322,
+      "digest": "sha256:ad9979f0aeb261468da0d6e555c8ca199e9220e0a6d768fa24f5163a859548aa",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 323,
+      "end": 323,
+      "digest": "sha256:58dbf1c1b0c27ce0623300387ad501f6a6c3b22dcf6ad9710bd31fcd63f41843",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 324,
+      "end": 324,
+      "digest": "sha256:1d4a657a9fbe6572def1b3ca985c0e5036c31330ac5d2832f6a2cbf60fdbd478",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 325,
+      "end": 325,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 326,
+      "end": 326,
+      "digest": "sha256:25d51fd4402f873b2502a038931ae501d3c201e8e5677a80e1d8b1d087ba9459",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 327,
+      "end": 327,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 328,
+      "end": 328,
+      "digest": "sha256:abdb4b7bc288f67d8d9e8ad5b947b7e72c8eafce213b979857daa64ba5058e3b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 329,
+      "end": 329,
+      "digest": "sha256:fdffa9f365e1793a76e37d73ddb95be889964c0d405a556501a1d229a4829322",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 330,
+      "end": 330,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 331,
+      "end": 331,
+      "digest": "sha256:d3865d20f9657e42a02bfa95aecc6dadb5644612275bb0a9c2dde695500c77ab",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 332,
+      "end": 332,
+      "digest": "sha256:a9e436d2babd638ade86791e162e7de5a6b1b3128c6ae9ed93504fbf3c53dc93",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 333,
+      "end": 333,
+      "digest": "sha256:cf3c93fbae914a8a472758edeb954a74302163e88ab81acdf4ed90ebb0d93314",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 334,
+      "end": 334,
+      "digest": "sha256:1c53f03ef620efef25baaca1a308c8560d423d564d58e83a6813575d88df074f",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 335,
+      "end": 335,
+      "digest": "sha256:be00091e13483f09c276e661e6b291868c015c2ab298321e67d159427e7a6657",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 336,
+      "end": 336,
+      "digest": "sha256:08c69557b68322a365eccc7bff0aea746b9c8d911140b576d7fd1d37eeabd616",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 337,
+      "end": 337,
+      "digest": "sha256:f2ff81c316f5c18f1d0f9f652f7d55418c8b5ddf74ac795a17e358ad63391928",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 338,
+      "end": 338,
+      "digest": "sha256:569bfa54d49c881d651cdb589f7b35656e69785a9c97c5788bd11d444ca85def",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 339,
+      "end": 339,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 340,
+      "end": 340,
+      "digest": "sha256:e0a4939206c5c40b20699486b49b73c6ffeaf849715488247c55ab4a247260d8",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 341,
+      "end": 341,
+      "digest": "sha256:bcba6b41c93eb2c31090ea7a0d0dfe95ec080bb0674ff527d2469da18fa7777f",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 342,
+      "end": 342,
+      "digest": "sha256:b469292194b629e23fda665b853c508c8bfbe66cfeeb2ae7ee3e11e7ccba6498",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 343,
+      "end": 343,
+      "digest": "sha256:ee926c0515d01714af08f719c286eea5ddb3ad0928132ecbeaeefff2679442a9",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 344,
+      "end": 344,
+      "digest": "sha256:5f9e7b880c599dad844abdc7b52fc1be20793e5f2489f1c52f260ea85946beb0",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 345,
+      "end": 345,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 346,
+      "end": 346,
+      "digest": "sha256:e96770609e9e0dfa94be40074cb2290afd14d3e84438f98f891940f6cb0b3088",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 347,
+      "end": 347,
+      "digest": "sha256:5a6f584a844c477f657b1fa602788e5427020d69b65c917d71f74be010e236ff",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 348,
+      "end": 348,
+      "digest": "sha256:c3df8337ed3553213ea2561a0764c3bf7e6c5b15b3716dc9bc5773e655bc78ef",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 349,
+      "end": 349,
+      "digest": "sha256:3ede43893fe80d3d84704ef631a95d57e258d74cfdb2a7dc406cd91e5aae0efd",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 350,
+      "end": 350,
+      "digest": "sha256:2d1386d367aebaf3c987811d3d22ac3e82970846787e93766b76c2f951a80b04",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 351,
+      "end": 351,
+      "digest": "sha256:43086e84d76f455fbed0d369af8c757e9448b40f48427ad748eea4a0067e5021",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 352,
+      "end": 352,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 353,
+      "end": 353,
+      "digest": "sha256:c1cb9aeef08fb8bb8ae35b5d28728c0488b1d784567f98dd232fdb3babd9817d",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 354,
+      "end": 354,
+      "digest": "sha256:454774521c3ab448d1d6c9cdd9ac2f141bd3f721b4709d788904b63e9e37b75e",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 355,
+      "end": 355,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 356,
+      "end": 356,
+      "digest": "sha256:4a9f62997c16e75590f035372fca532864062a0b4ac2010f6de14adcddc7895d",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 357,
+      "end": 357,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 358,
+      "end": 358,
+      "digest": "sha256:49289b3eac1b73d31e82ed286f2a04643dc20901fc4607eef5ecf6ce3875adf4",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 359,
+      "end": 359,
+      "digest": "sha256:8256bf6f8c156ba8211c09f268e5299dafedfb9d728228085d34848e3f96a4a2",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 360,
+      "end": 360,
+      "digest": "sha256:8db95e3dd9aa2b52cb8c7dee6149fd55c1758b8b73b4d1a943304ebe84ee55d9",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 361,
+      "end": 361,
+      "digest": "sha256:28475f7288cb61cc76f42b0e88cdc3e4b05ab2dcb3a92e5fea11987dad903dbd",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 362,
+      "end": 362,
+      "digest": "sha256:07c89c4c2177077a5db4d6aca6b90f9cd2f02c2a4ef8ad9d47bf2b17327db2d0",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 363,
+      "end": 363,
+      "digest": "sha256:485b272e0b134f5b8294d73f0d5002504b9c4526b05e75443c605441f1c78c78",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 364,
+      "end": 364,
+      "digest": "sha256:54c4ab06c432ba6b9a099bd60f9743b85829921d0490e4906a8c295a0c858ad6",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 365,
+      "end": 365,
+      "digest": "sha256:74105724ad7f5f34c99a6713a6d56efb93337604cadcc2bdc3f89f55b578d757",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 366,
+      "end": 366,
+      "digest": "sha256:f783e5a570eba6eaad037897946c61d3cc59979877366a308ef1a23308a18fb3",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 367,
+      "end": 367,
+      "digest": "sha256:53152f689d0975b97d461043ca57e28f5e6febd8a6faea1476136f49c84d9b3d",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 368,
+      "end": 368,
+      "digest": "sha256:27fc884fe860993dc17cc822f773245d1669c3b79e0278228b412ccaaea1b846",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 369,
+      "end": 369,
+      "digest": "sha256:2bf4020ff848315690d8e2c8e82df81b775dd4579a9664b4324c02a437e2d0d7",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 370,
+      "end": 370,
+      "digest": "sha256:7f688aacbb13fe7ea9641ddc5a7fad6580694a2a90ad894f591279d5cdb73a7c",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 371,
+      "end": 371,
+      "digest": "sha256:8897eca26c29587147971113268bfe20d27190d10e9230833d93eba4898c5adc",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 372,
+      "end": 372,
+      "digest": "sha256:2d400724045e550c65a93818179a4cab1a8f107105486d361d4fec8396c170b7",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 373,
+      "end": 373,
+      "digest": "sha256:946ccfe5aa8879c16328837f27e7069969af4176659ceb795ddbccf746fed864",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 374,
+      "end": 374,
+      "digest": "sha256:5ca28b229dbfe5672c4e212ab5d2420e7471946e4a9b5526fbc35fe74c4b48d3",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 375,
+      "end": 375,
+      "digest": "sha256:c520f76f9217583a90c6af7a21a80285924f009b0e241a5c7431090298a084d6",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 376,
+      "end": 376,
+      "digest": "sha256:8f4b8da777dfcdc84b90167ce5a999f9e0f453cf00f1eea8017ab69f5889353a",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 377,
+      "end": 377,
+      "digest": "sha256:17fa45f073daab2ffdec393ea123224d62b5a3bc1b1e07001cf296b87171272f",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 378,
+      "end": 378,
+      "digest": "sha256:6bbc05233bb3b9888d3c6e7cba213a8295d1e7dd2eb6ccb8e39b5d1acb4d139d",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 379,
+      "end": 379,
+      "digest": "sha256:c7bd09ce0f68ab9c0a20b823962e13849ce2732f178d438b7054b1b1d5b06669",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 380,
+      "end": 380,
+      "digest": "sha256:bba9c8f500e0f5e8b795957864b0a259fd846f97226f0b4190f23748cf28a1a6",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 381,
+      "end": 381,
+      "digest": "sha256:1734babc0188122a9f19f9ec25e3d5893fd4ab1c0bb2a4c8167d99ebbd630d47",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 382,
+      "end": 382,
+      "digest": "sha256:934e21a587aff29eea4ad6ab2f432d90adc61d8e85c6b64775e08b66f37543aa",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 383,
+      "end": 383,
+      "digest": "sha256:97e5de43e4e472b54dee27cfd18094f2578cc83673ce8d6292a06b01a84b8ffc",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 384,
+      "end": 384,
+      "digest": "sha256:666d6a6f93d0eb9a1ccde3086b30b96b4c319a079e084e1e73a3049880acd2bd",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 385,
+      "end": 385,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 386,
+      "end": 386,
+      "digest": "sha256:638883b35d70d6ed535791bd24565ebc071db0f0f3f1466ed8a9985741f64210",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 387,
+      "end": 387,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 388,
+      "end": 388,
+      "digest": "sha256:ef3e343dd6019f880473f9de348cb4fd2d2144b48cd334973eaa34ccfd8e3c40",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 389,
+      "end": 389,
+      "digest": "sha256:1fd35b022a3856e0df34fa125dedb6ec49be9cd057d33a9dc401e73cad219b2f",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 390,
+      "end": 390,
+      "digest": "sha256:81649bfed0e386f05ca8c1bcd806fb0cb0b1d421f5368b6fb1fffca70beafeab",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 391,
+      "end": 391,
+      "digest": "sha256:facd5973081e9d9326a8a890d2c32e14dcf5a74843cee8d7900f2f41ee20c5ae",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 392,
+      "end": 392,
+      "digest": "sha256:22f1516bfd107b9b84d3c8ba997dcf55b2728956a33a5f8263c151de423d2785",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 393,
+      "end": 393,
+      "digest": "sha256:ea57b7bb3f2faa673f3d4d6bb1b598a070fa580e7f45ed8e53f15962f0afd97f",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 394,
+      "end": 394,
+      "digest": "sha256:80d885752175605ebd63818d7c03af26f3a5b1a06c881365cc610448c527181a",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 395,
+      "end": 395,
+      "digest": "sha256:ba73d9a1add04fda9890456427098d838b4d846775c681f1e8e9512313510ff7",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 396,
+      "end": 396,
+      "digest": "sha256:7ffa1115572737d609fd895cb9454fcfc06bddc1dd8326d283ac9d32ac796757",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 397,
+      "end": 397,
+      "digest": "sha256:245754d32d3babe16b823c996c58e595c545119b7e59e93aedc74b293958973d",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 398,
+      "end": 398,
+      "digest": "sha256:d44b9cb33a58d0da522beb251565c2de8abcb68cae133300ac06b6c2f2eb5be5",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 399,
+      "end": 399,
+      "digest": "sha256:38c8fa96a2843a64e06e12035bf9111516aaa0e75e4a36ddaf03beac8a5181f8",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 400,
+      "end": 400,
+      "digest": "sha256:8207df84d63b26dbdbc98e7c537decd118d44d41475b9c89003bff4a549ca16f",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 401,
+      "end": 401,
+      "digest": "sha256:0b1364e2cd288eb8008407e39c8ee021f7ae0033d8dd459878331be893283684",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 402,
+      "end": 402,
+      "digest": "sha256:1398c62b675348effe699faf26c8c24188c7db1e47a552215b1d46e52c5f1a82",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 403,
+      "end": 403,
+      "digest": "sha256:afc9a5b289a17a9ecbdbfe18657b1d0e3f33dfbcc0df5e876f0212d67e3a6968",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 404,
+      "end": 404,
+      "digest": "sha256:38c48d3d2c9f223fc2569869020710098c94a82aa2e50601755fabde0ff9b1cf",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 405,
+      "end": 405,
+      "digest": "sha256:0d35db342b989a60c3481b4beaedf3e496158863ec8bffda3032fe141d9ff87a",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 406,
+      "end": 406,
+      "digest": "sha256:efee36af4fcaa7d0a1a64c9d2b897f18eac0daa9a49b2b83afb6c7c59c6d4e6c",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 407,
+      "end": 407,
+      "digest": "sha256:f1f326dc94181c2a05d098881b6d5e0068e969641fe31f6b4ed68f8567418ab8",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 408,
+      "end": 408,
+      "digest": "sha256:a7f2458226c566d294ef2d19276873199e47d48a5807a8497767d3a466b2bd74",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 409,
+      "end": 409,
+      "digest": "sha256:02a1c5390c065ea56728c9453a306726b31af7be23f769910eb777806a1e757d",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 410,
+      "end": 410,
+      "digest": "sha256:70f220d77020342c79cf1f6df764f500f42d7d69e76986496fc473218bf8db2c",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 411,
+      "end": 411,
+      "digest": "sha256:bea3892913f960152c80890314fc67a979ef380cc94c8223d1c8f18e011e4831",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 412,
+      "end": 412,
+      "digest": "sha256:c87d0db5aa5b16a368374a149d1c9573b38e2c3ba9bd84fbaef0a5fb58531b17",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 413,
+      "end": 413,
+      "digest": "sha256:39fa41c14a4230519843c5c2b725ab44cb6169a1acc444927c5bbb851789044d",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 414,
+      "end": 414,
+      "digest": "sha256:cba4b4e9fb9647e104d60a155ec5c602821dda800c317eccde80f68b4702343e",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 415,
+      "end": 415,
+      "digest": "sha256:9a29322d6ae927f94ee7e0ad0b1868c457eb25d73c12f2b29761d80241e33132",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 416,
+      "end": 416,
+      "digest": "sha256:42a9a1e1038c58d8c60f46f83731a5f90aa15f0eebdf57c57d57eaac75411cbe",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 417,
+      "end": 417,
+      "digest": "sha256:0decf66078c04440213ecd43fbb3fa65e31af3891772af58b21a196742296944",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 418,
+      "end": 418,
+      "digest": "sha256:97346bc342f498c73bb38e8707a944a5ec5fc183ffc6d90af4a5b7d338c47b6a",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 419,
+      "end": 419,
+      "digest": "sha256:21a1d9cd12103648747302a20b3d8121499a151dcef41512b691b9be0953dc02",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 420,
+      "end": 420,
+      "digest": "sha256:4d7de93374bb02240975140713670053ce20cfd496fa7af3e1393218f0d8d479",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 421,
+      "end": 421,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 422,
+      "end": 422,
+      "digest": "sha256:4e1cc979888d91d14cfe9c76ad01cd8b200f98c58ae5a863fa386e682d0645bd",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 423,
+      "end": 423,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 424,
+      "end": 424,
+      "digest": "sha256:09068da1299af97784ab5a081fd68d0bad5ab157ec4d35a288cf0cbe8f4ec4cc",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 425,
+      "end": 425,
+      "digest": "sha256:e3d09e795629007d695732fe9083627d17d84d232f22425decb4f35aafaf2306",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 426,
+      "end": 426,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 427,
+      "end": 427,
+      "digest": "sha256:7ed48465a73f7c947fcb9f6b490a43b0f81d64ccdd00219ec1b17d07643c2939",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 428,
+      "end": 428,
+      "digest": "sha256:74426cf1704491640fe5ca28fb0aa7846920dc8ce4067e07525d76b26c102e50",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 429,
+      "end": 429,
+      "digest": "sha256:0b439f10fb2d80684232b0be50b531c62b9a6b270e82ca481e38c34fe8173bea",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 430,
+      "end": 430,
+      "digest": "sha256:359ec6b96eed8c7886329bff329c30897d15532e8390d8131326172b637fef73",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 431,
+      "end": 431,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 432,
+      "end": 432,
+      "digest": "sha256:6eb825fa10f6b720ee1cb6013b4beb9382b9a38784940e7f23ebf8b20fdfe872",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 433,
+      "end": 433,
+      "digest": "sha256:b011617c27b69ea99d7d58f0bc7363e52f04add28fec4bf4be3e5d17d5547f40",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 434,
+      "end": 434,
+      "digest": "sha256:1f129fa19eaeaac91028dbb24041f0ad3ce72de31e4169e6506049f6f5f01182",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 435,
+      "end": 435,
+      "digest": "sha256:613df42bbd6f9c5b4e14ff35fbcc0c6d96d65e17abb29534889ceda5a69c0d32",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 436,
+      "end": 436,
+      "digest": "sha256:6eba4b8dd8215c1e4efeb65e2199e94f4b66e5083d98a6ff827f69dd7ed7e39d",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 437,
+      "end": 437,
+      "digest": "sha256:2d0a8c26b0ffd57339a50c98d38fac6cf93b85a6035622602b681c4d7b3bcb82",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 438,
+      "end": 438,
+      "digest": "sha256:7b970cb66a19f4abf8f54a754889687873975dddcca7cec53582806a637ee9f4",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 439,
+      "end": 439,
+      "digest": "sha256:21f7f28ff3ad460c627d6cbdd9ed70b4918d9048fb2abb8063258c8eaeb21734",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 440,
+      "end": 440,
+      "digest": "sha256:ac741da167d4d72937089b0642c63f04b509171622226dd1b35d2a048fed78d5",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 441,
+      "end": 441,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 442,
+      "end": 442,
+      "digest": "sha256:79c217d9e60058adb16cd3386479d304b19d5e2d11bbf36deef0019ffab37b4f",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 443,
+      "end": 443,
+      "digest": "sha256:c5a1910bdc339683b17155e49251cf0d106207bb70fd2b4e995cc2d423e23ea1",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 444,
+      "end": 444,
+      "digest": "sha256:b3e7ae0c8ef5a6c890d6c9022c11ecda5c7488587b2854f17795b3ac966fb176",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 445,
+      "end": 445,
+      "digest": "sha256:1478c4143895b8a9c456bf12c3935205adb4028a405492cd70df8c1441448a60",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 446,
+      "end": 446,
+      "digest": "sha256:e7b7580e40c635c692bdc70c3934ed1fe8eeb5159312a640f2b07d87f3f2d70c",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 447,
+      "end": 447,
+      "digest": "sha256:359ca5c6073d2923bc3e19150697a6a19208340f321edb2dfcb8aeb41c7098c6",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 448,
+      "end": 448,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 449,
+      "end": 449,
+      "digest": "sha256:3fbb2dde2f0721a54efff01e544006e954dd6a47eae17b287faa81b4a01aea45",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 450,
+      "end": 450,
+      "digest": "sha256:7793c27b8f52f33ea85d6f45cc04f809c891c2688cb3cf484bf457ec00933018",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 451,
+      "end": 451,
+      "digest": "sha256:15cb7899840a6937392bfdc61f5dc35f0c1b40ff2aecf4e9551ac7cda5d330af",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 452,
+      "end": 452,
+      "digest": "sha256:4ee0855e5919fc8f2dac2aa55ee61f3137858b39c2fb9cc603376f5552251497",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 453,
+      "end": 453,
+      "digest": "sha256:5c4df0f100cfc2c2eaf6496c59e92ea07f8c4423b2e589b5483606dc84e80445",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 454,
+      "end": 454,
+      "digest": "sha256:aacc04536bcce81b5b32c3f5dbf2976e7ed83e6bdac0c9bc5d596d504ebcd7da",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 455,
+      "end": 455,
+      "digest": "sha256:1c44207a6613f968790a920e64c78e86d3f8e63c7bf15a229dbd415cd6974e6b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 456,
+      "end": 456,
+      "digest": "sha256:8d68438508b81534da644f40095df10a6cca072a604eea63658f648543a39491",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 457,
+      "end": 457,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 458,
+      "end": 458,
+      "digest": "sha256:a8673651f55247d622b67eed8e53c592db9367d8206aca2bb8ae53f2f8abda56",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 459,
+      "end": 459,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 460,
+      "end": 460,
+      "digest": "sha256:046ead31467a21e21747f3f7309c259ee72a7bf21c380c35cfa497e79852a6c9",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 461,
+      "end": 461,
+      "digest": "sha256:320fd6c93dfa07f9966c35d6aa1aca062e4c9016b1a83dd56ab1bcfa59ddd8d2",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 462,
+      "end": 462,
+      "digest": "sha256:679b857686133de70ae6cd0d87d965adc7148a1d82adcb790c4b1622bc906502",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 463,
+      "end": 463,
+      "digest": "sha256:e32fa5371982a2bc735d0e0c13d7390b0f34a54277cd4b14de56a1ea08a1701c",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 464,
+      "end": 464,
+      "digest": "sha256:f41a45ff8043a8eebbaf3c30647c83a86f0dd2c57316fbf85617e13c45b89599",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 465,
+      "end": 465,
+      "digest": "sha256:fd67003ac3a504ada827dd91c4a0f092cfe26a614e01a227c972d37f3bd93fb3",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 466,
+      "end": 466,
+      "digest": "sha256:69826473eb6b1c360e30986de8b77d2ad0bf3a8d62e705862d79cd16e25918d9",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 467,
+      "end": 467,
+      "digest": "sha256:9eeb4a0ac464edf96ece72659e59390a0828f4e320ef1ea37f14bf40e25fc5a7",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 468,
+      "end": 468,
+      "digest": "sha256:b5f863f5e320486b40e3a8ec5e77a43e4f89760e7c76ef8d3310f3482408d656",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 469,
+      "end": 469,
+      "digest": "sha256:226668ec077c413c31ac24d40a6af7fbf90d9a2d65cf58ea57c880e7a57c4725",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 470,
+      "end": 470,
+      "digest": "sha256:6cd447a4abc4210ded06d476f7d08bb257a7d5fdc684591f2981d05400ecce2f",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 471,
+      "end": 471,
+      "digest": "sha256:75c5afc803ddba79cab92bfe707fce6299b6b5c0ccdb66fd63a445bd13cfa3e2",
+      "note": "Measured format, Git, and query findings."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/docs/findings.md",
+      "start": 472,
+      "end": 472,
+      "digest": "sha256:7350abbc132c6f1dd784b9983f210ef0e898e5483c37b79ed85daca6cbb01cdd",
+      "note": "Measured format, Git, and query findings."
+    }
+  ],
+  "version": 2
+}

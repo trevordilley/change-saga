@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "cmd/change-saga/main_test.go",
+      "start": 1,
+      "end": 62,
+      "digest": "sha256:57454acac6575824584b684c316782da54ebc58a5444ea4465933fbf024c29f3",
+      "note": "Provides stable target resolution and structured all-or-nothing mutation outcomes."
+    }
+  ],
+  "version": 2
+}

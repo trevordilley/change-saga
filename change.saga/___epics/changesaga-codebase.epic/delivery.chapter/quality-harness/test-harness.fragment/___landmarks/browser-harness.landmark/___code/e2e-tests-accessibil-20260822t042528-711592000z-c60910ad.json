@@ -1,0 +1,1027 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "digest": "sha256:308cefbfd025bc2d50182c0ce01af4c58a3083c32f29336429a1900a7420d8d9",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:a148a1a0e0cff8ecdd6ba9278215a42b5844ff3f2e24d030954794c5511386bc",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:33e696b7d98e0f00f8be8b16efd9d68cd85e0ee9c6cb455c5ca123895e0820d6",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:eaf22cf0732592c247141cbe61efa11012612f5a3122b9af9bbaf52f5724d194",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:33080f80b2e1c7b738e062aa77bcff5ec879961e20517a6b910a7894a0d3b8f5",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:507340ff0caf0dae87d238962bdb822a094c80819470e091a3853f14553d1ac4",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:3a9c7f8197c1392726cacfd7ac0318098c1547012b458da8f3a5bd4c1260842e",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:972a429382b2e14718e0e37b0570a8a1702991fcd8498cd84060a8bf4f05017b",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:faeeacb97a4f7858d99c140c7be658323da19db84b7e24ad984a51f5808cada3",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:4311ace248f86b2c8ec93d11363be5732d978588b590a1e52a494b63f1717bc4",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:981557df8750fec56ea08ffa07b4e85cf0c953ac8983dcbe3f4076082b4a91b5",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:b616254a6b5f47e0b223cea6a849d560e0ee870faf9530c4105f1f570cce34a2",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:17756668659e9c391e3d3b380e8f53c4a5395e052d5f1e795ab968c213a35909",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:335aa099e54fac4b57452cba183ef943c6a6de9c5449ef5879f9e77506073ff6",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:c480a9a0e0e242d1722aad86ecaabae1dee614ee206cf448e8158fa606d823d5",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:a83552ab571494b399b18199622dbe3b3826eb61fcd1f74cfb12abcf88e4f726",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:fe6899dd11e60c6cd3bae273bc6955bff95213717c6a42e0e9ab49646793d189",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:01e033a5d05f02789735c2123854f5b5b0f380f06da97fc8cb94f6b94a723fad",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:13d9f875d4be03f82ca3c4e901b6ad0b9b46b7790452ec01d89b22bb38dc91a7",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:a99a92ba5af129755511eeef43ab020f8e220e01263a36bf9a6d0ff2a65b6935",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:7d67482564087a1e5774255242f376e817e72e5e1ef96e81fc423d4c26739d61",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:8af228e884793dfd40516648f01af9f407326c8f68d06ddb2809eea2e10fe3d7",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:ebba714a6b2799c982a62ddb7fb828da8ad9d4377fe2373b3bb0e5d8e30296c9",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:52075e5ce9f399dbe3845b455ed3e93c0664246b18c80e9868da85730d4ede03",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:c734a5f35f0d024487391315660d6e692c86b2c27a225a548394d02bdc6d8644",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:645c0ac180523b2082ba4767e50a703366461060701ca8fc87004fec891adb74",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:3412917661849ff2a4b3d2d29ee96586eba4c26a7af3725795969f103d804dc8",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:6fc82fafda7466987bf8795ef00a8dfcf224bd551a8279eb1a1e654b7b751ff6",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:f53431314e633b930796d3dc7e4c9f29ac9f0ac0685a507a2f352c5163da7afc",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:f7448e562beeb87eb9127d567772b6f68ed82d5419fe0dfd39e25af26b317ad6",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:46a0a495c271e223a2fe2bbaf0ea9f3951e63346c2e02f85c40dd0f21496bf91",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:19696b352c96551031fb3138dee3c221d53e3f2afe6250ed035ab6d91a7c012a",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:13efac1825a7b478dd99673a33bb9417566e8d3f93611f9b24098e3fee104ba6",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:13057342e07514b1dde2d3b6a28745631fb61e8765285eda159d14ad644c80ac",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:d1af0e6780997c75a96fb82cc341d999f89d0fd89bf37cb69cb41f7428ac6565",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:daf1da81da98decbbf03be4cb3c3e65de3812224c6f34d29f68b7512e9a7d62d",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:3e8326af5b27f555d85a89e24b36f3b666219b7365f3ceb8b0b42b6ae210aeda",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:a4b4582f4fc3637a5df7709692d6098654a6237e1466f6bdab0c77d018ba836d",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:27e5788d5d9d73d24a81dbc0a5a74bfa82c9c3b3af99e52af796e90b468a8a3d",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:2b72d0060ba41e1bcc68d8f852f2e11b339cf08ea9555aa31a106496dfd370ad",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:1e5f5427f9e5c2d59f4d9a7dcd4a4a42098e9c4fb6b71a29010cc3558c1b056f",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:05561c2cd9423884a22edb8454c3bc4f424cfd8e81f61323e02ebf7f30edd6df",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:b1b2b27747fcb0b50c54b4d2c0b2b86fcbe4b5cc6776781b4b026c823fa89427",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:0c4df791f5579c1adb9ba99af05cfd5e94f9540f94b1edb21c61da3284ef16bc",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:c88717dce0c537f136933f93a4b814d83b27de49608b47841766a61e5a023cc1",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:c355de25603ca922e4fd9682dc6f8dfafbafb9ed79bb88e5842ca392343ad147",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:0d226ae8a776ef4d152f22ada05b4417952d42380dd97a8d095ec88e4a74bd44",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:d9ff4a7fa68e0e4612196fe062be9f3dee6e6be767f12da4cf6bde6f13f50197",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:16dc26c96da4ca57e2c76834708529d42a35c8d3dd0dff510c7f7914c2f23aaa",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:0d226ae8a776ef4d152f22ada05b4417952d42380dd97a8d095ec88e4a74bd44",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:42a8d6ca5779c6971ef319783c6e1ca7fe4dbd726999c298c3d1298dcfc4666b",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:2b72d0060ba41e1bcc68d8f852f2e11b339cf08ea9555aa31a106496dfd370ad",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:6d1a5a357d85a97dbd808545edbf8c974a030a5655ecfb1100455de61614142b",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:d9ff4a7fa68e0e4612196fe062be9f3dee6e6be767f12da4cf6bde6f13f50197",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:a021eba13eba523b05647d7a847090efebe91fff809c4455c77e0c7d1c47d5cc",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:42a8d6ca5779c6971ef319783c6e1ca7fe4dbd726999c298c3d1298dcfc4666b",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:f59e18f371734f6ffbbd614ebddc86ef381a33e8bcaf78843090a061ad218a98",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:d9ff4a7fa68e0e4612196fe062be9f3dee6e6be767f12da4cf6bde6f13f50197",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:900279454194f54264ad6e292b66d99d1cecabd13889a46821fb5f698fbee99f",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 68,
+      "end": 68,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:abacd86732f4b8ecab146381f5664464f2e9c70a827659752050536e03ffa76f",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 70,
+      "end": 70,
+      "digest": "sha256:2b72d0060ba41e1bcc68d8f852f2e11b339cf08ea9555aa31a106496dfd370ad",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 71,
+      "end": 71,
+      "digest": "sha256:e92edb6cf3f185760f6276063f9b2a3447e0d6003f00d5fc2295ae485f57abc6",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 72,
+      "end": 72,
+      "digest": "sha256:f6f5b40b158457d17864f21790786dd5a2ecdb64b66a651f788d4e25cd3303d2",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 73,
+      "end": 73,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 74,
+      "end": 74,
+      "digest": "sha256:055efae28ba2f283893714f862c976dc659fc05b9eb355ab4657b138188e2ff7",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 75,
+      "end": 75,
+      "digest": "sha256:892c9ef1252669c1ce57ccaebbc8f2d0e5b4b3a59a4711d2a55a704192415c9c",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 76,
+      "end": 76,
+      "digest": "sha256:74d5d68586879186412321794571ba4115af11b806953d3d38ea214c848cb103",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 77,
+      "end": 77,
+      "digest": "sha256:0ed64bb290f3a1797fadcba4d6753b44725514f82b612375f359cc53a3c106d3",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 78,
+      "end": 78,
+      "digest": "sha256:92d54a6476cd01475283e101ea35136e6fadf97da5142659ca92e00e9fa1bfdb",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 79,
+      "end": 79,
+      "digest": "sha256:2fd63b29c1c1faa739e360f319cdf9e307b880699164ad2bf0e7ac3bf11c3875",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 80,
+      "end": 80,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 81,
+      "end": 81,
+      "digest": "sha256:00ae073ab69b1711c466286a4a9d68539518d3809da5f6e49fa8ef63e8263a92",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 82,
+      "end": 82,
+      "digest": "sha256:a028e03a4e97ccedf1c83f89d49e75cc3e974d9fb19290be3dd332aa581ca9fe",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 83,
+      "end": 83,
+      "digest": "sha256:cd54e1d910b3a0af9bfdebfa30fb3ecdafe6c344d6a0931c74693aeb0716858d",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 84,
+      "end": 84,
+      "digest": "sha256:360f389786eb64d48192d46e3ab3c90d9fa1b815a05e1574eb12d8e9b2772e07",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 85,
+      "end": 85,
+      "digest": "sha256:3b5b252b1a878e96a0b0cc2f86a5f5b74002c3618d0cb1b7373fd2524d7851f5",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 86,
+      "end": 86,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 87,
+      "end": 87,
+      "digest": "sha256:bdf7360fdb5691eb43545a76a4a157f99ff5a18efbf59cb840538c3377e6991f",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 88,
+      "end": 88,
+      "digest": "sha256:1891377f0165ff2cb80d0352a9ea07f207cd2a9bfa5bee6cdb2aca8efeafb68c",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 89,
+      "end": 89,
+      "digest": "sha256:1294da852e22ae5f4dd6a1ad65ea0a724e4d8097e028406984611b07c13896a2",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 90,
+      "end": 90,
+      "digest": "sha256:bce37ecca943f6d00dbfe75998ef5ebcfa8fde17baf5bb4b0b7669ce3867c618",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 91,
+      "end": 91,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 92,
+      "end": 92,
+      "digest": "sha256:0b73b8555a4913bcf6c810df7f6c103e2e2bf13dfb25513a604ae70c98793214",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 93,
+      "end": 93,
+      "digest": "sha256:3598b1d7004135d78ca6d062551d906a2867580db659f057eecaa79c79737528",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 94,
+      "end": 94,
+      "digest": "sha256:9d97da1ec17873886052f8f4e92656c1ed3c62b5f45d6a41c40bcaa817a305b1",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 95,
+      "end": 95,
+      "digest": "sha256:e2c0a658d281fc426a2bbd5f3bfda9a0e23f2e4da1be950567dcca67eee9ca4a",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 96,
+      "end": 96,
+      "digest": "sha256:e159d120cb2518dfcde71d39024b85975df6c713932ada07ba8ad678c640ca7d",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 97,
+      "end": 97,
+      "digest": "sha256:62d555eb8e2ed342c294568a7a72c5e05ec2ab72902d4c9be3c1065bea7addfe",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 98,
+      "end": 98,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 99,
+      "end": 99,
+      "digest": "sha256:851707fd522caa810b076d5d80971809b8efe62e7753f0b27828baa91f27db88",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 100,
+      "end": 100,
+      "digest": "sha256:fcf904873e920dc3285361d9036bf80599be05694ae69bc244f6661c61105296",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 101,
+      "end": 101,
+      "digest": "sha256:9af771e617fff52b30b21999a19dc60125527db98575363bc0aa095653b8d9d9",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 102,
+      "end": 102,
+      "digest": "sha256:80267e62fc01ac6846bd73272da79c57123e7064091f612fbc479f1b7ec8bf4b",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 103,
+      "end": 103,
+      "digest": "sha256:92d54a6476cd01475283e101ea35136e6fadf97da5142659ca92e00e9fa1bfdb",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 104,
+      "end": 104,
+      "digest": "sha256:2fd63b29c1c1faa739e360f319cdf9e307b880699164ad2bf0e7ac3bf11c3875",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 105,
+      "end": 105,
+      "digest": "sha256:60cad3d4956fbdfe343bd7ce3ec3a306407f243eabf5bab57b9d449959ff89f3",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 106,
+      "end": 106,
+      "digest": "sha256:96f525db92b057f6e8ab21d7db55efafcd7ab1e3dec1ef9707062574d843ca0a",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 107,
+      "end": 107,
+      "digest": "sha256:d1021617f892168ea864f257c16303c223905bb4721b7b8213aea231c3633416",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 108,
+      "end": 108,
+      "digest": "sha256:e6372d16c614bcd322afb5cbe5e8cdd45b5ebd1833b573c37a34a024cb726bfd",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 109,
+      "end": 109,
+      "digest": "sha256:48abfa9eb3043d8220ea28b1dbea417aaa2f0ab39cbf3de01f7e30a0fe453bdb",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 110,
+      "end": 110,
+      "digest": "sha256:f6f5b40b158457d17864f21790786dd5a2ecdb64b66a651f788d4e25cd3303d2",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 111,
+      "end": 111,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 112,
+      "end": 112,
+      "digest": "sha256:f17c188250bf42dcb98f1b365b0f50f5a21ab472ce6a6ce22665b54065465f05",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 113,
+      "end": 113,
+      "digest": "sha256:62d555eb8e2ed342c294568a7a72c5e05ec2ab72902d4c9be3c1065bea7addfe",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 114,
+      "end": 114,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 115,
+      "end": 115,
+      "digest": "sha256:cc0865277ec8be30048d469d943351683ffdd31c751659cc17d583a91717e737",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 116,
+      "end": 116,
+      "digest": "sha256:cecb211c655fb59679dff998e3b8f8e5b84875eb91f9c26a5463abc83c011dbd",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 117,
+      "end": 117,
+      "digest": "sha256:62d555eb8e2ed342c294568a7a72c5e05ec2ab72902d4c9be3c1065bea7addfe",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 118,
+      "end": 118,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 119,
+      "end": 119,
+      "digest": "sha256:28dadae1231c27067b0b6579b837541f51ed9ea3935d53a7c9519537fa43d3d0",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 120,
+      "end": 120,
+      "digest": "sha256:15e572d516da152df3bef30080a7dbcfaad7eb12dbcc7bd5d5bc4b755c696d00",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 121,
+      "end": 121,
+      "digest": "sha256:62d555eb8e2ed342c294568a7a72c5e05ec2ab72902d4c9be3c1065bea7addfe",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 122,
+      "end": 122,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 123,
+      "end": 123,
+      "digest": "sha256:5dd1b8fe0d56599bc0a7573c2303e97cafeb3e46dbf9e8d2059d4d01ca7334dd",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 124,
+      "end": 124,
+      "digest": "sha256:9fdeaeaa559c2e8912be384cd9cb979bde4865fad24f7c99211078a8b5476578",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 125,
+      "end": 125,
+      "digest": "sha256:5ea31f2a8b244a9bbcd329ea3061fe35874721e2a2263320f4ac589df19aa068",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 126,
+      "end": 126,
+      "digest": "sha256:62d555eb8e2ed342c294568a7a72c5e05ec2ab72902d4c9be3c1065bea7addfe",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/accessibility.spec.ts",
+      "start": 127,
+      "end": 127,
+      "digest": "sha256:f6f5b40b158457d17864f21790786dd5a2ecdb64b66a651f788d4e25cd3303d2",
+      "note": "Checks keyboard navigation, inert drawers, focus, names, and axe results across workspace views."
+    }
+  ],
+  "version": 2
+}

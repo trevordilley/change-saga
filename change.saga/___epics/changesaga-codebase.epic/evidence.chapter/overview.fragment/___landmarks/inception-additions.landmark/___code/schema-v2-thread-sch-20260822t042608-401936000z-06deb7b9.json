@@ -1,0 +1,11 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "schema/v2/thread.schema.json",
+      "digest": "sha256:1e0505e6f26688ca38c7bf60370f8589c335b1441d44ca2bfc0a51f04cead432",
+      "note": "Records this owned authoring path as newly introduced in the since-inception comparison."
+    }
+  ],
+  "version": 2
+}

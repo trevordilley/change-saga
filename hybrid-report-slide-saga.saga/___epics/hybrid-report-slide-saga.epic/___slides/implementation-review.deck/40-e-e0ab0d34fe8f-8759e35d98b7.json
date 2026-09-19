@@ -1,29 +1,53 @@
 {
-  "version": 2,
-  "diffs": [
+  "references": [
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=9\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Flivingapp%2Fcompose.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=9",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/livingapp/compose.go",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:d28863555fbc7eb2c1b3aca9fb2fc5690456651523e934989c30dfd95f77129b",
       "note": "Projects story-to-review-to-diff paths, story-level transitivity, reverse filters, and accepted-story evidence gaps."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=365\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Flivingapp%2Fcompose.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=365",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/livingapp/compose.go",
+      "start": 365,
+      "end": 365,
+      "digest": "sha256:bf64b2c5aa837620242e31491e6074669b32fdb9454b47c24ec02e364ddbf1c3",
       "note": "Projects story-to-review-to-diff paths, story-level transitivity, reverse filters, and accepted-story evidence gaps."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=384\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Flivingapp%2Fcompose.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=383",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/livingapp/compose.go",
+      "start": 383,
+      "end": 384,
+      "digest": "sha256:f39795fd20152866238a9cf413142b4ed77aec2f3f4ab38af11c6cf2802fbda0",
       "note": "Projects story-to-review-to-diff paths, story-level transitivity, reverse filters, and accepted-story evidence gaps."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=417\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Flivingapp%2Fcompose.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=387",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/livingapp/compose.go",
+      "start": 387,
+      "end": 417,
+      "digest": "sha256:33044396db17f3e942aae5df22557c1d62dc05725ea6f241cf0ba0dc5006f647",
       "note": "Projects story-to-review-to-diff paths, story-level transitivity, reverse filters, and accepted-story evidence gaps."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=478\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Flivingapp%2Fcompose.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=478",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/livingapp/compose.go",
+      "start": 478,
+      "end": 478,
+      "digest": "sha256:0a339cb97f58e3c0248d61452c86f68ed37629fc079805a693bc4fac47ae1fad",
       "note": "Projects story-to-review-to-diff paths, story-level transitivity, reverse filters, and accepted-story evidence gaps."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=576\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Flivingapp%2Fcompose.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=484",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/livingapp/compose.go",
+      "start": 484,
+      "end": 576,
+      "digest": "sha256:6a0c5bf5456fbeb1bb48a563e168b3bca4de368a13a9a121c06ac2008491cf45",
       "note": "Projects story-to-review-to-diff paths, story-level transitivity, reverse filters, and accepted-story evidence gaps."
     }
-  ]
+  ],
+  "version": 2
 }

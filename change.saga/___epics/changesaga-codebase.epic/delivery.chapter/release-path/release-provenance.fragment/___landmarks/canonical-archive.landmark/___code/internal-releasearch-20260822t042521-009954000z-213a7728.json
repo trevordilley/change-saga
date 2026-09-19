@@ -1,0 +1,1123 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "digest": "sha256:1452f6e386eefebaa401b955728af9479b71851a4a09265c97dff3a59485a5db",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:4e9cc71ee03ae2b354efab15c33f70a621d85f5db17cc686cb0091ca7fc0b1be",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:bf10127732a0de88527bd99d8b0a108bce913a12ba1677e7b460017a018a4135",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:71e37b6cd48ad477cbb12624b757ee1dc4975711b78237a85f508bfdd723af77",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:ac4cc335b5c61d17b175ceb58e998d8b288a4fd591d753094d09253e7d9491b3",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:73c177d57663cba96063c0c45bd51e0761f3aa89a2aefe3a3142ba30ecff7f41",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:aec79cadb686b8fab2aea31cd3ae0a3c598e533a67c4898f1fef69b895bb3367",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:9d321d278769fb32c7c6820e1c992ebb53b04e39def0f158cbf1d84e27d34c18",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:30846666d2ce47f9ec32160922192466e9cd4450f31dee0061811ca48bb8ccb0",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:171b756171ff8240f94ccb83de837ed4242449df3ecef3a3762523d1f5ae0348",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:57e084ab258e81b1e20f6e9b9f72b556c4838b3517e76da7edd5b6e7546090a2",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:f05b48055b78db9e9e8993848d47169d7abd312df35886aa83d4014d37eb4009",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:dce87b6818a2884e83d31c73980f4824699871bd0d1b0b2cd9b7c3f5b15b116d",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:fafba0527c3953c4b6e0e5b5739ba83612f8053bcdc9466730193cd1d590b408",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:57a4735a365f3bd040d158f0b3466c07afbfc2b5102205e7376b0d159de1aca6",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:b6bb276aa0475a4199394f5023aa9c0f2a6fa9ec7e75d1e59460cbffcf7f1738",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:30057d0fd937d9a7739af4580e6b93d77353943cdcb961caaf4ffc6c20594557",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:8a9c60cf665e1d1361f897a1a40e493c1835f525bf9773d56f405c601cd5e2d0",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:4d7e1bfa7baae4ec840186570acf2ef2459ce0123b71452b15ff751bb0e66375",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:926b3d6858a48da9a49bba3d5b1d51fcd5b222d771c378ccf3a0874cfb1b6fb3",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:bd1c61d3044f1f98ad7b71a4e89933f75f7c854f621e52eb8eb18018a88e6292",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:7ce325f9188160206b8dd9906d4c1f00c453128300c43c789602f1624ca53b25",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:45a9071c325dc4284da67d2f19824c43574ba5c3df2beac4117b80477502eb9a",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:aba1ae141a96ae7de58265d891c0918d265a80e308dc864bc2c280c422c258b1",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:eb05dbf900fa08b848626ea3a180eefd177ffcefeebf3fd4d032f072b30f33d5",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:355ba8185dcebf385b6373d72aa85ad088367988befb059e4c4dd3177afe55ca",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:43ed2bea6a1a971bb74001427c16ef4b8edefd2ecfa02013aadd68b8e60c8af7",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:6daf214a7c14c90e6bca84e400ab27f62678ea6e9a09755c36b7dbfe8cf71bc9",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:636bb43bedd983543894d6ed738bc81fd27ca8e4bbb36b6f6e404ce2e3e02453",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:4c154cdaef82ba33866af83a0fb4627709fde0adf6b35ece16355f457f55ed74",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:a2d94134d12b18b292e67e47242b91e5aed7af658c1c268a473d0fdf545e6424",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:c830d54a0bfb19f1de4ca8a90bf1cbc9a0a33346e3e4f1a1e92609cff78dbbf7",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:b73c16e86edd58e2e83e9f7eb01c6e840c0cdab390b95d180becf3fa30f645e1",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:355ba8185dcebf385b6373d72aa85ad088367988befb059e4c4dd3177afe55ca",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:495346136971a08a49d52cd4cba4cbd226737390ee9fc358fba792e353645ecb",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:5cef74a9e586e2dccbfdabe991c2b80778943ee2ba9d775f1927bb9e5c8afa9e",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:552350cc640d45abb6c79c7da7e3191c4daba411e44b3ddb6d4c982312c7588e",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:3b5c7c4686f13d21a0e788349d86db362fd258282ed9363cb4749192728bbdc4",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:bf96e8a0dde2997857d5b64a2550e6d730e6be12a46558442b5066688ebb31a9",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:f9283e40d6e143a88b3190853b5960dcc0353904ab4a6e92ef108ead3fd0024e",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:10d732295ab439daa095b9183cc74e6b4f5d6b8ddd6c354030a3112e72b32b17",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:e7125b98d8bc9072df9cf43358c30b4255f53116611e29ae511e6a4a17677c8f",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:355ba8185dcebf385b6373d72aa85ad088367988befb059e4c4dd3177afe55ca",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:b12f4cf7cb23846adf3beb8c667e916281288a81dd05c88a616cca8514c77a26",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:355ba8185dcebf385b6373d72aa85ad088367988befb059e4c4dd3177afe55ca",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:93d2c075bd715b0b77eef963252f26b9fccb93f1f1b850d92d2bc566cc0d4f08",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:0e32a463f4a7af26c5ecc31c85b82b85b8f85b9b3fd245f2055b9ffee8e7651f",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:f296296816985cca4d8bbef2abcddaaab697bf7ddfd7ef1f6faf5985d42243dd",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:355ba8185dcebf385b6373d72aa85ad088367988befb059e4c4dd3177afe55ca",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 68,
+      "end": 68,
+      "digest": "sha256:1ee7b4c54fddea7d226cfddfebd7e4640a70f69ccecb68e42aa584c9bc34798c",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:f6ad17f100e002605610f3d133ec291d10f7996be6823819e5c2a3b1bc1636fd",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 70,
+      "end": 70,
+      "digest": "sha256:7418bc65ed9c2ae90794ae459f289f192eed9ebb0f137a2c6e153eb2853f2c1c",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 71,
+      "end": 71,
+      "digest": "sha256:284386eed803e34740bf44841eebfb04c3b1c58887f9c5285859b73eea65d060",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 72,
+      "end": 72,
+      "digest": "sha256:32922cee02faa3978aa09ffde4fb0a113c3e6bf5768eb9ce7d509888359601c0",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 73,
+      "end": 73,
+      "digest": "sha256:0e4e78d2eb683e84fa9d113d26e3913b225682a40e4b4181758ce247e53fbe80",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 74,
+      "end": 74,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 75,
+      "end": 75,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 76,
+      "end": 76,
+      "digest": "sha256:2376b0a8ca5270c43af5d034b6d110c18902e1d2f9ec38b59671844ed62aa54c",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 77,
+      "end": 77,
+      "digest": "sha256:355ba8185dcebf385b6373d72aa85ad088367988befb059e4c4dd3177afe55ca",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 78,
+      "end": 78,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 79,
+      "end": 79,
+      "digest": "sha256:e9cfbf0177b1ac17c23ac282c04776eabe98dd54ffb84aef885445c838f29ba4",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 80,
+      "end": 80,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 81,
+      "end": 81,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 82,
+      "end": 82,
+      "digest": "sha256:1c2df4cb903f63f4243087de2d6aa69a373012940a3815e873126c5992a7612b",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 83,
+      "end": 83,
+      "digest": "sha256:20ba68801b8f29e5fde6e5ba472cfd69a3b60433f744389746c88637e0f28ce0",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 84,
+      "end": 84,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 85,
+      "end": 85,
+      "digest": "sha256:355ba8185dcebf385b6373d72aa85ad088367988befb059e4c4dd3177afe55ca",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 86,
+      "end": 86,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 87,
+      "end": 87,
+      "digest": "sha256:dce189ba0137462018a13a40089cdedee3d10071fa326d22bd623155cb7a32b9",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 88,
+      "end": 88,
+      "digest": "sha256:963c222ccb36be51dffdeeccbf39e906c4e8dd023fe50c61953d16f96f8a31ab",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 89,
+      "end": 89,
+      "digest": "sha256:51676e25ffc1ed46daf2ba5cbda152cf64dc766d2d952b4d36872308bb0b3768",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 90,
+      "end": 90,
+      "digest": "sha256:750284eac201134f9148c6c8701e4c533a9e7c13aef5d063c1bdc88766ab1dae",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 91,
+      "end": 91,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 92,
+      "end": 92,
+      "digest": "sha256:ebca1c44befbd69562b10d8c10ee724a03dabaf0cc83cf0d21fe54fe955534e9",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 93,
+      "end": 93,
+      "digest": "sha256:355ba8185dcebf385b6373d72aa85ad088367988befb059e4c4dd3177afe55ca",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 94,
+      "end": 94,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 95,
+      "end": 95,
+      "digest": "sha256:7395a9194a05138b9688e8370e5a6505125f6493957daad9e46f7ab984918cf7",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 96,
+      "end": 96,
+      "digest": "sha256:5ed61ec18b3c6252ee5c02d4f5a3f14bc5f32a9d721a8e28e1b24bb7c754fcc3",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 97,
+      "end": 97,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 98,
+      "end": 98,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 99,
+      "end": 99,
+      "digest": "sha256:d3682c3b7540329360ec577da9c79cd8a5b34d93a3db8715b47ee10047d5176b",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 100,
+      "end": 100,
+      "digest": "sha256:7cd77f804adca889140203013a046e1e543ea80438b01a8d6101c8e0fe7cde40",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 101,
+      "end": 101,
+      "digest": "sha256:284386eed803e34740bf44841eebfb04c3b1c58887f9c5285859b73eea65d060",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 102,
+      "end": 102,
+      "digest": "sha256:59d705012d186cc77e226782b979b9760477c87ed9f19fa9d09c17034006ceee",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 103,
+      "end": 103,
+      "digest": "sha256:4c154cdaef82ba33866af83a0fb4627709fde0adf6b35ece16355f457f55ed74",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 104,
+      "end": 104,
+      "digest": "sha256:0e4e78d2eb683e84fa9d113d26e3913b225682a40e4b4181758ce247e53fbe80",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 105,
+      "end": 105,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 106,
+      "end": 106,
+      "digest": "sha256:fe5eba64e54b58926967a683bee3bc31534e5352b3bc0754bcc722914af7399f",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 107,
+      "end": 107,
+      "digest": "sha256:5f35328ad26139e378e12d7e545687f30fd270c9e895a4447f57872c2ad66237",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 108,
+      "end": 108,
+      "digest": "sha256:ee3726708e0c8db47eca9ddbdafd1f22ebfe329938dd5472c30049a7eb52e479",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 109,
+      "end": 109,
+      "digest": "sha256:f4d22728a75e43a11b1e3f35c45b143b62e72f5da653c3165a33a68ff1f89648",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 110,
+      "end": 110,
+      "digest": "sha256:d7ea9a6531b73b11dcd265c3b6fc453f187eedbd23055fae43a5b87407668098",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 111,
+      "end": 111,
+      "digest": "sha256:dc8d544211463a44f57e67c0bfcd47cfb7f0f495378b36fb2f55d9e8dc28107e",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 112,
+      "end": 112,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 113,
+      "end": 113,
+      "digest": "sha256:9a70c5476a21d6884a2d12113a208cd04fcff308e20e899697413ef03ff2116f",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 114,
+      "end": 114,
+      "digest": "sha256:4c154cdaef82ba33866af83a0fb4627709fde0adf6b35ece16355f457f55ed74",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 115,
+      "end": 115,
+      "digest": "sha256:0e4e78d2eb683e84fa9d113d26e3913b225682a40e4b4181758ce247e53fbe80",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 116,
+      "end": 116,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 117,
+      "end": 117,
+      "digest": "sha256:e1b242c8745ff8767507e9e627314d1567d77012fb3ab855bfb29b597122cb58",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 118,
+      "end": 118,
+      "digest": "sha256:dbce73cc35dfff4e989f10973ee9df662e2e57fd27c3ae917174515d1392428c",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 119,
+      "end": 119,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 120,
+      "end": 120,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 121,
+      "end": 121,
+      "digest": "sha256:1507e2f6e96e587fb2a1fc121defdfba7cc0696f2e35ad3a913bc6fcd7dc2efb",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 122,
+      "end": 122,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 123,
+      "end": 123,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 124,
+      "end": 124,
+      "digest": "sha256:eb4ece0becb46208285aa8e0850b2382231069172f9aa2c1e08410cbff7b77b2",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 125,
+      "end": 125,
+      "digest": "sha256:fd5fa8f5918cf05595fe3b579b11ae021f77152ae33774e8fef348bc31723a38",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 126,
+      "end": 126,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 127,
+      "end": 127,
+      "digest": "sha256:b355d415219f8797d57b3738cd4ef3d24d279540a56c2f43f6e83ef45ec7af88",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 128,
+      "end": 128,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 129,
+      "end": 129,
+      "digest": "sha256:9fa764d57e1d504709a72a049e8a30773ed12dd9d4eb9a41db8945a47065cfc9",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 130,
+      "end": 130,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 131,
+      "end": 131,
+      "digest": "sha256:ea21421b539a25fc5241550e43eb2a863f8220a421c94f268d8fb279215c3941",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 132,
+      "end": 132,
+      "digest": "sha256:b355d415219f8797d57b3738cd4ef3d24d279540a56c2f43f6e83ef45ec7af88",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 133,
+      "end": 133,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 134,
+      "end": 134,
+      "digest": "sha256:37f09470db66f25e3d243d8852c9ff20f81ee07c038c734e89df4f37dcdec99b",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 135,
+      "end": 135,
+      "digest": "sha256:ea21421b539a25fc5241550e43eb2a863f8220a421c94f268d8fb279215c3941",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 136,
+      "end": 136,
+      "digest": "sha256:55ef67585f81fdcaed6785865aa98af9ebc59fe0b0815063c388ee5937d2b4a7",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 137,
+      "end": 137,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 138,
+      "end": 138,
+      "digest": "sha256:1b9d0d58712ebc262cc7afe997089c703989f531d6b972a8090ec52868ecc2a8",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/releasearchive/archive.go",
+      "start": 139,
+      "end": 139,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Writes deterministic tar.gz and zip archives with fixed order, timestamps, modes, and atomic output replacement."
+    }
+  ],
+  "version": 2
+}

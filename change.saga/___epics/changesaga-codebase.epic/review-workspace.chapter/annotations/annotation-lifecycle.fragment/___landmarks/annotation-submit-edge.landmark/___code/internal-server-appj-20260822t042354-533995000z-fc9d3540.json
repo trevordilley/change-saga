@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/appjs.go",
+      "start": 1705,
+      "end": 2221,
+      "digest": "sha256:f3a1e575fa48889d7461c33eebde7764108eb24e19f4740c7cdfa0d5391ac803",
+      "note": "Routes tools, pointer and keyboard gestures, form submissions, and reload initialization through the annotation state machine."
+    }
+  ],
+  "version": 2
+}

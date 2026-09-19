@@ -1,0 +1,59 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".gitignore",
+      "digest": "sha256:815bcf287e8e88a0e0aae6bec1dca1aeb364b027de128997dbb4537823db8351",
+      "note": "Excludes build, coverage, and local-environment outputs from the public source contract."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".gitignore",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:b7b5a9a5bdb3a876455f7320f221592c77a378fac89c0283dc6ebe19b124bf43",
+      "note": "Excludes build, coverage, and local-environment outputs from the public source contract."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".gitignore",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:fe56da5f27d174b011ca65d2c1c9be83ca19ce1428e1594f8ed3ca037e8814ed",
+      "note": "Excludes build, coverage, and local-environment outputs from the public source contract."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".gitignore",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:de936f78138496611116da9255b20f7c1d0a996c3a607e4782703734197cb67e",
+      "note": "Excludes build, coverage, and local-environment outputs from the public source contract."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".gitignore",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:cf237c7aff44efbe6e502e645c3e06da03a69d7bdeb43392108ef3348143417e",
+      "note": "Excludes build, coverage, and local-environment outputs from the public source contract."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".gitignore",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:9151204ebd497e2b39260f06266d4cbee78ff71809b83e1849205aa8936d845e",
+      "note": "Excludes build, coverage, and local-environment outputs from the public source contract."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".gitignore",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:4d56952b0fb13bf8f9b6c13a6d4c34a075bac3af447636a1df4335d7576e2f97",
+      "note": "Excludes build, coverage, and local-environment outputs from the public source contract."
+    }
+  ],
+  "version": 2
+}

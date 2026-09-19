@@ -10,7 +10,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/twentyideas/changesaga/internal/diffuri"
+	"github.com/twentyideas/changesaga/internal/coderef"
 )
 
 var stableID = regexp.MustCompile(`^[a-zA-Z0-9][a-zA-Z0-9._-]{0,127}$`)
@@ -62,7 +62,7 @@ func validateRepositoryIdentity(value, path string, result *Validation) {
 		addIssue(result, "error", path, fmt.Sprintf("source.repository must not contain URL userinfo; use %q", stripped.String()))
 		return
 	}
-	canonical, err := diffuri.CanonicalRepository(value)
+	canonical, err := coderef.CanonicalRepository(value)
 	if err != nil {
 		addIssue(result, "error", path, fmt.Sprintf("source.repository is not a usable repository identity: %v", err))
 		return
@@ -305,18 +305,20 @@ func validateClaim(value Claim, path string, result *Validation) {
 		addIssue(result, "error", path, "claim statement is required")
 	}
 	if len(value.Evidence) == 0 {
-		addIssue(result, "error", path, "claim must cite at least one exact line or event diff URI")
+		addIssue(result, "error", path, "claim must cite at least one code reference")
 	}
 	seen := map[string]bool{}
-	for index, uri := range value.Evidence {
-		reference, err := diffuri.Parse(uri)
-		if err != nil || reference.Kind == "file" {
-			addIssue(result, "error", path, fmt.Sprintf("claim evidence %d must be a canonical line or event diff URI", index+1))
+	for index, reference := range value.Evidence {
+		if reference.Note != "" {
+			addIssue(result, "error", path, fmt.Sprintf("claim evidence %d cannot carry a note; the statement explains it", index+1))
 		}
-		if seen[uri] {
-			addIssue(result, "error", path, fmt.Sprintf("claim evidence %d duplicates an earlier URI", index+1))
+		if err := coderef.Validate(reference); err != nil {
+			addIssue(result, "error", path, fmt.Sprintf("claim evidence %d: %v", index+1, err))
 		}
-		seen[uri] = true
+		if seen[reference.Key()] {
+			addIssue(result, "error", path, fmt.Sprintf("claim evidence %d duplicates an earlier reference", index+1))
+		}
+		seen[reference.Key()] = true
 	}
 }
 
@@ -458,11 +460,11 @@ func ValidAnnotationColor(value string) bool {
 func ValidateAnchor(anchor Anchor) error {
 	switch anchor.Type {
 	case "target":
-		if len(anchor.Shapes) != 0 || anchor.Text != nil || anchor.Note != nil || anchor.Diff != nil {
+		if len(anchor.Shapes) != 0 || anchor.Text != nil || anchor.Note != nil || anchor.Code != nil {
 			return fmt.Errorf("target anchor cannot contain shapes, text, note, or diff data")
 		}
 	case "region", "drawing":
-		if anchor.Coordinate != "normalized" || len(anchor.Shapes) == 0 || anchor.Text != nil || anchor.Note != nil || anchor.Diff != nil {
+		if anchor.Coordinate != "normalized" || len(anchor.Shapes) == 0 || anchor.Text != nil || anchor.Note != nil || anchor.Code != nil {
 			return fmt.Errorf("region/drawing anchor requires normalized shapes")
 		}
 		for _, shape := range anchor.Shapes {
@@ -485,7 +487,7 @@ func ValidateAnchor(anchor Anchor) error {
 			}
 		}
 	case "text":
-		if anchor.Text == nil || anchor.Text.Exact == "" || len(anchor.Shapes) != 0 || anchor.Note != nil || anchor.Diff != nil {
+		if anchor.Text == nil || anchor.Text.Exact == "" || len(anchor.Shapes) != 0 || anchor.Note != nil || anchor.Code != nil {
 			return fmt.Errorf("text anchor requires an exact quote")
 		}
 		if anchor.Text.Start < 0 || anchor.Text.End < 0 || anchor.Text.End < anchor.Text.Start {
@@ -495,7 +497,7 @@ func ValidateAnchor(anchor Anchor) error {
 			return fmt.Errorf("text highlight color must be a #rrggbb value")
 		}
 	case "note":
-		if anchor.Note == nil || len(anchor.Shapes) != 0 || anchor.Text != nil || anchor.Diff != nil {
+		if anchor.Note == nil || len(anchor.Shapes) != 0 || anchor.Text != nil || anchor.Code != nil {
 			return fmt.Errorf("note anchor requires exactly one sticky note")
 		}
 		if anchor.Coordinate != "normalized" {
@@ -510,16 +512,15 @@ func ValidateAnchor(anchor Anchor) error {
 		if anchor.Note.Color != "" && !ValidAnnotationColor(anchor.Note.Color) {
 			return fmt.Errorf("note color must be a #rrggbb value")
 		}
-	case "diff":
-		if anchor.Diff == nil || len(anchor.Shapes) != 0 || anchor.Text != nil || anchor.Note != nil {
-			return fmt.Errorf("diff anchor requires exactly one diff URI")
+	case "code":
+		if anchor.Code == nil || len(anchor.Shapes) != 0 || anchor.Text != nil || anchor.Note != nil {
+			return fmt.Errorf("code anchor requires exactly one code reference")
 		}
-		reference, err := diffuri.Parse(anchor.Diff.URI)
-		if err != nil || reference.Kind == "file" {
-			return fmt.Errorf("diff anchor requires a valid line or event diff URI")
+		if err := coderef.Validate(*anchor.Code); err != nil || anchor.Code.Note != "" {
+			return fmt.Errorf("code anchor requires a valid code reference without a note")
 		}
 	default:
-		return fmt.Errorf("anchor type must be target, region, drawing, text, note, or diff")
+		return fmt.Errorf("anchor type must be target, region, drawing, text, note, or code")
 	}
 	return nil
 }
@@ -583,12 +584,6 @@ func validateDocument(document *Saga, result *Validation) {
 		if !targets[claim.Target] {
 			addIssue(result, "error", path, "claim target does not exist")
 		}
-		repository, _ := diffuri.CanonicalRepository(document.Manifest.Source.Repository)
-		for index, uri := range claim.Evidence {
-			if reference, err := diffuri.Parse(uri); err == nil && reference.Repository != repository {
-				addIssue(result, "error", path, fmt.Sprintf("claim evidence %d belongs to a different source repository", index+1))
-			}
-		}
 	}
 	verificationIDs := map[string]string{}
 	verifiedClaims := map[string]bool{}
@@ -649,7 +644,7 @@ func validateVisualMappings(fragment *Fragment, result *Validation) {
 		}
 		addIssue(result, "warning", fragment.Path, message)
 	}
-	mapped := len(fragment.Diffs) > 0
+	mapped := len(fragment.Code) > 0
 	for _, landmark := range fragment.Landmarks {
 		if strings.TrimSpace(landmark.Description) == "" {
 			message := "visual landmark has no semantic description; add what this element means so non-visual consumers do not have to parse its geometry"
@@ -658,7 +653,7 @@ func validateVisualMappings(fragment *Fragment, result *Validation) {
 			}
 			addIssue(result, "warning", landmark.Path, message)
 		}
-		if len(landmark.Diffs) > 0 {
+		if len(landmark.Code) > 0 {
 			mapped = true
 			if landmark.Selector.Type == "element" && landmark.Hotspot == nil && fragment.MediaType == "text/html" {
 				addIssue(result, "warning", landmark.Path, "mapped HTML element has no on-canvas hit area; add hotspot geometry so reviewers can open its linked code directly from the content")
@@ -669,9 +664,9 @@ func validateVisualMappings(fragment *Fragment, result *Validation) {
 		}
 	}
 	if !mapped {
-		message := "visual fragment has no directly linked code; attach exact diff evidence to the fragment or its landmarks"
+		message := "visual fragment has no directly linked code; reference the code it explains from the fragment or its landmarks"
 		if fragment.SlideMeta != nil {
-			message = "slide has no Item-linked code; attach every exact diff atom to the Item it realizes"
+			message = "slide has no Item-linked code; reference every changed line from the Item it realizes"
 		}
 		addIssue(result, "warning", fragment.Path, message)
 	}
@@ -693,19 +688,19 @@ func validateNarrativeMappings(fragment *Fragment, result *Validation) {
 				}
 			}
 			if citation == nil {
-				addIssue(result, "warning", fragment.Path, fmt.Sprintf("Markdown footnote [^%s] is not linked to code; create an exact-text landmark for its definition and attach focused diff evidence", footnote.ID))
+				addIssue(result, "warning", fragment.Path, fmt.Sprintf("Markdown footnote [^%s] is not linked to code; create an exact-text landmark for its definition and reference the code it cites", footnote.ID))
 				continue
 			}
-			if len(citation.Diffs) == 0 {
-				addIssue(result, "warning", citation.Path, fmt.Sprintf("Markdown footnote [^%s] has an exact-text landmark but no linked code; attach focused diff evidence just as you would for a diagram node", footnote.ID))
+			if len(citation.Code) == 0 {
+				addIssue(result, "warning", citation.Path, fmt.Sprintf("Markdown footnote [^%s] has an exact-text landmark but no linked code; reference the code it cites just as you would for a diagram node", footnote.ID))
 			}
 		}
 	}
-	if len(fragment.Diffs) == 0 {
+	if len(fragment.Code) == 0 {
 		return
 	}
 	for _, landmark := range fragment.Landmarks {
-		if len(landmark.Diffs) > 0 && (landmark.Selector.Type == "text" || landmark.Selector.Type == "heading") {
+		if len(landmark.Code) > 0 && (landmark.Selector.Type == "text" || landmark.Selector.Type == "heading") {
 			return
 		}
 	}

@@ -8,27 +8,23 @@ import (
 	"strings"
 	"unicode/utf8"
 
-	"github.com/twentyideas/changesaga/internal/diffuri"
+	"github.com/twentyideas/changesaga/internal/coderef"
+	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/gitattribution"
+	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
-func (s *session) indexReviewItems(ctx context.Context) {
+func (s *session) indexReviewItems(ctx context.Context, code coverage.Resolver) {
 	resolver := gitattribution.New(ctx, s.document.Root)
 	for _, stored := range s.document.Threads {
 		thread := s.normalizeThread(ctx, resolver, stored)
 		s.threads[thread.ID] = thread
 		copy := thread
 		s.reviewItems = append(s.reviewItems, ReviewItem{Kind: "thread", Thread: &copy})
-		if thread.Anchor.Type == "diff" && thread.Anchor.Diff != nil {
-			selector, err := diffuri.Parse(thread.Anchor.Diff.URI)
-			if err == nil {
-				for _, atom := range s.changes.Atoms {
-					atomReference, atomErr := diffuri.Parse(atom.URI)
-					if atomErr == nil && diffuri.Matches(selector, atomReference) {
-						s.threadsByDiff[atom.URI] = append(s.threadsByDiff[atom.URI], thread)
-					}
-				}
+		if thread.Anchor.Type == "code" && thread.Anchor.Code != nil {
+			for _, atom := range s.atomsWithin(ctx, code, *thread.Anchor.Code) {
+				s.threadsByAtom[atom.Key] = append(s.threadsByAtom[atom.Key], thread)
 			}
 		}
 	}
@@ -49,9 +45,9 @@ func (s *session) indexReviewItems(ctx context.Context) {
 		}
 	}
 	walk(s.document.Section)
-	for _, review := range s.document.DiffReviews {
+	for _, review := range s.document.FileReviews {
 		event := ReviewEvent{
-			ID: review.ID, Kind: "file_review", Diff: review.URI, State: review.State, CreatedAt: review.CreatedAt,
+			ID: review.ID, Kind: "file_review", Code: &review.Code, State: review.State, CreatedAt: review.CreatedAt,
 			Attribution: attribution(ctx, resolver, review.Path), LegacyClaimedAuthor: review.Author,
 		}
 		s.reviewItems = append(s.reviewItems, ReviewItem{Kind: "file_review", Event: &event})
@@ -159,4 +155,21 @@ func sortReviewItems(items []ReviewItem) {
 		}
 		return items[i].Kind < items[j].Kind
 	})
+}
+
+// atomsWithin returns the comparison's changed atoms inside reference, viewed
+// wherever it is current in the comparison.
+func (s *session) atomsWithin(ctx context.Context, code coverage.Resolver, reference coderef.Reference) []gitdiff.Atom {
+	current, _ := coverage.Sides(ctx, reference, s.changes, code)
+	var atoms []gitdiff.Atom
+	for _, atom := range s.changes.Atoms {
+		location := s.changes.Location(atom)
+		for _, resolution := range current {
+			if resolution.Location.Contains(location) {
+				atoms = append(atoms, atom)
+				break
+			}
+		}
+	}
+	return atoms
 }

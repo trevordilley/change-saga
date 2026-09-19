@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/install_windows_test.ps1",
+      "start": 1,
+      "end": 120,
+      "digest": "sha256:55bd1cd9a09533772b388d86363232ba9ddc865a4803ea44434714da847920d6",
+      "note": "Builds mocked Windows releases and verifies successful native installation and executable mode."
+    }
+  ],
+  "version": 2
+}

@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore.go",
+      "start": 194,
+      "end": 219,
+      "digest": "sha256:68234f6437cba62e2dd5e8021746e0fde51c688143633d9bf696a9434c3b5687",
+      "note": "Rejects diff review identities whose canonical repository differs from the Saga source repository."
+    }
+  ],
+  "version": 2
+}

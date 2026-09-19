@@ -1,0 +1,21 @@
+{
+  "references": [
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/cli/query_reviewapp.go",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:d718c2c21e7196ff1fe56aee39812d8f2057cf8cbf712cf72bf64d09758ac3ac",
+      "note": "Review-session mode chosen by query shape."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/query_reviewapp.go",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:9e418a9f15795a8c0a1f39666add098c3ccbd57adb1bd2a43f5ab0ac0701298f",
+      "note": "Review-session mode chosen by query shape."
+    }
+  ],
+  "version": 2
+}

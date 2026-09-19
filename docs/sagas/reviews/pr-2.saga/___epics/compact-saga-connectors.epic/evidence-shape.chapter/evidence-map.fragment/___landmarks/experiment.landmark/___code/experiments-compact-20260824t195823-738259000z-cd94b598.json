@@ -1,0 +1,1827 @@
+{
+  "references": [
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "digest": "sha256:72df5e7dfcb71ff4383ac091a7f58155087f377664fb0975ca59deb991615bee",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:ec026b211c90092311ac95d8cf91971cb106cc5584e044c1ab13aab11d875992",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:7657c84f728ffadcafe1a0c8315fd9d1a64aba622f122f8a6dbfbd8aa3999266",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:7372ca9c91b46378f293618966ea28c51ad2218435f3b78e40254c6afe40789f",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:a1fa3cf3d8b63142cc86da8030ecb281383ace7da6fe8ff404380921810da4a5",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:101ead936a2281d53dcc064b7e2a2ab0d53b92ef3ef7b34b668673007895c860",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:64f56231c32b3abf8264e2bf7dd52520959498f3b949c4e4a15e542e3f1b466b",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:6e7694023f2cde3c3b308afa7eb89de9c643f9ecbcd351dd654de520ee698811",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:df1d036cbbf3df46e2045071e082245ece204c7f53ecf0a4e022bff9bb228f47",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:71e37b6cd48ad477cbb12624b757ee1dc4975711b78237a85f508bfdd723af77",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:dc94db91287ede614bfe3a0ee2e2b567400c33fbbb5566199f17b7f6235ec46d",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:ecd809ad732d34f167fb9215b94d189bf981bf6fbffe2f380195c22fe8902423",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:9d321d278769fb32c7c6820e1c992ebb53b04e39def0f158cbf1d84e27d34c18",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:171b756171ff8240f94ccb83de837ed4242449df3ecef3a3762523d1f5ae0348",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:b83dd5913a82d8a691007f7ee185ac68dfe5991b41a3f4a5a6707f66ba980dd6",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:dce87b6818a2884e83d31c73980f4824699871bd0d1b0b2cd9b7c3f5b15b116d",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:8fbccf5ddb1f4aa074d4872ffaa17e418832f2e06dcb8788f6dfc78c9b4ba0df",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:f2718a9bd8719c24b98ab7251c6c0938ff0d3de46a480ad0a29f26d8689fc476",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:ff2c0ea95d76cbc00801be44ecfc5884dca46f0b7febe0b6b2a9a5e1afd73944",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:4251f63298670483bdac18904e47ecc02d2c2d19b3f7d8e42f79cb371a7c684e",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:ab6f6be8e5963a10d31f1044691aa6beceed5a59d04cd8247f259497075d8b4d",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:fafba0527c3953c4b6e0e5b5739ba83612f8053bcdc9466730193cd1d590b408",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:315d64f971b24f701d34c77f125ad93d70b7b40a02c0236b045393e24bf6b5fd",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:e2b3b81ca408ab43e9bce13a0307659de6702362a8f53a1fc03440678f2f5b1f",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:4355e9a29644367c09083e09534de1d27f6ccd907e8b20f72a65bb99a72402eb",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:06c3b6c23e050985f2f889d945483bd545e732032cbea02004c2ca1843a4a69a",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:71f0c16b31b612b7a56446c443696649aad62daa2f36559313cbdc0770d15761",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:092046b60359f80ffb900974ab2c6eebd5d5aa586305bc6aa1b501affe6a44ed",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:5e24754a5fa7a68d61b5af2aad997efce71c8cfcf181896c795b357f6ae8ba72",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:a38900f8fbfb3e870210cc7c66bc05cbe99edc4d0a912a45e6c6e291260cc476",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:cf13321da6f67717ccdfebfa43ff422c729b684ef9e96e7b89845a3fc3c54663",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:6937e27b1644bb4ff10ca98c6b4b74547c958bf7575de69712f920ade36db40a",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:8601f08dfa9913b430498475dc7b106666b7d51b75c897f14e195f05107578ea",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:fa3a7f0b3bd4f602f44a01cd4eb430549fd3da188ee0a16670a1d5b1ebd36317",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:ba64ab9f2faf0cbe9e4a687a803396cba1194dff5f6f4b386c115abffe834895",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:5da2483068589705b5d502781b536c790c68f79659d7497918100a3d2dea99c4",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:6e2e620ac7e7835113d65f786f1aba7ef44659f68031f1ea1c51e3c1388e8440",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:7f0c74adcdced73fcc22060735952e1ec9f7700b945edbc5616cb845c3c7fa2b",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:830dbe51cacba6f7a3a2a57ec489d4048bf18a1e483d9589a4e8d094e6567aaa",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:74fa9381e60ad5a97e699d0391dea86ee93f60ba2c7a4f3d55739f126e375ee0",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:7956dd103c32d3641df7091b5be1b4d068bfaecae639aba5f2d478cf6ee9d023",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:30ae3cc43de1e2d5186e94fd52471817b7a5d7c79e6e12fc90b49aa79a424c90",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:10d732295ab439daa095b9183cc74e6b4f5d6b8ddd6c354030a3112e72b32b17",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:4355e9a29644367c09083e09534de1d27f6ccd907e8b20f72a65bb99a72402eb",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:06c3b6c23e050985f2f889d945483bd545e732032cbea02004c2ca1843a4a69a",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:cabb3f123c9d993cf878b9b796496f081e8af1ffee857bf2af6c6603b34cac54",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:0aa88cacec1b8e3a5c9457bdc65bc3560279e63dd4b527c14b1244a9f1f99b75",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:a3f91c63a6532e7069b26d2bfb4c4f290573d2f0fab4bc93aea8f93671c2e9ff",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:df1678eb14af2b398e6438f340892cc717f0de50ba73ba2dd803ddb5ed5088b0",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:d8294b6a5add85cebedbb9c899a8f1e05f1fa6920c2eaff763276162e0e5e75e",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:a9e282877793adf312927236ed2777f530bd8b4d9ef0dba9ea2c7f47fbeb1b68",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:03be769cc4c9afecc0bc6e0e6f2d3da6a0937e8ddba4127ff48134f2d87c2716",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:717482303978074a39faa0492a48a2e74445c70a0955c9cca8ea7b9db713be83",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:e4e1ad74aa7759acde5dbe9b142052e130de3d61e10f4c9cb989721f2be8ad3c",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:d1f83ee2d9f58f3058ffd481dea936a360875412e05f22f15433484f81921af2",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:46670a3f452cd3902bf62d7abec1af33377f90fffbf53eb07bce5bcdbd376e6b",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:122786492e969a8d82a9d5723f5a1e4a683f248045cb914611a8da91b67ad33b",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 68,
+      "end": 68,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:a9e9bee558cc8be70c3121666dcf9db5d23ee29f4246ebf0716dbef75717393d",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 70,
+      "end": 70,
+      "digest": "sha256:ad2abe25973d7c5927e47ceb2ffca53b0f9e90e713b94cb3451eaca30591935f",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 71,
+      "end": 71,
+      "digest": "sha256:4d381b0a76e9ed3d612e8f93d34c91d07b54e41c25e03cc7d53d38fe64823741",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 72,
+      "end": 72,
+      "digest": "sha256:99370840cb92b3f8c4e596431fef7a1157f4bbc22a154c8737f7c6a9d6527561",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 73,
+      "end": 73,
+      "digest": "sha256:08e004b650d08e0172f57efe71b1cfb25e2aadc8273a5b1b3a6cef5b78fcd81a",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 74,
+      "end": 74,
+      "digest": "sha256:9f0775fdc7519bcc904cc6e6e91878a43beabed5cecfcd85d6e547eb74e70e84",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 75,
+      "end": 75,
+      "digest": "sha256:10d732295ab439daa095b9183cc74e6b4f5d6b8ddd6c354030a3112e72b32b17",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 76,
+      "end": 76,
+      "digest": "sha256:cc82f98750a9a2bf57813b1bf7fd6a4e0c16623acf5cd6d02b293683fb3503ce",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 77,
+      "end": 77,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 78,
+      "end": 78,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 79,
+      "end": 79,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 80,
+      "end": 80,
+      "digest": "sha256:8490034a4b976d9e179410fa8a393859a0b4bc76bde705212e964ac59d499056",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 81,
+      "end": 81,
+      "digest": "sha256:ccbac07536a16fe19f6f069c119852bd00a7beda69b7a2ec1e2672e6a33b569d",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 82,
+      "end": 82,
+      "digest": "sha256:c285be74048d09929efbe9a93981c4f8d998cd56677cec898d37b4841c73d789",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 83,
+      "end": 83,
+      "digest": "sha256:2088a800020c76d08bd06337ad40e85f72bb817d3508d4548437d3b0080b477a",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 84,
+      "end": 84,
+      "digest": "sha256:1306e169aad9991fedf03cb94fe68b71343a8dbe049604206dfab9e7c50498f9",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 85,
+      "end": 85,
+      "digest": "sha256:355ba8185dcebf385b6373d72aa85ad088367988befb059e4c4dd3177afe55ca",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 86,
+      "end": 86,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 87,
+      "end": 87,
+      "digest": "sha256:cc8dc2c1daf61574e41d2b4e851a647f35ca7e3f96a9216defb2c9b7ca07bd33",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 88,
+      "end": 88,
+      "digest": "sha256:ce0a05e0d443e63c2a4d722871493d58e54aae09a4e7f84562f60234e42cfdfa",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 89,
+      "end": 89,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 90,
+      "end": 90,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 91,
+      "end": 91,
+      "digest": "sha256:fbd605b7c7ce2cba11dfda44a6af868f1f15c33472a178e91e100e1fa5fd23f6",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 92,
+      "end": 92,
+      "digest": "sha256:52198d43ad43e62ee99e606f7ae988bd74168d2697bbaba1d73e142b1dae0e28",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 93,
+      "end": 93,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 94,
+      "end": 94,
+      "digest": "sha256:355ba8185dcebf385b6373d72aa85ad088367988befb059e4c4dd3177afe55ca",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 95,
+      "end": 95,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 96,
+      "end": 96,
+      "digest": "sha256:b5c42bab8ce86a7fd6110e13a1f4f51ad231604dc2603d14e60f2817b6cba7b8",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 97,
+      "end": 97,
+      "digest": "sha256:b455c68f3021cf77dd45edd1578ceec6969b88472434c7a42800419e14f307bb",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 98,
+      "end": 98,
+      "digest": "sha256:3a8fd1f1585098f3f6e10333e58c2f9a5c6233965f9480b1e11da64e44317ff4",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 99,
+      "end": 99,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 100,
+      "end": 100,
+      "digest": "sha256:7eda72d6890aab2510fe0b4854edd353ba85f3ad0859f251936d96fe9bf205c2",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 101,
+      "end": 101,
+      "digest": "sha256:5908fd89d1f57aae4c268ce04f76b1277d3894e0b8066ca98060c52594bb087d",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 102,
+      "end": 102,
+      "digest": "sha256:4b320541eabb03a263fd0e0080f84430d013f974cf76d0fe01312f969dde00b5",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 103,
+      "end": 103,
+      "digest": "sha256:e56fef6b8902629ef539d0ac1b090e41f5f221e5dbdf203ff3214e933f4a3b34",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 104,
+      "end": 104,
+      "digest": "sha256:93b6f4d5fe3565a23a1d6590eb88ac0c06237eebcd3128a4bc92adc258bcb66a",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 105,
+      "end": 105,
+      "digest": "sha256:22541be263fd4db5f94276a6b91cd936ae350a13eda6f19a9bb2b403082028e0",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 106,
+      "end": 106,
+      "digest": "sha256:c557574daae88b3d2734aca14da37e17cf84a77ea6154c1f27f59bff849c9e59",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 107,
+      "end": 107,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 108,
+      "end": 108,
+      "digest": "sha256:17defd2cb1571bb86449f20dfd54cc7ff3e8fb286e152802134664a39dfc19ca",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 109,
+      "end": 109,
+      "digest": "sha256:300304924d9c182174385d8b4c07b688b205b757d8001f89672b82756d0987cd",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 110,
+      "end": 110,
+      "digest": "sha256:69806eea6b7d876adbf0cdbe8aab8b6e6a17333c0eea04b893b6d77c9ec90ca9",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 111,
+      "end": 111,
+      "digest": "sha256:19a05599e5ab31d4e1777670e38c13f86961889709342c5adb3c6cead0959a04",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 112,
+      "end": 112,
+      "digest": "sha256:4895916a2785e0d2049f64f50717549f99d8cce422fd5fcd6173d9797500169d",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 113,
+      "end": 113,
+      "digest": "sha256:a5ca7d9dc9e33dcb250e8c2b2d2334f684d763dd7aa802ad0e3807d39397c3cc",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 114,
+      "end": 114,
+      "digest": "sha256:5d14d5ccdfe3d0f597e35b27d82413de7d7220abea6ea17372fd8cbeccb1816f",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 115,
+      "end": 115,
+      "digest": "sha256:4dc76020bae70577e64b330dca83fdf24f3d7593a0154d8abec6dc63f5897fd9",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 116,
+      "end": 116,
+      "digest": "sha256:60ed34dad8d4e4cdef82ef2e6751b8001a13d16cd39b4195294904ddae6df54b",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 117,
+      "end": 117,
+      "digest": "sha256:0031ea4d70e9e9f7705b665d22c8fa59b14a2e83642dcdc462637152143f7105",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 118,
+      "end": 118,
+      "digest": "sha256:220415ef15df6f23bd9467accc5bc6e3a8afaf6e33f6ee10ae4cf9f101ee68cb",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 119,
+      "end": 119,
+      "digest": "sha256:b33dede6988fb99d44796baafdab72ee08156a83d6943f965459520d64c8fdcc",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 120,
+      "end": 120,
+      "digest": "sha256:69b3ffa08e133b102906a7aaed689ee90ef4b313ddd2ed498dcfc49e6088de91",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 121,
+      "end": 121,
+      "digest": "sha256:bfcdff5d69f5cf07affb5ed5cc562122645d250fba6fcd35d65573a2aeaef720",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 122,
+      "end": 122,
+      "digest": "sha256:114e7414f28c773611f6f21a42fdc44cf43113320ae49f77e4ce56795fd52a05",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 123,
+      "end": 123,
+      "digest": "sha256:1d87e5b4dc46f8a33e932480803153dbe9222efb378c2118cd59182142f0815e",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 124,
+      "end": 124,
+      "digest": "sha256:4dc76020bae70577e64b330dca83fdf24f3d7593a0154d8abec6dc63f5897fd9",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 125,
+      "end": 125,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 126,
+      "end": 126,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 127,
+      "end": 127,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 128,
+      "end": 128,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 129,
+      "end": 129,
+      "digest": "sha256:494349c747f8a8fedba7398918c1cb00c2df68ce44b000616554676b76a56d2e",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 130,
+      "end": 130,
+      "digest": "sha256:f4ac801a3366ef9f3267e5bf3d173b1ec617efdfe4676aa1969f2f260ae15249",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 131,
+      "end": 131,
+      "digest": "sha256:15c552b97ccdfd225721ae1efa18f835ce4bffa44148357d3d46e5942db0bfc0",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 132,
+      "end": 132,
+      "digest": "sha256:387cc392a7891f8f0113f1acf1b388e3b0925c8b2e6e5546d25092cd4f3923e8",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 133,
+      "end": 133,
+      "digest": "sha256:e69fcad986fa3545d2ce925b1b4226e4497cd6a26637ff22401c85b6f9e3dabe",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 134,
+      "end": 134,
+      "digest": "sha256:f2329d389705c22a74389b534790f3c8abf7731fa4451fe25b34feb0ca7e1af1",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 135,
+      "end": 135,
+      "digest": "sha256:d8537826a95cbfe1df2887dd558e36a7909f7295b85629224569facf5dbe47ee",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 136,
+      "end": 136,
+      "digest": "sha256:f7b8ed799a494ad6395a692af5b23c2bfa53a6f7b631cfb02892ded697c1b3dd",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 137,
+      "end": 137,
+      "digest": "sha256:3f788cc7c00697bba6bda63567669605bcbe107a082040011e22323eef95676f",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 138,
+      "end": 138,
+      "digest": "sha256:d8b3354215a4761a3bf685a25da9a735d9f0652c622561b7206c2bca21bba83f",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 139,
+      "end": 139,
+      "digest": "sha256:7f6421ca1f537bff07b404401e899c26e79884a3c2d0b93ad43800ab6dfc3bed",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 140,
+      "end": 140,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 141,
+      "end": 141,
+      "digest": "sha256:dee84927edae4b7e06afe7342ac0a93cc8f1a114bedbb36983755d20287401c0",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 142,
+      "end": 142,
+      "digest": "sha256:aff1be4421aea432886b2b59d208cbe5c59c9c37af5d24e96512248793ddbf20",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 143,
+      "end": 143,
+      "digest": "sha256:e63bf3b303d0ed2115136ae994018c059b823ed6fa2e4c998e02344a51ab79a2",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 144,
+      "end": 144,
+      "digest": "sha256:f7ad13b8a924d74672f03d6206aa2342294bb200b9907fdfe780d7ed11f71323",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 145,
+      "end": 145,
+      "digest": "sha256:4c154cdaef82ba33866af83a0fb4627709fde0adf6b35ece16355f457f55ed74",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 146,
+      "end": 146,
+      "digest": "sha256:0e4e78d2eb683e84fa9d113d26e3913b225682a40e4b4181758ce247e53fbe80",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 147,
+      "end": 147,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 148,
+      "end": 148,
+      "digest": "sha256:c54efcaa5c3b9e486be2a9d31bc772b45089da81d325b309956f8dc0d28f8fe0",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 149,
+      "end": 149,
+      "digest": "sha256:aff1be4421aea432886b2b59d208cbe5c59c9c37af5d24e96512248793ddbf20",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 150,
+      "end": 150,
+      "digest": "sha256:9e93d6f921705195214659c0fffa69c7f724e0523f55e5cad9d067e44a49e1a8",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 151,
+      "end": 151,
+      "digest": "sha256:8080c97448e10e9dec28ea19cce9db7a4e525113d230c8f81bd95d4aa531f8c4",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 152,
+      "end": 152,
+      "digest": "sha256:5dc818c0ac42ea2dcdf685264cabeca322ecd8a146d6d98029bb999b3dd399f7",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 153,
+      "end": 153,
+      "digest": "sha256:cf46820fa3e376962c930f9ca8a5a2ca37275dd64223683442e95082813a02ad",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 154,
+      "end": 154,
+      "digest": "sha256:a8515e349c39d05887601fa0363b17d6520da450b4927aa58f9f5f92394db5c2",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 155,
+      "end": 155,
+      "digest": "sha256:9ef5954884de46526cb972298cdac8a9afe4199189cbdd0461f1259efae4c322",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 156,
+      "end": 156,
+      "digest": "sha256:c2f8dc1356b6a2b0805a11d1035553f68e66e6853950506634bd6bd42cc05d14",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 157,
+      "end": 157,
+      "digest": "sha256:c13f355413e6ff5b67a248dba18aa6a1cbf57ee76e60588e0d3621081430bc09",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 158,
+      "end": 158,
+      "digest": "sha256:eebb095241b259f4c10398afb9ac8b3f124455ee4571d904f4ca8d32f363352a",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 159,
+      "end": 159,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 160,
+      "end": 160,
+      "digest": "sha256:ada1d7914809e3499d4573e8bfe5826ae082ea2e2a14db7cc14172577c6a735a",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 161,
+      "end": 161,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 162,
+      "end": 162,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 163,
+      "end": 163,
+      "digest": "sha256:91c462ce052701332b89fe505bc4485b1a643bcc2e608965599a45495a54e22c",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 164,
+      "end": 164,
+      "digest": "sha256:8e61d2f98e2647566c822cce4bbed116695ef55339bcd6c299a48b1083146b41",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 165,
+      "end": 165,
+      "digest": "sha256:c285be74048d09929efbe9a93981c4f8d998cd56677cec898d37b4841c73d789",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 166,
+      "end": 166,
+      "digest": "sha256:557eaa06617b6ded2a6cc76f5d461fb0a5a152b62b47ad9f5950f23a8af489c7",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 167,
+      "end": 167,
+      "digest": "sha256:9210d3156c29ccf58b0fa86dd617a73ed686c5097a8d10d7eaecac4d0ebcb7e1",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 168,
+      "end": 168,
+      "digest": "sha256:e6d334a76c80e0ffeef2b7e18aa9e81c3280ae4f3b20a2e6e669803eac534f56",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 169,
+      "end": 169,
+      "digest": "sha256:27fa094f9d78dfdc31898ae583ca5513c8d9bb6ab12eea27fb6457be77bf76a2",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 170,
+      "end": 170,
+      "digest": "sha256:1306e169aad9991fedf03cb94fe68b71343a8dbe049604206dfab9e7c50498f9",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 171,
+      "end": 171,
+      "digest": "sha256:355ba8185dcebf385b6373d72aa85ad088367988befb059e4c4dd3177afe55ca",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 172,
+      "end": 172,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 173,
+      "end": 173,
+      "digest": "sha256:209e5cfd141bf314833b2e69f713216104267f627a75a9c7ff477368f21e5b1a",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 174,
+      "end": 174,
+      "digest": "sha256:315434450edfeb3b1057c40068aa3ea2d77ed4a6f55eeff8791e66cc3ce9bca0",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 175,
+      "end": 175,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 176,
+      "end": 176,
+      "digest": "sha256:947ed264c0694e56baf89cf1a05bd99c837dbe2bf622bbe875f6e1a37a58d8b6",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 177,
+      "end": 177,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 178,
+      "end": 178,
+      "digest": "sha256:355ba8185dcebf385b6373d72aa85ad088367988befb059e4c4dd3177afe55ca",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 179,
+      "end": 179,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 180,
+      "end": 180,
+      "digest": "sha256:fbd605b7c7ce2cba11dfda44a6af868f1f15c33472a178e91e100e1fa5fd23f6",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 181,
+      "end": 181,
+      "digest": "sha256:571e0530d11257150c22cf40bcf52ac28ae6bfad79107eb0d7dfccd096ed582b",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 182,
+      "end": 182,
+      "digest": "sha256:6bd7df8086bb995890991ffd58c1a8ecc9ded434216a24e4d764004643a4f719",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 183,
+      "end": 183,
+      "digest": "sha256:4f9ef370780217c954249e0cce9e72d9362a09215b0712577c246eb6570d6964",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 184,
+      "end": 184,
+      "digest": "sha256:cf8fa8ec9c7f18940dfeafc261405bd08ad98df7bf0cf0c4f7075b78178fdcea",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 185,
+      "end": 185,
+      "digest": "sha256:033d2d2a23b9c465a564d8fddf73d0960af3d681d4f090959943d6effdd88ff4",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 186,
+      "end": 186,
+      "digest": "sha256:2e697a937b8c085f7ee8b22b30fb93ebfb7a36d6dff58bff898c94faf6e12890",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 187,
+      "end": 187,
+      "digest": "sha256:c278ef09bff9e1d266f63b5ec34252d568b598af9a425486d8857a12c0ec2dcf",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 188,
+      "end": 188,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 189,
+      "end": 189,
+      "digest": "sha256:2c39a07e6d08abd5a76f36dabc95fb084d45aabc77ec92d026259b66bf760f06",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 190,
+      "end": 190,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 191,
+      "end": 191,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 192,
+      "end": 192,
+      "digest": "sha256:355ba8185dcebf385b6373d72aa85ad088367988befb059e4c4dd3177afe55ca",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 193,
+      "end": 193,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 194,
+      "end": 194,
+      "digest": "sha256:07d92ecb654bca7601a3089b1c6daf35500f71e08809a4e22b54dcbc66666a06",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 195,
+      "end": 195,
+      "digest": "sha256:9f9ddba03560dd753df8abd28b03d7003500dc47a0726c7f6fa4cc8a9bd38f9f",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 196,
+      "end": 196,
+      "digest": "sha256:6bd7df8086bb995890991ffd58c1a8ecc9ded434216a24e4d764004643a4f719",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 197,
+      "end": 197,
+      "digest": "sha256:f7dde1b47553a0d0fc252b456454b62e00d860e67fe99f430363ab64c34f6556",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 198,
+      "end": 198,
+      "digest": "sha256:90b0df9e3733614a67776c2d353ac85e0691e47c904ca8135ca7b90c36ea8b6d",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 199,
+      "end": 199,
+      "digest": "sha256:c00d51d17fc1fd9b33a7306f2c0ebbb97c80471a04c1142c117388537956621f",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 200,
+      "end": 200,
+      "digest": "sha256:790abc4e40cac256ccb7c2ec0b7a5dd3d193b4ada19a15c084a6f46517e2c858",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 201,
+      "end": 201,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 202,
+      "end": 202,
+      "digest": "sha256:658ad7c9312e898de45c0f474bd248749b59be941ed7d003e8f3ec32cdc84fa6",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 203,
+      "end": 203,
+      "digest": "sha256:1fa83010775c0d7dbe5ece405a9a723bb3aa6bb82a3f95f632d69617ef3f0354",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 204,
+      "end": 204,
+      "digest": "sha256:7ef080390aaee7b7808fd276a884baa469757f807716ed0539baeaf9457355a6",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 205,
+      "end": 205,
+      "digest": "sha256:44babc8be27806877a428ec2fbc4664015dfe6b68e151586d6f6364ec6834e32",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 206,
+      "end": 206,
+      "digest": "sha256:1a2477a8127147fbb2ec92f2cbfee2a5807852d6f60b9e97f2e388c550151f7d",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 207,
+      "end": 207,
+      "digest": "sha256:46ae6efb1bdcca232683dc7fcec67c53243444703a0937f194445a52dd0dd289",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 208,
+      "end": 208,
+      "digest": "sha256:f069ac8b45454d9146604f41f944775630a19528cc6420535c5450354196a8ac",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 209,
+      "end": 209,
+      "digest": "sha256:1c1fbb948e9ad63d8f2b4c09a3b15dbf4ee0f96c47a2360f82999eb682b66a59",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 210,
+      "end": 210,
+      "digest": "sha256:da5c4b4af8bfbcb944c17782876465d58cd93717401f942c0f4756ed22580668",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 211,
+      "end": 211,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 212,
+      "end": 212,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 213,
+      "end": 213,
+      "digest": "sha256:ada1d7914809e3499d4573e8bfe5826ae082ea2e2a14db7cc14172577c6a735a",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 214,
+      "end": 214,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 215,
+      "end": 215,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 216,
+      "end": 216,
+      "digest": "sha256:c212289b1fa1e5b36096441a47c7bb2f30a2f9de6c16725e90b17ed519046dc0",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 217,
+      "end": 217,
+      "digest": "sha256:5cef74a9e586e2dccbfdabe991c2b80778943ee2ba9d775f1927bb9e5c8afa9e",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 218,
+      "end": 218,
+      "digest": "sha256:e0716b974b86e44ceae0665b89702b463fe9cc3f617f1cb569f084606363311d",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 219,
+      "end": 219,
+      "digest": "sha256:87181f90d3d1090553b4907c474d241ce64b306c6cbcb4bfa20eb67cc92e4440",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 220,
+      "end": 220,
+      "digest": "sha256:a064a4309d3aadb1df4e6633f54d0c2e572422f858faef0ec892b0cd476ad796",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 221,
+      "end": 221,
+      "digest": "sha256:a580c14434f7ece82527546e6c8cbd92d4f1302864b71ec4470e1e017ad7776b",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 222,
+      "end": 222,
+      "digest": "sha256:fe86e907238775899db642830209b98488882ad5196b8fc236ae973d51a1e8bd",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 223,
+      "end": 223,
+      "digest": "sha256:eb8b1daf974427d8b4d72b3edb87b2a5cef211b71d426c30703793ea19213bc0",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 224,
+      "end": 224,
+      "digest": "sha256:10d732295ab439daa095b9183cc74e6b4f5d6b8ddd6c354030a3112e72b32b17",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 225,
+      "end": 225,
+      "digest": "sha256:533a9c3503fe6854064cfec98c266fdb6f94ff83ea1f85bdf32341283ff5113d",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 226,
+      "end": 226,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Experiment CLI entrypoint."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/main.go",
+      "start": 227,
+      "end": 227,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Experiment CLI entrypoint."
+    }
+  ],
+  "version": 2
+}

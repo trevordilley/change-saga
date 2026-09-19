@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/diffuri/diffuri.go",
+      "start": 179,
+      "end": 233,
+      "digest": "sha256:8cb71f0513c1eded9f59464d0bea99a90080c88f2de4c4e4411220213c3c470e",
+      "note": "Enforces contained entrypoints, safe structural entities, and cross-platform portable names."
+    }
+  ],
+  "version": 2
+}

@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/fixture-builder.ts",
+      "start": 360,
+      "end": 450,
+      "digest": "sha256:58a1b7eb5c2091b47cc98de0b5b7149d43f28d73aff199e8a227df6836de7f04",
+      "note": "Constructs canonical diff URIs and authenticated HTTP form or multipart requests for security scenarios."
+    }
+  ],
+  "version": 2
+}

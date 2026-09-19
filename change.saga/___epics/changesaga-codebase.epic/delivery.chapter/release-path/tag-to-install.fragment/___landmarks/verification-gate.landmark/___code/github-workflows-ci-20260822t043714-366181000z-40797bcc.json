@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/workflows/ci.yml",
+      "start": 68,
+      "end": 107,
+      "digest": "sha256:1dbfa623dda9c18c1329fbe74a7764fc9516ec3f072255cb10e010dd7ef00f78",
+      "note": "Runs formatting, shell, credential-policy, workflow-pinning, and release-script lint checks."
+    }
+  ],
+  "version": 2
+}

@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/install.sh",
+      "start": 244,
+      "end": 265,
+      "digest": "sha256:01065b2a64628a6127770afa651957b892c3fa15bc8b79aa235504d4be34e6fb",
+      "note": "Permits archive topology inspection only after the computed digest matches the manifest."
+    }
+  ],
+  "version": 2
+}

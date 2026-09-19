@@ -11,7 +11,6 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/twentyideas/changesaga/internal/diffuri"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
@@ -88,7 +87,7 @@ func TestAuthoringLoopAgainstGitDiff(t *testing.T) {
 	if err := Cover(context.Background(), []string{"--repo", repo, "--target", "___overview/overview.fragment", "--path", "app.go", "--side", "new", "--lines", "1-3", root}, &output); err != nil {
 		t.Fatal(err)
 	}
-	if err := Cover(context.Background(), []string{"--repo", repo, "--target", "___overview/overview.fragment", "--path", "app.go", "--event", "add", root}, &output); err != nil {
+	if err := Cover(context.Background(), []string{"--repo", repo, "--target", "___overview/overview.fragment", "--path", "app.go", "--file", root}, &output); err != nil {
 		t.Fatal(err)
 	}
 	report, err = buildReport(context.Background(), root, repo)
@@ -158,7 +157,7 @@ func TestInstallSkillPrintsPortableAuthoringContract(t *testing.T) {
 	for _, expected := range []string{
 		"project-local agent skill", "existing PR-authoring", "thing to be reviewed, not the review itself",
 		"Do not create review", "change-saga --help", "change-saga status --json", "change-saga add-landmark", "SVG diagram",
-		"interactive HTML", "data flows", "data models", "exact diff atoms",
+		"interactive HTML", "data flows", "data models", "Reference only the code a fragment or landmark explains",
 		"zero citations", "code-bearing SVG/HTML", "node, edge, arrow, transition", "SVG element bounds become on-canvas links automatically",
 		"change-saga query mappings --sort scrutiny", "change-saga add-claim", "change-saga verify-claim",
 		"change-saga compare --json", "must_update", "new_content", "source diffs only",
@@ -277,26 +276,23 @@ func TestRepositoryDiscoveryRequiresOptInForLocalOrigin(t *testing.T) {
 	}
 }
 
-func TestCoverRejectsURIForDifferentRepository(t *testing.T) {
-	repo := t.TempDir()
-	git(t, repo, "init", "-b", "main")
-	git(t, repo, "config", "user.name", "Test Author")
-	git(t, repo, "config", "user.email", "test@example.test")
-	writeFile(t, filepath.Join(repo, "README.md"), "base\n")
-	git(t, repo, "add", ".")
-	git(t, repo, "commit", "-m", "base")
-	root := filepath.Join(t.TempDir(), "different.saga")
+// A reference is pinned in the repository it is authored from; a location
+// whose commit that checkout does not have cannot be digested and is refused
+// before anything is written.
+func TestCoverRejectsReferenceAbsentFromRepository(t *testing.T) {
+	root, repo := coveredSaga(t)
 	var output bytes.Buffer
-	if err := Init(context.Background(), []string{"--repo", repo, "--repository", "https://example.test/acme/source.git", root}, &output); err != nil {
-		t.Fatal(err)
+	err := Cover(context.Background(), []string{"--repo", repo, "--ref", strings.Repeat("a", 40) + ":internal/service/handler.go", root}, &output)
+	if err == nil {
+		t.Fatal("a reference to a commit absent from the repository was accepted")
 	}
-	uri, err := diffuri.Build(diffuri.Reference{Repository: "https://example.test/acme/other.git", Base: "a", Head: "b", Kind: "event", Event: "add", Path: "empty.txt"})
-	if err != nil {
-		t.Fatal(err)
+	if names := diffRecords(t, filepath.Join(root, saga.CodeDirName)); len(names) != 0 {
+		t.Fatalf("a refused reference left records: %v", names)
 	}
-	err = Cover(context.Background(), []string{"--uri", uri, root}, &output)
-	if err == nil || !strings.Contains(err.Error(), "does not match saga source repository") {
-		t.Fatalf("foreign repository URI was accepted: %v", err)
+	head := strings.TrimSpace(git(t, repo, "rev-parse", "HEAD"))
+	err = Cover(context.Background(), []string{"--repo", repo, "--ref", head + ":internal/service/missing.go", root}, &output)
+	if err == nil || !strings.Contains(err.Error(), "does not exist at commit") {
+		t.Fatalf("a reference to a missing file was accepted: %v", err)
 	}
 }
 

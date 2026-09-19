@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/cli.go",
+      "start": 949,
+      "end": 1012,
+      "digest": "sha256:2f9309090133133eb9e7970f1df24fa62cdf73fbea3b3457bce086256e48e112",
+      "note": "Resolves authored hierarchy paths and stable URNs to exact target packages."
+    }
+  ],
+  "version": 2
+}

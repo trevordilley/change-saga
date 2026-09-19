@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/codeview.go",
+      "start": 147,
+      "end": 170,
+      "digest": "sha256:e12b1bd1064debacfa4409717b6108c9cf4d115387df2ff3fafb188fc9d185f6",
+      "note": "Captures a requested file and diff identity and preserves both in stable Code Diff links."
+    }
+  ],
+  "version": 2
+}

@@ -1,0 +1,3051 @@
+{
+  "references": [
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "digest": "sha256:29860c09de99b33c5c31f3029ab447c239c6cfee45d8385099270a2b11cc923e",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:896d144d437b9f0966ba1dbe34ab59cba0ff19a0e5d910b542bcdd8e5f25c071",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:d85b6883b468d8dffdc8ac69616cd56e7506b64eebf6f40a033a73f08adccfae",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:101ead936a2281d53dcc064b7e2a2ab0d53b92ef3ef7b34b668673007895c860",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:de4d33509d21b5e5beebb94e908f061adcdc0da24bcaddcfb8c56444a18eba9d",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:b5b0516bbc4e44012318c4d3722295609e5b84a69459b68b98d0c730cfe9cd3e",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:9ca02bdf4ba193063c35e14a4eb03e409cd5fd1c28eed2077f82efd0538d41b4",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:71e37b6cd48ad477cbb12624b757ee1dc4975711b78237a85f508bfdd723af77",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:88b2b63df1b22d7cb9359d4a10a5e357a697e72f0d3f3dc2887843958558ca4b",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:d01aa323829d06b5023aa663d61d45371f4198cc7f8a770199fe5e4dc0c5ba39",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:9d321d278769fb32c7c6820e1c992ebb53b04e39def0f158cbf1d84e27d34c18",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:30846666d2ce47f9ec32160922192466e9cd4450f31dee0061811ca48bb8ccb0",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:c38b872e8f16669d10170776c2f60b599323949e1cae090c6134635c999923a0",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:171b756171ff8240f94ccb83de837ed4242449df3ecef3a3762523d1f5ae0348",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:5477249feb9c6e0d0e73f83266b79ef392128e0ce67daae9b528cbcc4db7b552",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:57e084ab258e81b1e20f6e9b9f72b556c4838b3517e76da7edd5b6e7546090a2",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:74432b77763c6cfa9171fc3fd13832ff241f4c996771aa8caccfe84199cb372f",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:f05b48055b78db9e9e8993848d47169d7abd312df35886aa83d4014d37eb4009",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:8fbccf5ddb1f4aa074d4872ffaa17e418832f2e06dcb8788f6dfc78c9b4ba0df",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:ab6f6be8e5963a10d31f1044691aa6beceed5a59d04cd8247f259497075d8b4d",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:fafba0527c3953c4b6e0e5b5739ba83612f8053bcdc9466730193cd1d590b408",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:691ad78e1ff8485a479bdfa982d23f920101912a59bea8851a5f019283192565",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:bbf1df95da3a262e0630fd041674db79657086e03286b6979c15e67cbb3162d6",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:961c58e6a3dcfa9978e3cfac63b5319fe7d2194480ad158d4fb22ea7af51e4a0",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:f7dc0e30953f168f8fd06276214ea94b7c6da4f9b5b478e9492c54bce70c9835",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:30956778cf4a9438bd4c47f77c7a1e2d2e7bdd6b19bd09cec6cfc7587318b718",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:2ba0238ba592ebc030e320abc9749c50ff83307cb7be7d6ef75948af4ea542bc",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:ce29912ce24c46df42678eebd600da5a3b1948ffd926e5beb3649239f8bba975",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:a871d95aa4c93fa9b658ddc82698e2135dea24160c5affeb01361d167f7d34f8",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:d38a181d734fc05d421284f2643ff9581ea273f55b579d718ea45a22741a98cc",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:30bffdea407590f037d1f66d85823bc6d3ff3ae3c0f223a9cf2af41361c3567c",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:f83c7333f892e7a39d84af3ece611c8d460a8ce367f8c2c5965c047b74542f03",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:8bb1f4c3b4c23310e9b7557a808b687d3f4147096d89d1603f2403ef71754fc6",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:c490bf5efe323b8a71689cbc7d99ebe678b33589ecefd38ecc925513d9026c13",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:5a8c59bc5d9750ea069f3345cf01b52bf78864bd530c08db0e170ea2225d85d4",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:719473ff18e02feb3ff06314209710c4277ac109cb18537bad21bab9673cdf00",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:436892d640950e4703a6f477344a2e3fbb9e0531a0fe68df3097f963ee01fde4",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:0cf6937f10fd806f9723f7b6fb230aadb0ca117f5c3eb356b782f5a67201ee9a",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:05c6026423537c3b3836625796e665090a4513aabf0faabcf681cde27df066e0",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:bc22a2a3a5df870efb775b0907f22af6537f4ac2bccd9bac86aa65db3f584971",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:4b02b22e206a26fe0bad67be26e9fb1974bc66f3a2c5057c56f59ec247eb38f4",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:b14dae36c2a74667f1f02693f61758126865153eedc6f2f9b1cf2c7759cadb70",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:cdac6b6bb0ff6dbcad72f97889ab8449a7bcf5303963c8bf0302cb45b711d97a",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:36321e4a0a321dc08cf37ef233215f53d24fd2cd83b5fa0941f3041556bbdd19",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:0a93f337d3bcb2c27cf687c3fd43c3ebde38b09cacf25e21b917bfed436a99cd",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:64269f59d1958eee12f78e24921a4829bb8ddb7d354b00b8e4b759bc93a7123a",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:a54f9008b89a73338a15775ab6ca6c84d5ffe39de827ff7f548849fc8d0d5199",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:5fb0a6fed5b450def63f1fc7b9b4c48ac49e21987bfac4581cd6ea6e14c03afa",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:130f5363286013c8934b6bded14e1356807d7944668c588c65d5848a4be9aeda",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:62ddcdd395d34e9bcc6b9f9fc197b70ee2442bc9188c5b326ed6d7bc4f342bae",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:a8818922aeac03492fbe59b603755cdac1eefc3466787e23fe552475a8810b83",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:8548db496f02ed5a3f6891f90772935a8e4aa0e5bb32e2abd845c28897e0cf21",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:1c43993a56cb057de905c92c828969e75bf7e623baf0d4905264be477cb3ac40",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:c35f61c43c2ca398d3ac89dab33a9d36f5e115c4f2b0b6370491739b04e8f744",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:834599b0294bf89cc3ba1a0b2653bd7d4bc79098f2eb511f6a4a0e9d93b1ab40",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 68,
+      "end": 68,
+      "digest": "sha256:dd956a7a2fcfdd32718dc6dea307300933d2f7a63ae70b246edd63806c5c64ed",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:d680f3ce70b067a1f44a80000e57bda3279ef20ab4f7b81a94871ca3aad564ce",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 70,
+      "end": 70,
+      "digest": "sha256:e7e1c7ea3c7062499e723457e3e063022a33c09a008ede78da2e850a0b09dc27",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 71,
+      "end": 71,
+      "digest": "sha256:51a3cf506dcc9d6d21ecec798702857e47a476c6d8ab418f1307d8f8538bd39b",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 72,
+      "end": 72,
+      "digest": "sha256:c41636dd60f60f6c3ce00f8a35ca5caa9db124b73fbe7ba1cdea1936e848b0bc",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 73,
+      "end": 73,
+      "digest": "sha256:e4b16e3716d1e60cf289d83389e58d4a6f7c07f863b66480a71fa2606665635b",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 74,
+      "end": 74,
+      "digest": "sha256:20185d23441f64dadabddf960718638f72ea5e418a246711c0e01aff62a0601f",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 75,
+      "end": 75,
+      "digest": "sha256:222e8d3d761f31ed7ab6a24b4e0c382fdaf760c4a082b2b257a1801af2379a22",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 76,
+      "end": 76,
+      "digest": "sha256:4ce357a81b69841e1c14484a6a15d97a3fb9b9497da5b97d67073a52f7917181",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 77,
+      "end": 77,
+      "digest": "sha256:986d79df40398b196e46eda3753f179cbb10f4e93bec07f9b08c45950ff7552a",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 78,
+      "end": 78,
+      "digest": "sha256:ddf230badcbfd058bec08fc3fe1fd5b91adb29273140e9b619bf628f7a75a957",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 79,
+      "end": 79,
+      "digest": "sha256:a0540e08d82c53a8435bbbe0119274ff915737d5a245e7cd29715241d5f1b86e",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 80,
+      "end": 80,
+      "digest": "sha256:f03af2393efea3683ca6ee261f33f1376a6c9b13876b5d26b20a992cf9c3db16",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 81,
+      "end": 81,
+      "digest": "sha256:97f7639d0679d8f46d7c86cf5b5e4813cafbb106c0d0bdcf35cd70157b012900",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 82,
+      "end": 82,
+      "digest": "sha256:d20ec5ec2cd2f9c80e5789f5f6916827c1e8a2defcb0224e10c35001965f0970",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 83,
+      "end": 83,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 84,
+      "end": 84,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 85,
+      "end": 85,
+      "digest": "sha256:77a9b5e9019c8db8783ec9c3febb0a2c9862f61a05c308fe895e4a9bed03edb3",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 86,
+      "end": 86,
+      "digest": "sha256:ab52cb2127850774813a9a0132f1cb171ee68629ad1e7d4ed6770c903ced2637",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 87,
+      "end": 87,
+      "digest": "sha256:247c404e37701bf20bfcde2f7b70ecd779d35ea54e09545d49d884beba6ac27c",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 88,
+      "end": 88,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 89,
+      "end": 89,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 90,
+      "end": 90,
+      "digest": "sha256:16fa9ba2350940371d34444ff374c6f1483205f09f47ba79ddfa033ef561bf33",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 91,
+      "end": 91,
+      "digest": "sha256:d9e741ef51698c70d96d6bb3c8b9b599090be9f998858bac68817c303d4707ea",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 92,
+      "end": 92,
+      "digest": "sha256:5f6695781279aec331de22472aaff503a88943dd9f1278ab66f52024b0c05f7d",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 93,
+      "end": 93,
+      "digest": "sha256:425d7fa069a81c117271ac454063f43777b2b4bccea0d3eabf070409879fc1bb",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 94,
+      "end": 94,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 95,
+      "end": 95,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 96,
+      "end": 96,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 97,
+      "end": 97,
+      "digest": "sha256:be90f6355e4c7d5cdc03a7100b7938007cf09d1211d7c20bd3508ff25362681f",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 98,
+      "end": 98,
+      "digest": "sha256:21caf266848fd0789a7c97fa34d3fae0683bfaf6179c382fb7eae98d42a2a6d1",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 99,
+      "end": 99,
+      "digest": "sha256:a95f300141fb66d353670d7421abd5309e62cd997b5767e56ebde219c8c3ac94",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 100,
+      "end": 100,
+      "digest": "sha256:b3234ebf76ad860d1a47a95020c054d6fa70a7bb0babbea3d3cc6e2f95987385",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 101,
+      "end": 101,
+      "digest": "sha256:a185b8e2cd88e96351c5ed814820fdf16afbf7e6f5b83c122598ff99919d52d9",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 102,
+      "end": 102,
+      "digest": "sha256:84e259577e93d2f002d5329584ee484592d991e24465393a6f23817e88a6de29",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 103,
+      "end": 103,
+      "digest": "sha256:85e6c2215d7a6bb63457069c1ce80181bad5a7ebef92aa5db92bbc75aec4e4c5",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 104,
+      "end": 104,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 105,
+      "end": 105,
+      "digest": "sha256:7bcdcc2524caceb8e839ab91c41c3db8964991316a0f68c15d6152c296907783",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 106,
+      "end": 106,
+      "digest": "sha256:d10dc49e15bbc2b5d1975431bde53c952f5d6dae6527e55fe95ef078171207c3",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 107,
+      "end": 107,
+      "digest": "sha256:27a62922263d2ee00ca11657c06f5ad1f21b7fc679af03568bd7cc609f2db8a5",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 108,
+      "end": 108,
+      "digest": "sha256:eb502b0933be0046755c9a2d88a17e052ebf4a64c4f69dbf347c71e501da5f6b",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 109,
+      "end": 109,
+      "digest": "sha256:ea0b166fa864c8be41e9998a5c880d2e39c456bc637ed9dd524f7a355109be25",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 110,
+      "end": 110,
+      "digest": "sha256:eae928b7ad294f3201406891db37d17d3370e09720d518660987a35fe36292d1",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 111,
+      "end": 111,
+      "digest": "sha256:0e5f2ec6f3fb190ff52bc05fd403584918df4f6672d48b6795394fb1eaab7214",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 112,
+      "end": 112,
+      "digest": "sha256:68ea067a1bbc00c5276dbfd93d0bb0776a58dec0da83253e612172d77fc274ab",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 113,
+      "end": 113,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 114,
+      "end": 114,
+      "digest": "sha256:c8ab67450683c17f525d01d75121bc7a0293f37820ae5efb728a934fc732032b",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 115,
+      "end": 115,
+      "digest": "sha256:b46d3d90f5e1e292d7e6f676eb37aac716b827af855b951bde67ca5e16d83520",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 116,
+      "end": 116,
+      "digest": "sha256:a47e70f0c01c8458be7c9a2ff1ef33439652ff7111ccab90c779c4d2649ade89",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 117,
+      "end": 117,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 118,
+      "end": 118,
+      "digest": "sha256:1061c1678396a5246fa0c7e6600f5e5bdbc892b5abf6bc212102a77cf356d701",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 119,
+      "end": 119,
+      "digest": "sha256:fa4d3e0f940be6b638eaa214d0ba4d4eb5a471164f5a20f2fd86fc6788da33ed",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 120,
+      "end": 120,
+      "digest": "sha256:6b8a0c5802a30e41cf66275988ea178a1b1e3fe64bb3f07cf30b78b9855d8a7f",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 121,
+      "end": 121,
+      "digest": "sha256:4fc0e67919313a1583b69e252e6265782d5d5835d4567ba44644d3342d4576e0",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 122,
+      "end": 122,
+      "digest": "sha256:32200d90e45a4ef2bc94234324e7a8532ab038440d488d44e689116e0abbdcf8",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 123,
+      "end": 123,
+      "digest": "sha256:bb8a3e8a69378fbad040007c6f4d9c4702efc74da5deaf0c73442ef7703eeca1",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 124,
+      "end": 124,
+      "digest": "sha256:7b2cac61c17a0d8083460c8beb9fdd822a2738b8d9de48ad29a79a76c7f39ea8",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 125,
+      "end": 125,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 126,
+      "end": 126,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 127,
+      "end": 127,
+      "digest": "sha256:3341036bf7fe053bf251ae30925e7e5a89b039045c46543020fdb5a54a95095d",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 128,
+      "end": 128,
+      "digest": "sha256:a256b6a006459d5a9464e7fd2b3049128bd2e401b3b9997da3409a7951d87a67",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 129,
+      "end": 129,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 130,
+      "end": 130,
+      "digest": "sha256:ef92f234309b3fb02ed244496ebb778e682ca2ab510727b8846b7e639a9ad00b",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 131,
+      "end": 131,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 132,
+      "end": 132,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 133,
+      "end": 133,
+      "digest": "sha256:eefa847960f9c3de9298aeb60eee27b239208811b6d15e421d14195b625034e7",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 134,
+      "end": 134,
+      "digest": "sha256:c8ed41676a33c9c35901d432acf61b89a36675b533908a0c9f4086fa3a2bf83f",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 135,
+      "end": 135,
+      "digest": "sha256:93f1ca61a557182e231b6d5b2b4bcd0c2fa8338dde8cf337b1a36486733fb0ee",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 136,
+      "end": 136,
+      "digest": "sha256:d570cc11aa61b8d6e28bf21c8f012dba43cd6c54f46e3e05c52e27c0ff7a3926",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 137,
+      "end": 137,
+      "digest": "sha256:7ca6b4ce90e2f4ab7e327d82e137f208dd357f7230f780c32957d9993e86cda9",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 138,
+      "end": 138,
+      "digest": "sha256:6aeb87dc31e41bbd1bd2d16fb2bed92bfcc81b8c196b9843a5c866bb0eeb91ef",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 139,
+      "end": 139,
+      "digest": "sha256:ace2384b9b4d6b1f643f11ee1a0c234c99e2497d100b16cb77993689dad71396",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 140,
+      "end": 140,
+      "digest": "sha256:1650a2ff1b5038988fe8829a7b5d53033cb09db27d2ff370519b38fa781a242b",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 141,
+      "end": 141,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 142,
+      "end": 142,
+      "digest": "sha256:4549a49cee73e74207fc333a115d9afa9d73e6b067285c68ae4c527dc262a2f7",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 143,
+      "end": 143,
+      "digest": "sha256:d3238a4e815cf3c7fc729794ac7113d2fc94d8b572b07982a312f930d25bfab3",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 144,
+      "end": 144,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 145,
+      "end": 145,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 146,
+      "end": 146,
+      "digest": "sha256:0a0ef7a9ba166ee754f12582c09dff5ed345f5d77f7d1d1f1769edc460eec7be",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 147,
+      "end": 147,
+      "digest": "sha256:63c38e7d024a2ff9dd50bdfbd395bbe5e45268a1af4c256132cbfae4d148b91c",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 148,
+      "end": 148,
+      "digest": "sha256:01e4045d097d00a0c4ce538a786c9976e20ee08c500f9f435ac7e99c3f8d75fb",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 149,
+      "end": 149,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 150,
+      "end": 150,
+      "digest": "sha256:1a47c7c6e3861e16f738b8bf4db833adfeb26f0c41767c6292c0e9cc00487c01",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 151,
+      "end": 151,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 152,
+      "end": 152,
+      "digest": "sha256:7d2c3b94511c0c82e2a4531aa960587d623a406098cfd74f7630589a39078338",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 153,
+      "end": 153,
+      "digest": "sha256:54f9f74a1ed80cdbb2e0e6d00db66cf59e848081e7bdd576c47d8e44397eb6b8",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 154,
+      "end": 154,
+      "digest": "sha256:c5ffe1a184ecc2f80d8dd8cdbc8c8f5f59f8136a834fe69bd9c9c87251d31767",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 155,
+      "end": 155,
+      "digest": "sha256:1f50b42525b3aab636699e668cce30c6d9aa03ad1b10bf639e4551b6635e3acc",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 156,
+      "end": 156,
+      "digest": "sha256:91c37b7dcdcea9ec0b528b6f7a6678f4c424e1a6a9f39be4d795ebb636f63e9f",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 157,
+      "end": 157,
+      "digest": "sha256:abe3f5fbf7a77a6dcd91fb1416907a72754442ac06f6cfa941a7d714604c00f4",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 158,
+      "end": 158,
+      "digest": "sha256:a939d88e50597c2d49f74f7e6c689f03c9c54a219fce83665ccd2a958efbc9a0",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 159,
+      "end": 159,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 160,
+      "end": 160,
+      "digest": "sha256:b89fb3d6eb48c4e49e49ae7d0cfa3378c5c2a7bfdcdfe1e5e2c9e5012b42da51",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 161,
+      "end": 161,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 162,
+      "end": 162,
+      "digest": "sha256:e0b6cfc3afe69b62897a52615e86c808b08c882cc04ba467d6ccfc4c2e9162df",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 163,
+      "end": 163,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 164,
+      "end": 164,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 165,
+      "end": 165,
+      "digest": "sha256:70ccf8f09ed107a7c1c62df644bafa338944c2f68711176ec1143e79b49076c8",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 166,
+      "end": 166,
+      "digest": "sha256:b1a24093b71035fb7fc7695b87f2cf824c4a5f3d924dbaf121c231533aabfa22",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 167,
+      "end": 167,
+      "digest": "sha256:cea38253c3b316d024adc9be10bce6a21d2d82138bc16b0e5749c25e00674463",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 168,
+      "end": 168,
+      "digest": "sha256:3a3d89c51cafdd6d009efb2ab6f1ac95fe19d3f9439334ea08ac9defb5b4d9b1",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 169,
+      "end": 169,
+      "digest": "sha256:fa7531ef4e4b227945c023bc1a26f48c64094ac1c7299e2e80bd476a707db6b7",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 170,
+      "end": 170,
+      "digest": "sha256:1cf3a1c272ace280905ae1de41f23bd4ac28279cbf50db095aca97b1becb4941",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 171,
+      "end": 171,
+      "digest": "sha256:333154d91b00ead8a58f46c2609fa29d32fb51a4f6f2ec9bfbbbc6c9bc13aa2a",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 172,
+      "end": 172,
+      "digest": "sha256:af738d857211fb8383d13a1a92b00d60cfedb9340444e20a0c4de0141527f483",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 173,
+      "end": 173,
+      "digest": "sha256:62bf064ba73527fdc86943aede6da1dba8464043c450103a3a202dd53f8249d0",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 174,
+      "end": 174,
+      "digest": "sha256:42a57081051f4682a7db3e590b4dd5413d53dc9a01551276dacb521a7e1db9a5",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 175,
+      "end": 175,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 176,
+      "end": 176,
+      "digest": "sha256:fb56f774c15b3e64dba09115aefacaeb93f6b7dcf32a7b017fcf226c2009942d",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 177,
+      "end": 177,
+      "digest": "sha256:ffc1929e4bfe2f59c034423f7d1867cf13034f1f289a13f675e78d9a07212c6d",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 178,
+      "end": 178,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 179,
+      "end": 179,
+      "digest": "sha256:8b8d6356da6e5840a232a4a72f3883d9145fd0b6b45bf3904155b60d622cbd2c",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 180,
+      "end": 180,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 181,
+      "end": 181,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 182,
+      "end": 182,
+      "digest": "sha256:e672da34b919d610549c079c1dfd7e233bc55885f78a21ebcf19cb309cbfb109",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 183,
+      "end": 183,
+      "digest": "sha256:d1fdddd176ebb13545cfa448ef5dc8c6c626de9274a60e49ffd0d94ad16c0518",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 184,
+      "end": 184,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 185,
+      "end": 185,
+      "digest": "sha256:d0d986b0df7e9c47aa782b06609469bc8eeca47612b838cf829dda4bcddd3329",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 186,
+      "end": 186,
+      "digest": "sha256:d0079352851d759677dd9e2777d78fde587e308960b9fadfac4d9c4bdb66e8c4",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 187,
+      "end": 187,
+      "digest": "sha256:cbae9e1942ac734e20fd289eaf81361e9adc5cf669bb620751bfd8fe7e07afff",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 188,
+      "end": 188,
+      "digest": "sha256:59fa6876a13713df56356982a6ceec53de61fa9cab20d8dfa14c3bdba24a225b",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 189,
+      "end": 189,
+      "digest": "sha256:41c8b0e1ac15a99c7f86507afaeb024d6994b0e894c35cbc029ed93bfc956a1b",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 190,
+      "end": 190,
+      "digest": "sha256:958818ce2008b2355a2ee1571871b199b360455e0d00d3186974b34c1522766e",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 191,
+      "end": 191,
+      "digest": "sha256:c714cfa55ef4951491946146ba49b6efba6b473361502a708a2648598b8a5693",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 192,
+      "end": 192,
+      "digest": "sha256:5b71e9e16a30561029598c355a53706dfccbd353544a422fd8aaa269ac388def",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 193,
+      "end": 193,
+      "digest": "sha256:fafba0527c3953c4b6e0e5b5739ba83612f8053bcdc9466730193cd1d590b408",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 194,
+      "end": 194,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 195,
+      "end": 195,
+      "digest": "sha256:40e71ae1f7c46238f98546e12af7f5e521f0043daffab8be905743b337e3ed3f",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 196,
+      "end": 196,
+      "digest": "sha256:573f1f65fbda0753c1a0cb9dbd9100c4898f1cd1fa12fc918e593de606bb2ac5",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 197,
+      "end": 197,
+      "digest": "sha256:5b6283ed17a233a5be6fe728bd0d247e55997cde6f1d69be1bf2e9752c348544",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 198,
+      "end": 198,
+      "digest": "sha256:a964bb3fa1efcd309d149525684f6b6c9ec76a5108fa0ef66ab98b16a7ed662e",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 199,
+      "end": 199,
+      "digest": "sha256:b66fc7fce6a19f795637fe580c5ff7609c9df85de1d51715ab125edf370e727c",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 200,
+      "end": 200,
+      "digest": "sha256:6f3f76c09f2abe12a93aa19c2f7c65a17a268e429fd5503c8f7da28aa8f11c7e",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 201,
+      "end": 201,
+      "digest": "sha256:860a95f36f222ed6c312ff1b1b6ba5569de41ffdbbd69ab7fa523048942f0092",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 202,
+      "end": 202,
+      "digest": "sha256:0328e13de5f03a0118a21d7b2bac9a2259dee7175eb0b75cb5a9a882f8792963",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 203,
+      "end": 203,
+      "digest": "sha256:0f0e07086ee746c083de114d39616f770bb3836fdd9e74c0409f4691b04ebfe9",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 204,
+      "end": 204,
+      "digest": "sha256:5d8e36ca58e976ee93d89aaec6f60fdd92885592667f69b6ef759d5b0e4e42c4",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 205,
+      "end": 205,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 206,
+      "end": 206,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 207,
+      "end": 207,
+      "digest": "sha256:8bd9a01ec9a291031fe2a769aadabb069d8836ee09a6e13eab45004a626e8fb2",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 208,
+      "end": 208,
+      "digest": "sha256:162f2e1ad50b89753606aee7f050c9b599b74f9238b1e954683594ee8d1cbc6f",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 209,
+      "end": 209,
+      "digest": "sha256:a43adc6fa3d5bc3ea9a82e2c653cede4bf71ec0b02464c2d0e638de64be67c04",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 210,
+      "end": 210,
+      "digest": "sha256:ba2f4891e156d33b4f797678d823b1c060efd4284db46c5a054d5462e4348c6f",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 211,
+      "end": 211,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 212,
+      "end": 212,
+      "digest": "sha256:ab2d2b815990ce155020f148f53fae87700b3a926543537f2fea069274d3e0e0",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 213,
+      "end": 213,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 214,
+      "end": 214,
+      "digest": "sha256:c1580766b2c4e409d181da7abeff90970a08e3ea34b5b9a266d32e4a329f3446",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 215,
+      "end": 215,
+      "digest": "sha256:d29bbe66ab3cd1277ef2cc5e755500fa80beafe6395cd443f5e6f18acef72a14",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 216,
+      "end": 216,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 217,
+      "end": 217,
+      "digest": "sha256:c9868203a3704ccb157139aa21538ab193420ff3851881e91e82d85172e70059",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 218,
+      "end": 218,
+      "digest": "sha256:06b11de826359bd9691301e17a6f3a9d23843f769264b55289a358ad9551ca4c",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 219,
+      "end": 219,
+      "digest": "sha256:9a78aac83cb75b5844253b5ed4c4f260c52390b64bc0d8e05a80f295f50fd4bf",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 220,
+      "end": 220,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 221,
+      "end": 221,
+      "digest": "sha256:b8130000830c47ca4182b4c74ab4d89c39a9cb33379fb2c097fae484ee70d216",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 222,
+      "end": 222,
+      "digest": "sha256:ab2d2b815990ce155020f148f53fae87700b3a926543537f2fea069274d3e0e0",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 223,
+      "end": 223,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 224,
+      "end": 224,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 225,
+      "end": 225,
+      "digest": "sha256:72db1a4583327c12a7c65be9de1d04c6ead0507b363e0520a494794eef4d9b9b",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 226,
+      "end": 226,
+      "digest": "sha256:e008a7231a49a080102ca28c84f498f5ba0916b2e3d3d4c6c8342f0b233e72c1",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 227,
+      "end": 227,
+      "digest": "sha256:95d1e984251182e5e7195fcfb96a02bcd17510e540794ebc5751b3821703df58",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 228,
+      "end": 228,
+      "digest": "sha256:42a57081051f4682a7db3e590b4dd5413d53dc9a01551276dacb521a7e1db9a5",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 229,
+      "end": 229,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 230,
+      "end": 230,
+      "digest": "sha256:6fbcb933398077c24f0c05113eb44e70b902477e41d30a8ccfc55b31003846d7",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 231,
+      "end": 231,
+      "digest": "sha256:17defd2cb1571bb86449f20dfd54cc7ff3e8fb286e152802134664a39dfc19ca",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 232,
+      "end": 232,
+      "digest": "sha256:ffb71656a98952bb85a89d597bb5635c2e07f57b6c1e9540451b77e9b300c931",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 233,
+      "end": 233,
+      "digest": "sha256:96dd09fd7d8d55ec60e5315cfe06d75c3ca2fc8387209c83a5a32d3b634d5447",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 234,
+      "end": 234,
+      "digest": "sha256:60607f89ecd30928d22b13314c54fea93fe155cf57a9019344b7f8654464613e",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 235,
+      "end": 235,
+      "digest": "sha256:3d61e0bbf7620cea5c6b32b516edf4f4c618438239140bf3b009d7000cabdcd8",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 236,
+      "end": 236,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 237,
+      "end": 237,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 238,
+      "end": 238,
+      "digest": "sha256:67f47ac067c2a8cf9da2dae068636d581f91514ef1e167c80926a71e579bcc7f",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 239,
+      "end": 239,
+      "digest": "sha256:4c154cdaef82ba33866af83a0fb4627709fde0adf6b35ece16355f457f55ed74",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 240,
+      "end": 240,
+      "digest": "sha256:d6a0aa24b8eed8d1a0bce4b2a0abf90d798afd92fd8bab810a718b4a33be7674",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 241,
+      "end": 241,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 242,
+      "end": 242,
+      "digest": "sha256:3ddd6b2179f083c1e681177582762086ce15f39ab954eb04c6872e1217ce53d0",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 243,
+      "end": 243,
+      "digest": "sha256:cf42eed8731a06545ec6a090b83ac602622b401862644417553c40267bf57249",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 244,
+      "end": 244,
+      "digest": "sha256:d6a0aa24b8eed8d1a0bce4b2a0abf90d798afd92fd8bab810a718b4a33be7674",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 245,
+      "end": 245,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 246,
+      "end": 246,
+      "digest": "sha256:056575182b329cdcad8fde0bc4ea1afc69401679c75d43c96deb51ab06bf31e9",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 247,
+      "end": 247,
+      "digest": "sha256:ee4aa8c7aafb53aff6ad95fb6fe5afa9d8eb10ca18306af97b7456bbf1aa66f7",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 248,
+      "end": 248,
+      "digest": "sha256:7142ecd72ba2beef1ec51e5599d6ef72fc0f99fedc640415f855c4231885ee51",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 249,
+      "end": 249,
+      "digest": "sha256:ace2384b9b4d6b1f643f11ee1a0c234c99e2497d100b16cb77993689dad71396",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 250,
+      "end": 250,
+      "digest": "sha256:4c5665e491187b00f4f9addba2e9bb046cae4c39788560c4426e0bce50035f4f",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 251,
+      "end": 251,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 252,
+      "end": 252,
+      "digest": "sha256:f5073a31f74a1bc0f9664703f30a02480eb79bc4f798827265001605f9a11d91",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 253,
+      "end": 253,
+      "digest": "sha256:ace2384b9b4d6b1f643f11ee1a0c234c99e2497d100b16cb77993689dad71396",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 254,
+      "end": 254,
+      "digest": "sha256:1e32a7160888b3b593cddea120456ad97f9b0846e82753afe1a1fcb9dd18aa90",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 255,
+      "end": 255,
+      "digest": "sha256:4c5665e491187b00f4f9addba2e9bb046cae4c39788560c4426e0bce50035f4f",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 256,
+      "end": 256,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 257,
+      "end": 257,
+      "digest": "sha256:13832723333454e1f0c4cca8c218117727b7d4b7a0728eac9961f84cb2217c34",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 258,
+      "end": 258,
+      "digest": "sha256:4c5665e491187b00f4f9addba2e9bb046cae4c39788560c4426e0bce50035f4f",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 259,
+      "end": 259,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 260,
+      "end": 260,
+      "digest": "sha256:e7ce28864f396a870e13ac9cfc592ee25a42eb35d32832618ff0f91d535458de",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 261,
+      "end": 261,
+      "digest": "sha256:5cf7f7591c06da18297d201b6f5eb5bc65a41b562bac6533127a552ae6818d40",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 262,
+      "end": 262,
+      "digest": "sha256:75b179eb896ff8f82b3138e428ec4228eda4f7f6c9624ff23b0d994c4d9c63f6",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 263,
+      "end": 263,
+      "digest": "sha256:68a6aad451ae684ac5fceeeb9fc0f86e95fd68ee07436ce79c5cefb080042e59",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 264,
+      "end": 264,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 265,
+      "end": 265,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 266,
+      "end": 266,
+      "digest": "sha256:7e173474ceccd7ebcc1729f3be0b895c50684fa035d311d2f475e5a9c754dea5",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 267,
+      "end": 267,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 268,
+      "end": 268,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 269,
+      "end": 269,
+      "digest": "sha256:473668e210f92483539ec7bdf4d2ff992167eb0c81227e5d1765188f2639048d",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 270,
+      "end": 270,
+      "digest": "sha256:64c698b550ead973f9d878b8bc4e56ca071ad3a49875f8a0e44b64bdad3831f1",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 271,
+      "end": 271,
+      "digest": "sha256:ec1d10eef8ee246d184d40b9fdb0e53b05476a7072e788b3ae24684ddf931785",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 272,
+      "end": 272,
+      "digest": "sha256:7d9186c37bf6c34c9ceb6f83412a3187c7fd6fce7f988f40a2ea721b23db7122",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 273,
+      "end": 273,
+      "digest": "sha256:d8c267bffc41a009a3bf6e26666c3c23e99357a72ade481bd173d43aca542b2e",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 274,
+      "end": 274,
+      "digest": "sha256:ab2d2b815990ce155020f148f53fae87700b3a926543537f2fea069274d3e0e0",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 275,
+      "end": 275,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 276,
+      "end": 276,
+      "digest": "sha256:72db1a4583327c12a7c65be9de1d04c6ead0507b363e0520a494794eef4d9b9b",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 277,
+      "end": 277,
+      "digest": "sha256:82d716e6a3660cb1d76fb2c1d76d8c8b518f205b1788f0597e46434cfb2c4553",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 278,
+      "end": 278,
+      "digest": "sha256:9d46526f6f9dc5457e55bda8594bbd6e69e05235111f6eff80cf196a02318b9d",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 279,
+      "end": 279,
+      "digest": "sha256:4c154cdaef82ba33866af83a0fb4627709fde0adf6b35ece16355f457f55ed74",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 280,
+      "end": 280,
+      "digest": "sha256:0e4e78d2eb683e84fa9d113d26e3913b225682a40e4b4181758ce247e53fbe80",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 281,
+      "end": 281,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 282,
+      "end": 282,
+      "digest": "sha256:3978b4d2e39271fe054ae420d9b031919549170d999d444d62825c7fedd442f4",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 283,
+      "end": 283,
+      "digest": "sha256:42b11bf5388249d9f3b5c037f88de276f0a86221dae40f589d11fc6a5f4e2eba",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 284,
+      "end": 284,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 285,
+      "end": 285,
+      "digest": "sha256:941ddaf0589046b6adda730f90b15a1a13c06f9cf0800b3ac1bf696e13159318",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 286,
+      "end": 286,
+      "digest": "sha256:42b11bf5388249d9f3b5c037f88de276f0a86221dae40f589d11fc6a5f4e2eba",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 287,
+      "end": 287,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 288,
+      "end": 288,
+      "digest": "sha256:f92486b0421a5f954f12edf2feaebd4ab64aaca67a90296be9974930c62b0305",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 289,
+      "end": 289,
+      "digest": "sha256:4c154cdaef82ba33866af83a0fb4627709fde0adf6b35ece16355f457f55ed74",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 290,
+      "end": 290,
+      "digest": "sha256:0e4e78d2eb683e84fa9d113d26e3913b225682a40e4b4181758ce247e53fbe80",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 291,
+      "end": 291,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 292,
+      "end": 292,
+      "digest": "sha256:d4f136613a9e7835f7684df69f2b3be2fca1512a38cf5534ae7dc76c8cd3836a",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 293,
+      "end": 293,
+      "digest": "sha256:4c154cdaef82ba33866af83a0fb4627709fde0adf6b35ece16355f457f55ed74",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 294,
+      "end": 294,
+      "digest": "sha256:ba7e981171cd34c53ca25ff0cdcbca1babcde9d82b0e77751b4c47d0677bebbd",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 295,
+      "end": 295,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 296,
+      "end": 296,
+      "digest": "sha256:02e825126626d93c833281c206e2b9eb1051cae8861f55533a7c57856065c0be",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 297,
+      "end": 297,
+      "digest": "sha256:4c154cdaef82ba33866af83a0fb4627709fde0adf6b35ece16355f457f55ed74",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 298,
+      "end": 298,
+      "digest": "sha256:0e4e78d2eb683e84fa9d113d26e3913b225682a40e4b4181758ce247e53fbe80",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 299,
+      "end": 299,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 300,
+      "end": 300,
+      "digest": "sha256:73397ef4f4b4722bbd7dc8697042ca3be8a7929a59f71a0e6553b1e0142c62c7",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 301,
+      "end": 301,
+      "digest": "sha256:cf42eed8731a06545ec6a090b83ac602622b401862644417553c40267bf57249",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 302,
+      "end": 302,
+      "digest": "sha256:0e4e78d2eb683e84fa9d113d26e3913b225682a40e4b4181758ce247e53fbe80",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 303,
+      "end": 303,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 304,
+      "end": 304,
+      "digest": "sha256:13826cfde62c2ea0d008f9c0506aaae51dcbcbc6363c44f7f535802fc4cccc9f",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 305,
+      "end": 305,
+      "digest": "sha256:697c0ff3cb22f0d456cf1e569683af6711acd692e171022c17fa6754ed2f05f1",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 306,
+      "end": 306,
+      "digest": "sha256:4c154cdaef82ba33866af83a0fb4627709fde0adf6b35ece16355f457f55ed74",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 307,
+      "end": 307,
+      "digest": "sha256:0e4e78d2eb683e84fa9d113d26e3913b225682a40e4b4181758ce247e53fbe80",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 308,
+      "end": 308,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 309,
+      "end": 309,
+      "digest": "sha256:e5c015ecac0bb21526e2f14db404b4a510330d20af57a4cacec80f2cc8cf301f",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 310,
+      "end": 310,
+      "digest": "sha256:1c274ec10bb94d50b8f65732b408366e9a128682d4829c745748d4a78deb1798",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 311,
+      "end": 311,
+      "digest": "sha256:ada47abfe2a36a3a3d5c55628b60375778c2d6bf0d320957bf893b7ee71defc7",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 312,
+      "end": 312,
+      "digest": "sha256:1b4b534c69db6c8a22f656f9b8ac2538a75d9e8a7ff3e4dc6e176777c7dfe7e7",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 313,
+      "end": 313,
+      "digest": "sha256:5078ea5291c3d4136d2cf3b439ff156dc1141895b8043fe438531c2ad98328d2",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 314,
+      "end": 314,
+      "digest": "sha256:790abc4e40cac256ccb7c2ec0b7a5dd3d193b4ada19a15c084a6f46517e2c858",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 315,
+      "end": 315,
+      "digest": "sha256:77a9b5e9019c8db8783ec9c3febb0a2c9862f61a05c308fe895e4a9bed03edb3",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 316,
+      "end": 316,
+      "digest": "sha256:8f946fe4ea13edd784df94a0330ac618323386f83c06f94da24a15bd002965c8",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 317,
+      "end": 317,
+      "digest": "sha256:d3cc44df6a237b733bf9b40dd8f5106e902acb5bd7a117d7dfe79546994cc6fe",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 318,
+      "end": 318,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 319,
+      "end": 319,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 320,
+      "end": 320,
+      "digest": "sha256:ca787f12e858d8bb475c598080ed1dc56409830baf80b90f868923b906a379de",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 321,
+      "end": 321,
+      "digest": "sha256:bb6e7d4aeabe36ade1ff66409d5d3600fa6be19a40a78faa8d40acd14ce82dc6",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 322,
+      "end": 322,
+      "digest": "sha256:aff677e47deddc8b54412fc5f2f33cdaaafa88e647b7f812b8d29e382e406252",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 323,
+      "end": 323,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 324,
+      "end": 324,
+      "digest": "sha256:caebcfb21fd6ef99edf025ab703ae4378b90d68242c4b5853938195e120313b4",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 325,
+      "end": 325,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 326,
+      "end": 326,
+      "digest": "sha256:1f312699c1fb33703595385ec0205a4098e8657250f449c650bd39990789dc7b",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 327,
+      "end": 327,
+      "digest": "sha256:d1a3b3e7b9761452280b87b1266049c9cf65dc578a259b494a74932066d7e4fc",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 328,
+      "end": 328,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 329,
+      "end": 329,
+      "digest": "sha256:18880a82d851e1cc20c2751c9e344f51536696478747d0fc8e8fdd41f86b37b2",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 330,
+      "end": 330,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 331,
+      "end": 331,
+      "digest": "sha256:eb0b4db3279a7e0d8c97efb0236a6363c094b711d9b0be8c5130c6c0b46b3b07",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 332,
+      "end": 332,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 333,
+      "end": 333,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 334,
+      "end": 334,
+      "digest": "sha256:42135dab3270cb19bc3f09fb0e3701f02c8ffb41b8a19095c10189afccdb248c",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 335,
+      "end": 335,
+      "digest": "sha256:20686754caf5c1ee3ce04169f55f5dabd1b0f06253c422a39d5905f40de75a3d",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 336,
+      "end": 336,
+      "digest": "sha256:355ba8185dcebf385b6373d72aa85ad088367988befb059e4c4dd3177afe55ca",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 337,
+      "end": 337,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 338,
+      "end": 338,
+      "digest": "sha256:d79960d02787efb9dc09e81cae8fca891cf06d23f37f7c59e2ac236b30996945",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 339,
+      "end": 339,
+      "digest": "sha256:4c154cdaef82ba33866af83a0fb4627709fde0adf6b35ece16355f457f55ed74",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 340,
+      "end": 340,
+      "digest": "sha256:0e4e78d2eb683e84fa9d113d26e3913b225682a40e4b4181758ce247e53fbe80",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 341,
+      "end": 341,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 342,
+      "end": 342,
+      "digest": "sha256:50e4ad044353527dac17bb2a79b379a875b25353e58923f9845baa122a7c2d02",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 343,
+      "end": 343,
+      "digest": "sha256:4c154cdaef82ba33866af83a0fb4627709fde0adf6b35ece16355f457f55ed74",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 344,
+      "end": 344,
+      "digest": "sha256:0e4e78d2eb683e84fa9d113d26e3913b225682a40e4b4181758ce247e53fbe80",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 345,
+      "end": 345,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 346,
+      "end": 346,
+      "digest": "sha256:bb54ba119d130e1525eccb6b979fb4c2dfd4f8cbcf9dcf1e0ecc56e4296fff80",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 347,
+      "end": 347,
+      "digest": "sha256:42b11bf5388249d9f3b5c037f88de276f0a86221dae40f589d11fc6a5f4e2eba",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 348,
+      "end": 348,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 349,
+      "end": 349,
+      "digest": "sha256:ff5f4a4ec1813a5e973ac9c0de535c948a7cb3be85ec66df29c717f628a4eb2a",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 350,
+      "end": 350,
+      "digest": "sha256:668d773b9e554c01b91bb10525650eb0fec3f42f7dbbcc3e7e13100d553f1739",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 351,
+      "end": 351,
+      "digest": "sha256:4805e812cd868f3a1a4ea46bd99b848d016958e15eabb16aeb0720bba7b462c5",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 352,
+      "end": 352,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 353,
+      "end": 353,
+      "digest": "sha256:15353202d858e1de8f2d2216bd21eeea82a051d5858e51b799bc5878bf760592",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 354,
+      "end": 354,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 355,
+      "end": 355,
+      "digest": "sha256:16f782b1072e46e6877530a3107b9250f2fa6970cfe531121086333b37c12f6f",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 356,
+      "end": 356,
+      "digest": "sha256:42b11bf5388249d9f3b5c037f88de276f0a86221dae40f589d11fc6a5f4e2eba",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 357,
+      "end": 357,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 358,
+      "end": 358,
+      "digest": "sha256:d2f9596ebed86414bd2397cb443f46b1fe47fea129d47b2021899d331965d7b6",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 359,
+      "end": 359,
+      "digest": "sha256:77a9b5e9019c8db8783ec9c3febb0a2c9862f61a05c308fe895e4a9bed03edb3",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 360,
+      "end": 360,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 361,
+      "end": 361,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 362,
+      "end": 362,
+      "digest": "sha256:07b4bae2ff7065bab8e729c94e980c27aacc22c78cb32e8796dd59ff71d452c8",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 363,
+      "end": 363,
+      "digest": "sha256:b31523433f4e20e753fa7fb6f5615dfccaf56a88653062b12ef81f0037e886c7",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 364,
+      "end": 364,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 365,
+      "end": 365,
+      "digest": "sha256:355ba8185dcebf385b6373d72aa85ad088367988befb059e4c4dd3177afe55ca",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 366,
+      "end": 366,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 367,
+      "end": 367,
+      "digest": "sha256:f6f3737352ae3e2a75c566b6755719e04652daa1cb41f178cd6137c37629ef38",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 368,
+      "end": 368,
+      "digest": "sha256:429e7e38140de8a00194dd406ba180d2fb515fe28688a4eee16f2b591cf8ebf1",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 369,
+      "end": 369,
+      "digest": "sha256:355ba8185dcebf385b6373d72aa85ad088367988befb059e4c4dd3177afe55ca",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 370,
+      "end": 370,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 371,
+      "end": 371,
+      "digest": "sha256:d47a5cd85b071d6446b5b1665c613883fda7a1901829d5de39f8a799c1d179b2",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 372,
+      "end": 372,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 373,
+      "end": 373,
+      "digest": "sha256:355ba8185dcebf385b6373d72aa85ad088367988befb059e4c4dd3177afe55ca",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 374,
+      "end": 374,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 375,
+      "end": 375,
+      "digest": "sha256:849e68a87411bb0a52e5323eb65c93e24ce887f409645e0971cf22c162700071",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 376,
+      "end": 376,
+      "digest": "sha256:35eb2aa3aa8469671ee1ffe24d1a2d7cf5677db73c0275f80e9bbc4933eb2c1b",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 377,
+      "end": 377,
+      "digest": "sha256:355ba8185dcebf385b6373d72aa85ad088367988befb059e4c4dd3177afe55ca",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 378,
+      "end": 378,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 379,
+      "end": 379,
+      "digest": "sha256:b964c6b8b7837a5cb7cfe64f9d2ebe493f4a26014bba1ba622b3145521cf825e",
+      "note": "Bidirectional evidence migration."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/migrate.go",
+      "start": 380,
+      "end": 380,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Bidirectional evidence migration."
+    }
+  ],
+  "version": 2
+}

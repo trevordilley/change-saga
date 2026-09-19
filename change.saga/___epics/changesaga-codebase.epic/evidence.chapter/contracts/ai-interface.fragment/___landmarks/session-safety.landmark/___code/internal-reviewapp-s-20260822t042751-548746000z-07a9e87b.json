@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewapp/session.go",
+      "start": 844,
+      "end": 884,
+      "digest": "sha256:f0d172dbf416bb5e1e8f20555dba0913db0c92ea7e9da9ab4f8cf7c5ee96d25a",
+      "note": "Builds a contained immutable read session with sanitized errors and deterministic ordering."
+    }
+  ],
+  "version": 2
+}

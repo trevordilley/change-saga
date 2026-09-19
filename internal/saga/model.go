@@ -1,6 +1,10 @@
 package saga
 
-import "time"
+import (
+	"time"
+
+	"github.com/twentyideas/changesaga/internal/coderef"
+)
 
 const (
 	// ComponentVersion is the version of the narrative, evidence, and review
@@ -17,6 +21,16 @@ const (
 	// implementation deck embedded under ___slides/. It is a record version,
 	// not a container format.
 	DeckRecordVersion = 4
+
+	// CodeDirName holds a narrative target's code-reference evidence records.
+	CodeDirName = "___code"
+
+	// MergesDir holds one record per landed change: the commit it landed as
+	// and the messages of the branch commits it collapsed.
+	MergesDir = "___merges"
+
+	// FileReviewDir, under ___review, holds reviewed marks for changed files.
+	FileReviewDir = "files"
 
 	// QualityRootDir is the quality capability root.
 	QualityRootDir = "___quality"
@@ -101,10 +115,10 @@ type Item struct {
 	Path      string `json:"path"`
 	Directory string `json:"-"`
 	ItemManifest
-	Target   string     `json:"target"`
-	Diffs    []DiffFile `json:"diffs,omitempty"`
-	HasDiffs bool       `json:"-"`
-	Reviews  []Review   `json:"reviews,omitempty"`
+	Target  string     `json:"target"`
+	Code    []CodeFile `json:"code,omitempty"`
+	HasCode bool       `json:"-"`
+	Reviews []Review   `json:"reviews,omitempty"`
 }
 
 // PR uses a pointer for Number so an absent pull request number stays absent.
@@ -144,12 +158,12 @@ type Section struct {
 	Target    string      `json:"target"`
 	Children  []*Section  `json:"children,omitempty"`
 	Fragments []*Fragment `json:"fragments,omitempty"`
-	Diffs     []DiffFile  `json:"diffs,omitempty"`
-	// HasDiffs records the presence of this target's ___diffs directory without
+	Code      []CodeFile  `json:"code,omitempty"`
+	// HasCode records the presence of this target's ___code directory without
 	// materializing any evidence records. Narrative-only loads use it to render
 	// a lazy linked-code affordance while keeping coverage metadata unopened.
-	HasDiffs bool     `json:"-"`
-	Reviews  []Review `json:"reviews,omitempty"`
+	HasCode bool     `json:"-"`
+	Reviews []Review `json:"reviews,omitempty"`
 }
 
 type FragmentManifest struct {
@@ -170,8 +184,8 @@ type Fragment struct {
 	Entrypoint string         `json:"entrypoint"`
 	Order      int            `json:"order,omitempty"`
 	Target     string         `json:"target"`
-	Diffs      []DiffFile     `json:"diffs,omitempty"`
-	HasDiffs   bool           `json:"-"`
+	Code       []CodeFile     `json:"code,omitempty"`
+	HasCode    bool           `json:"-"`
 	Landmarks  []Landmark     `json:"landmarks,omitempty"`
 	Reviews    []Review       `json:"reviews,omitempty"`
 	SlideMeta  *SlideManifest `json:"-"`
@@ -187,8 +201,8 @@ type Landmark struct {
 	Selector    LandmarkSelector `json:"selector"`
 	Hotspot     *LandmarkRegion  `json:"hotspot,omitempty"`
 	Target      string           `json:"target"`
-	Diffs       []DiffFile       `json:"diffs,omitempty"`
-	HasDiffs    bool             `json:"-"`
+	Code        []CodeFile       `json:"code,omitempty"`
+	HasCode     bool             `json:"-"`
 	ItemMeta    *ItemManifest    `json:"-"`
 	Reviews     []Review         `json:"reviews,omitempty"`
 }
@@ -213,31 +227,28 @@ type LandmarkRegion struct {
 	Height float64 `json:"height"`
 }
 
-type DiffFile struct {
-	Path    string          `json:"-"`
-	Version int             `json:"version"`
-	Diffs   []DiffReference `json:"diffs"`
-}
-
-type DiffReference struct {
-	URI  string `json:"uri"`
-	Note string `json:"note,omitempty"`
+// CodeFile is one evidence record: the code references a narrative target
+// explains. It never contains a diff; comparisons are computed from it.
+type CodeFile struct {
+	Path       string              `json:"-"`
+	Version    int                 `json:"version"`
+	References []coderef.Reference `json:"references"`
 }
 
 // Claim is one falsifiable assertion made by the change author. Claims are
 // deliberately independent records: adding a second claim never rewrites the
 // first record and two authors do not contend on one aggregate manifest.
-// Evidence here does not contribute to coverage; it points at exact code that
-// an independent reviewer can inspect when testing the assertion.
+// Evidence here does not contribute to coverage; it references code at a
+// commit that an independent reviewer can inspect when testing the assertion.
 type Claim struct {
-	Path      string    `json:"-"`
-	Version   int       `json:"version"`
-	ID        string    `json:"id"`
-	Target    string    `json:"target"`
-	Kind      string    `json:"kind"`
-	Statement string    `json:"statement"`
-	Evidence  []string  `json:"evidence"`
-	CreatedAt time.Time `json:"created_at"`
+	Path      string              `json:"-"`
+	Version   int                 `json:"version"`
+	ID        string              `json:"id"`
+	Target    string              `json:"target"`
+	Kind      string              `json:"kind"`
+	Statement string              `json:"statement"`
+	Evidence  []coderef.Reference `json:"evidence"`
+	CreatedAt time.Time           `json:"created_at"`
 }
 
 // Verification is an append-only result for one claim. The latest result is
@@ -309,16 +320,12 @@ type ThreadManifest struct {
 }
 
 type Anchor struct {
-	Type       string        `json:"type"`
-	Shapes     []Shape       `json:"shapes,omitempty"`
-	Text       *TextSelector `json:"text,omitempty"`
-	Note       *NoteSelector `json:"note,omitempty"`
-	Diff       *DiffSelector `json:"diff,omitempty"`
-	Coordinate string        `json:"coordinate_space,omitempty"`
-}
-
-type DiffSelector struct {
-	URI string `json:"uri"`
+	Type       string             `json:"type"`
+	Shapes     []Shape            `json:"shapes,omitempty"`
+	Text       *TextSelector      `json:"text,omitempty"`
+	Note       *NoteSelector      `json:"note,omitempty"`
+	Code       *coderef.Reference `json:"code,omitempty"`
+	Coordinate string             `json:"coordinate_space,omitempty"`
 }
 
 type Suggestion struct {
@@ -384,16 +391,39 @@ type ThreadEvent struct {
 	CreatedAt         time.Time `json:"created_at"`
 }
 
-type DiffReview struct {
-	Path              string    `json:"-"`
-	AttributionDetail string    `json:"-"`
-	Version           int       `json:"version"`
-	ID                string    `json:"id"`
-	URI               string    `json:"uri"`
-	Author            string    `json:"author,omitempty"`
-	State             string    `json:"state"`
-	CreatedAt         time.Time `json:"created_at"`
+type FileReview struct {
+	Path              string            `json:"-"`
+	AttributionDetail string            `json:"-"`
+	Version           int               `json:"version"`
+	ID                string            `json:"id"`
+	Code              coderef.Reference `json:"code"`
+	Author            string            `json:"author,omitempty"`
+	State             string            `json:"state"`
+	CreatedAt         time.Time         `json:"created_at"`
 }
+
+// Merge records a change landing on its target branch. Commit is the landed
+// commit that references were re-pinned to; Commits are the branch's commits,
+// oldest first, so a squash merge keeps the per-commit reasoning Git's own
+// history no longer carries.
+type Merge struct {
+	Path     string         `json:"-"`
+	Version  int            `json:"version"`
+	Commit   string         `json:"commit"`
+	Commits  []MergedCommit `json:"commits"`
+	PinnedAt time.Time      `json:"pinned_at"`
+}
+
+type MergedCommit struct {
+	Commit  string    `json:"commit"`
+	Author  string    `json:"author"`
+	Date    time.Time `json:"date"`
+	Subject string    `json:"subject"`
+	Body    string    `json:"body,omitempty"`
+}
+
+// MergeFilename is the record name for a landed commit.
+func MergeFilename(commit string) string { return commit + ".json" }
 
 type Saga struct {
 	Root     string   `json:"root"`
@@ -412,9 +442,10 @@ type Saga struct {
 	// Epics groups the same nodes by durable product domain.
 	Epics         []*Epic        `json:"epics,omitempty"`
 	Threads       []*Thread      `json:"threads,omitempty"`
-	DiffReviews   []DiffReview   `json:"diff_reviews,omitempty"`
+	FileReviews   []FileReview   `json:"file_reviews,omitempty"`
 	Claims        []Claim        `json:"claims,omitempty"`
 	Verifications []Verification `json:"verifications,omitempty"`
+	Merges        []Merge        `json:"merges,omitempty"`
 }
 
 type Issue struct {

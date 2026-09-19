@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/workflows/ci.yml",
+      "start": 1,
+      "end": 67,
+      "digest": "sha256:913599d3fdbc97aa83f291b23e06e511776decd4f4a66c5669c8fc9d13e4ebc9",
+      "note": "Defines read-only triggers and cross-platform race-enabled Go tests plus release reproducibility."
+    }
+  ],
+  "version": 2
+}

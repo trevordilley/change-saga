@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/cli.spec.ts",
+      "start": 1,
+      "end": 109,
+      "digest": "sha256:63a433c254fda15572eddfb0f5c759329b25b5eed4479f258a3a37a5a7131ddb",
+      "note": "Exercises canonical URI rejection plus mapping scrutiny, claims, and verification queries."
+    }
+  ],
+  "version": 2
+}

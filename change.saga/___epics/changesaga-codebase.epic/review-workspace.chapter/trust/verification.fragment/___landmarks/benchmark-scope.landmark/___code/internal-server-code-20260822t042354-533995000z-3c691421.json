@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/codeview_test.go",
+      "start": 1,
+      "end": 34,
+      "digest": "sha256:b6d4e5a17a623e496d38b84e41a2a3ff55f9d3c14f5ec41565f8ff295dfcf7b6",
+      "note": "Benchmarks large-Saga code-view construction as a non-threshold performance signal."
+    }
+  ],
+  "version": 2
+}

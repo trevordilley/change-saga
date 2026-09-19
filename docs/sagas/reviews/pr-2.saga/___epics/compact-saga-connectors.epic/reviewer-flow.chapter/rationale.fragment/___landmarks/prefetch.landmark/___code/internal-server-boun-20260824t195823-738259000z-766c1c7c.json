@@ -1,0 +1,963 @@
+{
+  "references": [
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "digest": "sha256:5d6e248f3eabba26f9d2b85de9cf20a0020e84d1a1d3cdc1797ce28e7820f9df",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:0b0d4d1f5fbec17d7732f29ccf38d3ed9e3587229f0a04824e1096d25f930f7a",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:71e37b6cd48ad477cbb12624b757ee1dc4975711b78237a85f508bfdd723af77",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:6c7872f7e7aba7ceb14de93a1613a51c5b446ca889744d3b529463bd245c0953",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:f05b48055b78db9e9e8993848d47169d7abd312df35886aa83d4014d37eb4009",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:1b649ecbf085fe223589d7f842defd5e2c82ec06b02b4f7827a31625fd09316e",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:ab6f6be8e5963a10d31f1044691aa6beceed5a59d04cd8247f259497075d8b4d",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:fafba0527c3953c4b6e0e5b5739ba83612f8053bcdc9466730193cd1d590b408",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:516acb76f38511b66c31560e335e66e5706ce05c62bb695d652de87de38e4874",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:4440e0cf3c853f16d10c661794c8dbc6afc065f5baf5bd71650ae9b2115daf23",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:c49abfb2d7b519bf5ccbaf1f2d8829667517fd29732121368f064b550662e207",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:e89149b48f4839d04ecaf10d637d08e14e930e3693cd1d4a29f0529bb33d8e5e",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:a1576da2eeb4a14011163c1d6c891ee06b62ed76fd58ea9c6830bebc906dc999",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:e38411cf4e9a33a9f9a02f0f2e7ddf75498169e509e91e8846166ff16279d91e",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:c634c303334e635c591013dc2048ae49506469054dca935d6221eb6ed078c324",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:1b069cab1742ce789555ec80c03ecbc0eec7a91789423d29e77bf2bb9cf97e72",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:e17c78b81baac14df4a3fd461b68cb6703716afb894027f5ba39440a12ac3cb9",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:ecd1d803128db2be948d94a3f43040f09ed1e2cecefeba20d3bf2c489f488ac8",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:e3b136b39eeba740af0c6c0766aca39754cfa4a4a4aa1ac79447ca91696c4d4a",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:5af445edb031da65b96ecfa612250c8254d93912024aa240faf876df96815e77",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:17c36b477d8d8c37730e7c3f3ffc4c26318309db012d7a24a777c6c0b04d7f5e",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:60a9fae1e72373c234e5cec21b8d71c3ec2f9a4be1daa97a875f5749f1d68a73",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:b4c75221804ffb4678d53da32ac33956583913a53320040facd39c69a92f113d",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:a7ddadd682923d2c8043f569e6e10e9d56b67badcbacd19546f239baf0d87f83",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:6b2127e4a1b7e45931f32ca74dacf3cb3e2256d9aabbc428c06da2d403ec753b",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:f7fe61cd344f973e7e137049069577969f54aaf9ef19c9778b4de42798e16781",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:7cf36cf85ddbc30a5f28cbdfc14095ac18c8ca5ba3b2efe58f1b9c904667c091",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:49f47f2439c05bccbb2dc3ce129988788f52b5f7628f5cbc2235f99ac95a3f47",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:e7ba346bf4530eacbc70280d74167fa05b8315905c72b054893878c1d0b59c34",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:cffed893e9154b9d0444bbef89738e967607bb34ab85a02a25865e129564b938",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:90506f9af7d2e0f85ee0a66003a5b5e37aa5fd812baa07ba9bfae9fc49f21f67",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:e6f3894a6db79eea62a910f52652d81b193e49dbf3149a1a13616a80f6b9a392",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:32f74c16c6405c976fd7177d2be50db149db947dc3f0e850754dbebe62947811",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:a34eeb0f0e05dd85613b15b0f72715140ec3b33df5b234fed9130d67dd17d7c9",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:15d27c64f583d5303c6e2b8fee08b1afa0e43704dfa006c515855bf21b77ee7f",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:61e57fafb714838d2e172b53356387b2d79f8649737eb239d627685f8769f9ff",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:6066a72a9170502c9de4744aa65c466792f4619b22d7aae0185a729a33ac8842",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:e17c78b81baac14df4a3fd461b68cb6703716afb894027f5ba39440a12ac3cb9",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:d4de1b812303389b5bfe896d80e3645158d7c3308f7a46afbf458b9ef451d8ed",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:ea1db223ee0703b7e3655c9343108dfdd8ba6a8cb46e80707b2665ba9ef9b159",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:699f22efcb8b90e03a28d89ac25e75259a0d373812ff2b93f2e853dc0697545a",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:60f2a25619ff11e74c3a954a7b390c8ad00956fc04756d0fd48bc7f89e1f521c",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:12a2847cc43772b88a2a7c9012afa0ef883dc84df140c63973576465392e6f30",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:ccd6b4618eede91a6221ae13e63564817dfbfd9ab96ddf644fb45dc197c4b21f",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:0504d485138df18a74b92ad08f999577d6e4e553e0ebb60005cbad3b37f19dc3",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:9bc2cd70d9610cf365c49997502e9cbfe48fd8d8829d8fa00f924600ce62b05f",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:835888f8bd3385ed66bca096cf191735354640c0ef58f0545f45c801d5e78fca",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:8580dc39b6d43fefce65ac4df6caae6cbeff2bdb8513e37013b002112478ea55",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 68,
+      "end": 68,
+      "digest": "sha256:0b2898f887d956f9b5dfff2379e5b7b36a246221f5d714a6b883cd896ccf289d",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:b33052294897c1e7f016234954e37c47d4f18535b6658e7364a1b72cde8f75f0",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 70,
+      "end": 70,
+      "digest": "sha256:7dadad505ca6715a15ffa0ab93aa3b9e5a2cb995b68dd7c22afc5b90abcdcc0b",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 71,
+      "end": 71,
+      "digest": "sha256:60a9fae1e72373c234e5cec21b8d71c3ec2f9a4be1daa97a875f5749f1d68a73",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 72,
+      "end": 72,
+      "digest": "sha256:0835dd993deef91d875da548b30a2902789c0c4f033aadc382ecc5f8bb2f0cb3",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 73,
+      "end": 73,
+      "digest": "sha256:c75b5add0d7c104dc4a0eadf2e61c8069c77773aa997d00c8b0e54b03015f4f3",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 74,
+      "end": 74,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 75,
+      "end": 75,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 76,
+      "end": 76,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 77,
+      "end": 77,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 78,
+      "end": 78,
+      "digest": "sha256:0b971cc9b5fa3dad8e6b805554ab3b40b402283227913e81716fdcc31f2c85f7",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 79,
+      "end": 79,
+      "digest": "sha256:e17c78b81baac14df4a3fd461b68cb6703716afb894027f5ba39440a12ac3cb9",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 80,
+      "end": 80,
+      "digest": "sha256:b5684c2628be94f27e34db4c5550e37d0f51357a184f763e622edb90d721f884",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 81,
+      "end": 81,
+      "digest": "sha256:40cb616eb48cacba5fbb8328ed82aa05f1d162981ff88b0760b58dfbd214d90c",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 82,
+      "end": 82,
+      "digest": "sha256:2577e799dcc5f4e7cd5abb21a4e9e223ef136dc7767f7b451d98675168640f08",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 83,
+      "end": 83,
+      "digest": "sha256:b2335459845248b669e3620780062a6a7d6163b4a3f1513aedd50b9ca02d3ac7",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 84,
+      "end": 84,
+      "digest": "sha256:752abde4cc66fab7c2b81a92f0271d2aa29364e5dfaa953d5ad9b4e352394708",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 85,
+      "end": 85,
+      "digest": "sha256:278ad926d539e49833cc17b8a35a8002784bf20f29f38b3412e2d99f4c202f7f",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 86,
+      "end": 86,
+      "digest": "sha256:8f75e4583cb77ce3172787a69d607e55235224302b1752f650925c8d97b4bcd8",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 87,
+      "end": 87,
+      "digest": "sha256:10969932cbf8e3c83b09ef91d50d90dac7e6e3dd257e0c8ddfed14f1b5948933",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 88,
+      "end": 88,
+      "digest": "sha256:9e3a6f1a6f7b4f7e45205f0e67dd75bd9bab186286f7541c9146a978493b8136",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 89,
+      "end": 89,
+      "digest": "sha256:77c2a94a6f1c9ce3d5104efafcc654179f0dae9e7334889c5c800f454a0b8143",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 90,
+      "end": 90,
+      "digest": "sha256:239761185d7692fef79ab116436dce1de063dd2deedecac14e8551a0a09ffafb",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 91,
+      "end": 91,
+      "digest": "sha256:332e1b8856d7a2386fa3fbc25c50294bf802d7ab3f0d164bc67b508dad8a0d58",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 92,
+      "end": 92,
+      "digest": "sha256:001047e033cb0c613fbd0ebac037e5a460d1c180f2f14b2487f9f26465d4076e",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 93,
+      "end": 93,
+      "digest": "sha256:7e49add3698feb6da72b827d0c358aedd3f7698a28c1f2fa4fed07f1304f7d65",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 94,
+      "end": 94,
+      "digest": "sha256:60a9fae1e72373c234e5cec21b8d71c3ec2f9a4be1daa97a875f5749f1d68a73",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 95,
+      "end": 95,
+      "digest": "sha256:0835dd993deef91d875da548b30a2902789c0c4f033aadc382ecc5f8bb2f0cb3",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 96,
+      "end": 96,
+      "digest": "sha256:fcff9781c5ec4addb519aae5f5a93c4a6f5d46cc4598384c23d9a7f728f67487",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 97,
+      "end": 97,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 98,
+      "end": 98,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 99,
+      "end": 99,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 100,
+      "end": 100,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 101,
+      "end": 101,
+      "digest": "sha256:b61922d59865bb54ba14607b00efc6eeb821dc430f6ad691e2f0d22439448d60",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 102,
+      "end": 102,
+      "digest": "sha256:e17c78b81baac14df4a3fd461b68cb6703716afb894027f5ba39440a12ac3cb9",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 103,
+      "end": 103,
+      "digest": "sha256:2a51dc8a128bf036ff594c0f2e911c71edd0401839b6716085127066329cb70d",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 104,
+      "end": 104,
+      "digest": "sha256:a8832fda9b41c627804cf815e253f200e92e90dc979af4340f6e9bb9a4c4a8ca",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 105,
+      "end": 105,
+      "digest": "sha256:fa7f1c5ee63d478d09fa02fea671953615b1290d0aa07d8bc50e7163afede2d2",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 106,
+      "end": 106,
+      "digest": "sha256:9dae38fa924e709f3d3f9004152755127d2ba073ec0d252e9cc458722bd712dd",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 107,
+      "end": 107,
+      "digest": "sha256:7ad3b9daffcf8a16ee9b79654502787f4420b65796007ceca15737249cb8bcc8",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 108,
+      "end": 108,
+      "digest": "sha256:c4f097fbce54d87ea2118c332065170b57312f905c22e8c1247d7c96594c4acf",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 109,
+      "end": 109,
+      "digest": "sha256:b956bd2716566d0f18560692122c18a40312824d08fc524a8b00cf1411164162",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 110,
+      "end": 110,
+      "digest": "sha256:8ded008a2bfbb96b881550cb2b9ca56dae254cf0c62fc3696a59960efc367533",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 111,
+      "end": 111,
+      "digest": "sha256:60a9fae1e72373c234e5cec21b8d71c3ec2f9a4be1daa97a875f5749f1d68a73",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 112,
+      "end": 112,
+      "digest": "sha256:bb7f0fcc038cd77e7275a8f872c9e57ed3a6a937705ecd5290bdf49e5a7379b9",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 113,
+      "end": 113,
+      "digest": "sha256:e55aa0c3ce80d5d42132c4b8d4ddc4da08e49d99c158b9d02a1714f8c40d46da",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 114,
+      "end": 114,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 115,
+      "end": 115,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 116,
+      "end": 116,
+      "digest": "sha256:78393cb26608ca3649ca342c3737d664cb7e6e2e59c09f7c09e4736f374f669b",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 117,
+      "end": 117,
+      "digest": "sha256:49965342662ef5e6c0bb08f411e312b7e1feb6a9a5a68b85faa364b8370ba6b9",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 118,
+      "end": 118,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/bounded_browser_test.go",
+      "start": 119,
+      "end": 119,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Browser prefetch, lazy diff, and streaming coverage regressions."
+    }
+  ],
+  "version": 2
+}

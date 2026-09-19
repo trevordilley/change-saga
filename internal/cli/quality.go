@@ -357,7 +357,7 @@ type qualityEvidenceRequest struct {
 	TestCase      string    `json:"test_case,omitempty"`
 	TestRevision  string    `json:"test_revision,omitempty"`
 	Role          string    `json:"role,omitempty"`
-	Diffs         []string  `json:"diffs,omitempty"`
+	Code          []string  `json:"code,omitempty"`
 	Verifications []string  `json:"verifications,omitempty"`
 	Citations     []string  `json:"citations,omitempty"`
 	Supersedes    []string  `json:"supersedes,omitempty"`
@@ -365,13 +365,19 @@ type qualityEvidenceRequest struct {
 	RequestID     string    `json:"request_id,omitempty"`
 }
 
-func (request qualityEvidenceRequest) input() quality.AddEvidenceInput {
+// input reads each code location's digest from the source repository, so a
+// request names code the same way cover does and never supplies a digest.
+func (request qualityEvidenceRequest) input(repository string) (quality.AddEvidenceInput, error) {
+	code, err := authorLocations(context.Background(), repository, request.Code, "code")
+	if err != nil {
+		return quality.AddEvidenceInput{}, err
+	}
 	return quality.AddEvidenceInput{
 		ID: request.ID, TestCase: request.TestCase, TestRevision: request.TestRevision,
-		Role: quality.EvidenceRole(request.Role), Diffs: request.Diffs, Verifications: request.Verifications,
+		Role: quality.EvidenceRole(request.Role), Code: code, Verifications: request.Verifications,
 		Citations: request.Citations, Supersedes: request.Supersedes,
 		CreatedAt: request.CreatedAt, RequestID: request.RequestID,
-	}
+	}, nil
 }
 
 func qualityEvidenceAdd(args []string, out io.Writer, stdin io.Reader) error {
@@ -386,8 +392,9 @@ func qualityEvidenceAdd(args []string, out io.Writer, stdin io.Reader) error {
 	requestID := flags.String("request-id", "", "idempotency key")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
 	epic := epicFlag(flags)
-	var diffs, verifications, citations, supersedes stringList
-	flags.Var(&diffs, "diff", "exact saga-diff line or event URI; repeatable")
+	repoDir := flags.String("repo", "", "source repository checkout; required when separate")
+	var code, verifications, citations, supersedes stringList
+	flags.Var(&code, "code", "code location <commit>:<path>[#L<start>[-L<end>]]; repeatable")
 	flags.Var(&verifications, "verification", "verification URN; repeatable")
 	flags.Var(&citations, "citation", "citation URN; repeatable")
 	flags.Var(&supersedes, "supersedes", "current evidence head URN this replaces; repeatable")
@@ -400,7 +407,9 @@ func qualityEvidenceAdd(args []string, out io.Writer, stdin io.Reader) error {
 	root := flags.Arg(0)
 	if *batch != "" {
 		combined := false
-		flags.Visit(func(value *flag.Flag) { combined = combined || (value.Name != "batch" && value.Name != "json") })
+		flags.Visit(func(value *flag.Flag) {
+			combined = combined || (value.Name != "batch" && value.Name != "json" && value.Name != "repo")
+		})
 		if combined {
 			return fmt.Errorf("--batch cannot be combined with other request flags")
 		}
@@ -410,7 +419,11 @@ func qualityEvidenceAdd(args []string, out io.Writer, stdin io.Reader) error {
 		}
 		inputs := make([]quality.AddEvidenceInput, 0, len(requests))
 		for _, request := range requests {
-			inputs = append(inputs, request.input())
+			input, err := request.input(firstNonEmpty(*repoDir, root))
+			if err != nil {
+				return err
+			}
+			inputs = append(inputs, input)
 		}
 		for _, input := range inputs {
 			if err := assertRecordEpic(root, *epic, input.TestCase); err != nil {
@@ -432,7 +445,7 @@ func qualityEvidenceAdd(args []string, out io.Writer, stdin io.Reader) error {
 	overrideVisited(flags, map[string]func(){
 		"id": func() { request.ID = *id }, "test": func() { request.TestCase = *testCase },
 		"test-case": func() { request.TestCase = *testCase }, "test-revision": func() { request.TestRevision = *testRevision },
-		"role": func() { request.Role = *role }, "diff": func() { request.Diffs = diffs },
+		"role": func() { request.Role = *role }, "code": func() { request.Code = code },
 		"verification": func() { request.Verifications = verifications }, "citation": func() { request.Citations = citations },
 		"supersedes": func() { request.Supersedes = supersedes }, "request-id": func() { request.RequestID = *requestID },
 	})
@@ -442,7 +455,11 @@ func qualityEvidenceAdd(args []string, out io.Writer, stdin io.Reader) error {
 	if err := assertRecordEpic(root, *epic, request.TestCase); err != nil {
 		return err
 	}
-	result, err := quality.AddEvidence(root, request.input())
+	input, err := request.input(firstNonEmpty(*repoDir, root))
+	if err != nil {
+		return err
+	}
+	result, err := quality.AddEvidence(root, input)
 	if err != nil {
 		return err
 	}

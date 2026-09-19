@@ -1,4 +1,5 @@
 import { spawn, spawnSync, type ChildProcessWithoutNullStreams } from "node:child_process";
+import { createHash } from "node:crypto";
 import { request as httpRequest } from "node:http";
 import { mkdtempSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -11,11 +12,14 @@ const author = { name: "Source Author", email: "author@example.test" };
 
 export const declaredRepository = "https://example.test/acme/change-saga-demo.git";
 
-type StatusAtom = { uri: string; path: string; side?: string; line?: number };
+type StatusAtom = { ref: string; kind: string; path: string; side?: string; line?: number };
 type StatusReport = { uncovered: StatusAtom[] | null; repository: string; base_oid: string; head_oid: string };
 
-/** The exact comparison identity every diff URI in this fixture must carry. */
-export type DiffIdentity = { repository: string; base: string; head: string };
+/**
+ * The comparison this fixture reviews. `head` is the commit every added-line
+ * code reference is pinned to, and `base` the merge-base for deleted lines.
+ */
+export type ComparisonIdentity = { repository: string; base: string; head: string };
 
 export type SagaRepositories = {
   root: string;
@@ -24,7 +28,7 @@ export type SagaRepositories = {
   sagaRoot: string;
   /** Private TMPDIR handed to every server subprocess so upload staging is observable. */
   tempDir: string;
-  identity: DiffIdentity;
+  identity: ComparisonIdentity;
 };
 
 export type SagaServer = {
@@ -89,7 +93,7 @@ function statusReport(sourceRepo: string, sagaRoot: string): StatusReport {
   return JSON.parse(result.stdout) as StatusReport;
 }
 
-function addCoverage(sourceRepo: string, sagaRoot: string): DiffIdentity {
+function addCoverage(sourceRepo: string, sagaRoot: string): ComparisonIdentity {
   const initial = statusReport(sourceRepo, sagaRoot);
   const uncovered = initial.uncovered ?? [];
   if (uncovered.length === 0) throw new Error("fixture source comparison unexpectedly has no changed atoms");
@@ -98,8 +102,9 @@ function addCoverage(sourceRepo: string, sagaRoot: string): DiffIdentity {
   if (!citation) throw new Error("fixture has no changed line for its prose citation");
   const overviewRemainder = overview.filter((atom) => atom !== citation);
   const architecture = uncovered.filter((atom) => !overview.includes(atom));
-  // The node deliberately owns only the lifecycle event for an added file.
-  // Its linked-code drawer must still load the real patch as review context;
+  // The node deliberately owns only the lifecycle event for an added file: a
+  // whole-file reference accounts for the file's events, not its lines. Its
+  // linked-code drawer must still load the real patch as review context;
   // otherwise it regresses to an unhelpful "add file" row with no code.
   const diagramAtom = architecture.find((atom) => atom.path === "assets/ui/theme.css" && atom.line === undefined);
   const edgeAtom = architecture.find((atom) => atom.path === "assets/ui/theme.css" && atom.line !== undefined);
@@ -114,7 +119,7 @@ function addCoverage(sourceRepo: string, sagaRoot: string): DiffIdentity {
     if (atoms.length === 0) throw new Error(`fixture has no atoms for ${target}`);
     runSaga([
       "cover", "--repo", sourceRepo, "--target", target, "--name", name,
-      ...atoms.flatMap((atom) => ["--uri", atom.uri]),
+      ...atoms.flatMap((atom) => ["--ref", atom.ref]),
       sagaRoot
     ], dirname(sagaRoot));
   }
@@ -149,7 +154,7 @@ function buildSourceRepository(root: string): { sourceRepo: string; base: string
   return { sourceRepo, base, head: git(sourceRepo, "rev-parse", "HEAD") };
 }
 
-function buildSagaRepository(root: string, source: { sourceRepo: string; base: string; head: string }): { sagaRepo: string; sagaRoot: string; identity: DiffIdentity } {
+function buildSagaRepository(root: string, source: { sourceRepo: string; base: string; head: string }): { sagaRepo: string; sagaRoot: string; identity: ComparisonIdentity } {
   const sagaRepo = join(root, "saga-repo");
   const sagaRoot = join(sagaRepo, "wave-one.saga");
   mkdirSync(sagaRepo, { recursive: true });
@@ -355,36 +360,37 @@ export function fileName(path: string): string {
 }
 
 /**
- * Reproduces Go's `url.Values.Encode` escaping: every byte outside the
- * unreserved set is percent-encoded with uppercase hex, and a space becomes `+`.
- * `canonicalDiffURI` therefore builds byte-for-byte the same string the product
- * considers canonical, which a positive control in the suite verifies.
+ * Builds the one canonical spelling of a code location the product accepts:
+ * Git's `<commit>:<path>` with GitHub's `#L<start>[-L<end>]` suffix, where a
+ * single line is `#L<n>` and a whole file has no suffix. A positive control in
+ * the suite verifies it is byte-for-byte what the server itself renders.
  */
-function encodeQueryComponent(value: string): string {
-  return [...new TextEncoder().encode(value)]
-    .map((byte) => {
-      const char = String.fromCharCode(byte);
-      if (/[A-Za-z0-9\-_.~]/.test(char)) return char;
-      if (char === " ") return "+";
-      return `%${byte.toString(16).toUpperCase().padStart(2, "0")}`;
-    })
-    .join("");
+export function codeLocation(commit: string, path: string, start?: number, end: number | undefined = start): string {
+  if (start === undefined) return `${commit}:${path}`;
+  return start === end ? `${commit}:${path}#L${start}` : `${commit}:${path}#L${start}-L${end}`;
 }
 
-export function diffURI(kind: "file" | "line" | "event", parameters: Record<string, string | number>): string {
-  const query = Object.keys(parameters)
-    .sort()
-    .map((key) => `${encodeQueryComponent(key)}=${encodeQueryComponent(String(parameters[key]))}`)
-    .join("&");
-  return `saga-diff://v1/${kind}?${query}`;
-}
-
-export function canonicalFileURI(identity: DiffIdentity, path: string): string {
-  return diffURI("file", { repository: identity.repository, base: identity.base, head: identity.head, path });
-}
-
-export function canonicalLineURI(identity: DiffIdentity, path: string, side: "old" | "new", start: number, end: number): string {
-  return diffURI("line", { repository: identity.repository, base: identity.base, head: identity.head, path, side, start, end });
+/**
+ * The digest the product stores for a reference: sha256 over the exact bytes
+ * of lines start..end (each with its newline) at the commit, or the whole file.
+ */
+export function codeDigest(sourceRepo: string, commit: string, path: string, start?: number, end: number | undefined = start): string {
+  const content = spawnSync("git", ["show", `${commit}:${path}`], { cwd: sourceRepo, maxBuffer: 64 * 1024 * 1024 });
+  if (content.status !== 0) throw new Error(`git show ${commit}:${path} failed\n${content.stderr.toString()}`);
+  let bytes: Buffer = content.stdout;
+  if (start !== undefined && end !== undefined) {
+    const lines: Buffer[] = [];
+    let offset = 0;
+    while (offset < bytes.length) {
+      const newline = bytes.indexOf(0x0a, offset);
+      const next = newline < 0 ? bytes.length : newline + 1;
+      lines.push(bytes.subarray(offset, next));
+      offset = next;
+    }
+    if (start < 1 || end < start || end > lines.length) throw new Error(`line range ${start}-${end} is outside ${path}`);
+    bytes = Buffer.concat(lines.slice(start - 1, end));
+  }
+  return `sha256:${createHash("sha256").update(bytes).digest("hex")}`;
 }
 
 export type HTTPResponse = { status: number; body: string; headers: Record<string, string | string[] | undefined> };
@@ -502,7 +508,7 @@ function buildLargeSourceRepository(root: string): { sourceRepo: string; base: s
   return { sourceRepo, base, head: git(sourceRepo, "rev-parse", "HEAD") };
 }
 
-function buildLargeSagaRepository(root: string, source: { sourceRepo: string; base: string; head: string }): { sagaRepo: string; sagaRoot: string; identity: DiffIdentity } {
+function buildLargeSagaRepository(root: string, source: { sourceRepo: string; base: string; head: string }): { sagaRepo: string; sagaRoot: string; identity: ComparisonIdentity } {
   const sagaRepo = join(root, "saga-repo");
   const sagaRoot = join(sagaRepo, "large.saga");
   mkdirSync(sagaRepo, { recursive: true });

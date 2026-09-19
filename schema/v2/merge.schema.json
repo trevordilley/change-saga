@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://changesaga.dev/schema/v2/merge.schema.json",
+  "title": "Change Saga merge record",
+  "description": "Written by repin when a change lands: the landed commit references were re-pinned to, and the branch's commit messages, oldest first.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "commit",
+    "commits",
+    "pinned_at"
+  ],
+  "properties": {
+    "version": {
+      "const": 2
+    },
+    "commit": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$"
+    },
+    "commits": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "commit",
+          "author",
+          "date",
+          "subject"
+        ],
+        "properties": {
+          "commit": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$"
+          },
+          "author": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "subject": {
+            "type": "string",
+            "minLength": 1
+          },
+          "body": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "pinned_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/querytest/fixture.go",
+      "start": 1,
+      "end": 165,
+      "digest": "sha256:1ee5294a8c109db432b0a6432d1e868c9eddd9d0a79123594bc61bd902407a88",
+      "note": "Tests bounded inert queries, separate repositories, cursor attacks, side effects, and path leakage."
+    }
+  ],
+  "version": 2
+}

@@ -1,0 +1,3243 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "digest": "sha256:b33f34ae74998f2c922a802e5bd3dd13a3702213efa1d7a2fb350d3205206d14",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:688b07115f0ec777e532843c0e4de51e6676c38f02e66162c41b44b445c7f7ec",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:71e37b6cd48ad477cbb12624b757ee1dc4975711b78237a85f508bfdd723af77",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:6c7872f7e7aba7ceb14de93a1613a51c5b446ca889744d3b529463bd245c0953",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:9d321d278769fb32c7c6820e1c992ebb53b04e39def0f158cbf1d84e27d34c18",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:171b756171ff8240f94ccb83de837ed4242449df3ecef3a3762523d1f5ae0348",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:57e084ab258e81b1e20f6e9b9f72b556c4838b3517e76da7edd5b6e7546090a2",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:74432b77763c6cfa9171fc3fd13832ff241f4c996771aa8caccfe84199cb372f",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:f05b48055b78db9e9e8993848d47169d7abd312df35886aa83d4014d37eb4009",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:226f37da536b12b86af70e3b5777877ac58882a6b0e30be1d9fc591badf849e2",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:1b649ecbf085fe223589d7f842defd5e2c82ec06b02b4f7827a31625fd09316e",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:d28863555fbc7eb2c1b3aca9fb2fc5690456651523e934989c30dfd95f77129b",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:ab6f6be8e5963a10d31f1044691aa6beceed5a59d04cd8247f259497075d8b4d",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:5848092e881d6728ee9dbcea8d7a1d95fd61173d37db11915f72c75e342dbe49",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:fafba0527c3953c4b6e0e5b5739ba83612f8053bcdc9466730193cd1d590b408",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:e68460f29fe9662c569654a5fc806177a23bd228d29512439d30f5525fbd1847",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:4d31909ce96fbc200604c03e8465ec5fbb1ef2846087603967bf8af8b6a7e07f",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:1fa90be2bfee4cd5b4418b910c2c55b2c0c9a42886c50d235fadd8a1aa5c53e2",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:1ff511ad8e25b713d8b43a67bf3eebf61302c5b979150c9ef80167cf5829caf8",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:2fe5984b613353ce58a317cfa80fa73b0ab01c70da4f9a3a5e92a0210d1782d9",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:15186a138013004878797c8a52b76e821d912589162b32c93255de3accaf09bb",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:87139e0e59cc890655c5c0434aaf3d9e5275103ec2bac659effe5d1c36550d2a",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:97d5677e161ebb56de29d89c678fdf5c615af02acac956006fa8cebe3899fce7",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:3fbedef3dccecceb3c7c68fab904242cb73de6301f710b0698faa790885ec69c",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:312efe31fdb10f2253f0125585259903f9275256dd942b88577f34ac55b3bc61",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:07fd6b6fdb97695222a192ef13fe8c1b390f8755249a954cf601f660420b9eaa",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:0c77b9a4e8d1cd424d473fcd69196740872928b65c6a47a81bf8514a67b36599",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:02b6478141ba789c97618ceaf21143382be83da3881174b309972bfcc241c84e",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:05a47d3a5a187093b99944dadb321f1359b559588e74182c313ab38777577a96",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:f06b3787c6a00356ee43adaf82fe7de818d177e3c5046cf0d333bd3ec92661d8",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:81454bc672e559a2fecd396c05ed03d4c7556dc7bfeff25d892e0e7568d73b86",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:0e4e78d2eb683e84fa9d113d26e3913b225682a40e4b4181758ce247e53fbe80",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:5bad7cc2dfafc2175fa2d9704e0202f94083a9da69a585b0b18c48bea236275e",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:f06b3787c6a00356ee43adaf82fe7de818d177e3c5046cf0d333bd3ec92661d8",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:f9d92782544c5c493e336c2c1b44d0b12cffb057745d7d3568d832ac27111577",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:0e4e78d2eb683e84fa9d113d26e3913b225682a40e4b4181758ce247e53fbe80",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:5bad7cc2dfafc2175fa2d9704e0202f94083a9da69a585b0b18c48bea236275e",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:cfac18a3b54986904c2778a40cf5dec4febc562ce5da98e5672c1ec6769ab618",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:5617181d62b07f46c09f70a789549ed0565387fa5edc113419e5d7ef7fc33847",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:751bd971a75157d90f950c52d992fb3693e0f2d10d181e910638597f0414bc1d",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:ae6e535e7d3af00d122b400b077b77e9e84006bcc42d022640d76546ae490ed8",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:03e66b95c22f63e2408afed3ebc740445be48c800bdc054ac1d5ab4eba1be878",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:b2e0162ebb4e1153d843c78d8a4af39ae647efbe5c2daea4e5305c71f859194a",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:1d83721a159f2bbd7f694c2e5397dea7caa4fafa54e43ea82da2d309d11105a4",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:28716fbd4bf6246fef65038ad835f480e65c07873bd851d110f41a2cc160eeb4",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:fdc5b1898a0faa95bff9892d15bad80dc939f317156276ffa2a13f59a7fa603a",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:5fc40474548ea7fc1acd5e29e86c5ee90d82c2825ad29614aefada312e73c444",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:6df1b45d64e0a21789eaa6bfd3517bd836072dcf30e43c5b65a9388c32531d31",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:dd083bfe5e6a4e910092f45ffa958f7b7d25900ad9417f6566d1b103d88c956b",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:e4f7971f749834f8102e92ef4d677977003bb7072ec777217e98fa74320f2288",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:355ba8185dcebf385b6373d72aa85ad088367988befb059e4c4dd3177afe55ca",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:77a9b5e9019c8db8783ec9c3febb0a2c9862f61a05c308fe895e4a9bed03edb3",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:838fdbfe5870fa71bdf138c188f875698ce147b30f9a457d002f0736bac8160c",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:b5ebb0981419d375c8b937421b63e04a5891885c59a193584b17420833ca108a",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 68,
+      "end": 68,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:6b053d1e17912676ea8fd0ef10e9ce8089bb4f47b1d6bdaae1239dbf8aa2de8b",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 70,
+      "end": 70,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 71,
+      "end": 71,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 72,
+      "end": 72,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 73,
+      "end": 73,
+      "digest": "sha256:0c77b9a4e8d1cd424d473fcd69196740872928b65c6a47a81bf8514a67b36599",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 74,
+      "end": 74,
+      "digest": "sha256:501bfab7dcb5a24582fa72ad223b901abe02488b97bddc092ac73136daef8df4",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 75,
+      "end": 75,
+      "digest": "sha256:9ddb894e436047a10134bfaa5b98767939b4b119182985b5d229ae6f04459240",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 76,
+      "end": 76,
+      "digest": "sha256:18aa8b0a5a94516e9888d2219f68c7f29b118df2ada2a32d7cb3e6c6f4805b3c",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 77,
+      "end": 77,
+      "digest": "sha256:378c4af30582fe229085b2790964ca684186282c8bfe23c80fb93fe4b2144826",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 78,
+      "end": 78,
+      "digest": "sha256:cfac18a3b54986904c2778a40cf5dec4febc562ce5da98e5672c1ec6769ab618",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 79,
+      "end": 79,
+      "digest": "sha256:e660136a1f7b238576dccbb791ee507718ef996364eab336ee90d228301fb4f1",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 80,
+      "end": 80,
+      "digest": "sha256:2452c6de7caa47fe63b4e19af3d3d22987d2c2bc59b912328830ea4e7b6c53f0",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 81,
+      "end": 81,
+      "digest": "sha256:333a60434e5c6d3e9b94edd69324e46bc005ef311ec2aef524e8fbfefddb9aae",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 82,
+      "end": 82,
+      "digest": "sha256:23510fb11cb1d3ea1df75e3e627332d6955571bd5586d550e6f78fe63a90b1ee",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 83,
+      "end": 83,
+      "digest": "sha256:0e4e78d2eb683e84fa9d113d26e3913b225682a40e4b4181758ce247e53fbe80",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 84,
+      "end": 84,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 85,
+      "end": 85,
+      "digest": "sha256:54ab2bba9d2cffbfe68c1c204ca8f3147a476c29b31c15ab8c23979c0d320c19",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 86,
+      "end": 86,
+      "digest": "sha256:bb93c23c759e8950bfc0479a5749464795751cf04b27fe8034292950d461ebd6",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 87,
+      "end": 87,
+      "digest": "sha256:13d1ec6f10a80a6a4762216fd5764268066d9ec29a4fc42d9cb16943ce07f161",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 88,
+      "end": 88,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 89,
+      "end": 89,
+      "digest": "sha256:790abc4e40cac256ccb7c2ec0b7a5dd3d193b4ada19a15c084a6f46517e2c858",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 90,
+      "end": 90,
+      "digest": "sha256:77a9b5e9019c8db8783ec9c3febb0a2c9862f61a05c308fe895e4a9bed03edb3",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 91,
+      "end": 91,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 92,
+      "end": 92,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 93,
+      "end": 93,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 94,
+      "end": 94,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 95,
+      "end": 95,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 96,
+      "end": 96,
+      "digest": "sha256:265b0d265fc5bbae958176e7950de43161c93bc5b8e03946762fc2fdbd2000e0",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 97,
+      "end": 97,
+      "digest": "sha256:4d31909ce96fbc200604c03e8465ec5fbb1ef2846087603967bf8af8b6a7e07f",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 98,
+      "end": 98,
+      "digest": "sha256:57a7f353a8bc2747c489d7754b1bcdae4b21e3ea8ae00f9d99e76b883a7c2eb0",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 99,
+      "end": 99,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 100,
+      "end": 100,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 101,
+      "end": 101,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 102,
+      "end": 102,
+      "digest": "sha256:38cec2e5d74043720f611097847bb395f8bc56ad58b793aacf0021533e548f1e",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 103,
+      "end": 103,
+      "digest": "sha256:00a923dbaade8e239ffd73c3f78a95125cd9b725e7df45660a9807723221a9e1",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 104,
+      "end": 104,
+      "digest": "sha256:45ca0a2e8690ce0dea3f2bebcd30ab3b8f461503f38df3c8419b2fceb6d0e947",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 105,
+      "end": 105,
+      "digest": "sha256:1d83721a159f2bbd7f694c2e5397dea7caa4fafa54e43ea82da2d309d11105a4",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 106,
+      "end": 106,
+      "digest": "sha256:1f758ead9c1064f31448d2be7584e5d3ba836c0619e75d5b37542469d2d1ab6f",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 107,
+      "end": 107,
+      "digest": "sha256:49b4a02a12e9a5b4693579a57be487ef0ee6e843b7a2f38bba27df325a1848fb",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 108,
+      "end": 108,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 109,
+      "end": 109,
+      "digest": "sha256:7e8b9eb2e60d4df7880ff1b081fd038fe9c601c191510763f5b277c75950a0ba",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 110,
+      "end": 110,
+      "digest": "sha256:0a2423d44d482ac7426d08f8e63f1b1467f3b84840657dc7e0e52d09e320b85e",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 111,
+      "end": 111,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 112,
+      "end": 112,
+      "digest": "sha256:0a122d1690a214ca2a08b2a803120237b607e51a1ec0981fea2c968182efd328",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 113,
+      "end": 113,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 114,
+      "end": 114,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 115,
+      "end": 115,
+      "digest": "sha256:53899c2fcb6a4966dd0ad1c658b37e694ec964d89bde5824ea25eb6e038a1b92",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 116,
+      "end": 116,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 117,
+      "end": 117,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 118,
+      "end": 118,
+      "digest": "sha256:fd60cafb5d8d701647f09eff50fe3a87717333c805cce0831c041054662a2cbf",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 119,
+      "end": 119,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 120,
+      "end": 120,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 121,
+      "end": 121,
+      "digest": "sha256:5cc4dd644c34319c4f471ee3fd8ab089e900169621394999c2f191b7e806156e",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 122,
+      "end": 122,
+      "digest": "sha256:98e1a09741468ddbecec491d5cb6d091bfc1a5004291192895608e47c3cb3be4",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 123,
+      "end": 123,
+      "digest": "sha256:eae23602458985737a158b25b6d8a34f4d85b7f532df04d08cb2415b588d0a6b",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 124,
+      "end": 124,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 125,
+      "end": 125,
+      "digest": "sha256:a1d507faaa406c7140944a64db4569ede256a901cd0110c945b0696327fea8c8",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 126,
+      "end": 126,
+      "digest": "sha256:6e486fb7fadea17af74009cc88cea0caa272cad34807ce234228151d98e40c08",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 127,
+      "end": 127,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 128,
+      "end": 128,
+      "digest": "sha256:b3a98333d749258828e96b61bd3daa9526a19458f5b92f8178c5f8941968d0ca",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 129,
+      "end": 129,
+      "digest": "sha256:ade693e45d7e72b217a6e4043ca1611e19849016a1245be8bc86a294e6fdc1d4",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 130,
+      "end": 130,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 131,
+      "end": 131,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 132,
+      "end": 132,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 133,
+      "end": 133,
+      "digest": "sha256:046c3fa8f9cf32aeeacbde7233d1d9e60ada7a753c4f1deeee7419c9a68501f6",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 134,
+      "end": 134,
+      "digest": "sha256:4d31909ce96fbc200604c03e8465ec5fbb1ef2846087603967bf8af8b6a7e07f",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 135,
+      "end": 135,
+      "digest": "sha256:1fa90be2bfee4cd5b4418b910c2c55b2c0c9a42886c50d235fadd8a1aa5c53e2",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 136,
+      "end": 136,
+      "digest": "sha256:92be40ce02c2274d19cd74e9530d7276751de640c60a00303a95964235630913",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 137,
+      "end": 137,
+      "digest": "sha256:8bf5fcf2638d9dbfd9d4d0a8cdfc179d385dcee7e67fee6f838f9aeb605051a6",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 138,
+      "end": 138,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 139,
+      "end": 139,
+      "digest": "sha256:901eb310d0d3b06812d1361d2b1bc4c2d6fbbfbb2420b91d3a9132cb9ead28ee",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 140,
+      "end": 140,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 141,
+      "end": 141,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 142,
+      "end": 142,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 143,
+      "end": 143,
+      "digest": "sha256:2fe5984b613353ce58a317cfa80fa73b0ab01c70da4f9a3a5e92a0210d1782d9",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 144,
+      "end": 144,
+      "digest": "sha256:15186a138013004878797c8a52b76e821d912589162b32c93255de3accaf09bb",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 145,
+      "end": 145,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 146,
+      "end": 146,
+      "digest": "sha256:0c77b9a4e8d1cd424d473fcd69196740872928b65c6a47a81bf8514a67b36599",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 147,
+      "end": 147,
+      "digest": "sha256:c6a092f6ab223cc4ecab75ac89f95e459f2d8923ff81cff6b48677e03acfb88a",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 148,
+      "end": 148,
+      "digest": "sha256:38f9ac408981ff648c732f207fb842320180db2e5eb7d5a3235a86d903ef6dac",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 149,
+      "end": 149,
+      "digest": "sha256:f06b3787c6a00356ee43adaf82fe7de818d177e3c5046cf0d333bd3ec92661d8",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 150,
+      "end": 150,
+      "digest": "sha256:76ba4395d5d02a7ee077992bf448cb69c087640099277adfb7473d776d8b1d91",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 151,
+      "end": 151,
+      "digest": "sha256:0e4e78d2eb683e84fa9d113d26e3913b225682a40e4b4181758ce247e53fbe80",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 152,
+      "end": 152,
+      "digest": "sha256:5bad7cc2dfafc2175fa2d9704e0202f94083a9da69a585b0b18c48bea236275e",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 153,
+      "end": 153,
+      "digest": "sha256:f06b3787c6a00356ee43adaf82fe7de818d177e3c5046cf0d333bd3ec92661d8",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 154,
+      "end": 154,
+      "digest": "sha256:bf4899e340ff26bf80e0e46689f37d5a591edf0a7a31893ec9d6004e5d73c22e",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 155,
+      "end": 155,
+      "digest": "sha256:0e4e78d2eb683e84fa9d113d26e3913b225682a40e4b4181758ce247e53fbe80",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 156,
+      "end": 156,
+      "digest": "sha256:5bad7cc2dfafc2175fa2d9704e0202f94083a9da69a585b0b18c48bea236275e",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 157,
+      "end": 157,
+      "digest": "sha256:cfac18a3b54986904c2778a40cf5dec4febc562ce5da98e5672c1ec6769ab618",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 158,
+      "end": 158,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 159,
+      "end": 159,
+      "digest": "sha256:5029b253a011e651b7776300d318df41f8aa97682f8c4eed74cc552f6ee56a19",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 160,
+      "end": 160,
+      "digest": "sha256:f6bed3cfc31e171b526bac0825509aad86366f32b8097682c89c3fbc84a8e7c9",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 161,
+      "end": 161,
+      "digest": "sha256:0d3497cc212727725f2ce54e501b607b1faeadca38ee9a599e8dcae334fe9a67",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 162,
+      "end": 162,
+      "digest": "sha256:06785b95d8dfc39e411b806222a02cf6a25e4b26992489ec06f2ab9b282fa14b",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 163,
+      "end": 163,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 164,
+      "end": 164,
+      "digest": "sha256:d925a248e02a0101ea9587bfb248d301e1e4fac098ccef876a1ba4514a978de2",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 165,
+      "end": 165,
+      "digest": "sha256:52ecda8c3f8de1f802ebea3416f5eaf2a11851bcca59bd4e5d5809fa91955893",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 166,
+      "end": 166,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 167,
+      "end": 167,
+      "digest": "sha256:2c793365e8cf9020e43cbe40d589903f6f28870afbb0bd820d6976f4470318a7",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 168,
+      "end": 168,
+      "digest": "sha256:9b993c662fa8934880e80246ccc72a316688a700f482f203baa3322c4f274c1b",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 169,
+      "end": 169,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 170,
+      "end": 170,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 171,
+      "end": 171,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 172,
+      "end": 172,
+      "digest": "sha256:e7d6dc215c2226bf9fc2b5c34d73961353becdbc1f7d836f1962c1a1efd1bc32",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 173,
+      "end": 173,
+      "digest": "sha256:4d31909ce96fbc200604c03e8465ec5fbb1ef2846087603967bf8af8b6a7e07f",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 174,
+      "end": 174,
+      "digest": "sha256:33ba95604bed0719964b0080d755374f654f83922a94ff7130e345665aba9a0a",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 175,
+      "end": 175,
+      "digest": "sha256:da5da27f14a8c8f24a52804d2f0c5e33f9bb77b18549361caa935202bfe3f80a",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 176,
+      "end": 176,
+      "digest": "sha256:8b7429e1489e5495eb3bc649408d62b432bd56744e0e4e74179e35e136c6d9cb",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 177,
+      "end": 177,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 178,
+      "end": 178,
+      "digest": "sha256:790abc4e40cac256ccb7c2ec0b7a5dd3d193b4ada19a15c084a6f46517e2c858",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 179,
+      "end": 179,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 180,
+      "end": 180,
+      "digest": "sha256:4c9dd4ede5186ac97fa19e253326059059a19598c14dbe6eddcc490b5a9bb327",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 181,
+      "end": 181,
+      "digest": "sha256:edb034331dee587424b9eea757c7ed22aa40e09747b4c9abec1423d99367992b",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 182,
+      "end": 182,
+      "digest": "sha256:2e7e9498d3df994e1137c15344a6de0c2ac628a800c94d7c35c3a75111f0a4ab",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 183,
+      "end": 183,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 184,
+      "end": 184,
+      "digest": "sha256:ee4d8bd6be42509b2e7e303b8418265306996a8d4705ac72cd118ff15f23a8eb",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 185,
+      "end": 185,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 186,
+      "end": 186,
+      "digest": "sha256:e7a5f5500294a2e188aa8c7e1ba97527d4b29e82f1e6694bb44e1f77a4b1e0f7",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 187,
+      "end": 187,
+      "digest": "sha256:4380aed94ee5677610bbc14ed90af097629085904e2fb1e5a0d88a42bf3dd7cd",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 188,
+      "end": 188,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 189,
+      "end": 189,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 190,
+      "end": 190,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 191,
+      "end": 191,
+      "digest": "sha256:2c2966d8d1fe7d909bbc1a461ebae266767c32b25aca335d214872abf2784b8d",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 192,
+      "end": 192,
+      "digest": "sha256:278d312b9c8ac1cde3ecb96d85c2a237e194d5a1ce7a5379e019ed817b3e410e",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 193,
+      "end": 193,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 194,
+      "end": 194,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 195,
+      "end": 195,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 196,
+      "end": 196,
+      "digest": "sha256:33ba95604bed0719964b0080d755374f654f83922a94ff7130e345665aba9a0a",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 197,
+      "end": 197,
+      "digest": "sha256:da5da27f14a8c8f24a52804d2f0c5e33f9bb77b18549361caa935202bfe3f80a",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 198,
+      "end": 198,
+      "digest": "sha256:f3305ce66c479435ad8080f2062a7ee0b007fc2cf525f5348b8c596bf5a5a043",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 199,
+      "end": 199,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 200,
+      "end": 200,
+      "digest": "sha256:790abc4e40cac256ccb7c2ec0b7a5dd3d193b4ada19a15c084a6f46517e2c858",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 201,
+      "end": 201,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 202,
+      "end": 202,
+      "digest": "sha256:e93bc380cd964c88c1bcb07039cd6e2dff2a3114ca4ed777aa34924d0ad4343a",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 203,
+      "end": 203,
+      "digest": "sha256:3e418d8de32daed86ca6a30bc64e50861d8293e425bbef5685c975a8f7534571",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 204,
+      "end": 204,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 205,
+      "end": 205,
+      "digest": "sha256:96a1991f375a01b9924243948876c51e054e4d32682d3a262c561a41f66709a7",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 206,
+      "end": 206,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 207,
+      "end": 207,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 208,
+      "end": 208,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 209,
+      "end": 209,
+      "digest": "sha256:b678c72c5130f3cc30b3f27b0da024c000348baad5b93a73c9d113cc676fe9dd",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 210,
+      "end": 210,
+      "digest": "sha256:61172e4978ed02fe056368777f244e5a985370302537008169da735398c06869",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 211,
+      "end": 211,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 212,
+      "end": 212,
+      "digest": "sha256:f68f69f2a4dd8f9e91f164cea8c5baf49b6fd0df8ba1fcff24029bba25d30804",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 213,
+      "end": 213,
+      "digest": "sha256:8efdf3096d4a9c0938ccbe2330304cc7c61301b8067f3734887ac4df945dc501",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 214,
+      "end": 214,
+      "digest": "sha256:31f280e9f876cd827c4e9e5a41e378591ce563495e7bfe94a1c24df788d49154",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 215,
+      "end": 215,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 216,
+      "end": 216,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 217,
+      "end": 217,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 218,
+      "end": 218,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 219,
+      "end": 219,
+      "digest": "sha256:fd53887661f524fb49bbdcd442b622a81dcd594d1c1ad11ca552ecbef0d29cae",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 220,
+      "end": 220,
+      "digest": "sha256:4d31909ce96fbc200604c03e8465ec5fbb1ef2846087603967bf8af8b6a7e07f",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 221,
+      "end": 221,
+      "digest": "sha256:1fa90be2bfee4cd5b4418b910c2c55b2c0c9a42886c50d235fadd8a1aa5c53e2",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 222,
+      "end": 222,
+      "digest": "sha256:2056cf69c6fbc4b1fd529ecc4e3dd0e7ae572a3bb9da76909742f649eac91840",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 223,
+      "end": 223,
+      "digest": "sha256:dfa488de578144d38fce3ef2bf59592979d08d84092d38d9c7247b0094fbb36a",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 224,
+      "end": 224,
+      "digest": "sha256:48d1eb0c61f39b886032d127a00445b48d625df2796c5c8d12ed8cac5ef0de81",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 225,
+      "end": 225,
+      "digest": "sha256:24c9058362c04d9f3d4f7808064c5e1eb63ba2e7451d1737a2f22f72b88af8f9",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 226,
+      "end": 226,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 227,
+      "end": 227,
+      "digest": "sha256:8017e5c60072cf53c278ff3648409be532b432d79b108c2fc404ca3950b56469",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 228,
+      "end": 228,
+      "digest": "sha256:4c154cdaef82ba33866af83a0fb4627709fde0adf6b35ece16355f457f55ed74",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 229,
+      "end": 229,
+      "digest": "sha256:b9a659681da55a28b6a6c1eeb32b508b76693e75a1d9d419d6d2f45686dba100",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 230,
+      "end": 230,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 231,
+      "end": 231,
+      "digest": "sha256:a7db3521e013fc09c0647af2bb94d8ad48400e200ae127a61d4d48c0a6bf0af1",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 232,
+      "end": 232,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 233,
+      "end": 233,
+      "digest": "sha256:37e4da6bda5136d7ad2fa3c8a164104441a014c031908b4497deb5b536dc5711",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 234,
+      "end": 234,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 235,
+      "end": 235,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 236,
+      "end": 236,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 237,
+      "end": 237,
+      "digest": "sha256:333804fa734754795e47cb6256743a30e80fab343632929af7ea53b1c4f2cfb1",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 238,
+      "end": 238,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 239,
+      "end": 239,
+      "digest": "sha256:af625b81e73d6e15cd134d6e00cd506020a31de8f5335c603581372cd85ab2d8",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 240,
+      "end": 240,
+      "digest": "sha256:d2adf2371624e860daf9bef4d089c41e5b6523f03a7fc4cfe91f33431efd70b4",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 241,
+      "end": 241,
+      "digest": "sha256:f2fec06d2e3d7b81636318e84d4238a4aa8549a2d0ca44695c025fbdc958f5ef",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 242,
+      "end": 242,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 243,
+      "end": 243,
+      "digest": "sha256:3801f870bdc7ff1065d0b806eb9a4b3d1ff8b5d475b5a482832b46f3ae62f830",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 244,
+      "end": 244,
+      "digest": "sha256:329f772dd48a45248a51244533554cc5f41cc7d8d93f261239729ec76537b9b7",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 245,
+      "end": 245,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 246,
+      "end": 246,
+      "digest": "sha256:befce6e9488bbb04dd2f5408dd6c11bba3248e9edaef64a68857e7ff5e51f891",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 247,
+      "end": 247,
+      "digest": "sha256:86c1ad4fe6c9fdc54c09e8c92ee5a896047a1174d5add5f053aa74fffa81cb2d",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 248,
+      "end": 248,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 249,
+      "end": 249,
+      "digest": "sha256:1ba623cee7a90c9d57c1a21ac4557630439b837337ee4443aef04e2160c22f2e",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 250,
+      "end": 250,
+      "digest": "sha256:e4d9c027bc5ce899782b308bc7e170c9f7982568fa3ed0abbf006b76bbae27ef",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 251,
+      "end": 251,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 252,
+      "end": 252,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 253,
+      "end": 253,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 254,
+      "end": 254,
+      "digest": "sha256:d519d956bf890e8c4b9222fe5f123646b2290a0513ed9ca87949eb7bbb05d3cc",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 255,
+      "end": 255,
+      "digest": "sha256:4d31909ce96fbc200604c03e8465ec5fbb1ef2846087603967bf8af8b6a7e07f",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 256,
+      "end": 256,
+      "digest": "sha256:cc63e3ceb6ce9503f24be32e92b44ab5eed79335cfc426486a15d5de5287f94a",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 257,
+      "end": 257,
+      "digest": "sha256:586e127526450c08f7144781544e0f8e37719d218a3993ef5a018fcf4d117c1d",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 258,
+      "end": 258,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 259,
+      "end": 259,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 260,
+      "end": 260,
+      "digest": "sha256:93cdaab8006130d1ce76d4f9f4931f245b848360d9df07e36ff8986feb92f5a4",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 261,
+      "end": 261,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 262,
+      "end": 262,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 263,
+      "end": 263,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 264,
+      "end": 264,
+      "digest": "sha256:19882865d767e46189c7dd9c1a4efb91d8a32c3735cbc7c8ee8782bd5716efab",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 265,
+      "end": 265,
+      "digest": "sha256:50cc04e6240ec3849120f78545967ec97580bfc5322ba2d158b4b9f5534313bf",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 266,
+      "end": 266,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 267,
+      "end": 267,
+      "digest": "sha256:5fbf7b15e69c1d69093044b2129e1c5e5324bca2c2a159dc1fe6b454e04f9b19",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 268,
+      "end": 268,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 269,
+      "end": 269,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 270,
+      "end": 270,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 271,
+      "end": 271,
+      "digest": "sha256:b678c72c5130f3cc30b3f27b0da024c000348baad5b93a73c9d113cc676fe9dd",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 272,
+      "end": 272,
+      "digest": "sha256:ed8a77b24ed5ec16cc296c8bd0889dad0b69f65ccb55f3d79abb86ac61578b1f",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 273,
+      "end": 273,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 274,
+      "end": 274,
+      "digest": "sha256:02aec84f52e7ffea754dd33610451c73ca2de40d17498c1bd1f92ec45d6a467b",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 275,
+      "end": 275,
+      "digest": "sha256:6c70cd1c9ddbbf1856ee5b454acfc29bab69be0f44747d98d2ea3ae24755f390",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 276,
+      "end": 276,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 277,
+      "end": 277,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 278,
+      "end": 278,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 279,
+      "end": 279,
+      "digest": "sha256:829fa5725f35485e94536fd8e3d038eb6ff7cd4e4eb2a2cf610340653276c31c",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 280,
+      "end": 280,
+      "digest": "sha256:4d31909ce96fbc200604c03e8465ec5fbb1ef2846087603967bf8af8b6a7e07f",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 281,
+      "end": 281,
+      "digest": "sha256:e6532dbeb731bf5feafa8609f343b9e145a6e21acbf9ef7c56458710109be800",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 282,
+      "end": 282,
+      "digest": "sha256:7d54c29e49dc5d1a093072c77a0c4d7d92d943aec6bba83c8d20ec46b4498bac",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 283,
+      "end": 283,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 284,
+      "end": 284,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 285,
+      "end": 285,
+      "digest": "sha256:f2a43e60c7c7f679f22ce16db6cdd926ad7d6c99c3cfc3b82e646e9b63650c6b",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 286,
+      "end": 286,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 287,
+      "end": 287,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 288,
+      "end": 288,
+      "digest": "sha256:5c8c09b03b5114f2f67c49014a983ba76b242539cb365a8812b159279374c900",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 289,
+      "end": 289,
+      "digest": "sha256:98cfd8b425402341d70298a98b3e1b6c67a8978be88bdea242845c977dfa6ddc",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 290,
+      "end": 290,
+      "digest": "sha256:656149018b91a21342c2daad00dba765dfd990944e9456aaef2955813915421f",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 291,
+      "end": 291,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 292,
+      "end": 292,
+      "digest": "sha256:0ed9eff8707f57444082f6aa46f1db4f819deb6b5338fc0ae44749c9b3b39fcf",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 293,
+      "end": 293,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 294,
+      "end": 294,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 295,
+      "end": 295,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 296,
+      "end": 296,
+      "digest": "sha256:033d21a34164178354e1122369ed3fc77b0982886321a7b2857fecbf55cf4766",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 297,
+      "end": 297,
+      "digest": "sha256:02bff7048728bbac2571fe25cfa24e34dc8aeb92af20696c59d9b5e4398b1ee9",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 298,
+      "end": 298,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 299,
+      "end": 299,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 300,
+      "end": 300,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 301,
+      "end": 301,
+      "digest": "sha256:3fab99180f75b96826f9c15d25c93a86d790e41211502fedd4ad7d49db5e15a4",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 302,
+      "end": 302,
+      "digest": "sha256:ece523c7d95d420d4ff49e42b4fb263847bfb194d96eebb9f9472a2b0266a7e4",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 303,
+      "end": 303,
+      "digest": "sha256:6925c8878274a67cca2ae26157cc6b47d86981a591314e7f13f258083554f2f6",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 304,
+      "end": 304,
+      "digest": "sha256:b47dcab2b04c56805b9e5c7a6069c15e3c10cd2d88c8d08c8dd865f3c2e6a9a2",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 305,
+      "end": 305,
+      "digest": "sha256:e2a07c9ab25f3d90b0919a844f2302a2287b787e94cc2305433365350beb95ed",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 306,
+      "end": 306,
+      "digest": "sha256:a0d631f46c7b77ee2659e7f8626967a222bba74763547eaef05e95a9120688c9",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 307,
+      "end": 307,
+      "digest": "sha256:bc41b58ef7c63b2a961dfd5d1b79556e0f9962f2f515f18d72ec659b398c8648",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 308,
+      "end": 308,
+      "digest": "sha256:468618bf6c2feb3129352e5e7572b55da0cb02fe43121163da5239b7170caff9",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 309,
+      "end": 309,
+      "digest": "sha256:297145af1b576d01cf9024209c07c2a074e0a8e6105b142052e4fcd1600c0968",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 310,
+      "end": 310,
+      "digest": "sha256:138f5f44fd103a4d26885a62a02957a991b7ae190d7189176aca920631b5fb7b",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 311,
+      "end": 311,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 312,
+      "end": 312,
+      "digest": "sha256:5fdff0df33e9f1e30d4f81f28d4d19b53dbbbe22c57fb47a24edcfb3a18c2f32",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 313,
+      "end": 313,
+      "digest": "sha256:ebf8ef90d36634ceba4551f4ec3314c29eb04d453b5bbe0a717d561762765563",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 314,
+      "end": 314,
+      "digest": "sha256:86199883eb3761bf08c9a641f69c8082a1e9035140f18aa496723e012865c785",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 315,
+      "end": 315,
+      "digest": "sha256:4c154cdaef82ba33866af83a0fb4627709fde0adf6b35ece16355f457f55ed74",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 316,
+      "end": 316,
+      "digest": "sha256:b9a659681da55a28b6a6c1eeb32b508b76693e75a1d9d419d6d2f45686dba100",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 317,
+      "end": 317,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 318,
+      "end": 318,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 319,
+      "end": 319,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 320,
+      "end": 320,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 321,
+      "end": 321,
+      "digest": "sha256:e0cfb27b4140c603f3624ed927b4037b1e2cc5b4bf6466ecdf36711a09e9c7fd",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 322,
+      "end": 322,
+      "digest": "sha256:ece523c7d95d420d4ff49e42b4fb263847bfb194d96eebb9f9472a2b0266a7e4",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 323,
+      "end": 323,
+      "digest": "sha256:73e5bdd891d2a9b1fad9ce33a3cdfab73e9e99fab4cbd002b375b00765dabde3",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 324,
+      "end": 324,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 325,
+      "end": 325,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 326,
+      "end": 326,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 327,
+      "end": 327,
+      "digest": "sha256:bb6fa0435922b64795bae3e9822be383869ff79aa26d88b44f1062c0124e5044",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 328,
+      "end": 328,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 329,
+      "end": 329,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 330,
+      "end": 330,
+      "digest": "sha256:7757b4916435ed5b3e41af77e274d841a68ad925b827b790ca71cf9fa8212756",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 331,
+      "end": 331,
+      "digest": "sha256:ece523c7d95d420d4ff49e42b4fb263847bfb194d96eebb9f9472a2b0266a7e4",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 332,
+      "end": 332,
+      "digest": "sha256:da316b7dbf929207b3ae2d28d1e776866e50bf4fa026320125b65e62c15950de",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 333,
+      "end": 333,
+      "digest": "sha256:1cecb4372d59559198af2047e97596aed1aa7c4ce3d2eb110c09023a049b4dac",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 334,
+      "end": 334,
+      "digest": "sha256:a653244854503ebd6525964583f6507596ec9a5b81f65a1b3d6247eecde36c69",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 335,
+      "end": 335,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 336,
+      "end": 336,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 337,
+      "end": 337,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 338,
+      "end": 338,
+      "digest": "sha256:e858c352107cc16bc2747f562e887e6d5bd4bb61fa94d6d6ca64de942e269fbe",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 339,
+      "end": 339,
+      "digest": "sha256:ece523c7d95d420d4ff49e42b4fb263847bfb194d96eebb9f9472a2b0266a7e4",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 340,
+      "end": 340,
+      "digest": "sha256:da316b7dbf929207b3ae2d28d1e776866e50bf4fa026320125b65e62c15950de",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 341,
+      "end": 341,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 342,
+      "end": 342,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 343,
+      "end": 343,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 344,
+      "end": 344,
+      "digest": "sha256:033d21a34164178354e1122369ed3fc77b0982886321a7b2857fecbf55cf4766",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 345,
+      "end": 345,
+      "digest": "sha256:aca98907d70b3ed18914cb2487900e731345740e87b6768c4f747701538e9d09",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 346,
+      "end": 346,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 347,
+      "end": 347,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 348,
+      "end": 348,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 349,
+      "end": 349,
+      "digest": "sha256:cf0ef93b84fa87fd20725af54cfa346c48861f661e7c530f998c3e4be0089d5c",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 350,
+      "end": 350,
+      "digest": "sha256:6818b8b821178d26cda29e2565744ea83646489e69b64ce1eb0dc52597956f2c",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 351,
+      "end": 351,
+      "digest": "sha256:90efd222e690c6ac632a0c9ad9fee338e4dc4a5271c019c10a2a0a7132889275",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 352,
+      "end": 352,
+      "digest": "sha256:0081478b660792f25e567dd735ef20bd6d2e8ec3417d134ad69202f7bfd38aff",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 353,
+      "end": 353,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 354,
+      "end": 354,
+      "digest": "sha256:ba9dc38ca698354afc959d0d319012bdc0f1d8b829be628b581a375dc5d85721",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 355,
+      "end": 355,
+      "digest": "sha256:c1398a334cc4a14fa3a61ba5a337b1126b1f354128c6e85dded4b7089ea882af",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 356,
+      "end": 356,
+      "digest": "sha256:78b5503cbfda8e70cf5bdf2c6af04132121c13272a8e213a3a97aa2bf16d7b2e",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 357,
+      "end": 357,
+      "digest": "sha256:ece523c7d95d420d4ff49e42b4fb263847bfb194d96eebb9f9472a2b0266a7e4",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 358,
+      "end": 358,
+      "digest": "sha256:a354281c547d400b1c5dfa872b15dbbdb24a469f19ed431b31fe66ae148af8d6",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 359,
+      "end": 359,
+      "digest": "sha256:800f2a9e86b4cff2c1b9e3fcfa9c71f253af2f95ae119aa175b5562eaba3c146",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 360,
+      "end": 360,
+      "digest": "sha256:4c154cdaef82ba33866af83a0fb4627709fde0adf6b35ece16355f457f55ed74",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 361,
+      "end": 361,
+      "digest": "sha256:0e4e78d2eb683e84fa9d113d26e3913b225682a40e4b4181758ce247e53fbe80",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 362,
+      "end": 362,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 363,
+      "end": 363,
+      "digest": "sha256:895c13a82bf129804456a7ec843b65b37c15f83194e58b3bbc50a900401962ea",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 364,
+      "end": 364,
+      "digest": "sha256:29b2acf6620dc1c6b1d3e8122898d1f92724d0efa799b5f90d3a3c609afa807c",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 365,
+      "end": 365,
+      "digest": "sha256:8d7eff07ae0e7825648aae124453c4dbc00b98e42e01a2a4c97465d3581dd804",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 366,
+      "end": 366,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 367,
+      "end": 367,
+      "digest": "sha256:ff5f4a4ec1813a5e973ac9c0de535c948a7cb3be85ec66df29c717f628a4eb2a",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 368,
+      "end": 368,
+      "digest": "sha256:0e7db196551cc5804efcbe1f60b0bebdf21ebeadc76c6cd0c8f214f4b8a7f595",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 369,
+      "end": 369,
+      "digest": "sha256:42b11bf5388249d9f3b5c037f88de276f0a86221dae40f589d11fc6a5f4e2eba",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 370,
+      "end": 370,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 371,
+      "end": 371,
+      "digest": "sha256:ff3e6b5e0013cead86b67fb65ecd4c8b7bafd08b441cc497ff73231be72c942f",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 372,
+      "end": 372,
+      "digest": "sha256:710c94ce9583dbedf7a554487d463e46dfaea7f2869d11b80754c7dc6ba25048",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 373,
+      "end": 373,
+      "digest": "sha256:289c2e59f015c2e396306c0237408819996b670658ba554d910b5b3d451d6c06",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 374,
+      "end": 374,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 375,
+      "end": 375,
+      "digest": "sha256:461dc5416e19f4f904116fa83c15d33b18ca7b3315f06ea7de8c404f5fdae0d1",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 376,
+      "end": 376,
+      "digest": "sha256:790abc4e40cac256ccb7c2ec0b7a5dd3d193b4ada19a15c084a6f46517e2c858",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 377,
+      "end": 377,
+      "digest": "sha256:77a9b5e9019c8db8783ec9c3febb0a2c9862f61a05c308fe895e4a9bed03edb3",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 378,
+      "end": 378,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 379,
+      "end": 379,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 380,
+      "end": 380,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 381,
+      "end": 381,
+      "digest": "sha256:a4a11134aa250a2cfc8a087404d72cdeb2e566bdb11cc1e45f841cc4f5e482c8",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 382,
+      "end": 382,
+      "digest": "sha256:3db9856917b4f4cc40303c0b4f0c7b41b9d6a9df6e198c449b53318bad02ae10",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 383,
+      "end": 383,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 384,
+      "end": 384,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 385,
+      "end": 385,
+      "digest": "sha256:50542677e3093ec04c409986b9aa74b44b018974ecfbd5ead1fe5963c599dea3",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 386,
+      "end": 386,
+      "digest": "sha256:ece523c7d95d420d4ff49e42b4fb263847bfb194d96eebb9f9472a2b0266a7e4",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 387,
+      "end": 387,
+      "digest": "sha256:63df206bb0c52043c34f89a318361775a437b4ab7bb924e20a3c241c37a11fc0",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 388,
+      "end": 388,
+      "digest": "sha256:7484acf7c0d773d922756bf41714aa2b7b1eb2de44a0fbbfa587311850a22ff2",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 389,
+      "end": 389,
+      "digest": "sha256:59b67d0c4a12985b3d102f09fabf5322dbd18774da9b34e7c832b00a7e682dde",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 390,
+      "end": 390,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 391,
+      "end": 391,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 392,
+      "end": 392,
+      "digest": "sha256:15b77afd262536d10271dc32e1dadbdc804fb03041b6d0f5e2955d98fcf33781",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 393,
+      "end": 393,
+      "digest": "sha256:dcbfbb0f029bc87efe937c5c52e9ae71d5ea0a4134c428d91daec1033285adce",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 394,
+      "end": 394,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 395,
+      "end": 395,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 396,
+      "end": 396,
+      "digest": "sha256:689b65b7cdb6b8f4116b734d72da0b82bbe21074536416a788ae5278202ea986",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 397,
+      "end": 397,
+      "digest": "sha256:20fc442c16a3a38072ca1a89a903bd4f5766250c9b011cbec6034de2390e53da",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 398,
+      "end": 398,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 399,
+      "end": 399,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 400,
+      "end": 400,
+      "digest": "sha256:fe13d7feaeb901e850ddd2cc5d46b7a2d508fec32f81a26d22f134daf11d26bf",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 401,
+      "end": 401,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 402,
+      "end": 402,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 403,
+      "end": 403,
+      "digest": "sha256:386fcdc43317c00671f64275592472ac7b9e6dff2dabad5c7774925fd436108a",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 404,
+      "end": 404,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Tests append-only granularity, concurrency, fault cleanup, foreign repository rejection, and symlink-safe mutations."
+    }
+  ],
+  "version": 2
+}

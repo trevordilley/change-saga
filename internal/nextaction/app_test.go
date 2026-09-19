@@ -47,7 +47,7 @@ func appStatus() livingapp.Status {
 		},
 		Axes: coverage.AxisProjection{Criteria: []coverage.CriterionCoverage{}},
 		ChangedSource: livingapp.ChangedSource{
-			Complete: true, Uncovered: []livingapp.UncoveredPath{}, Orphans: []livingapp.OrphanRef{}, TestOwned: []livingapp.TestOwned{},
+			Complete: true, Uncovered: []livingapp.UncoveredPath{}, Stale: []livingapp.StaleReference{}, TestOwned: []livingapp.TestOwned{},
 		},
 	}
 }

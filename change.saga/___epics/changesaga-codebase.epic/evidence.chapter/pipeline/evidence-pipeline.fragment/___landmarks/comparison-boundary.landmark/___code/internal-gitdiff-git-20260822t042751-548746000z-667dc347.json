@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitdiff/gitdiff.go",
+      "start": 68,
+      "end": 152,
+      "digest": "sha256:8a9a768787329361af5f6ff6be04b153227862688d446e998ebd80df51ab48c9",
+      "note": "Pins the base-to-head product comparison while excluding Saga-only commits from evidence identity."
+    }
+  ],
+  "version": 2
+}

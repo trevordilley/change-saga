@@ -1,0 +1,411 @@
+{
+  "references": [
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "digest": "sha256:9146e7666d70f22e7739e8735d90275a271753977bd21337caf82345fd8f3cd0",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:bba51a8dbe7e3d04ac513d60cecda49b22d7ace0bf5fa5a7ccc998088a843e6f",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:59d179993c49a4f90c06c89db0c636aae915d3cc2f691fb1754e383027aadbd2",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:7da6e521e9655f3127c7922b7740cdd8bf1fa4c9766239584ddf79b076fee1ce",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:bc1e9359be839f11eea201bc06e3614745949493c5b5a57fe14e3bd2dd57678f",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:9418e860bedd50b484515c56645f0eea6695ab85fc65fece80a958c88c4ae75d",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:fe11174cc5416ff6ef2819e199c3fe5caba2f4c0c87ff880f7605d19c7a62dbb",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:aa9218809f136b61d7f1018ccc5ced8d8350b5f285e6fb0105b0bc91224d3d95",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:536d336bacf8d52198cde5795afd8fc10a889212c6b3079479579388b5fe261d",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:9e86d116bc872317cba6010cefd97a446b8b926a19c9cb8264699d0105eb5e70",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:fc5c70f71f7ab981eb912b4f734dca1692d0cb337d42e491804c0cb716b07007",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:dc1c30057d95deaf49acff5237342497aa4cb0cea1502095440ed039b1ad1226",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:7c6cbea30bb58b904a097086fa81d02f28c588b391e4f182ab8cc9361b64941a",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:8377b8c40f7ccd6a7ab58bf1682e3e0edff131f0150b748a55c7037fcb83b41a",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:d4261e29bffb08a9c9e2a35274fe69cea0d91d66705f63e0dd09c04bb8eddcbc",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:226c803705da0c5acd7e20ac76c96c113dcc92a1cd8d1e7ff78019e19dc1e94a",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:3dff52f8bb21df5769e008119ca7a55f38c239f1ad4c92772d6b711260a68091",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:6e01052bf102d37f436d99bd5ea49ae0b14e719d802cd4f0f1e76c74f346ed0d",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:caaf4a95dcb7c069364bf5dd529fdad1abc3b61c4b63df03be54ed2a8bd3a29d",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:83242c7ac24a0453e24c8d583354a3ac02b8775d01277ea10e8825d380ca605c",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:54c10f75d3b4047322f433e84ecf3a9c99a837017728b9d72ff26016a80d87a8",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:db415a2bd0bcc5ed9ce45cb771e1ce70ab57e7c1214dc65a90bae7ba447ac00e",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:1edee8a704d1034594137a313d9588fd54ff24b0f45fa88eb24456b4c08f1eff",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:ea5a95f66b3a87744311638ddda4ea8ef6f4aac9f2c83cafce579bc04223732b",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:55babba5086428a2972460fae3e1b143884239a0be917ea8784d4b117ebd618a",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:f76277b8424b2e5d687db2af6773f4867e39d37e9f1fbaef9538e624f28e120a",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:0b89620d92aa2ea90c5f9f95f79fe73296448e19cfd42558613c0e178a282c66",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:33f27cbd691b6ab8b64fee9657acaeb9f3479645bda8e50e19a80d9017150c37",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:8a8fe5140bca25b2b8164bdc327884913c5254256856e3d30ac2ef3681cb4ba3",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:e98a17c3f3db08661ba39c608d3c5b936b7efdcbdf52a037e58777fc8074632b",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:dd43dcbf433b6aa810427a2e6f39155a6754534eaa9042712b44b0a5910d3315",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:388212987ae05fd6671207f2c2194a53695504d872dec4e4bcc97d203da3c8ae",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:da4f79acd0ecfb6e199c58e86282c5b46659db222e31c2ec97affdaf308ae1da",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:88375026d33867c460e81c59d294044bd15b5d53ab8817c57b06dfe942cddf7d",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:c9ebaa148e6766d83879b61a8fc9ff7c8f133897dc5d0a5cca35b2a8aad7fb24",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:463071f2fb4419857dfcda3c8d3b0826c0d85a87299fae16ac9997ab7b55fc99",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:f4cfec2f7716eea5d9c6defcf788f98706fbdcd09e05de4495ffe55719a64acb",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:f63821aa8306204394694206c3254d66c9b2d661b2a84c29d3b2ee569800f831",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:59d654ca16a47383ad7235f5dc35cc63197c2c46794f6084a448b08c2621a80e",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:7c248566a04af7030d8715ec5c989dfc56867df95a2b8db0899ff01501848c8c",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:2671235ec872ad835cebb6900bef36624cab844f396f9aeae93328895b5939ea",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:8ef70114ec35793a4aea50ef729c54a6f36203fefa2ad72884a4d6abafe41953",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:023d913b1f65bfc5f2e8d0c185c297b696ed0c458b1e8ad8ec927612c3598c6a",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:480568ad03f939114247ab214f43c61240348281a47ebe4071a3af4db5a410e5",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:5add13ea5d2468db2e6f9493e8fc4b86144fa030188392f1a582b1f492f80fd5",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:a1a5d403045c2374094f77087f3bb096aa5aea140abd5d411f4568e092e9c100",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:02a1a8e5f5aeae42817b57b779bc2fbb39dad08498b532e9d5bff3cd024b1273",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:ab12682ef4f2cf5bab3d3908c5c380a7c29d7bd9bc329aea9a90ad766080ac53",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:de90fcd31bf52dc6658f5b293d6095f9e0df4dd1dcd851b9a613826e0b9eb5be",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:f40746dd56ca17772d8b71cc03f40213f5c0cb624713e8c995a751398d757fd1",
+      "note": "Experiment-only dependency lock."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.sum",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:499963c00cf2a1f2c2d87630f6cea858667fd25ba333d664093bb7b68267389b",
+      "note": "Experiment-only dependency lock."
+    }
+  ],
+  "version": 2
+}

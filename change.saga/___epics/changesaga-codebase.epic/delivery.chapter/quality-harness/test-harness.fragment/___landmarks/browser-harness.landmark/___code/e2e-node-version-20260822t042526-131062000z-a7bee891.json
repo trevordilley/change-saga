@@ -1,0 +1,19 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/.node-version",
+      "digest": "sha256:9c579c4eab1d526e689fe7cda201a0ab2f39070304043bb55c459a3d90954250",
+      "note": "Pins the Node runtime used by browser tests."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/.node-version",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:9c579c4eab1d526e689fe7cda201a0ab2f39070304043bb55c459a3d90954250",
+      "note": "Pins the Node runtime used by browser tests."
+    }
+  ],
+  "version": 2
+}

@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore.go",
+      "start": 334,
+      "end": 368,
+      "digest": "sha256:6c3f90e2b6745d3377ab67ab894c78e82ad45177e3b16ca5e50fb7464bb3d7e7",
+      "note": "Accepts only regular supported attachment files and exposes mutation fault hooks for zero-partial-write tests."
+    }
+  ],
+  "version": 2
+}

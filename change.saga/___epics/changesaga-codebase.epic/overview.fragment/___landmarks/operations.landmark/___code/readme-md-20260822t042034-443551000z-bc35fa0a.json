@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "README.md",
+      "start": 10,
+      "end": 38,
+      "digest": "sha256:ca7353bf4d0a9a1a78147e86df6232f3408b75e1e256ed2db71ec8bb2297c40e",
+      "note": "Documents installation on macOS, Linux, and Windows together with visible release health signals."
+    }
+  ],
+  "version": 2
+}

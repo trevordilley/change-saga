@@ -20,21 +20,22 @@ func grammarHelp(t *testing.T, name string) string {
 	args := append(append([]string{}, fields[1:]...), "-h")
 	ctx := context.Background()
 	run := map[string]func() error{
-		"story":           func() error { return story(ctx, args, &output, strings.NewReader("")) },
-		"criterion":       func() error { return criterion(ctx, args, &output, strings.NewReader("")) },
-		"citation":        func() error { return Citation(ctx, args, &output) },
-		"relation":        func() error { return Relation(ctx, args, &output) },
-		"prototype":       func() error { return Prototype(ctx, args, &output) },
-		"add-deck":        func() error { return AddDeck(ctx, args, &output) },
-		"cover":           func() error { return Cover(ctx, args, &output) },
-		"rebase-evidence": func() error { return RebaseEvidence(ctx, args, &output) },
-		"validate":        func() error { return Validate(ctx, args, &output) },
-		"status":          func() error { return Status(ctx, args, &output) },
-		"spec":            func() error { return Spec(args, &output) },
-		"quality":         func() error { return qualityCommand(ctx, args, &output, strings.NewReader("")) },
-		"epic":            func() error { return Epic(ctx, args, &output) },
-		"persona":         func() error { return Persona(ctx, args, &output) },
-		"flag":            func() error { return FeatureFlag(ctx, args, &output) },
+		"story":      func() error { return story(ctx, args, &output, strings.NewReader("")) },
+		"criterion":  func() error { return criterion(ctx, args, &output, strings.NewReader("")) },
+		"citation":   func() error { return Citation(ctx, args, &output) },
+		"relation":   func() error { return Relation(ctx, args, &output) },
+		"prototype":  func() error { return Prototype(ctx, args, &output) },
+		"add-deck":   func() error { return AddDeck(ctx, args, &output) },
+		"cover":      func() error { return Cover(ctx, args, &output) },
+		"references": func() error { return References(ctx, args, &output) },
+		"repin":      func() error { return Repin(ctx, args, &output) },
+		"validate":   func() error { return Validate(ctx, args, &output) },
+		"status":     func() error { return Status(ctx, args, &output) },
+		"spec":       func() error { return Spec(args, &output) },
+		"quality":    func() error { return qualityCommand(ctx, args, &output, strings.NewReader("")) },
+		"epic":       func() error { return Epic(ctx, args, &output) },
+		"persona":    func() error { return Persona(ctx, args, &output) },
+		"flag":       func() error { return FeatureFlag(ctx, args, &output) },
 	}[fields[0]]
 	if run == nil {
 		t.Fatalf("no dispatcher for implemented grammar command %q", name)
@@ -117,7 +118,7 @@ func TestStatusJSONKeepsV1KeysAndAddsTheAuthoringGrammar(t *testing.T) {
 	if err := json.Unmarshal(output.Bytes(), &document); err != nil {
 		t.Fatalf("status JSON: %v\n%s", err, output.String())
 	}
-	for _, key := range []string{"complete", "summary", "uncovered", "overlaps", "orphans", "saga_changes"} {
+	for _, key := range []string{"complete", "summary", "uncovered", "overlaps", "stale_references", "saga_changes"} {
 		if _, ok := document[key]; !ok {
 			t.Errorf("status dropped version 1 key %q", key)
 		}

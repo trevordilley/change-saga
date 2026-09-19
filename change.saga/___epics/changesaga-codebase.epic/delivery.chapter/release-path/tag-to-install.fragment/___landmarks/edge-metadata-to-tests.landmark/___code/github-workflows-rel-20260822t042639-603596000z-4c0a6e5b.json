@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/workflows/release.yml",
+      "start": 102,
+      "end": 102,
+      "digest": "sha256:4463c7398bf848e29a37c2dc6a5be924e69c9938554863c99d69636bcb80bb39",
+      "note": "Separates metadata resolution from the reusable verification gate."
+    }
+  ],
+  "version": 2
+}

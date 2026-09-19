@@ -13,7 +13,8 @@ import (
 	"time"
 
 	"github.com/twentyideas/changesaga/internal/applayout"
-	"github.com/twentyideas/changesaga/internal/diffuri"
+	"github.com/twentyideas/changesaga/internal/coderef"
+	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
@@ -143,7 +144,7 @@ func GenerateLargeSaga(ctx context.Context, parent string, options LargeSagaOpti
 	if err != nil {
 		return LargeSaga{}, err
 	}
-	shape, err := writeCoverageMappings(fragments, changes.Atoms, options)
+	shape, err := writeCoverageMappings(ctx, repositoryDir, fragments, changes, options)
 	if err != nil {
 		return LargeSaga{}, err
 	}
@@ -157,7 +158,7 @@ func GenerateLargeSaga(ctx context.Context, parent string, options LargeSagaOpti
 		return LargeSaga{}, err
 	}
 	fixture.Threads = options.Threads
-	if err := writeDiffReviews(root, changes, options.DiffReviews); err != nil {
+	if err := writeFileReviews(ctx, repositoryDir, root, changes, options.DiffReviews); err != nil {
 		return LargeSaga{}, err
 	}
 	fixture.DiffReviews = options.DiffReviews
@@ -361,7 +362,7 @@ func writeApproval(fragmentDir, fragmentID string, index int) error {
 }
 
 type rangedMapping struct {
-	reference saga.DiffReference
+	reference coderef.Reference
 	atoms     int
 }
 
@@ -372,8 +373,8 @@ type coverageShape struct {
 	maxTargetReferences int
 }
 
-func writeCoverageMappings(fragments []generatedFragment, atoms []gitdiff.Atom, options LargeSagaOptions) (coverageShape, error) {
-	ranges, err := coverageRanges(atoms, resolveRangeWidth(options))
+func writeCoverageMappings(ctx context.Context, repositoryDir string, fragments []generatedFragment, changes gitdiff.ChangeSet, options LargeSagaOptions) (coverageShape, error) {
+	ranges, err := coverageRanges(ctx, repositoryDir, changes, resolveRangeWidth(options))
 	if err != nil {
 		return coverageShape{}, err
 	}
@@ -382,7 +383,7 @@ func writeCoverageMappings(fragments []generatedFragment, atoms []gitdiff.Atom, 
 		targets = len(fragments)
 	}
 	shape := coverageShape{references: len(ranges)}
-	grouped := make([][]saga.DiffReference, len(fragments))
+	grouped := make([][]coderef.Reference, len(fragments))
 	for index, mapping := range ranges {
 		target := index % targets
 		grouped[target] = append(grouped[target], mapping.reference)
@@ -392,8 +393,8 @@ func writeCoverageMappings(fragments []generatedFragment, atoms []gitdiff.Atom, 
 		if len(grouped[index]) == 0 {
 			continue
 		}
-		value := saga.DiffFile{Version: saga.CurrentVersion, Diffs: grouped[index]}
-		if err := writeJSON(filepath.Join(fragment.dir, "___diffs", "coverage.json"), value); err != nil {
+		value := saga.CodeFile{Version: saga.CurrentVersion, References: grouped[index]}
+		if err := writeJSON(filepath.Join(fragment.dir, saga.CodeDirName, "coverage.json"), value); err != nil {
 			return coverageShape{}, err
 		}
 		shape.diffFiles++
@@ -411,45 +412,36 @@ func resolveRangeWidth(options LargeSagaOptions) int {
 	return options.CoverageRangeWidth
 }
 
-func coverageRanges(atoms []gitdiff.Atom, width int) ([]rangedMapping, error) {
+func coverageRanges(ctx context.Context, repositoryDir string, changes gitdiff.ChangeSet, width int) ([]rangedMapping, error) {
+	resolver, err := coderesolve.New(ctx, repositoryDir)
+	if err != nil {
+		return nil, err
+	}
+	defer resolver.Close()
+	atoms := changes.Atoms
 	result := make([]rangedMapping, 0, (len(atoms)+width-1)/width)
 	for start := 0; start < len(atoms); {
-		first, err := diffuri.Parse(atoms[start].URI)
+		first := atoms[start]
+		end := start + 1
+		for end < len(atoms) && end-start < width && consecutiveLine(first, atoms[end], end-start) {
+			end++
+		}
+		location := changes.Location(first)
+		if first.Kind == "line" {
+			location.End = location.Start + end - start - 1
+		}
+		reference, err := resolver.Author(ctx, location, fmt.Sprintf("atoms-%05d-%05d", start, end-1))
 		if err != nil {
 			return nil, err
 		}
-		end := start + 1
-		for end < len(atoms) && end-start < width {
-			next, err := diffuri.Parse(atoms[end].URI)
-			if err != nil {
-				return nil, err
-			}
-			if !consecutiveLine(first, next, end-start) {
-				break
-			}
-			end++
-		}
-		uri := atoms[start].URI
-		if first.Kind == "line" && end-start > 1 {
-			first.End = first.Start + end - start - 1
-			uri, err = diffuri.Build(first)
-			if err != nil {
-				return nil, err
-			}
-		}
-		result = append(result, rangedMapping{
-			reference: saga.DiffReference{URI: uri, Note: fmt.Sprintf("atoms-%05d-%05d", start, end-1)},
-			atoms:     end - start,
-		})
+		result = append(result, rangedMapping{reference: reference, atoms: end - start})
 		start = end
 	}
 	return result, nil
 }
 
-func consecutiveLine(first, next diffuri.Reference, offset int) bool {
-	return first.Kind == "line" && next.Kind == "line" &&
-		first.Repository == next.Repository && first.Base == next.Base && first.Head == next.Head &&
-		first.Path == next.Path && first.Side == next.Side && next.Start == first.Start+offset && next.End == next.Start
+func consecutiveLine(first, next gitdiff.Atom, offset int) bool {
+	return first.Kind == "line" && next.Kind == "line" && first.Path == next.Path && first.Side == next.Side && next.Line == first.Line+offset
 }
 
 func writeThreads(root string, fragments []generatedFragment, count int) error {
@@ -483,20 +475,22 @@ func writeThreads(root string, fragments []generatedFragment, count int) error {
 	return nil
 }
 
-func writeDiffReviews(root string, changes gitdiff.ChangeSet, count int) error {
+func writeFileReviews(ctx context.Context, repositoryDir, root string, changes gitdiff.ChangeSet, count int) error {
+	resolver, err := coderesolve.New(ctx, repositoryDir)
+	if err != nil {
+		return err
+	}
+	defer resolver.Close()
 	for index := 0; index < count; index++ {
-		uri, err := diffuri.Build(diffuri.Reference{
-			Repository: changes.Repository, Base: changes.BaseOID, Head: changes.HeadOID,
-			Kind: "file", Path: filepath.ToSlash(sourcePath(index)),
-		})
+		reference, err := resolver.Author(ctx, coderef.Location{Commit: changes.HeadOID, Path: filepath.ToSlash(sourcePath(index))}, "")
 		if err != nil {
 			return err
 		}
-		review := saga.DiffReview{
-			Version: saga.CurrentVersion, ID: fmt.Sprintf("diff-review-%03d", index), URI: uri,
+		review := saga.FileReview{
+			Version: saga.CurrentVersion, ID: fmt.Sprintf("file-review-%03d", index), Code: reference,
 			Author: "Benchmark Reviewer", State: "reviewed", CreatedAt: fixtureTime(index),
 		}
-		if err := writeJSON(filepath.Join(root, "___review", "diffs", fmt.Sprintf("review-%03d.json", index)), review); err != nil {
+		if err := writeJSON(filepath.Join(root, "___review", saga.FileReviewDir, fmt.Sprintf("review-%03d.json", index)), review); err != nil {
 			return err
 		}
 	}

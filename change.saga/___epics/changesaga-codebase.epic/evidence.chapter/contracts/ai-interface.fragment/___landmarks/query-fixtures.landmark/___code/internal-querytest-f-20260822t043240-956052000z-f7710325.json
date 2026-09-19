@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/querytest/fixture_test.go",
+      "start": 1,
+      "end": 102,
+      "digest": "sha256:a76ffc5173bf1d9463cb68d7e5fc11ee3a965f08e46ce056eed8a3b7902f176c",
+      "note": "Tests separate repositories and adversarial overlays before the filesystem-isolation assertion."
+    }
+  ],
+  "version": 2
+}

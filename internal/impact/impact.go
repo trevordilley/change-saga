@@ -1,10 +1,12 @@
-// Package impact projects an incoming Git comparison onto the source evidence
-// owned by an existing Change Saga. It never compares authored content.
+// Package impact projects an incoming Git comparison onto the code references
+// of an existing Change Saga. It never compares authored content.
 package impact
 
 import (
+	"context"
 	"sort"
 
+	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/saga"
@@ -112,12 +114,12 @@ type Reach struct {
 	Path        []string `json:"path"`
 }
 
-// TestCaseEvidence is one current quality-evidence record's exact selectors.
+// TestCaseEvidence is one current quality-evidence record's code references.
 type TestCaseEvidence struct {
 	TestCase string
 	Evidence string
 	Role     string
-	Diffs    []string
+	Code     []coderef.Reference
 	Criteria []string
 }
 
@@ -163,23 +165,51 @@ type targetAccumulator struct {
 
 type ownerSet map[string][]coverage.Assignment
 
-// Analyze projects incoming changed atoms onto the baseline Saga's ownership
-// graph. baseline must describe the repository tree at incoming.BaseOID.
-func Analyze(document *saga.Saga, baseline gitdiff.ChangeSet, report coverage.Report, incoming gitdiff.ChangeSet, mode string, incomingSaga *saga.Saga) Result {
-	return AnalyzeGraph(document, baseline, report, incoming, mode, incomingSaga, Graph{})
+// ownedRange is one reference resolved at the incoming comparison's base.
+// Start and End are zero for a whole file.
+type ownedRange struct {
+	start, end int
+	assignment coverage.Assignment
+}
+
+// ownership answers which references hold a line or file at one commit.
+type ownership map[string][]ownedRange
+
+func (owned ownership) line(path string, line int) ownerSet {
+	owners := ownerSet{}
+	for _, value := range owned[path] {
+		if value.start == 0 || line >= value.start && line <= value.end {
+			mergeAssignments(owners, []coverage.Assignment{value.assignment})
+		}
+	}
+	return owners
+}
+
+func (owned ownership) file(path string) ownerSet {
+	owners := ownerSet{}
+	for _, value := range owned[path] {
+		mergeAssignments(owners, []coverage.Assignment{value.assignment})
+	}
+	return owners
+}
+
+// Analyze projects incoming changed atoms onto the baseline Saga's references.
+// Each reference is resolved at incoming.BaseOID, so evidence authored at any
+// earlier commit applies wherever its lines now are.
+func Analyze(ctx context.Context, document *saga.Saga, baseline gitdiff.ChangeSet, report coverage.Report, incoming gitdiff.ChangeSet, mode string, incomingSaga *saga.Saga, resolver coverage.Resolver) Result {
+	return AnalyzeGraph(ctx, document, baseline, report, incoming, mode, incomingSaga, Graph{}, resolver)
 }
 
 // AnalyzeGraph is Analyze plus the review-repository projection: test-case
 // evidence joins target ownership, and every affected owner is followed along
 // recorded relations to the stories and criteria it serves.
-func AnalyzeGraph(document *saga.Saga, baseline gitdiff.ChangeSet, report coverage.Report, incoming gitdiff.ChangeSet, mode string, incomingSaga *saga.Saga, graph Graph) Result {
-	report, testLocations := withTestOwnership(report, baseline, graph)
+func AnalyzeGraph(ctx context.Context, document *saga.Saga, baseline gitdiff.ChangeSet, report coverage.Report, incoming gitdiff.ChangeSet, mode string, incomingSaga *saga.Saga, graph Graph, resolver coverage.Resolver) Result {
 	result := Result{
-		Schema: Schema, Mode: mode, Basis: "source_diffs_only", ContentCompared: false,
+		Schema: Schema, Mode: mode, Basis: "code_references", ContentCompared: false,
 		Baseline: BaselineStatus{
 			SagaID: document.Manifest.ID, Title: document.Manifest.Title, Source: sourceIdentity(baseline),
 			Complete: report.Complete, Covered: report.Summary.Covered, Total: report.Summary.Total,
-			Uncovered: report.Summary.Uncovered, Stale: report.Summary.Orphaned, Overlapping: report.Summary.Overlapping,
+			Uncovered: report.Summary.Uncovered, Stale: report.Summary.Stale, Overlapping: report.Summary.Overlapping,
 		},
 		Incoming: IncomingStatus{Source: sourceIdentity(incoming)},
 		Targets:  []TargetImpact{}, NewContent: []UnownedChange{}, Diagnostics: []Diagnostic{},
@@ -192,31 +222,31 @@ func AnalyzeGraph(document *saga.Saga, baseline gitdiff.ChangeSet, report covera
 	if !report.Complete {
 		result.Diagnostics = append(result.Diagnostics, Diagnostic{
 			Code:    "baseline_incomplete",
-			Message: "the maintained Saga does not completely map the incoming comparison base; impact results may omit affected content",
+			Message: "the maintained Saga does not completely account for its own comparison; impact results may omit affected content",
 		})
 	}
 
 	locations := indexTargets(document)
-	for target, location := range testLocations {
-		locations[target] = location
+	owned := ownership{}
+	resolve := func(target, evidenceFile string, index int, reference coderef.Reference) {
+		resolution := resolver.Resolve(ctx, reference, incoming.BaseOID)
+		if !resolution.Current() {
+			return
+		}
+		location := resolution.Location
+		owned[location.Path] = append(owned[location.Path], ownedRange{start: location.Start, end: location.End, assignment: coverage.Assignment{Target: target, EvidenceFile: evidenceFile, Reference: index + 1}})
 	}
-	currentLines := map[string]map[int]gitdiff.Atom{}
-	fileOwners := map[string]ownerSet{}
-	for _, atom := range baseline.Atoms {
-		if atom.Kind == "line" && atom.Side == "new" {
-			if currentLines[atom.Path] == nil {
-				currentLines[atom.Path] = map[int]gitdiff.Atom{}
+	coverage.WalkDocumentCode(document, func(target string, files []saga.CodeFile) {
+		for _, file := range files {
+			for index, reference := range file.References {
+				resolve(target, file.Path, index, reference)
 			}
-			currentLines[atom.Path][atom.Line] = atom
 		}
-		if !baselineAtomExistsAtHead(atom) {
-			continue
-		}
-		for _, path := range atomPaths(atom) {
-			if fileOwners[path] == nil {
-				fileOwners[path] = ownerSet{}
-			}
-			mergeAssignments(fileOwners[path], report.Ownership[atom.Key])
+	})
+	for _, evidence := range graph.TestCases {
+		locations[evidence.TestCase] = targetLocation{Kind: "test-case", Title: evidence.TestCase, Location: evidence.TestCase}
+		for index, reference := range evidence.Code {
+			resolve(evidence.TestCase, evidence.Evidence, index, reference)
 		}
 	}
 
@@ -225,15 +255,13 @@ func AnalyzeGraph(document *saga.Saga, baseline gitdiff.ChangeSet, report covera
 		owners := ownerSet{}
 		switch {
 		case atom.Kind == "line" && atom.Side == "old":
-			if baselineAtom, ok := currentLines[atom.Path][atom.Line]; ok && baselineAtom.Content == atom.Content {
-				mergeAssignments(owners, report.Ownership[baselineAtom.Key])
-			}
+			owners = owned.line(atom.Path, atom.Line)
 		case atom.Kind == "event" && atom.Event != "add":
 			path := atom.Path
 			if atom.Event == "rename" && atom.OldPath != "" {
 				path = atom.OldPath
 			}
-			mergeOwnerSets(owners, fileOwners[path])
+			owners = owned.file(path)
 		}
 		if len(owners) > 0 {
 			directOwners[atom.Key] = owners
@@ -260,7 +288,7 @@ func AnalyzeGraph(document *saga.Saga, baseline gitdiff.ChangeSet, report covera
 		if position, ok := linePosition[atom.Key]; ok {
 			mergeOwnerSets(owners, replacementOwners(position, incoming.DisplayLines, incomingByKey, directOwners))
 			if len(owners) == 0 {
-				mergeOwnerSets(owners, adjacentOwners(position, incoming.DisplayLines, currentLines, report.Ownership))
+				mergeOwnerSets(owners, adjacentOwners(position, incoming.DisplayLines, owned))
 			}
 		}
 		if len(owners) > 0 {
@@ -321,31 +349,6 @@ func AnalyzeGraph(document *saga.Saga, baseline gitdiff.ChangeSet, report covera
 	result.Summary.RequirementsImpacted = len(result.Requirements)
 	result.Summary.TestCasesImpacted = len(result.TestCases)
 	return result
-}
-
-// withTestOwnership adds current test-case evidence to baseline ownership using
-// the same exact selector semantics as changed-source accounting. The report is
-// copied; the caller's ownership map is never mutated.
-func withTestOwnership(report coverage.Report, baseline gitdiff.ChangeSet, graph Graph) (coverage.Report, map[string]targetLocation) {
-	locations := map[string]targetLocation{}
-	if len(graph.TestCases) == 0 {
-		return report, locations
-	}
-	ownership := make(map[string][]coverage.Assignment, len(report.Ownership))
-	for key, owners := range report.Ownership {
-		ownership[key] = append([]coverage.Assignment(nil), owners...)
-	}
-	for _, evidence := range graph.TestCases {
-		locations[evidence.TestCase] = targetLocation{Kind: "test-case", Title: evidence.TestCase, Location: evidence.TestCase}
-		for index, uri := range evidence.Diffs {
-			files := []saga.DiffFile{{Path: evidence.Evidence, Diffs: []saga.DiffReference{{URI: uri}}}}
-			for _, atom := range coverage.SelectTarget(files, baseline) {
-				ownership[atom.Key] = append(ownership[atom.Key], coverage.Assignment{Target: evidence.TestCase, DiffFile: evidence.Evidence, Diff: index + 1})
-			}
-		}
-	}
-	report.Ownership = ownership
-	return report, locations
 }
 
 // projectReviewRepository follows every affected owner to the requirements and
@@ -434,30 +437,11 @@ func sourceIdentity(changes gitdiff.ChangeSet) SourceIdentity {
 	return SourceIdentity{Repository: changes.Repository, Base: changes.Base, Head: changes.Head, BaseOID: changes.BaseOID, HeadOID: changes.HeadOID}
 }
 
-func baselineAtomExistsAtHead(atom gitdiff.Atom) bool {
-	if atom.Kind == "line" {
-		return atom.Side == "new"
-	}
-	return atom.Event != "delete"
-}
-
-func atomPaths(atom gitdiff.Atom) []string {
-	seen := map[string]bool{}
-	var result []string
-	for _, value := range []string{atom.Path, atom.NewPath} {
-		if value != "" && !seen[value] {
-			seen[value] = true
-			result = append(result, value)
-		}
-	}
-	return result
-}
-
 func mergeAssignments(destination ownerSet, assignments []coverage.Assignment) {
 	for _, assignment := range assignments {
 		duplicate := false
 		for _, existing := range destination[assignment.Target] {
-			if existing.DiffFile == assignment.DiffFile && existing.Diff == assignment.Diff {
+			if existing.EvidenceFile == assignment.EvidenceFile && existing.Reference == assignment.Reference {
 				duplicate = true
 				break
 			}
@@ -497,7 +481,9 @@ func replacementOwners(position int, lines []gitdiff.DisplayLine, atoms map[stri
 	return owners
 }
 
-func adjacentOwners(position int, lines []gitdiff.DisplayLine, current map[string]map[int]gitdiff.Atom, ownership map[string][]coverage.Assignment) ownerSet {
+// adjacentOwners returns the references holding the unchanged line nearest an
+// addition on either side.
+func adjacentOwners(position int, lines []gitdiff.DisplayLine, owned ownership) ownerSet {
 	owners := ownerSet{}
 	path := lines[position].Path
 	for index := position - 1; index >= 0; index-- {
@@ -506,9 +492,7 @@ func adjacentOwners(position int, lines []gitdiff.DisplayLine, current map[strin
 			break
 		}
 		if line.Kind == "context" {
-			if atom, ok := current[path][line.OldLine]; ok {
-				mergeAssignments(owners, ownership[atom.Key])
-			}
+			mergeOwnerSets(owners, owned.line(path, line.OldLine))
 			break
 		}
 	}
@@ -518,9 +502,7 @@ func adjacentOwners(position int, lines []gitdiff.DisplayLine, current map[strin
 			break
 		}
 		if line.Kind == "context" {
-			if atom, ok := current[path][line.OldLine]; ok {
-				mergeAssignments(owners, ownership[atom.Key])
-			}
+			mergeOwnerSets(owners, owned.line(path, line.OldLine))
 			break
 		}
 	}
@@ -538,8 +520,8 @@ func addTargetChanges(accumulators map[string]*targetAccumulator, locations map[
 			accumulator.action = action
 		}
 		for _, assignment := range assignments {
-			if assignment.DiffFile != "" {
-				accumulator.evidence[assignment.DiffFile] = true
+			if assignment.EvidenceFile != "" {
+				accumulator.evidence[assignment.EvidenceFile] = true
 			}
 		}
 		key := atom.Key
@@ -607,7 +589,7 @@ func atomLess(left, right gitdiff.Atom) bool {
 	if left.Side != right.Side {
 		return left.Side < right.Side
 	}
-	return left.URI < right.URI
+	return left.Ref < right.Ref
 }
 
 func first(values ...string) string {

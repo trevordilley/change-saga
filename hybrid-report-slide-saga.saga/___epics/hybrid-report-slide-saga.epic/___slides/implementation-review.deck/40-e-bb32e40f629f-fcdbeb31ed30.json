@@ -1,21 +1,37 @@
 {
-  "version": 2,
-  "diffs": [
+  "references": [
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=3\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=skills%2Fchange-saga%2FSKILL.md\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=3",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "skills/change-saga/SKILL.md",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:f539a71e0f866ebc262ed1bf673d23f6d428e539f10df839615061dcd9966838",
       "note": "Guides authors to keep living intent separate from focused decks and close every Item evidence path through accepted requirements."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=58\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=skills%2Fchange-saga%2FSKILL.md\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=54",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "skills/change-saga/SKILL.md",
+      "start": 54,
+      "end": 58,
+      "digest": "sha256:c9226490c458c0468d786ce69bc801c358f230bdf129f4894faa9d9a74d656f0",
       "note": "Guides authors to keep living intent separate from focused decks and close every Item evidence path through accepted requirements."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=117\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=skills%2Fchange-saga%2FSKILL.md\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=116",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "skills/change-saga/SKILL.md",
+      "start": 116,
+      "end": 117,
+      "digest": "sha256:4e8e2ea3da106bde208f0b615fd7369aafd6d1df225b7ef7c6acc5c4148ddb0a",
       "note": "Guides authors to keep living intent separate from focused decks and close every Item evidence path through accepted requirements."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=169\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=skills%2Fchange-saga%2FSKILL.md\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=148",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "skills/change-saga/SKILL.md",
+      "start": 148,
+      "end": 169,
+      "digest": "sha256:b2b5a761e1968ad4b1be461562409e2a51893336745c6ad3a1f16e9beb666d62",
       "note": "Guides authors to keep living intent separate from focused decks and close every Item evidence path through accepted requirements."
     }
-  ]
+  ],
+  "version": 2
 }

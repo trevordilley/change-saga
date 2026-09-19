@@ -15,6 +15,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/twentyideas/changesaga/internal/saga"
 	"github.com/twentyideas/changesaga/internal/testfixture"
 )
 
@@ -77,7 +78,7 @@ const (
 	// Cold-root allocated bytes are stable enough for a slope budget, while wall
 	// time is not. A 25% allowance absorbs fixed Git/process noise and remains
 	// far below the roughly linear growth caused by loading and fingerprinting
-	// every ___diffs record.
+	// every ___code record.
 	rootDiffRecordAllocationGrowth = 1.25
 	rootDiffRecordScale            = 1024
 )
@@ -248,7 +249,7 @@ func TestAsyncPageConstructionIsInvariantToComparisonScale(t *testing.T) {
 // This is the scale half of TestRootShellDoesNotConstructTheSourceComparison.
 // Both fixtures have the same saga title, four chapter summaries, four fragment
 // descriptors, review state, source comparison, and coverage totals. The large
-// fixture merely repeats one valid DiffReference in independent ___diffs files.
+// fixture merely repeats one valid code reference in independent ___code files.
 // Root construction is therefore O(chapters + summary metadata) only when its
 // response and allocations stay invariant to that multiplication.
 //
@@ -263,7 +264,7 @@ func TestColdRootShellIsInvariantToDiffReferenceRecordCount(t *testing.T) {
 	base := serveColdRoot(t, baseFixture)
 	large := serveColdRoot(t, largeFixture)
 	if large.bodyBytes > base.bodyBytes+rootDiffRecordByteAllowance {
-		t.Fatalf("cold GET / response grew with ___diffs records: %d records produced %d B, %d records produced %d B (allowance %d B); root may carry chapter/summary metadata, not coverage or code projections",
+		t.Fatalf("cold GET / response grew with ___code records: %d records produced %d B, %d records produced %d B (allowance %d B); root may carry chapter/summary metadata, not coverage or code projections",
 			baseFixture.diffRecords, base.bodyBytes, largeFixture.diffRecords, large.bodyBytes, rootDiffRecordByteAllowance)
 	}
 	if base.allocatedBytes == 0 {
@@ -271,7 +272,7 @@ func TestColdRootShellIsInvariantToDiffReferenceRecordCount(t *testing.T) {
 	}
 	growth := float64(large.allocatedBytes) / float64(base.allocatedBytes)
 	if growth > rootDiffRecordAllocationGrowth {
-		t.Fatalf("cold GET / allocated bytes grew %.2fx with ___diffs records: %d records allocated %d B, %d records allocated %d B (budget %.2fx); the root still loads/fingerprints detailed evidence or constructs atom-level views",
+		t.Fatalf("cold GET / allocated bytes grew %.2fx with ___code records: %d records allocated %d B, %d records allocated %d B (budget %.2fx); the root still loads/fingerprints detailed evidence or constructs atom-level views",
 			growth, baseFixture.diffRecords, base.allocatedBytes, largeFixture.diffRecords, large.allocatedBytes, rootDiffRecordAllocationGrowth)
 	}
 	t.Logf("cold root: %d -> %d diff records | response %d -> %d B | allocated %d -> %d B (%.2fx)",
@@ -332,7 +333,7 @@ func newIncrementalSSRFixture(tb testing.TB, diffRecords int) incrementalSSRFixt
 		if err != nil {
 			return err
 		}
-		if !entry.IsDir() && filepath.Base(path) == "coverage.json" && filepath.Base(filepath.Dir(path)) == "___diffs" {
+		if !entry.IsDir() && filepath.Base(path) == "coverage.json" && filepath.Base(filepath.Dir(path)) == saga.CodeDirName {
 			original = path
 		}
 		return nil
@@ -341,7 +342,7 @@ func newIncrementalSSRFixture(tb testing.TB, diffRecords int) incrementalSSRFixt
 		tb.Fatal(err)
 	}
 	if original == "" {
-		tb.Fatal("fixture generated no ___diffs/coverage.json record")
+		tb.Fatal("fixture generated no ___code/coverage.json record")
 	}
 	data, err := os.ReadFile(original)
 	if err != nil {

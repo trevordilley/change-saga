@@ -1,0 +1,235 @@
+{
+  "references": [
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/legacy.go",
+      "digest": "sha256:98b03d70b04d87a195e89277f968592fcfe23778942e5041f9923709747b7bb3",
+      "note": "Legacy evidence reader."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/legacy.go",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:9ca02bdf4ba193063c35e14a4eb03e409cd5fd1c28eed2077f82efd0538d41b4",
+      "note": "Legacy evidence reader."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/legacy.go",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Legacy evidence reader."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/legacy.go",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:71e37b6cd48ad477cbb12624b757ee1dc4975711b78237a85f508bfdd723af77",
+      "note": "Legacy evidence reader."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/legacy.go",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:926ebc76318f711b7e6fce77071eb1a689adb7f244f8cbde070b2852db74b02e",
+      "note": "Legacy evidence reader."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/legacy.go",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:171b756171ff8240f94ccb83de837ed4242449df3ecef3a3762523d1f5ae0348",
+      "note": "Legacy evidence reader."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/legacy.go",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Legacy evidence reader."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/legacy.go",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:ab6f6be8e5963a10d31f1044691aa6beceed5a59d04cd8247f259497075d8b4d",
+      "note": "Legacy evidence reader."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/legacy.go",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:fafba0527c3953c4b6e0e5b5739ba83612f8053bcdc9466730193cd1d590b408",
+      "note": "Legacy evidence reader."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/legacy.go",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Legacy evidence reader."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/legacy.go",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:1cc84c5d423f399b58aff82a71ede1d42b47b28d91db36fa5ae3ebbdd7393c17",
+      "note": "Legacy evidence reader."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/legacy.go",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:c5e9f7e604f9438333b82189d141842e79274005ca0bc7d2d6e19aa70bc4fd13",
+      "note": "Legacy evidence reader."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/legacy.go",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:864e3ad3697067ea18800e8eee19aed5aa95eea8c39a6357ff74895a2fb000ba",
+      "note": "Legacy evidence reader."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/legacy.go",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:2328f155f864c086ce5384fe7fc1ae5afbb16b39f03ac4ae9f1b9aa6245ae3ce",
+      "note": "Legacy evidence reader."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/legacy.go",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:d52ea7dcd870b2470c162ef0b5c8680c10177096d105bc1a0c014e3e7f15042b",
+      "note": "Legacy evidence reader."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/legacy.go",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:4be48f382210a3e47067a446c693840feb0bab749c19c0a2fe18520a79c7208e",
+      "note": "Legacy evidence reader."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/legacy.go",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:4ff9de879b8985729fef4aafaaf16e896c43b1985f06e04aed4cf327ffe4054f",
+      "note": "Legacy evidence reader."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/legacy.go",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:af7f2587e6d2a0eb54593a8da7076e62d9dabf95f33cfceb7edefb87a3067d59",
+      "note": "Legacy evidence reader."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/legacy.go",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Legacy evidence reader."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/legacy.go",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:f3afa8acdcb8ea0e5275cf2df59d00b396fe046d066f08b8d5bcffa8d34e871f",
+      "note": "Legacy evidence reader."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/legacy.go",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Legacy evidence reader."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/legacy.go",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:2ae61d992955ded446f4095e1fc4db8bfadb4f6da429f9587d8982b73a66f396",
+      "note": "Legacy evidence reader."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/legacy.go",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Legacy evidence reader."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/legacy.go",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:31ebb708cecd0861582ccf2c5ce901ef3304889535bca93d2f0ec9720d5e462a",
+      "note": "Legacy evidence reader."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/legacy.go",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:c607da6bbedf03304c891c1e5e427e05c0991a437a621e2fc44b1b6325284e8b",
+      "note": "Legacy evidence reader."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/legacy.go",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:2ae61d992955ded446f4095e1fc4db8bfadb4f6da429f9587d8982b73a66f396",
+      "note": "Legacy evidence reader."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/legacy.go",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Legacy evidence reader."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/legacy.go",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:a8eb3d7af33b10665ae0b2ea99b153ac4448f0a559995b15bfa05ce093f13c8b",
+      "note": "Legacy evidence reader."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/migrate/legacy.go",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Legacy evidence reader."
+    }
+  ],
+  "version": 2
+}

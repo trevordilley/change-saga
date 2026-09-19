@@ -1,25 +1,45 @@
 {
-  "version": 2,
-  "diffs": [
+  "references": [
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=25\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=e2e%2Ftests%2Fannotation-bubbles.spec.ts\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=20",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "e2e/tests/annotation-bubbles.spec.ts",
+      "start": 20,
+      "end": 25,
+      "digest": "sha256:cec99922c8dcec635b50a47016486aad9e9a38e55dca9b31802d198c851526a4",
       "note": "Keeps comments, replies, thread state, file review, and slide decisions in place while refreshing only the affected review surface."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=77\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=e2e%2Ftests%2Fannotation-bubbles.spec.ts\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=77",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "e2e/tests/annotation-bubbles.spec.ts",
+      "start": 77,
+      "end": 77,
+      "digest": "sha256:7f7e69e7b67ed9eef8773e235901053c18f8f3eabefad55af3fd444caae0b263",
       "note": "Keeps comments, replies, thread state, file review, and slide decisions in place while refreshing only the affected review surface."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=152\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=e2e%2Ftests%2Fannotation-bubbles.spec.ts\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=152",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "e2e/tests/annotation-bubbles.spec.ts",
+      "start": 152,
+      "end": 152,
+      "digest": "sha256:04647f53193c7d4b3d67f047235e737f71afc63604afb208bcd4ef721c453f50",
       "note": "Keeps comments, replies, thread state, file review, and slide decisions in place while refreshing only the affected review surface."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=168\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=e2e%2Ftests%2Fannotation-bubbles.spec.ts\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=168",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "e2e/tests/annotation-bubbles.spec.ts",
+      "start": 168,
+      "end": 168,
+      "digest": "sha256:04647f53193c7d4b3d67f047235e737f71afc63604afb208bcd4ef721c453f50",
       "note": "Keeps comments, replies, thread state, file review, and slide decisions in place while refreshing only the affected review surface."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=213\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=e2e%2Ftests%2Fannotation-bubbles.spec.ts\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=213",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "e2e/tests/annotation-bubbles.spec.ts",
+      "start": 213,
+      "end": 213,
+      "digest": "sha256:cf819f778d7728acaa09a478af172a5ad80808d12d5fc7380d10836b45ef85dd",
       "note": "Keeps comments, replies, thread state, file review, and slide decisions in place while refreshing only the affected review surface."
     }
-  ]
+  ],
+  "version": 2
 }
