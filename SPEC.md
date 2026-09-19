@@ -29,7 +29,7 @@ quality, coverage, relation, or deck fields.
 ```text
 <id>.saga/
   saga.json
-  ___overview/                 # the elevator pitch for the application
+  ___overview/                 # pitch, description, and terms and vocabulary
   ___designsystem/             # design-system references
   ___personas/<id>.persona/    # who the application serves
   ___featureflags/<id>.flag/   # flags and the stories or epics they gate
@@ -73,6 +73,7 @@ enforced at runtime, and every ID uses `[A-Za-z0-9][A-Za-z0-9._-]{0,127}`.
 | Manifest | `v5/saga.schema.json` | identity, title, source, `version: 5` | canonical repository identity |
 | Epic | `v5/epic.schema.json` | immutable ID, title, creation time | directory name equals ID |
 | Persona identity, revision, event | `v5/persona*.schema.json` | name and description; lifecycle `active` or `retired` | one root, acyclic revision and event graphs |
+| Term identity, revision, event | `v5/term*.schema.json` | name and definition; optional aliases, story and record links, and code references; lifecycle `active` or `retired` | linked stories and records exist; aliases distinct from the name |
 | Flag identity, revision, event | `v5/flag*.schema.json` | description and at least one story or epic target; state `off`, `on`, or `retired` | targets exist; `retired` is terminal |
 | Relation | `v5/relation.schema.json` | endpoints, type, scope, pins required by the matrix, rationale, state, time | same Saga, no self-edge, canonical conflict ordering, graph acyclicity/currentness |
 | Coverage exception | `v5/coverage-exception.schema.json` | one of six axes, criterion/revision pin, rationale, citation, supersession set | current revision, resolved citations, one unsuperseded head per criterion/axis |
@@ -112,6 +113,32 @@ gated directly or through its epic; a retired flag gates nothing. Status
 reports each story as `not_implemented`, `implemented_not_enabled`, or
 `implemented_enabled`, where implemented means every current criterion's
 implementation axis is covered.
+
+The **overview** is formal. Its parts are the project **name** (the manifest's
+`title`), the **elevator pitch** (`___overview/pitch.fragment`), the
+**description**, a short essay (`___overview/description.fragment`), and **terms
+and vocabulary** (`___overview/terms/<id>.term/`). Nothing else may live in
+`___overview`. Every part is optional; a missing part is reported as a gap and
+never blocks.
+
+A **term** names a word the project uses that a newcomer would not know. Terms
+are living records like personas: an immutable identity, append-only revisions
+(`name`, `definition`, and optional `aliases`, `stories`, `records`, and `code`),
+and lifecycle events whose root state is `active`. URNs are
+`urn:change-saga:<saga>:term:<id>`, with `:revision:<id>` and `:event:<id>`.
+`stories` and `records` link the term to the stories, personas, epics, flags, or
+other terms it relates to, and must exist. `code` holds code references
+(section 5) to the lines that define the term, usually an enum value or a
+constant. The links run both ways: a term reaches its stories and code, and a
+line of code or a story reports the terms that reference it.
+
+Term code references never count toward coverage; they are watched instead. A
+term's references are judged at the head, so renaming the enum or constant it
+names makes the term stale, naming exactly which term to update. When a
+comparison adds an enum value or a typed constant that no term references, and
+no term's name or alias matches it, a growth suggestion proposes defining it;
+it never blocks. Recognizing enum values and constants is a conservative
+per-language heuristic.
 
 The **onboarding deck** is a flat deck with role `onboarding`, one per
 application. Its Items carry `record`, the URN of a persona, epic, or story they
@@ -860,6 +887,10 @@ hide authored content behind a valid-looking saga. Other names beginning with
   add|revise|set-state`, and `story move --story URN --epic ID` author the
   application's structure. Commands that create a record inside an epic
   require `--epic`; commands that revise one accept it as an assertion.
+- `change-saga term add|revise|set-state` authors terms, with `--ref
+  <rev>:<path>#L<start>[-L<end>]` for their code, and `change-saga overview
+  set-pitch|set-description` writes the overview's text. `query terms` finds
+  terms by term, story, or code location.
 - `change-saga references [--stale] [--diff]` reports every code reference's
   health, and `change-saga repin --onto REV [--branch REV]` re-pins references
   when a change lands (see section 6.2).
