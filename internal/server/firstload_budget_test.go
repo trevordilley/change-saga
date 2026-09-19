@@ -60,7 +60,6 @@ const (
 	rootRetainedGrowthSlack  = 2 * 1024 * 1024
 	rootRetainedCeiling      = 32 * 1024 * 1024
 
-	mutationWallCeiling             = 2 * time.Second
 	reviewPageAllocationGrowth      = 1.50
 	reviewPageAllocationGrowthSlack = 512 * 1024
 
@@ -293,26 +292,6 @@ type timedResponse struct {
 	wall time.Duration
 }
 
-func timedRootRequest(tb testing.TB, handler *http.ServeMux) timedResponse {
-	tb.Helper()
-	started := time.Now()
-	body := firstLoadPage(tb, handler)
-	return timedResponse{body: body, wall: time.Since(started)}
-}
-
-func checkMutationEnvelope(t *testing.T, before, after timedResponse) {
-	t.Helper()
-	checkSimpleGrowth(t, "root response bytes after mutation", int64(len(before.body)), int64(len(after.body)),
-		rootResponseGrowthBudget, rootResponseGrowthSlack)
-	checkSimpleGrowth(t, "root materialized nodes after mutation", rootNodeCount(before.body), rootNodeCount(after.body),
-		rootNodeGrowthBudget, rootNodeGrowthSlack)
-	limit := time.Duration(float64(before.wall)*rootWallGrowthBudget) + rootWallGrowthSlack
-	if after.wall > limit || after.wall > rootWallCeiling {
-		t.Errorf("root wall time after mutation grew from %s to %s, budget %s and ceiling %s",
-			before.wall, after.wall, limit, rootWallCeiling)
-	}
-}
-
 // TestDaylightRootFirstLoadScale is an opt-in local harness, never ordinary CI.
 // The generated comparison closely matches the diagnosed 532,290-atom shape:
 // 2,666 files with 100 replaced lines produce 533,200 old/new line atoms, all
@@ -412,16 +391,6 @@ func measureRootFirstLoad(tb testing.TB, name string, options testfixture.LargeS
 		shape.wall, shape.retained, shape.fullBuilds)
 	runtime.KeepAlive(handler)
 	return shape
-}
-
-func requireRootMarkup(tb testing.TB, name, page string) {
-	tb.Helper()
-	if rows := strings.Count(page, `class="diff-row`); rows != 0 {
-		tb.Errorf("%s materialized %d diff rows", name, rows)
-	}
-	if rows := strings.Count(page, `class="manifest-range"`); rows != 0 {
-		tb.Errorf("%s materialized %d coverage rows", name, rows)
-	}
 }
 
 // rootNodeCount counts opening tags in the response. It deliberately avoids a

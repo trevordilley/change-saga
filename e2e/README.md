@@ -27,23 +27,18 @@ snapshot of both temporary repositories before deleting them.
 
 Each check runs at the cheapest layer that can still tell the truth about it.
 
-- **Browser** (`navigation`, `annotations`, `annotation-bubbles`, `review`,
-  `accessibility`): a real
-  Chromium page against the real server process. Reviewer behavior, rendering,
-  focus, and axe scans live here.
+- **Browser** (`navigation`, `documentation`, `implementation-deck`,
+  `accessibility`): a real Chromium page against the real server process.
+  Reviewer behavior, rendering, focus, and axe scans live here, including the
+  guarantee that the Saga is documentation with no approval, comment, or
+  annotation control in observe or compare mode.
 - **HTTP against the running process** (`security`): raw Node requests to the
   spawned server, which is the only way to forge the `Host` and `Origin`
-  headers a browser refuses to send. Used for the session-token, cross-origin,
-  diff-identity, and upload rejections.
+  headers a browser refuses to send. Used for the removed write endpoints,
+  cross-origin, code-location, and path-leak checks.
 - **Subprocess** (`cli`, plus the non-loopback check in `security`): the real
   binary invoked with real arguments, asserting exit status, message, and that
   a refusal wrote nothing.
-
-Byte-boundary edges that would make an end-to-end request unreliable — such as
-a request larger than the 32 MiB multipart cap, where the server answers before
-the client finishes writing — stay in the Go unit tests
-(`internal/server`, `internal/reviewstore`, `internal/store`). This suite
-asserts the contract those limits exist to provide.
 
 ## Fixtures
 
@@ -51,8 +46,9 @@ asserts the contract those limits exist to provide.
 - `sagaRepositories`: both repositories only, with no server and no browser, for
   subprocess tests.
 
-Both hand the server subprocess a private `TMPDIR` inside the fixture, so
-`stagedUploads()` can prove a rejected upload left no staged file behind.
+Both hand every subprocess a private `TMPDIR` inside the fixture, so nothing
+the CLI or server writes to temporary storage escapes it. `startSagaServer`
+compares against `main` by default; pass `null` to observe the head instead.
 
 The fixture source repository has an `origin` matching the declared repository
 URI, because the CLI verifies declared identity against the checkout's origin on

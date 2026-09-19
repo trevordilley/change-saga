@@ -62,7 +62,7 @@ func TestEmbeddedDeckRendersInTheDeckViewer(t *testing.T) {
 			t.Fatalf("slide overlay isolation contract %q missing", contract)
 		}
 	}
-	if !strings.Contains(appJavaScript, `if (q('.diff-drawer.open')) closeDrawer(false);`) {
+	if !strings.Contains(appJavaScript, `if (q('.diff-drawer.open')) closeDrawer();`) {
 		t.Fatal("presentation mode did not close the review drawer before entering fullscreen")
 	}
 }

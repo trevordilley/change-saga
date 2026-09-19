@@ -58,7 +58,7 @@ func TestFocusedCodeRendererIncludesAccessibleLocalDiffControls(t *testing.T) {
 	if strings.Contains(body, "cdn.") || strings.Contains(body, "unpkg.") || strings.Contains(body, "jsdelivr.") {
 		t.Fatal("renderer added a runtime network dependency")
 	}
-	if strings.Contains(body, `class="file-review" method="post" action="/api/diff-review"><input required`) {
-		t.Fatal("mark-reviewed control regressed to a visible header identity form")
+	if strings.Contains(body, "/api/diff-review") || strings.Contains(body, "file-review") {
+		t.Fatal("the code view offered to mark a file reviewed")
 	}
 }

@@ -3,25 +3,11 @@ package server
 const appJavaScript = `(() => {
   const q = (selector, root = document) => root.querySelector(selector);
   const qa = (selector, root = document) => [...root.querySelectorAll(selector)];
-  const mutationToken = q('meta[name="change-saga-mutation-token"]')?.content || '';
-  let drawing = null;
   let activeFragment = null;
-  let selectedTool = 'select';
-  let annotationColor = '#d04832';
   let diffLayout = 'inline';
-  let selectionAnchor = null;
-  let annotationDraft = null;
-  let annotationDraftRedo = null;
-  let selectedAnnotation = null;
-  let annotationDrag = null;
-  let noteNudge = null;
-  let annotationColorTouched = false;
   let drawerOpener = null;
   let drawerRestore = null;
-  let pinnedBubble = null;
-  let bubbleHideTimer = null;
   const slideDiffPreviewReasons = new WeakMap();
-  const noteDefaultColor = '#f2bd4b';
 
   function slideDiffSummaryButton(node) {
     const button = node?.closest?.('.diff-button');
@@ -109,7 +95,7 @@ const appJavaScript = `(() => {
     const fragment = q('.fragment', active);
     const targetCodeButton = q(':scope > .fragment-head [data-target-code-href]', fragment);
     if (targetCodeButton) void hydrateTargetCodeSummary(targetCodeButton);
-    positionFragmentOverlays();
+    positionLandmarkHotspots();
   }
 
   function stepDeckSlide(delta) {
@@ -141,7 +127,7 @@ const appJavaScript = `(() => {
     qa('[data-slide-present]').forEach(button => button.setAttribute('aria-pressed', String(active)));
     const exit = q('[data-slide-exit-presentation]');
     if (exit) exit.hidden = !active;
-    globalThis.requestAnimationFrame?.(positionFragmentOverlays);
+    globalThis.requestAnimationFrame?.(positionLandmarkHotspots);
   }
 
   async function toggleSlidePresentation() {
@@ -154,7 +140,7 @@ const appJavaScript = `(() => {
       syncSlidePresentation();
       return;
     }
-    if (q('.diff-drawer.open')) closeDrawer(false);
+    if (q('.diff-drawer.open')) closeDrawer();
     try {
       if (!document.documentElement.requestFullscreen) throw new Error('fullscreen unavailable');
       await document.documentElement.requestFullscreen();
@@ -172,394 +158,6 @@ const appJavaScript = `(() => {
     shell: new Set('case do done elif else esac fi for function if in select then time until while'.split(' ')),
     generic: new Set('class const enum false function interface let new null private public return static struct true type var void'.split(' '))
   };
-
-  function normalizedAnnotationColor(value, fallback = '#d04832') {
-    return /^#[0-9a-f]{6}$/i.test(value || '') ? value.toLowerCase() : fallback;
-  }
-
-  function clampNormalized(value) {
-    return Math.max(0, Math.min(1, Number(value) || 0));
-  }
-
-  function stickyNoteAnchor(text, x, y, color) {
-    return {type:'note', coordinate_space:'normalized', note:{text, x:clampNormalized(x), y:clampNormalized(y), color:normalizedAnnotationColor(color, noteDefaultColor)}};
-  }
-
-  function translateNote(note, dx, dy) {
-    return {...note, x:clampNormalized(note.x + dx), y:clampNormalized(note.y + dy)};
-  }
-
-  function colorWithAlpha(value, alpha = '55') {
-    return normalizedAnnotationColor(value) + alpha;
-  }
-
-  function commandLabel(command) {
-    return command?.label || 'annotation';
-  }
-
-  function updateHistoryControls() {
-    const shapeDraft = annotationDraft?.shapeDraft;
-    const undo = shapeDraft ? annotationDraft.undo.length && annotationDraft : annotationDraft;
-    const stepwise = shapeDraft || annotationDraft?.noteDraft;
-    const redo = stepwise ? annotationDraft.redo.length && annotationDraft : annotationDraftRedo;
-    // The buttons are icon-only, so the command name lives in the accessible
-    // name and the tooltip rather than in replaceable text content.
-    qa('[data-undo]').forEach(button => {
-      button.disabled = !undo;
-      const label = undo ? 'Undo ' + commandLabel(undo) : 'Nothing to undo';
-      button.setAttribute('aria-label', label);
-      button.title = (undo ? 'Undo ' + commandLabel(undo) : 'Undo') + ' (Ctrl/Cmd+Z)';
-    });
-    qa('[data-redo]').forEach(button => {
-      button.disabled = !redo;
-      const label = redo ? 'Redo ' + commandLabel(redo) : 'Nothing to redo';
-      button.setAttribute('aria-label', label);
-      button.title = (redo ? 'Redo ' + commandLabel(redo) : 'Redo') + ' (Ctrl+Y or Ctrl/Cmd+Shift+Z)';
-    });
-  }
-
-  function submitReviewForm(action, fields, multipart = false) {
-    const data = new FormData();
-    Object.entries(fields).forEach(([name,value]) => data.set(name, value));
-    const target = String(fields.target || '');
-    const article = reviewMutationFragment(target, annotationDraft?.fragment || selectedAnnotation?.element || null);
-    void persistReviewMutation(action, data, article).then(() => {
-      if (annotationDraft) closeAnnotation();
-    }).catch(error => alert('Could not save this review change: ' + error.message));
-  }
-
-  function submitThreadState(command, state) {
-    submitReviewForm('/api/thread-state', {thread:command.thread, target:command.target, state});
-  }
-
-  function isReviewDecision(state) {
-    return state === 'approved' || state === 'rejected';
-  }
-
-  function reviewDecisionStatus(state) {
-    if (state === 'approved') return 'Approved';
-    if (state === 'rejected') return 'Changes requested';
-    return 'Not reviewed';
-  }
-
-  function directoryReviewState(state) {
-    if (state === 'approved') return {state:'approved', status:'Approved'};
-    if (state === 'rejected') return {state:'changes-requested', status:'Changes requested'};
-    return {state:'unreviewed', status:'Unreviewed'};
-  }
-
-  function updateReviewDirectorySummary(directory) {
-    const rows = qa('[data-review-directory-target]', directory);
-    const decided = rows.filter(row => row.dataset.reviewState === 'approved' || row.dataset.reviewState === 'changes-requested').length;
-    const summary = q('[data-review-directory-summary]', directory);
-    if (summary) summary.textContent = decided + '/' + rows.length + ' reviewed';
-  }
-
-  function updateReviewDirectoryState(target, state) {
-    const projected = directoryReviewState(state);
-    qa('[data-review-directory-target]').filter(row => row.dataset.reviewDirectoryTarget === target).forEach(row => {
-      row.dataset.reviewState = projected.state;
-      row.classList.remove('unreviewed', 'approved', 'changes-requested');
-      row.classList.add(projected.state);
-      const status = q('[data-review-directory-status]', row);
-      if (status) status.textContent = projected.status;
-      updateReviewDirectorySummary(row.closest('[data-chapter-review-directory]'));
-    });
-  }
-
-  function updateSlideReviewState(target, state) {
-    const status = reviewDecisionStatus(state);
-    qa('[data-slide-review-status]').filter(item => item.dataset.reviewTarget === target).forEach(item => {
-      item.dataset.reviewState = state;
-      item.setAttribute('aria-label', status);
-      item.title = status;
-      const card = item.closest('[data-slide-thumbnail-card]');
-      if (card) card.dataset.reviewState = state;
-    });
-  }
-
-  let reviewProgressTimer = null;
-  let reviewScrollTimer = null;
-
-  function reviewProgressLabel(title, status, note = '') {
-    return title + ': ' + status + (note ? '. Comment: ' + note : '');
-  }
-
-  function showReviewProgressTooltip(segment) {
-    const progress = segment?.closest('[data-review-progress]');
-    const tooltip = q('[data-review-progress-tooltip]', progress);
-    if (!progress || !tooltip || !segment) return;
-    const title = segment.dataset.reviewProgressTitle || 'Review item';
-    const status = reviewDecisionStatus(segment.dataset.reviewState || '');
-    const note = segment.dataset.reviewProgressNote || '';
-    q('[data-review-progress-tooltip-title]', tooltip).textContent = title;
-    q('[data-review-progress-tooltip-status]', tooltip).textContent = status;
-    const noteElement = q('[data-review-progress-tooltip-note]', tooltip);
-    noteElement.textContent = note;
-    noteElement.hidden = !note;
-    tooltip.hidden = false;
-  }
-
-  function hideReviewProgressTooltip(progress) {
-    const tooltip = q('[data-review-progress-tooltip]', progress);
-    if (tooltip) tooltip.hidden = true;
-  }
-
-  function updateReviewProgress(previous = '', next = '', emphasize = false, target = '', note = '') {
-    const progress = q('[data-review-progress]');
-    if (!progress) return;
-    const total = Math.max(0, Number(document.body.dataset.reviewTotal) || 0);
-    let decided = Math.max(0, Number(document.body.dataset.reviewDecided) || 0);
-    const targetSegments = target ? qa('[data-review-progress-target]', progress).filter(segment => segment.dataset.reviewProgressTarget === target) : [];
-    if ((previous || next) && (!target || targetSegments.length > 0)) {
-      if (!isReviewDecision(previous) && isReviewDecision(next)) decided++;
-      if (isReviewDecision(previous) && !isReviewDecision(next)) decided--;
-      decided = Math.max(0, Math.min(total, decided));
-      document.body.dataset.reviewDecided = String(decided);
-    }
-    progress.setAttribute('aria-label', 'Review progress: ' + decided + ' of ' + total + ' decisions');
-    if (target) {
-      targetSegments.forEach(segment => {
-        const status = reviewDecisionStatus(next);
-        const title = segment.dataset.reviewProgressTitle || 'Review item';
-        segment.dataset.reviewState = next;
-        segment.dataset.reviewProgressNote = note;
-        segment.classList.remove('approved', 'rejected', 'pending');
-        segment.classList.add(next === 'approved' || next === 'rejected' ? next : 'pending');
-        segment.setAttribute('aria-label', reviewProgressLabel(title, status, note));
-        segment.title = title + ' · ' + status + (note ? '\n' + note : '');
-        if (segment.matches(':hover,:focus')) showReviewProgressTooltip(segment);
-      });
-    }
-    if (!emphasize) return;
-    progress.classList.add('changed');
-    clearTimeout(reviewProgressTimer);
-    reviewProgressTimer = setTimeout(() => progress.classList.remove('changed'), 1500);
-  }
-
-  function setReviewControlState(control, state, animate = true, note = '') {
-    const previous = control.dataset.reviewState || '';
-    const title = control.dataset.reviewTitle || 'item';
-    const author = control.dataset.reviewAuthor || '';
-    const attribution = control.dataset.reviewDetail || '';
-    const matching = qa('[data-review-controls]').filter(candidate => candidate.dataset.reviewTarget === control.dataset.reviewTarget);
-    matching.forEach(candidate => {
-      candidate.dataset.reviewState = state;
-      candidate.dataset.reviewAuthor = author;
-      candidate.dataset.reviewDetail = attribution;
-      const candidateTitle = candidate.dataset.reviewTitle || title;
-      qa('[data-review-decision]', candidate).forEach(button => {
-        const selected = button.dataset.reviewDecision === state;
-        button.setAttribute('aria-pressed', String(selected));
-        if (button.dataset.reviewDecision === 'approved') {
-          button.setAttribute('aria-label', (selected ? 'Approval recorded for ' : 'Approve ') + candidateTitle + (selected && author ? ' by ' + author : '') + (selected && note ? '. Comment: ' + note : ''));
-          button.title = 'Approve';
-        } else {
-          button.setAttribute('aria-label', (selected ? 'Changes requested on ' : 'Request changes on ') + candidateTitle + (selected && author ? ' by ' + author : '') + (selected && note ? '. Comment: ' + note : ''));
-          button.title = 'Request changes';
-        }
-        const tooltip = q('[data-review-decision-tooltip]', button);
-        const tooltipAuthor = tooltip ? q('[data-review-decision-author]', tooltip) : null;
-        const tooltipNote = tooltip ? q('[data-review-decision-tooltip-note]', tooltip) : null;
-        if (tooltipAuthor) {
-          tooltipAuthor.textContent = author;
-          tooltipAuthor.title = attribution;
-          tooltipAuthor.hidden = !author;
-        }
-        if (tooltipNote) {
-          tooltipNote.textContent = note;
-          tooltipNote.hidden = !note;
-        }
-      });
-      const decisionNote = q('[data-review-note]', candidate);
-      if (decisionNote) {
-        decisionNote.textContent = note;
-        decisionNote.title = note;
-        decisionNote.hidden = !note;
-      }
-      if (!animate) return;
-      candidate.classList.remove('decision-changed');
-      requestAnimationFrame(() => candidate.classList.add('decision-changed'));
-      setTimeout(() => candidate.classList.remove('decision-changed'), 650);
-    });
-    updateReviewDirectoryState(control.dataset.reviewTarget, state);
-    updateSlideReviewState(control.dataset.reviewTarget, state);
-    updateReviewProgress(previous, state, animate, control.dataset.reviewTarget, note);
-  }
-
-  function closeReviewComposer(form, immediate = false) {
-    if (!form) return;
-    clearTimeout(form.reviewCloseTimer);
-    form.classList.remove('open');
-    const finish = () => {
-      form.hidden = true;
-      form.reset();
-      form.reviewControl = null;
-      document.body.append(form);
-    };
-    if (immediate) finish(); else form.reviewCloseTimer = setTimeout(finish, 150);
-  }
-
-  function openReviewComposer(control, state) {
-    qa('[data-review-decision-form].open').forEach(form => closeReviewComposer(form, true));
-    const form = q('[data-shared-review-form]');
-    if (!form) return;
-    clearTimeout(form.reviewCloseTimer);
-    form.reset();
-    form.reviewControl = control;
-    control.append(form);
-    q('[name=target]', form).value = control.dataset.reviewTarget;
-    q('[name=state]', form).value = state;
-    const field = q('[name=body]', form);
-    field.placeholder = state === 'rejected' ? 'What needs to change? (optional)' : 'Add a review note (optional)';
-    form.hidden = false;
-    requestAnimationFrame(() => form.classList.add('open'));
-    field.focus();
-  }
-
-  function upsertLocalHumanDecision(control, state, body = '') {
-    let list = q('[data-review-identities]', control);
-    if (!list) {
-      list = document.createElement('span');
-      list.className = 'review-identities';
-      list.dataset.reviewIdentities = '';
-      control.insertBefore(list, q('.review-decision-group', control));
-    }
-    let identity = qa('.review-identity.human', list).find(item => q('.reviewer-author', item)?.textContent === 'Local / uncommitted');
-    if (!identity) {
-      identity = document.createElement('span');
-      identity.className = 'review-identity human';
-      identity.innerHTML = '<span class="reviewer-kind">Human</span><span class="reviewer-author">Local / uncommitted</span>';
-      list.append(identity);
-    }
-    identity.classList.remove('approved', 'rejected');
-    identity.classList.add(state);
-    identity.title = 'This review event has not been committed yet.' + (body ? '\n' + body : '');
-    return qa('.review-identity.rejected', list).length ? 'rejected' : 'approved';
-  }
-
-  async function persistReviewDecision(control, state, body = '') {
-    const controls = qa('[data-review-controls]').filter(candidate => candidate.dataset.reviewTarget === control.dataset.reviewTarget);
-    const buttons = controls.flatMap(candidate => qa('button', candidate));
-    buttons.forEach(button => button.disabled = true);
-    try {
-      const values = new URLSearchParams({target:control.dataset.reviewTarget, state, body, return_to:location.pathname + location.search + location.hash});
-      const response = await fetch('/api/review', {method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded','X-Change-Saga-Async':'true','X-Change-Saga-Mutation-Token':mutationToken},body:values,credentials:'same-origin'});
-      if (!response.ok) throw new Error((await response.text()).trim() || 'review could not be saved');
-      controls.forEach(candidate => {
-        candidate.dataset.reviewAuthor = 'Local / uncommitted';
-        candidate.dataset.reviewDetail = 'This review event has not been committed yet.';
-      });
-      let aggregate = state;
-      controls.forEach(candidate => { aggregate = upsertLocalHumanDecision(candidate, state, body.trim()); });
-      setReviewControlState(control, aggregate, true, aggregate === state ? body.trim() : '');
-    } catch (error) {
-      alert('Could not save this review decision: ' + error.message);
-      throw error;
-    } finally {
-      buttons.forEach(button => button.disabled = false);
-    }
-  }
-
-  function activateReviewDecision(button) {
-    const control = button.closest('[data-review-controls]');
-    const requested = button.dataset.reviewDecision;
-    if (requested === 'rejected') {
-      openReviewComposer(control, 'rejected');
-      return;
-    }
-    persistReviewDecision(control, 'approved').catch(() => {});
-  }
-
-  async function submitReviewComposer(form) {
-    const control = form.reviewControl || form.closest('[data-review-controls]');
-    if (!control) return;
-    const state = q('[name=state]', form).value;
-    const body = q('[name=body]', form).value;
-    try {
-      await persistReviewDecision(control, state, body);
-      closeReviewComposer(form);
-    } catch (_) {}
-  }
-
-  function openReviewComment(control, anchor = control) {
-    discardAnnotationDraft();
-    const form = q('.annotation-compose');
-    form.reset();
-    form.reviewOrigin = anchor;
-    q('[name=target]', form).value = control.dataset.reviewTarget;
-    q('[name=anchor]', form).value = JSON.stringify({type:'target'});
-    q('.dialog-head h2', form).textContent = 'Comment on ' + (control.dataset.reviewTitle || 'this item');
-    form.classList.add('open');
-    positionAnnotationComposer(anchor);
-    q('[name=body]', form).focus();
-    resetTool();
-    updateHistoryControls();
-  }
-
-  function resetAnnotationComposerPosition() {
-    const form = q('.annotation-compose');
-    if (!form) return;
-    form.classList.remove('anchored');
-    form.style.removeProperty('left');
-    form.style.removeProperty('top');
-  }
-
-  function positionAnnotationComposer(anchor) {
-    const form = q('.annotation-compose');
-    const rect = anchor?.getBoundingClientRect ? anchor.getBoundingClientRect() : anchor;
-    if (!form || !rect || !Number.isFinite(rect.left) || !Number.isFinite(rect.top)) {
-      resetAnnotationComposerPosition();
-      return;
-    }
-    form.classList.add('anchored');
-    const width = form.offsetWidth;
-    const height = form.offsetHeight;
-    const gap = 10;
-    const edge = 12;
-    const clamp = (value, low, high) => Math.max(low, Math.min(Math.max(low, high), value));
-    const centerLeft = rect.left + (rect.width - width) / 2;
-    const centerTop = rect.top + (rect.height - height) / 2;
-    const candidates = [
-      {left:rect.right + gap, top:centerTop},
-      {left:rect.left - width - gap, top:centerTop},
-      {left:centerLeft, top:rect.bottom + gap},
-      {left:centerLeft, top:rect.top - height - gap}
-    ].map((candidate,index) => ({
-      left:clamp(candidate.left, edge, innerWidth - width - edge),
-      top:clamp(candidate.top, edge, innerHeight - height - edge),
-      index
-    }));
-    const obstacles = [q('.annotation-toolbox:not([hidden])'), q('.topbar')]
-      .filter(element => element?.getClientRects().length)
-      .map(element => element.getBoundingClientRect());
-    const overlap = (a,b) => Math.max(0, Math.min(a.right,b.right) - Math.max(a.left,b.left)) * Math.max(0, Math.min(a.bottom,b.bottom) - Math.max(a.top,b.top));
-    const score = candidate => {
-      const candidateRect = {left:candidate.left,top:candidate.top,right:candidate.left+width,bottom:candidate.top+height};
-      const coveredControls = obstacles.reduce((area, obstacle) => area + overlap(candidateRect, obstacle), 0);
-      const coveredAnchor = overlap(candidateRect, rect);
-      const dx = Math.max(rect.left-candidateRect.right, candidateRect.left-rect.right, 0);
-      const dy = Math.max(rect.top-candidateRect.bottom, candidateRect.top-rect.bottom, 0);
-      return (coveredControls + coveredAnchor) * 1000 + Math.hypot(dx,dy) + candidate.index / 100;
-    };
-    candidates.sort((left,right) => score(left) - score(right));
-    const {left,top} = candidates[0];
-    form.style.left = Math.round(left + scrollX) + 'px';
-    form.style.top = Math.round(top + scrollY) + 'px';
-  }
-
-  function shortcutDirection(event) {
-    if (event.altKey || (!event.ctrlKey && !event.metaKey)) return '';
-    const key = String(event.key || '').toLowerCase();
-    if (key === 'z') return event.shiftKey ? 'redo' : 'undo';
-    if (key === 'y' && event.ctrlKey && !event.shiftKey) return 'redo';
-    return '';
-  }
-
-  function annotationDeleteShortcut(event) {
-    if (event.ctrlKey || event.metaKey || event.altKey || event.key !== 'Delete' && event.key !== 'Backspace') return false;
-    return !event.target.matches?.('input,textarea,[contenteditable="true"]');
-  }
 
   async function copyPermalink(button) {
     const url = new URL(location.href);
@@ -655,7 +253,7 @@ const appJavaScript = `(() => {
     markLandmarkDiffOwnership(target, visual);
     const affordance = cloneLandmarkAffordance(target);
     if (affordance) visual.append(affordance);
-    stage.insertBefore(visual, q('.review-overlay', stage));
+    stage.append(visual);
   }
 
   async function prepareSVGElementHotspots(fragment) {
@@ -718,154 +316,6 @@ const appJavaScript = `(() => {
     });
   }
 
-  // A comment drawn onto the content travels with its mark. The server places
-  // each bubble from the stored anchor so it is already right without script;
-  // here it is refined against the mark as the browser actually laid it out,
-  // which is the only way to place a highlight at all.
-  function annotationBubbleFor(threadID) {
-    return threadID ? q('[data-annotation-bubble][data-thread-id="' + CSS.escape(threadID) + '"]') : null;
-  }
-
-  function annotationMarkFor(bubble) {
-    const id = bubble?.dataset.threadId;
-    if (!id) return null;
-    const selector = '[data-thread-id="' + CSS.escape(id) + '"]';
-    const stage = bubble.closest('.fragment-stage') || document;
-    return q('[data-annotation-entity]' + selector, stage) || q('[data-sticky-note]' + selector, stage) || q('mark[data-text-mark]' + selector, stage);
-  }
-
-  function annotationBubbleAt(node) {
-    const own = node?.closest?.('[data-annotation-bubble]');
-    if (own) return own;
-    const mark = node?.closest?.('[data-annotation-entity],[data-sticky-note],mark[data-text-mark]');
-    return mark ? annotationBubbleFor(mark.dataset.threadId) : null;
-  }
-
-  function positionAnnotationBubbles(root = document) {
-    let unplaced = 0;
-    qa('[data-annotation-bubble]', root).forEach(bubble => {
-      const stage = bubble.closest('.fragment-stage');
-      const mark = annotationMarkFor(bubble);
-      const box = mark?.getBoundingClientRect();
-      const stageBox = stage?.getBoundingClientRect();
-      if (!stageBox || !stageBox.width || !stageBox.height || !box || (!box.width && !box.height)) {
-        // A mark the browser cannot measure yet — an unloaded image, a
-        // highlight whose text moved — still needs a reachable comment, so the
-        // bubble parks on the stage edge instead of vanishing.
-        if (!bubble.classList.contains('placed')) {
-          bubble.style.left = '100%';
-          bubble.style.top = unplaced++ * 26 + 'px';
-          bubble.classList.add('placed');
-        }
-        return;
-      }
-      bubble.style.left = clampNormalized((box.right - stageBox.left) / stageBox.width) * 100 + '%';
-      bubble.style.top = clampNormalized((box.top - stageBox.top) / stageBox.height) * 100 + '%';
-      bubble.classList.add('placed');
-    });
-  }
-
-  function positionFragmentOverlays() {
-    positionLandmarkHotspots();
-    positionAnnotationBubbles();
-  }
-
-  // A revealed comment must stay on screen and must not sit on top of the mark
-  // it describes. The panel is first nudged left far enough to fit in the
-  // window, then moved above its bubble if that is what it takes to leave the
-  // mark visible. A sliver of overlap beside a rectangle is not worth moving
-  // for; burying a sticky note under its own comment is.
-  function alignAnnotationBubblePanel(bubble) {
-    const panel = q('[data-annotation-bubble-panel]', bubble);
-    if (!panel) return;
-    panel.classList.remove('flip-y');
-    panel.style.marginLeft = '';
-    const overflow = panel.getBoundingClientRect().right - (innerWidth - 8);
-    if (overflow > 0) panel.style.marginLeft = -Math.min(overflow, Math.max(0, panel.getBoundingClientRect().left - 8)) + 'px';
-    const box = panel.getBoundingClientRect();
-    const mark = annotationMarkFor(bubble)?.getBoundingClientRect();
-    const buriesMark = Boolean(mark)
-      && Math.min(box.right, mark.right) - Math.max(box.left, mark.left) > 40
-      && Math.min(box.bottom, mark.bottom) - Math.max(box.top, mark.top) > 10;
-    const roomAbove = bubble.getBoundingClientRect().top - box.height - 13;
-    if ((buriesMark || box.bottom > innerHeight - 8) && roomAbove > 0) panel.classList.add('flip-y');
-  }
-
-  function setAnnotationBubbleOpen(bubble, open) {
-    if (!bubble) return;
-    bubble.classList.toggle('open', open);
-    const panel = q('[data-annotation-bubble-panel]', bubble);
-    if (panel) panel.hidden = !open;
-    q('[data-annotation-bubble-toggle]', bubble)?.setAttribute('aria-expanded', String(open));
-    annotationMarkFor(bubble)?.classList.toggle('annotation-revealed', open);
-    if (open) alignAnnotationBubblePanel(bubble);
-  }
-
-  function revealAnnotationBubble(bubble) {
-    if (!bubble) return;
-    clearTimeout(bubbleHideTimer);
-    qa('[data-annotation-bubble].open').forEach(other => {
-      if (other !== bubble && other !== pinnedBubble) setAnnotationBubbleOpen(other, false);
-    });
-    setAnnotationBubbleOpen(bubble, true);
-  }
-
-  // A bubble the reviewer is still using stays open: pinned by a click, holding
-  // focus, or under the pointer on either the bubble or the mark it belongs to.
-  function annotationBubbleHeld(bubble) {
-    if (bubble === pinnedBubble || bubble.contains(document.activeElement)) return true;
-    const mark = annotationMarkFor(bubble);
-    return Boolean(bubble.matches?.(':hover') || mark?.matches?.(':hover'));
-  }
-
-  function hideAnnotationBubbleSoon(bubble) {
-    if (!bubble) return;
-    clearTimeout(bubbleHideTimer);
-    // The gap between a mark and its bubble is real screen distance; closing
-    // immediately would make the thread impossible to reach with the pointer.
-    bubbleHideTimer = setTimeout(() => {
-      if (!annotationBubbleHeld(bubble)) setAnnotationBubbleOpen(bubble, false);
-    }, 180);
-  }
-
-  function pinAnnotationBubble(bubble) {
-    if (pinnedBubble === bubble) {
-      pinnedBubble = null;
-      setAnnotationBubbleOpen(bubble, false);
-      return;
-    }
-    const previous = pinnedBubble;
-    pinnedBubble = bubble;
-    if (previous) setAnnotationBubbleOpen(previous, false);
-    revealAnnotationBubble(bubble);
-  }
-
-  function closeAnnotationBubbles() {
-    pinnedBubble = null;
-    clearTimeout(bubbleHideTimer);
-    qa('[data-annotation-bubble].open').forEach(bubble => setAnnotationBubbleOpen(bubble, false));
-  }
-
-  function closeAnnotationBubble(bubble) {
-    if (!bubble) return;
-    if (pinnedBubble === bubble) pinnedBubble = null;
-    const returnFocus = bubble.contains(document.activeElement);
-    setAnnotationBubbleOpen(bubble, false);
-    if (returnFocus) q('[data-annotation-bubble-toggle]', bubble)?.focus();
-  }
-
-  // A permalink to a comment must still open it now that the comment lives
-  // inside a bubble rather than in the list under the content.
-  function revealHashedAnnotationBubble() {
-    const id = decodeURIComponent(location.hash.replace(/^#/, ''));
-    const target = id ? document.getElementById(id) : null;
-    const bubble = target?.closest?.('[data-annotation-bubble]');
-    if (!bubble) return;
-    pinnedBubble = bubble;
-    revealAnnotationBubble(bubble);
-    globalThis.requestAnimationFrame?.(() => target.scrollIntoView({block:'center'}));
-  }
-
   // within lets a preparation pass run over one hydrated fragment as well as
   // over the whole page, including when the root is the fragment itself.
   function within(root, selector) {
@@ -881,9 +331,9 @@ const appJavaScript = `(() => {
         frame.style.minHeight = '0';
         frame.style.aspectRatio = String(aspect);
       }
-      frame.addEventListener('load', positionFragmentOverlays);
+      frame.addEventListener('load', positionLandmarkHotspots);
     });
-    within(root, '.fragment-image').forEach(image => image.addEventListener('load', positionFragmentOverlays));
+    within(root, '.fragment-image').forEach(image => image.addEventListener('load', positionLandmarkHotspots));
     within(root, '[data-landmark-target]').forEach(target => {
       const anchor = target.dataset.landmarkAnchor;
       const fragment = target.closest('.fragment');
@@ -908,23 +358,7 @@ const appJavaScript = `(() => {
       markLandmarkDiffOwnership(target, q('[data-landmark-visual="' + CSS.escape(anchor) + '"]', fragment));
     });
     within(root, '.fragment').forEach(fragment => { void prepareSVGElementHotspots(fragment).catch(() => {}); });
-    globalThis.requestAnimationFrame?.(positionFragmentOverlays);
-  }
-
-  // Text highlights are drawn onto content, so they are applied once per piece
-  // of content: over the page at load, and over each explanation as it arrives.
-  function prepareTextHighlights(root = document) {
-    within(root, '[data-text-target]').forEach(label => {
-      const target = document.querySelector('[data-target="'+CSS.escape(label.dataset.textTarget)+'"] [data-selectable]');
-      if (!target) return;
-      const exact = label.dataset.exact;
-      const color = normalizedAnnotationColor(label.dataset.textColor);
-      const mark = markExactText(target, exact);
-      if (!mark) return;
-      mark.style.backgroundColor = colorWithAlpha(color);
-      mark.dataset.textMark = 'true';
-      mark.dataset.threadId = label.dataset.threadId || '';
-    });
+    globalThis.requestAnimationFrame?.(positionLandmarkHotspots);
   }
 
   // Markdown citations are ordinary footnotes until their reference entry is
@@ -1180,64 +614,11 @@ const appJavaScript = `(() => {
 
   function filterTree() {
     const filter = (q('[data-file-filter]')?.value || '').trim().toLowerCase();
-    const hideReviewed = Boolean(q('[data-hide-reviewed]')?.checked);
     const files = qa('[data-tree-file]');
-    files.forEach(file => { file.hidden = !file.dataset.treePath.toLowerCase().includes(filter) || (hideReviewed && file.dataset.reviewed === 'true'); });
+    files.forEach(file => { file.hidden = !file.dataset.treePath.toLowerCase().includes(filter); });
     qa('[data-tree-folder]').reverse().forEach(folder => { folder.hidden = !q('[data-tree-file]:not([hidden])', folder); });
     const empty = q('[data-tree-empty]');
     if (empty) empty.hidden = files.some(file => !file.hidden);
-  }
-
-  // A code location is <commit>:<path>#L<start>[-L<end>]; the range suffix is
-  // anchored at the end, so the path can contain any character.
-  function parseCodeLocation(value) {
-    const match = /^([0-9a-f]{40}(?:[0-9a-f]{24})?):(.+?)(?:#L(\d+)(?:-L(\d+))?)?$/.exec(value || '');
-    if (!match) return null;
-    const location = {commit: match[1], path: match[2]};
-    if (match[3]) {
-      location.start = Number(match[3]);
-      location.end = Number(match[4] || match[3]);
-    }
-    return location;
-  }
-
-  function selectedRangeRef(rows) {
-    if (!rows.length) return '';
-    const numbers = rows.map(row => Number(row.dataset.line));
-    const location = parseCodeLocation(rows[0].dataset.diffRef);
-    if (!location) return rows[0].dataset.diffRef;
-    const start = Math.min(...numbers), end = Math.max(...numbers);
-    return location.commit + ':' + location.path + '#L' + start + (end === start ? '' : '-L' + end);
-  }
-
-  function updateLineSelection(rows) {
-    const selected = new Set(rows);
-    qa('[data-diff-row]').forEach(row => {
-      row.classList.toggle('selected', selected.has(row));
-      const button = q('[data-line-select]', row);
-      if (button) button.setAttribute('aria-pressed', String(selected.has(row)));
-    });
-    const toolbar = q('[data-selection-toolbar]');
-    if (!toolbar) return;
-    toolbar.classList.toggle('open', rows.length > 0);
-    if (!rows.length) { delete toolbar.dataset.diffRef; return; }
-    toolbar.dataset.diffRef = selectedRangeRef(rows);
-    toolbar.dataset.target = rows[0].dataset.target;
-    toolbar.dataset.content = rows.map(row => q('[data-code]', row)?.textContent || '').join('\n');
-    q('[data-selection-label]', toolbar).textContent = rows.length === 1 ? '1 line selected' : rows.length + ' lines selected';
-  }
-
-  function selectDiffLine(button, extend) {
-    const row = button.closest('[data-diff-row]');
-    if (!row) return;
-    let rows = [row];
-    if (extend && selectionAnchor && selectionAnchor.dataset.side === row.dataset.side && selectionAnchor.dataset.path === row.dataset.path) {
-      const start = Number(selectionAnchor.dataset.line), end = Number(row.dataset.line);
-      rows = qa('[data-diff-row]').filter(candidate => candidate.dataset.side === row.dataset.side && candidate.dataset.path === row.dataset.path && Number(candidate.dataset.line) >= Math.min(start,end) && Number(candidate.dataset.line) <= Math.max(start,end));
-    } else {
-      selectionAnchor = row;
-    }
-    updateLineSelection(rows);
   }
 
   function setDocNodeExpandedByID(id, expanded) {
@@ -1278,7 +659,7 @@ const appJavaScript = `(() => {
 	void setChapterOpen(chapter, button.getAttribute('aria-expanded') !== 'true');
   }
 
-  // Code Diff, Coverage, and Review Activity are deliberately absent from the root document.
+  // Code Diff, Coverage, Change, and History are deliberately absent from the root document.
   // Their endpoints return bounded HTML fragments, and a cold comparison may
   // answer 202 while its snapshot is still being built. Per-surface request
   // generations keep a late response for one file from replacing a newer deep
@@ -1294,9 +675,7 @@ const appJavaScript = `(() => {
     const url = new URL(explicitHref || surface?.dataset.surfaceHref || '', location.href);
     if (!explicitHref) {
       const current = new URL(location.href);
-      const carried = ['file', 'ref', 'mode'];
-      if (name === 'activity') carried.push('target');
-      carried.forEach(key => {
+      ['file', 'ref', 'mode'].forEach(key => {
         if (current.searchParams.has(key)) url.searchParams.set(key, current.searchParams.get(key));
       });
     }
@@ -1367,11 +746,9 @@ const appJavaScript = `(() => {
       within(root, '[data-file-diff-href]').forEach(file => { void hydrateReviewFile(file); });
       void hydrateRelatedOwners(root);
     }
-    if (name === 'activity') filterActivity();
     const id = decodeURIComponent(location.hash.replace(/^#/, ''));
     const destination = id ? document.getElementById(id) : null;
     if (destination?.closest('[data-review-surface="'+name+'"]')) {
-      revealHashedAnnotationBubble();
       globalThis.requestAnimationFrame?.(() => destination.scrollIntoView({block:'center'}));
     }
   }
@@ -1467,7 +844,6 @@ const appJavaScript = `(() => {
       if (status) status.textContent = linkedContext ? 'All changed hunks · linked lines highlighted' : 'All changed hunks';
       prepareContext(destination);
       applyDiffLayout(diffLayout);
-      revealHashedAnnotationBubble();
       if (!location.hash) {
         const selected = q('.diff-row.selected', destination);
         globalThis.requestAnimationFrame?.(() => selected?.scrollIntoView({block:'center'}));
@@ -1545,6 +921,13 @@ const appJavaScript = `(() => {
     if (name === 'manifest') beginContinuousCoverageLoad(surface);
   }
 
+  const surfaceLabels = {
+    code:{title:'Code Diff', loading:'Loading changed files.'},
+    manifest:{title:'Coverage', loading:'Loading files and explanations.'},
+    change:{title:'Change', loading:'Loading what this change edited and affected.'},
+    history:{title:'History', loading:'Loading the commits that changed this record.'}
+  };
+
   async function hydrateReviewSurface(name, options = {}) {
     const surface = q('[data-review-surface="'+name+'"]');
     if (!surface) return null;
@@ -1556,8 +939,8 @@ const appJavaScript = `(() => {
     previous?.controller.abort();
     clearTimeout(reviewSurfaceRetries.get(name));
     const controller = new AbortController();
-    const activity = name === 'activity';
-    surfaceStatus(surface, 'loading', name === 'code' ? 'Loading Code Diff…' : activity ? 'Loading review activity…' : 'Loading Coverage…', name === 'code' ? 'Loading changed files.' : activity ? 'Loading decisions and conversations.' : 'Loading files and explanations.');
+    const label = surfaceLabels[name] || surfaceLabels.manifest;
+    surfaceStatus(surface, 'loading', 'Loading ' + label.title + '…', label.loading);
     const promise = fetch(url, {headers:{Accept:'text/html','X-Change-Saga-Async':'true'},credentials:'same-origin',signal:controller.signal}).then(async response => {
       if (response.status === 202) {
         const delay = retryDelay(response);
@@ -1574,7 +957,7 @@ const appJavaScript = `(() => {
       return surface;
     }).catch(error => {
       if (error.name === 'AbortError') return surface;
-      surfaceStatus(surface, 'error', name === 'code' ? 'Code Diff could not be loaded.' : activity ? 'Review activity could not be loaded.' : 'Coverage could not be loaded.', error.message, true);
+      surfaceStatus(surface, 'error', label.title + ' could not be loaded.', error.message, true);
       return surface;
     }).finally(() => {
       if (reviewSurfaceRequests.get(name)?.promise === promise) reviewSurfaceRequests.delete(name);
@@ -1641,11 +1024,9 @@ const appJavaScript = `(() => {
     });
     const sagaSide = q('.saga-side');
     const codeSide = q('.code-side');
-    const toolbox = q('.annotation-toolbox');
     const codeMeta = q('.top-meta');
     if (sagaSide) sagaSide.hidden = name !== 'saga' && name !== 'slides';
     if (codeSide) codeSide.hidden = name !== 'code';
-    if (toolbox) toolbox.hidden = (name !== 'saga' && name !== 'slides') || !toolbox.dataset.annotationTarget;
     if (codeMeta) codeMeta.hidden = name !== 'code';
     const shell = q('[data-shell]');
     if (shell) {
@@ -1654,27 +1035,15 @@ const appJavaScript = `(() => {
     }
     const slideView = q('[data-view="slides"]') ? 'slides' : 'saga';
     qa('[data-slide-present]').forEach(button => { button.hidden = name !== slideView; });
-    // A hidden view measures as zero, so the bubbles are placed once the saga
+    // A hidden view measures as zero, so hotspots are placed once the saga
     // view is actually on screen.
-    if (name === 'saga' || name === 'slides') globalThis.requestAnimationFrame?.(positionFragmentOverlays);
+    if (name === 'saga' || name === 'slides') globalThis.requestAnimationFrame?.(positionLandmarkHotspots);
     if (updateURL) {
       const url = new URL(location.href);
       if (name === 'saga') url.searchParams.delete('view'); else url.searchParams.set('view', name);
       history.pushState({view: name}, '', url);
     }
     if (name === 'code' || name === 'manifest' || name === 'change') void hydrateReviewSurface(name);
-  }
-
-  function filterActivity(selected = q('[data-activity-filter][aria-pressed="true"]')?.dataset.activityFilter || 'all') {
-    qa('[data-activity-filter]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.activityFilter === selected)));
-    let visible = 0;
-    qa('[data-activity-item]').forEach(item => {
-      const match = selected === 'all' || item.dataset.activityState === selected;
-      item.hidden = !match;
-      if (match) visible++;
-    });
-    const empty = q('[data-activity-filter-empty]');
-    if (empty) empty.hidden = visible !== 0;
   }
 
   function filterManifest() {
@@ -1723,84 +1092,16 @@ const appJavaScript = `(() => {
     activeFragment = fragment;
     activeFragment.classList.add('active-fragment');
     // Pointing at an explanation is the clearest signal that it is about to be
-    // read or annotated, so it is fetched now rather than when it scrolls.
+    // read, so it is fetched now rather than when it scrolls.
     if (fragment.dataset.fragmentHref) void hydrateFragment(fragment);
-  }
-
-  function hideAnnotationTools() {
-    const toolbox = q('[data-annotation-target]');
-    if (!toolbox) return;
-    toolbox.hidden = true;
-    toolbox.dataset.annotationTarget = '';
-    toolbox.setAttribute('aria-label', 'Annotation tools');
-    qa('[data-annotation-tools]').forEach(button => {
-      button.setAttribute('aria-expanded', 'false');
-      button.setAttribute('aria-label', 'Show annotation tools for ' + (button.dataset.annotationTitle || 'this explanation'));
-    });
-    document.body.append(toolbox);
-    resetTool();
-  }
-
-  function showAnnotationTools(fragment, target = fragment?.dataset.target || '', title = fragment?.dataset.fragmentTitle || 'this explanation') {
-    const toolbox = q('[data-annotation-target]');
-    const actions = fragment ? q(':scope > .fragment-head > .fragment-actions', fragment) : null;
-    if (!fragment || !toolbox || !actions) return false;
-    setActiveFragment(fragment);
-    actions.append(toolbox);
-    toolbox.dataset.annotationTarget = target;
-    toolbox.setAttribute('aria-label', 'Annotation tools for ' + title);
-    const label = q('[data-tool-target]', toolbox);
-    if (label) label.textContent = title;
-    toolbox.hidden = false;
-    qa('[data-annotation-tools]').forEach(candidate => {
-      const selected = candidate.dataset.annotationTools === target;
-      candidate.setAttribute('aria-expanded', String(selected));
-      candidate.setAttribute('aria-label', (selected ? 'Hide' : 'Show') + ' annotation tools for ' + (candidate.dataset.annotationTitle || 'this explanation'));
-    });
-    resetTool();
-    return true;
-  }
-
-  async function toggleAnnotationTools(button) {
-    const fragment = button.closest('.fragment');
-    const toolbox = q('[data-annotation-target]');
-    if (!fragment || !toolbox) return;
-    closeAnnotationBubbles();
-    const target = button.dataset.annotationTools || fragment.dataset.target || '';
-    if (!toolbox.hidden && toolbox.dataset.annotationTarget === target) {
-      hideAnnotationTools();
-      return;
-    }
-    if (annotationDraft || drawing) closeAnnotation();
-    if (fragment.dataset.fragmentHref) await hydrateFragment(fragment);
-    if (fragment.dataset.fragmentHref) return;
-    const title = fragment.dataset.fragmentTitle || button.dataset.annotationTitle || 'this explanation';
-    showAnnotationTools(fragment, target, title);
-  }
-
-  function cancelDrawing() {
-    if (!drawing) return;
-    drawing.overlay.classList.remove('drawing', 'placing');
-    if (drawing.preview) drawing.preview.remove();
-    drawing = null;
-  }
-
-  function setSelectedTool(mode) {
-    selectedTool = mode;
-    qa('[data-tool]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.tool === mode)));
-  }
-
-  function resetTool() {
-    cancelDrawing();
-    setSelectedTool('select');
   }
 
   function configureDrawer(mode, title) {
     const drawer = q('.diff-drawer');
     if (!drawer) return;
     drawer.dataset.drawerMode = mode;
-    const labels = {fragment:'Related explanation', activity:'Review activity', code:'Linked code'};
-    const icons = {fragment:'#i-book', activity:'#i-comment', code:'#i-diff'};
+    const labels = {fragment:'Related explanation', history:'History', code:'Linked code'};
+    const icons = {fragment:'#i-book', history:'#i-clock', code:'#i-diff'};
     const label = labels[mode] || labels.code;
     drawer.setAttribute('aria-label', label);
     const heading = q('.drawer-head strong', drawer);
@@ -1812,7 +1113,6 @@ const appJavaScript = `(() => {
       close.setAttribute('aria-label', 'Close ' + label.toLowerCase());
       close.title = 'Close';
     }
-    q('[data-open-activity]')?.setAttribute('aria-expanded', String(mode === 'activity' && drawer.classList.contains('open')));
   }
 
   function restoreDrawerContent() {
@@ -1833,7 +1133,6 @@ const appJavaScript = `(() => {
     drawer.classList.add('open');
     drawer.removeAttribute('inert');
     drawer.setAttribute('aria-hidden', 'false');
-    if (drawer.dataset.drawerMode === 'activity') q('[data-open-activity]')?.setAttribute('aria-expanded', 'true');
     q('.drawer-backdrop').classList.add('open');
     document.body.style.overflow = 'hidden';
     q('[data-close-drawer]', drawer).focus();
@@ -1864,31 +1163,21 @@ const appJavaScript = `(() => {
     const returnOpener = drawer?.classList.contains('open') ? drawerOpener : opener;
     restoreDrawerContent();
     const surface = document.createElement('div');
-    surface.className = 'activity-drawer-surface';
+    surface.className = 'history-drawer-surface';
     surface.dataset.reviewSurface = 'history';
     surface.dataset.surfaceHref = href;
     q('.drawer-body')?.append(surface);
-    configureDrawer('activity', 'History');
+    configureDrawer('history', 'History');
     showDrawer(returnOpener);
     return hydrateReviewSurface('history', {href:new URL(href, location.href).toString(), force:true});
   }
 
-  // Compare mode highlights the records this change edited or affected and
-  // offers approval only on them; everything else stays reachable but quiet.
-  // Observe mode renders no approval controls at all.
-  const layerState = {ready:false, approvable:new Set(), changed:new Set(), affected:new Set(), dom:new Map()};
+  // Compare mode highlights the records this change edited or affected;
+  // everything else stays reachable but quiet. The Saga is documentation, so
+  // neither mode offers approvals or comments on it.
+  const layerState = {ready:false, changed:new Set(), affected:new Set(), dom:new Map()};
   function applyLayers(root = document) {
     if (!layerState.ready) return;
-    within(root, '[data-review-controls]').forEach(controls => {
-      const gate = q('[data-approval-gate]', controls);
-      if (gate) gate.hidden = !layerState.approvable.has(controls.dataset.reviewTarget || '');
-    });
-    within(root, '[data-review-progress-target]').forEach(segment => {
-      segment.hidden = !layerState.approvable.has(segment.dataset.reviewProgressTarget || '');
-    });
-    within(root, '[data-review-directory-target]').forEach(row => {
-      row.hidden = !layerState.approvable.has(row.dataset.reviewDirectoryTarget || '');
-    });
     const layerOf = id => layerState.changed.has(id) ? 'changed' : layerState.affected.has(id) ? 'affected' : '';
     const byDOM = new Map();
     layerState.dom.forEach((dom, urn) => byDOM.set(dom, layerOf(urn)));
@@ -1913,7 +1202,6 @@ const appJavaScript = `(() => {
       if (response.status === 202) { await new Promise(resolve => setTimeout(resolve, retryDelay(response))); continue; }
       if (!response.ok) return;
       const layers = await response.json();
-      layerState.approvable = new Set(layers.approvable || []);
       layerState.changed = new Set(layers.changed || []);
       layerState.affected = new Set(layers.affected || []);
       layerState.dom = new Map(Object.entries(layers.dom || {}));
@@ -1925,31 +1213,6 @@ const appJavaScript = `(() => {
       }))).observe(document.body, {childList:true, subtree:true});
       return;
     }
-  }
-
-  async function openActivityDrawer(href, opener, updateURL = true) {
-    const destination = new URL(href || location.href, location.href);
-    const target = destination.searchParams.get('target') || '';
-    const apiURL = new URL('/api/activity', location.href);
-    if (target) apiURL.searchParams.set('target', target);
-    const drawer = q('.diff-drawer');
-    const returnOpener = drawer?.classList.contains('open') ? drawerOpener : opener;
-    restoreDrawerContent();
-    const surface = document.createElement('div');
-    surface.className = 'activity-drawer-surface';
-    surface.dataset.reviewSurface = 'activity';
-    surface.dataset.surfaceHref = '/api/activity';
-    q('.drawer-body')?.append(surface);
-    configureDrawer('activity', target ? 'Comments for this section' : 'Review activity');
-    showDrawer(returnOpener);
-    if (updateURL) {
-      const url = new URL(location.href);
-      url.searchParams.set('activity', '1');
-      if (target) url.searchParams.set('target', target); else url.searchParams.delete('target');
-      if (url.searchParams.get('view') === 'activity') url.searchParams.delete('view');
-      history.pushState({view:q('[data-view].active')?.dataset.view || 'saga', activity:true}, '', url);
-    }
-    return hydrateReviewSurface('activity', {href:apiURL.toString(), force:true});
   }
 
   // One changed file's diff body is fetched the first time a reviewer opens it
@@ -2302,19 +1565,8 @@ const appJavaScript = `(() => {
     }
   }
 
-  function installFragmentContents(article, replacement, preserveLiveDecision = false) {
+  function installFragmentContents(article, replacement) {
     const wasActive = article.classList.contains('active-fragment');
-    const tools = q('[data-annotation-target]');
-    const toolsTarget = tools && !tools.hidden && tools.closest('.fragment') === article ? tools.dataset.annotationTarget : '';
-    if (toolsTarget) document.body.append(tools);
-    if (preserveLiveDecision) {
-      // A decision the reviewer has already made is not undone by content
-      // arriving after it: the live controls move into the rendered explanation
-      // instead of being replaced by the state its snapshot was built from.
-      const live = q(':scope > .fragment-head [data-review-controls]', article);
-      const rendered = q(':scope > .fragment-head [data-review-controls]', replacement);
-      if (live && rendered) rendered.replaceWith(live);
-    }
     for (const attribute of Array.from(article.attributes)) {
       if (!replacement.hasAttribute(attribute.name)) article.removeAttribute(attribute.name);
     }
@@ -2325,10 +1577,8 @@ const appJavaScript = `(() => {
     article.replaceChildren(...Array.from(replacement.childNodes));
     prepareLandmarks(article);
     prepareDiffCitations(article);
-    prepareTextHighlights(article);
     highlightCode(article);
-    positionFragmentOverlays();
-    if (toolsTarget) showAnnotationTools(article, toolsTarget, article.dataset.fragmentTitle || 'this explanation');
+    positionLandmarkHotspots();
     return article;
   }
 
@@ -2346,121 +1596,12 @@ const appJavaScript = `(() => {
       // node no longer reaches the document that handles it. Filling the article
       // in place keeps its head where it was and every live control attached,
       // and keeps this explanation the active one without re-selecting it.
-      return installFragmentContents(article, replacement, true);
+      return installFragmentContents(article, replacement);
     } catch (_) {
       delete article.dataset.fragmentLoading;
       const placeholder = q('[data-fragment-placeholder]', article);
       if (placeholder) placeholder.textContent = 'This explanation could not be loaded. Reload the page to try again.';
       return article;
-    }
-  }
-
-  function reviewMutationFragment(target, origin = null) {
-    const direct = origin?.closest?.('.fragment');
-    if (direct) return direct;
-    return qa('.fragment').find(fragment => fragment.dataset.target === target ||
-      Boolean(q('[data-review-comment="' + CSS.escape(target) + '"]', fragment))) || null;
-  }
-
-  function restoreReviewMutationFocus(article, action, data) {
-    const thread = String(data.get('thread') || '');
-    const target = String(data.get('target') || '');
-    let destination = null;
-    if (thread) {
-      const matching = qa('article.thread', article).find(candidate =>
-        q('input[name="thread"]', candidate)?.value === thread);
-      destination = action.endsWith('/api/reply') ? q('input[name="body"]', matching) : q('.thread-state button', matching);
-    }
-    if (!destination && target) {
-      destination = qa('[data-review-comment]', article).find(button => button.dataset.reviewComment === target) ||
-        qa('[data-review-controls]', article).find(control => control.dataset.reviewTarget === target)?.querySelector('button');
-    }
-    destination?.focus?.({preventScroll:true});
-  }
-
-  async function refreshFragmentReviews(article, action, data) {
-    if (!article?.dataset.target) return false;
-    const scroll = {x:scrollX, y:scrollY};
-    const url = new URL('/api/fragment', location.href);
-    url.searchParams.set('target', article.dataset.target);
-    const response = await fetch(url, {headers:{Accept:'text/html','X-Change-Saga-Async':'true'},credentials:'same-origin',cache:'no-store'});
-    if (!response.ok) throw new Error((await response.text()).trim() || 'updated review could not be loaded');
-    const replacement = q('.fragment', parseShellHTML(await response.text()));
-    if (!replacement) throw new Error('updated review response was incomplete');
-    installFragmentContents(article, replacement);
-    scrollTo(scroll.x, scroll.y);
-    restoreReviewMutationFocus(article, action, data);
-    return true;
-  }
-
-  async function refreshChapterReviews(chapter) {
-    const body = q(':scope > [data-chapter-body]', chapter);
-    const target = q(':scope > .section-head [data-review-controls]', chapter)?.dataset.reviewTarget || '';
-    if (!body || !target) return false;
-    const scroll = {x:scrollX, y:scrollY};
-    const url = new URL('/api/section', location.href);
-    url.searchParams.set('target', target);
-    const response = await fetch(url, {headers:{Accept:'text/html','X-Change-Saga-Async':'true'},credentials:'same-origin',cache:'no-store'});
-    if (!response.ok) throw new Error((await response.text()).trim() || 'updated chapter review could not be loaded');
-    const wrapper = parseShellHTML(await response.text());
-    body.replaceChildren(...Array.from(wrapper.childNodes));
-    chapter.removeAttribute('data-section-href');
-    await observeDeferredFragments(body);
-    scrollTo(scroll.x, scroll.y);
-    return true;
-  }
-
-  async function persistReviewMutation(action, data, origin = null) {
-    const target = String(data.get('target') || '');
-    const article = reviewMutationFragment(target, origin);
-    data.set('mutation_token', mutationToken);
-    data.set('return_to', location.pathname + location.search + location.hash);
-    const multipart = action.endsWith('/api/thread') || action.endsWith('/api/reply');
-    const headers = {'X-Change-Saga-Async':'true','X-Change-Saga-Mutation-Token':mutationToken};
-    let body = data;
-    if (!multipart) {
-      body = new URLSearchParams();
-      for (const [name,value] of data.entries()) if (typeof value === 'string') body.append(name, value);
-      headers['Content-Type'] = 'application/x-www-form-urlencoded';
-    }
-    const response = await fetch(action, {
-      method:'POST',
-      headers,
-      body,
-      credentials:'same-origin'
-    });
-    if (!response.ok) throw new Error((await response.text()).trim() || 'review change could not be saved');
-    if (article) await refreshFragmentReviews(article, action, data);
-    return response;
-  }
-
-  async function submitReviewMutationForm(form, submitter = null) {
-    const buttons = qa('button,input[type="submit"]', form);
-    buttons.forEach(button => button.disabled = true);
-    const action = new URL(form.action, location.href).pathname;
-    const data = new FormData(form);
-    if (submitter?.name) data.set(submitter.name, submitter.value);
-    const annotation = form.matches('.annotation-compose');
-    const origin = form.reviewOrigin || form;
-    const chapter = origin?.closest?.('[data-chapter]') || null;
-    const reviewSurface = form.reviewSurface || form.closest('[data-review-surface]')?.dataset.reviewSurface || '';
-    try {
-      await persistReviewMutation(action, data, origin);
-      if (chapter) await refreshChapterReviews(chapter);
-      if (reviewSurface) {
-        if (reviewSurface === 'code') fileDiffCache.clear();
-        const surface = await hydrateReviewSurface(reviewSurface, {force:true});
-        if (reviewSurface === 'code') {
-          await Promise.all(within(surface, '[data-file-diff-href]').map(file => hydrateReviewFile(file, {force:true})));
-        }
-      }
-      if (annotation) closeAnnotation();
-      if (form.matches('.diff-compose')) form.classList.remove('open');
-      form.reset();
-    } catch (error) {
-      alert('Could not save this review change: ' + error.message);
-    } finally {
-      buttons.forEach(button => button.disabled = false);
     }
   }
 
@@ -2652,18 +1793,17 @@ const appJavaScript = `(() => {
     configureDrawer('fragment', fragment.dataset.fragmentTitle || 'Related explanation');
     setActiveFragment(fragment);
     showDrawer(opener);
-    positionFragmentOverlays();
+    positionLandmarkHotspots();
     requestAnimationFrame(() => {
       const visual = q('[data-landmark-visual="' + CSS.escape(anchor) + '"]', fragment);
       (visual || destination).scrollIntoView({block:'center'});
     });
   }
 
-  function closeDrawer(updateURL = true) {
+  function closeDrawer() {
     const drawer = q('.diff-drawer');
     if (!drawer) return;
     const wasOpen = drawer.classList.contains('open');
-    const wasActivity = drawer.dataset.drawerMode === 'activity';
     drawer.classList.remove('open');
     drawer.setAttribute('aria-hidden', 'true');
     // Return focus before the drawer becomes inert. WebKit does not always make
@@ -2676,718 +1816,7 @@ const appJavaScript = `(() => {
     restoreDrawerContent();
     drawerOpener = null;
     configureDrawer('code', 'Linked code');
-    q('[data-open-activity]')?.setAttribute('aria-expanded', 'false');
-    if (wasActivity && updateURL) {
-      const url = new URL(location.href);
-      url.searchParams.delete('activity');
-      url.searchParams.delete('target');
-      if (url.searchParams.get('view') === 'activity') url.searchParams.delete('view');
-      history.replaceState({view:q('[data-view].active')?.dataset.view || 'saga'}, '', url);
-    }
   }
-
-  // A diff row already carries the change it is: its code location, the
-  // narrative target a comment on it belongs to, and its content. The per-line
-  // buttons used to repeat all three, which cost more than the code itself in a
-  // large file, so they now read the row they sit in.
-  function diffActionContext(button) {
-    const row = button.closest('[data-diff-ref]');
-    return {dataset:{
-      diffAction: button.dataset.diffAction,
-      diffRef: button.dataset.diffRef || row?.dataset.diffRef,
-      target: button.dataset.target || row?.dataset.target || '',
-      content: button.dataset.content ?? (q('[data-code]', row)?.textContent || '')
-    }};
-  }
-
-  function openDiffComposer(button) {
-    const form = q('.diff-compose');
-    const suggestion = button.dataset.diffAction === 'suggestion';
-	form.reset();
-    form.reviewOrigin = button.origin || null;
-    form.reviewSurface = button.origin?.closest?.('[data-review-surface]')?.dataset.reviewSurface || '';
-    form.classList.toggle('suggesting', suggestion);
-    form.classList.add('open');
-    q('[name=target]', form).value = button.dataset.target;
-    // The server reads the referenced content and records its digest.
-    q('[name=anchor]', form).value = JSON.stringify({type:'code', code:parseCodeLocation(button.dataset.diffRef)});
-    q('[name=kind]', form).value = suggestion ? 'suggestion' : 'comment';
-    q('.diff-compose-head strong', form).textContent = suggestion ? 'Suggest a replacement' : 'Comment on this change';
-    q('[name=replacement]', form).value = suggestion ? (button.dataset.content || '') : '';
-    q('[name=body]', form).required = true;
-    q('[name=body]', form).focus();
-  }
-
-  function annotationLabel(anchor) {
-    if (anchor?.type === 'note') return 'sticky note';
-    if (anchor?.type === 'text') return 'highlight';
-    if (anchor?.type === 'region') return 'rectangle';
-    if (anchor?.type === 'drawing') return 'freehand';
-    return 'comment';
-  }
-
-  function cloneAnchor(anchor) {
-    return JSON.parse(JSON.stringify(anchor));
-  }
-
-  function stepShapeDraftHistory(draft, direction) {
-    const from = direction === 'undo' ? draft.undo : draft.redo;
-    const to = direction === 'undo' ? draft.redo : draft.undo;
-    if (!from.length) return false;
-    to.push(cloneAnchor(draft.anchor));
-    draft.anchor = from.pop();
-    return true;
-  }
-
-  function createShapeElement(shape, className, index) {
-    const name = shape.type === 'rect' ? 'rect' : shape.type === 'ellipse' ? 'ellipse' : shape.type === 'line' ? 'line' : 'polyline';
-    const element = document.createElementNS('http://www.w3.org/2000/svg', name);
-    element.setAttribute('class', 'annotation selectable ' + className + (shape.type === 'path' || shape.type === 'line' ? ' path' : ''));
-    element.dataset.shapeIndex = String(index);
-    renderShapeElement(element, shape);
-    return element;
-  }
-
-  function renderShapeElement(element, shape) {
-    const color = normalizedAnnotationColor(shape.color);
-    element.setAttribute('stroke', color);
-    if (shape.type === 'rect') {
-      element.setAttribute('fill', color);
-      element.setAttribute('fill-opacity', '.22');
-      element.setAttribute('x', shape.x * 1000);
-      element.setAttribute('y', shape.y * 1000);
-      element.setAttribute('width', shape.width * 1000);
-      element.setAttribute('height', shape.height * 1000);
-    } else if (shape.type === 'ellipse') {
-      element.setAttribute('fill', color);
-      element.setAttribute('fill-opacity', '.22');
-      element.setAttribute('cx', shape.x * 1000);
-      element.setAttribute('cy', shape.y * 1000);
-      element.setAttribute('rx', shape.width * 1000);
-      element.setAttribute('ry', shape.height * 1000);
-    } else if (shape.type === 'line') {
-      element.setAttribute('x1', shape.x * 1000);
-      element.setAttribute('y1', shape.y * 1000);
-      element.setAttribute('x2', shape.width * 1000);
-      element.setAttribute('y2', shape.height * 1000);
-    } else {
-      element.setAttribute('points', (shape.points || []).map(point => point.x * 1000 + ',' + point.y * 1000).join(' '));
-    }
-  }
-
-  function shapeFromElement(element) {
-    const type = element.tagName.toLowerCase() === 'polyline' ? 'path' : element.tagName.toLowerCase();
-    const shape = {type, color:normalizedAnnotationColor(element.getAttribute('stroke'))};
-    if (type === 'rect') {
-      Object.assign(shape, {x:Number(element.getAttribute('x'))/1000,y:Number(element.getAttribute('y'))/1000,width:Number(element.getAttribute('width'))/1000,height:Number(element.getAttribute('height'))/1000});
-    } else if (type === 'ellipse') {
-      Object.assign(shape, {x:Number(element.getAttribute('cx'))/1000,y:Number(element.getAttribute('cy'))/1000,width:Number(element.getAttribute('rx'))/1000,height:Number(element.getAttribute('ry'))/1000});
-    } else if (type === 'line') {
-      Object.assign(shape, {x:Number(element.getAttribute('x1'))/1000,y:Number(element.getAttribute('y1'))/1000,width:Number(element.getAttribute('x2'))/1000,height:Number(element.getAttribute('y2'))/1000});
-    } else {
-      shape.points = (element.getAttribute('points') || '').trim().split(/\s+/).filter(Boolean).map(value => {
-        const [x,y] = value.split(',').map(Number);
-        return {x:x/1000,y:y/1000};
-      });
-    }
-    return shape;
-  }
-
-  function noteButton(label, attribute) {
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.textContent = label;
-    button.setAttribute(attribute, 'true');
-    return button;
-  }
-
-  function noteTextField(value) {
-    const field = document.createElement('textarea');
-    field.className = 'sticky-note-text';
-    field.rows = 4;
-    field.maxLength = 2000;
-    field.placeholder = 'Write a note';
-    field.setAttribute('aria-label', 'Sticky note text');
-    field.value = value;
-    return field;
-  }
-
-  function renderNoteElement(element, note) {
-    const color = normalizedAnnotationColor(note.color, noteDefaultColor);
-    element.dataset.x = String(note.x);
-    element.dataset.y = String(note.y);
-    element.dataset.color = color;
-    element.style.setProperty('--note-color', color);
-    element.style.left = note.x * 100 + '%';
-    element.style.top = note.y * 100 + '%';
-  }
-
-  function createNoteElement(note, pending) {
-    const element = document.createElement('div');
-    element.className = 'sticky-note' + (pending ? ' pending' : '');
-    element.dataset.stickyNote = 'true';
-    element.tabIndex = 0;
-    element.setAttribute('role', 'note');
-    element.setAttribute('aria-label', pending ? 'New sticky note' : 'Sticky note');
-    const body = document.createElement('p');
-    body.className = 'sticky-note-body';
-    body.dataset.stickyText = 'true';
-    // Note text is only ever written as a text node, never as markup.
-    body.textContent = note.text || '';
-    const actions = document.createElement('span');
-    actions.className = 'sticky-note-actions';
-    element.append(body, actions);
-    if (pending) {
-      body.hidden = true;
-      element.prepend(noteTextField(note.text || ''));
-      actions.append(noteButton('Add note', 'data-commit-note'), noteButton('Cancel', 'data-cancel-note'));
-    }
-    renderNoteElement(element, note);
-    return element;
-  }
-
-  function noteAnchorFromElement(element) {
-    return stickyNoteAnchor(q('[data-sticky-text]', element)?.textContent || '', Number(element.dataset.x), Number(element.dataset.y), element.dataset.color);
-  }
-
-  function persistedAnchor(group) {
-    return {type:group.dataset.anchorType,coordinate_space:'normalized',shapes:qa('[data-shape-index]', group).map(shapeFromElement)};
-  }
-
-  function clearAnnotationSelection() {
-    q('.annotation.selected')?.classList.remove('selected');
-    q('.sticky-note.selected')?.classList.remove('selected');
-    qa('[data-annotation-resize]').forEach(element => element.remove());
-    selectedAnnotation = null;
-    const tools = q('[data-annotation-selection]');
-    if (tools) tools.hidden = true;
-  }
-
-  function updateAnnotationResizeHandle() {
-    qa('[data-annotation-resize]').forEach(element => element.remove());
-    if (!selectedAnnotation || selectedAnnotation.element.tagName.toLowerCase() !== 'rect') return;
-    const element = selectedAnnotation.element;
-    const handle = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-    handle.setAttribute('class', 'annotation-resize-handle');
-    handle.dataset.annotationResize = 'true';
-    handle.setAttribute('x', Number(element.getAttribute('x')) + Number(element.getAttribute('width')) - 7);
-    handle.setAttribute('y', Number(element.getAttribute('y')) + Number(element.getAttribute('height')) - 7);
-    handle.setAttribute('width', '14');
-    handle.setAttribute('height', '14');
-    element.parentNode.append(handle);
-  }
-
-  function selectAnnotation(element) {
-    const fragment = element.closest('.fragment');
-    if (fragment) showAnnotationTools(fragment);
-    clearAnnotationSelection();
-    const draft = element.classList.contains('pending');
-    const group = element.closest('[data-annotation-entity]');
-    selectedAnnotation = {
-      kind:draft ? 'draft' : 'persisted',
-      element,
-      group,
-      index:Number(element.dataset.shapeIndex),
-      thread:group?.dataset.threadId || '',
-      target:group?.dataset.target || '',
-      state:group?.dataset.threadState || 'open'
-    };
-    element.classList.add('selected');
-    const tools = q('[data-annotation-selection]');
-    if (tools) tools.hidden = false;
-    const color = normalizedAnnotationColor(element.getAttribute('stroke'));
-    annotationColor = color;
-    const picker = q('[data-annotation-color]');
-    if (picker) picker.value = color;
-    setSelectedTool('select');
-    updateAnnotationResizeHandle();
-    element.setAttribute('tabindex', '-1');
-    element.focus?.({preventScroll:true});
-  }
-
-  function selectStickyNote(element) {
-    const fragment = element.closest('.fragment');
-    if (fragment) showAnnotationTools(fragment);
-    clearAnnotationSelection();
-    selectedAnnotation = {
-      kind:element.classList.contains('pending') ? 'draft' : 'persisted',
-      note:true,
-      element,
-      thread:element.dataset.threadId || '',
-      target:element.dataset.target || '',
-      state:element.dataset.threadState || 'open'
-    };
-    element.classList.add('selected');
-    const tools = q('[data-annotation-selection]');
-    if (tools) tools.hidden = false;
-    const color = normalizedAnnotationColor(element.dataset.color, noteDefaultColor);
-    annotationColor = color;
-    const picker = q('[data-annotation-color]');
-    if (picker) picker.value = color;
-    setSelectedTool('select');
-    element.focus?.({preventScroll:true});
-  }
-
-  function mountNoteDraft(fragment, anchor) {
-    const stage = q('.fragment-stage', fragment);
-    if (!stage) return null;
-    const element = createNoteElement(anchor.note, true);
-    stage.append(element);
-    const field = q('.sticky-note-text', element);
-    field.addEventListener('input', () => {
-      if (annotationDraft?.noteDraft) annotationDraft.anchor.note.text = field.value;
-    });
-    field.focus();
-    return element;
-  }
-
-  function beginNoteDraft(fragment, point) {
-    discardAnnotationDraft();
-    setActiveFragment(fragment);
-    const anchor = stickyNoteAnchor('', point.x, point.y, annotationColor);
-    annotationDraft = {kind:'draft', noteDraft:true, target:fragment.dataset.target, fragment, anchor, undo:[], redo:[], label:'sticky note'};
-    annotationDraft.element = mountNoteDraft(fragment, anchor);
-    updateHistoryControls();
-  }
-
-  function restoreNoteDraft(draft) {
-    discardAnnotationDraft();
-    setActiveFragment(draft.fragment);
-    annotationDraft = {...draft};
-    annotationDraft.element = mountNoteDraft(draft.fragment, annotationDraft.anchor);
-    updateHistoryControls();
-  }
-
-  function syncNoteDraft() {
-    if (!annotationDraft?.noteDraft || !annotationDraft.element) return;
-    renderNoteElement(annotationDraft.element, annotationDraft.anchor.note);
-    const field = q('.sticky-note-text', annotationDraft.element);
-    if (field) field.value = annotationDraft.anchor.note.text || '';
-    clearAnnotationSelection();
-    updateHistoryControls();
-  }
-
-  function discardNoteDraft() {
-    if (!annotationDraft?.noteDraft) return;
-    qa('.sticky-note.pending').forEach(element => element.remove());
-    annotationDraftRedo = annotationDraft;
-    annotationDraft = null;
-    clearAnnotationSelection();
-    resetTool();
-    updateHistoryControls();
-  }
-
-  function commitNoteDraft() {
-    const draft = annotationDraft;
-    if (!draft?.noteDraft) return;
-    const field = q('.sticky-note-text', draft.element);
-    const text = (field?.value || '').trim();
-    if (!text) {
-      field?.focus();
-      return;
-    }
-    const anchor = cloneAnchor(draft.anchor);
-    anchor.note.text = text;
-    submitReviewForm('/api/thread', {target:draft.target, kind:'comment', anchor:JSON.stringify(anchor), body:text}, true);
-  }
-
-  function beginNoteEdit(element) {
-    if (q('.sticky-note-text', element)) return;
-    const body = q('[data-sticky-text]', element);
-    const field = noteTextField(body.textContent);
-    body.hidden = true;
-    element.prepend(field);
-    q('.sticky-note-actions', element).prepend(noteButton('Save', 'data-save-note'), noteButton('Cancel', 'data-cancel-note'));
-    field.focus();
-    field.setSelectionRange(field.value.length, field.value.length);
-  }
-
-  async function endNoteEdit(element, commit) {
-    const field = q('.sticky-note-text', element);
-    if (!field) return;
-    const body = q('[data-sticky-text]', element);
-    const before = noteAnchorFromElement(element);
-    const text = field.value.trim();
-    field.remove();
-    qa('[data-save-note],[data-cancel-note]', element).forEach(button => button.remove());
-    body.hidden = false;
-    element.focus?.({preventScroll:true});
-    if (!commit || !text || text === before.note.text) return;
-    const anchor = cloneAnchor(before);
-    anchor.note.text = text;
-    body.textContent = text;
-    try {
-      await persistAnnotationAnchor(element.dataset.threadId, anchor);
-    } catch (error) {
-      body.textContent = before.note.text;
-      alert('Could not update the note: ' + error.message);
-    }
-  }
-
-  function discardAnnotationDraft() {
-    qa('.annotation.pending').forEach(element => element.remove());
-    qa('.sticky-note.pending').forEach(element => element.remove());
-    annotationDraft = null;
-    annotationDraftRedo = null;
-    clearAnnotationSelection();
-  }
-
-  function syncShapeDraft(showComposer = true) {
-    if (!annotationDraft?.shapeDraft) return;
-    const overlay = q('.review-overlay', annotationDraft.fragment);
-    qa('.annotation.pending', overlay).forEach(element => element.remove());
-    annotationDraft.anchor.shapes.forEach((shape,index) => overlay.append(createShapeElement(shape, 'pending', index)));
-    annotationDraft.anchor.type = annotationDraft.anchor.shapes.some(shape => shape.type === 'path') ? 'drawing' : 'region';
-    const form = q('.annotation-compose');
-    q('[name=target]', form).value = annotationDraft.target;
-    q('[name=anchor]', form).value = JSON.stringify(annotationDraft.anchor);
-    form.classList.toggle('open', showComposer && annotationDraft.anchor.shapes.length > 0);
-    if (form.classList.contains('open')) {
-      const marks = qa('.annotation.pending', overlay);
-      positionAnnotationComposer(marks[marks.length - 1] || annotationDraft.fragment);
-    }
-    clearAnnotationSelection();
-    updateHistoryControls();
-  }
-
-  function ensureShapeDraft(fragment) {
-    if (annotationDraft?.shapeDraft && annotationDraft.fragment === fragment) return annotationDraft;
-    const form = q('.annotation-compose');
-    discardAnnotationDraft();
-    form.reset();
-    form.reviewOrigin = fragment;
-    q('.dialog-head h2', form).textContent = 'Add a comment';
-    annotationDraft = {
-      kind:'draft', shapeDraft:true, target:fragment.dataset.target, fragment, body:'',
-      anchor:{type:'region',coordinate_space:'normalized',shapes:[]},
-      undo:[], redo:[], label:'annotation'
-    };
-    return annotationDraft;
-  }
-
-  function addDraftShape(fragment, shape) {
-    const draft = ensureShapeDraft(fragment);
-    draft.body = q('[name=body]', q('.annotation-compose'))?.value || draft.body || '';
-    draft.undo.push(cloneAnchor(draft.anchor));
-    draft.redo = [];
-    draft.anchor.shapes.push(shape);
-    syncShapeDraft(true);
-    const form = q('.annotation-compose');
-    q('[name=body]', form).value = draft.body;
-    q('[name=body]', form).focus();
-    setSelectedTool('select');
-  }
-
-  function openAnnotation(anchor, options = {}) {
-    const fragment = options.fragment || activeFragment;
-    if (!fragment) return;
-    discardAnnotationDraft();
-    setActiveFragment(fragment);
-    const form = q('.annotation-compose');
-    form.reset();
-    form.reviewOrigin = options.anchorElement || fragment;
-    q('.dialog-head h2', form).textContent = 'Add a comment';
-    q('[name=target]', form).value = fragment.dataset.target;
-    q('[name=anchor]', form).value = JSON.stringify(anchor);
-    q('[name=body]', form).value = options.body || '';
-    form.classList.add('open');
-    positionAnnotationComposer(options.anchorElement || options.anchorRect || q('.fragment-head', fragment));
-    q('[name=body]', form).focus();
-    annotationDraft = {
-      kind:'draft',
-      anchor,
-      target:fragment.dataset.target,
-      fragment,
-      body:options.body || '',
-      label:annotationLabel(anchor)
-    };
-    if (!options.fromRedo) annotationDraftRedo = null;
-    resetTool();
-    updateHistoryControls();
-  }
-
-  function closeAnnotation(discard = true) {
-    const form = q('.annotation-compose');
-    if (form) form.classList.remove('open');
-    resetAnnotationComposerPosition();
-    if (discard) {
-      discardAnnotationDraft();
-    }
-    resetTool();
-    updateHistoryControls();
-  }
-
-  function undoDraft() {
-    if (!annotationDraft) return false;
-    if (annotationDraft.noteDraft) {
-      if (stepShapeDraftHistory(annotationDraft, 'undo')) {
-        syncNoteDraft();
-        return true;
-      }
-      discardNoteDraft();
-      return true;
-    }
-    const form = q('.annotation-compose');
-    annotationDraft.body = q('[name=body]', form)?.value || '';
-    if (annotationDraft.shapeDraft) {
-      if (!stepShapeDraftHistory(annotationDraft, 'undo')) return false;
-      syncShapeDraft(true);
-      q('[name=body]', form).value = annotationDraft.body;
-      return true;
-    }
-    form?.classList.remove('open');
-    annotationDraftRedo = annotationDraft;
-    annotationDraft = null;
-    resetTool();
-    updateHistoryControls();
-    return true;
-  }
-
-  function redoDraft() {
-    if (annotationDraft?.shapeDraft) {
-      if (!stepShapeDraftHistory(annotationDraft, 'redo')) return false;
-      syncShapeDraft(true);
-      q('[name=body]', q('.annotation-compose')).value = annotationDraft.body || '';
-      return true;
-    }
-    if (annotationDraft?.noteDraft) {
-      if (!stepShapeDraftHistory(annotationDraft, 'redo')) return false;
-      syncNoteDraft();
-      return true;
-    }
-    if (!annotationDraftRedo) return false;
-    const draft = annotationDraftRedo;
-    annotationDraftRedo = null;
-    if (draft.noteDraft) {
-      restoreNoteDraft(draft);
-      return true;
-    }
-    openAnnotation(draft.anchor, {...draft, fromRedo:true});
-    return true;
-  }
-
-  function performHistoryAction(direction) {
-    if (direction === 'undo') undoDraft();
-    else redoDraft();
-  }
-
-  function shapeBounds(shape) {
-    if (shape.type === 'path') {
-      const xs = shape.points.map(point => point.x), ys = shape.points.map(point => point.y);
-      return {left:Math.min(...xs),right:Math.max(...xs),top:Math.min(...ys),bottom:Math.max(...ys)};
-    }
-    if (shape.type === 'line') {
-      return {left:Math.min(shape.x,shape.width),right:Math.max(shape.x,shape.width),top:Math.min(shape.y,shape.height),bottom:Math.max(shape.y,shape.height)};
-    }
-    if (shape.type === 'ellipse') {
-      return {left:shape.x-shape.width,right:shape.x+shape.width,top:shape.y-shape.height,bottom:shape.y+shape.height};
-    }
-    return {left:shape.x,right:shape.x+shape.width,top:shape.y,bottom:shape.y+shape.height};
-  }
-
-  function translateShape(shape, dx, dy) {
-    const copy = JSON.parse(JSON.stringify(shape));
-    const bounds = shapeBounds(copy);
-    dx = Math.max(-bounds.left, Math.min(1-bounds.right, dx));
-    dy = Math.max(-bounds.top, Math.min(1-bounds.bottom, dy));
-    if (copy.type === 'path') {
-      copy.points = copy.points.map(point => ({x:point.x+dx,y:point.y+dy}));
-    } else {
-      copy.x += dx;
-      copy.y += dy;
-      if (copy.type === 'line') {
-        copy.width += dx;
-        copy.height += dy;
-      }
-    }
-    return copy;
-  }
-
-  async function persistAnnotationAnchor(thread, anchor) {
-    const response = await fetch('/api/thread-anchor', {
-      method:'POST',
-      headers:{'Content-Type':'application/x-www-form-urlencoded','X-Change-Saga-Mutation-Token':mutationToken},
-      body:new URLSearchParams({thread,anchor:JSON.stringify(anchor)})
-    });
-    if (!response.ok) throw new Error(await response.text());
-  }
-
-  function selectedAnchor() {
-    if (!selectedAnnotation) return null;
-    if (selectedAnnotation.kind === 'draft') return cloneAnchor(annotationDraft.anchor);
-    return selectedAnnotation.note ? noteAnchorFromElement(selectedAnnotation.element) : persistedAnchor(selectedAnnotation.group);
-  }
-
-  function nudgeSelectedNote(dx, dy) {
-    if (!selectedAnnotation?.note) return;
-    const anchor = selectedAnchor();
-    if (!noteNudge) noteNudge = {selection:selectedAnnotation, before:cloneAnchor(anchor)};
-    anchor.note = translateNote(anchor.note, dx, dy);
-    renderNoteElement(selectedAnnotation.element, anchor.note);
-    if (selectedAnnotation.kind === 'draft') annotationDraft.anchor = anchor;
-    noteNudge.after = anchor;
-    positionAnnotationBubbles(selectedAnnotation.element.closest('.fragment-stage') || document);
-  }
-
-  function commitNoteNudge() {
-    if (!noteNudge) return;
-    const nudge = noteNudge;
-    noteNudge = null;
-    if (!nudge.after) return;
-    if (nudge.selection.kind === 'draft') {
-      annotationDraft.undo.push(nudge.before);
-      annotationDraft.redo = [];
-      updateHistoryControls();
-      return;
-    }
-    persistAnnotationAnchor(nudge.selection.thread, nudge.after).catch(error => {
-      renderNoteElement(nudge.selection.element, nudge.before.note);
-      alert('Could not move the note: ' + error.message);
-    });
-  }
-
-  async function recolorSelectedAnnotation(color) {
-    if (!selectedAnnotation) return;
-    const before = selectedAnchor();
-    const anchor = cloneAnchor(before);
-    if (selectedAnnotation.note) {
-      anchor.note.color = normalizedAnnotationColor(color, noteDefaultColor);
-      renderNoteElement(selectedAnnotation.element, anchor.note);
-    } else {
-      anchor.shapes[selectedAnnotation.index].color = normalizedAnnotationColor(color);
-      renderShapeElement(selectedAnnotation.element, anchor.shapes[selectedAnnotation.index]);
-    }
-    if (selectedAnnotation.kind === 'draft') {
-      annotationDraft.undo.push(before);
-      annotationDraft.redo = [];
-      annotationDraft.anchor = anchor;
-      if (!annotationDraft.noteDraft) q('[name=anchor]', q('.annotation-compose')).value = JSON.stringify(anchor);
-      updateHistoryControls();
-      return;
-    }
-    try {
-      await persistAnnotationAnchor(selectedAnnotation.thread, anchor);
-    } catch (error) {
-      if (selectedAnnotation.note) renderNoteElement(selectedAnnotation.element, before.note);
-      else renderShapeElement(selectedAnnotation.element, before.shapes[selectedAnnotation.index]);
-      alert('Could not update annotation: ' + error.message);
-    }
-  }
-
-  async function removeSelectedAnnotation() {
-    if (!selectedAnnotation) return;
-    const selection = selectedAnnotation;
-    if (selection.note) {
-      if (selection.kind === 'draft') discardNoteDraft();
-      else submitThreadState({thread:selection.thread, target:selection.target}, 'withdrawn');
-      return;
-    }
-    const before = selectedAnchor();
-    if (selection.kind === 'draft') {
-      annotationDraft.undo.push(before);
-      annotationDraft.redo = [];
-      annotationDraft.anchor.shapes.splice(selection.index, 1);
-      syncShapeDraft(true);
-      return;
-    }
-    if (before.shapes.length === 1) {
-      submitThreadState({thread:selection.thread,target:selection.target}, 'withdrawn');
-      return;
-    }
-    const anchor = cloneAnchor(before);
-    anchor.shapes.splice(selection.index, 1);
-    selection.element.remove();
-    qa('[data-shape-index]', selection.group).forEach((element,index) => { element.dataset.shapeIndex = String(index); });
-    clearAnnotationSelection();
-    positionAnnotationBubbles(selection.group?.closest('.fragment-stage') || document);
-    try {
-      await persistAnnotationAnchor(selection.thread, anchor);
-    } catch (error) {
-      location.reload();
-    }
-  }
-
-  async function useTool(mode, fragment = activeFragment) {
-    cancelDrawing();
-    clearAnnotationSelection();
-    // An open comment covers the surface the reviewer is about to draw on, so
-    // arming a tool hands the pointer back to the content.
-    if (mode !== 'select') closeAnnotationBubbles();
-    setSelectedTool(mode);
-    if (mode === 'select') {
-      if (annotationDraft?.shapeDraft) syncShapeDraft(true);
-      return;
-    }
-    if (fragment) setActiveFragment(fragment);
-    if (!fragment) {
-      const label = q('[data-tool-target]');
-      if (label) label.textContent = 'Choose an explanation first';
-      resetTool();
-      return;
-    }
-    // There is nothing to draw on until the explanation has arrived, so arming
-    // a tool waits for its content rather than silently disarming itself.
-    if (fragment.dataset.fragmentHref) await hydrateFragment(fragment);
-    if (fragment.dataset.fragmentHref) {
-      const label = q('[data-tool-target]');
-      if (label) label.textContent = 'This explanation is still loading';
-      resetTool();
-      return;
-    }
-    if (mode === 'target') {
-      openAnnotation({type:'target'}, {fragment, anchorElement:q('.fragment-head', fragment)});
-      return;
-    }
-    if (mode === 'text') {
-      const selection = getSelection();
-      const selectable = q('[data-selectable]', fragment);
-      if (!selection || selection.isCollapsed || !selectable || !selectable.contains(selection.anchorNode) || !selectable.contains(selection.focusNode)) {
-        const label = q('[data-tool-target]');
-        if (label) label.textContent = 'Select some text first';
-        resetTool();
-        return;
-      }
-      const exact = selection.toString();
-      const selectedRange = selection.getRangeAt(0);
-      const before = document.createRange();
-      before.selectNodeContents(selectable);
-      before.setEnd(selectedRange.startContainer, selectedRange.startOffset);
-      const start = before.toString().length;
-      const allText = selectable.textContent;
-      openAnnotation({type:'text',text:{exact,start,end:start+exact.length,prefix:allText.slice(Math.max(0,start-32),start),suffix:allText.slice(start+exact.length,start+exact.length+32),color:annotationColor}}, {fragment, anchorRect:selectedRange.getBoundingClientRect()});
-      return;
-    }
-    const overlay = q('.review-overlay', fragment);
-    if (!overlay) {
-      resetTool();
-      return;
-    }
-    // A nearby composer should not intercept the next stroke in a multi-shape
-    // annotation. Keep its draft values, hide it while the tool is armed, and
-    // let addDraftShape reopen it beside the newly completed mark.
-    if (annotationDraft?.shapeDraft) {
-      const form = q('.annotation-compose');
-      annotationDraft.body = q('[name=body]', form)?.value || annotationDraft.body || '';
-      form?.classList.remove('open');
-      resetAnnotationComposerPosition();
-    }
-    if (mode === 'sticky') {
-      // A sticky is paper, not ink, so it opens on the note palette until the
-      // reviewer picks a colour of their own.
-      if (!annotationColorTouched) {
-        annotationColor = noteDefaultColor;
-        const picker = q('[data-annotation-color]');
-        if (picker) picker.value = noteDefaultColor;
-      }
-      overlay.classList.add('placing');
-    }
-    overlay.classList.add('drawing');
-    drawing = {fragment, overlay, mode, color:annotationColor, points: []};
-  }
-
-  document.addEventListener('mousedown', event => {
-    if (event.target.closest('[data-tool="text"]')) event.preventDefault();
-  });
 
   document.addEventListener('pointerover', event => {
     const slideDiffButton = slideDiffSummaryButton(event.target);
@@ -3395,11 +1824,10 @@ const appJavaScript = `(() => {
       setSlideDiffPreview(slideDiffButton, 'pointer', true);
     }
     const fragment = event.target.closest('.fragment');
-    if (fragment && !drawing) setActiveFragment(fragment);
+    if (fragment) setActiveFragment(fragment);
     if (event.pointerType !== 'touch' && fragment && !(event.relatedTarget instanceof Node && fragment.contains(event.relatedTarget))) {
       beginFragmentPrefetch(fragment, 'pointer');
     }
-    if (!drawing) revealAnnotationBubble(annotationBubbleAt(event.target));
   });
 
   document.addEventListener('pointerout', event => {
@@ -3411,7 +1839,6 @@ const appJavaScript = `(() => {
     if (event.pointerType !== 'touch' && fragment && !(event.relatedTarget instanceof Node && fragment.contains(event.relatedTarget))) {
       endFragmentPrefetch(fragment, 'pointer');
     }
-    hideAnnotationBubbleSoon(annotationBubbleAt(event.target));
   });
 
   document.addEventListener('focusin', event => {
@@ -3422,7 +1849,6 @@ const appJavaScript = `(() => {
     const fragment = event.target.closest('.fragment');
     if (fragment) setActiveFragment(fragment);
     if (fragment && !(event.relatedTarget instanceof Node && fragment.contains(event.relatedTarget))) beginFragmentPrefetch(fragment, 'focus');
-    revealAnnotationBubble(annotationBubbleAt(event.target));
   });
 
   document.addEventListener('focusout', event => {
@@ -3432,7 +1858,6 @@ const appJavaScript = `(() => {
     }
     const fragment = event.target.closest('.fragment');
     if (fragment && !(event.relatedTarget instanceof Node && fragment.contains(event.relatedTarget))) endFragmentPrefetch(fragment, 'focus');
-    hideAnnotationBubbleSoon(annotationBubbleAt(event.target));
   });
 
   document.addEventListener('click', event => {
@@ -3460,11 +1885,11 @@ const appJavaScript = `(() => {
       void hydrateReviewFile(retryFile.closest('[data-file-diff-href]'), {force:true});
       return;
     }
-	const nextAuxiliaryPage = event.target.closest?.('[data-aux-file-next]');
-	if (nextAuxiliaryPage) {
-	  void appendAuxiliaryDiff(nextAuxiliaryPage);
-	  return;
-	}
+    const nextAuxiliaryPage = event.target.closest?.('[data-aux-file-next]');
+    if (nextAuxiliaryPage) {
+      void appendAuxiliaryDiff(nextAuxiliaryPage);
+      return;
+    }
     const retrySurface = event.target.closest?.('[data-retry-surface]');
     if (retrySurface) {
       void hydrateReviewSurface(retrySurface.dataset.retrySurface, {force:true});
@@ -3482,16 +1907,11 @@ const appJavaScript = `(() => {
     if (boundedLink && !boundedLink.hasAttribute('data-open-fragment') && !boundedLink.getAttribute('href')?.startsWith('#') && !event.defaultPrevented && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey && (!boundedLink.target || boundedLink.target === '_self')) {
       const destination = new URL(boundedLink.href, location.href);
       const view = destination.searchParams.get('view');
-      if (destination.origin === location.origin && destination.pathname === location.pathname && (destination.searchParams.has('activity') || view === 'activity')) {
-        event.preventDefault();
-        void openActivityDrawer(destination.toString(), boundedLink);
-        return;
-      }
       if (destination.origin === location.origin && destination.pathname === location.pathname && (view === 'code' || view === 'manifest')) {
         event.preventDefault();
         history.pushState({view}, '', destination);
         setView(view, false);
-        if (boundedLink.closest('.diff-drawer.open')) closeDrawer(false);
+        if (boundedLink.closest('.diff-drawer.open')) closeDrawer();
         return;
       }
     }
@@ -3505,45 +1925,22 @@ const appJavaScript = `(() => {
     // A hydrated Markdown citation is still an in-page link, but linked-code
     // activation takes precedence over its original footnote navigation.
     if (sagaLink && !sagaLink.hasAttribute('data-open-diffs')) {
-	  event.preventDefault();
+      event.preventDefault();
       const id = decodeURIComponent(sagaLink.getAttribute('href').slice(1));
-	  const sagaURL = new URL(location.href);
-	  ['view', 'file', 'ref', 'mode', 'activity', 'target'].forEach(key => sagaURL.searchParams.delete(key));
-	  sagaURL.hash = id;
-	  history.pushState({view:'saga'}, '', sagaURL);
-	  if (sagaLink.closest('.diff-drawer.open')) closeDrawer(false);
+      const sagaURL = new URL(location.href);
+      ['view', 'file', 'ref', 'mode'].forEach(key => sagaURL.searchParams.delete(key));
+      sagaURL.hash = id;
+      history.pushState({view:'saga'}, '', sagaURL);
+      if (sagaLink.closest('.diff-drawer.open')) closeDrawer();
       // pushState deliberately does not dispatch hashchange or perform native
       // anchor scrolling. Run the same lazy reveal, view switch, highlight,
       // and scroll path used for initial and browser-history navigation.
-	  if (id) void activateLandmark().then(revealHashedAnnotationBubble);
-	  else setView('saga', false);
+      if (id) void activateLandmark();
+      else setView('saga', false);
       return;
-    }
-    const bubbleToggle = event.target.closest?.('[data-annotation-bubble-toggle]');
-    if (bubbleToggle) { pinAnnotationBubble(bubbleToggle.closest('[data-annotation-bubble]')); return; }
-    if (pinnedBubble && !event.target.closest?.('[data-annotation-bubble]')) {
-      const unpinned = pinnedBubble;
-      pinnedBubble = null;
-      hideAnnotationBubbleSoon(unpinned);
     }
     const permalink = event.target.closest('[data-copy-link]');
     if (permalink) { copyPermalink(permalink); return; }
-    if (event.target.closest('[data-undo]')) { performHistoryAction('undo'); return; }
-    if (event.target.closest('[data-redo]')) { performHistoryAction('redo'); return; }
-    if (event.target.closest('[data-remove-annotation]')) { removeSelectedAnnotation(); return; }
-    if (event.target.closest('[data-commit-note]')) { commitNoteDraft(); return; }
-    const saveNote = event.target.closest('[data-save-note]');
-    if (saveNote) { endNoteEdit(saveNote.closest('.sticky-note'), true); return; }
-    const cancelNote = event.target.closest('[data-cancel-note]');
-    if (cancelNote) {
-      const note = cancelNote.closest('.sticky-note');
-      if (note.classList.contains('pending')) discardNoteDraft(); else endNoteEdit(note, false);
-      return;
-    }
-    const stickyNote = event.target.closest('[data-sticky-note]');
-    if (stickyNote) { selectStickyNote(stickyNote); return; }
-    const annotation = event.target.closest('.annotation.selectable');
-    if (annotation) { selectAnnotation(annotation); return; }
     const docTwisty = event.target.closest('[data-doc-twisty]');
     if (docTwisty) { toggleDocNode(docTwisty); return; }
     const deckToggle = event.target.closest('[data-deck-toggle]');
@@ -3558,10 +1955,6 @@ const appJavaScript = `(() => {
     if (viewTab) { setView(viewTab.dataset.viewTab); return; }
     const historyButton = event.target.closest('[data-open-history]');
     if (historyButton) { event.preventDefault(); void openHistoryDrawer(historyButton.dataset.historyHref, historyButton); return; }
-    const activityButton = event.target.closest('[data-open-activity]');
-    if (activityButton) { event.preventDefault(); void openActivityDrawer(activityButton.dataset.activityHref, activityButton); return; }
-    const activityFilter = event.target.closest('[data-activity-filter]');
-    if (activityFilter) { filterActivity(activityFilter.dataset.activityFilter); return; }
     const manifestMode = event.target.closest('[data-manifest-mode]');
     if (manifestMode) { void activateManifestMode(manifestMode.dataset.manifestMode); return; }
     const treeToggle = event.target.closest('[data-toggle-tree]');
@@ -3579,47 +1972,16 @@ const appJavaScript = `(() => {
       if (!hidden) q('.code-toolbar [data-toggle-related]')?.focus();
       return;
     }
-    // Scoped to the toolbar buttons, otherwise every click inside a diff surface
-    // matches its data-layout container and never reaches the line handlers below.
+    // Scoped to the toolbar buttons: a diff surface also carries data-layout.
     const layout = event.target.closest('button[data-layout]');
     if (layout) { applyDiffLayout(layout.dataset.layout); return; }
-    const lineSelect = event.target.closest('[data-line-select]');
-    if (lineSelect) { selectDiffLine(lineSelect, event.shiftKey); return; }
-    const selectionAction = event.target.closest('[data-selection-action]');
-    if (selectionAction) {
-      const toolbar = selectionAction.closest('[data-selection-toolbar]');
-      openDiffComposer({dataset:{diffAction:selectionAction.dataset.selectionAction,diffRef:toolbar.dataset.diffRef,target:toolbar.dataset.target,content:toolbar.dataset.content},origin:selectionAction});
-      return;
-    }
-    if (event.target.closest('[data-selection-clear]')) { selectionAnchor = null; updateLineSelection([]); return; }
     const targetCodeButton = event.target.closest('[data-target-code-href]');
     if (targetCodeButton) { event.preventDefault(); void hydrateTargetCode(targetCodeButton); return; }
     const drawerButton = event.target.closest('[data-open-diffs]');
     if (drawerButton) { event.preventDefault(); openDrawer(drawerButton.dataset.openDiffs, drawerButton); return; }
     if (event.target.closest('[data-close-drawer]')) { closeDrawer(); return; }
-    const annotationTools = event.target.closest('[data-annotation-tools]');
-    if (annotationTools) { void toggleAnnotationTools(annotationTools); return; }
-    const reviewDecision = event.target.closest('[data-review-decision]');
-    if (reviewDecision) { activateReviewDecision(reviewDecision); return; }
-    const reviewComment = event.target.closest('[data-review-comment]');
-    if (reviewComment) { openReviewComment(reviewComment.closest('[data-review-controls]') || {dataset:{reviewTarget:reviewComment.dataset.reviewComment,reviewTitle:reviewComment.dataset.reviewTitle}}, reviewComment); return; }
-    const reviewCancel = event.target.closest('[data-review-cancel]');
-    if (reviewCancel) { closeReviewComposer(reviewCancel.closest('[data-review-decision-form]')); return; }
-    if (event.target.closest('[data-close-annotation]')) { closeAnnotation(); return; }
-    const diffAction = event.target.closest('[data-diff-action]');
-    if (diffAction) { const context = diffActionContext(diffAction); context.origin = diffAction; openDiffComposer(context); return; }
-    if (event.target.closest('[data-close-diff-compose]')) { q('.diff-compose').classList.remove('open'); return; }
-    const tool = event.target.closest('[data-tool]');
-    if (tool) { void useTool(tool.dataset.tool, tool.closest('.fragment')); return; }
     const fragment = event.target.closest('.fragment');
     if (fragment) setActiveFragment(fragment);
-  });
-
-  document.addEventListener('dblclick', event => {
-    const note = event.target.closest?.('[data-sticky-note]');
-    if (!note || note.classList.contains('pending')) return;
-    selectStickyNote(note);
-    beginNoteEdit(note);
   });
 
   document.addEventListener('toggle', event => {
@@ -3635,45 +1997,9 @@ const appJavaScript = `(() => {
     hydrateOpenedManifestDiffs(details);
   }, true);
 
-  document.addEventListener('submit', event => {
-    const form = event.target;
-    if (form.matches('[data-review-decision-form]')) {
-      event.preventDefault();
-      submitReviewComposer(form);
-      return;
-    }
-    if (form.matches('.annotation-compose,.diff-compose,.reply,.thread-state,.file-review')) {
-      event.preventDefault();
-      void submitReviewMutationForm(form, event.submitter);
-      return;
-    }
-    if (form.matches('form[action^="/api/"]')) {
-      let token = q('[name=mutation_token]', form);
-      if (!token) {
-        token = document.createElement('input');
-        token.type = 'hidden';
-        token.name = 'mutation_token';
-        form.append(token);
-      }
-      token.value = mutationToken;
-      let returnTo = q('[name=return_to]', form);
-      if (!returnTo) {
-        returnTo = document.createElement('input');
-        returnTo.type = 'hidden';
-        returnTo.name = 'return_to';
-        form.append(returnTo);
-      }
-      returnTo.value = location.pathname + location.search + location.hash;
-    }
-  });
-
   document.addEventListener('input', event => {
     if (event.target.matches?.('[data-file-filter]')) filterTree();
     if (event.target.matches?.('[data-manifest-filter]')) filterManifest();
-  });
-
-  document.addEventListener('change', event => {
-    if (event.target.matches?.('[data-hide-reviewed]')) filterTree();
   });
 
   document.addEventListener('keydown', event => {
@@ -3682,53 +2008,9 @@ const appJavaScript = `(() => {
       syncSlidePresentation();
       return;
     }
-    if ((event.key === 'ArrowLeft' || event.key === 'ArrowRight') && deckViewerActive() && deckViewerSlides().length && !selectedAnnotation && !annotationDraft && !event.target.matches?.('input,textarea,select,[contenteditable="true"]')) {
+    if ((event.key === 'ArrowLeft' || event.key === 'ArrowRight') && deckViewerActive() && deckViewerSlides().length && !event.target.matches?.('input,textarea,select,[contenteditable="true"]')) {
       event.preventDefault();
       stepDeckSlide(event.key === 'ArrowRight' ? 1 : -1);
-      return;
-    }
-    const editingField = event.target.closest?.('.sticky-note-text');
-    if (editingField) {
-      const note = editingField.closest('.sticky-note');
-      const pending = note.classList.contains('pending');
-      if (event.key === 'Escape') {
-        event.preventDefault();
-        if (pending) discardNoteDraft(); else endNoteEdit(note, false);
-      } else if (event.key === 'Enter' && (event.metaKey || event.ctrlKey)) {
-        event.preventDefault();
-        if (pending) commitNoteDraft(); else endNoteEdit(note, true);
-      }
-      return;
-    }
-    if (selectedAnnotation && annotationDeleteShortcut(event)) {
-      event.preventDefault();
-      removeSelectedAnnotation();
-      return;
-    }
-    if (selectedAnnotation?.note) {
-      if (event.key === 'Enter' || event.key === 'F2') {
-        event.preventDefault();
-        const element = selectedAnnotation.element;
-        if (element.classList.contains('pending')) q('.sticky-note-text', element)?.focus();
-        else beginNoteEdit(element);
-        return;
-      }
-      const step = event.shiftKey ? .05 : .01;
-      const nudge = {ArrowLeft:[-step,0], ArrowRight:[step,0], ArrowUp:[0,-step], ArrowDown:[0,step]}[event.key];
-      if (nudge) {
-        event.preventDefault();
-        nudgeSelectedNote(nudge[0], nudge[1]);
-        return;
-      }
-    }
-    const direction = shortcutDirection(event);
-    if (direction) {
-      const editable = event.target.matches?.('input,textarea,[contenteditable="true"]');
-      const emptyDraftBody = annotationDraft && event.target === q('[name=body]', q('.annotation-compose')) && !event.target.value;
-      if (!editable || emptyDraftBody) {
-        event.preventDefault();
-        performHistoryAction(direction);
-      }
       return;
     }
     const workspaceTab = event.target.closest?.('[data-view-tab]');
@@ -3753,252 +2035,48 @@ const appJavaScript = `(() => {
       event.preventDefault();
       return;
     }
-    if (event.key !== 'Escape') return;
-    const focusedBubble = document.activeElement?.closest?.('[data-annotation-bubble]') || pinnedBubble;
-    if (focusedBubble) {
-      closeAnnotationBubble(focusedBubble);
-      return;
-    }
-    if (selectedAnnotation) {
-      clearAnnotationSelection();
-      return;
-    }
-    if (annotationDraft?.noteDraft) {
-      discardNoteDraft();
-      return;
-    }
-    closeDrawer();
-    closeAnnotation();
-    updateLineSelection([]);
-    const diffForm = q('.diff-compose');
-    if (diffForm) diffForm.classList.remove('open');
-    qa('[data-review-decision-form].open').forEach(form => closeReviewComposer(form));
+    if (event.key === 'Escape') closeDrawer();
   });
 
-  document.addEventListener('keyup', event => {
-    if (noteNudge && String(event.key).startsWith('Arrow')) commitNoteNudge();
-  });
-
-  document.addEventListener('pointerdown', event => {
-    const resizeHandle = event.target.closest?.('[data-annotation-resize]');
-    if (resizeHandle && selectedAnnotation) {
-      const overlay = resizeHandle.closest('.review-overlay');
-      const box = overlay.getBoundingClientRect();
-      annotationDrag = {
-        selection:selectedAnnotation,
-        before:selectedAnchor(),
-        start:{x:(event.clientX-box.left)/box.width,y:(event.clientY-box.top)/box.height},
-        box,
-        mode:'resize',
-        moved:false
-      };
-      resizeHandle.setPointerCapture?.(event.pointerId);
-      event.preventDefault();
-      return;
-    }
-    const note = event.target.closest?.('[data-sticky-note]');
-    if (note && selectedTool === 'select' && !event.target.closest('.sticky-note-text,button')) {
-      selectStickyNote(note);
-      const box = note.closest('.fragment-stage').getBoundingClientRect();
-      annotationDrag = {
-        selection:selectedAnnotation,
-        before:selectedAnchor(),
-        start:{x:(event.clientX-box.left)/box.width,y:(event.clientY-box.top)/box.height},
-        box,
-        mode:'note',
-        moved:false
-      };
-      note.setPointerCapture?.(event.pointerId);
-      event.preventDefault();
-      return;
-    }
-    const annotation = event.target.closest?.('.annotation.selectable');
-    if (annotation && selectedTool === 'select') {
-      selectAnnotation(annotation);
-      const overlay = annotation.closest('.review-overlay');
-      const box = overlay.getBoundingClientRect();
-      annotationDrag = {
-        selection:selectedAnnotation,
-        before:selectedAnchor(),
-        start:{x:(event.clientX-box.left)/box.width,y:(event.clientY-box.top)/box.height},
-        box,
-        mode:'move',
-        moved:false
-      };
-      annotation.setPointerCapture?.(event.pointerId);
-      event.preventDefault();
-      return;
-    }
-    if (!drawing || event.target !== drawing.overlay) return;
-    const box = drawing.overlay.getBoundingClientRect();
-    if (drawing.mode === 'sticky') {
-      const fragment = drawing.fragment;
-      const point = {x:clampNormalized((event.clientX-box.left)/box.width), y:clampNormalized((event.clientY-box.top)/box.height)};
-      cancelDrawing();
-      setSelectedTool('select');
-      beginNoteDraft(fragment, point);
-      event.preventDefault();
-      return;
-    }
-    drawing.points = [{x:(event.clientX-box.left)/box.width,y:(event.clientY-box.top)/box.height}];
-    drawing.start = drawing.points[0];
-    drawing.preview = document.createElementNS('http://www.w3.org/2000/svg', drawing.mode === 'rect' ? 'rect' : 'polyline');
-    drawing.preview.setAttribute('class', 'annotation pending ' + (drawing.mode === 'draw' ? 'path' : ''));
-    drawing.preview.setAttribute('stroke', drawing.color);
-    drawing.preview.setAttribute('fill', drawing.mode === 'rect' ? drawing.color : 'none');
-    if (drawing.mode === 'rect') drawing.preview.setAttribute('fill-opacity', '.22');
-    drawing.overlay.append(drawing.preview);
-    event.preventDefault();
-  });
-
-  document.addEventListener('pointermove', event => {
-    if (annotationDrag) {
-      const point = {x:(event.clientX-annotationDrag.box.left)/annotationDrag.box.width,y:(event.clientY-annotationDrag.box.top)/annotationDrag.box.height};
-      const dx = point.x-annotationDrag.start.x, dy = point.y-annotationDrag.start.y;
-      const anchor = cloneAnchor(annotationDrag.before);
-      if (annotationDrag.mode === 'note') {
-        anchor.note = translateNote(anchor.note, dx, dy);
-        renderNoteElement(annotationDrag.selection.element, anchor.note);
-      } else {
-        if (annotationDrag.mode === 'resize') {
-          const shape = anchor.shapes[annotationDrag.selection.index];
-          shape.width = Math.max(.01, Math.min(1-shape.x, point.x-shape.x));
-          shape.height = Math.max(.01, Math.min(1-shape.y, point.y-shape.y));
-        } else {
-          anchor.shapes[annotationDrag.selection.index] = translateShape(anchor.shapes[annotationDrag.selection.index], dx, dy);
-        }
-        renderShapeElement(annotationDrag.selection.element, anchor.shapes[annotationDrag.selection.index]);
-        updateAnnotationResizeHandle();
-      }
-      if (annotationDrag.selection.kind === 'draft') annotationDraft.anchor = anchor;
-      annotationDrag.after = anchor;
-      annotationDrag.moved = Math.abs(dx) + Math.abs(dy) > .001;
-      positionAnnotationBubbles(annotationDrag.selection.element.closest('.fragment-stage') || document);
-      event.preventDefault();
-      return;
-    }
-    if (!drawing || !drawing.preview) return;
-    const box = drawing.overlay.getBoundingClientRect();
-    const point = {x:Math.max(0,Math.min(1,(event.clientX-box.left)/box.width)),y:Math.max(0,Math.min(1,(event.clientY-box.top)/box.height))};
-    if (drawing.mode === 'rect') {
-      drawing.preview.setAttribute('x', Math.min(drawing.start.x,point.x)*1000);
-      drawing.preview.setAttribute('y', Math.min(drawing.start.y,point.y)*1000);
-      drawing.preview.setAttribute('width', Math.abs(point.x-drawing.start.x)*1000);
-      drawing.preview.setAttribute('height', Math.abs(point.y-drawing.start.y)*1000);
-      drawing.end = point;
-    } else {
-      drawing.points.push(point);
-      drawing.preview.setAttribute('points', drawing.points.map(value => value.x*1000+','+value.y*1000).join(' '));
-    }
-  });
-
-  document.addEventListener('pointerup', async () => {
-    if (annotationDrag) {
-      const drag = annotationDrag;
-      annotationDrag = null;
-      if (!drag.moved) return;
-      if (drag.selection.kind === 'draft') {
-        annotationDraft.undo.push(drag.before);
-        annotationDraft.redo = [];
-        if (!annotationDraft.noteDraft) q('[name=anchor]', q('.annotation-compose')).value = JSON.stringify(annotationDraft.anchor);
-        updateHistoryControls();
-      } else {
-        try {
-          await persistAnnotationAnchor(drag.selection.thread, drag.after);
-        } catch (error) {
-          if (drag.selection.note) renderNoteElement(drag.selection.element, drag.before.note);
-          else renderShapeElement(drag.selection.element, drag.before.shapes[drag.selection.index]);
-          alert('Could not move annotation: ' + error.message);
-        }
-      }
-      return;
-    }
-    if (!drawing || !drawing.preview) return;
-    const fragment = drawing.fragment;
-    const preview = drawing.preview;
-    let shape;
-    if (drawing.mode === 'rect') {
-      const point = drawing.end || drawing.start;
-      shape = {type:'rect',x:Math.min(drawing.start.x,point.x),y:Math.min(drawing.start.y,point.y),width:Math.abs(point.x-drawing.start.x),height:Math.abs(point.y-drawing.start.y),color:drawing.color};
-    } else {
-      shape = {type:'path',points:drawing.points,color:drawing.color};
-    }
-    drawing.overlay.classList.remove('drawing');
-    drawing = null;
-    preview.remove();
-    addDraftShape(fragment, shape);
-  });
-
-  updateHistoryControls();
-  updateReviewProgress();
   prepareLandmarks();
   prepareDiffCitations();
-  prepareTextHighlights();
   const shellArriving = observeDeferredFragments();
 
   const firstFragment = q('.fragment');
   if (firstFragment) setActiveFragment(firstFragment);
-  const reviewProgressMap = q('[data-review-progress]');
-  reviewProgressMap?.addEventListener('pointerover', event => {
-    const segment = event.target.closest?.('[data-review-progress-target]');
-    if (segment) showReviewProgressTooltip(segment);
-  });
-  reviewProgressMap?.addEventListener('pointerleave', () => hideReviewProgressTooltip(reviewProgressMap));
-  reviewProgressMap?.addEventListener('focusin', event => {
-    const segment = event.target.closest?.('[data-review-progress-target]');
-    if (segment) showReviewProgressTooltip(segment);
-  });
-  reviewProgressMap?.addEventListener('focusout', event => {
-    if (!reviewProgressMap.contains(event.relatedTarget)) hideReviewProgressTooltip(reviewProgressMap);
-  });
   q('[data-file-filter]')?.addEventListener('input', filterTree);
-  q('[data-hide-reviewed]')?.addEventListener('change', filterTree);
   q('[data-manifest-filter]')?.addEventListener('input', filterManifest);
-  q('[data-annotation-color]')?.addEventListener('input', event => { annotationColorTouched = true; annotationColor = normalizedAnnotationColor(event.target.value); });
-  q('[data-annotation-color]')?.addEventListener('change', event => { if (selectedAnnotation) recolorSelectedAnnotation(event.target.value); });
   prepareContext();
   syncSlidePresentation();
   highlightCode();
   applyDiffLayout('inline');
-  addEventListener('resize', () => { applyDiffLayout(diffLayout); positionFragmentOverlays(); });
+  addEventListener('resize', () => { applyDiffLayout(diffLayout); positionLandmarkHotspots(); });
   document.addEventListener('fullscreenchange', syncSlidePresentation);
-  addEventListener('scroll', () => {
-    const progress = q('[data-review-progress]');
-    if (!progress) return;
-    progress.classList.add('scrolling');
-    clearTimeout(reviewScrollTimer);
-    reviewScrollTimer = setTimeout(() => progress.classList.remove('scrolling'), 650);
-  }, {passive:true});
   const requestedView = new URL(location.href).searchParams.get('view');
-  const activityRequested = new URL(location.href).searchParams.has('activity') || requestedView === 'activity';
   const initialView = requestedView === 'code' || requestedView === 'manifest' || requestedView === 'slides' || requestedView === 'change' ? requestedView : 'saga';
   setView(initialView, false);
   setManifestMode('code');
   const anchorResolving = initialView === 'saga' || initialView === 'slides'
-    ? activateLandmark().then(revealHashedAnnotationBubble)
-    : hydrateReviewSurface(initialView).then(revealHashedAnnotationBubble);
-	 syncDeckSlideForHash();
-  const activityResolving = activityRequested ? openActivityDrawer(location.href, null, false) : Promise.resolve();
+    ? activateLandmark()
+    : hydrateReviewSurface(initialView);
+  syncDeckSlideForHash();
   // The page arrives as a shell and fills in what is on screen. Saying when
   // that has finished is the difference between a reviewer who can see the
   // page has settled and automation that would otherwise have to guess.
-  void Promise.all([shellArriving, anchorResolving, activityResolving]).then(() => {
+  void Promise.all([shellArriving, anchorResolving]).then(() => {
     document.body.dataset.shellReady = 'true';
   });
   void loadLayers();
-  positionFragmentOverlays();
-  globalThis.requestAnimationFrame?.(positionFragmentOverlays);
+  positionLandmarkHotspots();
+  globalThis.requestAnimationFrame?.(positionLandmarkHotspots);
   addEventListener('hashchange', () => {
-	 syncDeckSlideForHash();
+    syncDeckSlideForHash();
     const view = new URL(location.href).searchParams.get('view');
-    if (view === 'code' || view === 'manifest') void hydrateReviewSurface(view).then(revealHashedAnnotationBubble);
-    else void activateLandmark().then(revealHashedAnnotationBubble);
+    if (view === 'code' || view === 'manifest') void hydrateReviewSurface(view);
+    else void activateLandmark();
   });
   addEventListener('popstate', () => {
-    const url = new URL(location.href);
-    const view = url.searchParams.get('view');
+    const view = new URL(location.href).searchParams.get('view');
     setView(view === 'code' || view === 'manifest' || view === 'slides' || view === 'change' ? view : 'saga', false);
-    if (url.searchParams.has('activity') || view === 'activity') void openActivityDrawer(url.toString(), null, false);
-    else if (q('.diff-drawer')?.dataset.drawerMode === 'activity') closeDrawer(false);
   });
 })();`

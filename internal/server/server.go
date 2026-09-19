@@ -2,10 +2,8 @@ package server
 
 import (
 	"context"
-	"crypto/rand"
 	"crypto/sha256"
 	"crypto/subtle"
-	"encoding/base64"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -40,7 +38,6 @@ type app struct {
 	// change against its merge-base. It never comes from the Saga.
 	rng           gitdiff.Range
 	template      *template.Template
-	mutationToken string
 	shutdownToken string
 	shutdown      func()
 	cache         snapshotCache
@@ -105,7 +102,6 @@ type pageData struct {
 	Manifest         *CoverageManifestView
 	Error            string
 	Files            []*fileDiffView
-	MutationToken    string
 	// CoverageTotals is the audit reduced to the numbers the shell states
 	// outright. The audit itself stays on the Coverage tab.
 	CoverageTotals *coverageTotalsView
@@ -237,16 +233,12 @@ func ListenManaged(ctx context.Context, root, sourceDir, addr string, openBrowse
 	if err != nil {
 		return err
 	}
-	mutationToken, err := newMutationToken()
-	if err != nil {
-		return fmt.Errorf("create mutation token: %w", err)
-	}
 	generations, err := snapshotcache.Default()
 	if err != nil {
 		return fmt.Errorf("open review cache: %w", err)
 	}
 	stopCh := make(chan struct{}, 1)
-	application := &app{root: abs, sourceDir: sourceDir, rng: options.Range, template: tmpl, mutationToken: mutationToken, shutdownToken: options.ShutdownToken, generations: generations}
+	application := &app{root: abs, sourceDir: sourceDir, rng: options.Range, template: tmpl, shutdownToken: options.ShutdownToken, generations: generations}
 	application.shutdown = func() {
 		select {
 		case stopCh <- struct{}{}:
@@ -640,31 +632,6 @@ func findFragmentByTarget(document *saga.Saga, target string) *saga.Fragment {
 	return found
 }
 
-func targetBelongsToChapter(root *saga.Section, target string) bool {
-	var walk func(*saga.Section, bool) bool
-	walk = func(section *saga.Section, inChapter bool) bool {
-		if section == nil {
-			return false
-		}
-		inChapter = inChapter || section.Kind == "chapter"
-		if inChapter && section.Target == target {
-			return true
-		}
-		for _, fragment := range section.Fragments {
-			if inChapter && fragment.Target == target {
-				return true
-			}
-		}
-		for _, child := range section.Children {
-			if walk(child, inChapter) {
-				return true
-			}
-		}
-		return false
-	}
-	return walk(root, false)
-}
-
 // markLinkedEvidence flags the rows of a whole-file diff that a single
 // narrative target actually explains, so the drawer keeps showing the reviewer
 // which lines its explanation is answerable for once the surrounding file
@@ -752,14 +719,6 @@ func loopbackListenAddress(address string) bool {
 	return ip != nil && ip.IsLoopback()
 }
 
-func newMutationToken() (string, error) {
-	var token [32]byte
-	if _, err := rand.Read(token[:]); err != nil {
-		return "", err
-	}
-	return base64.RawURLEncoding.EncodeToString(token[:]), nil
-}
-
 // newPageTemplate is the single definition of the renderer's template funcs so
 // tests exercise exactly the helpers the served page uses. It renders a
 // compared Saga; newPageTemplateFor renders the way a reviewer was opened.
@@ -838,7 +797,6 @@ func (a *app) page(w http.ResponseWriter, r *http.Request) {
 		Saga:           document,
 		EmbeddedDecks:  len(document.Decks)+len(document.Onboarding) > 0,
 		Root:           rootView,
-		MutationToken:  a.mutationToken,
 		CoverageTotals: a.cachedCoverageTotals(),
 	}
 	requirementsView, _, requirementsDocument, err := loadRequirementsSurface(a.root, document.Manifest.ID, r)
@@ -1411,38 +1369,6 @@ func (a *app) themeScript(w http.ResponseWriter, _ *http.Request) {
 	w.Header().Set("Content-Type", "text/javascript; charset=utf-8")
 	w.Header().Set("Cache-Control", "no-store")
 	_, _ = io.WriteString(w, themeBoot)
-}
-
-const (
-	maxMultipartBytes  = 32 << 20
-	maxAttachmentBytes = 10 << 20
-	maxAttachments     = 8
-)
-
-var (
-	errUploadTooLarge = errors.New("upload too large")
-	errInvalidUpload  = errors.New("invalid upload")
-	attachmentTempDir string
-)
-
-func parseForm(w http.ResponseWriter, r *http.Request, limit int64) error {
-	r.Body = http.MaxBytesReader(w, r.Body, limit)
-	return r.ParseForm()
-}
-
-func (a *app) validMutationToken(r *http.Request) bool {
-	if a.mutationToken == "" {
-		return true
-	}
-	provided := r.Header.Get("X-Change-Saga-Mutation-Token")
-	if provided == "" {
-		provided = r.FormValue("mutation_token")
-	}
-	return subtle.ConstantTimeCompare([]byte(provided), []byte(a.mutationToken)) == 1
-}
-
-func writeMutationError(w http.ResponseWriter) {
-	http.Error(w, "The review request was invalid or the saga could not be updated. Run change-saga validate and try again.", http.StatusBadRequest)
 }
 
 func findFragment(document *saga.Saga, id string) *saga.Fragment {

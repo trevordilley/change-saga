@@ -1,98 +1,30 @@
 import { tmpdir } from "node:os";
-import {
-  codeLocation,
-  git,
-  formBody,
-  multipartBody,
-  readJSON,
-  readMutationToken,
-  reviewFiles,
-  runCLI,
-  serverRequest,
-  stagedUploads,
-  startSagaServer,
-  stopSagaServer,
-  treeSnapshot,
-  type HTTPResponse,
-  type SagaFixture
-} from "../support/fixture-builder.js";
+import { codeLocation, git, runCLI, serverRequest, treeSnapshot, type HTTPResponse } from "../support/fixture-builder.js";
 import { expect, test } from "../support/test.js";
 
 const overviewTarget = "urn:change-saga:wave-one:fragment:wave-one-overview";
 
-type Mutation = { path: string; describe: string; send: (headers: Record<string, string>) => Promise<HTTPResponse> };
-
-/** Every mutating endpoint with a payload that would succeed if the gate opened. */
-function mutations(fixture: SagaFixture): Mutation[] {
-  const ref = codeLocation(fixture.identity.head, "src/app.go");
-  const post = (path: string, payload: { body: string | Buffer; headers: Record<string, string> }) => (headers: Record<string, string>) =>
-    serverRequest(fixture.baseURL, path, { method: "POST", headers: { ...payload.headers, ...headers }, body: payload.body });
-  return [
-    { path: "/api/thread", describe: "new comment", send: post("/api/thread", multipartBody({ target: overviewTarget, anchor: '{"type":"target"}', body: "Forged comment." })) },
-    { path: "/api/reply", describe: "reply", send: post("/api/reply", multipartBody({ thread: "missing", body: "Forged reply." })) },
-    { path: "/api/thread-state", describe: "resolve", send: post("/api/thread-state", formBody({ thread: "missing", state: "resolved" })) },
-    { path: "/api/thread-anchor", describe: "move annotation", send: post("/api/thread-anchor", formBody({ thread: "missing", anchor: '{"type":"target"}' })) },
-    { path: "/api/review", describe: "approval", send: post("/api/review", formBody({ target: overviewTarget, state: "approved", body: "Forged approval." })) },
-    { path: "/api/diff-review", describe: "file reviewed", send: post("/api/diff-review", formBody({ ref, state: "reviewed" })) }
-  ];
-}
-
-test("@critical rejects every mutation without a valid session token and writes nothing", async ({ saga }) => {
+// The Saga is documentation: the reviewer has no way to comment on, annotate,
+// approve, or mark it reviewed. The endpoints that used to write those records
+// are gone, so nothing a page or a forged request sends can change the Saga.
+test("@critical has no documentation write endpoints and writes nothing when they are called", async ({ saga }) => {
   const before = treeSnapshot(saga.sagaRoot);
-  const token = await readMutationToken(saga.baseURL);
-  expect(token.length).toBeGreaterThan(40);
-
-  for (const mutation of mutations(saga)) {
-    for (const [label, headers] of [
-      ["no token", {}],
-      ["empty token", { "X-Change-Saga-Mutation-Token": "" }],
-      ["wrong token", { "X-Change-Saga-Mutation-Token": "not-the-session-token" }],
-      ["truncated token", { "X-Change-Saga-Mutation-Token": token.slice(0, -1) }]
-    ] as const) {
-      const response = await mutation.send(headers);
-      expect(response.status, `${mutation.path} with ${label}`).toBe(403);
-      expect(response.body, `${mutation.path} with ${label}`).toContain("mutation token");
-    }
-  }
-  expect(treeSnapshot(saga.sagaRoot), "saga tree after rejected mutations").toBe(before);
-
-  // Positive control: the same approval succeeds with the session token, so the
-  // rejections above are the token gate and not a broken payload.
-  const accepted = await serverRequest(saga.baseURL, "/api/review", {
-    method: "POST",
-    headers: { ...formBody({}).headers, "X-Change-Saga-Mutation-Token": token },
-    body: formBody({ target: overviewTarget, state: "approved", body: "Genuine approval." }).body
-  });
-  expect(accepted.status).toBe(303);
-  expect(reviewFiles(saga, /\/___approvals\/.*-approved\.json$/)).toHaveLength(1);
-});
-
-test("rejects a session token minted by a different server process", async ({ saga }) => {
-  const before = treeSnapshot(saga.sagaRoot);
-  const other = await startSagaServer(saga);
-  try {
-    const ownToken = await readMutationToken(saga.baseURL);
-    const otherToken = await readMutationToken(other.baseURL);
-    expect(otherToken).not.toBe(ownToken);
-
-    const response = await serverRequest(saga.baseURL, "/api/review", {
+  const form = { "Content-Type": "application/x-www-form-urlencoded" };
+  for (const path of ["/api/thread", "/api/reply", "/api/thread-state", "/api/thread-anchor", "/api/review", "/api/diff-review"]) {
+    const response = await serverRequest(saga.baseURL, path, {
       method: "POST",
-      headers: { ...formBody({}).headers, "X-Change-Saga-Mutation-Token": otherToken },
-      body: formBody({ target: overviewTarget, state: "approved", body: "Token from the neighbouring process." }).body
+      headers: form,
+      body: new URLSearchParams({ target: overviewTarget, state: "approved", body: "Forged." }).toString()
     });
-    expect(response.status).toBe(403);
-    expect(response.body).toContain("mutation token");
-  } finally {
-    await stopSagaServer(other);
+    expect([404, 405], `POST ${path} answered ${response.status}`).toContain(response.status);
   }
-  expect(treeSnapshot(saga.sagaRoot)).toBe(before);
+  const activity = await serverRequest(saga.baseURL, "/api/activity");
+  expect(activity.status, "the review activity feed").toBe(404);
+  expect(treeSnapshot(saga.sagaRoot), "saga tree after calls to removed endpoints").toBe(before);
 });
 
 test("@critical rejects cross-origin and foreign-Host requests before any handler runs", async ({ saga }) => {
-  const before = treeSnapshot(saga.sagaRoot);
-  const token = await readMutationToken(saga.baseURL);
   const port = new URL(saga.baseURL).port;
-  const approval = formBody({ target: overviewTarget, state: "approved", body: "Cross-origin approval." });
 
   for (const [label, headers] of [
     ["a foreign Origin", { Origin: "http://evil.test" }],
@@ -100,13 +32,9 @@ test("@critical rejects cross-origin and foreign-Host requests before any handle
     ["cross-site fetch metadata", { "Sec-Fetch-Site": "cross-site" }],
     ["cross-origin fetch metadata", { "Sec-Fetch-Site": "cross-origin" }]
   ] as const) {
-    const response = await serverRequest(saga.baseURL, "/api/review", {
-      method: "POST",
-      headers: { ...approval.headers, "X-Change-Saga-Mutation-Token": token, ...headers },
-      body: approval.body
-    });
-    expect(response.status, `mutation with ${label}`).toBe(403);
-    expect(response.body, `mutation with ${label}`).toContain("Cross-origin request rejected.");
+    const response = await serverRequest(saga.baseURL, "/api/runtime-stop", { method: "POST", headers });
+    expect(response.status, `POST with ${label}`).toBe(403);
+    expect(response.body, `POST with ${label}`).toContain("Cross-origin request rejected.");
   }
 
   for (const host of ["attacker.test", `attacker.test:${port}`, `127.0.0.1.evil.test:${port}`, `evil.test:${port}`]) {
@@ -120,27 +48,31 @@ test("@critical rejects cross-origin and foreign-Host requests before any handle
     const response = await serverRequest(saga.baseURL, "/", { headers: { Host: host } });
     expect(response.status, `page request with Host ${host}`).toBe(200);
   }
-  const sameOrigin = await serverRequest(saga.baseURL, "/api/review", {
+  // Positive control: a same-origin POST passes the origin gate and reaches the
+  // handler, which then refuses it for its own reason.
+  const sameOrigin = await serverRequest(saga.baseURL, "/api/runtime-stop", {
     method: "POST",
-    headers: { ...approval.headers, "X-Change-Saga-Mutation-Token": token, Origin: `http://127.0.0.1:${port}`, "Sec-Fetch-Site": "same-origin" },
-    body: approval.body
+    headers: { Origin: `http://127.0.0.1:${port}`, "Sec-Fetch-Site": "same-origin" }
   });
-  expect(sameOrigin.status).toBe(303);
-  expect(treeSnapshot(saga.sagaRoot)).not.toBe(before);
+  expect(sameOrigin.status).toBe(403);
+  expect(sameOrigin.body).toContain("shutdown token");
 });
 
-test("@critical refuses malformed, non-canonical, and foreign code locations without writing", async ({ page, saga }) => {
+test("@critical refuses malformed, non-canonical, and foreign code locations", async ({ page, saga }) => {
   const { base, head } = saga.identity;
-  const canonical = codeLocation(head, "src/app.go");
   await page.goto(`${saga.baseURL}/?view=code&file=${encodeURIComponent("src/app.go")}`);
-  const rendered = await page.locator('article.file-diff[data-file-path="src/app.go"] form.file-review input[name="ref"]').getAttribute("value");
+  const row = page.locator('article.file-diff[data-file-path="src/app.go"] [data-diff-row][data-side="new"]').first();
+  const line = Number(await row.getAttribute("data-line"));
   // Positive control for the whole table below: the location this suite builds
   // is byte-for-byte the canonical spelling the product itself renders.
-  expect(rendered).toBe(canonical);
+  expect(await row.getAttribute("data-diff-ref")).toBe(codeLocation(head, "src/app.go", line));
+  const canonical = codeLocation(head, "src/app.go");
   expect(canonical).toBe(`${head}:src/app.go`);
 
+  // A commit that is neither side of the comparison: its file exists, but
+  // showing it would present code the change never touched.
+  const outside = git(saga.sourceRepo, "commit-tree", `${head}^{tree}`, "-p", head, "-m", "outside the comparison");
   const rejected: Array<[string, string]> = [
-    ["empty", ""],
     ["not a location", "not-a-code-location"],
     ["missing path", `${head}:`],
     ["missing commit", ":src/app.go"],
@@ -156,126 +88,32 @@ test("@critical refuses malformed, non-canonical, and foreign code locations wit
     ["zero line", `${head}:src/app.go#L0`],
     ["inverted range", `${head}:src/app.go#L4-L3`],
     ["trailing fragment", `${canonical}#top`],
-    ["line location, not a file", codeLocation(head, "src/app.go", 3, 4)],
-    ["path absent at the comparison", codeLocation(head, "src/missing.go")]
-  ];
-
-  const token = await readMutationToken(saga.baseURL);
-  const before = treeSnapshot(saga.sagaRoot);
-  for (const [label, ref] of rejected) {
-    const payload = formBody({ ref, state: "reviewed", file: "src/app.go" });
-    const response = await serverRequest(saga.baseURL, "/api/diff-review", {
-      method: "POST",
-      headers: { ...payload.headers, "X-Change-Saga-Mutation-Token": token },
-      body: payload.body
-    });
-    expect(response.status, `file review with ${label} location`).toBe(400);
-    expect(response.body, `file review with ${label} location`).not.toContain(saga.root);
-  }
-  expect(treeSnapshot(saga.sagaRoot), "saga tree after rejected code locations").toBe(before);
-
-  const accepted = formBody({ ref: canonical, state: "reviewed", file: "src/app.go" });
-  const response = await serverRequest(saga.baseURL, "/api/diff-review", {
-    method: "POST",
-    headers: { ...accepted.headers, "X-Change-Saga-Mutation-Token": token },
-    body: accepted.body
-  });
-  expect(response.status).toBe(303);
-  const records = reviewFiles(saga, /\/___review\/files\/.*-reviewed\.json$/);
-  expect(records).toHaveLength(1);
-});
-
-test("@critical refuses a file review at a commit outside the comparison without writing", async ({ saga }) => {
-  const { head } = saga.identity;
-  // A real commit in the checkout that is neither side of the comparison: its
-  // file exists and digests fine, but marking it reviewed would record a file
-  // the reviewer was never shown. A well-formed but unknown commit must not be
-  // silently re-pinned to another commit either.
-  const outside = git(saga.sourceRepo, "commit-tree", `${head}^{tree}`, "-p", head, "-m", "outside the comparison");
-  // Selecting code for review already draws this line: a location outside the
-  // comparison is not found, and a malformed one is a bad request.
-  const select = (ref: string) => serverRequest(saga.baseURL, `/api/code?file=${encodeURIComponent("src/app.go")}&ref=${encodeURIComponent(ref)}`);
-  expect((await select(codeLocation(outside, "src/app.go"))).status, "code view at a commit outside the comparison").toBe(404);
-  expect((await select(`${head}:src/app.go#L3-L3`)).status, "code view with a non-canonical location").toBe(400);
-  expect((await select(codeLocation(head, "src/app.go", 3))).status, "code view with a changed line").toBe(200);
-
-  const token = await readMutationToken(saga.baseURL);
-  const before = treeSnapshot(saga.sagaRoot);
-  for (const [label, ref] of [
     ["commit outside the comparison", codeLocation(outside, "src/app.go")],
     ["unknown commit", codeLocation("0".repeat(40), "src/app.go")]
-  ] as const) {
-    const payload = formBody({ ref, state: "reviewed", file: "src/app.go" });
-    const response = await serverRequest(saga.baseURL, "/api/diff-review", {
-      method: "POST",
-      headers: { ...payload.headers, "X-Change-Saga-Mutation-Token": token },
-      body: payload.body
-    });
-    expect([400, 404], `file review with ${label} answered ${response.status}`).toContain(response.status);
-    expect(response.body, `file review with ${label}`).not.toContain(saga.root);
+  ];
+  const select = (ref: string) => serverRequest(saga.baseURL, `/api/code?file=${encodeURIComponent("src/app.go")}&ref=${encodeURIComponent(ref)}`);
+  for (const [label, ref] of rejected) {
+    const response = await select(ref);
+    expect([400, 404], `code view with ${label} location answered ${response.status}`).toContain(response.status);
+    expect(response.body, `code view with ${label} location`).not.toContain(saga.root);
   }
-  expect(treeSnapshot(saga.sagaRoot), "saga tree after file reviews outside the comparison").toBe(before);
-});
-
-test("@critical rejects oversized and mistyped uploads, cleaning up every staged file", async ({ saga }) => {
-  const token = await readMutationToken(saga.baseURL);
-  const before = treeSnapshot(saga.sagaRoot);
-  const fields = { target: overviewTarget, anchor: '{"type":"target"}', body: "Attachment check." };
-  const send = async (payload: { body: Buffer; headers: Record<string, string> }): Promise<HTTPResponse> =>
-    serverRequest(saga.baseURL, "/api/thread", {
-      method: "POST",
-      headers: { ...payload.headers, "X-Change-Saga-Mutation-Token": token },
-      body: payload.body
-    });
-
-  const oversized = await send(multipartBody(fields, [{ field: "attachment", filename: "large.txt", content: Buffer.alloc(10 * 1024 * 1024 + 1, "x") }]));
-  expect(oversized.status, "single attachment above the per-file limit").toBe(413);
-  expect(oversized.body).toContain("size or file count");
-  expect(stagedUploads(saga), "staged files after an oversized upload").toEqual([]);
-
-  const tooMany = await send(multipartBody(fields, Array.from({ length: 9 }, (_, index) => ({ field: "attachment", filename: `note-${index}.txt`, content: "hello\n" }))));
-  expect(tooMany.status, "more attachments than the limit allows").toBe(413);
-  expect(stagedUploads(saga), "staged files after too many attachments").toEqual([]);
-
-  const disguised = await send(multipartBody(fields, [{ field: "attachment", filename: "screenshot.png", content: "#!/bin/sh\necho nope\n" }]));
-  expect(disguised.status, "declared PNG whose bytes are a shell script").toBe(400);
-  expect(disguised.body).toContain("supported image");
-  expect(stagedUploads(saga), "staged files after a sniffed-type mismatch").toEqual([]);
-
-  const svgWithScript = await send(multipartBody(fields, [{ field: "attachment", filename: "diagram.svg", content: "<html><body>not an svg</body></html>" }]));
-  expect(svgWithScript.status, "declared SVG whose bytes are HTML").toBe(400);
-  expect(stagedUploads(saga), "staged files after a declared-SVG mismatch").toEqual([]);
-
-  expect(treeSnapshot(saga.sagaRoot), "saga tree after rejected uploads").toBe(before);
-
-  // Positive control: a genuine text attachment is accepted and staged cleanly.
-  const accepted = await send(multipartBody(fields, [{ field: "attachment", filename: "note.txt", content: "reviewer note\n" }]));
-  expect(accepted.status).toBe(303);
-  const attachmentManifests = reviewFiles(saga, /\/attachment-01\.fragment\/fragment\.json$/);
-  expect(attachmentManifests).toHaveLength(1);
-  // The server names the stored file after its staged copy rather than the
-  // upload, so the manifest entrypoint is the contract, not the original name.
-  const attachment = readJSON<{ media_type: string; entrypoint: string }>(attachmentManifests[0]);
-  expect(attachment.media_type).toBe("text/plain");
-  expect(reviewFiles(saga, new RegExp(`/attachment-01\\.fragment/${attachment.entrypoint.replaceAll(".", "\\.")}$`))).toHaveLength(1);
-  expect(stagedUploads(saga), "staged files after a successful upload").toEqual([]);
+  expect((await select(`${head}:src/app.go#L3-L3`)).status, "code view with a non-canonical location").toBe(400);
+  expect((await select(codeLocation(outside, "src/app.go"))).status, "code view at a commit outside the comparison").toBe(404);
+  expect((await select(codeLocation(head, "src/app.go", line))).status, "code view with a changed line").toBe(200);
 });
 
 test("@critical never exposes filesystem paths in browser-facing responses", async ({ saga }) => {
-  const token = await readMutationToken(saga.baseURL);
   const responses: HTTPResponse[] = [
     await serverRequest(saga.baseURL, "/"),
     await serverRequest(saga.baseURL, "/does-not-exist"),
     await serverRequest(saga.baseURL, "/chapters/missing-chapter"),
     await serverRequest(saga.baseURL, "/f/diagram/..%2F..%2F..%2Fetc%2Fpasswd"),
     await serverRequest(saga.baseURL, "/f/no-such-fragment/content.md"),
-    await serverRequest(saga.baseURL, "/", { headers: { Host: "attacker.test" } })
+    await serverRequest(saga.baseURL, "/", { headers: { Host: "attacker.test" } }),
+    await serverRequest(saga.baseURL, `/api/code?file=${encodeURIComponent("../../escape")}&ref=not-a-code-location`),
+    await serverRequest(saga.baseURL, `/api/history?target=${encodeURIComponent("../../escape")}`),
+    await serverRequest(saga.baseURL, `/api/fragment?target=${encodeURIComponent("../../escape")}`)
   ];
-  const payload = formBody({ ref: "not-a-code-location", state: "reviewed" });
-  responses.push(
-    await serverRequest(saga.baseURL, "/api/diff-review", { method: "POST", headers: { ...payload.headers, "X-Change-Saga-Mutation-Token": token }, body: payload.body }),
-    await serverRequest(saga.baseURL, "/api/thread-state", { method: "POST", headers: formBody({}).headers, body: formBody({ thread: "../../escape", state: "resolved" }).body })
-  );
 
   const secrets = [saga.root, saga.sagaRoot, saga.sourceRepo, saga.tempDir, tmpdir()];
   const phrases = ["no such file", "permission denied", "goroutine", "/private/var/folders"];

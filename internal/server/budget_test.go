@@ -313,7 +313,7 @@ func BenchmarkLargeSagaRealisticHTTP(b *testing.B) {
 	if err != nil {
 		b.Fatal(err)
 	}
-	handler := newMux(&app{root: fixture.Root, sourceDir: fixture.Repository, rng: gitdiff.Range{Against: fixture.Base}, template: tmpl, mutationToken: "benchmark-token"})
+	handler := newMux(&app{root: fixture.Root, sourceDir: fixture.Repository, rng: gitdiff.Range{Against: fixture.Base}, template: tmpl})
 	path := ""
 	{
 		recorder := httptest.NewRecorder()

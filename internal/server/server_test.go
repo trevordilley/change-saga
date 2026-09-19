@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"html/template"
-	"mime/multipart"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
@@ -16,8 +15,6 @@ import (
 	"strings"
 	"testing"
 	"time"
-
-	"github.com/twentyideas/changesaga/internal/changeview"
 
 	"github.com/twentyideas/changesaga/internal/applayout"
 	"github.com/twentyideas/changesaga/internal/coderef"
@@ -70,41 +67,10 @@ func TestSecureHandlerRejectsCrossOriginFetchSiteAndHost(t *testing.T) {
 	}
 }
 
-func TestValidMutationTokenPassesSecurityGate(t *testing.T) {
-	application := &app{root: validServerSaga(t), mutationToken: "correct-token"}
-	values := url.Values{"thread": {"missing"}, "state": {"open"}}
-	request := httptest.NewRequest(http.MethodPost, "http://127.0.0.1:7342/api/thread-state", strings.NewReader(values.Encode()))
-	request.Host = "127.0.0.1:7342"
-	request.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	request.Header.Set("X-Change-Saga-Mutation-Token", "correct-token")
-	recorder := httptest.NewRecorder()
-	secureHandler(newMux(application), "127.0.0.1:7342").ServeHTTP(recorder, request)
-	if recorder.Code == http.StatusForbidden {
-		t.Fatalf("valid token was rejected: %s", recorder.Body.String())
-	}
-}
-
 func TestHTTPServerHasBoundedResourceSettings(t *testing.T) {
 	server := newHTTPServer(http.NotFoundHandler())
 	if server.ReadTimeout <= 0 || server.WriteTimeout <= 0 || server.IdleTimeout <= 0 || server.ReadHeaderTimeout <= 0 || server.MaxHeaderBytes <= 0 {
 		t.Fatalf("server limits are incomplete: %#v", server)
-	}
-}
-
-func TestMutationTokensAreRandomAndPlumbedIntoBrowserRequests(t *testing.T) {
-	first, err := newMutationToken()
-	if err != nil {
-		t.Fatal(err)
-	}
-	second, err := newMutationToken()
-	if err != nil {
-		t.Fatal(err)
-	}
-	if first == second || len(first) < 40 {
-		t.Fatalf("mutation tokens are not independent 256-bit values: %q %q", first, second)
-	}
-	if !strings.Contains(pageTemplate, `name="change-saga-mutation-token"`) || !strings.Contains(appJavaScript, `X-Change-Saga-Mutation-Token`) || !strings.Contains(appJavaScript, `data.set('mutation_token', mutationToken)`) {
-		t.Fatal("browser mutation token plumbing is incomplete")
 	}
 }
 
@@ -135,8 +101,8 @@ func TestWorkspaceTabsAndClosedDrawerCarryAccessibleSemantics(t *testing.T) {
 		"openFragmentDrawer(fragmentDrawerLink.dataset.openFragment, fragmentDrawerLink)",
 		"hydrateTargetCode(targetCodeButton)",
 		"data-target-code-response",
-		"const labels = {fragment:'Related explanation', activity:'Review activity', code:'Linked code'}",
-		"openActivityDrawer(activityButton.dataset.activityHref, activityButton)",
+		"const labels = {fragment:'Related explanation', history:'History', code:'Linked code'}",
+		"openHistoryDrawer(historyButton.dataset.historyHref, historyButton)",
 	} {
 		if !strings.Contains(appJavaScript, fragment) {
 			t.Errorf("browser script no longer maintains %q", fragment)
@@ -964,59 +930,6 @@ func validServerSaga(t *testing.T) string {
 	return root
 }
 
-func multipartRequest(t *testing.T, path string, fields map[string]string) *http.Request {
-	t.Helper()
-	var body bytes.Buffer
-	writer := multipart.NewWriter(&body)
-	for key, value := range fields {
-		if err := writer.WriteField(key, value); err != nil {
-			t.Fatal(err)
-		}
-	}
-	if err := writer.Close(); err != nil {
-		t.Fatal(err)
-	}
-	request := httptest.NewRequest(http.MethodPost, path, &body)
-	request.Header.Set("Content-Type", writer.FormDataContentType())
-	return request
-}
-
-func multipartFileRequest(t *testing.T, path, filename string, content []byte) *http.Request {
-	return multipartFilesRequest(t, path, map[string][]byte{filename: content})
-}
-
-func multipartFilesRequest(t *testing.T, path string, files map[string][]byte) *http.Request {
-	t.Helper()
-	var body bytes.Buffer
-	writer := multipart.NewWriter(&body)
-	for filename, content := range files {
-		part, err := writer.CreateFormFile("attachment", filename)
-		if err != nil {
-			t.Fatal(err)
-		}
-		if _, err := part.Write(content); err != nil {
-			t.Fatal(err)
-		}
-	}
-	if err := writer.Close(); err != nil {
-		t.Fatal(err)
-	}
-	request := httptest.NewRequest(http.MethodPost, path, &body)
-	request.Header.Set("Content-Type", writer.FormDataContentType())
-	return request
-}
-
-func assertEmptyDirectory(t *testing.T, path string) {
-	t.Helper()
-	entries, err := os.ReadDir(path)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if len(entries) != 0 {
-		t.Fatalf("temporary upload files remain: %v", entries)
-	}
-}
-
 func serverTemplate(t *testing.T) *template.Template {
 	t.Helper()
 	tmpl, err := newPageTemplate()
@@ -1030,18 +943,6 @@ func serverGit(t *testing.T, dir string, args ...string) string {
 	t.Helper()
 	command := exec.Command("git", args...)
 	command.Dir = dir
-	output, err := command.CombinedOutput()
-	if err != nil {
-		t.Fatalf("git %v: %v\n%s", args, err, output)
-	}
-	return string(output)
-}
-
-func serverGitEnv(t *testing.T, dir string, environment []string, args ...string) string {
-	t.Helper()
-	command := exec.Command("git", args...)
-	command.Dir = dir
-	command.Env = append(os.Environ(), environment...)
 	output, err := command.CombinedOutput()
 	if err != nil {
 		t.Fatalf("git %v: %v\n%s", args, err, output)
@@ -1071,17 +972,6 @@ func writeServerEpic(t *testing.T, root string) {
 	t.Helper()
 	writeServerFile(t, filepath.Join(serverEpicDir(root), applayout.EpicManifestName),
 		`{"$schema":"https://changesaga.dev/schema/v5/epic.schema.json","version":5,"id":"core","title":"Core","created_at":"2026-08-21T12:00:00Z"}`)
-}
-
-// changedLayers is a comparison in which the change edited targets.
-func changedLayers(targets ...string) func(context.Context) (*changeview.Layers, error) {
-	return func(context.Context) (*changeview.Layers, error) {
-		layers := &changeview.Layers{}
-		for _, target := range targets {
-			layers.Changed = append(layers.Changed, changeview.Change{NodeRef: changeview.NodeRef{URN: target}, Change: changeview.ChangeRevised})
-		}
-		return layers, nil
-	}
 }
 
 // Documentation has no approve, reject, or comment control in either mode;
