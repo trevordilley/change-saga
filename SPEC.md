@@ -93,7 +93,8 @@ yet.
 ### Application records
 
 **Epics** are durable areas of the product, not changes: revising a story that
-belongs to an older epic refines that area in place. An epic's `epic.json` is
+belongs to an older epic refines that area in place. Epics are listed in the
+order they were created. An epic's `epic.json` is
 immutable and its URN is `urn:change-saga:<saga>:epic:<id>`. Moving a story
 between epics moves its directory and changes nothing else.
 
@@ -102,7 +103,8 @@ append-only revisions (`name`, `description`), and lifecycle events whose root
 state is `active`; a persona can be retired and restored. URNs are
 `urn:change-saga:<saga>:persona:<id>`, with `:revision:<id>` and `:event:<id>`.
 A story revision may name the personas it serves in `personas`; the list is
-optional, but any persona it names must exist. Persona coverage (which active
+optional, but any persona it names must exist. A story's `priority` is optional
+free text that the reviewer shows; the tool gives it no meaning. Persona coverage (which active
 personas an accepted story serves, and which stories served only a retired
 persona) is reported and never blocks.
 
@@ -898,7 +900,9 @@ hide authored content behind a valid-looking saga. Other names beginning with
 - `change-saga status --json` (`status_schema` `change-saga.status/v3`) reports
   a **coverage report** under `coverage`: a scope (the change with `--against`,
   otherwise the whole application; `--epic` narrows either) and six areas.
-  `implementation` counts changed lines referenced by an implementation deck;
+  `implementation` counts changed lines referenced by the Saga's documentation
+  (an implementation deck or narrative), with test code counted when a test
+  case's evidence references it;
   `stories` and `personas` count changed lines that reach a story or persona
   through the chain; `design` counts stories in scope that have design;
   `quality` counts acceptance criteria in scope that have a test; `health`
