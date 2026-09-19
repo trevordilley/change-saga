@@ -1,0 +1,501 @@
+{
+  "references": [
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/server/template.go",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:c8b27ae205c197e064303b4f0fdd01e1baca5a7b72b4a2c5228559406c28055a",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/server/template.go",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:5de4ebc362af19b101977091366bbede46df5754e584893a8cc6f6c88423e962",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/server/template.go",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:8814d16e104b1b208b61c26dd4afb72348f4858409c9a7a29d588205b5a2fb1a",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/server/template.go",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:3f8461f6d204ac8cce3de28835c09bbc37bf05e0d7df4d27b069894c2158e30b",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/server/template.go",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:e56c635fffcbf4a52e2afd1cff59cee18a4d073556fc5f32b6b80fc661dc0feb",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:07ddd940a83a21eda8abc63615f6e634d22dfc715024ec746ed686ba05df0aa2",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:4ddfc01580e3ddd866553639344aa132d3e78da781af2a997f8f4ff3d704d81e",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:cf0705f0994f9aa863f082832d751017e804a9618b6b9eca108df0f8266f8fd8",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:cc8a486f7561f36aadaeede4a3208b200b3fe2a91abff1287c923116754d4f79",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:cc88925f0df54db9d4185d20f1a1e4a022ba125e294d32730a20056f0f3a8748",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/server/template.go",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:6c3334db1cb5fe72de49f8558f0637d0c93e13a9207d644618c6d1ba3df1d9fd",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:df0480e41c06074f61e8a8634343d2fd8edca0b04419863ced1d21e69d871893",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:783b96e8d5e537e88d7e3a8a412cbd7f8bdf2a3c5bb4da7b54d98c2e209d0285",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:a2a9da1768f9178d85264d9a922124e41b7686ce6af1bbe921008b25bf942949",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:c04f91b7301ae99ff96615f53406b7b6a9dc7d87cab767e358981e8f8e888ecf",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/server/template.go",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:d995142321e7e8f9d90399d1bcefae39b6371f73f0731d4ecc80597b7a5de9e8",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:8e3ee96b20a2db128d36ab661d8c09add06792d1e638c6feeebdd9b2eab03f45",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:5a58dd3f8aa96d1966e427b40366d8a52ec063f9cde0b0d3ec69145ee9f9a814",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:c7bb7336251de13d39925782ed9aafd5b159477adfea211bd7533f61331bce39",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:0fbfd47cd1a3043a0fb994766e69b2643d93dc56ed94c926b03332d33709161f",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:841c5f486154345ed6c7b904fb82c55f75644ddd075edabdccaf0eeb8b99afc6",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:1429afae8e4004d483d936b1ad051e470e4370c81ddb1ed04db7284715670cd0",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:650ad3f3fdf9fed42a5a50b246b6fe360504889f3eedec90e1a620183dab2b3a",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:b1b66dd4991e83c1cd1e448a54bb0fd9d1bd5216eb96d7cf11597755e56efb26",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:6355b311b72e07e6bf0b352e80b5429ca0aa20a245af1e3af794a09da820eb36",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:7531c3a49e834d2f163ec6f6a8c3a31eee12edaa55132738a862f4f59679c4e3",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:4a55a9825451efb15aa40c0e89ae62168b8cca09e1d805b484264cff7e1e1561",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:47c2f3740c6280aa8ea67b70c0aa6500ab411d7acfeb98be4f63b26200a359ed",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:6b24ccde4baea7811a6a7cf692f85103e4fba3e83e72bdd406f5f1bd8da1c888",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:fd05880a5d7f8fd90a5fa98867f547313b494561d8b35afa424c3a60c8e4dfbd",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:2b4163676f69eb91854e582812e19a47116e1158260c624c1f62d744d039853f",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:bfd2b93f9309235e0aa5483d5953ccf3ea8154e83c79f0f69c07939f01a2b73b",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:7bb8bb79b80764bb046dcd774f481684d58501157074e2d786970fe85d762ddc",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 68,
+      "end": 68,
+      "digest": "sha256:91c0fec5b67d016ad905a36d001aad4fa2a7becf47b911da522c700811896249",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:f82702120e2d82e876aa03880a369d9628518bd358074645ef8998b6fb056e6d",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 70,
+      "end": 70,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 71,
+      "end": 71,
+      "digest": "sha256:af8316483e5af46988d2dfd98cb9c0ebb6e7b9bcc23ef318d639f1343ac5ee7a",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/server/template.go",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:812b68977ba1c2a21cab02324aac78d6582319d901b8d2f301aa51e8c2d397f5",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/server/template.go",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/server/template.go",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:c8259854966045ec64738d21f2621c1f06ad5cd639b72ca74438f091c6e1f4d2",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/server/template.go",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:0333c4ccb2adc6cc216616c9ae114791cc67679e5887120b2d97231cc3b98ba0",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/server/template.go",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:7073fc66e5b82c1e99cdebc213ba43952e1ca1fe3434f9a13932257e39e93ecd",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 85,
+      "end": 85,
+      "digest": "sha256:10aef4c35b5182d2ad68ed31792962d6440ec8bbe29511fa78ff7a392cad96ba",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 86,
+      "end": 86,
+      "digest": "sha256:301145b425cbe1153be4e12574b1ffd4b320dcac29df321e5b9da4b5052b29ea",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 87,
+      "end": 87,
+      "digest": "sha256:ead890a2fd4f5ce758912b4cce330cd25770b380327b16fd37c867c2b2718699",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 88,
+      "end": 88,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 89,
+      "end": 89,
+      "digest": "sha256:b74021e30212fa71f91b130f4eb5f0f5045b815ff3bc95fd516cbbe4984319e6",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 90,
+      "end": 90,
+      "digest": "sha256:e8b591c842f0bdc87096b2aa1dd2b4081e89134c19ca6ba5c59c6869789e59dd",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 91,
+      "end": 91,
+      "digest": "sha256:c43a9238863384afa4cd4a72df68c59a691fa083254ca9cc95d0cdbe0cc47fe7",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 92,
+      "end": 92,
+      "digest": "sha256:5d8647b4c2515f609c715fb2a804f906a6bb7f78ac58e62f67c562f2e674ef9d",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/server/template.go",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:e6cb02fe50f46cdf7bacc904921ad072d66693db19659e9742e32973896bc0b6",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/server/template.go",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:67d24de16690111f27bd820df1bfdc21635240784a62178c7b23d081bbd6deec",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 96,
+      "end": 96,
+      "digest": "sha256:3a440e6184b447298a34523dcb43763c051d6d4258acd127f5b2a1af58db124b",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 97,
+      "end": 97,
+      "digest": "sha256:4e2632bb1a29e5b0acb07a81370066c6b08136bd5ce2ad6819653cad67dfc3a0",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 98,
+      "end": 98,
+      "digest": "sha256:1fbb30a8f77aebc931b2e6ecc2b4627f6dff48bbd5fbe19aed5fa0a7a113f00c",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 99,
+      "end": 99,
+      "digest": "sha256:debc8228d53bef93e8d32b471f41c7e5cebb575f5ab8cb41c21537ec77ed3ceb",
+      "note": "Structural SSR shell template."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/template.go",
+      "start": 109,
+      "end": 109,
+      "digest": "sha256:cfd5172eea7c6132658fd2efc4d2e2ca5a3b37d73961b7f5ca87af124dd661d7",
+      "note": "Structural SSR shell template."
+    }
+  ],
+  "version": 2
+}

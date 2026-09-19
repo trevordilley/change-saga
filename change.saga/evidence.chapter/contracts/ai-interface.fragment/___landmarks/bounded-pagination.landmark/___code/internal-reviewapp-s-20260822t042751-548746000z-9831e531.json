@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewapp/session_test.go",
+      "start": 168,
+      "end": 244,
+      "digest": "sha256:36cc9bbeeb3c30a24a3d863333d44bbb12b34fd52040bbd9fa586522d1040dc9",
+      "note": "Bounds content and list reads with UTF-8-safe chunks and snapshot-bound integrity-checked cursors."
+    }
+  ],
+  "version": 2
+}

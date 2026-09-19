@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/saga/load_test.go",
+      "start": 1,
+      "end": 102,
+      "digest": "sha256:30edab2331299fc688458a4a38df7f3b686aeb35d317a858c98ed239da1525ab",
+      "note": "Enforces contained entrypoints, safe structural entities, and cross-platform portable names."
+    }
+  ],
+  "version": 2
+}

@@ -1,0 +1,11 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/impact/impact.go",
+      "digest": "sha256:476aa7211a67ff892d5b80eba229946d51d67b608e647d874f34f78fca4defff",
+      "note": "Records this owned authoring path as newly introduced in the since-inception comparison."
+    }
+  ],
+  "version": 2
+}

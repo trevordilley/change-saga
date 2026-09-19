@@ -1,0 +1,595 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "digest": "sha256:a795c5613ac1d9d098ccfbc9d89d0679d4891d51e88635662e54080641ec732b",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:0b0d4d1f5fbec17d7732f29ccf38d3ed9e3587229f0a04824e1096d25f930f7a",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:35b3ac75676c65f1c7171d71cab729e217b3aebeec9273e87fc4f05a0295cdf6",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:af27c2a1e35c0816fc8630d833d48c6dc35a504323485b4a485786d73a9366c3",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:268c3998b844467fb26e970df3d793c618cf78e98383ea0d49ac5f27d0cd8a29",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:ba7e0dd515fa2371ac833a87bb0e4a364cef6b1203df01bb0e8c5a4a6025d146",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:b83156e5247959ae6620d3d00badf4da37262b28d50ef3acd3c99eb64ed179ae",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:e97f43f66141d11a04516df3cb49f6ab8a85151f6a8b877642e65c4dba34e47a",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:1b1879bb292196ef112dfd8e2c50c17872d02002a745910dffc07d9c51c9f2c0",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:f9ba55ccd1c4169ad8093042337bacb929e057fb66ca8b4bb932eac5bbc5f8bf",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:8c67e116da7607d1942412ebbe71d0743b1bb97a9fa741d8c560ad9c61297fb3",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:c8b27ae205c197e064303b4f0fdd01e1baca5a7b72b4a2c5228559406c28055a",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:5de4ebc362af19b101977091366bbede46df5754e584893a8cc6f6c88423e962",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:8814d16e104b1b208b61c26dd4afb72348f4858409c9a7a29d588205b5a2fb1a",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:3f8461f6d204ac8cce3de28835c09bbc37bf05e0d7df4d27b069894c2158e30b",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:e56c635fffcbf4a52e2afd1cff59cee18a4d073556fc5f32b6b80fc661dc0feb",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:427866a237257b976682d607c0d8568e5cf8348e4c8166bafb3c62810360c304",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:656b3c8f25ef5e224873d64108588c19c979b8c039be721498150b9b17f47051",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:4a541b07c26b17680b85434e7ade3498af186fee33614800c85b10cbc7a2b726",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:322f4fa26d2e942559a9f9f9809c8d921aefd4641b5f68274cf946d4650b5968",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:fab6a37a657c5d1e73c8cc450be6f9b524db72f4b4fb252de5e3bdfdd6189bc2",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:ea805f2df4d32977eb4372a2a8d0f7f91e1169b596c2a9aecb98314034dcfe9a",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:8e5d71e45abad6d5fb608cb5a54ad04237569ce7fd5ad37cd83ac49b46f26ce7",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:6c3334db1cb5fe72de49f8558f0637d0c93e13a9207d644618c6d1ba3df1d9fd",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:5c965eaff9f61045d93d508e3736133e8146ac9ab19fa17e5aa74838a8ef6813",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:32b002c02bf24d3ef15c835534c5d3d6899f42080df06470ed07f39d5d41f03b",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:71faa7da8bec1e9053fe53e0c25150d066852d7a37b4a23f885af62fa734f44c",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:f399a8ed3ad90660b8156500db0ba0612dca42843cd410aee05b4ac67538dac8",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:d995142321e7e8f9d90399d1bcefae39b6371f73f0731d4ecc80597b7a5de9e8",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:fa7961100d1b270fdbcac6322e7fde7260463068776a62f415d336b4aebe9b8b",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:7a87102a024517d0f601d3897f2d0704de183c801fae112e51a210b7b9e3900b",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:5c53d43973ead433b2060fdee084f2ea0fc8077c03f9d10894ec98d0e107e1ef",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:90d607011bd9df3ff4531af746c6b324054f340b5e3b259f0efaec8d4e645506",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:99618feed7bd684531c6b3a322fc6e8bec46a3f3619715e12b9845cdd146a53e",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:35dd88da036af0d68e993d4f50c87d6a0fb0b69d576d8d13b5715c076d348a23",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:fd539b5e27762a8936ac4c469948b21d4b255c75bfa48a083b481ed76b8de9b5",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:cdeda9bb1663ab404be11c77342f2e1f81756f71e97018e7ff1979b540d07901",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:b620e6879d238609d30df23027cd8461b7040b0076d39c106cfab0672dd0eaa7",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:cd0d14210cdeb7ae3395a55405f8bef24aa45a3b3a72163fdfc27230671d8353",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:38fcc022953252d1876f9ae48e2c19e5d10e34d53bc5602695d47f24ccfb9c48",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:812b68977ba1c2a21cab02324aac78d6582319d901b8d2f301aa51e8c2d397f5",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:c8259854966045ec64738d21f2621c1f06ad5cd639b72ca74438f091c6e1f4d2",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:0333c4ccb2adc6cc216616c9ae114791cc67679e5887120b2d97231cc3b98ba0",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:7073fc66e5b82c1e99cdebc213ba43952e1ca1fe3434f9a13932257e39e93ecd",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:e491cf12178ebb503d283cae25d335295e50df446975640c946430ca81cb80e2",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:fc0fe2b0b1dd4fc6d2db8a449b48af63925385525b099b6c2bb7c6f514bf9dfd",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:434d982342e5b917be3ebca08d784194daf72d1280098f4f2a7b4fef4adcd7f4",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:e6cb02fe50f46cdf7bacc904921ad072d66693db19659e9742e32973896bc0b6",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:67d24de16690111f27bd820df1bfdc21635240784a62178c7b23d081bbd6deec",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:02f812ee6e7b774500750c38d72637ef1df48986ef94c84b1f69ffe3092a876f",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:fea590977714f075c320b5a7711ae028f705718f1032ec1a863b01fa7311f42b",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 68,
+      "end": 68,
+      "digest": "sha256:6aa640a0ea259b173d4a19e977f815af1c0acaeae6435e3f2d55cbe0f3c43e81",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 70,
+      "end": 70,
+      "digest": "sha256:8b5e6ffcb2513753db4ca180755f11c74c7c9e7f7baa4612bf9d95371b92031c",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 71,
+      "end": 71,
+      "digest": "sha256:6e1f85d68408a2e3359283ed6fc6b9b11343282acbad63bb37e7bef07c0a63f8",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 72,
+      "end": 72,
+      "digest": "sha256:2c796b3f8517ad8c07314baef1d75f99aac7e30204035f7fa5a5cd00daec0685",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/template.go",
+      "start": 73,
+      "end": 73,
+      "digest": "sha256:93e680d6aaa30baba4c30f9c2e88e0d4cf29f18d26266320b9221316f07b7d96",
+      "note": "Defines the complete accessible Saga, Code Diff, Coverage, drawer, and annotation workspace markup."
+    }
+  ],
+  "version": 2
+}

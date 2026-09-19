@@ -1,0 +1,2019 @@
+{
+  "references": [
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "digest": "sha256:e83a8d0f397ee80e26a9c2084690cd0ee6a4858386ac7b817e630e0e4664439d",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:efde0d8da4149ee38c05bbaa3732bc54737376224c43ea73dd1acf1947072da0",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:71e37b6cd48ad477cbb12624b757ee1dc4975711b78237a85f508bfdd723af77",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:d7c13472432b49bc3449735b494389e2fbf6bab4fb98ea35c40aedb55cc0d0a9",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:1b649ecbf085fe223589d7f842defd5e2c82ec06b02b4f7827a31625fd09316e",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:ff2c0ea95d76cbc00801be44ecfc5884dca46f0b7febe0b6b2a9a5e1afd73944",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:4251f63298670483bdac18904e47ecc02d2c2d19b3f7d8e42f79cb371a7c684e",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:ab6f6be8e5963a10d31f1044691aa6beceed5a59d04cd8247f259497075d8b4d",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:fafba0527c3953c4b6e0e5b5739ba83612f8053bcdc9466730193cd1d590b408",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:333e5bd69724eeac9111be2cb709b610f8e514a984a86e7cfbfcc91d1c45512a",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:37a18e934f9ad08121995cfba621c7d56faab421eff8b8a76babdebd36ce31cf",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:6111118c479162166550f066db974921d1a3c32d0fb071e44e91babaf667d4b2",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:87d2356cd578cba10ab63c8feff368ef9dc2b22106d7d7dabcb673a79d363eca",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:f0521f09304706c6e38d437009fb59d6e089108aff46071d2f86ed33e5a70abd",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:e4ad602ca0e98467fa338a8eba541b3c7e22550ababa29f581bb462ce412df76",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:db0a302780f16e099d2ebdbff7deecc4de3fda5ac967fddb588cc630310b6a20",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:93d1d3c23b7fd5a3941dfb4736aa6cb61d298e408fea568e49f97f786ef65c3b",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:109223b109fcb392fd28fac0f24792adba03194578c28d254e4d5d0d03c74fe1",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:efe103990b165b4c9ace4f68b240cd5406ae52618d7e7c81575e50c3f9239251",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:4b2451324a482f0c4aaf36ac9ff13991869576acb1147b5b7d48b8f7e0092ff0",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:683aebe07b9b1862f9e79c4c9aebe28d8e2b4d0b51ce9b1656a202898446e080",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:0fa2a9e0343783496f68023e50b2a32e4c81996e2c81d6f840392078dfe6fc47",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:b72495716b237845108d881eaf1ee949bbe3f4c2464409f8fba337243876859f",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:3b1eb8f3dedd6139bacbb2502054cca18bf22afd76d4f705479453c1257ba46e",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:30d37bf25054b2b0b59080e4ebbbac00109fc5ff90d5b78eea21f0d200c12a7a",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:cffbeadae11c1e7f0381635ea0548fe78bcffcf49a672f1fad5c85948b43f5cb",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:398638a226be4a8369b886649f5b248dbfd909153923be2402b38455d5a9b083",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:d10cae1ef12816f38c8a87469162cd832f37688d8a2f0d17c87715db87d1569b",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:7af46d45720cb04ebc2832984def481fc3ba744f96b26bf9df2e533556de0f80",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:754a6677a9da2241e4815c4bf7ce0898c524313496e1c2764d0690fef97d45cb",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:ed2f1c064313593a78c234ad162aa319f0602dbd715a135062ec5fc6f6f68d85",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:649e81b66e8cb98224085e125efe4ca82ca4d36ce938a6f4a5413f633b83057d",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:346d0360e61d827c3306039d369c15c9595ed079c3e0095e2074ba1b8cf3fdf8",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:304411baf30b34f1135b34ad3d4e0a6cf886cd70357d7187f39b642383719786",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:ea89ebe99f37e463f47694b375b4bd3dc90c28c6276e39f3e0831800de73e7b1",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:d3932e5c3d7d88f1df38c1093dbc398ec4ecf38ae7e75d0ba8c661df8958718b",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:f9054086ef3a74915cf468a51347cb315d0d06b83af932f763a9156a83bf5133",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:6f181a087a814dab906e1f011a972f8842757f312a52cf414f71cc55aae2932d",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:2e76298789c9a992bcf7262c34992be13714d8cf6f5b05142a049307153cf018",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:20906487c7568d9e3413f4e91b1ad4fc035a9d794270fbee1d12d4d812d4e890",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:99c5cbe15c5d0e66298db891a1e6da911ae1b2163f26cc8f0613717683bad52f",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:304411baf30b34f1135b34ad3d4e0a6cf886cd70357d7187f39b642383719786",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:d7a5509cc1fbc20e03c0cff8576e90613f9eb6f5ee2a91973e17d9aa40c67978",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:2fa94fb2877eb99f8bfd85bfb1000cb9fc6fb527d950cb289167e9f83ebf5fd4",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:842ce884f001c3573c19c16b19d9b409913928622b4223d34ab4d1435d7b2b4f",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:42b251218441cb729c3784a4934da83e7fa8f943e2015b974cc88394107f93ee",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:272901918e235b89630064f88cfc0a82cf1bb9a3de4733976b59b261bfa83c06",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:232ed582725d988f1537882dadb5f771d07af7425d55f28b1011739ff5ae26e8",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:815ef336dae9c06f540606a6080e1c6189a1d18747c16435fa181ce37731549c",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:6a4445ba6d6769731df21441617c12fe4d56cc3fd0bd55082e36cf858df55988",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:146d9fd3c07a971f130c67290e9160d6420ec6ceb7041fe3ff7b6735caaf720b",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:af8a1ade2078c30da04646f8553b1d71898d5939267482636e9b18cc4d52a9b6",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 68,
+      "end": 68,
+      "digest": "sha256:7dba06276f1ea7bf2c6d40355f5cf87519b40f1e9539d4a796b86fca435c552a",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:d2890b7b0dcf069038b57b0413f526293a362adcdfa264b81d739e6b5c622e6c",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 70,
+      "end": 70,
+      "digest": "sha256:5784a8975f1c2dd63d401923cca4ec421f827afeb5c2a84129edff1ee7fa42e2",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 71,
+      "end": 71,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 72,
+      "end": 72,
+      "digest": "sha256:ee0f27396228137cf964c7ed2a8775f4750bb791559aed51a68bfc007ae0b910",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 73,
+      "end": 73,
+      "digest": "sha256:98f2d6d49be31bf8c8f00a71e8c03eb9f6b8a179ec95c9af384a81bf0b9679ed",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 74,
+      "end": 74,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 75,
+      "end": 75,
+      "digest": "sha256:dd5fa93f49316163ac0153e7a5239ecc2867cfb982b353d2755849af40d6c7a4",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 76,
+      "end": 76,
+      "digest": "sha256:5b558cbe03aa20cc4cc56c7a823304704a6df32964d4e0bada77a44394b3bed6",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 77,
+      "end": 77,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 78,
+      "end": 78,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 79,
+      "end": 79,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 80,
+      "end": 80,
+      "digest": "sha256:d363228b82b3e673e5d796c647f0d6d230a0a22c1559027cfa9c5776d1f5e4ed",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 81,
+      "end": 81,
+      "digest": "sha256:fd1e3b834c3fcd5355ea2ffdf08c96786fab4be3cbec936a4c1b5fd697397a67",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 82,
+      "end": 82,
+      "digest": "sha256:baf859dade4da65c4795fb9793463f97f12a05c26e774047bae69c79bfdb2a11",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 83,
+      "end": 83,
+      "digest": "sha256:df1c95a11bef5a605b8a09f21ed70574c9c42a52158b944e2ac2b9673c3997b5",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 84,
+      "end": 84,
+      "digest": "sha256:d816400b7d09dcdcf0048824071bc47a79487584ce17dee26437b30fa7d5df62",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 85,
+      "end": 85,
+      "digest": "sha256:ebc88a0f64dc9818ed2482f09d5d03b8d88bca5376402b02825403b64a63c8dd",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 86,
+      "end": 86,
+      "digest": "sha256:f9054086ef3a74915cf468a51347cb315d0d06b83af932f763a9156a83bf5133",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 87,
+      "end": 87,
+      "digest": "sha256:14c70d4da979e1bcae7dcf6026cc9ee54aa7e602079cc7417bed8f7e799aa4f7",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 88,
+      "end": 88,
+      "digest": "sha256:304411baf30b34f1135b34ad3d4e0a6cf886cd70357d7187f39b642383719786",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 89,
+      "end": 89,
+      "digest": "sha256:edb50cc4457ac0fe2a5753363a17aaa223b9211b8acb43f948a50b45146d7419",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 90,
+      "end": 90,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 91,
+      "end": 91,
+      "digest": "sha256:2fa94fb2877eb99f8bfd85bfb1000cb9fc6fb527d950cb289167e9f83ebf5fd4",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 92,
+      "end": 92,
+      "digest": "sha256:22b80671dcb9d81d22ca08c9c9a05c7141fea6325347d1ee1dd24baa350b0e5e",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 93,
+      "end": 93,
+      "digest": "sha256:42c95385e6d3f15b3a363d8fbb4c6a27254fbfaa9709e4e7feeeff130c7ab7d5",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 94,
+      "end": 94,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 95,
+      "end": 95,
+      "digest": "sha256:2f2a258acbae890f50c43a8a14dc92d4d66e8b5f93752639ea7d9f7a1555d0e9",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 96,
+      "end": 96,
+      "digest": "sha256:ee94cd7abcbdb8eb9969ae45ab678dad14c118d7720ed8c299d874efa57f4354",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 97,
+      "end": 97,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 98,
+      "end": 98,
+      "digest": "sha256:d2503c7f22f95df74f93fe70491760aba18b1f416ab0560f5d5872ff4d81d0ec",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 99,
+      "end": 99,
+      "digest": "sha256:31ae96de7c60e510cc63281b97b62e894f4669a619ecc4122264fd498b0649a5",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 100,
+      "end": 100,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 101,
+      "end": 101,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 102,
+      "end": 102,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 103,
+      "end": 103,
+      "digest": "sha256:5630496d22ff55a754151427f317f8c86c7bf1522d186fa47e93627a5e7afbdc",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 104,
+      "end": 104,
+      "digest": "sha256:a5c3de350e750e50f480c3f43f51f778d02e781bed915690b0c8d35af66652e9",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 105,
+      "end": 105,
+      "digest": "sha256:e063dca558f9fa1cb02d560c8bbe7a955378ac7eb317bb761ef7741765187b81",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 106,
+      "end": 106,
+      "digest": "sha256:304411baf30b34f1135b34ad3d4e0a6cf886cd70357d7187f39b642383719786",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 107,
+      "end": 107,
+      "digest": "sha256:527f26c67666e5770b28ae88f2adcb6819f1baba7c8c9318e2331d4d69f9bdba",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 108,
+      "end": 108,
+      "digest": "sha256:a6b480eb64dd66b8cf59f4f2437742058ec001f897fdcf749a0eb03a970a5e8e",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 109,
+      "end": 109,
+      "digest": "sha256:6c7172c5310667bd9fb4d55f40e162282fb01f076a491b83ffda294d2278c53c",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 110,
+      "end": 110,
+      "digest": "sha256:fd0c1ce4fdc4319ea446dfd78b44401be3073bfabbefc931ada4946ed435ad71",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 111,
+      "end": 111,
+      "digest": "sha256:8571162cd492a07df8cd3772969faabc16e3a788b12f1425e2e174285eff9c65",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 112,
+      "end": 112,
+      "digest": "sha256:5bad7cc2dfafc2175fa2d9704e0202f94083a9da69a585b0b18c48bea236275e",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 113,
+      "end": 113,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 114,
+      "end": 114,
+      "digest": "sha256:de3b8f5af5c3152eea76706a2a53ce59d68909d3c1e42395bf975b1d6836a252",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 115,
+      "end": 115,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 116,
+      "end": 116,
+      "digest": "sha256:2fa94fb2877eb99f8bfd85bfb1000cb9fc6fb527d950cb289167e9f83ebf5fd4",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 117,
+      "end": 117,
+      "digest": "sha256:a63f9c25045eb4e8890fdc1514edb88eac32c16db846ecd099bd7c898aba4c36",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 118,
+      "end": 118,
+      "digest": "sha256:c35078502a42281316bd6af1d96a1d2d4307185b99b190f5123877b622c8aa8c",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 119,
+      "end": 119,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 120,
+      "end": 120,
+      "digest": "sha256:83ef8e501c6c0bc01afdd727a065023c556b9f29a90581aa7fefc705df40bbd3",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 121,
+      "end": 121,
+      "digest": "sha256:752791386c0f3e0e313815d19f5cf9654eb9a9abd00c24c44443005e4ab94af7",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 122,
+      "end": 122,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 123,
+      "end": 123,
+      "digest": "sha256:6b014395c9b7731edee869ec36edf8e6244fedee27ca515fc21fe19b322ef7be",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 124,
+      "end": 124,
+      "digest": "sha256:ac66ff31b1e016bbe1d11f9048d00e4616be70efb71e99f9226e9dfc516dae5d",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 125,
+      "end": 125,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 126,
+      "end": 126,
+      "digest": "sha256:2706895a1f488327bcbdd23259191d2f9e7d13794003e55c68cfba0a8170d25d",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 127,
+      "end": 127,
+      "digest": "sha256:416fa298cbceebebd99a4fac8d977bdd0dc933323b61188f726f0f3c9d18f60a",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 128,
+      "end": 128,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 129,
+      "end": 129,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 130,
+      "end": 130,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 131,
+      "end": 131,
+      "digest": "sha256:1ef14694cdf6cbf24e820b8a7aaf5a9606c1904f7e124a527481508db8daa8c1",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 132,
+      "end": 132,
+      "digest": "sha256:ab05481bf243a38ec5116ace90a37c08a71f226c2f8d09b7e668b06cff412e9f",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 133,
+      "end": 133,
+      "digest": "sha256:8de1059539ab9852b400861c0669950b3a3cd40608b9ab9c3782b293999a74c4",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 134,
+      "end": 134,
+      "digest": "sha256:29b5ae6f84c76d9ec90e9bf784a2fe95ad3075f8949dd4e44c77b1e01070b974",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 135,
+      "end": 135,
+      "digest": "sha256:05c5ad5cf58159f3ccd9f2e84401e44e9631664570b1a21c80788e8af4175c3c",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 136,
+      "end": 136,
+      "digest": "sha256:4b051c8fbcaa57b2001a71048f60c9724b86e30d6ace9927e48b0ecd385d2f80",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 137,
+      "end": 137,
+      "digest": "sha256:5ad35606c18315ae28c34b2af52090662e02a8ad1f55d657249d7f62e47d6a85",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 138,
+      "end": 138,
+      "digest": "sha256:f4adc9a384b4874c2b2a4a90c03d41290a5363671f3958e4cb155c0caba74612",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 139,
+      "end": 139,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 140,
+      "end": 140,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 141,
+      "end": 141,
+      "digest": "sha256:f19096c923253ae174f4b34ce73c5c9eb9148d4bfec53053901145a399973b87",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 142,
+      "end": 142,
+      "digest": "sha256:b76a05609c389d0a1917ff7b8d08e9a45350ca54987c7e401f3d67c786b992ef",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 143,
+      "end": 143,
+      "digest": "sha256:5fb8d8cea371defb784085905900c0dbdf8583e9209935d9e8b87de02e860c65",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 144,
+      "end": 144,
+      "digest": "sha256:cb88214b57f01e25cfdb60fc6a326315f232606e84e5a9a39069e11c286a6a90",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 145,
+      "end": 145,
+      "digest": "sha256:1b2dd175cf1bbc3cb6c8f017cb3875dc8e7711075ada13ae195050bbd3733744",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 146,
+      "end": 146,
+      "digest": "sha256:b476946e156f78b3a8548082a521a7e9ba65aafddfccded70d604dfa10c0e9fd",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 147,
+      "end": 147,
+      "digest": "sha256:35de07a2f38e3f91a7a09cf2090afbe7390b82b99c0fb2b6be6c1e4fba06a171",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 148,
+      "end": 148,
+      "digest": "sha256:6e24e6c0675fa971a1e211e78f76cb1a804d072b1a782c7e0d8fada15a04be14",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 149,
+      "end": 149,
+      "digest": "sha256:221ace7d123e0c96cfb1cedf630a74cfe492543a6433102b02e47f7c47a9a894",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 150,
+      "end": 150,
+      "digest": "sha256:cacc080594d6a0e4ccb9a197482d885d496d11af92c823c84ae61f3316df9993",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 151,
+      "end": 151,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 152,
+      "end": 152,
+      "digest": "sha256:b476946e156f78b3a8548082a521a7e9ba65aafddfccded70d604dfa10c0e9fd",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 153,
+      "end": 153,
+      "digest": "sha256:406bf861d047c52fe69ca8e2368f47357c12b6aaa213d2f5f6b9dd8e24d12763",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 154,
+      "end": 154,
+      "digest": "sha256:66885261202fad70f10e40cbcef5c4f2a3a0ca178903a02173c79167d4ba5952",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 155,
+      "end": 155,
+      "digest": "sha256:b766754cc3f8f4c05c99cb48201262cd177c37c458fac481f9f0f1b79ee046b0",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 156,
+      "end": 156,
+      "digest": "sha256:ec9fffcc653fe84b1e3b29823c7bac8c83d703055c5ce800e0ca0bbce8d9ab31",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 157,
+      "end": 157,
+      "digest": "sha256:a31f4d964869dff30c4ba434cc56afbe923aeda50bb58250abed9512087cb91e",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 158,
+      "end": 158,
+      "digest": "sha256:e7e1c7ea3c7062499e723457e3e063022a33c09a008ede78da2e850a0b09dc27",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 159,
+      "end": 159,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 160,
+      "end": 160,
+      "digest": "sha256:478d4e4f20b6de74f8285ef3bc15a75c1f10d723786049180e761c8985614c33",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 161,
+      "end": 161,
+      "digest": "sha256:2de462947cff8242e809e7cda94dec43a574985b393b917d6ed4bb73e9d3355f",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 162,
+      "end": 162,
+      "digest": "sha256:cba6e960df807209000e7d5e8219767b99266f44a871e90815067604a308d301",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 163,
+      "end": 163,
+      "digest": "sha256:aec0535f9dcac296f512954bb4532a1aea384df7e603bd542a0c9be0dae94c29",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 164,
+      "end": 164,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 165,
+      "end": 165,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 166,
+      "end": 166,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 167,
+      "end": 167,
+      "digest": "sha256:b21d15d904e17080378b80eceab723611c58074073cd320daa22669edbc3b6b0",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 168,
+      "end": 168,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 169,
+      "end": 169,
+      "digest": "sha256:0f9fe1aa79966463024c00348ebded6455e3c7b58a000f0c647bf684c6ba6ccd",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 170,
+      "end": 170,
+      "digest": "sha256:ee710c926d06fc9338f20f5572819b413edb8f60199c9fb0506a64208174c280",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 171,
+      "end": 171,
+      "digest": "sha256:015d10f7854b430e8efc3b967ae10a6b0793ea52e6466e4c0a7ebededcb886e4",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 172,
+      "end": 172,
+      "digest": "sha256:feed9ff3b869e1d6cee37585b807f7bf978618258bcee035db8f1a24e1b76acd",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 173,
+      "end": 173,
+      "digest": "sha256:2e43467bac3d94fb18600fe36c73ae854a06d2e7dc2bdce4774b9814ee88c5b8",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 174,
+      "end": 174,
+      "digest": "sha256:628fa8d01926a3ca76865e8171cff932ea6fbf9d124922cd46bc864d55cc7969",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 175,
+      "end": 175,
+      "digest": "sha256:f3289bccf1ff6ebbfe3d4ea31ff6599cc84227cb415030651d759c55a97b4e4d",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 176,
+      "end": 176,
+      "digest": "sha256:42a57081051f4682a7db3e590b4dd5413d53dc9a01551276dacb521a7e1db9a5",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 177,
+      "end": 177,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 178,
+      "end": 178,
+      "digest": "sha256:c1152461e4284dd0dc81ff7059aace9fbe750d47dc6cd3106c13842d83445493",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 179,
+      "end": 179,
+      "digest": "sha256:d45efc622b65789dbddd5b4ae94b9f52ac9128487b499fb1700a780cae7c58fb",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 180,
+      "end": 180,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 181,
+      "end": 181,
+      "digest": "sha256:fdbc500fc5c9024b89e96ebecd68eff22e2565f6830b6991237b2bc3bd501a91",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 182,
+      "end": 182,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 183,
+      "end": 183,
+      "digest": "sha256:2ed0d96471ed6363c0e4fbc2ec856187255f5729acdddd278b3f802b6148459d",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 184,
+      "end": 184,
+      "digest": "sha256:7f3d5fe234b167d1508e07548f6667c4bb3124c9e236c90a8d389f334bc08404",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 185,
+      "end": 185,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 186,
+      "end": 186,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 187,
+      "end": 187,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 188,
+      "end": 188,
+      "digest": "sha256:99c75f0dd37e6cc4d78452a06712fe72572aee0d64179080f2dfc6d8579e2f06",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 189,
+      "end": 189,
+      "digest": "sha256:3c088e2b172ca3ec493ab9ad925e638ae2b3a9eadf1003cd0ca51799400a2e81",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 190,
+      "end": 190,
+      "digest": "sha256:556125f231bd9e14de7967910fb52f60861664c706a4ef95a04eabd2f9cb9d66",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 191,
+      "end": 191,
+      "digest": "sha256:ab583c49f70aa713cac9e1164e5e94e149831e37f0da38a4d585c57e86ee4809",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 192,
+      "end": 192,
+      "digest": "sha256:9826d8230d1138be12115630eff17077276bf387a0ccb8e9c0b0cb87074d952a",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 193,
+      "end": 193,
+      "digest": "sha256:8bce286b701271ef4ea51486a22c9a67f361711c5310da686c6175423c3c03b7",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 194,
+      "end": 194,
+      "digest": "sha256:819e749e762e00446d213ce6e7e31057c6dcaf3917824e7b9e93b6c15d3f728b",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 195,
+      "end": 195,
+      "digest": "sha256:a0e27edf043fd4f19a9ae94e744cecef252e928400b5631bb2ee679fe22906c0",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 196,
+      "end": 196,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 197,
+      "end": 197,
+      "digest": "sha256:6c202417a98fcf548c42a8a3c3ff4f905f6600a701c80bff29137b261fcf3453",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 198,
+      "end": 198,
+      "digest": "sha256:398a20b02fc2e2353ff9a92fe4c24177b25a6d8d3395c173fd39a9bba6decdd5",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 199,
+      "end": 199,
+      "digest": "sha256:33ea24127e04d1df0b9c8193628b2590906550317a26ff5b6ac3daa4809c9c76",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 200,
+      "end": 200,
+      "digest": "sha256:d72d0ba41f95ce01aff1be3f66aa30ad7dbc21a0eb1ee0475fb091217eddc1d6",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 201,
+      "end": 201,
+      "digest": "sha256:cfac18a3b54986904c2778a40cf5dec4febc562ce5da98e5672c1ec6769ab618",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 202,
+      "end": 202,
+      "digest": "sha256:2914e8cf1d01b8d2a82dc9286a4ac3dcbd34ec96c3d4f0fea48c53cf6acbd355",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 203,
+      "end": 203,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 204,
+      "end": 204,
+      "digest": "sha256:be8d6769990f46137a8f2d12fb4ec32f5ad7ae8efc0ae800caa96c05b400741a",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 205,
+      "end": 205,
+      "digest": "sha256:b2de16b90407ece3d128fc3820c4ffdca9fa89b943ff56b2e95008119e31b988",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 206,
+      "end": 206,
+      "digest": "sha256:853cb15748b100dd68a0ad32939cb11a933eb54dadec36d5d24ff35d1ebe88bd",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 207,
+      "end": 207,
+      "digest": "sha256:eedea4b0f9c215e72e9d8222b7a18774214fee92d61e9c536b5f67bda8f5237f",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 208,
+      "end": 208,
+      "digest": "sha256:b5f071b2ef4d8ae8a56090272a059ccaada33f6b5615387fffa3193bc6c2882d",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 209,
+      "end": 209,
+      "digest": "sha256:b6ff5f20a8d7fa74eae63c936f4bd235935dff3c9a6617d69efc80f1cb147fd7",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 210,
+      "end": 210,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 211,
+      "end": 211,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 212,
+      "end": 212,
+      "digest": "sha256:7899a47903015042e2f8db6b6d44b49de69b0b71950b74e7f3bd945790493af5",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 213,
+      "end": 213,
+      "digest": "sha256:a600a26363f15ee1c4b1e9d92799f565af504e7054c7cc774280c09abc211d24",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 214,
+      "end": 214,
+      "digest": "sha256:b3ad10a31a7bd048eccfaf26afb5503ffa0915328e16ec7175a86f7e1fdc3f7e",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 215,
+      "end": 215,
+      "digest": "sha256:8370a89d7731a558757f8f98850126003e7706d90b2123001f4b90ff7966efbb",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 216,
+      "end": 216,
+      "digest": "sha256:4d462fd5188f25c26530ccff006b62e5a7b57d356990e09d5f3e18812ecfc743",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 217,
+      "end": 217,
+      "digest": "sha256:faf73b1e8f9a0ba7cb36fa980dc3522f9bd1f80ea02860c706524fc5305d946e",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 218,
+      "end": 218,
+      "digest": "sha256:ac0937e1edeb40f9a2db9ef1b3460c3bcbdef4c8c9f10074188952211fb761d7",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 219,
+      "end": 219,
+      "digest": "sha256:f5ebee0096d0776241462311cacd19208092b50caa511b04b5477f4f6759a2c6",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 220,
+      "end": 220,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 221,
+      "end": 221,
+      "digest": "sha256:c63f1d04659f3de7ac0cb45f072754f1fa1a5767324fbd93617d07469e54a682",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 222,
+      "end": 222,
+      "digest": "sha256:0d703f88c0510f3b947b6e7a89190a7b77d9d6fdbb0bf4b4193a9da5553b15a4",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 223,
+      "end": 223,
+      "digest": "sha256:ac0937e1edeb40f9a2db9ef1b3460c3bcbdef4c8c9f10074188952211fb761d7",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 224,
+      "end": 224,
+      "digest": "sha256:12739e71d16bd978e2ace705b081df4d6e8c82d425206216df4fd181b2c256ac",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 225,
+      "end": 225,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 226,
+      "end": 226,
+      "digest": "sha256:c63f1d04659f3de7ac0cb45f072754f1fa1a5767324fbd93617d07469e54a682",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 227,
+      "end": 227,
+      "digest": "sha256:0a0b95151236069d33a351f903d0ae9e5c876954b2f3ea88b2ad578f20084f3f",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 228,
+      "end": 228,
+      "digest": "sha256:6cdef6a113bb2e509646141f3dea4453f8a5cfbc891c698f4e1fceb772000a10",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 229,
+      "end": 229,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 230,
+      "end": 230,
+      "digest": "sha256:496e8e760f4ba4b0664869e83d3645e7fb2caf23f1a1cf8a035e65fe7c70775a",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 231,
+      "end": 231,
+      "digest": "sha256:16cd32432bf3a151e2d96ad70b241d9028bcd3d7e6540d62d5c68ac720d98c42",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 232,
+      "end": 232,
+      "digest": "sha256:8519392d29446867752f44ff29c5b9f04308bc5434da9d20339ca39e0c3b0249",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 233,
+      "end": 233,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 234,
+      "end": 234,
+      "digest": "sha256:793bd7bc8680a04462b9328ed51f0071dc7c0452f4c277e062c1a058275bfede",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 235,
+      "end": 235,
+      "digest": "sha256:5131451db0b1f8ee248374cfb6587cd784829610991178dcd040d380dd4e1e3e",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 236,
+      "end": 236,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 237,
+      "end": 237,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 238,
+      "end": 238,
+      "digest": "sha256:1e38e9e7f8ddee363beeadd375354b1d6748901358503c2fb3c548876b799912",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 239,
+      "end": 239,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 240,
+      "end": 240,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 241,
+      "end": 241,
+      "digest": "sha256:157252ac66f5b53006e413c53bc8800aa52398d7e0ba99734f6e24cd04b3a1f3",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 242,
+      "end": 242,
+      "digest": "sha256:5101205b4b988b49e44133652a30dab00eaf364bad0600b9480bebe91eb57730",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 243,
+      "end": 243,
+      "digest": "sha256:3dfefbc1ffb4c4bd43ead8a640169af97b302cf72bb93212ea1365e9890ced8f",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 244,
+      "end": 244,
+      "digest": "sha256:77024a9d8c0967d7bc62e71a10c844959e5d911e185dfa3a1653ad0cf06b93a2",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 245,
+      "end": 245,
+      "digest": "sha256:e2be28a4497bc5974b9fbf43efb7329aa5f5edc8349419a549bca10c78cdaa55",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 246,
+      "end": 246,
+      "digest": "sha256:ac0937e1edeb40f9a2db9ef1b3460c3bcbdef4c8c9f10074188952211fb761d7",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 247,
+      "end": 247,
+      "digest": "sha256:ab87fee9138ef189eb4779fe4f95f0e80a832cd140f86b9ef8d1bf9de1fc4dd1",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 248,
+      "end": 248,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 249,
+      "end": 249,
+      "digest": "sha256:e7e1c7ea3c7062499e723457e3e063022a33c09a008ede78da2e850a0b09dc27",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 250,
+      "end": 250,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Selector index growth contract."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 251,
+      "end": 251,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Selector index growth contract."
+    }
+  ],
+  "version": 2
+}

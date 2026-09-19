@@ -1,0 +1,11 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/saga/validate.go",
+      "digest": "sha256:de340c593fa9527406ccbf7163f588c3ddec4bf23afc3af0a7a7198d460bc545",
+      "note": "Records this owned authoring path as newly introduced in the since-inception comparison."
+    }
+  ],
+  "version": 2
+}

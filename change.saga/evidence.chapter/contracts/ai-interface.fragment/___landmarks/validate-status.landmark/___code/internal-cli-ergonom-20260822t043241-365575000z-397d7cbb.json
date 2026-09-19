@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/ergonomics_test.go",
+      "start": 201,
+      "end": 268,
+      "digest": "sha256:21d63f84d58dbbaa1b93531cb166eb3f3819ecb5d1a7617407a44e62dc9a42c7",
+      "note": "Tests deterministic heading-anchor repair and its no-op behavior for already valid content."
+    }
+  ],
+  "version": 2
+}

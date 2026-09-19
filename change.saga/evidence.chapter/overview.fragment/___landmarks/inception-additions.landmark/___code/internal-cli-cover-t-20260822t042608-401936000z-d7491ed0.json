@@ -1,0 +1,11 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/cover_test.go",
+      "digest": "sha256:fd38dc3a7d97e7675af58e65da8798312ed9029afa61aebfc07fd1b39c7011df",
+      "note": "Records this owned authoring path as newly introduced in the since-inception comparison."
+    }
+  ],
+  "version": 2
+}

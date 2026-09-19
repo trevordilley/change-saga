@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/appjs.go",
+      "start": 1,
+      "end": 324,
+      "digest": "sha256:bb5904a5e5c501e96e2fc783ef8d70cd15924097105a4ff7218e7bb544dc39e5",
+      "note": "Defines token-bearing review submissions, decision state, progress feedback, shortcuts, and stable permalinks."
+    }
+  ],
+  "version": 2
+}

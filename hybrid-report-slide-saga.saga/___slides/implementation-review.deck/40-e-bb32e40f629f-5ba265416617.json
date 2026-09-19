@@ -1,25 +1,45 @@
 {
-  "version": 2,
-  "diffs": [
+  "references": [
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=21\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=README.md\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=11",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "README.md",
+      "start": 11,
+      "end": 21,
+      "digest": "sha256:63f9f8c39da113ec31e7dab49c8737b355f62afc3f7dffe5bc0cbfb41648d9c4",
       "note": "Introduces the hybrid Saga contract and explains how review targets trace back to living requirements."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=208\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=README.md\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=206",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "README.md",
+      "start": 206,
+      "end": 208,
+      "digest": "sha256:373a58b3b3fbe67ec5fc9b0d6208a42ad0faf59b836f3dbfa549bef073922f45",
       "note": "Introduces the hybrid Saga contract and explains how review targets trace back to living requirements."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=225\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=README.md\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=224",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "README.md",
+      "start": 224,
+      "end": 225,
+      "digest": "sha256:f06ba70e9837773c67ffa9ce1bd47e1daaa25f70da87f7cd5dd16288b8d3252c",
       "note": "Introduces the hybrid Saga contract and explains how review targets trace back to living requirements."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=231\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=README.md\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=227",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "README.md",
+      "start": 227,
+      "end": 231,
+      "digest": "sha256:47546936c715edd591492d9eff46f04c40f4e34d4c14c43bd249716873b5e869",
       "note": "Introduces the hybrid Saga contract and explains how review targets trace back to living requirements."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=240\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=README.md\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=239",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "README.md",
+      "start": 239,
+      "end": 240,
+      "digest": "sha256:80567b650dc3cdef11af06812e304bd95075660f7c8692d43926964d3e7a09de",
       "note": "Introduces the hybrid Saga contract and explains how review targets trace back to living requirements."
     }
-  ]
+  ],
+  "version": 2
 }

@@ -1,0 +1,437 @@
+{
+  "references": [
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/server/attachedcode.go",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:8b173c2ebede9517a984037d6f9fac36bf4572f680e37f5d88eb0a1c207d49b3",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/attachedcode.go",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:44222e36ff099fec5890b325e41c23ddd7059bed426375131f8c33d43c5ae7b2",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/attachedcode.go",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/attachedcode.go",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/attachedcode.go",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:a75fb58c6cbd7066039781683fd599fbfcb5d31f99252345ae54855c7a75de6a",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/attachedcode.go",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:49a4452eddc3016f0078612fd74b76c2265d1615f8e073c0abc2dd87cc10316d",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/attachedcode.go",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:32f1ea583ddb00bd515eab0f9e2817441049cd26058c78d08a8d08a2a8df02f0",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/attachedcode.go",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:fb1cea8c14b3af611a102735b984389cbd251bc5050d919e8b857206a644bc84",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/attachedcode.go",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/attachedcode.go",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/attachedcode.go",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:d4ce5015d138f1910cb00b5c86dd72aa6557fcea8b05e4accd19820ea0e68fb5",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/attachedcode.go",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:3723d9d91c5b6293f239713110fa83ca9f72edaaa03ae1305bf4d61bfe922d37",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/server/attachedcode.go",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:44acab54424996fcb092e0bf8f1512750f7f3bc58def738eadbee35fc553af67",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/attachedcode.go",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:35a0ab416bc6ac6b79cf9a267f43153918032d1671b911ad437802dd1df81df6",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/server/attachedcode.go",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:e54e36771992ae37f5fc9fb08af90925a4d88607a49873554fb4474f1568a1dd",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/attachedcode.go",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:52c0b9e4e99509cdf34ad7084f6ab2a31296bd3fbb9ca4b70b1aaf6fe52ce61a",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/attachedcode.go",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:c95e7313afbe4368cf5865915b4ac33623da5302ecaa905b26f63525567d8df7",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/server/attachedcode.go",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:11b34db62e6da6932c5783e34289f3ee75720f66d6b85e397a7c8f42fd1dae92",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/attachedcode.go",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:49db2299967f2c8f9ed41ce8542e52c0b4f894980bf1074612f024ab45f582a6",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/attachedcode.go",
+      "start": 91,
+      "end": 91,
+      "digest": "sha256:d4844034dde9e26a5c4b5b34bfbad46b70d4c363f53982f5d7522ec5e6a4cec5",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/attachedcode.go",
+      "start": 92,
+      "end": 92,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/attachedcode.go",
+      "start": 93,
+      "end": 93,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/attachedcode.go",
+      "start": 94,
+      "end": 94,
+      "digest": "sha256:e9e9e66c391b049bffbd90dfc977ac8327906c565977e22145f62e3bbd462b34",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/attachedcode.go",
+      "start": 101,
+      "end": 101,
+      "digest": "sha256:497eae036efc0a3ea4ca5d0e57ec841d90c038f58c8c9558bb29dba76d5ef3ab",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/server/attachedcode.go",
+      "start": 99,
+      "end": 99,
+      "digest": "sha256:3c579657c8bb7463d7f1ffabfed8b098e2cf67a087f2a6d0a1dfdb98cf1029b0",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/server/attachedcode.go",
+      "start": 100,
+      "end": 100,
+      "digest": "sha256:e3b3df4913605073aef88fcd41f42dbd09c4de3659ce84d9de4299810208b463",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/attachedcode.go",
+      "start": 115,
+      "end": 115,
+      "digest": "sha256:ce3f31eea0120dd4b119e3adcaa85b0dcae1d8153a4f4bcf4806c786f2e4652c",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/attachedcode.go",
+      "start": 116,
+      "end": 116,
+      "digest": "sha256:682d6cb70c95903178a6e7b463851439799a4b7340c99874cf297da76c31359c",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/attachedcode.go",
+      "start": 117,
+      "end": 117,
+      "digest": "sha256:69def196f98a5bb624764c83cb21c4f3911ceaf2fcfdfea9163fe591238d3310",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/server/attachedcode.go",
+      "start": 109,
+      "end": 109,
+      "digest": "sha256:6cff11d18a5bc49136e6521b4304461f1d3c068b1f42097c5226128496d1a3d5",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/attachedcode.go",
+      "start": 126,
+      "end": 126,
+      "digest": "sha256:f7f744f18b74cb3e6b06f0f04e2463d654badba8ecaed5fa96d7cfdb3829f751",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/attachedcode.go",
+      "start": 127,
+      "end": 127,
+      "digest": "sha256:a1765e1bf25c9fd33ff2a051782b05fa92508436cf68ee42cafde40d9e2f9084",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/attachedcode.go",
+      "start": 128,
+      "end": 128,
+      "digest": "sha256:f9bc249236df1e8ef27ac399bb015cdae9c7756082e4bed0df0a39da818af4d5",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/attachedcode.go",
+      "start": 129,
+      "end": 129,
+      "digest": "sha256:21c95c8d7f66f1dbe4aa46a711050b9c3be142cc6ee8fa7559f4dfb31d666582",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/attachedcode.go",
+      "start": 130,
+      "end": 130,
+      "digest": "sha256:f76340b598de008e16f61c0208646a11d2f74bebafe4bd6e37593ac8128a3b29",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/attachedcode.go",
+      "start": 131,
+      "end": 131,
+      "digest": "sha256:bf5455b381fb72dbe14cdb844386b059b9170703a8785e1a6a2ee673bcb5d7d6",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/attachedcode.go",
+      "start": 132,
+      "end": 132,
+      "digest": "sha256:10df81b046f58065938d494eae12e57c0402dee55660f60d360946068eec23c5",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/attachedcode.go",
+      "start": 133,
+      "end": 133,
+      "digest": "sha256:4dc76020bae70577e64b330dca83fdf24f3d7593a0154d8abec6dc63f5897fd9",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/attachedcode.go",
+      "start": 134,
+      "end": 134,
+      "digest": "sha256:16a88a20928e71507fa44caf4d3b550ee33f1de84370e9b17424b6369bbf2b6d",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/attachedcode.go",
+      "start": 135,
+      "end": 135,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/attachedcode.go",
+      "start": 136,
+      "end": 136,
+      "digest": "sha256:ecf35a8e51c2b9c0c00ba01eefc72385aa876f9acbe03c5023ca5b5efa588082",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/attachedcode.go",
+      "start": 137,
+      "end": 137,
+      "digest": "sha256:27097299292de7e7a659bbd76a9a1d7d2ad7464a1df323b6705262542e475c63",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/attachedcode.go",
+      "start": 138,
+      "end": 138,
+      "digest": "sha256:0ed3e33b1a6862cc18bdfc95c3d90bf9471033ffb715b929320eb6ce007cc90b",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/attachedcode.go",
+      "start": 139,
+      "end": 139,
+      "digest": "sha256:ed32c209daf32bebeeb076747d0b95dbf0754462dfb7cbad16e7d8bf044eb6b6",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/attachedcode.go",
+      "start": 140,
+      "end": 140,
+      "digest": "sha256:d20ec5ec2cd2f9c80e5789f5f6916827c1e8a2defcb0224e10c35001965f0970",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/attachedcode.go",
+      "start": 141,
+      "end": 141,
+      "digest": "sha256:aa8d28cacc67e3156a93a072f0ed0f54ba32ac6c378cfb6b2909e1805bd2a91e",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/attachedcode.go",
+      "start": 142,
+      "end": 142,
+      "digest": "sha256:0055be52138ce20d78ee039150397ad551cd19d14b897dfacd04b3e05bdcd9dc",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/attachedcode.go",
+      "start": 143,
+      "end": 143,
+      "digest": "sha256:d20ec5ec2cd2f9c80e5789f5f6916827c1e8a2defcb0224e10c35001965f0970",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/attachedcode.go",
+      "start": 144,
+      "end": 144,
+      "digest": "sha256:5e6da88ad079bf2d29129faab5cb0b7ef0d980a621d6e72c31e28f7c59d7d03d",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/attachedcode.go",
+      "start": 145,
+      "end": 145,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/attachedcode.go",
+      "start": 146,
+      "end": 146,
+      "digest": "sha256:56cd6da3f561d6f880ce3062a47178d83b3e7e90c52979470754cdf941611d0b",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/attachedcode.go",
+      "start": 163,
+      "end": 163,
+      "digest": "sha256:1140d03d73e76916d635820c16ca84ede297a196c55e05bf309214aa42d4e51d",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/attachedcode.go",
+      "start": 164,
+      "end": 164,
+      "digest": "sha256:b837f0064588c7d27c72926ea73c6139fd49535fc3851d7e33dae4b86429e0d5",
+      "note": "Bounded attached-code summaries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/attachedcode.go",
+      "start": 165,
+      "end": 165,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Bounded attached-code summaries."
+    }
+  ],
+  "version": 2
+}

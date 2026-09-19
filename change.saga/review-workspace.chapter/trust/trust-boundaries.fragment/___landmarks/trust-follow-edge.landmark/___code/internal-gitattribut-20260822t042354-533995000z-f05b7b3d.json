@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution.go",
+      "start": 204,
+      "end": 268,
+      "digest": "sha256:3466b56ea4f4155e1a047645239b056513d5a2a32ee2d100b2648c98612f27cc",
+      "note": "Finds each record’s introducing committer through rename-following history with bounded parallel workers and batched paths."
+    }
+  ],
+  "version": 2
+}

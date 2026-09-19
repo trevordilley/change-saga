@@ -1,17 +1,29 @@
 {
-  "version": 2,
-  "diffs": [
+  "references": [
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=203\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fsaga%2Fflat_review.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=203",
+      "commit": "b6042a5b85057c8f2f892dabc9d06cb1bfa155fd",
+      "path": "internal/saga/flat_review.go",
+      "start": 203,
+      "end": 203,
+      "digest": "sha256:05ecc21bc65b84be72b0de9fa507d8e646efaa6d04685dec1aa93efd7015fa81",
       "note": "Composes flat slide review records with existing report review state instead of replacing either history."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=205\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fsaga%2Fflat_review.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=205",
+      "commit": "b6042a5b85057c8f2f892dabc9d06cb1bfa155fd",
+      "path": "internal/saga/flat_review.go",
+      "start": 205,
+      "end": 205,
+      "digest": "sha256:0d1c9724b74f5f387b7f84aa17f747ea7d6faa5f619e113a9d844a4a0c5915e3",
       "note": "Composes flat slide review records with existing report review state instead of replacing either history."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=207\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fsaga%2Fflat_review.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=207",
+      "commit": "b6042a5b85057c8f2f892dabc9d06cb1bfa155fd",
+      "path": "internal/saga/flat_review.go",
+      "start": 207,
+      "end": 207,
+      "digest": "sha256:3af5b8cbdfe5c7197831092d645b4652a7d8b353054a10a3b789accffad3d827",
       "note": "Composes flat slide review records with existing report review state instead of replacing either history."
     }
-  ]
+  ],
+  "version": 2
 }

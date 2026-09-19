@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/saga/validate.go",
+      "start": 410,
+      "end": 520,
+      "digest": "sha256:3913fc41d85f1ac59cb328fe19c14810376af75777c1e6c1d516bac0e906218f",
+      "note": "Defines strict independent hierarchy and history records that compose the portable filesystem format."
+    }
+  ],
+  "version": 2
+}

@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/query.go",
+      "start": 176,
+      "end": 226,
+      "digest": "sha256:d7c972dd4db4c3ae53e170f97485ed3ca27e0cce80192cedd811d234c6021b6c",
+      "note": "Enumerates every supported operation with deterministic purposes and usage contracts."
+    }
+  ],
+  "version": 2
+}

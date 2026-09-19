@@ -1,0 +1,1259 @@
+{
+  "references": [
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "digest": "sha256:fe0c08f85d1637ae9098fb812bb43603985aa79b5233410608fbaa87d4a1f41b",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:df1d036cbbf3df46e2045071e082245ece204c7f53ecf0a4e022bff9bb228f47",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:71e37b6cd48ad477cbb12624b757ee1dc4975711b78237a85f508bfdd723af77",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:dc94db91287ede614bfe3a0ee2e2b567400c33fbbb5566199f17b7f6235ec46d",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:ecd809ad732d34f167fb9215b94d189bf981bf6fbffe2f380195c22fe8902423",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:9d321d278769fb32c7c6820e1c992ebb53b04e39def0f158cbf1d84e27d34c18",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:b83dd5913a82d8a691007f7ee185ac68dfe5991b41a3f4a5a6707f66ba980dd6",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:d7c13472432b49bc3449735b494389e2fbf6bab4fb98ea35c40aedb55cc0d0a9",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:dce87b6818a2884e83d31c73980f4824699871bd0d1b0b2cd9b7c3f5b15b116d",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:b3c0d13ea10f8c2df2aef0275d68e21986bba81a44e81e3b37a71dc5d76d8a6e",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:fafba0527c3953c4b6e0e5b5739ba83612f8053bcdc9466730193cd1d590b408",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:109910b153dba8e05f02fff4b37b91988b6fc097089e2c3f966424d72fd4af9e",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:7a2d3591b1e28ca29b5ac9c2e2d3c06bd588bd5763a1c1891a9b259fc67d1cbb",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:f408772021ae2a83dbadad9c26cfcdcc349bee5ecbd00fdacfd33d8f952cbefc",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:7934de03fb6ab90c3bfba6be4665b214c937abe4ffc73e0124e84a437c5bfb07",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:1306e169aad9991fedf03cb94fe68b71343a8dbe049604206dfab9e7c50498f9",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:355ba8185dcebf385b6373d72aa85ad088367988befb059e4c4dd3177afe55ca",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:cc8dc2c1daf61574e41d2b4e851a647f35ca7e3f96a9216defb2c9b7ca07bd33",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:ce0a05e0d443e63c2a4d722871493d58e54aae09a4e7f84562f60234e42cfdfa",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:f2349152bfc2db25ae5d5bd769503614e52f54a04b56db92ca3d237bc7912e3f",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:3a7c3bd7514e36a7aa175ce696ba94c4a7a5a263f72db8fa6a0f6b694eb902c3",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:8c06dcb57c43f9c5bb934dfa62199d4637597ac24ffce60eabf9a70c7c9a72d1",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:d7ea9a6531b73b11dcd265c3b6fc453f187eedbd23055fae43a5b87407668098",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:7bfa2cacf0a04057f3be3eeccbc0310e8cf6ffa762c0f347b0e261988e91d0d6",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:a0c3218200c9b36d5f62409435bd9aa67ec46bdbde056211e998cbeee8c6777e",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:fbd605b7c7ce2cba11dfda44a6af868f1f15c33472a178e91e100e1fa5fd23f6",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:193e79dbfe979dd30cc13872a60c5c0e2302a2c11a377d8a21c9a4c6cd356ae9",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:355ba8185dcebf385b6373d72aa85ad088367988befb059e4c4dd3177afe55ca",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:1f312699c1fb33703595385ec0205a4098e8657250f449c650bd39990789dc7b",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:cc5e3e9f3b2070fc6a8808fc43dadc135cbf34f1fd5c05ec80175db1afffee5b",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:b455c68f3021cf77dd45edd1578ceec6969b88472434c7a42800419e14f307bb",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:3a8fd1f1585098f3f6e10333e58c2f9a5c6233965f9480b1e11da64e44317ff4",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:7666c04c027ba247f8101376b59b5379e22e0022f15562b82ab12623aaabda1b",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:355ba8185dcebf385b6373d72aa85ad088367988befb059e4c4dd3177afe55ca",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:791b63424dc97556d0fe21db65c3bd3e6aedea8608a77df83053c0561cdd8e30",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:355ba8185dcebf385b6373d72aa85ad088367988befb059e4c4dd3177afe55ca",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:fc9ccc4db3944388730386a8f3c969c4efb3aab9d954503583db20bbf8af58d9",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:355ba8185dcebf385b6373d72aa85ad088367988befb059e4c4dd3177afe55ca",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:89c84d42310fcc5647c345042d32d6a06f45d62d76e110c5bf8264175cba5fcc",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:8a926930ca2cac566e122e5d343aae48e0c5f978b575521095df1d53bc648d07",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:78c833967800eb10cff7f326ee500b4aeafed2239c7dad5c4db072dd81dc6f28",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:aa5d47ff1a352c22bfbbcd32cf6af8307be8aae5f892585a929692dab81f7a83",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:4271da423b8960ae5827039f2499b3a741c6f92b75785d1b84768250eda8f1cf",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:dbe639efca5c8c7a5beadbdb9db57cb79d90bc04a4deafcc9c87378a5eb645f4",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:b05d3136481f7b7c9958f5dd4289652a002fde027fa8eb198d4576983f7f956a",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:dc409f87845d5b26c4b040d508ce6b91b424583d21f08958717078ec822f0afb",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:732a816dd5965e257efdd4f07f82c48a583b45699b6e064d46118303971bf060",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:c00040a7e85a75450fb744e7cb0034efaa92b493b9cabab74d90a0e9e42740bf",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 68,
+      "end": 68,
+      "digest": "sha256:a637c72eb7315c99e0e7a91a48ff81a33a42308065c042cb937431ff221e1a7d",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:5fb49d1b624389063476f4aba810681c43812ad3c2b6e5406bc5e2ee7dd35c6e",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 70,
+      "end": 70,
+      "digest": "sha256:a306c1c90e5f70ab881b84f95e1eee4077e5d429ee7fabed102464961b1ad462",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 71,
+      "end": 71,
+      "digest": "sha256:ccb26929b20463f4e05f9ca42dcd98648e517ae23e81083ce5b2af77432d0a41",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 72,
+      "end": 72,
+      "digest": "sha256:ada1d7914809e3499d4573e8bfe5826ae082ea2e2a14db7cc14172577c6a735a",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 73,
+      "end": 73,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 74,
+      "end": 74,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 75,
+      "end": 75,
+      "digest": "sha256:50bef5228d315324142cd216e5f18de31c0dfc9615ee163bf05d314e4036ada6",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 76,
+      "end": 76,
+      "digest": "sha256:b38d263f39a223ba8a8210f98163986027c6f340f6131c8a0a7cb7e8f6909b81",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 77,
+      "end": 77,
+      "digest": "sha256:f408772021ae2a83dbadad9c26cfcdcc349bee5ecbd00fdacfd33d8f952cbefc",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 78,
+      "end": 78,
+      "digest": "sha256:3013dd9a1226a4f8e077f970e14cf1ae00c8b1cb12651ac304660a25216808e4",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 79,
+      "end": 79,
+      "digest": "sha256:00bc19be8dd25bb08a748b110da8d5f53c7ac373af4742990dd7b4bf752fe513",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 80,
+      "end": 80,
+      "digest": "sha256:22fffd46c6c3ce8c87f7a9ce859ff0487725c67dc66c7cb248565fd0ce781099",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 81,
+      "end": 81,
+      "digest": "sha256:15f46df8bfa28c798a7ee93ea19225a3092c39e715355b8b3498adf60c503dae",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 82,
+      "end": 82,
+      "digest": "sha256:f05e49ee6dde4563256133385af619eaebc8d9ab19c6137e3612343be1a463a5",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 83,
+      "end": 83,
+      "digest": "sha256:1306e169aad9991fedf03cb94fe68b71343a8dbe049604206dfab9e7c50498f9",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 84,
+      "end": 84,
+      "digest": "sha256:355ba8185dcebf385b6373d72aa85ad088367988befb059e4c4dd3177afe55ca",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 85,
+      "end": 85,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 86,
+      "end": 86,
+      "digest": "sha256:cc8dc2c1daf61574e41d2b4e851a647f35ca7e3f96a9216defb2c9b7ca07bd33",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 87,
+      "end": 87,
+      "digest": "sha256:ce0a05e0d443e63c2a4d722871493d58e54aae09a4e7f84562f60234e42cfdfa",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 88,
+      "end": 88,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 89,
+      "end": 89,
+      "digest": "sha256:f2349152bfc2db25ae5d5bd769503614e52f54a04b56db92ca3d237bc7912e3f",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 90,
+      "end": 90,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 91,
+      "end": 91,
+      "digest": "sha256:1fec10ec0efb0661c38105cbc5e6f6d1add8c148182081dacf98709d38590f98",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 92,
+      "end": 92,
+      "digest": "sha256:193e79dbfe979dd30cc13872a60c5c0e2302a2c11a377d8a21c9a4c6cd356ae9",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 93,
+      "end": 93,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 94,
+      "end": 94,
+      "digest": "sha256:355ba8185dcebf385b6373d72aa85ad088367988befb059e4c4dd3177afe55ca",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 95,
+      "end": 95,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 96,
+      "end": 96,
+      "digest": "sha256:1f312699c1fb33703595385ec0205a4098e8657250f449c650bd39990789dc7b",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 97,
+      "end": 97,
+      "digest": "sha256:b1236d71c25a61c91a2e0476606500c19a173c3249e9ed795141bad23b020721",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 98,
+      "end": 98,
+      "digest": "sha256:0e4a355cbf38a38ddd0bbd7e2e73ca8f3a84eb41939194c9f07c948c7627da49",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 99,
+      "end": 99,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 100,
+      "end": 100,
+      "digest": "sha256:95fc3a5b3e264e778f31e102cbfc9f365a5b53652abe0dbb065b27834eb4fdb1",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 101,
+      "end": 101,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 102,
+      "end": 102,
+      "digest": "sha256:355ba8185dcebf385b6373d72aa85ad088367988befb059e4c4dd3177afe55ca",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 103,
+      "end": 103,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 104,
+      "end": 104,
+      "digest": "sha256:631f7a8e0a721e448334e07e5b454e72e7a293fd8bf73e09ca642ce58fc7f8b5",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 105,
+      "end": 105,
+      "digest": "sha256:ccaf0f8d77ba512b0ebe3765e7219f33c869844d01fa6eabf3423cdf0ec6ea55",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 106,
+      "end": 106,
+      "digest": "sha256:c032b0a3f9c84b506dc29aadd3618bc1dc9623d8e7ade6b49cb366661cdf9604",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 107,
+      "end": 107,
+      "digest": "sha256:47386abd4ef21a68d038e069aeab8303ee773ba12ff9a84496701a1a9160b4c7",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 108,
+      "end": 108,
+      "digest": "sha256:035576e0643cef7fded7f837f295a1f33afbfe5b569c148da92f537954fb309c",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 109,
+      "end": 109,
+      "digest": "sha256:1806a0d655d960c3be30615a2a8d6afc05db60ca031058238398b4e5f00beae6",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 110,
+      "end": 110,
+      "digest": "sha256:cb5412d3783fbe4aa9a23c48bcda9330f73ad6e473b147adf205625b2bb5198b",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 111,
+      "end": 111,
+      "digest": "sha256:ace2384b9b4d6b1f643f11ee1a0c234c99e2497d100b16cb77993689dad71396",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 112,
+      "end": 112,
+      "digest": "sha256:a0c3218200c9b36d5f62409435bd9aa67ec46bdbde056211e998cbeee8c6777e",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 113,
+      "end": 113,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 114,
+      "end": 114,
+      "digest": "sha256:af0286db3457b0ab4b32c95e0c28693488d979067577b8b848fbd0562c8b914f",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 115,
+      "end": 115,
+      "digest": "sha256:24eeb742c794d04da81990056b1305fa8f53a61723083120547207270cfc93c5",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 116,
+      "end": 116,
+      "digest": "sha256:8b7e6ef50dfc002960c3049146b707dd959001a6f2143a8c87e65df3391792b0",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 117,
+      "end": 117,
+      "digest": "sha256:ace2384b9b4d6b1f643f11ee1a0c234c99e2497d100b16cb77993689dad71396",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 118,
+      "end": 118,
+      "digest": "sha256:a0c3218200c9b36d5f62409435bd9aa67ec46bdbde056211e998cbeee8c6777e",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 119,
+      "end": 119,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 120,
+      "end": 120,
+      "digest": "sha256:0e17005ea65d5517336b085102477da863ce890abf05e1241a9a7cad960c45fc",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 121,
+      "end": 121,
+      "digest": "sha256:30b7ad474e60e4a127bcf71868b5cb15eb195d83c2b0ecc987f5b5814030b1f9",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 122,
+      "end": 122,
+      "digest": "sha256:8c4d0a496d6d7eea95724be550d0dc1b00877591060de71e62ad3922944880aa",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 123,
+      "end": 123,
+      "digest": "sha256:4dc76020bae70577e64b330dca83fdf24f3d7593a0154d8abec6dc63f5897fd9",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 124,
+      "end": 124,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 125,
+      "end": 125,
+      "digest": "sha256:6c0480175da152aaacd2cf76cd6b35caa4645e639fe0830719ac26376b30e94c",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 126,
+      "end": 126,
+      "digest": "sha256:967f60e549bc2bbb7f5dc7b94a30c863b83c95db7f1234e7b24fffb39e4c1d8c",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 127,
+      "end": 127,
+      "digest": "sha256:b363a9e029885e6160f6017dd3a332c89f3c6e2295e007395ea5ad5fb2f97ac3",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 128,
+      "end": 128,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 129,
+      "end": 129,
+      "digest": "sha256:6d280b48044ca5620a44f0b7efd3d7ff664b7f0968ec9c8601e22c8e34d0d91b",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 130,
+      "end": 130,
+      "digest": "sha256:ace2384b9b4d6b1f643f11ee1a0c234c99e2497d100b16cb77993689dad71396",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 131,
+      "end": 131,
+      "digest": "sha256:a0c3218200c9b36d5f62409435bd9aa67ec46bdbde056211e998cbeee8c6777e",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 132,
+      "end": 132,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 133,
+      "end": 133,
+      "digest": "sha256:0e17005ea65d5517336b085102477da863ce890abf05e1241a9a7cad960c45fc",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 134,
+      "end": 134,
+      "digest": "sha256:6fc1b3e268ac4a58555435db796f19814de73ae0abeb9bb757023246b91da41e",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 135,
+      "end": 135,
+      "digest": "sha256:2d90cc6d4ab21e4626f414cd8d2b76bf51a258fdd512a3751737d5f1cfe6dd1f",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 136,
+      "end": 136,
+      "digest": "sha256:4dc76020bae70577e64b330dca83fdf24f3d7593a0154d8abec6dc63f5897fd9",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 137,
+      "end": 137,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 138,
+      "end": 138,
+      "digest": "sha256:0e5f2ec6f3fb190ff52bc05fd403584918df4f6672d48b6795394fb1eaab7214",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 139,
+      "end": 139,
+      "digest": "sha256:fb1a656d6dc4d28b77967790b5bb21330d5ecb4ae828b3afd70fca9feeef3ab5",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 140,
+      "end": 140,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 141,
+      "end": 141,
+      "digest": "sha256:eb5fd26a1d07615d2f4053dcd76b9467d943ba727dd317751faeb2842458c063",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 142,
+      "end": 142,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 143,
+      "end": 143,
+      "digest": "sha256:f3004564977c543861b060bd3f0262d0f17f6d692e58c8e3707ffd2be8b46246",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 144,
+      "end": 144,
+      "digest": "sha256:896426dd9d2bfe69311fcd6bf4fdfae55b54e79cf3221851cf144906befbebef",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 145,
+      "end": 145,
+      "digest": "sha256:ada1d7914809e3499d4573e8bfe5826ae082ea2e2a14db7cc14172577c6a735a",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 146,
+      "end": 146,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 147,
+      "end": 147,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 148,
+      "end": 148,
+      "digest": "sha256:19c01f8d9d3017d9bbb6859b8bce2038d9b09cc19b112f27c411ecd6837876eb",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 149,
+      "end": 149,
+      "digest": "sha256:cb9c0e41dd86c8dd9ad952cfe3d234601e36c184a5a7dc5d7a043ba210dccf1d",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 150,
+      "end": 150,
+      "digest": "sha256:dbe7030d1144600123349afdfae93dc548044bf7f6688746cae4b61304830f72",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 151,
+      "end": 151,
+      "digest": "sha256:8629cb4d7d8c39e6c73255d90adafc066820b3a902c306303d0ec98dd1e80877",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 152,
+      "end": 152,
+      "digest": "sha256:3fcbbe4e5bdd6bad3a439b244f26a0fb22bbe75fa62ff145bbb915ae75634670",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 153,
+      "end": 153,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 154,
+      "end": 154,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 155,
+      "end": 155,
+      "digest": "sha256:c612553ed10d9619416969692f2b4fb8a7933fff7af0b4e5fbf7abb04cf95041",
+      "note": "Disposable index command."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/cmd/compactctl/indexcmd.go",
+      "start": 156,
+      "end": 156,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Disposable index command."
+    }
+  ],
+  "version": 2
+}

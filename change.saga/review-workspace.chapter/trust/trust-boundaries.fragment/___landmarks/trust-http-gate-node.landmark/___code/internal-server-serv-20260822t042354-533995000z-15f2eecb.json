@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server_test.go",
+      "start": 1,
+      "end": 252,
+      "digest": "sha256:8b731c881164cbed7361bc6f939185acb1cf6ef28c7499f9b83c2878bcb081d5",
+      "note": "Tests origin and host rejection, mutation tokens, bounded servers and uploads, loopback restrictions, and redacted errors."
+    }
+  ],
+  "version": 2
+}

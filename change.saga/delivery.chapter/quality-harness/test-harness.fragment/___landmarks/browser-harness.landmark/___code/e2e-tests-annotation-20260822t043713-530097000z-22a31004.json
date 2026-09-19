@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/annotation-bubbles.spec.ts",
+      "start": 1,
+      "end": 79,
+      "digest": "sha256:daa8c36efcdd0fe787f24f884e942a53c26070ec9c867ff2a0766766a4a1e217",
+      "note": "Exercises drawn-comment pinning, hover, focus, and in-bubble replies."
+    }
+  ],
+  "version": 2
+}

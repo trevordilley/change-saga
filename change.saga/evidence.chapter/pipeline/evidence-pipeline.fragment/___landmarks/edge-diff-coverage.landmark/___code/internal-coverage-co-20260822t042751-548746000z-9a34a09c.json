@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/coverage/coverage.go",
+      "start": 146,
+      "end": 228,
+      "digest": "sha256:f4ab25e5862052f9e5da9494ecee37aa9b99872a7cd3579828c3ecc9f315efa1",
+      "note": "Indexes canonical diff atoms so focused selectors can be matched exactly."
+    }
+  ],
+  "version": 2
+}

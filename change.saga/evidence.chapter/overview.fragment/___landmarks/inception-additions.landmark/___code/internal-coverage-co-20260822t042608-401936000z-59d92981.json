@@ -1,0 +1,11 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/coverage/coverage.go",
+      "digest": "sha256:a7be067d13f00fdec8b3dbf638c66682070530d449af6f90c7881b70ffc23bf0",
+      "note": "Records this owned authoring path as newly introduced in the since-inception comparison."
+    }
+  ],
+  "version": 2
+}

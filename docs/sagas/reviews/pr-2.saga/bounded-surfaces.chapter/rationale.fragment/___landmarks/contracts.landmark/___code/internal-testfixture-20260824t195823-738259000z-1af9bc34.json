@@ -1,0 +1,1101 @@
+{
+  "references": [
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 83,
+      "end": 83,
+      "digest": "sha256:513aaa51f090b136a7883c41673ada0dd42286d4dc22fd80d37b295966a23b35",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 84,
+      "end": 84,
+      "digest": "sha256:89a6a987fa8cf236583a7f47427c987487bdf55e534bc6b971c6e48aee121c9d",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 85,
+      "end": 85,
+      "digest": "sha256:f1f05001c9e8f0ec634229fee50bb864545702b190ae6ffec832d2fb508dcef4",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 86,
+      "end": 86,
+      "digest": "sha256:1e53a49207199dcf709415e2d5163c66918728a33adc7eb849243b94bb20aa8f",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 87,
+      "end": 87,
+      "digest": "sha256:a0176a11acce99b213fb0c4cf2bb35ebae9174660c7cbc503d7180731e6d4eb3",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 88,
+      "end": 88,
+      "digest": "sha256:039d3b64da504ec9d3f7f15ba883c9c7fcf0cde8c7046569fc62879b671e9552",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 89,
+      "end": 89,
+      "digest": "sha256:c3933253152e0f247125dd5347e7c08062f260656aa73f16aeaac3d9dd3f6ea8",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 90,
+      "end": 90,
+      "digest": "sha256:5d868ac849e2a2af3fe1c66ededf0a9811bfe76608cab4a03afef67f783b79ea",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 91,
+      "end": 91,
+      "digest": "sha256:037dfe8bc2fcc2e4a2b9b8d1a1d31553aa5df12665974e6371e0904051c55b98",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 92,
+      "end": 92,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 93,
+      "end": 93,
+      "digest": "sha256:ed0e8e0038afe85aced4e7b5ebda74a6502386bdc1cacd9cd7ddeabaeb1e25c1",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 94,
+      "end": 94,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 95,
+      "end": 95,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 96,
+      "end": 96,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 97,
+      "end": 97,
+      "digest": "sha256:8830e9b46a71f14d76d3873bd0873f5cf70690b23615a853c2fbe4b00ed7e1fa",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 98,
+      "end": 98,
+      "digest": "sha256:9e12060ac07de731a0a87dfb5fec8b8ef09bcfe198cb8815f3ebdfe78acfc5ae",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 99,
+      "end": 99,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 100,
+      "end": 100,
+      "digest": "sha256:240b6f920212efd6813160174e69727746e6bfed63a3c36f2a8e618e5ff9df04",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 101,
+      "end": 101,
+      "digest": "sha256:711d7e2214677015760820c137b910e8e0cf92af040ad6722e3dc7cdd59401fb",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 102,
+      "end": 102,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 103,
+      "end": 103,
+      "digest": "sha256:a28ff5efbc078de6d1becf0ce0a4a56b3dba472b280e0bcd16f0c471c7ba780c",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 104,
+      "end": 104,
+      "digest": "sha256:b75bf7f4b027c9d627bf04c29ed3dc2936e74888d3083d31aedbab121f53491c",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 105,
+      "end": 105,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 106,
+      "end": 106,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 107,
+      "end": 107,
+      "digest": "sha256:2f4984f9532c07f83dccbecdf8715be8f12deb3fec20302466232e0ee734ec9f",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 108,
+      "end": 108,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 109,
+      "end": 109,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 110,
+      "end": 110,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 111,
+      "end": 111,
+      "digest": "sha256:c1580766b2c4e409d181da7abeff90970a08e3ea34b5b9a266d32e4a329f3446",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 112,
+      "end": 112,
+      "digest": "sha256:91f86a17c24b69c13697628a3182417b9dfd7d5e8dbbd43582e41b7a6f991d05",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 113,
+      "end": 113,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 114,
+      "end": 114,
+      "digest": "sha256:c5d0f201e6a85334a688f4dfc949c5591dcc9564c4aadfc9998ae4861d955f6c",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 115,
+      "end": 115,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 116,
+      "end": 116,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 117,
+      "end": 117,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 118,
+      "end": 118,
+      "digest": "sha256:ed6c1e355d992f6aa2a479547bf4ae55589596edd382d6d756d7ec389f55ac27",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 119,
+      "end": 119,
+      "digest": "sha256:dc50c195a689d136d4e9cf579a2041f5c5dacbdbe3eb006ed3c44ee4b520a160",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 120,
+      "end": 120,
+      "digest": "sha256:a15131075bcd35091fc251a3449c0d6c187f2704428ec7a48ba6ed50bb561aa5",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 121,
+      "end": 121,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 122,
+      "end": 122,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 123,
+      "end": 123,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 124,
+      "end": 124,
+      "digest": "sha256:4077cf8ad9f0aa3deace63570c9c5aa32312742ea3b8b6d0b6a53ebe0daf13c0",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 125,
+      "end": 125,
+      "digest": "sha256:a98fc9515d12932ed64c33bed7d4ff47ab3ba1280b96aaef35fe3e5ce4df96b9",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 126,
+      "end": 126,
+      "digest": "sha256:3203208b8db588c78c04523ceccdd96c48de25fcf4eaca58212256c7e8ced12e",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 127,
+      "end": 127,
+      "digest": "sha256:17badeda2dac3c111e1227f513977cbefd954b891a32f06f95ab187dfc38f5f0",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 128,
+      "end": 128,
+      "digest": "sha256:1a87f1a9119762787109832313bddd518c98058535ac722934a8fbe3245b7494",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 129,
+      "end": 129,
+      "digest": "sha256:66697c39a7e48d1bebf1e0e0bcd3b19924d4c0c91d376303c37742d9548d52d0",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 130,
+      "end": 130,
+      "digest": "sha256:574b65aea82f43e5ff3dd9b0ec6659b84513d4a3876cf85872c32c0264d3118b",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 131,
+      "end": 131,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 132,
+      "end": 132,
+      "digest": "sha256:676459f1abbc3bf3290214b5e0ef1bc5cb9349f230c3da96fb6299162e4e7e78",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 133,
+      "end": 133,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 134,
+      "end": 134,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 135,
+      "end": 135,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 136,
+      "end": 136,
+      "digest": "sha256:490a708597c01645d58fbf495dd786a491e52afc63ff26707a64b887c1b11f01",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 137,
+      "end": 137,
+      "digest": "sha256:2bc4842fd63a363997dd0ab1266ef7b8f4eaaf6828b10343d27b4d09e64585c1",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 138,
+      "end": 138,
+      "digest": "sha256:e6edacd14b19be3febc82abc6e9fe7ff035d62c8d856579201e3559d2970d507",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 139,
+      "end": 139,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 140,
+      "end": 140,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 141,
+      "end": 141,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 142,
+      "end": 142,
+      "digest": "sha256:09261f4e0140519b2d4e1c55ef7373e6b646142a90cbdbd391183ff18eb3f94b",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 143,
+      "end": 143,
+      "digest": "sha256:90d44aab8a0e24a9bd1965b457a3e90350276d281a4ec972102b9aada63b8c5d",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 144,
+      "end": 144,
+      "digest": "sha256:d30d50b0caef6e0ccdca473585345698a81961aa507a4353b5ad5540cdc7e92f",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 145,
+      "end": 145,
+      "digest": "sha256:e59e65fed399763b61ba11141e54d05f2c5061f8e68a1701383a573fa105ba78",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 146,
+      "end": 146,
+      "digest": "sha256:6cf696a26b1b8fa292edfde9db475012b0e2b5f32b7c0e790c4377b193a35eee",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 147,
+      "end": 147,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 148,
+      "end": 148,
+      "digest": "sha256:aab1aee4a1ffcf4355e03fbb16426d3f938fb5cc02a567594779fe59f24a44c4",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 149,
+      "end": 149,
+      "digest": "sha256:82f283a2b221027cda041f08b12a859b2934d9d6ca039cb6cf881554c57b9872",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 150,
+      "end": 150,
+      "digest": "sha256:80282d33c6ed00e74b07b1dfd421e0eaab89b9b0f9a82699cdf418d116b2eaff",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 151,
+      "end": 151,
+      "digest": "sha256:962f2e536f63635415b8a492675055ba8cd6b2cb09f60d436164680072a3e0db",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 152,
+      "end": 152,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 153,
+      "end": 153,
+      "digest": "sha256:789860d09165c67537bc1f755c2fdf7adccd9182d425b81679f1eb097fa30b4c",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 154,
+      "end": 154,
+      "digest": "sha256:3b077feea2a74acfdf1430ba8c26185c2d9fe595d08e75751b0b01cb1217a76e",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 155,
+      "end": 155,
+      "digest": "sha256:55b727a81c560c2dd448e8ec8ec35731a5aca9f0c3c0258d4a2d7d9e986dc5e1",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 156,
+      "end": 156,
+      "digest": "sha256:a60d07e7deb1523db70c5d6de5d8df4d5b985652ddac555800939ecc14c3526a",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 157,
+      "end": 157,
+      "digest": "sha256:84221321663f9860123d4e7044516b7121d55ceaece1b34ea35553262e789241",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 158,
+      "end": 158,
+      "digest": "sha256:4d1824b0745c02eaa35d7f32ef645905c157f4b84639df22a38c5abdcc4e5ea3",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 159,
+      "end": 159,
+      "digest": "sha256:0e840e560e5395d886dedc3b280aa6bb4d3beda2a340ac051ce0e279a02f20af",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 160,
+      "end": 160,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 161,
+      "end": 161,
+      "digest": "sha256:e7e1c7ea3c7062499e723457e3e063022a33c09a008ede78da2e850a0b09dc27",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 162,
+      "end": 162,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 163,
+      "end": 163,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 164,
+      "end": 164,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 222,
+      "end": 222,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 223,
+      "end": 223,
+      "digest": "sha256:81ba9e41e5a1cb6a737bd3b3f1b6fb466f2b1750e995a7ef01b62989793a5229",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 224,
+      "end": 224,
+      "digest": "sha256:57db1846bf0f4dfede06be6bfd87ae2d17455750d8d83b8bda3a01c61ace23eb",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 225,
+      "end": 225,
+      "digest": "sha256:8b7d03ae4177f06b4dd26c617c61c6c2ee93ede4df979ae1f019ed1c9fd5ce3b",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 226,
+      "end": 226,
+      "digest": "sha256:565e7e3322b76f73c2b966b95d53449d697a4797037c410b51aa44eb518565cc",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 227,
+      "end": 227,
+      "digest": "sha256:81396a312a6cb059a13b5dc5a9a3752f928622e740509d79df7d00a226633edb",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 228,
+      "end": 228,
+      "digest": "sha256:afd1d16240032cf158d0ff37c90c2d15c7e156a4c67484395eefd90a7d422d46",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 229,
+      "end": 229,
+      "digest": "sha256:101ead936a2281d53dcc064b7e2a2ab0d53b92ef3ef7b34b668673007895c860",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 230,
+      "end": 230,
+      "digest": "sha256:50420e5b74a17f5a5d13987111487ee3cfd2f7bc457d6879bfce56287f6929f1",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 231,
+      "end": 231,
+      "digest": "sha256:41567ab24a3420451a638cebe81f896027f9ad41bdc6a549183076e72515d19c",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 232,
+      "end": 232,
+      "digest": "sha256:a0d64e717e726c6994822e5b0936544847e23d873312700dc00cbb3e974a9ea2",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 233,
+      "end": 233,
+      "digest": "sha256:90d44aab8a0e24a9bd1965b457a3e90350276d281a4ec972102b9aada63b8c5d",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 234,
+      "end": 234,
+      "digest": "sha256:c3933253152e0f247125dd5347e7c08062f260656aa73f16aeaac3d9dd3f6ea8",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 235,
+      "end": 235,
+      "digest": "sha256:8608497387db0833e81eff235cd83523d5b1baacf0e77d30866b9930ed581b4d",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 236,
+      "end": 236,
+      "digest": "sha256:62e221248ce2ceada9733c413697a6e83aec8359206d36ae569ecba2e1658706",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 237,
+      "end": 237,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 238,
+      "end": 238,
+      "digest": "sha256:9df7d43b7e20dd619814263305e72e2b46e03d4bc4efef9c84f9b5a5fedecff8",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 239,
+      "end": 239,
+      "digest": "sha256:ad5fbe9c2a22952bab7bb3b19b25719b5c6e557529d8521e0c1b309f96949d06",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 240,
+      "end": 240,
+      "digest": "sha256:696b191ffd1fb3a778236a7844ca169a275498327c52886138049c5ed944cd98",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 241,
+      "end": 241,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 242,
+      "end": 242,
+      "digest": "sha256:4c855d30b3620ae67e56f55d345edaac2c30b1378710155f23ddb62aae3c23fa",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 243,
+      "end": 243,
+      "digest": "sha256:8d8fe814b26b42c414fb88a3213feb91dd7c9277bde91ddfc721e57a29821557",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 244,
+      "end": 244,
+      "digest": "sha256:4336ffb964487da95a843b2833ede0435d3d12ef1ff5177b6faba91263d265d9",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 245,
+      "end": 245,
+      "digest": "sha256:b25d3830bfef2fee236a3b41a70f4666dca705a62a8ade84a53d3482153d64bc",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 246,
+      "end": 246,
+      "digest": "sha256:4c154cdaef82ba33866af83a0fb4627709fde0adf6b35ece16355f457f55ed74",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 247,
+      "end": 247,
+      "digest": "sha256:b9a659681da55a28b6a6c1eeb32b508b76693e75a1d9d419d6d2f45686dba100",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 248,
+      "end": 248,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 249,
+      "end": 249,
+      "digest": "sha256:8d3d5f83dedc46ded95dd7cf1202ac7b48c4c66bbd0fdc413e4b5e66d4a68f6e",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 250,
+      "end": 250,
+      "digest": "sha256:3610d9b5bd6716119908dae13e50a0bafed0831fb7a64830142b754ab2602fdc",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 251,
+      "end": 251,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 252,
+      "end": 252,
+      "digest": "sha256:9b93c9f6e06be10c3f57c691780f51344db38d84d0d14aa46b993fbad66bdba6",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 253,
+      "end": 253,
+      "digest": "sha256:4c154cdaef82ba33866af83a0fb4627709fde0adf6b35ece16355f457f55ed74",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 254,
+      "end": 254,
+      "digest": "sha256:b9a659681da55a28b6a6c1eeb32b508b76693e75a1d9d419d6d2f45686dba100",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 255,
+      "end": 255,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 256,
+      "end": 256,
+      "digest": "sha256:eb7eb73fe22a2727e9c7564cddc58f63def9dac3576a3118553f758b37bf7366",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 257,
+      "end": 257,
+      "digest": "sha256:da0badbfedbe21f33fdfadb04b4aa227080e43a117d217aba0d25a33c0b3c3a6",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 258,
+      "end": 258,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 259,
+      "end": 259,
+      "digest": "sha256:2c1422a6d630bf7dbd06f02b67a89dedac540a0cab1a619ef1108336cc93b9bc",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 260,
+      "end": 260,
+      "digest": "sha256:4c154cdaef82ba33866af83a0fb4627709fde0adf6b35ece16355f457f55ed74",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 261,
+      "end": 261,
+      "digest": "sha256:b9a659681da55a28b6a6c1eeb32b508b76693e75a1d9d419d6d2f45686dba100",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 262,
+      "end": 262,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 263,
+      "end": 263,
+      "digest": "sha256:9e93d6f921705195214659c0fffa69c7f724e0523f55e5cad9d067e44a49e1a8",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 264,
+      "end": 264,
+      "digest": "sha256:58fe789ab98fa2a7bfe8d4a359863707fb9f677859e1dcd42e0ca78711594b7d",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 265,
+      "end": 265,
+      "digest": "sha256:80871cf0c96d57f21e4afd327963feb6b89c6d871d0f6a75410999dc4112b11c",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 266,
+      "end": 266,
+      "digest": "sha256:6a861afc5fcd9faea09d35598b98b0dabc5e2ff71ed71dcaf9e70ba4845bb414",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 267,
+      "end": 267,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 268,
+      "end": 268,
+      "digest": "sha256:4da379d4065fc55165199f7cae1456dd9092a5127e92b574dd4183812759e97c",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 269,
+      "end": 269,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 270,
+      "end": 270,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 271,
+      "end": 271,
+      "digest": "sha256:ad8a0b8b34baea1d5f5f970b7a8e1d8f7b377d64021586f1d9edad392999e02e",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 272,
+      "end": 272,
+      "digest": "sha256:69cedb674a6c8032076e9aa2aae52d6ebd20def68481826bad3e0647ab786fce",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 273,
+      "end": 273,
+      "digest": "sha256:72c9cde4a35b98a6edafed13c3bfad5e0d1e4206637d05987d640697cb6ee76a",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 274,
+      "end": 274,
+      "digest": "sha256:2266e7269c11ece28cd9c3164523d26e366e1ceb51170295dcb91d6fd57ca8cd",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 275,
+      "end": 275,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Large fixture shape and determinism tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga_test.go",
+      "start": 276,
+      "end": 276,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Large fixture shape and determinism tests."
+    }
+  ],
+  "version": 2
+}

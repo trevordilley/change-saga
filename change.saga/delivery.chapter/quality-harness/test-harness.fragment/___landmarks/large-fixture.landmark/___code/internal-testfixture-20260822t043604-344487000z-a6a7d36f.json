@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 1,
+      "end": 136,
+      "digest": "sha256:d7671d513cf0328891f4f62eb27c1a940b240a17b8482d08e9ff74b1e1706364",
+      "note": "Defines scale options and orchestrates deterministic fixture generation."
+    }
+  ],
+  "version": 2
+}

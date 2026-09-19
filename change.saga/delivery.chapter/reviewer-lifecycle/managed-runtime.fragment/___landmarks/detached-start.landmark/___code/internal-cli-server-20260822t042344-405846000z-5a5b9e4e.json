@@ -1,0 +1,11 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime.go",
+      "digest": "sha256:e744db5568a2b12f6c0d8609ab98c5f8d7531f73a5b6fa0236e7f7b0ff538672",
+      "note": "Introduces managed detached reviewer processes and persisted runtime identity."
+    }
+  ],
+  "version": 2
+}

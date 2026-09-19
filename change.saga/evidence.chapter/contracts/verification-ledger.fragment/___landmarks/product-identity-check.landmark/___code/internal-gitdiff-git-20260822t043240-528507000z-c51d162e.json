@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitdiff/gitdiff_test.go",
+      "start": 126,
+      "end": 159,
+      "digest": "sha256:ba0594f6567b5d3d1de39ee4478f7c47c78ba308b7b5d5f59ed7264eb292fafa",
+      "note": "Tests that a Saga-only commit preserves product identity and every product atom URI."
+    }
+  ],
+  "version": 2
+}

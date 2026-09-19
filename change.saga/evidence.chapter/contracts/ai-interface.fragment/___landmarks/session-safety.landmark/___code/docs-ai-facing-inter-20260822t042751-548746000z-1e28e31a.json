@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-facing-interface.md",
+      "start": 614,
+      "end": 646,
+      "digest": "sha256:64b08a7f8810c7b858474cff0f2a95fe9b7c755793c1eabe2d3a56b599f1adfe",
+      "note": "Builds a contained immutable read session with sanitized errors and deterministic ordering."
+    }
+  ],
+  "version": 2
+}

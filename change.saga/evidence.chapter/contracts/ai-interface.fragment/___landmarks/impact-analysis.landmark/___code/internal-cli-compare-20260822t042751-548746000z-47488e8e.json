@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/compare.go",
+      "start": 1,
+      "end": 153,
+      "digest": "sha256:d21022476f92f2b9d995137236998e68b1501aecc172bacc7e282f50b3dd8d02",
+      "note": "Classifies source-derived maintenance impact and refuses exhaustive claims from incomplete baselines."
+    }
+  ],
+  "version": 2
+}

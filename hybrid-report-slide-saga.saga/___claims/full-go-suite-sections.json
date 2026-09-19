@@ -5,7 +5,13 @@
   "kind": "test",
   "statement": "The complete Go test suite passes with optional slide sections remaining inside their owning deck disclosure.",
   "evidence": [
-    "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=1585\u0026head=product-89a45eaa46c1a2d3c2b02afd6debfd04bc94a812a1aaeab85ec24f359031bbe8\u0026path=internal%2Fserver%2Fserver_test.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=1585"
+    {
+      "commit": "bfdc7a711fe1a41c68cce873765120a4327689a5",
+      "path": "internal/server/server_test.go",
+      "start": 1585,
+      "end": 1585,
+      "digest": "sha256:f8ebc3d969ade15a38caf68a20367f93cbd1053035cde62947dd0e21d207656d"
+    }
   ],
   "created_at": "2026-09-16T21:05:44.34694Z"
 }

@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/diffuri/diffuri_test.go",
+      "start": 1,
+      "end": 146,
+      "digest": "sha256:e14f1dbfc7b7a84351f431d0f87dfe9c89860114ae19babbac67646d1af8b615",
+      "note": "Defines stable narrative URNs and canonical absolute source identities without local paths."
+    }
+  ],
+  "version": 2
+}

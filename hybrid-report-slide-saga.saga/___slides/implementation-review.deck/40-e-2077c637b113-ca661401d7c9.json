@@ -1,21 +1,37 @@
 {
-  "version": 2,
-  "diffs": [
+  "references": [
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=480\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fcli%2Fcover.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=480",
+      "commit": "b6042a5b85057c8f2f892dabc9d06cb1bfa155fd",
+      "path": "internal/cli/cover.go",
+      "start": 480,
+      "end": 480,
+      "digest": "sha256:95fcae69687eaf363abc25647923330cb4ce4257921f28e7461889f26385efff",
       "note": "Keeps exact evidence Item-only and writes embedded evidence inside the owning deck bundle."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=483\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fcli%2Fcover.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=483",
+      "commit": "b6042a5b85057c8f2f892dabc9d06cb1bfa155fd",
+      "path": "internal/cli/cover.go",
+      "start": 483,
+      "end": 483,
+      "digest": "sha256:dee260ba3b8ea8724492162014d0ec73ea147e745417a18be59841d85fba7f78",
       "note": "Keeps exact evidence Item-only and writes embedded evidence inside the owning deck bundle."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=490\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fcli%2Fcover.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=490",
+      "commit": "b6042a5b85057c8f2f892dabc9d06cb1bfa155fd",
+      "path": "internal/cli/cover.go",
+      "start": 490,
+      "end": 490,
+      "digest": "sha256:02b0fbf2f5867f87983f9984043449d42581c9795969d87345c9a434c073bbdb",
       "note": "Keeps exact evidence Item-only and writes embedded evidence inside the owning deck bundle."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=501\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fcli%2Fcover.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=501",
+      "commit": "b6042a5b85057c8f2f892dabc9d06cb1bfa155fd",
+      "path": "internal/cli/cover.go",
+      "start": 501,
+      "end": 501,
+      "digest": "sha256:ce32d97582bb6dc444ec7309dce163f5c4e7ca33c73583ddf6f00f3704be6dbf",
       "note": "Keeps exact evidence Item-only and writes embedded evidence inside the owning deck bundle."
     }
-  ]
+  ],
+  "version": 2
 }

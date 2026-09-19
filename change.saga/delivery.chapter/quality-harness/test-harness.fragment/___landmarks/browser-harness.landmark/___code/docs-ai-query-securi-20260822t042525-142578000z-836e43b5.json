@@ -1,0 +1,907 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "digest": "sha256:ed0185b2f069b3b0b5e8f84cc2d687a06874b4436ed6e81e426a46b2c672158f",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:43497a0116625d5c0c13acd269445ecbf4ee60857b4601617cd1fe584a5544ef",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:45e2037be4375df278f67ff71bacc731b58b73c370bcbc292ef9d3ad5ef84b82",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:87f4dba47a4b64e2a0d840c574ab14394ca65bca7fd175aa4e99c0380e5f4e1d",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:c40337b1a10cee183ffb47562e0d5472cf7af0b272472be5a13198562b198e06",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:df80942fa7a95d923d600865503bca0d7fc1ab590b5d75d8ca334c51654c07db",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:55ec0830b824a548bea17af762fbe312ac479c12437a045108521cce7c0138dd",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:f185a607235cc42969e15432b226ec21bf4bdc16a3a25ea114582aa6a20c5795",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:29fb676d40da3ca6b84f7536669b35bd57562e0403373055110ef17b8f5bad91",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:3de96133cf20381c475d696974242b255b08d0cb7b74edd416490a547a35343b",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:a1c17299e32fda3db417cff6100b7e4ce2d88949ccac63d014b1bf87bbd2e748",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:dd2a86e0ce73d0bc6c736f17048aa0466becc87a64fc77b8b1df65d9d18f5aeb",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:f932c2b535a80a33790440111817169623ffaad95a7d3c68ef71824ee2346c1f",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:f1e00721685bd5e70b45f946b56b7bcec863564df7f49cf3099dc3591e3d0285",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:11f0610ccaf8d658fac2c506a014a153a7af034589f3976008367c8058a39a89",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:e246b588984abccc6839146f115ed662307bfba56c0bb91c546a281636c81359",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:05e02508270889035c25664178e3722ef23797c86d9888005e4860cce5dd7e11",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:8bbb101bf9bae3bb90636814ebf59f4052bbc4ee6d561d06b3ffcc375d614724",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:970180096f94cc730806c8586f7f4c2ce811e6d2f90b2e94f7d37f225b285f0f",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:b114d4be9694231a6553e41774112a57a660391ca43561ebc448ef8239f75a34",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:b6a8c2c198957e677dbc9b5657c52278fe49096419b8e16574cde24d6071afd4",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:65ebbd6f0a781cc53866ea8046c3844e2cac0ef6aa030661747a366f4ad27d24",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:a69ac004aee2ca44bb94d1bfa657407eb535027ea38f0331d6f75e8c6aa19194",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:46501f5b543cf63b32c8f39f6b18f65dbf249efad7ed76450ed1f05083d5c3d6",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:9ee9ba2775c5e0b334d9ef67416c3a2ee9420b5e11f261e635f628bcc639cb21",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:bbdee5a8241ee84b85899fdbbbeec07ccd11acd6501a6715486d9caaa0df7bcc",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:21909da1f23eb668d60632c74efdbcf27cdd25019e040eec3e2722bcd2fb58e1",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:7a6dfa413e7508b010f6d38ac9e32c4abdf211acd9fd5429f97a9a10882d0bdf",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:cebf852a7ead351a0861518db30bb0589e47edbb788352bc6014ba7c5bd33eea",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:e00c325cfb0d774a67b28d8b8f125570e927d4861306d4c3cff1e482bed86b1d",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:6f8603e680dfaef36e14f574dfadedf3e6d855311ad3cf5605d99af64dd06949",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:5bb55518b3b25c4d68dfe6f3c05ed678fdedb32b93157762a4ddd061aa143b2f",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:c6bf92db4ca625ac308cb186f2e1e047f660e76dcd8144629e57172fc2eead83",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:e9cb4d27c4c8addcf66fc387a30c99831523a3724e48dbf37d36cacfe22a6301",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:c4e332367fc47aa90cb8be73bc6cf2665c37e610afaebe37362b3cbbd5636528",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:c3146276f3fb4a102cd917d404ba0ea4a86d2d04b4f5aa2d2ad0e35ba1e55b32",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:0e9ee4aef2aa278bdf4b4771635e1847b41383d8eca5255029d11088894a63f1",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:3d76718c7c3ad3e415fc139e20d0e546896a7d1876f924f4f7ed625e49c33881",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:0a407847ef7aec69e9126da8e06d575c67b146c4dd404cf4414c56eb8a81d110",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:ecd621b278da261bef820646766d599ef8c470b8a851649ab604261bc0aca628",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:cd5507ba0c5797b92f4eb5b1421f4c12716502484a3fc1fda9e15443fa452369",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:20679e438a81f720673512a5592ff9cfe73af1ef77f9778d559be84bfffedcbb",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:25b9bddbb21aa46e6463ea9edbb5265e6f51628e48ca811ce1d89d549e84dcd8",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:1f1436a384fcbc968d9543061a3da35131a4404f6baef4c90f27937460904f8c",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:951bffa32f2de75b588a20f3d25e2fa352554e699e5fd032a0f10c670d9613db",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:9145db3c360fd1d46e8931347a77d8e29e19d5923e385f06fd5546d362cd9344",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:c0676bba749a65b919165616373da0d7e85c8f7d7d6a1fa4f7bf2cdeaa6a4619",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:c482daeaef8842836c8b9b75dde9330fab9c8f74267173df9e7efcead1ee39cb",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:b9e25fa06e7a4deae6fd8a35e2344b2a8ae6b39f4ddddbe777df2c48b8bbb2e2",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:42020c97cebe1f5f93a7118dc6d8375b14800cb0c8efd786867280406da9e6a0",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:f235bb2a247e413056843519ea30edd4c95bcbff92a403980c7a5f570b6bbb0f",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:58a26257a428764cd4e4c6b5dfebb3dba1e6f960bd326872e608704db0c1244c",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:925ff68bfdb98fc95a4be3a09f2fcf8d9ff12ad0a0cae2df03d4cb0e5ba2c287",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:2a6ccea1bdd47b8145c0ad4e38f4cd7b001aa39070f86e781e0602ed868db489",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:a01cdfb75735997d4d7be2ea4ee7b1fb85307e6d98e78e79b0d6330feed65d16",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 68,
+      "end": 68,
+      "digest": "sha256:3650fda6acc5a87434d0497eb5ee095291842204249e9cc5c28e13daa1b7f10f",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:314b8b6db103344d86b60c3daded688ae9bd4910eec7abda9e7378e2b4a1c880",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 70,
+      "end": 70,
+      "digest": "sha256:014d3b6b8e871056649b744a80086b5cb4a360d192cbe5d01433042c2b6aad3f",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 71,
+      "end": 71,
+      "digest": "sha256:85d3f13d6241cac7829a93daa2902f4518e026a324e34e1bd447e54d3594ed05",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 72,
+      "end": 72,
+      "digest": "sha256:dd4714911c173bf2c6c506ff6e0fa3a8bf8763796babaecb3d3f7fcef338eb85",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 73,
+      "end": 73,
+      "digest": "sha256:65856748e63e64063abd5e072ad57a07789340a4899bac5341752b1313976428",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 74,
+      "end": 74,
+      "digest": "sha256:52d16650c567c90600fd6a5ee5c1a31cb9b19bf08eddb711ec2f6da7bd2140e0",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 75,
+      "end": 75,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 76,
+      "end": 76,
+      "digest": "sha256:4974d1aaec31c7b7a58064e1464c8df66ea289a83cbee60079b548efb5a2ad74",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 77,
+      "end": 77,
+      "digest": "sha256:d1a79944dff0bfa2106db6d220f87b5b17d3075f225e45cf933d6a8d7420567f",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 78,
+      "end": 78,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 79,
+      "end": 79,
+      "digest": "sha256:3005b5fe0e95456b031f35d23530a8c017417196b93879a12059ebef3950aa34",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 80,
+      "end": 80,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 81,
+      "end": 81,
+      "digest": "sha256:3401c0d870f56f0d9d5d875ec1c5f47d828ef91438b88ff22c319da868d13c9f",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 82,
+      "end": 82,
+      "digest": "sha256:d76b8371250459c4d3bd9ccf7154d56034ee34a5cfeead6760f9c4e8d63a0cfd",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 83,
+      "end": 83,
+      "digest": "sha256:f2857fda477237a7a64206ff5bba08b18e2b96deadd15fffdf05a58c8376af68",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 84,
+      "end": 84,
+      "digest": "sha256:27a7add0a1affcd7b2b5bbaf33c752dbdbbc8ec3d9dcb4ff21d78fb2ea1b2c61",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 85,
+      "end": 85,
+      "digest": "sha256:782348b87579abbf76f602178d2358752fddb0822efe38d6f12a06945b928bd6",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 86,
+      "end": 86,
+      "digest": "sha256:7e6d41ed820c47c4cbfa87559afa56e4173041cf488acc745ea4c4e3553d11a9",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 87,
+      "end": 87,
+      "digest": "sha256:4bf7c6e33c86e6186b537ef70b096641f187bf311e7560035c75b8da9c302b31",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 88,
+      "end": 88,
+      "digest": "sha256:a4a463e29443f3d55186b20f8ee2389df785c66644616225969cf49c6ad8f055",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 89,
+      "end": 89,
+      "digest": "sha256:96c1ec888e8963fe8aaaf942a76df2f0a8749573af2449fe33635623cc1c3d65",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 90,
+      "end": 90,
+      "digest": "sha256:c6600877b7e8c1244f4e906c00c73ddfefd8fe20cfabc44a9a5efed4bb745c4d",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 91,
+      "end": 91,
+      "digest": "sha256:dccb16f96cfdcc1e5b7f8626aae9d356695bd5e85fc02fa7d40b40bb432933fd",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 92,
+      "end": 92,
+      "digest": "sha256:2085261ce1e97a38ebe73e8beae84cb6ad2cb1ca0d01e59f0b7cdc59814a6e4b",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 93,
+      "end": 93,
+      "digest": "sha256:4a4a3cc2060f0462c90d67a80bc5e09993a399a2930beef843077b1d0821842e",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 94,
+      "end": 94,
+      "digest": "sha256:92be31d694cb10038052a5366a4a693c720e4e0bbff5e877715d3420f158349e",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 95,
+      "end": 95,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 96,
+      "end": 96,
+      "digest": "sha256:3ae869e97c7f02e50ffd0eb58a16a8cc1223e49c73a5c4412ec36287aa5114b6",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 97,
+      "end": 97,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 98,
+      "end": 98,
+      "digest": "sha256:c82ec258ddba21fbedb19fa063e3b873c425ec053978a68379d8085daab329f0",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 99,
+      "end": 99,
+      "digest": "sha256:2f6f862e4f5ac822f95003ec1fdc4577ea4784a76fbd557d31f8ee711b815c95",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 100,
+      "end": 100,
+      "digest": "sha256:153eae72f5ad49996836790b2680da2a4e90f6f92f648bd65cd09862e3c1b1f2",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 101,
+      "end": 101,
+      "digest": "sha256:b623d3afe62a9857dc312e90496967fed223ce710682137563c8197a280e987a",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 102,
+      "end": 102,
+      "digest": "sha256:81ce2843b64848a86b35084ab55432c0a222727667a7072accb56fb2a2d9ab5e",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 103,
+      "end": 103,
+      "digest": "sha256:086f166bb68143945bffeb97e716e439c6d414610e7f93dfcb3db9bb8fad1123",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 104,
+      "end": 104,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 105,
+      "end": 105,
+      "digest": "sha256:422344c480612b6fa4a45744efa18f3da5a7ae760e07e1d837c5d8d0e4b899fd",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 106,
+      "end": 106,
+      "digest": "sha256:710fae6a3d7474ced6d6608b8a6466b35ced6907abbdfb1c01010bed87f97e97",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 107,
+      "end": 107,
+      "digest": "sha256:2e7d773e9be28a65d07d0ad1c9f9777a8bfdcc3a3b44dd564ba25f525571270f",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 108,
+      "end": 108,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 109,
+      "end": 109,
+      "digest": "sha256:e25bebd0c9da2adbe6762399f6c84b405b38d75e196a91cdc434ba220fc6ccca",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 110,
+      "end": 110,
+      "digest": "sha256:40d688f1283f6d1becf926ccede1d285cefc655fd9e9e52e5837b967fd102de0",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 111,
+      "end": 111,
+      "digest": "sha256:4a3a8892bc350d5581f98e1423fa5eb85408f5d7eac5e7430fcb77bffa826e75",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-query-security-test-plan.md",
+      "start": 112,
+      "end": 112,
+      "digest": "sha256:a8970402135a1a9bb2550578d70b45cb7797d039861cb23fc369ff0b8622b402",
+      "note": "Defines adversarial repository, pagination, unsafe-path, and no-side-effect acceptance cases."
+    }
+  ],
+  "version": 2
+}

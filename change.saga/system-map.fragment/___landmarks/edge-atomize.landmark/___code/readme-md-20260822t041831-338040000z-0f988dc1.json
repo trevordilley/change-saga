@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "README.md",
+      "start": 69,
+      "end": 71,
+      "digest": "sha256:0541bcaf2a307e254a172f2b2aa3ede1d69ba921866a4449037e1f2832ca23fa",
+      "note": "Makes unexplained changed code observable as a first-class coverage gap."
+    }
+  ],
+  "version": 2
+}

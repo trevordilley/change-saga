@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CHANGELOG.md",
+      "start": 107,
+      "end": 203,
+      "digest": "sha256:b0e2e5b17915af25ccd68cdc89c9e15e39e98e327e09481a101d90a80bf78451",
+      "note": "Records v0.0.3 and v0.0.2 AI-query, review, renderer, performance, and trust changes."
+    }
+  ],
+  "version": 2
+}

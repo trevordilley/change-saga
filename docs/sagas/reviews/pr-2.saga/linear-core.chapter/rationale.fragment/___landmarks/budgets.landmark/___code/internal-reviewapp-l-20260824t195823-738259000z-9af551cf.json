@@ -1,0 +1,2715 @@
+{
+  "references": [
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "digest": "sha256:e4117e08abf05e997349146260874c46b13d9f368bfe6d2a0f7c31167ef0bb7b",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:efde0d8da4149ee38c05bbaa3732bc54737376224c43ea73dd1acf1947072da0",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:71e37b6cd48ad477cbb12624b757ee1dc4975711b78237a85f508bfdd723af77",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:dc94db91287ede614bfe3a0ee2e2b567400c33fbbb5566199f17b7f6235ec46d",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:9d321d278769fb32c7c6820e1c992ebb53b04e39def0f158cbf1d84e27d34c18",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:171b756171ff8240f94ccb83de837ed4242449df3ecef3a3762523d1f5ae0348",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:57e084ab258e81b1e20f6e9b9f72b556c4838b3517e76da7edd5b6e7546090a2",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:226f37da536b12b86af70e3b5777877ac58882a6b0e30be1d9fc591badf849e2",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:1b649ecbf085fe223589d7f842defd5e2c82ec06b02b4f7827a31625fd09316e",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:ff2c0ea95d76cbc00801be44ecfc5884dca46f0b7febe0b6b2a9a5e1afd73944",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:4251f63298670483bdac18904e47ecc02d2c2d19b3f7d8e42f79cb371a7c684e",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:ab6f6be8e5963a10d31f1044691aa6beceed5a59d04cd8247f259497075d8b4d",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:3f118bdcbc85a6ae9a5779dd9c6c2e6aa10f6e1b8236a1a029c846af4b5273b9",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:fafba0527c3953c4b6e0e5b5739ba83612f8053bcdc9466730193cd1d590b408",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:0f51e991aedccfa55ffcff6d8a712748605223ffc54442c99ef7d857d44663e0",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:285d4c329a4e90e46c17127e2ccb9f5c4e71c899c2f046800a01d00d7ae57f84",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:c709b2762a4a1e0c35c667cfb5b11df25a99873dc39c8634b3ded189be8dd6d9",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:87c342f4c11b284a2c505f9f33468c8367a8bfd3bd5a6a5d818c291655ca8728",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:101ead936a2281d53dcc064b7e2a2ab0d53b92ef3ef7b34b668673007895c860",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:9699c6e5f90e13fefd5c76257e5f1ea1ffb744394869d352fdbcca5d021ecc54",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:4602de202ed2a0962b0d709152e0854526a667294c377eb1ca283da5a72fd13a",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:d21e92ffa8262bc11c633afe2dba798b3b829af0a14a798c286cb443b7c60f33",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:101ead936a2281d53dcc064b7e2a2ab0d53b92ef3ef7b34b668673007895c860",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:28f0efd095dada766f9ff40aa6e3886b2edf5fdb9d400bb1b3cc588afbd39fb9",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:45e988e869e24877812b536638c694c5b2901f98074fbe6630a6d73af694d9d4",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:579b03608a86ca7cbe9d9d07ca84e9c15b15a678487d1a95fa6fe8080ec14ec9",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:16507a6a8bf5742d81730fec2165e377138862bb6b18d8ae391f06e975f555e2",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:10978d9f3a439d992ef3ee9cb36aed75c03efe9fe7a372c8acb638f09c94ec1b",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:e4840e1647748a3b7aeba3e5298562677e160d4650cf91bf767ffc1f706265a6",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:a8fe3eb52a08e589e7858c566f558d71f3b9b09d08c4d24dadaa54bc8513aabf",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:101ead936a2281d53dcc064b7e2a2ab0d53b92ef3ef7b34b668673007895c860",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:967f4cdf9109e88db633a59c292f75cb515354cbb1735f599ebdfcbd77bfa238",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:75ff66073b460a133baecba2b2c73028eed923240e719ce2f26f006fba0a2109",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:1fc2a58b888f2068c619b8104976fc7cf1de83191b1323af83ee586d77b7efdc",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:f59d7a75d9a490527d74d6413fbefe7a93cca8a8700f890fbcf9a28f0fae907c",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:101ead936a2281d53dcc064b7e2a2ab0d53b92ef3ef7b34b668673007895c860",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:485f4d46a8b43d4652b0d6e17559dcf224ac4a8b4e85564afd11c005e53f31ed",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:ab51e197db71ce09c0f67e7a7181e01d45a509e5d077cd4d0a59a1fbebec265d",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:9899276eb5367336589d9ddd3d0fff8100f9f1585a7c865d1a72dbc54ed28c9e",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:3d0c09384f58b5a1431394a5b85c1632618dcbfa6de43c1789961889d483a3c1",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:f49131be41e4e4bc44478862b537cbabefe0a1dcd63fafeb9872e667cd9dc3d0",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:60f297e02aea4d52dee4260c06e9f493e44d4c0725454ed749e2e5698b2a0029",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:fe36fb8e6846a0dd4dd8adbffb29af21812f72b8870fd91b2bbef8956b925cab",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:0af52f8bd5364afc353b0e2241949dfc9a3a9a5690bd19ee27c9fe3ab24e20b3",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:76511b5d2082f8ba34ebb23ff7da095de2640ebbf57fcdfebff9b1d3c14e309a",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:2bd464c5570320e9ac2017564039c0004c718be250bdf3a9cd042bb893fc9bfa",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:099fb3190785a71f6e7f39146b49cd5bf5ee3f9d1418e6f66450380c613f6d80",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:f5562d27e797e7842e6b3b70b9453473faff6fefe022e2e8adac4a76bb1ef115",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:551ffe499ec69c043a366c135a5e014eedb3785816f0b1afcbd0e267686ec46c",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:cb66a0f128a368db7f4ee32e15da990fc7ba796b6ba7986044d4d450212deb98",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:0d3f485918255a5c7c1c91b94af5be71a3f3b8b6b7970954d773766bee586af6",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:49f0b43038ab1fc2ff6aaf5c6072db8fe31d8ec587914ba10362ffe3bc2664c1",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:b68ada9d997286fbd89ef8b43131d4abfd222794cc5dca7232a93eb20690212e",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:04dd63cfa6331d4d263fab40c7c9df2450f769a3859b50e9eed1086489bedd6b",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:878a5458e18fafc8b7be706931ca123f2a6dc43d1e30dfb9ce7dd6789448be9a",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:b995dd7b54dbf29070b8ff21a37ae727a23a1a4e96da1fa3ef493eebbbc92eb0",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:1a4605ee0cb8840365b9ce3144b2eb8f10da18605fa47a3924a560a8af66f2f4",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:cb61daf8c3a660b4577814e1c988ce72d78f78a8b611640f0e61bd625a1f7322",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:91aa54efade1ff7616ee7a4d8a4958bb71d6f8dc109af0311cbb653ef7104bef",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:65a276722d5f2f7491e9acab4ff5d3a55ad0cab519861ccce489e7d0a9be05ff",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 68,
+      "end": 68,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 70,
+      "end": 70,
+      "digest": "sha256:7a1cd20e839d6a654240f47c2bbca1c1ae25dd2a3313fe922ab4777f660f81b9",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 71,
+      "end": 71,
+      "digest": "sha256:f2349152bfc2db25ae5d5bd769503614e52f54a04b56db92ca3d237bc7912e3f",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 72,
+      "end": 72,
+      "digest": "sha256:3acff9fca86fe5f02249946d02211316786a1210a1ea10568ea38b5c9330f95d",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 73,
+      "end": 73,
+      "digest": "sha256:f7afdba989e1e0edab429c4414e01761b764d8459695ab0d92ce78436d45de4f",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 74,
+      "end": 74,
+      "digest": "sha256:fa161a7fbf4d65ef4eb30017539639b671a9b437c711e0dc98dbb0f24ba67a05",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 75,
+      "end": 75,
+      "digest": "sha256:4df7fa51ad888c19dfea96195d64eeeba53229c70cf02c9a3f7db45cc1c801ad",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 76,
+      "end": 76,
+      "digest": "sha256:dd39a7809703b1fd44fea55f5a411ba15247d5ece1d3a73e35560efc742f00ea",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 77,
+      "end": 77,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 78,
+      "end": 78,
+      "digest": "sha256:e2be28a4497bc5974b9fbf43efb7329aa5f5edc8349419a549bca10c78cdaa55",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 79,
+      "end": 79,
+      "digest": "sha256:ac0937e1edeb40f9a2db9ef1b3460c3bcbdef4c8c9f10074188952211fb761d7",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 80,
+      "end": 80,
+      "digest": "sha256:779fd42ded2f170f684af7574848abe3a1950c05e5ca1ca7415a1158c08b9b97",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 81,
+      "end": 81,
+      "digest": "sha256:a5ca7d9dc9e33dcb250e8c2b2d2334f684d763dd7aa802ad0e3807d39397c3cc",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 82,
+      "end": 82,
+      "digest": "sha256:9700d27d05562afd5c70dbedde8283e10b6b8adaaf41f6b1238e3a606193ab5e",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 83,
+      "end": 83,
+      "digest": "sha256:4dc76020bae70577e64b330dca83fdf24f3d7593a0154d8abec6dc63f5897fd9",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 84,
+      "end": 84,
+      "digest": "sha256:ce3c0dcd5511150b02e70e11b0b07c4cb760116c94846fc3c01df44995253532",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 85,
+      "end": 85,
+      "digest": "sha256:7cbfd44db6f927fd491f81b5d83e77a0561bdd41e419d42adb3479fca942409a",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 86,
+      "end": 86,
+      "digest": "sha256:4dc76020bae70577e64b330dca83fdf24f3d7593a0154d8abec6dc63f5897fd9",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 87,
+      "end": 87,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 88,
+      "end": 88,
+      "digest": "sha256:ed82807be56712e76fad64d020e0355955c7b6c2ad8a6fc75ef7d062cf3c46ae",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 89,
+      "end": 89,
+      "digest": "sha256:e7e1c7ea3c7062499e723457e3e063022a33c09a008ede78da2e850a0b09dc27",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 90,
+      "end": 90,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 91,
+      "end": 91,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 92,
+      "end": 92,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 93,
+      "end": 93,
+      "digest": "sha256:6d543fc13c7b257ed85f0fb185cdddbc18d86785cebc7dfdf43045c4ac35e045",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 94,
+      "end": 94,
+      "digest": "sha256:97b8e3901f5f9b0784086e3720a9ec96a516ae45a55dfb687b1f4aee69d39fb2",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 95,
+      "end": 95,
+      "digest": "sha256:e20658d44b9c56650c62aefd63cf000450fc4da6e547d5f0f11d00a3d0ca4639",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 96,
+      "end": 96,
+      "digest": "sha256:7261f2c675c13ca058ea3c481331a075ba5f815beeb4ae4296cc44cb512aeb14",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 97,
+      "end": 97,
+      "digest": "sha256:f2349152bfc2db25ae5d5bd769503614e52f54a04b56db92ca3d237bc7912e3f",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 98,
+      "end": 98,
+      "digest": "sha256:3acff9fca86fe5f02249946d02211316786a1210a1ea10568ea38b5c9330f95d",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 99,
+      "end": 99,
+      "digest": "sha256:f7afdba989e1e0edab429c4414e01761b764d8459695ab0d92ce78436d45de4f",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 100,
+      "end": 100,
+      "digest": "sha256:fa161a7fbf4d65ef4eb30017539639b671a9b437c711e0dc98dbb0f24ba67a05",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 101,
+      "end": 101,
+      "digest": "sha256:ce26cdc1ebbcc03bbfdf0961838a6e4d916a1d73fbc35b1ee15bcc271b9fc4ee",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 102,
+      "end": 102,
+      "digest": "sha256:dd39a7809703b1fd44fea55f5a411ba15247d5ece1d3a73e35560efc742f00ea",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 103,
+      "end": 103,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 104,
+      "end": 104,
+      "digest": "sha256:e2be28a4497bc5974b9fbf43efb7329aa5f5edc8349419a549bca10c78cdaa55",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 105,
+      "end": 105,
+      "digest": "sha256:ac0937e1edeb40f9a2db9ef1b3460c3bcbdef4c8c9f10074188952211fb761d7",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 106,
+      "end": 106,
+      "digest": "sha256:b42c473c90dca2aac524ca106cd6275bcb4d75b3a272d7a965fc70b66b105833",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 107,
+      "end": 107,
+      "digest": "sha256:a5ca7d9dc9e33dcb250e8c2b2d2334f684d763dd7aa802ad0e3807d39397c3cc",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 108,
+      "end": 108,
+      "digest": "sha256:9700d27d05562afd5c70dbedde8283e10b6b8adaaf41f6b1238e3a606193ab5e",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 109,
+      "end": 109,
+      "digest": "sha256:4dc76020bae70577e64b330dca83fdf24f3d7593a0154d8abec6dc63f5897fd9",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 110,
+      "end": 110,
+      "digest": "sha256:480e776cacb9370128019d145c2fd508b84973182ea63dbe2e742e1ef979a609",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 111,
+      "end": 111,
+      "digest": "sha256:6a7aa6feb224a0735204bfc44ceab1963dbcbf10dc7d63cb67dfb97e3b07cac0",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 112,
+      "end": 112,
+      "digest": "sha256:4dc76020bae70577e64b330dca83fdf24f3d7593a0154d8abec6dc63f5897fd9",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 113,
+      "end": 113,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 114,
+      "end": 114,
+      "digest": "sha256:ed82807be56712e76fad64d020e0355955c7b6c2ad8a6fc75ef7d062cf3c46ae",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 115,
+      "end": 115,
+      "digest": "sha256:e7e1c7ea3c7062499e723457e3e063022a33c09a008ede78da2e850a0b09dc27",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 116,
+      "end": 116,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 117,
+      "end": 117,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 118,
+      "end": 118,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 119,
+      "end": 119,
+      "digest": "sha256:ccf36fed63808b58f71c58b80336d08366bd555986954f52cafbc7c5f741907c",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 120,
+      "end": 120,
+      "digest": "sha256:70add4f6d1bb8e204f5e0df3606121ccfdd4e3e0a9e62b0128b533e1e963ba0d",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 121,
+      "end": 121,
+      "digest": "sha256:c4b7157a22943c8de8355b9990c8f3cfbefcc1f8fef7e86dc2e1f2f24b69a40b",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 122,
+      "end": 122,
+      "digest": "sha256:4f6959cb70c3ba530941d39ef590326164f12e56831f6fe4bf58eaeb0294ff47",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 123,
+      "end": 123,
+      "digest": "sha256:675abf40e55673c0623325385baa36a37bc24603a4fbfd5eb6519b60a2754217",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 124,
+      "end": 124,
+      "digest": "sha256:9f59ddd003806c88282c46137ed34fe32554a83cf1a61a86a42f9d6248449716",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 125,
+      "end": 125,
+      "digest": "sha256:f2349152bfc2db25ae5d5bd769503614e52f54a04b56db92ca3d237bc7912e3f",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 126,
+      "end": 126,
+      "digest": "sha256:3acff9fca86fe5f02249946d02211316786a1210a1ea10568ea38b5c9330f95d",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 127,
+      "end": 127,
+      "digest": "sha256:f7afdba989e1e0edab429c4414e01761b764d8459695ab0d92ce78436d45de4f",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 128,
+      "end": 128,
+      "digest": "sha256:fa161a7fbf4d65ef4eb30017539639b671a9b437c711e0dc98dbb0f24ba67a05",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 129,
+      "end": 129,
+      "digest": "sha256:2e8b084c2de78339995f02820989efc5b3ae4c4a847f609664f256067ac5ab1c",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 130,
+      "end": 130,
+      "digest": "sha256:dd39a7809703b1fd44fea55f5a411ba15247d5ece1d3a73e35560efc742f00ea",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 131,
+      "end": 131,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 132,
+      "end": 132,
+      "digest": "sha256:e2be28a4497bc5974b9fbf43efb7329aa5f5edc8349419a549bca10c78cdaa55",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 133,
+      "end": 133,
+      "digest": "sha256:ac0937e1edeb40f9a2db9ef1b3460c3bcbdef4c8c9f10074188952211fb761d7",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 134,
+      "end": 134,
+      "digest": "sha256:f63ee20ac3d4bf030e8266b6674a8f65d330de054a7562d27f42b725897be65b",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 135,
+      "end": 135,
+      "digest": "sha256:9700d27d05562afd5c70dbedde8283e10b6b8adaaf41f6b1238e3a606193ab5e",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 136,
+      "end": 136,
+      "digest": "sha256:4dc76020bae70577e64b330dca83fdf24f3d7593a0154d8abec6dc63f5897fd9",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 137,
+      "end": 137,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 138,
+      "end": 138,
+      "digest": "sha256:ed82807be56712e76fad64d020e0355955c7b6c2ad8a6fc75ef7d062cf3c46ae",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 139,
+      "end": 139,
+      "digest": "sha256:e7e1c7ea3c7062499e723457e3e063022a33c09a008ede78da2e850a0b09dc27",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 140,
+      "end": 140,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 141,
+      "end": 141,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 142,
+      "end": 142,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 143,
+      "end": 143,
+      "digest": "sha256:07dd6e09bc2a51050e8534d674f7e3d8cef435456dab180ae80a78a706352f3a",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 144,
+      "end": 144,
+      "digest": "sha256:fb739ccd1a73b551faef6a20bf8902feafcf119ffe7323103dcaf1dbddbc428f",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 145,
+      "end": 145,
+      "digest": "sha256:927ed8ce928ecba82d0a04891dc56a568bdea1ef24a91d0de00eaacceafe9e43",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 146,
+      "end": 146,
+      "digest": "sha256:057e270130c2408bed73726c9261050bd98d958eb6c027b9ad645231c4971671",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 147,
+      "end": 147,
+      "digest": "sha256:9705c2db64effe6818eb57f712d042c8ac8343cddb92999b32d52166ed6ac8b8",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 148,
+      "end": 148,
+      "digest": "sha256:3f1c97abcbd9c810292b9b8a1a9d6073740f23a7282c5229c2277506fcd8482c",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 149,
+      "end": 149,
+      "digest": "sha256:5c974e90251938128ec38780af6b0088af52fe5e5eed86dee891a710f131f062",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 150,
+      "end": 150,
+      "digest": "sha256:a9f9431723af6f4fa032b1110b7fa1694befe7f06c80874a804a6de33c4dde72",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 151,
+      "end": 151,
+      "digest": "sha256:f2349152bfc2db25ae5d5bd769503614e52f54a04b56db92ca3d237bc7912e3f",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 152,
+      "end": 152,
+      "digest": "sha256:adf3a9995eff6ba71c0d98b13ca3bb687a5dd2904056161b982d80f865ce6dca",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 153,
+      "end": 153,
+      "digest": "sha256:26467dfeae2c5ac9f5d54217e8f69b508486b0a394017e94d8f951702092dc2d",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 154,
+      "end": 154,
+      "digest": "sha256:3acff9fca86fe5f02249946d02211316786a1210a1ea10568ea38b5c9330f95d",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 155,
+      "end": 155,
+      "digest": "sha256:8f1dae0c7e431ea46b9f1659fccd1c99546aba14fb6d7eb0f3c704e06be3b3e9",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 156,
+      "end": 156,
+      "digest": "sha256:bd748b9fa0f6e03ac11f72301092457040309f14797816f6b1352582dfc0faf1",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 157,
+      "end": 157,
+      "digest": "sha256:046272a4f2df0ecc1b05416d519fd22516805bd807e751d2a3f0f9de830ea02d",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 158,
+      "end": 158,
+      "digest": "sha256:beb662f58664fd67d0b8fcef194c456a64e45c95a7aa5e60d48e65eae3eaf4b3",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 159,
+      "end": 159,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 160,
+      "end": 160,
+      "digest": "sha256:239cfb3e73e2d521d387dfce50034af2e73a7b537384adb60d48cb77e66e710c",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 161,
+      "end": 161,
+      "digest": "sha256:ace2384b9b4d6b1f643f11ee1a0c234c99e2497d100b16cb77993689dad71396",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 162,
+      "end": 162,
+      "digest": "sha256:997244172afdff7f1eb6cf59317a5aeb7e543485c344e0c68443de36b6d2986f",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 163,
+      "end": 163,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 164,
+      "end": 164,
+      "digest": "sha256:ad558c94c9bc589311c3890addf3ee82eeece61280cb92e0147e7eafce8dc629",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 165,
+      "end": 165,
+      "digest": "sha256:fa773d4097a2b316e05a2bf1e70335f3f37388170db3655b934d4c9f4ae32acf",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 166,
+      "end": 166,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 167,
+      "end": 167,
+      "digest": "sha256:0375c8f5a1cf4ffd112365c4d41f8fd4caafd3cef710f1a36c57e20d92c930b5",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 168,
+      "end": 168,
+      "digest": "sha256:d54b3fc7d9099b3f30da72263c2b5f067a5c8366189e2a5704778babbc7cc6f2",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 169,
+      "end": 169,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 170,
+      "end": 170,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 171,
+      "end": 171,
+      "digest": "sha256:b8b44549e1305c768110c61d1198956f87f86fd20fcfbd673bf86f61dbdee920",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 172,
+      "end": 172,
+      "digest": "sha256:c9e8564a36d1c6c79ba0eda9f311dd62f649a307ba90ac0e3764382db9d43b5e",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 173,
+      "end": 173,
+      "digest": "sha256:fda2472d063a1bd4c1eed13059cd22714921aa8c2f97bee836f490e71463622e",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 174,
+      "end": 174,
+      "digest": "sha256:255ed65e52a13df895b5b913c3da99ee37ca31e1e231e1713c2b2549cbafe149",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 175,
+      "end": 175,
+      "digest": "sha256:d98e4f84953bde6e78e5004d0cd0aa9582210b35d2916dba20bd191e6ce020cd",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 176,
+      "end": 176,
+      "digest": "sha256:887178ec78b3c9d28b388525bd849de0a010f298abdd578fc260e27d2fa5fb82",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 177,
+      "end": 177,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 178,
+      "end": 178,
+      "digest": "sha256:8d5e8b5d9823912bbf16d3e5578af94e19731e677ac931a75115d948db332582",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 179,
+      "end": 179,
+      "digest": "sha256:3e826bc6b05a50eff9aa778df6301025144615493d82296fdcf13be3e1d12fb3",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 180,
+      "end": 180,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 181,
+      "end": 181,
+      "digest": "sha256:8263be09e5638e624bd877cf5d057a193b6498db2bfb152b337a9fd07161a610",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 182,
+      "end": 182,
+      "digest": "sha256:1f3cb67ac3c1e2d980ac8f7563044ac46379a666649157c56e29e589317bc50b",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 183,
+      "end": 183,
+      "digest": "sha256:cbb9d31cfb325d6d0f176310412b8afdc6fb56f5e334a12a1d69d784ca19649f",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 184,
+      "end": 184,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 185,
+      "end": 185,
+      "digest": "sha256:1bcf5f9f61dabad3d86bc1262000a0cfe2d175be492efa4926ad1520bc339da9",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 186,
+      "end": 186,
+      "digest": "sha256:e7e1c7ea3c7062499e723457e3e063022a33c09a008ede78da2e850a0b09dc27",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 187,
+      "end": 187,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 188,
+      "end": 188,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 189,
+      "end": 189,
+      "digest": "sha256:58583d4c154dedd48c431f985c659e8085fcd7a04ae1a9b8dd2f2a0372ffb242",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 190,
+      "end": 190,
+      "digest": "sha256:b3c59a2dc256714f997667e2550580625ee2712a6a6e6abaa82ed84fab490371",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 191,
+      "end": 191,
+      "digest": "sha256:9d70731eb4a4a9a6498dcd86b2f8f593391efeb5e7f5ffac578c59e6bf1cfee4",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 192,
+      "end": 192,
+      "digest": "sha256:42a57081051f4682a7db3e590b4dd5413d53dc9a01551276dacb521a7e1db9a5",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 193,
+      "end": 193,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 194,
+      "end": 194,
+      "digest": "sha256:80de3058cd1fd1afd6290c283fe9065344f921724336a8c5e095aa6db2136c63",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 195,
+      "end": 195,
+      "digest": "sha256:a5cbb6829040525b5c6d5b789a708af2b7a031af0b923b49b0d5792cd56f55a6",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 196,
+      "end": 196,
+      "digest": "sha256:8e8c38e0b24ca810f8ab626a80acf77920209c0519f7fd5834fa5adc21a9dd3f",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 197,
+      "end": 197,
+      "digest": "sha256:f0debf62e2e22b122b74c213f4168ff71b62c7594339f21bcb9e71a5042fc394",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 198,
+      "end": 198,
+      "digest": "sha256:44f0495724027b6553ba8886466f83906b8f1c9c8681547b323ec05365c7bad0",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 199,
+      "end": 199,
+      "digest": "sha256:434dcdf077c11076cf0a35deda5ef3fe1407ea1c24c7fa4d6290b8e1f776179f",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 200,
+      "end": 200,
+      "digest": "sha256:c4f7953b40ffa20b04c69056d179f406e53c6902ea3f93ba9693cc7fa3a87bef",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 201,
+      "end": 201,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 202,
+      "end": 202,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 203,
+      "end": 203,
+      "digest": "sha256:f669f2c373cc4f306f506362f6ce0976dd0e33f1453621c0e5b93094b4f16af9",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 204,
+      "end": 204,
+      "digest": "sha256:39988eeeb37488dcdedd1398859795ec7b16abfb76b53e8820ab23f3ed3ee76a",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 205,
+      "end": 205,
+      "digest": "sha256:ca77d81c64d509e2fda2d2cefa1c9e219fc7c3fc0931f154d44f367845af5682",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 206,
+      "end": 206,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 207,
+      "end": 207,
+      "digest": "sha256:20ecaf928ca41939e1264b40058347afa04fe733c970d18919e98890e5adf59e",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 208,
+      "end": 208,
+      "digest": "sha256:7a62c06418adb37f77858a70a47ef9ea0114658f10269b2d1fe174e96c045b93",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 209,
+      "end": 209,
+      "digest": "sha256:de68048c365a966931b163f3cade5e53619f289f4f63bbf51ec253cdef65dde3",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 210,
+      "end": 210,
+      "digest": "sha256:3a2320b866543a5577e84c134459370860faf465f2cc30e3f192812660cb0fff",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 211,
+      "end": 211,
+      "digest": "sha256:0a53b574632f857e060cb26b54bf5cceac9736c67e2abc94fa33bdb47ed1be45",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 212,
+      "end": 212,
+      "digest": "sha256:78da88e080a6f88e1bca7598bf90fc7e9cc2beb769d9096743ba9a5f2464fa05",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 213,
+      "end": 213,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 214,
+      "end": 214,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 215,
+      "end": 215,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 216,
+      "end": 216,
+      "digest": "sha256:746b2902ac2cbd7b7ddefc092d76421ada506232b425a254f349089cbce5c1ae",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 217,
+      "end": 217,
+      "digest": "sha256:704c8f06f8be016e2337b47646aaff75d3f961106ebdb0cfc4b699184a00a402",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 218,
+      "end": 218,
+      "digest": "sha256:67ad9dc12eeddbe110317666d2c09aca1898da0cd42dc9ff1416e1e10d2f37fb",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 219,
+      "end": 219,
+      "digest": "sha256:b3d29b855978816540d6f09a70254e543d2cc24ad9625fc3abce2304b1bec429",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 220,
+      "end": 220,
+      "digest": "sha256:b78965732ff426fa34666c49f54a095c6f9bcc559854134cfd4aa86128ac763c",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 221,
+      "end": 221,
+      "digest": "sha256:06628daba0c09fd9d3c5ab7320dd748cd49b3cf4ed0a0b74890e236da7aebc36",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 222,
+      "end": 222,
+      "digest": "sha256:0aa577f75fff12b8816e043bd6087f97b496f25fa839284732cdae36fb5e5e04",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 223,
+      "end": 223,
+      "digest": "sha256:18dcd6a8bc837aad7842f105dc9fe268e9a37faab05f7836463b3f5467e17c0d",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 224,
+      "end": 224,
+      "digest": "sha256:52316ad72cbf1d13e0e3742ce6afc814f07e35be3940dd955c32192b377fc8a6",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 225,
+      "end": 225,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 226,
+      "end": 226,
+      "digest": "sha256:576e1f1c7d1d715ae01bf5b86765e87d036cf4510fb4e2ad233b7095645fca18",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 227,
+      "end": 227,
+      "digest": "sha256:c080487abc12a10856a65040163c04143c69a05853a5f210a762bdaac39b48c5",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 228,
+      "end": 228,
+      "digest": "sha256:7990b6c16cdac0ac2a3b29750be62bdf0e64545d0ee1517888c84e34b569e5ac",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 229,
+      "end": 229,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 230,
+      "end": 230,
+      "digest": "sha256:d7cf47561ca493f5734ea47101229c7eb604dec66d6dfa291b6b12d882ba1c28",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 231,
+      "end": 231,
+      "digest": "sha256:e956fc6f02246816f3881df98b946a1df43cc84e6e4960ed42084328c2b7aa52",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 232,
+      "end": 232,
+      "digest": "sha256:850cc7100e4e0ab5f75f91e71e5c4a140c9c8ba14a1004a5bf5ccfb428d63080",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 233,
+      "end": 233,
+      "digest": "sha256:8caa6740137136eb167dbca699209ae968b13e1ade13ebb310462e4fa892a7f6",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 234,
+      "end": 234,
+      "digest": "sha256:a33579c94d410dbdaf28d09b75fa4c8618e4a36e5accbed40fe21d8fefc12352",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 235,
+      "end": 235,
+      "digest": "sha256:1069d9799c42dc77ec2d2baaf40def9317ed254d191fec1f7fdc6c5cd7dfc6bb",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 236,
+      "end": 236,
+      "digest": "sha256:3acfb79d545e890ffb2da8439990610bb56f02353d7a179cec78e022607fe95e",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 237,
+      "end": 237,
+      "digest": "sha256:356763df1132782d9c623bfe7d20c3a6f44767e0a2ba7182d12f1e78f174b488",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 238,
+      "end": 238,
+      "digest": "sha256:4dc76020bae70577e64b330dca83fdf24f3d7593a0154d8abec6dc63f5897fd9",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 239,
+      "end": 239,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 240,
+      "end": 240,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 241,
+      "end": 241,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 242,
+      "end": 242,
+      "digest": "sha256:f7c75eb9e9252622250a74202ecfff5d007e9379c535f63d96e2a4e9a0c8f068",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 243,
+      "end": 243,
+      "digest": "sha256:fa965733015250f6ee1260030fa1904fba18afa5086305640b56d914503faf1b",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 244,
+      "end": 244,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 245,
+      "end": 245,
+      "digest": "sha256:00e2dddf8e6e3ac11a2da912e51486fb4bd3f78b4ffdf19c5412210a255678c2",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 246,
+      "end": 246,
+      "digest": "sha256:cc3760f33e98a884406c4d42da2fb329ff13a1580e62e590ac4a0714aa020165",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 247,
+      "end": 247,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 248,
+      "end": 248,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 249,
+      "end": 249,
+      "digest": "sha256:fbbf3c29ab88535358de00b4732acd988eca6521f18672e9d3fa1c7b82897eb9",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 250,
+      "end": 250,
+      "digest": "sha256:75161dd18fb64748ae4b79a1ac9cc6f034db22c59683acf223651a2eb704386c",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 251,
+      "end": 251,
+      "digest": "sha256:36060a4ab5b14fddb9aed0900eda78545f303722631c88e78e0df9d41890e583",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 252,
+      "end": 252,
+      "digest": "sha256:c52d2f63b3a44a23a7ec5ecfb2a9314fbab4c610b9eee59ab7e3641ab3deef19",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 253,
+      "end": 253,
+      "digest": "sha256:9d51be813122db65c9ee4c7ebd43bd18de1bd1bb7f38e5d29bf6e26237a0bd27",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 254,
+      "end": 254,
+      "digest": "sha256:caf03f49a330bc04d196cf2c2ed5590292b6c2a322d7c279f177887cca1b22f9",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 255,
+      "end": 255,
+      "digest": "sha256:fb83c71aa38e2013ae30b0a0e847d8c1592d1d0704114e3594bf6e4a2a0935de",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 256,
+      "end": 256,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 257,
+      "end": 257,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 258,
+      "end": 258,
+      "digest": "sha256:e1a116fc5582b60f6582ae4355b301b9b18ba5fda359329f3d0da951248ea753",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 259,
+      "end": 259,
+      "digest": "sha256:b78965732ff426fa34666c49f54a095c6f9bcc559854134cfd4aa86128ac763c",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 260,
+      "end": 260,
+      "digest": "sha256:6b123a3d0ffe42865bf6bc4b719e773d8c08dced7ad47946d0d7387396492e03",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 261,
+      "end": 261,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 262,
+      "end": 262,
+      "digest": "sha256:53f8d05a5cbd60dc44b40cbca076df211eb6e08461ff160ab5e20fb38e179e78",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 263,
+      "end": 263,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 264,
+      "end": 264,
+      "digest": "sha256:2c2fd61bacc0197e3b465bdef05421de8b899854dee46799ba8906a97833d41e",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 265,
+      "end": 265,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 266,
+      "end": 266,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 267,
+      "end": 267,
+      "digest": "sha256:ff115a970fc29e270471312329801f5a2ccbdc939a9a266265c8657ba5fb3454",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 268,
+      "end": 268,
+      "digest": "sha256:b78965732ff426fa34666c49f54a095c6f9bcc559854134cfd4aa86128ac763c",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 269,
+      "end": 269,
+      "digest": "sha256:2f4984f9532c07f83dccbecdf8715be8f12deb3fec20302466232e0ee734ec9f",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 270,
+      "end": 270,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 271,
+      "end": 271,
+      "digest": "sha256:53f8d05a5cbd60dc44b40cbca076df211eb6e08461ff160ab5e20fb38e179e78",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 272,
+      "end": 272,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 273,
+      "end": 273,
+      "digest": "sha256:c1580766b2c4e409d181da7abeff90970a08e3ea34b5b9a266d32e4a329f3446",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 274,
+      "end": 274,
+      "digest": "sha256:f3150cdc122471800e392798f6b44700cd5992ebd57a8c984de87f2be3ea1c27",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 275,
+      "end": 275,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 276,
+      "end": 276,
+      "digest": "sha256:58efc0da949c4b3129457a9a4112f5a67fcead82b3ebfacd509ffabfda8cbb44",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 277,
+      "end": 277,
+      "digest": "sha256:7cb70e9930c3766c976229427425239fe186341b20101ba787f63d4ad9ddcbbb",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 278,
+      "end": 278,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 279,
+      "end": 279,
+      "digest": "sha256:53f8d05a5cbd60dc44b40cbca076df211eb6e08461ff160ab5e20fb38e179e78",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 280,
+      "end": 280,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 281,
+      "end": 281,
+      "digest": "sha256:bd4c8eae9f00ff405b3970612c35e29d0b75d51b1ceaa83ab2944036ae82e441",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 282,
+      "end": 282,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 283,
+      "end": 283,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 284,
+      "end": 284,
+      "digest": "sha256:886f7d49a1d06850456a79a377766f36c63ce8bd6c21f441794a60d93b32b7ed",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 285,
+      "end": 285,
+      "digest": "sha256:ccf26946b59bcf8c7e2cf105f315455cb57a84086949b519c0a0e422120f4e43",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 286,
+      "end": 286,
+      "digest": "sha256:2359d27c89bba6b5cced92436630477eec073d6f2eb17dd91050467855d5f61c",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 287,
+      "end": 287,
+      "digest": "sha256:6117245bac135fd82ce7c22ebb474382b48b2c98329f10064aeaec5c090b4cff",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 288,
+      "end": 288,
+      "digest": "sha256:10e3d31b65814069f9f3a59720057d63ddf6572399404c5fc2e316aa8b9b9329",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 289,
+      "end": 289,
+      "digest": "sha256:db0a302780f16e099d2ebdbff7deecc4de3fda5ac967fddb588cc630310b6a20",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 290,
+      "end": 290,
+      "digest": "sha256:93d1d3c23b7fd5a3941dfb4736aa6cb61d298e408fea568e49f97f786ef65c3b",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 291,
+      "end": 291,
+      "digest": "sha256:225791c1fe62f442c54f8c38ecbc9c281b736be2ae7f8f5d2f26032c50caf2bf",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 292,
+      "end": 292,
+      "digest": "sha256:01e6b2ac4280074802f63e1cb1f4c06799d1a8464f9453aa1368e29c0f5c6914",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 293,
+      "end": 293,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 294,
+      "end": 294,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 295,
+      "end": 295,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 296,
+      "end": 296,
+      "digest": "sha256:91ab720d995d84189e6da1e52e83f66f3b2e9463f15aa885d36150cf72beee5d",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 297,
+      "end": 297,
+      "digest": "sha256:642916909a8284f191d449370a018d1229dd3e5ec60a7dc2e0d52c3a3469b200",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 298,
+      "end": 298,
+      "digest": "sha256:41c9e8e9d10ff9db42279bed194ab8d4dc8e752f9b401f8609d98e5d3e076379",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 299,
+      "end": 299,
+      "digest": "sha256:06279abcb105bd98634d08501f9b7f08580e6ed84401b7b4dfb8bc0eb1075717",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 300,
+      "end": 300,
+      "digest": "sha256:6389e6559b839e155ca775b99f55b6a762527d6a9f5e08c33fbf91319f979a57",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 301,
+      "end": 301,
+      "digest": "sha256:473fdf18b08bae6ba873e1a48de044936a4710d07ad8ffc471f7bbaae2d7f4f3",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 302,
+      "end": 302,
+      "digest": "sha256:8af0153191ca16a4091ede75bb40cba56e02b369544e78a941ef67cfc220ccd3",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 303,
+      "end": 303,
+      "digest": "sha256:ba9749ce9a286a1279226072f2aa2821e4df9af466b566a1a6f26e8b0b892588",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 304,
+      "end": 304,
+      "digest": "sha256:0509d270bc349beab32d52f4931f18cb3dee17f2e4fff41ebfc4867d0811c3bf",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 305,
+      "end": 305,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 306,
+      "end": 306,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 307,
+      "end": 307,
+      "digest": "sha256:f9c9103127d207fed636f92262f1527768aed7c9c579fd1c6ee130b5ffa6fade",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 308,
+      "end": 308,
+      "digest": "sha256:b78965732ff426fa34666c49f54a095c6f9bcc559854134cfd4aa86128ac763c",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 309,
+      "end": 309,
+      "digest": "sha256:06628daba0c09fd9d3c5ab7320dd748cd49b3cf4ed0a0b74890e236da7aebc36",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 310,
+      "end": 310,
+      "digest": "sha256:0aa577f75fff12b8816e043bd6087f97b496f25fa839284732cdae36fb5e5e04",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 311,
+      "end": 311,
+      "digest": "sha256:071a07e3d1a7638f312e32c0cbdb379e3be24f68b3c13bf5013ab9a38493b6c5",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 312,
+      "end": 312,
+      "digest": "sha256:4b21ab9ba4ffc9d22e8fe16406e1d8f90ef5efa736d4ee5a49cb0826cb117c5b",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 313,
+      "end": 313,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 314,
+      "end": 314,
+      "digest": "sha256:7aa956ec432201e898901887da2c9f62e91fec4065936aec501d0dd87a1bd2ca",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 315,
+      "end": 315,
+      "digest": "sha256:e4bb9d1925f1df30e6eb4f00440f22afd3656e7b3a4b33c3c2b052ea253197c4",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 316,
+      "end": 316,
+      "digest": "sha256:4c154cdaef82ba33866af83a0fb4627709fde0adf6b35ece16355f457f55ed74",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 317,
+      "end": 317,
+      "digest": "sha256:3e9b8fa2a3c17670068f7b05341d30107b807d45d404dc6c843b018cc1013aec",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 318,
+      "end": 318,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 319,
+      "end": 319,
+      "digest": "sha256:92ae4d85611674f774333a9726675992fda2a5b842b8f744b85b6b201b2286e8",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 320,
+      "end": 320,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 321,
+      "end": 321,
+      "digest": "sha256:96a364db229b16ccc3fbec992cd21dd9feaef7366e156abd2807f38f62f7debf",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 322,
+      "end": 322,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 323,
+      "end": 323,
+      "digest": "sha256:53f8d05a5cbd60dc44b40cbca076df211eb6e08461ff160ab5e20fb38e179e78",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 324,
+      "end": 324,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 325,
+      "end": 325,
+      "digest": "sha256:dab6d8945c0703f76781d2f781ce3423dc109527c753121e0f9b620948b4890f",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 326,
+      "end": 326,
+      "digest": "sha256:e6cf3e32426b740547454469426915e5605818ad7351110868baecdf6c987004",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 327,
+      "end": 327,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 328,
+      "end": 328,
+      "digest": "sha256:aa40317b83a76a81d95acaf0931c748da2a6f51632fe0b57a6442acfcf580e1e",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 329,
+      "end": 329,
+      "digest": "sha256:753ceaa942546de4acc1b2199a3bad9325626be662526291f2557d7399a8754e",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 330,
+      "end": 330,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 331,
+      "end": 331,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 332,
+      "end": 332,
+      "digest": "sha256:fc6dd5740443be9c204fd1814cb6ae2d0317473639ba3cb6aa038aacbc046321",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 333,
+      "end": 333,
+      "digest": "sha256:f30e2d2a238423529ad558ed8f674b5dd50f6133c3daf7a5028125b1c9ebba34",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 334,
+      "end": 334,
+      "digest": "sha256:031c7f44724dac079a90755496d6c53c535058bc532c6c414902d8afe7839bb0",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 335,
+      "end": 335,
+      "digest": "sha256:45a313cfcc1508ef93eff365061caffc2c2f401f74e2fbcb53d3fd83ff6d81b7",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 336,
+      "end": 336,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 337,
+      "end": 337,
+      "digest": "sha256:3bb08c5af530a556d77f76ae67429d54b565c4783fb3ed4c3c6249c0fa0458ca",
+      "note": "Large-saga selector construction benchmarks."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/reviewapp/largesaga_bench_test.go",
+      "start": 338,
+      "end": 338,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Large-saga selector construction benchmarks."
+    }
+  ],
+  "version": 2
+}

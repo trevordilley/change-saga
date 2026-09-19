@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitdiff/gitdiff.go",
+      "start": 1,
+      "end": 67,
+      "digest": "sha256:70363c2eea402a92283dffc4d7a193940be6ef446d1576ba673197e22387d3bb",
+      "note": "Produces exact changed-line and lifecycle atoms from the pinned Git comparison."
+    }
+  ],
+  "version": 2
+}

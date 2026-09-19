@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewapp/session_test.go",
+      "start": 345,
+      "end": 388,
+      "digest": "sha256:26b4f2584971d3e4369bdfdbdc0e0bd68506a3c021add1623e364862dc42f626",
+      "note": "Tests bounded inert queries, separate repositories, cursor attacks, side effects, and path leakage."
+    }
+  ],
+  "version": 2
+}

@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/saga/schema_contract_test.go",
+      "start": 346,
+      "end": 367,
+      "digest": "sha256:83f80d87f41467bac3e432722ca27d6c8a507242ccefec6dbb19c016eefd012f",
+      "note": "Defines stable narrative URNs and canonical absolute source identities without local paths."
+    }
+  ],
+  "version": 2
+}

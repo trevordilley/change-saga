@@ -1,0 +1,2099 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "digest": "sha256:434b9e12e4638c7978a03bf5fa3dbfff89f2b194e0771a284e4d58c46d0d2b91",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:827b51a12898536edde6d43674b742a35527b731ff2f842dc83cadb9ab65113b",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:71e37b6cd48ad477cbb12624b757ee1dc4975711b78237a85f508bfdd723af77",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:dc94db91287ede614bfe3a0ee2e2b567400c33fbbb5566199f17b7f6235ec46d",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:9d321d278769fb32c7c6820e1c992ebb53b04e39def0f158cbf1d84e27d34c18",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:171b756171ff8240f94ccb83de837ed4242449df3ecef3a3762523d1f5ae0348",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:15d9390e6e92e6e6c76e70f40a1594fb94b72e55f7358c02092c0253f2f46abf",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:57e084ab258e81b1e20f6e9b9f72b556c4838b3517e76da7edd5b6e7546090a2",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:738b5a3be3be1c8b34207c393b865f99bc1fd07b287dcabcf3ff74f92fcb6cfe",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:f05b48055b78db9e9e8993848d47169d7abd312df35886aa83d4014d37eb4009",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:1b649ecbf085fe223589d7f842defd5e2c82ec06b02b4f7827a31625fd09316e",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:fafba0527c3953c4b6e0e5b5739ba83612f8053bcdc9466730193cd1d590b408",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:7db9629f107aa23acf21a8e5d9db47a4e6b0aad6ae7b151ab67234cd60b56335",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:148f9e676181e526c24bf3c68ed1bfbddbb28483642f6f5d773947fc39cdfdca",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:810982b6ec8c04ebdee7178e74a0f957047131efa2559d3e153ee1315c7f68a5",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:19da32b305f5c27bd3b321cc8af9f034d840acfb114383d3c1a7b9e68b9b0d1d",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:2bb0272e67f8ff2dcabe57f724750be2064d199cbc5eaa1441e37968f00342e5",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:fe0a251010f624e9a2a3f62950704a39f6f7bca9018784b19eae13f09b0a525c",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:3e0eba7b9318972858a5f66d75d710fb312b4a02c36b759eb6694268040dc36c",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:15901281d2b4db574dcf846a4304b17dce305058aca70701133d0a884c2a2807",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:3a11a493a6160038f6eaeacaa56f6964fc188eeb05f6323859fd545a0034a068",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:38d1fbdd4a437ab480a1d3a008edc662742b4d4f9308af318ab1a3623849615b",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:49bf717e715c3b77a19dff405f1b1e612c92281c01bba532500fa2fd253fc8ce",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:38d1fbdd4a437ab480a1d3a008edc662742b4d4f9308af318ab1a3623849615b",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:3935c6c22795166e30b4a19c3aa46e7ca02a2a6b0eef8b7f343e23ee3c26bc4b",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:8082c6c1427b6d2a1690b4045070c24eaaf4b2c474c365a0c04ed60704dc1d99",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:440f178d9b74b2f03fe2e96349d9391d90695e596cd52edc595749e371753bd0",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:d7067505ffc8639ee0742b20886ebd084a252c063abb2fdf58c1cc645a4c6b30",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:6f01d09378b64c8fd3e9ba3411cac96b9a20f194a3ec76832d6bc546ce345f14",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:967bcfd481268d2b93730c0707fa330dbe171cecb21b0b03984ad88f54f956ae",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:f23a8397766e5d79e35b8445ea02cd1cf63ca4ab34e914639be98784f0611686",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:25c4a46591898e9378b024bcfe3aebc6bba83bd3c78a86ca1a6b8a1ac09c8ead",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:20b244bfb30d92a096888fcfedc4e746c954ee996092fefcff1fe2565f4e546b",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:4dc76020bae70577e64b330dca83fdf24f3d7593a0154d8abec6dc63f5897fd9",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:77a9b5e9019c8db8783ec9c3febb0a2c9862f61a05c308fe895e4a9bed03edb3",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:f850b8cff2183b54907709b12a24578a6a66e58fc04e704b684e8f89feee646a",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:d7067505ffc8639ee0742b20886ebd084a252c063abb2fdf58c1cc645a4c6b30",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:6f01d09378b64c8fd3e9ba3411cac96b9a20f194a3ec76832d6bc546ce345f14",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:b4904c0620cf78fd95e8c91ffa8873dc8031e92e6dc46b6ed7f1c86b0b593178",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:8c34885e1b576ffee9b2ce55067dabb3abfd111506bee70b93d7e3a6e246a32a",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:ad5f0726975c4af8c17c45b3030895f5758e22d9a1d576ff188f0c60c385a98b",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:93040d3b7a83246843d51173c503c699e345c886599dee990e91ecc16e7a70a7",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:4dc76020bae70577e64b330dca83fdf24f3d7593a0154d8abec6dc63f5897fd9",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:77a9b5e9019c8db8783ec9c3febb0a2c9862f61a05c308fe895e4a9bed03edb3",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:470f6496f6aa81d0aae02c259e76f14ab633b95551bd20af8494bb3bda40890a",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:63c7b1ba524fc1fcdd340f5ac1191f00616287a82b6ea2a93da9127bc2c34155",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:d7d5d3c460a734b373e9e1449b20b6888c0d34a115a0eef5873bfb316a8fcf49",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:777448d8b9f6821861e31ef14807666ae5558df56b1bb67394163ee80574d972",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:101dd5d9df21e564a1c8f05f9935e52a5f369d26c58a34e4e4b1e5697580386e",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:7f07c1e10796128547d1fe96c373487788863258ac1eeeadf5249c20ad838d0f",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:8e7e5ed6d9bb71439eca719eb93c37c7117c510c2ca388d7ad57b8b3d6be318f",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:f877fd2a8a9a4a3ae0366924f6fbae8e54ba119cd06e871a91efe0927998da5c",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:75b9a36f2303795c95f1eaf901cd405464b507c583a3645c2a2002ca7fa09438",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:91f161662b8063b3b59c45697393b62d15a64d9ee858ad6c33613cb2e2398009",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 68,
+      "end": 68,
+      "digest": "sha256:57573a2a664fdc4f3ae216320155a67564f35a95ec4925fa1cd02857928d3d0b",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:b6cff4d6c0c97de1190dfe8bda278a2a0798fd6e141e8ea0d02e965036c2c7f5",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 70,
+      "end": 70,
+      "digest": "sha256:e25df93827e20fc4bbd1666fcb4d8af7a8aaded00408e5bf668986ab4176b422",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 71,
+      "end": 71,
+      "digest": "sha256:cfac18a3b54986904c2778a40cf5dec4febc562ce5da98e5672c1ec6769ab618",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 72,
+      "end": 72,
+      "digest": "sha256:ca0e1e9fdb72055b3a9fabdf2c6a04632a6e10be228629dbf53140217b43ab6e",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 73,
+      "end": 73,
+      "digest": "sha256:693194eb11258d7ac080dadf44fa5a00d59c1a2f661d3b739c35392902dd4384",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 74,
+      "end": 74,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 75,
+      "end": 75,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 76,
+      "end": 76,
+      "digest": "sha256:f717674ccdd0173b2f47dd38910a5492a35d24babac71c92491db3a54276e622",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 77,
+      "end": 77,
+      "digest": "sha256:f2a83b55aa5dedfa1deaec28cf8377192716061f3690768f0f298842f7b6b2d1",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 78,
+      "end": 78,
+      "digest": "sha256:9d35464af4686a6536db91fca1f132e5cc6cc28e462b914f229dd200a47344a7",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 79,
+      "end": 79,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 80,
+      "end": 80,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 81,
+      "end": 81,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 82,
+      "end": 82,
+      "digest": "sha256:13e1322b38cfe2d56a0b8f030590d1556758e5f40adc908a111f434923e78788",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 83,
+      "end": 83,
+      "digest": "sha256:63c7b1ba524fc1fcdd340f5ac1191f00616287a82b6ea2a93da9127bc2c34155",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 84,
+      "end": 84,
+      "digest": "sha256:d7d5d3c460a734b373e9e1449b20b6888c0d34a115a0eef5873bfb316a8fcf49",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 85,
+      "end": 85,
+      "digest": "sha256:9b6942f1cf9a6e600455de48a6fb6accd9403cff53e36abe2cc0bb282482c41b",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 86,
+      "end": 86,
+      "digest": "sha256:8e7e5ed6d9bb71439eca719eb93c37c7117c510c2ca388d7ad57b8b3d6be318f",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 87,
+      "end": 87,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 88,
+      "end": 88,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 89,
+      "end": 89,
+      "digest": "sha256:2cabc55c1787789513e7020f21a8cf9a89c52ec29e62c80e3606a75460148671",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 90,
+      "end": 90,
+      "digest": "sha256:9cd3e9fecf9dced31ff7cd7e0c94ae62a1e7d6b41fa454260ec83f11095ffb81",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 91,
+      "end": 91,
+      "digest": "sha256:4b66e20f3c62221f3adec5d9dbb7c446decb1424740b1eaaeba88c7912398ad5",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 92,
+      "end": 92,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 93,
+      "end": 93,
+      "digest": "sha256:05c38fdfbdc89d6dda49cb1a22b372f2080bdf948927c23a577bcbb0e938fce7",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 94,
+      "end": 94,
+      "digest": "sha256:57446ec4bbb00e70ba129f264cb59b6dd39052e7f627afa4e2fbcb1260c9cf78",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 95,
+      "end": 95,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 96,
+      "end": 96,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 97,
+      "end": 97,
+      "digest": "sha256:7ee4ed6aefb2214dbc486ec9bc854552a24f9f7abf943f464ee764cfdd14b163",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 98,
+      "end": 98,
+      "digest": "sha256:022fa9980b0952549e1a33ff44dd6d150712c8dff1bcce812470cdc47fba34de",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 99,
+      "end": 99,
+      "digest": "sha256:81a43150d64e8db5136df3ea806db3510bf3d9ba55ca771e73e8212a28c9dcfa",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 100,
+      "end": 100,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 101,
+      "end": 101,
+      "digest": "sha256:29b1d714d2477938d76857d3064cb8d2e5257bec3f9c24b6e9dcb8078749e5d6",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 102,
+      "end": 102,
+      "digest": "sha256:fe86726228672c0f9b8fd129bb050788de6b8a5a89f393c0295845e50b19a794",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 103,
+      "end": 103,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 104,
+      "end": 104,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 105,
+      "end": 105,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 106,
+      "end": 106,
+      "digest": "sha256:228bcd284460c8bfc57a70da7b49e631825ac8dc14e859b9e1febd57429b7ab5",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 107,
+      "end": 107,
+      "digest": "sha256:63c7b1ba524fc1fcdd340f5ac1191f00616287a82b6ea2a93da9127bc2c34155",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 108,
+      "end": 108,
+      "digest": "sha256:d7d5d3c460a734b373e9e1449b20b6888c0d34a115a0eef5873bfb316a8fcf49",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 109,
+      "end": 109,
+      "digest": "sha256:777448d8b9f6821861e31ef14807666ae5558df56b1bb67394163ee80574d972",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 110,
+      "end": 110,
+      "digest": "sha256:101dd5d9df21e564a1c8f05f9935e52a5f369d26c58a34e4e4b1e5697580386e",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 111,
+      "end": 111,
+      "digest": "sha256:78ffb12987a846561951646cfbba26776a54a1d84ca7d980787bcb5f21402a8a",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 112,
+      "end": 112,
+      "digest": "sha256:e4d1fa71ad56c7aadea836004490854933f85825e6607cd627523f4223d6b08b",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 113,
+      "end": 113,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 114,
+      "end": 114,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 115,
+      "end": 115,
+      "digest": "sha256:f877fd2a8a9a4a3ae0366924f6fbae8e54ba119cd06e871a91efe0927998da5c",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 116,
+      "end": 116,
+      "digest": "sha256:5ef1f0e360939536d15a4b613b3f2109ff1df636d0a4ac7bbe014351a93c1071",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 117,
+      "end": 117,
+      "digest": "sha256:89faa9d5e1232bbe4d6bfafc2887865264cd57f2e927213633268a6a2561af67",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 118,
+      "end": 118,
+      "digest": "sha256:2bb78ffe97868e4f420cd270d309bd4c53054790dd291c36decd41f8d0b2e66b",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 119,
+      "end": 119,
+      "digest": "sha256:5af03b33b4e62d5f1755f4dc9980bc6622d139cdb97ade3d02633400b87907f9",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 120,
+      "end": 120,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 121,
+      "end": 121,
+      "digest": "sha256:033d2462413b923b53c4bc93264b0de2a6accf4a30f48ff727687f78fe4e13e2",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 122,
+      "end": 122,
+      "digest": "sha256:1ce63367967eef0ba9d3580a7c0067b000c27f6427f0f26881f06a91bf1fe0fb",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 123,
+      "end": 123,
+      "digest": "sha256:b988d5add66b7b8dbcf43e4d5955297ea0081cab40b9040fa497c7b5d66de12e",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 124,
+      "end": 124,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 125,
+      "end": 125,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 126,
+      "end": 126,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 127,
+      "end": 127,
+      "digest": "sha256:c8ddb032dd42fb70d33a7947fa57d4b6a4807fe2e3307a46dc8fbdf620d8dd24",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 128,
+      "end": 128,
+      "digest": "sha256:63c7b1ba524fc1fcdd340f5ac1191f00616287a82b6ea2a93da9127bc2c34155",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 129,
+      "end": 129,
+      "digest": "sha256:d7d5d3c460a734b373e9e1449b20b6888c0d34a115a0eef5873bfb316a8fcf49",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 130,
+      "end": 130,
+      "digest": "sha256:777448d8b9f6821861e31ef14807666ae5558df56b1bb67394163ee80574d972",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 131,
+      "end": 131,
+      "digest": "sha256:101dd5d9df21e564a1c8f05f9935e52a5f369d26c58a34e4e4b1e5697580386e",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 132,
+      "end": 132,
+      "digest": "sha256:7f07c1e10796128547d1fe96c373487788863258ac1eeeadf5249c20ad838d0f",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 133,
+      "end": 133,
+      "digest": "sha256:8e7e5ed6d9bb71439eca719eb93c37c7117c510c2ca388d7ad57b8b3d6be318f",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 134,
+      "end": 134,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 135,
+      "end": 135,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 136,
+      "end": 136,
+      "digest": "sha256:f877fd2a8a9a4a3ae0366924f6fbae8e54ba119cd06e871a91efe0927998da5c",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 137,
+      "end": 137,
+      "digest": "sha256:b8b82f21c4e0c4c4a1408ebad209543a453fde7f092965e5cb71f6ba1667b10c",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 138,
+      "end": 138,
+      "digest": "sha256:4590d4512d4751041b619d8f44fda54080fa4d46c282a95da1fe8f3bd78a2036",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 139,
+      "end": 139,
+      "digest": "sha256:78497704b58b1f9de5d81d52ff5328d8e89af524bbfed4a1b44088439fb941fb",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 140,
+      "end": 140,
+      "digest": "sha256:502db1bdbecb975d2b5974026bd0817700551de334d4e68492b630977ede74ef",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 141,
+      "end": 141,
+      "digest": "sha256:4926d5c9038c3eaaeb0fa715623760e2f8b3bb8ced313824e7d0f97214b7df9f",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 142,
+      "end": 142,
+      "digest": "sha256:8474a9fa484157f9318802a96bf70617838dcbb89c07f474b18a3224d70e251a",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 143,
+      "end": 143,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 144,
+      "end": 144,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 145,
+      "end": 145,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 146,
+      "end": 146,
+      "digest": "sha256:28909b39d8dc1b0912e1dc0df4f99a1501dd492051c5cfa9d6249bb400a7d001",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 147,
+      "end": 147,
+      "digest": "sha256:63c7b1ba524fc1fcdd340f5ac1191f00616287a82b6ea2a93da9127bc2c34155",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 148,
+      "end": 148,
+      "digest": "sha256:b282ee0cc098dc754b805010a8412d8d18073a4625899dadece635f9712628bc",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 149,
+      "end": 149,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 150,
+      "end": 150,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 151,
+      "end": 151,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 152,
+      "end": 152,
+      "digest": "sha256:cc5f04d3ea7b6d3855ccbfd804f9ffaffc4811febb316badb2b97b1b7611067a",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 153,
+      "end": 153,
+      "digest": "sha256:611e446cbcc91ddd7650b3ea2b88f445c3025020c8be224e1d3a0c5e1becc529",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 154,
+      "end": 154,
+      "digest": "sha256:108561b466492ce27790683c15a50c3910861875f8597f3fc2a71b2e27534497",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 155,
+      "end": 155,
+      "digest": "sha256:b9a659681da55a28b6a6c1eeb32b508b76693e75a1d9d419d6d2f45686dba100",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 156,
+      "end": 156,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 157,
+      "end": 157,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 158,
+      "end": 158,
+      "digest": "sha256:d516b7a5a7d92a1b076f6261c659b90769ec23711a0baca88c3b8bba57daa8d9",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 159,
+      "end": 159,
+      "digest": "sha256:fa6db74210bbf94e51aaf47c0713dc3054334c11cbd82c788e5ae52ca49db25a",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 160,
+      "end": 160,
+      "digest": "sha256:33df9361b172bf5a8b78bb1a35401789e381053ec1fb79b8e89abbf42314642e",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 161,
+      "end": 161,
+      "digest": "sha256:939ca6a352f3d214c22bebddcba6133e5f23b2c19ada99038a74f1b49e7a1901",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 162,
+      "end": 162,
+      "digest": "sha256:291dce8d852ad8f1887856b95dcc60f595bbb905ebbf8d627e714b803ebcda83",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 163,
+      "end": 163,
+      "digest": "sha256:8a7ec28241295045266937833e17a236cd5562e91c56af24132cf21cea27e6fa",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 164,
+      "end": 164,
+      "digest": "sha256:9f621f2cb7bef49d052f8b0fa753e245cea57685fceb00cf501e4d938f5255f6",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 165,
+      "end": 165,
+      "digest": "sha256:5dc11dc3c38dd42b6dabd7c6759a7b5dcd776c7b30b08890548e0b393b882745",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 166,
+      "end": 166,
+      "digest": "sha256:f417c2dfeb5e43803915a9c1f852ad017c28156f43535960673cec1f45e96148",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 167,
+      "end": 167,
+      "digest": "sha256:c8acd99fc875f906f21d8412645643a45ec27864bb7d45d4762c77725e4522c0",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 168,
+      "end": 168,
+      "digest": "sha256:8e0f0897c755c476d656ba120d566fffb9e8cbe602a1833bf9acff1dc14584df",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 169,
+      "end": 169,
+      "digest": "sha256:adae9d51183ccdb4b906f120c197b11194f519d499708ec8794ebec614c0356e",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 170,
+      "end": 170,
+      "digest": "sha256:dabd0aaaedd7dfc5d5a99f25c83a0bed4b851c2890c7d0ef23d7b27c6a1fbea8",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 171,
+      "end": 171,
+      "digest": "sha256:9d5fa07be35ac1cb793920ac8c761bcb0b303fa6a2e2c5e80e98f240c7a11096",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 172,
+      "end": 172,
+      "digest": "sha256:4dc76020bae70577e64b330dca83fdf24f3d7593a0154d8abec6dc63f5897fd9",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 173,
+      "end": 173,
+      "digest": "sha256:64536914a6209eed0188e84e0d0404e64020893ea7433e1af98502f3f427f133",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 174,
+      "end": 174,
+      "digest": "sha256:0b42032a1e8add1690c554d7c34a1713b02964c365d1fc84cd3e826ab96c1e9b",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 175,
+      "end": 175,
+      "digest": "sha256:60636bac2eaa4aa8d56bb6bee3feeb7213fc4e87f349380920939ab8b8c7748b",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 176,
+      "end": 176,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 177,
+      "end": 177,
+      "digest": "sha256:5bad7cc2dfafc2175fa2d9704e0202f94083a9da69a585b0b18c48bea236275e",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 178,
+      "end": 178,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 179,
+      "end": 179,
+      "digest": "sha256:bc77d505d29012f162605b96540a1df32d32b3198d8fe49974622b63cea82d24",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 180,
+      "end": 180,
+      "digest": "sha256:9955899d08cefb24183a8fdcd25c56fc79fdbb030cd8ae2d53181c8cb5510817",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 181,
+      "end": 181,
+      "digest": "sha256:81fddb9ab97987d36c8975819cf867ab0a55109c560d96282513293326245e16",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 182,
+      "end": 182,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 183,
+      "end": 183,
+      "digest": "sha256:6b33a678417d7c3e02ca1897042bf57ad1e418d369483dbb5daa3f9c7624e17b",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 184,
+      "end": 184,
+      "digest": "sha256:9a4cdddec9a416a4b3664b2d8d46892df81adca138be6647a738529b863d9f6b",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 185,
+      "end": 185,
+      "digest": "sha256:3664649c3dee11676c865fe5dc6696b52b032122a9731a0336d5f443f7b6ca1b",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 186,
+      "end": 186,
+      "digest": "sha256:e6ed5eb314440aadf745423c6384f99aab82b59b18e54978986525cc5ce8cda8",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 187,
+      "end": 187,
+      "digest": "sha256:09afe2e4a63c6ddc5e474ea821780c8f489724531cb9127eee9542618274ebca",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 188,
+      "end": 188,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 189,
+      "end": 189,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 190,
+      "end": 190,
+      "digest": "sha256:bec7e0e6a2ec30225d9bec5b482673ed32eeed8528347e953d94a2f6beaef6ac",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 191,
+      "end": 191,
+      "digest": "sha256:0f630f07f98bcf6472db236038bb677e672e498aa0cfc8602ce23ec3bdeb6bed",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 192,
+      "end": 192,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 193,
+      "end": 193,
+      "digest": "sha256:7b8b75c4f15d9432253bc41f19765953d6a922a901e8b0286b7306ccfda9d7ad",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 194,
+      "end": 194,
+      "digest": "sha256:a31b7b2c8c73ad33c59bcde5c2206247413f6cfb3fc7b4c6e2650098617e25f2",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 195,
+      "end": 195,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 196,
+      "end": 196,
+      "digest": "sha256:1a2078dfd9032245dee1fb2641f21802c50d4495a803e0aa558be39882ff7fa3",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 197,
+      "end": 197,
+      "digest": "sha256:7b8b75c4f15d9432253bc41f19765953d6a922a901e8b0286b7306ccfda9d7ad",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 198,
+      "end": 198,
+      "digest": "sha256:d8904375e090d765847b0610652715c4deebe35e1cb5116fddbb295dbb3eb1c8",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 199,
+      "end": 199,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 200,
+      "end": 200,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 201,
+      "end": 201,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 202,
+      "end": 202,
+      "digest": "sha256:06b7d00de108414bf56a470851910a59a76aa69c7f3add09ad9155a35d3ac706",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 203,
+      "end": 203,
+      "digest": "sha256:fa6db74210bbf94e51aaf47c0713dc3054334c11cbd82c788e5ae52ca49db25a",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 204,
+      "end": 204,
+      "digest": "sha256:99ab60062e75bbd68fef75628004b3346f5e7bda4b021b1addec6c689da7330c",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 205,
+      "end": 205,
+      "digest": "sha256:291dce8d852ad8f1887856b95dcc60f595bbb905ebbf8d627e714b803ebcda83",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 206,
+      "end": 206,
+      "digest": "sha256:0629d1cc1fb4d9e6dfecfa6a6b3ef72e639117a50423a3b480dd9475ab45ba4d",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 207,
+      "end": 207,
+      "digest": "sha256:60636bac2eaa4aa8d56bb6bee3feeb7213fc4e87f349380920939ab8b8c7748b",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 208,
+      "end": 208,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 209,
+      "end": 209,
+      "digest": "sha256:d9339c3deb653a6e737b9683c377ad9bcf22c05e41bc7311650068f17b948afd",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 210,
+      "end": 210,
+      "digest": "sha256:df4a85a486be9079183bc2136a28726385b97746ad919d0ea6ac480aa8f29f25",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 211,
+      "end": 211,
+      "digest": "sha256:3a78c979c00829bbbd3a9cdbab79c32de967f7a49b51f88966eb7c17bd1be886",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 212,
+      "end": 212,
+      "digest": "sha256:feaae28d8fe102ced110c3e6636bc633c5c4ec94e12561dc845ceda5e148daaf",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 213,
+      "end": 213,
+      "digest": "sha256:5bad7cc2dfafc2175fa2d9704e0202f94083a9da69a585b0b18c48bea236275e",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 214,
+      "end": 214,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 215,
+      "end": 215,
+      "digest": "sha256:4d0121905f903a5d4c1486069943005dc350018da122a289a0b63b8694344d06",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 216,
+      "end": 216,
+      "digest": "sha256:400d7668b3f963c19be8a4d9f417a24b7b4e598e2283215eda17de7af1194167",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 217,
+      "end": 217,
+      "digest": "sha256:96028c1bed72b78979ea0ef50b5462fbdcd3affed3d53be30b637b3fd5fa2d9d",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 218,
+      "end": 218,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 219,
+      "end": 219,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 220,
+      "end": 220,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 221,
+      "end": 221,
+      "digest": "sha256:81cec4295c6f99f43ce39240541fcd0b077e03cce78153a35b640e1672a3c0d2",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 222,
+      "end": 222,
+      "digest": "sha256:b78965732ff426fa34666c49f54a095c6f9bcc559854134cfd4aa86128ac763c",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 223,
+      "end": 223,
+      "digest": "sha256:fe7466f988a38810db6d8f8a170141de4ff47beab595493a6228ce08ac6b9d32",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 224,
+      "end": 224,
+      "digest": "sha256:32171ee2a0e9e6f44c35e00cde9683cb7e18947b1c903e98620b719c1d9b2d1c",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 225,
+      "end": 225,
+      "digest": "sha256:ca0e1e9fdb72055b3a9fabdf2c6a04632a6e10be228629dbf53140217b43ab6e",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 226,
+      "end": 226,
+      "digest": "sha256:d90ade66e141495fe286bdda614461252416cfa245db6268e5f0cbf1d7fd0806",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 227,
+      "end": 227,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 228,
+      "end": 228,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 229,
+      "end": 229,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 230,
+      "end": 230,
+      "digest": "sha256:c440315ec2b581f18c4d20053bb71aa7b5a3ed1172139ae06b1f188fd95ac49c",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 231,
+      "end": 231,
+      "digest": "sha256:ece523c7d95d420d4ff49e42b4fb263847bfb194d96eebb9f9472a2b0266a7e4",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 232,
+      "end": 232,
+      "digest": "sha256:fe7466f988a38810db6d8f8a170141de4ff47beab595493a6228ce08ac6b9d32",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 233,
+      "end": 233,
+      "digest": "sha256:32171ee2a0e9e6f44c35e00cde9683cb7e18947b1c903e98620b719c1d9b2d1c",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 234,
+      "end": 234,
+      "digest": "sha256:ca0e1e9fdb72055b3a9fabdf2c6a04632a6e10be228629dbf53140217b43ab6e",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 235,
+      "end": 235,
+      "digest": "sha256:300904d0770f9921c9c95f01eae4af5a4279c65f6693c36fa11b76e6a5d458cc",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 236,
+      "end": 236,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 237,
+      "end": 237,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 238,
+      "end": 238,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 239,
+      "end": 239,
+      "digest": "sha256:b4d9af1f72a6935f2825d0d93b18b800fb289f65f67b22a63530dfd3410c5e5a",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 240,
+      "end": 240,
+      "digest": "sha256:ece523c7d95d420d4ff49e42b4fb263847bfb194d96eebb9f9472a2b0266a7e4",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 241,
+      "end": 241,
+      "digest": "sha256:fe7466f988a38810db6d8f8a170141de4ff47beab595493a6228ce08ac6b9d32",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 242,
+      "end": 242,
+      "digest": "sha256:32171ee2a0e9e6f44c35e00cde9683cb7e18947b1c903e98620b719c1d9b2d1c",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 243,
+      "end": 243,
+      "digest": "sha256:7d86f728ecd71a2b843356de238741abbf673c1b627a7edcc2804411fa8256fd",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 244,
+      "end": 244,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 245,
+      "end": 245,
+      "digest": "sha256:300904d0770f9921c9c95f01eae4af5a4279c65f6693c36fa11b76e6a5d458cc",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 246,
+      "end": 246,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 247,
+      "end": 247,
+      "digest": "sha256:7b8c6d72940b70840d9b2684ca0c52ae8434886b0279b261564c01d25cc8dcaf",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 248,
+      "end": 248,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 249,
+      "end": 249,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 250,
+      "end": 250,
+      "digest": "sha256:458046f9b67b5d0cf01c8686ba8a71a89f15198a28b2c07077d39638c07eb072",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 251,
+      "end": 251,
+      "digest": "sha256:ece523c7d95d420d4ff49e42b4fb263847bfb194d96eebb9f9472a2b0266a7e4",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 252,
+      "end": 252,
+      "digest": "sha256:fe7466f988a38810db6d8f8a170141de4ff47beab595493a6228ce08ac6b9d32",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 253,
+      "end": 253,
+      "digest": "sha256:32171ee2a0e9e6f44c35e00cde9683cb7e18947b1c903e98620b719c1d9b2d1c",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 254,
+      "end": 254,
+      "digest": "sha256:57573a2a664fdc4f3ae216320155a67564f35a95ec4925fa1cd02857928d3d0b",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 255,
+      "end": 255,
+      "digest": "sha256:d0730d5e202efd9b0dfa02317f134490776a8562254df5ca6f8f55264dbbbb48",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 256,
+      "end": 256,
+      "digest": "sha256:c339a7f2c6c28c849a5f2c72ef7a1a12f0bad0253ad7f3bd7d1880026b42c8d9",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 257,
+      "end": 257,
+      "digest": "sha256:cfac18a3b54986904c2778a40cf5dec4febc562ce5da98e5672c1ec6769ab618",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 258,
+      "end": 258,
+      "digest": "sha256:ca0e1e9fdb72055b3a9fabdf2c6a04632a6e10be228629dbf53140217b43ab6e",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 259,
+      "end": 259,
+      "digest": "sha256:300904d0770f9921c9c95f01eae4af5a4279c65f6693c36fa11b76e6a5d458cc",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 260,
+      "end": 260,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution_test.go",
+      "start": 261,
+      "end": 261,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Tests introducing-committer attribution, rewrite and rename behavior, batching and caching, and includes its large-Saga benchmark."
+    }
+  ],
+  "version": 2
+}

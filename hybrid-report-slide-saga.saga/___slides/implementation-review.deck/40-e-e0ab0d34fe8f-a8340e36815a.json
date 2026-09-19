@@ -1,17 +1,29 @@
 {
-  "version": 2,
-  "diffs": [
+  "references": [
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=49\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fcli%2Fquery_reviewapp.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=49",
+      "commit": "b6042a5b85057c8f2f892dabc9d06cb1bfa155fd",
+      "path": "internal/cli/query_reviewapp.go",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:2111c2530cb953c44148943df2088c924060cc7a68401752095c7b16bb8d1d2a",
       "note": "Carries committed source identity and optional slide section labels through the distinct living and slide query contracts."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=84\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fcli%2Fquery_reviewapp.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=84",
+      "commit": "b6042a5b85057c8f2f892dabc9d06cb1bfa155fd",
+      "path": "internal/cli/query_reviewapp.go",
+      "start": 84,
+      "end": 84,
+      "digest": "sha256:9f32bad1018e6e785d5bcfcd26bb92bc2daee12007b34eb893dcba962050c3cd",
       "note": "Carries committed source identity and optional slide section labels through the distinct living and slide query contracts."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=87\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fcli%2Fquery_reviewapp.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=87",
+      "commit": "b6042a5b85057c8f2f892dabc9d06cb1bfa155fd",
+      "path": "internal/cli/query_reviewapp.go",
+      "start": 87,
+      "end": 87,
+      "digest": "sha256:417416f8203fcd22b61de93ea4c3dfd76bd4aff8715ffff07c481ddc39ce5d71",
       "note": "Carries committed source identity and optional slide section labels through the distinct living and slide query contracts."
     }
-  ]
+  ],
+  "version": 2
 }

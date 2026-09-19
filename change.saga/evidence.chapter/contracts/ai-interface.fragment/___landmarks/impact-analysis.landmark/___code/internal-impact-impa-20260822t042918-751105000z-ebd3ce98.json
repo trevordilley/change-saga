@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/impact/impact.go",
+      "start": 107,
+      "end": 249,
+      "digest": "sha256:93f46ba2ad26db4e0ea5f30c3273b244885c530c3354341c54907f80604d5932",
+      "note": "Analyzes destructive replacements, neighboring additions, unowned atoms, and incomplete baselines."
+    }
+  ],
+  "version": 2
+}

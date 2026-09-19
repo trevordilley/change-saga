@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitdiff/gitdiff_test.go",
+      "start": 160,
+      "end": 338,
+      "digest": "sha256:5e1bc6a5e3229f1ec9a9b73d75f337441ea275144dc2b803e9da2d6683d69cc2",
+      "note": "Distinguishes changed lines from lifecycle events and preserves product identity across Saga-only edits."
+    }
+  ],
+  "version": 2
+}

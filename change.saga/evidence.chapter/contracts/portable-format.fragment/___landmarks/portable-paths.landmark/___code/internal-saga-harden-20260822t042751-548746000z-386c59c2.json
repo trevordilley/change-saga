@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/saga/hardening_test.go",
+      "start": 215,
+      "end": 330,
+      "digest": "sha256:41cbbc3ef874aada19c0d995c856fd6052f919d090f28e176e17c92452c20a36",
+      "note": "Enforces contained entrypoints, safe structural entities, and cross-platform portable names."
+    }
+  ],
+  "version": 2
+}

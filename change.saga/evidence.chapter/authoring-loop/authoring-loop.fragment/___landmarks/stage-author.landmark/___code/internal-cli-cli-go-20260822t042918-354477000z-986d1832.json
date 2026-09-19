@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/cli.go",
+      "start": 1536,
+      "end": 1594,
+      "digest": "sha256:89eea1c53766ef303e0a008ddede5bae8d1a1271419ff90230355d796fb6e216",
+      "note": "Provides the SVG scaffold and concise embedded format specification."
+    }
+  ],
+  "version": 2
+}

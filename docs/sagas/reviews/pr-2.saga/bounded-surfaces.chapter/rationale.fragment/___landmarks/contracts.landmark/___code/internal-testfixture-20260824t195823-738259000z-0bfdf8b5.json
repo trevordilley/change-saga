@@ -1,0 +1,693 @@
+{
+  "references": [
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:3502572494880db7582d8d827bb065dd9574fddb315deb608dcdc46642997eaa",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:45a3766cca88f4b5558fae5f4ba5149efe84fd3368cdc8771a0f80e849bf92ea",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:a5a46989078db5bd07f0781c53007de6c45fc6d8bde20fc8fb711c12afc734ee",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:7551e5e83bfae591dcbb33cd65f345b23f10591af57c1934558cb23b9b6ab392",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:16e66957e17bba533b9ed7b8cb46afd2bc9e59a71b4587d004169687d6376264",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:18536c74c1057d4087e46673870b29915a9cc929f00b0edfeefafa66ed4145d2",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:13baa39657373bbb489689bd16af66bec7c78814f09aa62d0a14abbcc419242e",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:ec208a8702886ca942ee4051df7ed514facbb7e6f0a007913777dba3318ce672",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:b67d170bee6cf051ca5fa0aae1b0a0578a2b661ccca93940dbc03de74d8e2d0c",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:e2e632cc73ecd8b77b3cd2740e862aa47b4f4c678e71a9167f333e5848869527",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 83,
+      "end": 83,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 84,
+      "end": 84,
+      "digest": "sha256:3ba9a4a3547697ea311d2dee38f2a9991466714f88c63a6180301b1cd6f123e3",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 85,
+      "end": 85,
+      "digest": "sha256:973b90d23b087e271ad7e136d0c053ddbebbc8ffe8dbf4848c5384e242fe3369",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 86,
+      "end": 86,
+      "digest": "sha256:16e66957e17bba533b9ed7b8cb46afd2bc9e59a71b4587d004169687d6376264",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 87,
+      "end": 87,
+      "digest": "sha256:8b7b8819c681327a6496057eab62a5fe4c320932cfcf630de7763afd67a6a127",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 88,
+      "end": 88,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 89,
+      "end": 89,
+      "digest": "sha256:412c27b808239fff0f50948d751885abd9df8460924d4bc3b7b090a5b0f8bf84",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 90,
+      "end": 90,
+      "digest": "sha256:d7a818ab872e5e5855d1c9fb0b0dbac46c91f35119ab282259b211583d012e64",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 91,
+      "end": 91,
+      "digest": "sha256:807a20ed7e103a844784d07e1d56552a8efeed364e04a4d9b5c9567329a33383",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 92,
+      "end": 92,
+      "digest": "sha256:c91fbd86c2d3474fa892243087ade9644f3c86bab993567458838a4591befe5a",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 119,
+      "end": 119,
+      "digest": "sha256:664908061a825876c76b77a47729c371b3a827323502a3f17ceb31405b422395",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 141,
+      "end": 141,
+      "digest": "sha256:dce316ec6cf33a2c7598b0eb34690bc1d3e2fb9339031fd83da062e996e18b81",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 123,
+      "end": 123,
+      "digest": "sha256:f94cced4218e03b6e450b9a4f57e19ad789fd4bfb6c70a2b99a0ad3cd1e5b131",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 124,
+      "end": 124,
+      "digest": "sha256:1153fabf82e6b5f0886d42ba468ba54b1ba59ce128560cf4a3e1a9680cd8c586",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 125,
+      "end": 125,
+      "digest": "sha256:636571b2aea0cf3b709bf18cc7ce9569fead715f98143f5ea877a5a3c4ef327b",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 145,
+      "end": 145,
+      "digest": "sha256:10b08df528678977cc76bec97b78a8f95c72fb3244ef8ae039dfb1e40bc366b7",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 146,
+      "end": 146,
+      "digest": "sha256:01792321c996c55c110f4be44314470e35dbfe7c97a21097e2ce6ebcf39e5e4f",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 147,
+      "end": 147,
+      "digest": "sha256:c17161d3c61b85d360a1ac9df7265ac153576650ef4487bf4c06cc733699e4b5",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 148,
+      "end": 148,
+      "digest": "sha256:f2eeb5311f11b73811dbb94f7416ba52310034e34265c711359e7aff61e9846c",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 149,
+      "end": 149,
+      "digest": "sha256:b7a903c1316551b466eda245a4d8e806b6d219996693c3b2a2132846ef860084",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 150,
+      "end": 150,
+      "digest": "sha256:22693c4f062337da15b7d2c7759d28d5e1c0af9357ca68a3c1e3c2feaaa5e8cd",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 193,
+      "end": 193,
+      "digest": "sha256:58a6b732616d7c183041ded20a59d282c77db7101634f92f0596a6b1b107ddb6",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 194,
+      "end": 194,
+      "digest": "sha256:328642e8c886c79fc8f1f72e535b22c2f9b5f01ac9b53b083450f0c5ebcd83be",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 195,
+      "end": 195,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 196,
+      "end": 196,
+      "digest": "sha256:c58dadfb17d48f08e25849a33230e89fb2d0c0c96a4dc91f957021d49704fbf6",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 197,
+      "end": 197,
+      "digest": "sha256:21541d7239a6aa44ceddf818f2e9729273aac155bef43f8d3d7bce88beebc34a",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 198,
+      "end": 198,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 199,
+      "end": 199,
+      "digest": "sha256:33ea68d352956c547c555e3e0f3e197479f74336fbc0fcb6e3b093f5c55f4969",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 200,
+      "end": 200,
+      "digest": "sha256:4b29423eaaecf8951134c81360ad9204b01e58622909c758683e2807eabb9e61",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 201,
+      "end": 201,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 325,
+      "end": 325,
+      "digest": "sha256:d84660fa1428bcb67512718e2370a999663039a51639d19a1430fc152cf09f32",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 326,
+      "end": 326,
+      "digest": "sha256:7aceb0564b32f636eeb698a05594842fbdae4434275f48e439ebc63976f6c95c",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 359,
+      "end": 359,
+      "digest": "sha256:f9a10147dc99f74edf29713340735d6107abb32c4adfcd8cfea67aae18129e16",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 360,
+      "end": 360,
+      "digest": "sha256:178da5297b3b737487172def91bea694ae7c1aed207624628c25f64ebb313e55",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 361,
+      "end": 361,
+      "digest": "sha256:a28569753f404cdb47fc5d992140e1b1218cd6e51eb06968c826a9911f5b4550",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 362,
+      "end": 362,
+      "digest": "sha256:512cd7cd5eab6fd83ec1e996af4058083e2bdea448881dfd059e269013bdedbc",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 363,
+      "end": 363,
+      "digest": "sha256:a4e9fded665e4e129c09de8f6b8f947663cf88b059a84c5351bfed713137935c",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 364,
+      "end": 364,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 365,
+      "end": 365,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 366,
+      "end": 366,
+      "digest": "sha256:b95d48973f2c180ca46b97af3fed0424b145f98b60e89a0ea7143943acb295f2",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 367,
+      "end": 367,
+      "digest": "sha256:0d6d5c8312722384a0bd4c475c56a4983e0b146ad8c4b2f7df32cb8a7890588d",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 328,
+      "end": 328,
+      "digest": "sha256:17ceeda95c7dbd56db10f4a4dff9b3ff7dd46396e49833beda845a03f643c0a7",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 369,
+      "end": 369,
+      "digest": "sha256:a5d42045d06c10e471dd05ce87d5a44943abb225a465b3d0cafebccac9cfe9bd",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 371,
+      "end": 371,
+      "digest": "sha256:9c3770873c7fa8e6e902104434405198ba814f580a77380c7e712f0f19075ae5",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 372,
+      "end": 372,
+      "digest": "sha256:994aeae40635a337459f4fd17ab1af445468fea8b9691f4378ec87306ca7399b",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 373,
+      "end": 373,
+      "digest": "sha256:19e3026ee1315cc0212de5d02b965a2748100a10f1409753d6941d657a1b0206",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 374,
+      "end": 374,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 375,
+      "end": 375,
+      "digest": "sha256:7dfd066ad741671fbe73d7d247f92ba98708fe2497d5859a46174966c362a5e7",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 332,
+      "end": 332,
+      "digest": "sha256:f256e803f035cbcb6e975f120f4005912481ee2496a53f603178b8a487db5d17",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 378,
+      "end": 378,
+      "digest": "sha256:154a115928529278c4b54d25c27eb1ac005e9377da4fa3d95613733af2757a3d",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 334,
+      "end": 334,
+      "digest": "sha256:34d7a2092712188cca37a1ee4e70bfca155449af4f50218d83fabc1910851a06",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 380,
+      "end": 380,
+      "digest": "sha256:0a8bbc1f984c6443fc78dcb7c62c808122e90093f508a7f33d38ab27e90392f0",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 342,
+      "end": 342,
+      "digest": "sha256:f66b7719b63c2bcce9facd6d269e904d4febbe79727fba99db2b5c569c41013c",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 388,
+      "end": 388,
+      "digest": "sha256:c68bd4e2983ccf48c622e6e49badcf3515794ddb3c5316f5469dd96e945786d6",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 389,
+      "end": 389,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 390,
+      "end": 390,
+      "digest": "sha256:c1f7c3c05ff491ba7b348edab09fc4d06279d640301811b5dbb9b5968dcd5edd",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 391,
+      "end": 391,
+      "digest": "sha256:1f998e9f74bcfd42e59ce7416ecea7d1e6a2195329cba73f1bd071d33e270a35",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 392,
+      "end": 392,
+      "digest": "sha256:ba6115e62eca080e11cfee4ed74aa109c60b2e704be6531e20237d4dd917ad2c",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 344,
+      "end": 344,
+      "digest": "sha256:9e218d700c906b66b17f8489a5807a2272d10139ed63b3faf63684677808b379",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 346,
+      "end": 346,
+      "digest": "sha256:0dba11d871c8388570c24758fa8b5609671cbdbb20d27c41ec9c0cdca7fdc165",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 395,
+      "end": 395,
+      "digest": "sha256:d030f0c4592f4c54c9290a4431ce425645fa3b6062743c8a41ece8cc45061f53",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 396,
+      "end": 396,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 397,
+      "end": 397,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 398,
+      "end": 398,
+      "digest": "sha256:a8d923232f2ab33a1538aba0e356f842931c7ae02d126113ead5b84f19d78c5b",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 399,
+      "end": 399,
+      "digest": "sha256:9300d99b959d71a2cf758c41b4a3faa2b0c87d302a7ae4eec81b94300c801f06",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 400,
+      "end": 400,
+      "digest": "sha256:5cb45f6889f284e873fd82e858964cf68c378b68df81bc2a06e1c5314bcf73e6",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 401,
+      "end": 401,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 402,
+      "end": 402,
+      "digest": "sha256:9735132b8699c57cc404f601c9e9d4c5e754260513feab002db9da0322ade89a",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 349,
+      "end": 349,
+      "digest": "sha256:5798b9a503787cf388e1cd72cb2bd786453342725d7cb153cd4334a1165e8ec7",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 350,
+      "end": 350,
+      "digest": "sha256:709832255df91a827dfec138dba0d61c259b8b95b2906e711624565f1c352cc8",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 405,
+      "end": 405,
+      "digest": "sha256:1ecbbceee74c9ab187259662c36024b0423763b635efee7a3f21755e13b9ef35",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 406,
+      "end": 406,
+      "digest": "sha256:ce214c2108bccc9e0050ff5dc532da63058696ee9cd919f3edb54687dddd3a43",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 357,
+      "end": 357,
+      "digest": "sha256:fc3419d2e26d70659ba3d3b61d860c668d7eb5b7c9dac81c7bff28cd654cabf5",
+      "note": "Generated pathological saga fixture."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 413,
+      "end": 413,
+      "digest": "sha256:28e9fe3157768bd8a90ff6a00a66b9642bcbd01472ddd9add41c550b0900e930",
+      "note": "Generated pathological saga fixture."
+    }
+  ],
+  "version": 2
+}

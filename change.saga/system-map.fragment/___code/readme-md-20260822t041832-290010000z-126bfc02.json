@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "README.md",
+      "start": 31,
+      "end": 38,
+      "digest": "sha256:9e4da73f76a01251c651cafb5b4a16c5b377721e686296c49b60d182ba95b32a",
+      "note": "Shows the project status and quality signals that frame this experimental public contract."
+    }
+  ],
+  "version": 2
+}

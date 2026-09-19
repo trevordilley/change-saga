@@ -1,0 +1,11 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/querytest/fixture.go",
+      "digest": "sha256:f420d7550538b63f6e07c953daa9d3aab9a580c9704043d5f6319761996eb452",
+      "note": "Records this owned authoring path as newly introduced in the since-inception comparison."
+    }
+  ],
+  "version": 2
+}

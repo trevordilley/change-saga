@@ -1,0 +1,547 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "digest": "sha256:c553fcf209bda9ff2f3347b5cb95550f240b150224ae2a5fb3e8130fbd664690",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:0b0d4d1f5fbec17d7732f29ccf38d3ed9e3587229f0a04824e1096d25f930f7a",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:71e37b6cd48ad477cbb12624b757ee1dc4975711b78237a85f508bfdd723af77",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:2687cf8ba8737b6155548121841a1a74c90dce6633adb6429b325cd1e9f2cc58",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:f05b48055b78db9e9e8993848d47169d7abd312df35886aa83d4014d37eb4009",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:1b649ecbf085fe223589d7f842defd5e2c82ec06b02b4f7827a31625fd09316e",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:ff2c0ea95d76cbc00801be44ecfc5884dca46f0b7febe0b6b2a9a5e1afd73944",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:fafba0527c3953c4b6e0e5b5739ba83612f8053bcdc9466730193cd1d590b408",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:fd14eedb06507edbd77043d54047182d5c27311c5de6ed57e04428e15cbf86bc",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:fb6ddfa97fe4b139ce34cfd6c05a40fdd4b83b4c28ac1b654155a41d8b7bd998",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:46f3b5f8f3a01c856b5800e9f7d6631d66174bb19d613ca2c90af82b1c28084e",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:67d00d889a1fbd88ab4741bc98e902f3f54a021c4cad2f835d8a23323f2db5aa",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:af270ba017e6b5fb39c0d3aa77f758c5685a5057dad73dec21a440e0307132ea",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:c84fa48db005132773af574ab9ccd576ff6eaac335d54f8d6f893b2790adfe06",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:9c69c167f87a5258554d998e5ccc28022295ba7375c567729c105f3d1e85e6f2",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:a355cbdf1ee5bea589819ccfb5d3a6a01da6c84a49acc7d371137a9980f73ddc",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:88870ca4668e32d8c7d97e2a1ae6a207318ef09d70d3a6048f4e77b032bb1207",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:96a3bd42313b62b90f8e539110b4420ff76ed7197cb43cf68f6ae5000dfa82db",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:4512b747f521a91a966c16f779f4d7dfc3ef9abe0887a14af0ee7bb6e1b8bc91",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:6db7a9c22c61571930d12968cf4c35264194fa38418f29b99dc7999dae6e7d95",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:d9ad3f273facc36ab637afe587540cc04bdef7ef8ed03a566eb945538a37e2d4",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:ee9cd30e0de5578e5e89c9294e4a113e007489f3280c8884d20fec9d6c20876f",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:e7a534302dfb37c1329aeeb02dd3015716ef5930594805a492623834fc4b28c1",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:3732976d6895610b5c59afb76e3a24a45884defabedd762937771a2f377e9695",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:f54b6d3e9ada54e66bf1d17baf3165a3a25e69bf576e850ddd6ee0ac466da3b4",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:4e4e7815a508e0c39f87bc0824cf47951bb44279e90868ab516a50bdd8eaeb65",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:ad6fd295eefc2cc017e27c71860c9b63d9fb721b1a2cfd8debbeff33ae4855fe",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:0b7bcf9511d0a66502c060c07899d4332611409c71ef9924b535a957f4d3c408",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:63e299ed909ccec7271335be1be1bfc5e0826ef14204de75e1e03a8507602b9c",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:0c3c6675fe2b783985a82fdf1f5ea4d301ebd9480c2f9ac381c9e7c5579e6670",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:f4ec469aead692c0b094dfaa26bae2d75f09cda28eaf7c016a87f459943b833f",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:d3cc6059d50401828f53c68e72e3d3ceeb1501ae3a971ccd71033c9490a5fca4",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:d4864b50296f7f0bfef80232c3ce5aa92306c11255fce7a8c5fd475f58b192c3",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:97174497fabb12437d26f0dfa94cf81fd9e073d21bdf95b80c10f401772f56ef",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:b9ebb8fa0475bb89fa99dc8319d3fac64e84486b1aa7f4b891a52df107c493ce",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:5e22eef160db21c91b246820a2dced8ce149fda814ef4b1a7ffc38f775e82fe3",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:a694c92d5eed9a0074b0c539f31abf67eec1ab95d2415169a1ff2f049f91d3ec",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:aa28324021048c4f6c483cb35f6e7434213189a26378b5e347469604021f07b5",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:e123455e7644794f724e98f2373b71ad739c5fe57d6e2437b99a4ee9af1a4a82",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:59c9245ebcea0b3d9e11a92ba16fb5e254c0e28f46cda24913e3625982cc1743",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:9fbf122f778bc118e8769c6d5d080b3818fc672617d5dbebfdfc08f8a350b9da",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:76fba9bc0bfcab954e2c5375e1b95d6c42d04b0916aab33df1083c9474d7d4f1",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:a9f08f7ba50c8d6f040f84cacc9f140695fa625670951d464f5298bcdaea5474",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:77fcccd53069f02f636d235c2d65329f3ff59082d47350c718869462f9663f18",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:af270ba017e6b5fb39c0d3aa77f758c5685a5057dad73dec21a440e0307132ea",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:ad6fd295eefc2cc017e27c71860c9b63d9fb721b1a2cfd8debbeff33ae4855fe",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:c48bc59dc22cd17682cd3fd501a211d855b1a7111b5432b5e87b053fd85b5c1c",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:4bddb26b0c5ea6feb9b03f7538fde6bc695d46753dc48af462997a946da9201b",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest_test.go",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Verifies both ownership directions and prevents coverage chunks from merging across files."
+    }
+  ],
+  "version": 2
+}

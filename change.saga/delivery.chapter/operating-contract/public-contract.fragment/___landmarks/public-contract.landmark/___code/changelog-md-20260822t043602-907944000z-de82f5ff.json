@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CHANGELOG.md",
+      "start": 1,
+      "end": 106,
+      "digest": "sha256:ca4e475c672c139286fec5b6ee9f9b86a3a6d952965038bd528031d4aefab58a",
+      "note": "Records unreleased, v0.0.6, v0.0.5, and v0.0.4 delivery and review behavior."
+    }
+  ],
+  "version": 2
+}

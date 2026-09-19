@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SPEC.md",
+      "start": 331,
+      "end": 361,
+      "digest": "sha256:b6f18a72e2ee21544f6f02662c9e806af6dac8a16d7702f0269f65302818b007",
+      "note": "Classifies source-derived maintenance impact and refuses exhaustive claims from incomplete baselines."
+    }
+  ],
+  "version": 2
+}

@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-facing-interface.md",
+      "start": 466,
+      "end": 537,
+      "digest": "sha256:61af4cac0c390c1059eeae4bac538ee77809b9acf16098f99cfd85f773cf1441",
+      "note": "Defines one versioned query envelope, stable operations, typed responses, and machine error codes."
+    }
+  ],
+  "version": 2
+}

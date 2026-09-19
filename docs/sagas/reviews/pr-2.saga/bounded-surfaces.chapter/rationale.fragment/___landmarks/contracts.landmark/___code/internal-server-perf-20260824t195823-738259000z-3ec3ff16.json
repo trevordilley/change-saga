@@ -1,0 +1,69 @@
+{
+  "references": [
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/server/performance_test.go",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:c63c76397cdd95722f20aab36f8ea40bd2220e11095fdc24b855a4477890613a",
+      "note": "Server performance invariants."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/server/performance_test.go",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:cccf252f3ac72d64bc5a2b7d88c2484ea5055f0446a1b41a75cd42d088c6fc5b",
+      "note": "Server performance invariants."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/performance_test.go",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:6d0446904eb3440eaa74a2c435e945e0ce26688801d9d9915a6d4b71c14af6f2",
+      "note": "Server performance invariants."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/performance_test.go",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:ded3f1ce8106cbf356998e17f3779e809332816f40cc7acff9b66d5beb3c6b51",
+      "note": "Server performance invariants."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/performance_test.go",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:5ff5d8e9bfe7f9b0ee4744fe56514fceba1a58f8b83b57c0551689cfec25ff0a",
+      "note": "Server performance invariants."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/performance_test.go",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:17807133653025ad505f827e119474910f00aa4a2e8144274e2582e968c2cba5",
+      "note": "Server performance invariants."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/server/performance_test.go",
+      "start": 94,
+      "end": 94,
+      "digest": "sha256:2ec8a99a5655d32ce3735a200401b19c98c0e0c2c92d5b9c46a20ad49c0b7784",
+      "note": "Server performance invariants."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/performance_test.go",
+      "start": 96,
+      "end": 96,
+      "digest": "sha256:34001f8fd0dc5b6b3e2c4c43b68687e42002d82d9549ede1ca3f30d6c2b4136b",
+      "note": "Server performance invariants."
+    }
+  ],
+  "version": 2
+}

@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/saga/schema_contract_test.go",
+      "start": 1,
+      "end": 132,
+      "digest": "sha256:ff430eab812784ab0e9c0f1c1591e83a8815a532b1f7328441410467e4a86d84",
+      "note": "Defines strict independent hierarchy and history records that compose the portable filesystem format."
+    }
+  ],
+  "version": 2
+}

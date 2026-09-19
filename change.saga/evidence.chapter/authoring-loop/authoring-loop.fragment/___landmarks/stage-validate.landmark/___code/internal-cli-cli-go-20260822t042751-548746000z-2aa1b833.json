@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/cli.go",
+      "start": 579,
+      "end": 772,
+      "digest": "sha256:54cbbfafe19fc4f8fa410f726d52d70463367293e84e3c8e159a201b127a2c0b",
+      "note": "Separates structural and authoring validation from exact source-atom status reporting."
+    }
+  ],
+  "version": 2
+}

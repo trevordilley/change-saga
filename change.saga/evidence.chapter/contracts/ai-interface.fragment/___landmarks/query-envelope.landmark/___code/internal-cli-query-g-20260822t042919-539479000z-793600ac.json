@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/query.go",
+      "start": 116,
+      "end": 175,
+      "digest": "sha256:18ca2f5a6b9515fa42bfb9a72984a447a835f13ec14a943f59ae5cb4da1e47dc",
+      "note": "Defines stable query errors, the common JSON envelope, help, and schema descriptions."
+    }
+  ],
+  "version": 2
+}

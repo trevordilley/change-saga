@@ -1,0 +1,29 @@
+{
+  "references": [
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/support/annotations.ts",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:d0172bc9e0a9466c564e78fd16b275e50a2583ea16b51726efe2d369d14c6e9c",
+      "note": "Browser helper behavior for lazy annotation surfaces."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/support/annotations.ts",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:f97adce34388fea76695fa440ddb4a640ab0e21d90ff2f1f28c86e7a65348dfe",
+      "note": "Browser helper behavior for lazy annotation surfaces."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "e2e/support/annotations.ts",
+      "start": 73,
+      "end": 73,
+      "digest": "sha256:f97adce34388fea76695fa440ddb4a640ab0e21d90ff2f1f28c86e7a65348dfe",
+      "note": "Browser helper behavior for lazy annotation surfaces."
+    }
+  ],
+  "version": 2
+}

@@ -1,61 +1,117 @@
 {
-  "version": 2,
-  "diffs": [
+  "references": [
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=5\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fcli%2Fslides.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=5",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/cli/slides.go",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:685cee49599a9c34054ff01a772039f6d7f6d02a2468fcccedd8b3a60f3b87d9",
       "note": "Authors optional slide section labels inside one deck while retaining v3 embedded bundles and standalone v4 behavior."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=9\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fcli%2Fslides.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=9",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/cli/slides.go",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:c38b872e8f16669d10170776c2f60b599323949e1cae090c6134635c999923a0",
       "note": "Authors optional slide section labels inside one deck while retaining v3 embedded bundles and standalone v4 behavior."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=26\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fcli%2Fslides.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=19",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/cli/slides.go",
+      "start": 19,
+      "end": 26,
+      "digest": "sha256:265bab99891fbf7bc7332c780ec6fe698c4ee3ee0cbd8e402dd9110b6e788126",
       "note": "Authors optional slide section labels inside one deck while retaining v3 embedded bundles and standalone v4 behavior."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=30\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fcli%2Fslides.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=28",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/cli/slides.go",
+      "start": 28,
+      "end": 30,
+      "digest": "sha256:38c1465fef8d821398dda938ea7eecb7a7cd200356f955e649f610c110d0a1d9",
       "note": "Authors optional slide section labels inside one deck while retaining v3 embedded bundles and standalone v4 behavior."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=32\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fcli%2Fslides.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=32",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/cli/slides.go",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:060bb6b28cd666ecfce2a6cb9409a7ad45ce034f7c6c31d00e724ea580a712ec",
       "note": "Authors optional slide section labels inside one deck while retaining v3 embedded bundles and standalone v4 behavior."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=117\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fcli%2Fslides.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=89",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/cli/slides.go",
+      "start": 89,
+      "end": 117,
+      "digest": "sha256:7f446d3a60b2ae62ddb2d28f901507376eeb37094bafb671637ccb10cc8446cc",
       "note": "Authors optional slide section labels inside one deck while retaining v3 embedded bundles and standalone v4 behavior."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=133\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fcli%2Fslides.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=133",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/cli/slides.go",
+      "start": 133,
+      "end": 133,
+      "digest": "sha256:01d487e8371dd41fe6cc4999a9de9bcd2654fd5389a1a3909e6259dbe46e8d78",
       "note": "Authors optional slide section labels inside one deck while retaining v3 embedded bundles and standalone v4 behavior."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=166\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fcli%2Fslides.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=165",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/cli/slides.go",
+      "start": 165,
+      "end": 166,
+      "digest": "sha256:f7ff6931073a4940a8bd9dabcd63348e4ab0bbc5dc7ce3d945fe3fcdae8327e2",
       "note": "Authors optional slide section labels inside one deck while retaining v3 embedded bundles and standalone v4 behavior."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=228\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fcli%2Fslides.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=226",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/cli/slides.go",
+      "start": 226,
+      "end": 228,
+      "digest": "sha256:7ca3737bc609c7fa258108862bb827f5944d403ba6e373892239994c60b6605c",
       "note": "Authors optional slide section labels inside one deck while retaining v3 embedded bundles and standalone v4 behavior."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=236\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fcli%2Fslides.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=236",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/cli/slides.go",
+      "start": 236,
+      "end": 236,
+      "digest": "sha256:7dadfece93924ec2e8ec914c4d24a39b1bea5f4bab278943e97ceb3efe05d2ad",
       "note": "Authors optional slide section labels inside one deck while retaining v3 embedded bundles and standalone v4 behavior."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=357\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fcli%2Fslides.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=357",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/cli/slides.go",
+      "start": 357,
+      "end": 357,
+      "digest": "sha256:a9bca06ed73d1f0caf38285d1ff60bb75ee9b51270dfd03dbf2b53afc857c9b2",
       "note": "Authors optional slide section labels inside one deck while retaining v3 embedded bundles and standalone v4 behavior."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=363\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fcli%2Fslides.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=363",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/cli/slides.go",
+      "start": 363,
+      "end": 363,
+      "digest": "sha256:63f2f89b19637737dd4c6b718c7ed1536a2e5327592e2da161aef14cfc9c5a06",
       "note": "Authors optional slide section labels inside one deck while retaining v3 embedded bundles and standalone v4 behavior."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=367\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fcli%2Fslides.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=367",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/cli/slides.go",
+      "start": 367,
+      "end": 367,
+      "digest": "sha256:918c3267da46bbf165b06a443205766c22aabc65e8cc318e58a07200da1ee85b",
       "note": "Authors optional slide section labels inside one deck while retaining v3 embedded bundles and standalone v4 behavior."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=443\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fcli%2Fslides.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=443",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/cli/slides.go",
+      "start": 443,
+      "end": 443,
+      "digest": "sha256:9358cfa3ec5daee2cbe32fadde6708addee9ef7c061785ac9625346ac4f6772b",
       "note": "Authors optional slide section labels inside one deck while retaining v3 embedded bundles and standalone v4 behavior."
     }
-  ]
+  ],
+  "version": 2
 }

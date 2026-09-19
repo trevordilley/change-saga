@@ -1,0 +1,1243 @@
+{
+  "references": [
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "digest": "sha256:b90f716315d4e4cd93500457f78b52ca308026c59a7507ccba00479ed03cd487",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:5f135a8565d492d0e760e8aa4396440d6f92cb53528e84643b2c30ab3242fa28",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:71e37b6cd48ad477cbb12624b757ee1dc4975711b78237a85f508bfdd723af77",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:9d321d278769fb32c7c6820e1c992ebb53b04e39def0f158cbf1d84e27d34c18",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:74432b77763c6cfa9171fc3fd13832ff241f4c996771aa8caccfe84199cb372f",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:d28863555fbc7eb2c1b3aca9fb2fc5690456651523e934989c30dfd95f77129b",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:ab6f6be8e5963a10d31f1044691aa6beceed5a59d04cd8247f259497075d8b4d",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:fafba0527c3953c4b6e0e5b5739ba83612f8053bcdc9466730193cd1d590b408",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:7be70cf340008f1865a81aea3e30711e7628d45667336cb9e2cabf40e6a4f8f2",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:10d61de8281fb12164e5e68ea5196c3e31cbe0665234f9a2cc58e7bcd8ab6e29",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:d0d986b0df7e9c47aa782b06609469bc8eeca47612b838cf829dda4bcddd3329",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:85df138ff85081ae36fd69ab533cda4936dbd0cb8c0e080f2619d5933185e454",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:97c86c0b58513afc409999b010d5a5ccf94c589bfe025451001f791fd1c3560e",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:986885a0e8ffaa55e4598970b4ad02a20bc39afa09b7692c2388c1301c39c3e5",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:24005bfa5954fec970010da43032812e05f5d5ea07d6a7cc10f7cbcd7d45f40b",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:2d72b3e2b40169bb276111e54950e19eec188f48054bdb459b276c36d6e09fad",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:68c3849eb8e98bf9be76ef03730ed72ee2b43d77b2fde9a723c1339776a955f8",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:ba8f0402b7bb0ba07c372cfc2f9352b0c9279f12fe0544c33d0b393e37b6aff3",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:fafba0527c3953c4b6e0e5b5739ba83612f8053bcdc9466730193cd1d590b408",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:ff0180e748235f3543e6b4167c23f1e9c213f94b0562ed2a81ec8b8024e679b6",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:1e0b51aa4348934adf6263f3e45d25d1c18174e16bb63e0e09c6ce3d6480e6bd",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:a9cee41870c918c00ca2de9a34cdd0d3d6d718f4a96a0622b11595fb2d01c3ef",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:d9d4c64726c4e5d156c3d693a3c9e494ef7fe30d58db58a3b9c5a1a7412a12c8",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:5c79ce5f58cd7a55326463c5474d50cca932b3b0ddf3d0b1eabca4b2c434a2de",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:5d9fa51543b1ff03c15d9dce121f7e06aedbefd7d142c8d6cbe1585f9e094879",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:5eb131d9dacf109e69f91e2db8460e6bc13f1e2493ae60167b7b272468d25847",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:744b423551bb3f74e3daa29179477d4ec96dfa16eac113977dc794708ac63e14",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:385c651018db8761522ba23519afe4310ff1db927ccc1de0d116a310d0e677f8",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:52ee0870ecd2beae44994c5f901f0b141f7957f9e3ea035e4a7fb7a165ec62b8",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:faa72053b5d5aa6c64d5faf9786a7666d53821882ad39484001ba197ccddefb5",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:f8bbd97dbade9f2ba3ab19c18abc3b626a7f09ed537b08d791dfc811ecc3be18",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:744b423551bb3f74e3daa29179477d4ec96dfa16eac113977dc794708ac63e14",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:cfecc83c172ee835fd0d5df5adbdf9b5304214a0545edbe3dcf98efb054f4a9e",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:7bb04998316f1069a4b5071af8f17411ef56904ba194e2b2efeca1dea37f846d",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:faa72053b5d5aa6c64d5faf9786a7666d53821882ad39484001ba197ccddefb5",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:10d732295ab439daa095b9183cc74e6b4f5d6b8ddd6c354030a3112e72b32b17",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:6dac76a1851920c0f0338a7b4b6505c20246d375bdfe73ea8ed5f870094691fc",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:d4bcd853bc834f5c6457631bd4106f4f16fbb83150bf9bac667e200722f1f604",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:6086d48183193c65be6e0d554d14c33fc310f26c6c151b2f09025c51434802d1",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:9cf1467e71892f35737249d854ae35b23080b3632196a11b8d741d5b471315d2",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:3ad2a6f93fc37040a4bb2d02cbe173144caffa346fac07bf88278350b968a741",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:22222b3d84551254266e0ed6a64993eb1ff4e550cc3afdf6b93f8413ae5a0330",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:5a3e28e2b64206ce9a9dec32ccda280a1c17f82bea5e16c8643251a7f53334c7",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:08ec74ba96fe72eb7819c2f560e78a4a39d995d4eea3ec156dcbe95c0c11ee70",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:d7b98f0afb99736a481e7fc0ffc734f62e9099d27ae9f69fa2d79a14f5acbc41",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:4f5acb4c0eaf6c2134c1a972c31cf61be79be8b0e4b8a1187d8b6f074f79ac2c",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:81fa01300f0125c657834837b1f96671ea15ad3a60ec6b22633a63f8e22dfcd9",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:8ac65b881c2d052c8cb9e80ca35d338fd63a02a8360fa03d41d1003fdb295859",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:480c8c00780a2ac386be4aeca711d82cb305e87777b53d52a83cfad7cb1f211c",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:b4c3b18f9cd871fe6e3963de321249ac16d4de0ea9b26f9cc7fb33296a5bbc39",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:08369b17fcc7d45d05dabebd4cf12196457274e08b65822ce4d4e957cbe0c1c1",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:19077c148196565d231167f0e99442012fac2300504116af56444bb1c8a0c7df",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:0c878a28fbc110a2ead44ca3a72cbb06eb69d94ec4fde2c814d0ec0e061cedbd",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:c883b4adc6ddfad83a8a0275f355afb111c66608ad193d7f743f54576ecd5c27",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 68,
+      "end": 68,
+      "digest": "sha256:66a52370170a025d81551b3236a40ad0ea5c3e23f0e9123ff4ed258a9eb744ce",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:af738d857211fb8383d13a1a92b00d60cfedb9340444e20a0c4de0141527f483",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 70,
+      "end": 70,
+      "digest": "sha256:e01abfd3469783ddd7463b7ad0a12ec39df3689a0719adb8cdcefb9f3341c59e",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 71,
+      "end": 71,
+      "digest": "sha256:4c154cdaef82ba33866af83a0fb4627709fde0adf6b35ece16355f457f55ed74",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 72,
+      "end": 72,
+      "digest": "sha256:3fccbe86901e3598a47eb52887f005af3d558c52ce4efccc32137e2bf9c9f971",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 73,
+      "end": 73,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 74,
+      "end": 74,
+      "digest": "sha256:58e9337bf26c51d771d4ea58fce5a335a09befcdbf4518812104e984c87e5659",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 75,
+      "end": 75,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 76,
+      "end": 76,
+      "digest": "sha256:f743b99f83618d6a54ce0d37f0e9ca58529c1e7eff3a7fbaad95726531b33f2b",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 77,
+      "end": 77,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 78,
+      "end": 78,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 79,
+      "end": 79,
+      "digest": "sha256:925a97907c4e3cacca3871fe1ec69d6ffa3164bc369345239866791611d59476",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 80,
+      "end": 80,
+      "digest": "sha256:5a3e28e2b64206ce9a9dec32ccda280a1c17f82bea5e16c8643251a7f53334c7",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 81,
+      "end": 81,
+      "digest": "sha256:e7c43e336e67ad17f5d728142bc49b44db2ae6b402109000409f9d2749f88cdb",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 82,
+      "end": 82,
+      "digest": "sha256:9379702e9e0ddf97bd740310eb9ac28c282d2ea67464cb811676b61149d8278b",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 83,
+      "end": 83,
+      "digest": "sha256:233354c4833ef8071944bf77e2376075ee9f5b6a8dbff8cc5c8496f241a72607",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 84,
+      "end": 84,
+      "digest": "sha256:e7e1c7ea3c7062499e723457e3e063022a33c09a008ede78da2e850a0b09dc27",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 85,
+      "end": 85,
+      "digest": "sha256:4c154cdaef82ba33866af83a0fb4627709fde0adf6b35ece16355f457f55ed74",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 86,
+      "end": 86,
+      "digest": "sha256:3fccbe86901e3598a47eb52887f005af3d558c52ce4efccc32137e2bf9c9f971",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 87,
+      "end": 87,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 88,
+      "end": 88,
+      "digest": "sha256:19cb6d31ed38dafe856615e8f9d64379fdd1120773f154b2a8b755d8daf86953",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 89,
+      "end": 89,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 90,
+      "end": 90,
+      "digest": "sha256:6a7962c3781a1ac38d03cc1ce2108a4c9767c2a316ff122787ed965e1606adc9",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 91,
+      "end": 91,
+      "digest": "sha256:e7c43e336e67ad17f5d728142bc49b44db2ae6b402109000409f9d2749f88cdb",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 92,
+      "end": 92,
+      "digest": "sha256:9379702e9e0ddf97bd740310eb9ac28c282d2ea67464cb811676b61149d8278b",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 93,
+      "end": 93,
+      "digest": "sha256:91628407f0b294c9e1c83f61dc033641295e60b0548c49148b4762b625dbd3c4",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 94,
+      "end": 94,
+      "digest": "sha256:e7e1c7ea3c7062499e723457e3e063022a33c09a008ede78da2e850a0b09dc27",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 95,
+      "end": 95,
+      "digest": "sha256:0c8917e724826249f93176b9680c656af157166d9a6e4c129d964b58cb19c4ac",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 96,
+      "end": 96,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 97,
+      "end": 97,
+      "digest": "sha256:0fb465b2fb63b7ef93b1f0a249bcbccbb02d1181d462d99e22151d544fe49ad9",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 98,
+      "end": 98,
+      "digest": "sha256:ba91dd073b682011422987c560db3e9d8bb859db75cf4d2ac859052562cbe11d",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 99,
+      "end": 99,
+      "digest": "sha256:4c154cdaef82ba33866af83a0fb4627709fde0adf6b35ece16355f457f55ed74",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 100,
+      "end": 100,
+      "digest": "sha256:3fccbe86901e3598a47eb52887f005af3d558c52ce4efccc32137e2bf9c9f971",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 101,
+      "end": 101,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 102,
+      "end": 102,
+      "digest": "sha256:428440690fe5055ca5e5fd610533514271f7c188ac9161458f332106f3ee0916",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 103,
+      "end": 103,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 104,
+      "end": 104,
+      "digest": "sha256:4769880e7607fa16b4dfa8fd8771f34926285aedf309955696ce69f6afd0c4eb",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 105,
+      "end": 105,
+      "digest": "sha256:156c7b9b85842324568128b048d04cf0423b1a2ed191fa8610332336b844bfa3",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 106,
+      "end": 106,
+      "digest": "sha256:17596259aa1cbb4d248d0a167bb129121d41cf7c6a818c00a74cd6af76e2a26e",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 107,
+      "end": 107,
+      "digest": "sha256:4c154cdaef82ba33866af83a0fb4627709fde0adf6b35ece16355f457f55ed74",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 108,
+      "end": 108,
+      "digest": "sha256:3fccbe86901e3598a47eb52887f005af3d558c52ce4efccc32137e2bf9c9f971",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 109,
+      "end": 109,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 110,
+      "end": 110,
+      "digest": "sha256:1a9cfb51c680c861052247dfc6ec3c3e1be98780bf398eb2e84e85f589198cbc",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 111,
+      "end": 111,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 112,
+      "end": 112,
+      "digest": "sha256:f743b99f83618d6a54ce0d37f0e9ca58529c1e7eff3a7fbaad95726531b33f2b",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 113,
+      "end": 113,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 114,
+      "end": 114,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 115,
+      "end": 115,
+      "digest": "sha256:5540137d5e1b6b6ed67aaf64375b286718dafa6225a7a37428d0cb97b79a2506",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 116,
+      "end": 116,
+      "digest": "sha256:eda9ae1fef8cb0c7953338509f9a77df3f42958d6b21d75f58a5b8dc4512ab32",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 117,
+      "end": 117,
+      "digest": "sha256:bb8ee13694e7dff87d9c3ea349090b087083084491c5c2dcff6aa4b81d249405",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 118,
+      "end": 118,
+      "digest": "sha256:cc9b9c8a8a932daa6d68ce6744df32c9d47688423f8fbf64c235d716f455703a",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 119,
+      "end": 119,
+      "digest": "sha256:b780b9a4d26aefa01d0b5a2931900bda8c4dbc5b8653b26a9bd9bea9dea5775f",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 120,
+      "end": 120,
+      "digest": "sha256:3100112cf0d21ba4f12fb1efc6dfd3cb4540be89df908cd0fc5d80468bfe8bf7",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 121,
+      "end": 121,
+      "digest": "sha256:505378f181692ddcf07d4616c44c2d3535da4461e289af01e97f4597646f950c",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 122,
+      "end": 122,
+      "digest": "sha256:af738d857211fb8383d13a1a92b00d60cfedb9340444e20a0c4de0141527f483",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 123,
+      "end": 123,
+      "digest": "sha256:8e4687db66dd6f43232c8f711cdf5da00a0c44c58010b8ee6ae670047d8391df",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 124,
+      "end": 124,
+      "digest": "sha256:5c99e85815005d8bf3fa1291c9443fb2f75222c20bd4ee9f806ee340d5b7fa67",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 125,
+      "end": 125,
+      "digest": "sha256:42a57081051f4682a7db3e590b4dd5413d53dc9a01551276dacb521a7e1db9a5",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 126,
+      "end": 126,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 127,
+      "end": 127,
+      "digest": "sha256:8f4d6b81766a6a612321ac7c031ee4b86b4f8086bcaa16d9f55f1453b982a01e",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 128,
+      "end": 128,
+      "digest": "sha256:4f050718f2accbd921e49294f2743b728a6aec7c3f84e92c3e1a6423560e7646",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 129,
+      "end": 129,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 130,
+      "end": 130,
+      "digest": "sha256:7a0dbb603f99a88ae33a474ba6a6fa8ffc80fd62ac82c6acf6c612b1cca9723f",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 131,
+      "end": 131,
+      "digest": "sha256:27a481504e378f4b0d5a02c635b3c3c272c19394d4f9f3bd7f8c1e1b9977f324",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 132,
+      "end": 132,
+      "digest": "sha256:1133a2704399869edaff2727841a5a83035ad0069dd26abab95c496820b4ce02",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 133,
+      "end": 133,
+      "digest": "sha256:c07bb04ca866a05fc1090b3f950c463581db9d2560b834478f54a35f0bb3c427",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 134,
+      "end": 134,
+      "digest": "sha256:c35a3fa114645cbab391c7040aa3a1c652ab488a396710f22cc332fc8a67e1cb",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 135,
+      "end": 135,
+      "digest": "sha256:02675607ccb2c1c374b2309089dc2eb35bbd9fa66993cca983666a62c04f20eb",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 136,
+      "end": 136,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 137,
+      "end": 137,
+      "digest": "sha256:8e1dff80ca04b736a6820515ffaa5f61c6e038d8e31c5a025e97f62ec96cdc10",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 138,
+      "end": 138,
+      "digest": "sha256:e7e1c7ea3c7062499e723457e3e063022a33c09a008ede78da2e850a0b09dc27",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 139,
+      "end": 139,
+      "digest": "sha256:790ac460b395131ba9f85319e5a0f66e748fa394f4403f61d895511fc39d1d68",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 140,
+      "end": 140,
+      "digest": "sha256:cf08a3d974a73e4361c540e276ba02f49ba22aa85161309b4e0da374dbd3795e",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 141,
+      "end": 141,
+      "digest": "sha256:78f0ce89a348390cfc6ad9a8e3d8cc32a03275b834e80cda738496c5e5b6b0c9",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 142,
+      "end": 142,
+      "digest": "sha256:f83efa1305aa73e168164a13f02b597ebe9c7b33631599e0d7fb438837115a42",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 143,
+      "end": 143,
+      "digest": "sha256:64f9f386b962f2d33e4ad9ee568de4bdeea70b9f8e640c7c6c56fcc057be0ce8",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 144,
+      "end": 144,
+      "digest": "sha256:4dc76020bae70577e64b330dca83fdf24f3d7593a0154d8abec6dc63f5897fd9",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 145,
+      "end": 145,
+      "digest": "sha256:9d5181c72394fc2edfc3426e3b31f2bb07f41c7ecff2cb86993b7dcca143b189",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 146,
+      "end": 146,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 147,
+      "end": 147,
+      "digest": "sha256:0aa2e52c006238263c65438786fcadca65ce79d53840f91c7698274363a67870",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 148,
+      "end": 148,
+      "digest": "sha256:2d5bc451c64f583ebad76f75457f2970d5c83c7f07b677cd04c8857552e5ff2c",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 149,
+      "end": 149,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 150,
+      "end": 150,
+      "digest": "sha256:00837f506bd8b4f72b830dc7f0969758780d1ad70586734b61264a1ff1ea53b7",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 151,
+      "end": 151,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 152,
+      "end": 152,
+      "digest": "sha256:5a895729388d7bcb93a698a23a30db91869f516397bf1726571a9e039a01037e",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 153,
+      "end": 153,
+      "digest": "sha256:8b8d6356da6e5840a232a4a72f3883d9145fd0b6b45bf3904155b60d622cbd2c",
+      "note": "Bridge from compact records to v2 selectors."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/connector/bridge.go",
+      "start": 154,
+      "end": 154,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Bridge from compact records to v2 selectors."
+    }
+  ],
+  "version": 2
+}

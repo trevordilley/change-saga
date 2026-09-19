@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/performance.md",
+      "start": 1,
+      "end": 76,
+      "digest": "sha256:3d377d4db7159a9fb14c84c0e2caa22f9f307b42885b4137634c4408c9f58bf1",
+      "note": "Defines workload scale, budgets, reference hardware, measurements, and benchmark commands."
+    }
+  ],
+  "version": 2
+}

@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/review-experience-audit.md",
+      "start": 85,
+      "end": 167,
+      "digest": "sha256:9329fd5d1a6d7998f8327b667a71568920be5bc4f75518be818962ed5984ce4d",
+      "note": "Provides overview, chapter, and code-diff wireframes for content-first navigation."
+    }
+  ],
+  "version": 2
+}

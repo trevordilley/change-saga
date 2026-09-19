@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/workflows/release.yml",
+      "start": 103,
+      "end": 112,
+      "digest": "sha256:94c097a5989236490c564f243cfe836d146a984f0970a0e9f00d78ce15b58c9f",
+      "note": "Feeds the resolved commit into the reusable unsigned verification workflow."
+    }
+  ],
+  "version": 2
+}

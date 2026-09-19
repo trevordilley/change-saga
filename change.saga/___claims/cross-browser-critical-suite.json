@@ -5,7 +5,13 @@
   "kind": "test",
   "statement": "The committed critical Playwright suite passes on Chromium, Firefox, and WebKit for v0.0.6.",
   "evidence": [
-    "saga-diff://v1/line?base=14afd0526c471d9ccad5825fadda735094e599e4\u0026end=27\u0026head=product-964a0b07e1a68460c0d665e55100f062a506f951b593593984d44517f040f9bb\u0026path=.github%2Fworkflows%2Fe2e.yml\u0026repository=https%3A%2F%2Fgithub.com%2Ftwentyideas%2Fchange-saga.git\u0026side=new\u0026start=27"
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/workflows/e2e.yml",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:6e66e1183b224f1d6b162ae1788814d16819234c73cd20d1f7466d71abcc1089"
+    }
   ],
   "created_at": "2026-08-22T04:30:25.082759Z"
 }

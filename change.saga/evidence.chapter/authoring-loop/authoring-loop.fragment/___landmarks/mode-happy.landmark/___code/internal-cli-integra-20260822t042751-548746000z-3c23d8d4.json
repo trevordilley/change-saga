@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/integration_test.go",
+      "start": 267,
+      "end": 286,
+      "digest": "sha256:dd7c113fc17041b6ed247c0ed5ce9d6a450add6fe416b3a0f63a37856f4b1210",
+      "note": "Exercises the successful end-to-end loop from exact comparison through complete focused evidence."
+    }
+  ],
+  "version": 2
+}

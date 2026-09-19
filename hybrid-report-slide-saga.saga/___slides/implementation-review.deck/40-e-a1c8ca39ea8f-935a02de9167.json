@@ -1,13 +1,21 @@
 {
-  "version": 2,
-  "diffs": [
+  "references": [
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=30\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Freviewapp%2Ftypes.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=30",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/reviewapp/types.go",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:562bb0785bcff279f0afe40823214b24609c5cf7c7c8583961caaea28f15e464",
       "note": "Defines the source-head and optional slide-section contracts used by review application sessions."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=239\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Freviewapp%2Ftypes.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=239",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/reviewapp/types.go",
+      "start": 239,
+      "end": 239,
+      "digest": "sha256:28c9dc9977c61cb0f1f504ea29345b3733274e17f654d795284569cdfd517c44",
       "note": "Defines the source-head and optional slide-section contracts used by review application sessions."
     }
-  ]
+  ],
+  "version": 2
 }

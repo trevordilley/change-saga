@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime.go",
+      "start": 1,
+      "end": 143,
+      "digest": "sha256:5000f124a711bcef74dbbcb7aa084dfa6709850e4f9e0d3b404561f36dc81bc5",
+      "note": "Starts or reuses a child, generates shutdown authority, captures logs, and waits for readiness."
+    }
+  ],
+  "version": 2
+}

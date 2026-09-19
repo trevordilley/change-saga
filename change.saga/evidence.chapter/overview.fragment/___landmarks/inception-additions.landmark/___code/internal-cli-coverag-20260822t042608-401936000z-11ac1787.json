@@ -1,0 +1,11 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/coverage_repair.go",
+      "digest": "sha256:4c8115683bae326ef49a82c0ef20a651238bcc9d45594d7985817fec9c25bf7d",
+      "note": "Records this owned authoring path as newly introduced in the since-inception comparison."
+    }
+  ],
+  "version": 2
+}

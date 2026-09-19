@@ -1,13 +1,21 @@
 {
-  "version": 2,
-  "diffs": [
+  "references": [
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=44\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fserver%2Ftargetcode.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=42",
+      "commit": "b6042a5b85057c8f2f892dabc9d06cb1bfa155fd",
+      "path": "internal/server/targetcode.go",
+      "start": 42,
+      "end": 44,
+      "digest": "sha256:424735408d053942d0253f2cdb0ab94af36acc12c4c89eac5e69b2654913e990",
       "note": "Aggregates only the active slide and its Item evidence, deduplicates selected atoms and files, and builds the linked-code drawer without a global snapshot."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=84\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fserver%2Ftargetcode.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=79",
+      "commit": "b6042a5b85057c8f2f892dabc9d06cb1bfa155fd",
+      "path": "internal/server/targetcode.go",
+      "start": 79,
+      "end": 84,
+      "digest": "sha256:b094a8f0497f1e918bcf40c3d5705e421b27834ed0ef028789798cb961205613",
       "note": "Aggregates only the active slide and its Item evidence, deduplicates selected atoms and files, and builds the linked-code drawer without a global snapshot."
     }
-  ]
+  ],
+  "version": 2
 }

@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/cover.go",
+      "start": 198,
+      "end": 255,
+      "digest": "sha256:bbcbe03b86b3eab0d5d44fc2e1b05192983acb139fab39955faab19f00266a0e",
+      "note": "Normalizes single or batched inputs from files or standard input without partial mutation."
+    }
+  ],
+  "version": 2
+}

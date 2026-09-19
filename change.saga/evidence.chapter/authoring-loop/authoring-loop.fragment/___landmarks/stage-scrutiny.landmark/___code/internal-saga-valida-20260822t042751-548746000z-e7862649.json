@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/saga/validate.go",
+      "start": 609,
+      "end": 674,
+      "digest": "sha256:78bc4955a36fdc9b6b7c1f06c032602af404933e16bd5e12cb20b1cecb87486d",
+      "note": "Surfaces broad, weakly explained, or unfocused mappings so they can be split and retargeted."
+    }
+  ],
+  "version": 2
+}

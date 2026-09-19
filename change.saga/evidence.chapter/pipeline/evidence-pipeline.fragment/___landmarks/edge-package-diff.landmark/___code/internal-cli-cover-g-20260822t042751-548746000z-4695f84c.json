@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/cover.go",
+      "start": 293,
+      "end": 400,
+      "digest": "sha256:1d3c12d7c20e11b1da851ba2f8d564dd744a0039e33bd44a7c582ddae43f6c00",
+      "note": "Binds portable narrative targets to canonical exact source selectors without widening ownership."
+    }
+  ],
+  "version": 2
+}

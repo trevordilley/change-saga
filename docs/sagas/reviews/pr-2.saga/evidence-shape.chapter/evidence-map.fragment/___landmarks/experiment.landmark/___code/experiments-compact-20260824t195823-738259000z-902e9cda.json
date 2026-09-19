@@ -1,0 +1,3411 @@
+{
+  "references": [
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "digest": "sha256:7d2c5f3a6fb1868e25b1b9910dc9ae7e6c8de17b5365eeaf52537ef91b04965d",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:2c1c8f08a832e2af8c51a62aebc874e068c718d92f83938ca91da349651fdf91",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:e9f132d6bb4aa086f0bba1af072b071dbf903cff0f2343b4ce10403f6bc86ca1",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:9b1e51267541b2bb1f1671f38c374d1fcf1df6152e56a6525b6cb578bca093d0",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:98b1a3d7b7726713551a420b379ecdb427a78df752aca286201cc4523e78bcbf",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:101ead936a2281d53dcc064b7e2a2ab0d53b92ef3ef7b34b668673007895c860",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:d09cb225e56cf9a92bc46adae29cd2cbdb30cac7914d737c02ea423ac6095896",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:95b1ef546ffaf2a369d17ffdb6fd01143cf69663386625f1597924f3c669dfae",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:b648d2c7be33b9a82ac754d20e388e7dbb6761ab978cd09203ac4f93f1837d6e",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:71e37b6cd48ad477cbb12624b757ee1dc4975711b78237a85f508bfdd723af77",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:6c7872f7e7aba7ceb14de93a1613a51c5b446ca889744d3b529463bd245c0953",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:dc94db91287ede614bfe3a0ee2e2b567400c33fbbb5566199f17b7f6235ec46d",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:171b756171ff8240f94ccb83de837ed4242449df3ecef3a3762523d1f5ae0348",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:15d9390e6e92e6e6c76e70f40a1594fb94b72e55f7358c02092c0253f2f46abf",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:57e084ab258e81b1e20f6e9b9f72b556c4838b3517e76da7edd5b6e7546090a2",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:f05b48055b78db9e9e8993848d47169d7abd312df35886aa83d4014d37eb4009",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:1b649ecbf085fe223589d7f842defd5e2c82ec06b02b4f7827a31625fd09316e",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:8fbccf5ddb1f4aa074d4872ffaa17e418832f2e06dcb8788f6dfc78c9b4ba0df",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:fafba0527c3953c4b6e0e5b5739ba83612f8053bcdc9466730193cd1d590b408",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:d0d986b0df7e9c47aa782b06609469bc8eeca47612b838cf829dda4bcddd3329",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:c664e5e02a24909592c5721d7775f0afcbf29ceb0dcfe935fbd9d8a5cc5a1c07",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:c7e0be0a48452c8ef069618223c1e5af24a4db67d5c2b43ae07d6f55fa9676b3",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:63d4f9b70396038df8d93778bd2031dd79224d1d3406987a4785ea228a2c2da3",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:fafba0527c3953c4b6e0e5b5739ba83612f8053bcdc9466730193cd1d590b408",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:9d4c39e504fa1c4b59bb6298eface1a94c94dd65d5f7375e284b4a26d5c48de7",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:dba910f42a1ff978edf0e1736f987bcf6bc9263dd94442f50d99ce1e0ce57f97",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:ece523c7d95d420d4ff49e42b4fb263847bfb194d96eebb9f9472a2b0266a7e4",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:eb0685f3a66de71153c374aee026c5370c7f9dd40b738bf73f130bf9aa1c9b03",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:32171ee2a0e9e6f44c35e00cde9683cb7e18947b1c903e98620b719c1d9b2d1c",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:57573a2a664fdc4f3ae216320155a67564f35a95ec4925fa1cd02857928d3d0b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:0ed806b154e965379df4b2e8e011b869c3828cb7069f04392e0f17d1cf88c67b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:5d07b239dafd7292095a972e2e02c67e2db4c33bb913575fdd8d8b984a90bc57",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:e8d3a6f279de963f096010f9a40e16f870e99bdf290dd6151f509e1e74fedaae",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:5bfc12790522ecd16eb67672c9ea9319b48a19e2ab56bddfb7d78e8bd8543395",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:0f4eb8f298565de90a9cb52324573114149f73830d56725a4637bb43dfeaaba5",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:2deacf46ee35c089d319a24186690c2f1b391bf4a8bf97bf6c4bd2508fb8d549",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:b7f6aca0a147301c788ef44b9a6101a2a9b008e10917d52cceb5796acfa1a203",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:98c778e92cc6791f5c0c24416cb995e3c84fb086ddbe4e7ecf60bebf372a4bd6",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:7127a25ebb206bded69d8996b6257ef9e229bba48e298cf3fd4e395081d8562c",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:ece523c7d95d420d4ff49e42b4fb263847bfb194d96eebb9f9472a2b0266a7e4",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:cd5780ade93d7ebd8df9117e26871b983d2a8f597dae4069dded05e52f123020",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:a3ac89a47c700cdcf77e9f6ae3df85c04b37b5f115c1dea6f0ffb8abb709927d",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:8b5ea1c593975553c31b1e5b399c3d898bf283844164a98dbd630a73317f43bd",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:26c06e3ea05ec8aa2cbfa13db245ea08d1f90132e52bd8f70b7ccfd13d64f1d2",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:ece523c7d95d420d4ff49e42b4fb263847bfb194d96eebb9f9472a2b0266a7e4",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:ce3afd0b456108d69c49eef57ac430dcaac2031911ded5a76700a6b66d530aa5",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:f610f4a4adbf1a19ef8a1aa50f5749f20596bb6da98b4f8c851b6cf4fa0ac82a",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:39a95e267e1e3cdf042ad88a3d97a0f618c4f5791deeccc0af8f5d8271e52b2f",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:2928789146c7506bbcc2609f892b0c8dd1d302e60083b52b60dbc4a647ca6b98",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:99adf14d67a834d03fcb5a053b98f4f343ca161350ee2fcbc699c309ea6d46de",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:1a95654c710971ff98992e44f992102f71054464433de293d72078eb6f2de834",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:3c4b265f1da28107c13784f174312e7f1eb211ad6c85c99a57a69f8c14dfc59d",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:67104564431e7195c1477f10a1f8a053ea254d3eff4e623ad189fd2758aa3b8d",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 68,
+      "end": 68,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 70,
+      "end": 70,
+      "digest": "sha256:203c22d06b93074df984acd43e9b27b1531620a1c7e1a4dc2c2b71ab403919f7",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 71,
+      "end": 71,
+      "digest": "sha256:ece523c7d95d420d4ff49e42b4fb263847bfb194d96eebb9f9472a2b0266a7e4",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 72,
+      "end": 72,
+      "digest": "sha256:ef6c6e1a974c8a64fd1599f0fec260f1bf9d734b0977d24902f3edeebcd580d0",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 73,
+      "end": 73,
+      "digest": "sha256:98a7c6ec1c98cf100cfa9439b4298a9b5df5f141c77b5e4fe3482d45883b3f81",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 74,
+      "end": 74,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 75,
+      "end": 75,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 76,
+      "end": 76,
+      "digest": "sha256:9332fc2f805d82abc75ade4e74962b483f08c559a6738dda573f8d67531d4bcc",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 77,
+      "end": 77,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 78,
+      "end": 78,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 79,
+      "end": 79,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 80,
+      "end": 80,
+      "digest": "sha256:1f312699c1fb33703595385ec0205a4098e8657250f449c650bd39990789dc7b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 81,
+      "end": 81,
+      "digest": "sha256:e2cd5b7c7280c9e51e38dcaa1acbf2775bb8e391933faa25bfe5c8f0d626230b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 82,
+      "end": 82,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 83,
+      "end": 83,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 84,
+      "end": 84,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 85,
+      "end": 85,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 86,
+      "end": 86,
+      "digest": "sha256:ee59d2325e9fe3dc425062f5b8c53f90a79b996eea794762822ac4a658aa30d9",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 87,
+      "end": 87,
+      "digest": "sha256:7d1b1f2417ea765c9f7a86ff674755873d34ccd63ab8d66baf37bb294d99d0ec",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 88,
+      "end": 88,
+      "digest": "sha256:fe10afd9cdfe4f7e9de61c8f5fd3e1bafc0908c16c5accbd5a835e7189f7aed9",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 89,
+      "end": 89,
+      "digest": "sha256:214342f147c8e2c287990fc8f836a8346ecd8808234642635b8d3822dd109930",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 90,
+      "end": 90,
+      "digest": "sha256:ece523c7d95d420d4ff49e42b4fb263847bfb194d96eebb9f9472a2b0266a7e4",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 91,
+      "end": 91,
+      "digest": "sha256:fc869646b8a645d1a642df67a593053ddaca18ef7c4637c343fe8ade1b0d145f",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 92,
+      "end": 92,
+      "digest": "sha256:7d07c4d0847c2297b9e0293a21cf5042fcc04bd4a4b17447e8535ce6c04e0848",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 93,
+      "end": 93,
+      "digest": "sha256:7b804271607415549309617af1c32159cfcfac8c0f7dc73f944000411d68201e",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 94,
+      "end": 94,
+      "digest": "sha256:1bb35e900cd3d730959c5978c7d5851ddf43eb22f8bafd5f9b276c965f29d9ac",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 95,
+      "end": 95,
+      "digest": "sha256:088f3dce5db3fcdef157a9f56e56f5c0c3818e91948950fb643ee7832e1e3c9c",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 96,
+      "end": 96,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 97,
+      "end": 97,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 98,
+      "end": 98,
+      "digest": "sha256:9f3b96b1c11f9e868979680fe7561569e86ddf39fae171114aa3652ee0e81d6c",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 99,
+      "end": 99,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 100,
+      "end": 100,
+      "digest": "sha256:2c2f712e5c1654658eb3b2e3080ba42d3e54d03f1dd029f27f570b03e4246319",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 101,
+      "end": 101,
+      "digest": "sha256:7d665302db1f5fb6e6f2482ef4c65ba3749216c876e642959435da2593b6f30a",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 102,
+      "end": 102,
+      "digest": "sha256:42667b46a79235c56c3dc4a71d016f11cb41d90b38874d1d7124d2764de229d3",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 103,
+      "end": 103,
+      "digest": "sha256:c85be76a206dd34cf01755933ded92c69e0a63578fde8d611f5a9c3e06e47620",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 104,
+      "end": 104,
+      "digest": "sha256:bb9d3a326a6abc0912b7cad272adee7d009e39c1dc9457b28a100950976965b2",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 105,
+      "end": 105,
+      "digest": "sha256:be771f266c09bb459c9b4fdab6a79c47d80dce46bb9a84bfcbb9a6cbd72dc7ce",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 106,
+      "end": 106,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 107,
+      "end": 107,
+      "digest": "sha256:92148aa8b87049142bbf3950f8bf446f02d35749852432759f33ffa3cd8fb95f",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 108,
+      "end": 108,
+      "digest": "sha256:d9bf39951ef261e1f4a2fe81f978571784dc7ec6160f642ceb6b814ea4c2c645",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 109,
+      "end": 109,
+      "digest": "sha256:bdee0895d70df181a9c0bd26095e224061c72c256474fed9807f1d8601cf25ac",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 110,
+      "end": 110,
+      "digest": "sha256:fb2c1fcd3caff0a934e635eadf5730a6acd49c9c39fbcbf51f989deedc414bd9",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 111,
+      "end": 111,
+      "digest": "sha256:e7e1c7ea3c7062499e723457e3e063022a33c09a008ede78da2e850a0b09dc27",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 112,
+      "end": 112,
+      "digest": "sha256:77a9b5e9019c8db8783ec9c3febb0a2c9862f61a05c308fe895e4a9bed03edb3",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 113,
+      "end": 113,
+      "digest": "sha256:c5e5052e439b7bf1b041f1458479d88c23bf2c8fd4e386bb1d7c6fa4c0a5592e",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 114,
+      "end": 114,
+      "digest": "sha256:48d5f18f8f3819a3dae748d000a992d541e7ab66368a23fac342c64a369ad8ee",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 115,
+      "end": 115,
+      "digest": "sha256:8e4372cfab45fac2fecd3f85eba97b3df804fa9ccd4f397a22fb11e8ad7be2fa",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 116,
+      "end": 116,
+      "digest": "sha256:976ca1d6acf438488ba4341ee02be2e34065ebfe2c0c9f68f983e7e2600dafe2",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 117,
+      "end": 117,
+      "digest": "sha256:e7e1c7ea3c7062499e723457e3e063022a33c09a008ede78da2e850a0b09dc27",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 118,
+      "end": 118,
+      "digest": "sha256:77a9b5e9019c8db8783ec9c3febb0a2c9862f61a05c308fe895e4a9bed03edb3",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 119,
+      "end": 119,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 120,
+      "end": 120,
+      "digest": "sha256:317d18a56a88ede6beeecf1adc882c43731ef3a92671c0f53f7658a0eb093100",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 121,
+      "end": 121,
+      "digest": "sha256:7b459b44a48ffef0b04a7b9ca8e674ab299219bfbebb59c90542029228aaa48c",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 122,
+      "end": 122,
+      "digest": "sha256:5e151ed206662f0f67ccf00c875fd7d69eb733d570d794541cedcf1b5043457a",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 123,
+      "end": 123,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 124,
+      "end": 124,
+      "digest": "sha256:23f9351757818202972dfaed86b72e603ee154d147d35142e9ca5731f575e2e2",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 125,
+      "end": 125,
+      "digest": "sha256:aea89da2d19fab131ba89c96df72504d3ec740d87c78bf11d494ee3d9f202714",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 126,
+      "end": 126,
+      "digest": "sha256:542d6aa31eb76a8011d7e954a1bd86658c06ef867a43b6e243f8272576ac0642",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 127,
+      "end": 127,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 128,
+      "end": 128,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 129,
+      "end": 129,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 130,
+      "end": 130,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 131,
+      "end": 131,
+      "digest": "sha256:3572ea196ffcf4a03a3063d3c187f6ffc8a5a9325ec8ea17213cfc19d40422e6",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 132,
+      "end": 132,
+      "digest": "sha256:7138d9a3d4f84b46d288d01f848cf7ea826c75c1b0eb0d6147a9c9be5ce44fbf",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 133,
+      "end": 133,
+      "digest": "sha256:5bd062950b962029bd44010baa8438dd7594812c9fc1ab7e248223fee668e0df",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 134,
+      "end": 134,
+      "digest": "sha256:2ddc1cbec0b5af586835561456ed288b2ec6fe562c7d15888d10489102afc59b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 135,
+      "end": 135,
+      "digest": "sha256:bb9d3a326a6abc0912b7cad272adee7d009e39c1dc9457b28a100950976965b2",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 136,
+      "end": 136,
+      "digest": "sha256:be771f266c09bb459c9b4fdab6a79c47d80dce46bb9a84bfcbb9a6cbd72dc7ce",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 137,
+      "end": 137,
+      "digest": "sha256:051f68286ab071bf96176debb38c264de00105674e926302f6685deaf743ee63",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 138,
+      "end": 138,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 139,
+      "end": 139,
+      "digest": "sha256:3f7896f4e46544bf57fc46facfc864ef8a81e91a9469acf3ffc13a32bf500be6",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 140,
+      "end": 140,
+      "digest": "sha256:116317fa5d72f559249fba834e2ca7834ce6b1d492982994fa6ba7f80059d144",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 141,
+      "end": 141,
+      "digest": "sha256:337f128be9d5ce6784d5be1bb3edc3bc36acd30c01f8f7da407197ce375eed98",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 142,
+      "end": 142,
+      "digest": "sha256:e07cccbbddbb82f6c1759c39f08493cfe6baf01bdfb9dffd8a12eb7990a1e273",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 143,
+      "end": 143,
+      "digest": "sha256:d44ff064fe4485118b30bdf6e90cca3b52d25c72aa2872efa7a6580b6f92cb4e",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 144,
+      "end": 144,
+      "digest": "sha256:f4b77761095c211fd184ab5c0ccddc7c192c19b445f252cb84c1c3a985033bcb",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 145,
+      "end": 145,
+      "digest": "sha256:98e1dd19a8b93d3cc9f516a35ac1c0072fbce624a2ca0fa56c78b80f48cf5502",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 146,
+      "end": 146,
+      "digest": "sha256:0d576a33cd8e51524d929531d2adac20d72f12e453a8a4d41240531abdb4cc1f",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 147,
+      "end": 147,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 148,
+      "end": 148,
+      "digest": "sha256:fc869646b8a645d1a642df67a593053ddaca18ef7c4637c343fe8ade1b0d145f",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 149,
+      "end": 149,
+      "digest": "sha256:885a2ad138fae0b20c17dd4989d9e5aa320ecc284328ed300ad8a278c111bcf2",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 150,
+      "end": 150,
+      "digest": "sha256:1bb35e900cd3d730959c5978c7d5851ddf43eb22f8bafd5f9b276c965f29d9ac",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 151,
+      "end": 151,
+      "digest": "sha256:5425500515898ab258c8b620a2bcabe771f33b4bd1fcdd146ee1d6e33b5e3f3b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 152,
+      "end": 152,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 153,
+      "end": 153,
+      "digest": "sha256:92148aa8b87049142bbf3950f8bf446f02d35749852432759f33ffa3cd8fb95f",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 154,
+      "end": 154,
+      "digest": "sha256:63f32936ac034332ca4756f1d3ee50b0bbff57f5cac8bed7c1927b0f42b8baa8",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 155,
+      "end": 155,
+      "digest": "sha256:bdee0895d70df181a9c0bd26095e224061c72c256474fed9807f1d8601cf25ac",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 156,
+      "end": 156,
+      "digest": "sha256:2a20575c53204f4d6e8403d7036a8e92407cfe2e102430bdf638a9cdcc7533c4",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 157,
+      "end": 157,
+      "digest": "sha256:e7e1c7ea3c7062499e723457e3e063022a33c09a008ede78da2e850a0b09dc27",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 158,
+      "end": 158,
+      "digest": "sha256:77a9b5e9019c8db8783ec9c3febb0a2c9862f61a05c308fe895e4a9bed03edb3",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 159,
+      "end": 159,
+      "digest": "sha256:c5e5052e439b7bf1b041f1458479d88c23bf2c8fd4e386bb1d7c6fa4c0a5592e",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 160,
+      "end": 160,
+      "digest": "sha256:63f32936ac034332ca4756f1d3ee50b0bbff57f5cac8bed7c1927b0f42b8baa8",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 161,
+      "end": 161,
+      "digest": "sha256:bdee0895d70df181a9c0bd26095e224061c72c256474fed9807f1d8601cf25ac",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 162,
+      "end": 162,
+      "digest": "sha256:40d6762a28ce4619d35ad93ac0f5866f4b1ba628a003025e9ce3b2ae1ca6319a",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 163,
+      "end": 163,
+      "digest": "sha256:e7e1c7ea3c7062499e723457e3e063022a33c09a008ede78da2e850a0b09dc27",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 164,
+      "end": 164,
+      "digest": "sha256:77a9b5e9019c8db8783ec9c3febb0a2c9862f61a05c308fe895e4a9bed03edb3",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 165,
+      "end": 165,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 166,
+      "end": 166,
+      "digest": "sha256:317d18a56a88ede6beeecf1adc882c43731ef3a92671c0f53f7658a0eb093100",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 167,
+      "end": 167,
+      "digest": "sha256:7b459b44a48ffef0b04a7b9ca8e674ab299219bfbebb59c90542029228aaa48c",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 168,
+      "end": 168,
+      "digest": "sha256:78bf617ea558e6685e862e94dbcc23bc4ee3c453a0c3a8705b6d0928cc148100",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 169,
+      "end": 169,
+      "digest": "sha256:e6b6c3bb101139a5e295ed1d7d500c02cc851eb42ac4fd06150ba4a1a990dbe0",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 170,
+      "end": 170,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 171,
+      "end": 171,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 172,
+      "end": 172,
+      "digest": "sha256:a0d07ec9d131476f87b540eb2f6b7d45ec5e256fc8f65b8c3366d9fd234d38e8",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 173,
+      "end": 173,
+      "digest": "sha256:b043fdabea00035924b19a85ca650506c185431bbc17ed05deed3dffd9ec55c0",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 174,
+      "end": 174,
+      "digest": "sha256:95543f33e94bc92b74ee4e0ce2459e7cbccfec108009ca09f7d44327d9b58ca2",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 175,
+      "end": 175,
+      "digest": "sha256:28bea2a103b78ebee359f5a993709d5a45f8039ea5baf304a689465573680f92",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 176,
+      "end": 176,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 177,
+      "end": 177,
+      "digest": "sha256:3b56fabcb8aabf042b29e1e16db82b3674a423d54b100cd90696158e2579c018",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 178,
+      "end": 178,
+      "digest": "sha256:6f49195e2b0f4d931c3846191a2029a2de75f53e8d42ef08d9950e7ee337475c",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 179,
+      "end": 179,
+      "digest": "sha256:d4eba965b5f9850e4fb980380715521d6aed92ffec219cd69609261ced4c4e51",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 180,
+      "end": 180,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 181,
+      "end": 181,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 182,
+      "end": 182,
+      "digest": "sha256:4fd0747bf579b79e552a5606579c822374ec2feffcf86941e410dcf186ee1921",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 183,
+      "end": 183,
+      "digest": "sha256:63c6437a7246f354001a161b8689d51239e66d0ba50de9e5a6bd25ed4423ca9b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 184,
+      "end": 184,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 185,
+      "end": 185,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 186,
+      "end": 186,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 187,
+      "end": 187,
+      "digest": "sha256:192dec957a7dc0c1168d202eebb33b13baf11f873e81d4519d7e80a4dc133be0",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 188,
+      "end": 188,
+      "digest": "sha256:382222b9f95ac3dc0a530d0d11d2caed0154cc16e43da845e9816d429a4ba944",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 189,
+      "end": 189,
+      "digest": "sha256:02480d2e7c3c2f588a12395af94c43b777471ade46eac1914887c4b07084aa19",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 190,
+      "end": 190,
+      "digest": "sha256:cf0f75026acfd96b5f5de95a2c7abc216bf9a178dee4e11e16281948b5275941",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 191,
+      "end": 191,
+      "digest": "sha256:013c707e367653163cb861b53be2de89988810ca97cb8f77791de6c5ce3a8806",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 192,
+      "end": 192,
+      "digest": "sha256:bb9d3a326a6abc0912b7cad272adee7d009e39c1dc9457b28a100950976965b2",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 193,
+      "end": 193,
+      "digest": "sha256:be771f266c09bb459c9b4fdab6a79c47d80dce46bb9a84bfcbb9a6cbd72dc7ce",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 194,
+      "end": 194,
+      "digest": "sha256:051f68286ab071bf96176debb38c264de00105674e926302f6685deaf743ee63",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 195,
+      "end": 195,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 196,
+      "end": 196,
+      "digest": "sha256:fc869646b8a645d1a642df67a593053ddaca18ef7c4637c343fe8ade1b0d145f",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 197,
+      "end": 197,
+      "digest": "sha256:d69f4d1156802664f79481233718a5d61bb81575bfe709d709540622a7db1bf5",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 198,
+      "end": 198,
+      "digest": "sha256:eb7df077f1e1a3bdb3a4d99d49acb122ccf0645c3413e86011d091b121a88ae4",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 199,
+      "end": 199,
+      "digest": "sha256:6949acb29c593e99bd548f9b8cf53d241eb11e38df5434ccadf5c1c75bb28ed1",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 200,
+      "end": 200,
+      "digest": "sha256:77a9b5e9019c8db8783ec9c3febb0a2c9862f61a05c308fe895e4a9bed03edb3",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 201,
+      "end": 201,
+      "digest": "sha256:1bb35e900cd3d730959c5978c7d5851ddf43eb22f8bafd5f9b276c965f29d9ac",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 202,
+      "end": 202,
+      "digest": "sha256:5425500515898ab258c8b620a2bcabe771f33b4bd1fcdd146ee1d6e33b5e3f3b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 203,
+      "end": 203,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 204,
+      "end": 204,
+      "digest": "sha256:92148aa8b87049142bbf3950f8bf446f02d35749852432759f33ffa3cd8fb95f",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 205,
+      "end": 205,
+      "digest": "sha256:63f32936ac034332ca4756f1d3ee50b0bbff57f5cac8bed7c1927b0f42b8baa8",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 206,
+      "end": 206,
+      "digest": "sha256:bdee0895d70df181a9c0bd26095e224061c72c256474fed9807f1d8601cf25ac",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 207,
+      "end": 207,
+      "digest": "sha256:33eda8edd4f6bb42f994ef41dad01dc1ace1fa983470a1be6120effb11f6bf92",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 208,
+      "end": 208,
+      "digest": "sha256:e7e1c7ea3c7062499e723457e3e063022a33c09a008ede78da2e850a0b09dc27",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 209,
+      "end": 209,
+      "digest": "sha256:77a9b5e9019c8db8783ec9c3febb0a2c9862f61a05c308fe895e4a9bed03edb3",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 210,
+      "end": 210,
+      "digest": "sha256:c5e5052e439b7bf1b041f1458479d88c23bf2c8fd4e386bb1d7c6fa4c0a5592e",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 211,
+      "end": 211,
+      "digest": "sha256:63f32936ac034332ca4756f1d3ee50b0bbff57f5cac8bed7c1927b0f42b8baa8",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 212,
+      "end": 212,
+      "digest": "sha256:bdee0895d70df181a9c0bd26095e224061c72c256474fed9807f1d8601cf25ac",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 213,
+      "end": 213,
+      "digest": "sha256:946ca68b24caf99df4b82ee1abde7c7e10fa3f6205535c15e1791517172e4039",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 214,
+      "end": 214,
+      "digest": "sha256:e7e1c7ea3c7062499e723457e3e063022a33c09a008ede78da2e850a0b09dc27",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 215,
+      "end": 215,
+      "digest": "sha256:77a9b5e9019c8db8783ec9c3febb0a2c9862f61a05c308fe895e4a9bed03edb3",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 216,
+      "end": 216,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 217,
+      "end": 217,
+      "digest": "sha256:317d18a56a88ede6beeecf1adc882c43731ef3a92671c0f53f7658a0eb093100",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 218,
+      "end": 218,
+      "digest": "sha256:f0c9907894a8f3993d9d01bf9c38540b63c615b7e6f978c37b61eda22c144ab3",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 219,
+      "end": 219,
+      "digest": "sha256:8ef6dd3cf82674bca00d808f5e38368d5435bdbab4050b18bde03d5621b58e7f",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 220,
+      "end": 220,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 221,
+      "end": 221,
+      "digest": "sha256:9b701195aae85a482d7f7a88da2b1086760cec6c8a7f386d06359d2663518023",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 222,
+      "end": 222,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 223,
+      "end": 223,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 224,
+      "end": 224,
+      "digest": "sha256:58d79dae3904191b88e28f8eadd73e62f232fb6ced0f7678a855be127f499066",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 225,
+      "end": 225,
+      "digest": "sha256:32a4b459dbc358806701d3e7479b651ffc9293cc9c26e441c8464dfcf7f54b51",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 226,
+      "end": 226,
+      "digest": "sha256:f4de1177769aa1094dfe5e50ef22937ee531997986ac35a49d5b7116f45a3c5d",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 227,
+      "end": 227,
+      "digest": "sha256:e1067606d541d433fa1f5f0bd8857eeab8db179a4588a68133291d259bfb0fed",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 228,
+      "end": 228,
+      "digest": "sha256:bb9d3a326a6abc0912b7cad272adee7d009e39c1dc9457b28a100950976965b2",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 229,
+      "end": 229,
+      "digest": "sha256:be771f266c09bb459c9b4fdab6a79c47d80dce46bb9a84bfcbb9a6cbd72dc7ce",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 230,
+      "end": 230,
+      "digest": "sha256:051f68286ab071bf96176debb38c264de00105674e926302f6685deaf743ee63",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 231,
+      "end": 231,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 232,
+      "end": 232,
+      "digest": "sha256:92148aa8b87049142bbf3950f8bf446f02d35749852432759f33ffa3cd8fb95f",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 233,
+      "end": 233,
+      "digest": "sha256:63f32936ac034332ca4756f1d3ee50b0bbff57f5cac8bed7c1927b0f42b8baa8",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 234,
+      "end": 234,
+      "digest": "sha256:bdee0895d70df181a9c0bd26095e224061c72c256474fed9807f1d8601cf25ac",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 235,
+      "end": 235,
+      "digest": "sha256:6d9f479a8db6c64416f222401f9df8695e1b979c9008472e901ff9455a684dc4",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 236,
+      "end": 236,
+      "digest": "sha256:e7e1c7ea3c7062499e723457e3e063022a33c09a008ede78da2e850a0b09dc27",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 237,
+      "end": 237,
+      "digest": "sha256:77a9b5e9019c8db8783ec9c3febb0a2c9862f61a05c308fe895e4a9bed03edb3",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 238,
+      "end": 238,
+      "digest": "sha256:c5e5052e439b7bf1b041f1458479d88c23bf2c8fd4e386bb1d7c6fa4c0a5592e",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 239,
+      "end": 239,
+      "digest": "sha256:63f32936ac034332ca4756f1d3ee50b0bbff57f5cac8bed7c1927b0f42b8baa8",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 240,
+      "end": 240,
+      "digest": "sha256:bdee0895d70df181a9c0bd26095e224061c72c256474fed9807f1d8601cf25ac",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 241,
+      "end": 241,
+      "digest": "sha256:e75bdcb0ef559776ccae76f1b43a19b008865201cadd4ef32fe4df95ba0fa4ba",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 242,
+      "end": 242,
+      "digest": "sha256:e7e1c7ea3c7062499e723457e3e063022a33c09a008ede78da2e850a0b09dc27",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 243,
+      "end": 243,
+      "digest": "sha256:77a9b5e9019c8db8783ec9c3febb0a2c9862f61a05c308fe895e4a9bed03edb3",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 244,
+      "end": 244,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 245,
+      "end": 245,
+      "digest": "sha256:317d18a56a88ede6beeecf1adc882c43731ef3a92671c0f53f7658a0eb093100",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 246,
+      "end": 246,
+      "digest": "sha256:aca1c4c2c307c6d2d216facfe0a89ef7f35d82df0b59701a2fea7be9d4e0aa83",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 247,
+      "end": 247,
+      "digest": "sha256:98cfd8b425402341d70298a98b3e1b6c67a8978be88bdea242845c977dfa6ddc",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 248,
+      "end": 248,
+      "digest": "sha256:6bacbd0f5cd8a69409134a569af07ba8df0d55b7a35ec5974096b8bd20e16234",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 249,
+      "end": 249,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 250,
+      "end": 250,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 251,
+      "end": 251,
+      "digest": "sha256:4c4a12ee7a23641ab6f0df8337ef31bffc7a80eb9f718a869eb16e8bd1958b8b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 252,
+      "end": 252,
+      "digest": "sha256:e22a3610e0541cad9de3bc90d930eea9485b08afcc2abdf3ce2ef4fd763117b3",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 253,
+      "end": 253,
+      "digest": "sha256:7f6580b6170ba1b2890695c1c17913d2922028e25b2d58ae95dc4a9ae7348ec6",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 254,
+      "end": 254,
+      "digest": "sha256:2969a12353cefe5fffa374053abaf9dbf114d3bc6938689491905e1f4a56d159",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 255,
+      "end": 255,
+      "digest": "sha256:326e6deaad206cdbee03711984fc8f637df6ccc3c005cc30ea44a4dfde0958b8",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 256,
+      "end": 256,
+      "digest": "sha256:5b6585d8fb75c08cda69dbe7c22d1ea3044b366a0af5b7dbda81d5bd1f1ce9b1",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 257,
+      "end": 257,
+      "digest": "sha256:a69663ca0b446c51cb4b4acf9f7bb6dfa8ca24fcd9b1184e01f66366d8331900",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 258,
+      "end": 258,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 259,
+      "end": 259,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 260,
+      "end": 260,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 261,
+      "end": 261,
+      "digest": "sha256:17143cd1346fdfda02b635a4edb553083715765e45db99007019a433e926f460",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 262,
+      "end": 262,
+      "digest": "sha256:d9d0d8be844a2734355e09c7ff48b6f4f1fb0cd548d4072271d704c080ad4675",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 263,
+      "end": 263,
+      "digest": "sha256:35c544ba569917a5f53013d44251aa79cce45abec8e0d091289af3375c11a4ed",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 264,
+      "end": 264,
+      "digest": "sha256:5874cf3de20aa19d4aef9f6be00750c0cf111cfe5d4280d4c2166cbd1b9c3c92",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 265,
+      "end": 265,
+      "digest": "sha256:ece523c7d95d420d4ff49e42b4fb263847bfb194d96eebb9f9472a2b0266a7e4",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 266,
+      "end": 266,
+      "digest": "sha256:9a8903d69fe8019b688c8c91a05d6a29cb3d007eab312281578618a7f7d6e0f9",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 267,
+      "end": 267,
+      "digest": "sha256:ed0662fd697e1905f581771de4ec38a14c7dd93fdd1e3d8bcc3a35c17cd2c8b8",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 268,
+      "end": 268,
+      "digest": "sha256:c2def655567e012a14bc8ff9b8d605c9812705c1d207d4f474193ced4df5303b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 269,
+      "end": 269,
+      "digest": "sha256:27ed3a78cd1325fd1e34ad82a2a94c55b25318d92aa0a081be122b2d91448c1e",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 270,
+      "end": 270,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 271,
+      "end": 271,
+      "digest": "sha256:66e928071083f4533732fcb396f971736c2c3d118e3090fea12fca0fc5e8744c",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 272,
+      "end": 272,
+      "digest": "sha256:cc22fbf03514c72aeb49db2e170fd9bc58f82fb6f6ab242ce8f3001cd677cba4",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 273,
+      "end": 273,
+      "digest": "sha256:7da5193ffcbc4cc87c4e08cd5f05af57237a4b22f1ef1fa02c5c05a650ecb7a4",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 274,
+      "end": 274,
+      "digest": "sha256:5b465a0ed50cb25ecadf494ef56b9eaa767f296f69e220e7b29a7625d1c48b82",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 275,
+      "end": 275,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 276,
+      "end": 276,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 277,
+      "end": 277,
+      "digest": "sha256:1fc7d17914be73bd22dcdb0037d082e5061f5d411ba7a2d101bc28f814f37ed6",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 278,
+      "end": 278,
+      "digest": "sha256:0e9d8e4f1000c750c2692af7727b76e08344e6ee5f824e5d133f7f4ef473bc22",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 279,
+      "end": 279,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 280,
+      "end": 280,
+      "digest": "sha256:1fa4761a2590ef2d135145c9b6c3ca511600c9b37d4129097d866d9416083454",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 281,
+      "end": 281,
+      "digest": "sha256:25e64ddb3b09b190fb7c6ddf5370372b7f8cdd923f6d8cea4f4ba22d93473fe9",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 282,
+      "end": 282,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 283,
+      "end": 283,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 284,
+      "end": 284,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 285,
+      "end": 285,
+      "digest": "sha256:058b6c0001a28bbf163c57dd0e810bd57a83eb7c13f1fd25d9b81d8e52bc8b38",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 286,
+      "end": 286,
+      "digest": "sha256:2a1555a3968f28d33b55edca8989ee3b2033d1ff72a64d3ba37ab76282954664",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 287,
+      "end": 287,
+      "digest": "sha256:9b3d1a293136474c4a0a114adcc0031181ac75e05ba807aa5edbc2c4edfe3a29",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 288,
+      "end": 288,
+      "digest": "sha256:4b67bc7b2686ccbcb1adcd5dba8f72e977e0245c812443e161ddb4d184b8b5ed",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 289,
+      "end": 289,
+      "digest": "sha256:6a929f06483d9937d9762f901370e6e37d9e77e8dc1ff4f45039313ebe8eb634",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 290,
+      "end": 290,
+      "digest": "sha256:377b309622558521d2a13f290f7e8fea4e50fa559bb7f6aac7f9b477a2710c51",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 291,
+      "end": 291,
+      "digest": "sha256:bb9d3a326a6abc0912b7cad272adee7d009e39c1dc9457b28a100950976965b2",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 292,
+      "end": 292,
+      "digest": "sha256:bad7af7e252c71d1a0892f9cb7fd9c7b3a373fc4d5fc77e79c3c2269de893371",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 293,
+      "end": 293,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 294,
+      "end": 294,
+      "digest": "sha256:9fb385b2b8b79367476a301c920e7fdfe06f66e775d29f31138b045eba6975c9",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 295,
+      "end": 295,
+      "digest": "sha256:de15f3e114e873d638d0ee1bd32613d9bf3b6be72237f4944c03771074799934",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 296,
+      "end": 296,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 297,
+      "end": 297,
+      "digest": "sha256:92148aa8b87049142bbf3950f8bf446f02d35749852432759f33ffa3cd8fb95f",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 298,
+      "end": 298,
+      "digest": "sha256:0c56caa3b332e2661d9673b6eb41cdcc704a49a161902c85f1fdd0326850f584",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 299,
+      "end": 299,
+      "digest": "sha256:77a9b5e9019c8db8783ec9c3febb0a2c9862f61a05c308fe895e4a9bed03edb3",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 300,
+      "end": 300,
+      "digest": "sha256:c5e5052e439b7bf1b041f1458479d88c23bf2c8fd4e386bb1d7c6fa4c0a5592e",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 301,
+      "end": 301,
+      "digest": "sha256:bdc5a115e2cee56f092e93d0d7614bfd5552a758352818a50ca3f9d5764dd10d",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 302,
+      "end": 302,
+      "digest": "sha256:77a9b5e9019c8db8783ec9c3febb0a2c9862f61a05c308fe895e4a9bed03edb3",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 303,
+      "end": 303,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 304,
+      "end": 304,
+      "digest": "sha256:317d18a56a88ede6beeecf1adc882c43731ef3a92671c0f53f7658a0eb093100",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 305,
+      "end": 305,
+      "digest": "sha256:7b459b44a48ffef0b04a7b9ca8e674ab299219bfbebb59c90542029228aaa48c",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 306,
+      "end": 306,
+      "digest": "sha256:9a48792a05fd02691eb44be48433ca57851446c2742c7ca454fc29f98e12fc8b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 307,
+      "end": 307,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 308,
+      "end": 308,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 309,
+      "end": 309,
+      "digest": "sha256:9ea3c2a488c7f06a0f7a1895e254a448e42fb95a27b35ad6a77ce2b860d10855",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 310,
+      "end": 310,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 311,
+      "end": 311,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 312,
+      "end": 312,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 313,
+      "end": 313,
+      "digest": "sha256:d386dea1b4d74c39239e9e6fb868055f21fdc2d7620b27400b5af2631ec818ac",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 314,
+      "end": 314,
+      "digest": "sha256:20cf995abe83faba926071c4cd91e8f6539f1993a5de71926bcc7ddc5eb1cd4f",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 315,
+      "end": 315,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 316,
+      "end": 316,
+      "digest": "sha256:0a3199470236d2495ac3ddf2e78476d12c113dfc32ac0d58c900a081dfd30081",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 317,
+      "end": 317,
+      "digest": "sha256:2a261acc4f57063b26e9c351fb18de2feffdabcd3b9b531fe4d345d0495a5ff7",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 318,
+      "end": 318,
+      "digest": "sha256:55e03172ff25820a5ff1ed223a2790674db75df63caedade897b750620131fec",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 319,
+      "end": 319,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 320,
+      "end": 320,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 321,
+      "end": 321,
+      "digest": "sha256:99109bd8fda02316915f93d5b3b57ccaca54dd190288d1b420bff8d700500cf2",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 322,
+      "end": 322,
+      "digest": "sha256:ece523c7d95d420d4ff49e42b4fb263847bfb194d96eebb9f9472a2b0266a7e4",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 323,
+      "end": 323,
+      "digest": "sha256:ef6c6e1a974c8a64fd1599f0fec260f1bf9d734b0977d24902f3edeebcd580d0",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 324,
+      "end": 324,
+      "digest": "sha256:98a7c6ec1c98cf100cfa9439b4298a9b5df5f141c77b5e4fe3482d45883b3f81",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 325,
+      "end": 325,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 326,
+      "end": 326,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 327,
+      "end": 327,
+      "digest": "sha256:6c9a39bfab748629a959a0856dae39bdd7b1be678451d943619959ae9e44dc6a",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 328,
+      "end": 328,
+      "digest": "sha256:54772b039f85954659c1876759bf18ff99c9a1716b6d6f76c0dfad44bb91414f",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 329,
+      "end": 329,
+      "digest": "sha256:344b40cb41c3484c049a5353d876d0486f852f0e88f78a9c586884c4e42900b8",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 330,
+      "end": 330,
+      "digest": "sha256:f9ca891bff7ac1f7ceaae40ef051066be9efe47b4e4281e86c319be2c55ebce4",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 331,
+      "end": 331,
+      "digest": "sha256:d257924a90114ff5febd5e1c3fa01af4d74aa68bc2bd812af91209504c2d8025",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 332,
+      "end": 332,
+      "digest": "sha256:8da4b9bd4ccc3326caf6133744bfb36a95381c844bb50bd984df3a4d37c9cce4",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 333,
+      "end": 333,
+      "digest": "sha256:4893f40e3781eb896c82d046a08067a11e35cdf2f1dfaf26fea90b8db6676413",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 334,
+      "end": 334,
+      "digest": "sha256:30648f77fd5a9c63b3cdd0af49daa1299220b7541e88ca17efe1a6a114b9ff2a",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 335,
+      "end": 335,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 336,
+      "end": 336,
+      "digest": "sha256:0c8ba0f0c16b077eb2110ff67bb3ea7e2c08d9494d21d2f7c468ea88250eb5b6",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 337,
+      "end": 337,
+      "digest": "sha256:ee72d05a4154d7fecb7cb3d67b66ef636e3f3967695e1a055b2e0d43f73c6ac7",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 338,
+      "end": 338,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 339,
+      "end": 339,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 340,
+      "end": 340,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 341,
+      "end": 341,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 342,
+      "end": 342,
+      "digest": "sha256:bca50e2a7177a85a786aa411725ec4a6dc250a6031ece0690403e66febf615f9",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 343,
+      "end": 343,
+      "digest": "sha256:ece523c7d95d420d4ff49e42b4fb263847bfb194d96eebb9f9472a2b0266a7e4",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 344,
+      "end": 344,
+      "digest": "sha256:73e5bdd891d2a9b1fad9ce33a3cdfab73e9e99fab4cbd002b375b00765dabde3",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 345,
+      "end": 345,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 346,
+      "end": 346,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 347,
+      "end": 347,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 348,
+      "end": 348,
+      "digest": "sha256:7b5702a0eb9db0fec1b7ec2cecd3510f3937393029e6416610ab2d5a2875ea8a",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 349,
+      "end": 349,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 350,
+      "end": 350,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 351,
+      "end": 351,
+      "digest": "sha256:67bb8fd2fc7a207d7cf689d4365f481a8414733bf73bb541ddc27a4b1a9e122f",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 352,
+      "end": 352,
+      "digest": "sha256:ece523c7d95d420d4ff49e42b4fb263847bfb194d96eebb9f9472a2b0266a7e4",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 353,
+      "end": 353,
+      "digest": "sha256:aff677e47deddc8b54412fc5f2f33cdaaafa88e647b7f812b8d29e382e406252",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 354,
+      "end": 354,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 355,
+      "end": 355,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 356,
+      "end": 356,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 357,
+      "end": 357,
+      "digest": "sha256:1f312699c1fb33703595385ec0205a4098e8657250f449c650bd39990789dc7b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 358,
+      "end": 358,
+      "digest": "sha256:d1a3b3e7b9761452280b87b1266049c9cf65dc578a259b494a74932066d7e4fc",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 359,
+      "end": 359,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 360,
+      "end": 360,
+      "digest": "sha256:2b8ef6636e1082b780d6740306bbc5f6820ccd750382405c33fd22f1e71fe8dc",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 361,
+      "end": 361,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 362,
+      "end": 362,
+      "digest": "sha256:6d21be8eb50796b8cbd971ec14fc0daa51ddc83d7e558797e30d87f4f6cd3c3c",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 363,
+      "end": 363,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 364,
+      "end": 364,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 365,
+      "end": 365,
+      "digest": "sha256:5fa88529d59a02ba6c36244b59b190a1fee973ea2943f78c890f9024def9a979",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 366,
+      "end": 366,
+      "digest": "sha256:649fcd43b410b10b034cd957ed82576f0e6b6dc1401e1203d0758680df95dc50",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 367,
+      "end": 367,
+      "digest": "sha256:6922c42ba31ef692044f51dc485815819b083232f4bdba5a2d4485e0b2f6f774",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 368,
+      "end": 368,
+      "digest": "sha256:49fa1e132cf660c581a9eac8d22eef9841de6ec2a00e5b1962c87d2a6d6b9690",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 369,
+      "end": 369,
+      "digest": "sha256:49097a145297215a567469616ba3648aeccfe76c90d7dd7f32001380c6b7a0ce",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 370,
+      "end": 370,
+      "digest": "sha256:f64f0eca21b740e576f38f57ad919d6eab7f1ee8812cfae4c0a2a8ed7eb9015d",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 371,
+      "end": 371,
+      "digest": "sha256:bb9d3a326a6abc0912b7cad272adee7d009e39c1dc9457b28a100950976965b2",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 372,
+      "end": 372,
+      "digest": "sha256:be771f266c09bb459c9b4fdab6a79c47d80dce46bb9a84bfcbb9a6cbd72dc7ce",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 373,
+      "end": 373,
+      "digest": "sha256:051f68286ab071bf96176debb38c264de00105674e926302f6685deaf743ee63",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 374,
+      "end": 374,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 375,
+      "end": 375,
+      "digest": "sha256:fc869646b8a645d1a642df67a593053ddaca18ef7c4637c343fe8ade1b0d145f",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 376,
+      "end": 376,
+      "digest": "sha256:72665646a6e36d2d5e7366b60b6048dcad33739fd2ad50da46166cb2460ecf8d",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 377,
+      "end": 377,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 378,
+      "end": 378,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 379,
+      "end": 379,
+      "digest": "sha256:d69f4d1156802664f79481233718a5d61bb81575bfe709d709540622a7db1bf5",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 380,
+      "end": 380,
+      "digest": "sha256:eb7df077f1e1a3bdb3a4d99d49acb122ccf0645c3413e86011d091b121a88ae4",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 381,
+      "end": 381,
+      "digest": "sha256:6949acb29c593e99bd548f9b8cf53d241eb11e38df5434ccadf5c1c75bb28ed1",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 382,
+      "end": 382,
+      "digest": "sha256:77a9b5e9019c8db8783ec9c3febb0a2c9862f61a05c308fe895e4a9bed03edb3",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 383,
+      "end": 383,
+      "digest": "sha256:1bb35e900cd3d730959c5978c7d5851ddf43eb22f8bafd5f9b276c965f29d9ac",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 384,
+      "end": 384,
+      "digest": "sha256:5425500515898ab258c8b620a2bcabe771f33b4bd1fcdd146ee1d6e33b5e3f3b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 385,
+      "end": 385,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 386,
+      "end": 386,
+      "digest": "sha256:92148aa8b87049142bbf3950f8bf446f02d35749852432759f33ffa3cd8fb95f",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 387,
+      "end": 387,
+      "digest": "sha256:63f32936ac034332ca4756f1d3ee50b0bbff57f5cac8bed7c1927b0f42b8baa8",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 388,
+      "end": 388,
+      "digest": "sha256:bdee0895d70df181a9c0bd26095e224061c72c256474fed9807f1d8601cf25ac",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 389,
+      "end": 389,
+      "digest": "sha256:01d889edb80f775ad267d8e90178fbf680314b67ab63a4464a1e9716c5fca481",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 390,
+      "end": 390,
+      "digest": "sha256:e7e1c7ea3c7062499e723457e3e063022a33c09a008ede78da2e850a0b09dc27",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 391,
+      "end": 391,
+      "digest": "sha256:77a9b5e9019c8db8783ec9c3febb0a2c9862f61a05c308fe895e4a9bed03edb3",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 392,
+      "end": 392,
+      "digest": "sha256:c5e5052e439b7bf1b041f1458479d88c23bf2c8fd4e386bb1d7c6fa4c0a5592e",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 393,
+      "end": 393,
+      "digest": "sha256:63f32936ac034332ca4756f1d3ee50b0bbff57f5cac8bed7c1927b0f42b8baa8",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 394,
+      "end": 394,
+      "digest": "sha256:bdee0895d70df181a9c0bd26095e224061c72c256474fed9807f1d8601cf25ac",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 395,
+      "end": 395,
+      "digest": "sha256:64e944b1a81a7686682c4132ab4bdd6cb8133b605e27067735bb97d24914000d",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 396,
+      "end": 396,
+      "digest": "sha256:e7e1c7ea3c7062499e723457e3e063022a33c09a008ede78da2e850a0b09dc27",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 397,
+      "end": 397,
+      "digest": "sha256:77a9b5e9019c8db8783ec9c3febb0a2c9862f61a05c308fe895e4a9bed03edb3",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 398,
+      "end": 398,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 399,
+      "end": 399,
+      "digest": "sha256:317d18a56a88ede6beeecf1adc882c43731ef3a92671c0f53f7658a0eb093100",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 400,
+      "end": 400,
+      "digest": "sha256:7b459b44a48ffef0b04a7b9ca8e674ab299219bfbebb59c90542029228aaa48c",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 401,
+      "end": 401,
+      "digest": "sha256:d1d895c98930eaac5de4bd9d4ea0739ad016f4972cea483a6a04bfa10c6b8cda",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 402,
+      "end": 402,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 403,
+      "end": 403,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 404,
+      "end": 404,
+      "digest": "sha256:d0ef80ef12f82fff41fa4a6ea9c56b53791bbafce8dbd546c6a06f7f3cc2a4f1",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 405,
+      "end": 405,
+      "digest": "sha256:21cf25f11092c4b5a1c296fe1f2ea6c0f8b23ae3e4d49ab9a12fcdcab03d7e84",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 406,
+      "end": 406,
+      "digest": "sha256:a0d07ec9d131476f87b540eb2f6b7d45ec5e256fc8f65b8c3366d9fd234d38e8",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 407,
+      "end": 407,
+      "digest": "sha256:f18e77a0ed0a4c1a363d6f671b21d424258ede2e967b1f553922f17ea1662cf3",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 408,
+      "end": 408,
+      "digest": "sha256:95543f33e94bc92b74ee4e0ce2459e7cbccfec108009ca09f7d44327d9b58ca2",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 409,
+      "end": 409,
+      "digest": "sha256:d69b8f82332e80fcc9b51e0509c2dbc9ca6bd5629b64f8a87552c68cf6ebafd2",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 410,
+      "end": 410,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 411,
+      "end": 411,
+      "digest": "sha256:4364cf5b271b622c86472383c9c7d190abf3217f78969047ce261bbb3ad19b2e",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 412,
+      "end": 412,
+      "digest": "sha256:53f5ddf468a4da242dabc5dd3cd15e8e90edc8f1ad21b80c763c9db4664f95b9",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 413,
+      "end": 413,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 414,
+      "end": 414,
+      "digest": "sha256:fb6893ed398aa793a4289bfbdacbde5c1ed665d2d5c92c4eff63dd950eb14350",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 415,
+      "end": 415,
+      "digest": "sha256:4814101cf303a7d4dd4fbbcded1a620d970ff9d467086e25dd1383531954fa68",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 416,
+      "end": 416,
+      "digest": "sha256:59c4bbe665279f0bc816a6703c4fa1aeb425e813835ab304954d77fe8afe1321",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 417,
+      "end": 417,
+      "digest": "sha256:95543f33e94bc92b74ee4e0ce2459e7cbccfec108009ca09f7d44327d9b58ca2",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 418,
+      "end": 418,
+      "digest": "sha256:9378209c56b96cb5e8d5f3730883eb93d2585072474421b452adde35ba23fc3b",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 419,
+      "end": 419,
+      "digest": "sha256:e2bbd6c484c8680dfd547eb06d31f565558ce6afba3e5d1e15a085dab037f9d6",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 420,
+      "end": 420,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 421,
+      "end": 421,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 422,
+      "end": 422,
+      "digest": "sha256:5c829acaa7534b0eda0b2090d853d1cdaa7370043ba77985471e7e03fb6d2397",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 423,
+      "end": 423,
+      "digest": "sha256:e0b521cf2ea0dbdd69ce7076f83efcf3ae4844c33f757d1bb9387b388c9e8654",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 424,
+      "end": 424,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Real Git merge scenarios."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/mergetest/merge_test.go",
+      "start": 425,
+      "end": 425,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Real Git merge scenarios."
+    }
+  ],
+  "version": 2
+}

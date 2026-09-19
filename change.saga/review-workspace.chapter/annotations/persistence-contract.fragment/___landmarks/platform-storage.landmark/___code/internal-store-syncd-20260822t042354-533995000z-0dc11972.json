@@ -1,0 +1,139 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/store/syncdir_windows.go",
+      "digest": "sha256:bb0662bee5541f738008edf099f6cdbd2cb950e95a1c7c0884dedcb79765c03b",
+      "note": "Defines the Windows directory-sync adapter used by the shared publication contract."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/store/syncdir_windows.go",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:cdbccbf5adfc984febb2af09648d33bdba2f62ada4cd3543fef9cbf53835d88e",
+      "note": "Defines the Windows directory-sync adapter used by the shared publication contract."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/store/syncdir_windows.go",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines the Windows directory-sync adapter used by the shared publication contract."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/store/syncdir_windows.go",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:69398f40ec31b1176609c972b483340abf462590451d280e2122176ac1ba65e2",
+      "note": "Defines the Windows directory-sync adapter used by the shared publication contract."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/store/syncdir_windows.go",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines the Windows directory-sync adapter used by the shared publication contract."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/store/syncdir_windows.go",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:c7a0b98e007f29942842f03d39329723186d7ecc9f7ef1d30307acb10d6f0e36",
+      "note": "Defines the Windows directory-sync adapter used by the shared publication contract."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/store/syncdir_windows.go",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines the Windows directory-sync adapter used by the shared publication contract."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/store/syncdir_windows.go",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:43399f271762aa8cd08252a754b3515a6a190af3af56ffb072b96ea67daaaf6d",
+      "note": "Defines the Windows directory-sync adapter used by the shared publication contract."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/store/syncdir_windows.go",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:c84022be327dc8201c20541f07dc487dfef2aa26278833f66e57a1c1cf03106b",
+      "note": "Defines the Windows directory-sync adapter used by the shared publication contract."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/store/syncdir_windows.go",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:c15f35d447389d67f67ae08b622aa8a52184ce6fb6151acbb39e7d1cf7ac1584",
+      "note": "Defines the Windows directory-sync adapter used by the shared publication contract."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/store/syncdir_windows.go",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:698d7004be5a169f8e9ff484bf7f9ec0bed4a915e7ec60abf44abb212b92186a",
+      "note": "Defines the Windows directory-sync adapter used by the shared publication contract."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/store/syncdir_windows.go",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:f93d7395775d2ff4ae6642147a23a2a7a95a54c40ae757197d6aafde8ed8c164",
+      "note": "Defines the Windows directory-sync adapter used by the shared publication contract."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/store/syncdir_windows.go",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Defines the Windows directory-sync adapter used by the shared publication contract."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/store/syncdir_windows.go",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:355ba8185dcebf385b6373d72aa85ad088367988befb059e4c4dd3177afe55ca",
+      "note": "Defines the Windows directory-sync adapter used by the shared publication contract."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/store/syncdir_windows.go",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Defines the Windows directory-sync adapter used by the shared publication contract."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/store/syncdir_windows.go",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:83f501961d5c1f5a35e3dd6cfff82699069d7bd59e291d13a69f594e2b6370c4",
+      "note": "Defines the Windows directory-sync adapter used by the shared publication contract."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/store/syncdir_windows.go",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Defines the Windows directory-sync adapter used by the shared publication contract."
+    }
+  ],
+  "version": 2
+}

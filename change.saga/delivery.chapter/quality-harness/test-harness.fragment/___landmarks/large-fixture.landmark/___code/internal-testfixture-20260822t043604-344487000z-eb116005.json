@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/testfixture/largesaga.go",
+      "start": 137,
+      "end": 220,
+      "digest": "sha256:2e1fecdea63baebe359aa49d7a08cb5de48a40640caa8c73e2c7773f246e79db",
+      "note": "Validates workload options and creates stable two-commit source history."
+    }
+  ],
+  "version": 2
+}

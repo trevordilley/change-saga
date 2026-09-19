@@ -1,0 +1,205 @@
+{
+  "references": [
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/cli/cli.go",
+      "start": 876,
+      "end": 876,
+      "digest": "sha256:ce0da3d1893b74314b7053119ec7fe14873982f39c84113575224e31ad67f419",
+      "note": "CLI wiring for scale-safe authoring and queries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cli.go",
+      "start": 876,
+      "end": 876,
+      "digest": "sha256:231b4939cf3a8f1445e2ec6720670b64de61cf5e595ab7a6285defbb3bc85d44",
+      "note": "CLI wiring for scale-safe authoring and queries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cli.go",
+      "start": 877,
+      "end": 877,
+      "digest": "sha256:25973b173474c815ddde588f0ca01eecb69889d7cd6590a3d7e4fd2e4a9edf0b",
+      "note": "CLI wiring for scale-safe authoring and queries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cli.go",
+      "start": 878,
+      "end": 878,
+      "digest": "sha256:7e8b9e50eba902e5155c1dcc60b9bfc1e753b788a780a22aeff7cb78ded54f41",
+      "note": "CLI wiring for scale-safe authoring and queries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cli.go",
+      "start": 879,
+      "end": 879,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "CLI wiring for scale-safe authoring and queries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cli.go",
+      "start": 880,
+      "end": 880,
+      "digest": "sha256:e65441f15d999a1332d8a7d087b78be5662d7470faeb064506a87fc630d2c552",
+      "note": "CLI wiring for scale-safe authoring and queries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cli.go",
+      "start": 881,
+      "end": 881,
+      "digest": "sha256:77a9b5e9019c8db8783ec9c3febb0a2c9862f61a05c308fe895e4a9bed03edb3",
+      "note": "CLI wiring for scale-safe authoring and queries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cli.go",
+      "start": 882,
+      "end": 882,
+      "digest": "sha256:83e212be0ba8a47381188771bfa157c08beeb4413fb76d2a45183d7625cc9b54",
+      "note": "CLI wiring for scale-safe authoring and queries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cli.go",
+      "start": 883,
+      "end": 883,
+      "digest": "sha256:f93b614ad306010874365a18033c29a42fd0353e21c327b7c803f437eea9a0a6",
+      "note": "CLI wiring for scale-safe authoring and queries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cli.go",
+      "start": 884,
+      "end": 884,
+      "digest": "sha256:944696f1d524bd6ab562b5f464d7dcf3edb99207180169bb5ce05b98c19c9071",
+      "note": "CLI wiring for scale-safe authoring and queries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cli.go",
+      "start": 885,
+      "end": 885,
+      "digest": "sha256:4766e053e5769a514f5f3af542e5c95b1c8c658f79e216e4be00b900bdd21d11",
+      "note": "CLI wiring for scale-safe authoring and queries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cli.go",
+      "start": 886,
+      "end": 886,
+      "digest": "sha256:42a57081051f4682a7db3e590b4dd5413d53dc9a01551276dacb521a7e1db9a5",
+      "note": "CLI wiring for scale-safe authoring and queries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cli.go",
+      "start": 887,
+      "end": 887,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "CLI wiring for scale-safe authoring and queries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cli.go",
+      "start": 888,
+      "end": 888,
+      "digest": "sha256:b9d73f4430956d3cb31e4bcc8c9649ee15754391f706d0abe3b555ac37bcdd29",
+      "note": "CLI wiring for scale-safe authoring and queries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cli.go",
+      "start": 889,
+      "end": 889,
+      "digest": "sha256:1c48a5d797894e398fbdcfc28783da814e8d7934f74932d230c5fed44d65fc1d",
+      "note": "CLI wiring for scale-safe authoring and queries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cli.go",
+      "start": 890,
+      "end": 890,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "CLI wiring for scale-safe authoring and queries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cli.go",
+      "start": 891,
+      "end": 891,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "CLI wiring for scale-safe authoring and queries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cli.go",
+      "start": 892,
+      "end": 892,
+      "digest": "sha256:32a8815d2861d63f777ae757ba8b2a9e3fe13be4fb8cb5b1d5e8bcb0d682036a",
+      "note": "CLI wiring for scale-safe authoring and queries."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/cli/cli.go",
+      "start": 1447,
+      "end": 1447,
+      "digest": "sha256:0b0b32940fef87f9c0d763ac5b92677a0d7ec941f411015ba8904e9332cd0fbe",
+      "note": "CLI wiring for scale-safe authoring and queries."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/cli/cli.go",
+      "start": 1448,
+      "end": 1448,
+      "digest": "sha256:4d23fb074ec7abd4ef7cab2adad84de4e3f34fe03000f81cfcb11a51dfe65b47",
+      "note": "CLI wiring for scale-safe authoring and queries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cli.go",
+      "start": 1463,
+      "end": 1463,
+      "digest": "sha256:5c0309b22844c86e74466567c643b04bbbe77a5fd98896f202e53f5f05e9d2b9",
+      "note": "CLI wiring for scale-safe authoring and queries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cli.go",
+      "start": 1464,
+      "end": 1464,
+      "digest": "sha256:2c9bd77b5b450d9283f9380c3ee6da543bc4f7edf9399b82725edcf4cc5167f6",
+      "note": "CLI wiring for scale-safe authoring and queries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cli.go",
+      "start": 1465,
+      "end": 1465,
+      "digest": "sha256:63384604d169f435a1a4a23cb5ccb2c1ed9b6b1ead6700cc5fd72eb8053011e3",
+      "note": "CLI wiring for scale-safe authoring and queries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cli.go",
+      "start": 1466,
+      "end": 1466,
+      "digest": "sha256:532848f59529b91b547312716ab2ccec1560566fa37bab582e7b2bce888d0fa1",
+      "note": "CLI wiring for scale-safe authoring and queries."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cli.go",
+      "start": 1467,
+      "end": 1467,
+      "digest": "sha256:078f584b704d1d67f49d0a0d9f76f0c5bab1098968022d8aa9c23887a053a75a",
+      "note": "CLI wiring for scale-safe authoring and queries."
+    }
+  ],
+  "version": 2
+}

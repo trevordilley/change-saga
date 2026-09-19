@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/appjs.go",
+      "start": 1033,
+      "end": 1075,
+      "digest": "sha256:d460c73241288aeba79a6d76eba1f019910b8d034703d36e1abad14d1e7326f2",
+      "note": "Hydrates the complete file diff and highlights rows that were already linked by the narrative selection."
+    }
+  ],
+  "version": 2
+}

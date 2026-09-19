@@ -1,0 +1,51 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "go.mod",
+      "digest": "sha256:dd1c90702488e67f3270dd5fa0ec4b853bec129041a9675ccbda558e5c5c082a",
+      "note": "Declares the Go module and runtime dependencies exercised by verification."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "go.mod",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:3feb3a20a2fb347f8889283a3f32effb8ebf168f968e9066f4e6cb6753af9a27",
+      "note": "Declares the Go module and runtime dependencies exercised by verification."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "go.mod",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Declares the Go module and runtime dependencies exercised by verification."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "go.mod",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:8946df557e17fd1d6180a979ed5af02265377498f33068632b1ecf999d74fd93",
+      "note": "Declares the Go module and runtime dependencies exercised by verification."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "go.mod",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Declares the Go module and runtime dependencies exercised by verification."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "go.mod",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:25a59c7821547be0f1646e41c6dc0fab87772135083ca4f41290e1eda750b66a",
+      "note": "Declares the Go module and runtime dependencies exercised by verification."
+    }
+  ],
+  "version": 2
+}

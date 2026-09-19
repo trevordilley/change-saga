@@ -1,0 +1,11 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/saga/markdown_test.go",
+      "digest": "sha256:f172e425bb44bd48b79a3913b3e6d072cb9a74d910d5dba74c294c7f5f626d2e",
+      "note": "Records this owned authoring path as newly introduced in the since-inception comparison."
+    }
+  ],
+  "version": 2
+}

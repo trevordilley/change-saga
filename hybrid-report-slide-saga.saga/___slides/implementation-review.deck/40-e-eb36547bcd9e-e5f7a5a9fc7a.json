@@ -1,33 +1,61 @@
 {
-  "version": 2,
-  "diffs": [
+  "references": [
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=931\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fserver%2Fserver.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=931",
+      "commit": "b6042a5b85057c8f2f892dabc9d06cb1bfa155fd",
+      "path": "internal/server/server.go",
+      "start": 931,
+      "end": 931,
+      "digest": "sha256:b6095e860998e02283415e9a1c47c2a092febe318393eab8ec2ed361c23a69fc",
       "note": "Projects each embedded slide beneath its one named deck node and marks only genuine section boundaries for subtle dividers."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=960\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fserver%2Fserver.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=960",
+      "commit": "b6042a5b85057c8f2f892dabc9d06cb1bfa155fd",
+      "path": "internal/server/server.go",
+      "start": 960,
+      "end": 960,
+      "digest": "sha256:e4d474b0be489859e888440671cd256d73a8b83f6c421ba085a28d9d5bfb85d5",
       "note": "Projects each embedded slide beneath its one named deck node and marks only genuine section boundaries for subtle dividers."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=962\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fserver%2Fserver.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=962",
+      "commit": "b6042a5b85057c8f2f892dabc9d06cb1bfa155fd",
+      "path": "internal/server/server.go",
+      "start": 962,
+      "end": 962,
+      "digest": "sha256:5e3169f880a1b5ee33e88d596865b991b0eb86ed891e39338c01c2282bf85391",
       "note": "Projects each embedded slide beneath its one named deck node and marks only genuine section boundaries for subtle dividers."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=971\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fserver%2Fserver.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=971",
+      "commit": "b6042a5b85057c8f2f892dabc9d06cb1bfa155fd",
+      "path": "internal/server/server.go",
+      "start": 971,
+      "end": 971,
+      "digest": "sha256:e0fe6faa55522322432ec35c619094f755e67122741bd5acbbfdb25031c0efa6",
       "note": "Projects each embedded slide beneath its one named deck node and marks only genuine section boundaries for subtle dividers."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=973\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fserver%2Fserver.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=973",
+      "commit": "b6042a5b85057c8f2f892dabc9d06cb1bfa155fd",
+      "path": "internal/server/server.go",
+      "start": 973,
+      "end": 973,
+      "digest": "sha256:690a71fbedc29c8190b4b481295927ca9c0beb0b229eeccd5c36e6f5bca4dd88",
       "note": "Projects each embedded slide beneath its one named deck node and marks only genuine section boundaries for subtle dividers."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=977\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fserver%2Fserver.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=977",
+      "commit": "b6042a5b85057c8f2f892dabc9d06cb1bfa155fd",
+      "path": "internal/server/server.go",
+      "start": 977,
+      "end": 977,
+      "digest": "sha256:3119b51569fad2f86f51cc5e460c9d3504790933dd3160e9b09593dc5349528c",
       "note": "Projects each embedded slide beneath its one named deck node and marks only genuine section boundaries for subtle dividers."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=1460\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fserver%2Fserver.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=1460",
+      "commit": "b6042a5b85057c8f2f892dabc9d06cb1bfa155fd",
+      "path": "internal/server/server.go",
+      "start": 1460,
+      "end": 1460,
+      "digest": "sha256:679288bcbd991b0c2979bf5d511ca1701ea2cae905c83771d543d651e6e54f72",
       "note": "Projects each embedded slide beneath its one named deck node and marks only genuine section boundaries for subtle dividers."
     }
-  ]
+  ],
+  "version": 2
 }

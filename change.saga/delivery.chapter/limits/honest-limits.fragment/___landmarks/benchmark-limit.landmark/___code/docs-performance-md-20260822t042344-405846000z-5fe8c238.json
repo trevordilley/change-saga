@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/performance.md",
+      "start": 77,
+      "end": 88,
+      "digest": "sha256:37753463ed017f290089c7490a2febfa548d27973bf1efe82e94abef98a53bbc",
+      "note": "Names remaining bottlenecks without turning reference results into universal guarantees."
+    }
+  ],
+  "version": 2
+}

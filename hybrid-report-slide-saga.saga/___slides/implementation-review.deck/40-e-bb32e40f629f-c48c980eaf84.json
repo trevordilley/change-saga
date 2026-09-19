@@ -1,21 +1,37 @@
 {
-  "version": 2,
-  "diffs": [
+  "references": [
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=224\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fcli%2Fcli.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=224",
+      "commit": "b6042a5b85057c8f2f892dabc9d06cb1bfa155fd",
+      "path": "internal/cli/cli.go",
+      "start": 224,
+      "end": 224,
+      "digest": "sha256:deea6b5d7ec7601608f54228fa69e3f80ea70e01877f57312182d0316f7cc1c1",
       "note": "Updates command guidance to distinguish report-owned decks and pinned slide explanations from living intent."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=242\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fcli%2Fcli.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=241",
+      "commit": "b6042a5b85057c8f2f892dabc9d06cb1bfa155fd",
+      "path": "internal/cli/cli.go",
+      "start": 241,
+      "end": 242,
+      "digest": "sha256:0ab2f98052a15de8b24ecb7fa222528853d1abb76c00541e24c302278c4d5d8c",
       "note": "Updates command guidance to distinguish report-owned decks and pinned slide explanations from living intent."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=246\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fcli%2Fcli.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=246",
+      "commit": "b6042a5b85057c8f2f892dabc9d06cb1bfa155fd",
+      "path": "internal/cli/cli.go",
+      "start": 246,
+      "end": 246,
+      "digest": "sha256:3f1181ead03230f127e0c66531737e8fb226956a7ecb24535bd6bf37e2285ac3",
       "note": "Updates command guidance to distinguish report-owned decks and pinned slide explanations from living intent."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=767\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fcli%2Fcli.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=766",
+      "commit": "b6042a5b85057c8f2f892dabc9d06cb1bfa155fd",
+      "path": "internal/cli/cli.go",
+      "start": 766,
+      "end": 767,
+      "digest": "sha256:455e160f64140d651eb178993847f3389fb0a58269f8d16b05d368cd7844bd5e",
       "note": "Updates command guidance to distinguish report-owned decks and pinned slide explanations from living intent."
     }
-  ]
+  ],
+  "version": 2
 }

@@ -1,37 +1,69 @@
 {
-  "version": 2,
-  "diffs": [
+  "references": [
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=22\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Flivingapp%2Fsession.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=22",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/livingapp/session.go",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:e2477c797480fd9b8c50a244ccd3696151c84ca0ee21fe53316eb55ac31793c9",
       "note": "Stales missing deck, slide, or Item sources and binds committed-head lookup to the active comparison."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=33\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Flivingapp%2Fsession.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=27",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/livingapp/session.go",
+      "start": 27,
+      "end": 33,
+      "digest": "sha256:e3c145a5751364b16e701c7337a6133bd57b40e4784a319f5dcbd967ef687541",
       "note": "Stales missing deck, slide, or Item sources and binds committed-head lookup to the active comparison."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=69\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Flivingapp%2Fsession.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=69",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/livingapp/session.go",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:fb6efb7b3ec74088042d499a67024fb9557816cae3fabdf4ed6bb5a116414755",
       "note": "Stales missing deck, slide, or Item sources and binds committed-head lookup to the active comparison."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=98\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Flivingapp%2Fsession.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=98",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/livingapp/session.go",
+      "start": 98,
+      "end": 98,
+      "digest": "sha256:e4e87bd88d5daa97d51f8216a95cc6e2d72e3954d66ee799cb343da6d92d4994",
       "note": "Stales missing deck, slide, or Item sources and binds committed-head lookup to the active comparison."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=109\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Flivingapp%2Fsession.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=109",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/livingapp/session.go",
+      "start": 109,
+      "end": 109,
+      "digest": "sha256:21ba4a91a63c31d8b3a1a77f8ba1ac93681c4550850282d6ffadc58b7b6f6c76",
       "note": "Stales missing deck, slide, or Item sources and binds committed-head lookup to the active comparison."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=152\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Flivingapp%2Fsession.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=144",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/livingapp/session.go",
+      "start": 144,
+      "end": 152,
+      "digest": "sha256:0c528b6ba6326484519ac595ab7509fcf0a99cf21f3b8d8666260ed98756bc24",
       "note": "Stales missing deck, slide, or Item sources and binds committed-head lookup to the active comparison."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=208\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Flivingapp%2Fsession.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=208",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/livingapp/session.go",
+      "start": 208,
+      "end": 208,
+      "digest": "sha256:f1d1142b80ef1748eec735606ccd4a6834f0fc59a8efbb3285bf52c1729e83a8",
       "note": "Stales missing deck, slide, or Item sources and binds committed-head lookup to the active comparison."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=270\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Flivingapp%2Fsession.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=258",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/livingapp/session.go",
+      "start": 258,
+      "end": 270,
+      "digest": "sha256:286990ce56f5bd9cbe439b184f7a4854ed37e8690ea6e7e8dc79b2cd0fa1270a",
       "note": "Stales missing deck, slide, or Item sources and binds committed-head lookup to the active comparison."
     }
-  ]
+  ],
+  "version": 2
 }

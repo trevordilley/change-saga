@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/tests/security.spec.ts",
+      "start": 191,
+      "end": 234,
+      "digest": "sha256:4e3db7dbe6132fe4d401f8ba7a741d2e61bb2ddaedbc6f6a1c3e13664a0d14c5",
+      "note": "Rejects oversized or mistyped uploads and proves staged temporary files are cleaned."
+    }
+  ],
+  "version": 2
+}

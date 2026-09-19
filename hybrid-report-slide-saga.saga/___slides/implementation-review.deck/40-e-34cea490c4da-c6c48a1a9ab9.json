@@ -1,29 +1,53 @@
 {
-  "version": 2,
-  "diffs": [
+  "references": [
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=12\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fcli%2Fslides_test.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=12",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/cli/slides_test.go",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:ff2c0ea95d76cbc00801be44ecfc5884dca46f0b7febe0b6b2a9a5e1afd73944",
       "note": "Exercises multi-deck authoring, in-deck section metadata and queries, Item evidence, accepted-story transitivity, reviews, and compatibility end to end."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=16\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fcli%2Fslides_test.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=14",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/cli/slides_test.go",
+      "start": 14,
+      "end": 16,
+      "digest": "sha256:6b9f45f01651e0a622c147fab2b1068946c79f008be5fb304d09e6ebcdf179dd",
       "note": "Exercises multi-deck authoring, in-deck section metadata and queries, Item evidence, accepted-story transitivity, reviews, and compatibility end to end."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=47\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fcli%2Fslides_test.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=47",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/cli/slides_test.go",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:46522bc71d3ada81fee79506c8f371867baaf57affa0a239522d2028b757e250",
       "note": "Exercises multi-deck authoring, in-deck section metadata and queries, Item evidence, accepted-story transitivity, reviews, and compatibility end to end."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=70\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fcli%2Fslides_test.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=68",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/cli/slides_test.go",
+      "start": 68,
+      "end": 70,
+      "digest": "sha256:b3b85ec07c10bdab09b5c7b295b4c3f2e3ed5b7da2ab04e286e769704f679921",
       "note": "Exercises multi-deck authoring, in-deck section metadata and queries, Item evidence, accepted-story transitivity, reviews, and compatibility end to end."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=119\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fcli%2Fslides_test.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=119",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/cli/slides_test.go",
+      "start": 119,
+      "end": 119,
+      "digest": "sha256:c0e13aa465188bc56417a84085a053b0aac6e5d91c9d0338a6f696dc259a8a56",
       "note": "Exercises multi-deck authoring, in-deck section metadata and queries, Item evidence, accepted-story transitivity, reviews, and compatibility end to end."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=294\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fcli%2Fslides_test.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=141",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/cli/slides_test.go",
+      "start": 141,
+      "end": 294,
+      "digest": "sha256:fc39739ebd26b8bad90a123675f4b22a01b0ad110d1186c50419bd74e72e3b7c",
       "note": "Exercises multi-deck authoring, in-deck section metadata and queries, Item evidence, accepted-story transitivity, reviews, and compatibility end to end."
     }
-  ]
+  ],
+  "version": 2
 }

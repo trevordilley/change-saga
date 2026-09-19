@@ -1,0 +1,4507 @@
+{
+  "references": [
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "digest": "sha256:b5885c9410345fc7fd44c151e4dfb6ee23290573bca8629827c91eea1c360a66",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:0b0d4d1f5fbec17d7732f29ccf38d3ed9e3587229f0a04824e1096d25f930f7a",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:71e37b6cd48ad477cbb12624b757ee1dc4975711b78237a85f508bfdd723af77",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:dc94db91287ede614bfe3a0ee2e2b567400c33fbbb5566199f17b7f6235ec46d",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:9d321d278769fb32c7c6820e1c992ebb53b04e39def0f158cbf1d84e27d34c18",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:033727e32775e03cd68232ac6618ab5bb1491d758ed4936ec7cd00aeca9ead64",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:763a04ff74d16e99de0771b9504ae52588af724fbd39ebb230390d183a30a8e6",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:2687cf8ba8737b6155548121841a1a74c90dce6633adb6429b325cd1e9f2cc58",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:171b756171ff8240f94ccb83de837ed4242449df3ecef3a3762523d1f5ae0348",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:b83dd5913a82d8a691007f7ee185ac68dfe5991b41a3f4a5a6707f66ba980dd6",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:74432b77763c6cfa9171fc3fd13832ff241f4c996771aa8caccfe84199cb372f",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:f05b48055b78db9e9e8993848d47169d7abd312df35886aa83d4014d37eb4009",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:1b649ecbf085fe223589d7f842defd5e2c82ec06b02b4f7827a31625fd09316e",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:dce87b6818a2884e83d31c73980f4824699871bd0d1b0b2cd9b7c3f5b15b116d",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:ab6f6be8e5963a10d31f1044691aa6beceed5a59d04cd8247f259497075d8b4d",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:3f118bdcbc85a6ae9a5779dd9c6c2e6aa10f6e1b8236a1a029c846af4b5273b9",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:fafba0527c3953c4b6e0e5b5739ba83612f8053bcdc9466730193cd1d590b408",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:bdae2f5a4bcac8b63ac30be42a48463fd734d0704d0929107cc06d390a21066e",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:a655605920157e08dc614fb954e2bbb1663ac01579a7bf05372c27a04079178a",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:a20e8ebb492e1818c4850a5523c40fe2c1d57d4df18979628151b01571767d5f",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:296d34240f7070da68b4e089d41523a2045bd3d43a48a0fa0dd3c091a402c522",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:a6d6fa365e87fbaab6bb45cce88ad387835b65f71568cf3d8b1e1546d9bb5913",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:101ead936a2281d53dcc064b7e2a2ab0d53b92ef3ef7b34b668673007895c860",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:b727a947cf06d5f3d4294b21a2ed1e62ef23616a9e12fd4628a5d144b5c16e36",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:101ead936a2281d53dcc064b7e2a2ab0d53b92ef3ef7b34b668673007895c860",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:542da2ed642604fb5dcf989955d89b188ca1c0692c0c2cd361a2578f08a554dd",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:5477e35b0743de97c64982226a55b5323f8809558c114e8b5e4223b3ebb8432f",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:21b9a68e53497facbb09f7857b28bc9b4363c97e256d99ef529786a0c4e9993f",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:101ead936a2281d53dcc064b7e2a2ab0d53b92ef3ef7b34b668673007895c860",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:afd578d8c8aa490898db69ba884404dc66f21006ca371f23f03e4c3aea8fc803",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:4914600cdd544278b37d37b3fe02aac14278c16dcb53cd3db7998c30b1211533",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:d3dc5ed47cf743194f1970e2b1ab815e74332e81c49e424d43ae2f3c9c313d26",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:8a8205e5fa622e07844b046320cfc1abecbae6303d316a54e45f334035b8ce74",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:f452d1ad22e1f83b7137e04a9435d5f71037309bb1deee54d6b281006f5f7789",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:1ee9d04b270a1c50da4136823a3c4804829ea65cdd3fcc11ca7f4422b6742b3a",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:d0d986b0df7e9c47aa782b06609469bc8eeca47612b838cf829dda4bcddd3329",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:84e99900c78300b74877ff4e3e70f2469791af0addbf5300e6b75a371486516a",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:ecf7035c35e00dfc432bc40c29def84e20233bf7bbe02593309ca0ed0416004b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:419e2ffd6cc2a363023ba0068f9f75f8b1bd0692ef7f258a41460b6ff2876429",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:7058731287f4bfa67b58296ac3edd0016d70c467f0823f49159530344919c4b5",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:178e62f66c5e407f12e491bcbc3ce9458fe075d4772f3b7ebcd282fdfa009121",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:cc74088009e6a3a1640c89edffbb159abcb5f475ace693699dfd34dd01d1a6fe",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:86a8f6604d22acdfe8ecae49730becb5ccf51cba12acaae5ac1428d1019f6dbc",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:53ed81a3d8f006d3e0df98743527c566beee976b6c8609c9de9de48e90961f9b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:fff0419587b50c947bf6bc358954ad8f6099cb7d2c23a8999b0a9ebdc47166d6",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:7e7aacc15831370e7a136a64cabb6c5bee5a3cd0adb264c2786123688a6f6930",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:f7dd2e3e85cbee1d346185a259f3f7c57c8c90bf957ce0763a992bacb795c25f",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:13f85396068dad30b985cba16b471eb28d552f28fbd9ef43ab08d81258caa8f3",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:81b186b6bfd1b0c3fe4e39c4f1d3b106a759ab21b898cb3e5511e7533b79a726",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:c35a33dcce6a1bd5bee9c770d1146331e39a6db2bf10dba3bdb58ba058d93a55",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:834bfffd09070ee5b9c61cfb6df91d5ea4ddc3831928f4e69778e57313734b6d",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:be45db2c2eb95f712462158d40226be078fe5b20892f207db969b7100e90899e",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:ffcdd4fb5533f7cfcd947cacceef591d54c63fc8b2004eca574dacbe163ec776",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:23cfa5df4430b2f560d2baca76932ea0bb27803588e3f54c24c2e2417ffa3ebf",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:44b204e97427c4e3e87acda6ea55810e332b9238fc9735997c93aa6390cddaa4",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:6148b0395dc6b452c3e737c837d36ab529267585c69a0a6de37b6d43acc0bcd8",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:4f975a09ef53276183087bb5ac9913a474f37d5b0c8920807cfe82261d2a021b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:1f57905c4090365a25326b91df5cec9ac274a7dd2d40843cb0c7f34dafc0ff61",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:eda5f0aeb750af84138df9aa02237fb67457cf613238dca3988bc253e2e57a8a",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 68,
+      "end": 68,
+      "digest": "sha256:fafba0527c3953c4b6e0e5b5739ba83612f8053bcdc9466730193cd1d590b408",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 70,
+      "end": 70,
+      "digest": "sha256:9db540773723a2071ea52444410948630348263a258d57f0734f6898808643ba",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 71,
+      "end": 71,
+      "digest": "sha256:2bd464c5570320e9ac2017564039c0004c718be250bdf3a9cd042bb893fc9bfa",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 72,
+      "end": 72,
+      "digest": "sha256:1410eed8b357d3000a409df17c53eeca17aa6b812543c2dbd570d2687f64f9f7",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 73,
+      "end": 73,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 74,
+      "end": 74,
+      "digest": "sha256:8031fee8a0ca0457c16d7d9049f5646f3e73deb4c2f1af33720fdd9630341740",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 75,
+      "end": 75,
+      "digest": "sha256:f4d50b74704a54efac811223f93bcc4fbfd2e97ecfa7f60eddaafbb1ae036717",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 76,
+      "end": 76,
+      "digest": "sha256:181c69c2063a5655de86e13222f1a4a901d7a1dcbcc87cf7c6109437ab2bbb64",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 77,
+      "end": 77,
+      "digest": "sha256:4cba0847568e8f240c7caa76650f41ef0ac5183e9c0c8568134313235fe06059",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 78,
+      "end": 78,
+      "digest": "sha256:7b89408e75d5561d5d510c24d7cb201537986484b161c7bc11ca91ffff1d9dac",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 79,
+      "end": 79,
+      "digest": "sha256:79699527ed1d70df6aa34572164beeb460f7e71b37f4cf2a85b46e42f4026617",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 80,
+      "end": 80,
+      "digest": "sha256:70d6b9ee0c9cf34891355a4ad223c320c880c7307285ee0e6bd623ee9c5e0ce2",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 81,
+      "end": 81,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 82,
+      "end": 82,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 83,
+      "end": 83,
+      "digest": "sha256:6693f1b7a46e87545231006286d633301664b62f0124c676efadfabd14ca8921",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 84,
+      "end": 84,
+      "digest": "sha256:cfd8cfedce3fe6c555fb4d788c8d0e0041e26aadca2b9245ec6dab32d30fafee",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 85,
+      "end": 85,
+      "digest": "sha256:8fe27a6143f8cfd8d0c01c81dfca617bf8b2811ea9725aa2658a41e338c83b4b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 86,
+      "end": 86,
+      "digest": "sha256:ab07293c4ac52172052dd9f5c05ed86ca251c4e72e5ff2f8769ba899a232c961",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 87,
+      "end": 87,
+      "digest": "sha256:0766ebdb1a9e4229076b4b62c8dfbb5938dafca8d32b54a1dfa18b14700ef42c",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 88,
+      "end": 88,
+      "digest": "sha256:dab96147efd4445056b093fac4d198fcc8bd22345ab38f0c2db9291deb531161",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 89,
+      "end": 89,
+      "digest": "sha256:0818a280a2a1ad84cb910f2d2fe3c24020a23af783a8f908a1310f81d4743d70",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 90,
+      "end": 90,
+      "digest": "sha256:50ebf3fcef303d8ec9f34fb333269041c6243e2e1711b96a3f5929ea443757fc",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 91,
+      "end": 91,
+      "digest": "sha256:ef9f61449dffacec1c894e58a6486264869974bf895b501f325aecd63eb0e3be",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 92,
+      "end": 92,
+      "digest": "sha256:372ab81df599859e5466f769e145dff7b982d8fbfba3ac7d44927b394f825428",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 93,
+      "end": 93,
+      "digest": "sha256:eb83d36be86dfff50753b53e1fce8f75d6b4fedbe2e439741280a2faf4de03ad",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 94,
+      "end": 94,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 95,
+      "end": 95,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 96,
+      "end": 96,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 97,
+      "end": 97,
+      "digest": "sha256:405f40119ef44b52264a79aadc6492dd49c512021fbda6505146d710e71345df",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 98,
+      "end": 98,
+      "digest": "sha256:62b76043956a1bc471be4c2754047f569030d3d8a85e7bc1974b78ce00ce0dc7",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 99,
+      "end": 99,
+      "digest": "sha256:34e49012d5c16fb14ba7975723d22d14458fd86b636311b78590ac3f67bbdac2",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 100,
+      "end": 100,
+      "digest": "sha256:9dbb176eaac11fe20a863e83938c68949a45ff58cf8704f19ef3299362abd046",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 101,
+      "end": 101,
+      "digest": "sha256:0f144155d7813c07497c28a6ee9a2433ba5cc198d8ddf68b6e3681c139395b08",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 102,
+      "end": 102,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 103,
+      "end": 103,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 104,
+      "end": 104,
+      "digest": "sha256:08296a57db696aade2c6f4b1de89ea3dddcf0169a5d4750327e74c24067acd19",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 105,
+      "end": 105,
+      "digest": "sha256:62b76043956a1bc471be4c2754047f569030d3d8a85e7bc1974b78ce00ce0dc7",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 106,
+      "end": 106,
+      "digest": "sha256:5a84d952f4be4dabb48d60c1e51c387f080c050269c5f1af50c7fd1c0875d5c3",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 107,
+      "end": 107,
+      "digest": "sha256:0f144155d7813c07497c28a6ee9a2433ba5cc198d8ddf68b6e3681c139395b08",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 108,
+      "end": 108,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 109,
+      "end": 109,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 110,
+      "end": 110,
+      "digest": "sha256:5b02a80579b7b8819be2ced961257fad75e2c1c228bdd9e79bf83b31226f2295",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 111,
+      "end": 111,
+      "digest": "sha256:9152c7900ca8ac04364b2c5a98ac6601e68bc46802b0a06d4b72d6da09fa91e6",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 112,
+      "end": 112,
+      "digest": "sha256:0c437b1bdf6b5f623b0d6392269bcf511476aadf1704d62cf540fe96391321e3",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 113,
+      "end": 113,
+      "digest": "sha256:45a9783fde8bed4fb2c31ba33356713cb8214bff5d2444629ec9575b50489e72",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 114,
+      "end": 114,
+      "digest": "sha256:e70087fffd6bcb785e1cd271c2e7a80051e1220741baae90e0c8f87dd8ab6445",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 115,
+      "end": 115,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 116,
+      "end": 116,
+      "digest": "sha256:c2a5c4e84690b56c577cc133f2e140b50c89aee1e0e8ea9e527b310234b62668",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 117,
+      "end": 117,
+      "digest": "sha256:0e7912bce8faf10680cae263b66febd68535c5276471d576bff893691c6d24d3",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 118,
+      "end": 118,
+      "digest": "sha256:95472fd1c471b79e7584819e67e32f9b665e3d1f08f6a498fdb06a2d6eb6d16d",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 119,
+      "end": 119,
+      "digest": "sha256:e7e1c7ea3c7062499e723457e3e063022a33c09a008ede78da2e850a0b09dc27",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 120,
+      "end": 120,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 121,
+      "end": 121,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 122,
+      "end": 122,
+      "digest": "sha256:652a15a722bdf900958971df4f4c3e29564dc38dfc987301cbc14d418d61d504",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 123,
+      "end": 123,
+      "digest": "sha256:dcc58019290d7f623cbc45ec5452d9df568f20f8cee65b58cf4d7b4b915d7f17",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 124,
+      "end": 124,
+      "digest": "sha256:0159bd88b3f73c9a5d2040130a7a9faa467e0b9ae711477c3b14be8ef35c1c84",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 125,
+      "end": 125,
+      "digest": "sha256:8c3b6113ec359d662d0d45b618d318739fb62ad3c38436fc9ece149743c33420",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 126,
+      "end": 126,
+      "digest": "sha256:8ca4356bebf49f8bac732e0824d5d9f64a87f86c53b16af3f11f2bb9cb8fc36b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 127,
+      "end": 127,
+      "digest": "sha256:7b4bf6c17edce035507db9db3d6338ea331615cfb0b61a36e0c0174c9bd5ef69",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 128,
+      "end": 128,
+      "digest": "sha256:78ebaeb0e7a56e916c86fbe05dbcd714ca7df93d7008e1fbcb7a58d4b4c5d27c",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 129,
+      "end": 129,
+      "digest": "sha256:91b6c872d18138db7ca064750896103807778bc77ad65aa2de41a5cb401f14eb",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 130,
+      "end": 130,
+      "digest": "sha256:65872930f03f96d679e1a6dbd5a6db8a15cfc63e0cb04a1cbc2275964f915168",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 131,
+      "end": 131,
+      "digest": "sha256:8ae3bb488cf80e87dea4988b70ac1e626462d44782bdcd0f106e9c2f5803808a",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 132,
+      "end": 132,
+      "digest": "sha256:e7e1c7ea3c7062499e723457e3e063022a33c09a008ede78da2e850a0b09dc27",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 133,
+      "end": 133,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 134,
+      "end": 134,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 135,
+      "end": 135,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 136,
+      "end": 136,
+      "digest": "sha256:1119ade3e5284f2b4d700ce7f3aadf33916dc03c0589bc91ea03aace427f452c",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 137,
+      "end": 137,
+      "digest": "sha256:d40943bc14c7838c36c29c4923d0a07efcc3a6a2135cf926525813848e41f4a9",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 138,
+      "end": 138,
+      "digest": "sha256:03bfe08ca7f5dfaa06bb97c69e983a704670e0c7104a492779fc14f01bdc879d",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 139,
+      "end": 139,
+      "digest": "sha256:3db0c46f09383412e8047b560c2978be7b4dd630025b8e2f0c1ebcddd7ade622",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 140,
+      "end": 140,
+      "digest": "sha256:1d6ea86ce131da1ca6738fa32fdd07c842d002157cb82483e4c8512a22365e86",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 141,
+      "end": 141,
+      "digest": "sha256:a18f06fe838cf56cfc5afa1903d677045d88dbe953f226619f36ecbff86ae494",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 142,
+      "end": 142,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 143,
+      "end": 143,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 144,
+      "end": 144,
+      "digest": "sha256:93bd9a0ff07d0d778f5ffeb1a5ec1d11a5b6f70f5e5517fc1c46f516d4411ee9",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 145,
+      "end": 145,
+      "digest": "sha256:cd04e50a83dacb952b8cc41b8c9b5a93f506ac0b51f8bfcef99fdc9cd4875526",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 146,
+      "end": 146,
+      "digest": "sha256:0df781359dc8d5bf330c290872fe8ee1f72b5152f16e32d9300325f16c35ba0e",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 147,
+      "end": 147,
+      "digest": "sha256:d1292da9938ef8c0bbf85e9f54c95191afc2d51647e5b0dcb424f25fd28e4a63",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 148,
+      "end": 148,
+      "digest": "sha256:96096c543113f2412ac632bd6925b8adf4b81e6d977faade33ec419c42a38b12",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 149,
+      "end": 149,
+      "digest": "sha256:02596cd0232c28d4c208ab6fa9e0b352d534c6052ac03ae12bb483d46e19a8e9",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 150,
+      "end": 150,
+      "digest": "sha256:17e94204506c1814552137109427a7652c2b9546e913927198bd1e8ee6c23e06",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 151,
+      "end": 151,
+      "digest": "sha256:680a52d7be4e0e51be6ca06876df0901810ad399288bc4b2736ed33d7ba72035",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 152,
+      "end": 152,
+      "digest": "sha256:e7425de7d358184fab057af76237ef0d9b9ea5320e4e10f2bb275f97029e6d4b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 153,
+      "end": 153,
+      "digest": "sha256:7055154e4de49c457bcb7cb0ede8f589394d9b027321c95cb8c26988a25428b9",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 154,
+      "end": 154,
+      "digest": "sha256:ef1adf68a618479946cdbeb673b0c886acc555d881193e7dedff58c3257b60ee",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 155,
+      "end": 155,
+      "digest": "sha256:b21c1560c264f180495c4a852d417bc8bfd55636e84107b215b5736ceeb05c68",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 156,
+      "end": 156,
+      "digest": "sha256:4482b543bf56292a83c86937fe51aef417e5b742594caa0ae9c2de0b011d39b5",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 157,
+      "end": 157,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 158,
+      "end": 158,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 159,
+      "end": 159,
+      "digest": "sha256:c247438414d71df66b3f5f41ec883a8f658ffbe2b432cd762d2daeae1510a4ea",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 160,
+      "end": 160,
+      "digest": "sha256:dcc4330ff466f40dca93162d5e78e0cb1d187222e931d33b8c570e09c9b79fe4",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 161,
+      "end": 161,
+      "digest": "sha256:4bd3fcebaf5f19eee6730876513b684b4e5bb85e7616ee2e60bfd222cb2607f2",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 162,
+      "end": 162,
+      "digest": "sha256:2ed4bf2252704ff88ab3b264c60578751c777ce0f9d0fc53e338081808ae9f25",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 163,
+      "end": 163,
+      "digest": "sha256:7a039f4d3c058c863653e7461351c4360bee0ae51bb8ffaaa6ddbfb9fdfcc35d",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 164,
+      "end": 164,
+      "digest": "sha256:a1dbfc97d6dbd83a387a553cde13dc40871c7a6e3e7313a9f6ab4b1eba765304",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 165,
+      "end": 165,
+      "digest": "sha256:57d34f4fab952ad1c3d38e88d7a62330640303a85194b2ff5cc85ae0d75ade68",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 166,
+      "end": 166,
+      "digest": "sha256:9e8cace881d837b76463e95ba7dc5bc0930e9b8cd417cbeb34f6f8d51a16e2e1",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 167,
+      "end": 167,
+      "digest": "sha256:920400bf6e27141f8a825299259760237a13f1c6c83461eb133e9a25e00e493c",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 168,
+      "end": 168,
+      "digest": "sha256:ea57cfeff4a722bdb4e99443aabe0a622fa29570e2ea1d18c04f7fe14f26c0b0",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 169,
+      "end": 169,
+      "digest": "sha256:3ab898034440047402c4a4ea3d51a3274320be558faf458d82f55001fd3acf97",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 170,
+      "end": 170,
+      "digest": "sha256:7f4bed3ce322fc31c4ce1a380944023e7432d568bbf55ed3d80496a0f3cca84f",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 171,
+      "end": 171,
+      "digest": "sha256:73c07c4ffbed11c27aa6ceb2b2ba5f2b0e1b403f9b2bb8e29015f379bd4a22a4",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 172,
+      "end": 172,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 173,
+      "end": 173,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 174,
+      "end": 174,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 175,
+      "end": 175,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 176,
+      "end": 176,
+      "digest": "sha256:b8d097b51aded7a8f9a3a71430cd54f6448e332baf31039e8e69e9afa78ce765",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 177,
+      "end": 177,
+      "digest": "sha256:b78965732ff426fa34666c49f54a095c6f9bcc559854134cfd4aa86128ac763c",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 178,
+      "end": 178,
+      "digest": "sha256:6fcfe6e7180ce0d7ab9a6728db70aed07511ff424962454de3dbdfe5bfbc0f41",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 179,
+      "end": 179,
+      "digest": "sha256:98b6e2008b55f75f4fff0f9d570abadd933730c46641745a64e22cda0a2f27f9",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 180,
+      "end": 180,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 181,
+      "end": 181,
+      "digest": "sha256:b59a0598e3fa4e480940f03f42257fde232193c72cdfe5170b25511b3222ecbe",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 182,
+      "end": 182,
+      "digest": "sha256:d668cac63fed7a6e6213337908f176a26225834b15615a3a3cd6845d6846132d",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 183,
+      "end": 183,
+      "digest": "sha256:c607c50915997c67f850ba0f59844f52503385f2e9941fce753ca075ab1f392d",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 184,
+      "end": 184,
+      "digest": "sha256:c700f7103ea935a5fb3a919212dba0b7dc149c008f9653a0bd147f41cb6627b5",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 185,
+      "end": 185,
+      "digest": "sha256:ae18692e7dc374b34f536e835eda2df19147e4fc86dda6f2a3035f949f8bb61a",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 186,
+      "end": 186,
+      "digest": "sha256:a57470a84d9d9e40a218e7e056e8386835ea5a30a65245cfde5394fda92319d1",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 187,
+      "end": 187,
+      "digest": "sha256:7ec6d54a98e56d7d8b0a271a13dcdb9f899324deecd43dcd6570a0400e820480",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 188,
+      "end": 188,
+      "digest": "sha256:6e0557237bc45dffbae9325d9b7118ade6a34476c9a8e6e93eee02d8f00d324e",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 189,
+      "end": 189,
+      "digest": "sha256:44a99d3fc02b6a43b234734c96b59ae42e82bdb28d897db2cf3225ec1625dccb",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 190,
+      "end": 190,
+      "digest": "sha256:079697fc75d6118067ad12584406f1e8b273b6ebacaa5fd85d0ba666993e4714",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 191,
+      "end": 191,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 192,
+      "end": 192,
+      "digest": "sha256:26b9ed2028455be5d8d2a59b546c9b5dd424a565e821cce5e2bec3958fcd91b3",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 193,
+      "end": 193,
+      "digest": "sha256:15e7f01c1b2775c91fd4058a078604d043c6a01d6d9fd36ca44459d26bb69090",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 194,
+      "end": 194,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 195,
+      "end": 195,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 196,
+      "end": 196,
+      "digest": "sha256:bd50a7c0824d9031c179148f742b296c3b977e9670540ac1eebc121b72a29bfd",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 197,
+      "end": 197,
+      "digest": "sha256:9ec7f4b6b5a3d3d42ce76f45ead231adafe5346b8f88c516b109adacf0aeb6e8",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 198,
+      "end": 198,
+      "digest": "sha256:ccb5fa6372b640c1d3c34f55dc8de49065e9a8d44435771684fbae06ece0bafa",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 199,
+      "end": 199,
+      "digest": "sha256:4ad1a720bb77a6943939eeb58cf9867d0b1da911f841ddf5bf35363eba439823",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 200,
+      "end": 200,
+      "digest": "sha256:3eb7c438588638dd19724db1440cf8a227edb2251792b17deb16469d0a52e00a",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 201,
+      "end": 201,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 202,
+      "end": 202,
+      "digest": "sha256:160ebf901640ce8027224cc04cdff42551eb124a03a9b6d5e1a99fdb97cec1e7",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 203,
+      "end": 203,
+      "digest": "sha256:0ea10e167b97c37540438f84c9c74c3d94511d260e58d23d1b0c01a30c8cdc20",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 204,
+      "end": 204,
+      "digest": "sha256:637d78bb45942087bc2d7009fc7b6711892a25e1e7e154ece2696c68ae3e6eea",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 205,
+      "end": 205,
+      "digest": "sha256:067e5d0083a8155e203df357dfb4d59160974bb9dcf8ed7538951c2d75ad8260",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 206,
+      "end": 206,
+      "digest": "sha256:20166f420555ca22d8ad19ced6a0176a8a706a7b9020a070d2bd3e1486cd38cb",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 207,
+      "end": 207,
+      "digest": "sha256:884986606fc1ed676021ff500e7a5a9eb7a3681264d9f67650a86d994d0ebf98",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 208,
+      "end": 208,
+      "digest": "sha256:630cfd20d14f8985f66b81edd33cba33c428e53568c11e03b8f7017bf8e8d062",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 209,
+      "end": 209,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 210,
+      "end": 210,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 211,
+      "end": 211,
+      "digest": "sha256:ba533501bea3e20240f7506ed224ef38065b0a3a526d2871931bdd873a622416",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 212,
+      "end": 212,
+      "digest": "sha256:50747b6da04ed6d996cbd0592dbc7354d68caa245325cb56527b9cc2c05b0e70",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 213,
+      "end": 213,
+      "digest": "sha256:3e89bbaa55f08388c640d1770bc2e72490501205a6e6003281a8e3179e8c3960",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 214,
+      "end": 214,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 215,
+      "end": 215,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 216,
+      "end": 216,
+      "digest": "sha256:0c1d0e637a358f02af02a900c6d26f2b6c78f9f83bee796554f3ba6a5d7c5dc7",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 217,
+      "end": 217,
+      "digest": "sha256:b78965732ff426fa34666c49f54a095c6f9bcc559854134cfd4aa86128ac763c",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 218,
+      "end": 218,
+      "digest": "sha256:f353f27ddcc06cb924776200daa2f3247ed7933028ed678359b505426e1fc96e",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 219,
+      "end": 219,
+      "digest": "sha256:a3f56d7f05a837f41cc570c8035fe5e3bd9c019efef1e16b0ec42258c608be80",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 220,
+      "end": 220,
+      "digest": "sha256:242e3c60e86fa8f71bfef4d7ecefe44115adbf61ea225304af456f87801bbcb0",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 221,
+      "end": 221,
+      "digest": "sha256:0fea7df23aba18506fe82d689fbac998c7a8ff798cd9b10e6978624f51fc6a0f",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 222,
+      "end": 222,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 223,
+      "end": 223,
+      "digest": "sha256:f71d7981e3693372462855e6c80f6d86a6af1f94b647383ad200acb64fdd3697",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 224,
+      "end": 224,
+      "digest": "sha256:b2381caf3fa1a6a94ad7e16b3b7847371697c8f7a354ecfba87d6db11cb56f8e",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 225,
+      "end": 225,
+      "digest": "sha256:eb673378407c52ad426726cbd724b53a2dec875c1f1b04131e43fd8f5dd74f2f",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 226,
+      "end": 226,
+      "digest": "sha256:77c752e8b6fcaf66c84801c2a34af0b7952f05ea38cf584a45598fd33904a3c7",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 227,
+      "end": 227,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 228,
+      "end": 228,
+      "digest": "sha256:c96e61e9b0762de6be3750bee73576fe17530ac90d5f4ab198c17c663c724656",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 229,
+      "end": 229,
+      "digest": "sha256:974bd3e7a47a3fb3dfd7e2aff11d8bd096a8ccc3aa38f9e5492f7abd9af027fd",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 230,
+      "end": 230,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 231,
+      "end": 231,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 232,
+      "end": 232,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 233,
+      "end": 233,
+      "digest": "sha256:49c386fc5795aaba7da3bf3493aedda66d3098469035d59f09a5299080904f0d",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 234,
+      "end": 234,
+      "digest": "sha256:ece523c7d95d420d4ff49e42b4fb263847bfb194d96eebb9f9472a2b0266a7e4",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 235,
+      "end": 235,
+      "digest": "sha256:d00612b8b1634477854d69bac4d4cb196ece341c55382902f66d585d921f4d61",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 236,
+      "end": 236,
+      "digest": "sha256:057c76a3e1eb7b898755fdec8b428365204160e1169315197d5716fa12a778b6",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 237,
+      "end": 237,
+      "digest": "sha256:6e6763dc3d1fff0d964751f2a70a7b3331e102b74466399783d011ac25c2ae82",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 238,
+      "end": 238,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 239,
+      "end": 239,
+      "digest": "sha256:f3b814f687194cebdb34083fea78573d68891af7760b7bedf327ff70801c6beb",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 240,
+      "end": 240,
+      "digest": "sha256:8170cec952347eef7601fce4886f2e6c1143bcdfa6f12bb6b4ba2cdff29de026",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 241,
+      "end": 241,
+      "digest": "sha256:2f009e9729dd3b5c5531e02476b340b7b47812b6e4350011c7b99531543472cd",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 242,
+      "end": 242,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 243,
+      "end": 243,
+      "digest": "sha256:c2a5c4e84690b56c577cc133f2e140b50c89aee1e0e8ea9e527b310234b62668",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 244,
+      "end": 244,
+      "digest": "sha256:c27adf05f2ec241102592c91a369e425a07538e063daba2993e9ee07bb7c8d06",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 245,
+      "end": 245,
+      "digest": "sha256:5857892b6648421aa31276ec5cb45f1ed4f119232bc12b20c186edd1d0dab28c",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 246,
+      "end": 246,
+      "digest": "sha256:ad83bca7cb2f48b9349c92ef382c01c8058308cd01e0b5c8d3b03bb120357624",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 247,
+      "end": 247,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 248,
+      "end": 248,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 249,
+      "end": 249,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 250,
+      "end": 250,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 251,
+      "end": 251,
+      "digest": "sha256:177d7f6eb2d1d42fd5dc9bb8a2d9ad93c64c06b310fb2088a5347eaa49c0362f",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 252,
+      "end": 252,
+      "digest": "sha256:ece523c7d95d420d4ff49e42b4fb263847bfb194d96eebb9f9472a2b0266a7e4",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 253,
+      "end": 253,
+      "digest": "sha256:a8f45eb8be4dd8d8be41e72b6977c64b38040f7e35ace622ce9e8d3cee06635c",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 254,
+      "end": 254,
+      "digest": "sha256:682aa40f4870c335824e2c248fd026121fb42828c415379945bfe03f4a70fbb5",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 255,
+      "end": 255,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 256,
+      "end": 256,
+      "digest": "sha256:93fe7aedb073a9caca73c91eca860fffca35a07821ec2ee0dad79ad58edb8e2c",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 257,
+      "end": 257,
+      "digest": "sha256:64e0f9bc45c263c663df88c3337c87c4ba0ba9d4a04f74a8310e5d37d2ac93af",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 258,
+      "end": 258,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 259,
+      "end": 259,
+      "digest": "sha256:b905d77ae90ca9c6a54449e7051e589548bd4ae14aa1b4e2bf5b25a0a4391f3f",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 260,
+      "end": 260,
+      "digest": "sha256:0386b35fb9c43ac5e467d11753689b30d204314029d719f1c03fc9103bae52bf",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 261,
+      "end": 261,
+      "digest": "sha256:824fd280d026afeb54293f6465fb3f51c34b52b3143e4055837dacb31a511bca",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 262,
+      "end": 262,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 263,
+      "end": 263,
+      "digest": "sha256:e4482306f5474a98d5cf4e3d33f37eb4da7f9c7c67aa7b202dd5a4432f73e053",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 264,
+      "end": 264,
+      "digest": "sha256:27422bd9c544d66079f372cad1ddbfca63b5e7d480515a7c36e62be9227aa59d",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 265,
+      "end": 265,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 266,
+      "end": 266,
+      "digest": "sha256:f55e487154b9b1bc8f0e469b5901ff7d8d740c26a0f8ec145cc7fe6271778792",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 267,
+      "end": 267,
+      "digest": "sha256:d5ea1a83a8c22c0ff46fba878560a091b31f01f3031575c4a5f838abd8e999d0",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 268,
+      "end": 268,
+      "digest": "sha256:90f9aad2dd5e2efd28dc9780ed87fdba6f44d840e97c3a35b59678d10dc3d80f",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 269,
+      "end": 269,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 270,
+      "end": 270,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 271,
+      "end": 271,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 272,
+      "end": 272,
+      "digest": "sha256:2b03a321b12d25696be6905c42c172b5dda1558ed9fccae9d66da1bb6054119d",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 273,
+      "end": 273,
+      "digest": "sha256:c23fd0896fe04c67656058aa17faece0f6d6ecba7d11445ca30b3979605550df",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 274,
+      "end": 274,
+      "digest": "sha256:4bf3ca3028ad3bf443ca1e0bbf3a3022dc8b2f8bd5dbae5a2a608a0f3102d020",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 275,
+      "end": 275,
+      "digest": "sha256:e34705e899be1f98c5bac56c4b5c19858f7edc97f5a66e58fdbdd5b0e736cfc7",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 276,
+      "end": 276,
+      "digest": "sha256:99da056c3fb5a64b1665ac5a0d6d693ad5d4f79307d65103fbc332ab0633fe0b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 277,
+      "end": 277,
+      "digest": "sha256:9e5549ec0b45693a5e1589c322ea1cc9f0694ccfb30f981eb7ec5ecccb92f3ee",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 278,
+      "end": 278,
+      "digest": "sha256:5fb68cd09d351d5956908492c59fb818da49ea72f6e9ead9b71329ddb0d10d39",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 279,
+      "end": 279,
+      "digest": "sha256:638f8be8feed5cde5f66997122622cfc173904adbcdb5c62e5be60bbc9363bc9",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 280,
+      "end": 280,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 281,
+      "end": 281,
+      "digest": "sha256:6e4aaf70480b7334a9d4ddc35774ae9d5a71e8434b5b84849ad0ed68c369f74d",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 282,
+      "end": 282,
+      "digest": "sha256:c0b24b5e138dd4ba987019a5d242621dbcf0f3294d491f765a9dcf56ad94277a",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 283,
+      "end": 283,
+      "digest": "sha256:de24beef5b75e0729f75e013d8cb80e4712e6747eba1f4b8b7eb760b40f09a5b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 284,
+      "end": 284,
+      "digest": "sha256:06c1e094e33de0ad87f918c01193c0b95c221a5cf45e89efb222445100e7fb46",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 285,
+      "end": 285,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 286,
+      "end": 286,
+      "digest": "sha256:83a58abca33edb6ba730ad52e9da5e2ab5277825b03e47030001cdfcb9d846c8",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 287,
+      "end": 287,
+      "digest": "sha256:391601770e6211b08d95c42a8a51ab14856184a4a073bb51390ee88baaee2bef",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 288,
+      "end": 288,
+      "digest": "sha256:624aee8cec65354482bd4fb8a952a17255184643526b8f87c6d5d6e8616a6cc4",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 289,
+      "end": 289,
+      "digest": "sha256:9f00d19f71f8749a8c1ce790f0badf5237a377102872d684e24be149abae1410",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 290,
+      "end": 290,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 291,
+      "end": 291,
+      "digest": "sha256:7d4c72c025bf57bd1b472a9bb498a15d9605d7ed3c1feaf31a2d998095528fb4",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 292,
+      "end": 292,
+      "digest": "sha256:939fd7b0f8f3a69d764b42e6e21cc2103cbc4faa0fc211f309a2537e473da9ce",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 293,
+      "end": 293,
+      "digest": "sha256:a05db68ea0ae7c6a53e6bdf20c907b522ba903e9fe1e4d78124e1c41faa71be2",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 294,
+      "end": 294,
+      "digest": "sha256:f353f27ddcc06cb924776200daa2f3247ed7933028ed678359b505426e1fc96e",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 295,
+      "end": 295,
+      "digest": "sha256:0e790f01de2a20cde4c424ec3e1730170a83374bb87cd5ad186da0b043d8b5f9",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 296,
+      "end": 296,
+      "digest": "sha256:e1ea75aa8c121a3eafa154aa10da9b1b3baae82a56399955bff033a91387b8ff",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 297,
+      "end": 297,
+      "digest": "sha256:da02d85af34c30dd30a674e251c467ca42e90a1292aeb5c01ce45795e9643d21",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 298,
+      "end": 298,
+      "digest": "sha256:75478f058a06e8f62b2df928259f7e2cb95e563ed7fa7bbf648f02e691732d51",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 299,
+      "end": 299,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 300,
+      "end": 300,
+      "digest": "sha256:06df21fdcb2c261b6d31bbac35b963aeced8237132b456c141a98b0bc5a5f3a3",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 301,
+      "end": 301,
+      "digest": "sha256:a31c86be57fd827ef8f228df275241d79d74e0e5f0c125134efcb212879a2871",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 302,
+      "end": 302,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 303,
+      "end": 303,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 304,
+      "end": 304,
+      "digest": "sha256:b831fab2bfd7d99ce49bcd1e95b48b783149b87cb28aba0d5ceffd464f2f7a05",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 305,
+      "end": 305,
+      "digest": "sha256:59645ae277737c27b94ebd3c18312c7e3077f702a8216ae383ee1f3230209e1f",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 306,
+      "end": 306,
+      "digest": "sha256:4380de7b93bd974f6b6bae284e2f79e95d86dccbf95ab30eaa4680341460cfa3",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 307,
+      "end": 307,
+      "digest": "sha256:2250a616e02bdba224dc5ad7fbcceca2574e94b35da932160003fe53cc876476",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 308,
+      "end": 308,
+      "digest": "sha256:e4072e82edbb2d4e21f935a754cbf4e63195f88c2c87b2549728c6b45401918b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 309,
+      "end": 309,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 310,
+      "end": 310,
+      "digest": "sha256:c09b6a72ad165ed42dc1f815fbbef2a82d7e42e1ecff771f089b18bb4f95acf5",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 311,
+      "end": 311,
+      "digest": "sha256:1e495c36524a29aa2650ec1c8ae46fe203a4e436704ff64656665bba54eb11d2",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 312,
+      "end": 312,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 313,
+      "end": 313,
+      "digest": "sha256:1d7a22d13be57bf3bc6a39786b1b4bad8a56ce5d6d13514bf3874d9a9a6070e7",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 314,
+      "end": 314,
+      "digest": "sha256:7e571e134f39308bb397351760ced7c2070afa617ea5e115d3716fce27cfecd9",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 315,
+      "end": 315,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 316,
+      "end": 316,
+      "digest": "sha256:bac5be322bd7125f084f21f272f25747d68b074b1e4f3f73b26fbcf9b711e832",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 317,
+      "end": 317,
+      "digest": "sha256:a652531a305c0228f671c941280337ea39cfaef4fbc330f4849520de7cac5e15",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 318,
+      "end": 318,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 319,
+      "end": 319,
+      "digest": "sha256:353b6b549ec3b5183fe70e790e26dfa7eab640bce4e40192c50c70d8703eeee9",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 320,
+      "end": 320,
+      "digest": "sha256:3726acceaccaedff5a488b6fb08cae7607d60394ce9f03ae213b879203fb1653",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 321,
+      "end": 321,
+      "digest": "sha256:0048f3e7c283248b2d103bdc2108c58940d34f1c739fbb230e4638f1d3927077",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 322,
+      "end": 322,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 323,
+      "end": 323,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 324,
+      "end": 324,
+      "digest": "sha256:561c2074d883658161d22f14ae178e9066f80dc29a72c02456e7d1db0e74436b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 325,
+      "end": 325,
+      "digest": "sha256:26abb5f2f80d77ea8250539c81940e583040c76feec4cec49995f74e6c252686",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 326,
+      "end": 326,
+      "digest": "sha256:58fd68f1e54a5a8bf4b4ac1df4823f6b5858234b52304c9218af2591687285d1",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 327,
+      "end": 327,
+      "digest": "sha256:5625aef91a7ef19a4e8b9318c2e2952a12e9502debcbbace631870978c86365c",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 328,
+      "end": 328,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 329,
+      "end": 329,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 330,
+      "end": 330,
+      "digest": "sha256:0f29085afb5c4b3c9f3cc0a0d03e0439c58efdb7fb26f8bca8d0e3be23af9c50",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 331,
+      "end": 331,
+      "digest": "sha256:b78965732ff426fa34666c49f54a095c6f9bcc559854134cfd4aa86128ac763c",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 332,
+      "end": 332,
+      "digest": "sha256:f2036328f63f431fe81193c70955bb5fa6d2e3c44ae61bdc8206525434f08703",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 333,
+      "end": 333,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 334,
+      "end": 334,
+      "digest": "sha256:53f8d05a5cbd60dc44b40cbca076df211eb6e08461ff160ab5e20fb38e179e78",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 335,
+      "end": 335,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 336,
+      "end": 336,
+      "digest": "sha256:f7fe61cd344f973e7e137049069577969f54aaf9ef19c9778b4de42798e16781",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 337,
+      "end": 337,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 338,
+      "end": 338,
+      "digest": "sha256:53f8d05a5cbd60dc44b40cbca076df211eb6e08461ff160ab5e20fb38e179e78",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 339,
+      "end": 339,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 340,
+      "end": 340,
+      "digest": "sha256:c802e8414bf7ea98df17d6c5d5c1089f04b5b298d2ebfb14dc1f7ced05c0eda4",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 341,
+      "end": 341,
+      "digest": "sha256:f420f6a1cd3325d1926340421b88e90744b4e2e0b358782d43d7138ba1fdcb54",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 342,
+      "end": 342,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 343,
+      "end": 343,
+      "digest": "sha256:870aa23a5c8f04b6c3d56f32432d9103781429dd0189fe442823d67676a02731",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 344,
+      "end": 344,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 345,
+      "end": 345,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 346,
+      "end": 346,
+      "digest": "sha256:85faf73881f467485cb9bfd031192a27b64e1f87d6edb5d8f9b5912a447576a2",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 347,
+      "end": 347,
+      "digest": "sha256:bc4e15f7ff5b26e4ed11ce1752fbf66231e71a82b0eaf36d67bf661b6805a205",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 348,
+      "end": 348,
+      "digest": "sha256:1fee170c05b762e1f63f93f1e6adf5e9c3d93ca851e49ce37ec421246a0cc698",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 349,
+      "end": 349,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 350,
+      "end": 350,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 351,
+      "end": 351,
+      "digest": "sha256:777f1bccdc02cf62cc3c967f70ae59883172d313ab59ef479f633ff7369ac2f4",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 352,
+      "end": 352,
+      "digest": "sha256:b78965732ff426fa34666c49f54a095c6f9bcc559854134cfd4aa86128ac763c",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 353,
+      "end": 353,
+      "digest": "sha256:7d4c72c025bf57bd1b472a9bb498a15d9605d7ed3c1feaf31a2d998095528fb4",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 354,
+      "end": 354,
+      "digest": "sha256:5c2b494be482dfb3f9d9b8b2a506e57eba60477b87b30a5d0a19a3a06478dc0c",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 355,
+      "end": 355,
+      "digest": "sha256:b092037977c7ef9333bd39fd97fd3498d1311830c46a1ab4f071c308580e7b3e",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 356,
+      "end": 356,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 357,
+      "end": 357,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 358,
+      "end": 358,
+      "digest": "sha256:2a4a45d7b28b8c74741d6fbac43fa8ef654dee15869e886d5efea2a8d14ade5b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 359,
+      "end": 359,
+      "digest": "sha256:ece523c7d95d420d4ff49e42b4fb263847bfb194d96eebb9f9472a2b0266a7e4",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 360,
+      "end": 360,
+      "digest": "sha256:d723039ec04c6768ee6d6e5a360ed7d5a6b5b261fd5948abdf96dbc7a697a23d",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 361,
+      "end": 361,
+      "digest": "sha256:4bcebadd9f7005f31bc65f2d688873bb186d60bb8a6a191e631dec893b5bef69",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 362,
+      "end": 362,
+      "digest": "sha256:23b961ee5af6f175084c92435b424729ee24bc81d5b00ef6bdb6cfd63e5d18e2",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 363,
+      "end": 363,
+      "digest": "sha256:6fce959fa870d035da6123f87164719be485c1d05f80ddeed45e030042a55570",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 364,
+      "end": 364,
+      "digest": "sha256:9c17a8221135841f55db142a72ce9c7c041fcf075cfc4fb35cda068fec905029",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 365,
+      "end": 365,
+      "digest": "sha256:5f16500f6401d5ea1374aca1bfa9624b52a73cecf58486ec254d900c7935beff",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 366,
+      "end": 366,
+      "digest": "sha256:48493d4749c4fc8f208c0e7f72f4d57024f2bf7d5fe59fb296e40ea695f89395",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 367,
+      "end": 367,
+      "digest": "sha256:34ec2aa96f2ee6092466e5748884b2f7f33b2a4bcaefc8942fc1b80bdfeb836e",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 368,
+      "end": 368,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 369,
+      "end": 369,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 370,
+      "end": 370,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 371,
+      "end": 371,
+      "digest": "sha256:d5928e48fdac5d69483f5f0130c5a34f7c02a0dd6643da71c155d264a734a1de",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 372,
+      "end": 372,
+      "digest": "sha256:f5a6696c4bf57fab609ce766cd747f7b278ca49b303c77ef5220bd00c7120a25",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 373,
+      "end": 373,
+      "digest": "sha256:cca87f65336f262aa8b82836adea2ad317778168fe5d50d8a3e2e61fa0dddf98",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 374,
+      "end": 374,
+      "digest": "sha256:efe76cdf787a1b0a53bf364be7aed5dfdd1625cb9de667dcaa169fcd5cc3097e",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 375,
+      "end": 375,
+      "digest": "sha256:9fc8f4849934dd68f17a242bf5984049ef71e991aff40e6c3987e9b1d0748f2e",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 376,
+      "end": 376,
+      "digest": "sha256:1c86269103f5820eb22210906ecc60f759ce8853f9b757280eac29d79a9c1d28",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 377,
+      "end": 377,
+      "digest": "sha256:e3e2dad08a6b681b065fada6f690a4202642f994d504bc64660ef098e38e1b12",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 378,
+      "end": 378,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 379,
+      "end": 379,
+      "digest": "sha256:7251052a41ce1e4b7479417991af2bd0f939e5888e5c602a7b8c1ff7d0dfaccd",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 380,
+      "end": 380,
+      "digest": "sha256:b88f6abbe647f64d6e647a85918ea66c37fa7eab6804bd6e7e715f9c3b041941",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 381,
+      "end": 381,
+      "digest": "sha256:9fccbb671d8a7b2a9f91caf8c3a30857bff86f23f816da0c71193d3682b5a19c",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 382,
+      "end": 382,
+      "digest": "sha256:5a84d952f4be4dabb48d60c1e51c387f080c050269c5f1af50c7fd1c0875d5c3",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 383,
+      "end": 383,
+      "digest": "sha256:506c05987a72dd27283be15d949d39abf53d5395e9e7990acd301373d43ef768",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 384,
+      "end": 384,
+      "digest": "sha256:6ef200d95ecc89525606e71ad585bc0ce048cc39dca640edb988129dc9d1cfff",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 385,
+      "end": 385,
+      "digest": "sha256:a48d5930e29851ba067b708dc6d525a60dba01af9bca65ba676cd73c6ecb310a",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 386,
+      "end": 386,
+      "digest": "sha256:278ff06beb285413690cc80d68c8d13191a18bb9c77f13aee4c64228d2393ebb",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 387,
+      "end": 387,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 388,
+      "end": 388,
+      "digest": "sha256:0dff9166705b0c97008c0328fa698e7f0d1f74cd6888b0ea55272b784dfb0379",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 389,
+      "end": 389,
+      "digest": "sha256:ad893b9356140f1ddea6e9086b534a45ec4b441c7511948504c299a2a58bec77",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 390,
+      "end": 390,
+      "digest": "sha256:5b9282fbc7093ddd489617647a0ae349e83a831a09c24bbf0030d05db584a331",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 391,
+      "end": 391,
+      "digest": "sha256:bb734c02af8ee5e2ccf0eec28110e45ffbf75f5eb8fb1942eded2d1865875fc6",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 392,
+      "end": 392,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 393,
+      "end": 393,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 394,
+      "end": 394,
+      "digest": "sha256:29d1d35a3b104927277685d0f68dddbc9911b1af53c20231b8573fedfbe883fd",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 395,
+      "end": 395,
+      "digest": "sha256:bb351cf6f8d797b70b39de91e52b105059b13ed10f26011268a89d3aabed3e98",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 396,
+      "end": 396,
+      "digest": "sha256:2ae8ad9bc78754b401617ca8f0485039ef43bda61228598a97f84d82c493eedd",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 397,
+      "end": 397,
+      "digest": "sha256:ff64457d4e72d653d4bdcd3c8052227f71ec87fad32a083386fc5a0a02b1ddfc",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 398,
+      "end": 398,
+      "digest": "sha256:b00d08ced138c00abb835af8eb5cb6d2cb69af82b533fb2361e174af4588d4bd",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 399,
+      "end": 399,
+      "digest": "sha256:221ccc25dddb8520493c6a39d59d1cd5ac6475d7ad959be03f7c80357e26b418",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 400,
+      "end": 400,
+      "digest": "sha256:c2276c9e86ae3efd48a3cd10ca3ff126e95949d0d47be5653c545669e9a399c2",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 401,
+      "end": 401,
+      "digest": "sha256:97a60e6dbf7122cd5e13bb1c5c8dad705ffeb7a710752dec670573c19c3d2221",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 402,
+      "end": 402,
+      "digest": "sha256:71d85a01df1fd808f35c534987b1b861aa469d51cb5eb693a5762b16aa00243f",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 403,
+      "end": 403,
+      "digest": "sha256:c3b574879ed76cb40d5e0697b5e224921db5d8984dec67f8fd4d63327f03302c",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 404,
+      "end": 404,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 405,
+      "end": 405,
+      "digest": "sha256:3c0b51eb360c711ae109630e0e291433c71d3be961e5a5774432a65e7cf7cd50",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 406,
+      "end": 406,
+      "digest": "sha256:f7afdba989e1e0edab429c4414e01761b764d8459695ab0d92ce78436d45de4f",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 407,
+      "end": 407,
+      "digest": "sha256:990785aa94306b02170d9dfbf690e0719770840dfe4fdb00523f375363f77ada",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 408,
+      "end": 408,
+      "digest": "sha256:e2be28a4497bc5974b9fbf43efb7329aa5f5edc8349419a549bca10c78cdaa55",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 409,
+      "end": 409,
+      "digest": "sha256:e785deef83d76bdfd12d61a3ea0c27a47a4b697c04dae3c2aa451b062fad995b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 410,
+      "end": 410,
+      "digest": "sha256:ac0937e1edeb40f9a2db9ef1b3460c3bcbdef4c8c9f10074188952211fb761d7",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 411,
+      "end": 411,
+      "digest": "sha256:4b115ac6accecca0d2e6451e17140c1a5aa80731d69f51b71f406b442d4f6955",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 412,
+      "end": 412,
+      "digest": "sha256:b9aeb044caa386e6abe9f9ad38ee49305051b391bf337e70604cffb06748053c",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 413,
+      "end": 413,
+      "digest": "sha256:6489313b4c58e5e64177c6f402ffbd1ea3f7c098a8ab507345d0d90cde96b621",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 414,
+      "end": 414,
+      "digest": "sha256:20c769b2da9b510ce9960c2130415a53b5aa850bc3ebe3e847b49316672ebe27",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 415,
+      "end": 415,
+      "digest": "sha256:4dc76020bae70577e64b330dca83fdf24f3d7593a0154d8abec6dc63f5897fd9",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 416,
+      "end": 416,
+      "digest": "sha256:dfa8b8b6e8570e1aabd0ea1ead6ba021edc01037a5ffdd7114e51ec953e62243",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 417,
+      "end": 417,
+      "digest": "sha256:1744c3691a63dbfa76320bbe3cddadbbe8c8f59cab10f360d72ce62c61b3da5e",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 418,
+      "end": 418,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 419,
+      "end": 419,
+      "digest": "sha256:e7e1c7ea3c7062499e723457e3e063022a33c09a008ede78da2e850a0b09dc27",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 420,
+      "end": 420,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 421,
+      "end": 421,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 422,
+      "end": 422,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 423,
+      "end": 423,
+      "digest": "sha256:d2173b40dc0d468e5786c40d1ad7bc868ae5e9d233d261cf7b99b96e701f17bb",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 424,
+      "end": 424,
+      "digest": "sha256:b78965732ff426fa34666c49f54a095c6f9bcc559854134cfd4aa86128ac763c",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 425,
+      "end": 425,
+      "digest": "sha256:e979680b60dc7844ca570cb511309a63205c94de1dd36ae2ece4f135b223a293",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 426,
+      "end": 426,
+      "digest": "sha256:d0d7987002b19155326fc3d374a116bae6576dd4a52c40bc227fc480345fed20",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 427,
+      "end": 427,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 428,
+      "end": 428,
+      "digest": "sha256:53f8d05a5cbd60dc44b40cbca076df211eb6e08461ff160ab5e20fb38e179e78",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 429,
+      "end": 429,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 430,
+      "end": 430,
+      "digest": "sha256:ac6b04c0f078cacfc2ae46c4511ab1b87721624fde4a53051c82e373a43bc9b0",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 431,
+      "end": 431,
+      "digest": "sha256:f7fe61cd344f973e7e137049069577969f54aaf9ef19c9778b4de42798e16781",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 432,
+      "end": 432,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 433,
+      "end": 433,
+      "digest": "sha256:53f8d05a5cbd60dc44b40cbca076df211eb6e08461ff160ab5e20fb38e179e78",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 434,
+      "end": 434,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 435,
+      "end": 435,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 436,
+      "end": 436,
+      "digest": "sha256:dbab40bac13d931bbd7addb5c4edbcb876e84cd101f923816caa08b02686b5a5",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 437,
+      "end": 437,
+      "digest": "sha256:dbab40bac13d931bbd7addb5c4edbcb876e84cd101f923816caa08b02686b5a5",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 438,
+      "end": 438,
+      "digest": "sha256:2ec3af0bb68b2db23ebe268a0a4d008601588c3a977113bd320312bea2811032",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 439,
+      "end": 439,
+      "digest": "sha256:a440d682f71f99608380c7172a8c2724542648ca4fd2551d929bb51199fd221e",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 440,
+      "end": 440,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 441,
+      "end": 441,
+      "digest": "sha256:5472122bd9437bb7d9fc2642207edc06623b750700f3eea9ecfb96ac4d8c2710",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 442,
+      "end": 442,
+      "digest": "sha256:2155eded271944ef8f1775170ff233147b4bbfeab377ad8d2f3af1730dc6385d",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 443,
+      "end": 443,
+      "digest": "sha256:511652e9cf6a13ff9e6e68d9d2940fb6d5165045781bc1c026d5c5496ff0c68d",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 444,
+      "end": 444,
+      "digest": "sha256:04bf4e3f3117a53601c9fd1c66fad75d86b1117a19f609bdbd9a157b3f8719f3",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 445,
+      "end": 445,
+      "digest": "sha256:2f5fd47d432279864e7b16a13fa629780a53fe8a4b136d15109e2349f964d62a",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 446,
+      "end": 446,
+      "digest": "sha256:a92018cfd7ca9d395424694d69354df6002233e287b232c0d3bf5d261668e7ed",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 447,
+      "end": 447,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 448,
+      "end": 448,
+      "digest": "sha256:d370e6652b026b104a12c35504a548ed768bc4c007b99bfeb6988aa77ce27f64",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 449,
+      "end": 449,
+      "digest": "sha256:6ca139ef462fabe8a4614e28804796699f830945a0ff86d951ee118e217d622f",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 450,
+      "end": 450,
+      "digest": "sha256:ae89949ca83f3fc11e608c2e5628a209ffbf32e1fa768b64e4d1a789d45c0408",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 451,
+      "end": 451,
+      "digest": "sha256:0f70b86752b5578873615bd89796a484c714c7396767ccc77fd885cc91a730d1",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 452,
+      "end": 452,
+      "digest": "sha256:3609676ce36d1bfb09c3e8d8f00c0fb84fdc2a9e85d7264519f62b6f9256a84c",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 453,
+      "end": 453,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 454,
+      "end": 454,
+      "digest": "sha256:3d42a245768ec56a60caa6f12ce1a4519dab42823772c91d9a7ce0e5f2fe5909",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 455,
+      "end": 455,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 456,
+      "end": 456,
+      "digest": "sha256:dbab40bac13d931bbd7addb5c4edbcb876e84cd101f923816caa08b02686b5a5",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 457,
+      "end": 457,
+      "digest": "sha256:dbab40bac13d931bbd7addb5c4edbcb876e84cd101f923816caa08b02686b5a5",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 458,
+      "end": 458,
+      "digest": "sha256:e9d456b63420c4822f5f357041e4f5dc93ec353473d9472fd6294d0ba0423369",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 459,
+      "end": 459,
+      "digest": "sha256:608c182ab0ec0933be8080fc99541acac0a4174cb9a472cd1e8ef5b429b19860",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 460,
+      "end": 460,
+      "digest": "sha256:94d149b5374623fcc76a686c1854872d0953a43b6163e4337c68d7c44312ff7c",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 461,
+      "end": 461,
+      "digest": "sha256:8a846691939cae771ce0851eee4eaa58296345655a1bcfe8fa94aa619581c8bc",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 462,
+      "end": 462,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 463,
+      "end": 463,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 464,
+      "end": 464,
+      "digest": "sha256:c174e3da577d3a2f934c9b40d2f673caca0075f14c733eef2a06fa2e82ec6c11",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 465,
+      "end": 465,
+      "digest": "sha256:086b65fae847b6982d633325d0a1376195076d5c2fdf90eb063b5e65bcd2b0de",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 466,
+      "end": 466,
+      "digest": "sha256:89f6632e009a244fbedc74bd20fdfdae7007005fd88e3f39f662e80b1c98db21",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 467,
+      "end": 467,
+      "digest": "sha256:4bb0bd5b4224ce7412cd345889e19a98a939a379255ba3c653e4c7ab7c2217bf",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 468,
+      "end": 468,
+      "digest": "sha256:a3bed7a7d32833ee42ea63062378ec06ed17db5cec143fb6f079ac83debaf927",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 469,
+      "end": 469,
+      "digest": "sha256:dc898f1a2b46f4c7bb698eee98a3abb0316b6b8f8183522cd40368573b944a74",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 470,
+      "end": 470,
+      "digest": "sha256:9f92066f058baf094a7481a94c17742f212c93e0e31864d2738fe39c0edad208",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 471,
+      "end": 471,
+      "digest": "sha256:d0169f5d59b9ef32e7b5a9d36eb3757de1a3989492c1bf38e6241eba043adc97",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 472,
+      "end": 472,
+      "digest": "sha256:3e89bbaa55f08388c640d1770bc2e72490501205a6e6003281a8e3179e8c3960",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 473,
+      "end": 473,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 474,
+      "end": 474,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 475,
+      "end": 475,
+      "digest": "sha256:ac9295085a6ff317a8e0ce7ac75dd13cb577713c51c0c0cc7d9d8c0f76cc923b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 476,
+      "end": 476,
+      "digest": "sha256:b78965732ff426fa34666c49f54a095c6f9bcc559854134cfd4aa86128ac763c",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 477,
+      "end": 477,
+      "digest": "sha256:640a2dc9aad20f2cb99abc4bec4c95a3670ee0966e3914d554058d55638cdc32",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 478,
+      "end": 478,
+      "digest": "sha256:aa5d245f27049e6ae66b74bf1a7bb1b3d5a0d7645f3b52e18ab488f40d1d2242",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 479,
+      "end": 479,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 480,
+      "end": 480,
+      "digest": "sha256:f132104ef3ea52bc2586797ee1336e7773d3db54f09ab8229e357ab742de5af8",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 481,
+      "end": 481,
+      "digest": "sha256:c035068a6084c10e4b86e2670d2fcc002632c92b1b1221059f2d8a0faebd585f",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 482,
+      "end": 482,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 483,
+      "end": 483,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 484,
+      "end": 484,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 485,
+      "end": 485,
+      "digest": "sha256:baa2a976da837b70a7b52cdd6befd5ddb69cf937842cd2e481f520e467964de4",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 486,
+      "end": 486,
+      "digest": "sha256:e62b590f477d934cbb5aff56dd1b8666096e2174273a66db9f51f82ea36805a9",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 487,
+      "end": 487,
+      "digest": "sha256:c9f65fd4bd30b9a96f114852bf2ba2d2a557005a337d9d8e9821e436aff7777f",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 488,
+      "end": 488,
+      "digest": "sha256:d3e75dabf5eb4f3ffa99505d652a1e98e63603b9eaca9f7da2fa9ecf2a2f15a1",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 489,
+      "end": 489,
+      "digest": "sha256:59bf9d9e8b9204816c00ceeec5d9be0d086d45c443e24fe90117040b7059fb5c",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 490,
+      "end": 490,
+      "digest": "sha256:3b296522048bc6cfb8891aa619187d230159448850b9e82aad9e80361892bfce",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 491,
+      "end": 491,
+      "digest": "sha256:42a57081051f4682a7db3e590b4dd5413d53dc9a01551276dacb521a7e1db9a5",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 492,
+      "end": 492,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 493,
+      "end": 493,
+      "digest": "sha256:a252dce41ff02a14a6b655fbde739f2cff3063caf0f895c5edf1f59f55940a26",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 494,
+      "end": 494,
+      "digest": "sha256:d08ac5ee767c5efc39fffe47266709ebe44a2557fbb5f1e75372763257e7b6e9",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 495,
+      "end": 495,
+      "digest": "sha256:2f974b3c20a5599065fd01ffeb3cff8fffb81dc761f9c3ad5f55cf3a4d2c338d",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 496,
+      "end": 496,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 497,
+      "end": 497,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 498,
+      "end": 498,
+      "digest": "sha256:77909ed0555f9ec1b13fa1e6e28c29003268dbf34af5332fb378ef75d47a44be",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 499,
+      "end": 499,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 500,
+      "end": 500,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 501,
+      "end": 501,
+      "digest": "sha256:f84aaeae3952af31b8386e4c90a7277d45a8a61becf4ea8462cf2dd692670823",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 502,
+      "end": 502,
+      "digest": "sha256:829f69c54e3fe5e2af6b98703ad91ef15396bc1bd438219e754e24c3437fda89",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 503,
+      "end": 503,
+      "digest": "sha256:417a891c9dce6843562fb361689648bd4eb8f9a69e727c3e6f09e6be9c9857aa",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 504,
+      "end": 504,
+      "digest": "sha256:ec9fdddd5037e13ed0e31a449f4825a837be7f252057f788154568c47fd081b6",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 505,
+      "end": 505,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 506,
+      "end": 506,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 507,
+      "end": 507,
+      "digest": "sha256:56a53f8d8ea583b0e4a3fc219b1c24284f4c6a383b72d1d6fb4cd63afda87279",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 508,
+      "end": 508,
+      "digest": "sha256:b78965732ff426fa34666c49f54a095c6f9bcc559854134cfd4aa86128ac763c",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 509,
+      "end": 509,
+      "digest": "sha256:c99d9867b97a885ff94fdc96bb1178fc28c942e595afbb08c00e4011ddb4dbb8",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 510,
+      "end": 510,
+      "digest": "sha256:03b4d0b371ce0346cdd0902584e81aff4edd8d45795de5574f04ff66be95a99d",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 511,
+      "end": 511,
+      "digest": "sha256:ffaab2764eff990262932725cad05e43b4766ceb58fed3d1c9515e7213cc4a6e",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 512,
+      "end": 512,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 513,
+      "end": 513,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 514,
+      "end": 514,
+      "digest": "sha256:4514ca06960cd6cdfca9943b8ac9cdb9d24d19f3fcee264d808f563e9889ef2c",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 515,
+      "end": 515,
+      "digest": "sha256:b78965732ff426fa34666c49f54a095c6f9bcc559854134cfd4aa86128ac763c",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 516,
+      "end": 516,
+      "digest": "sha256:ef8f93c37af0e90759dcfee2b4941d23416d80ee2301073fb8a0ed4f5f55ca6d",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 517,
+      "end": 517,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 518,
+      "end": 518,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 519,
+      "end": 519,
+      "digest": "sha256:5efbacbe26e78c976b089148781f9dea96caf2003c425837f69702c304b65ac8",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 520,
+      "end": 520,
+      "digest": "sha256:b78965732ff426fa34666c49f54a095c6f9bcc559854134cfd4aa86128ac763c",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 521,
+      "end": 521,
+      "digest": "sha256:3a6ca104966638d69b26d9b20051d53bfb7d3a6df0542679b8a4449fcf2ff372",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 522,
+      "end": 522,
+      "digest": "sha256:5f0751281aafa0dad9358450e9ab2d97e3b77db4c8703c625e6803702a5592bc",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 523,
+      "end": 523,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 524,
+      "end": 524,
+      "digest": "sha256:a7d6c5a74f8fd8c55c343379b8bbb97b69d01cd2f71647a5fc025793bbe32b58",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 525,
+      "end": 525,
+      "digest": "sha256:61e0edde298047b18c898a8cb88e277a7baacccae142f1cfb825ff70ba67a850",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 526,
+      "end": 526,
+      "digest": "sha256:0c35a23f157e6d03f60e4f503fb821f41731894491fbe57f388d0920289c7063",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 527,
+      "end": 527,
+      "digest": "sha256:2c74c99cd3349f08dc5d82664a3c47e84f805e35464462a161c5fca063530fa1",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 528,
+      "end": 528,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 529,
+      "end": 529,
+      "digest": "sha256:d0795e4af2029d274438b4e3856f3f1853706b1d13b8a5e518ebadbbad17b5e1",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 530,
+      "end": 530,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 531,
+      "end": 531,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 532,
+      "end": 532,
+      "digest": "sha256:51b0bc24a50bd8c7471a4f50cdbba228f907dfb40d12054c13cf74cfd1c5398a",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 533,
+      "end": 533,
+      "digest": "sha256:40d0851595419538ea3c033bd364574608831f9b5bf14442aa5b846f21ac4298",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 534,
+      "end": 534,
+      "digest": "sha256:86598d2dd42dd6ab6b2149d235c1924602d83d5d5e5e03e2a82314e9b2dfb7b0",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 535,
+      "end": 535,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 536,
+      "end": 536,
+      "digest": "sha256:0f9a33c673008da6364681dcc0d1182d75359c7e6a93931f60e9592ec1acc4d5",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 537,
+      "end": 537,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 538,
+      "end": 538,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 539,
+      "end": 539,
+      "digest": "sha256:d8e8111c8fdc1d2c4c89dde783cc8a03bdbc13f25ad7e40a8159a6a07d059cbe",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 540,
+      "end": 540,
+      "digest": "sha256:b78965732ff426fa34666c49f54a095c6f9bcc559854134cfd4aa86128ac763c",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 541,
+      "end": 541,
+      "digest": "sha256:d0d7987002b19155326fc3d374a116bae6576dd4a52c40bc227fc480345fed20",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 542,
+      "end": 542,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 543,
+      "end": 543,
+      "digest": "sha256:53f8d05a5cbd60dc44b40cbca076df211eb6e08461ff160ab5e20fb38e179e78",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 544,
+      "end": 544,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 545,
+      "end": 545,
+      "digest": "sha256:f7fe61cd344f973e7e137049069577969f54aaf9ef19c9778b4de42798e16781",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 546,
+      "end": 546,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 547,
+      "end": 547,
+      "digest": "sha256:53f8d05a5cbd60dc44b40cbca076df211eb6e08461ff160ab5e20fb38e179e78",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 548,
+      "end": 548,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 549,
+      "end": 549,
+      "digest": "sha256:2f51a4efa7fcb434408baf1a2b18f5297559e938ca011687cbff56a59ed7f945",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 550,
+      "end": 550,
+      "digest": "sha256:833403fe2d394313c2b0edb0f14c69e85a9104d5a2b16549feb2bfed3ad8d3b7",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 551,
+      "end": 551,
+      "digest": "sha256:13aa7f151152285edc64410c13d3c5e219dfd83a09b231c9e91ed1c22ec1968b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 552,
+      "end": 552,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 553,
+      "end": 553,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 554,
+      "end": 554,
+      "digest": "sha256:38ac065774ad3df33ca84d9795b65c1a5ab98d919f7e960a7e33fddae8a66551",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 555,
+      "end": 555,
+      "digest": "sha256:b78965732ff426fa34666c49f54a095c6f9bcc559854134cfd4aa86128ac763c",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 556,
+      "end": 556,
+      "digest": "sha256:f353f27ddcc06cb924776200daa2f3247ed7933028ed678359b505426e1fc96e",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 557,
+      "end": 557,
+      "digest": "sha256:721a272fb99baa38e26360b3beee28e6e0e9279bd697e68f178b8f45090802ea",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 558,
+      "end": 558,
+      "digest": "sha256:242e3c60e86fa8f71bfef4d7ecefe44115adbf61ea225304af456f87801bbcb0",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 559,
+      "end": 559,
+      "digest": "sha256:aabdf00f8c0a08a70279a770f1b76ee459df6f4ae39149a37d3d7e341ac8edc1",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 560,
+      "end": 560,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 561,
+      "end": 561,
+      "digest": "sha256:e86a2bf8506c4ee0d04d7aa9859a6e0fca9c7a4c335f422caa9180f33e21b218",
+      "note": "Pathological first-load budgets."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/firstload_budget_test.go",
+      "start": 562,
+      "end": 562,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Pathological first-load budgets."
+    }
+  ],
+  "version": 2
+}

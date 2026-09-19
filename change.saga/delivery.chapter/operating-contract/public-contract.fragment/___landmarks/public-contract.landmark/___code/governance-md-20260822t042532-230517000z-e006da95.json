@@ -1,0 +1,603 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "digest": "sha256:bc021e297d5b71e6b0462dc79b60526d822e9791e6de9473d181b5880e9d4c68",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:ded2021b8f9184f09c4d3e3d2efba1db0b3186933d2df52b2fef02d2f3684c40",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:9d3c44eb63f4e66e4767ec393f1180570ae25cb2946db25e3c8a09446036f4d4",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:9e0ce1e6232c4ef11677ce4e975fb7fe73bb2b33374170fdba57fe6b78b6f0c0",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:8b9d225fef5842ccfe307493d0d2c4a1870d76d25228b12ed247b3fe702088de",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:1ff24d338d9da3a6328e40beff34b1b063dcc16cb6812022c1c274bf83992462",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:7696b2466c8c4e44381a72b9bbde306f72f4c3d498aa6717b9fe49c491d573c0",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:ba6f4d04700a9b7245a8af14f8c7b011757aa1a23d183564a897e4f8fbbcbc6a",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:b00236e1518e456274da04c243bf189f2ae51aa114194481e5584c516e69040f",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:f77496b4b7780e5dac9a15e287ed35d4d0056c8f1c53df71e9e113b143a01520",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:6e11d7cb3e3b2cbecc460cde6163c1ee79b4f076fb563e57fa188439d0a0e2ec",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:930ee83535bfe532e76b8d9549b5069ca176698cc84ff34aeb2fa262a68e0c19",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:5e6df4302c53fd82775867b8359468e47d7068ecf1abb5d17229ab197f49344d",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:c87e9799d03542e76575a85c64869d2c9f85cebb345423d38d510611de037aea",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:f6f68f851d53bde2ba011efc3b46340921e688f5a5b4372384398259ea5a4f3c",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:9d1f91a6f58704d556c64a210a669cf8d8e0af43ca1b880f7139a0566e5fe1ce",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:a39213c10515e073762de7be8a2a18d230aeab3b1ff49cb3412e2fb8f515cfc6",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:9df36bf54c87c6c1ae8ba1d129804a31f038cc4dd3cfbf39e5433f20c7c14c73",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:4af75c390b93782c5deab667d646c6dbdd69cc8df313b0a809d711f3c82ea305",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:f9e37ffcbcdb51d6c3ff878ba3040063c1398cdc312abfdb0061dfed0b599f0f",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:a86a926163fb2926c547068a3e543b3ebda7db234b356070e2ebacf1b668406a",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:4ae2331789d04c9d5e13bd50dcadacf4688f414fa4c650caa8d2a1d2a72f53c0",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:be6010ff98615d651cee90b39228082fe4810a3de8f2d96d34ef0f3c2d6d2902",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:0d1b6acfc45e9d4a79fc00f9da7f7e5ccd04d03d1c8600c50fd432e3e9b017f4",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:c58ff0ca8846d5c53f346fc0546977b7335246e1b96d04da25764dc00f98b2eb",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:7fd3b19112af5a19fc022669d553a747e34b88bd349027cb1b08c0d29d387840",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:a76eee4e83171fd569fa232371cc507b4572f34bc0c99f313ed2dfeb7f453cda",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:cb53f788e0f886bea1ad590aad8fc26e3176581a0a18823e0fb3530d8c098a86",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:cd42caac64bc9b104765c975d458caa69555027903000bcfba23df56f298e051",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:bc58233dd2777919e5ef589f84907cb7d6af3912d1cbd7f71b7b213de7b05531",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:d5b4e4e6522be5236eef136b80dcd6eb3664ec29b3c5bb24fe1f30831f523acc",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:bb44076f9fce36500eb4667534b41b4119f4f8203c694bb6d7dc5c02a59e96eb",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:61bd5cbdbaa872ed9eb082bd9a2b08eaafa06b389cda29b09fca11fefb278b02",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:5cad44798f63921ef9a5c7f5adb80b6104793ad8c799af42ab9e267a56fe82e4",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:12fbc0d02d060d43149c7aff4047ac11a3c5160eda36f028dc7171c90c402391",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:e15384133396d56067706d42b1e70e2d7dbef96ceb71e56a5bf9e397c032a35b",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:5e3e8d4bee087995eaf5c5a87ff64afa0ea4588a10dca4ead2da21ca43d5c415",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:2feec8cb393165e95181197ebefeca44a4256bef6f4cfc10de68843135d1ecb6",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:ae74a5ab98c5527f25a8c49cef4c3649c896a52aea54fbb19437486bf8144365",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:b06fe5b35b43bc90384962028de766ba332d05ea1b75f5c4437b46366f5a9276",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:bae11853adc510e00de7c638e32cea8327494e49920b706e21a23069bb4acfa0",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:95df5a14c45afa2eba7041d3d87bdacbc4c9fd8a66ebe107bd4951d6dfcc0684",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:960b5dc9e198526390c8252666692b1bffaf09016f40d744b5d08e10f13c5538",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:aae7b32ae8006a730ee1cf7f67260746f90bf4b1b973ad11d7c38a14a5a66856",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:3a1120a85c9c5bb9c69892f4a82930d7f183f7f8304e97747b07f92923dc8121",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:4ed09bb024b5bc1116c69bcbbf7a6362bd7b3da566adf76292760104ca83c6dd",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:532edf651ac260d7422d74a7ab1c90036f6f44d8d42b6f1d3f69647b8f3c9282",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:6763296aec0886ce23ec87eaa14e5e4d60b44369c263663bfa59fd3e4e15c8f5",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:045552856b46df1fc706bc7bf287f942792622859538de893356b0201b9b98fd",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:ad2e4f0e2337d12bb9211ee29f9b7c50a0c4b2309ab5978d400c39f67e3304f6",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:9d3822e64deead3b4e49130dfa6d71dd0eb730bdf44b9343d61939f40d96b842",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:6cfd4df311af7c713378c4235e91dd18a7bad9f661d019f3c79b2b10bd1cee91",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:50714d37c188789b90e956ce002c302246f91b2f30ac90f9d7c6ab00807f69c8",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 68,
+      "end": 68,
+      "digest": "sha256:952787cbe78337750f5577ccda5717a6010804233a559ba9759181fc5d54bc75",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:a7cb349e6ad92d80d8863e12f6b506e245186f6bd91d2631b67ee2c64072bdd6",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 70,
+      "end": 70,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 71,
+      "end": 71,
+      "digest": "sha256:063f79d9c33bc2a3019a4229b6eb6b1ed6ea1747e2e5ad6e737ab4c058ff022f",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 72,
+      "end": 72,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 73,
+      "end": 73,
+      "digest": "sha256:df2b8123c33f5b84f5148e2567969d4630bcc6a772c1dba7047b0340d9df1d4a",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "GOVERNANCE.md",
+      "start": 74,
+      "end": 74,
+      "digest": "sha256:5ab1c80596b4f5c2c108552f36e5efc1190a58b50b0c6d805cd082733f98cd62",
+      "note": "Defines project roles, decisions, scope, and release responsibility."
+    }
+  ],
+  "version": 2
+}

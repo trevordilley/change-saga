@@ -1,0 +1,77 @@
+{
+  "references": [
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/ai-facing-interface.md",
+      "start": 372,
+      "end": 372,
+      "digest": "sha256:0503f9e17e96ae468baef34b2ed6ac03fdbc74d70cae3792f909db6025cb227b",
+      "note": "Bounded structured-query guidance."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "docs/ai-facing-interface.md",
+      "start": 373,
+      "end": 373,
+      "digest": "sha256:e7d9ce4103d89d2379a85542f43b5f6eccbd64f147534d023982ef5b4b3c6044",
+      "note": "Bounded structured-query guidance."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/ai-facing-interface.md",
+      "start": 372,
+      "end": 372,
+      "digest": "sha256:e08857ab7ed8f6a1f3332726196964961144b16c12370cfd282bf7142fd19975",
+      "note": "Bounded structured-query guidance."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/ai-facing-interface.md",
+      "start": 373,
+      "end": 373,
+      "digest": "sha256:40d4a0d4ba6778f6c67745b5e714c4bf81e477dd0359df3a1a2c79fd98450fb2",
+      "note": "Bounded structured-query guidance."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/ai-facing-interface.md",
+      "start": 374,
+      "end": 374,
+      "digest": "sha256:80c99dc0a4303a9febbd8aa96e837af5560fcc5b340eef34e099654bc145fd0b",
+      "note": "Bounded structured-query guidance."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/ai-facing-interface.md",
+      "start": 375,
+      "end": 375,
+      "digest": "sha256:5bbeb6aabe53232ac2c528bef7c1d5cc37d09fc44ce0b7fead728cd15643e821",
+      "note": "Bounded structured-query guidance."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/ai-facing-interface.md",
+      "start": 376,
+      "end": 376,
+      "digest": "sha256:4dd400c5d141beb5ef01e1b0a9aaa84b95741e97f2bf2060338294e268b16d2b",
+      "note": "Bounded structured-query guidance."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/ai-facing-interface.md",
+      "start": 377,
+      "end": 377,
+      "digest": "sha256:6955b999ce0c76a325bb74c135a6fa72155de4560ee29358e5bd7c331af35cef",
+      "note": "Bounded structured-query guidance."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "docs/ai-facing-interface.md",
+      "start": 378,
+      "end": 378,
+      "digest": "sha256:2609e9203f996ea075e5df0b9173ad138eee691bb687c65749b86f81b520e702",
+      "note": "Bounded structured-query guidance."
+    }
+  ],
+  "version": 2
+}

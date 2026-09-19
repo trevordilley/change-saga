@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/saga/model.go",
+      "start": 132,
+      "end": 157,
+      "digest": "sha256:5d6281c31e97ef02ea3ef2090870bbfed8f6a5976eeda48f9345b69c4499ec24",
+      "note": "Defines and validates independent claim and append-only verification records."
+    }
+  ],
+  "version": 2
+}

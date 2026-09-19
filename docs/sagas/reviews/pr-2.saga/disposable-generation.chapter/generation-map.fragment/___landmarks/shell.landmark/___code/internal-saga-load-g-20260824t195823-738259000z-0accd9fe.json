@@ -1,0 +1,1413 @@
+{
+  "references": [
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:6f254d4720bc72a26cea4089bb3f8713017aeacfb50e353961a443c896e7b578",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:9e38b0a7ea329566c37639d160ce38510784cc3e4c17b3050e26ea13f0a2a244",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:f58e62b634d5c96249e7a0467f98c0e6c47dc14299e6c7ccedfeeec97406ce87",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:f8d58e726154e3371f111f535bb29996c4bf7bbd39f35d6863b213b81c230bfd",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:8b0ce80139b29deb32834311b65be315545cf45da0e12d51183ae65c05073a3f",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:036a436e697af815ba609dbc24af5d2563a4726fb391dee54c332211dab6648a",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:5342ce4d8e86309a8a67cf97cb62c71a3d1e07c071338507b049ffbd6318b508",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:45599bd5a732675945a7d096cbe50df294e76a67102b4eb45bc9d799695961d6",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:82991bb8fbee5bc6c8009a9f19e5511243b3b42e6f3cc171e1793b95667e711f",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:5168cefe0f323073cceec617c15fe15c9050166e81aacb8782b369c61d6966f3",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:ceaa345d7375a6d2794ad20f2a334ae06810449211a51b96fd1fd50b1f598fd2",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:d4050a831d9454aabc97aa2230017a0831f4b8cfe3537dd66f7955b0dd8b0372",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:f60a96087e41ac2449402b484b4597d1e1e96c7505d36a8c590292996b7f4152",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:fe74d6e551638e5a22d515942db23d77d7fa260d9414fbda21e0e33279d00920",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:0b6daf3a72d3e5f5a6ff705ff7de7ccb80033d6133823b39959bbf1078839767",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:180694a8ba1ede3e2ddad959e8f613ff6f69bcd48781e840e8bcd4699754146d",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:9a2e93de1cdd6c022a064fbe6a4fce2cf8a1986db73f11fa494a7bc64764956c",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:714f9349b0f5143fcc04fa3ee2593ea34487cd6c8cbb2fa752b9d0ce5bd4c5b2",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:fb025bdc4905c94dcf7589a2d25954d71221305099646abc5a4413567dec7f32",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:20c98b15d4535006d6cb8c7af211158ceecab73f4bfbcd0230b1d1bda5d77d13",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:c305568c769cc8e621fb0b36cad19cea874498d4c67a2c4e2799b28510d7fc3e",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:59fada9ce8c08cd9cc1b05d1bbd758fc21c77c785435a59609cf3c82aad77002",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:700a8f248554401e164ed391e0ee3ea387ecb7c16831be6f8e9144950a9cf19b",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:b2c03c5c781dc1dc6bab8834428fcd6b8dce3ddd15bad12cc1b140e668a209a0",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:edd431c9effdfa101c0284419b71462bfd4ad72272bb85fbc9bab0c13dae955e",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/saga/load.go",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:ee67690deebce8d1331da941b36dc9c2492f8de90d6a3ef92899188d5e00a127",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 77,
+      "end": 77,
+      "digest": "sha256:dc89b186558e6ae36d5c5f7171c472b59f16a302877500579864b6a8f3295c0f",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/saga/load.go",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:07701169ce0c9dc027d2e1cf369f2a98f545bc6b1697252438d9ed2bb3066dfc",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 82,
+      "end": 82,
+      "digest": "sha256:e3e072877e8cb7aed40b9d8290d1858d40880fc2248fb5ba775070ef96ff21d3",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/saga/load.go",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:68c97f8e79c2ac88786415437c40cb38e50b94f798fab514ce2d9857966ce35f",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 88,
+      "end": 88,
+      "digest": "sha256:b6c341485cc70fb1ed6d9f61c1eb03d551af849eb7b0b5f86c314c180ecbd957",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/saga/load.go",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:f38fad976dad0aa95b49aa4fcbe21569d342dddbf6aa921c3b51090873ed3b48",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 97,
+      "end": 97,
+      "digest": "sha256:38df2744f11ccc2d22dbedaf18f2e370febdb9a26a096086db51d7c7324e52d9",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 98,
+      "end": 98,
+      "digest": "sha256:0e36a2f0c041b4598ebcf82144e8e7f2d121e817707caa0dc0919ba4f2d2c919",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 99,
+      "end": 99,
+      "digest": "sha256:0d7d0a5cefc7cd5c48aa602988b7ea22fc1f100b4b1f5a5123b1f071ba455c50",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 100,
+      "end": 100,
+      "digest": "sha256:53d0fbb7d243c8a0c797c1589fd20c17ac383b1710b4243cb0f1d4fd1ae34dc3",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 101,
+      "end": 101,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/saga/load.go",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:a4ea2b5b9f3a44c8151a129ac496ba9201599b717e92d7a98ddfb95637562040",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 106,
+      "end": 106,
+      "digest": "sha256:206936ddc79829acb7149765d1f91539d3be8f0f25ee6d72c00d61d54768e2d6",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/saga/load.go",
+      "start": 74,
+      "end": 74,
+      "digest": "sha256:cc50d67d9eee1717f3ddad91df09cdf85b057af5daf1c0bf8641a47d5044cf86",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 113,
+      "end": 113,
+      "digest": "sha256:5312c158636fc9ffb5f49fdf863d6216bdf363516b65ac865d0a3aed47f74712",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 114,
+      "end": 114,
+      "digest": "sha256:575385366111276e44fa0a52b1c24d36b9c3e5c4e4a54d6f5075513d51506752",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 115,
+      "end": 115,
+      "digest": "sha256:cf8fa8ec9c7f18940dfeafc261405bd08ad98df7bf0cf0c4f7075b78178fdcea",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 116,
+      "end": 116,
+      "digest": "sha256:97862abe016ce9a6157880844178af9bbca93db824390ed85f10355833610548",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 117,
+      "end": 117,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/saga/load.go",
+      "start": 79,
+      "end": 79,
+      "digest": "sha256:0b603472529bcdd7ab0b6cdc702861888cdb95d7b5fc7b8268a5109ab645ffa2",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 122,
+      "end": 122,
+      "digest": "sha256:d7221d6e167872e255a802a29a6559b42b6362eea8b975841dfa3ac2fa89b865",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/saga/load.go",
+      "start": 122,
+      "end": 122,
+      "digest": "sha256:6e426f874ec430fe82805a215df3d23eb5d8c7dad8001413aa33f11bfb402262",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 165,
+      "end": 165,
+      "digest": "sha256:e22f33cf7ec016f7ea861f3adce8b48924648d11297b69b15fea3222ff753550",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 193,
+      "end": 193,
+      "digest": "sha256:0874e8c73dd29c5cb673044b2d436a5786c73d624c310e42727bfa3bcb23d923",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 194,
+      "end": 194,
+      "digest": "sha256:59fdf1c8b31fcffea576ae19e0c1718a84f1cf2ea79e9c15c3d5a2eb68c10c91",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 195,
+      "end": 195,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/saga/load.go",
+      "start": 166,
+      "end": 166,
+      "digest": "sha256:3d7c6c11f80b5f908850d71d86471fe1bc18259ba324b06009374a4b7482d68b",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 212,
+      "end": 212,
+      "digest": "sha256:189a770d0240e4bf1d8bee4526afaf7af8bdd074d360710a47ea16b146dc835f",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/saga/load.go",
+      "start": 173,
+      "end": 173,
+      "digest": "sha256:2bfa985cdc92d0774670555ec897fc30e598c45688200e8e1ed63ad12e3d9826",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 219,
+      "end": 219,
+      "digest": "sha256:2db214720ef40ff3f8b8d9443dd654477998ed57e43bb0d87b66a3c4333041fa",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/saga/load.go",
+      "start": 194,
+      "end": 194,
+      "digest": "sha256:b0787f2683c2159d40082b384f5f12f7cd93cd09950cc783eb036a57a89e4b7d",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 240,
+      "end": 240,
+      "digest": "sha256:20f54e8a5cb5754a776cf3222e9326d4cb418efd9d4cf4ce08caa31261447829",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/saga/load.go",
+      "start": 207,
+      "end": 207,
+      "digest": "sha256:7737e0c0e6f4ef5c74b6f34db601fb79e1faca4340e38e0fbf34fd6752f2fc5f",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/saga/load.go",
+      "start": 208,
+      "end": 208,
+      "digest": "sha256:6e426f874ec430fe82805a215df3d23eb5d8c7dad8001413aa33f11bfb402262",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 253,
+      "end": 253,
+      "digest": "sha256:5312c158636fc9ffb5f49fdf863d6216bdf363516b65ac865d0a3aed47f74712",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 254,
+      "end": 254,
+      "digest": "sha256:cd84aefd24fc1cdebb0fb30cdb3b0d1496e8d18db3086a2d0d7b3690fba75e25",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 255,
+      "end": 255,
+      "digest": "sha256:cf8fa8ec9c7f18940dfeafc261405bd08ad98df7bf0cf0c4f7075b78178fdcea",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 256,
+      "end": 256,
+      "digest": "sha256:f25baea04caf2a06754d67a2898dada556b9ff6ea962d810367ed18835f1709a",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 257,
+      "end": 257,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 258,
+      "end": 258,
+      "digest": "sha256:e22f33cf7ec016f7ea861f3adce8b48924648d11297b69b15fea3222ff753550",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/saga/load.go",
+      "start": 215,
+      "end": 215,
+      "digest": "sha256:3a77b0d594df290aeace559d1022fc263e73197bbb7f75019ed4514a583b7856",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 265,
+      "end": 265,
+      "digest": "sha256:55bfa25b36dfeb058f55c889bb20872a4575ff213b58c4e61fad45791bb8cd3c",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/saga/load.go",
+      "start": 217,
+      "end": 217,
+      "digest": "sha256:01310fd3e9a65405018ea4a80f9ea2a3b0d8bb83a688af53f261f4a8ce69e7f4",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 267,
+      "end": 267,
+      "digest": "sha256:b143450e90b943445e7c41dba9a43ee9f898968d7e4e95e84d19a4f4ed7b82f8",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 284,
+      "end": 284,
+      "digest": "sha256:9718de186e190015a2022c32f6c62f5fe64977ebdb42b2b759ca5f58a1c2e578",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 285,
+      "end": 285,
+      "digest": "sha256:423b79e8ed787e37307a36f9a6cac5fce1d65377953a417aa1903bb05657185d",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 286,
+      "end": 286,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/saga/load.go",
+      "start": 241,
+      "end": 241,
+      "digest": "sha256:316722e38cd6ef617cc2454e90eb267cb4b053cc37db556794eb63d5041c6414",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 294,
+      "end": 294,
+      "digest": "sha256:f6bd549d470130f84280499e17a23bb67bc8503901113d584b9e47e172ff581c",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/saga/load.go",
+      "start": 286,
+      "end": 286,
+      "digest": "sha256:e9f0a1d852e6b0c7e4d4b7cd75d4333597957557272415f07b27000f79d3a978",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 339,
+      "end": 339,
+      "digest": "sha256:5d5c4805c3cb549a4a94da455b682c7ee02ccbeadff2df2ec6554ae160d9b346",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 350,
+      "end": 350,
+      "digest": "sha256:de8bcdae50a711728e8fe059b0eb5a974c89eee23c619be0f92d23a415b09c61",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 351,
+      "end": 351,
+      "digest": "sha256:fa359d1ffbacf4a32edb20489a43f129998019c2e3bbafec734f6ac29306ecc6",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 352,
+      "end": 352,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 395,
+      "end": 395,
+      "digest": "sha256:814c1e8f46949c2fe62c1b2a7653f698d2cf98c6568438d582f43b79ad90367b",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 396,
+      "end": 396,
+      "digest": "sha256:e194e16c233985857245b4eb195d5e97c5a7386849f673bbcffc4f91c7b85891",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 397,
+      "end": 397,
+      "digest": "sha256:be8a651cd659f0aa1492020fd6bfdf759441a4475b33c03898c4c0935d3507f4",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 398,
+      "end": 398,
+      "digest": "sha256:989c01d5a4b513e35b2a01d899776f11aac6d4970b5992801265762f382405b2",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 399,
+      "end": 399,
+      "digest": "sha256:517fda11bf688024e26cdd663aaea1c8e87e234ffb17a472e1ab20e66a64bd3c",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 400,
+      "end": 400,
+      "digest": "sha256:85c1d57b4ee73251c2668929fbf85acc99a0edd84a05361a442ce741b83828a9",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 401,
+      "end": 401,
+      "digest": "sha256:c080487abc12a10856a65040163c04143c69a05853a5f210a762bdaac39b48c5",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 402,
+      "end": 402,
+      "digest": "sha256:e7a56fc3546d1543676be3828b47ba289e89afac54f00fd1875ad8b67efe2fab",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 403,
+      "end": 403,
+      "digest": "sha256:956e4871bc4154dc586184dc4928b0d63198ef9cf1765110885548d247241225",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 404,
+      "end": 404,
+      "digest": "sha256:109a2853a2cf7118a48e11f81f5c1c538ba837332eeacac5c6b2b7c5db3d8d51",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 405,
+      "end": 405,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 406,
+      "end": 406,
+      "digest": "sha256:0f0cd849f3d9cb9249d54ff4a77ab8e12a949c9d14b5f3e4beb2255d26e6829c",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 407,
+      "end": 407,
+      "digest": "sha256:956e4871bc4154dc586184dc4928b0d63198ef9cf1765110885548d247241225",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 408,
+      "end": 408,
+      "digest": "sha256:109a2853a2cf7118a48e11f81f5c1c538ba837332eeacac5c6b2b7c5db3d8d51",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 409,
+      "end": 409,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 410,
+      "end": 410,
+      "digest": "sha256:ae7f68c324e65a543a9b31751811cb9b7f1dd76d369f107a5a87ba58d5be00ae",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 411,
+      "end": 411,
+      "digest": "sha256:de19cc68c172e1425f38090969465e1fcd84de4f5bb94451c5437119827b5fd1",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 412,
+      "end": 412,
+      "digest": "sha256:af3748a7d2711c14ff2619cdb2adca2f4c814668c755c6b92e62131a487b267c",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 413,
+      "end": 413,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 414,
+      "end": 414,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/saga/load.go",
+      "start": 421,
+      "end": 421,
+      "digest": "sha256:f92efdd23ccab961f8a5f6f7d63f2210fc2920828bf4513b88bbad18959c3713",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 497,
+      "end": 497,
+      "digest": "sha256:71601cde8a4b5e2e1a854c7c74b8702569df74b1efe20af9e0083fb784f1ae37",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/saga/load.go",
+      "start": 457,
+      "end": 457,
+      "digest": "sha256:b2600032b33baa27d2d330bd799b0cca15a27cc3e7d6955fbf14d536fe8093b6",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 533,
+      "end": 533,
+      "digest": "sha256:29ed2bef58b210f18c596fd000f3c2b536cb7e782a01b6771f04cac7b71b74aa",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 566,
+      "end": 566,
+      "digest": "sha256:bb51b8a699592fbc1b1c255d1a94928a2fe163030de6d1dbb970e214d11dd3be",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 567,
+      "end": 567,
+      "digest": "sha256:459d4b5a9e7aa43d389c4bc9423095793784a5ef94c31097ffafff20a476d322",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 568,
+      "end": 568,
+      "digest": "sha256:ef64e2cfd88c778f04573478bcc1268665f3b981263267c7c95d0403141131e0",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 569,
+      "end": 569,
+      "digest": "sha256:19827cdaaa084df5a72a0548cb54cb3f628867c5afc7021952438d33c8c0e3b3",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 570,
+      "end": 570,
+      "digest": "sha256:e62f8162727cd31746355369947e03221ee3f8af99fafe6189108acb60ef797b",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 571,
+      "end": 571,
+      "digest": "sha256:c8b3f4b6dc691a6a6a31b62dc5f57ef9036bad54589e04138efa4c385e910175",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 572,
+      "end": 572,
+      "digest": "sha256:d00c9a57db8ac51bda8d04c2887324d3819dad01dd54b973b957fd6cb1043690",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 573,
+      "end": 573,
+      "digest": "sha256:872065df4e4033cc76ea0760453db98123ba9ac768b19de9c973feb3273ecd46",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 574,
+      "end": 574,
+      "digest": "sha256:6119b61cfa18bb024a2d3c8ff2927686800ecc05338840075ba2af1cb3fed7fa",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 575,
+      "end": 575,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 576,
+      "end": 576,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 577,
+      "end": 577,
+      "digest": "sha256:48c03879a7b81f44793ffde5908a345f6147611b49804605c93ce150477b8a1e",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 578,
+      "end": 578,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 579,
+      "end": 579,
+      "digest": "sha256:6d444bb662836c0792638e1f37d2331e01fbef6edca1da8680398c41b0d2ae43",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 580,
+      "end": 580,
+      "digest": "sha256:25dd93605c3a7e9141351e02b6008d383fd5e48386f298f956add544d804dda7",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 581,
+      "end": 581,
+      "digest": "sha256:ee106aa583ac1fd5ff4ebb50405ef527f5df742029d53f9aebb345836829f057",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 582,
+      "end": 582,
+      "digest": "sha256:d1902b49e05cabfb7aadec57f3239e5fa437055e8ff8a4d870724295498f782c",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 583,
+      "end": 583,
+      "digest": "sha256:90957072bb91798331b66262480444180be29dfa273c53c98b6b6fb88bb18627",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 584,
+      "end": 584,
+      "digest": "sha256:42a57081051f4682a7db3e590b4dd5413d53dc9a01551276dacb521a7e1db9a5",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 585,
+      "end": 585,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 586,
+      "end": 586,
+      "digest": "sha256:43a9ae14ff0f66faaac14e80da58998722ae9ed7233db69a2ee9a27563ce4542",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 587,
+      "end": 587,
+      "digest": "sha256:42a57081051f4682a7db3e590b4dd5413d53dc9a01551276dacb521a7e1db9a5",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 588,
+      "end": 588,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 589,
+      "end": 589,
+      "digest": "sha256:030c6dd0c1e469974dda37a46e3bb52587a7f2dfa790f713b2e002c320566950",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 590,
+      "end": 590,
+      "digest": "sha256:8fc986283561f73c5ccf2fa405907dc0cba9638bd82e50f2735cad975bfcda1f",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 591,
+      "end": 591,
+      "digest": "sha256:83e942bbe598d91e3db4defc3e9ad216baaca3ee888d48375d5e40150c0a8d28",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 592,
+      "end": 592,
+      "digest": "sha256:231bb83fe2a027daac0ac0e949a506c92fd26f62e5e8491cfb4f1ed247277be3",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 593,
+      "end": 593,
+      "digest": "sha256:62e8c60bb60d312d436910608baf4b7d73858254bc41732b7dfc3d23a52ed87d",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 594,
+      "end": 594,
+      "digest": "sha256:42a57081051f4682a7db3e590b4dd5413d53dc9a01551276dacb521a7e1db9a5",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 595,
+      "end": 595,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 596,
+      "end": 596,
+      "digest": "sha256:f5b6b780c88cb924bad546c81d52f65d8ac19950909d074e175aa024ddc25303",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 597,
+      "end": 597,
+      "digest": "sha256:b7e691a9aba00fb85e01b3924a19b0837da7cd558f82a239e4d44ec3f332c71a",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 598,
+      "end": 598,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 599,
+      "end": 599,
+      "digest": "sha256:1e907521aa435836916781af79b7642045d61e26d61fe6302002ad53e4118ac4",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 600,
+      "end": 600,
+      "digest": "sha256:c379d4fd050a435f38bc4381bf0bc2431b2b8f4be1b0cd7ca58dbca3f9693cab",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 601,
+      "end": 601,
+      "digest": "sha256:4be72831fd02815e6ae9e362e8f6e0d4db45bbf85a7590545aafe8fb1b2f9509",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 602,
+      "end": 602,
+      "digest": "sha256:4c154cdaef82ba33866af83a0fb4627709fde0adf6b35ece16355f457f55ed74",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 603,
+      "end": 603,
+      "digest": "sha256:3fccbe86901e3598a47eb52887f005af3d558c52ce4efccc32137e2bf9c9f971",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 604,
+      "end": 604,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 605,
+      "end": 605,
+      "digest": "sha256:57cbe02972196d80bcdaa0bc80eca7ac9c4c7047ffccd6859699bf0e3089231c",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 606,
+      "end": 606,
+      "digest": "sha256:e907d392a64b76a390bbbe2c70aeb97c7c330a67ca908f12f94c4f49cc7537c9",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 607,
+      "end": 607,
+      "digest": "sha256:e7e1c7ea3c7062499e723457e3e063022a33c09a008ede78da2e850a0b09dc27",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 608,
+      "end": 608,
+      "digest": "sha256:6071721123078c4f1152c48966c242be8b9e07cfc2346b34747c918bebedf9f7",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 609,
+      "end": 609,
+      "digest": "sha256:012f6a71f6b89811dfed62408a7f9ec7ea95e116bf753540c9084efa158acd2c",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 610,
+      "end": 610,
+      "digest": "sha256:4347e241cd29af16bfe3384672987c9e9259cf9737537fa64884681a32f7a0b7",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 611,
+      "end": 611,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 612,
+      "end": 612,
+      "digest": "sha256:215eb5dd587fafbac898f0dba9949df09be494a6b9c2ee4a0aebb980fc0237a9",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 613,
+      "end": 613,
+      "digest": "sha256:9b112d5beb22621d0f253dd0fc756fa392412fba77862fe707189c611ed4774e",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 614,
+      "end": 614,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 615,
+      "end": 615,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 616,
+      "end": 616,
+      "digest": "sha256:f28df5af9b17b4d41b411fd5413213571bafc23c5ca4dd963ae9c22ecbba2faf",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 617,
+      "end": 617,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 618,
+      "end": 618,
+      "digest": "sha256:aae839663c7ff7ef357fcad9d56c3d98031918034b8c4fc87f7d793dbe122cf6",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 619,
+      "end": 619,
+      "digest": "sha256:dc7acaa048069fe244c1ceafd07003a8167f5889140ab7533201e21cd846956e",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 620,
+      "end": 620,
+      "digest": "sha256:77a9b5e9019c8db8783ec9c3febb0a2c9862f61a05c308fe895e4a9bed03edb3",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 621,
+      "end": 621,
+      "digest": "sha256:021331239a1c71bafeda721b7624063c9ce494860297f13271c8154baad7ad4b",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 622,
+      "end": 622,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 623,
+      "end": 623,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/saga/load.go",
+      "start": 511,
+      "end": 511,
+      "digest": "sha256:259cfcfc69262aa5cd08a883cfda0c84a0867b55a67a96fee6ea6b22464e9877",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 645,
+      "end": 645,
+      "digest": "sha256:4fb465b487067affc1316d2a1a69bbb5ad95c249a645f596c2aa0ac88edc8d43",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/saga/load.go",
+      "start": 557,
+      "end": 557,
+      "digest": "sha256:a65523910060e077c379e02b9d3c99ab7d7cec7ab336859882fd0473b610c0ec",
+      "note": "Structural versus full saga loading."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/saga/load.go",
+      "start": 691,
+      "end": 691,
+      "digest": "sha256:ad674345752db8096f4977b67058d603497620e939733faa40153b262616dfad",
+      "note": "Structural versus full saga loading."
+    }
+  ],
+  "version": 2
+}

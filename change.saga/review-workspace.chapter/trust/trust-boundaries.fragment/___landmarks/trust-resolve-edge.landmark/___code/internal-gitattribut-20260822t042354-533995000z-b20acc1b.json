@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/gitattribution/gitattribution.go",
+      "start": 135,
+      "end": 203,
+      "digest": "sha256:4c1e34e3a5190d4ddfdce23c4c5211db3f4e08efd1ebc1abe25bac5fd3dea57b",
+      "note": "Confines paths to the Saga repository and distinguishes uncommitted, renamed, tracked, and unavailable records."
+    }
+  ],
+  "version": 2
+}

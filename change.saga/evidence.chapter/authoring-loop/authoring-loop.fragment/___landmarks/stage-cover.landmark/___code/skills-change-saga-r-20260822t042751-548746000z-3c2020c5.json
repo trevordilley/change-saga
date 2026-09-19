@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "skills/change-saga/references/authoring.md",
+      "start": 215,
+      "end": 258,
+      "digest": "sha256:65729e80a4100eac200ca7201967c74fb1d601e00e9d707539aa40e562c530db",
+      "note": "Resolves dry-run or atomic batches into exact line and lifecycle coverage records."
+    }
+  ],
+  "version": 2
+}

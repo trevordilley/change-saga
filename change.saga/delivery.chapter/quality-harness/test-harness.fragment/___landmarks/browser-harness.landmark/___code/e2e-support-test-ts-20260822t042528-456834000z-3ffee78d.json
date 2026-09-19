@@ -1,0 +1,595 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "digest": "sha256:daf148ca12ee2f196aa5b987e88f4e1cec517feb65d327bc241bb094022aefc1",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:ebbc15d15889c498eb2fd1908651de52d29f647c181da8d6e208b19ec55e9c43",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:26ea31e89df6cb461c9dd4038babdb61596d663bc807bfeb8299e8224b574d82",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:66970c5c1b6ee8f20e2ad34b25cd019858134a4cdea76bc497ecfa2249e8608d",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:e8200964a978635522b2ab090c65065d8ef8e85c4730bb2eb0460d34c677ddbb",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:e9bed1c691e3ec684c34f973e103b0772a0595a76d22e94e30fb86ea8fbbeb9a",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:85649c9e7fc11cf2a5ead956505d0e2875b19cd2b672b097d0b81728249173d4",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:79c72a6599577bd2ae921894de3c0a1ec792c6b036682a9825f624c201d91c61",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:87985fca9055b32e69279ee4231b07479d7c4ba458684b7b6bbf3e05cb3f5f6b",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:32b35c1cf1de468e299a467c7fa8345a93e13e49197fa18a1ab2fd2d5ec38e6f",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:c7bb731e1f1e2d68eb1ca5d23b627b59bcece52a18d316a62cfc374a18adecaa",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:65ba2f4a9d43571a68495632a3a7a2cde781cca2034db28b65ad3432fdaf3b0c",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:edbee2c16dad5c0908e1a26c18589550c1771744951d250feba3f84a2983de31",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:0335a947600267675ae317a143f10f4dd86d3bcd354ce161ccfd5f011cebeca2",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:b7f73826cf435e7af566019ab20ea3010e3c7f436eec6fe0089f3f82d5fa7e91",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:61705db812aa5b375f8eb0e6387be5db44a25e1ed294992c5daef683b62002dc",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:2645c0a646cb53973c205e5ecd25047be152143c276a41bf0ffefdbe9809126d",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:aa1d1a63390229c798347e83a0405441c9400035284ad168c1bf6cdf1d70a370",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:370af696cc58d1b6fb3331b96b05ad21c0b98a40f9584103601d17ca7dbf7adf",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:1e1a4ad8e559ecc751f5aad3f1d1fffbacec4106d84be41e9335e00a1899a5c9",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:472fe6f7cbda37ccdae3e48f71a6e71fdd9f1903c1b485b5f93b8dfbe5b974b3",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:6f9983973f62d8c8a25d77d55e32b4a22ca32b086d6b37374e3b420f04ca50c1",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:6a7c0d596b97ccd152c4416d3b06b15370262f9c51665d44c0b42738a7c43aa4",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:22d11caf43e97ef369e6beed1a268bd05838f29b9dd254bf69ba64884147234a",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:8be1918df769c215b88cdffbeab06350b9ccdc5bd2e92125e97e322548c7aa3d",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:26d7e318e9c0328dfab9eb8a3412e490536647ca26cb0f400b435b01feafcad7",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:2f54901a191eeab3cad97e32cc9f8e625cea8484a3a32a85aea0cd4e032af39d",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:6aab1f98c2ce11be878e84adb7f2132c944f68226d2b5220953ada73a0a927f4",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:22d11caf43e97ef369e6beed1a268bd05838f29b9dd254bf69ba64884147234a",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:fd8088ce134054a28ccade8ead8e2f0bbc1b43a11823d455fead33b0d14c8196",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:4d5cd2fb4f3df884515255b39523f2f8b5472beea9f566ffca204db802561041",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:e09b7b80eeba8f45bc52bf85ff563330d5d2621e1b8e7c8cf6cfb64e989d7723",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:83e619966c1e3d3caebf7c72db6a572af1d025c3d0ae22a6f3c13d85649ecbae",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:a8430138e29de333433cd4cd5ec81c293d282d350b8a3540c05a342d82b1927a",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:11df87a47316c708c5502098e9af6c44534eb80beadcf6063028efca85937abe",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:0c3761e02c011ac612fc4dc6432b054bfe99d0bf2b040dbbf30daaa41432c0c2",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:bf5a2602c7b8f306c560d52164229781e7381d1afd3464d0335f0dc00ddaa9c0",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:5a9c94f5fbca7771fbe4817ae010f091aba06f19f880efafc42131143d79a348",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:d9a4d2541aecef6221a129906ff0e3d8719d45116324bf0ec19798c4062011d8",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:4893f40e3781eb896c82d046a08067a11e35cdf2f1dfaf26fea90b8db6676413",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:4d5cd2fb4f3df884515255b39523f2f8b5472beea9f566ffca204db802561041",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:ffcd292cc09a314f3014a501c0cfb34c586dbccdcb8122d56cddd231915bf687",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:1a1085ba37f4e978341d01e482e1fc3ff135794e8eefdb9ce60ead28577699e8",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:11df87a47316c708c5502098e9af6c44534eb80beadcf6063028efca85937abe",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:73e5b47961c7bbad3abd4e834cf4208a1d5a7d9cf17f2ea90acd354f881ff4d1",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:bf5a2602c7b8f306c560d52164229781e7381d1afd3464d0335f0dc00ddaa9c0",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:6b934cbbb5d0e1eb3d3b44f8ddcfdae64e9dd469a1e5b4130a935759a2e78687",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:c656d01d026ecb263c65e087541390ae94911c79f8643b88ba17eaa770fdeeb3",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:4893f40e3781eb896c82d046a08067a11e35cdf2f1dfaf26fea90b8db6676413",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:27e5788d5d9d73d24a81dbc0a5a74bfa82c9c3b3af99e52af796e90b468a8a3d",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:f6f5b40b158457d17864f21790786dd5a2ecdb64b66a651f788d4e25cd3303d2",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:940763b2c86d5b0f5bcc9411a2c82d93366c9101c1a717b1a62c25f11b9a726b",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:217a558a711de7b511a678f672e1d0ada3ac6ac920c6b69825d9ff6c5e198198",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:62680827afb5302213989d94cf353f563d8ecd00d6f65daa770af7753ce14178",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:81a94753321b9728e686f33170f395fd3e4d4b731b0c570a138b6d8bbca1b3a1",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:8d04857f651d86b6d5c9f4e3d6cb3c05a0707b802ba9d138bacfa9e850526e96",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:4d7eec38cf7201f01aeab84d47606d7b2b464ef40932e36eddc8b451f646c387",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:b1c5ef5fa1b31c28b3881e4c4e99fdde6b6af19c2b07d0bd1db175a2bf8f2e05",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:f58f8a0b384f5da273d94ec27d1924a57e489ffcea856a3dd9cb69071b71ff48",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:72ded666200fcddb0090d8b1883b8766af1118b44ad32001c0c0c590252c9b1a",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:c171b5d94e9ee92ac53f30b8ae58a8a88c5752afa9e657d38c268e3b358dcceb",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 68,
+      "end": 68,
+      "digest": "sha256:d692fbadf408ae2ed6edbd6b94b48f3c273a56fcc296b5e6815c119ad7219353",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:1384547233f5e436b0303860c805dc1040797379dc93862385772f544bc0d098",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 70,
+      "end": 70,
+      "digest": "sha256:727c0c75e4eb61ab667a2901378ccb2429f3981da6b1f240de19edda3421bdaa",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 71,
+      "end": 71,
+      "digest": "sha256:7e00d39cd3de7769e73c67e4376a43d138c4d2ca32ef5699b137b19c7c448e8b",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 72,
+      "end": 72,
+      "digest": "sha256:6d524998622f40e0aef8fffa970c7dddfb9123ff455d209093c34b5a2bdeb2ff",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "e2e/support/test.ts",
+      "start": 73,
+      "end": 73,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Wraps tests with fixtures, console capture, cleanup, failure attachments, and accessibility assertions."
+    }
+  ],
+  "version": 2
+}

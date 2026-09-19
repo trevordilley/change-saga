@@ -1,0 +1,1653 @@
+{
+  "references": [
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/coverage/coverage.go",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:ad23b608ed4717500490b335449eae51d644f7543f98028d1359307a36221026",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:0f8c9156a14ed51b26f9503a1c997c1abdeb9bad71fb6e1e57f42f177f8ed5c8",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 71,
+      "end": 71,
+      "digest": "sha256:0e9ec07e507435940c0923a067abe2b93223e82558122c9e0a489aa1c0344636",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 72,
+      "end": 72,
+      "digest": "sha256:7f3a6d7a4b434a25143e7751cb79765c3637d4ed89f9cf1187691cd8a082dc64",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 73,
+      "end": 73,
+      "digest": "sha256:ee7ecb0f4b69de59d272543e8ca2360b5bf8b684de1f53163d77df1d96644b7d",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 74,
+      "end": 74,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 75,
+      "end": 75,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/coverage/coverage.go",
+      "start": 78,
+      "end": 78,
+      "digest": "sha256:60d0e851756b3cca813e8c1d85f3e8061761503ad76813140509f4fc1d50d4a4",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/coverage/coverage.go",
+      "start": 79,
+      "end": 79,
+      "digest": "sha256:d47d78b1e75eb73ae4780cdcc5e40a576094bbda5bc48a3a2cf6837407031e48",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/coverage/coverage.go",
+      "start": 80,
+      "end": 80,
+      "digest": "sha256:954c3b0f0ffc91f866433bb59fda8bc65285cf2a76a30e0d7a12baf0390eaa0c",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/coverage/coverage.go",
+      "start": 81,
+      "end": 81,
+      "digest": "sha256:42a268dede1ef166e69403a46724007abb50712e17b01c654c13a216909e4938",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/coverage/coverage.go",
+      "start": 82,
+      "end": 82,
+      "digest": "sha256:d25bbadc26416ec6c36282d3cbf8035111d33fbaa39af27d5843e889b8ed5e4b",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/coverage/coverage.go",
+      "start": 83,
+      "end": 83,
+      "digest": "sha256:258645f2d12f86112164d2741e16ac05d4cb8f554609b2696c5726748a16619f",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/coverage/coverage.go",
+      "start": 84,
+      "end": 84,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/coverage/coverage.go",
+      "start": 85,
+      "end": 85,
+      "digest": "sha256:b92eaab4819dc74ba8e2ff217a02846acd305dbbcbd0fc976ce082ee212bb5db",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/coverage/coverage.go",
+      "start": 86,
+      "end": 86,
+      "digest": "sha256:1955b22cff69246465e413c06ff91c9114ba31ead1f50dd04b5d813033b6fa0a",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/coverage/coverage.go",
+      "start": 87,
+      "end": 87,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/coverage/coverage.go",
+      "start": 88,
+      "end": 88,
+      "digest": "sha256:c544549671a79311aef1ae5fc13312a90b31ddf209d3d93ac368fabfcab5232b",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/coverage/coverage.go",
+      "start": 89,
+      "end": 89,
+      "digest": "sha256:dc98950f3d7083001f26e66a475e879c69e9f326c0c4f9afdf1e10750c51b584",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/coverage/coverage.go",
+      "start": 90,
+      "end": 90,
+      "digest": "sha256:b535861c94cd18104e178a2960c6735a54d53f2aadf93af5c8c8854139fa98dd",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/coverage/coverage.go",
+      "start": 91,
+      "end": 91,
+      "digest": "sha256:3ee912acce49fbec9b9ff5ee628e362e02015c5622535dfe2d93c79398adb786",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/coverage/coverage.go",
+      "start": 92,
+      "end": 92,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/coverage/coverage.go",
+      "start": 93,
+      "end": 93,
+      "digest": "sha256:51a3cf506dcc9d6d21ecec798702857e47a476c6d8ab418f1307d8f8538bd39b",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/coverage/coverage.go",
+      "start": 94,
+      "end": 94,
+      "digest": "sha256:fbdd2a63a49342b3219dd8c1eaca23611ba9310ed23554b5c05253d717e2eb9d",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/coverage/coverage.go",
+      "start": 95,
+      "end": 95,
+      "digest": "sha256:22512014412a01baaea23bd51eb7bd830c89c6f4a2017ae825e4561bebde469a",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/coverage/coverage.go",
+      "start": 96,
+      "end": 96,
+      "digest": "sha256:c01614aa47c095e4b27d0e575c9b7202d402ca96a8c7910e42e0bbb651ad98a5",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/coverage/coverage.go",
+      "start": 97,
+      "end": 97,
+      "digest": "sha256:976d5cc2f1d74b134248bf91c6856714b1d675dbc8d904da8f7b530ab2768de6",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/coverage/coverage.go",
+      "start": 98,
+      "end": 98,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/coverage/coverage.go",
+      "start": 99,
+      "end": 99,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 83,
+      "end": 83,
+      "digest": "sha256:ef816553e3143a6f41e61927b883ec8ed52f1116c1b01590122651784ab40320",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 84,
+      "end": 84,
+      "digest": "sha256:a93bf3c029ce7825580f03afbeb4b5d5fdc86a2f8e12f7d6cb25bedbbbb9e405",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 85,
+      "end": 85,
+      "digest": "sha256:b564e775d01fca41ae5ddae5aa34840efb2a04e2405eaaa32ad7692f406417c8",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 86,
+      "end": 86,
+      "digest": "sha256:b8a70577c4947a828ac4b2f12d5e19eff49ed1f7c25f943fa4e089d8160a16cd",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 87,
+      "end": 87,
+      "digest": "sha256:f0aa07aba43e2e20b3595dcbc624a99d45947b6635c30cb0c792d1f71e4018af",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/coverage/coverage.go",
+      "start": 103,
+      "end": 103,
+      "digest": "sha256:2fb8aeec6bbabbe51e198e65bf5f83c204fd1c0af18034249c0f9e1c23b69066",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/coverage/coverage.go",
+      "start": 104,
+      "end": 104,
+      "digest": "sha256:cf477bb54edd9e0885e5bd79e6247a224c935ecdaff36193df08245b6b88b1f1",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 91,
+      "end": 91,
+      "digest": "sha256:b1ae128883386ce9bbde326f0c14bd58273ba818b5a242976224e980a7d03757",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 92,
+      "end": 92,
+      "digest": "sha256:fb1db4122edc826f0e596e9eeaec32a03ac51e22cfecb81e440e5861e8eb7918",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/coverage/coverage.go",
+      "start": 106,
+      "end": 106,
+      "digest": "sha256:ab3468427117fdc84ff63dbc9561b381bec23b21bda1b8463cc9dd2c5b817549",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 94,
+      "end": 94,
+      "digest": "sha256:1c1c9858f934e28c15b6697c9cce0346263f0fd2cfa59fb362f0c5b9f0d33b21",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 95,
+      "end": 95,
+      "digest": "sha256:89ffe69a18653ab7f0e10b4dd9dce4a2b1524731de98a8ed3f98ad3b2d585883",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 96,
+      "end": 96,
+      "digest": "sha256:bef1c79229aca5f46b996029aeaeb035cd6e2456d395dbc1ba1588d0135e24bd",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 114,
+      "end": 114,
+      "digest": "sha256:1d4d6a63db953c5f6db36b3ccdc797e650d81ab5c496260d598cd1be2e0f3fef",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 115,
+      "end": 115,
+      "digest": "sha256:b2810dd77b13a9c0a1952269a1068ba53a427aa30143dd42433906048df8e345",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 116,
+      "end": 116,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 117,
+      "end": 117,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 118,
+      "end": 118,
+      "digest": "sha256:94b44c51f454065a9a791bfcb1b6fdfc0b30d644ae6732d53ee732e9dfeb5ef6",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 119,
+      "end": 119,
+      "digest": "sha256:99d55d9d4e948a90957dbf453415b379bbfb1ddf4ea63868508886d87ba2f844",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 120,
+      "end": 120,
+      "digest": "sha256:4f7fe7ad2055701e203e519b99fa3a1a22fa3b87484cafceffa4b5b87c28bac9",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 121,
+      "end": 121,
+      "digest": "sha256:a0b945b7ec4b54f792fb164ba1ca21c43ab795b02b6b594b1dfb07661b5bf441",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 122,
+      "end": 122,
+      "digest": "sha256:c392d6133f3126415edc4882be8acc9c2024c674fb0b9bad256542258df411e3",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 123,
+      "end": 123,
+      "digest": "sha256:47e24e6b4e10c7947aa27ba25be4256b41699972eef0db4d3c0ebe5c50fc87ee",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 124,
+      "end": 124,
+      "digest": "sha256:a93bf3c029ce7825580f03afbeb4b5d5fdc86a2f8e12f7d6cb25bedbbbb9e405",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 125,
+      "end": 125,
+      "digest": "sha256:1bddf04d472c9f0a54c89d1d1d4f247e59da12567d41993d0898fe9b00128f9d",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 126,
+      "end": 126,
+      "digest": "sha256:7b6e93ba34d56a2ea92ed98462612262238ba355db2c877fef5e606a91e004b8",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 127,
+      "end": 127,
+      "digest": "sha256:1eec962597e71f6469c50902f484eb71db5ffaf5538c0831e49cf5920144839d",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 128,
+      "end": 128,
+      "digest": "sha256:b11edf984b7e9f1c5bb0c90319fccd498418c36b1b8737d96aa663a9b6a4821f",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 129,
+      "end": 129,
+      "digest": "sha256:09f33d645988d08cdb677f6b1c5ddb2008dccebffc2bc40554b0cd3bb3a8d46b",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 130,
+      "end": 130,
+      "digest": "sha256:b8a284406ed5331db808839c26b70aca798e8b9e0ec72c77cabde9e44787a34a",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 131,
+      "end": 131,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 132,
+      "end": 132,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 133,
+      "end": 133,
+      "digest": "sha256:90db3a9181aa229c797ea61271a95a40ec8b17b5501be192d163ebdb53789d97",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 134,
+      "end": 134,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 135,
+      "end": 135,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 136,
+      "end": 136,
+      "digest": "sha256:372bd8023ada76c1f225c4176c5c465245f92afbd02e2300443c5abe55c2ace0",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 137,
+      "end": 137,
+      "digest": "sha256:dcd2d44e327710dbc8ef17e739f80d3516edd15bbb9d12bda9ed67d5d85e8837",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 138,
+      "end": 138,
+      "digest": "sha256:b243cf515585d72736f84124a8864cb239ec4c5b98718729ebd86df7a830b1bf",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 139,
+      "end": 139,
+      "digest": "sha256:523b9fd53f6a6d64e58912f1bafe9daa3bc644eafba03f8b7909637c6065d073",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 140,
+      "end": 140,
+      "digest": "sha256:0aaf383d1f9c1b37748cb261fcda64434dbc0d263fedf4396610eeafa18d48c2",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 141,
+      "end": 141,
+      "digest": "sha256:ef816553e3143a6f41e61927b883ec8ed52f1116c1b01590122651784ab40320",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 142,
+      "end": 142,
+      "digest": "sha256:1f55aba2984393118d9f1b30b884948d57baad38431f64c3b34e5fe6d907f34f",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 143,
+      "end": 143,
+      "digest": "sha256:79518a699ad9d53f28a327d84c66f09b1b103cbe32f75e0f3937591897ed1b00",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 144,
+      "end": 144,
+      "digest": "sha256:b564e775d01fca41ae5ddae5aa34840efb2a04e2405eaaa32ad7692f406417c8",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 145,
+      "end": 145,
+      "digest": "sha256:b8a70577c4947a828ac4b2f12d5e19eff49ed1f7c25f943fa4e089d8160a16cd",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 146,
+      "end": 146,
+      "digest": "sha256:0330bb9da511f962aeec7e8d2270ce7d5af69c8d49dc460d1e16ff11c63f4c67",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 147,
+      "end": 147,
+      "digest": "sha256:77a9b5e9019c8db8783ec9c3febb0a2c9862f61a05c308fe895e4a9bed03edb3",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 148,
+      "end": 148,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 149,
+      "end": 149,
+      "digest": "sha256:ad45bbd712a3405c75016975f75d18f81eac7acb8cfd28af713f4ef3bac712bc",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 150,
+      "end": 150,
+      "digest": "sha256:e007e4ec57763b0c99f70b00974927fe5cd570adb2b482894a5f58da803e222b",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 151,
+      "end": 151,
+      "digest": "sha256:4d68b33a5303b17b9ec7d26cbd193b453bb7e9a7dde4e04a64be7ab98e90c9cf",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 152,
+      "end": 152,
+      "digest": "sha256:18825ad84bd9ca329849122100e4ad2684bcf3ba90774aceff9bab19d8966d9d",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 153,
+      "end": 153,
+      "digest": "sha256:057cc2519cb31e14e39e7772918e0340c37a1bd857949a1901704d012e0373d4",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 154,
+      "end": 154,
+      "digest": "sha256:42a57081051f4682a7db3e590b4dd5413d53dc9a01551276dacb521a7e1db9a5",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 155,
+      "end": 155,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 156,
+      "end": 156,
+      "digest": "sha256:42b60febf7022616103dec8f8197faf7a65ee6accc94c7402551fed64bb30ceb",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 157,
+      "end": 157,
+      "digest": "sha256:e2bbd6c484c8680dfd547eb06d31f565558ce6afba3e5d1e15a085dab037f9d6",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 158,
+      "end": 158,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 159,
+      "end": 159,
+      "digest": "sha256:733e9d0f31aefc89ba761a217634dd0207ed729ead151bb29ca93406e38f4660",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 160,
+      "end": 160,
+      "digest": "sha256:bf20e6ee528e3c093545ef842fee46234177fcbb67d742cbaceb66e004122d3a",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 161,
+      "end": 161,
+      "digest": "sha256:c44cf4f423985528002ed868908158a677717a5c7c04bfb7e1a3f1459548e7fb",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 162,
+      "end": 162,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 163,
+      "end": 163,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 164,
+      "end": 164,
+      "digest": "sha256:1068a1f20513617ccc1d48353e602b717abac7b064058b4adf67d41354bab4f1",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 165,
+      "end": 165,
+      "digest": "sha256:b2810dd77b13a9c0a1952269a1068ba53a427aa30143dd42433906048df8e345",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 166,
+      "end": 166,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 167,
+      "end": 167,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 168,
+      "end": 168,
+      "digest": "sha256:5578f7916b1ccc382bca864e9072b12bfa1fe28a105795b7efd7772b7b6fd161",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 169,
+      "end": 169,
+      "digest": "sha256:b08a0007652778f0ffde11ea2aa8dd6735252af02ff6a929ebfdeade10125312",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 170,
+      "end": 170,
+      "digest": "sha256:d47d78b1e75eb73ae4780cdcc5e40a576094bbda5bc48a3a2cf6837407031e48",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 171,
+      "end": 171,
+      "digest": "sha256:954c3b0f0ffc91f866433bb59fda8bc65285cf2a76a30e0d7a12baf0390eaa0c",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 172,
+      "end": 172,
+      "digest": "sha256:42a268dede1ef166e69403a46724007abb50712e17b01c654c13a216909e4938",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 173,
+      "end": 173,
+      "digest": "sha256:d25bbadc26416ec6c36282d3cbf8035111d33fbaa39af27d5843e889b8ed5e4b",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 174,
+      "end": 174,
+      "digest": "sha256:258645f2d12f86112164d2741e16ac05d4cb8f554609b2696c5726748a16619f",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 175,
+      "end": 175,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 176,
+      "end": 176,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 177,
+      "end": 177,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 178,
+      "end": 178,
+      "digest": "sha256:b799f1853f884d47f3b76cc5433402e7ee440966244e4d984bc8e6f83ea9fd64",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/coverage/coverage.go",
+      "start": 129,
+      "end": 129,
+      "digest": "sha256:a67b4b84eab879ef160d10f6cf15a614b6769ac3890e3fec1d42dec824e4d6b4",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/coverage/coverage.go",
+      "start": 130,
+      "end": 130,
+      "digest": "sha256:bf47ff2fc1d435aad62ba8bb4ab293a0a92e5cba2b27e3a261af8cc963c4fcc6",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 184,
+      "end": 184,
+      "digest": "sha256:ef805d72a3c9a5ef54f33ec6efb5b9cdda485d0aaa8b22fe784b0d541029c991",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 185,
+      "end": 185,
+      "digest": "sha256:10a7bfb9032bb73e750feb1e54f39e22887105f970e60d25f6f2779b9aef13be",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/coverage/coverage.go",
+      "start": 132,
+      "end": 132,
+      "digest": "sha256:3e8a5bc150d9105c6f97c7a16777f29a585bb0e6db1187e60bdb375bdc8b51ce",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/coverage/coverage.go",
+      "start": 133,
+      "end": 133,
+      "digest": "sha256:b2810dd77b13a9c0a1952269a1068ba53a427aa30143dd42433906048df8e345",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 187,
+      "end": 187,
+      "digest": "sha256:dd5c3c4f89282e3bbb5cce8e12afcae4286a8c83bef7d66fdb73d8eeb82f9011",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/coverage/coverage.go",
+      "start": 146,
+      "end": 146,
+      "digest": "sha256:6af0f6164fe07079aa5fb34fe84bd19757aefe2fe1272a3d46ebd8cb56517d7e",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 200,
+      "end": 200,
+      "digest": "sha256:bd6092899714b070b90e164eba08f9fb2039bf92087e84cc37d5907aa5ef40b9",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/coverage/coverage.go",
+      "start": 162,
+      "end": 162,
+      "digest": "sha256:0faf1792a19958601cc6f15bb7a016988821dcfffca9b903bc44456b6885a56e",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 216,
+      "end": 216,
+      "digest": "sha256:28977228e51be78ffffcb773afc8f8acc20721a3ebcfe117439f97ed65272698",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/coverage/coverage.go",
+      "start": 173,
+      "end": 173,
+      "digest": "sha256:a21792044ea3206f11a5327f46f94b1cba1d012be693c18417e3afbabb00b133",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 227,
+      "end": 227,
+      "digest": "sha256:5d67cf4e1495e27084a3e4f9da23b3b26d6e9c0ca45567eca9fac1319be6dfac",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 228,
+      "end": 228,
+      "digest": "sha256:ffab7c7179f807ea1a1f79f3688b54efc3005321e2d7771af450e5f0db81e8b5",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 229,
+      "end": 229,
+      "digest": "sha256:4d8b1033d96f45bd26f17e2c82990c5c741635f94e82e6024018eb236de1df9b",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 230,
+      "end": 230,
+      "digest": "sha256:83fa00397df74e1ba0bd0d9ed8542222ab562087d3a1b83ca88ac896482c72d8",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 231,
+      "end": 231,
+      "digest": "sha256:e2980b6a692a1919e3d671aabb7f27f025daf90a370aa901263424e396df7db6",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 232,
+      "end": 232,
+      "digest": "sha256:ace2384b9b4d6b1f643f11ee1a0c234c99e2497d100b16cb77993689dad71396",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 233,
+      "end": 233,
+      "digest": "sha256:cfd2d02c3df7a3b7a25d26c80517a82ea2ec5bc80d185c171996450736635fa1",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 234,
+      "end": 234,
+      "digest": "sha256:9d5181c72394fc2edfc3426e3b31f2bb07f41c7ecff2cb86993b7dcca143b189",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 235,
+      "end": 235,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 236,
+      "end": 236,
+      "digest": "sha256:94e115679c44dbfad8e15a3b10dfc52cca14e216ab305ad99af3d85b728dcfe9",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 237,
+      "end": 237,
+      "digest": "sha256:4f66b05653ab3a5db5928e26e674bb9c9cd033c75b8c52c4ebb01be51c08ab28",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 238,
+      "end": 238,
+      "digest": "sha256:27097299292de7e7a659bbd76a9a1d7d2ad7464a1df323b6705262542e475c63",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 239,
+      "end": 239,
+      "digest": "sha256:2dcfacc3a4cff1b30dada6f08819fb3fb2fb192d4bea58154775110f2af1460c",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 240,
+      "end": 240,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 241,
+      "end": 241,
+      "digest": "sha256:276e6b06aec8f325cec33ba47f086393cc1f55232fc8d81286246308a3fc53b5",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 242,
+      "end": 242,
+      "digest": "sha256:29ca9f1a04973bd82ec1d0d0dc60bd504431823018f98a17a34a3a925b5c4fbb",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 243,
+      "end": 243,
+      "digest": "sha256:cd94b7222884b3f6b3daf33bd55d0dda31ecdd9815ca709f17ce4c87a00558a8",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 244,
+      "end": 244,
+      "digest": "sha256:ef8b690e7363f7b9b9a4b5dcf2b3bbb1b7b9436b78b504cbcdff0f9383a61c33",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 245,
+      "end": 245,
+      "digest": "sha256:4dc76020bae70577e64b330dca83fdf24f3d7593a0154d8abec6dc63f5897fd9",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 246,
+      "end": 246,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 247,
+      "end": 247,
+      "digest": "sha256:e2543086b939a8a753d75eb98a70e3d981a50d5e74550af0f2c0425bfad6844c",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 248,
+      "end": 248,
+      "digest": "sha256:25f702772c5d8c18a1a07e54b3c452435855eba7b74d405cff0cca0764023af3",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 249,
+      "end": 249,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 250,
+      "end": 250,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 251,
+      "end": 251,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 252,
+      "end": 252,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 253,
+      "end": 253,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 254,
+      "end": 254,
+      "digest": "sha256:cde7af9b8f6e3fcd0d135f054cdc7b99091205e536ad767c6e1db2e23bff7f38",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 255,
+      "end": 255,
+      "digest": "sha256:361eee42d69741c357524d69aa3720995b7e088f384a825c06a75a59c847765f",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 256,
+      "end": 256,
+      "digest": "sha256:07d1b44c2f36aa334a5ebff05131722e106de9c78a2f68753f5de08585baf856",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 257,
+      "end": 257,
+      "digest": "sha256:c9780f56dfc2bcaa0d6cb841a64c00331c46d442136675cb0993741bcd463732",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 258,
+      "end": 258,
+      "digest": "sha256:a7b6909f2d016e98605c8e5c7e9d245c740b339c53eacb5d1cf58497a4768194",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 259,
+      "end": 259,
+      "digest": "sha256:c66a34241dfd7de22386567d15ee17deeb2ff94f4b113401ea76532d2a0d957d",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 260,
+      "end": 260,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 261,
+      "end": 261,
+      "digest": "sha256:87d86e9e334c0b5d7ea027fd829a35899b2b70d76e11d5322f282678e75cf86d",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 262,
+      "end": 262,
+      "digest": "sha256:c66a34241dfd7de22386567d15ee17deeb2ff94f4b113401ea76532d2a0d957d",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 263,
+      "end": 263,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 264,
+      "end": 264,
+      "digest": "sha256:4bb04096e557d02120d7e0d215d74a7f7416791e624b6d00ebfa41370358b822",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 265,
+      "end": 265,
+      "digest": "sha256:7de5839fcb6b736255f23e164865f241f040a5355f941d974f2a883ef163982a",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 266,
+      "end": 266,
+      "digest": "sha256:5131451db0b1f8ee248374cfb6587cd784829610991178dcd040d380dd4e1e3e",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 267,
+      "end": 267,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 268,
+      "end": 268,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 269,
+      "end": 269,
+      "digest": "sha256:e1f6cd02210607559cd6ce0c6f4138ca0bb5fb04204ceca2b8fadb450c5f7233",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 270,
+      "end": 270,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 271,
+      "end": 271,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 272,
+      "end": 272,
+      "digest": "sha256:5fa70effe96819653478e3e8a8455f4b1a3b7d8b13880943d247eaef1c89937e",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/coverage/coverage.go",
+      "start": 175,
+      "end": 175,
+      "digest": "sha256:e54e36771992ae37f5fc9fb08af90925a4d88607a49873554fb4474f1568a1dd",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/coverage/coverage.go",
+      "start": 176,
+      "end": 176,
+      "digest": "sha256:f1c07c82c74fc92f4b76426cd4a9578c7f81c3271c6b67a4feed03847634fbda",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/coverage/coverage.go",
+      "start": 177,
+      "end": 177,
+      "digest": "sha256:4c154cdaef82ba33866af83a0fb4627709fde0adf6b35ece16355f457f55ed74",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/coverage/coverage.go",
+      "start": 178,
+      "end": 178,
+      "digest": "sha256:42a57081051f4682a7db3e590b4dd5413d53dc9a01551276dacb521a7e1db9a5",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 274,
+      "end": 274,
+      "digest": "sha256:853cc059e4c2558692d8df6c2f967a4f51438e130736002c1b3f3e3bb369a596",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 275,
+      "end": 275,
+      "digest": "sha256:0f97a2a34f25db6ab881c0b59a2368437be1bf0880ac60c2f5683e48f2041473",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 276,
+      "end": 276,
+      "digest": "sha256:5e9debefcf7a56147fd9b1adb663ea5048ef2f5bb9b59d970e592daa9db58d2c",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 277,
+      "end": 277,
+      "digest": "sha256:49768c7ebeb06e40e93da692d94fe82977e895120adeb04431c0ad56a14ebd76",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 278,
+      "end": 278,
+      "digest": "sha256:f0b8f8d962526a2bf17870e3c2028a1d6407661afbd8c319f2e71630d1ae8e12",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 279,
+      "end": 279,
+      "digest": "sha256:2c7094015763ef1243e14c5566049792d4b2c342bf02176b988cfb6667450c77",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 280,
+      "end": 280,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 281,
+      "end": 281,
+      "digest": "sha256:1dc5fd35cc44be8511725d535e39dc1cc5137fc560be109f8a80e65bb225042d",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 282,
+      "end": 282,
+      "digest": "sha256:4b0c15b5fb76a0a8e186cf3c2bf87870065cec7811bda9d1932b9d888db55cb6",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 283,
+      "end": 283,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 284,
+      "end": 284,
+      "digest": "sha256:b0555b112e8556e468e2290652564d489909630effd5d35c7c2ed630c7d36232",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 285,
+      "end": 285,
+      "digest": "sha256:c6537fe4461a3264d585dc8e41ba7fdf13ce168c92967341528055d80572db3f",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 286,
+      "end": 286,
+      "digest": "sha256:d87fd1f3913f5625e852086ee5576d7f1570b5e84ac94ecca76cc2809b0dcbc9",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 287,
+      "end": 287,
+      "digest": "sha256:340478e858770cdefc4c6474963112eeaf7e42f2dcdcf244e62ee7395e53a6d0",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 288,
+      "end": 288,
+      "digest": "sha256:e93a1213dabe259b9f0f2c691bb8e0283f6507ee98261aedee13945c93ec230e",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 289,
+      "end": 289,
+      "digest": "sha256:a7af7938160795bb71741d29f520117a0879f4e09cf12734bf03e6ee623ce6c5",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 290,
+      "end": 290,
+      "digest": "sha256:ace2384b9b4d6b1f643f11ee1a0c234c99e2497d100b16cb77993689dad71396",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 291,
+      "end": 291,
+      "digest": "sha256:9d5181c72394fc2edfc3426e3b31f2bb07f41c7ecff2cb86993b7dcca143b189",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 292,
+      "end": 292,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/coverage/coverage.go",
+      "start": 180,
+      "end": 180,
+      "digest": "sha256:edda4ebb241ffa1115744fa9e47a5674af91fec16ad93a2567fcf3f8af5d99cb",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 294,
+      "end": 294,
+      "digest": "sha256:fd9533d48b26b30d5c5b46b132f7d89b0319c8c23c561669cb50b1a27ae18b0c",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 305,
+      "end": 305,
+      "digest": "sha256:5026a0d5b187c792d921ee45d9dd3c310766467a8eb4091beaa09cd8a6b07d5d",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 306,
+      "end": 306,
+      "digest": "sha256:d3c0a2c76bb958d1a8f768b0b657b7049c629dbe5e07d5c87054f748692161a2",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 307,
+      "end": 307,
+      "digest": "sha256:dc98950f3d7083001f26e66a475e879c69e9f326c0c4f9afdf1e10750c51b584",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 308,
+      "end": 308,
+      "digest": "sha256:b535861c94cd18104e178a2960c6735a54d53f2aadf93af5c8c8854139fa98dd",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 309,
+      "end": 309,
+      "digest": "sha256:6262886abcef6ab518c5478195986b8935975eb8823e79eef5784a29d2bb2bc0",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 310,
+      "end": 310,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 311,
+      "end": 311,
+      "digest": "sha256:51a3cf506dcc9d6d21ecec798702857e47a476c6d8ab418f1307d8f8538bd39b",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 312,
+      "end": 312,
+      "digest": "sha256:155fa8f03970cfd809e28867dcc48023e89625c6e240376eadfeb979a332fa95",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 313,
+      "end": 313,
+      "digest": "sha256:22512014412a01baaea23bd51eb7bd830c89c6f4a2017ae825e4561bebde469a",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 314,
+      "end": 314,
+      "digest": "sha256:c01614aa47c095e4b27d0e575c9b7202d402ca96a8c7910e42e0bbb651ad98a5",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 315,
+      "end": 315,
+      "digest": "sha256:50d8fdd886f91376bc83a7244e85ddd3f8933f9223ab519fad1dae8f39f3eeb2",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 316,
+      "end": 316,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 317,
+      "end": 317,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 318,
+      "end": 318,
+      "digest": "sha256:77a9b5e9019c8db8783ec9c3febb0a2c9862f61a05c308fe895e4a9bed03edb3",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 319,
+      "end": 319,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Dense positional coverage evaluation."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/coverage/coverage.go",
+      "start": 320,
+      "end": 320,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Dense positional coverage evaluation."
+    }
+  ],
+  "version": 2
+}

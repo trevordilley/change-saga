@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "skills/change-saga/references/format.md",
+      "start": 58,
+      "end": 113,
+      "digest": "sha256:40a8dc657899a89d5da45483ea6d521933023f3f3bc3c462eb779abc36beab87",
+      "note": "Implements atomic exact coverage creation, replacement, removal, naming, and repair."
+    }
+  ],
+  "version": 2
+}

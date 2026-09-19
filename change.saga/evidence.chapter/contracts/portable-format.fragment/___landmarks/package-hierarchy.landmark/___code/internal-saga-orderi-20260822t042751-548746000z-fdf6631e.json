@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/saga/ordering_test.go",
+      "start": 1,
+      "end": 192,
+      "digest": "sha256:47a8a0561ec0012bfecb769d91bf5218cef8fe48c41cb3ac64c5da674ad6f9c2",
+      "note": "Defines strict independent hierarchy and history records that compose the portable filesystem format."
+    }
+  ],
+  "version": 2
+}

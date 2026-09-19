@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/attachedcode.go",
+      "start": 33,
+      "end": 74,
+      "digest": "sha256:3f3bb449f71868eedda2a39aeedd09ea6ee0c21905e0b1f4d99301b240f4b5c3",
+      "note": "Transforms a target’s exact atoms into file-grouped linked evidence with counts and target identity."
+    }
+  ],
+  "version": 2
+}

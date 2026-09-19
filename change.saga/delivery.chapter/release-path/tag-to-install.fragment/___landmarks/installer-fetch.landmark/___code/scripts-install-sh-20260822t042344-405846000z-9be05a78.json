@@ -1,0 +1,11 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/install.sh",
+      "digest": "sha256:4d742e4c5b7df021bda6895b731a321656df58fd7c1b5f7ec056b5a5ed261503",
+      "note": "Introduces the mapped macOS/Linux release installer."
+    }
+  ],
+  "version": 2
+}

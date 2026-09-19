@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/ergonomics_test.go",
+      "start": 1,
+      "end": 111,
+      "digest": "sha256:f52a177f464749c21e7d9ddf3c5668997fa8556a43d79a27966c2819c55107dc",
+      "note": "Creates and validates stable semantic targets for visual elements, headings, and exact citations."
+    }
+  ],
+  "version": 2
+}

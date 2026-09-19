@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/workflows/release.yml",
+      "start": 123,
+      "end": 222,
+      "digest": "sha256:88330f18e714f15556cc39af984b3df564d07328ceac08b8afd386f90a7bb903",
+      "note": "Builds all platforms while confining optional signing credentials to protected macOS jobs."
+    }
+  ],
+  "version": 2
+}

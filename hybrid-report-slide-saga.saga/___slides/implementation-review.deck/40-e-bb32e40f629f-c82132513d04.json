@@ -1,17 +1,29 @@
 {
-  "version": 2,
-  "diffs": [
+  "references": [
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=29\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=skills%2Fchange-saga%2Freferences%2Fauthoring.md\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=3",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "skills/change-saga/references/authoring.md",
+      "start": 3,
+      "end": 29,
+      "digest": "sha256:cf7708246d5844e43dc3987af53023fcfcf66560376960ccfb1e7df09b078f06",
       "note": "Adds authoring rules for independent deck bundles, pinned explains links, and reverse trace audits."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=60\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=skills%2Fchange-saga%2Freferences%2Fauthoring.md\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=60",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "skills/change-saga/references/authoring.md",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:debcfe77de341a5bd67768b7e101690d025c896dd1c44def4dfe40dec4f407ed",
       "note": "Adds authoring rules for independent deck bundles, pinned explains links, and reverse trace audits."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=66\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=skills%2Fchange-saga%2Freferences%2Fauthoring.md\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=63",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "skills/change-saga/references/authoring.md",
+      "start": 63,
+      "end": 66,
+      "digest": "sha256:8d00f4feccd1ffbce48b7d7ee1482f3c4f06f5594f698b894d6977befb035bfd",
       "note": "Adds authoring rules for independent deck bundles, pinned explains links, and reverse trace audits."
     }
-  ]
+  ],
+  "version": 2
 }

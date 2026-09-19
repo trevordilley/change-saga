@@ -1,13 +1,21 @@
 {
-  "version": 2,
-  "diffs": [
+  "references": [
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=33\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=skills%2Fchange-saga%2Freferences%2Fauthoring.md\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=33",
+      "commit": "b6042a5b85057c8f2f892dabc9d06cb1bfa155fd",
+      "path": "skills/change-saga/references/authoring.md",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:ebb2e8fdcf7573660b590d6d1c4dc3e54930e24f8c4baab8361041993bc67c73",
       "note": "Adds authoring rules for independent deck bundles, pinned explains links, and reverse trace audits."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=38\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=skills%2Fchange-saga%2Freferences%2Fauthoring.md\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=36",
+      "commit": "b6042a5b85057c8f2f892dabc9d06cb1bfa155fd",
+      "path": "skills/change-saga/references/authoring.md",
+      "start": 36,
+      "end": 38,
+      "digest": "sha256:6fbcac3958c09e4896f164cbd7e78b06947750704565b29b7c1ecb195fa36d34",
       "note": "Adds authoring rules for independent deck bundles, pinned explains links, and reverse trace audits."
     }
-  ]
+  ],
+  "version": 2
 }

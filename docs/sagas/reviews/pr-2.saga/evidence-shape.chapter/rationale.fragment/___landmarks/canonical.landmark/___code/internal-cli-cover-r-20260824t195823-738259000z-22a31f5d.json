@@ -1,0 +1,3363 @@
+{
+  "references": [
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "digest": "sha256:2eadefab1380ff04f29e4948c1cccb9c9be03d4aeb46b558bb16fecb71c3a6b8",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:55feb8da8d74ead61adcf05dfbc90d4ec717e9510e8f14e0e89bf1e838d3bd23",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:71e37b6cd48ad477cbb12624b757ee1dc4975711b78237a85f508bfdd723af77",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:6c7872f7e7aba7ceb14de93a1613a51c5b446ca889744d3b529463bd245c0953",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:dc94db91287ede614bfe3a0ee2e2b567400c33fbbb5566199f17b7f6235ec46d",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:926ebc76318f711b7e6fce77071eb1a689adb7f244f8cbde070b2852db74b02e",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:9d321d278769fb32c7c6820e1c992ebb53b04e39def0f158cbf1d84e27d34c18",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:171b756171ff8240f94ccb83de837ed4242449df3ecef3a3762523d1f5ae0348",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:57e084ab258e81b1e20f6e9b9f72b556c4838b3517e76da7edd5b6e7546090a2",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:74432b77763c6cfa9171fc3fd13832ff241f4c996771aa8caccfe84199cb372f",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:f05b48055b78db9e9e8993848d47169d7abd312df35886aa83d4014d37eb4009",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:1b649ecbf085fe223589d7f842defd5e2c82ec06b02b4f7827a31625fd09316e",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:d28863555fbc7eb2c1b3aca9fb2fc5690456651523e934989c30dfd95f77129b",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:4251f63298670483bdac18904e47ecc02d2c2d19b3f7d8e42f79cb371a7c684e",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:fafba0527c3953c4b6e0e5b5739ba83612f8053bcdc9466730193cd1d590b408",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:d0d986b0df7e9c47aa782b06609469bc8eeca47612b838cf829dda4bcddd3329",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:e53875b7015f4a5bdcf72b46139d3ed98856eaa7c2e2139d1eeb369ad2ee8ba1",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:c65611bba9d09e532791ede2080b6c26cb20c9068e162801cff33f805336cc53",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:2bb410473c918e057c04d61fcecda47bdcd853f0739358dd354d050c2a691935",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:9d96e26d0cfcc5c04ef06de18ee4782fb667dfc9b764f0955f5d2c5b1459044e",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:fafba0527c3953c4b6e0e5b5739ba83612f8053bcdc9466730193cd1d590b408",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:832601abca30bd7e9ef263bd95e16f0526d4bc36066e029fbc6b5e0ac6c256bd",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:4257d8c72633f8838b3db8d4f274b6c941957a5725257c9a8ad2db447c686709",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:d27a7d5071a8616015748f6badb70e666acfb3e213a3c55a55b66f43610a5a90",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:ece523c7d95d420d4ff49e42b4fb263847bfb194d96eebb9f9472a2b0266a7e4",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:455ba1ddee1c4e37e73dc00b63f36f26d1f1a84d45cd15ac41a0e3ee7edb4d4a",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:ff93222c5334a7ee096c3422393dc1fe0bd7495bc8383cb75a3b0c6b419a85f7",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:5288be722e2499e8debb43b79d82fac193b51a5a496de2a6d83382c7ed93b6d7",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:d822a867c506b82f6fc57e736f897d233d24161f38a3108b496b75e25854db61",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:cad4c9c2cafab0acbb8757dfab8ffc8d15eeec4372084d0dfd6b695ec1a90a0f",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:98f46f82b211e56c93ae43225d467e2f80c8053ed93cd4378788fa06d50e4a5a",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:1c9547e807db242cc2677ccb42a5022393fe2b3ad7137def7f2cb4c41cc89bea",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:ece523c7d95d420d4ff49e42b4fb263847bfb194d96eebb9f9472a2b0266a7e4",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:44393f567cf318489d703518212c07b5b6373b28369f855de178cee59e26a2ed",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:9c9dfe2322e6fdaa09f696349fa2c8c0875a78fc3f4b891b30383f5e2509a28c",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:ece523c7d95d420d4ff49e42b4fb263847bfb194d96eebb9f9472a2b0266a7e4",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:218e3f3d8549e121bf247e06bd1b996758d769284c6e3f8639dfb67d43cc4131",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:1320929d162a8996b310f4745e9e16fc2f1838d7c33ae9fd7755cfc1394ab2c7",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:ece523c7d95d420d4ff49e42b4fb263847bfb194d96eebb9f9472a2b0266a7e4",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:8d66fa5f1a18600ffe7416591295c395b7d25a12f5a23b41dfb71f11752d73c9",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:cf21478a8b799a89a111026ea5cbc761df703a851ab81ed0866012ae741e9c36",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:e8b8e25492e2e4cd5a1416e9cd26417ff7b8e17735ef1c3e502512493767085c",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:7a55f8366fe66d134c4c58f2677550f65c89217e23ca4efd16670d4a66d2b5ce",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:02585959afe310a22175d63375c8a1617bce1210ed83bfdcfbb0019158df1573",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:1dd0b3b04ce6959389f652be5b6607452433541c59100e13e0fd8739dfaf668e",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:ece523c7d95d420d4ff49e42b4fb263847bfb194d96eebb9f9472a2b0266a7e4",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:98ae80a879c5a578218c8da36a1e3703844ac667e7ee896f86bfac4ecd2e4be4",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:ca0b1a038da8bd2b2d0efb1dc8ba443d6fa6c9170defea920290dc1893113054",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:df4092078cc4a38649fd1a6c2db05359ead7cfa6ec2d03e554346a8afe8be40a",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:4c154cdaef82ba33866af83a0fb4627709fde0adf6b35ece16355f457f55ed74",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:ed5295afc6784be5a144ff2e04d7ca5fc52f50c0018e8b80f1e07e8e09fab533",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 68,
+      "end": 68,
+      "digest": "sha256:f74da6371aa5e6f7204d64a8dbd16cc2eaf74303ae787e663084dcb3f25cd252",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:d77ab4c34e0f9273cf7996f05012470f56b4472ad9e35a657b754ac87dfec565",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 70,
+      "end": 70,
+      "digest": "sha256:42a57081051f4682a7db3e590b4dd5413d53dc9a01551276dacb521a7e1db9a5",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 71,
+      "end": 71,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 72,
+      "end": 72,
+      "digest": "sha256:cbd20da0f0766ae89e561d1cd572bfd98a9be0663a38aea698de425d866884ae",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 73,
+      "end": 73,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 74,
+      "end": 74,
+      "digest": "sha256:9d2819e7a0b2bb6875e118c36c5bf9ffdc1ebc930b1749b2dd3c94a31a6b2033",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 75,
+      "end": 75,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 76,
+      "end": 76,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 77,
+      "end": 77,
+      "digest": "sha256:1b4068a01ec3e17d9238c9df6a124ca9d68ed5eb50414688d9c00159f4b3eb4a",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 78,
+      "end": 78,
+      "digest": "sha256:ece523c7d95d420d4ff49e42b4fb263847bfb194d96eebb9f9472a2b0266a7e4",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 79,
+      "end": 79,
+      "digest": "sha256:313c8509fbf36d0e2e1930497448f57a8529d00ac0297c8ef0bd35f1eecb211d",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 80,
+      "end": 80,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 81,
+      "end": 81,
+      "digest": "sha256:46526b44da81fe0f65333d1f7dcc378fb06d40ca87742f26a8ece72e9b40c661",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 82,
+      "end": 82,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 83,
+      "end": 83,
+      "digest": "sha256:2c3648259d8b1ed989d41d6c52e0ec81e18aeb4d798f95fe37c47c3ff152c985",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 84,
+      "end": 84,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 85,
+      "end": 85,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 86,
+      "end": 86,
+      "digest": "sha256:9aec79f535dfaa887d66c1cb97fd5926e2037a48bb10006e0f5ee91dd90ad026",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 87,
+      "end": 87,
+      "digest": "sha256:06ed95486343533c58e725aadffee192e58b0e66c37435b6075f1abbfab0dc4f",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 88,
+      "end": 88,
+      "digest": "sha256:615f9afb0969099cb8559af9fa03579f9aa8bc719fd479ea46c87b429c8fa7c0",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 89,
+      "end": 89,
+      "digest": "sha256:ece523c7d95d420d4ff49e42b4fb263847bfb194d96eebb9f9472a2b0266a7e4",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 90,
+      "end": 90,
+      "digest": "sha256:55d36c9e13550beda9bc9b4f1b97fffcd3a67ebb3131b46da19bde766aa4301c",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 91,
+      "end": 91,
+      "digest": "sha256:ca0b1a038da8bd2b2d0efb1dc8ba443d6fa6c9170defea920290dc1893113054",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 92,
+      "end": 92,
+      "digest": "sha256:df4092078cc4a38649fd1a6c2db05359ead7cfa6ec2d03e554346a8afe8be40a",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 93,
+      "end": 93,
+      "digest": "sha256:4c154cdaef82ba33866af83a0fb4627709fde0adf6b35ece16355f457f55ed74",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 94,
+      "end": 94,
+      "digest": "sha256:ed5295afc6784be5a144ff2e04d7ca5fc52f50c0018e8b80f1e07e8e09fab533",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 95,
+      "end": 95,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 96,
+      "end": 96,
+      "digest": "sha256:2e5b1f197b485e8cdf8748852ce400e31c33b2fde20666b639b384f138545119",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 97,
+      "end": 97,
+      "digest": "sha256:483099046153124c94b85381b4e9266a5dbab7f3367f510eba712ef112f78af4",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 98,
+      "end": 98,
+      "digest": "sha256:42a57081051f4682a7db3e590b4dd5413d53dc9a01551276dacb521a7e1db9a5",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 99,
+      "end": 99,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 100,
+      "end": 100,
+      "digest": "sha256:3a4a03891de8bd776a73074656e73288163810eff90b3f1ecbad4514d1f0c4ff",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 101,
+      "end": 101,
+      "digest": "sha256:3daa72f779158343cd0d61c100db1411a18e398adcb99238eb55b994630da900",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 102,
+      "end": 102,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 103,
+      "end": 103,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 104,
+      "end": 104,
+      "digest": "sha256:f617583bdd59a8f9b6efbfa833ce726ab8f2a63f009ec98b17ca6e58ea7fd56f",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 105,
+      "end": 105,
+      "digest": "sha256:9d824d8a5d51c0c2d70f2ff1f5fb3b1f3eff33c9abeae2da685b85035901572b",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 106,
+      "end": 106,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 107,
+      "end": 107,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 108,
+      "end": 108,
+      "digest": "sha256:e668881a70ef6b475989e62699179506aee4d7109bdcc0f293d747fbbb735939",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 109,
+      "end": 109,
+      "digest": "sha256:3efe8ce3bf52f3591dd98e308ec74164b943a772da5e133640412a4947061a64",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 110,
+      "end": 110,
+      "digest": "sha256:4b2cedea404af0cf63e4b98ac54ed122a56878aa43541f8dcb644775ae49374b",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 111,
+      "end": 111,
+      "digest": "sha256:4de96069f63901fb90041560a8a1d89d8914c1ffe05fd424ef7497cc8cf76828",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 112,
+      "end": 112,
+      "digest": "sha256:ce07a314cc30da8988d52444e0f98c802cd9f1bd130206f1dcaddfee947e4080",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 113,
+      "end": 113,
+      "digest": "sha256:c2276c9e86ae3efd48a3cd10ca3ff126e95949d0d47be5653c545669e9a399c2",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 114,
+      "end": 114,
+      "digest": "sha256:89bc7511b22b538df142833751d4a03741bb28393b43f19f8d66d491daf52d9e",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 115,
+      "end": 115,
+      "digest": "sha256:07cadc89cf18fef7e7443b01625b8c1e04007c9ff4f731efa8d26b85f3c05da4",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 116,
+      "end": 116,
+      "digest": "sha256:886f026c8f9fa182c7a1461594ffc59cfba1dd257d73c64cac0c759be3c76d9e",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 117,
+      "end": 117,
+      "digest": "sha256:332f2cf14771e844e2cb62c60b833366fd9befa7cf153bc562a6db2fb32eb826",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 118,
+      "end": 118,
+      "digest": "sha256:5bad7cc2dfafc2175fa2d9704e0202f94083a9da69a585b0b18c48bea236275e",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 119,
+      "end": 119,
+      "digest": "sha256:89bc7511b22b538df142833751d4a03741bb28393b43f19f8d66d491daf52d9e",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 120,
+      "end": 120,
+      "digest": "sha256:ba36383f575af7a26a84f62ba168517a80f3ab25b594de072f1526be4744710e",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 121,
+      "end": 121,
+      "digest": "sha256:e85c6490d5f1357282dba84f94b52b1e1fa0e6c65c1d73db5dba7524ad1d7915",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 122,
+      "end": 122,
+      "digest": "sha256:70c7c083a33519021034ae141ae75c76fe97e547cca5a469e8bf2e8cffd85879",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 123,
+      "end": 123,
+      "digest": "sha256:5bad7cc2dfafc2175fa2d9704e0202f94083a9da69a585b0b18c48bea236275e",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 124,
+      "end": 124,
+      "digest": "sha256:89bc7511b22b538df142833751d4a03741bb28393b43f19f8d66d491daf52d9e",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 125,
+      "end": 125,
+      "digest": "sha256:a1959ec3bcaf5203b0848f689008ed9184b0e62e759805118e27d67155e8de4b",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 126,
+      "end": 126,
+      "digest": "sha256:41c8aa97a495683b8787fd16ba834461c7a96af38f28dc105540591c830a9d70",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 127,
+      "end": 127,
+      "digest": "sha256:afe1baf6d8b0530ea89f8d8b83f5c3fc89b5bb186c9f1b75226fca6bfcc26089",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 128,
+      "end": 128,
+      "digest": "sha256:5bad7cc2dfafc2175fa2d9704e0202f94083a9da69a585b0b18c48bea236275e",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 129,
+      "end": 129,
+      "digest": "sha256:89bc7511b22b538df142833751d4a03741bb28393b43f19f8d66d491daf52d9e",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 130,
+      "end": 130,
+      "digest": "sha256:6932fad1f938637a3f2ff2bcff536b6aaa5693bffcd99cc2b84c92781b94defd",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 131,
+      "end": 131,
+      "digest": "sha256:f1c07651d7763883ec7139b5f92517447ab65bb9baeb91ec48aa163578b05730",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 132,
+      "end": 132,
+      "digest": "sha256:e75ba92aa897b2802428150077db3c869c3f4e8d5250bba170d3014fe8d693ac",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 133,
+      "end": 133,
+      "digest": "sha256:5bad7cc2dfafc2175fa2d9704e0202f94083a9da69a585b0b18c48bea236275e",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 134,
+      "end": 134,
+      "digest": "sha256:89bc7511b22b538df142833751d4a03741bb28393b43f19f8d66d491daf52d9e",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 135,
+      "end": 135,
+      "digest": "sha256:7095da64fedc746899ce9bcc0d6d3fad9918ecf5a87f9e4c7f9da4f2ce19ad7f",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 136,
+      "end": 136,
+      "digest": "sha256:5e2f43048cdd2ecb6b624766419b76625f1ea7bc7cc46689d380d4e2b105e8e8",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 137,
+      "end": 137,
+      "digest": "sha256:2c86c252d313141b009d64303392e4e5ae73171bced9c331947a7278872521fa",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 138,
+      "end": 138,
+      "digest": "sha256:5bad7cc2dfafc2175fa2d9704e0202f94083a9da69a585b0b18c48bea236275e",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 139,
+      "end": 139,
+      "digest": "sha256:89bc7511b22b538df142833751d4a03741bb28393b43f19f8d66d491daf52d9e",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 140,
+      "end": 140,
+      "digest": "sha256:f8345acb5513a5548493790e711b5ce5addc947c369e8b6c28cbd8f7f1c46d20",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 141,
+      "end": 141,
+      "digest": "sha256:c785c40a9f677f9759f9c678b808f88dc8d395ca24c7a15261d2664778be2cdf",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 142,
+      "end": 142,
+      "digest": "sha256:cf4f59e21d0ac6d57287d7b8b68dcd9d0acc4a2dcaaf5f88b137e8ffa5e4e446",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 143,
+      "end": 143,
+      "digest": "sha256:5bad7cc2dfafc2175fa2d9704e0202f94083a9da69a585b0b18c48bea236275e",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 144,
+      "end": 144,
+      "digest": "sha256:89bc7511b22b538df142833751d4a03741bb28393b43f19f8d66d491daf52d9e",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 145,
+      "end": 145,
+      "digest": "sha256:9aca406ea246c4f335e525f569f4f9fafab41f6c806f0ef7da761dce193296f9",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 146,
+      "end": 146,
+      "digest": "sha256:f23840bd454959f54378fecf514159ee3b57c8a43b247cda6e94d71024e0a54d",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 147,
+      "end": 147,
+      "digest": "sha256:a71b2381bfc6087239754c30cacc13f592a2429c4ab7219073dab2a149b63cf8",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 148,
+      "end": 148,
+      "digest": "sha256:5bad7cc2dfafc2175fa2d9704e0202f94083a9da69a585b0b18c48bea236275e",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 149,
+      "end": 149,
+      "digest": "sha256:89bc7511b22b538df142833751d4a03741bb28393b43f19f8d66d491daf52d9e",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 150,
+      "end": 150,
+      "digest": "sha256:2cc6b7dcc81be45507e56119fea66291af4e1eb4594817b8d3682aeef84b7752",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 151,
+      "end": 151,
+      "digest": "sha256:5636ff403cf95392020231e9cbc7652899c9fabcc2b12cac02e5b5f17e932c34",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 152,
+      "end": 152,
+      "digest": "sha256:455cd5711d602e22eddf8dcd7b6d3d1df426af37760ba807409550589e91539f",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 153,
+      "end": 153,
+      "digest": "sha256:5bad7cc2dfafc2175fa2d9704e0202f94083a9da69a585b0b18c48bea236275e",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 154,
+      "end": 154,
+      "digest": "sha256:89bc7511b22b538df142833751d4a03741bb28393b43f19f8d66d491daf52d9e",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 155,
+      "end": 155,
+      "digest": "sha256:c2c6e52badcc61bb88a50e89c617be813accf4e55188f4cb3808883d1a5bc7f1",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 156,
+      "end": 156,
+      "digest": "sha256:6b3fa43588d510274c4421b9ead31a76942b71a534dec3e1ab9c284ae532d342",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 157,
+      "end": 157,
+      "digest": "sha256:5c523cb563107eb521ef8d29ca7e7ab70d5fa1fc43e1b1cada13e63c2750afa2",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 158,
+      "end": 158,
+      "digest": "sha256:5bad7cc2dfafc2175fa2d9704e0202f94083a9da69a585b0b18c48bea236275e",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 159,
+      "end": 159,
+      "digest": "sha256:89bc7511b22b538df142833751d4a03741bb28393b43f19f8d66d491daf52d9e",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 160,
+      "end": 160,
+      "digest": "sha256:1eeafed20388ec740fdbfa34c8d4eb666776ec1a8ad43efba9199c9eece1beb4",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 161,
+      "end": 161,
+      "digest": "sha256:667070535966025211fe66377f8deeeb26507ed1ca3022367fc8d12d804fa4b9",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 162,
+      "end": 162,
+      "digest": "sha256:332f2cf14771e844e2cb62c60b833366fd9befa7cf153bc562a6db2fb32eb826",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 163,
+      "end": 163,
+      "digest": "sha256:5bad7cc2dfafc2175fa2d9704e0202f94083a9da69a585b0b18c48bea236275e",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 164,
+      "end": 164,
+      "digest": "sha256:89bc7511b22b538df142833751d4a03741bb28393b43f19f8d66d491daf52d9e",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 165,
+      "end": 165,
+      "digest": "sha256:0df5e49c86c55ceef0786263d0a29ecb5cb6afa7d0a937eb9987251d4ad1dc94",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 166,
+      "end": 166,
+      "digest": "sha256:e593fbb38086bd456c984649296c071a46bc394451c093ef32bf85e88a1e14a0",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 167,
+      "end": 167,
+      "digest": "sha256:044fbd0a60b998e19d10cf44326bd33ef7f1b147e861072d94ffeea32200e306",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 168,
+      "end": 168,
+      "digest": "sha256:ac5c515d33b73c11ade57900a441802cd5347b6f8ed38fe2e437f3c640211f1d",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 169,
+      "end": 169,
+      "digest": "sha256:80296a3c0478f1131d1c345824b09d8c130d876ad3d9776668d22615c935b032",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 170,
+      "end": 170,
+      "digest": "sha256:d8b407ce2bc33661468b4728cd8c14e0f5c6a2a3501e4a7f3b76470e878bb353",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 171,
+      "end": 171,
+      "digest": "sha256:5bad7cc2dfafc2175fa2d9704e0202f94083a9da69a585b0b18c48bea236275e",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 172,
+      "end": 172,
+      "digest": "sha256:89bc7511b22b538df142833751d4a03741bb28393b43f19f8d66d491daf52d9e",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 173,
+      "end": 173,
+      "digest": "sha256:3163c47bac9fdc392c7ce9fbafa642237cb89833375a23741119f65254d1bf34",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 174,
+      "end": 174,
+      "digest": "sha256:e593fbb38086bd456c984649296c071a46bc394451c093ef32bf85e88a1e14a0",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 175,
+      "end": 175,
+      "digest": "sha256:044fbd0a60b998e19d10cf44326bd33ef7f1b147e861072d94ffeea32200e306",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 176,
+      "end": 176,
+      "digest": "sha256:6524de6194e157226c8e2e2b71a8761a371d814b2403a9e73387a41eddd02321",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 177,
+      "end": 177,
+      "digest": "sha256:80296a3c0478f1131d1c345824b09d8c130d876ad3d9776668d22615c935b032",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 178,
+      "end": 178,
+      "digest": "sha256:d8b407ce2bc33661468b4728cd8c14e0f5c6a2a3501e4a7f3b76470e878bb353",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 179,
+      "end": 179,
+      "digest": "sha256:5bad7cc2dfafc2175fa2d9704e0202f94083a9da69a585b0b18c48bea236275e",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 180,
+      "end": 180,
+      "digest": "sha256:89bc7511b22b538df142833751d4a03741bb28393b43f19f8d66d491daf52d9e",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 181,
+      "end": 181,
+      "digest": "sha256:987b460a75e79fcb6b0816d472ad9f2db155d8b18f966ccbe517130ff27f6d47",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 182,
+      "end": 182,
+      "digest": "sha256:e593fbb38086bd456c984649296c071a46bc394451c093ef32bf85e88a1e14a0",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 183,
+      "end": 183,
+      "digest": "sha256:044fbd0a60b998e19d10cf44326bd33ef7f1b147e861072d94ffeea32200e306",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 184,
+      "end": 184,
+      "digest": "sha256:d24519aeacefdb0181cc10ed69fed56a58ea381c36321c09e9f8fbdd1e08368d",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 185,
+      "end": 185,
+      "digest": "sha256:80296a3c0478f1131d1c345824b09d8c130d876ad3d9776668d22615c935b032",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 186,
+      "end": 186,
+      "digest": "sha256:d8b407ce2bc33661468b4728cd8c14e0f5c6a2a3501e4a7f3b76470e878bb353",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 187,
+      "end": 187,
+      "digest": "sha256:5bad7cc2dfafc2175fa2d9704e0202f94083a9da69a585b0b18c48bea236275e",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 188,
+      "end": 188,
+      "digest": "sha256:89bc7511b22b538df142833751d4a03741bb28393b43f19f8d66d491daf52d9e",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 189,
+      "end": 189,
+      "digest": "sha256:fe902ecb7bc1401633c107e4cd7e946ada72a1f3ef085984198c330389116d8c",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 190,
+      "end": 190,
+      "digest": "sha256:64507119239746415751612a541b1b04beb365da012b29e2028ca83f8eb287b8",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 191,
+      "end": 191,
+      "digest": "sha256:59fe7ad7d523571c6ab4bafcc8034cd52a9b30be845d03b8d61040823447cecd",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 192,
+      "end": 192,
+      "digest": "sha256:5bad7cc2dfafc2175fa2d9704e0202f94083a9da69a585b0b18c48bea236275e",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 193,
+      "end": 193,
+      "digest": "sha256:60a9fae1e72373c234e5cec21b8d71c3ec2f9a4be1daa97a875f5749f1d68a73",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 194,
+      "end": 194,
+      "digest": "sha256:32f3459a6cb836ae01f30d3e4256fa886e00595118f72c4c3815eb6da2f3aeea",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 195,
+      "end": 195,
+      "digest": "sha256:e74e0b1feab4c95bb64a1b74811a25f9057b2a3f5c8d1cb318adb6ca18bbc78d",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 196,
+      "end": 196,
+      "digest": "sha256:21f2395fb51d379f8e98de39d7a652dbbbc84edf46233367054f402740f4c9f2",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 197,
+      "end": 197,
+      "digest": "sha256:67017fd061e3ed169b395f7618a1250c0263faeb25b0cd323936d9acfe343375",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 198,
+      "end": 198,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 199,
+      "end": 199,
+      "digest": "sha256:e7e1c7ea3c7062499e723457e3e063022a33c09a008ede78da2e850a0b09dc27",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 200,
+      "end": 200,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 201,
+      "end": 201,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 202,
+      "end": 202,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 203,
+      "end": 203,
+      "digest": "sha256:9cde6f022f460092326e4ce22481caa0548a72c081cb866829a5effc5290a9b0",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 204,
+      "end": 204,
+      "digest": "sha256:9b78ef944a35390dfa7f088978f1eaf888a8d17cbccb6b9c58ac74acf112c658",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 205,
+      "end": 205,
+      "digest": "sha256:8f0e9a254967757a8608fb2194da46b86dda6647c849df0948e776e5b74c29a9",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 206,
+      "end": 206,
+      "digest": "sha256:09e906ee974535043bc55ae4315b1368cb2f7454adca6b55cd9b83949aa92ec4",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 207,
+      "end": 207,
+      "digest": "sha256:5ff93660d8b8b52a7c1919a0151b78ef4e8ddd11f72836cc0ecb8b46e9778988",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 208,
+      "end": 208,
+      "digest": "sha256:44132d9c45d1c198cb4acf226486ed9badf640ccb69066e1a2205813b50a3717",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 209,
+      "end": 209,
+      "digest": "sha256:d63719e13baa6a237b1dd76a617996ab9e0b06fcdf7067afae4c638e04d5b608",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 210,
+      "end": 210,
+      "digest": "sha256:9cd29c67c3c3ec3d7093f1ba227aa60c3d9391a01ccdc58d21913cb53b954e72",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 211,
+      "end": 211,
+      "digest": "sha256:15595c7bf072fea74bfab81cf28b6341621727b16aa41361fd906975037f693c",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 212,
+      "end": 212,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 213,
+      "end": 213,
+      "digest": "sha256:313c8509fbf36d0e2e1930497448f57a8529d00ac0297c8ef0bd35f1eecb211d",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 214,
+      "end": 214,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 215,
+      "end": 215,
+      "digest": "sha256:46526b44da81fe0f65333d1f7dcc378fb06d40ca87742f26a8ece72e9b40c661",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 216,
+      "end": 216,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 217,
+      "end": 217,
+      "digest": "sha256:555121750b153f4c46042cc9e58f5c24b8afac03482b2c58f64f8aa8e4220850",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 218,
+      "end": 218,
+      "digest": "sha256:8d4b8e4c7cca5bb860b560d1466260c72057e98919e67151a01fb6457967aa48",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 219,
+      "end": 219,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 220,
+      "end": 220,
+      "digest": "sha256:4a5823b2188dd8996e63f04e8352770a4be2ac057b93344c368fb88e825e23bf",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 221,
+      "end": 221,
+      "digest": "sha256:e54e36771992ae37f5fc9fb08af90925a4d88607a49873554fb4474f1568a1dd",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 222,
+      "end": 222,
+      "digest": "sha256:37f3aab3ffb6c4d3af6cd9cc2500d5c20063ccced74509c2dc36bd193cf68272",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 223,
+      "end": 223,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 224,
+      "end": 224,
+      "digest": "sha256:3957f2bb280b5c9279d16ece7490dc78478fbf626017460b1cfa8c1a38421a2b",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 225,
+      "end": 225,
+      "digest": "sha256:a8215a321897205a53e6e0a912a5660b7263a49978042a37166c04be558328f2",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 226,
+      "end": 226,
+      "digest": "sha256:e227a22f53bd9adf5b0f6a7fb4ccbff474fa684c4655e555ac177c50e0f72d40",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 227,
+      "end": 227,
+      "digest": "sha256:b8edfee9c82a0bc822ff5cf51d43bec1de66bef9695ad1b6235f7d69b927dd95",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 228,
+      "end": 228,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 229,
+      "end": 229,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 230,
+      "end": 230,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 231,
+      "end": 231,
+      "digest": "sha256:81f1e440afbbb10deb3fc0fba39ce9958e0989f470cc63b43bad77a8e7f77ff3",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 232,
+      "end": 232,
+      "digest": "sha256:2e10269d3c2a98f3dcf7b2e4f4e6639f87a9036d1c80566e300117451bf48fd7",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 233,
+      "end": 233,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 234,
+      "end": 234,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 235,
+      "end": 235,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 236,
+      "end": 236,
+      "digest": "sha256:b0405203f9b23b6959a7fd9ca657c9349260c374013e97ad514d5afe7a77fc75",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 237,
+      "end": 237,
+      "digest": "sha256:43c1fd367141e83bf64e42427807b6b5664810b3c4d07b39a7927983eb5c0f4d",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 238,
+      "end": 238,
+      "digest": "sha256:ac7fe4ce7f03fa609943cc92ec728eee0ca045ee96fbe436083968b1569867b5",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 239,
+      "end": 239,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 240,
+      "end": 240,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 241,
+      "end": 241,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 242,
+      "end": 242,
+      "digest": "sha256:6166ad91683bdb32e54b22fdd8f59276c871a6de59608a8b8c7b367640d3bb50",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 243,
+      "end": 243,
+      "digest": "sha256:7e01a5ab37e91b591aab46aa5a034b5a12f6a94eb1333fb237be64a1e4589b1f",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 244,
+      "end": 244,
+      "digest": "sha256:5818fa88badc08268bb1d220e20bb5111a8b5d597d2faf3abd74ff2a82b1ea1f",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 245,
+      "end": 245,
+      "digest": "sha256:774b49ff3ae1d680d69e6fb062431cde00ed26627e86faf37c18e374ebb5d145",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 246,
+      "end": 246,
+      "digest": "sha256:ece523c7d95d420d4ff49e42b4fb263847bfb194d96eebb9f9472a2b0266a7e4",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 247,
+      "end": 247,
+      "digest": "sha256:19939016bb3d0f92942d75a3cfe11e0930e37901b6845fd786a668e45300ef81",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 248,
+      "end": 248,
+      "digest": "sha256:d7d5d3c460a734b373e9e1449b20b6888c0d34a115a0eef5873bfb316a8fcf49",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 249,
+      "end": 249,
+      "digest": "sha256:131609aad76186c901608f6173038206182d7fb934284096460c258013608212",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 250,
+      "end": 250,
+      "digest": "sha256:13d28ad1fa053326595262907706e027c34318c44e2e7333f42912a31b4fb1d3",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 251,
+      "end": 251,
+      "digest": "sha256:7c08f8d66729421edcb7b5797d45e5a69d2acb5f22581a1d4ff9ad4308ee6c2f",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 252,
+      "end": 252,
+      "digest": "sha256:43599922a5cbd0bc31d54d61726859b0ad867a397aa540509549800da6d91706",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 253,
+      "end": 253,
+      "digest": "sha256:8f14db19f298562f5bf5dfeaacdfbfce81f7b3ac33e48f91f3fac6c1fd323fbc",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 254,
+      "end": 254,
+      "digest": "sha256:0160d3c48f0aca27fe2f35653e3dc0524b0cdc6eda246534e491a74b2ee553a2",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 255,
+      "end": 255,
+      "digest": "sha256:05ec6f9e30edc6a72a33c5dae33e870887773876bf4b1b0269e4f7c4e17a0926",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 256,
+      "end": 256,
+      "digest": "sha256:f56ab888b32ba2a445bb5820c368ee3663b6183e3e14fabb6595617c08156a25",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 257,
+      "end": 257,
+      "digest": "sha256:ef157cba485ca3f0a6ad277c53d895045a574e1b01d970ae1f0531be91d41476",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 258,
+      "end": 258,
+      "digest": "sha256:aab380cbd35ad767e1031740ebb1b3720b48fa549102e2b2a00ce26cd1318f5b",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 259,
+      "end": 259,
+      "digest": "sha256:e537d9602ad2a425a2146274825775dda14b4b946af33b7e750c657e5efce1da",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 260,
+      "end": 260,
+      "digest": "sha256:51d984620758b39a05afae731c491577de42892f921c5fa327067c632f9488f3",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 261,
+      "end": 261,
+      "digest": "sha256:4251e8c5ab127634290c5ec1d64fcf002eeb7fe20d6c989da49da5c3296ddbf9",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 262,
+      "end": 262,
+      "digest": "sha256:c6aff92eaabe72868052795b5453ad75e02a2af1def9e985efe0de0fddd66fb8",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 263,
+      "end": 263,
+      "digest": "sha256:9fd7f6f3c333a34cd7b72f0fb559eb3860f34021a61292c9e9988653398cdd9e",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 264,
+      "end": 264,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 265,
+      "end": 265,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 266,
+      "end": 266,
+      "digest": "sha256:8eeca58a3dfc0c18d7317d267e3ffc8081717e94f57ae1ee23229ddfe9bd0a9f",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 267,
+      "end": 267,
+      "digest": "sha256:63e53643285bfd12e499d328fa49e2b3174802b2ba16effc079bff70ca0b97bb",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 268,
+      "end": 268,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 269,
+      "end": 269,
+      "digest": "sha256:2ad89428479077d02041b50dccc55ecae1797f4c95518a4923fa4991683cad8c",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 270,
+      "end": 270,
+      "digest": "sha256:df5263fcccdac36a96a6c2842f79e98f4e6c3bd22e634f497b6fb917ca3b6229",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 271,
+      "end": 271,
+      "digest": "sha256:67179f383db0b45e3061227060e6a8b448c77995eb1c732086bce7f237f3a692",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 272,
+      "end": 272,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 273,
+      "end": 273,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 274,
+      "end": 274,
+      "digest": "sha256:bfd0c527402ea433800ecbce758f0a29246b3bcbe7bb91bb5f8ee3aa8d3bcd1a",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 275,
+      "end": 275,
+      "digest": "sha256:96fa34c452b9464b2e13989ec9ef8c0b314255c0dc6091d0b99855a645a1ec9b",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 276,
+      "end": 276,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 277,
+      "end": 277,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 278,
+      "end": 278,
+      "digest": "sha256:7f454d80415e410a1ba451ceb185d7d12678ed25b624cb38e7cf1fb81fcbf8ed",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 279,
+      "end": 279,
+      "digest": "sha256:b2cb39bbcc62c5ca3ca8b19d9a754fe51f98a45741d734e99072154f8098f141",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 280,
+      "end": 280,
+      "digest": "sha256:67e1956ecddda90d8830247be4b63de9eff3386c086bea15643977a86f799d20",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 281,
+      "end": 281,
+      "digest": "sha256:363c29cf5070519acd58e9781e5307fd22dd161a29aaf0a2c60647077308cc3c",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 282,
+      "end": 282,
+      "digest": "sha256:ece523c7d95d420d4ff49e42b4fb263847bfb194d96eebb9f9472a2b0266a7e4",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 283,
+      "end": 283,
+      "digest": "sha256:82909b4e0af117354bfe923732c3ac21b8b979ae44e847eddb620c59c6655795",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 284,
+      "end": 284,
+      "digest": "sha256:d78b9530e0ff586c0658d79b43d7982b4e72b13c34209dd9fdf5bb8bbe2a2771",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 285,
+      "end": 285,
+      "digest": "sha256:4a59da4f39c4fe2c5e850ebc1218a1e9ee8cec9162fcf4ce5ff6c30a8a71844a",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 286,
+      "end": 286,
+      "digest": "sha256:4c154cdaef82ba33866af83a0fb4627709fde0adf6b35ece16355f457f55ed74",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 287,
+      "end": 287,
+      "digest": "sha256:3f076720194952cecf52bdc8b3124670790474f659c87e71a73cd0eb2763dcbc",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 288,
+      "end": 288,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 289,
+      "end": 289,
+      "digest": "sha256:0c6749dd665367fb0c074624f2b67655f4c2fb5a9da73298f3e65fe16044c69e",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 290,
+      "end": 290,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 291,
+      "end": 291,
+      "digest": "sha256:6a58517d751a2b664e72962c8ea1e87a13ae7c615d8bffcabd97cd3b0f8ce503",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 292,
+      "end": 292,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 293,
+      "end": 293,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 294,
+      "end": 294,
+      "digest": "sha256:029fa5588a0324008127be93c663d496c8fe59be8537a4aaff6db70ad9103e6f",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 295,
+      "end": 295,
+      "digest": "sha256:4703720b468d52bf31ce59e90713aaaca72e40529648aee447a935149c2c1f9d",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 296,
+      "end": 296,
+      "digest": "sha256:eedeb9594471ac834af676022817ad8af117104fdf842e46c5ffb0846aec9436",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 297,
+      "end": 297,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 298,
+      "end": 298,
+      "digest": "sha256:5e9cef98a683bdbe9edd59255d68667cdf78bbd840fa7e3b7bce612c00e194c5",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 299,
+      "end": 299,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 300,
+      "end": 300,
+      "digest": "sha256:9f8901d94ea2213c66087632c95aec06b15bd2d74681a8945f85aebcb0022401",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 301,
+      "end": 301,
+      "digest": "sha256:cedebffce0667605a87d677ad5d6b6eee1bc576bf6346656582ca84f348dfac7",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 302,
+      "end": 302,
+      "digest": "sha256:e9ee4f2f30b0d1fd089f0b2960fdb9f1281c04349b1b2562280d9a01ec27e007",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 303,
+      "end": 303,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 304,
+      "end": 304,
+      "digest": "sha256:9dc933de6fc031ed5c771a05cfa470cef0e9ab77ecfe5df2d95211433bff8007",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 305,
+      "end": 305,
+      "digest": "sha256:169855a95f6f91a1cc3e0a8efc7c8c164b76de408e9069407fbc49a2704211ca",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 306,
+      "end": 306,
+      "digest": "sha256:e23a9bd954ee93161998284f16598c172d8a06bc1f9a1863c91ae4d790e84d25",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 307,
+      "end": 307,
+      "digest": "sha256:302756d573185788ac88ed1b3be2f2607a94f1517c150fb6bd191fa2f39bb2ed",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 308,
+      "end": 308,
+      "digest": "sha256:b72a78911d6a5a485a96b2a81a83f4d354ee6a4c1ab76e2ea63580b54b612cc0",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 309,
+      "end": 309,
+      "digest": "sha256:9ebfaf9f6b128bc5d97ff87bd321b77d1ea55af051e51d581c86ee40823f6b41",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 310,
+      "end": 310,
+      "digest": "sha256:0f907d5bbcc3d9177410cfab43fbfb3c7c32b119e9f7719122c02fabc1e6a7fa",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 311,
+      "end": 311,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 312,
+      "end": 312,
+      "digest": "sha256:12e75cdd374587fcd0a288971be2e15770ec01a4c14c1f7bcbbf1d7c83f5feca",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 313,
+      "end": 313,
+      "digest": "sha256:ad27edd1bf07d437d88d7806e0ea16d3c88179ff80a2143a76b7436611af8ea0",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 314,
+      "end": 314,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 315,
+      "end": 315,
+      "digest": "sha256:c3a6fbb7c4638b89ee239710f4e0060802ae146ba1376dc7c2f730e93c24e931",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 316,
+      "end": 316,
+      "digest": "sha256:487edd20d459b0eb439b339cf54d4b5f15c53b07d7a7d6faca61bc5d3ad1d75f",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 317,
+      "end": 317,
+      "digest": "sha256:d78b9530e0ff586c0658d79b43d7982b4e72b13c34209dd9fdf5bb8bbe2a2771",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 318,
+      "end": 318,
+      "digest": "sha256:0d3432028e17906dc199261178eb4a8dae100f134f53f2fe4707354136ab2274",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 319,
+      "end": 319,
+      "digest": "sha256:e51a962ff673c9edc0c48e5afb7b8cbf532c552a7c70cc8930af541297af489a",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 320,
+      "end": 320,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 321,
+      "end": 321,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 322,
+      "end": 322,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 323,
+      "end": 323,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 324,
+      "end": 324,
+      "digest": "sha256:fbc5086452126fa23e029fa35cb9d655962bfbc77dbca9f0f918c34ef3957d0d",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 325,
+      "end": 325,
+      "digest": "sha256:942e1420451f07e1cbd32e879fa3723260f5e3217ec9619e5845f379f0674a8b",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 326,
+      "end": 326,
+      "digest": "sha256:a6a64e295367e2eaa93bca6723ad76aa422b9fbf41a1b1df79e045c486d5db78",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 327,
+      "end": 327,
+      "digest": "sha256:61a8a01c5c7abf39c5014c81f6bb16d15c9b5670c97c32f94e51e5d444b7033b",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 328,
+      "end": 328,
+      "digest": "sha256:259e6decfa5f3f0c888ca9420da1eb9b14963c841415fba2869bc32403c3101d",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 329,
+      "end": 329,
+      "digest": "sha256:86590664fa473bfb303c1e5097c11e24f63cd5e2977615577c2814499cec024b",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 330,
+      "end": 330,
+      "digest": "sha256:b4fbbf4e1953cb12c4deb9b9540b782357abdf2b766ea4aba461a0a74eeecebb",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 331,
+      "end": 331,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 332,
+      "end": 332,
+      "digest": "sha256:cf78118cdf45dc922b1ae41186878593a07c316031a02990970b21b6f211474e",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 333,
+      "end": 333,
+      "digest": "sha256:75570c16fcd47cc7a257b164e0f7bbbc24e42686c8847ca500787da5165da443",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 334,
+      "end": 334,
+      "digest": "sha256:6b092d234dbe4b9a8c262e1f2bbdfa4a91305d9a52cd12540d01a3d40dc23ad0",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 335,
+      "end": 335,
+      "digest": "sha256:ed37b23562b95a8784c40233b799812f11458c58e83e6bd9cbf81cc0c0ca6fa7",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 336,
+      "end": 336,
+      "digest": "sha256:38eb18e3502c0c076240994886550f56c00250111a3ab26d08298fe6c71233e9",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 337,
+      "end": 337,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 338,
+      "end": 338,
+      "digest": "sha256:e39fa9f421bc3bfedabb434fd083b5dfb7e35179b2e27094c496b9dd4355e656",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 339,
+      "end": 339,
+      "digest": "sha256:e8dc0d100cd000524a845fd03584d7932c34525685850b8e654454c9bd4b72f2",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 340,
+      "end": 340,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 341,
+      "end": 341,
+      "digest": "sha256:e7e1c7ea3c7062499e723457e3e063022a33c09a008ede78da2e850a0b09dc27",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 342,
+      "end": 342,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 343,
+      "end": 343,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 344,
+      "end": 344,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 345,
+      "end": 345,
+      "digest": "sha256:e5715cc1e03091160ca590ffeca503cc8bb22868cad975b9cb5249be51ac8ead",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 346,
+      "end": 346,
+      "digest": "sha256:4a4817cd4fe7fea09217d3588f533b730e174d887ba676edf46f277db2a50320",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 347,
+      "end": 347,
+      "digest": "sha256:f21ebeaecdeababfa2175d7be1845cba4332dae5edc3041c5704ff731ae44b00",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 348,
+      "end": 348,
+      "digest": "sha256:4703720b468d52bf31ce59e90713aaaca72e40529648aee447a935149c2c1f9d",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 349,
+      "end": 349,
+      "digest": "sha256:cc7904cfb89e7653d9f2c1cf2d468c70a2478957ced6e440e57bb9e1a1f7449e",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 350,
+      "end": 350,
+      "digest": "sha256:08b6adf69280af200ec020afd07c20a9615aedf9f912696d2cf59af990d532c5",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 351,
+      "end": 351,
+      "digest": "sha256:1992b1100e5f182d603e968c3c3b5ea7680c1cd049f5ce22a5ab1696b83c071b",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 352,
+      "end": 352,
+      "digest": "sha256:df59dba9890eb0b317e659e58ed5f50154ae4471cbe56b52c2791f480359d928",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 353,
+      "end": 353,
+      "digest": "sha256:cdc1cfac25414bfe10428f76d611bdded3cd808faf97abe09b1005e23af6e2b9",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 354,
+      "end": 354,
+      "digest": "sha256:c583fcf2b72b37a2f492dc791120503d1a2a585d076c5dbebf28d6d290ab2881",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 355,
+      "end": 355,
+      "digest": "sha256:b1d984fda031f8154995dc0e2cd594f7582013f45a7bbfb373e84675c03df879",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 356,
+      "end": 356,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 357,
+      "end": 357,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 358,
+      "end": 358,
+      "digest": "sha256:2d1e8bb4072531bd86e265964db76d63c55994c4e65bb078eb19f6b46136c5a5",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 359,
+      "end": 359,
+      "digest": "sha256:a09fca5861c015711c6dc3d1f7a932ab53f8b27d63c007400a95674c6956058c",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 360,
+      "end": 360,
+      "digest": "sha256:ca6089f74075704c5dd6875ec2052536a2cc67619b0988bb8b4988c18fdf16ea",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 361,
+      "end": 361,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 362,
+      "end": 362,
+      "digest": "sha256:d09b25748d00c405e419ba0754f204a8ae62ad2459135c2c394f94cf60afd381",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 363,
+      "end": 363,
+      "digest": "sha256:1a7edfbb7a4ddfa1452607d149254cfa66afb848164f03cd002bbe6bb06175b8",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 364,
+      "end": 364,
+      "digest": "sha256:59b35bfd42ad34b5d68234c5c0450a67e6d5e13f252c0b03bea3b4c19d4bf8d0",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 365,
+      "end": 365,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 366,
+      "end": 366,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 367,
+      "end": 367,
+      "digest": "sha256:2bc12146215b18ee0c41652cdd93dd31b11edd368c09738fba75011ca31e475d",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 368,
+      "end": 368,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 369,
+      "end": 369,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 370,
+      "end": 370,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 371,
+      "end": 371,
+      "digest": "sha256:b18dd5bde3a3efeca26296002d0b715e37762572c9c8398b3a604dfa305d5740",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 372,
+      "end": 372,
+      "digest": "sha256:abec31387b3b287bd316020c6e6df4b3882dc6d0f5d7b881b347066a31d6efe3",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 373,
+      "end": 373,
+      "digest": "sha256:c3cdc78b9e2951f6f747f23f79f681b371c2af2729cd0eedc493a2372be99426",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 374,
+      "end": 374,
+      "digest": "sha256:0607710ff2e92676c82d05fe6a14d5e8f69397ceadf86695d781bf565743e300",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 375,
+      "end": 375,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 376,
+      "end": 376,
+      "digest": "sha256:74f4243c765f191328c9351bb48a8b925483d73d3686a609fa7ee479267fe05f",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 377,
+      "end": 377,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 378,
+      "end": 378,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 379,
+      "end": 379,
+      "digest": "sha256:3e61e8b49df782269a21d599108fd8015a2566f6c3d3c3e8470b31f70f898c47",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 380,
+      "end": 380,
+      "digest": "sha256:f64689ccb7a3f1fcc76c1bd23cec360d313a4d2d27a4826ad8dab5037ad7cb61",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 381,
+      "end": 381,
+      "digest": "sha256:9732f904f6b2255397e4174cd828e33d59bdd28aefecddad02ae5ed1fd36be83",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 382,
+      "end": 382,
+      "digest": "sha256:4703720b468d52bf31ce59e90713aaaca72e40529648aee447a935149c2c1f9d",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 383,
+      "end": 383,
+      "digest": "sha256:f6cea136ba009405287cad94eff177f43cb43ce1a819c24b085c9dfd55b6f6bc",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 384,
+      "end": 384,
+      "digest": "sha256:5e9cef98a683bdbe9edd59255d68667cdf78bbd840fa7e3b7bce612c00e194c5",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 385,
+      "end": 385,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 386,
+      "end": 386,
+      "digest": "sha256:f548fbe609faf3daa8cb9a70c433a8bc4286d65ad77b2cd17582aaea6fe526bd",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 387,
+      "end": 387,
+      "digest": "sha256:cedd37c033c579f24c5e44ca38231bc772f3ca9c10049f950c139f2bfe386c44",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 388,
+      "end": 388,
+      "digest": "sha256:8b5f4aa291db3340150cd4e6d2dc5107de589fe70ddedbde344594e189c71d8b",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 389,
+      "end": 389,
+      "digest": "sha256:d8925f9abb8e9e7934cf622a6e7fb0de99b0ee957c3764b38909fe9dc6966a1d",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 390,
+      "end": 390,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 391,
+      "end": 391,
+      "digest": "sha256:2bc12146215b18ee0c41652cdd93dd31b11edd368c09738fba75011ca31e475d",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 392,
+      "end": 392,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 393,
+      "end": 393,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 394,
+      "end": 394,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 395,
+      "end": 395,
+      "digest": "sha256:d4ee83d454d1e5012a620f6ed44a1a081e1eed0b9bbdb1124a3b0dd45ad710be",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 396,
+      "end": 396,
+      "digest": "sha256:a7f6a8aa2270adac92dec4951a8548d09ad22da598991862d2d09777d9a34b5d",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 397,
+      "end": 397,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 398,
+      "end": 398,
+      "digest": "sha256:fdd54761b9eba25a917b06f1f3f2c33fd961c812fccd4bd37e719bb9760c204f",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 399,
+      "end": 399,
+      "digest": "sha256:4a381cf29a932611944628b2576249ff8b8885cefa52e1611ab196ac3ed65434",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 400,
+      "end": 400,
+      "digest": "sha256:8872a8b565e62bf56f6f0ea75d99881c34d2ea16ba7c01e96939a315238465d2",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 401,
+      "end": 401,
+      "digest": "sha256:440eeb1b59650a37ad23657df4d99771286a0b17bd733be797dd1781a8fe9c93",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 402,
+      "end": 402,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 403,
+      "end": 403,
+      "digest": "sha256:c3f44089161219f491ef6403c7c188f55a7d92d5a6b32fa71a69aa679fb4024c",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 404,
+      "end": 404,
+      "digest": "sha256:a24a0fb005684ed6a8db1ba24b19b34c1175b13f8dd6577304a1bbaad4c4c8a9",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 405,
+      "end": 405,
+      "digest": "sha256:49d0a06f0278d3915c2a88f26dab39e1b3dfb97e636401534701432920654c63",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 406,
+      "end": 406,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 407,
+      "end": 407,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 408,
+      "end": 408,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 409,
+      "end": 409,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 410,
+      "end": 410,
+      "digest": "sha256:9ed9a01c8bdb8e29570071a9d0bbdf908c8a3e795bcb6c94834a338d7d0c97db",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 411,
+      "end": 411,
+      "digest": "sha256:b2cb39bbcc62c5ca3ca8b19d9a754fe51f98a45741d734e99072154f8098f141",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 412,
+      "end": 412,
+      "digest": "sha256:67e1956ecddda90d8830247be4b63de9eff3386c086bea15643977a86f799d20",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 413,
+      "end": 413,
+      "digest": "sha256:65ecd562a1bed5fa9f8f749782cd21229597360b347f30edfd72ea931bc18371",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 414,
+      "end": 414,
+      "digest": "sha256:a7a590ab2eb9ad1a7475645cafd626bc13f6076ecd3f03b89052f167cd1acf87",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 415,
+      "end": 415,
+      "digest": "sha256:d78b9530e0ff586c0658d79b43d7982b4e72b13c34209dd9fdf5bb8bbe2a2771",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 416,
+      "end": 416,
+      "digest": "sha256:8c45407ea3aa3ee4ed961c0e8de35784aea601dc2476931d27530ff4b08255ac",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 417,
+      "end": 417,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 418,
+      "end": 418,
+      "digest": "sha256:8ddbb0579822c712f46fc5948b96785d55257fe30e9c40c8f567727a8bf3f6dc",
+      "note": "Canonical range regression cases."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/cover_ranges_test.go",
+      "start": 419,
+      "end": 419,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Canonical range regression cases."
+    }
+  ],
+  "version": 2
+}

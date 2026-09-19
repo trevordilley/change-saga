@@ -5,7 +5,13 @@
   "kind": "ux",
   "statement": "Hovering or focusing an active slide diff total temporarily shows the normal hover state on every evidence-bearing Item and on no Item without associated diffs.",
   "evidence": [
-    "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=69\u0026head=product-3fccf2c0b6a597951c4e45a49361e70631e320e8a79d4e2aa11560c3ed50eef7\u0026path=e2e%2Ftests%2Fhybrid-slides.spec.ts\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=69"
+    {
+      "commit": "75508b54ee82cf1dce0b889c1c605966a7a533e0",
+      "path": "e2e/tests/hybrid-slides.spec.ts",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:3779e0fa6ce52fe05d6f59fe239a0e7d56d1f4f8b421f2c5b9e5de34fb1a36f5"
+    }
   ],
   "created_at": "2026-09-16T23:50:56.392647Z"
 }

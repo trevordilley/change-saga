@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-facing-interface.md",
+      "start": 367,
+      "end": 465,
+      "digest": "sha256:ca0aeb04d4d15b948638c47c35dc1ec5bdfb0809213302ad32658c703378e143",
+      "note": "Provides stable target resolution and structured all-or-nothing mutation outcomes."
+    }
+  ],
+  "version": 2
+}

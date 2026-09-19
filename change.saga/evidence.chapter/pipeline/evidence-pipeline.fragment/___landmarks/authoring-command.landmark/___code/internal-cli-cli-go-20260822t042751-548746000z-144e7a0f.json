@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/cli.go",
+      "start": 1,
+      "end": 176,
+      "digest": "sha256:ef0fcfb8b654691eb5bdd1f667698f2640614fe86862e64322a6b1f7ad7c88d3",
+      "note": "Introduces the stable CLI command surface and dispatch that starts portable authoring workflows."
+    }
+  ],
+  "version": 2
+}

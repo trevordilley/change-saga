@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/cover_test.go",
+      "start": 176,
+      "end": 254,
+      "digest": "sha256:e3fcda3e15af0320193107a9216e35a853298483214bf347ce1e1d38773a54f6",
+      "note": "Implements atomic exact coverage creation, replacement, removal, naming, and repair."
+    }
+  ],
+  "version": 2
+}

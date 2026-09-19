@@ -1,49 +1,93 @@
 {
-  "version": 2,
-  "diffs": [
+  "references": [
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=23\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=23",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/server/appjs.go",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:3d979d19e76915f6433b9bdd840774c9cab546a8d7d50269f239a20e031e5fdb",
       "note": "Marks Item visuals by exact evidence ownership and temporarily applies their hover state while the slide diff total is hovered or focused."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=55\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=27",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/server/appjs.go",
+      "start": 27,
+      "end": 55,
+      "digest": "sha256:ebb6a1f5514d1dd8afc7667db3a2ba822c4da9df3a62c189c531817bc2fb36a3",
       "note": "Marks Item visuals by exact evidence ownership and temporarily applies their hover state while the slide diff total is hovered or focused."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=73\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=73",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/server/appjs.go",
+      "start": 73,
+      "end": 73,
+      "digest": "sha256:22071c579613ab98a6d5ef678cbfd8fd1c9619c7ac5440d618cd3f832ff5c1e7",
       "note": "Marks Item visuals by exact evidence ownership and temporarily applies their hover state while the slide diff total is hovered or focused."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=674\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=674",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/server/appjs.go",
+      "start": 674,
+      "end": 674,
+      "digest": "sha256:d0ff3b2b4b233b61fcb9c6fe289e7b5e6bcbcb46e84e1dc0552816f5bd13c6b7",
       "note": "Marks Item visuals by exact evidence ownership and temporarily applies their hover state while the slide diff total is hovered or focused."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=913\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=913",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/server/appjs.go",
+      "start": 913,
+      "end": 913,
+      "digest": "sha256:40514756389d5ed6e5a6986eec8a04ba06a43b2999a2dc4984ea9b619f1afa37",
       "note": "Marks Item visuals by exact evidence ownership and temporarily applies their hover state while the slide diff total is hovered or focused."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=923\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=923",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/server/appjs.go",
+      "start": 923,
+      "end": 923,
+      "digest": "sha256:5b0c9b85283ebd32aed6f586d2ead583b6d35383808e62367843220bb5d4bd80",
       "note": "Marks Item visuals by exact evidence ownership and temporarily applies their hover state while the slide diff total is hovered or focused."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=927\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=927",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/server/appjs.go",
+      "start": 927,
+      "end": 927,
+      "digest": "sha256:4a4fa97ca294343b7fea9bda8927c9d00f14cc2bcd38055eab9f5a40f2ebd40f",
       "note": "Marks Item visuals by exact evidence ownership and temporarily applies their hover state while the slide diff total is hovered or focused."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=3332\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=3329",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/server/appjs.go",
+      "start": 3329,
+      "end": 3332,
+      "digest": "sha256:4e680c05b751dff5a787a6218ca81c0c2f9b2f925492754d9b977f021d0bdf0f",
       "note": "Marks Item visuals by exact evidence ownership and temporarily applies their hover state while the slide diff total is hovered or focused."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=3345\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=3342",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/server/appjs.go",
+      "start": 3342,
+      "end": 3345,
+      "digest": "sha256:ac4c5cccfcc57d9ef522c6bb13b98b2a2d06e155e4fd90ef30a11f87351b4b7a",
       "note": "Marks Item visuals by exact evidence ownership and temporarily applies their hover state while the slide diff total is hovered or focused."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=3357\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=3354",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/server/appjs.go",
+      "start": 3354,
+      "end": 3357,
+      "digest": "sha256:175ea3906292d9975d64b3fdfcc96d43ea9290a148c380c2b3b3f29020aa910d",
       "note": "Marks Item visuals by exact evidence ownership and temporarily applies their hover state while the slide diff total is hovered or focused."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=3368\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fserver%2Fappjs.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=3365",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/server/appjs.go",
+      "start": 3365,
+      "end": 3368,
+      "digest": "sha256:30885e5a6f8a070495cfacc18d43b07bdf7a715d1f87102264df359136c3b706",
       "note": "Marks Item visuals by exact evidence ownership and temporarily applies their hover state while the slide diff total is hovered or focused."
     }
-  ]
+  ],
+  "version": 2
 }

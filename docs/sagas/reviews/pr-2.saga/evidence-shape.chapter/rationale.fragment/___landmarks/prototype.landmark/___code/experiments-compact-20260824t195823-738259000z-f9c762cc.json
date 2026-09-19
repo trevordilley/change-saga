@@ -1,0 +1,219 @@
+{
+  "references": [
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.mod",
+      "digest": "sha256:e645898a4d3bbb90adc8cf950ed1d8638c230d652f766f63ed1a19a2fe22dc65",
+      "note": "Experiment-only dependency boundary."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.mod",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:89321b769f05442b700b5c4c64d80b8eab236a2b52260cacf1bfcbad9e924593",
+      "note": "Experiment-only dependency boundary."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.mod",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:cc74ae639a8548b96a85b29bbb6122f8c6b3099d8819c13880d1149215506206",
+      "note": "Experiment-only dependency boundary."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.mod",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:35b099848079ea0701619f5caae1a69471bb2cb9c994c4f7d5845c91aeb4162f",
+      "note": "Experiment-only dependency boundary."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.mod",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:15d35a721cbcd5864f71f7b019a715a7931025301d241c2e8eabf2996c14fefa",
+      "note": "Experiment-only dependency boundary."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.mod",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:471c7cc4262729cdf48376ebc9b7f8205ec49a14f8a1b9a47e40d78176d3a83e",
+      "note": "Experiment-only dependency boundary."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.mod",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experiment-only dependency boundary."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.mod",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:8946df557e17fd1d6180a979ed5af02265377498f33068632b1ecf999d74fd93",
+      "note": "Experiment-only dependency boundary."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.mod",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experiment-only dependency boundary."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.mod",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:b77335cf61a6d74b1a5e38dd347a53eb4c2037fa845403a6c04dec9a5ddd9af2",
+      "note": "Experiment-only dependency boundary."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.mod",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experiment-only dependency boundary."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.mod",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:0385ced9f68af1592be6b31c482d646c0c0c7fd913e05b2738b94d9f3e95fd56",
+      "note": "Experiment-only dependency boundary."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.mod",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:3e9a980302c3fdaf359dcafa85c4b95eefb40f677930ac961bbd030a8b9a8ae5",
+      "note": "Experiment-only dependency boundary."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.mod",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:272a5f39ac81eee4aa521f3cb5d5861a6b7728e8159c667ffaf1aa2c4103255e",
+      "note": "Experiment-only dependency boundary."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.mod",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:fafba0527c3953c4b6e0e5b5739ba83612f8053bcdc9466730193cd1d590b408",
+      "note": "Experiment-only dependency boundary."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.mod",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Experiment-only dependency boundary."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.mod",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:0385ced9f68af1592be6b31c482d646c0c0c7fd913e05b2738b94d9f3e95fd56",
+      "note": "Experiment-only dependency boundary."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.mod",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:71d23f1417836775c6e3d581afe91677ecb5c75d932f97771a9a2f6a61b4cca6",
+      "note": "Experiment-only dependency boundary."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.mod",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:1d104570ddb961ec98d3620141504921fef582b2a7ddc73b97727921dfe23291",
+      "note": "Experiment-only dependency boundary."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.mod",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:49729186daf6094f3b3ce83fdac9640a0b0e546b79ce009b3396d99853340037",
+      "note": "Experiment-only dependency boundary."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.mod",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:3b5909165dbb3d50bbbbd3963f7a974419f5b65221bfd7ece2485c836c4945d4",
+      "note": "Experiment-only dependency boundary."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.mod",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:3f7d511c4f44109071652c81b338f23293c8e9af06674935413f385ec2f0b409",
+      "note": "Experiment-only dependency boundary."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.mod",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:d2dc5a391e447954917fe87c5dfdc7c742d058ceafc319557c929ba96bcf27f3",
+      "note": "Experiment-only dependency boundary."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.mod",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:1cdbd5ff3d11254ff1f09a367290109ea3e8592fd54011e98e8a3f568723fb82",
+      "note": "Experiment-only dependency boundary."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.mod",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:262c643c869b4e441346a631026134b5497061f621b37fcd681d22309e17afd7",
+      "note": "Experiment-only dependency boundary."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.mod",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:1b39f820b45bf719e49bad63dbfbbcb7c5efb6fce6caff1fce0646459a189bfc",
+      "note": "Experiment-only dependency boundary."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "experiments/compact-connectors/go.mod",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:fafba0527c3953c4b6e0e5b5739ba83612f8053bcdc9466730193cd1d590b408",
+      "note": "Experiment-only dependency boundary."
+    }
+  ],
+  "version": 2
+}

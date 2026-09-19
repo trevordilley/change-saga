@@ -1,0 +1,53 @@
+{
+  "references": [
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/cli/query.go",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:e07acdb19ad5e536952c387df4fbf10063d6571de81ba98653f18866e2002e17",
+      "note": "Summary-aware query selection."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/cli/query.go",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:9be4533a87a9a477d7570d438d2fcebb54098fedcc98fd81608bd3d7fd6eac1c",
+      "note": "Summary-aware query selection."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/query.go",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:8ea55147f62b6aa752cbc9793457c06eb7c055409853d2bf7be4c423793d1210",
+      "note": "Summary-aware query selection."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/query.go",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:311c5db02adb7f5644bc6ec01cd007e84cb329e689c5eb7e4b8a3abcea6c7a1a",
+      "note": "Summary-aware query selection."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/query.go",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:55912ed3651f582e0f9c2140f9d4df84333cb45ff5527eac2eb83cf8a70913dc",
+      "note": "Summary-aware query selection."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/cli/query.go",
+      "start": 256,
+      "end": 256,
+      "digest": "sha256:52545904087df97dd1430d3f2ab1668a4f4ef50e8b4704aea17a62612fdbb25b",
+      "note": "Summary-aware query selection."
+    }
+  ],
+  "version": 2
+}

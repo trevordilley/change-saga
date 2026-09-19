@@ -1,0 +1,499 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "digest": "sha256:f445018e75de955eaa72bb8252b3b76b10e041a4695574c911ff67eb137f39a0",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:19ee099bcd421956cce12ac395762b340c21e6a0de20d32af47c361da37e35f6",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:9b922b7c1779f46cbb9a050183a6d6ea86d37289929a3946ba69e867904cfd24",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:50f7334decd1161af072dec5f219dce898befa4a8de753cd4d19b5702d8877c5",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:77bf887bcebedffd032bea84347a5563ae8d4d12feca990489e2aff6263f81da",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:ce4cdc5e3a6d060cc177d22c6320e9f2618fbc4de2ca548db0aa0ba4d33c523f",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:74ceb589f87d91ba44e2424a84e60f074515a714bc3f6462c348de0393910360",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:30a803bc2505d40a2b8abdb25d49d3a0c3ec6267b86fa43a85f9fb387e00fd2a",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:b6ca6dcf1d32f138fccf651576eac7318030e24bfed62fbb9717edd6c519d380",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:e0bdb8426f175feb76c79b9c0b4f03c92bc9834e74935ea471512ed14f21316c",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:2759185e2e3ca4a0c435ddcbeed1ca845216a759be699f5da1f740b5439533b1",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:ebfa7917ec705cdd2a7e89f3e43329cb8bc157e1bafc670c85d68f805bab4891",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:9f5a3960bdb2e6afa75d74a87cb176fe58104977798d795e9ed560b35ddb028a",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:ea280acdc4efa1c1f3ee7113ce9280d8809589223da0ccb3d33fc4dd0b4e9912",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:dadb82935e9435d05258101eb98e9be8ebeb7b3dd6b7d06dd58827b77fa3437e",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:e13a59f2123624617eef692ac22ca8f9a0d2ac6f309042eae7254ec0b1879abc",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:9773b24236fa9d6013e0f09c96dac5f4fa00a1db8457321f58c46d33b2347777",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:9b137a98c114807b9e529f9ae0fea9ebcec9eab825e73ae718ec934b3d271fb3",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:0b4ee7de43c6a9c700daa13701b3fef41f8ba728583c32e751a91a48badc9c5e",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:4a96692e7a7fd03db44afae3aafe6fe22a5b6af47967773161cfc62bc859b00f",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:93f05b91fdd792430b7588d551a79adcedaa9f1bf664e1d3835f87f4e60c3d66",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:c0409a2c0effe9897078e6636ecc6a921a9e76b0514069a2d0632be2b6dae47f",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:187ba6d95b989647205cfc81460c4a2896c11e9802e8c8e8a0af0319b57a2cc2",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:e507dfb937907e19d6db164776d67e52df55921f40d5714381e02c956b558936",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:afbb84eee4b108da80db07397f8803263083468cb7430153057c216f681a282e",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:53280a22fae5f72a2e27cf6c4b3c464b28f11604455b2e03b2899bdce9fe5bf8",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:f278651200f2706111aed0c915c1b3ed87978f9c184231647e481de4fa90e991",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:a232a8aa9080199d42c05fe2cd59537b4b2803c00a7d6d77ed294fe1b1fca637",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:e68fd075196ac78591fc7565c7c37f4151584556dacbc9bedc3659374afcaa8f",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:93cb2122c6e679569fcd6fe0ef2175f154e3591650164d9281fc6e2cbcc14987",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:c9e15b8b1e64470aa8389cdf6ab97cbbffa6473f9b28d9c466675c01e19bcda2",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:fb05ba1dfa89d4d62da0f6c24e88b3b3263eea469bc69ccbbd87648ebcd948a5",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:30595d9c3f0f4132b8c3aa20a20fcb5daaa14e35965a4bbdc91fd538831048d7",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:8c7c2edd414b3628ea009f8c0a0a431e79f9ff67c87dbd3bf5c6c54b6404259a",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:5b9c23de7d9e288bb7508de5af48ab7861be8b0652887f53f4f2f068dc095a6a",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:49516943b7d40689da535d98b00f5b031e806107c724fb49be58c6474fa12aad",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:a321ea1b9b2888472542ed9a3fa3c24b8db30c26a01e1ce9b795abb585ccda16",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:125cbd49f984ed8c1ea2de44a04d1d2320e8cdaae53636b11a5a8270fb6ea8d7",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:577f8f2be28ad07f4a0a3d17526e55574535d85a62fd8c96937b1e4b4df7b11b",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:5e3e8d4bee087995eaf5c5a87ff64afa0ea4588a10dca4ead2da21ca43d5c415",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:1ac3786e3191d783bead845a6fae5844c22d5c20b6f65ae13aae0b138614b6e6",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:eb9d863049ed22b129ccaa783564144dcf4944055779f4f3d255c0fb3d83006d",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:5080225699bbb0a4c8e1866835dbe188870e0b173db12b2b8e85fb4ae67cc059",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:d4e570d24aad1ffcf504b4578e6e1def9fcaabc422ddcc6accda2d73b620aacd",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:0f2ab6956619f2e33c5ebc3c96812a1e236ecef0a2a4814a0b9b42aa7006bef3",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SUPPORT.md",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:f77496b4b7780e5dac9a15e287ed35d4d0056c8f1c53df71e9e113b143a01520",
+      "note": "Routes questions, bugs, security reports, and usage help with honest response expectations."
+    }
+  ],
+  "version": 2
+}

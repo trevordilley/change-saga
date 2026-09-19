@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "SPEC.md",
+      "start": 362,
+      "end": 382,
+      "digest": "sha256:66bf88d1c83fd6e0f814d1c961d3ae620f620b4fbb22f68a16a69516ac47f183",
+      "note": "Defines and validates independent claim and append-only verification records."
+    }
+  ],
+  "version": 2
+}

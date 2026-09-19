@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/mutation_test.go",
+      "start": 1,
+      "end": 127,
+      "digest": "sha256:4efe6e132bd3e75fed8782b3d8e4338a1fe43937561502cef080434e8a45e3a6",
+      "note": "Provides stable target resolution and structured all-or-nothing mutation outcomes."
+    }
+  ],
+  "version": 2
+}

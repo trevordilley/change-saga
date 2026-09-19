@@ -1,17 +1,29 @@
 {
-  "version": 2,
-  "diffs": [
+  "references": [
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=43\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=e2e%2Ftests%2Fannotations.spec.ts\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=43",
+      "commit": "b6042a5b85057c8f2f892dabc9d06cb1bfa155fd",
+      "path": "e2e/tests/annotations.spec.ts",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:f2f7c9eb8631bbe155dd6134368b9d6c5a45e5a2b35f532d813ccb99845e2cc9",
       "note": "Keeps comments, replies, thread state, file review, and slide decisions in place while refreshing only the affected review surface."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=65\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=e2e%2Ftests%2Fannotations.spec.ts\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=65",
+      "commit": "b6042a5b85057c8f2f892dabc9d06cb1bfa155fd",
+      "path": "e2e/tests/annotations.spec.ts",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:f2f7c9eb8631bbe155dd6134368b9d6c5a45e5a2b35f532d813ccb99845e2cc9",
       "note": "Keeps comments, replies, thread state, file review, and slide decisions in place while refreshing only the affected review surface."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=78\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=e2e%2Ftests%2Fannotations.spec.ts\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=78",
+      "commit": "b6042a5b85057c8f2f892dabc9d06cb1bfa155fd",
+      "path": "e2e/tests/annotations.spec.ts",
+      "start": 78,
+      "end": 78,
+      "digest": "sha256:65f2b17427222c53b3626a9863175514b504387040ad671a57e1361522bd3a1e",
       "note": "Keeps comments, replies, thread state, file review, and slide decisions in place while refreshing only the affected review surface."
     }
-  ]
+  ],
+  "version": 2
 }

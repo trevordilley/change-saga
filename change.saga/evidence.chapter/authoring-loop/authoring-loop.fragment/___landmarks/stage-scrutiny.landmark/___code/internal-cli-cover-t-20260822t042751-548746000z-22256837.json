@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/cover_test.go",
+      "start": 366,
+      "end": 508,
+      "digest": "sha256:924656cb4de0173aad63256f4c97415014ac166688e13a409486ad988d7cc9b8",
+      "note": "Surfaces broad, weakly explained, or unfocused mappings so they can be split and retargeted."
+    }
+  ],
+  "version": 2
+}

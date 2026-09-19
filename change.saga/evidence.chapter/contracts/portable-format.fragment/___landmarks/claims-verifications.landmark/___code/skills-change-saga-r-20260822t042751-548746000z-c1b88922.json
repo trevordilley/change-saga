@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "skills/change-saga/references/format.md",
+      "start": 114,
+      "end": 141,
+      "digest": "sha256:dddc41733ae7e346433a1bf1451ade6f8ffe0ac75bdf7cc717a804c35aba0ef8",
+      "note": "Defines and validates independent claim and append-only verification records."
+    }
+  ],
+  "version": 2
+}

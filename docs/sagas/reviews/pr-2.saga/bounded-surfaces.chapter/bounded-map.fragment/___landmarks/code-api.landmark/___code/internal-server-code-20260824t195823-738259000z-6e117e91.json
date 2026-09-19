@@ -1,0 +1,149 @@
+{
+  "references": [
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:ab6f6be8e5963a10d31f1044691aa6beceed5a59d04cd8247f259497075d8b4d",
+      "note": "Lazy code rendering compatibility."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:10ff52a0887491ea34fc8944c4b1c1ab6142f464adce55e992bdc2a292616070",
+      "note": "Lazy code rendering compatibility."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:b68f9371af0b5995dd38771da4d10ff0ae3e0c3c27f3611e6a7a0c01577dca6f",
+      "note": "Lazy code rendering compatibility."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:a8b4d19ade5e572203f35366fbea83eedddbdc1996f73218600a966bffdd994b",
+      "note": "Lazy code rendering compatibility."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:a391b372b20395248b2c5b0ca35dfecdb2ad02118d72d01919ca313e6d658dc0",
+      "note": "Lazy code rendering compatibility."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:b592b7eae008673d71fe2ae2f73a66c7655dc0ae813b0ca54454f29eae84bf50",
+      "note": "Lazy code rendering compatibility."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:b9872abad02f1d0d1a4d1ee5308417f9b80338ef415b8c2cf3a538632f6cc382",
+      "note": "Lazy code rendering compatibility."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:9f1ccfc71e79e9f945c323a956c670fb04441436a6b067a77458d8657ffe47be",
+      "note": "Lazy code rendering compatibility."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:54c565285f0cab9b6f04c630bf94527e3951c0ce32c94f0969d271c24b1908b5",
+      "note": "Lazy code rendering compatibility."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:13429ee9b978639a2ae711b119af7a4426607ab2a4afb74bf2c87c5de190143d",
+      "note": "Lazy code rendering compatibility."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:4973169175658f1d44f915823411a68c8e759874683f5616080ad221bb25b901",
+      "note": "Lazy code rendering compatibility."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:6bef4057010edb4a3b56f51b6bc67a8c74e07e692786d671c9431f79df02c08c",
+      "note": "Lazy code rendering compatibility."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Lazy code rendering compatibility."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Lazy code rendering compatibility."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:9bf550c3ab3caf9d5f66f6ac2436cbf228d0d20b821d70900f2f39f9caef09b7",
+      "note": "Lazy code rendering compatibility."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:8d504c1816c07f5820b668442509ab43e800e118718a5cd02c4bb21fdc8561b0",
+      "note": "Lazy code rendering compatibility."
+    },
+    {
+      "commit": "4823e6887676cda35cc43bd9acdfef9cd2cd8c83",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:d0cb32aee034cda1aea967724e8f4566cfd4418f8afa2a47a946019fc8473d60",
+      "note": "Lazy code rendering compatibility."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:d12093776f1510bd27a2c67f403f67fe25515eda27641d16d7c04420dc28a5af",
+      "note": "Lazy code rendering compatibility."
+    }
+  ],
+  "version": 2
+}

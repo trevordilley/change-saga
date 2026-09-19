@@ -1,0 +1,11 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/workflows/ci.yml",
+      "digest": "sha256:7d7c18f6200164a28d397978cc6117002f50363530b0e184b64593100cfc641f",
+      "note": "Introduces secret-free continuous verification reused by pull requests and releases."
+    }
+  ],
+  "version": 2
+}

@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/server.go",
+      "start": 884,
+      "end": 901,
+      "digest": "sha256:bdfe69b1430ef326ff7467bbc8b654e37100088dc2d775e360443254d50d5b97",
+      "note": "Projects the latest persisted thread state, attribution, messages, and anchor into the rendered thread view."
+    }
+  ],
+  "version": 2
+}

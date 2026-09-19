@@ -1,33 +1,61 @@
 {
-  "version": 2,
-  "diffs": [
+  "references": [
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=24\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fsaga%2Fmutation.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=22",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/saga/mutation.go",
+      "start": 22,
+      "end": 24,
+      "digest": "sha256:ec01add47b14dbe9409784095d1568aed56efe7dc0bd52828c91f64a93486aaa",
       "note": "Indexes embedded deck, slide, and Item targets with their flat mutation storage boundaries."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=42\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fsaga%2Fmutation.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=42",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/saga/mutation.go",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:b0292e32cc80eb1f14dc29ebe16fea6e156eeb82d3f7643a7a56353451ddbec4",
       "note": "Indexes embedded deck, slide, and Item targets with their flat mutation storage boundaries."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=53\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fsaga%2Fmutation.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=51",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/saga/mutation.go",
+      "start": 51,
+      "end": 53,
+      "digest": "sha256:1574f1c5f708a2a98b8e431dcf734c9e196c1023e624fab6a94dc77eb3e23741",
       "note": "Indexes embedded deck, slide, and Item targets with their flat mutation storage boundaries."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=61\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fsaga%2Fmutation.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=58",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/saga/mutation.go",
+      "start": 58,
+      "end": 61,
+      "digest": "sha256:06cc290d4a4d9ee5c3d8366e261b91c2b32d42a6255048db210c2f6dc4cd38d7",
       "note": "Indexes embedded deck, slide, and Item targets with their flat mutation storage boundaries."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=69\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fsaga%2Fmutation.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=67",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/saga/mutation.go",
+      "start": 67,
+      "end": 69,
+      "digest": "sha256:12eb8aadc2d93833bf07005199335a3b68af0f302b10d0235e74c303d7733e8b",
       "note": "Indexes embedded deck, slide, and Item targets with their flat mutation storage boundaries."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=123\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fsaga%2Fmutation.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=115",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/saga/mutation.go",
+      "start": 115,
+      "end": 123,
+      "digest": "sha256:f912f84918e7165397477e4e10c407f02135d6040328d7149d18610d6cf5dd46",
       "note": "Indexes embedded deck, slide, and Item targets with their flat mutation storage boundaries."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=128\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fsaga%2Fmutation.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=new\u0026start=128",
+      "commit": "b98be0c29a31ce652e0479a180ec0be87af93a9d",
+      "path": "internal/saga/mutation.go",
+      "start": 128,
+      "end": 128,
+      "digest": "sha256:b0292e32cc80eb1f14dc29ebe16fea6e156eeb82d3f7643a7a56353451ddbec4",
       "note": "Indexes embedded deck, slide, and Item targets with their flat mutation storage boundaries."
     }
-  ]
+  ],
+  "version": 2
 }

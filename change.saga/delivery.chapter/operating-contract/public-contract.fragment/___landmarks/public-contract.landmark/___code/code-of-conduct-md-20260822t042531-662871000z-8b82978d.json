@@ -1,0 +1,1139 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "digest": "sha256:0f317fbcfa8cf223b066e7c772271a910360acc8072ab8588c238d029219ff7b",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:9f317aa7104e0847ce652861e83fc8f6974bbb30112f7f5cb3799b9b972a2163",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:2978793d9e9c4b5f365a7e73b26b59501fa32c99aadbe1f118816277704c59be",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:b5db6c05eede3fa5e6e5b1a70e2bd8695c0a83dcd7bab4e3ac95bde526ad23b4",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:a4dab81abe65fd4d9cb1992eaa9300f1da7fe7c131ef298161a49687a2386534",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:5a77d4d41d423d4f4c4e8c4757e00718349353192ec24cb4a719e10186dd7d3c",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:01df7e7aa778b5f4fbe029d0812ddbdab4d04f871be27e44cbaa3fb102b20722",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:3c521bdd4b773edae455b905df0d94a4417da7cc1f56ab2af230bcd6c9cdf7a3",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:ab12612f369f80d6804e207a7269378885cb33248f9457879e6f8421393cd0f9",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:d4d3c0c8b842c76e1fdae3d618f20647ce1101274738414e01d9911758802137",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:b7d3c419754d863babd811a5846a8ba822b054d7019858b42f053020bc9d3a54",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:c0b64dd93bf2e9fe775927d879d3909332f218d0ccef03e8dbb3139b725f4b8a",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:0218c6fde2c6ae7ebc613c5ab96a087f014e5494dd6a541724895dbe85656c58",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:18d8af984b29d74535bdddb3d503f0722ef656ceec2a2dfebcc2a560fc4ee742",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:466cc613f46ad677d5ceddd259091b55589a7b741ec5f36aaa0096b356b6f3a5",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:a006d42c1441f26eea4c279a8c71563c679633f246a96f23505214e84eed01a6",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:0c7ed62fd97a6ae63ddd3018e1607eab2d53d0fd2f18ff1a4a7e0deccf60368b",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:33fcd61c19e422dcbdeaef4e51315a26558233d662b0acbaa892acd474e71c28",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:582e5da06698a8cce70dd12b329bd18cdf527492f8a8ac7af75ee385617182cb",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:8e9fd9cacbc6dd1f1fdebe489a4b92ae95e15823f65d5cb4ade961a0c64a52e9",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:1e3b13ac03d04200da8eb1bfd86b3bef4cb6108d5b5d74d03c52b03ffb4db19f",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:7ddaedc9b89e29f3fbf9c6f1f0acca0c3a9fabc71737fa649fe2c134d8cf0379",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:c25e6a39bc419323daa6c011df0a22630752da00833459d703c602c110eecdf3",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:9c6173b987f26058b4a39f1fa3ead7e20b45da9b6f3327706ced26fefc56beda",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:f906ebcc8401ba121b7539b9e546c0a670204592627f733dc292966b73b30eb4",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:33fa9d15faa295306c99252503b0d7a834ee9888fa75b75ec24084d33e232de1",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:9b2a5ed100d32fe63b1530bdc8a1dae73ed9c3b48c2007d25ef7a0c2c6f84f34",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:ffa41745c22df79ad53ae443291befc98b2278f2c31778bd722d27e182e2a181",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:9c747610600eb172ccc0189488c5299c2509393cd99e8d82bdc6d1fa1ae8817d",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:6db62766c078b4cd46126a77173bb87e1f39dee8db945f211048ccd38398ec2c",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:f295a744229132f6184a7fd98b1aea95cf94a6ff9bbdaf8545783a7af8a5e494",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:92498276df1d906b72dfef29c2d1a45ca304c6f7a88149f6b1b1daba9854b8c5",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:45b5b15b48dc99415665f29295d083817013e64698e5137a3af9ec0ac5957f30",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:cf0901fc93a1fd92b75177181d808c673d0ecc41a209bdaf24ae4eda008709db",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:b1a7febfd928eda6cc0b7cc9c47bb91b7e6730b3460779a705e8a654fb9d05bc",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:bc8d558843cb809390815cb047860c29185a6f0805fce755f9871a0c9f9989b0",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:49d9a337f65c122f625299be3d0fdc387323687ac1320e461eadbd47653fe7cf",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:779610f5c68ed002b819b002197bb48bf9b520b5594142071a619cc5410636be",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:58949fac86de4567faf2ae44732882e8775c149c6cef09c0b53376c58839dc05",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:2feec8cb393165e95181197ebefeca44a4256bef6f4cfc10de68843135d1ecb6",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:2081f3acd8cf1e83ad4b5c1d36e53be793bcce36ffd7b2eaeb5c0f019c824b62",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:02f9138848fffb1a20f89dad9cbbd704a3a360218c407b4c37787b0bbb00af7e",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:641a47cf520c6f43de4bada1f9a9550bd2323f4fe5144cf6180f6f100d232b55",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:5d83fc9a1de8e682c2d38aa6ebcd76af5ed77d76e6190a779e047301d84fb3a6",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:80effb6628d244891d0aff2456577beffee4960670990b1cd6d55c7d4889aaed",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:44eedece94caa64cd8b73571f141b912fd526ee850c1d44037556453680af69c",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:5044807c9440aa83365e4814ffa5d520c0d0e09c3b2e235e2db52e575c02c9b3",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:90a926877cfa57116f97794de0b22e367925983f6eec37f94b7484f83f41028f",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:ac51de05fb5ad0c461bdc3ed575368ed69e0ebe2bdb1aeb176f3dfc6a9f6185d",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:75017eae3e2b4736253a1c0022054f492ef9eae7175c311c7477164b3ec163be",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:87734a0dfbd5dad13355366b4c35856083548e9c3270c4bf33b816d4a1d48f4b",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:921991d4d9fab74fb65e79ec3c8bc14dec1fc69a88d90d159773c6849199a8fd",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 68,
+      "end": 68,
+      "digest": "sha256:f0abe075bf045880e2b7f43073230e38dcfcabdbbda7a8cc0024b9849c2a4dde",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 70,
+      "end": 70,
+      "digest": "sha256:93406befd3aefea7f558376f774156fdf402c0895a8c2554ddfe2682823e2954",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 71,
+      "end": 71,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 72,
+      "end": 72,
+      "digest": "sha256:05742e6d101ec01d58c6730516f55ccc9fef2d765657d5368527313891f3de15",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 73,
+      "end": 73,
+      "digest": "sha256:183aec1bd9c0426a79774cf05778a91bad8b70ae9ea204dc2ed884f02918e25f",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 74,
+      "end": 74,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 75,
+      "end": 75,
+      "digest": "sha256:9d1f91a6f58704d556c64a210a669cf8d8e0af43ca1b880f7139a0566e5fe1ce",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 76,
+      "end": 76,
+      "digest": "sha256:94661d1244c30012e291dbd847651a77e004e9ddfe70b5df32a0e45c8bb8af18",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 77,
+      "end": 77,
+      "digest": "sha256:db5c4c6bbb31704bac0ce6f4ccbcaeb9b1baeea22b3ffcd227d84dd8445aabf6",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 78,
+      "end": 78,
+      "digest": "sha256:d8662764ba35c4b208a2b9d5492616f5826a35ace8d08e31d6ac87e8366bcae1",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 79,
+      "end": 79,
+      "digest": "sha256:a86a926163fb2926c547068a3e543b3ebda7db234b356070e2ebacf1b668406a",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 80,
+      "end": 80,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 81,
+      "end": 81,
+      "digest": "sha256:f74d7ed2d765f66dc816f61f4074d2d8569292f7ee218697c31f48a5fed3dc69",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 82,
+      "end": 82,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 83,
+      "end": 83,
+      "digest": "sha256:5587a57b885a738c2fe0416cab743398b933d61ac35f532ad572d801b79ff66a",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 84,
+      "end": 84,
+      "digest": "sha256:f15bd3ad18f8e24dd3132e2a88c59bd87a59ec95b2ebf5fa1f3679b9fb68b3bd",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 85,
+      "end": 85,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 86,
+      "end": 86,
+      "digest": "sha256:8493c4ab933ee272ec891c9ebc560d87e83ae71a2df6071468e9d8a342ef805e",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 87,
+      "end": 87,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 88,
+      "end": 88,
+      "digest": "sha256:9136da5f9205e61fc003e60e96cdd4440d82f14a817d96fba45d8534fe8416e4",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 89,
+      "end": 89,
+      "digest": "sha256:b474239fadd9aeeb916eef9e793f4810ba4b94c6ca2658d12cd39a1edd5e863f",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 90,
+      "end": 90,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 91,
+      "end": 91,
+      "digest": "sha256:185795885bcc89a2225fa1aed0533c9b0594b0bb772ffbdc8ec9e13148ffd035",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 92,
+      "end": 92,
+      "digest": "sha256:871c0210908c2712291fb6d32c6552d9c27872bcdf6b6d953272b0c8910893b4",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 93,
+      "end": 93,
+      "digest": "sha256:e64956466cc998196f01d9015f6eec4f6b20370978ef8d464f2307c207969f96",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 94,
+      "end": 94,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 95,
+      "end": 95,
+      "digest": "sha256:cd86540979e41c9e464939fae0e9d3df8bbb537ffc3f5d0189c5420313eb6944",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 96,
+      "end": 96,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 97,
+      "end": 97,
+      "digest": "sha256:dfbee9b11e5a14fb6aa6144e936456eae4bfeb26dd23bc65faaa3e706e28fea0",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 98,
+      "end": 98,
+      "digest": "sha256:0fbb6253a304a67828584761562c9aff36ec7cdd728cb37178fd095a2d997a36",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 99,
+      "end": 99,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 100,
+      "end": 100,
+      "digest": "sha256:14190341c32cc8e61cb0462e4aec2a472afca60fd4c9bb8aed5e8323108c742d",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 101,
+      "end": 101,
+      "digest": "sha256:a206e41d771cf1e2f56a9c8a08a1f80b060c495e1070550dc1a80e0572889cb4",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 102,
+      "end": 102,
+      "digest": "sha256:942b720bdfc993973dc9c748ad2771fef2a30ececfb9f5df3c2eb2668d3aa058",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 103,
+      "end": 103,
+      "digest": "sha256:16c2a178680abb84d8a66bc8d3ea8b696720975989761a032ce1650caf1efea8",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 104,
+      "end": 104,
+      "digest": "sha256:89d5d3ede8f88edd58095d8770269d25f54692353ef466950429a7d0ca72445a",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 105,
+      "end": 105,
+      "digest": "sha256:ffe095914ad94dfaf22be5af1d5fea14d00c201f08ad2ed3e1371da1b9754460",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 106,
+      "end": 106,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 107,
+      "end": 107,
+      "digest": "sha256:bb6dd106f1e1b68df388f76ad5158b5e3d0c2880737c80a978053a77b251027d",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 108,
+      "end": 108,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 109,
+      "end": 109,
+      "digest": "sha256:ab04de77f72a3f7e9fe1fdd5b83e592f8860e736e0277d788c323cfcec509566",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 110,
+      "end": 110,
+      "digest": "sha256:7a8317d4b83f77504d85bbb576f56fad83c11e0a582b80f4be451ae5c37dad10",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 111,
+      "end": 111,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 112,
+      "end": 112,
+      "digest": "sha256:92020372177074cb3413b0c7f5662a2d31406bbd86e32cd81f3f39892c06c0a3",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 113,
+      "end": 113,
+      "digest": "sha256:54d2d96eb335a43f9975d1b29fb70c883b95256775b2ab6148a17a0baa80d711",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 114,
+      "end": 114,
+      "digest": "sha256:e7a45483a33ee63ef1d13aeb0f2fda5745d0b746ca4946b57fa74034d90e1afc",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 115,
+      "end": 115,
+      "digest": "sha256:976a35acfb12cbb5f8e752baf9d8b59e24dfa01a1d7ca6c90f4023bdafc067f6",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 116,
+      "end": 116,
+      "digest": "sha256:8d667dff486bf0e1acf1640e359f1469eda1c01ca81a2811af4f92b469ec271d",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 117,
+      "end": 117,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 118,
+      "end": 118,
+      "digest": "sha256:6648e3a1cff3ecf6c6995dbd4ad22afbdc956ab08ee249a597e415a6840bc1e5",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 119,
+      "end": 119,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 120,
+      "end": 120,
+      "digest": "sha256:960299c9240a6d9a1cf494facae60af77c062088d5e4841476624b17dc6504df",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 121,
+      "end": 121,
+      "digest": "sha256:b4a039f80d715b15b46889fb066d3ba2f4e1e70b3157e0eeecbd020a4c12f497",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 122,
+      "end": 122,
+      "digest": "sha256:12d198e72f00ba19679bf2075fb09a4b4b6f555cd683a50885e114e7df264051",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 123,
+      "end": 123,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 124,
+      "end": 124,
+      "digest": "sha256:e25d828e94a4b98ab2e30b9aef33ba1f26b7a466f6814f7f2230b42c0ec7f8aa",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 125,
+      "end": 125,
+      "digest": "sha256:561f268a5553953ce1023998278faf0edf19ad1926b11ab0b9dbe239707a406d",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 126,
+      "end": 126,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 127,
+      "end": 127,
+      "digest": "sha256:31d183ca9287da8c4c7869b58f28e057b07c4f088067469ead63f746b6dedbe9",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 128,
+      "end": 128,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 129,
+      "end": 129,
+      "digest": "sha256:b013f85c3cf93d31fb44111bb191d191613c31e52b22813cb41ddbd22e0eef72",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 130,
+      "end": 130,
+      "digest": "sha256:7f4c91d5eb6ae5651549224cddce89308a8b359403456f2e0c3f30a189a420ff",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 131,
+      "end": 131,
+      "digest": "sha256:4c0613c2de870d7470c8499178ee84946470356edd3fbfacf62d7d606855af51",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 132,
+      "end": 132,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 133,
+      "end": 133,
+      "digest": "sha256:4d1514e41c05e082d9af24d2336c4685421ea6e4b4915ef02d7496484f6c5973",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 134,
+      "end": 134,
+      "digest": "sha256:1bc9448b89be6a5838a00243ff8994cf5869ff4d2ac84a221b2e5aa81354b158",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 135,
+      "end": 135,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 136,
+      "end": 136,
+      "digest": "sha256:3584138a3a0dc1d74c8e18166f7d358f64a241e170f02d048d4c834811559018",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 137,
+      "end": 137,
+      "digest": "sha256:459c63b4f499ac36b20455342e7bcca4b36fd26d6442b4e81170f1e585ad6016",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 138,
+      "end": 138,
+      "digest": "sha256:823e2b6bd0e8ccb9f6effdba3ed9ffd8184dd5db631fb5a9e444feb6a76bedc0",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 139,
+      "end": 139,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 140,
+      "end": 140,
+      "digest": "sha256:2103ee33a9b654f456d896fe32eadeb083319d4e151da8f8d3f738563565fca9",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "CODE_OF_CONDUCT.md",
+      "start": 141,
+      "end": 141,
+      "digest": "sha256:b653f4cd347600c0da9972f3e73b6e3fa8c1ad39d4c094ef3274176c6d9d47c1",
+      "note": "Defines participation standards, enforcement scope, and escalation."
+    }
+  ],
+  "version": 2
+}

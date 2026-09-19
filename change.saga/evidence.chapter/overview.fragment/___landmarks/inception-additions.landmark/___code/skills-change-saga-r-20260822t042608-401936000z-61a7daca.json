@@ -1,0 +1,11 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "skills/change-saga/references/authoring.md",
+      "digest": "sha256:3c493f76b17eb406565c14401195224fcca36dd51a18c1f805abb04223b47f28",
+      "note": "Records this owned authoring path as newly introduced in the since-inception comparison."
+    }
+  ],
+  "version": 2
+}

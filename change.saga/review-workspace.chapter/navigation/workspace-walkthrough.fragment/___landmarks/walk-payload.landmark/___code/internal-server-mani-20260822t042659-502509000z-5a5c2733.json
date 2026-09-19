@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/manifest.go",
+      "start": 113,
+      "end": 191,
+      "digest": "sha256:54dda5bb18d591c8c159e84677f92058f1de94de78a73b28f30219c66fda51b5",
+      "note": "Consumes exact coverage assignments once and emits both file-first and target-first navigation payloads."
+    }
+  ],
+  "version": 2
+}

@@ -1,0 +1,469 @@
+{
+  "references": [
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:917e328f58fdd66b0246c015a54ff51db21a4555652d7335f57558bf7706b0c6",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:f34eab55fcda7b4ef56c28db35b9ae1024005a3091f2ba814e559d4b1e8a26bf",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:c118874b282a7f06be1b5e30fe845c076dbe28de10456028c46f5d2289cc60f4",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:d051cc062ecfb14583a850d2f0c44e9708dfd25c5daa9ac028585111d1202bcc",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:c172a0585b72685ac059b026d4fd5ffea62d1293ffa69d6126be2c05adf63fff",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:80a3752b46de6cc3ba42d74d414ca108957c20ccfe94d7127bde54a4cd359d53",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:0cd9abcf9cb3493f1849c87fed91e1f717efaa8360e0d90315c5dcbf5c8d047f",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:df8a4e18bb99d3420a6822b186a41baeb1384485a028abb53178f0c641e2461c",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:dfffbee6c895dba8b339d0db011a97d8f64191cd3abfcc976c7bf04225a7250f",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:07aa03f472cd4467c75fcf3915825ee5e9f8e08de244f95652ae1862bd046141",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:65d5427b5967bb492b7403924ccbe49ecf3346aecbb5e8436404ae9f36b2845e",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:ab338d2b735d69d96c0e02d3b27770c055126b0c7c8e987267bca287b8097058",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:c3fa27d65f8a721726ad919f4320fab48d323d7d9c71593b25b6221410dc90ec",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:ac3eaf479d5ec4e3190c94551ff10eaa2e5b8201201ca15033ad6ae837763ae6",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:c99f8e65fe6a46c907f8971f804d851b89561636edf2be129a0b34b924efc95f",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:b81e1d127e685226262d44d99b473f75002acb36d629fbc7f4ec04bcbb577f10",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:6517045585bf56b2f7d6c37d3dfe49d6b417621d2bd6e2e32fda62cb33c993f2",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:8739a8d025bb10d6e1fd7021f4c5bc28607ede69c7efaa9e3a64c4b63f646d75",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:f7c932f02b807e6a530cdf8b7b229102a43bd1ea92973f141b2295c9277507d2",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:014712d0eddba34b5bd6e290658003fb1f1d74ee7c6e4ad636407078c99c7d7b",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:23682c58d9ca62ea9f3a71908844d5e45b220d46a51337f64065b6030bcc1c0d",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:7d039d397108a47fc70a954ac9dddaae361bf580fc42aca0cdc8d3ba6c821bec",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:447589a2b442822aabbaf3c8c0758a03d6324d033f9b3f91e2105afb6bb7abb3",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:e331eada729435e7195313beb0c28be56f874a3e5a117fc86e22a19abe7cdf8f",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:0007cbca36fdcc6ccbb682cf3d28fc142f4a4c26a6668eb576bed81091e3838f",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:8a1a9ed11fe43fdacf57f358e60f91372fb1df07f33c8c0b6c01f5c88878e05b",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:dfc783f7d96c53306be314b139cffe05dc3df6af51e8fd2e3bbf3b2979b17627",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:0d44655833b37cc2920ddd0b5de654d93fe7cd48a13ed499ce55907a90fb0535",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:8ec46691229f72ff8a18bed799febb33e101e06b756168e5d9cb6624f165653e",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:8d67d8ff191eaa1598e96282545cafa14bf466a34a055badfad7538a36de8490",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:8f97a30265d5af49a0939d1492843dbc65b1db4b9b2c4d1815b9b2763e20e838",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:8b00c6d64c44cbbec030cd5f46241cfa21cad589b25d24d39b14607235646ae9",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:c67687f69ba3994ca070887c54612800675d18231d32c28b7d3209a17f6ba932",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:10d149612743f261f49e3cc46169e3fe3b6bd93c32012599dc763bbe7aaf2266",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:2cfdb93061eb9628e4087f14c3bfcb16e3cf73803bfd090df6c385df51e12371",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:2c7ba1fc5a7c025c9465d272bbb50a25c2b57d7f869519a43955255f4a357d9a",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:457b96b46f74e3dd170729df73c9fb58729825bcc38723fc947b9ee2f932a35a",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:85b26aafb3fbb3154f12feb8950d8156f34063fbae48abb0a28a0c728f4d435a",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:c1fb379d9716da2ce5ffff3a679e5e4fa5a906cf68b2011d02f3b953c7834a47",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:76c7349bb390d2739d692d889d0dc1ddaad58ad663bb4431d85a319da91453b4",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:84ab11b3649866c1fc6100f1276e7e228797a4598e92a095c5cb96d7adfab440",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:63bf13e46bfa4495d04bdfd99a84ad029feef75a0e5b4049ea2960aac2e2703b",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:806b26cfe9fcf0a623488a6e8667b8a6c6c5afdedf8166816ff585a412f775fe",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:5416bb5596cc34d7679ba84d425a639068f9a82bb10cee32fb61cd859383d249",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:2e64642b74868ac5295ee7251922d7919bc48c0e36e11607891043666139df3f",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:6fb49b71fd480ac92d48bbccf1587ad550993732e2ef6dbd521a5e8d550c0f5b",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:59144ccf49cfb4faccf1d3ea4a091f46b4b87a9f7afa00d69816cf90101d7601",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:1aadcd33d0bdaa16d0f54ffe5c324fa67372b0bd0a104cc7799c4480fb318932",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:ab2178b0887f56b077de275b72eec5bfeee8313cedfe5f0a6bc6809a8a98a455",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:797367d475cc597848e3335a76f549dce724950b47a68427f0f569cdd074d24a",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:45d380fc0eeeb478486d04edad91bbf45b5c654ee635799df1616aca1058317d",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:bb79b814a8fed7ab0933420e83af485e50b622e9b367d70fabd37126b6c13b38",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:c319f27409a375406e175659ee76f15a4c13ca1ca153dd6df18c311e2c81059b",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:1c66b463e8d5cf61927b4dc221dc1c59aefd3f4c4fbba755580edaef8c3e6265",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 68,
+      "end": 68,
+      "digest": "sha256:3d915a907701e36c20636eb15349da0d9af1e3bbdc97c3208c233e7b5d3c934e",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:d29dd18f1f485b686a8430c8b08b4161a45966fdabfd3b12fd67cd5137a972f0",
+      "note": "Release-facing statement of the whole scale initiative."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "CHANGELOG.md",
+      "start": 70,
+      "end": 70,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Release-facing statement of the whole scale initiative."
+    }
+  ],
+  "version": 2
+}

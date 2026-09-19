@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/appjs.go",
+      "start": 820,
+      "end": 868,
+      "digest": "sha256:d44bfdb8167aa87ffb6e400a7b20eeae7cfd3b31ec1e16f21a2b00813c69cd91",
+      "note": "Filters changed files and converts a reviewer line selection into one exact range URI."
+    }
+  ],
+  "version": 2
+}

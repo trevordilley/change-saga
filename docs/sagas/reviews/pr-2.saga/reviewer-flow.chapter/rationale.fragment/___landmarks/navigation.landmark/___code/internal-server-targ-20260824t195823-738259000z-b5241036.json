@@ -1,0 +1,2443 @@
+{
+  "references": [
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "digest": "sha256:545e164c6533d54ffae8bbd41c3a5edd57f2ea44051da3a4970a9c9818913d48",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:0b0d4d1f5fbec17d7732f29ccf38d3ed9e3587229f0a04824e1096d25f930f7a",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:71e37b6cd48ad477cbb12624b757ee1dc4975711b78237a85f508bfdd723af77",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:dc94db91287ede614bfe3a0ee2e2b567400c33fbbb5566199f17b7f6235ec46d",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:9d321d278769fb32c7c6820e1c992ebb53b04e39def0f158cbf1d84e27d34c18",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:033727e32775e03cd68232ac6618ab5bb1491d758ed4936ec7cd00aeca9ead64",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:74432b77763c6cfa9171fc3fd13832ff241f4c996771aa8caccfe84199cb372f",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:226f37da536b12b86af70e3b5777877ac58882a6b0e30be1d9fc591badf849e2",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:ff2c0ea95d76cbc00801be44ecfc5884dca46f0b7febe0b6b2a9a5e1afd73944",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:d28863555fbc7eb2c1b3aca9fb2fc5690456651523e934989c30dfd95f77129b",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:4251f63298670483bdac18904e47ecc02d2c2d19b3f7d8e42f79cb371a7c684e",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:ab6f6be8e5963a10d31f1044691aa6beceed5a59d04cd8247f259497075d8b4d",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:fafba0527c3953c4b6e0e5b5739ba83612f8053bcdc9466730193cd1d590b408",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:64dc19d396b4f759b91eccc57ba49fe9a6a4c438fd6797ed7ff98cbfd9731a26",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:c79bf65279d2fec598a21ab4a151cad885c80a3396344ccf51958f27f7f896a5",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:120830e777f33ce182b1417dde098188dc03474fec619044c7a972d0736c7146",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:7a3a0e5d88b219669dc8aadf3443e19b42fd5f6237af0cbd15496e40ed384714",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:13bd9841fa3c235fa6abfa8986149dfa2d4ff0bf4fea25938df3efa930f5e61f",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:0db9c88953a60d722d90faaff16f098e91447b4b820ad924b919b652c896774a",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:d83a204dfbe28dcf0b7491887bbb2f84bd56abe11ee4dcaf10beca00c33f8405",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:2991ea471e34c73bfe52d1c58c7607d42b43fd78a417e83c80be2debbc378fe8",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:c8b2ec26b6b076091a22d2356f76966d2ac1d9bc0749989657437c06d3cc6fec",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:5ad35606c18315ae28c34b2af52090662e02a8ad1f55d657249d7f62e47d6a85",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:6f6b9b83889d128d717ecdf4b5b7b0a15df1b93d3fbe19ba1ac0e1a868a50c3c",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:8a4835975681e1ec95704b79007f131dc0ccd4cdae00bbd399f28dcbf1889304",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:65ed6cf06ee196aa81dde9716f402ae003b79b6b600bf3c18d550989fc8c96cb",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:ee85bff268661c2cf7894fc628ee6159bad2e06275f99994510cb405a8f2b4d5",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:7a6f5b794b703ac48d8726736ad321f30850644a075a484e6dc0879c02af54f5",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:c84945b036f21ab485a5e4f6ec125b7b3054c15f1855d858f835f4437aedc393",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:bb0a6c0daf1f7895ab2c275278bdffde93b3f599ea122a1af3eddacb138cdbb1",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:f6798b6a69c83d833242ecdebad832b3e4fff32420eeeccf2b6065286116d83c",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:b088eea0dee73b72cfe820259f487ffb6f98c91b56badf2e8c60ff60ba923ea3",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:e077ca9810e29f83c656a28f1a29f67c0ef2e1fc562d1a6aa5477a4348a738a5",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:f0c07ad8778d05092136c8e5c0cbf7773bf8d081fb835d468ef48edb5528dbee",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:74a54a91f963dbfea38d0d3c519eab62e5227cf6ef3a749e1e3422dfaa8c7827",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:eb14227343deaf07a41e920ab3960a7aafd0a4f64ad9bd564d0783d5f8177081",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:01808ce67e0bd3e557c63d5c320c488962d50617edb936bae04043a1b2b44b7c",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:27489b7075b3529200be15f8b5e7a25ed86050592ddeea644a40c470417dd067",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:9ff5c7fa3d593acc4ec0b8b5241346466bb72c52f6019dc78b980586f1c061cf",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:df5c6bfa2d556d3c01429a43527ed3e9926115eb30b5f5ba982d6842a8f123da",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:444d3f1848de9496b04dfc09b6f54ed937e8923b5b41abea883911747f40cc5a",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:c66a34241dfd7de22386567d15ee17deeb2ff94f4b113401ea76532d2a0d957d",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:7d322985d42078e71da48ae0fe82d164332e22cc44b9b7567e665aca42d82815",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:c080487abc12a10856a65040163c04143c69a05853a5f210a762bdaac39b48c5",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:fca55f59a51200024d5180c18ba227543659501dfb2df0a6c0b35c103b2db87f",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:c66a34241dfd7de22386567d15ee17deeb2ff94f4b113401ea76532d2a0d957d",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:e1f697665f61b083a8da2bc59661b02fae5a530fc9e6b73e23567ba7316e2c25",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:1a9d41a479a4944fa7ff9fbfb29c8263e5a5c711d9a3f1068af955c49bfb9e6f",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:c66a34241dfd7de22386567d15ee17deeb2ff94f4b113401ea76532d2a0d957d",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:2b7c5fd5936b6a378606ac198d6a054954d8013d91f6331732a17f80a94ba22e",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:21db31f9c84aa2c613b6bcb132a5319df376bef63ed74d34a8f59961c8cdfd14",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:313dee7284ccd930361322422d2990bb50ea42c52702a04de725aa5d2ded8f09",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:74806a59461b58f513d5561ebd109097561b7ffa71d3843027b835dd15dbf456",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:24640181a9b206063e3b0e6fcfc7115f0cc39310b4473d09f3605f1af134b04d",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 68,
+      "end": 68,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 70,
+      "end": 70,
+      "digest": "sha256:c4ae6de2832ad7577f37c97bca3b42b680bc5ab6c7206b63d042c596bd87b19e",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 71,
+      "end": 71,
+      "digest": "sha256:1afda406a2628b7d40642355107b4297f6a2f5e87b3ece38c4e0a87989009d5c",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 72,
+      "end": 72,
+      "digest": "sha256:75bcb76a169e19b9d58f2a5f1c1927011f4a4437b016108248e7d43d0e382e21",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 73,
+      "end": 73,
+      "digest": "sha256:65e44ad3b730438ebb991a92de98d205e907db4e28d9891c97b2d2d90cdd32fe",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 74,
+      "end": 74,
+      "digest": "sha256:5033f45211bf354397a8875d3b9b804cd7a94ada578ce6c1c779501d8b1a30bf",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 75,
+      "end": 75,
+      "digest": "sha256:70e97f8f4be20e8688d0b1f3227f3f6f7fc989743c98885769bc2e597643d10d",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 76,
+      "end": 76,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 77,
+      "end": 77,
+      "digest": "sha256:939a98c3a81e12f53eadc44937a989b01c17dd8c00af2559385a2d33f46e9a63",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 78,
+      "end": 78,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 79,
+      "end": 79,
+      "digest": "sha256:c1580766b2c4e409d181da7abeff90970a08e3ea34b5b9a266d32e4a329f3446",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 80,
+      "end": 80,
+      "digest": "sha256:19ca75676376bf70dc9c8af18e1b3a798148f9c3a11d864b93bc3aa0e1082cfd",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 81,
+      "end": 81,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 82,
+      "end": 82,
+      "digest": "sha256:7403893ed799953bb2b24d3eb98f72ebbeb050bd2a183129232778fc48c27dad",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 83,
+      "end": 83,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 84,
+      "end": 84,
+      "digest": "sha256:939a98c3a81e12f53eadc44937a989b01c17dd8c00af2559385a2d33f46e9a63",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 85,
+      "end": 85,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 86,
+      "end": 86,
+      "digest": "sha256:a3eb6741b71c6fafe27e6adc528c582e3c8affa9ff96038b996e9ab83110f98c",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 87,
+      "end": 87,
+      "digest": "sha256:d4a8b228bded9c89526a21d4cc71a25b8c915ea22f68e0a4973b467427dee25e",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 88,
+      "end": 88,
+      "digest": "sha256:0ebf410b47649810afc2ac11856ae50e1c85b915f875eeeabfc2406b4f975288",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 89,
+      "end": 89,
+      "digest": "sha256:9d70731eb4a4a9a6498dcd86b2f8f593391efeb5e7f5ffac578c59e6bf1cfee4",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 90,
+      "end": 90,
+      "digest": "sha256:7cbd777c4ac1dd96a2ac3243735558f3611228287bb8459ef97df110f6a64df3",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 91,
+      "end": 91,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 92,
+      "end": 92,
+      "digest": "sha256:da4df4cee0855048c7f0f069d6c2a1421ca41311aa3a7592dd614c098c012f22",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 93,
+      "end": 93,
+      "digest": "sha256:d5f4b10b3d57dc7215e640cb6fd2623e834fcb1d52980fa857c0ab3254cb649f",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 94,
+      "end": 94,
+      "digest": "sha256:01bbce826170f1ebc981384bb20a1b609c459191d846495b6baecd62c78f1065",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 95,
+      "end": 95,
+      "digest": "sha256:602e521fe627671e89930dbbd21d1361afd371d8912c5397937035191d354cb4",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 96,
+      "end": 96,
+      "digest": "sha256:d674c7cd2bb9d2aa079d0fc614ad1e6e6c85e0547d02fe4b897b4f570172270a",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 97,
+      "end": 97,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 98,
+      "end": 98,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 99,
+      "end": 99,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 100,
+      "end": 100,
+      "digest": "sha256:a80d1797c6892ddd29c8e2e6c4b2d6869af8448dce9221c4952c78280ae55f61",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 101,
+      "end": 101,
+      "digest": "sha256:24ccbe498565703de88f153c72fd2264875cb8dc65dbf486ea4a06de5c786335",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 102,
+      "end": 102,
+      "digest": "sha256:f336545be5bf31b554d6cd6c3b0d1fc073f61cb53e236e5eff4504c89985f183",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 103,
+      "end": 103,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 104,
+      "end": 104,
+      "digest": "sha256:edfcc39d011ed85f497f83f9c9051a08548b054ff9d4e75fdc5d9a3b65598829",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 105,
+      "end": 105,
+      "digest": "sha256:eae57af913c89e2d68bcbaa8c670c0a67bf4dded15aec56113845e7a246e9dab",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 106,
+      "end": 106,
+      "digest": "sha256:3efa67e9770a0ef783cfee7823ff1a6af21ecfca1c0c6786d8749a5d717a347a",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 107,
+      "end": 107,
+      "digest": "sha256:73664da89af03839a0328b2bd3004508794b258f4d054fd674b86cc1b94719e7",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 108,
+      "end": 108,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 109,
+      "end": 109,
+      "digest": "sha256:25621f30e0042658940574866974e4c1454f5d6cc9b27979461b8cf509296dcf",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 110,
+      "end": 110,
+      "digest": "sha256:41f5a4806f9a804ec55e287029d5fafc2a301c642336930281b9e0ac7558aa00",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 111,
+      "end": 111,
+      "digest": "sha256:8a30338eb9975a8c6be8265e2869ab109861143ee5d32a333ca3183481390cf4",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 112,
+      "end": 112,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 113,
+      "end": 113,
+      "digest": "sha256:877042b38e1661dbdac4ded52ae57b2525f6f8aad13f054eaf210dce17ed179f",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 114,
+      "end": 114,
+      "digest": "sha256:742dd6453fbeff76e4fd0ed5d2a6b1318f7bb3ab7cf409ee0170c1fdd104c259",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 115,
+      "end": 115,
+      "digest": "sha256:a88313726ee439b3d0e08f44abc35e016d321e1f81adad5e835df194267266a3",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 116,
+      "end": 116,
+      "digest": "sha256:9c9bb6ff6bc0a609d2e3c1f086d31baee3cb004eedfd6076af8b636970acd6fb",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 117,
+      "end": 117,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 118,
+      "end": 118,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 119,
+      "end": 119,
+      "digest": "sha256:db165ac7cd44133c152f89f870c9152361f2c4bfb2e179c30c6bcab6382d5d8e",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 120,
+      "end": 120,
+      "digest": "sha256:bfa5ff7b55de464fb17ea82a327a03ca336d455301c8cdba9cb80f0bf9131192",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 121,
+      "end": 121,
+      "digest": "sha256:651b67efa6067a4c74a7af2d89fafa0732b9fc4373fc696715e34fe4600cb71e",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 122,
+      "end": 122,
+      "digest": "sha256:d21c8d33c7d7d6e8a5438268b7ef8e6bd79f13f73097ea2447dd1dec8d4f7868",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 123,
+      "end": 123,
+      "digest": "sha256:f9318a7291d0642de1a319c588451ccb98b43943f7638cbd396d2b5e22256e91",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 124,
+      "end": 124,
+      "digest": "sha256:2ba205a3d34eb99cf13b8fc8d246d0a94d292f45e314c3aee7f36906b1e9154b",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 125,
+      "end": 125,
+      "digest": "sha256:9d5181c72394fc2edfc3426e3b31f2bb07f41c7ecff2cb86993b7dcca143b189",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 126,
+      "end": 126,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 127,
+      "end": 127,
+      "digest": "sha256:f20c5a4165aa084d803fbc86e644fac237b83b88d812c0aa02ea3596cb6f3e51",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 128,
+      "end": 128,
+      "digest": "sha256:c53ab4d38cdb1258e8a66cc859bf00116c8107c3bddb4c4ee34e0491aa92198a",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 129,
+      "end": 129,
+      "digest": "sha256:819733674d1e916c05d78a24ea9873b26794bb0eb20a5a0e5327c8920fc58c78",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 130,
+      "end": 130,
+      "digest": "sha256:4dc76020bae70577e64b330dca83fdf24f3d7593a0154d8abec6dc63f5897fd9",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 131,
+      "end": 131,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 132,
+      "end": 132,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 133,
+      "end": 133,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 134,
+      "end": 134,
+      "digest": "sha256:3cf5c442e970e40d2e7f90bcff596bac0f2fbe4cfdf6fb6e2664f94cc5defe37",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 135,
+      "end": 135,
+      "digest": "sha256:f1401c2e35f2471d006fd8ac837697fa50e3fd93bd7ffc69c6c3974e43ca1e46",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 136,
+      "end": 136,
+      "digest": "sha256:f000ce805eadc587abe007d6d67cdc9243023ee6d4db77af4e7b1fcfb1d8811d",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 137,
+      "end": 137,
+      "digest": "sha256:2341bfe2ebeda59ddd3f911f350f68cac779f0d753cbe774be241e4cec2ea3d5",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 138,
+      "end": 138,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 139,
+      "end": 139,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 140,
+      "end": 140,
+      "digest": "sha256:1eb4c55d0b8ad33a57129aec666421e1348e452d6d00dcabfa3adc4f82e887f0",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 141,
+      "end": 141,
+      "digest": "sha256:50e2a242450fbf1ae7ee77cc1fad4e6f6ac33410c9e783c6d7d91dafa39e5548",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 142,
+      "end": 142,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 143,
+      "end": 143,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 144,
+      "end": 144,
+      "digest": "sha256:d8702d905a02b0c725adce4bd2b995b7d8c1f6c43066a6ec76c3579f2a934320",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 145,
+      "end": 145,
+      "digest": "sha256:b925118caa209cd372007d8513d4028c1182afcac499f91011ea3a81bc45b6b0",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 146,
+      "end": 146,
+      "digest": "sha256:78917164c77c02b70e3323a40616f440db89a09f9a6c306836bf19ddaf7c3645",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 147,
+      "end": 147,
+      "digest": "sha256:c71abae569ca13496d6ec5a33bb292fac42c631fb3f0a85877441b2a7064ed9e",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 148,
+      "end": 148,
+      "digest": "sha256:1cd0060c300add74ae3f86b1079643d95de5b55dc5cf990f03b06130d69c195e",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 149,
+      "end": 149,
+      "digest": "sha256:3a1429a934cad7f4a0399f47d05565f72e3dd158b081cea34c65411e124405b9",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 150,
+      "end": 150,
+      "digest": "sha256:6119b61cfa18bb024a2d3c8ff2927686800ecc05338840075ba2af1cb3fed7fa",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 151,
+      "end": 151,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 152,
+      "end": 152,
+      "digest": "sha256:512d84e5db69e934cd6b19b2e5e63ab3237bb53d5d500672f2122adf51e0167a",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 153,
+      "end": 153,
+      "digest": "sha256:c080487abc12a10856a65040163c04143c69a05853a5f210a762bdaac39b48c5",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 154,
+      "end": 154,
+      "digest": "sha256:99312b11d8e4865fd5653b1f487e5497ac667f7732a03bc1c376609e303d1a74",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 155,
+      "end": 155,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 156,
+      "end": 156,
+      "digest": "sha256:49d65f842b7765daeae308cf7c330d8afc5623bfc3e11051c5ee9bfdf54e08f8",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 157,
+      "end": 157,
+      "digest": "sha256:8eca9d18ec9eed2fa317a5d189a45f571fe97762aa401bf01db862119bee772f",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 158,
+      "end": 158,
+      "digest": "sha256:66f3cb7296072a01baffcf6994b1587b7bf330652c310e6c673319753e990959",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 159,
+      "end": 159,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 160,
+      "end": 160,
+      "digest": "sha256:2dbf535241a13209c1b8e1e130127e6d8256bc321abb9bc29ff6a9badf0245e1",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 161,
+      "end": 161,
+      "digest": "sha256:08eb347f0eb60f4ee34fe9b1bc54a8bee5425e0a87d559d27b9f7d048bd97c47",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 162,
+      "end": 162,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 163,
+      "end": 163,
+      "digest": "sha256:deae83f6b416b91a664f1a05bc772e41d03a419a3c7a219ee6da0cdab00195a3",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 164,
+      "end": 164,
+      "digest": "sha256:056a91ad3cd929d1f0dec30c7f282aa608b116d77924ad88116df0c9fc884f0e",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 165,
+      "end": 165,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 166,
+      "end": 166,
+      "digest": "sha256:48c03879a7b81f44793ffde5908a345f6147611b49804605c93ce150477b8a1e",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 167,
+      "end": 167,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 168,
+      "end": 168,
+      "digest": "sha256:2091d2f07751958d0a1e405e0f8933c82198c9066de37053a3af727f01139aa4",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 169,
+      "end": 169,
+      "digest": "sha256:16dcbb8a8eeae501b61b0427d29dae3f49468a22cc02adffe95c326dea2918d9",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 170,
+      "end": 170,
+      "digest": "sha256:88777ceffd9c14deb4003b90f4d2780d3eed7803baed18881b02ee40ef2b90aa",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 171,
+      "end": 171,
+      "digest": "sha256:67b6ed87945526df1893804cbd70d6c13038ed7f0a43ff9f76b81ab617000b20",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 172,
+      "end": 172,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 173,
+      "end": 173,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 174,
+      "end": 174,
+      "digest": "sha256:b4a34cc68003a67e3e764a49aafc8c66388624856f69078c3c01340ca4f35772",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 175,
+      "end": 175,
+      "digest": "sha256:72581b84d9494522339ee47fd28caaa6d33089f69052bc2b308f3222cb956263",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 176,
+      "end": 176,
+      "digest": "sha256:46536e435dba6319a8fe29b9bace51500089470c0eb1b12d893bdf8be52d6f01",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 177,
+      "end": 177,
+      "digest": "sha256:42a57081051f4682a7db3e590b4dd5413d53dc9a01551276dacb521a7e1db9a5",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 178,
+      "end": 178,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 179,
+      "end": 179,
+      "digest": "sha256:33bef74871a4212c170267abcb2f7b2352ed98192606d1ead4d18225f3409388",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 180,
+      "end": 180,
+      "digest": "sha256:4aa2e5e78b502f74789d68d8575865f2b92d9c918f5fd408e812f33265c12a1e",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 181,
+      "end": 181,
+      "digest": "sha256:ceae1d42bb4757328ebb9fad17570b02a56c0749857fb2350d3506d5fe955d7c",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 182,
+      "end": 182,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 183,
+      "end": 183,
+      "digest": "sha256:c76dba6206d8f9d1c9eb26b02a0b0a3345f3b124a67777667972fb9f5b3283cf",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 184,
+      "end": 184,
+      "digest": "sha256:bffcb22349a3a172fca06bb18c894a232d794857fa3b882d0e2d73a3d0f9e8c4",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 185,
+      "end": 185,
+      "digest": "sha256:26af3e2a72eeea7c3d6835232aee13c6f8f058295b381012713cc6bf81c9f7fe",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 186,
+      "end": 186,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 187,
+      "end": 187,
+      "digest": "sha256:3892e52d06b183aa959f2b02948b6e661bd6a962161193fd1df3615aa51ce3de",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 188,
+      "end": 188,
+      "digest": "sha256:2b12cf3018080719ec5976aa95d84e753c6cafd4c9a19c66074fa099d9185c5d",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 189,
+      "end": 189,
+      "digest": "sha256:488872c7e10231ec280a909772f2f8ccc816bd37083778dd7f2c2afef6805836",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 190,
+      "end": 190,
+      "digest": "sha256:e7e1c7ea3c7062499e723457e3e063022a33c09a008ede78da2e850a0b09dc27",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 191,
+      "end": 191,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 192,
+      "end": 192,
+      "digest": "sha256:78459fc9dadbd1a39c237cb11e5d2e0420df5ad5bfc9f61265488a5922c0b445",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 193,
+      "end": 193,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 194,
+      "end": 194,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 195,
+      "end": 195,
+      "digest": "sha256:415da896341da59b20d5a5b8835b194fa99c1b4024d128ce72dd175ff63db5dc",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 196,
+      "end": 196,
+      "digest": "sha256:f3fb337685fef6d5b2d870c9a7e9c8a70a5c2e17f6fed131eb855fed3dd0721d",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 197,
+      "end": 197,
+      "digest": "sha256:c8b2ec26b6b076091a22d2356f76966d2ac1d9bc0749989657437c06d3cc6fec",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 198,
+      "end": 198,
+      "digest": "sha256:c266838394f97025936385dc7d12fc9251cb96d3cdb740d0f292eea0866e55f4",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 199,
+      "end": 199,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 200,
+      "end": 200,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 201,
+      "end": 201,
+      "digest": "sha256:06613eb87c4e915b9571ce00dee413eb89711cd21d404188c3e4d5256eb4b3d3",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 202,
+      "end": 202,
+      "digest": "sha256:bd3e286f2c7da5643447742f54943523172606d6c187090beaa0c7786beb0092",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 203,
+      "end": 203,
+      "digest": "sha256:0536cb7690e48fe494ca4f8cca4b18ab64f8fe0d3618fa32faaa80565c3dd649",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 204,
+      "end": 204,
+      "digest": "sha256:de45983bdadaad7659c91dfb427f7fb0457241f6051960df2da0d3e9509d3d0a",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 205,
+      "end": 205,
+      "digest": "sha256:940cb75077f4ef04e7872bb4df313be7451ac711f93986d3c798ee39c3bd9fdb",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 206,
+      "end": 206,
+      "digest": "sha256:7f3a702f4278297e5a18f9fa873b8d61ef14a3c1002f917e7ecaa237dcf727b6",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 207,
+      "end": 207,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 208,
+      "end": 208,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 209,
+      "end": 209,
+      "digest": "sha256:5033f45211bf354397a8875d3b9b804cd7a94ada578ce6c1c779501d8b1a30bf",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 210,
+      "end": 210,
+      "digest": "sha256:c0fe7175e80478638a414dcfe779535cff224ed648d8a9d32b94cad10a861fc4",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 211,
+      "end": 211,
+      "digest": "sha256:7ff540f82ae0752c8860914285ad8856f3139420aee26ee6852e2b7777e7bb1c",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 212,
+      "end": 212,
+      "digest": "sha256:d6ad8028458b227832a4d74877812a73b3d450359ba3e89fa1073ab23887a0dc",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 213,
+      "end": 213,
+      "digest": "sha256:72581b84d9494522339ee47fd28caaa6d33089f69052bc2b308f3222cb956263",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 214,
+      "end": 214,
+      "digest": "sha256:64ae3bb9b005abb4a785fd8b6950c71ade73b233abd8bd8f67c1b2f73ecbe98e",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 215,
+      "end": 215,
+      "digest": "sha256:42a57081051f4682a7db3e590b4dd5413d53dc9a01551276dacb521a7e1db9a5",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 216,
+      "end": 216,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 217,
+      "end": 217,
+      "digest": "sha256:27847d142f9332809c834a8740d20421ddd4577e6c566f00634510b44b4265d4",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 218,
+      "end": 218,
+      "digest": "sha256:13150169d9897921a8f6b69744d61c1d412a64e1b68e62f18e55eaa0e0409871",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 219,
+      "end": 219,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 220,
+      "end": 220,
+      "digest": "sha256:10e1e2cfb316cda59283109e35fcfb4b549ff20dab66c8b1778cad18b947bc58",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 221,
+      "end": 221,
+      "digest": "sha256:07382260162888a27364404b160fa2ae603bae1ff886df242be3fcc81f0f9891",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 222,
+      "end": 222,
+      "digest": "sha256:acb2a965aecf4787425985efdfe1a52f96ae6b3b39d437683b6e3f693350ca58",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 223,
+      "end": 223,
+      "digest": "sha256:c8e4049cdaf145cd8e624ed73bebaa8fedf22e5efdcd208475fb02e99d32e3ac",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 224,
+      "end": 224,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 225,
+      "end": 225,
+      "digest": "sha256:dbc1f7d089665c3e9b3074e235cb31b396e143093ed0bb56d0efcc25d0751ddd",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 226,
+      "end": 226,
+      "digest": "sha256:09a59e6946533e8215d615ec6ae377fabe32add8b91e2b4b304730b4ff3166aa",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 227,
+      "end": 227,
+      "digest": "sha256:2eac3bed3618774f02c9e1e2d1f507ef971af32ced4e550b8f0c65d418485885",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 228,
+      "end": 228,
+      "digest": "sha256:0bdc9b08cdfbd193f309c08b6bf8ebd027d7cf7a20153c311b2869e182f8e4a2",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 229,
+      "end": 229,
+      "digest": "sha256:c64dc0ee96ce57acc8d211e97a51984565d36123820cfe171b99a7ee860c0e8a",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 230,
+      "end": 230,
+      "digest": "sha256:b5c00d6fa2a91abe09151582668c183b150e28191f3c099e569a2055713f156b",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 231,
+      "end": 231,
+      "digest": "sha256:5d4bd8f00ca4bcaeda8c2a0ac101aedfd0ecc58f97ba82db49c64abf03754a6b",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 232,
+      "end": 232,
+      "digest": "sha256:b884aff07e884dcd388f5a54a46a398da71bb71450e318891a0d2a80719bf015",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 233,
+      "end": 233,
+      "digest": "sha256:8ee9a58df72eab60e085fa84f4b243624834baa055bad9cbeb4ce6725a2a6a8a",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 234,
+      "end": 234,
+      "digest": "sha256:4dc76020bae70577e64b330dca83fdf24f3d7593a0154d8abec6dc63f5897fd9",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 235,
+      "end": 235,
+      "digest": "sha256:c4a560cb4378ad09f48c3aa46544cf6e0203a97e64da8e16d720463de3135618",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 236,
+      "end": 236,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 237,
+      "end": 237,
+      "digest": "sha256:f6209c4ef87d7bfcdc4657a0662ca9aedc9d4ad5c42e25f4ab9f1cd076969d1e",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 238,
+      "end": 238,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 239,
+      "end": 239,
+      "digest": "sha256:19339d2f8419f2631ea1437dfbf576731a3dacd03044fa565d73cbd3acc67f91",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 240,
+      "end": 240,
+      "digest": "sha256:2b434acc21022e2507f7f503d68f57d2d9b0212874ed1a654fe2e32e79978b94",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 241,
+      "end": 241,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 242,
+      "end": 242,
+      "digest": "sha256:7b336aef500caab081038e07d61d2799cb2edcfb74fb573fd2f67eb45b022db7",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 243,
+      "end": 243,
+      "digest": "sha256:3fa4dad72f657ccc1f7ace52f5c06a3e2e8f50828e610462ad02634c7289659e",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 244,
+      "end": 244,
+      "digest": "sha256:9f07d531261989df02f638461aa542258c768fa36ffcc42148fcfaa006162e1a",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 245,
+      "end": 245,
+      "digest": "sha256:3e349b369d21e38f49efa31a0a0e84d634afa0fd1585bf36a982d9994b0e644e",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 246,
+      "end": 246,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 247,
+      "end": 247,
+      "digest": "sha256:03ed37629dc403fe097e1f0bae649a75a10eb3b1901685f7e6b5b1e4ecc480ad",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 248,
+      "end": 248,
+      "digest": "sha256:dc66a1f0e1716c5571297d6b6acd4de4665ed2f2ad239bc782ef18c7035992a8",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 249,
+      "end": 249,
+      "digest": "sha256:c9bd3846bd385927d12c77609a31c78bb220340cff5b3ddc84bb791d41c74cfe",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 250,
+      "end": 250,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 251,
+      "end": 251,
+      "digest": "sha256:3756c8874192fc898117eb6f3049c49cd53d5287f4e907e2cd4bae89b2c68cc1",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 252,
+      "end": 252,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 253,
+      "end": 253,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 254,
+      "end": 254,
+      "digest": "sha256:11f0c46f26b6f21afb8f397a6f29bf4e916893524989ded670d2a445415b6daf",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 255,
+      "end": 255,
+      "digest": "sha256:71f7746c48028e9bca98901870e92a0c4de652808e9fae0a8822ee85e4d78ced",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 256,
+      "end": 256,
+      "digest": "sha256:a57ebf1694fb4d7fd4dbf098785fbb87fe701bbfe118b76012c48f1e0b1595bf",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 257,
+      "end": 257,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 258,
+      "end": 258,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 259,
+      "end": 259,
+      "digest": "sha256:3eb7bf250dc3444c89cb9d3f5240e566b169e66b3f183151cf4a91ae05487d83",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 260,
+      "end": 260,
+      "digest": "sha256:bfa5ff7b55de464fb17ea82a327a03ca336d455301c8cdba9cb80f0bf9131192",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 261,
+      "end": 261,
+      "digest": "sha256:651b67efa6067a4c74a7af2d89fafa0732b9fc4373fc696715e34fe4600cb71e",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 262,
+      "end": 262,
+      "digest": "sha256:d21c8d33c7d7d6e8a5438268b7ef8e6bd79f13f73097ea2447dd1dec8d4f7868",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 263,
+      "end": 263,
+      "digest": "sha256:f9318a7291d0642de1a319c588451ccb98b43943f7638cbd396d2b5e22256e91",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 264,
+      "end": 264,
+      "digest": "sha256:2ba205a3d34eb99cf13b8fc8d246d0a94d292f45e314c3aee7f36906b1e9154b",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 265,
+      "end": 265,
+      "digest": "sha256:9d5181c72394fc2edfc3426e3b31f2bb07f41c7ecff2cb86993b7dcca143b189",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 266,
+      "end": 266,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 267,
+      "end": 267,
+      "digest": "sha256:faa248fc964ff653dfdd8236aba0bae17522ffd05f847a38d7ebacbc467df849",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 268,
+      "end": 268,
+      "digest": "sha256:f7b080e24374f125dff4d7fe92acaf62fdd4e6d04edb77eaba5870beb77c0aca",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 269,
+      "end": 269,
+      "digest": "sha256:326d0939d3e63a76fa2bace6032c1c44f29b191292e554074d965c894d92edfd",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 270,
+      "end": 270,
+      "digest": "sha256:4dc76020bae70577e64b330dca83fdf24f3d7593a0154d8abec6dc63f5897fd9",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 271,
+      "end": 271,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 272,
+      "end": 272,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 273,
+      "end": 273,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 274,
+      "end": 274,
+      "digest": "sha256:cfbb6e2a739d82b26daa0e7e51501adb962aea7e0406604408386fbf41663189",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 275,
+      "end": 275,
+      "digest": "sha256:16dcbb8a8eeae501b61b0427d29dae3f49468a22cc02adffe95c326dea2918d9",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 276,
+      "end": 276,
+      "digest": "sha256:60b9fbc1e34010d72d7cf229e439c92f4db4c26fc8f0b4b876909af66472dd0d",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 277,
+      "end": 277,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 278,
+      "end": 278,
+      "digest": "sha256:50e2a242450fbf1ae7ee77cc1fad4e6f6ac33410c9e783c6d7d91dafa39e5548",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 279,
+      "end": 279,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 280,
+      "end": 280,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 281,
+      "end": 281,
+      "digest": "sha256:9410d33f505d1b3b17932bbd410db45bff498ceaf9dbfcf84824b36c1f3811aa",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 282,
+      "end": 282,
+      "digest": "sha256:76e57cc12f8ddeeaa5928c9c2cb693ea183040fb08c74056441e2cf0d42087ed",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 283,
+      "end": 283,
+      "digest": "sha256:13d196fd037b14069f2cef08309dc80f16f4ce3e9c5afbd1acf8d9d0f47c4c3b",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 284,
+      "end": 284,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 285,
+      "end": 285,
+      "digest": "sha256:5aa107a899c09dca68468db40d23379b971be2f63ef1e028e9365ad201e4eab9",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 286,
+      "end": 286,
+      "digest": "sha256:f73dfa0d55649c4f8d0211e88749d18bf1c42ba384f4dc852c5745e53b1e125f",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 287,
+      "end": 287,
+      "digest": "sha256:064c87311a4de8172e4108692f37f5ad906138b6d60a7a7fa33618fbc54f37da",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 288,
+      "end": 288,
+      "digest": "sha256:098013b953b8cc9fb4d9aa14dec478a24699fa547a91f65a49fad0a7b16be4c9",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 289,
+      "end": 289,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 290,
+      "end": 290,
+      "digest": "sha256:d28ee5f404d236b55a945206f911095ca93f6077730bb7391e5e7af3c21693c4",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 291,
+      "end": 291,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 292,
+      "end": 292,
+      "digest": "sha256:faa534162d7f0d0d2b0854ab01a33ac6fdc8f61d2181830089f22f88e06a36c4",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 293,
+      "end": 293,
+      "digest": "sha256:cd55bb6a46580223308552730ed96afbe0d34b89ad523434d539a70563f9ce90",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 294,
+      "end": 294,
+      "digest": "sha256:790bdb14618a9c0363fe4e40b8514c1d913068b9a456054280b1fba522125e4d",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 295,
+      "end": 295,
+      "digest": "sha256:e6806f155c5ac1ae2722ca06f2ac9cadcb881b9123cb624a3c10475b4449dc2e",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 296,
+      "end": 296,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 297,
+      "end": 297,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 298,
+      "end": 298,
+      "digest": "sha256:5f6695781279aec331de22472aaff503a88943dd9f1278ab66f52024b0c05f7d",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 299,
+      "end": 299,
+      "digest": "sha256:9599f034cc864e6f4a8bed59d36d0f6b6b6d498f41f43c2022397ef44be078cc",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 300,
+      "end": 300,
+      "digest": "sha256:fef8fd4262eb77e9ad18155ca90b26d87b11868d79b9b37e1b4d7f262d0e71f2",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 301,
+      "end": 301,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 302,
+      "end": 302,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 303,
+      "end": 303,
+      "digest": "sha256:ffd39a3a8975052ee232886d2a328bfc1772dd00414643bd6e4f7ca42fde19a6",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/targetcode.go",
+      "start": 304,
+      "end": 304,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Target-scoped code summaries and reverse explanation owners."
+    }
+  ],
+  "version": 2
+}

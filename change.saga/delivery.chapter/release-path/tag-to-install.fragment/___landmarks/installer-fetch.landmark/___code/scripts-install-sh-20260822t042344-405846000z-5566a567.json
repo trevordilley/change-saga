@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/install.sh",
+      "start": 1,
+      "end": 169,
+      "digest": "sha256:b00b9a1110a2cbe37d30d78fdf8976cac0b0c08250601184266e16ee5a206bcb",
+      "note": "Defines fail-closed policy, validates tag inputs, detects platform, and constrains HTTPS downloads."
+    }
+  ],
+  "version": 2
+}

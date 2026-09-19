@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/codeview.go",
+      "start": 434,
+      "end": 490,
+      "digest": "sha256:b0349ba89cfd32dfe3277b1bb416013178c1f5297cc5cf76c8ba8b290a3dd8de",
+      "note": "Builds the narrative-to-code ownership projection used to open a target’s files and exact chunks."
+    }
+  ],
+  "version": 2
+}

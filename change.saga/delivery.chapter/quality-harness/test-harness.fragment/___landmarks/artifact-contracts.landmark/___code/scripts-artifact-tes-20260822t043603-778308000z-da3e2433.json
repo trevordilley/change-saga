@@ -1,0 +1,11 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/artifact_test.sh",
+      "digest": "sha256:014aa7e7184e3d8bc06e7efb8d2a926bd4ab7d7fbf210b1b4f87a1e2399dbbcd",
+      "note": "Introduces consumer-visible archive content and permission checks."
+    }
+  ],
+  "version": 2
+}

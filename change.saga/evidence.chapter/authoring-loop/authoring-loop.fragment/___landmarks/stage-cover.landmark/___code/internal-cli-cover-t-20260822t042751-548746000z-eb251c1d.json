@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/cover_test.go",
+      "start": 255,
+      "end": 365,
+      "digest": "sha256:b64c3a281d324f161d11519fa1efbcac28304bbd3c405978e7956766594c7fe1",
+      "note": "Resolves dry-run or atomic batches into exact line and lifecycle coverage records."
+    }
+  ],
+  "version": 2
+}

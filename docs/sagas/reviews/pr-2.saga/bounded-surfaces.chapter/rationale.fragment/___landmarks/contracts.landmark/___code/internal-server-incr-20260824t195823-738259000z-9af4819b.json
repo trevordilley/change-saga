@@ -1,0 +1,2203 @@
+{
+  "references": [
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "digest": "sha256:b69bc88981c80e9c08f8addd8b0ea7b4e24c5fa04f2bcaa5ee000a58ab9e6b2a",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:0b0d4d1f5fbec17d7732f29ccf38d3ed9e3587229f0a04824e1096d25f930f7a",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:71e37b6cd48ad477cbb12624b757ee1dc4975711b78237a85f508bfdd723af77",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:dc94db91287ede614bfe3a0ee2e2b567400c33fbbb5566199f17b7f6235ec46d",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:033727e32775e03cd68232ac6618ab5bb1491d758ed4936ec7cd00aeca9ead64",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:763a04ff74d16e99de0771b9504ae52588af724fbd39ebb230390d183a30a8e6",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:2687cf8ba8737b6155548121841a1a74c90dce6633adb6429b325cd1e9f2cc58",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:171b756171ff8240f94ccb83de837ed4242449df3ecef3a3762523d1f5ae0348",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:57e084ab258e81b1e20f6e9b9f72b556c4838b3517e76da7edd5b6e7546090a2",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:f05b48055b78db9e9e8993848d47169d7abd312df35886aa83d4014d37eb4009",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:6f254d4720bc72a26cea4089bb3f8713017aeacfb50e353961a443c896e7b578",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:1b649ecbf085fe223589d7f842defd5e2c82ec06b02b4f7827a31625fd09316e",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:dce87b6818a2884e83d31c73980f4824699871bd0d1b0b2cd9b7c3f5b15b116d",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:ab6f6be8e5963a10d31f1044691aa6beceed5a59d04cd8247f259497075d8b4d",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:3f118bdcbc85a6ae9a5779dd9c6c2e6aa10f6e1b8236a1a029c846af4b5273b9",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:fafba0527c3953c4b6e0e5b5739ba83612f8053bcdc9466730193cd1d590b408",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:dcd1598494053d0b34c33f4a19a45c29e9b021af09f57a5a771a429ffeedc053",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:ece523c7d95d420d4ff49e42b4fb263847bfb194d96eebb9f9472a2b0266a7e4",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:b870a09ad18952c19a779d7683d41dc8f2f3ac0e0400c506116c4b956775dc7f",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:4bb00befaf93f96023327e07074d97b3c28adc3880765002c3f39ddfb4154d9b",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:e101c318015b56005f74fda02864031b77b1b5b602875147d100085453a7a4d0",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:e88367bc49957688b14ffac31ee1cacd6c03064dd2e0e6318737b228c9d846b3",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:f7fe61cd344f973e7e137049069577969f54aaf9ef19c9778b4de42798e16781",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:ccc17a4e5a4f9244b044a9717d1cf5ad92517688f4ca60bbe27690242a89af4e",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:492ab70b0cf28adda2afc2e6ed2f549544df7058a971fb29afb32153da969ced",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:120871bc606a577856a9962017533446300c47e2f4288fd3dcebb21c95b34a79",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:deedb71f73789b3ccf0d1a97d5448c0c5e7a3dea98737612111fafe45010c9fa",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:78c5a9163a841bfeefcb8133e8662aca40a24f8b4dc0f7075350d62df5204a9f",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:164517f9bd02496a676e7b6eb0eb53b0acbef1e09ce961be546253a83c93b879",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:bb45772bf9c799cc3750ea848689330b7473f59743b5437b83e3082a60588064",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:315814a56ed0125f920e86633ddbe9f30ae26aa7a0b2b41c1effb1d1b7cb9cf0",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:240375f4951d37ba997b9172f5c32de372a56c53146b104f9cb6b146d5b01795",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:382ae9b269e86b011af5a48ae48fefba1b220341b5ce9989dd3ace6f82fcad17",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:1d40f59384edb3bc08df97453a6d60fc267a9f23eef7480bbc726b5db4dcfdb2",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:273926d1ba71dcf9eaa2e7c39179d0e012f84785052a991d6b0b253131abf69e",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:2e72af5482a60c6fe64d6a8c10459edc8e6646286f93fa185160cdd3ada5473f",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:c1d1b9b3f23875ec547be692e6ae260625d6bbc6114b3b276b36b1f75cf98e8c",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:0ea10e167b97c37540438f84c9c74c3d94511d260e58d23d1b0c01a30c8cdc20",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:a856c019af4888d05afa9d78256d89f279e5fe34b82d17f252c844f3719ecf7e",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:ddcdc31926f70e3fc250001919b1b9078b1efa887143a31d2f11755a327763c1",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:c830d54a0bfb19f1de4ca8a90bf1cbc9a0a33346e3e4f1a1e92609cff78dbbf7",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:1933dc3a3a110a44ea864397f2b5d018db07d41c0ff5a215386e55dd008b976a",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:03fef9484cc0da761912c8a8b8d42d7b58e234214c68d84bf73dfd569a0e71b6",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:067e5d0083a8155e203df357dfb4d59160974bb9dcf8ed7538951c2d75ad8260",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:1d8fbb8b7fdcad60908f57417108913c3cc111c97c1259b89c5ef5f5f0255e1a",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:77328c121ec6dc96f0ecfd98f2745033d5f307e7c89fd0900682b23e91414e3f",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:ced70fce70d91fc30501437b11ff64035a1d12292e87055ace3c94fbb370df60",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:7c31edb0cebc53cbaf2500fb527afe03093a6a169788059c1f9f355228022dfa",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:7897b071fa0feb889739b08f87872f56841dcdf2cd8a08aa165b3088997c9f66",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:8c6a6776b4b5b8c172523b9f893ded96a9a630ea97a84ced6adc2b090b301579",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 68,
+      "end": 68,
+      "digest": "sha256:6327d1a90ca5a54c25715dc52ca457cbc8a3d5e1f5425e573020b33d6efe4cae",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:02f5735dd3680771de7d08f917fa5fdc128af20a2e5d445f7e5b54ca6efd0508",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 70,
+      "end": 70,
+      "digest": "sha256:42a1734fb9adab3304543e99e3c3e8d9eedc70f9e050be580935efdbba1bab51",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 71,
+      "end": 71,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 72,
+      "end": 72,
+      "digest": "sha256:2d314e89459277b5fa2fc58d77458987ff9a496a77171f563ce1c17330bb190a",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 73,
+      "end": 73,
+      "digest": "sha256:1bfbb8fc50963c11ae3dda4a5c8353b1ee8328a5a78946c7506063e0903e6c54",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 74,
+      "end": 74,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 75,
+      "end": 75,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 76,
+      "end": 76,
+      "digest": "sha256:ebd036889908724f93099181b19b330a2270cb869b088c90b95282ab6291c2c9",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 77,
+      "end": 77,
+      "digest": "sha256:6da3fa3b87cd7dcf0717fae2ddf0c98ca6162f36165ef5e48a833f71985641ab",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 78,
+      "end": 78,
+      "digest": "sha256:d1d9338124d8caa98868196910563af94115beb90c11630295c6dfd27cc39ff1",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 79,
+      "end": 79,
+      "digest": "sha256:d8236e623bb05d34f21a31f0aad153a86a2e386d7ba00ec54a1db58eee5fd2c0",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 80,
+      "end": 80,
+      "digest": "sha256:d7edaea8c494d90e1382e569cde7a5871ae57154e8c89be8c22ada37ad0bbfba",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 81,
+      "end": 81,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 82,
+      "end": 82,
+      "digest": "sha256:355ba8185dcebf385b6373d72aa85ad088367988befb059e4c4dd3177afe55ca",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 83,
+      "end": 83,
+      "digest": "sha256:77a9b5e9019c8db8783ec9c3febb0a2c9862f61a05c308fe895e4a9bed03edb3",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 84,
+      "end": 84,
+      "digest": "sha256:1c8dc2442812065ca7018d841da6e282a4c24e475ef88eacfbda23487374149a",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 85,
+      "end": 85,
+      "digest": "sha256:e20e28ec7182e7bbb18da04961601ac5fed680644c79ffffdf98a4bc3e15105a",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 86,
+      "end": 86,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 87,
+      "end": 87,
+      "digest": "sha256:eb6a62e170458281cd08a9b17345f5c0f3aa686b74817cfdf0e1d537dd63f203",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 88,
+      "end": 88,
+      "digest": "sha256:f353f27ddcc06cb924776200daa2f3247ed7933028ed678359b505426e1fc96e",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 89,
+      "end": 89,
+      "digest": "sha256:721a272fb99baa38e26360b3beee28e6e0e9279bd697e68f178b8f45090802ea",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 90,
+      "end": 90,
+      "digest": "sha256:70daf4faa88cedbfff66193709560f66b694ff47db8ecaa9b71b4f59267c8b9f",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 91,
+      "end": 91,
+      "digest": "sha256:b3c961b6292a2900cf42238bc8caf64911b11d458a2703f8115f6768226ae231",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 92,
+      "end": 92,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 93,
+      "end": 93,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 94,
+      "end": 94,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 95,
+      "end": 95,
+      "digest": "sha256:9b394ede23ffd0319e5b1b721f3d2d5d712baa319dc8d21ab3c9d8038dd2e760",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 96,
+      "end": 96,
+      "digest": "sha256:08bd09fa43e4c8f29311305a89c1960659cfb5b06ebb25852bd93f0b0d57f1cf",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 97,
+      "end": 97,
+      "digest": "sha256:67a75b7ea77c045a9a5968814e95f7e977854ee865190c7bdd939d102df33369",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 98,
+      "end": 98,
+      "digest": "sha256:97326b4d34f5e68f5214db12100a2ad8adc89f4e561193c32998c8da874cd7fd",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 99,
+      "end": 99,
+      "digest": "sha256:6119b61cfa18bb024a2d3c8ff2927686800ecc05338840075ba2af1cb3fed7fa",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 100,
+      "end": 100,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 101,
+      "end": 101,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 102,
+      "end": 102,
+      "digest": "sha256:7f78a5e0aa4f64e97c595a3b3bd1409175397f8845a7d6fbbae09065cb1ba04f",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 103,
+      "end": 103,
+      "digest": "sha256:993a3103ba8901efc81e85355584c867d07afee45dafc49b8542bf712b1ee7a8",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 104,
+      "end": 104,
+      "digest": "sha256:2442ebfe2a54855e4333ee190bd6058d374fb663305545bfb2f87929b69b2fcf",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 105,
+      "end": 105,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 106,
+      "end": 106,
+      "digest": "sha256:718edb36a04d3d472d544a489eb96b50bf2463d844f4757b3ef1efbc6e2aa6d9",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 107,
+      "end": 107,
+      "digest": "sha256:4736b044e5837046e56c1f1ad4849cb9a3190d6bffbafb0395e3c9d047d410cc",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 108,
+      "end": 108,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 109,
+      "end": 109,
+      "digest": "sha256:55cb149fc48f69239b8808f813e3594db957b62f0c4154e2f17ef4091c62549a",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 110,
+      "end": 110,
+      "digest": "sha256:680e525c0402260ab45e237262c5bf16883f9cebd79d86b22d0d5d1990c9691c",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 111,
+      "end": 111,
+      "digest": "sha256:f4f5cdc0269ee07f231c63443ffa5d712ad812364d48c74b021e1eec1e4df0d8",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 112,
+      "end": 112,
+      "digest": "sha256:f4b1e0b71f781663510ae666886a7548befd247f2bdb622ef9e2a0d7e15c003e",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 113,
+      "end": 113,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 114,
+      "end": 114,
+      "digest": "sha256:bf721a79a48188af1928f7b1f00afc5e9f2976ea7d74db0f61a7f8beeb037494",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 115,
+      "end": 115,
+      "digest": "sha256:61650cff2c53ca6bd816f3a7c549a3f46da312ff880efa40b95415b916c36c4a",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 116,
+      "end": 116,
+      "digest": "sha256:e273c6f2023a9538ed04684490d7df60c27bdb72be6205408e65409aac20ea66",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 117,
+      "end": 117,
+      "digest": "sha256:591fdb681cb4c547b742bc2ba8db484a66ea47c35ccb5b248072fea9113c6438",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 118,
+      "end": 118,
+      "digest": "sha256:1fe7a75b0b41c368dff2b8db9ec8ac38f3192502a7fc0a9d350fa7056120960c",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 119,
+      "end": 119,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 120,
+      "end": 120,
+      "digest": "sha256:8b8bdec91418aa1d3fdb5c0d133d6cadf838c98c533b836a56cc8e7e72efe256",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 121,
+      "end": 121,
+      "digest": "sha256:55bafff40223995a7f71d3c49538b0e268616f17b9a536501bc8c432638f5e30",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 122,
+      "end": 122,
+      "digest": "sha256:d54a06304ac409813639f7c7113203834dcc07e57f4f9d4774c27ca013046a3a",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 123,
+      "end": 123,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 124,
+      "end": 124,
+      "digest": "sha256:f9ad049e38b12cde57286b2aa19d2a2f79c8fd25553c8c0232e33ec37118cbce",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 125,
+      "end": 125,
+      "digest": "sha256:e6e30318f94583472edf5f422b244d2103fb310f058faabe1d45e20a219b0da9",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 126,
+      "end": 126,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 127,
+      "end": 127,
+      "digest": "sha256:b9e587ef52b815ac3eecf944d6b4042868ee34a6caeedb27f84fdd998cd86e44",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 128,
+      "end": 128,
+      "digest": "sha256:c080487abc12a10856a65040163c04143c69a05853a5f210a762bdaac39b48c5",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 129,
+      "end": 129,
+      "digest": "sha256:74cf6a0fb4cc702199676889c8279c7d5b38bcc37b3440f7f2468d15bd338535",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 130,
+      "end": 130,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 131,
+      "end": 131,
+      "digest": "sha256:f365b5eb8ac5bdc9422583622f002b5cce86ac5dc2d66ec8a3c74d3b5975ecbc",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 132,
+      "end": 132,
+      "digest": "sha256:b80ddf0f5e2dc2319348b1bc6a5c343eb67523f17291013a586b2dd57406d254",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 133,
+      "end": 133,
+      "digest": "sha256:87c1bd493694dfcc02a0d1841db02baae82ceaf301a2e695b6c38e2a4ffefc63",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 134,
+      "end": 134,
+      "digest": "sha256:eee05782b76b3324e200e71d671b3cce6bca8cf3408720fbd92ba9fd1f051a9b",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 135,
+      "end": 135,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 136,
+      "end": 136,
+      "digest": "sha256:3ef87201c971925cc2a4d1cc7e48b66d53ff559dbc38950053d5df9160688c15",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 137,
+      "end": 137,
+      "digest": "sha256:976297ce66fda2e95a83b55f8ea9f5b6c7f939078746121eaaa580c57df1e958",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 138,
+      "end": 138,
+      "digest": "sha256:7152e698a14153db06e91da98e998132c254d4ad59ae560e6f4a094fdfb72371",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 139,
+      "end": 139,
+      "digest": "sha256:fa575e2b650d7b98145019ca53c4816799473f32cbb429d0dfb6ab4ae616b22e",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 140,
+      "end": 140,
+      "digest": "sha256:eab969b09f11e3161ffbb424457771c2c273ec255e08bcfba3476e3e5150109c",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 141,
+      "end": 141,
+      "digest": "sha256:4a8f4d17077aff836b9f6b41af824f80615631b7c7ca6348a3df3488ceb7e8e9",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 142,
+      "end": 142,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 143,
+      "end": 143,
+      "digest": "sha256:53cefe465dcd0e6812ca6b1d666a0dc4c3fc644edc4cfd0640a52fdda70c875a",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 144,
+      "end": 144,
+      "digest": "sha256:e22c215f7a29b3cc729649940a9c481faa284d19a41ed8c9ad0c12933cb81754",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 145,
+      "end": 145,
+      "digest": "sha256:cee99d8fa860a909fd6d566bd86d8e1b54dd7330fdcc8d556b1888dde8421a0b",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 146,
+      "end": 146,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 147,
+      "end": 147,
+      "digest": "sha256:f9ad049e38b12cde57286b2aa19d2a2f79c8fd25553c8c0232e33ec37118cbce",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 148,
+      "end": 148,
+      "digest": "sha256:e45fd9cad47f370a2dd9b86dc4534fcb77bf20c7083539c530e91b50c61ee4b9",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 149,
+      "end": 149,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 150,
+      "end": 150,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 151,
+      "end": 151,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 152,
+      "end": 152,
+      "digest": "sha256:d7803300ad6de0bde05e5ad08931e20b4955582f33d95a0182eabf513d62b731",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 153,
+      "end": 153,
+      "digest": "sha256:05abdd3fa09a573ad025b4eadfb8af2cfcaef764b7b396084f4633ce2bb4b64f",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 154,
+      "end": 154,
+      "digest": "sha256:fc59d2221a245d7be62f4d2026550edc57c2624dec15f7c632d2209e89948af0",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 155,
+      "end": 155,
+      "digest": "sha256:e71d6b4902e36680cbd6f01c494c82ce13bfa85dac8a1111b322e371b496ea2f",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 156,
+      "end": 156,
+      "digest": "sha256:77a9b5e9019c8db8783ec9c3febb0a2c9862f61a05c308fe895e4a9bed03edb3",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 157,
+      "end": 157,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 158,
+      "end": 158,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 159,
+      "end": 159,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 160,
+      "end": 160,
+      "digest": "sha256:f7fe61cd344f973e7e137049069577969f54aaf9ef19c9778b4de42798e16781",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 161,
+      "end": 161,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 162,
+      "end": 162,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 163,
+      "end": 163,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 164,
+      "end": 164,
+      "digest": "sha256:ccc17a4e5a4f9244b044a9717d1cf5ad92517688f4ca60bbe27690242a89af4e",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 165,
+      "end": 165,
+      "digest": "sha256:67a75b7ea77c045a9a5968814e95f7e977854ee865190c7bdd939d102df33369",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 166,
+      "end": 166,
+      "digest": "sha256:297c9aa09cc336dc1f4ba7a0417683f77717782c6e2733b5c040e1d094a20bef",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 167,
+      "end": 167,
+      "digest": "sha256:6119b61cfa18bb024a2d3c8ff2927686800ecc05338840075ba2af1cb3fed7fa",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 168,
+      "end": 168,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 169,
+      "end": 169,
+      "digest": "sha256:f56b1dfcb5a4d8f382a3d5a213fe1d9b102e39f4f112f6c7fa6982fb1aea4473",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 170,
+      "end": 170,
+      "digest": "sha256:840daf8b67c280fc98dcb4c6dda7e52ed895956a1b3e0f73f55ea2540791ca6c",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 171,
+      "end": 171,
+      "digest": "sha256:f4be52518c63695b8da84f994e91f6f5c8eb307e75b0b2d5a135c74efdf55a6b",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 172,
+      "end": 172,
+      "digest": "sha256:dedec5a5beac9fea3a465dfb8b5e380e51a9e5e8d38303299847dc6f7574eddd",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 173,
+      "end": 173,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 174,
+      "end": 174,
+      "digest": "sha256:a5c1e625b93aa8f759a081a1a4ad33aa4272a53232404976bc98e1817c692673",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 175,
+      "end": 175,
+      "digest": "sha256:a8bd11e6e1f4f77f4610727b97edf41e5c5d6124eb4254e9ec5a1b3b28658c60",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 176,
+      "end": 176,
+      "digest": "sha256:eafd1ea66d905305c3f838d3b07d36aa372b98c256276d92e216f5fcafcbd631",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 177,
+      "end": 177,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 178,
+      "end": 178,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 179,
+      "end": 179,
+      "digest": "sha256:e3df3e9b94b919b4fa16b97a7db788091cb534954c503b9e886230e4cc038a49",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 180,
+      "end": 180,
+      "digest": "sha256:670ab13e21dcb6bc0961400d88f9712484644331b46b51904745971caa122eb2",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 181,
+      "end": 181,
+      "digest": "sha256:52f946d98a4eff32381249ebed97dde6fb43f3707057439c2ef76b0028a4e9e4",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 182,
+      "end": 182,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 183,
+      "end": 183,
+      "digest": "sha256:91a3e4ea2dd2fc8d118041d752e589e9714dfb475885fb55f2e5d3afcb141274",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 184,
+      "end": 184,
+      "digest": "sha256:026bd470f21fbd29826969fa19e8006e803045577dc2bb54cf6082293f2b11e6",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 185,
+      "end": 185,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 186,
+      "end": 186,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 187,
+      "end": 187,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 188,
+      "end": 188,
+      "digest": "sha256:f5783a96c9fcfa4993f04906b5143bc1d358d903a70c273c0910aa606997a8db",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 189,
+      "end": 189,
+      "digest": "sha256:08bd09fa43e4c8f29311305a89c1960659cfb5b06ebb25852bd93f0b0d57f1cf",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 190,
+      "end": 190,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 191,
+      "end": 191,
+      "digest": "sha256:d64a4f8a1ed061432677a9d388d99e9a9b6037ce9985014f89707e3caf59fe13",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 192,
+      "end": 192,
+      "digest": "sha256:3522f593b3451b07f5ec90bbbe5936d6e33efc59f59f641facbbb4e110884589",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 193,
+      "end": 193,
+      "digest": "sha256:e431350dc80e486ee23e37b14a143c3aaf6bf498d09aae420a7334f8073fa4b1",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 194,
+      "end": 194,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 195,
+      "end": 195,
+      "digest": "sha256:96862669c7178818e5dbef9de5f4c7bd0a47f3292b714d020cf4d065451f8c99",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 196,
+      "end": 196,
+      "digest": "sha256:75d77027d22e799a4ec3071654d7044da8306b995da584a4c90d2923cb67b828",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 197,
+      "end": 197,
+      "digest": "sha256:7006f23d22f59298f990c7680eccae8138943343d2c47b7496e0c4ce6e26acf0",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 198,
+      "end": 198,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 199,
+      "end": 199,
+      "digest": "sha256:b04456186a5aa113f331c11a6d300b5a3a0b20da348bfee67fc630206b3484b1",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 200,
+      "end": 200,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 201,
+      "end": 201,
+      "digest": "sha256:50bc5717988800c6e8d41a33583b58aab88a6b458fbea16b8016cdf52957c630",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 202,
+      "end": 202,
+      "digest": "sha256:2fa097fb85a3e079d6947f4d880fa3abc9f8675f5c294e1c4aa78457d95e4179",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 203,
+      "end": 203,
+      "digest": "sha256:77bcd1842453c71a59fc3bc1e85ae70975be83585b34358d72d26cd03d3849d2",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 204,
+      "end": 204,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 205,
+      "end": 205,
+      "digest": "sha256:0870afb227269d990cc60cbf3565936be1bd226dbee79329510931588d41b6ce",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 206,
+      "end": 206,
+      "digest": "sha256:51e9b8e1964d65decd31c84514f1632ef52b023116689d3ec5b44ecce8dd924e",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 207,
+      "end": 207,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 208,
+      "end": 208,
+      "digest": "sha256:e603b524859cffb985f3dc02aa2f481f6bd201d6aa91f653104e206d3640ad58",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 209,
+      "end": 209,
+      "digest": "sha256:409bfdc39bfe951e5e29d56eb60d5fd502c7bac5b667456936b207bc250215e1",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 210,
+      "end": 210,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 211,
+      "end": 211,
+      "digest": "sha256:e8cf73e596c64f56305bc3b91fdbb6eda9d310578f6690c4e86a6ef9d3acd26f",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 212,
+      "end": 212,
+      "digest": "sha256:d60c400080079b83531c5dd7bba86a0d6e3093bf6d3f5e5fa65bfdd36f1fa1ec",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 213,
+      "end": 213,
+      "digest": "sha256:72da7869862ffe892c81f4ebf4883e1e3215a6e5ff5fc9470d255e81027870ec",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 214,
+      "end": 214,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 215,
+      "end": 215,
+      "digest": "sha256:1a90209a7e753700673da0882f497e618da5e517c4b092820e9f6efb06d3759f",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 216,
+      "end": 216,
+      "digest": "sha256:2554be26b37d2d4a1433dc87dec9662221368e843a0188696697c5c48d348528",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 217,
+      "end": 217,
+      "digest": "sha256:48e4a3ac73ad2476d4c14acd78a9b7a8aa475bab40260cf2ca9753800ca72e6d",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 218,
+      "end": 218,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 219,
+      "end": 219,
+      "digest": "sha256:51b0cd9634b78e32adaa97ab8c8f09af6155e3d03d7082e1a014f805ab8daacd",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 220,
+      "end": 220,
+      "digest": "sha256:a08de91dae299fdc6c0b2a13dc65b4798513e6d86112c8221aeb812502a6e2be",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 221,
+      "end": 221,
+      "digest": "sha256:262fe4d3d9556d0b4bb577e54f0ee0416982e5a526ced36bee4c2ab8e0d8421f",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 222,
+      "end": 222,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 223,
+      "end": 223,
+      "digest": "sha256:35e9d8935f322443c1d24c800f613383b398e6bc1b78951ff4f2ba779568451d",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 224,
+      "end": 224,
+      "digest": "sha256:e977554c39a43e070916ee99217e132531fa1cf1999ee23a5b60a59de081ddee",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 225,
+      "end": 225,
+      "digest": "sha256:82115b2959d9adcf6527bfe6c91a559c1581636f186621e51994e7ec9f3eead7",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 226,
+      "end": 226,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 227,
+      "end": 227,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 228,
+      "end": 228,
+      "digest": "sha256:e1bc934922149c0ef3e0c30ede3e1b0600d7f3eaa7d0e299ff08877ae2f43ccd",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 229,
+      "end": 229,
+      "digest": "sha256:4869f28bb380d36efc883329a8490833b136a66b223fb7d825239af086a21ea6",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 230,
+      "end": 230,
+      "digest": "sha256:d6f80a64f4299add20601cdc620b4aaf1110ad61d018d0621c9812351bbe979c",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 231,
+      "end": 231,
+      "digest": "sha256:7e2b01605d0c5290e075b70b872ee9f1d1c8ba8ada71c2bc30846cac9d7293cf",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 232,
+      "end": 232,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 233,
+      "end": 233,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 234,
+      "end": 234,
+      "digest": "sha256:e00c7b47dd8c9faefc0c977cce6896683ab3986d034dc0e77bea61e114dd1490",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 235,
+      "end": 235,
+      "digest": "sha256:7d590f9950f488677cd7c886785e118b3e18213c1eb829ede8dbc55bb310dc75",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 236,
+      "end": 236,
+      "digest": "sha256:55cb149fc48f69239b8808f813e3594db957b62f0c4154e2f17ef4091c62549a",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 237,
+      "end": 237,
+      "digest": "sha256:d66a9526954c74d3c38c47933944697673cdb521500f55cb8153c697dd1c79d8",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 238,
+      "end": 238,
+      "digest": "sha256:f4f5cdc0269ee07f231c63443ffa5d712ad812364d48c74b021e1eec1e4df0d8",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 239,
+      "end": 239,
+      "digest": "sha256:08d91ae4a12373f81055ebf37d9e330deedf47c0590d07e4ea836a44e872c75e",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 240,
+      "end": 240,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 241,
+      "end": 241,
+      "digest": "sha256:33dd1a8b0930654d78085b6a8430bb4ed8dc529dac7225845d81e67630f14a67",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 242,
+      "end": 242,
+      "digest": "sha256:b75c576d9a4bae03b82c94ce66ff5533a8807a34e12845f58a8ff31baa5e3f6a",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 243,
+      "end": 243,
+      "digest": "sha256:d5a7abfb123b68cac1644a6be030da2e1be61c3db7a1555fb1d2cb4c414fe51b",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 244,
+      "end": 244,
+      "digest": "sha256:949ed7179eb1e5753f705a766d046d60140487bd0d1c1766071b13d82c29884b",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 245,
+      "end": 245,
+      "digest": "sha256:1ce845e4934ce9ef64587d0946b9f8ff9320255c49cbb01b358fe6f7f484e5b9",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 246,
+      "end": 246,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 247,
+      "end": 247,
+      "digest": "sha256:46ab9f6f2bec7fccd9505b90a211d75883f77b95bd9338d42340b83ef98b9a8c",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 248,
+      "end": 248,
+      "digest": "sha256:2e1b884361bb432b8241603b2e1193fa85d34b418abc5dc842eb5d697407af3b",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 249,
+      "end": 249,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 250,
+      "end": 250,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 251,
+      "end": 251,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 252,
+      "end": 252,
+      "digest": "sha256:be3952b9b25f34c55bba12070afc63bd01807ca137fe784fc0b91e36b1181cfb",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 253,
+      "end": 253,
+      "digest": "sha256:f0abe65014c0273db35ab9e3f61810421fb7c7c4f462f7a568692c31021ade0f",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 254,
+      "end": 254,
+      "digest": "sha256:46a153674e43f3bfd62350e75633b0f0bd7cdf17f71855a381a4250c423d8760",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 255,
+      "end": 255,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 256,
+      "end": 256,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 257,
+      "end": 257,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 258,
+      "end": 258,
+      "digest": "sha256:7ac3134fa381f77a6a3ee5b8c1599dc88d2c189e38db1d9ea6d234477bdb8b63",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 259,
+      "end": 259,
+      "digest": "sha256:48a4fb94f612af9a7eba1d3755229d3f25d70f963a282a979d901d29e967945b",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 260,
+      "end": 260,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 261,
+      "end": 261,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 262,
+      "end": 262,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 263,
+      "end": 263,
+      "digest": "sha256:419f7801e43e48f8724a18e2959881eb871624ecb42411e57af792a3ce1f9b9b",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 264,
+      "end": 264,
+      "digest": "sha256:ece523c7d95d420d4ff49e42b4fb263847bfb194d96eebb9f9472a2b0266a7e4",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 265,
+      "end": 265,
+      "digest": "sha256:f353f27ddcc06cb924776200daa2f3247ed7933028ed678359b505426e1fc96e",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 266,
+      "end": 266,
+      "digest": "sha256:a3f56d7f05a837f41cc570c8035fe5e3bd9c019efef1e16b0ec42258c608be80",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 267,
+      "end": 267,
+      "digest": "sha256:242e3c60e86fa8f71bfef4d7ecefe44115adbf61ea225304af456f87801bbcb0",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 268,
+      "end": 268,
+      "digest": "sha256:ea8ce2e16aa70f7ec1bcafbef9184715e8a83d8b71047dc57b095b39c2029243",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 269,
+      "end": 269,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 270,
+      "end": 270,
+      "digest": "sha256:12753f83101a877db7a0e782bd6c11a044675ad341f222bdbbcba43a9e2cbe9c",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 271,
+      "end": 271,
+      "digest": "sha256:86c0b1646744b86a421ec1c2d116c458341fd66100c7aec397877b68a3c28e8c",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 272,
+      "end": 272,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 273,
+      "end": 273,
+      "digest": "sha256:237f9fd1a04a0f665a66c4aa6ee2812849b73c857805c1c260648157d430b3f4",
+      "note": "Incremental API continuation and lazy-detail tests."
+    },
+    {
+      "commit": "31732621344a14ceb560890375c2240cf2720933",
+      "path": "internal/server/incremental_test.go",
+      "start": 274,
+      "end": 274,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Incremental API continuation and lazy-detail tests."
+    }
+  ],
+  "version": 2
+}

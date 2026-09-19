@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/codeview.go",
+      "start": 352,
+      "end": 490,
+      "digest": "sha256:06d80d304a6475c9d8ce65f668949523b02afd5cc3aab2192fea97bd8b426a87",
+      "note": "Indexes narrative targets and groups selected code ownership back into chapter, fragment, and landmark links."
+    }
+  ],
+  "version": 2
+}

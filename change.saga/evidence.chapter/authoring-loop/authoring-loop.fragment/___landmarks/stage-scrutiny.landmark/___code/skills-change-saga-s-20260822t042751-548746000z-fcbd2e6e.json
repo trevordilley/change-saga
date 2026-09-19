@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "skills/change-saga/SKILL.md",
+      "start": 182,
+      "end": 213,
+      "digest": "sha256:da7dfc859b7b88fb7131dc6f836e952d63aa9eb994c2a1b5cd5fd7d6fdd5e330",
+      "note": "Surfaces broad, weakly explained, or unfocused mappings so they can be split and retargeted."
+    }
+  ],
+  "version": 2
+}

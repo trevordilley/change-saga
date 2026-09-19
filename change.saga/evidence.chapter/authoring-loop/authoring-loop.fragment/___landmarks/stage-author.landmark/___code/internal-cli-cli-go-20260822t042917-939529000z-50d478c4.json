@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/cli.go",
+      "start": 177,
+      "end": 277,
+      "digest": "sha256:1157b1caaddb32e7ef3bc94c0b20724a5d11bebaf4c880377fb9214e5512350c",
+      "note": "Initializes a portable Saga only after resolving its exact source comparison."
+    }
+  ],
+  "version": 2
+}

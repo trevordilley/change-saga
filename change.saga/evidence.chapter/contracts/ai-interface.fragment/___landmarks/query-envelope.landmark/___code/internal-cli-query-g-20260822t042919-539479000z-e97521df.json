@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/query.go",
+      "start": 1,
+      "end": 115,
+      "digest": "sha256:0902061367e2a7312254d5141d1f3a80c72ad04824b3149cef006827582da355",
+      "note": "Defines the versioned query schema, request types, page shape, and session interface."
+    }
+  ],
+  "version": 2
+}

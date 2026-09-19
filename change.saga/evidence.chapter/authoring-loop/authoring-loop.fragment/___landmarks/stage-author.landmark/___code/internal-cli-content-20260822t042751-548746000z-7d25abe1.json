@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/content.go",
+      "start": 1,
+      "end": 100,
+      "digest": "sha256:a9f6e1dde4e2f2bb59c94089b4d9c3c7f470ad6e0e6bb71ad5ac6b99e72eeeba",
+      "note": "Creates focused hierarchy and fragment content through supported portable authoring mutations."
+    }
+  ],
+  "version": 2
+}

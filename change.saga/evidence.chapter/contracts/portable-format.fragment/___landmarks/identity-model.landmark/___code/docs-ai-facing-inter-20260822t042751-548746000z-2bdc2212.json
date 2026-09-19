@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "docs/ai-facing-interface.md",
+      "start": 538,
+      "end": 577,
+      "digest": "sha256:d33ecb0eb103b0b9f64b85f7a1f823064bab08c1bbabe8920aee0a40fae94fb8",
+      "note": "Defines stable narrative URNs and canonical absolute source identities without local paths."
+    }
+  ],
+  "version": 2
+}

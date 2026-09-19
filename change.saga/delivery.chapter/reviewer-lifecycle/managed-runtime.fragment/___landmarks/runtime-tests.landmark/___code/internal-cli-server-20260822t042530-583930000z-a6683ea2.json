@@ -1,0 +1,579 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "digest": "sha256:ef9382f361ea3a93abbf9780eacd5cade6c2688d69c90789c591c5914d4aa664",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:55feb8da8d74ead61adcf05dfbc90d4ec717e9510e8f14e0e89bf1e838d3bd23",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:71e37b6cd48ad477cbb12624b757ee1dc4975711b78237a85f508bfdd723af77",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:6c7872f7e7aba7ceb14de93a1613a51c5b446ca889744d3b529463bd245c0953",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:dc94db91287ede614bfe3a0ee2e2b567400c33fbbb5566199f17b7f6235ec46d",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:926ebc76318f711b7e6fce77071eb1a689adb7f244f8cbde070b2852db74b02e",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:171b756171ff8240f94ccb83de837ed4242449df3ecef3a3762523d1f5ae0348",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:b83dd5913a82d8a691007f7ee185ac68dfe5991b41a3f4a5a6707f66ba980dd6",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:1b649ecbf085fe223589d7f842defd5e2c82ec06b02b4f7827a31625fd09316e",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:dce87b6818a2884e83d31c73980f4824699871bd0d1b0b2cd9b7c3f5b15b116d",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:fafba0527c3953c4b6e0e5b5739ba83612f8053bcdc9466730193cd1d590b408",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:0a8850d78ad663d2ad641088cf13c542188313e5f8c71d9e69ae39d80aff6587",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:ca2968e44d99c8b4a8b88a848e3049a8232d10d8e69ff7880fa5aada873ac450",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:dad8119d2233aa1cee45c08cc8889d003d451da2ad99f83644458dd9d78f6ffb",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:88f5a8c99c2e3a6fe326be82c64f1fb34d50f211df28c58f0375d530d67d2d39",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:fe1b49dc72f63263dc4f81dd21df3edbfe65e965e7af28c4388af27458ee60cf",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:d1d3706a998ce5956157e1f189487a3999b23ca404cb7822ad5844f1093d34ee",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:bb1b2b1b09fd2799c2a157fe330350b165d31b3885c68391225b36f61b27a8bd",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:d95c8eaaaaf5a1acd3c7e77b1c7a1bb889bba1a486f456321a26c3e6885e2e6b",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:c1d1b9b3f23875ec547be692e6ae260625d6bbc6114b3b276b36b1f75cf98e8c",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:5e9e29124799cea5e11f180a79091baef5937e22ebac0dc3297432b958c84673",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:c830d54a0bfb19f1de4ca8a90bf1cbc9a0a33346e3e4f1a1e92609cff78dbbf7",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:f18c98c89386a999bdef62d8e9b80912739408701523b09dd275026cd8adc985",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:79080d8209a4983d32b1941e6d6a55e8ad22510fce8b998fb6e56d7cfd76d7de",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:2930e62b9d45b77d61e70377025d6442ae250e74e94ecd7be6c8d6b19492c48e",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:6bc2ec4c7e5eda9aa01ec49c8ee929eb3ac70f7174d42cb4fe35fa469843e86b",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:183ae846138fe4ee44278cdd2ac14b46875d50f43c88c78c8ef6f5d5fd2ad697",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:9b0b14c78739e7716cf173a07c42b3867ae16225b52649b7f71e24049ca4412d",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:d8fb89b303b173c00be5a6fe8b359c826a0a6b1c75c7327364e8968db65977e2",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:9a1a62e6634f4a7385b1a80c34294aca906da796b4670b19fc198b3d3d4bcf4e",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:02a8bd584bfdcfdbedac13ab055d748073a6281b77cc5b345efc6676ce48ab99",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:11ef34c2cf8e7c3f6bd7ffda186e1c2a367b54cb02a25a33d3dbcb0b262d92d2",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:2680117506c0c7faaa7d6d66b2c5050423e4ceb50d095ae50bc923ffba82b91a",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:7fa584d52a4d9a5f455cb9046a44c86e5ceab740ed91fd3fb082049e68eb5fde",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:58b88fc45ea66f3d0d52f49ecc73b17a794220af1069d916dbd6afe7df84f21a",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:752e5c68198cfe7fe90538be0407690d88bf37623a7c41d6040e6cc1049fdc85",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:a14188f711dc45b510a0d3bdcaa900c0216d3152d6b65cf79878b7e56e170cb4",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:5f7cea30e29776ce4b600c3fe1ac63b5dbc93b1524fc2cbaeecff855f98528b7",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:48a7fd0d055ac7a69d2298f01455a3ba4ca5c1c44353bec93339c6a54df94730",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:5d8a5ab92240ef28860d80935436eaec82816e46656f580473b9d004ada1cc08",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:5cc815235f969d2b79ea468eaf212b63280258ae0c87c5dd628b96e70a62ae02",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:ea45abfbb80bff898e5f9dfaa32ba780c5b1ae63c1f313ea3ade24e9e84bbb61",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:a9b08d564b16d3df3d1ab261cc96c21bb1b45faad67bea066ae013ca1da745ec",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:480da4b5d94fdb711b89893578e493d430d49536d137bfae414fd8c54739993c",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:1933dc3a3a110a44ea864397f2b5d018db07d41c0ff5a215386e55dd008b976a",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:e6310a36567d4b7c0a1b3702f98202877786563ca353701837a3faf8fdd9a25d",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:4c154cdaef82ba33866af83a0fb4627709fde0adf6b35ece16355f457f55ed74",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:27cf14a971e7058c6ce9799e2f9925c99a13a73fb333b07ff494851ea5915eab",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:64efc49418d26dcf129b22a6aa21108ceec37677a32d08e9d5fee35dda66bb9d",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:f7f959f2d2715c85e7a08162ff7b2b1586226470808b0b1afb3910ba32d0249d",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:d08892645bc8b334cfabe8118be89851aab0c1738f3aacf4745d70bfc91389b7",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 68,
+      "end": 68,
+      "digest": "sha256:d3c9f70ccddf0da29f743738c744194c73c887712b785d3f360b84493a40d2f7",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:ae4790314acb5d5e2d4fbb7b35f0ed64f5b090483c133c4705c4cb663803a062",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 70,
+      "end": 70,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/cli/server_runtime_test.go",
+      "start": 71,
+      "end": 71,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Tests state-path stability, token shape, state round trips, and invalid-token shutdown refusal."
+    }
+  ],
+  "version": 2
+}

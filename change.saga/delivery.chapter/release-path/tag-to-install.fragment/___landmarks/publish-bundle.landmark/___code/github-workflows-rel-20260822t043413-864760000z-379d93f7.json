@@ -1,0 +1,21 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/workflows/release.yml",
+      "start": 235,
+      "end": 285,
+      "digest": "sha256:6248625cd301d1d8c76369742ae228c8b87aa681502f08ab6d00058350758dc0",
+      "note": "Rechecks the prepared bundle, emits truthful release notes outside the installer handoff, attests provenance, revalidates the tag, and publishes once."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/workflows/release.yml",
+      "start": 302,
+      "end": 423,
+      "digest": "sha256:0e84d5b4c5dca1bc35b412119c2266d60ce508854c26eddba646278f2a90152a",
+      "note": "Rechecks the prepared bundle, emits truthful release notes outside the installer handoff, attests provenance, revalidates the tag, and publishes once."
+    }
+  ],
+  "version": 2
+}

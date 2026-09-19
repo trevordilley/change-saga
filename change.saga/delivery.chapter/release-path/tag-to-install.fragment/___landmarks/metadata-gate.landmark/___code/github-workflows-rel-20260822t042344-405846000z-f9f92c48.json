@@ -1,0 +1,13 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/workflows/release.yml",
+      "start": 48,
+      "end": 101,
+      "digest": "sha256:fc4b133e64196ea90e693c674e5c6e4855f1770f8310fabd4aacb1964fe2e679",
+      "note": "Validates SemVer, exact commit identity, event consistency, and default-branch ancestry."
+    }
+  ],
+  "version": 2
+}

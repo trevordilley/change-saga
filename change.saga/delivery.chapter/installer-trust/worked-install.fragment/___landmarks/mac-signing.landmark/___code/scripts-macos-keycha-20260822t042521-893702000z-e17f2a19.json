@@ -1,0 +1,467 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "digest": "sha256:adcfc533981c82ff3bec908e3ba54898a9cc998d5ee5c4984ba4d3ca4d46335b",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:1d95fc04a80c952f49ce4188627c53b0fbe8c44041b952d592acd1de99861466",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:5cd79a5836e297d0c3438ca92d28224c35806b0308ad88e0c24054cfaf37f693",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:32c4858e22cc2c967b42150fa550562a2c839c2cebcaab91cabdf6f4da020022",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:0d262e27a269c755d4d2dc6c3c10949d032a6455c25d73ef46b7352d03046621",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:c6199e3a819f4d741db2663765ab6c5ef07e12ef0b828104efaded99d5493cc7",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:32c4858e22cc2c967b42150fa550562a2c839c2cebcaab91cabdf6f4da020022",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:f8b1e10a5cd63501977e7345e98cde0435e67a8148dbdda42d382583ac33800e",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:9c2663daa0a1664c6e346f70499f402c2ecf758597d4d96d68456d236df72e07",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:d1979df8c1f8c8bc5ed90e32432ef4183e6fa65948ba068e82ccc3ed7e342b6c",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:32c4858e22cc2c967b42150fa550562a2c839c2cebcaab91cabdf6f4da020022",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:7a052d5b802dc3bd35506e9f2d933b6a8ae1e983d2733a780957a410a20e8bd2",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:4921ff7fe9d80359d0ffbb04700b6a957bff2960eb0a6700eb91b0e9257dd142",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:88fc633667d0300731bdd84472dc424e1f9c64175ea2badb666472d91aeb4efc",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:ebab0e9256b0a4051a7ac3c50748e8715b7438a9a16bafe1301d51df7806181a",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:3b312839a54b075857e9947df7eb556a136bc242a5711497e1c3681e8efca03e",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:023cc96abec242bd8071adc0dd5a8c41de5171f95737a0e18c49734a11e6b716",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:3aa5b834e23256435bdcae756099c04d181e3c919cb56d31772a1962ec97b826",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:81f407cfde0e539d59d80d4618a67d26b6b718416d170c36c48ca18d42f3037a",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:f13f13463e2a45e752d607720272ba07d210472588f5c295b7f236aacbdf2099",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:3f050604be5c8ccb1e12db02b412601096910b996044e0dcacf138865157db4c",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:4df968cd70c200040f84680ad1378d2231a9b7119b9a7d8c6530c0a07c6ed475",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:378db6784e0405cf366cc52ff4993250c1dd4f67aa3145050d96ed533aee69bf",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:6340609cd4132a2f5a5073b6d9dee3e071c02050139ffa3c6310b94f5f58a749",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:fd192ccaaf345432ca0214a287b650a45786592e23b5dd3f84c267234055147b",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:f7572f22b95d2333b78034fa8d0b122938e08bbc6e117d6a05925c046a0a95f7",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:9b3ef1d6e4e533fc879f9829b65a2321b748a15f8f59c8776ba23fb145e948df",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:becb381ab792d823f013f82c7067fcf061456ccb6856e2fa3d36d40686bf8eb6",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:901ec050e964776d05d147e7173908367d131d2516a8dc51c6a16e560f3549e8",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:6ee2b3b3bcea4de6f66446ed5732bdd445acdbe7b18574dd3c8f5e2abbbbe745",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:f27b911379b5a01090e73814a310545d5047fb30649129d4e920ab3aeaf239fa",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:ebaea364857e5554355c9fda34c9da903fda791714ac411cf1d615da281fd835",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:3a9af0947c274f67f74412479ca899c77a856e9be954e57f3b8690e6de1d712b",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:79064325f9db4f5aea76b65fbc51b85083efe10abce627a0ded3694a5bcf15b6",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:b8f096e5811812488d95094893acb2c47735b1050119dd2bcaa8b8f2a2acd2e5",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:f749d924ce2868e7ecbe371b7555f4ffbb3a25786cf3bc3bbd59a26b3351c04b",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:4f35918746756e17f4a66893b8fe536b0fb6f22b1d63f3131bd49fdad5ff4cbf",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:4ef09a99c618cc3652c29feed550152d6b1674fd95eeaa2d93361e8c12ad6180",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:da2c1d932e865a48ebfb281dabe9b9ffce7411155650e0f499ac22c86eb94ae7",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:a484f6affc75d781c6b8c3a34599eef803ce1b1203f057cf40a5a4b1f1abe99a",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:7f0fcdeba918e1721530b087b8dd26f83b70c3c92b6c1bac5185641149a3b8b9",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:bdfef608c05ca130a29628d1cf52550218ab3ddb0c577a9223e70664bcaad2cb",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:ccda8b6fe0fdc8e1339ec037fb09344e18143e937de864d03b4533a12b37efc7",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:86ba1ca1a1ab9f60515cc40703c2a248455a339d4c6519942fd3aa1928362487",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:62bd309f542cd649477a3be59b74d65ba10ad70a672e473e1fe5f781925635fc",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:1aa9d7a92a2175bb4640493084ddfb798367eeb63201d6ecbc8f196703af1525",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:ea92228664a41984598950eeda2ca49d4584cd6485fdbd3362102d3dbb8adcfe",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:27349f0d7734735ebdf435c60cef2b744494843ab8c9c7b188a3fa44c3cfca4c",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:3769d237cd420b9d38b981a0a4f6770190a4a83dca1fe56c4f5ba1e2cbc0ef76",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "scripts/macos-keychain.sh",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:9bd23444cda21143540671f08df394a5d1c8a3e08a3047ea32eea73fd167fab8",
+      "note": "Imports the Developer ID credential into an isolated temporary keychain."
+    }
+  ],
+  "version": 2
+}

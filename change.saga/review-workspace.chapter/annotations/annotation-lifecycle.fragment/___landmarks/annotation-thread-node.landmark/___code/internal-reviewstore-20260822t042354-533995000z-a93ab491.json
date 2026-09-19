@@ -1,0 +1,11 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/reviewstore/reviewstore.go",
+      "digest": "sha256:fcfa2017b025c1c73549966be0a7e33ad3967b73b5ac792ca2e16f0a4fe23ed1",
+      "note": "Introduces append-only review record mutations for the local workspace."
+    }
+  ],
+  "version": 2
+}

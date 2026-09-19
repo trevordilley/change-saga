@@ -1,37 +1,69 @@
 {
-  "version": 2,
-  "diffs": [
+  "references": [
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=244\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fcli%2Fquery.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=244",
+      "commit": "b6042a5b85057c8f2f892dabc9d06cb1bfa155fd",
+      "path": "internal/cli/query.go",
+      "start": 244,
+      "end": 244,
+      "digest": "sha256:c9cee3d8cab05a8ebd4e46a37ab7ff9dd4ace6df763cd12e4874eba65477bd8e",
       "note": "Defines exact-diff and committed-head traceability queries and exposes slide section metadata through the versioned slide query contract."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=271\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fcli%2Fquery.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=271",
+      "commit": "b6042a5b85057c8f2f892dabc9d06cb1bfa155fd",
+      "path": "internal/cli/query.go",
+      "start": 271,
+      "end": 271,
+      "digest": "sha256:2d42f19f957a25b84870d8ac1909d502cff7b1f5dd1c9da605602c8309475b70",
       "note": "Defines exact-diff and committed-head traceability queries and exposes slide section metadata through the versioned slide query contract."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=321\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fcli%2Fquery.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=320",
+      "commit": "b6042a5b85057c8f2f892dabc9d06cb1bfa155fd",
+      "path": "internal/cli/query.go",
+      "start": 320,
+      "end": 321,
+      "digest": "sha256:5a8b95373a7231ac493ccb25ed2b6e87dfbaa90cc3a2bdf45222f53e34046dc9",
       "note": "Defines exact-diff and committed-head traceability queries and exposes slide section metadata through the versioned slide query contract."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=420\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fcli%2Fquery.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=420",
+      "commit": "b6042a5b85057c8f2f892dabc9d06cb1bfa155fd",
+      "path": "internal/cli/query.go",
+      "start": 420,
+      "end": 420,
+      "digest": "sha256:6f9cb8d8890cadc553bcc18feb11ee970da7590564bd8ebf070a4ef7bc872350",
       "note": "Defines exact-diff and committed-head traceability queries and exposes slide section metadata through the versioned slide query contract."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=424\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fcli%2Fquery.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=424",
+      "commit": "b6042a5b85057c8f2f892dabc9d06cb1bfa155fd",
+      "path": "internal/cli/query.go",
+      "start": 424,
+      "end": 424,
+      "digest": "sha256:a27fe31298801712f06dec321a2acdae3490b09518546e7acb6c6addcf83012f",
       "note": "Defines exact-diff and committed-head traceability queries and exposes slide section metadata through the versioned slide query contract."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=440\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fcli%2Fquery.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=440",
+      "commit": "b6042a5b85057c8f2f892dabc9d06cb1bfa155fd",
+      "path": "internal/cli/query.go",
+      "start": 440,
+      "end": 440,
+      "digest": "sha256:0f6b90e49807d0db089d52dd81ba0bdb42d8855130bad5c0a9b521ec8508ee65",
       "note": "Defines exact-diff and committed-head traceability queries and exposes slide section metadata through the versioned slide query contract."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=486\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fcli%2Fquery.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=486",
+      "commit": "b6042a5b85057c8f2f892dabc9d06cb1bfa155fd",
+      "path": "internal/cli/query.go",
+      "start": 486,
+      "end": 486,
+      "digest": "sha256:8188a070d258380fed03e481bf87d238f0ec048d4fcc4d1ace814ea8ccf54a20",
       "note": "Defines exact-diff and committed-head traceability queries and exposes slide section metadata through the versioned slide query contract."
     },
     {
-      "uri": "saga-diff://v1/line?base=b6042a5b85057c8f2f892dabc9d06cb1bfa155fd\u0026end=684\u0026head=product-03af401ea58a465ca2bf963f1619bc098d5a5d97eb9bb7e034043cbd0b473041\u0026path=internal%2Fcli%2Fquery.go\u0026repository=https%3A%2F%2Fgithub.com%2Ftrevordilley%2Fchange-saga.git\u0026side=old\u0026start=684",
+      "commit": "b6042a5b85057c8f2f892dabc9d06cb1bfa155fd",
+      "path": "internal/cli/query.go",
+      "start": 684,
+      "end": 684,
+      "digest": "sha256:cc98a9d6e0133544ef9f17b435c4cc4501dac7b0864779ec9308d7121fd8ec9f",
       "note": "Defines exact-diff and committed-head traceability queries and exposes slide section metadata through the versioned slide query contract."
     }
-  ]
+  ],
+  "version": 2
 }

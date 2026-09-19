@@ -1,0 +1,1075 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "digest": "sha256:c86c27c8d9d4e82ab7b88fd46a563faf040ca8e5e39892e7c5ce5efa66cb4700",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:0b0d4d1f5fbec17d7732f29ccf38d3ed9e3587229f0a04824e1096d25f930f7a",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:71e37b6cd48ad477cbb12624b757ee1dc4975711b78237a85f508bfdd723af77",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:5477249feb9c6e0d0e73f83266b79ef392128e0ce67daae9b528cbcc4db7b552",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:f05b48055b78db9e9e8993848d47169d7abd312df35886aa83d4014d37eb4009",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:fafba0527c3953c4b6e0e5b5739ba83612f8053bcdc9466730193cd1d590b408",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:8b988a402aeb5798e9d4a9ace6be23ffcac7b81a8c0fd815a867c0d7409a4c0f",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:b50ce450e3d596399a7c6f037fe6d28014ffd658609180478e24affc9e3a07c6",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:b33fd57b0066b13623cb19bb3957116cd5b4a8e526151a81fd7486375d873435",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:101ead936a2281d53dcc064b7e2a2ab0d53b92ef3ef7b34b668673007895c860",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:465cb91e84eb9179c265f818317b3a6fd56f926966578d1ef0d91f140822a69f",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:7db653a224eb2624a27a999d8f3e569930ec25648a76ad8e26eb54febe041f8c",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:6b601c02e7216b382779bb1ff57dd1928dd1ed401d14280a9121ca1bc47921d7",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:1d8ffcb53adc3d9bc6fe15d3bd2e4c51ec0c51a663469376282af691a747f4ca",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:82b4d47708befb77e8e52778ca9b309dd941534c8fac92211d1dafd2ef43ae32",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:374b473bf7fb13be8456e098c10d49d859850a1dc0d849edad53031d17f13a7d",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:a5be8af0082b7d197bd18daa82a5aff84ade2dd2e8fb23385b2fc9473db5e673",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:e6f3ce7af3dbcf13f2db83ae9593f770fefcbd354a83c1eb40dd9d46b5387138",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:c9cb2b7a08b08d64dc24302ccfdaf3ec5f72422ed1caedc7aee3edefff2bf75b",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:f4cbe08bcb969dd34d973870f233444ac6257ddd8fc183f76510b5002790311f",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:df72274474c39a9ceea2fa890abbe70323601189efa444ef4c8a63b06ccb6139",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:c5316532372eb9ff3ca92449b7b1361e63d5a949bad51ddd1bec20fcfbded2f1",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:f6a739ad5947f2943bc98fb0295387396f74f08e0d58cdd1ed1881ab851155b9",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:9fcd9d4862f202ddfe44342345b656f00b7be33299b004267d707cdf907d1943",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:2b55329ae2d7cd8428b8757160583a65c9010cc42fd273863dc6174e53030518",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:189033b25fce16d6e2f9c1008a3244fec278cf632ba455e37797519675e74006",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 30,
+      "end": 30,
+      "digest": "sha256:207e8174cfe00e73baeb492e2d77206a063c1862f43e97be49656a06a356ed25",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 31,
+      "end": 31,
+      "digest": "sha256:1ff93ff1781f769316b0dd2d13477208d4208b07a02aea5d55c6f49f57ec1202",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 32,
+      "end": 32,
+      "digest": "sha256:15987336aa8f2da53f4bdf87b01d1d144e9f22bab29bfac5338c51c8bc41305d",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 33,
+      "end": 33,
+      "digest": "sha256:0ce30cf9f938a37e136e5281398a8cec50b0282b436d23c55ff16a8a80a5c1f5",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 34,
+      "end": 34,
+      "digest": "sha256:cc56dec6ec06de11f123bec839b0d36c0ad5feeb55002fe4a8e8970721effa8e",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 35,
+      "end": 35,
+      "digest": "sha256:4a7705361b21d47d5da8509ee2d50ecc57ab1680030a1d57a08550d5280e693b",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 36,
+      "end": 36,
+      "digest": "sha256:d1d611a62de5b276c5b309c4b67083531418a0b2d787f6732c88329b42e24c02",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 37,
+      "end": 37,
+      "digest": "sha256:ea79dd024153e996d603f6fce91ec884c05ea058e7784e489b27cc1787391659",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 38,
+      "end": 38,
+      "digest": "sha256:409baeb1a175c821dd5e846d537ae56c267f23b9130e5897452fb7a385d1f3af",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 39,
+      "end": 39,
+      "digest": "sha256:b92c03b72fb80efb9c0ee32f1d8996e030856bc4bf748cab411ee31f1e894388",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 40,
+      "end": 40,
+      "digest": "sha256:c8e68f713b026cc7a4c2370e412e09fdc2d8ede860ca56e01327dea941912ed1",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 41,
+      "end": 41,
+      "digest": "sha256:0fc1a41b7eb535293c74b8bc41f0c9df03a607e335d4c212a90b3699469c51c9",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 42,
+      "end": 42,
+      "digest": "sha256:8af02cbba4536c244fd2fd6c393bd59866a8451d5bd24d9a24c15bd0534be3d5",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 43,
+      "end": 43,
+      "digest": "sha256:a6d8c09a5188ea80b81a6ea129f8c0a8a2855e80a1b142f84997214e23a21080",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 44,
+      "end": 44,
+      "digest": "sha256:450701e734b70d2f5663457bdd0aa6e720107abd58dc6b4e77567bb706c65368",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 45,
+      "end": 45,
+      "digest": "sha256:42601ba2a613acf2c0a05ac1d7d83c93600c61b5da547c0dfeeacc0ad0a89d91",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 46,
+      "end": 46,
+      "digest": "sha256:920e536d149287b61e670931e6fe59151679978fee7c036f6800c519a6da5574",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 47,
+      "end": 47,
+      "digest": "sha256:f92b3059d3d11ee37dca11f9df598fccca86707eb9dd04aaa0f18b2edf3b8edb",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 48,
+      "end": 48,
+      "digest": "sha256:ca84024a4c5c8c7219efcc22a51c27015957da2a81d48377deee53c7ec840da7",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 49,
+      "end": 49,
+      "digest": "sha256:bc30fde8ba3c29e7ec35ab14175a565c3ba476bf8de825e466d5f03ce2c6599a",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 50,
+      "end": 50,
+      "digest": "sha256:579ef763650853d806a732b95d6669ca1714a74dc0669c8467488bf8145d4534",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 51,
+      "end": 51,
+      "digest": "sha256:715f591f2aa2089294775ef6a24cd6012882c45fd5f53b0ee009f2df271171a7",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 52,
+      "end": 52,
+      "digest": "sha256:9344aa045fd5a4047df61ffcc98cf0578e02fab16eee978b06198e40977b161a",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 53,
+      "end": 53,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 54,
+      "end": 54,
+      "digest": "sha256:ca67f1bbf322941dff46f41bad5cd358d709a854a0811663b31343f6daacd733",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 55,
+      "end": 55,
+      "digest": "sha256:73b985332e189a373a990b5aac79d8bab3ebdb74cc6cc9ec040df83247e7d781",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 56,
+      "end": 56,
+      "digest": "sha256:2b866d247462a095f3d10485bb05d4722b3113e288212d74ea5c53bd7fcce94f",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 57,
+      "end": 57,
+      "digest": "sha256:694dd5a523e51d438271e2875d0a6023b4f699c9cbaf8c2666a96d2fa7c2d090",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 58,
+      "end": 58,
+      "digest": "sha256:57549bb12473bdb3c32b2e3acb0f3faf9cd18ebf3d6764a317538b7312820e9b",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 59,
+      "end": 59,
+      "digest": "sha256:16c6921e50642c90a133f92cd39c23dd42ae6dfbd70ce83d5e107621522b6d77",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 60,
+      "end": 60,
+      "digest": "sha256:15682698a8501730c4c4e52b16ebb977f8e35549b99b9f1d08443ec6c7a6fbe8",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 61,
+      "end": 61,
+      "digest": "sha256:3b5750e2d4f0c58819866f2ba78f304ae025e0044782555256ce85d430f79fc7",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 62,
+      "end": 62,
+      "digest": "sha256:15e1eb773acafc5c7f4bc34e3a22628df4fa6bf3a29b01fec91a5c5c7bb59b64",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 63,
+      "end": 63,
+      "digest": "sha256:eb700613076318385135aefa5eaeff2b932bfa7feb01af20d505d3462f2f37dc",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 64,
+      "end": 64,
+      "digest": "sha256:10c3a371241b01ee0bc785d79c44692757c0573438d45054ae70cf50a92db9b0",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 65,
+      "end": 65,
+      "digest": "sha256:e95738411c196aa132c2ad4a3575053611ba51b993160395011cf6e12087a812",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 66,
+      "end": 66,
+      "digest": "sha256:a3061999fe4c8fc425b62fcdb93699de24fc817b2cddb046a1c7f85d259ce1f2",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 67,
+      "end": 67,
+      "digest": "sha256:ea00732d4a6af628a1b730804a286fa77fa6063761d02e2a603c47b4d11c190b",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 68,
+      "end": 68,
+      "digest": "sha256:cf392da79f5c12464f24c658cd4ce13de35d21af21483b8c7f3be6eeec3951e9",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 69,
+      "end": 69,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 70,
+      "end": 70,
+      "digest": "sha256:b0bd116c52e1f7a3683540bc7dd2fd2e5234135e4e62d7f3e159077a52e34727",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 71,
+      "end": 71,
+      "digest": "sha256:450f498248d768b374904d05c1e3b3c5593f5094bed4ab6e2ced394f0907361b",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 72,
+      "end": 72,
+      "digest": "sha256:69f3e5ed1a14c8d014b222474a89e995f52c60c2ccb1669b879e4a7f5e34b4ed",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 73,
+      "end": 73,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 74,
+      "end": 74,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 75,
+      "end": 75,
+      "digest": "sha256:27c9f21641944c796f0835f0694069033a50c3ac68f4ec8c3baf7e31e6370304",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 76,
+      "end": 76,
+      "digest": "sha256:4c35974d337fcb34f529269dd4f3cc9247b37f66101d41ebd1cc166773f56c90",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 77,
+      "end": 77,
+      "digest": "sha256:e91ada09483f5626cf5f61689e9879c6c74ecabc9ff2262623dca570b1ac77d0",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 78,
+      "end": 78,
+      "digest": "sha256:b9c97bde854a625d098a765dafc92ecc75636c90685e6e3864f919d240c557de",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 79,
+      "end": 79,
+      "digest": "sha256:1bae51f89f48fe894d2dcc01d8fcc91dcfce1ab8df89e65d2e406f4f28c2a1ff",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 80,
+      "end": 80,
+      "digest": "sha256:29624c119139d6f128e88ed37b537ebf9c1dae43050bad4717a79f98aca9cf06",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 81,
+      "end": 81,
+      "digest": "sha256:07717cb39fc7d6c56bf293486a698d83369bc3d8da1e4d781de9582bc30d58f1",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 82,
+      "end": 82,
+      "digest": "sha256:5b2694d8667a62f32bf22dc5b0213e41948987880b76f7ea17d594cd65dfa2aa",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 83,
+      "end": 83,
+      "digest": "sha256:5e4e79703396bed7b4df4c6800ebca31add1899fc8e1c969c372af114e82408a",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 84,
+      "end": 84,
+      "digest": "sha256:686b8285e6041d5d5e669a8f3892ebd0b5514d2d951255831e81c523d75f7ffb",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 85,
+      "end": 85,
+      "digest": "sha256:5008434de722b9ba2019d44cb05fffd6929ca6cef3ce8b42f2a1251073c6d2f3",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 86,
+      "end": 86,
+      "digest": "sha256:e1263443c220a8f930dd33395ee1d1ca2b398b6decaeab1fda49214efe29c77a",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 87,
+      "end": 87,
+      "digest": "sha256:ef307fc8ca5da906cdeb554e756512a6d3642cbb588a21630a1edd7b1a4bda62",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 88,
+      "end": 88,
+      "digest": "sha256:da2ee0ddfdad44438453f8bce1c3387d4a85bcd8964c436ac8ef063aff1630bc",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 89,
+      "end": 89,
+      "digest": "sha256:3cad45f36fed728a817ed82a027a128686c44d70ee0f5761640c46192204abe2",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 90,
+      "end": 90,
+      "digest": "sha256:c96524a240f1081b0e3997afbf81ccdc6acd5de3d6fa90846ac2bff00ad26ddf",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 91,
+      "end": 91,
+      "digest": "sha256:73b1f1b8b2301adc09c9798952e7cd161d273f5ce60ff237efda5eaf99ce61e3",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 92,
+      "end": 92,
+      "digest": "sha256:5bff08c3ac50464def8329fad237033b647773112d7c648d5b0d5539969bec49",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 93,
+      "end": 93,
+      "digest": "sha256:401b024a8ed99eaeb500a39c6146fa8ea9b72cf55aab6c6cb71701ff0076c5ab",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 94,
+      "end": 94,
+      "digest": "sha256:d78fc1ba35409eda0d12e3b6d1e6bb27298f7747405fb3582143e14cb66e1b52",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 95,
+      "end": 95,
+      "digest": "sha256:298a0673c4a65c99bf4a4e56c49da2bad730b92f43d0e5b82a6b53cedef273e8",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 96,
+      "end": 96,
+      "digest": "sha256:1e4824a2d7976b7bed33a279d5980360ab1577d1c28a60510e06467e3f8f3bf7",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 97,
+      "end": 97,
+      "digest": "sha256:6e362fa89396e2fe131b24c833d732764b19882596653e2b9a35df664aef7806",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 98,
+      "end": 98,
+      "digest": "sha256:78a62f174ea282a7e947854d7aa2a0286444d1c35f7e975c20989a764a64e566",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 99,
+      "end": 99,
+      "digest": "sha256:74a270effe79e70fe0527ec0354281bd9bdc6a5a8c8c7bb53b4303fbaf8836b4",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 100,
+      "end": 100,
+      "digest": "sha256:df61b723bd0d2761603ef16821647b8b114123d28d6ccdd65891006323395731",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 101,
+      "end": 101,
+      "digest": "sha256:97952f7769d6218f584043f7d4be195d7887ce7e8f2e99413222ddee1d1247bc",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 102,
+      "end": 102,
+      "digest": "sha256:89daeebec8900853f73853c6200f743aa66592796b60038594607592cc7455c5",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 103,
+      "end": 103,
+      "digest": "sha256:6dc6fd103774d9dfc6e8c17d493750038017dfcaa0916014e47b8c0d1c768ff0",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 104,
+      "end": 104,
+      "digest": "sha256:69e80ba805442e46cc9937a6b349d7e5205110094374449b5b5083f8c8b9759c",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 105,
+      "end": 105,
+      "digest": "sha256:188fec2770270c6d9852eda7a1e7e8b703d35c5a0a2d29656483ec740e068fbb",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 106,
+      "end": 106,
+      "digest": "sha256:361fd5397973b4c39422a9dcb69fdbce84ca834eefd9e2c625f1a653e520579e",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 107,
+      "end": 107,
+      "digest": "sha256:0740abd2f0a64c0c8b02624914f04c202e2938193cd61841106d1952815514bb",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 108,
+      "end": 108,
+      "digest": "sha256:3f85ddee5def75683719a9bd14dd73c9c7a05c1ee0e67a413065a3bc1a520ba8",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 109,
+      "end": 109,
+      "digest": "sha256:b8ccb2b03627dd094670787a73c1e10918dd7785d041b6bd55b01d5a245350c9",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 110,
+      "end": 110,
+      "digest": "sha256:c8a07f8e84b8b0102c0f872c804252a9ad8054c9123616743ff4a8da1cbb7196",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 111,
+      "end": 111,
+      "digest": "sha256:4ab0b06b6ad059557a7e4f0a0705d6f0b9fc74c4277502b9c2b3fe38b2e6c817",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 112,
+      "end": 112,
+      "digest": "sha256:3d9c04ba61f43c2453ea10a493f14ff921e5ff2cb1c551f841dabdbfbd518dd7",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 113,
+      "end": 113,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 114,
+      "end": 114,
+      "digest": "sha256:01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 115,
+      "end": 115,
+      "digest": "sha256:0e88eae72c72ed03f0877806c89a6a4432edbf6d6411045ec6c4fe8af6874900",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 116,
+      "end": 116,
+      "digest": "sha256:12bc95204d80c455fb3d755b68f58ae9370d2e193e6244ca64ef13b140bcd051",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 117,
+      "end": 117,
+      "digest": "sha256:670b1b131549b7807581a8e87d0c9bb9f97fc18fe93e78b07914f3ca5292dff5",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 118,
+      "end": 118,
+      "digest": "sha256:c5d96ff3b7d5706cf6f19724de1bbc45ecea795d92df0fb1ec325c99f4bee035",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 119,
+      "end": 119,
+      "digest": "sha256:f36c684efb601aa6d077b2947d0629308aff1f3e8d347827a7429397f866d018",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 120,
+      "end": 120,
+      "digest": "sha256:45a49aa183210c9cba5e5591653b5f1fde4c9c93bfce4a1b8fcd411308ecffb9",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 121,
+      "end": 121,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 122,
+      "end": 122,
+      "digest": "sha256:6779dd3a8d26f4481478b3b922951364865f5a7b24a8d5efca8cb0fb368bda60",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 123,
+      "end": 123,
+      "digest": "sha256:a95b927d411f5980d0f14ad3604859211fcc6c45e2b3a505fbe60be0ae9ab1f0",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 124,
+      "end": 124,
+      "digest": "sha256:7d553e3dd0c8f64d7557412337f5ae285d4eddabd9c054f623f86d1d2d551127",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 125,
+      "end": 125,
+      "digest": "sha256:2c8044b731c657bd161bdf053bbb514f3f5f8014e258fcc21602fc95a0e15bcf",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 126,
+      "end": 126,
+      "digest": "sha256:8a3bd2f6e4d027179e76954062c75f21f7d4aca68e0b648164c8f5da5a0762de",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 127,
+      "end": 127,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 128,
+      "end": 128,
+      "digest": "sha256:95fca594845ef27bddbeeba2a209a8486ae3edc1a274911b4c547c4d72b16d3d",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 129,
+      "end": 129,
+      "digest": "sha256:cbed44231fb394ad06a549abd3dec072972252a43ef21632a4aabd6bfa465d2d",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 130,
+      "end": 130,
+      "digest": "sha256:8d20041f088cfe055e52ea7ae0ff9d7dcf2d054d62847ad08bc17c0a91b48270",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 131,
+      "end": 131,
+      "digest": "sha256:67cda82da606238e05e62399569c5ee03993419648ae5d43a2bf8cd6347f8263",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 132,
+      "end": 132,
+      "digest": "sha256:100d8304dc146c56be931ad3fd1228cde29e619b6767866964f350cbbc9d334b",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": "internal/server/icons.go",
+      "start": 133,
+      "end": 133,
+      "digest": "sha256:412ca345ccf75bf9c0806bce695be8de808b79984251a7a54d202cf6101dd451",
+      "note": "Bundles the icon sprite and deterministic file-type badges used across the workspace without external assets."
+    }
+  ],
+  "version": 2
+}

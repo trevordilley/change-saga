@@ -1,0 +1,243 @@
+{
+  "references": [
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/question.yml",
+      "digest": "sha256:9fef84fbb29813586aa8e7756bca178ff458c4bc9313cd1298309e644aeafb56",
+      "note": "Collects attempted commands, output, environment, and documentation context."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/question.yml",
+      "start": 1,
+      "end": 1,
+      "digest": "sha256:3074191047c0f2c857d1f8768ff905ea49ce2623eb2695d621846fb2f75c1933",
+      "note": "Collects attempted commands, output, environment, and documentation context."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/question.yml",
+      "start": 2,
+      "end": 2,
+      "digest": "sha256:feddae58ea9f9de0720046777573496b55de37fe58caa507c04b235f5499f79a",
+      "note": "Collects attempted commands, output, environment, and documentation context."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/question.yml",
+      "start": 3,
+      "end": 3,
+      "digest": "sha256:45949c40d15938d5cd2df248872216944c3c2dfb4f5e0c0c5ae2ef94692cb195",
+      "note": "Collects attempted commands, output, environment, and documentation context."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/question.yml",
+      "start": 4,
+      "end": 4,
+      "digest": "sha256:ef11a719d9b7dd4649d0dd5f348a309d7a32609943586bfff4f2b5c8a2ff2000",
+      "note": "Collects attempted commands, output, environment, and documentation context."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/question.yml",
+      "start": 5,
+      "end": 5,
+      "digest": "sha256:79c4294071e81a00c24521f61180f7dc5ab4d3e929b1bdada99bfdb0e76f97d8",
+      "note": "Collects attempted commands, output, environment, and documentation context."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/question.yml",
+      "start": 6,
+      "end": 6,
+      "digest": "sha256:521c1c9cb6a9217fcaf876dce5f0a57adc27ff48190f7e7b300ddfc97a4d01a0",
+      "note": "Collects attempted commands, output, environment, and documentation context."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/question.yml",
+      "start": 7,
+      "end": 7,
+      "digest": "sha256:7ebe3f44783694dd0823bc4992646d9b7cc606364decd0745517128ad99369ec",
+      "note": "Collects attempted commands, output, environment, and documentation context."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/question.yml",
+      "start": 8,
+      "end": 8,
+      "digest": "sha256:8daf849fb2c597d768247ae34f23a21f374a0a024757f51e524e778b9c52a229",
+      "note": "Collects attempted commands, output, environment, and documentation context."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/question.yml",
+      "start": 9,
+      "end": 9,
+      "digest": "sha256:9215979edfe2e4d9c862f488999e1c52516cdf35f6f88d1c639506a315508278",
+      "note": "Collects attempted commands, output, environment, and documentation context."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/question.yml",
+      "start": 10,
+      "end": 10,
+      "digest": "sha256:e55f397cb2571a7025eba18c8a007800122fdf6eb02ebcab07aa18433db694ce",
+      "note": "Collects attempted commands, output, environment, and documentation context."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/question.yml",
+      "start": 11,
+      "end": 11,
+      "digest": "sha256:b7c74e17673e832b7c8bc7bf196482ca13ac3ae14e5f8f06ea959acc217f3e80",
+      "note": "Collects attempted commands, output, environment, and documentation context."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/question.yml",
+      "start": 12,
+      "end": 12,
+      "digest": "sha256:e2b76f848b30af8c4a4017375b8d896f8b256bbbc680bc8a54cd71c5b9132da2",
+      "note": "Collects attempted commands, output, environment, and documentation context."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/question.yml",
+      "start": 13,
+      "end": 13,
+      "digest": "sha256:1c9e4b2ab16410b7c278f1902b0ac438002ca8fe1ef5aa83e286acc6e80aeb57",
+      "note": "Collects attempted commands, output, environment, and documentation context."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/question.yml",
+      "start": 14,
+      "end": 14,
+      "digest": "sha256:521c1c9cb6a9217fcaf876dce5f0a57adc27ff48190f7e7b300ddfc97a4d01a0",
+      "note": "Collects attempted commands, output, environment, and documentation context."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/question.yml",
+      "start": 15,
+      "end": 15,
+      "digest": "sha256:db99f52ef87c881f27cdb2baee8c81f02f2b182d9d9436478eebe3bbf6169732",
+      "note": "Collects attempted commands, output, environment, and documentation context."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/question.yml",
+      "start": 16,
+      "end": 16,
+      "digest": "sha256:a7826608a6e982fe7675eefb385169c43ab26f22f2377c78f6d0b4d1fb05e114",
+      "note": "Collects attempted commands, output, environment, and documentation context."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/question.yml",
+      "start": 17,
+      "end": 17,
+      "digest": "sha256:d1a1c7f5c678d7005b3b0f5fdc23cd1a120071bf8516301f0e1c599cb4359a45",
+      "note": "Collects attempted commands, output, environment, and documentation context."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/question.yml",
+      "start": 18,
+      "end": 18,
+      "digest": "sha256:e6d57138520969a711d25af5a38b8f5dcf68253be8473384b2e3326ea2b34af9",
+      "note": "Collects attempted commands, output, environment, and documentation context."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/question.yml",
+      "start": 19,
+      "end": 19,
+      "digest": "sha256:e2b76f848b30af8c4a4017375b8d896f8b256bbbc680bc8a54cd71c5b9132da2",
+      "note": "Collects attempted commands, output, environment, and documentation context."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/question.yml",
+      "start": 20,
+      "end": 20,
+      "digest": "sha256:4722c37a5a97533fd64b764d00817203c6b677594126ef05c173e7b1b6cec9e2",
+      "note": "Collects attempted commands, output, environment, and documentation context."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/question.yml",
+      "start": 21,
+      "end": 21,
+      "digest": "sha256:521c1c9cb6a9217fcaf876dce5f0a57adc27ff48190f7e7b300ddfc97a4d01a0",
+      "note": "Collects attempted commands, output, environment, and documentation context."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/question.yml",
+      "start": 22,
+      "end": 22,
+      "digest": "sha256:b81152ac9fbd3e7e2771b14fbb5ee22d4d487890553f051e092fe3e30fd9db68",
+      "note": "Collects attempted commands, output, environment, and documentation context."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/question.yml",
+      "start": 23,
+      "end": 23,
+      "digest": "sha256:423a151fcf8dd4638e7cc662c2153bd71d1928d72b9824b7d235fd7ac9441978",
+      "note": "Collects attempted commands, output, environment, and documentation context."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/question.yml",
+      "start": 24,
+      "end": 24,
+      "digest": "sha256:3212df9bc6ecd94137e1269f3ffd93e4c526e3b083dea9b54974d4369b9125de",
+      "note": "Collects attempted commands, output, environment, and documentation context."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/question.yml",
+      "start": 25,
+      "end": 25,
+      "digest": "sha256:5e9e47c1d87b03d9c5fc575662d2efd1b34e9c9838978bc518a844d3e0059648",
+      "note": "Collects attempted commands, output, environment, and documentation context."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/question.yml",
+      "start": 26,
+      "end": 26,
+      "digest": "sha256:79d3786f16f153a5796581a04ae117a7163ca484fa2267f98fd187c1169f6165",
+      "note": "Collects attempted commands, output, environment, and documentation context."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/question.yml",
+      "start": 27,
+      "end": 27,
+      "digest": "sha256:521c1c9cb6a9217fcaf876dce5f0a57adc27ff48190f7e7b300ddfc97a4d01a0",
+      "note": "Collects attempted commands, output, environment, and documentation context."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/question.yml",
+      "start": 28,
+      "end": 28,
+      "digest": "sha256:44e347b713c35b8691493f13bfa85736d037b426a1a9d41b7238448cb4db781c",
+      "note": "Collects attempted commands, output, environment, and documentation context."
+    },
+    {
+      "commit": "94f4de995bbc27b45f6eced11c774fa42b29498d",
+      "path": ".github/ISSUE_TEMPLATE/question.yml",
+      "start": 29,
+      "end": 29,
+      "digest": "sha256:44edb977b4e74ff30e516f5a3513fb759277b2539f5ec11bbce71239c685e4a3",
+      "note": "Collects attempted commands, output, environment, and documentation context."
+    }
+  ],
+  "version": 2
+}
