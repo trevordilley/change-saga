@@ -1,0 +1,14 @@
+{
+  "version": 4,
+  "id": "domain-agent-loop",
+  "slide": "product-domains",
+  "rank": 0,
+  "kind": "node",
+  "label": "agent-loop",
+  "description": "The agent-loop epic: open it for its stories, design, quality, and implementation deck.",
+  "selector": {
+    "type": "element",
+    "element_id": "agent-loop"
+  },
+  "record": "urn:change-saga:app:epic:agent-loop"
+}

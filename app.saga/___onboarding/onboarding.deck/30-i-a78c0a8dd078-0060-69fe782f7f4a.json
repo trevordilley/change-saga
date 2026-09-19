@@ -1,0 +1,14 @@
+{
+  "version": 4,
+  "id": "domain-reviewer-app",
+  "slide": "product-domains",
+  "rank": 60,
+  "kind": "node",
+  "label": "reviewer-app",
+  "description": "The reviewer-app epic: open it for its stories, design, quality, and implementation deck.",
+  "selector": {
+    "type": "element",
+    "element_id": "reviewer-app"
+  },
+  "record": "urn:change-saga:app:epic:reviewer-app"
+}
