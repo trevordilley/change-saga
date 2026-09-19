@@ -1,55 +1,64 @@
 # Change Saga format
 
-A Change Saga is the durable, version-controlled record of one big change: the
-kind that warrants product requirements, UX and UI design, technical design,
-quality verification, and an implementation deck. The change itself is often
-built quickly, in one large pull request; the Saga is what captures why it
-exists, what it was meant to do, and how every changed line traces back to
-that intent. A Saga starts with the big work and ends with the big work.
+A Change Saga is the durable, version-controlled documentation and history of
+an application: its personas, its requirements, their design, how they are
+verified, and how they are implemented, with every implementing line of code
+referenced at the commit it was documented against. The application evolves
+through many bodies of work; the Saga keeps all of its requirements current as
+the code changes, and every change is a comparison of the Saga and its code
+between two commits.
 
 There is exactly one Saga format. It is identified by `version: 5` and the
-schemas under [`schema/v5`](schema/v5). A Saga has one `saga.json`, one Saga
-ID, report content, living requirements and work-plan records, quality
-records, and the embedded implementation deck under `___slides/`. Readers
-reject any other manifest version, a root `00-saga.json`, and a manifest
-`presentation` member.
+schemas under [`schema/v5`](schema/v5). Readers reject any other manifest
+version, a root `00-saga.json`, and a manifest `presentation` member. A Saga may
+live in the code repository or in a companion repository; code references
+resolve against the repository the manifest declares.
 
 Git is the outer audit log. Saga records add the semantic history inside it:
 immutable identities, append-only revisions and lifecycle events, relations
 that pin the revisions they rely on, supersession, evidence, and review
-decisions. Staleness is always derived from those pins, never from Git
-history.
+decisions. Staleness is always derived from pins, never from Git history.
 
 ### Layout
 
-The manifest carries identity and source only: it adds no aggregate quality,
-coverage, relation, or deck fields.
+A Saga documents one application. Material about the whole application sits at
+the root; everything else belongs to an **epic**, a durable area of the
+product. The manifest carries identity and source only: it adds no aggregate
+quality, coverage, relation, or deck fields.
 
 ```text
 <id>.saga/
   saga.json
-  <report content>             # overview, chapters, sections, fragments
-  ___requirements/
-    prototypes/                # revisioned interactive prototypes
-    stories/                   # stories and their acceptance criteria
-    citations/
-    relations/                 # typed, pinned edges between resources
-    coverage-exceptions/       # immutable per-criterion, per-axis decisions
-  ___design/                   # technical design chapters
-  ___slides/                   # the implementation deck
-  ___workplan/                 # waves, work items, dependencies, contracts
-  ___quality/
-    policies/
-    test-cases/<id>.test/
-      test-case.json
-      revisions/
-      events/
-      evidence/
-      runs/
+  ___overview/                 # the elevator pitch for the application
+  ___designsystem/             # design-system references
+  ___personas/<id>.persona/    # who the application serves
+  ___featureflags/<id>.flag/   # flags and the stories or epics they gate
+  ___onboarding/<id>.deck/     # a deck that explains the application
+  ___epics/<id>.epic/
+    epic.json
+    <report content>           # chapters, sections, fragments
+    ___requirements/
+      prototypes/              # revisioned interactive prototypes
+      stories/                 # stories and their acceptance criteria
+      citations/
+      relations/               # typed, pinned edges between resources
+      coverage-exceptions/     # immutable per-criterion, per-axis decisions
+    ___design/                 # technical design chapters
+    ___slides/                 # the epic's implementation deck
+    ___workplan/               # waves, work items, dependencies, contracts
+    ___quality/
+      policies/
+      test-cases/<id>.test/
   ___claims/
   ___verifications/
+  ___merges/                   # landed commits and their branch messages
   ___review/                   # review overlay
 ```
+
+Report content and epic roots are invalid at the application root. No URN names
+an epic, so every resource ID is unique across the whole Saga: a story, deck,
+slide, fragment, or any other resource can move between epics without breaking
+a link to it.
 
 Each record is interpreted by the schema its `$schema` names. Report content
 records use the v2 component schemas, living requirement and work-plan records
@@ -62,6 +71,9 @@ enforced at runtime, and every ID uses `[A-Za-z0-9][A-Za-z0-9._-]{0,127}`.
 | Record | Schema | Required semantic fields | Runtime-only checks |
 | --- | --- | --- | --- |
 | Manifest | `v5/saga.schema.json` | identity, title, source, `version: 5` | canonical repository identity |
+| Epic | `v5/epic.schema.json` | immutable ID, title, creation time | directory name equals ID |
+| Persona identity, revision, event | `v5/persona*.schema.json` | name and description; lifecycle `active` or `retired` | one root, acyclic revision and event graphs |
+| Flag identity, revision, event | `v5/flag*.schema.json` | description and at least one story or epic target; state `off`, `on`, or `retired` | targets exist; `retired` is terminal |
 | Relation | `v5/relation.schema.json` | endpoints, type, scope, pins required by the matrix, rationale, state, time | same Saga, no self-edge, canonical conflict ordering, graph acyclicity/currentness |
 | Coverage exception | `v5/coverage-exception.schema.json` | one of six axes, criterion/revision pin, rationale, citation, supersession set | current revision, resolved citations, one unsuperseded head per criterion/axis |
 | Test-case identity | `v5/test-case.schema.json` | immutable ID and creation time | filename/package match and one identity per package |
@@ -76,6 +88,35 @@ and implementation) is required. A Saga with no test cases is not exempt from
 quality; each criterion's quality axis is a visible gap until a test case
 verifies it or a current coverage exception excuses it. Coverage-exception
 records are read and evaluated; no command writes them yet.
+
+### Application records
+
+**Epics** are durable areas of the product, not changes: revising a story that
+belongs to an older epic refines that area in place. An epic's `epic.json` is
+immutable and its URN is `urn:change-saga:<saga>:epic:<id>`. Moving a story
+between epics moves its directory and changes nothing else.
+
+**Personas** are application-level living records with an immutable identity,
+append-only revisions (`name`, `description`), and lifecycle events whose root
+state is `active`; a persona can be retired and restored. URNs are
+`urn:change-saga:<saga>:persona:<id>`, with `:revision:<id>` and `:event:<id>`.
+A story revision may name the personas it serves in `personas`; the list is
+optional, but any persona it names must exist. Persona coverage (which active
+personas an accepted story serves, and which stories served only a retired
+persona) is reported and never blocks.
+
+**Feature flags** have an immutable identity, revisions that name at least one
+story or epic target, and lifecycle events with states `off`, `on`, and
+`retired`. A current `off` or conflicted flag gates its targets, and a story is
+gated directly or through its epic; a retired flag gates nothing. Status
+reports each story as `not_implemented`, `implemented_not_enabled`, or
+`implemented_enabled`, where implemented means every current criterion's
+implementation axis is covered.
+
+The **onboarding deck** is a flat deck with role `onboarding`, one per
+application. Its Items carry `record`, the URN of a persona, epic, or story they
+explain, and never own code references. Implementation decks keep role
+`change` and never carry `record`.
 
 ### V5 identities and quality records
 
