@@ -120,13 +120,23 @@ test("@critical exposes mapping scrutiny, claims, and verification as an AI revi
   const ownerEnvelope = JSON.parse(owners.stdout) as { data: { atoms: Array<{ owners: Array<{ mapping?: { scrutiny_score: number } }> }> } };
   expect(ownerEnvelope.data.atoms.flatMap((atom) => atom.owners).some((owner) => typeof owner.mapping?.scrutiny_score === "number")).toBe(true);
 
-  // Mapping every changed line is necessary but not sufficient: this Saga has
-  // no accepted stories, so it is not ready for review, and status says why.
+  // Status has no verdict: every changed line is mapped and this Saga has no
+  // stories, and status reports both and exits zero.
   const status = runCLI(sagaRepositories, ["status", "--repo", sourceRepo, "--against", "main", sagaRoot]);
-  expect(status.status, status.stderr).toBe(3);
+  expect(status.status, status.stderr).toBe(0);
   expect(status.stdout).toContain("ALL ATOMS MAPPED");
   expect(status.stdout).toContain("does not establish explanation quality or correctness");
-  expect(status.stdout).toMatch(/ready_for_review\s+blocked/);
+  expect(status.stdout).toMatch(/implementation\s+(\d+)\/\1 changed lines referenced by the implementation deck/);
+  expect(status.stdout).toMatch(/stories\s+0\/\d+ changed lines reach a story/);
+
+  // A question is one command: implementation is covered, stories are not,
+  // and only the named areas are reported.
+  const implementation = runCLI(sagaRepositories, ["check", "--covers", "implementation", "--repo", sourceRepo, "--against", "main", sagaRoot]);
+  expect(implementation.status, implementation.stdout + implementation.stderr).toBe(0);
+  const stories = runCLI(sagaRepositories, ["check", "--covers", "implementation,stories", "--repo", sourceRepo, "--against", "main", sagaRoot]);
+  expect(stories.status, stories.stdout + stories.stderr).toBe(3);
+  expect(stories.stdout).toContain("reaches no story");
+  expect(stories.stdout).not.toContain("personas");
 });
 
 test("@critical refuses to serve a structurally invalid saga with zero side effects", async ({ sagaRepositories }) => {
