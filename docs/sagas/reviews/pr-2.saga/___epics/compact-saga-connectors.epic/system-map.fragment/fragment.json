@@ -1,8 +1,0 @@
-{
-  "version": 2,
-  "id": "system-map",
-  "title": "Whole-codebase review pipeline",
-  "media_type": "image/svg+xml",
-  "entrypoint": "system-map.svg",
-  "order": 1
-}

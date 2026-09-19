@@ -1,6 +1,0 @@
-{
-  "version": 2,
-  "id": "delivery-overview",
-  "media_type": "text/markdown",
-  "entrypoint": "content.md"
-}

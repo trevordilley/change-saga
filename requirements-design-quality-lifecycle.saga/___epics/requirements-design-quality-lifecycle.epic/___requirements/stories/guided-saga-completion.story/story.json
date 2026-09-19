@@ -1,7 +1,0 @@
-{
-  "$schema": "https://changesaga.dev/schema/v3/story.schema.json",
-  "version": 3,
-  "id": "guided-saga-completion",
-  "created_at": "2026-09-17T22:30:48.195876Z",
-  "request_id": "story-guided-saga-completion-r1"
-}

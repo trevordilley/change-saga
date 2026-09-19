@@ -1,9 +1,0 @@
-{
-  "$schema": "https://changesaga.dev/schema/v5/saga.schema.json",
-  "version": 5,
-  "id": "hybrid-report-slide-saga",
-  "title": "Hybrid Report + Slide Sagas",
-  "source": {
-    "repository": "https://github.com/trevordilley/change-saga.git"
-  }
-}

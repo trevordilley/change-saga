@@ -1,8 +1,0 @@
-{
-  "version": 2,
-  "id": "review-workspace-journey",
-  "title": "Reviewer journey",
-  "media_type": "image/svg+xml",
-  "entrypoint": "image.svg",
-  "order": -100
-}

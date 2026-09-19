@@ -1,9 +1,0 @@
-{
-  "$schema": "https://changesaga.dev/schema/v5/saga.schema.json",
-  "version": 5,
-  "id": "compact-saga-connectors",
-  "title": "Scaling Change Saga to whole-codebase reviews",
-  "source": {
-    "repository": "https://github.com/twentyideas/changesaga.git"
-  }
-}

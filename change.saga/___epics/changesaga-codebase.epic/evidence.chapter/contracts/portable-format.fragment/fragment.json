@@ -1,8 +1,0 @@
-{
-  "version": 2,
-  "id": "portable-format-contract",
-  "title": "Portable format contract",
-  "media_type": "text/markdown",
-  "entrypoint": "content.md",
-  "order": 10
-}

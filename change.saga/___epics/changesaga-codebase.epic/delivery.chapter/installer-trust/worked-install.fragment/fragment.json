@@ -1,8 +1,0 @@
-{
-  "version": 2,
-  "id": "delivery-worked-install",
-  "title": "Worked install: success and fail closed",
-  "media_type": "text/markdown",
-  "entrypoint": "installer.md",
-  "order": 10
-}
