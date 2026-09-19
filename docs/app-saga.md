@@ -275,6 +275,13 @@ the slide, or the code it references, changed between that commit and the pull
 request's current head. That is how a review is known to be out of date for a
 pull request: slide by slide, not as a whole.
 
+**A review deck must account for its change.** Every changed line in the
+review's range must be covered by the review deck's Items, exactly as Change
+Saga has always required of the change it explains. Coverage is reported per
+review (covered, uncovered, and stale lines, with the uncovered lines
+listed) so a reviewer can be confident the deck explains every line, and the
+reviewer shows uncovered lines beside the deck.
+
 **The tool records; the team decides.** The tool never declares a review
 approved. `status` and `check` report every slide's state and currency, and a
 team decides what it requires (every slide approved, a human approval, no open
@@ -286,6 +293,28 @@ that changed it, so the reasoning behind today's state stays one step away.
 This replaces the existing review overlay: `___approvals` on report targets and
 `___review` threads on documentation move into reviews, and the reviewer drops
 approval and comment controls from the documentation.
+
+### 12. The overview, and the project's terminology
+
+The overview is formal, not a single page. Its parts each appear in the
+sidebar: the **project name**, the **elevator pitch**, a **description** (a
+short essay), and **Terms and Vocabulary**.
+
+Every project has its own language, and it is usually the least documented and
+fastest to rot: a word the team says every day ("testtaker" for one sitting of
+an assessment) is baffling to a newcomer until they dig through the code. A
+**term** is a record with a name, a definition, and any aliases, and it
+references what it names: the stories it belongs to, and the exact code that
+defines it, most often an enum value or a constant. The links run both ways:
+from a term to its code and stories, and from a line of code or a story to the
+terms it defines.
+
+Terms stay current through mechanisms that already exist. Renaming the enum
+makes the term's code reference stale, which names exactly the term to update.
+A comparison that adds an enum value or a constant no term references suggests,
+as growth rather than a requirement, that the change may have introduced new
+terminology to define. Recognizing enums and constants is a per-language
+heuristic, and it only ever suggests.
 
 ### Kept from the current design
 
@@ -317,7 +346,8 @@ reconstructs it.
 
 1. Do feature flags gate stories, epics, or both?
 2. Are retired stories shown in the app view, or only in history?
-3. What is the app-level sidebar above the epics?
+3. What is the app-level sidebar above the epics? Partly settled: the overview
+   expands to name, elevator pitch, description, and Terms and Vocabulary.
 4. Onboarding deck Items point at records (personas, epics, stories) rather than
    code. Confirm that this is its only kind of evidence.
 
@@ -353,6 +383,13 @@ It also decides whether decision records are needed.
 
 Phase 2 also includes the sync cursor and compare mode for companion
 repositories (goal 10).
+
+**Review coverage.** Every changed line in a review's range is covered by its
+deck, reported per review and shown in the reviewer (goal 11).
+
+**Overview and terminology.** The overview's formal parts, term records with
+bidirectional story and code references, stale terms on rename, and new-term
+suggestions in comparisons (goal 12).
 
 **Phase 6 — Adoption.** Turn readiness into a coverage report with no
 verdict: `status` exits zero whenever it can report, and non-zero only when the
