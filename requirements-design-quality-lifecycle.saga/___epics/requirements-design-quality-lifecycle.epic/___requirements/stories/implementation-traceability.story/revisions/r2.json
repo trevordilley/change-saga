@@ -9,10 +9,6 @@
   "title": "Connect every completed path to exact implementation",
   "statement": "As a reviewer, I can traverse from an accepted criterion through each required Product, Design, Quality, and Implementation artifact to exact current diffs, and traverse the same graph in reverse.",
   "priority": "must",
-  "personas": [
-    "urn:change-saga:requirements-design-quality-lifecycle:persona:author",
-    "urn:change-saga:requirements-design-quality-lifecycle:persona:reviewer"
-  ],
   "citations": [
     "urn:change-saga:requirements-design-quality-lifecycle:citation:lifecycle-plan"
   ],

@@ -9,9 +9,6 @@
   "title": "Author living product requirements safely",
   "statement": "As a product owner or AI collaborator, I can explain why the change matters and create or revise user stories and acceptance criteria while preserving stable identity and explicit decision history.",
   "priority": "must",
-  "personas": [
-    "urn:change-saga:requirements-design-quality-lifecycle:persona:author"
-  ],
   "citations": [
     "urn:change-saga:requirements-design-quality-lifecycle:citation:lifecycle-plan"
   ],

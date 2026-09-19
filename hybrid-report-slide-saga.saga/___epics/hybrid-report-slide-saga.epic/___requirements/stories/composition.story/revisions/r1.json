@@ -7,9 +7,6 @@
   "title": "Separate lifecycles, one Saga",
   "statement": "As a change author, I can keep living product requirements and implementation review decks under one Saga identity without conflating their lifecycles.",
   "priority": "high",
-  "personas": [
-    "urn:change-saga:hybrid-report-slide-saga:persona:author"
-  ],
   "citations": [],
   "acceptance_criteria": [
     {

@@ -7,9 +7,6 @@
   "title": "Focused implementation review",
   "statement": "As a reviewer, I can open focused visual decks from a Report Saga and inspect the exact code behind each explanation.",
   "priority": "high",
-  "personas": [
-    "urn:change-saga:hybrid-report-slide-saga:persona:reviewer"
-  ],
   "citations": [],
   "acceptance_criteria": [
     {

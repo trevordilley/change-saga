@@ -7,9 +7,6 @@
   "title": "Keep the whole change in one Saga",
   "statement": "As a product and engineering team, we can evolve one Change Saga from initial requirements through design, implementation, quality, and completed review so intent and evidence remain connected.",
   "priority": "must",
-  "personas": [
-    "urn:change-saga:requirements-design-quality-lifecycle:persona:author"
-  ],
   "citations": [
     "urn:change-saga:requirements-design-quality-lifecycle:citation:lifecycle-plan"
   ],

@@ -7,9 +7,6 @@
   "title": "Guide authors toward complete traceability",
   "statement": "As a human or AI author, I can discover the Saga grammar, see the highest-value unresolved gaps, and safely advance the artifact until every required intent-to-diff path is reviewable.",
   "priority": "must",
-  "personas": [
-    "urn:change-saga:requirements-design-quality-lifecycle:persona:author"
-  ],
   "citations": [
     "urn:change-saga:requirements-design-quality-lifecycle:citation:lifecycle-plan"
   ],

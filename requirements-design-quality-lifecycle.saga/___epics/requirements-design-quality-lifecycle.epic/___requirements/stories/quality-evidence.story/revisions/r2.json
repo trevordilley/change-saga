@@ -9,10 +9,6 @@
   "title": "Define and verify quality in the same Saga",
   "statement": "As a quality engineer or reviewer, I can define independently reviewable test cases with ordered expected behavior, link them to requirements, and inspect current verification evidence without leaving the Saga.",
   "priority": "must",
-  "personas": [
-    "urn:change-saga:requirements-design-quality-lifecycle:persona:author",
-    "urn:change-saga:requirements-design-quality-lifecycle:persona:reviewer"
-  ],
   "citations": [
     "urn:change-saga:requirements-design-quality-lifecycle:citation:lifecycle-plan"
   ],

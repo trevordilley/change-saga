@@ -7,10 +7,6 @@
   "title": "Make readiness and review gaps explainable",
   "statement": "As a delivery owner and reviewer, I can tell what is ready, what is missing, and why before approving the change.",
   "priority": "must",
-  "personas": [
-    "urn:change-saga:requirements-design-quality-lifecycle:persona:author",
-    "urn:change-saga:requirements-design-quality-lifecycle:persona:reviewer"
-  ],
   "citations": [
     "urn:change-saga:requirements-design-quality-lifecycle:citation:lifecycle-plan"
   ],

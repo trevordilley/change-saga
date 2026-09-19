@@ -9,10 +9,6 @@
   "title": "Make readiness and coverage gaps explainable",
   "statement": "As a delivery owner, author, or reviewer, I can see what each story still needs across Product, Design, Quality, and Implementation, why it is missing, and what safe action should happen next.",
   "priority": "must",
-  "personas": [
-    "urn:change-saga:requirements-design-quality-lifecycle:persona:author",
-    "urn:change-saga:requirements-design-quality-lifecycle:persona:reviewer"
-  ],
   "citations": [
     "urn:change-saga:requirements-design-quality-lifecycle:citation:lifecycle-plan"
   ],

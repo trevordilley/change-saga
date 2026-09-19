@@ -7,9 +7,6 @@
   "title": "Author living stories and criteria safely",
   "statement": "As a product owner or AI collaborator, I can create and revise user stories and acceptance criteria through supported CLI workflows while preserving stable identity and explicit lifecycle history.",
   "priority": "must",
-  "personas": [
-    "urn:change-saga:requirements-design-quality-lifecycle:persona:author"
-  ],
   "citations": [
     "urn:change-saga:requirements-design-quality-lifecycle:citation:lifecycle-plan"
   ],

@@ -9,9 +9,6 @@
   "title": "Focused implementation review",
   "statement": "As a reviewer, I can expand a named deck in the Report Saga sidebar, navigate its rendered slide thumbnails, and inspect the exact code behind each explanation.",
   "priority": "high",
-  "personas": [
-    "urn:change-saga:hybrid-report-slide-saga:persona:reviewer"
-  ],
   "citations": [],
   "acceptance_criteria": [
     {

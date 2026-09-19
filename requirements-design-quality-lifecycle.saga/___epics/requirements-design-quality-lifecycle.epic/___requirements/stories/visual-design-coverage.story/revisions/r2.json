@@ -9,10 +9,6 @@
   "title": "Trace requirements through UX, UI, and technical design",
   "statement": "As a designer, architect, or reviewer, I can see exactly which UX flows, UI references, and technical diagrams address each accepted story or acceptance criterion.",
   "priority": "must",
-  "personas": [
-    "urn:change-saga:requirements-design-quality-lifecycle:persona:author",
-    "urn:change-saga:requirements-design-quality-lifecycle:persona:reviewer"
-  ],
   "citations": [
     "urn:change-saga:requirements-design-quality-lifecycle:citation:lifecycle-plan"
   ],

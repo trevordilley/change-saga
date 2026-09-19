@@ -7,9 +7,6 @@
   "title": "Adopt the evolution without breaking existing Sagas",
   "statement": "As a Change Saga maintainer, I can adopt the new report-container capabilities explicitly while existing report and slide-native artifacts remain readable and predictable.",
   "priority": "must",
-  "personas": [
-    "urn:change-saga:requirements-design-quality-lifecycle:persona:author"
-  ],
   "citations": [
     "urn:change-saga:requirements-design-quality-lifecycle:citation:lifecycle-plan"
   ],

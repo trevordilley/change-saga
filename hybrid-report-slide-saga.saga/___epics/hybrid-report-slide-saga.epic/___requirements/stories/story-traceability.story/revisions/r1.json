@@ -7,9 +7,6 @@
   "title": "Close the loop to user intent",
   "statement": "As a product and release owner, I can trace implementation evidence back to an accepted user story so completion gaps are visible.",
   "priority": "high",
-  "personas": [
-    "urn:change-saga:hybrid-report-slide-saga:persona:author"
-  ],
   "citations": [],
   "acceptance_criteria": [
     {

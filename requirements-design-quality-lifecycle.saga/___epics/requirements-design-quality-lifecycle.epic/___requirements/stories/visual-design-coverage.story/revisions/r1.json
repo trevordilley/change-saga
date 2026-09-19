@@ -7,10 +7,6 @@
   "title": "Trace requirements into visual design",
   "statement": "As an architect or reviewer, I can see exactly which technical-design Decks, Slides, and Items address each accepted story or acceptance criterion.",
   "priority": "must",
-  "personas": [
-    "urn:change-saga:requirements-design-quality-lifecycle:persona:author",
-    "urn:change-saga:requirements-design-quality-lifecycle:persona:reviewer"
-  ],
   "citations": [
     "urn:change-saga:requirements-design-quality-lifecycle:citation:lifecycle-plan"
   ],

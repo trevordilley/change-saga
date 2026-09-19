@@ -7,9 +7,6 @@
   "title": "Refine product intent through prototypes",
   "statement": "As a product team, we can create and revise interactive prototypes before or alongside requirements so observed interaction and technical learning refine the stories we ultimately commit to.",
   "priority": "must",
-  "personas": [
-    "urn:change-saga:requirements-design-quality-lifecycle:persona:author"
-  ],
   "citations": [
     "urn:change-saga:requirements-design-quality-lifecycle:citation:lifecycle-plan"
   ],

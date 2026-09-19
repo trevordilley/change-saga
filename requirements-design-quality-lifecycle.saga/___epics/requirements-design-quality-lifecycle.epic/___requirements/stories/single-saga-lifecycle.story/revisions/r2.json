@@ -9,9 +9,6 @@
   "title": "Keep the whole change as one auditable Saga",
   "statement": "As a product and engineering team, we can evolve one version-controlled Change Saga from exploratory prototypes through requirements, design, quality, implementation, and completed review so every intentional change and its rationale remain connected.",
   "priority": "must",
-  "personas": [
-    "urn:change-saga:requirements-design-quality-lifecycle:persona:author"
-  ],
   "citations": [
     "urn:change-saga:requirements-design-quality-lifecycle:citation:lifecycle-plan"
   ],
