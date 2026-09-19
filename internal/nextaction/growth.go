@@ -152,7 +152,7 @@ func (b *builder) storyGrowth() {
 			Question: question("Which story does \""+title+"\" deliver?", NeedProductJudgment,
 				option("capture it", "a proposed story, and an addresses relation so the code it explains reaches it",
 					b.invoke("story add", grammar.V("id", id), grammar.V("revision", "r1"), grammar.V("event", "proposed"), grammar.V("title", title),
-						grammar.V("statement", ""), grammar.V("priority", "")),
+						grammar.V("statement", "")),
 					b.invoke("relation add", link...)),
 				option("an existing story covers it", "an addresses relation to that story", b.invoke("relation add", existing...)),
 				option("not now", "nothing is recorded; the stories area keeps reporting the gap")),

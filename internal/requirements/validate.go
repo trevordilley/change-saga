@@ -64,8 +64,8 @@ func validateRevision(value Revision, sagaID, storyID string) error {
 	if strings.TrimSpace(value.Statement) == "" {
 		problems.add("statement is required")
 	}
-	if strings.TrimSpace(value.Priority) == "" || len(value.Priority) > 128 {
-		problems.add("priority must contain 1-128 characters")
+	if len(value.Priority) > 128 {
+		problems.add("priority must contain at most 128 characters")
 	}
 	validateTime(&problems, value.CreatedAt)
 	validateRequestID(&problems, value.RequestID)

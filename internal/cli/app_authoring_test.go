@@ -326,8 +326,17 @@ func TestCreateCommandsRequireAnEpicAmongSeveral(t *testing.T) {
 	if err := Story(ctx, []string{"add", root, "--epic", testEpic, "--id", "s", "--revision", "r1", "--event", "proposed", "--title", "S", "--statement", "S", "--priority", "must"}, &output); err != nil {
 		t.Fatalf("story add without --persona = %v", err)
 	}
+	// Nor a priority: it is optional free text, so incremental adoption never
+	// makes an author invent one.
+	if err := Story(ctx, []string{"add", root, "--epic", testEpic, "--id", "unprioritized", "--revision", "r1", "--event", "proposed", "--title", "U", "--statement", "U"}, &output); err != nil {
+		t.Fatalf("story add without --priority = %v", err)
+	}
+	revision, err := os.ReadFile(filepath.Join(root, "___epics", testEpic+".epic", "___requirements", "stories", "unprioritized.story", "revisions", "r1.json"))
+	if err != nil || strings.Contains(string(revision), "priority") {
+		t.Fatalf("a story with no priority records none: %v\n%s", err, revision)
+	}
 	// An unknown epic lists the known ones.
-	err := AddChapter(ctx, []string{"--epic", "missing", "--title", "C", root, "chapter"}, &output)
+	err = AddChapter(ctx, []string{"--epic", "missing", "--title", "C", root, "chapter"}, &output)
 	if err == nil || !strings.Contains(err.Error(), `epic "missing" does not exist`) || !strings.Contains(err.Error(), "known epics: billing, "+testEpic) {
 		t.Fatalf("unknown epic = %v", err)
 	}

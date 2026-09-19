@@ -97,7 +97,7 @@ func storyAdd(_ context.Context, args []string, out io.Writer, stdin io.Reader) 
 	event := flags.String("event", "", "stable initial proposed-event id")
 	title := flags.String("title", "", "story title")
 	statement := flags.String("statement", "", "complete user-story statement")
-	priority := flags.String("priority", "", "story priority")
+	priority := flags.String("priority", "", "optional free-text priority the reviewer shows, such as must, should, or could; the tool reads no meaning into it")
 	requestID := flags.String("request-id", "", "idempotency key")
 	from := flags.String("from", "", "read a structured mutation request from a JSON file, or - for stdin")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
@@ -140,7 +140,7 @@ func storyAdd(_ context.Context, args []string, out io.Writer, stdin io.Reader) 
 		request = storyAddRequest{Epic: *epic, ID: *id, Revision: *revision, Event: *event, Title: *title, Statement: *statement, Priority: *priority, Personas: personas, Citations: citations, RequestID: *requestID}
 		request.AcceptanceCriteria = append([]requirements.Criterion{}, flagCriteria...)
 	}
-	if request.ID == "" || request.Revision == "" || request.Event == "" || request.Title == "" || request.Statement == "" || request.Priority == "" {
+	if request.ID == "" || request.Revision == "" || request.Event == "" || request.Title == "" || request.Statement == "" {
 		return fmt.Errorf("usage: %s", usage)
 	}
 	root := flags.Arg(0)
@@ -171,7 +171,7 @@ func storyRevise(ctx context.Context, args []string, out io.Writer, stdin io.Rea
 	revision := flags.String("revision", "", "stable revision id")
 	title := flags.String("title", "", "complete revised title")
 	statement := flags.String("statement", "", "complete revised user-story statement")
-	priority := flags.String("priority", "", "complete revised priority")
+	priority := flags.String("priority", "", "optional free-text priority; omit it for none")
 	requestID := flags.String("request-id", "", "idempotency key")
 	from := flags.String("from", "", "read a structured complete revision from a JSON file, or - for stdin")
 	edit := flags.Bool("edit", false, "edit the complete proposed revision with $EDITOR")
@@ -234,7 +234,7 @@ func storyRevise(ctx context.Context, args []string, out io.Writer, stdin io.Rea
 			return err
 		}
 	}
-	if request.Story == "" || request.Revision == "" || request.Title == "" || request.Statement == "" || request.Priority == "" {
+	if request.Story == "" || request.Revision == "" || request.Title == "" || request.Statement == "" {
 		return fmt.Errorf("usage: %s", usage)
 	}
 	if err := assertRecordEpic(root, *epic, request.Story); err != nil {
