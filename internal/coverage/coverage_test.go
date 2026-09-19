@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"sort"
 	"strings"
 	"testing"
 
@@ -70,9 +71,17 @@ func eventAtom(event, path string) gitdiff.Atom {
 	return gitdiff.Atom{Key: "event:" + event + ":" + path + "::", Kind: "event", Event: event, Path: path}
 }
 
+// documentWith builds fragments in target order. Map iteration order is random,
+// and tests address fragments by position, so the order must be fixed.
 func documentWith(targets map[string][]coderef.Reference) *saga.Saga {
 	root := &saga.Section{Target: "urn:change-saga:test:saga"}
-	for target, references := range targets {
+	names := make([]string, 0, len(targets))
+	for target := range targets {
+		names = append(names, target)
+	}
+	sort.Strings(names)
+	for _, target := range names {
+		references := targets[target]
 		if target == root.Target {
 			root.Code = append(root.Code, saga.CodeFile{Path: "___code/root.json", References: references})
 			continue
