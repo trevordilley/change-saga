@@ -31,7 +31,7 @@ func Open(ctx context.Context, options OpenOptions) (Layers, *Inventory, error) 
 	location, locateErr := Locate(ctx, options.SagaRoot)
 	compute := Options{
 		SagaRoot: options.SagaRoot, Document: options.Document, Changes: options.Changes,
-		Report: options.Report, Resolver: options.Resolver, Location: location,
+		Report: options.Report, Resolver: options.Resolver, Location: location, Checkout: options.Checkout,
 	}
 	var diagnostics []Diagnostic
 	switch {
@@ -48,6 +48,7 @@ func Open(ctx context.Context, options OpenOptions) (Layers, *Inventory, error) 
 			return Layers{}, nil, err
 		}
 		compute.Base, compute.Head, diagnostics = sides.base, sides.head, sides.diagnostics
+		compute.Companion = true
 	}
 	layers, inventory, err := Compute(ctx, compute)
 	if err != nil {

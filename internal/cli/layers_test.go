@@ -164,3 +164,147 @@ func TestSagaAbsentAtTheBaseIsAllAdded(t *testing.T) {
 		}
 	}
 }
+
+// addQueueSlide adds a slide explaining the charged criterion, with one Item
+// referencing the queue code.
+func addQueueSlide(t *testing.T, root, id, title string) {
+	t.Helper()
+	visual := filepath.Join(t.TempDir(), id+".svg")
+	writeFile(t, visual, `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><text>`+title+`</text></svg>`+"\n")
+	mustRun(t, AddSlide, "--deck", "urn:change-saga:shop:deck:impl", "--id", id, "--title", title, "--intent", "explain", "--layout", "diagram", "--source", visual, "--takeaway", title, root, id)
+	mustRun(t, AddItem, "--slide", "urn:change-saga:shop:slide:"+id, "--id", id+"-item", "--kind", "node", "--label", title, "--description", title, "--region", "0,0,1,1", root)
+	mustRun(t, Relation, "add", "--epic", "checkout", "--id", id+"-charged", "--type", "explains", "--from", "urn:change-saga:shop:slide:"+id,
+		"--to", "urn:change-saga:shop:story:pay:criterion:charged", "--scope", "descendants", "--rationale", "How the charge reaches fulfilment", root)
+}
+
+// removeSlides deletes every slide and Item of the implementation deck.
+func removeSlides(t *testing.T, repo, root string) {
+	t.Helper()
+	deckDir := filepath.Join(root, "___epics", "checkout.epic", "___slides", "impl.deck")
+	for _, pattern := range []string{"20-s-*", "30-i-*"} {
+		matches, _ := filepath.Glob(filepath.Join(deckDir, pattern))
+		for _, match := range matches {
+			git(t, repo, "rm", "-q", match)
+		}
+	}
+}
+
+// A slide that drops out and one that explains the same criterion pair up,
+// the commit that replaced them sits beside both, and the new slide's
+// history names what it replaced and the comparison that opens it.
+func TestReplacedSlidePairsWithItsReplacementAndItsReason(t *testing.T) {
+	repo, root := shopSaga(t)
+	mustRun(t, AddDeck, "--epic", "checkout", "--id", "impl", "--title", "Implementation", "--objective", "How payment ships", root, "impl")
+	addQueueSlide(t, root, "sqs", "Jobs go through SQS")
+	git(t, repo, "add", ".")
+	git(t, repo, "commit", "-m", "Explain the queue")
+	git(t, repo, "checkout", "-b", "postgres")
+	mustRun(t, Relation, "supersede", "--relation", "urn:change-saga:shop:relation:sqs-charged", root)
+	removeSlides(t, repo, root)
+	addQueueSlide(t, root, "postgres", "Jobs go through a Postgres table")
+	git(t, repo, "add", "-A")
+	git(t, repo, "commit", "-m", "Move jobs to a Postgres table", "-m", "SQS could not order jobs.")
+
+	status, _ := statusLayers(t, root, "--against", "main")
+	changes := map[string]changeview.Change{}
+	for _, change := range status.Comparison.Changed {
+		changes[change.URN] = change
+	}
+	added, dropped := changes["urn:change-saga:shop:slide:postgres"], changes["urn:change-saga:shop:slide:sqs"]
+	if added.Pair == nil || added.Pair.Role != changeview.PairReplaces || added.Pair.With != "urn:change-saga:shop:slide:sqs" || added.Pair.Basis != changeview.PairInferred {
+		t.Fatalf("the new slide is not paired with the one it replaced: %#v", added.Pair)
+	}
+	if dropped.Change != changeview.ChangeRetired || !dropped.Removed || dropped.Pair == nil || dropped.Pair.With != "urn:change-saga:shop:slide:postgres" {
+		t.Fatalf("the dropped slide is not paired: %#v", dropped)
+	}
+	if len(added.Pair.Shared) != 1 || added.Pair.Shared[0] != "urn:change-saga:shop:story:pay:criterion:charged" {
+		t.Fatalf("pairing basis = %#v", added.Pair.Shared)
+	}
+	for _, change := range []changeview.Change{added, dropped} {
+		if len(change.Reasons) != 1 || change.Reasons[0].Subject != "Move jobs to a Postgres table" || change.Reasons[0].Body != "SQS could not order jobs." {
+			t.Fatalf("%s reasons = %#v", change.URN, change.Reasons)
+		}
+	}
+
+	var output bytes.Buffer
+	if err := Query(context.Background(), []string{"history", "--saga", root, "--node", "urn:change-saga:shop:slide:postgres"}, &output); err != nil {
+		t.Fatalf("history: %v\n%s", err, output.String())
+	}
+	var envelope struct {
+		Data changeview.History `json:"data"`
+	}
+	if err := json.Unmarshal(output.Bytes(), &envelope); err != nil {
+		t.Fatal(err)
+	}
+	history := envelope.Data
+	if history.Introduced == nil || history.Introduced.Subject != "Move jobs to a Postgres table" || len(history.Replaced) != 1 || history.Replaced[0] != "urn:change-saga:shop:slide:sqs" {
+		t.Fatalf("history = %#v", history)
+	}
+	if open := strings.Join(history.Introduced.Open, " "); !strings.Contains(open, "--against "+history.Introduced.Against) || !strings.Contains(open, "--head "+history.Introduced.Commit) || history.Introduced.Against == "" {
+		t.Fatalf("history does not open the comparison where the slide was introduced: %q", open)
+	}
+}
+
+// When two new records could each replace the dropped one, the pair is
+// ambiguous until an explicit supersedes relation decides it.
+func TestAmbiguousReplacementNeedsAnExplicitLink(t *testing.T) {
+	repo, root := shopSaga(t)
+	mustRun(t, AddDeck, "--epic", "checkout", "--id", "impl", "--title", "Implementation", "--objective", "How payment ships", root, "impl")
+	addQueueSlide(t, root, "sqs", "Jobs go through SQS")
+	git(t, repo, "add", ".")
+	git(t, repo, "commit", "-m", "Explain the queue")
+	git(t, repo, "checkout", "-b", "split")
+	mustRun(t, Relation, "supersede", "--relation", "urn:change-saga:shop:relation:sqs-charged", root)
+	removeSlides(t, repo, root)
+	addQueueSlide(t, root, "table", "Jobs table")
+	addQueueSlide(t, root, "worker", "Job worker")
+
+	pairOf := func(urn string) *changeview.Pair {
+		status, _ := statusLayers(t, root, "--against", "main")
+		for _, change := range status.Comparison.Changed {
+			if change.URN == urn {
+				return change.Pair
+			}
+		}
+		return nil
+	}
+	if pairing := pairOf("urn:change-saga:shop:slide:table"); pairing == nil || pairing.Basis != changeview.PairAmbiguous || pairing.Link == "" {
+		t.Fatalf("an ambiguous replacement must ask for an explicit link: %#v", pairing)
+	}
+	mustRun(t, Relation, "add", "--epic", "checkout", "--id", "table-replaces-sqs", "--type", "supersedes", "--from", "urn:change-saga:shop:slide:table",
+		"--to", "urn:change-saga:shop:slide:sqs", "--rationale", "The table holds the jobs the queue held", root)
+	if pairing := pairOf("urn:change-saga:shop:slide:table"); pairing == nil || pairing.Basis != changeview.PairExplicit || pairing.With != "urn:change-saga:shop:slide:sqs" {
+		t.Fatalf("an explicit supersedes relation must decide the pair: %#v", pairing)
+	}
+	_ = repo
+}
+
+// A squash merge collapses its branch's commits into one message; the
+// ___merges record repin writes keeps the branch messages, and they sit
+// beside the records the squash commit touched.
+func TestSquashMergeKeepsItsBranchReasons(t *testing.T) {
+	repo, root := shopSaga(t)
+	git(t, repo, "checkout", "-b", "retry")
+	writeFile(t, filepath.Join(repo, "src", "queue.go"), "package shop\n\n// Enqueue sends a job to SQS.\nfunc Enqueue(job string) error {\n\treturn retry(3, func() error { return sqs.Send(job) })\n}\n")
+	git(t, repo, "commit", "-am", "Retry enqueue", "-m", "SQS throttles under load.")
+	git(t, repo, "checkout", "main")
+	base := strings.TrimSpace(git(t, repo, "rev-parse", "HEAD"))
+	git(t, repo, "merge", "--squash", "retry")
+	git(t, repo, "commit", "-m", "Retry enqueue (#12)")
+	landed := strings.TrimSpace(git(t, repo, "rev-parse", "HEAD"))
+	mustRun(t, Repin, "--onto", landed, "--branch", "retry", root)
+	git(t, repo, "add", ".")
+	git(t, repo, "commit", "-m", "Re-pin after landing")
+	git(t, repo, "branch", "-D", "retry")
+
+	status, _ := statusLayers(t, root, "--against", base, "--head", landed)
+	var reasons []changeview.Reason
+	for _, affected := range status.Comparison.Affected {
+		if affected.URN == "urn:change-saga:shop:fragment:queue-design" {
+			reasons = affected.Reasons
+		}
+	}
+	if len(reasons) != 1 || reasons[0].Subject != "Retry enqueue (#12)" || len(reasons[0].Collapsed) != 1 || reasons[0].Collapsed[0].Body != "SQS throttles under load." {
+		t.Fatalf("the squash commit's branch reasons are lost: %#v", reasons)
+	}
+}

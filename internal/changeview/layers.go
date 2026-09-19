@@ -40,16 +40,19 @@ const (
 
 // Layers is a Saga opened to compare one change.
 type Layers struct {
-	Schema      string       `json:"schema"`
-	Against     string       `json:"against"`
-	Head        string       `json:"head"`
-	BaseOID     string       `json:"base_oid"`
-	HeadOID     string       `json:"head_oid"`
-	Saga        SagaSides    `json:"saga"`
-	Summary     Summary      `json:"summary"`
-	Changed     []Change     `json:"changed"`
-	Affected    []Affected   `json:"affected"`
-	Code        CodeLayer    `json:"code"`
+	Schema   string     `json:"schema"`
+	Against  string     `json:"against"`
+	Head     string     `json:"head"`
+	BaseOID  string     `json:"base_oid"`
+	HeadOID  string     `json:"head_oid"`
+	Saga     SagaSides  `json:"saga"`
+	Summary  Summary    `json:"summary"`
+	Changed  []Change   `json:"changed"`
+	Affected []Affected `json:"affected"`
+	Code     CodeLayer  `json:"code"`
+	// Unattached are the commits in the comparison that touched no record
+	// and no referenced code.
+	Unattached  []Reason     `json:"unattached_commits"`
 	Diagnostics []Diagnostic `json:"diagnostics"`
 }
 
@@ -100,6 +103,10 @@ type Change struct {
 	Removed bool      `json:"removed,omitempty"`
 	Before  *Snapshot `json:"before,omitempty"`
 	After   *Snapshot `json:"after,omitempty"`
+	// Pair is the record this one replaced or was replaced by.
+	Pair *Pair `json:"pair,omitempty"`
+	// Reasons are the commits that touched the record or its code.
+	Reasons []Reason `json:"reasons"`
 }
 
 // Snapshot is a record at one side of the comparison.
@@ -114,8 +121,9 @@ type Snapshot struct {
 // Affected is a record the change did not edit but invalidated.
 type Affected struct {
 	NodeRef
-	Revision string  `json:"revision"`
-	Because  []Cause `json:"because"`
+	Revision string   `json:"revision"`
+	Because  []Cause  `json:"because"`
+	Reasons  []Reason `json:"reasons"`
 }
 
 // Cause is one reason a record is affected. Via names the record it came
@@ -138,8 +146,9 @@ type CodeLayer struct {
 // affected when the record is in that layer.
 type CodeGroup struct {
 	NodeRef
-	Layer string `json:"layer,omitempty"`
-	Hunks []Hunk `json:"hunks"`
+	Layer   string   `json:"layer,omitempty"`
+	Hunks   []Hunk   `json:"hunks"`
+	Reasons []Reason `json:"reasons"`
 }
 
 // Hunk is one contiguous run of changed lines in one file, in diff order, or
@@ -179,6 +188,10 @@ type Options struct {
 	// the Saga at. An empty Head is the working tree; an empty Base means the
 	// Saga did not exist at the base.
 	Base, Head string
+	// Checkout is the code repository; Companion is set when the Saga lives
+	// in a different repository.
+	Checkout  string
+	Companion bool
 }
 
 // Snapshot pairs a loaded Saga snapshot with its inventory.
@@ -241,6 +254,7 @@ func Compute(ctx context.Context, options Options) (Layers, *Inventory, error) {
 	}
 
 	changed := diff(base.inventory, head.inventory)
+	pair(changed, base.inventory, head.inventory)
 	layers.Changed = changed
 	changedByURN := map[string]*Change{}
 	for index := range layers.Changed {
@@ -279,6 +293,17 @@ func Compute(ctx context.Context, options Options) (Layers, *Inventory, error) {
 	layers.Affected = affected.list()
 
 	layers.Code = codeLayer(options.Changes, report, projection, head.inventory, changedByURN, affected)
+	sources := reasonSources{
+		codeRepo: options.Checkout, codeFrom: options.Changes.BaseOID, codeTo: options.Changes.HeadOID,
+		sagaRepo: options.Location.Repo, sagaPath: options.Location.Path, sagaFrom: options.Base, sagaTo: firstNonEmpty(options.Head, "HEAD"),
+		companion: options.Companion,
+	}
+	if options.Checkout != "" && options.Location.Repo != "" {
+		// Merge records are append-only history recorded after a change lands,
+		// so the opened Saga may know of landings the head snapshot predates.
+		merges := append(append([]saga.Merge{}, head.document.Merges...), opened.document.Merges...)
+		attachReasons(ctx, &layers, sources, base.inventory, head.inventory, merges)
+	}
 	layers.Summary = Summary{Changed: len(layers.Changed), Affected: len(layers.Affected), CodeGroups: len(layers.Code.Groups), ChangedLines: len(options.Changes.Atoms)}
 	for _, hunk := range layers.Code.Unreferenced {
 		layers.Summary.Unreferenced += max(len(hunk.Lines), 1)

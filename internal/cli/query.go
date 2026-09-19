@@ -217,6 +217,7 @@ var queryOperations = []string{
 	"traceability",
 	"readiness",
 	"layers",
+	"history",
 }
 
 // queryPurpose says what each operation answers. It is keyed by the same
@@ -247,6 +248,7 @@ var queryPurpose = map[string]string{
 	"work-conflicts":      "deterministically identified work-plan conflicts and competing heads",
 	"traceability":        "current story-to-design/work/review/code paths, reverse code-location/commit lookup, and transitive blockers",
 	"readiness":           "independent requirement, plan, and delivery coverage axes; only immutable delivery evidence gates peer-review readiness",
+	"history":             "when a record was introduced, what it replaced, and every commit that changed it, each with the command that opens that comparison",
 	"layers":              "one comparison's Changed records (each with before and after), Affected records (with why), and Code (hunks grouped under the records that reference them, plus unreferenced lines)",
 }
 
@@ -275,6 +277,7 @@ var queryUsage = map[string]string{
 	"work-conflicts":      "change-saga query work-conflicts --saga PATH [--item ID|URN] [--wave ID|URN] [--kind KIND] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
 	"traceability":        "change-saga query traceability --saga PATH [--requirement ID|URN] [--criterion ID|URN] [--ref LOCATION | --commit OID] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
 	"readiness":           "change-saga query readiness --saga PATH [--requirement ID|URN] [--status ready|blocked] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
+	"history":             "change-saga query history --saga PATH --node URN",
 	"layers":              "change-saga query layers --saga PATH --against REV [--head REV] [--layer changed|affected|code] [--repo PATH]",
 }
 
@@ -301,6 +304,12 @@ func queryWithOpener(ctx context.Context, args []string, out io.Writer, open que
 	}
 	if operation == "schema" {
 		return writeQuerySchema(args[1:], out)
+	}
+	if operation == "history" {
+		if len(args) > 1 && isHelpArg(args[1]) {
+			return writeQuerySuccess(out, "", queryHelpFor(operation), nil)
+		}
+		return queryHistory(ctx, args[1:], out)
 	}
 	if operation == "layers" {
 		if len(args) > 1 && isHelpArg(args[1]) {
@@ -441,6 +450,7 @@ func querySchemaFor(operation string) querySchemaDescription {
 		"work-conflicts":      {"data.conflicts"},
 		"traceability":        {"data.criteria", "data.unlinked_code_evidence"},
 		"readiness":           {"data.summary", "data.requirements"},
+		"history":             {"data.introduced", "data.replaced", "data.events", "data.uncommitted"},
 		"layers":              {"data.summary", "data.changed", "data.affected", "data.code.groups", "data.code.unreferenced", "data.saga", "data.diagnostics"},
 	}
 	countedPaths := map[string]string{
@@ -467,7 +477,7 @@ func querySchemaFor(operation string) querySchemaDescription {
 	pagination := queryPaginationDescription{Kind: "none"}
 	if operation == "fragment" || operation == "slide" {
 		pagination = queryPaginationDescription{Kind: "byte-offset", NextOffsetPath: "data.content.next_offset"}
-	} else if operation != "overview" && operation != "layers" {
+	} else if operation != "overview" && operation != "layers" && operation != "history" {
 		pagination = queryPaginationDescription{
 			Kind: "cursor", CountedPath: countedPaths[operation], TotalPath: "page.total", ReturnedPath: "page.returned",
 			HasMorePath: "page.has_more", NextCursorPath: "page.next_cursor",

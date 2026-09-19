@@ -61,3 +61,22 @@ func queryLayers(ctx context.Context, args []string, out io.Writer) error {
 	}
 	return writeQuerySuccess(out, "", layers, nil)
 }
+
+// queryHistory answers "query history": when a record was introduced, what
+// it replaced, and every commit that changed it, each with the command that
+// opens the comparison where it happened. It reads Git's log of the record's
+// files, so it needs no comparison.
+func queryHistory(ctx context.Context, args []string, out io.Writer) error {
+	flags := flag.NewFlagSet("query history", flag.ContinueOnError)
+	flags.SetOutput(io.Discard)
+	sagaRoot := flags.String("saga", "", "saga root")
+	node := flags.String("node", "", "record URN")
+	if err := flags.Parse(args); err != nil || *sagaRoot == "" || *node == "" || flags.NArg() != 0 {
+		return writeQueryOperationFailure(out, "history", &queryError{Code: "invalid_argument", Message: "usage: " + queryUsage["history"]})
+	}
+	history, err := changeview.NodeHistory(ctx, *sagaRoot, *node)
+	if err != nil {
+		return writeQueryOperationFailure(out, "history", &queryError{Code: "not_found", Message: err.Error()})
+	}
+	return writeQuerySuccess(out, "", history, nil)
+}

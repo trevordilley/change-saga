@@ -81,6 +81,10 @@ type Node struct {
 	Explains [2]string `json:"-"`
 	// relationType is the relation's type for a relation node.
 	relationType string
+	// Targets are the stories and criteria the record addresses, explains,
+	// verifies, or implements through its active relations, kept at criterion
+	// granularity so two records that explain the same criterion can be paired.
+	Targets []string `json:"-"`
 	// contained marks a record whose parent holds it as part of one
 	// explanation (an Item in its slide, a slide in its deck, a landmark in its
 	// fragment), so what affects it affects the parent. A fragment's section
@@ -102,6 +106,9 @@ func (node *Node) Retired() bool {
 type Inventory struct {
 	Nodes   map[string]*Node
 	aliases map[string]string
+	// Supersedes maps a record to the records an active supersedes relation
+	// says it replaces: the explicit replacement link.
+	Supersedes map[string][]string
 }
 
 // Resolve returns the node a URN names, following criterion and revision
@@ -154,7 +161,22 @@ func Build(root string, document *saga.Saga, inputs livingapp.StatusInputs) *Inv
 	builder.app(inputs)
 	builder.report(document.Section, "")
 	builder.decks(document.Decks)
+	builder.inventory.Supersedes = map[string][]string{}
+	for _, relation := range builder.inventory.Nodes {
+		if relation.Kind != KindRelation || relation.Retired() {
+			continue
+		}
+		switch relation.relationType {
+		case "addresses", "explains", "verifies", "implements":
+			if from := builder.inventory.Nodes[relation.Explains[0]]; from != nil {
+				from.Targets = append(from.Targets, relation.Explains[1])
+			}
+		case "supersedes":
+			builder.inventory.Supersedes[relation.Explains[0]] = append(builder.inventory.Supersedes[relation.Explains[0]], relation.Explains[1])
+		}
+	}
 	for _, node := range builder.inventory.Nodes {
+		node.Targets = uniqueSorted(node.Targets)
 		sort.Strings(node.Files)
 		node.Links = uniqueSorted(node.Links)
 		node.Revision = builder.digest(node.Files)

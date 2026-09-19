@@ -134,6 +134,17 @@ func (status statusDocument) readyForReview() bool {
 	return ok && gate.Status == readiness.StatusReady
 }
 
+// printReasons prints the commits beside a record, each squash merge with
+// the branch commits it collapsed.
+func printReasons(out io.Writer, reasons []changeview.Reason) {
+	for _, reason := range reasons {
+		fmt.Fprintf(out, "      why: %s %s\n", shortOID(reason.Commit), reason.Subject)
+		for _, collapsed := range reason.Collapsed {
+			fmt.Fprintf(out, "           %s %s\n", shortOID(collapsed.Commit), collapsed.Subject)
+		}
+	}
+}
+
 // printComparison prints the three layers of a compared Saga.
 func printComparison(out io.Writer, layers *changeview.Layers, maxItems int) {
 	if layers == nil {
@@ -148,6 +159,17 @@ func printComparison(out io.Writer, layers *changeview.Layers, maxItems int) {
 	fmt.Fprintf(out, "\nChanged (%d records the change added, revised, or retired):\n", len(layers.Changed))
 	for _, change := range layers.Changed[:limit(len(layers.Changed))] {
 		fmt.Fprintf(out, "  %-8s %-10s %s  %s\n", change.Change, change.Kind, change.Title, change.URN)
+		if pairing := change.Pair; pairing != nil {
+			switch {
+			case pairing.Basis == changeview.PairAmbiguous:
+				fmt.Fprintf(out, "      may replace or be replaced by one of %s; link it: %s\n", strings.Join(pairing.Candidates, ", "), pairing.Link)
+			case pairing.Role == changeview.PairReplaces:
+				fmt.Fprintf(out, "      replaces %s (%s)\n", pairing.With, pairing.Basis)
+			default:
+				fmt.Fprintf(out, "      replaced by %s (%s)\n", pairing.With, pairing.Basis)
+			}
+		}
+		printReasons(out, change.Reasons)
 	}
 	fmt.Fprintf(out, "\nAffected (%d records the change did not edit but invalidated):\n", len(layers.Affected))
 	for _, affected := range layers.Affected[:limit(len(layers.Affected))] {
@@ -155,6 +177,7 @@ func printComparison(out io.Writer, layers *changeview.Layers, maxItems int) {
 		for _, cause := range affected.Because {
 			fmt.Fprintf(out, "      %s: %s\n", cause.Kind, cause.Detail)
 		}
+		printReasons(out, affected.Reasons)
 	}
 	fmt.Fprintf(out, "\nCode: %d changed lines under %d records; %d lines no record references\n", layers.Summary.ChangedLines, layers.Summary.CodeGroups, layers.Summary.Unreferenced)
 	for _, diagnostic := range layers.Diagnostics {
