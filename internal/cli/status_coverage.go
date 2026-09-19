@@ -3,6 +3,7 @@ package cli
 import (
 	"fmt"
 	"io"
+	"path/filepath"
 	"strconv"
 	"strings"
 
@@ -98,6 +99,27 @@ func storyPlaces(document *saga.Saga) map[string]nextaction.Place {
 				result[item.Target] = place
 			}
 		}
+	}
+	return result
+}
+
+// designEpics returns each epic that holds design content: a chapter,
+// section, or fragment under its ___design root.
+func designEpics(document *saga.Saga) map[string]bool {
+	result := map[string]bool{}
+	var visit func(*saga.Section)
+	visit = func(section *saga.Section) {
+		if strings.Contains("/"+filepath.ToSlash(section.Path)+"/", "/"+applayout.DesignDir+"/") {
+			if epic := applayout.EpicOfPath(section.Path); epic != "" {
+				result[epic] = true
+			}
+		}
+		for _, child := range section.Children {
+			visit(child)
+		}
+	}
+	if document.Section != nil {
+		visit(document.Section)
 	}
 	return result
 }

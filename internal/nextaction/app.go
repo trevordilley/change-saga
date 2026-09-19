@@ -51,9 +51,9 @@ func (b *builder) personas() {
 		if !persona.Gap {
 			continue
 		}
-		name := persona.Persona
+		name := firstNonEmptyString(persona.ID, persona.Persona)
 		if persona.Name != "" {
-			name = "\"" + persona.Name + "\" (" + persona.Persona + ")"
+			name = "\"" + persona.Name + "\" (" + name + ")"
 		}
 		options := []Option{
 			option("a new story serves them", "a story that names the persona; accept it once it is in scope",
@@ -72,7 +72,7 @@ func (b *builder) personas() {
 		}
 		b.add(Action{
 			ID: "growth:persona:" + persona.Persona, Kind: KindQuestion, Category: CategoryGrowth, Area: AreaPersonas, Resource: persona.Persona,
-			Reason:   "no accepted story serves this active persona, so the persona -> story link is a gap",
+			Reason:   "no accepted story serves the persona " + name + ", so the persona -> story link is a gap",
 			Practice: practicePersonas, value: 1,
 			Question: question("Which accepted story serves "+name+", or does the app no longer serve them?", NeedProductJudgment, options...),
 		})
@@ -85,9 +85,7 @@ func (b *builder) personas() {
 			if len(row.LifecycleHeads) == 1 {
 				retire = append(retire, b.invoke("story set-state", grammar.V("story", story), grammar.V("parent", row.LifecycleHeads[0]), grammar.V("state", "retired")).With("epic", row.Epic))
 			}
-			values := []grammar.Value{grammar.V("story", story), grammar.V("persona", "")}
-			values = append(values, parents(row.RevisionHeads)...)
-			reassign = append(reassign, b.invoke("story revise", values...).With("epic", row.Epic))
+			reassign = append(reassign, b.reviseStory(row, []string{""}))
 		}
 		personas := strings.Join(group.Personas, ", ")
 		b.add(Action{

@@ -71,7 +71,11 @@ type TermCode struct {
 // of a named type) and that no term references or names. It is never a gap
 // and never blocks.
 type TermSuggestion struct {
-	Name      string           `json:"name"`
+	Name string `json:"name"`
+	// Suggested is the domain word the identifier spells, the name to offer
+	// the author: ResolutionExcluded in Resolution suggests "excluded". Name
+	// stays the identifier the term's code reference points at.
+	Suggested string           `json:"suggested_name"`
 	Container string           `json:"container,omitempty"`
 	Kind      vocabulary.Kind  `json:"kind"`
 	Language  string           `json:"language"`
@@ -258,7 +262,8 @@ func SuggestTerms(ctx context.Context, terms []requirements.Term, changes gitdif
 			case referenced(current, declaration.Line):
 			default:
 				result = append(result, TermSuggestion{
-					Name: declaration.Name, Container: declaration.Container, Kind: declaration.Kind, Language: declaration.Language,
+					Name: declaration.Name, Suggested: vocabulary.Humanize(declaration.Name, declaration.Container),
+					Container: declaration.Container, Kind: declaration.Kind, Language: declaration.Language,
 					Location: coderef.Location{Commit: changes.HeadOID, Path: path, Start: declaration.Line, End: declaration.Line},
 				})
 			}

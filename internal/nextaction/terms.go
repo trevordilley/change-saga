@@ -6,6 +6,7 @@ import (
 
 	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/grammar"
+	"github.com/twentyideas/changesaga/internal/livingapp"
 )
 
 // terms keeps the project's vocabulary current. A term whose code reference
@@ -44,20 +45,73 @@ func (b *builder) terms() {
 			Command: ptr(b.invoke("term revise", values...)),
 		})
 	}
+	b.newTerminology()
+}
+
+// newTerminology groups the declarations a comparison added that look like
+// new vocabulary by their declaration block, a type's members in one file,
+// and offers each block as one question: which of these are words the team
+// uses? Each answer defines one term under the domain word the identifier
+// spells, referencing the identifier's code.
+func (b *builder) newTerminology() {
+	suggested := map[string]int{}
+	order := []string{}
+	blocks := map[string][]livingapp.TermSuggestion{}
 	for _, suggestion := range b.status.NewTerminology {
-		name := suggestion.Name
-		if suggestion.Container != "" {
-			name = suggestion.Container + "." + suggestion.Name
+		suggested[suggestion.Suggested]++
+		key := suggestion.Location.Path + "#" + suggestion.Container
+		if _, ok := blocks[key]; !ok {
+			order = append(order, key)
 		}
-		where := suggestion.Location.Path + lineSuffix(suggestion.Location.Start, suggestion.Location.End)
+		blocks[key] = append(blocks[key], suggestion)
+	}
+	for _, key := range order {
+		block := blocks[key]
+		first, last := block[0].Location, block[0].Location
+		names := []string{}
+		options := []Option{}
+		for _, suggestion := range block {
+			if suggestion.Location.Start < first.Start {
+				first = suggestion.Location
+			}
+			if suggestion.Location.End > last.End {
+				last = suggestion.Location
+			}
+			word := firstNonEmptyString(suggestion.Suggested, suggestion.Name)
+			id := termID(strings.ReplaceAll(word, " ", "-"))
+			if suggested[suggestion.Suggested] > 1 && suggestion.Container != "" {
+				// Two blocks suggest the same word; the type tells them apart.
+				id = termID(suggestion.Container) + "-" + id
+			}
+			names = append(names, "\""+word+"\"")
+			options = append(options, option("define \""+word+"\"", "a term named \""+word+"\" whose code reference is "+identifier(suggestion)+" at "+suggestion.Location.String(),
+				b.invoke("term add", grammar.V("id", id), grammar.V("name", word), grammar.V("definition", ""), grammar.V("ref", suggestion.Location.String()))))
+		}
+		options = append(options, option("not now", "nothing is recorded; a later comparison that adds such declarations suggests them again"))
+		where := first.Path + lineSuffix(first.Start, last.End)
+		reason := "this change adds " + identifier(block[0]) + " (" + where + ") and no term names it; is " + names[0] + " new terminology? define it while the meaning is fresh?"
+		if len(block) > 1 {
+			members := "declarations"
+			if block[0].Container != "" {
+				members = "members of " + block[0].Container
+			}
+			reason = "this change adds " + itoa(len(block)) + " " + members + " (" + where + ") that no term names: " + someOf(names, 5) +
+				"; define the ones that are project vocabulary while their meaning is fresh?"
+		}
 		b.add(Action{
-			ID: "growth:term:" + suggestion.Location.String(), Kind: KindCommand, Category: CategoryGrowth, Resource: suggestion.Location.String(),
-			Practice: practiceTerms,
-			Reason:   "this change adds " + name + " (" + where + ") and no term names it: this looks like new terminology; define it while the meaning is fresh?",
-			Command: ptr(b.invoke("term add", grammar.V("id", termID(suggestion.Name)), grammar.V("name", suggestion.Name),
-				grammar.V("definition", ""), grammar.V("ref", suggestion.Location.String()))),
+			ID: "growth:term:" + key, Kind: KindQuestion, Category: CategoryGrowth, Area: AreaTerms, Resource: first.Path,
+			Practice: practiceTerms, Reason: reason,
+			Question: question("Which of "+strings.Join(names, ", ")+" are words the team uses, and what does each mean?", NeedProductJudgment, options...),
 		})
 	}
+}
+
+// identifier names a declaration as the code spells it, with its type.
+func identifier(suggestion livingapp.TermSuggestion) string {
+	if suggestion.Container != "" {
+		return suggestion.Container + "." + suggestion.Name
+	}
+	return suggestion.Name
 }
 
 func lineSuffix(start, end int) string {

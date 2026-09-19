@@ -113,6 +113,19 @@ on the answer. The user may decline any of it. Recover product intent from
 the source material and the user; never invent a story, criterion, persona,
 or definition the user did not give you.
 
+Documenting existing code needs no change: run `status` without `--against`.
+There is no change to cover, so the queue is growth alone, the overview and
+the project's terms first. A few shapes are worth knowing:
+
+- Test-case growth is one suggestion per story, relating a test case to each
+  of its untested criteria.
+- In an epic with no design yet, design growth starts by creating it with
+  `change-saga design add-chapter`, then relating it to the story.
+- Stories that name no persona are offered a persona already named as well as
+  a new one. The suggested `story revise` carries every field of the current
+  revision forward: a revision is complete, so a field left off it (a
+  criterion, a citation) is dropped.
+
 What exists must stay healthy. Once a story is accepted or a design references
 code, a change that makes that link stale or breaks it shows up in the
 `health` area and in the next actions, and is reconciled in the same change.
@@ -145,12 +158,14 @@ rules over `check` and the JSON; see [references/ci.md](references/ci.md).
 
 `next_actions` are ordered: health first (conflicts, invalid and stale
 records, failed runs), then `changed_source` (cover every changed line), then
-reviews, then `growth`. Each action names the `area` it advances; a growth
-action also carries the `practice` it teaches. Loop:
+reviews, then `growth`. Each action names the `area` it advances (`overview`
+or `terms` for growth no coverage area counts); a growth action also carries
+the `practice` it teaches. Loop:
 
 1. run `change-saga spec --json` once to learn the resources, legal relations,
    and command shapes;
-2. run `status --json --against <base>` and take the first next action;
+2. run `status --json --against <base>` (or `status --json` without
+   `--against` to document existing code) and take the first next action;
 3. a `command` action carries a valid command shape: fill in its author inputs
    and run it; a `question` action needs product judgment, external access, or
    an explicit exclusion: ask the user its one question and run the command for
@@ -285,7 +300,8 @@ landmarks, and cited prose) follows the contracts in
 The overview has four parts: the project's name (the Saga's title), an
 elevator pitch (`change-saga overview set-pitch`), a description, a short
 essay (`change-saga overview set-description`), and its terms and vocabulary.
-Status lists each absent part under `overview.gaps`, and none ever blocks.
+Status lists each absent part under `overview.gaps` and suggests it as growth,
+and none ever blocks.
 
 A term (`change-saga term add`) is a word the team says every day that a
 newcomer cannot decode without digging through the code: a name, a
@@ -298,10 +314,14 @@ return the terms it defines; from a story, `query terms --story <id>`.
 
 - A rename makes the term's code reference stale, and a stale action names
   exactly that term with a prefilled `term revise`; supply the new `--ref`.
-- In a comparison, an added enum value or typed constant that no term names
-  becomes a growth action: "this looks like new terminology; define it?".
-  Offer it with what the value appears to mean; never invent a definition, and
-  never treat the suggestion as required.
+- In a comparison, added enum values or typed constants that no term names
+  become one growth question per declaration block (a type's members in one
+  file): which of these are words the team uses? Each answer is a `term add`
+  named with the domain word the identifier spells (`ResolutionExcluded` in
+  `Resolution` suggests "excluded"; status reports it as `suggested_name`)
+  whose `--ref` is the identifier's code. Offer it with what the value appears
+  to mean; never invent a definition, and never treat the suggestion as
+  required.
 
 ## Reconcile an evolving change
 
