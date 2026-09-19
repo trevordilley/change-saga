@@ -156,6 +156,21 @@ func TestReviewPageShowsDiffsDecisionsAndCurrency(t *testing.T) {
 	}
 }
 
+// Finding 32: the reviews sit inside the app shell, styled like every other
+// page, with the sidebar and the tabs beside them.
+func TestReviewsRenderInsideTheAppShell(t *testing.T) {
+	fixture := newServerReviewFixture(t)
+	_, handler := reviewApp(t, fixture, gitdiff.Range{})
+	for _, path := range []string{"/reviews", "/reviews/pr-7"} {
+		page := getPage(t, handler, path).Body.String()
+		for _, shell := range []string{`<nav class="doc-tree"`, `data-view-tab="manifest"`, `class="view-tab reviews-link current"`, "<style>", ".review-summary{"} {
+			if !strings.Contains(page, shell) {
+				t.Fatalf("%s is outside the app shell: lacks %q", path, shell)
+			}
+		}
+	}
+}
+
 // Comparing, the Change tab shows the living layers read-only beside the
 // review of the compared head, and the documentation offers no approval.
 func TestComparingShowsTheMatchingReviewBesideTheLayers(t *testing.T) {

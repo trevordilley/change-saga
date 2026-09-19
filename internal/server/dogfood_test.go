@@ -412,3 +412,33 @@ func TestComparedCoverageLineRetriesWhileTheComparisonBuilds(t *testing.T) {
 		t.Fatalf("totals while building = %d", recorder.Code)
 	}
 }
+
+// The documentation carries no approval or comment control on any page,
+// including the new ones; only a review's slides do.
+func TestDocumentationPagesHaveNoApprovalOrCommentControls(t *testing.T) {
+	document, records, tests := dogfoodRecords(t)
+	paths := []string{"/", "/requirements", "/terms"}
+	for _, story := range records.Stories {
+		paths = append(paths, requirementStoryHref(story.Identity.ID))
+		if story.CurrentRevision != nil && len(story.CurrentRevision.AcceptanceCriteria) > 0 {
+			paths = append(paths, requirementCriterionHref(story.Identity.ID, story.CurrentRevision.AcceptanceCriteria[0].ID))
+		}
+	}
+	for _, persona := range records.Personas {
+		paths = append(paths, personaHref(persona.Identity.ID))
+	}
+	for _, epic := range document.Epics {
+		paths = append(paths, epicHref(epic.ID))
+	}
+	for _, testCase := range tests.TestCases {
+		paths = append(paths, testCaseHref(testCase.Identity.ID))
+	}
+	for _, path := range paths {
+		page := dogfoodOK(t, path)
+		for _, control := range []string{"<form", "data-review-decision", "data-review-comment", "Approve slide", "Request changes", "<textarea"} {
+			if strings.Contains(page, control) {
+				t.Fatalf("%s carries a review control: %s", path, control)
+			}
+		}
+	}
+}

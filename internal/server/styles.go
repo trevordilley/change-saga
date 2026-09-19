@@ -116,6 +116,7 @@ body.presentation-mode .deck-viewer-stage:hover .slide-exit-presentation,body.pr
 .view-tab{display:flex;align-items:center;gap:6px;border:0;border-bottom:2px solid transparent;border-radius:0;padding:0 10px;background:transparent;color:var(--muted);font-size:12.5px}
 .view-tab:hover{color:var(--ink);background:var(--bg-subtle)}
 .view-tab.active{color:var(--ink);border-color:var(--accent);font-weight:600}
+.view-tab.reviews-link.current{color:var(--ink);border-color:var(--accent);font-weight:600;text-decoration:none}
 .top-meta{margin-left:auto;color:var(--faint);font:11px var(--mono)}
 .top-meta[hidden]{display:none}
 .theme-toggle{margin-left:8px}
