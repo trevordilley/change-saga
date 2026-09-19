@@ -11,6 +11,7 @@ import (
 	"testing"
 
 	"github.com/twentyideas/changesaga/internal/applayout"
+	"github.com/twentyideas/changesaga/internal/livingapp"
 	"github.com/twentyideas/changesaga/internal/nextaction"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
@@ -832,4 +833,35 @@ func TestOmittedEpicDefaultsAndSaysWhatItChose(t *testing.T) {
 		t.Fatalf("the implied epic is reported: %q", notices.String())
 	}
 	assertValid(t, root)
+}
+
+// The reviewer's sidebar and status list epics in the order the author
+// created them, not alphabetically.
+func TestEpicsArePresentedInCreationOrder(t *testing.T) {
+	root := newAuthoredSaga(t)
+	for _, id := range []string{"zebra", "accounts"} {
+		mustLiving(t, "epic add", epicCommand, "add", root, "--id", id, "--title", id)
+	}
+	document, _, err := saga.Load(root)
+	if err != nil {
+		t.Fatal(err)
+	}
+	got := []string{}
+	for _, epic := range document.Epics {
+		got = append(got, epic.ID)
+	}
+	if strings.Join(got, ",") != testEpic+",zebra,accounts" {
+		t.Fatalf("document epics = %v", got)
+	}
+	status, err := livingapp.LoadStatus(context.Background(), livingapp.StatusOptions{SagaRoot: root, Document: document})
+	if err != nil {
+		t.Fatal(err)
+	}
+	got = got[:0]
+	for _, epic := range status.Epics {
+		got = append(got, epic.ID)
+	}
+	if strings.Join(got, ",") != testEpic+",zebra,accounts" {
+		t.Fatalf("status epics = %v", got)
+	}
 }

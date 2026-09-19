@@ -191,6 +191,20 @@ func Epics(root string) ([]Epic, error) {
 	return epics, nil
 }
 
+// InCreationOrder returns epics in the order they were created, which is how
+// an author introduced the app's domains and how they are presented; epics
+// created at the same instant keep ID order.
+func InCreationOrder(epics []Epic) []Epic {
+	result := append([]Epic{}, epics...)
+	sort.SliceStable(result, func(i, j int) bool {
+		if !result[i].CreatedAt.Equal(result[j].CreatedAt) {
+			return result[i].CreatedAt.Before(result[j].CreatedAt)
+		}
+		return result[i].ID < result[j].ID
+	})
+	return result
+}
+
 // ValidateEpicManifest checks one epic identity record.
 func ValidateEpicManifest(manifest EpicManifest) error {
 	switch {
