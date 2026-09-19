@@ -18,6 +18,7 @@ import (
 
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coderesolve"
+	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/reviewstate"
 	"github.com/twentyideas/changesaga/internal/reviewstore"
@@ -53,6 +54,26 @@ type reviewPageView struct {
 	Slides        []*reviewSlideView
 	MutationToken string
 	Notice        string
+	// Coverage is the deck's coverage of the review's range, with the
+	// changes no Item explains shown beside the deck.
+	Coverage *reviewCoverageView
+}
+
+// reviewCoverageView is how completely the deck explains the review's range:
+// the counts, every uncovered change as a diff row, and stale references.
+// Like the Code view's gaps, it is reported, never a verdict.
+type reviewCoverageView struct {
+	Summary coverage.Summary
+	Files   []reviewGapFile
+	Stale   []coverage.StaleReference
+}
+
+// reviewGapFile is one file's uncovered changes.
+type reviewGapFile struct {
+	Path      string
+	Locations []string
+	Lines     []reviewDiffLine
+	Events    []string
 }
 
 type reviewSlideView struct {
@@ -188,6 +209,9 @@ func (a *app) reviewPage(w http.ResponseWriter, r *http.Request) {
 		Saga: document, Review: review, Report: report, Frozen: review.Merged != nil,
 		Comparing: !a.rng.Observe(), MutationToken: a.mutationToken, Notice: r.URL.Query().Get("notice"),
 	}
+	if report.Coverage != nil {
+		view.Coverage = reviewCoverage(report.Coverage)
+	}
 	resolver, err := coderesolve.New(ctx, a.sourceDir)
 	if err == nil {
 		defer resolver.Close()
@@ -228,6 +252,41 @@ func (a *app) reviewPage(w http.ResponseWriter, r *http.Request) {
 	if err := reviewTemplates.ExecuteTemplate(w, "review-page", view); err != nil {
 		http.Error(w, "The review could not be rendered.", http.StatusInternalServerError)
 	}
+}
+
+// reviewCoverage renders every uncovered change as the diff row it is: a
+// deleted line at the merge-base, an added line at the head, or a file event.
+func reviewCoverage(covered *reviewstate.Coverage) *reviewCoverageView {
+	view := &reviewCoverageView{Summary: covered.Summary, Stale: covered.StaleReferences}
+	files := map[string]*reviewGapFile{}
+	for _, file := range covered.UncoveredFiles {
+		view.Files = append(view.Files, reviewGapFile{Path: file.Path, Locations: file.Locations})
+	}
+	for index := range view.Files {
+		files[view.Files[index].Path] = &view.Files[index]
+	}
+	for _, atom := range covered.Uncovered {
+		path := atom.Path
+		if atom.Kind != "line" && atom.NewPath != "" {
+			path = atom.NewPath
+		}
+		file := files[path]
+		if file == nil {
+			if file = files[atom.OldPath]; file == nil {
+				continue
+			}
+		}
+		if atom.Kind != "line" {
+			file.Events = append(file.Events, coverage.DescribeAtom(atom))
+			continue
+		}
+		line := reviewDiffLine{Kind: "add", New: strconv.Itoa(atom.Line), Text: atom.Content}
+		if atom.Side == "old" {
+			line = reviewDiffLine{Kind: "del", Old: strconv.Itoa(atom.Line), Text: atom.Content}
+		}
+		file.Lines = append(file.Lines, line)
+	}
+	return view
 }
 
 func threadViewsFor(threads []*reviewstate.Thread, target string) []*reviewThreadView {
@@ -529,17 +588,18 @@ var reviewTemplates = template.Must(template.New("reviews").Funcs(templateFuncs(
 // post decisions and comments, so the page works without script.
 const reviewTemplateSource = `{{define "review-head"}}<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{{.}} · Change Saga</title><style>` + pageStyles + reviewStyles + `</style><script src="/theme.js"></script></head>{{end}}
-{{define "review-summary"}}<article class="review-summary{{if .Matches}} matching{{end}}" data-review-summary="{{.Report.ID}}"><header><a href="{{.Href}}"><strong>{{.Report.Title}}</strong></a>{{with .Report.PullRequest}}{{if .Number}} <span class="review-pr">#{{.Number}}</span>{{end}}{{end}}{{if .Report.Merged}} <span class="review-badge merged">merged</span>{{else}} <span class="review-badge open">open</span>{{end}}</header>{{template "review-range" .Report}}<ol class="review-slide-states">{{range .Report.Slides}}<li data-review-slide-state="{{.ID}}"><span class="review-slide-title">{{.Title}}</span>{{range .Decisions}}<span class="review-decision-chip {{.State}}{{if eq .Currency "out_of_date"}} out-of-date{{end}}" data-decision-state="{{.State}}" data-currency="{{.Currency}}">{{reviewState .State}}{{if eq .Currency "out_of_date"}} · out of date{{end}}</span>{{else}}<span class="review-decision-chip none">no decision</span>{{end}}{{if .OpenThreads}}<span class="review-threads">{{.OpenThreads}} open {{if eq .OpenThreads 1}}thread{{else}}threads{{end}}</span>{{end}}</li>{{end}}</ol></article>{{end}}
+{{define "review-summary"}}<article class="review-summary{{if .Matches}} matching{{end}}" data-review-summary="{{.Report.ID}}"><header><a href="{{.Href}}"><strong>{{.Report.Title}}</strong></a>{{with .Report.PullRequest}}{{if .Number}} <span class="review-pr">#{{.Number}}</span>{{end}}{{end}}{{if .Report.Merged}} <span class="review-badge merged">merged</span>{{else}} <span class="review-badge open">open</span>{{end}}</header>{{template "review-range" .Report}}{{with .Report.Coverage}}<p class="coverage-totals" data-review-coverage-summary data-uncovered="{{.Summary.Uncovered}}">{{.Summary.Covered}} of {{.Summary.Total}} changed lines explained by the deck{{if .Summary.Uncovered}} · <span class="gap">{{.Summary.Uncovered}} unexplained</span>{{end}}{{if .Summary.Stale}} · <span class="gap">{{.Summary.Stale}} stale</span>{{end}}</p>{{end}}<ol class="review-slide-states">{{range .Report.Slides}}<li data-review-slide-state="{{.ID}}"><span class="review-slide-title">{{.Title}}</span>{{range .Decisions}}<span class="review-decision-chip {{.State}}{{if eq .Currency "out_of_date"}} out-of-date{{end}}" data-decision-state="{{.State}}" data-currency="{{.Currency}}">{{reviewState .State}}{{if eq .Currency "out_of_date"}} · out of date{{end}}</span>{{else}}<span class="review-decision-chip none">no decision</span>{{end}}{{if .OpenThreads}}<span class="review-threads">{{.OpenThreads}} open {{if eq .OpenThreads 1}}thread{{else}}threads{{end}}</span>{{end}}</li>{{end}}</ol></article>{{end}}
 {{define "review-range"}}<p class="review-range">{{with .Range}}{{if .Frozen}}Frozen at <code>{{short .BaseOID}}</code>..<code>{{short .HeadOID}}</code>{{else}}<code>{{short .BaseOID}}</code>..<code>{{short .HeadOID}}</code> · head follows <code>{{.Following}}</code>{{end}}{{end}}{{with .Merged}} · landed as <code>{{short .Landed}}</code>{{end}}{{range .Diagnostics}}<span class="review-diagnostic">{{.}}</span>{{end}}</p>{{end}}
 {{define "review-index"}}{{template "review-head" "Reviews"}}<body class="review-surface"><header class="review-top"><a href="/">← {{.Saga.Manifest.Title}}</a><h1>Reviews</h1><p>Each pull request has one review: a slide deck explaining what the change did and why. Approvals and comments happen only here, per slide. The Saga itself is documentation.</p></header><main class="review-main">{{range .Reviews}}{{template "review-summary" .}}{{else}}<p class="review-empty">No reviews yet. Create one for a pull request with <code>change-saga review create</code>.</p>{{end}}</main></body></html>{{end}}
 {{define "review-diff"}}<figure class="review-diff" data-review-diff="{{.Location}}"><figcaption><code>{{.Path}}</code> <span class="review-location">{{.Location}}</span></figcaption>{{if .Note}}<p class="review-note">{{.Note}}</p>{{end}}{{if .Lines}}<table><tbody>{{range .Lines}}<tr class="review-line {{.Kind}}">{{if eq .Kind "hunk"}}<td colspan="3" class="review-hunk">{{.Text}}</td>{{else}}<td class="review-lineno">{{.Old}}</td><td class="review-lineno">{{.New}}</td><td class="review-code"><code>{{if eq .Kind "add"}}+{{else if eq .Kind "del"}}-{{else}} {{end}}{{.Text}}</code></td>{{end}}</tr>{{end}}</tbody></table>{{end}}</figure>{{end}}
 {{define "review-threads"}}{{range .}}<article class="review-thread {{.State}}" id="thread-{{.ID}}" data-review-thread="{{.ID}}" data-thread-state="{{.State}}">{{range .Comments}}<div class="review-comment" id="comment-{{.ID}}"><div class="review-comment-meta">{{.Author}} · <time datetime="{{.CreatedAt.Format "2006-01-02T15:04:05Z07:00"}}">{{.CreatedAt.Format "2006-01-02 15:04 MST"}}</time>{{if .State}} · {{.State}}{{end}}</div><div class="review-comment-body">{{.Body}}</div></div>{{end}}</article>{{end}}{{end}}
 {{define "review-comment-form"}}{{if not .Frozen}}<form class="review-comment-form" method="post" action="/reviews/{{.ReviewID}}/comment" data-review-comment-form="{{.Target}}"><input type="hidden" name="token" value="{{.Token}}"><input type="hidden" name="target" value="{{.Target}}"><label><span>Comment on {{.Label}}</span><textarea name="body" required rows="2"></textarea></label><button type="submit">Comment</button></form>{{end}}{{end}}
 {{define "review-page"}}{{template "review-head" .Review.Title}}<body class="review-surface" data-review="{{.Review.ID}}"><header class="review-top"><a href="/reviews">← Reviews</a> · <a href="/">{{.Saga.Manifest.Title}}</a>{{if .Comparing}} · <a href="/?view=change">Changed, Affected, and Code (read-only)</a>{{end}}<h1>{{.Review.Title}}</h1>{{with .Review.PullRequest}}<p class="review-pr">{{if .URL}}<a href="{{.URL}}">{{if .Number}}Pull request #{{.Number}}{{else}}{{.URL}}{{end}}</a>{{else}}Pull request #{{.Number}}{{end}}</p>{{end}}{{template "review-range" .Report}}<p class="review-rule">{{if .Frozen}}This review is history: its change has landed. It is shown exactly as it was reviewed.{{else}}Decide slide by slide. A decision records the head it was given at and goes out of date when the slide or the code it references changes. The tool records decisions; your team decides what it requires.{{end}}</p></header>
-<main class="review-main">{{$page := .}}{{range .Slides}}<section class="review-slide{{if .OutOfDate}} out-of-date{{end}}" id="{{.DOMID}}" data-review-slide="{{.Slide.ID}}"><header class="review-slide-head"><h2>{{.Slide.Title}}</h2><p class="review-takeaway">{{.Slide.Takeaway}}</p></header><div class="review-slide-body"><div class="review-visual">{{if .Interactive}}<iframe sandbox="allow-scripts" src="{{.VisualURL}}" title="{{.Slide.Title}}"></iframe>{{else}}<img src="{{.VisualURL}}" alt="{{.Slide.Title}}">{{end}}</div>
+<div class="review-layout"><main class="review-main">{{$page := .}}{{range .Slides}}<section class="review-slide{{if .OutOfDate}} out-of-date{{end}}" id="{{.DOMID}}" data-review-slide="{{.Slide.ID}}"><header class="review-slide-head"><h2>{{.Slide.Title}}</h2><p class="review-takeaway">{{.Slide.Takeaway}}</p></header><div class="review-slide-body"><div class="review-visual">{{if .Interactive}}<iframe sandbox="allow-scripts" src="{{.VisualURL}}" title="{{.Slide.Title}}"></iframe>{{else}}<img src="{{.VisualURL}}" alt="{{.Slide.Title}}">{{end}}</div>
 <aside class="review-decisions" aria-label="Decisions on {{.Slide.Title}}"><h3>Decisions</h3><ul>{{range .Report.Decisions}}<li class="review-decision-row {{.State}}{{if eq .Currency "out_of_date"}} out-of-date{{end}}" data-decision-state="{{.State}}" data-currency="{{.Currency}}"><strong>{{reviewState .State}}</strong> by {{reviewer .}} at <code>{{short .Commit}}</code>{{if eq .Currency "out_of_date"}} <span class="review-out-of-date" data-out-of-date>Out of date</span>{{else if eq .Currency "unknown"}} <span class="review-unknown">currency unknown</span>{{end}}{{if .Reasons}}<ul class="review-reasons">{{range .Reasons}}<li>{{.}}</li>{{end}}</ul>{{end}}{{if .Body}}<p class="review-body">{{.Body}}</p>{{end}}</li>{{else}}<li class="review-decision-row none">No decision yet</li>{{end}}</ul>{{if not $page.Frozen}}<form class="review-decision-form" method="post" action="/reviews/{{$page.Review.ID}}/decision" data-review-decision-form="{{.Slide.ID}}"><input type="hidden" name="token" value="{{$page.MutationToken}}"><input type="hidden" name="slide" value="{{.Slide.ID}}"><label><span>Note</span><textarea name="body" rows="2" placeholder="Required when requesting changes"></textarea></label><div class="review-decision-buttons"><button type="submit" name="state" value="approved" data-review-approve>Approve slide</button><button type="submit" name="state" value="changes_requested" data-review-request-changes>Request changes</button><button type="submit" name="state" value="none" data-review-withdraw>Withdraw</button></div></form>{{end}}</aside></div>
 <div class="review-items">{{range .Items}}<article class="review-item" id="{{.DOMID}}" data-review-item="{{.Item.ID}}"><h3>{{.Item.Label}}</h3><p>{{.Item.Description}}</p>{{if .RecordHref}}<p class="review-record">Documentation: <a href="{{.RecordHref}}" data-review-record="{{.Item.Record}}">{{.RecordLabel}}</a></p>{{end}}{{range .Diffs}}{{template "review-diff" .}}{{end}}{{template "review-threads" .Threads}}{{template "review-comment-form" (reviewCommentForm $page .Item.Target .Item.Label)}}</article>{{end}}</div>
-<div class="review-slide-threads">{{template "review-threads" .Threads}}{{template "review-comment-form" (reviewCommentForm $page .Slide.Target .Slide.Title)}}</div></section>{{end}}</main></body></html>{{end}}`
+<div class="review-slide-threads">{{template "review-threads" .Threads}}{{template "review-comment-form" (reviewCommentForm $page .Slide.Target .Slide.Title)}}</div></section>{{end}}</main>{{template "review-coverage" .Coverage}}</div></body></html>{{end}}
+{{define "review-coverage"}}{{if .}}<aside class="review-coverage{{if .Summary.Uncovered}} has-gap{{end}}" aria-label="Coverage of the change" data-review-coverage data-total="{{.Summary.Total}}" data-covered="{{.Summary.Covered}}" data-uncovered="{{.Summary.Uncovered}}" data-stale="{{.Summary.Stale}}" data-overlapping="{{.Summary.Overlapping}}"><h2>Coverage of the change</h2><p class="coverage-totals">{{.Summary.Total}} changed {{if eq .Summary.Total 1}}line{{else}}lines{{end}} · {{.Summary.Covered}} explained by the deck{{if .Summary.Uncovered}} · <span class="gap">{{.Summary.Uncovered}} unexplained</span>{{end}}{{if .Summary.Stale}} · <span class="gap">{{.Summary.Stale}} stale {{if eq .Summary.Stale 1}}reference{{else}}references{{end}}</span>{{end}}{{if .Summary.Overlapping}} · {{.Summary.Overlapping}} explained twice{{end}}</p>{{if .Files}}<p class="review-note">No review Item explains these changes. Cover them from the Item that does: <code>change-saga cover --target &lt;review Item&gt; --path &lt;file&gt; --changed-lines</code></p>{{range .Files}}<figure class="review-diff review-gap" data-review-gap="{{.Path}}"><figcaption><code>{{.Path}}</code>{{range .Locations}} <span class="review-location">{{.}}</span>{{end}}</figcaption>{{range .Events}}<p class="review-note">{{.}}</p>{{end}}{{if .Lines}}<table><tbody>{{range .Lines}}<tr class="review-line {{.Kind}}"><td class="review-lineno">{{.Old}}</td><td class="review-lineno">{{.New}}</td><td class="review-code"><code>{{if eq .Kind "add"}}+{{else}}-{{end}}{{.Text}}</code></td></tr>{{end}}</tbody></table>{{end}}</figure>{{end}}{{else}}<p class="review-note">Every changed line of the review's range is explained by the deck.</p>{{end}}{{if .Stale}}<h3>Stale references</h3><ul class="review-reasons">{{range .Stale}}<li data-review-stale="{{.Assignment.Target}}"><code>{{.Reference.Location}}</code>: {{.Reason}}</li>{{end}}</ul>{{end}}</aside>{{end}}{{end}}`
 
 // reviewCommentFormView carries what a comment form needs from its page.
 type reviewCommentFormView struct {
@@ -548,7 +608,7 @@ type reviewCommentFormView struct {
 }
 
 const reviewStyles = `
-.review-surface{max-width:1180px;margin:0 auto;padding:24px;font:15px/1.5 system-ui,sans-serif}
+.review-surface{max-width:1560px;margin:0 auto;padding:24px;font:15px/1.5 system-ui,sans-serif}
 .review-top h1{margin:8px 0 4px}.review-range code,.review-decisions code{font-size:12px}
 .review-rule{color:var(--muted,#555)}.review-diagnostic{display:block;color:#a15c00}
 .review-summary{border:1px solid var(--line,#ddd);border-radius:10px;padding:12px 16px;margin:12px 0}
@@ -571,4 +631,9 @@ const reviewStyles = `
 .review-lineno{width:3em;text-align:right;color:#8b949e;padding-right:6px}.review-code code{white-space:pre}
 .review-thread{border-left:3px solid #2f6fdc;padding-left:8px;margin:8px 0}.review-thread.resolved{border-color:#999;opacity:.8}
 .review-comment-meta{font-size:12px;color:#666}
+.review-layout{display:grid;grid-template-columns:minmax(0,1fr);gap:24px;align-items:start}
+@media (min-width:1280px){.review-layout{grid-template-columns:minmax(0,1fr) 360px}.review-coverage{position:sticky;top:16px;max-height:calc(100vh - 32px);overflow:auto}}
+.review-coverage{border:1px solid var(--line,#ddd);border-radius:12px;padding:12px 16px;margin:24px 0}
+.review-coverage.has-gap{border-color:#b45309}.review-coverage h2{margin:0 0 4px;font-size:17px}
+.review-coverage .gap,.review-summary .gap{color:#b45309;font-weight:600}.review-gap figcaption{display:flex;flex-wrap:wrap;gap:4px 8px}
 `
