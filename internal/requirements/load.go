@@ -76,7 +76,7 @@ func LoadWithOptions(root, sagaID string, options LoadOptions) (Document, error)
 	if err := applayout.RejectEpicRootsAtAppRoot(abs); err != nil {
 		return Document{}, err
 	}
-	document := Document{Root: abs, SagaID: sagaID, Epics: epics, Personas: []Persona{}, Stories: []Story{}, Citations: []Citation{}, Relations: []Relation{}, Flags: []Flag{}}
+	document := Document{Root: abs, SagaID: sagaID, Epics: epics, Personas: []Persona{}, Stories: []Story{}, Citations: []Citation{}, Relations: []Relation{}, Flags: []Flag{}, Terms: []Term{}}
 	if err := loadPersonas(&document); err != nil {
 		return Document{}, err
 	}
@@ -129,6 +129,9 @@ func LoadWithOptions(root, sagaID string, options LoadOptions) (Document, error)
 	sort.Slice(document.Citations, func(i, j int) bool { return document.Citations[i].ID < document.Citations[j].ID })
 	sort.Slice(document.Relations, func(i, j int) bool { return document.Relations[i].ID < document.Relations[j].ID })
 	if err := loadFlags(&document); err != nil {
+		return Document{}, err
+	}
+	if err := loadTerms(&document); err != nil {
 		return Document{}, err
 	}
 	citationIDs := map[string]bool{}

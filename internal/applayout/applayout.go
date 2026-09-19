@@ -5,7 +5,11 @@
 //
 //	app.saga/
 //	  saga.json
-//	  ___overview/        report content: the elevator pitch for the app
+//	  ___overview/        the project's name (saga.json title), elevator pitch,
+//	                      description, and terms and vocabulary
+//	    pitch.fragment/
+//	    description.fragment/
+//	    terms/<id>.term/
 //	  ___personas/        persona records
 //	  ___designsystem/    report content: Figma links and references
 //	  ___onboarding/      a deck whose Items reference records
@@ -45,6 +49,14 @@ const (
 	OnboardingDir   = "___onboarding"
 	FeatureFlagsDir = "___featureflags"
 	EpicsDir        = "___epics"
+
+	// The overview's formal parts. The project name is saga.json's title; the
+	// elevator pitch and description are fixed report fragments; terms are
+	// living records. Every part is optional.
+	OverviewPitch       = "pitch.fragment"
+	OverviewDescription = "description.fragment"
+	OverviewTerms       = "terms"
+	TermsDir            = OverviewDir + "/" + OverviewTerms
 
 	EpicSuffix       = ".epic"
 	EpicManifestName = "epic.json"

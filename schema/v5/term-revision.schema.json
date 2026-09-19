@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://changesaga.dev/schema/v5/term-revision.schema.json",
+  "title": "App Saga complete term revision",
+  "description": "A term is the project's own vocabulary: a name, a definition, any aliases, and what it names: the stories it belongs to, other app records, and the code that defines it, pinned at a commit.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "version",
+    "id",
+    "term",
+    "parents",
+    "name",
+    "definition",
+    "created_at"
+  ],
+  "properties": {
+    "$schema": {
+      "const": "https://changesaga.dev/schema/v5/term-revision.schema.json"
+    },
+    "version": {
+      "const": 5
+    },
+    "id": {
+      "$ref": "#/$defs/id"
+    },
+    "term": {
+      "$ref": "#/$defs/record_urn"
+    },
+    "parents": {
+      "type": "array",
+      "maxItems": 10000,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/revision_urn"
+      }
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "definition": {
+      "type": "string",
+      "minLength": 1
+    },
+    "aliases": {
+      "type": "array",
+      "maxItems": 32,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "stories": {
+      "type": "array",
+      "maxItems": 256,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/story_urn"
+      }
+    },
+    "records": {
+      "type": "array",
+      "maxItems": 256,
+      "uniqueItems": true,
+      "items": {
+        "$ref": "#/$defs/app_record_urn"
+      }
+    },
+    "code": {
+      "type": "array",
+      "maxItems": 64,
+      "items": {
+        "$ref": "#/$defs/code_reference"
+      }
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "request_id": {
+      "$ref": "#/$defs/id"
+    }
+  },
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "record_urn": {
+      "type": "string",
+      "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:term:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "revision_urn": {
+      "type": "string",
+      "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:term:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:revision:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "story_urn": {
+      "type": "string",
+      "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:story:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "app_record_urn": {
+      "type": "string",
+      "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:(persona|epic|flag|term):[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+    },
+    "code_reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "commit",
+        "path",
+        "digest"
+      ],
+      "properties": {
+        "commit": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}([0-9a-f]{24})?$",
+          "description": "Full Git object name the reference is pinned at."
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Normalized repository-relative slash path at that commit."
+        },
+        "start": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "First referenced line, 1-based. Absent for a whole file."
+        },
+        "end": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Last referenced line, inclusive. Absent for a whole file."
+        },
+        "digest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "description": "SHA-256 of the referenced bytes: the lines start..end including their newlines, or the whole file."
+        },
+        "note": {
+          "type": "string",
+          "description": "Optional reviewer-facing note; never part of the reference's identity."
+        }
+      },
+      "dependentRequired": {
+        "start": [
+          "end"
+        ],
+        "end": [
+          "start"
+        ]
+      }
+    }
+  }
+}

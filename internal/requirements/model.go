@@ -195,6 +195,7 @@ type Document struct {
 	Epics     []applayout.Epic
 	Personas  []Persona
 	Flags     []Flag
+	Terms     []Term
 	Stories   []Story
 	Citations []Citation
 	Relations []Relation
