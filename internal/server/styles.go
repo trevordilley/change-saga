@@ -622,8 +622,8 @@ mark.annotation-revealed{box-shadow:0 0 0 2px var(--ink)}
 .attached-file .diff-column-head{position:static!important;top:auto!important}
 .attached-file .diff-row.linked-evidence{box-shadow:inset 3px 0 var(--accent)}
 .attached-file .diff-row.linked-evidence .line-no:first-child{color:var(--accent)}
-.diff-surface.loading [data-file-diff-rows]{opacity:.55}
-.manifest-file-diff.loading [data-manifest-diff-rows]{opacity:.55}
+.diff-surface.loading [data-file-diff-rows]>:not([data-diff-placeholder]){opacity:.55}
+.manifest-file-diff.loading [data-manifest-diff-rows]>:not([data-diff-placeholder]){opacity:.55}
 .diff-placeholder{margin:0;padding:8px 10px;color:var(--faint);font:11px var(--mono)}
 
 /* Code workspace --------------------------------------------------------- */
