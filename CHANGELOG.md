@@ -34,6 +34,15 @@ tool, and what they have to do about it.
   decision goes out of date when its slide or code changes. The documentation
   itself has no approvals or comments, and the tool never declares a review
   approved.
+- **A review deck must account for its change.** Every changed line in a
+  review's range must be covered by its deck; coverage is reported per review,
+  with the unexplained lines, and `cover` on a review Item uses the review's own
+  range.
+- **The overview is formal, and the project's vocabulary is documented.** The
+  overview has a name, an elevator pitch, a description, and terms and
+  vocabulary. A term links to its stories and the exact code that defines it;
+  renaming that code makes the term stale, and a change that adds an enum value
+  no term names suggests defining one.
 - The reviewer sidebar is always Product, Design, Quality, and Implementation.
   Implementation is the deck itself, open to its slides.
 - `status --json` reports readiness gates, per-criterion coverage on six axes,
@@ -51,6 +60,8 @@ tool, and what they have to do about it.
   references after a merge.
 - `review create|list|approve|request-changes|withdraw|comment`, `sync` for a
   Saga in a companion repository, and `query layers` and `query history`.
+- `term add|revise|set-state`, `overview set-pitch|set-description`, `query
+  terms`, and `review list --uncovered`.
 
 ### Removed
 
