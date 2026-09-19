@@ -2,258 +2,173 @@
 
 ## The Saga
 
-There is one Saga format. `change-saga init` creates it; readers reject any
-other version.
+There is one Saga format, version 5. `change-saga init` creates it; readers
+reject any other version. Always use CLI commands and query targets; never
+invent, rename, nest, glob, or infer meaning from storage files.
 
 ```text
-<name>.saga/
-  saga.json                        # version 5
-  overview.fragment/               # report content
-  ___requirements/
-    prototypes/  stories/  citations/  relations/  coverage-exceptions/
-  ___design/                       # technical design
-  ___slides/<deck-id>.deck/        # the implementation deck
-  ___workplan/
-  ___quality/
-    policies/  test-cases/<id>.test/
-  ___claims/  ___verifications/  ___merges/  ___reviews/
+app.saga/
+  saga.json                        # identity and repository only
+  ___overview/                     # pitch, description, and terms
+  ___personas/  ___designsystem/  ___onboarding/  ___featureflags/
+  ___epics/<epic>.epic/
+    epic.json
+    <chapter>.chapter/             # narrative content
+    ___requirements/               # prototypes, stories, citations, relations
+    ___design/                     # UX, UI, and technical design
+    ___quality/                    # test cases and policies
+    ___workplan/
+    ___slides/<deck>.deck/         # the epic's implementation deck
+  ___reviews/<id>.review/          # one pull request's review deck and decisions
+  ___claims/  ___verifications/  ___merges/
 ```
 
 `change-saga spec --json` publishes the resources, the legal relation endpoint
 matrix, and every command shape. `change-saga status --json` returns the gates,
-per-criterion axis coverage, the stale set, changed-source accounting, and
-ordered `next_actions`; follow them until no required gap remains.
+per-criterion axis coverage, the stale set, changed-source accounting, overview
+gaps, reviews, and ordered `next_actions`.
 
-## Implementation deck
+No URN names its epic, so story, deck, slide, and Item IDs are unique across
+the app and reorganizing epics breaks no link.
 
-The deck is the Implementation section of the Saga. Keep requirements,
-acceptance criteria, prototypes, design, and work-plan history in their own
-surfaces; the deck explains the implemented change. Each
-`___slides/<deck-id>.deck/` bundle contains one `role: change` deck and its
-flat slide/Item/evidence records, and every target URN uses the Saga ID:
-`urn:change-saga:<saga>:deck:<deck>`, `urn:change-saga:<saga>:slide:<slide>`,
-and `urn:change-saga:<saga>:slide:<slide>:item:<item>`.
+## Decks
 
-```sh
-change-saga add-deck --epic checkout --objective "Explain the retry failure path." checkout.saga retry-flow
-change-saga add-slide --deck retry-flow --intent trace --layout sequence --title "Retry sequence" checkout.saga retry-sequence
-change-saga set-slide-content --target retry-sequence --source ./retry.svg checkout.saga
-change-saga add-item --slide retry-sequence --kind callout --id hidden-retry --element-id hidden-retry --description "The retry reviewers may not expect." --body "The second write is conditional." checkout.saga
-change-saga cover --target hidden-retry --path internal/retry.go --side new --lines 40-52 --note "Makes the second write conditional." checkout.saga
-change-saga query slide --saga checkout.saga --target retry-sequence
-change-saga query slide-diffs --saga checkout.saga --target hidden-retry
-```
-
-Only an Item may own slide coverage. Items include `callout`; a callout can
-name another Item with `about` and can own its own exact diff atoms. Approval
-decisions target slides only. Items remain valid targets for comments,
-annotations, evidence, claims, and deep links, but not approvals; deck status
-is derived from its slides. Read deck content with `query slide` and Item
-evidence with `query slide-diffs`, never through `query fragment`.
-
-Requirements are the traceability root. Link a deck, slide, or Item to a story
-or criterion with an active relation pinned to the story revision it relied
-on. The source may be broad, but exact code evidence remains Item-owned. Story
-links apply to every criterion in the pinned revision.
+Each `___slides/<deck>.deck/` bundle is an independently mergeable unit with
+compact category-prefixed records: `10-d` decks, `20-s` slides, `30-i` Items,
+and `40-e` evidence. Titles, parentage, and source paths live inside records,
+never in filenames. Each slide owns one self-contained SVG, image, or HTML
+file.
 
 ```sh
-change-saga relation add --id retry-covers-safe-write --type explains \
-  --from urn:change-saga:checkout:slide:retry-sequence \
-  --to urn:change-saga:checkout:story:safe-write:criterion:no-duplicate \
-  --to-revision urn:change-saga:checkout:story:safe-write:revision:r1 \
-  --rationale "The sequence explains how the criterion is implemented." \
-  checkout.saga
-change-saga query traceability --saga checkout.saga --ref '<commit>:<path>#L<start>-L<end>'
+change-saga add-deck --epic checkout --objective "Explain the retry failure path." app.saga retry-flow
+change-saga add-slide --deck retry-flow --intent trace --layout sequence --title "Retry sequence" --takeaway "The second write is conditional." app.saga retry-sequence
+change-saga set-slide-content --target retry-sequence --source ./retry.svg app.saga
+change-saga add-item --slide retry-sequence --kind callout --id hidden-retry --element-id hidden-retry --description "The retry reviewers may not expect." --body "The second write is conditional." app.saga
+change-saga cover --against main --target hidden-retry --path internal/retry.go --side new --lines 40-52 --note "Makes the second write conditional." app.saga
+change-saga query slide --saga app.saga --target retry-sequence
+change-saga query slide-diffs --saga app.saga --target hidden-retry
 ```
 
-The traceability response includes paths from accepted criteria through review
-targets to code references and `unlinked_code_evidence` for Item evidence that
-has no current story path. `--ref` looks up the targets that reference a code
-location, and `--commit` selects evidence pinned at that commit.
+Intents are `orient`, `explain`, `compare`, `trace`, `prove`, `risk`, and
+`conclude`; layouts are `hero`, `diagram`, `before-after`, `sequence`,
+`evidence`, `risk`, and `custom`. Item kinds are `node`, `edge`, `region`,
+`transition`, `statement`, `risk`, `metric`, `example`, and `callout`.
 
-## Report content
+Link a deck, slide, or Item to a story or criterion with a relation pinned to
+the revision it relied on (an omitted pin defaults to the current head):
 
-### Layout
-
-Report content belongs to an epic (or to the application's `___overview` and
-`___designsystem`):
-
-```text
-<name>.saga/
-  saga.json
-  ___claims/
-    <claim-id>.json
-  ___verifications/
-    <verification-id>.json
-  ___reviews/<id>.review/
-  ___epics/<epic>.epic/
-    epic.json
-    overview.fragment/
-      fragment.json
-      content.md
-      ___code/
-    <chapter>.chapter/
-      chapter.json
-      overview.fragment/
-      <section>/
-        section.json
-        <demo>.fragment/
-          fragment.json
-          index.html
-          app.js
-          ___landmarks/
-            submit-action.landmark/
-              landmark.json
-              ___code/
+```sh
+change-saga relation add --epic checkout --id retry-explains-safe-write --type explains \
+  --from urn:change-saga:app:slide:retry-sequence \
+  --to urn:change-saga:app:story:safe-write:criterion:no-duplicate \
+  --rationale "The sequence explains how the criterion is implemented." app.saga
 ```
-
-`.chapter` directories directly inside an epic are independently reviewable chapters.
-Ordinary directories inside them are recursive sections. `.fragment` directories are atomic content
-packages. A fragment manifest declares `version`, stable `id`, `media_type`,
-`entrypoint`, and optional `title`/`order`. Supported content includes Markdown,
-plain text, HTML, SVG, and raster images. Bundle HTML dependencies inside its
-fragment directory; do not rely on network access in the sandboxed viewer.
-
-Give every Markdown heading an explicit stable anchor:
-
-```markdown
-## Request validation {#request-validation}
-```
-
-Anchors begin with a lowercase letter and contain only lowercase letters,
-digits, and hyphens. They are unique within a fragment and remain unchanged when
-the visible heading is edited. The renderer combines the fragment target with
-the authored anchor to create a collision-free permalink.
-
-Addressable subparts use independent landmark packages:
-
-```json
-{
-  "version": 2,
-  "id": "submit-action",
-  "label": "Submit action",
-  "description": "The validated request crosses into persistence.",
-  "selector": { "type": "element", "element_id": "submit-action" }
-}
-```
-
-Store the record at `___landmarks/<id>.landmark/landmark.json`. Selector types
-are `heading` for an explicit Markdown anchor, `element` for an HTML/SVG element
-ID, `text` for an exact Markdown/plain-text quote, and `region` for normalized
-image coordinates. Put each code association in its own `___code/*.json`
-inside the package. SVG element landmarks infer their on-canvas hover controls
-from the rendered element bounds. A normalized `hotspot` overrides that
-geometry when needed; raster regions use normalized coordinates directly.
-Meaningful visual landmarks should include a semantic `description`; query
-clients receive it so they do not need to interpret raw SVG or HTML geometry.
 
 ## Commands
 
 ```sh
 change-saga install-skill
-change-saga init --repo <source-checkout> --title "Title" <name>.saga
-change-saga epic add --id <epic> --title "Title" <name>.saga
-change-saga add-chapter --epic <epic> --title "Title" <name>.saga backend
-change-saga add-section --title "Title" <name>.saga backend.chapter/path/to/section
-change-saga add-fragment --section path/to/section --type markdown --title "Context" <name>.saga
-change-saga add-fragment --section path/to/section --type html --source ./demo-package --entrypoint index.html <name>.saga
-change-saga set-fragment-content --target path/to/context.fragment --source ./overview.md <name>.saga
-change-saga add-landmark --target path/to/demo.fragment --element-id submit-action --label "Submit action" --description "The validated request crosses into persistence." <name>.saga
-change-saga add-landmark --target path/to/context.fragment --heading-id request-validation --label "Request validation" <name>.saga
-change-saga add-landmark --target path/to/context.fragment --id lease-renewal --text "Renewal is triggered from the heartbeat path before the lease midpoint." --label "Lease renewal evidence" <name>.saga
-change-saga cover --repo <source-checkout> --target path/to/demo.fragment --path file.go --side new --lines 4-9,12 --note "Adds request validation so malformed input fails before persistence." <name>.saga
-change-saga cover --repo <source-checkout> --target path/to/demo.fragment --path file.go --changed-lines --note "This focused file exists only to implement the demonstrated request flow." --json <name>.saga
-change-saga cover --target path/to/demo.fragment --ref '<commit>:<path>#L<start>-L<end>' --note "Implements the behavior explained by this fragment." <name>.saga
-change-saga cover --target path/to/demo.fragment/___landmarks/submit-action.landmark --ref '<commit>:<path>#L<start>-L<end>' --note "Connects the diagram action to its exact submit handler." <name>.saga
-change-saga cover --target path/to/context.fragment#lease-renewal --ref '<commit>:<path>#L<start>-L<end>' --note "Connects the prose citation to the renewal scheduling path." <name>.saga
-change-saga add-claim --target path/to/demo.fragment#submit-action --kind invariant --statement "Only one request can enter persistence for this key." --ref '<commit>:<path>#L<start>-L<end>' <name>.saga
-change-saga verify-claim --claim <claim-id> --status verified --method test --summary "The concurrent request test passed." --command "go test ./..." <name>.saga
-change-saga query mappings --saga <name>.saga --repo <source-checkout> --sort scrutiny
-change-saga replace-coverage --record <evidence_file> --batch replacements.jsonl --repo <source-checkout> <name>.saga
-change-saga remove-coverage --record <evidence_file> <name>.saga
-change-saga references --stale --diff --repo <source-checkout> <name>.saga
-change-saga repin --onto <landed-commit> --branch <branch> --repo <source-checkout> <name>.saga
-change-saga query claims --saga <name>.saga --status unverified
-change-saga validate --json <name>.saga
-change-saga status --json --repo <source-checkout> <name>.saga
-change-saga status --json --repo <source-checkout> --against <base> --head <head> <name>.saga
-change-saga query layers --saga <name>.saga --against <base> --layer affected
-change-saga query history --saga <name>.saga --node <urn>
-change-saga open --repo <source-checkout> <name>.saga
-change-saga serve status <name>.saga
-change-saga serve stop <name>.saga
-change-saga review create --id pr-<n> --pr <n> --url <url> --base <branch> --head <pr-branch> <name>.saga
-change-saga add-slide --review pr-<n> --intent explain --layout sequence --title "Why the queue moved" <name>.saga queue-move
-change-saga add-item --review pr-<n> --slide queue-move --kind node --id table --element-id table --record <story-urn> --description "The new queue table." <name>.saga
-change-saga cover --against <branch> --target <review Item URN> --path queue.go --changed-lines --note "Replaces SQS with a table." <name>.saga
-change-saga review approve --review pr-<n> --slide queue-move --reviewer-kind human <name>.saga
-change-saga review request-changes --review pr-<n> --slide queue-move --reviewer-kind ai --reviewer-name "Codex 1" --agent codex --model gpt-5.6-sol --body "Explain the migration." <name>.saga
-change-saga review list --review pr-<n> <name>.saga
+change-saga init --repo <source-checkout> --title "Title" app.saga
+change-saga epic add --id <epic> --title "Title" app.saga
+change-saga overview set-pitch --text "<pitch>" app.saga
+change-saga overview set-description --source description.md app.saga
+change-saga term add --id <term> --name "<name>" --definition "<definition>" --story <story> --ref 'HEAD:<path>#L<n>' app.saga
+change-saga term revise --term <term URN> --revision r2 --parent <revision URN> --name "<name>" --definition "<definition>" --ref 'HEAD:<path>#L<n>' app.saga
+change-saga add-chapter --epic <epic> --title "Title" app.saga <chapter>
+change-saga add-section --epic <epic> --title "Title" app.saga <chapter>/<section>
+change-saga add-fragment --epic <epic> --section <section> --type markdown --title "Context" app.saga
+change-saga add-fragment --epic <epic> --section <section> --type html --source ./demo-package --entrypoint index.html app.saga
+change-saga set-fragment-content --target <fragment> --source ./context.md app.saga
+change-saga add-landmark --target <fragment> --element-id submit-action --label "Submit action" --description "The validated request crosses into persistence." app.saga
+change-saga cover --against <base> --target <Item> --path file.go --side new --lines 4-9,12 --note "Adds request validation so malformed input fails before persistence." app.saga
+change-saga cover --against <base> --target <Item> --path file.go --changed-lines --note "This file exists only to implement the demonstrated flow." --json app.saga
+change-saga cover --target <fragment>#<landmark-id> --ref '<commit>:<path>#L<start>-L<end>' --note "Connects the citation to the renewal path." app.saga
+change-saga add-claim --target <Item> --kind invariant --statement "Only one request can enter persistence for this key." --ref '<commit>:<path>#L<start>-L<end>' app.saga
+change-saga verify-claim --claim <claim-id> --status verified --method test --summary "The concurrent request test passed." --command "go test ./..." app.saga
+change-saga query gaps --saga app.saga --against <base> --kind uncovered
+change-saga query mappings --saga app.saga --against <base> --sort scrutiny
+change-saga replace-coverage --record <evidence_file> --batch replacements.jsonl app.saga
+change-saga remove-coverage --record <evidence_file> app.saga
+change-saga references --stale --diff app.saga
+change-saga repin --onto <landed-commit> --branch <branch> app.saga
+change-saga sync --repo <code-checkout> app.saga
+change-saga query claims --saga app.saga --status unverified
+change-saga validate --json app.saga
+change-saga status --json app.saga
+change-saga status --json --against <base> --head <head> app.saga
+change-saga query layers --saga app.saga --against <base> --layer affected
+change-saga query history --saga app.saga --node <urn>
+change-saga query terms --saga app.saga --story <story>
+change-saga open app.saga
+change-saga open --against <base> app.saga
+change-saga serve status app.saga
+change-saga serve stop app.saga
+change-saga review create --id pr-<n> --pr <n> --url <url> --base <branch> --head <pr-branch> app.saga
+change-saga add-slide --review pr-<n> --intent explain --layout sequence --title "Why the queue moved" app.saga queue-move
+change-saga add-item --review pr-<n> --slide queue-move --kind node --id table --element-id table --record <story-urn> --description "The new queue table." app.saga
+change-saga cover --target <review Item URN> --path queue.go --changed-lines --note "Replaces SQS with a table." app.saga
+change-saga review list --review pr-<n> --uncovered app.saga
+change-saga review approve --review pr-<n> --slide queue-move --reviewer-kind human app.saga
+change-saga review request-changes --review pr-<n> --slide queue-move --reviewer-kind ai --reviewer-name "Codex 1" --agent codex --model <exact model> --body "Explain the migration." app.saga
 ```
 
-`--repo` may be omitted when the saga is inside the source checkout. Flags
-precede positional arguments. Without `--against`, a command observes the Saga
-at its head; with it, the command compares the merge-base of the two revisions
-through the head, as a pull request does. Coverage describes omission only, not
-correctness or explanation quality.
+`--repo <checkout>` may be omitted when the Saga is inside the source checkout.
+Flags precede positional arguments. Use `--json` for machine-readable mutation
+summaries and `--quiet` when no successful output is needed.
 
-## Claims and verification
-
-`___claims/<id>.json` stores one falsifiable author assertion, its narrative
-target, and the code references that support it. Claims never contribute to
-coverage. `___verifications/<id>.json` stores one append-only result for a
-claim: `unverified`, `verified`, `failed`, or `inconclusive`, plus the method,
-summary, and optional reproducible command. Git attribution identifies who
-committed each independent record.
-
-## Portable identities
+## Identities
 
 Targets are stable URNs:
 
 ```text
-urn:change-saga:<saga-id>:saga
-urn:change-saga:<saga-id>:chapter:<chapter-id>
-urn:change-saga:<saga-id>:section:<section-id>
-urn:change-saga:<saga-id>:fragment:<fragment-id>
-urn:change-saga:<saga-id>:fragment:<fragment-id>:landmark:<landmark-id>
+urn:change-saga:<saga>:saga
+urn:change-saga:<saga>:deck:<deck>
+urn:change-saga:<saga>:slide:<slide>
+urn:change-saga:<saga>:slide:<slide>:item:<item>
+urn:change-saga:<saga>:chapter:<chapter>
+urn:change-saga:<saga>:section:<section>
+urn:change-saga:<saga>:fragment:<fragment>
+urn:change-saga:<saga>:fragment:<fragment>:landmark:<landmark>
+urn:change-saga:<saga>:review:<review>[:slide:<slide>[:item:<item>]]
 ```
 
-Evidence contains code references: `{commit, path, start, end, digest}`, where
-`start` and `end` are absent for a whole file and `digest` is a SHA-256 of the
-exact referenced bytes. A reference is the code as of that commit, never a
-diff. When later commits only move the referenced lines, the reference is
-remapped automatically; when the lines change, it is stale, and `change-saga
-references --stale --diff` shows why. Never hand-edit a reference to make stale
-evidence pass; re-author it with `replace-coverage`. After a change lands,
-`change-saga repin --onto <landed-commit> --branch <branch>` re-pins references
-to the landed commit and records the branch's commit messages.
+## Code references
 
-Each evidence reference should include a concise `note` explaining what changed
-and why the narrative target owns that code. The Saga drawer groups references
-by source file and displays these notes before the reviewer expands the linked
-ranges.
+A reference is `{commit, path, start, end, digest}`, where `start` and `end`
+are absent for a whole file and `digest` is a SHA-256 of the exact referenced
+bytes. It is the code as of that commit, never a diff; written as a location it
+is `<commit>:<path>#L<start>-L<end>`. When later commits only move the lines,
+it is remapped automatically; when they change, it is stale, and `change-saga
+references --stale --diff` shows why. After a change lands, `change-saga repin
+--onto <landed-commit> --branch <branch>` re-pins references to the landed
+commit and records the branch's commit messages in `___merges/`, so a squash
+merge keeps its reasoning. Each reference's `note` is shown, grouped by file,
+before the reviewer expands its ranges.
+
+## Claims and verification
+
+`___claims/<id>.json` stores one falsifiable author assertion, its target, and
+the code references that support it; claims never contribute to coverage.
+`___verifications/<id>.json` stores one append-only result for a claim:
+`unverified`, `verified`, `failed`, or `inconclusive`, plus the method, summary,
+and optional reproducible command.
 
 ## Reviews
 
 The Saga is documentation: its stories, designs, test cases, and decks carry no
 approvals and no comments. A review is a pull request's slide deck under
 `___reviews/<id>.review/`, one per pull request. Its base is what the pull
-request merges into and its head follows the pull request's branch. The review
-deck explains what the change did and why; its Items reference the code the
-change touched, shown as a diff against the base, and may reference the records
-it revised.
+request merges into, and its head follows the pull request's branch until
+`repin` freezes it after merge.
 
 Decisions are per review slide (`approved`, `changes_requested`, or `none` to
-withdraw) and comments attach to review slides and Items. Each decision and
-comment is its own append-only file; never consolidate them into shared files or
-rewrite them. A decision records the reviewer and the pull request head it was
-given at. The reviewer is `human` or `ai`; an AI reviewer names a distinct seat,
-the agent, and the exact model, so `Claude 1` and `Claude 2` stay independent
-even on the same model. Git supplies the authoritative author identity, and a
-reviewer's latest decision on a slide is current.
-
-A decision goes out of date when its slide, or the code the slide's Items
-reference, changed after the commit it was given at; `review list` and `status`
-report each decision's currency. The tool never declares a review approved: it
-records decisions and the team decides what it requires. After the change
-lands, `repin` freezes the review at its exact base and head.
+withdraw), and comments attach to review slides and Items. Each decision and
+comment is its own append-only file; never consolidate or rewrite them. A
+decision records the reviewer and the head it was given at. The reviewer is
+`human` or `ai`; an AI reviewer names a distinct seat, the agent, and the exact
+model, so `Claude 1` and `Claude 2` stay independent on the same model. A
+decision goes out of date when its slide, or the code its Items reference,
+changed after the commit it was given at. Review coverage is computed over the
+review's own range and never counts toward the documentation's coverage. The
+tool never declares a review approved: it records decisions, and the team
+decides what it requires.
