@@ -290,9 +290,9 @@ func printActions(out io.Writer, actions []nextaction.Action, maxItems int, prac
 		}
 		switch {
 		case action.Command != nil:
-			fmt.Fprintf(out, "     $ %s\n", strings.Join(action.Command.Argv, " "))
+			fmt.Fprintf(out, "     $ %s\n", shellJoin(action.Command.Argv))
 		case action.Question != nil && practice && len(action.Question.Options) > 0 && len(action.Question.Options[0].Commands) > 0:
-			fmt.Fprintf(out, "     $ %s\n", strings.Join(action.Question.Options[0].Commands[0].Argv, " "))
+			fmt.Fprintf(out, "     $ %s\n", shellJoin(action.Question.Options[0].Commands[0].Argv))
 		case action.Question != nil:
 			fmt.Fprintf(out, "     ? %s\n", action.Question.Text)
 		}
@@ -384,6 +384,20 @@ func printOverviewStatus(out io.Writer, status livingapp.Status) {
 			fmt.Fprintf(out, "  %-28s %s#L%d\n", name, suggestion.Location.Path, suggestion.Location.Start)
 		}
 	}
+}
+
+// shellJoin prints argv so it can be pasted into a shell: an argument with
+// spaces or shell metacharacters is single-quoted.
+func shellJoin(argv []string) string {
+	quoted := make([]string, len(argv))
+	for index, arg := range argv {
+		if arg != "" && !strings.ContainsAny(arg, " \t\n'\"\\$`&|;<>()*?[]{}!#~") {
+			quoted[index] = arg
+			continue
+		}
+		quoted[index] = "'" + strings.ReplaceAll(arg, "'", `'\''`) + "'"
+	}
+	return strings.Join(quoted, " ")
 }
 
 func areaNames() []string {

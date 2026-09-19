@@ -96,7 +96,8 @@ type Action struct {
 	Practice string              `json:"practice,omitempty"`
 	Command  *grammar.Invocation `json:"command,omitempty"`
 	Question *Question           `json:"question,omitempty"`
-	// value orders growth: suggestions about the current change first.
+	// value orders growth, lowest first: a story for the most changed lines,
+	// then other suggestions about the current change, then the rest.
 	value int
 }
 

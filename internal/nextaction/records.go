@@ -157,7 +157,7 @@ func (b *builder) changedSource() {
 		b.add(Action{
 			ID: "source:uncovered:" + uncovered.Path, Kind: KindCommand, Category: CategorySource, Area: AreaImplementation, Resource: uncovered.Path,
 			Reason:  itoa(uncovered.Atoms) + " changed atoms in " + uncovered.Path + " are owned by no target; choose the smallest target that explains them",
-			Command: ptr(b.invoke("cover", grammar.V("target", ""), grammar.V("path", uncovered.Path), grammar.V("changed-lines", "true"))),
+			Command: ptr(b.invoke("cover", b.compared(grammar.V("target", ""), grammar.V("path", uncovered.Path), grammar.V("changed-lines", "true"))...)),
 		})
 	}
 	for _, implicated := range source.Implicated {
@@ -224,6 +224,18 @@ func (b *builder) testCases() {
 					b.invoke("quality test-case set-state", grammar.V("test", testCase.TestCase), grammar.V("state", "retired")))),
 		})
 	}
+}
+
+// compared adds the comparison status was opened with, so a cover shape
+// selects the same changed lines status reported.
+func (b *builder) compared(values ...grammar.Value) []grammar.Value {
+	if scope := b.context.Coverage.Scope; scope.Kind == "change" && scope.Against != "" {
+		values = append(values, grammar.V("against", scope.Against))
+		if scope.Head != "" && scope.Head != "HEAD" {
+			values = append(values, grammar.V("head", scope.Head))
+		}
+	}
+	return values
 }
 
 func itoa(value int) string { return strconv.Itoa(value) }

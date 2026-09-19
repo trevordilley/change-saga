@@ -181,15 +181,38 @@ func coverageInputs(document *saga.Saga, changes gitdiff.ChangeSet, report cover
 			}
 		}
 	}
-	in.Examined, in.Problems = healthRecords(targets, living, storyEpic)
+	// Health is about what already existed: in a comparison, the records the
+	// change added are new, not existing, so they are not examined (a problem
+	// with one is still reported).
+	added := map[string]bool{}
+	if layers != nil {
+		for _, change := range layers.Changed {
+			if change.Change == changeview.ChangeAdded {
+				added[change.URN] = true
+			}
+		}
+	}
+	examined, problems := healthRecords(targets, living, storyEpic)
+	for _, record := range examined {
+		if !added[record.Resource] && !added[record.Owner] {
+			in.Examined = append(in.Examined, areas.Record{Resource: record.Resource, Kind: record.Kind, Epic: record.Epic})
+		}
+	}
+	in.Problems = problems
 	return in
+}
+
+// healthRecord is one record health examines; Owner is the documentation
+// target holding a code reference.
+type healthRecord struct {
+	Resource, Kind, Epic, Owner string
 }
 
 // healthRecords lists the existing records health examines and those that
 // went stale or broke: code references, relations, stories, test cases, and
 // terms. A record's epic is the epic of the story it concerns.
-func healthRecords(targets map[string]*codeTarget, living livingapp.Status, storyEpic map[string]string) ([]areas.Record, []areas.Problem) {
-	examined := []areas.Record{}
+func healthRecords(targets map[string]*codeTarget, living livingapp.Status, storyEpic map[string]string) ([]healthRecord, []areas.Problem) {
+	examined := []healthRecord{}
 	problems := []areas.Problem{}
 	epicOf := func(resources ...string) string {
 		for _, resource := range resources {
@@ -203,26 +226,26 @@ func healthRecords(targets map[string]*codeTarget, living livingapp.Status, stor
 		}
 		return ""
 	}
-	for _, value := range targets {
+	for target, value := range targets {
 		for _, reference := range value.references {
-			examined = append(examined, areas.Record{Resource: reference, Kind: "code_reference", Epic: value.epic})
+			examined = append(examined, healthRecord{Resource: reference, Kind: "code_reference", Epic: value.epic, Owner: target})
 		}
 	}
 	for relation, state := range living.Chain.Relations {
-		examined = append(examined, areas.Record{Resource: relation, Kind: "relation", Epic: epicOf(state.To)})
+		examined = append(examined, healthRecord{Resource: relation, Kind: "relation", Epic: epicOf(state.To)})
 		switch state.Currency {
 		case requirements.CurrencyConflicted, requirements.CurrencyInvalid:
 			problems = append(problems, areas.Problem{Resource: relation, Kind: "relation", Epic: epicOf(state.To), Reason: "relation is " + string(state.Currency)})
 		}
 	}
 	for _, story := range living.Stories {
-		examined = append(examined, areas.Record{Resource: story.Story, Kind: "story", Epic: story.Epic})
+		examined = append(examined, healthRecord{Resource: story.Story, Kind: "story", Epic: story.Epic})
 		if len(story.RevisionHeads) > 1 || len(story.LifecycleHeads) > 1 {
 			problems = append(problems, areas.Problem{Resource: story.Story, Kind: "story", Epic: story.Epic, Reason: "story has competing heads; reconcile them"})
 		}
 	}
 	for _, testCase := range living.Quality.TestCases {
-		examined = append(examined, areas.Record{Resource: testCase.TestCase, Kind: "test_case", Epic: testCase.Epic})
+		examined = append(examined, healthRecord{Resource: testCase.TestCase, Kind: "test_case", Epic: testCase.Epic})
 	}
 	for _, fact := range living.Quality.Facts {
 		if fact.Required && fact.TestCase != "" && (fact.RunResult == "failed" || fact.RunResult == "blocked") {
@@ -233,7 +256,7 @@ func healthRecords(targets map[string]*codeTarget, living livingapp.Status, stor
 		if len(term.Code) == 0 {
 			continue
 		}
-		examined = append(examined, areas.Record{Resource: term.Term, Kind: "term"})
+		examined = append(examined, healthRecord{Resource: term.Term, Kind: "term"})
 		for _, code := range term.Code {
 			if code.State == coderesolve.Stale {
 				problems = append(problems, areas.Problem{Resource: term.Term, Kind: "term", Reason: "the code that defines it changed: " + code.Reason})
@@ -246,14 +269,15 @@ func healthRecords(targets map[string]*codeTarget, living livingapp.Status, stor
 	return examined, problems
 }
 
-// areaSentence says what an area counts, in the words of the report.
-var areaSentence = map[areas.Name]string{
-	areas.Implementation: "referenced by the implementation deck",
-	areas.Stories:        "reach a story",
-	areas.Personas:       "reach a persona",
-	areas.Design:         "have design",
-	areas.Quality:        "have a test case",
-	areas.Health:         "still healthy",
+// areaSentence says what an area counts, in the words of the report: the
+// plural form, then the singular.
+var areaSentence = map[areas.Name][2]string{
+	areas.Implementation: {"referenced by the implementation deck", "referenced by the implementation deck"},
+	areas.Stories:        {"reach a story", "reaches a story"},
+	areas.Personas:       {"reach a persona", "reaches a persona"},
+	areas.Design:         {"have design", "has design"},
+	areas.Quality:        {"have a test case", "has a test case"},
+	areas.Health:         {"still healthy", "still healthy"},
 }
 
 var unitWords = map[areas.Unit][2]string{
@@ -278,12 +302,12 @@ func describeScope(scope areas.Scope) string {
 
 // printAreaLine prints one area's counts.
 func printAreaLine(out io.Writer, area areas.Area) {
-	words := unitWords[area.Unit]
-	unit := words[1]
+	words, sentence := unitWords[area.Unit], areaSentence[area.Area]
+	unit, verb := words[1], sentence[0]
 	if area.Total == 1 {
-		unit = words[0]
+		unit, verb = words[0], sentence[1]
 	}
-	fmt.Fprintf(out, "  %-15s %d/%d %s %s", area.Area, area.Covered, area.Total, unit, areaSentence[area.Area])
+	fmt.Fprintf(out, "  %-15s %d/%d %s %s", area.Area, area.Covered, area.Total, unit, verb)
 	if area.Note != "" {
 		fmt.Fprintf(out, " (%s)", area.Note)
 	}

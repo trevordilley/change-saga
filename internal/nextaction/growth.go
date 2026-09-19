@@ -147,6 +147,8 @@ func (b *builder) storyGrowth() {
 		b.add(Action{
 			ID: "growth:story:" + place.Target, Kind: KindQuestion, Category: CategoryGrowth, Area: AreaStories, Resource: place.Target, Epic: place.Epic,
 			Reason: reason, Practice: practiceStories,
+			// The more of the change a story would explain, the more it is worth.
+			value: -value.count,
 			Question: question("Which story does \""+title+"\" deliver?", NeedProductJudgment,
 				option("capture it", "a proposed story, and an addresses relation so the code it explains reaches it",
 					b.invoke("story add", grammar.V("id", id), grammar.V("revision", "r1"), grammar.V("event", "proposed"), grammar.V("title", title),
@@ -232,13 +234,22 @@ func (b *builder) qualityGrowth() {
 		b.add(Action{
 			ID: "growth:quality:" + entry.Resource, Kind: KindQuestion, Category: CategoryGrowth, Area: AreaQuality, Resource: entry.Resource, Epic: entry.Epic,
 			Reason: "no test case verifies " + subject + "; add one?", Practice: practiceQuality,
-			value: b.valueOf(entry.Resource),
-			Question: question("Which test case verifies "+subject+"?", NeedProductJudgment,
-				option("an existing test case verifies it", "a verifies relation from the test case", b.invoke("relation add", relate...)),
-				option("a new test case is needed", "define its ordered steps and kinds, then relate it", b.invoke("quality test-case add"), b.invoke("relation add", relate...)),
-				option("not now", "nothing is recorded; the quality area keeps reporting the gap")),
+			value:    b.valueOf(entry.Resource),
+			Question: question("Which test case verifies "+subject+"?", NeedProductJudgment, b.testOptions(relate)...),
 		})
 	}
+}
+
+// testOptions offers an existing test case first when the app has any, and a
+// new one first when it has none yet.
+func (b *builder) testOptions(relate []grammar.Value) []Option {
+	existing := option("an existing test case verifies it", "a verifies relation from the test case", b.invoke("relation add", relate...))
+	fresh := option("a new test case is needed", "define its ordered steps and kinds, then relate it", b.invoke("quality test-case add"), b.invoke("relation add", relate...))
+	later := option("not now", "nothing is recorded; the quality area keeps reporting the gap")
+	if len(b.status.Quality.TestCases) == 0 {
+		return []Option{fresh, existing, later}
+	}
+	return []Option{existing, fresh, later}
 }
 
 // slug turns a title into a stable lowercase identifier.
