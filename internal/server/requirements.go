@@ -20,7 +20,7 @@ var errRequirementNotFound = errors.New("requirement not found")
 // every target, revision, lifecycle state, and criterion comes from
 // ___requirements.
 type requirementsPageView struct {
-	Active           bool
+	Active   bool
 	Overview bool
 	// Groups is the overview's stories by epic, in epic order.
 	Groups           []requirementGroupView
