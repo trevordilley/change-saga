@@ -180,3 +180,21 @@ func (fixed) Language() string { return "fixed" }
 func (fixed) Declarations([]byte) []Declaration {
 	return []Declaration{{Name: "Word", Line: 1, Kind: EnumMember, Language: "fixed"}}
 }
+
+// A suggested term is the domain word, not the Go identifier: the words the
+// member shares with its type are the type's, not the term's.
+func TestHumanizeSuggestsTheDomainWord(t *testing.T) {
+	for _, test := range []struct{ name, container, want string }{
+		{"ResolutionExcluded", "Resolution", "excluded"},
+		{"StateCoveredDirect", "AxisState", "covered direct"},
+		{"UnitChangedLine", "Unit", "changed line"},
+		{"TEST_TAKER", "Role", "test taker"},
+		{"HTTPServer", "", "http server"},
+		{"Unit", "Unit", "unit"},
+		{"reviewer-kind", "", "reviewer kind"},
+	} {
+		if got := Humanize(test.name, test.container); got != test.want {
+			t.Errorf("Humanize(%q, %q) = %q, want %q", test.name, test.container, got, test.want)
+		}
+	}
+}
