@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:app:story:one-app-saga",
+  "parents": [],
+  "title": "One app Saga",
+  "statement": "A repository has one app.saga that holds material about the whole application plus its epics, so every story has one current version and outlives the change that introduced it.",
+  "priority": "unspecified",
+  "citations": [
+    "urn:change-saga:app:citation:app-saga-goals"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "single-saga",
+      "statement": "A repository has one app.saga."
+    },
+    {
+      "id": "app-roots",
+      "statement": "Material about the whole application sits at the root (the overview, personas, design system, onboarding deck, and feature flags); everything else belongs to an epic under ___epics."
+    },
+    {
+      "id": "manifest-identity-only",
+      "statement": "saga.json holds identity and repository only; it holds no comparison."
+    }
+  ],
+  "created_at": "2026-09-19T20:47:22.548815Z"
+}

@@ -1,0 +1,32 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:app:story:code-references",
+  "parents": [],
+  "title": "Nodes reference code at a commit, not diffs",
+  "statement": "A reference says this node explains these lines, as of this commit: repository, commit, path, line range, and content digest. A diff is never stored; it is a way of viewing references against two commits.",
+  "priority": "unspecified",
+  "citations": [
+    "urn:change-saga:app:citation:app-saga-goals"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "deletions-and-whole-files",
+      "statement": "Deletions reference the base commit; renames and binary changes reference whole files."
+    },
+    {
+      "id": "remap-or-stale",
+      "statement": "Staleness compares the pinned commit with the viewed one: if the lines only moved, the range is remapped automatically; if they changed, the reference is stale and the diff since the pin can be shown."
+    },
+    {
+      "id": "repin-at-merge",
+      "statement": "At merge, references are re-pinned to the commit that landed, so squash merges and deleted branches lose nothing; the content digest finds the same lines in any commit as a fallback."
+    },
+    {
+      "id": "saga-only-commits",
+      "statement": "Commits that only change the Saga leave the code identical, so their remap is a no-op."
+    }
+  ],
+  "created_at": "2026-09-19T20:48:07.764759Z"
+}
