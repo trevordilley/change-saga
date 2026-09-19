@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"sort"
 	"strings"
 	"testing"
 
@@ -12,41 +13,51 @@ import (
 )
 
 // grammarHelp runs one grammar command with -h through the same entry
-// points main uses, returning the real flag set's help text.
+// points main uses, returning the real flag set's help text. A query's help
+// is its usage line, since query writes JSON.
 func grammarHelp(t *testing.T, name string) string {
 	t.Helper()
 	fields := strings.Fields(name)
-	var output bytes.Buffer
-	args := append(append([]string{}, fields[1:]...), "-h")
-	ctx := context.Background()
-	run := map[string]func() error{
-		"story":      func() error { return story(ctx, args, &output, strings.NewReader("")) },
-		"criterion":  func() error { return criterion(ctx, args, &output, strings.NewReader("")) },
-		"citation":   func() error { return Citation(ctx, args, &output) },
-		"relation":   func() error { return Relation(ctx, args, &output) },
-		"prototype":  func() error { return Prototype(ctx, args, &output) },
-		"add-deck":   func() error { return AddDeck(ctx, args, &output) },
-		"cover":      func() error { return Cover(ctx, args, &output) },
-		"references": func() error { return References(ctx, args, &output) },
-		"repin":      func() error { return Repin(ctx, args, &output) },
-		"sync":       func() error { return Sync(ctx, args, &output) },
-		"validate":   func() error { return Validate(ctx, args, &output) },
-		"status":     func() error { return Status(ctx, args, &output) },
-		"check":      func() error { return Check(ctx, args, &output) },
-		"spec":       func() error { return Spec(args, &output) },
-		"quality":    func() error { return qualityCommand(ctx, args, &output, strings.NewReader("")) },
-		"epic":       func() error { return Epic(ctx, args, &output) },
-		"review":     func() error { return Review(ctx, args, &output) },
-		"persona":    func() error { return Persona(ctx, args, &output) },
-		"term":       func() error { return Term(ctx, args, &output) },
-		"overview":   func() error { return overviewCommand(ctx, args, &output, strings.NewReader("")) },
-		"flag":       func() error { return FeatureFlag(ctx, args, &output) },
-	}[fields[0]]
+	if fields[0] == "query" {
+		return strings.ReplaceAll(queryUsage[""], "--", "  -") + " "
+	}
+	run := skillCommands[fields[0]]
 	if run == nil {
 		t.Fatalf("no dispatcher for implemented grammar command %q", name)
 	}
-	_ = run()
+	var output bytes.Buffer
+	_ = run(context.Background(), append(append([]string{}, fields[1:]...), "-h"), &output)
 	return output.String()
+}
+
+// usageKey names a grammar command's entry in commandUsage, where the design
+// family's operations are spelled design-<operation>.
+func usageKey(name string) string {
+	if operation, ok := strings.CutPrefix(name, "design "); ok {
+		return "design-" + operation
+	}
+	return name
+}
+
+// runnableCommands returns every command the CLI runs: each commandUsage
+// entry that is not a family of further commands, by its grammar name.
+func runnableCommands() []string {
+	result := []string{}
+	for key := range commandUsage {
+		name := key
+		if operation, ok := strings.CutPrefix(key, "design-"); ok {
+			name = "design " + operation
+		}
+		family := false
+		for other := range commandUsage {
+			family = family || strings.HasPrefix(other, key+" ") || key == "design" && strings.HasPrefix(other, "design-")
+		}
+		if !family {
+			result = append(result, name)
+		}
+	}
+	sort.Strings(result)
+	return result
 }
 
 // The grammar is the single source spec --json and next actions read. Every
@@ -57,7 +68,7 @@ func TestGrammarMatchesTheImplementedCLI(t *testing.T) {
 		if command.Status != grammar.StatusImplemented {
 			continue
 		}
-		if usage := commandUsage[command.Name]; usage != command.Usage {
+		if usage := commandUsage[usageKey(command.Name)]; usage != command.Usage {
 			t.Errorf("%s usage drifted:\n grammar %q\n cli     %q", command.Name, command.Usage, usage)
 		}
 		help := grammarHelp(t, command.Name)
@@ -112,6 +123,15 @@ func TestSpecJSONDescribesTheLivingGrammar(t *testing.T) {
 	}
 	if len(contract.Living.Commands) != len(grammar.Commands()) || contract.Living.StatusSchema != StatusSchema {
 		t.Error("spec commands are the grammar table")
+	}
+	published := map[string]bool{}
+	for _, command := range contract.Living.Commands {
+		published[command.Name] = true
+	}
+	for _, name := range runnableCommands() {
+		if !published[name] {
+			t.Errorf("spec --json omits the CLI command %q", name)
+		}
 	}
 }
 

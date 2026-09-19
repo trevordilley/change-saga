@@ -26,7 +26,7 @@ func TestCheckAnswersOnlyTheNamedAreas(t *testing.T) {
 	if err := Status(ctx, []string{"--against", "main", "--repo", repo, root}, &status); err != nil {
 		t.Fatalf("status with gaps must exit zero: %v\n%s", err, status.String())
 	}
-	if !strings.Contains(status.String(), "implementation  6/6 changed lines referenced by the implementation deck") {
+	if !strings.Contains(status.String(), "implementation  6/6 changed lines referenced by the Saga (6 by the implementation deck or narrative, 0 by test-case evidence)") {
 		t.Fatalf("status reports implementation coverage:\n%s", status.String())
 	}
 

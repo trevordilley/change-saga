@@ -159,10 +159,15 @@ type Status struct {
 
 // StoryStatus is the requirement identity an author needs to act on a story.
 type StoryStatus struct {
-	Story           string            `json:"story"`
-	ID              string            `json:"id"`
-	Epic            string            `json:"epic"`
-	Title           string            `json:"title,omitempty"`
+	Story string `json:"story"`
+	ID    string `json:"id"`
+	Epic  string `json:"epic"`
+	Title string `json:"title,omitempty"`
+	// Statement, Priority, and Citations complete the current revision, so a
+	// suggested revision can carry every field forward.
+	Statement       string            `json:"statement,omitempty"`
+	Priority        string            `json:"priority,omitempty"`
+	Citations       []string          `json:"citations,omitempty"`
 	State           string            `json:"state"`
 	Personas        []string          `json:"personas"`
 	GatedBy         []string          `json:"gated_by"`

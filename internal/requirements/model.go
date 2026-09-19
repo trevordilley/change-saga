@@ -55,7 +55,9 @@ type Revision struct {
 	Parents   []string `json:"parents"`
 	Title     string   `json:"title"`
 	Statement string   `json:"statement"`
-	Priority  string   `json:"priority"`
+	// Priority is optional free text the reviewer shows beside the story. The
+	// tool reads no meaning into it.
+	Priority string `json:"priority,omitempty"`
 	// Personas names the personas this revision of the story serves. It is
 	// optional, so a first story needs no personas defined; each persona it
 	// does name must exist.
