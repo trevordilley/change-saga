@@ -325,3 +325,27 @@ func TestReviewCoverageAccountsForItsOwnRange(t *testing.T) {
 		t.Fatalf("a pushed line is not uncovered: %#v", report.Coverage.UncoveredFiles)
 	}
 }
+
+func TestReviewListUncoveredListsOnlyGaps(t *testing.T) {
+	fixture := newReviewFixture(t)
+	text := run(t, Review, "list", "--uncovered", fixture.root)
+	if !strings.Contains(text, "Review pr-7") || !strings.Contains(text, "uncovered queue.go") || strings.Contains(text, "slide queue") {
+		t.Fatalf("review list --uncovered:\n%s", text)
+	}
+	head := strings.TrimSpace(git(t, fixture.repo, "rev-parse", "feature/pg"))
+	base := strings.TrimSpace(git(t, fixture.repo, "merge-base", "main", "feature/pg"))
+	for _, file := range []string{"queue.go", "store.go"} {
+		run(t, Cover, "--target", saga.ReviewItemTarget("app", "pr-7", map[string]string{"queue.go": "queue", "store.go": "table"}[file], "node"), "--ref", base+":"+file+"#L3", "--repo", fixture.repo, fixture.root)
+	}
+	if report := reviewReport(t, fixture); report.Coverage.Summary.Covered != 4 || report.Coverage.HeadOID != head {
+		t.Fatalf("coverage after covering the deleted lines = %#v", report.Coverage)
+	}
+	text = run(t, Review, "list", "--uncovered", fixture.root)
+	if !strings.Contains(text, "No uncovered changes") {
+		t.Fatalf("review list --uncovered with no gaps:\n%s", text)
+	}
+	var result reviewListOutput
+	if err := json.Unmarshal([]byte(run(t, Review, "list", "--uncovered", "--json", fixture.root)), &result); err != nil || len(result.Reviews) != 0 {
+		t.Fatalf("review list --uncovered --json = %#v, %v", result, err)
+	}
+}

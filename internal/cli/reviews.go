@@ -248,6 +248,7 @@ func reviewList(ctx context.Context, args []string, out io.Writer) error {
 	name := "review list"
 	flags := commandFlags(name, commandUsage[name], out)
 	reviewID := flags.String("review", "", "report one review")
+	uncovered := flags.Bool("uncovered", false, "list only reviews whose deck leaves changes of their range uncovered, or whose coverage cannot be read, and only those gaps")
 	repo := flags.String("repo", "", "code checkout when the Saga lives in a companion repository")
 	jsonOutput := flags.Bool("json", false, "emit machine-readable JSON")
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
@@ -275,8 +276,30 @@ func reviewList(ctx context.Context, args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
+	if *uncovered {
+		gaps := []reviewstate.Report{}
+		for _, report := range reports {
+			if report.Coverage == nil || report.Coverage.Summary.Uncovered > 0 || report.Coverage.Summary.Stale > 0 {
+				gaps = append(gaps, report)
+			}
+		}
+		reports = gaps
+	}
 	if *jsonOutput {
 		return writeJSON(out, reviewListOutput{Reviews: reports})
+	}
+	if *uncovered {
+		if len(reports) == 0 {
+			fmt.Fprintln(out, "No uncovered changes: every listed review's deck explains its whole range.")
+		}
+		for _, report := range reports {
+			fmt.Fprintf(out, "Review %s: %s\n", report.ID, report.Title)
+			for _, diagnostic := range report.Diagnostics {
+				fmt.Fprintf(out, "  note: %s\n", diagnostic)
+			}
+			printReviewCoverage(out, report.Coverage)
+		}
+		return nil
 	}
 	if len(reports) == 0 {
 		fmt.Fprintln(out, "No reviews. Create one for a pull request with change-saga review create.")

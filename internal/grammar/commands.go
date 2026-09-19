@@ -319,9 +319,11 @@ var commands = []Command{
 		Positionals: sagaOnly,
 	},
 	{
-		Name: "review list", Status: StatusImplemented, Usage: "change-saga review list [--review ID] [--repo PATH] [--json] <saga>",
-		Summary:     "report every review slide's decisions, the head commit each was given at, and whether each is out of date; never a verdict",
-		Flags:       []Flag{optional("review", "ID", "report one review"), optional("repo", "PATH", "code checkout when separate"), jsonFlag},
+		Name: "review list", Status: StatusImplemented, Usage: "change-saga review list [--review ID] [--uncovered] [--repo PATH] [--json] <saga>",
+		Summary: "report every review slide's decisions, the head commit each was given at, and whether each is out of date, and how completely each deck covers its review's range; never a verdict",
+		Flags: []Flag{optional("review", "ID", "report one review"),
+			optional("uncovered", "", "list only reviews whose deck leaves changes of their range uncovered, and only those gaps"),
+			optional("repo", "PATH", "code checkout when separate"), jsonFlag},
 		Positionals: sagaOnly,
 	},
 	{
