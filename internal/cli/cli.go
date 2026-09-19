@@ -277,7 +277,7 @@ func commandFlags(name, usage string, out io.Writer) *flag.FlagSet {
 }
 
 var commandDescription = map[string]string{
-	"init":                        "Create the app Saga: the saga.json manifest, a reviewer README, and the app\noverview under ___overview. Then cover the change: explain it with an\nimplementation deck whose Items reference every changed line. Epics, stories,\npersonas, design, and quality are optional and can come later.",
+	"init":                        "Create the app Saga: the saga.json manifest, a reviewer README, and the app\noverview under ___overview. Then either cover the change: explain it with an\nimplementation deck whose Items reference every changed line; or document\nexisting code: observe HEAD with status and reference the code each Item\nexplains at the current commit. Epics, stories, personas, design, and quality\nare optional and can come later.",
 	"status":                      "Report coverage by area for the change (--against) or the whole app, with the\nlists of what is and is not covered, stale records, and ordered next actions:\nrequired work first (keep what exists healthy, cover every changed line), then\noptional growth suggestions. Status has no verdict: it exits 0 whenever its\nreport can be trusted, and 1 only when the Saga is malformed (for example, a\nduplicate ID) or the checkout does not match the declared repository. Teams\nwrite their own rules over --json, or ask check.",
 	"check":                       "Ask whether the named coverage areas are fully covered in scope: the change\nwith --against, the whole app without, narrowed by --epic. It exits 0 when\nthey are, 3 with only those areas' gaps when they are not, and 1 when the\nreport cannot be trusted. Nothing is required unless someone asks.\n\nAreas follow the chain persona -> story -> design -> code:\n  implementation  every changed line is referenced by the implementation deck\n  stories         every changed line reaches a story through the chain\n  personas        every changed line reaches a persona\n  design          every story in scope has design\n  quality         every acceptance criterion in scope has a test\n  health          nothing that already existed went stale or broke",
 	"epic":                        "Add a durable product domain. An epic holds its own report content, stories,\ndesign, quality, work plan, and implementation deck. Story identity never\nnames an epic, so a story can move between epics without breaking a link.",
@@ -468,16 +468,27 @@ func Init(ctx context.Context, args []string, out io.Writer) error {
 		return err
 	}
 	fmt.Fprintf(out, `Created %[1]s
-Next: cover the change. Explain it with an implementation deck, then reference
-every changed line from the Item that explains it (the first command that
-needs an epic creates one named after the branch):
+Next, one of two paths.
+
+To cover a change (a branch or pull request): explain it with an
+implementation deck, then reference every changed line from the Item that
+explains it (the first command that needs an epic creates one named after the
+branch):
   change-saga add-deck --objective TEXT %[1]s NAME
   change-saga add-slide --deck TARGET --intent INTENT --layout LAYOUT %[1]s NAME
   change-saga add-item --slide TARGET --kind KIND %[1]s
   change-saga cover --against main --target ITEM --path PATH --changed-lines %[1]s
   change-saga status --against main %[1]s
-Stories, personas, design, test cases, the overview, and terms are optional;
-status suggests them as the Saga grows.
+
+To document existing code (no change needed): observe the app at HEAD, start
+with the overview and the project's terms, and reference the code each Item
+explains at the current commit, a range or a whole file at a time:
+  change-saga status %[1]s
+  change-saga overview set-pitch --text TEXT %[1]s
+  change-saga cover --target ITEM --path PATH (--lines RANGES | --file) %[1]s
+
+Either way, stories, personas, design, test cases, the overview, and terms
+are optional; status suggests them as the Saga grows.
 `, root)
 	return nil
 }
