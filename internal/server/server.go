@@ -2255,14 +2255,26 @@ func (a *app) diffReview(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "file review requires a whole-file code location", http.StatusBadRequest)
 		return
 	}
-	reference, err := a.authorCode(r.Context(), location)
+	// A reviewer marks a file they were shown, so the location must be one of
+	// the comparison's two commits.
+	document := a.sourceReviewDocument(r.Context())
+	if document == nil {
+		http.Error(w, "The saga could not be loaded.", http.StatusInternalServerError)
+		return
+	}
+	catalog, err := a.sourceCatalog(r.Context(), document.Manifest)
 	if err != nil {
+		http.Error(w, "The source comparison could not be loaded.", http.StatusInternalServerError)
+		return
+	}
+	if location.Commit != catalog.BaseOID && location.Commit != catalog.HeadOID {
+		http.Error(w, "file review location is not part of the comparison", http.StatusNotFound)
+		return
+	}
+	reference, err := a.authorCode(r.Context(), location)
+	if err != nil && location.Commit == catalog.HeadOID {
 		// A deleted file exists only at the comparison's merge-base.
-		if document := a.sourceReviewDocument(r.Context()); document != nil {
-			if catalog, catalogErr := a.sourceCatalog(r.Context(), document.Manifest); catalogErr == nil && location.Commit != catalog.BaseOID {
-				reference, err = a.authorCode(r.Context(), coderef.Location{Commit: catalog.BaseOID, Path: location.Path})
-			}
-		}
+		reference, err = a.authorCode(r.Context(), coderef.Location{Commit: catalog.BaseOID, Path: location.Path})
 	}
 	if err != nil {
 		writeMutationError(w)

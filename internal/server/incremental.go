@@ -193,12 +193,16 @@ func (a *app) codePage(w http.ResponseWriter, r *http.Request) {
 	}
 	selectedPath, selectionErr := selectedCatalogPath(catalog, r)
 	if selectionErr != nil {
-		http.Error(w, selectionErr.Error(), http.StatusBadRequest)
+		status := http.StatusBadRequest
+		if notFound, ok := selectionErr.(*selectionError); ok {
+			status = notFound.status
+		}
+		http.Error(w, selectionErr.Error(), status)
 		return
 	}
 	total := len(catalog.Files)
 	identity := sourceCatalogIdentity(catalog)
-	window, err := pageRequest(r, "code\x00"+identity+"\x00"+r.URL.Query().Get("file")+"\x00"+r.URL.Query().Get("diff"), total, defaultSurfacePageLimit, maxSurfacePageLimit)
+	window, err := pageRequest(r, "code\x00"+identity+"\x00"+r.URL.Query().Get("file")+"\x00"+r.URL.Query().Get("ref"), total, defaultSurfacePageLimit, maxSurfacePageLimit)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return

@@ -56,11 +56,14 @@ Both hand the server subprocess a private `TMPDIR` inside the fixture, so
 
 The fixture source repository has an `origin` matching the declared repository
 URI, because the CLI verifies declared identity against the checkout's origin on
-every read. `identity` on the fixture carries the repository URI and the base and
-head object IDs, and `canonicalFileURI` / `canonicalLineURI` build the exact
-canonical spelling the product accepts. A positive control in `security.spec.ts`
-asserts that spelling is byte-for-byte what the server itself renders, so the
-malformed and non-canonical cases cannot pass vacuously.
+every read. `identity` on the fixture carries the repository URI and the merge-base and head
+commits. Evidence is authored through the real `cover` CLI, which pins each code
+reference to a commit and digests its content. `codeLocation` builds the one
+canonical `<commit>:<path>[#L<start>[-L<end>]]` spelling the product accepts, and
+`codeDigest` recomputes a reference's `sha256:` digest from `git show`, so a test
+can assert stored references byte for byte. A positive control in
+`security.spec.ts` asserts the location spelling is exactly what the server
+itself renders, so the malformed and non-canonical cases cannot pass vacuously.
 
 ## Zero-side-effect assertions
 

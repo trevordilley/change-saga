@@ -734,7 +734,9 @@ func TestCreateDiffSuggestionAndMarkFileReviewed(t *testing.T) {
 	serverGit(t, repo, "add", "app.go")
 	serverGit(t, repo, "commit", "-m", "feature")
 	head := strings.TrimSpace(serverGit(t, repo, "rev-parse", "HEAD"))
-	application := &app{root: root, sourceDir: repo}
+	application := &app{root: root, sourceDir: repo, catalogLoader: func(context.Context, saga.Manifest) (gitdiff.Catalog, error) {
+		return gitdiff.Catalog{BaseOID: strings.Repeat("b", 40), HeadOID: head}, nil
+	}}
 	// The server reads the digest of the referenced bytes from the source
 	// repository; a digest supplied by the browser is never trusted.
 	request := multipartRequest(t, "/api/thread", map[string]string{

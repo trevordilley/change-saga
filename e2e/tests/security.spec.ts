@@ -1,8 +1,7 @@
 import { tmpdir } from "node:os";
 import {
-  canonicalFileURI,
-  canonicalLineURI,
-  diffURI,
+  codeLocation,
+  git,
   formBody,
   multipartBody,
   readJSON,
@@ -25,7 +24,7 @@ type Mutation = { path: string; describe: string; send: (headers: Record<string,
 
 /** Every mutating endpoint with a payload that would succeed if the gate opened. */
 function mutations(fixture: SagaFixture): Mutation[] {
-  const uri = canonicalFileURI(fixture.identity, "src/app.go");
+  const ref = codeLocation(fixture.identity.head, "src/app.go");
   const post = (path: string, payload: { body: string | Buffer; headers: Record<string, string> }) => (headers: Record<string, string>) =>
     serverRequest(fixture.baseURL, path, { method: "POST", headers: { ...payload.headers, ...headers }, body: payload.body });
   return [
@@ -34,7 +33,7 @@ function mutations(fixture: SagaFixture): Mutation[] {
     { path: "/api/thread-state", describe: "resolve", send: post("/api/thread-state", formBody({ thread: "missing", state: "resolved" })) },
     { path: "/api/thread-anchor", describe: "move annotation", send: post("/api/thread-anchor", formBody({ thread: "missing", anchor: '{"type":"target"}' })) },
     { path: "/api/review", describe: "approval", send: post("/api/review", formBody({ target: overviewTarget, state: "approved", body: "Forged approval." })) },
-    { path: "/api/diff-review", describe: "file reviewed", send: post("/api/diff-review", formBody({ uri, state: "reviewed" })) }
+    { path: "/api/diff-review", describe: "file reviewed", send: post("/api/diff-review", formBody({ ref, state: "reviewed" })) }
   ];
 }
 
@@ -130,62 +129,92 @@ test("@critical rejects cross-origin and foreign-Host requests before any handle
   expect(treeSnapshot(saga.sagaRoot)).not.toBe(before);
 });
 
-test("@critical refuses malformed, non-canonical, and cross-repository diff URIs without writing", async ({ page, saga }) => {
-  const canonical = canonicalFileURI(saga.identity, "src/app.go");
+test("@critical refuses malformed, non-canonical, and foreign code locations without writing", async ({ page, saga }) => {
+  const { base, head } = saga.identity;
+  const canonical = codeLocation(head, "src/app.go");
   await page.goto(`${saga.baseURL}/?view=code&file=${encodeURIComponent("src/app.go")}`);
-  const rendered = await page.locator('article.file-diff[data-file-path="src/app.go"] form.file-review input[name="uri"]').getAttribute("value");
-  // Positive control for the whole table below: the URI this suite builds is
-  // byte-for-byte the canonical identity the product itself renders.
+  const rendered = await page.locator('article.file-diff[data-file-path="src/app.go"] form.file-review input[name="ref"]').getAttribute("value");
+  // Positive control for the whole table below: the location this suite builds
+  // is byte-for-byte the canonical spelling the product itself renders.
   expect(rendered).toBe(canonical);
-  expect(canonical).toContain("path=src%2Fapp.go");
+  expect(canonical).toBe(`${head}:src/app.go`);
 
-  const [, query] = canonical.split("?");
   const rejected: Array<[string, string]> = [
     ["empty", ""],
-    ["not a URI", "not-a-diff-uri"],
-    ["wrong scheme", canonical.replace("saga-diff://", "https://")],
-    ["wrong version host", canonical.replace("saga-diff://v1/", "saga-diff://v2/")],
-    ["unknown kind", canonical.replace("/file?", "/blob?")],
-    ["reordered parameters", `saga-diff://v1/file?${query.split("&").reverse().join("&")}`],
-    ["unescaped path separator", canonical.replace("path=src%2Fapp.go", "path=src/app.go")],
-    ["lowercase percent escape", canonical.replace("path=src%2Fapp.go", "path=src%2fapp.go")],
-    ["extra parameter", `${canonical}&view=split`],
-    ["duplicated parameter", `${canonical}&path=src%2Fapp.go`],
+    ["not a location", "not-a-code-location"],
+    ["missing path", `${head}:`],
+    ["missing commit", ":src/app.go"],
+    ["abbreviated commit", `${head.slice(0, 12)}:src/app.go`],
+    ["over-long commit", `${head}0:src/app.go`],
+    ["uppercase commit", `${head.toUpperCase()}:src/app.go`],
+    ["symbolic revision", "HEAD:src/app.go"],
+    ["legacy diff URI", `saga-diff://v1/file?base=${base}&head=${head}&path=src%2Fapp.go`],
+    ["path traversal", `${head}:../../../etc/passwd`],
+    ["embedded traversal", `${head}:src/../src/app.go`],
+    ["absolute path", `${head}:/etc/passwd`],
+    ["non-canonical single-line range", `${head}:src/app.go#L3-L3`],
+    ["zero line", `${head}:src/app.go#L0`],
+    ["inverted range", `${head}:src/app.go#L4-L3`],
     ["trailing fragment", `${canonical}#top`],
-    ["userinfo", canonical.replace("saga-diff://v1/", "saga-diff://reviewer@v1/")],
-    ["missing head", `saga-diff://v1/file?${query.split("&").filter((pair) => !pair.startsWith("head=")).join("&")}`],
-    ["path traversal", diffURI("file", { repository: saga.identity.repository, base: saga.identity.base, head: saga.identity.head, path: "../../../etc/passwd" })],
-    ["absolute path", diffURI("file", { repository: saga.identity.repository, base: saga.identity.base, head: saga.identity.head, path: "/etc/passwd" })],
-    ["non-canonical repository casing", canonicalFileURI({ ...saga.identity, repository: "HTTPS://EXAMPLE.TEST/acme/change-saga-demo.git" }, "src/app.go")],
-    ["repository with credentials", canonicalFileURI({ ...saga.identity, repository: "https://token@example.test/acme/change-saga-demo.git" }, "src/app.go")],
-    ["cross-repository", canonicalFileURI({ ...saga.identity, repository: "https://example.test/acme/other-service.git" }, "src/app.go")],
-    ["cross-host repository", canonicalFileURI({ ...saga.identity, repository: "https://evil.test/acme/change-saga-demo.git" }, "src/app.go")],
-    ["line identity, not a file", canonicalLineURI(saga.identity, "src/app.go", "new", 3, 4)]
+    ["line location, not a file", codeLocation(head, "src/app.go", 3, 4)],
+    ["path absent at the comparison", codeLocation(head, "src/missing.go")]
   ];
 
   const token = await readMutationToken(saga.baseURL);
   const before = treeSnapshot(saga.sagaRoot);
-  for (const [label, uri] of rejected) {
-    const payload = formBody({ uri, state: "reviewed", file: "src/app.go" });
+  for (const [label, ref] of rejected) {
+    const payload = formBody({ ref, state: "reviewed", file: "src/app.go" });
     const response = await serverRequest(saga.baseURL, "/api/diff-review", {
       method: "POST",
       headers: { ...payload.headers, "X-Change-Saga-Mutation-Token": token },
       body: payload.body
     });
-    expect(response.status, `diff review with ${label} URI`).toBe(400);
-    expect(response.body, `diff review with ${label} URI`).not.toContain(saga.root);
+    expect(response.status, `file review with ${label} location`).toBe(400);
+    expect(response.body, `file review with ${label} location`).not.toContain(saga.root);
   }
-  expect(treeSnapshot(saga.sagaRoot), "saga tree after rejected diff identities").toBe(before);
+  expect(treeSnapshot(saga.sagaRoot), "saga tree after rejected code locations").toBe(before);
 
-  const accepted = formBody({ uri: canonical, state: "reviewed", file: "src/app.go" });
+  const accepted = formBody({ ref: canonical, state: "reviewed", file: "src/app.go" });
   const response = await serverRequest(saga.baseURL, "/api/diff-review", {
     method: "POST",
     headers: { ...accepted.headers, "X-Change-Saga-Mutation-Token": token },
     body: accepted.body
   });
   expect(response.status).toBe(303);
-  const records = reviewFiles(saga, /\/___review\/diffs\/.*-reviewed\.json$/);
+  const records = reviewFiles(saga, /\/___review\/files\/.*-reviewed\.json$/);
   expect(records).toHaveLength(1);
+});
+
+test("@critical refuses a file review at a commit outside the comparison without writing", async ({ saga }) => {
+  const { head } = saga.identity;
+  // A real commit in the checkout that is neither side of the comparison: its
+  // file exists and digests fine, but marking it reviewed would record a file
+  // the reviewer was never shown. A well-formed but unknown commit must not be
+  // silently re-pinned to another commit either.
+  const outside = git(saga.sourceRepo, "commit-tree", `${head}^{tree}`, "-p", head, "-m", "outside the comparison");
+  // Selecting code for review already draws this line: a location outside the
+  // comparison is not found, and a malformed one is a bad request.
+  const select = (ref: string) => serverRequest(saga.baseURL, `/api/code?file=${encodeURIComponent("src/app.go")}&ref=${encodeURIComponent(ref)}`);
+  expect((await select(codeLocation(outside, "src/app.go"))).status, "code view at a commit outside the comparison").toBe(404);
+  expect((await select(`${head}:src/app.go#L3-L3`)).status, "code view with a non-canonical location").toBe(400);
+  expect((await select(codeLocation(head, "src/app.go", 3))).status, "code view with a changed line").toBe(200);
+
+  const token = await readMutationToken(saga.baseURL);
+  const before = treeSnapshot(saga.sagaRoot);
+  for (const [label, ref] of [
+    ["commit outside the comparison", codeLocation(outside, "src/app.go")],
+    ["unknown commit", codeLocation("0".repeat(40), "src/app.go")]
+  ] as const) {
+    const payload = formBody({ ref, state: "reviewed", file: "src/app.go" });
+    const response = await serverRequest(saga.baseURL, "/api/diff-review", {
+      method: "POST",
+      headers: { ...payload.headers, "X-Change-Saga-Mutation-Token": token },
+      body: payload.body
+    });
+    expect([400, 404], `file review with ${label} answered ${response.status}`).toContain(response.status);
+    expect(response.body, `file review with ${label}`).not.toContain(saga.root);
+  }
+  expect(treeSnapshot(saga.sagaRoot), "saga tree after file reviews outside the comparison").toBe(before);
 });
 
 test("@critical rejects oversized and mistyped uploads, cleaning up every staged file", async ({ saga }) => {
@@ -242,7 +271,7 @@ test("@critical never exposes filesystem paths in browser-facing responses", asy
     await serverRequest(saga.baseURL, "/f/no-such-fragment/content.md"),
     await serverRequest(saga.baseURL, "/", { headers: { Host: "attacker.test" } })
   ];
-  const payload = formBody({ uri: "not-a-diff-uri", state: "reviewed" });
+  const payload = formBody({ ref: "not-a-code-location", state: "reviewed" });
   responses.push(
     await serverRequest(saga.baseURL, "/api/diff-review", { method: "POST", headers: { ...payload.headers, "X-Change-Saga-Mutation-Token": token }, body: payload.body }),
     await serverRequest(saga.baseURL, "/api/thread-state", { method: "POST", headers: formBody({}).headers, body: formBody({ thread: "../../escape", state: "resolved" }).body })

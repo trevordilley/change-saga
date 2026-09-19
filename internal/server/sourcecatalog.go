@@ -63,8 +63,11 @@ func selectedCatalogPath(catalog gitdiff.Catalog, r *http.Request) (string, erro
 	filePath := r.URL.Query().Get("file")
 	if raw := r.URL.Query().Get("ref"); raw != "" {
 		location, err := coderef.ParseLocation(raw)
-		if err != nil || location.Commit != catalog.BaseOID && location.Commit != catalog.HeadOID {
+		if err != nil {
 			return "", fmt.Errorf("invalid selected code location")
+		}
+		if location.Commit != catalog.BaseOID && location.Commit != catalog.HeadOID {
+			return "", &selectionError{status: http.StatusNotFound, message: "selected code is not part of the comparison"}
 		}
 		fromDiff := catalogPathFor(catalog, location.Path)
 		if filePath == "" {

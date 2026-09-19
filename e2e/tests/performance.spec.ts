@@ -192,12 +192,17 @@ test("loads a linked-code file diff on demand and keeps it answerable to its exp
   // from the row rather than from attributes repeated on every button.
   const row = rows.filter({ has: page.locator("[data-diff-action]") }).first();
   const rowReference = await row.getAttribute("data-diff-ref");
-  expect(rowReference).toMatch(/^saga-diff:\/\/v1\/line\?/);
+  const location = /^([0-9a-f]{40}):(src\/component-\d{3}\.ts)#L([1-9]\d*)$/.exec(rowReference ?? "");
+  expect(location, `row code location ${rowReference}`).not.toBeNull();
+  const [, commit, path, lineText] = location!;
+  expect([largeSaga.identity.head, largeSaga.identity.base]).toContain(commit);
   await row.getByRole("button", { name: "Comment on this line" }).click();
   const composer = page.locator("form.diff-compose");
   await expect(composer).toHaveClass(/open/);
   expect(await composer.locator('[name="target"]').inputValue()).toBe(target);
-  expect(JSON.parse(await composer.locator('[name="anchor"]').inputValue())).toEqual({ type: "diff", diff: { uri: rowReference } });
+  // The browser names the location; the server fills in the digest.
+  const line = Number(lineText);
+  expect(JSON.parse(await composer.locator('[name="anchor"]').inputValue())).toEqual({ type: "code", code: { commit, path, start: line, end: line } });
 
   // The suggestion composer prefills from the row's rendered code.
   await composer.locator("[data-close-diff-compose]").click();
