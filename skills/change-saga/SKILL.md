@@ -1,6 +1,6 @@
 ---
 name: change-saga
-description: 'Author, update, validate, and open the Change Saga for a big change: one Git-native record that carries prototypes, user stories and acceptance criteria, UX/UI and technical design, test cases, and the implementation deck, from the first prototype to exact, fully accounted diff URIs. Drive the work with status --json next actions. The primary purpose is to create the artifact submitted for human review, not to perform the review; only conduct review actions when explicitly requested.'
+description: 'Author, update, validate, and open a Change Saga: the Git-native documentation and history of an application, organized into epics that carry prototypes, user stories and acceptance criteria, UX/UI and technical design, test cases, and implementation decks whose Items reference the exact code they explain. Drive the work with status --json next actions. The primary purpose is to create the artifact submitted for human review, not to perform the review; only conduct review actions when explicitly requested.'
 ---
 
 # Change Saga
@@ -212,9 +212,9 @@ it.
      [--pr <number> --pr-url <url>] <name>.saga
    ```
 
-   Use `WORKTREE` as the head only for tracked in-progress changes. Warn that the
-   current engine does not account for untracked files. Then build the Product,
-   Design, and Quality parts, following status next actions, before
+   Comparisons are between commits, so commit in-progress work before covering
+   it; uncommitted changes are not part of any comparison. Then build the
+   Product, Design, and Quality parts, following status next actions, before
    storyboarding the deck.
 4. Page `change-saga query gaps --kind uncovered --saga <name>.saga` as the
    coverage work queue. Query `gaps --kind stale` for reconciliation work and
@@ -239,29 +239,34 @@ it.
    slide, include every non-decorative Item in `reading_order`, and give each a
    semantic description that stands without the picture. The slide is the
    approval unit; Items are the precise evidence and discussion units.
-8. Attach only the exact atoms each Item explains with `change-saga cover
-   --target`. Always provide a concise reviewer-facing note. Use `old` for
-   deletions and `new` for additions, cover rename/mode/binary events explicitly,
-   and prefer the absolute URIs returned by `query gaps`. Batch authoring may
-   reduce calls, but it never justifies widened selectors or slide-level
-   ownership.
+8. Reference only the exact code each Item explains with `change-saga cover
+   --target`. A reference pins lines at a commit with a digest of their
+   content. Always provide a concise reviewer-facing note. `--side new --lines`
+   pins added lines at the comparison's head, `--side old --lines` pins deleted
+   lines at its merge-base, and `--file` references a whole file for renames,
+   mode, and binary changes. Prefer the locations returned by `query gaps`.
+   Batch authoring may reduce calls, but it never justifies widened references
+   or slide-level ownership.
 9. Run `query mappings --sort scrutiny` and use `replace-coverage` or
-   `remove-coverage` to repair broad or misplaced ownership. If mappings became
-   stale only because an incorporated base advanced while product identity
-   remained byte-for-byte unchanged, preview `rebase-evidence --dry-run` and
-   apply it only after checking the old/new bases and complete impact. Do not
-   carry verifications unless an explicit analysis carry-forward is warranted.
+   `remove-coverage` to repair broad or misplaced ownership. References follow
+   their code: when later commits only move the referenced lines, they are
+   remapped automatically. When the lines themselves change, the reference is
+   stale; `change-saga references --stale --diff` shows why, and
+   `replace-coverage` re-authors it. After the change lands, `change-saga repin
+   --onto <landed commit> --branch <branch>` re-pins references to the landed
+   commit and records the branch's commit messages; run it before the branch is
+   deleted.
 10. Record falsifiable assertions with `add-claim` against the exact Item making
     them, and append reproducible results with `verify-claim`. Claims never
     contribute to coverage, and prose confidence is not verification.
-11. Repeat all three gap views until no product atom is uncovered, no selector
+11. Repeat all three gap views until no product atom is uncovered, no reference
     is stale, and every overlap has a defensible reviewer reason.
 12. Run `validate --json` and `status --json`, then perform the visual,
     accessibility, relationship-silhouette, surprise, and contact-sheet audits in
     `references/authoring.md`. A structurally valid deck that still makes the
     reviewer read paragraphs or decode decorative diagrams is not ready.
 
-Never make a selector wider merely to reach 100%. If an atom does not fit the
+Never make a reference wider merely to reach 100%. If an atom does not fit the
 current story, improve the structure or call out the unexplained change.
 
 ## Reconcile an evolving change

@@ -35,11 +35,11 @@ flat slide/Item/evidence records, and every target URN uses the Saga ID:
 and `urn:change-saga:<saga>:slide:<slide>:item:<item>`.
 
 ```sh
-change-saga add-deck --objective "Explain the retry failure path." checkout.saga retry-flow
+change-saga add-deck --epic checkout --objective "Explain the retry failure path." checkout.saga retry-flow
 change-saga add-slide --deck retry-flow --intent trace --layout sequence --title "Retry sequence" checkout.saga retry-sequence
 change-saga set-slide-content --target retry-sequence --source ./retry.svg checkout.saga
 change-saga add-item --slide retry-sequence --kind callout --id hidden-retry --element-id hidden-retry --description "The retry reviewers may not expect." --body "The second write is conditional." checkout.saga
-change-saga cover --target hidden-retry --uri 'saga-diff://v1/line?...' --note "Makes the second write conditional." checkout.saga
+change-saga cover --target hidden-retry --path internal/retry.go --side new --lines 40-52 --note "Makes the second write conditional." checkout.saga
 change-saga query slide --saga checkout.saga --target retry-sequence
 change-saga query slide-diffs --saga checkout.saga --target hidden-retry
 ```
@@ -63,50 +63,53 @@ change-saga relation add --id retry-covers-safe-write --type explains \
   --to-revision urn:change-saga:checkout:story:safe-write:revision:r1 \
   --rationale "The sequence explains how the criterion is implemented." \
   checkout.saga
-change-saga query traceability --saga checkout.saga --diff '<saga-diff URI>'
+change-saga query traceability --saga checkout.saga --ref '<commit>:<path>#L<start>-L<end>'
 ```
 
 The traceability response includes paths from accepted criteria through review
-targets to diff URIs and `unlinked_code_evidence` for Item evidence that has no
-current story path. `--commit` performs the same reverse lookup using the
-resolved source-head commit of the active committed comparison; it is not
-available for `WORKTREE` comparisons.
+targets to code references and `unlinked_code_evidence` for Item evidence that
+has no current story path. `--ref` looks up the targets that reference a code
+location, and `--commit` selects evidence pinned at that commit.
 
 ## Report content
 
 ### Layout
 
+Report content belongs to an epic (or to the application's `___overview` and
+`___designsystem`):
+
 ```text
 <name>.saga/
   saga.json
-  ___diffs/
   ___claims/
     <claim-id>.json
   ___verifications/
     <verification-id>.json
   ___review/
-    diffs/
+    files/
     threads/
-  overview.fragment/
-    fragment.json
-    content.md
-    ___diffs/
-  <chapter>.chapter/
-    chapter.json
+  ___epics/<epic>.epic/
+    epic.json
     overview.fragment/
-    <section>/
-      section.json
-      <demo>.fragment/
-        fragment.json
-        index.html
-        app.js
-        ___landmarks/
-          submit-action.landmark/
-            landmark.json
-            ___diffs/
+      fragment.json
+      content.md
+      ___code/
+    <chapter>.chapter/
+      chapter.json
+      overview.fragment/
+      <section>/
+        section.json
+        <demo>.fragment/
+          fragment.json
+          index.html
+          app.js
+          ___landmarks/
+            submit-action.landmark/
+              landmark.json
+              ___code/
 ```
 
-Direct root `.chapter` directories are independently reviewable chapters.
+`.chapter` directories directly inside an epic are independently reviewable chapters.
 Ordinary directories inside them are recursive sections. `.fragment` directories are atomic content
 packages. A fragment manifest declares `version`, stable `id`, `media_type`,
 `entrypoint`, and optional `title`/`order`. Supported content includes Markdown,
@@ -139,7 +142,7 @@ Addressable subparts use independent landmark packages:
 Store the record at `___landmarks/<id>.landmark/landmark.json`. Selector types
 are `heading` for an explicit Markdown anchor, `element` for an HTML/SVG element
 ID, `text` for an exact Markdown/plain-text quote, and `region` for normalized
-image coordinates. Put each code association in its own `___diffs/*.json`
+image coordinates. Put each code association in its own `___code/*.json`
 inside the package. SVG element landmarks infer their on-canvas hover controls
 from the rendered element bounds. A normalized `hotspot` overrides that
 geometry when needed; raster regions use normalized coordinates directly.
@@ -150,8 +153,9 @@ clients receive it so they do not need to interpret raw SVG or HTML geometry.
 
 ```sh
 change-saga install-skill
-change-saga init --repo <source-checkout> --base <rev> --head <rev-or-WORKTREE> --title "Title" <name>.saga
-change-saga add-chapter --title "Title" <name>.saga backend
+change-saga init --repo <source-checkout> --base <rev> --head <rev> --title "Title" <name>.saga
+change-saga epic add --id <epic> --title "Title" <name>.saga
+change-saga add-chapter --epic <epic> --title "Title" <name>.saga backend
 change-saga add-section --title "Title" <name>.saga backend.chapter/path/to/section
 change-saga add-fragment --section path/to/section --type markdown --title "Context" <name>.saga
 change-saga add-fragment --section path/to/section --type html --source ./demo-package --entrypoint index.html <name>.saga
@@ -161,15 +165,16 @@ change-saga add-landmark --target path/to/context.fragment --heading-id request-
 change-saga add-landmark --target path/to/context.fragment --id lease-renewal --text "Renewal is triggered from the heartbeat path before the lease midpoint." --label "Lease renewal evidence" <name>.saga
 change-saga cover --repo <source-checkout> --target path/to/demo.fragment --path file.go --side new --lines 4-9,12 --note "Adds request validation so malformed input fails before persistence." <name>.saga
 change-saga cover --repo <source-checkout> --target path/to/demo.fragment --path file.go --changed-lines --note "This focused file exists only to implement the demonstrated request flow." --json <name>.saga
-change-saga cover --target path/to/demo.fragment --uri 'saga-diff://v1/line?...' --note "Implements the behavior explained by this fragment." <name>.saga
-change-saga cover --target path/to/demo.fragment/___landmarks/submit-action.landmark --uri 'saga-diff://v1/line?...' --note "Connects the diagram action to its exact submit handler." <name>.saga
-change-saga cover --target path/to/context.fragment#lease-renewal --uri 'saga-diff://v1/line?...' --note "Connects the prose citation to the renewal scheduling path." <name>.saga
-change-saga add-claim --target path/to/demo.fragment#submit-action --kind invariant --statement "Only one request can enter persistence for this key." --diff 'saga-diff://v1/line?...' <name>.saga
+change-saga cover --target path/to/demo.fragment --ref '<commit>:<path>#L<start>-L<end>' --note "Implements the behavior explained by this fragment." <name>.saga
+change-saga cover --target path/to/demo.fragment/___landmarks/submit-action.landmark --ref '<commit>:<path>#L<start>-L<end>' --note "Connects the diagram action to its exact submit handler." <name>.saga
+change-saga cover --target path/to/context.fragment#lease-renewal --ref '<commit>:<path>#L<start>-L<end>' --note "Connects the prose citation to the renewal scheduling path." <name>.saga
+change-saga add-claim --target path/to/demo.fragment#submit-action --kind invariant --statement "Only one request can enter persistence for this key." --ref '<commit>:<path>#L<start>-L<end>' <name>.saga
 change-saga verify-claim --claim <claim-id> --status verified --method test --summary "The concurrent request test passed." --command "go test ./..." <name>.saga
 change-saga query mappings --saga <name>.saga --repo <source-checkout> --sort scrutiny
 change-saga replace-coverage --record <evidence_file> --batch replacements.jsonl --repo <source-checkout> <name>.saga
 change-saga remove-coverage --record <evidence_file> <name>.saga
-change-saga rebase-evidence --repo <source-checkout> --dry-run <name>.saga
+change-saga references --stale --diff --repo <source-checkout> <name>.saga
+change-saga repin --onto <landed-commit> --branch <branch> --repo <source-checkout> <name>.saga
 change-saga query claims --saga <name>.saga --status unverified
 change-saga validate --json <name>.saga
 change-saga status --json --repo <source-checkout> <name>.saga
@@ -209,16 +214,15 @@ urn:change-saga:<saga-id>:fragment:<fragment-id>
 urn:change-saga:<saga-id>:fragment:<fragment-id>:landmark:<landmark-id>
 ```
 
-Evidence contains absolute `saga-diff://v1/line?...` or
-`saga-diff://v1/event?...` URIs. Each URI includes the absolute repository URI,
-resolved base identity, stable product-patch identity, and line range or event. Saga-only
-commits preserve the product identity; product changes do not. Do not hand-edit a URI
-to make stale evidence pass. When a merged base refresh preserves the exact product
-identity, use `change-saga rebase-evidence --dry-run` and inspect its proof before
-applying it. For any product change, regenerate focused evidence against the intended
-source state instead.
-`saga-diff://v1/file?...` identifies a whole changed file only for review
-progress; it is not coverage evidence.
+Evidence contains code references: `{commit, path, start, end, digest}`, where
+`start` and `end` are absent for a whole file and `digest` is a SHA-256 of the
+exact referenced bytes. A reference is the code as of that commit, never a
+diff. When later commits only move the referenced lines, the reference is
+remapped automatically; when the lines change, it is stale, and `change-saga
+references --stale --diff` shows why. Never hand-edit a reference to make stale
+evidence pass; re-author it with `replace-coverage`. After a change lands,
+`change-saga repin --onto <landed-commit> --branch <branch>` re-pins references
+to the landed commit and records the branch's commit messages.
 
 Each evidence reference should include a concise `note` explaining what changed
 and why the narrative target owns that code. The Saga drawer groups references

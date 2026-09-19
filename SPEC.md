@@ -1,55 +1,64 @@
 # Change Saga format
 
-A Change Saga is the durable, version-controlled record of one big change: the
-kind that warrants product requirements, UX and UI design, technical design,
-quality verification, and an implementation deck. The change itself is often
-built quickly, in one large pull request; the Saga is what captures why it
-exists, what it was meant to do, and how every changed line traces back to
-that intent. A Saga starts with the big work and ends with the big work.
+A Change Saga is the durable, version-controlled documentation and history of
+an application: its personas, its requirements, their design, how they are
+verified, and how they are implemented, with every implementing line of code
+referenced at the commit it was documented against. The application evolves
+through many bodies of work; the Saga keeps all of its requirements current as
+the code changes, and every change is a comparison of the Saga and its code
+between two commits.
 
 There is exactly one Saga format. It is identified by `version: 5` and the
-schemas under [`schema/v5`](schema/v5). A Saga has one `saga.json`, one Saga
-ID, report content, living requirements and work-plan records, quality
-records, and the embedded implementation deck under `___slides/`. Readers
-reject any other manifest version, a root `00-saga.json`, and a manifest
-`presentation` member.
+schemas under [`schema/v5`](schema/v5). Readers reject any other manifest
+version, a root `00-saga.json`, and a manifest `presentation` member. A Saga may
+live in the code repository or in a companion repository; code references
+resolve against the repository the manifest declares.
 
 Git is the outer audit log. Saga records add the semantic history inside it:
 immutable identities, append-only revisions and lifecycle events, relations
 that pin the revisions they rely on, supersession, evidence, and review
-decisions. Staleness is always derived from those pins, never from Git
-history.
+decisions. Staleness is always derived from pins, never from Git history.
 
 ### Layout
 
-The manifest carries identity and source only: it adds no aggregate quality,
-coverage, relation, or deck fields.
+A Saga documents one application. Material about the whole application sits at
+the root; everything else belongs to an **epic**, a durable area of the
+product. The manifest carries identity and source only: it adds no aggregate
+quality, coverage, relation, or deck fields.
 
 ```text
 <id>.saga/
   saga.json
-  <report content>             # overview, chapters, sections, fragments
-  ___requirements/
-    prototypes/                # revisioned interactive prototypes
-    stories/                   # stories and their acceptance criteria
-    citations/
-    relations/                 # typed, pinned edges between resources
-    coverage-exceptions/       # immutable per-criterion, per-axis decisions
-  ___design/                   # technical design chapters
-  ___slides/                   # the implementation deck
-  ___workplan/                 # waves, work items, dependencies, contracts
-  ___quality/
-    policies/
-    test-cases/<id>.test/
-      test-case.json
-      revisions/
-      events/
-      evidence/
-      runs/
+  ___overview/                 # the elevator pitch for the application
+  ___designsystem/             # design-system references
+  ___personas/<id>.persona/    # who the application serves
+  ___featureflags/<id>.flag/   # flags and the stories or epics they gate
+  ___onboarding/<id>.deck/     # a deck that explains the application
+  ___epics/<id>.epic/
+    epic.json
+    <report content>           # chapters, sections, fragments
+    ___requirements/
+      prototypes/              # revisioned interactive prototypes
+      stories/                 # stories and their acceptance criteria
+      citations/
+      relations/               # typed, pinned edges between resources
+      coverage-exceptions/     # immutable per-criterion, per-axis decisions
+    ___design/                 # technical design chapters
+    ___slides/                 # the epic's implementation deck
+    ___workplan/               # waves, work items, dependencies, contracts
+    ___quality/
+      policies/
+      test-cases/<id>.test/
   ___claims/
   ___verifications/
+  ___merges/                   # landed commits and their branch messages
   ___review/                   # review overlay
 ```
+
+Report content and epic roots are invalid at the application root. No URN names
+an epic, so every resource ID is unique across the whole Saga: a story, deck,
+slide, fragment, or any other resource can move between epics without breaking
+a link to it.
 
 Each record is interpreted by the schema its `$schema` names. Report content
 records use the v2 component schemas, living requirement and work-plan records
@@ -62,12 +71,15 @@ enforced at runtime, and every ID uses `[A-Za-z0-9][A-Za-z0-9._-]{0,127}`.
 | Record | Schema | Required semantic fields | Runtime-only checks |
 | --- | --- | --- | --- |
 | Manifest | `v5/saga.schema.json` | identity, title, source, `version: 5` | canonical repository identity |
+| Epic | `v5/epic.schema.json` | immutable ID, title, creation time | directory name equals ID |
+| Persona identity, revision, event | `v5/persona*.schema.json` | name and description; lifecycle `active` or `retired` | one root, acyclic revision and event graphs |
+| Flag identity, revision, event | `v5/flag*.schema.json` | description and at least one story or epic target; state `off`, `on`, or `retired` | targets exist; `retired` is terminal |
 | Relation | `v5/relation.schema.json` | endpoints, type, scope, pins required by the matrix, rationale, state, time | same Saga, no self-edge, canonical conflict ordering, graph acyclicity/currentness |
 | Coverage exception | `v5/coverage-exception.schema.json` | one of six axes, criterion/revision pin, rationale, citation, supersession set | current revision, resolved citations, one unsuperseded head per criterion/axis |
 | Test-case identity | `v5/test-case.schema.json` | immutable ID and creation time | filename/package match and one identity per package |
 | Test-case revision | `v5/test-case-revision.schema.json` | full definition, parents, kinds, automation, ordered steps | one root, reachable acyclic graph, unique/non-reused step IDs |
 | Test lifecycle | `v5/test-case-event.schema.json` | parents and proposed/active/deprecated/retired state | one root, reachable acyclic graph, explicit multi-head conflicts |
-| Quality evidence | `v5/quality-evidence.schema.json` | test revision, role, at least one locator, supersession set | canonical/current diff URIs, resolved local URNs, acyclic supersession |
+| Quality evidence | `v5/quality-evidence.schema.json` | test revision, role, at least one locator, supersession set | current code references, resolved local URNs, acyclic supersession |
 | Test run | `v5/test-run.schema.json` | test revision, parents, exact source identity, result, evidence, execution time | current source/revision/evidence, one root, acyclic graph, visible multi-head conflicts |
 | Quality policy | `v5/quality-policy.schema.json` | criterion/revision, required kinds, allowed automation, rationale | resolved current criterion, acyclic supersession, one policy head |
 
@@ -76,6 +88,35 @@ and implementation) is required. A Saga with no test cases is not exempt from
 quality; each criterion's quality axis is a visible gap until a test case
 verifies it or a current coverage exception excuses it. Coverage-exception
 records are read and evaluated; no command writes them yet.
+
+### Application records
+
+**Epics** are durable areas of the product, not changes: revising a story that
+belongs to an older epic refines that area in place. An epic's `epic.json` is
+immutable and its URN is `urn:change-saga:<saga>:epic:<id>`. Moving a story
+between epics moves its directory and changes nothing else.
+
+**Personas** are application-level living records with an immutable identity,
+append-only revisions (`name`, `description`), and lifecycle events whose root
+state is `active`; a persona can be retired and restored. URNs are
+`urn:change-saga:<saga>:persona:<id>`, with `:revision:<id>` and `:event:<id>`.
+A story revision may name the personas it serves in `personas`; the list is
+optional, but any persona it names must exist. Persona coverage (which active
+personas an accepted story serves, and which stories served only a retired
+persona) is reported and never blocks.
+
+**Feature flags** have an immutable identity, revisions that name at least one
+story or epic target, and lifecycle events with states `off`, `on`, and
+`retired`. A current `off` or conflicted flag gates its targets, and a story is
+gated directly or through its epic; a retired flag gates nothing. Status
+reports each story as `not_implemented`, `implemented_not_enabled`, or
+`implemented_enabled`, where implemented means every current criterion's
+implementation axis is covered.
+
+The **onboarding deck** is a flat deck with role `onboarding`, one per
+application. Its Items carry `record`, the URN of a persona, epic, or story they
+explain, and never own code references. Implementation decks keep role
+`change` and never carry `record`.
 
 ### V5 identities and quality records
 
@@ -111,9 +152,9 @@ than being ordered by timestamp.
 
 Quality evidence roles are `test_implementation`,
 `implementation_under_test`, and `execution_artifact`. The first two require
-one or more exact line/event diff URIs. Execution artifacts forbid diff URIs
-and require a verification or citation. Every evidence record contains the
-four explicit arrays `diffs`, `verifications`, `citations`, and `supersedes`;
+one or more code references. Execution artifacts forbid code references and
+require a verification or citation. Every evidence record contains the four
+explicit arrays `code`, `verifications`, `citations`, and `supersedes`;
 projection uses the supersession graph, never timestamps, to choose current
 heads.
 
@@ -277,11 +318,9 @@ current or its visual source disappears, and a stale relation is never
 coverage. Relations never move exact diff ownership away from Items.
 
 `query traceability` returns the complete current paths from each accepted
-criterion through its linked review targets to Item-owned diff URIs. It can be
-filtered in reverse with `--diff` or with `--commit`, where the commit is the
-resolved source-head commit of the active committed comparison. Commit lookup
-is unavailable for `WORKTREE` comparisons because their exact diff may include
-uncommitted content. Its `unlinked_code_evidence` collection exposes Item
+criterion through its linked review targets to Item-owned code references. It can be
+filtered in reverse with `--ref <location>`, or with `--commit` to select
+evidence pinned at that commit. Its `unlinked_code_evidence` collection exposes Item
 evidence that has no active, current path to an accepted story. Thus a caller
 can traverse from a story to code, or from the current head commit or diff back
 to the story, without duplicating story text inside slide records.
@@ -346,9 +385,9 @@ userinfo is invalid rather than silently stripped on read. An optional `pr`
 records a positive `number`, an absolute `url`, or both.
 
 `base` and `head` select the comparison to evaluate. Commit comparisons resolve
-both revisions and record their actual Git merge base. `WORKTREE` is allowed as `head`; engines resolve the merge base of
-the configured base and current `HEAD`, then compare that tree to the tracked
-worktree. Untracked files are excluded.
+both revisions and record their actual Git merge base. Comparisons are always
+between commits: code references pin commits, so uncommitted working-tree
+changes are not a comparison.
 
 `change-saga init` uses the canonical portable `origin` identity when available.
 Without an origin, or when origin is itself a local path, the author must provide
@@ -405,8 +444,8 @@ interactive-flow.fragment/
 ├── ___landmarks/
 │   └── submit-action.landmark/
 │       ├── landmark.json
-│       └── ___diffs/
-└── ___diffs/
+│       └── ___code/
+└── ___code/
 ```
 
 ```json
@@ -453,7 +492,7 @@ an exact-text landmark. When that landmark owns diff evidence, reference
 renderers should let both the inline marker and the definition open the linked
 code. Citation definition text should remain plain, unique within its fragment,
 and focused on one claim so its exact-text selector is durable. Footnote syntax
-does not itself create coverage; the landmark's independent `___diffs` records
+does not itself create coverage; the landmark's independent `___code` records
 remain the authoritative association.
 
 A prose diff citation and a code-bearing visual landmark have identical
@@ -489,9 +528,9 @@ stable fragment-local ID, a reviewer-facing label, and one selector:
 Landmark IDs follow the Markdown-anchor grammar and are unique within the
 fragment. A `heading` package intentionally shares its ID with the heading it
 enriches. Engines combine the fragment target and landmark ID into a portable
-page anchor and assign the landmark its own target URN. Each `___diffs/*.json`
-inside the landmark package associates fully qualified diff atoms with that
-exact narrative element; each association remains an independent file.
+page anchor and assign the landmark its own target URN. Each `___code/*.json`
+inside the landmark package associates code references with that exact
+narrative element; each association remains an independent file.
 Meaningful visual landmarks should carry a concise semantic `description` that
 explains their role without relying on geometry, color, or position. Query
 clients return this description so non-visual consumers do not need to infer
@@ -531,99 +570,85 @@ IDs are 1–128 characters from `A-Z`, `a-z`, `0-9`, `.`, `_`, and `-`, beginnin
 with an alphanumeric character. Chapter, section, and fragment IDs are unique
 across the saga. Renaming or moving a directory does not change its target URN.
 
-## 5. Absolute diff URIs
+## 5. Code references
 
-A diff link is a fully realized URI. It does not inherit repository or revision
-state from the directory containing it.
-
-Line range:
-
-```text
-saga-diff://v1/line
-  ?repository=https%3A%2F%2Fgithub.com%2Facme%2Fpayments.git
-  &base=6c5f...40-hex-oid
-  &head=b127...40-hex-oid
-  &path=internal%2Fcheckout%2Fhandler.go
-  &side=new
-  &start=18
-  &end=42
-```
-
-File event:
-
-```text
-saga-diff://v1/event
-  ?repository=https%3A%2F%2Fgithub.com%2Facme%2Fpayments.git
-  &base=<identity>&head=<identity>
-  &event=rename
-  &old_path=internal%2Fold.go
-  &new_path=internal%2Fnew.go
-```
-
-File review target:
-
-```text
-saga-diff://v1/file
-  ?repository=https%3A%2F%2Fgithub.com%2Facme%2Fpayments.git
-  &base=<identity>&head=<identity>
-  &path=internal%2Fcheckout%2Fhandler.go
-```
-
-Required common parameters are `repository`, `base`, and `head`. Line URIs also
-require `path`, `side` (`old` or `new`), `start`, and `end`. Event URIs use
-`event=add|delete|type-change|rename|mode|binary|modify`. Rename carries exactly
-`old_path` and `new_path`; every other event carries exactly `path`. `add` and
-`delete` record file lifecycle independently of any changed-line atoms, so
-empty-file changes remain coverable. `type-change` records transitions among
-regular files, symlinks, and Gitlinks; `mode` records permission-only changes;
-`binary` records content Git cannot express as lines. `modify` is the defensive
-event for any other Git-reported file record that yields no more specific atom.
-File URIs identify the complete changed file for review-progress events; they
-are not valid coverage links.
-
-The query parameter set is closed and every parameter occurs exactly once.
-Canonical builders sort and escape the query and canonicalize the embedded
-repository identity. Parsers reject duplicate or unknown parameters and reject
-alternate encodings, ordering, userinfo, fragments, or other noncanonical
-spellings rather than assigning them an ambiguous meaning.
-
-The base identity is the comparison's resolved merge-base commit OID. The head identity is
-`product-<sha256-of-binary-patch>` where the patch excludes paths beneath any
-`.saga` directory. Product edits therefore make links stale, while committing
-comments, replies, approvals, or other saga-only changes does not invalidate
-otherwise identical evidence. `HEAD` and `WORKTREE` produce the same identity
-when their tracked product changes are identical. Engines compare the complete
-URI identity, preventing evidence from silently matching a similar path in a
-different repository or product comparison.
-
-## 6. Attaching diffs
-
-The root, a section, or a fragment can contain `___diffs/*.json` conforming to
-[`schema/v2/diff.schema.json`](schema/v2/diff.schema.json):
+Evidence never stores a diff. A code reference says "this node explains these
+lines, as of this commit", and a diff is a way of viewing references against
+two commits. Evidence records conform to
+[`schema/v2/code.schema.json`](schema/v2/code.schema.json):
 
 ```json
 {
-  "version": 2,
-  "diffs": [
-    {
-      "uri": "saga-diff://v1/line?repository=...&base=...&head=...&path=internal%2Fapi.go&side=new&start=18&end=42",
-      "note": "The behavior demonstrated by this fragment"
-    }
-  ]
+  "commit": "b127...40-hex-commit",
+  "path": "internal/checkout/handler.go",
+  "start": 18,
+  "end": 42,
+  "digest": "sha256:<hex of the exact referenced bytes>",
+  "note": "The behavior demonstrated by this fragment"
 }
 ```
 
-The containing object is the target of the evidence. One link may select a line
-range; one evidence file may hold multiple links and must hold at least one. All
-atoms are mapped when every changed line and file event is selected and every
-committed link matches the current source comparison. This is an omission
+`commit` is a full commit object name, never a symbolic ref. `start` and `end`
+select a 1-based inclusive line range; both are absent for a whole-file
+reference. `digest` is `sha256:` followed by the hex digest of the exact
+referenced bytes: the selected lines including their newlines, or the whole file
+blob. References do not repeat the repository; it is the Saga's declared
+`source.repository`.
+
+The compact location form, used by CLI flags, query arguments, URLs, and
+traceability results, omits the digest:
+
+```text
+<commit>:<path>[#L<start>[-L<end>]]
+```
+
+**Deletions** reference the base side of a comparison, since removed lines exist
+only there. Renames, mode and type changes, binary changes, and file additions
+or deletions are referenced by whole-file references.
+
+### 5.1 Viewing a reference at another commit
+
+A reference pinned at commit P is viewed at commit V by diffing P against V
+(renames followed, `.saga` paths excluded):
+
+- The pinned digest is verified first. A mismatch makes the reference stale.
+- Insertions and deletions entirely before the range shift it; the reference is
+  **remapped** and stays current.
+- Any change touching the range, including an insertion inside it, makes the
+  reference **stale**, with the reason and the diff since the pin available.
+- A whole-file reference remaps only on a pure rename and is stale on any
+  content, mode, or binary change.
+- Commits that change only `.saga` paths leave the code identical, so they
+  never move or stale a reference.
+- If the pinned commit is no longer available, the reference is resolved by
+  searching for its digest in the same path at V; only a unique match counts.
+
+A reference that is current but covers no changed line is not stale: it
+explains unchanged code.
+
+## 6. Attaching code
+
+A report target (a section, fragment, or landmark) holds evidence in
+`___code/*.json`, and a deck Item holds it in its `40-e-*.json` record, both as
+`{"version": 2, "references": [ ... ]}`. The containing object is the target of
+the evidence. An evidence file holds at least one reference.
+
+Coverage is computed for a comparison, never stored. For the merge-base M and
+head H (excluding `.saga` paths), every reference is viewed at both M and H.
+Added and modified lines are covered by references current at H, and deleted
+lines by references current at M. File events are covered only by whole-file
+references on the side where the file exists (M for a deletion). A whole-file
+reference does not cover the file's individual lines. `cover --changed-lines`
+therefore writes a whole-file reference for each file event plus line ranges
+for the changed lines. All atoms are mapped when every changed line and file
+event is covered and no reference in the Saga is stale. This is an omission
 invariant only; it does not establish explanation quality, claim truth, review
 completion, or correctness. Overlap is reported but permitted.
 
 CLI-generated evidence filenames are a deterministic function of the target's
-canonical selector set and exclude reviewer-facing notes. Unrelated selector
+canonical reference set and exclude reviewer-facing notes. Unrelated reference
 sets therefore write unrelated files, while two branches that explain the same
-selectors differently write the same path and require an explicit Git
+code differently write the same path and require an explicit Git
 reconciliation. A generated filename collision MUST NOT be resolved by adding a
 timestamp or numeric suffix: preserving both records would turn an authored
 disagreement into an accidental overlap. Explicit `--name` values remain stable
@@ -631,12 +656,14 @@ author-chosen repair handles.
 
 Every Git-reported product file has at least one event or line atom, so an
 unrepresentable file record cannot make a nonempty comparison appear complete.
+Comparisons are between commits; uncommitted working-tree changes are not a
+comparison.
 
 Changes under a `.saga` path in the source repository are classified separately
 as saga-only changes. When source and saga are different repositories, all saga
 history is naturally outside the source comparison.
 
-### 6.1 Diff-based maintenance impact
+### 6.1 Maintenance impact
 
 `change-saga compare` is a read-only evidence projection for maintaining a Saga
 as its source evolves. It MUST NOT compare fragment bytes, rendered prose,
@@ -644,8 +671,8 @@ diagram geometry, review comments, or other authored content.
 
 The first Saga is the maintained document. An incoming Git comparison may be
 provided directly or through another Saga's `source` declaration. The engine
-reconstructs the maintained Saga's comparison at the incoming comparison's
-resolved base and evaluates its committed evidence there. It then classifies
+views the maintained Saga's references at the incoming comparison's resolved
+base and evaluates its evidence there. It then classifies
 incoming source atoms as:
 
 - `conflicting_intersection` when a removed line or destructive file event
@@ -667,38 +694,32 @@ This projection does not rewrite evidence or advance the Saga's declared head.
 Its purpose is to produce the formal maintenance work queue before content and
 coverage are reconciled against the new source state.
 
-### 6.2 Exact evidence rebase
+### 6.2 Re-pinning at merge
 
-`change-saga rebase-evidence` is the only supported bulk identity migration for
-a moved declared base. It resolves the Saga's current source comparison and
-MUST prove that every candidate selector already carries the same
-base-independent product identity as that comparison. It MUST also rebuild each
-candidate using only the new resolved base and prove the result still selects a
-current atom. A different repository, product identity, selector shape, or
-unmatched translated selector MUST refuse the entire operation without writes.
-Multiple old base cohorts MUST be refused rather than partially migrated.
+When a change lands, `change-saga repin --onto REV [--branch REV]` re-pins
+coverage references from branch commits to the landed commit, following moved
+lines exactly as viewing does. A squash merge or a deleted branch therefore
+loses nothing. References to deleted code, which exist only at the base, stay
+pinned and are reported. Claims, quality evidence, threads, and file reviews are
+immutable records; they keep their pins and resolve through the same viewing
+rules and digest fallback.
 
-The operation preserves evidence record paths, targets, ordering, notes, paths,
-sides, ranges, and events. Only the exact base field in each canonical URI may
-change. `--dry-run` performs the same proof and reports the complete impact
-without mutation. Application is serialized under the Saga authoring lock; a
-failed multi-file write restores original evidence and removes newly appended
-records.
+`repin` also writes `___merges/<landed-commit>.json`, conforming to
+[`schema/v2/merge.schema.json`](schema/v2/merge.schema.json). It records the
+landed commit and the branch's commit messages, ancestors first, so the
+reasoning in individual commits survives a squash merge. `--branch` must be
+given while the branch still exists. `--dry-run` reports the complete impact
+without writing.
 
-Claims remain immutable. Every claim containing migrated evidence is copied to
-a new claim ID with translated evidence, and a v3 `supersedes` relation points
-from the replacement to the original. Verification is not inherited by default. With
-`--carry-verifications`, the latest result is appended for the replacement as a
-new `analysis` verification whose summary identifies the source verification
-and unchanged product identity; this records logical carry-forward and MUST NOT
-imply that a command or test was rerun.
+`change-saga references [--stale] [--diff]` reports every reference's health:
+current, remapped, or stale with its reason and the diff since the pin.
 
 ## 7. Claims and verification
 
 Author claims are independent `___claims/<id>.json` records conforming to
 [`schema/v2/claim.schema.json`](schema/v2/claim.schema.json). A claim contains a
 falsifiable `statement`, a `kind`, one existing narrative `target`, at least one
-exact line/event diff URI in `evidence`, and `created_at`. Claim evidence never
+code reference in `evidence`, and `created_at`. Claim evidence never
 contributes to coverage; readers independently report whether it is current and
 whether every matching atom is already mapped to the claim's target.
 
@@ -737,16 +758,17 @@ ___review/threads/<thread-id>.thread/
 The overlay also contains append-only file-review events:
 
 ```text
-___review/diffs/<event-id>-reviewed.json
+___review/files/<event-id>.json
 ```
 
 Each event conforms to
-[`schema/v2/diff-review.schema.json`](schema/v2/diff-review.schema.json), uses a
-fully realized `/file` diff URI, and has state `reviewed` or `unreviewed`. The
-latest event for the URI is current; when two events share a `created_at`, the
-greater event `id` is the later one. Ordering never depends on file names, so
-every engine resolves the same commit to the same state. A new comparison identity therefore starts
-with no files implicitly reviewed.
+[`schema/v2/file-review.schema.json`](schema/v2/file-review.schema.json), carries
+a whole-file code reference in `code`, and has state `reviewed` or
+`unreviewed`. The latest event for the path is current; when two events share a
+`created_at`, the greater event `id` is the later one. Ordering never depends on
+file names, so every engine resolves the same commit to the same state. A file
+review applies to the file's content at the referenced commit, so a later change
+to the file is not implicitly reviewed.
 
 A thread conforms to [`schema/v2/thread.schema.json`](schema/v2/thread.schema.json)
 and targets a saga, chapter, section, or fragment URN. Its anchor is one of:
@@ -756,7 +778,8 @@ and targets a saga, chapter, section, or fragment URN. Its anchor is one of:
 - `drawing`: arbitrary paths represented by normalized points.
 - `text`: an exact quote with optional prefix, suffix, and character positions.
 - `note`: a sticky note carrying its own visible text and normalized placement.
-- `diff`: one fully realized line or file-event diff URI.
+- `code`: one code reference. The reviewer supplies only the location; the
+  server computes the digest.
 
 Normalized coordinates are in `[0,1]` relative to the rendered fragment stage,
 so drawings survive responsive resizing. Shapes support presentation hints such
@@ -844,10 +867,12 @@ which combination of approvals permits merging.
 
 ## 10. Reserved names
 
-`___diffs` and `___approvals` are reserved on saga/chapter/section/fragment targets.
+`___code` and `___approvals` are reserved on saga/chapter/section/fragment targets.
 `___landmarks` is reserved inside fragments.
-`___review`, `___claims`, `___verifications`, `___requirements`, `___design`,
-`___workplan`, `___slides`, and `___quality` are reserved at the saga root;
+`___overview`, `___designsystem`, `___personas`, `___featureflags`,
+`___onboarding`, `___epics`, `___review`, `___claims`, `___verifications`, and
+`___merges` are reserved at the saga root. `___requirements`, `___design`,
+`___workplan`, `___slides`, and `___quality` are reserved at an epic root;
 `___slides` contains only real `<deck-id>.deck` directories.
 Reserved metadata directories must be
 real directories, not symlinks. So must every entity package: a `.chapter`,
@@ -860,6 +885,13 @@ hide authored content behind a valid-looking saga. Other names beginning with
 
 - `change-saga init SAGA` creates a Saga in the one format, ready for
   prototypes and stories. It never creates any other kind of Saga.
+- `change-saga epic add`, `persona add|revise|set-state`, `flag
+  add|revise|set-state`, and `story move --story URN --epic ID` author the
+  application's structure. Commands that create a record inside an epic
+  require `--epic`; commands that revise one accept it as an assertion.
+- `change-saga references [--stale] [--diff]` reports every code reference's
+  health, and `change-saga repin --onto REV [--branch REV]` re-pins references
+  when a change lands (see section 6.2).
 - `change-saga install-skill` prints an agent-agnostic prompt for installing the
   project-local Change Saga authoring skill. It MUST NOT mutate the repository
   or assume an agent-specific skill path.
@@ -871,7 +903,7 @@ hide authored content behind a valid-looking saga. Other names beginning with
   changing coverage. `change-saga verify-claim` appends one independent result.
 - `change-saga add-chapter` creates a top-level independently reviewable chapter and
   its overview fragment.
-- `change-saga cover --target ...` attaches an absolute diff URI to any target.
+- `change-saga cover --target ...` attaches code references to a target.
 - `change-saga status --json` reports the readiness gates, every accepted
   criterion's coverage on each of the six axes, the pin-derived stale set with
   pinned and current revisions, changed-source accounting (uncovered atoms with

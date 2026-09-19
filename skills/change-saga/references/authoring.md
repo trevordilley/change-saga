@@ -20,8 +20,8 @@ repeat the story prose in slide metadata.
 Before handoff, query each evidence path in reverse and clear the unlinked list:
 
 ```sh
-change-saga query traceability --saga checkout.saga --diff '<saga-diff URI>'
-change-saga query traceability --saga checkout.saga --commit '<resolved source-head commit>'
+change-saga query traceability --saga checkout.saga --ref '<commit>:<path>#L<start>-L<end>'
+change-saga query traceability --saga checkout.saga --commit '<commit>'
 ```
 
 The saga is the authored proposal that accompanies the code—the successor to a
@@ -45,8 +45,9 @@ gh pr view <number> --json number,title,url,body,baseRefName,headRefName,headRef
 ```
 
 Use an available provider integration instead when it has better access. For a
-local change without a PR, identify the intended merge base and choose `HEAD` or
-`WORKTREE` explicitly.
+local change without a PR, identify the intended merge base and commit the work
+first: comparisons are between commits, and uncommitted changes are not part of
+any comparison.
 
 Cross-check the provider's head OID/branch, title, and changed files against the
 local checkout before initializing. If they do not describe the same change,
@@ -126,7 +127,7 @@ verification. The overview should reveal the highest-consequence surprise
 early enough to shape how the reviewer interprets later slides.
 
 A callout is an overlaid Item, not a different evidence layer. It may name the
-Item it explains with `about`, and its own `___diffs` may point to the exact code
+Item it explains with `about`, and its own code references may point to the exact code
 that substantiates the callout. Keep callout bodies at 240 characters or less.
 Do not attach coverage to the Saga, deck, or slide. If an atom does not belong
 to an existing Item, improve the visual composition or add a focused Item.
@@ -272,8 +273,8 @@ For an override, divide the desired viewBox coordinates by the viewBox width
 and height. Raster regions always use normalized intrinsic-image coordinates.
 For example: `"hotspot":{"x":0.68,"y":0.72,"width":0.2,"height":0.12}`.
 
-When a landmark is realized by code, put each focused diff association in its
-own `<landmark>/___diffs/*.json` file. Run `change-saga cover --target` with
+When a landmark is realized by code, put each focused code association in its
+own `<landmark>/___code/*.json` file. Run `change-saga cover --target` with
 the path or target URN printed by `add-landmark`, or use the
 `<fragment-path>#<landmark-id>` shorthand,
 for example `change-saga cover --target
@@ -312,7 +313,7 @@ change-saga add-landmark --target path/to/lease.fragment \
   --text "Renewal is triggered from the heartbeat path before the lease midpoint." \
   --label "Lease renewal evidence" <name>.saga
 change-saga cover --target path/to/lease.fragment#lease-renewal \
-  --uri 'saga-diff://v1/line?...' \
+  --ref '<commit>:<path>#L<start>-L<end>' \
   --note "Schedules renewal from the heartbeat before the lease midpoint." <name>.saga
 ```
 
@@ -350,8 +351,8 @@ Before attaching broad coverage, perform an addressability inventory:
 - Give every evidence record a concise `--note` that answers both “what changed
   in this file?” and “why does this target own it?” Write for the collapsed file
   row a reviewer sees before opening code. Prefer one concrete sentence, such as
-  “Parses and validates absolute diff URIs so evidence remains unambiguous across
-  repositories.” Do not use path-only labels or generic notes such as
+  “Parses and validates code references so evidence stays attached to the exact
+  lines it explains.” Do not use path-only labels or generic notes such as
   “implementation,” “supporting changes,” or “tests.”
 - Keep one file and one coherent reason per evidence record. When separate
   ranges in the same file serve different reviewer ideas, attach them to their
@@ -382,17 +383,18 @@ Before attaching broad coverage, perform an addressability inventory:
   retarget, or rewrite broad records, or with `remove-coverage` to delete one.
   Move broad visual ownership to semantic landmarks where that better matches
   the explanation.
-- If a merged base refresh makes otherwise unchanged mappings stale, use
-  `change-saga rebase-evidence --repo PATH --dry-run` and inspect the old/new
-  base, product identity, atom count, selector count, and claim impact. Apply
-  only when the product patch is exactly unchanged. The command refuses real
-  product changes and rolls claims forward without mutating their history.
+- References follow their code. When later commits only move the referenced
+  lines, the reference is remapped automatically. When the lines change, it is
+  stale: run `change-saga references --stale --diff --repo PATH` to see why, and
+  re-author it with `replace-coverage`. After the change lands, run
+  `change-saga repin --onto <landed-commit> --branch <branch>` before the branch
+  is deleted.
 
 ## Claims and verification
 
 Record falsifiable assertions—not design opinions—with `change-saga
 add-claim`. A claim targets the narrative element making the assertion and
-cites exact line or event diff URIs. Claim evidence is deliberately separate
+cites the exact code it relies on with code references. Claim evidence is deliberately separate
 from coverage and never makes an uncovered atom covered.
 
 Examples include behavioral invariants, compatibility promises, measured

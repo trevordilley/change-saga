@@ -272,22 +272,18 @@ mappings using the `evidence_file` from `query mappings`:
 `replace-coverage --record PATH --batch -` atomically splits or retargets one,
 while `remove-coverage --record PATH` deletes one.
 
-If a base branch advances and is then merged into the feature while the product
-patch stays byte-for-byte identical, use the guarded bulk migration instead of
-hand-editing every URI:
+Evidence references code as of a commit, so it follows the code as it evolves.
+When later commits only move the referenced lines, the reference is remapped
+automatically; when the lines change, it goes stale and says why. After a change
+lands, re-pin references to the landed commit before the branch is deleted:
 
 ```sh
-change-saga rebase-evidence --repo ../source --dry-run checkout.saga
-change-saga rebase-evidence --repo ../source checkout.saga
+change-saga references --stale --diff --repo ../source checkout.saga
+change-saga repin --onto <landed-commit> --branch <branch> --repo ../source checkout.saga
 ```
 
-The command proves the unchanged base-independent product identity and verifies
-every translated selector before writing. It refuses a changed product diff,
-preserves evidence targets, notes, paths, sides, and ranges, and rolls affected
-immutable claims forward through `supersedes` relations. Replacement claims
-remain unverified unless `--carry-verifications` is explicitly requested; a
-carried result is a new `analysis` verification with an audit trail, never an
-edit or a claim that the original check was rerun.
+`repin` also records the branch's commit messages, so a squash merge keeps the
+reasoning in its individual commits.
 
 ## Manual CLI workflow
 
