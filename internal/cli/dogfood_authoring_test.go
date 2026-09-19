@@ -63,3 +63,25 @@ func TestBadCoverTargetNamesItems(t *testing.T) {
 		t.Fatalf("bad cover target error = %v", err)
 	}
 }
+
+// A citation's URN names no epic, so a story in any epic may cite it; --epic
+// only chooses where it is stored, and the help says so.
+func TestCitationIsCitableFromAnyEpic(t *testing.T) {
+	root, _ := coveredSaga(t)
+	var output bytes.Buffer
+	if err := Epic(context.Background(), []string{"add", "--id", "billing", "--title", "Billing", root}, &output); err != nil {
+		t.Fatal(err)
+	}
+	if err := Citation(context.Background(), []string{"add", "--epic", testEpic, "--id", "rfc", "--kind", "url", "--title", "RFC", "--reference", "https://example.test/rfc", root}, &output); err != nil {
+		t.Fatal(err)
+	}
+	if err := Story(context.Background(), []string{"add", "--epic", "billing", "--id", "pay", "--revision", "r1", "--event", "proposed", "--title", "Pay", "--statement", "As a buyer I want to pay so that I get the goods", "--priority", "must", "--citation", "urn:change-saga:batch:citation:rfc", root}, &output); err != nil {
+		t.Fatalf("a story in another epic could not cite the citation: %v\n%s", err, output.String())
+	}
+	assertValid(t, root)
+	output.Reset()
+	_ = Citation(context.Background(), []string{"add", "--help"}, &output)
+	if !strings.Contains(output.String(), "a\nstory in any epic may cite it") {
+		t.Fatalf("citation add help does not say any epic may cite it:\n%s", output.String())
+	}
+}

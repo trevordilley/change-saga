@@ -250,8 +250,8 @@ var commands = []Command{
 	{
 		Name: "citation add", Status: StatusImplemented, Mutates: true, Writes: []string{"citation"},
 		Usage:   "change-saga citation add --epic ID --id ID --kind KIND --title TEXT --reference LOCATOR [flags] <saga>",
-		Summary: "record an immutable citation that stories, exceptions, and evidence can cite",
-		Flags: []Flag{epicCreateFlag,
+		Summary: "record an immutable citation that stories, exceptions, and evidence can cite; a story in any epic may cite it",
+		Flags: []Flag{{Name: "epic", Value: "ID", Required: true, Description: "epic that stores the citation; its URN names no epic, so a story in any epic may cite it"},
 			required("id", "ID", "stable citation id"), required("kind", "KIND", "url, repository_commit, issue, document, or decision"),
 			required("title", "TEXT", "citation title"), required("reference", "LOCATOR", "authoritative locator"), requestIDFlag, jsonFlag,
 		},
