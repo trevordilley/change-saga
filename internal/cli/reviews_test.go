@@ -380,3 +380,42 @@ func TestCoverOnAReviewItemComparesTheReviewsRange(t *testing.T) {
 	}
 	assertValid(t, fixture.root)
 }
+
+func TestStatusReportsReviewCoverageAndNamesTheCoverCommand(t *testing.T) {
+	fixture := newReviewFixture(t)
+	git(t, fixture.repo, "remote", "add", "origin", "https://example.test/acme/app.git")
+	var output bytes.Buffer
+	_ = Status(context.Background(), []string{"--json", fixture.root}, &output)
+	var status struct {
+		Reviews     []reviewstate.Report `json:"reviews"`
+		NextActions []struct {
+			ID       string   `json:"id"`
+			Category string   `json:"category"`
+			Gates    []string `json:"gates"`
+			Command  *struct {
+				Command string   `json:"command"`
+				Argv    []string `json:"argv"`
+			} `json:"command"`
+		} `json:"next_actions"`
+	}
+	if err := json.Unmarshal(output.Bytes(), &status); err != nil {
+		t.Fatalf("status JSON: %v\n%s", err, output.String())
+	}
+	if len(status.Reviews) != 1 || status.Reviews[0].Coverage == nil || status.Reviews[0].Coverage.Summary.Uncovered != 2 {
+		t.Fatalf("status reviews = %#v", status.Reviews)
+	}
+	found := 0
+	for _, action := range status.NextActions {
+		if !strings.HasPrefix(action.ID, "review:uncovered:pr-7:") {
+			continue
+		}
+		found++
+		argv := strings.Join(action.Command.Argv, " ")
+		if action.Category != "review" || len(action.Gates) != 0 || action.Command.Command != "cover" || !strings.Contains(argv, "--changed-lines") || strings.Contains(argv, "--against") {
+			t.Fatalf("review action = %#v %s", action, argv)
+		}
+	}
+	if found != 2 {
+		t.Fatalf("review next actions = %d:\n%s", found, output.String())
+	}
+}
