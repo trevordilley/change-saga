@@ -176,7 +176,7 @@ func TestReviewCommentsThreadOnSlidesAndItemsOnly(t *testing.T) {
 		t.Fatalf("resolved discussion = %#v", got)
 	}
 	var refused bytes.Buffer
-	for _, target := range []string{saga.FragmentTarget("app", "app-overview"), "missing"} {
+	for _, target := range []string{saga.FragmentTarget("app", "app-description"), "missing"} {
 		if err := Review(context.Background(), []string{"comment", "--review", "pr-7", "--target", target, "--body", "no", "--reviewer-kind", "human", fixture.root}, &refused); err == nil {
 			t.Fatalf("a comment on %q was accepted", target)
 		}

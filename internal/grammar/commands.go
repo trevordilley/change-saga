@@ -26,6 +26,17 @@ var reviewDecisionFlags = []Flag{
 	optional("model", "MODEL", "exact AI model name (AI only)"), optional("repo", "PATH", "code checkout when separate"), jsonFlag,
 }
 
+// termDefinitionFlags declare the complete content of a term revision.
+func termDefinitionFlags() []Flag {
+	return []Flag{
+		required("name", "TEXT", "the term as the team says it"), required("definition", "TEXT", "what the term means in this project"),
+		repeatable("alias", "TEXT", "another spelling the team uses", false), repeatable("story", "URN", "story URN or ID the term belongs to", false),
+		repeatable("record", "URN", "persona, epic, flag, or term URN the term names", false),
+		repeatable("ref", "LOCATION", "code that defines the term, <commit>:<path>#L<start>[-L<end>]; the commit may be any revision", false),
+		optional("repo", "PATH", "code checkout when separate"),
+	}
+}
+
 func required(name, value, description string) Flag {
 	return Flag{Name: name, Value: value, Required: true, Description: description}
 }
@@ -49,6 +60,52 @@ var commands = []Command{
 		Flags: []Flag{
 			required("id", "ID", "stable epic id"), required("title", "TEXT", "the product domain the epic covers"),
 			optional("description", "TEXT", "what the domain covers"), requestIDFlag, jsonFlag,
+		},
+		Positionals: sagaOnly,
+	},
+	{
+		Name: "overview set-pitch", Status: StatusImplemented, Mutates: true, Writes: []string{"overview-pitch"},
+		Usage:   "change-saga overview set-pitch (--text TEXT | --source FILE|-) [--json|--quiet] <saga>",
+		Summary: "write the overview's elevator pitch as Markdown; until then it is shown as a gap",
+		Flags: []Flag{
+			optional("text", "TEXT", "the Markdown content; or use --source"), optional("source", "FILE|-", "a Markdown file, or - for standard input"),
+			jsonFlag, {Name: "quiet", Description: "suppress successful output"},
+		},
+		Positionals: sagaOnly,
+	},
+	{
+		Name: "overview set-description", Status: StatusImplemented, Mutates: true, Writes: []string{"overview-description"},
+		Usage:   "change-saga overview set-description (--text TEXT | --source FILE|-) [--json|--quiet] <saga>",
+		Summary: "write the overview's description, a short essay, as Markdown; until then it is shown as a gap",
+		Flags: []Flag{
+			optional("text", "TEXT", "the Markdown content; or use --source"), optional("source", "FILE|-", "a Markdown file, or - for standard input"),
+			jsonFlag, {Name: "quiet", Description: "suppress successful output"},
+		},
+		Positionals: sagaOnly,
+	},
+	{
+		Name: "term add", Status: StatusImplemented, Mutates: true, Writes: []string{"term", "term-revision", "term-event"},
+		Usage:   "change-saga term add --id ID --name TEXT --definition TEXT [--alias TEXT...] [--story URN...] [--record URN...] [--ref LOCATION...] [flags] <saga>",
+		Summary: "define a term in the project's vocabulary and reference the stories and code it names; a rename of that code makes the reference stale",
+		Flags: append([]Flag{required("id", "ID", "stable term id")}, append(termDefinitionFlags(),
+			optional("revision", "ID", "initial revision id; defaults to r1"), optional("event", "ID", "initial active-event id; defaults to active"), requestIDFlag, jsonFlag)...),
+		Positionals: sagaOnly,
+	},
+	{
+		Name: "term revise", Status: StatusImplemented, Mutates: true, Writes: []string{"term-revision"},
+		Usage:   "change-saga term revise --term URN --revision ID --parent URN... --name TEXT --definition TEXT [--alias TEXT...] [--story URN...] [--record URN...] [--ref LOCATION...] [flags] <saga>",
+		Summary: "append a complete term revision, such as pointing a stale code reference at renamed code; several --parent values reconcile competing heads",
+		Flags: append([]Flag{required("term", "URN", "canonical term URN"), required("revision", "ID", "new revision id"), repeatable("parent", "URN", "current revision head URN", true)},
+			append(termDefinitionFlags(), requestIDFlag, jsonFlag)...),
+		Positionals: sagaOnly,
+	},
+	{
+		Name: "term set-state", Status: StatusImplemented, Mutates: true, Writes: []string{"term-event"},
+		Usage:   "change-saga term set-state --term URN --event ID --parent URN... --state active|retired [--reason TEXT] [flags] <saga>",
+		Summary: "retire a term the project no longer uses, or restore it",
+		Flags: []Flag{
+			required("term", "URN", "canonical term URN"), required("event", "ID", "new lifecycle event id"), repeatable("parent", "URN", "current lifecycle head URN", true),
+			required("state", "STATE", "active or retired"), optional("reason", "TEXT", "why the lifecycle changed"), requestIDFlag, jsonFlag,
 		},
 		Positionals: sagaOnly,
 	},

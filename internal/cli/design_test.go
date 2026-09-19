@@ -60,7 +60,7 @@ func TestDesignAuthoringReusesHierarchyMutations(t *testing.T) {
 	for _, current := range document.Section.Fragments {
 		fragments[current.ID] = current.Path
 	}
-	if fragments["atomic-overview"] != "___overview/overview.fragment" || fragments["system-map"] != testEpicRel+"/___design/system-map.fragment" {
+	if fragments["atomic-description"] != "___overview/description.fragment" || fragments["system-map"] != testEpicRel+"/___design/system-map.fragment" {
 		t.Fatalf("root narrative/design fragments = %#v", fragments)
 	}
 	chapter := document.Section.Children[0]
@@ -78,7 +78,7 @@ func TestDesignScopedMutationsRejectNarrativeTargets(t *testing.T) {
 	}
 	// Neither the app overview nor an epic's own narrative is technical design.
 	for _, fragment := range []struct{ dir, target string }{
-		{overviewFragment(root), "___overview/overview.fragment"},
+		{overviewFragment(root), "___overview/description.fragment"},
 		{filepath.Join(testEpicDir(root), "notes.fragment"), testEpicRel + "/notes.fragment"},
 	} {
 		before, err := os.ReadFile(filepath.Join(fragment.dir, "content.md"))

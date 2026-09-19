@@ -3,6 +3,8 @@ package cli
 import (
 	"bytes"
 	"context"
+	"fmt"
+	"os"
 	"path/filepath"
 	"testing"
 
@@ -27,8 +29,8 @@ func personaURNFor(sagaID string) string {
 	return "urn:change-saga:" + sagaID + ":persona:" + testPersona
 }
 
-// addTestApp adds the fixture epic and persona to an initialized Saga and
-// returns the persona URN.
+// addTestApp adds the fixture epic, persona, and overview description to an
+// initialized Saga and returns the persona URN.
 func addTestApp(t *testing.T, root string) string {
 	t.Helper()
 	manifest, err := saga.ReadManifest(root)
@@ -43,13 +45,23 @@ func addTestApp(t *testing.T, root string) string {
 	if err := Persona(context.Background(), []string{"add", "--id", testPersona, "--name", "User", "--description", "Someone who uses the app", root}, &output); err != nil {
 		t.Fatalf("persona add: %v\n%s", err, output.String())
 	}
+	overviewFragment(root)
 	return personaURNFor(manifest.ID)
 }
 
 // testEpicDir returns the absolute directory of the fixture epic.
 func testEpicDir(root string) string { return applayout.EpicDir(root, testEpic) }
 
-// overviewFragment is the path of the app overview init writes.
+// overviewFragment returns the overview's description fragment, writing a
+// placeholder description the first time so tests have an app-level fragment
+// to author into and cover. Init writes no overview part.
 func overviewFragment(root string) string {
-	return filepath.Join(root, applayout.OverviewDir, "overview.fragment")
+	dir := filepath.Join(root, applayout.OverviewDir, applayout.OverviewDescription)
+	if _, err := os.Stat(dir); os.IsNotExist(err) {
+		var output bytes.Buffer
+		if err := Overview(context.Background(), []string{"set-description", "--text", "The app.", root}, &output); err != nil {
+			panic(fmt.Sprintf("write the overview description: %v\n%s", err, output.String()))
+		}
+	}
+	return dir
 }

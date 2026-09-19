@@ -72,7 +72,7 @@ func TestCoverLandmarkErrorsNameTheAvailableLandmarks(t *testing.T) {
 	// A fragment with no landmarks at all should say where to create one rather
 	// than leaving the author to guess the directory layout.
 	_, err = runCover(t, "", "--repo", repo,
-		"--target", "___overview/overview.fragment#anything",
+		"--target", "___overview/description.fragment#anything",
 		"--path", "internal/service/handler.go", "--side", "new", "--lines", "3", root)
 	if err == nil || !strings.Contains(err.Error(), "___landmarks/anything.landmark/landmark.json") {
 		t.Fatalf("error %q does not explain how to declare the landmark", err)
@@ -353,7 +353,7 @@ func TestValidateFixAddsMissingHeadingAnchors(t *testing.T) {
 	if len(result.Fixes) != 2 {
 		t.Fatalf("expected two anchors to be added: %#v", result.Fixes)
 	}
-	if result.Fixes[0].Path != "___overview/overview.fragment/content.md" || result.Fixes[0].Anchor != "overview" {
+	if result.Fixes[0].Path != "___overview/description.fragment/content.md" || result.Fixes[0].Anchor != "overview" {
 		t.Fatalf("unexpected fix record: %#v", result.Fixes[0])
 	}
 	for _, issue := range result.Issues {

@@ -20,6 +20,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/quality"
 	"github.com/twentyideas/changesaga/internal/qualityid"
+	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/reviewstate"
 	"github.com/twentyideas/changesaga/internal/reviewstore"
 	"github.com/twentyideas/changesaga/internal/saga"
@@ -27,7 +28,9 @@ import (
 )
 
 // ownedReference is one code reference the Saga records, with its owner.
-// Kind is evidence (a coverage record), claim, or quality_evidence.
+// Kind is evidence (a coverage record), claim, quality_evidence, or term. A
+// term's references name the code that defines a word of the project's
+// vocabulary; when one goes stale, its owner is the term to update.
 type ownedReference struct {
 	Kind         string            `json:"kind"`
 	Owner        string            `json:"owner"`
@@ -36,8 +39,8 @@ type ownedReference struct {
 	Code         coderef.Reference `json:"code"`
 }
 
-// sagaReferences lists every code reference in evidence records, claims, and
-// quality evidence, in a stable order.
+// sagaReferences lists every code reference in evidence records, claims,
+// quality evidence, and current term revisions, in a stable order.
 func sagaReferences(document *saga.Saga) ([]ownedReference, error) {
 	var result []ownedReference
 	coverage.WalkDocumentCode(document, func(target string, files []saga.CodeFile) {
@@ -62,6 +65,19 @@ func sagaReferences(document *saga.Saga) ([]ownedReference, error) {
 			for index, reference := range evidence.Code {
 				result = append(result, ownedReference{Kind: "quality_evidence", Owner: urn, Index: index + 1, Code: reference})
 			}
+		}
+	}
+	vocabulary, err := requirements.Load(document.Root, document.Manifest.ID)
+	if err != nil {
+		return nil, fmt.Errorf("load terms: %w", err)
+	}
+	for _, term := range vocabulary.Terms {
+		if term.CurrentRevision == nil {
+			continue
+		}
+		urn, _ := requirements.TermURN(document.Manifest.ID, term.Identity.ID)
+		for index, reference := range term.CurrentRevision.Code {
+			result = append(result, ownedReference{Kind: "term", Owner: urn, Index: index + 1, Code: reference})
 		}
 	}
 	return result, nil

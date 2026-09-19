@@ -13,8 +13,12 @@ import (
 func TestSetFragmentContentSupportsStdinAndJSON(t *testing.T) {
 	root := newAuthoredSaga(t)
 	var output bytes.Buffer
-	content := "# New overview {#new-overview}\n\nAuthored through the CLI.\n"
-	if err := setFragmentContent(context.Background(), []string{"--app", "overview", "--target", "overview.fragment", "--source", "-", "--json", root}, &output, strings.NewReader(content)); err != nil {
+	if err := AddFragment(context.Background(), []string{"--app", "designsystem", "--name", "tokens", "--title", "Tokens", root}, &output); err != nil {
+		t.Fatal(err)
+	}
+	output.Reset()
+	content := "# Tokens {#tokens}\n\nAuthored through the CLI.\n"
+	if err := setFragmentContent(context.Background(), []string{"--app", "designsystem", "--target", "tokens.fragment", "--source", "-", "--json", root}, &output, strings.NewReader(content)); err != nil {
 		t.Fatal(err)
 	}
 	var result fragmentContentOutput
@@ -24,7 +28,7 @@ func TestSetFragmentContentSupportsStdinAndJSON(t *testing.T) {
 	if !result.OK || result.Bytes != len(content) || result.MediaType != "text/markdown" {
 		t.Fatalf("unexpected result: %#v", result)
 	}
-	written, err := os.ReadFile(filepath.Join(overviewFragment(root), "content.md"))
+	written, err := os.ReadFile(filepath.Join(root, "___designsystem", "tokens.fragment", "content.md"))
 	if err != nil || string(written) != content {
 		t.Fatalf("entrypoint = %q, %v", written, err)
 	}

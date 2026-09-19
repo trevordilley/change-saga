@@ -60,7 +60,7 @@ func fileEventSaga(t *testing.T) (root, repo, base, head string) {
 	if err := Init(context.Background(), []string{"--repo", repo, "--repository", rangeRepository, root}, &output); err != nil {
 		t.Fatal(err)
 	}
-	writeFile(t, filepath.Join(root, "___overview", "overview.fragment", "content.md"), "# Events {#events}\n\nEvery kind of file change.\n")
+	writeFile(t, filepath.Join(overviewFragment(root), "content.md"), "# Events {#events}\n\nEvery kind of file change.\n")
 	return root, repo, base, head
 }
 

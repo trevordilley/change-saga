@@ -28,13 +28,13 @@ type authoringScope struct {
 var narrativeAuthoring = authoringScope{}
 var designAuthoring = authoringScope{design: true}
 
-// appReportRoots maps --app values to the app-level report roots.
+// appReportRoots maps --app values to the app-level report roots. The
+// overview is not one: its parts are formal, written with "overview".
 var appReportRoots = map[string]string{
-	"overview":     applayout.OverviewDir,
 	"designsystem": applayout.DesignSystemDir,
 }
 
-const appFlagHelp = "author into an app-level report root instead of an epic: overview or designsystem"
+const appFlagHelp = "author into the app-level design system instead of an epic: designsystem"
 
 // placeFlags registers the flags that choose where report content goes.
 func (scope authoringScope) placeFlags(flags *flag.FlagSet) (*string, *string) {
@@ -50,7 +50,7 @@ func (scope authoringScope) placed(epic, app *string) (authoringScope, error) {
 	scope.epic, scope.app = strings.TrimSpace(*epic), strings.TrimSpace(*app)
 	if scope.app != "" {
 		if _, ok := appReportRoots[scope.app]; !ok {
-			return scope, fmt.Errorf("--app must be overview or designsystem")
+			return scope, fmt.Errorf("--app must be designsystem; write the overview with change-saga overview")
 		}
 		if scope.epic != "" {
 			return scope, fmt.Errorf("--app and --epic cannot be combined; app-level report content belongs to no epic")
@@ -96,7 +96,7 @@ func (scope authoringScope) hierarchyRoot(document *saga.Saga) (string, error) {
 			if scope.design {
 				return "", err
 			}
-			return "", fmt.Errorf("%w; app-level report content uses --app overview|designsystem", err)
+			return "", fmt.Errorf("%w; app-level report content uses --app designsystem", err)
 		}
 		dir = epic.Dir
 		if scope.design {
@@ -145,7 +145,7 @@ func (scope authoringScope) resolveTarget(document *saga.Saga, value string, all
 			return "", "", fmt.Errorf("target %q is outside the app's %s root", value, scope.app)
 		}
 	case saga.EpicOf(rel) == "":
-		return "", "", fmt.Errorf("target %q belongs to the app, not an epic; use --app overview|designsystem", value)
+		return "", "", fmt.Errorf("target %q belongs to the app, not an epic; use --app designsystem", value)
 	case scope.epic != "":
 		if err := assertEpic(document.Root, scope.epic, target, saga.EpicOf(rel)); err != nil {
 			return "", "", err

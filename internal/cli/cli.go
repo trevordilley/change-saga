@@ -87,7 +87,7 @@ func (e *StatusError) Error() string { return "command reported a non-success st
 // commandUsage is the single source of each command's usage line so the
 // overview, the per-command -h banner, and argument errors cannot drift apart.
 var commandOrder = []string{
-	"init", "epic", "persona", "flag", "prototype", "story", "criterion", "citation", "relation", "design", "plan", "quality", "add-deck", "add-slide", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "cover", "remove-coverage", "replace-coverage", "references", "repin", "sync", "add-claim", "verify-claim",
+	"init", "epic", "overview", "term", "persona", "flag", "prototype", "story", "criterion", "citation", "relation", "design", "plan", "quality", "add-deck", "add-slide", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "cover", "remove-coverage", "replace-coverage", "references", "repin", "sync", "add-claim", "verify-claim",
 	"review", "validate", "status", "query",
 	"serve", "open", "install-skill", "spec",
 }
@@ -96,6 +96,13 @@ var commandUsage = map[string]string{
 	"init":                        "change-saga init [flags] <name.saga>",
 	"epic":                        "change-saga epic add [flags] <saga>",
 	"epic add":                    "change-saga epic add --id ID --title TEXT [--description TEXT] [flags] <saga>",
+	"overview":                    "change-saga overview <set-pitch|set-description> [flags] <saga>",
+	"overview set-pitch":          "change-saga overview set-pitch (--text TEXT | --source FILE|-) [--json|--quiet] <saga>",
+	"overview set-description":    "change-saga overview set-description (--text TEXT | --source FILE|-) [--json|--quiet] <saga>",
+	"term":                        "change-saga term <add|revise|set-state> [flags] <saga>",
+	"term add":                    "change-saga term add --id ID --name TEXT --definition TEXT [--alias TEXT...] [--story URN...] [--record URN...] [--ref LOCATION...] [flags] <saga>",
+	"term revise":                 "change-saga term revise --term URN --revision ID --parent URN... --name TEXT --definition TEXT [--alias TEXT...] [--story URN...] [--record URN...] [--ref LOCATION...] [flags] <saga>",
+	"term set-state":              "change-saga term set-state --term URN --event ID --parent URN... --state active|retired [--reason TEXT] [flags] <saga>",
 	"persona":                     "change-saga persona <add|revise|set-state> [flags] <saga>",
 	"persona add":                 "change-saga persona add --id ID --name TEXT --description TEXT [--revision r1] [--event active] [flags] <saga>",
 	"persona revise":              "change-saga persona revise --persona URN --revision ID --parent URN... --name TEXT --description TEXT [flags] <saga>",
@@ -154,9 +161,9 @@ var commandUsage = map[string]string{
 	"add-slide":                   "change-saga add-slide (--deck TARGET | --review ID) --intent INTENT --layout LAYOUT [flags] <saga> <name>",
 	"set-slide-content":           "change-saga set-slide-content [--review ID] --target TARGET --source FILE|- [--json|--quiet] <saga>",
 	"add-item":                    "change-saga add-item [--review ID] --slide TARGET --kind KIND [selector] [--record URN] [flags] <saga>",
-	"add-chapter":                 "change-saga add-chapter (--epic ID | --app overview|designsystem) [flags] <saga> <name>",
+	"add-chapter":                 "change-saga add-chapter (--epic ID | --app designsystem) [flags] <saga> <name>",
 	"add-section":                 "change-saga add-section [flags] <saga> <section/path>",
-	"add-fragment":                "change-saga add-fragment (--epic ID | --app overview|designsystem | --section TARGET) [flags] <saga>",
+	"add-fragment":                "change-saga add-fragment (--epic ID | --app designsystem | --section TARGET) [flags] <saga>",
 	"set-fragment-content":        "change-saga set-fragment-content --target TARGET --source FILE|- [--json|--quiet] <saga>",
 	"add-landmark":                "change-saga add-landmark [flags] <saga>",
 	"cover":                       "change-saga cover [flags] [--batch FILE|-] [--dry-run] [--against REV [--head REV]] <saga>",
@@ -264,6 +271,13 @@ func commandFlags(name, usage string, out io.Writer) *flag.FlagSet {
 var commandDescription = map[string]string{
 	"init":                        "Create the app Saga: the saga.json manifest, a reviewer README, and the app\noverview under ___overview. Then add an epic and author its content; personas\nand flags are optional and can come later.",
 	"epic":                        "Add a durable product domain. An epic holds its own report content, stories,\ndesign, quality, work plan, and implementation deck. Story identity never\nnames an epic, so a story can move between epics without breaking a link.",
+	"overview":                    "Write the overview's elevator pitch and description, as Markdown. The overview\nis formal: the project's name (saga.json's title), an elevator pitch, a\ndescription (a short essay), and its terms and vocabulary (\"term\"). Every part\nis optional; an absent part is shown as a gap, never an error.",
+	"overview set-pitch":          "Write the elevator pitch: what the application is and who it is for, in a few\nsentences. The first write creates ___overview/pitch.fragment; later writes\nreplace its content.",
+	"overview set-description":    "Write the description: a short essay on what the application does and how it is\norganized. The first write creates ___overview/description.fragment; later\nwrites replace its content.",
+	"term":                        "Define the project's own vocabulary: the words the team says every day that a\nnewcomer cannot decode without digging through the code. A term has a name, a\ndefinition, and aliases, and references what it names: the stories it belongs\nto, other records, and the exact code that defines it (most often an enum value\nor a constant), pinned at a commit. Renaming that code makes the reference\nstale, which names the term to update; a comparison that adds an enum value or\nconstant no term references suggests defining it. Terms never block anything.",
+	"term add":                    "Add an active term. --ref pins the code that defines it; the commit may be\nany revision (HEAD:internal/kinds.go#L12) and is resolved to a full commit.\nA term's code references are watched for renames and never count toward\nchanged-line coverage.",
+	"term revise":                 "Append a complete term revision: its name, definition, aliases, and every story,\nrecord, and code reference it names. Revise a term whose code reference went\nstale to point at the renamed code.",
+	"term set-state":              "Retire a term the project no longer uses, or restore it. It stays as history.",
 	"persona":                     "Author the people the app serves. Personas are optional living records: a story\nrevision may name the personas it serves, and status reports each active persona\nno accepted story serves as a coverage gap. Nothing blocks on personas.",
 	"flag":                        "Author feature flags that gate stories or whole epics. A gated story can be\nimplemented but not enabled; status reports it that way.",
 	"prototype":                   "Author revisioned interactive HTML experiences or explicitly allowed external\nembeds and pin them to the stories and criteria they clarify. A prototype may lead, follow,\nor evolve alongside its requirements.",
@@ -397,9 +411,9 @@ func Init(ctx context.Context, args []string, out io.Writer) error {
 		return err
 	}
 	manifest := saga.Manifest{Schema: saga.SagaSchemaURL, Version: saga.SagaVersion, ID: *id, Title: *title, Source: saga.Source{Repository: repositoryURI}}
-	// The app overview is the elevator pitch for the whole application. Epics,
-	// personas, and everything else are authored after init.
-	overview := saga.FragmentManifest{Version: saga.CurrentVersion, ID: *id + "-overview", Title: "Overview", MediaType: "text/markdown", Entrypoint: "content.md"}
+	// The overview's name is the manifest title. Its pitch, description, and
+	// terms, like epics and personas, are authored after init; until then each
+	// is shown as a gap.
 	// A failed init must not leave a half-built .saga behind, because the
 	// directory would then block a retry while never loading.
 	absRoot, err := filepath.Abs(root)
@@ -431,10 +445,7 @@ func Init(ctx context.Context, args []string, out io.Writer) error {
 		if err := store.WriteJSON(filepath.Join(stage, saga.ManifestName), manifest, true); err != nil {
 			return err
 		}
-		if err := store.WriteFile(filepath.Join(stage, "README.md"), []byte(reviewerBootstrapREADME), 0o644, true); err != nil {
-			return err
-		}
-		return populateFragment(filepath.Join(stage, applayout.OverviewDir, "overview.fragment"), overview, "", nil)
+		return store.WriteFile(filepath.Join(stage, "README.md"), []byte(reviewerBootstrapREADME), 0o644, true)
 	})
 	if errors.Is(err, fs.ErrExist) {
 		return fmt.Errorf("%s already exists", root)
@@ -442,7 +453,7 @@ func Init(ctx context.Context, args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
-	fmt.Fprintf(out, "Created %s\nNext: add the product domain this change belongs to, then author its content:\n  change-saga epic add --id ID --title TEXT %s\n  change-saga story add --epic ID --id ID --revision r1 --event proposed --title TEXT --statement TEXT --priority TEXT %s\nPersonas are optional; name who the app serves when it helps:\n  change-saga persona add --id ID --name TEXT --description TEXT %s\n", root, root, root, root)
+	fmt.Fprintf(out, "Created %s\nNext: add the product domain this change belongs to, then author its content:\n  change-saga epic add --id ID --title TEXT %s\n  change-saga story add --epic ID --id ID --revision r1 --event proposed --title TEXT --statement TEXT --priority TEXT %s\nPersonas, the overview's pitch and description, and the project's terms are optional; add them when they help:\n  change-saga persona add --id ID --name TEXT --description TEXT %s\n  change-saga overview set-pitch --text TEXT %s\n  change-saga term add --id ID --name TEXT --definition TEXT [--ref LOCATION] %s\n", root, root, root, root, root, root)
 	return nil
 }
 

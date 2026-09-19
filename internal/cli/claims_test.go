@@ -17,7 +17,7 @@ func TestClaimsAndVerificationsAreIndependentAppendOnlyRecords(t *testing.T) {
 	location := commit + ":worker.go#L3-L7"
 	var output bytes.Buffer
 	if err := AddClaim(context.Background(), []string{
-		"--id", "single-flight", "--target", "___overview/overview.fragment", "--kind", "invariant",
+		"--id", "single-flight", "--target", "___overview/description.fragment", "--kind", "invariant",
 		"--statement", "Only one sampler can run at a time.", "--repo", repo, "--ref", location, root,
 	}, &output); err != nil {
 		t.Fatal(err)
@@ -43,7 +43,7 @@ func TestClaimsAndVerificationsAreIndependentAppendOnlyRecords(t *testing.T) {
 		t.Fatalf("records were consolidated: claims=%#v verifications=%#v", document.Claims, document.Verifications)
 	}
 	claim := document.Claims[0]
-	if claim.Target != saga.FragmentTarget("atomic", "atomic-overview") || claim.Statement != "Only one sampler can run at a time." || len(claim.Evidence) != 1 {
+	if claim.Target != saga.FragmentTarget("atomic", "atomic-description") || claim.Statement != "Only one sampler can run at a time." || len(claim.Evidence) != 1 {
 		t.Fatalf("claim = %#v", claim)
 	}
 	// The claim pins the exact lines with a digest read from the repository.
@@ -77,7 +77,7 @@ func TestClaimFailuresDoNotWriteRecords(t *testing.T) {
 		{"lines past the end", []string{commit + ":worker.go#L1-L9"}, "invalid --ref 1"},
 		{"duplicate location", []string{commit + ":worker.go", commit + ":worker.go"}, "--ref 2 duplicates"},
 	} {
-		args := []string{"--id", "bad", "--target", "___overview/overview.fragment", "--kind", "behavior", "--statement", "This should not be written.", "--repo", repo}
+		args := []string{"--id", "bad", "--target", "___overview/description.fragment", "--kind", "behavior", "--statement", "This should not be written.", "--repo", repo}
 		for _, ref := range test.refs {
 			args = append(args, "--ref", ref)
 		}
