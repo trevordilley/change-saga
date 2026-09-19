@@ -294,7 +294,7 @@ func healthRecords(targets map[string]*codeTarget, living livingapp.Status, stor
 // areaSentence says what an area counts, in the words of the report: the
 // plural form, then the singular.
 var areaSentence = map[areas.Name][2]string{
-	areas.Implementation: {"referenced by the implementation deck", "referenced by the implementation deck"},
+	areas.Implementation: {"referenced by the Saga", "referenced by the Saga"},
 	areas.Stories:        {"reach a story", "reaches a story"},
 	areas.Personas:       {"reach a persona", "reaches a persona"},
 	areas.Design:         {"have design", "has design"},
@@ -330,10 +330,33 @@ func printAreaLine(out io.Writer, area areas.Area) {
 		unit, verb = words[0], sentence[1]
 	}
 	fmt.Fprintf(out, "  %-15s %d/%d %s %s", area.Area, area.Covered, area.Total, unit, verb)
-	if area.Note != "" {
+	switch {
+	case area.Note != "":
 		fmt.Fprintf(out, " (%s)", area.Note)
+	case area.Area == areas.Implementation && area.Covered > 0:
+		fmt.Fprintf(out, " (%s)", referencedBy(area))
 	}
 	fmt.Fprintln(out)
+}
+
+// referencedBy says what references an implementation area's covered lines:
+// a documentation target (usually an implementation-deck Item) or a test
+// case's evidence, which accounts for the test code it selects. A line both
+// reference counts as documentation.
+func referencedBy(area areas.Area) string {
+	documentation, evidence := 0, 0
+	for _, entry := range area.CoveredEntries {
+		documented := false
+		for _, owner := range entry.Via {
+			documented = documented || !strings.Contains(owner, ":test-case:")
+		}
+		if documented {
+			documentation += entry.Count
+		} else {
+			evidence += entry.Count
+		}
+	}
+	return fmt.Sprintf("%d by the implementation deck or narrative, %d by test-case evidence", documentation, evidence)
 }
 
 // printCoverage prints the coverage report: every area's counts. Gaps in the

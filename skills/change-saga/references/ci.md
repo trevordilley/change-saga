@@ -16,7 +16,7 @@ is named.
 
 | Area | Covered when |
 | --- | --- |
-| `implementation` | every changed line is referenced by the implementation deck |
+| `implementation` | every changed line is referenced by the implementation deck, or test code by its test case's evidence |
 | `stories` | every changed line reaches a story through the chain |
 | `personas` | every changed line reaches a persona |
 | `design` | every story in scope has design |

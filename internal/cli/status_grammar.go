@@ -235,7 +235,7 @@ func printComparison(out io.Writer, layers *changeview.Layers, maxItems int) {
 		}
 		printReasons(out, affected.Reasons)
 	}
-	fmt.Fprintf(out, "\nCode: %d changed lines under %d records; %d lines no record references\n", layers.Summary.ChangedLines, layers.Summary.CodeGroups, layers.Summary.Unreferenced)
+	fmt.Fprintf(out, "\nCode: the diff of %d changed lines, grouped under the %d records that reference them (the implementation area counts what is referenced)\n", layers.Summary.ChangedLines, layers.Summary.CodeGroups)
 	for _, diagnostic := range layers.Diagnostics {
 		fmt.Fprintf(out, "  note %s: %s\n", diagnostic.Code, diagnostic.Message)
 	}
@@ -489,7 +489,7 @@ func livingSpec() map[string]any {
 		"coverage_report": map[string]any{
 			"areas": areaNames(),
 			"area_rules": map[string]string{
-				"implementation": "every changed line is referenced by the implementation deck",
+				"implementation": "every changed line is referenced by the implementation deck (or a narrative target), or, for test code, by its test case's evidence",
 				"stories":        "every changed line reaches a story through the chain",
 				"personas":       "every changed line reaches a persona",
 				"design":         "every story in scope has design",

@@ -124,9 +124,9 @@ test("@critical exposes mapping scrutiny, claims, and verification as an AI revi
   // stories, and status reports both and exits zero.
   const status = runCLI(sagaRepositories, ["status", "--repo", sourceRepo, "--against", "main", sagaRoot]);
   expect(status.status, status.stderr).toBe(0);
-  expect(status.stdout).toContain("ALL ATOMS MAPPED");
-  expect(status.stdout).toContain("does not establish explanation quality or correctness");
-  expect(status.stdout).toMatch(/implementation\s+(\d+)\/\1 changed lines referenced by the implementation deck/);
+  expect(status.stdout).not.toContain("MAPPED");
+  expect(status.stdout).not.toContain("Changed lines nothing references");
+  expect(status.stdout).toMatch(/implementation\s+(\d+)\/\1 changed lines referenced by the Saga \(\1 by the implementation deck or narrative, 0 by test-case evidence\)/);
   expect(status.stdout).toMatch(/stories\s+0\/\d+ changed lines reach a story/);
 
   // A question is one command: implementation is covered, stories are not,
