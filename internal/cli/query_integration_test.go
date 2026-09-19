@@ -15,6 +15,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/querytest"
+	"github.com/twentyideas/changesaga/internal/reviewapp"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
@@ -121,6 +122,17 @@ func TestQueryCLIRealSeparateRepositoriesAllOperations(t *testing.T) {
 	readinessSummary, _ := readinessData["summary"].(map[string]any)
 	if readinessStatus != 0 || readinessSummary["status"] != "not_applicable" {
 		t.Fatalf("ordinary saga readiness = %#v body=%s", readinessEnvelope, readinessBody)
+	}
+
+	// Observing there is no change, so every scrutiny score is 0, and the
+	// result says why rather than ranking nothing silently.
+	observed, observedStatus, observedBody := runRealQuery(t, []string{"mappings", "--sort", "scrutiny", "--saga", fixture.SagaRoot, "--repo", fixture.SourceDir})
+	compared, _, comparedBody := runRealQuery(t, append([]string{"mappings", "--sort", "scrutiny"}, common...))
+	if observedData, _ := observed.Data.(map[string]any); observedStatus != 0 || observedData["note"] != reviewapp.ObserveMappingNote {
+		t.Fatalf("observed mappings do not say why every score is 0: %s", observedBody)
+	}
+	if comparedData, _ := compared.Data.(map[string]any); comparedData["note"] != nil {
+		t.Fatalf("compared mappings carry the observe note: %s", comparedBody)
 	}
 
 	large, status, body := runRealQuery(t, append([]string{"fragment", "--target", largeTarget, "--limit", fmt.Sprint(1 << 20)}, common...))

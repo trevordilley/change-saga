@@ -53,8 +53,17 @@ func (s *session) Mappings(ctx context.Context, query MappingQuery) (MappingPage
 	if err != nil {
 		return MappingPage{}, err
 	}
-	return MappingPage{Mappings: append([]MappingAssessment{}, filtered[start:end]...), Page: page}, nil
+	result := MappingPage{Mappings: append([]MappingAssessment{}, filtered[start:end]...), Page: page}
+	if s.changes.Mode == gitdiff.ModeObserve {
+		result.Note = ObserveMappingNote
+	}
+	return result, nil
 }
+
+// ObserveMappingNote explains why observing scores every mapping 0: the
+// scrutiny signals measure how much of a change each mapping explains and
+// how thinly, and an observed Saga has no change.
+const ObserveMappingNote = "observing: scrutiny measures how many changed lines and files a mapping claims and how thinly its notes justify them, and there is no change, so every score is 0; compare with --against REV to rank mappings"
 
 func (s *session) mappingAssessments() []MappingAssessment {
 	targetAtoms := map[string]map[string]gitdiff.Atom{}
