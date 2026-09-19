@@ -1,6 +1,9 @@
 package cli
 
 import (
+	"bytes"
+	"context"
+	"path/filepath"
 	"strings"
 	"testing"
 
@@ -36,5 +39,39 @@ func TestCoverRefAcceptsAnyRevision(t *testing.T) {
 	}
 	if strings.Contains(output, "HEAD:") {
 		t.Fatalf("cover recorded the symbolic revision instead of the commit:\n%s", output)
+	}
+}
+
+// Reverse evidence lookup takes a current location: traceability --ref at
+// HEAD finds evidence pinned at an older commit whose lines only moved.
+func TestTraceabilityRefFindsEvidenceAtTheCurrentCommit(t *testing.T) {
+	root, repo := coveredSaga(t)
+	var output bytes.Buffer
+	if err := AddDeck(context.Background(), []string{"--epic", testEpic, "--objective", "Explain the change.", root, "implementation"}, &output); err != nil {
+		t.Fatal(err)
+	}
+	if err := AddSlide(context.Background(), []string{"--deck", "implementation", "--intent", "explain", "--layout", "diagram", root, "consts"}, &output); err != nil {
+		t.Fatal(err)
+	}
+	if err := AddItem(context.Background(), []string{"--slide", "consts", "--kind", "callout", "--id", "a", "--element-id", "slide-title", "--description", "Constant A.", "--body", "A is one.", root}, &output); err != nil {
+		t.Fatal(err)
+	}
+	if output, err := runCover(t, "", "--repo", repo, "--target", "urn:change-saga:batch:slide:consts:item:a", "--ref", "HEAD:internal/service/handler.go#L3", "--name", "a", root); err != nil {
+		t.Fatalf("cover: %v\n%s", err, output)
+	}
+	writeFile(t, filepath.Join(repo, "internal", "service", "handler.go"), "package service\n\n// Moved down.\n// Twice.\nconst A = 1\nconst B = 2\nconst C = 3\n")
+	git(t, repo, "commit", "-am", "move A")
+	query := func(ref string) string {
+		var out bytes.Buffer
+		if err := Query(context.Background(), []string{"traceability", "--saga", root, "--repo", repo, "--ref", ref}, &out); err != nil {
+			t.Fatalf("traceability --ref %s: %v\n%s", ref, err, out.String())
+		}
+		return out.String()
+	}
+	if found := query("HEAD:internal/service/handler.go#L5"); !strings.Contains(found, `"item":"urn:change-saga:batch:slide:consts:item:a"`) {
+		t.Fatalf("the moved line did not find its evidence:\n%s", found)
+	}
+	if found := query("HEAD:internal/service/handler.go#L3"); !strings.Contains(found, `"unlinked_code_evidence":[]`) {
+		t.Fatalf("a line the evidence no longer covers matched:\n%s", found)
 	}
 }

@@ -7,6 +7,7 @@ import (
 	"context"
 	"time"
 
+	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/readiness"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/workplan"
@@ -43,10 +44,14 @@ type Filters struct {
 	Wave        string
 	Item        string
 	Status      string
-	// Ref selects code evidence whose pinned location overlaps this code
-	// location; Commit selects evidence pinned at this commit.
+	// Ref selects code evidence whose location overlaps this code location;
+	// Commit selects evidence pinned at this commit.
 	Ref    string
 	Commit string
+	// Locate, when set, places a reference at Ref's commit: where its lines
+	// are there after remapping, or false when they changed. Without it a
+	// reference matches Ref only at its pinned commit.
+	Locate func(coderef.Reference) (coderef.Location, bool) `json:"-"`
 }
 
 type Page struct {
@@ -179,6 +184,7 @@ type Traceability struct {
 	Story                  string                  `json:"story"`
 	Revision               string                  `json:"revision"`
 	Design                 []string                `json:"design"`
+	BroadDesign            []string                `json:"broad_design"`
 	WorkItems              []string                `json:"work_items"`
 	ReviewTargets          []string                `json:"review_targets"`
 	CodeEvidence           []string                `json:"code_evidence"`

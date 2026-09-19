@@ -17,6 +17,7 @@ import (
 	"strings"
 
 	"github.com/twentyideas/changesaga/internal/livingid"
+	"github.com/twentyideas/changesaga/internal/quality"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
 	"github.com/twentyideas/changesaga/internal/sagaref"
@@ -28,6 +29,7 @@ type session struct {
 	requirements requirements.Document
 	plan         workplan.Plan
 	saga         *saga.Saga
+	quality      quality.Document
 	adopted      bool
 }
 
@@ -62,15 +64,15 @@ func Open(_ context.Context, options OpenOptions) (Session, error) {
 		}
 	}
 	adopted := requirementsAdopted(root)
-	testCases, err := testCaseHeads(root)
+	qualityDocument, err := quality.Load(root)
 	if err != nil {
 		return nil, appError(CodeInvalidSaga, "the quality records could not be loaded", false, nil, err)
 	}
-	graph, err := loadLivingGraph(root, doc, testCases)
+	graph, err := loadLivingGraph(root, doc, revisionHeads(qualityDocument))
 	if err != nil {
 		return nil, err
 	}
-	return &session{snapshot: snapshot, requirements: graph.requirements, plan: graph.plan, saga: doc, adopted: adopted}, nil
+	return &session{snapshot: snapshot, requirements: graph.requirements, plan: graph.plan, saga: doc, quality: qualityDocument, adopted: adopted}, nil
 }
 
 func livingRootPresent(root, name string) bool {

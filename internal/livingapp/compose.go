@@ -8,6 +8,8 @@ import (
 
 	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/livingid"
+	"github.com/twentyideas/changesaga/internal/quality"
+	"github.com/twentyideas/changesaga/internal/qualityid"
 	"github.com/twentyideas/changesaga/internal/readiness"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
@@ -360,6 +362,13 @@ func (s *session) criterionInputs(filters Filters) ([]readiness.Criterion, []Tra
 	for _, v := range s.saga.Verifications {
 		verificationByURN["urn:change-saga:"+s.requirements.SagaID+":verification:"+v.ID] = v
 	}
+	passingRuns := map[string]string{}
+	for _, testCase := range s.quality.TestCases {
+		if testCase.CurrentRun != nil && testCase.CurrentRun.Result == quality.RunPassed {
+			testURN, _ := qualityid.TestCase(s.requirements.SagaID, testCase.Identity.ID)
+			passingRuns[testURN], _ = qualityid.Run(s.requirements.SagaID, testCase.Identity.ID, testCase.CurrentRun.ID)
+		}
+	}
 	inputs := []readiness.Criterion{}
 	meta := []Traceability{}
 	reviewEvidenceByTarget, _ := s.reviewEvidenceIndex()
@@ -414,10 +423,22 @@ func (s *session) criterionInputs(filters Filters) ([]readiness.Criterion, []Tra
 			if (filters.Ref != "" || filters.Commit != "") && len(codeEvidence) == 0 {
 				continue
 			}
+			// Design that addresses the whole story reaches each of its
+			// criteria too; it is listed again as broad because it was not
+			// written for this criterion alone.
+			broadDesign := []string{}
 			for _, r := range active {
-				if r.Type == requirements.RelationAddresses && r.To == criterionURN {
+				if r.Type != requirements.RelationAddresses {
+					continue
+				}
+				switch r.To {
+				case criterionURN:
 					design = append(design, r.From)
 					paths = append(paths, []string{criterionURN, r.From})
+				case storyURN:
+					design = append(design, r.From)
+					broadDesign = append(broadDesign, r.From)
+					paths = append(paths, []string{criterionURN, storyURN, r.From})
 				}
 			}
 			for _, r := range active {
@@ -444,6 +465,11 @@ func (s *session) criterionInputs(filters Filters) ([]readiness.Criterion, []Tra
 				if v, ok := verificationByURN[r.From]; ok && v.Status == "verified" {
 					evidence = append(evidence, r.From)
 					paths = append(paths, []string{criterionURN, r.From})
+				}
+				// A verifying test case is evidence once its current run passed.
+				if run, ok := passingRuns[r.From]; ok {
+					evidence = append(evidence, r.From)
+					paths = append(paths, []string{criterionURN, r.From, run})
 				}
 			}
 			blockers := []readiness.Blocker{}
@@ -476,7 +502,7 @@ func (s *session) criterionInputs(filters Filters) ([]readiness.Criterion, []Tra
 				blockers = append(blockers, readiness.Blocker{Code: "immutable_evidence_missing", Resource: criterionURN, Detail: "progress is not delivery evidence"})
 			}
 			inputs = append(inputs, readiness.Criterion{URN: criterionURN, Designed: len(design) > 0, Planned: len(work) > 0, Evidence: evidence, DirectBlockers: blockers, UpstreamPaths: transitive})
-			meta = append(meta, Traceability{Criterion: criterionURN, Story: storyURN, Revision: revisionURN, Design: uniqueSorted(design), WorkItems: uniqueSorted(work), ReviewTargets: uniqueSorted(reviewTargets), CodeEvidence: uniqueSorted(codeEvidence), Paths: uniquePaths(paths)})
+			meta = append(meta, Traceability{Criterion: criterionURN, Story: storyURN, Revision: revisionURN, Design: uniqueSorted(design), BroadDesign: uniqueSorted(broadDesign), WorkItems: uniqueSorted(work), ReviewTargets: uniqueSorted(reviewTargets), CodeEvidence: uniqueSorted(codeEvidence), Paths: uniquePaths(paths)})
 		}
 	}
 	return inputs, meta
@@ -488,6 +514,7 @@ type reviewEvidence struct {
 	Slide        string
 	Item         string
 	Ref          string
+	Reference    coderef.Reference
 	Location     coderef.Location
 	EvidenceFile string
 	Path         []string
@@ -503,7 +530,7 @@ func (s *session) reviewEvidenceIndex() (map[string][]reviewEvidence, []reviewEv
 					for _, reference := range file.References {
 						location := reference.Location()
 						ref := location.String()
-						value := reviewEvidence{Deck: deck.Target, Slide: slide.Target, Item: item.Target, Ref: ref, Location: location, EvidenceFile: file.Path}
+						value := reviewEvidence{Deck: deck.Target, Slide: slide.Target, Item: item.Target, Ref: ref, Reference: reference, Location: location, EvidenceFile: file.Path}
 						value.Key = value.Item + "\x00" + value.EvidenceFile + "\x00" + value.Ref
 						all = append(all, value)
 						for target, path := range map[string][]string{
@@ -526,7 +553,18 @@ func (s *session) reviewEvidenceIndex() (map[string][]reviewEvidence, []reviewEv
 func (s *session) reviewEvidenceMatches(value reviewEvidence, filters Filters) bool {
 	if filters.Ref != "" {
 		wanted, err := coderef.ParseLocation(filters.Ref)
-		if err != nil || !overlaps(wanted, value.Location) {
+		if err != nil {
+			return false
+		}
+		location := value.Location
+		if filters.Locate != nil {
+			at, current := filters.Locate(value.Reference)
+			if !current {
+				return false
+			}
+			location = at
+		}
+		if !overlaps(wanted, location) {
 			return false
 		}
 	}

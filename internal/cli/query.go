@@ -12,6 +12,7 @@ import (
 	"strings"
 
 	"github.com/twentyideas/changesaga/internal/coderef"
+	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/livingapp"
 	"github.com/twentyideas/changesaga/internal/reviewapp"
@@ -236,7 +237,7 @@ var queryPurpose = map[string]string{
 	"work-items":          "current work-item definitions, progress, explicit dependency blockers, workspaces, and merge evidence",
 	"work-events":         "normalized append-only progress, workspace, merge, and contract events",
 	"work-conflicts":      "deterministically identified work-plan conflicts and competing heads",
-	"traceability":        "current story-to-design/work/review/code paths, reverse code-location/commit lookup, and transitive blockers",
+	"traceability":        "current story-to-design/work/review/code/test paths (design that addresses the whole story is also listed as broad), reverse lookup by a code location at any revision (remapped as staleness is) or by pinned commit, and transitive blockers",
 	"readiness":           "independent requirement, plan, and delivery coverage axes; only immutable delivery evidence gates peer-review readiness",
 	"history":             "when a record was introduced, what it replaced, and every commit that changed it, each with the command that opens that comparison",
 	"terms":               "the project's vocabulary: each term's definition, aliases, stories, records, and code health at the head; filter by term, by story, or by a code location at any commit to find the terms a line of code defines",
@@ -265,7 +266,7 @@ var queryUsage = map[string]string{
 	"work-items":          "change-saga query work-items --saga PATH [--item ID|URN] [--wave ID|URN] [--status STATE] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
 	"work-events":         "change-saga query work-events --saga PATH [--item ID|URN] [--kind KIND] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
 	"work-conflicts":      "change-saga query work-conflicts --saga PATH [--item ID|URN] [--wave ID|URN] [--kind KIND] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
-	"traceability":        "change-saga query traceability --saga PATH [--requirement ID|URN] [--criterion ID|URN] [--ref LOCATION | --commit OID] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
+	"traceability":        "change-saga query traceability --saga PATH [--requirement ID|URN] [--criterion ID|URN] [--ref LOCATION | --commit OID] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]",
 	"readiness":           "change-saga query readiness --saga PATH [--requirement ID|URN] [--status ready|blocked] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
 	"history":             "change-saga query history --saga PATH --node URN",
 	"terms":               "change-saga query terms --saga PATH [--term ID|URN] [--story ID|URN] [--ref LOCATION] [--repo PATH] [--against REV [--head REV]]",
@@ -374,6 +375,14 @@ func queryWithOpener(ctx context.Context, args []string, out io.Writer, open que
 		page, err = session.Verifications(ctx, request)
 		result, responsePage = page.Data, &page.Page
 	case livingQuery:
+		if request.Filters.Ref != "" {
+			checkout := firstNonEmpty(options.SourceDir, options.SagaRoot)
+			resolver, locateErr := locateReferences(ctx, checkout, &request.Filters)
+			if locateErr != nil {
+				return writeQueryOperationFailure(out, operation, locateErr)
+			}
+			defer resolver.Close()
+		}
 		var page queryPage
 		page, err = session.Living(ctx, request)
 		result, responsePage = page.Data, &page.Page
@@ -387,6 +396,32 @@ func queryWithOpener(ctx context.Context, args []string, out io.Writer, open que
 		return writeQuerySuccessSchema(out, slideQuerySchema, session.Snapshot(), result, responsePage)
 	}
 	return writeQuerySuccess(out, session.Snapshot(), result, responsePage)
+}
+
+// locateReferences resolves a --ref at any revision to its commit and places
+// every reference there through the same remapping that decides staleness,
+// so a current location finds the evidence pinned at an older commit.
+func locateReferences(ctx context.Context, checkout string, filters *livingapp.Filters) (*coderesolve.Resolver, *queryError) {
+	location, err := resolveLocation(ctx, checkout, filters.Ref)
+	if err != nil {
+		return nil, &queryError{Code: "invalid_argument", Message: "--ref: " + err.Error()}
+	}
+	resolver, err := coderesolve.New(ctx, checkout)
+	if err != nil {
+		return nil, &queryError{Code: "source_unavailable", Message: err.Error(), Retryable: true}
+	}
+	filters.Ref = location.String()
+	located := map[string]coderesolve.Resolution{}
+	filters.Locate = func(reference coderef.Reference) (coderef.Location, bool) {
+		key := reference.Key()
+		at, seen := located[key]
+		if !seen {
+			at = resolver.Resolve(ctx, reference, location.Commit)
+			located[key] = at
+		}
+		return at.Location, at.Current()
+	}
+	return resolver, nil
 }
 
 func writeQuerySchema(args []string, out io.Writer) error {
@@ -576,7 +611,7 @@ func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, e
 	case "traceability":
 		flags.StringVar(&requirement, "requirement", "", "optional requirement ID or URN")
 		flags.StringVar(&criterion, "criterion", "", "optional criterion ID or URN")
-		flags.StringVar(&ref, "ref", "", "optional code location; selects evidence whose pinned location overlaps it")
+		flags.StringVar(&ref, "ref", "", "optional code location at any revision; selects evidence whose lines, remapped to that commit, overlap it")
 		flags.StringVar(&commit, "commit", "", "optional Git commit; selects evidence pinned at it")
 		flags.StringVar(&cursor, "cursor", "", "pagination cursor")
 		flags.Var(&limit, "limit", "page size")
@@ -652,10 +687,8 @@ func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, e
 		if ref != "" && commit != "" {
 			return nil, queryOpenOptions{}, false, fmt.Errorf("--ref and --commit are mutually exclusive")
 		}
-		if ref != "" {
-			if _, parseErr := coderef.ParseLocation(ref); parseErr != nil {
-				return nil, queryOpenOptions{}, false, fmt.Errorf("--ref must be a code location <commit>:<path>[#L<start>[-L<end>]]")
-			}
+		if revision, _, found := strings.Cut(ref, ":"); ref != "" && (!found || revision == "") {
+			return nil, queryOpenOptions{}, false, fmt.Errorf("--ref must be a code location <commit>:<path>[#L<start>[-L<end>]]")
 		}
 		if commit != "" {
 			decoded, decodeErr := hex.DecodeString(commit)
