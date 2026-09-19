@@ -329,7 +329,7 @@ func newMux(application *app) *http.ServeMux {
 	mux.HandleFunc("GET /theme.js", application.themeScript)
 	mux.HandleFunc("GET /api/code", application.codePage)
 	mux.HandleFunc("GET /api/coverage", application.coveragePage)
-	mux.HandleFunc("GET /api/coverage-totals", application.coverageTotalsPage)
+	mux.HandleFunc("GET /api/totals", application.coverageTotalsPage)
 	mux.HandleFunc("GET /api/reference-code", application.referenceCodePage)
 	mux.HandleFunc("GET /api/layers", application.layersAPI)
 	mux.HandleFunc("GET /api/change", application.changePage)
@@ -553,6 +553,9 @@ func (a *app) locateAnchor(w http.ResponseWriter, r *http.Request) {
 	}
 	if place.fragment != "" {
 		response["fragment"] = domID(place.fragment)
+		// An epic's explanation renders on its epic's page. Elsewhere the
+		// browser fetches it by target to show it in the drawer.
+		response["target"] = place.fragment
 	}
 	writeIncrementalHeaders(w, "application/json")
 	if err := json.NewEncoder(w).Encode(response); err != nil {
@@ -915,7 +918,7 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 		Requirements:  requirementsView,
 	}
 	// Change totals describe a comparison; observing has none, so its line
-	// arrives from /api/coverage-totals as the documented code instead.
+	// arrives from /api/totals as the documented code instead.
 	if data.Comparing {
 		data.CoverageTotals = a.cachedCoverageTotals()
 	}

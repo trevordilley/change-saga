@@ -51,13 +51,7 @@ func newAppGraph(document *saga.Saga, records requirements.Document, tests quali
 		inbound:    map[string][]requirements.Relation{},
 		outbound:   map[string][]requirements.Relation{},
 	}
-	for _, epic := range document.Epics {
-		for _, root := range []*saga.Section{epic.Report, epic.Design} {
-			if root != nil {
-				graph.markEpic(root, epic.ID)
-			}
-		}
-	}
+	graph.targetEpic = epicTargets(document)
 	for _, relation := range records.Relations {
 		if relation.State != requirements.RelationActive {
 			continue
@@ -68,19 +62,43 @@ func newAppGraph(document *saga.Saga, records requirements.Document, tests quali
 	return graph
 }
 
-func (graph *appGraph) markEpic(section *saga.Section, epic string) {
-	if section.Target != "" {
-		graph.targetEpic[section.Target] = epic
-	}
-	for _, fragment := range section.Fragments {
-		graph.targetEpic[fragment.Target] = epic
-		for _, landmark := range fragment.Landmarks {
-			graph.targetEpic[landmark.Target] = epic
+// epicTargets names the epic that holds each target of the app-wide tree.
+// An epic's chapters, explanations, and Items render on its page, so every
+// link to one opens there rather than on the app overview.
+func epicTargets(document *saga.Saga) map[string]string {
+	result := map[string]string{}
+	var mark func(*saga.Section, string)
+	mark = func(section *saga.Section, epic string) {
+		if section.Target != "" {
+			result[section.Target] = epic
+		}
+		for _, fragment := range section.Fragments {
+			result[fragment.Target] = epic
+			for _, landmark := range fragment.Landmarks {
+				result[landmark.Target] = epic
+			}
+		}
+		for _, child := range section.Children {
+			mark(child, epic)
 		}
 	}
-	for _, child := range section.Children {
-		graph.markEpic(child, epic)
+	for _, epic := range document.Epics {
+		for _, root := range []*saga.Section{epic.Report, epic.Design} {
+			if root != nil {
+				mark(root, epic.ID)
+			}
+		}
 	}
+	return result
+}
+
+// onEpicPageHref moves an in-page anchor to the page of the epic that holds
+// its target.
+func onEpicPageHref(epics map[string]string, target, href string) string {
+	if epic, ok := epics[target]; ok && strings.HasPrefix(href, "#") {
+		return epicHref(epic) + href
+	}
+	return href
 }
 
 // epicChapter reports the epic holding a chapter of the app-wide tree.
@@ -175,10 +193,11 @@ func (graph *appGraph) link(urn string) traceLink {
 		if location.Kind == "Chapter" || location.Kind == "Fragment" || location.Kind == "Section" {
 			link.Kind = "Design"
 		}
-		if epic, ok := graph.targetEpic[urn]; ok {
-			link.Href = epicHref(epic) + location.Href
-		} else {
-			link.Href = "/" + location.Href
+		// The index already places a target on its own page; only an app-level
+		// anchor still needs the overview.
+		link.Href = location.Href
+		if strings.HasPrefix(link.Href, "#") {
+			link.Href = "/" + link.Href
 		}
 	}
 	return link

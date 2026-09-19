@@ -383,13 +383,27 @@ type narrativeLocation struct {
 	slideMediaType string
 }
 
+// hrefAnchor is the in-page anchor of a link that may open another page,
+// such as an epic's.
+func hrefAnchor(href string) string {
+	if cut := strings.Index(href, "#"); cut >= 0 {
+		return href[cut+1:]
+	}
+	return href
+}
+
 func indexNarrativeFragments(document *saga.Saga) []narrativeLocation {
 	var result []narrativeLocation
+	epics := epicTargets(document)
+	epicTitles := map[string]*saga.Epic{}
+	for _, epic := range document.Epics {
+		epicTitles[epic.ID] = epic
+	}
 	var walk func(*saga.Section, narrativeLocation)
 	walk = func(section *saga.Section, chapter narrativeLocation) {
 		if section.Kind == "chapter" {
 			chapter.chapterID, chapter.chapterTitle, chapter.chapterTarget = section.ID, section.Title, section.Target
-			chapter.chapterHref = sagaHref(section.Target)
+			chapter.chapterHref = onEpicPageHref(epics, section.Target, sagaHref(section.Target))
 		} else if section.Kind == "deck" {
 			chapter.deckID, chapter.deckTitle, chapter.deckTarget = section.ID, section.Title, section.Target
 			chapter.deckHref = sagaHref(section.Target)
@@ -397,11 +411,17 @@ func indexNarrativeFragments(document *saga.Saga) []narrativeLocation {
 		for _, fragment := range section.Fragments {
 			location := chapter
 			if location.chapterTitle == "" {
-				location.chapterTitle, location.chapterTarget, location.chapterHref = "Overview", document.Section.Target, sagaHref(document.Section.Target)
+				// An epic's own explanation belongs to that epic, not to the
+				// app overview.
+				if epic := epicTitles[epics[fragment.Target]]; epic != nil {
+					location.chapterTitle, location.chapterTarget, location.chapterHref = epic.Title, epic.Target, epicHref(epic.ID)
+				} else {
+					location.chapterTitle, location.chapterTarget, location.chapterHref = "Overview", document.Section.Target, sagaHref(document.Section.Target)
+				}
 			}
 			location.fragment = fragment
 			location.target, location.itemID, location.title, location.diffs, location.hasDiffs = fragment.Target, fragment.ID, fragment.Title, fragment.Code, fragment.HasCode
-			location.fragmentHref = sagaHref(fragment.Target)
+			location.fragmentHref = onEpicPageHref(epics, fragment.Target, sagaHref(fragment.Target))
 			if fragment.SlideMeta != nil {
 				location.slideID, location.slideTitle, location.slideTarget = fragment.ID, fragment.Title, fragment.Target
 				location.slideHref = location.fragmentHref
@@ -413,7 +433,7 @@ func indexNarrativeFragments(document *saga.Saga) []narrativeLocation {
 				landmark := &fragment.Landmarks[index]
 				landmarkLocation := location
 				landmarkLocation.target, landmarkLocation.itemID, landmarkLocation.title, landmarkLocation.diffs, landmarkLocation.hasDiffs = landmark.Target, landmark.ID, landmark.Label, landmark.Code, landmark.HasCode
-				landmarkLocation.fragmentHref = sagaHref(fragment.Target) + "--" + landmark.ID
+				landmarkLocation.fragmentHref = location.fragmentHref + "--" + landmark.ID
 				result = append(result, landmarkLocation)
 			}
 		}
@@ -465,10 +485,10 @@ func makeRelatedSagaViewsForTargets(locations []narrativeLocation, ownedURIs map
 			if view == nil {
 				view = &RelatedSagaFragmentView{
 					ID: location.slideID, Title: location.slideTitle, Target: location.slideTarget,
-					Anchor: strings.TrimPrefix(location.slideHref, "#"), Href: location.slideHref,
+					Anchor: hrefAnchor(location.slideHref), Href: location.slideHref,
 					Slide: &SlideReferenceView{
 						ID: location.slideID, Title: location.slideTitle, Target: location.slideTarget,
-						Anchor: strings.TrimPrefix(location.slideHref, "#"), Href: location.slideHref,
+						Anchor: hrefAnchor(location.slideHref), Href: location.slideHref,
 						URL: location.slideURL, MediaType: location.slideMediaType,
 					},
 				}
@@ -491,7 +511,7 @@ func makeRelatedSagaViewsForTargets(locations []narrativeLocation, ownedURIs map
 		}
 		group.Fragments = append(group.Fragments, &RelatedSagaFragmentView{
 			ID: location.itemID, Title: title, Target: location.target,
-			Excerpt: fragmentExcerpt(location.fragment), Anchor: strings.TrimPrefix(location.fragmentHref, "#"), Href: location.fragmentHref, Refs: uris,
+			Excerpt: fragmentExcerpt(location.fragment), Anchor: hrefAnchor(location.fragmentHref), Href: location.fragmentHref, Refs: uris,
 		})
 	}
 	return result

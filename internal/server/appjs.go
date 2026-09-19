@@ -1783,13 +1783,26 @@ const appJavaScript = `(() => {
   async function openFragmentDrawer(anchor, opener) {
 	anchor = decodeURIComponent(String(anchor || '').replace(/^#/, ''));
     const destination = await revealAnchor(anchor);
-    const fragment = destination?.matches('.fragment') ? destination : destination?.closest('.fragment');
-    if (!fragment) return;
+    let fragment = destination?.matches('.fragment') ? destination : destination?.closest('.fragment');
+    let borrowed = Boolean(fragment);
+    if (!fragment) {
+      // The explanation belongs to another page, such as its epic's: fetch it
+      // for the drawer instead of moving it out of this page.
+      const place = await locateAnchor(anchor);
+      if (!place?.target) return;
+      try {
+        fragment = q('.fragment', parseShellHTML(await fetchShell('/api/fragment?target=' + encodeURIComponent(place.target))));
+      } catch (_) { fragment = null; }
+      if (!fragment) return;
+    }
     restoreDrawerContent();
-    const placeholder = document.createComment('change-saga fragment drawer');
-    fragment.replaceWith(placeholder);
-    drawerRestore = {fragment, placeholder};
+    if (borrowed) {
+      const placeholder = document.createComment('change-saga fragment drawer');
+      fragment.replaceWith(placeholder);
+      drawerRestore = {fragment, placeholder};
+    }
     q('.drawer-body').append(fragment);
+    if (!borrowed) { prepareLandmarks(fragment); highlightCode(fragment); }
     configureDrawer('fragment', fragment.dataset.fragmentTitle || 'Related explanation');
     setActiveFragment(fragment);
     showDrawer(opener);

@@ -2,7 +2,9 @@ import { expectNoSeriousAccessibilityViolations, expect, test } from "../support
 
 test("@critical navigates the saga, linked code, code tree, and coverage in both directions", async ({ page, saga }) => {
   await expect(page).toHaveTitle("Wave One Review · Change Saga");
-  await expect(page.getByRole("heading", { name: "Wave One Review" })).toBeVisible();
+  // The fixture's narrative lives in its one epic, so the test reads that
+  // epic's page.
+  await expect(page.getByRole("heading", { name: "Wave One", exact: true })).toBeVisible();
   await expect(page.getByText("Wave 1 connects the story to the exact source changes.")).toBeVisible();
   // The whole page, chrome included: the workspace tablist and the closed
   // linked-code drawer are now correct, so nothing is scoped out of this scan.
@@ -14,7 +16,7 @@ test("@critical navigates the saga, linked code, code tree, and coverage in both
   await expect(page.getByRole("button", { name: "Close Architecture" })).toHaveAttribute("aria-expanded", "true");
   await expect(page.getByRole("tabpanel", { name: "Saga" }).getByText("The renderer and persistence boundary stay independent.")).toBeVisible();
   await page.goto(`${saga.baseURL}/chapters/architecture`);
-  await expect(page).toHaveURL(/\/#.+chapter-architecture-/);
+  await expect(page).toHaveURL(/\/epics\/wave-one#.+chapter-architecture-/);
   await expect(page.getByRole("button", { name: "Close Architecture" })).toHaveAttribute("aria-expanded", "true");
 
   const overview = page.locator('[data-fragment-title="Overview"]');
@@ -84,7 +86,7 @@ test("@critical navigates the saga, linked code, code tree, and coverage in both
 });
 
 test("deeply indented Code Diff paths scroll horizontally without truncation", async ({ page, saga }) => {
-  await page.goto(saga.baseURL);
+  await page.goto(saga.epicURL);
   await page.getByRole("tab", { name: "Code Diff" }).click();
 
   const tree = page.getByRole("tree", { name: "Changed files" });

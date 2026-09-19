@@ -37,7 +37,11 @@ export type SagaServer = {
   serverLog: string[];
 };
 
-export type SagaFixture = SagaRepositories & SagaServer;
+export type SagaFixture = SagaRepositories & SagaServer & {
+  /** The page of the one epic that holds the fixture's narrative. An epic's
+   * chapters and explanations render on its page, not on the app overview. */
+  epicURL: string;
+};
 
 function write(path: string, contents: string | Buffer): void {
   mkdirSync(dirname(path), { recursive: true });
@@ -254,7 +258,8 @@ export function createSagaRepositories(testInfo: TestInfo): SagaRepositories {
 export async function createSagaFixture(testInfo: TestInfo): Promise<SagaFixture> {
   const repositories = createSagaRepositories(testInfo);
   try {
-    return { ...repositories, ...(await startSagaServer(repositories)) };
+    const server = await startSagaServer(repositories);
+    return { ...repositories, ...server, epicURL: `${server.baseURL}/epics/wave-one` };
   } catch (error) {
     rmSync(repositories.root, { recursive: true, force: true });
     throw error;
@@ -556,7 +561,8 @@ export function createLargeSagaRepositories(testInfo: TestInfo): SagaRepositorie
 export async function createLargeSagaFixture(testInfo: TestInfo): Promise<SagaFixture> {
   const repositories = createLargeSagaRepositories(testInfo);
   try {
-    return { ...repositories, ...(await startSagaServer(repositories)) };
+    const server = await startSagaServer(repositories);
+    return { ...repositories, ...server, epicURL: `${server.baseURL}/epics/large` };
   } catch (error) {
     rmSync(repositories.root, { recursive: true, force: true });
     throw error;

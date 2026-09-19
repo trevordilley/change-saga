@@ -390,13 +390,13 @@ func TestObservedCoverageShowsTheDocumentedCode(t *testing.T) {
 // instead of saying "Building the review index…" forever.
 func TestOverviewCoverageLineIsFilledIn(t *testing.T) {
 	root := dogfoodOK(t, "/")
-	if !strings.Contains(root, `data-totals-href="/api/coverage-totals"`) || strings.Contains(root, "Building the review index") {
+	if !strings.Contains(root, `data-totals-href="/api/totals"`) || strings.Contains(root, "Building the review index") {
 		t.Fatal("the observed overview does not ask for its coverage line")
 	}
 	if !strings.Contains(appJavaScript, "loadCoverageTotals()") || !strings.Contains(appJavaScript, "hydrateLazyDetails(details)") {
 		t.Fatal("the page script never fills in the coverage line or opens reference code")
 	}
-	if totals := dogfoodOK(t, "/api/coverage-totals"); !strings.Contains(totals, "data-observe-totals") || !strings.Contains(totals, "records reference") && !strings.Contains(totals, "record references") {
+	if totals := dogfoodOK(t, "/api/totals"); !strings.Contains(totals, "data-observe-totals") || !strings.Contains(totals, "records reference") && !strings.Contains(totals, "record references") {
 		t.Fatalf("coverage totals = %s", totals)
 	}
 }
@@ -407,7 +407,7 @@ func TestComparedCoverageLineRetriesWhileTheComparisonBuilds(t *testing.T) {
 	application := &app{rng: gitdiff.Range{Against: "main"}}
 	application.cache.building = true
 	recorder := httptest.NewRecorder()
-	newMux(application).ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, "/api/coverage-totals", nil))
+	newMux(application).ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, "/api/totals", nil))
 	if recorder.Code != http.StatusAccepted || recorder.Header().Get("Retry-After") == "" {
 		t.Fatalf("totals while building = %d", recorder.Code)
 	}

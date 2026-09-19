@@ -101,7 +101,7 @@ test("a Saga opens several implementation decks without paginating its documenta
   // Slide navigation is scoped to the slide surface. Returning to the report
   // and pressing an arrow key must not silently move its hidden deck.
   await page.getByRole("tab", { name: "Saga" }).click();
-  await page.getByRole("heading", { name: "Wave One Review" }).click();
+  await page.getByRole("heading", { name: "Wave One", exact: true }).click();
   await page.keyboard.press("ArrowLeft");
   await failureDeckNode.getByRole("button", { name: "Show slide: Failure path" }).click();
   await expect(slidePanel.locator('[data-deck-slide][data-slide-title="Failure path"]')).toBeVisible();
