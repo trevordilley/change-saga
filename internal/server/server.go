@@ -98,16 +98,16 @@ type pageData struct {
 	RequirementsMode bool
 	Requirements     *requirementsPageView
 	// TermsMode shows the overview's Terms and vocabulary, or one term.
-	TermsMode bool
-	Terms     *termsPageView
-	Root             *sectionView
-	SlideRoot        *sectionView
-	Nav              []*navNodeView
-	Diagnostic       string
-	Code             *CodeReviewView
-	Manifest         *CoverageManifestView
-	Error            string
-	Files            []*fileDiffView
+	TermsMode  bool
+	Terms      *termsPageView
+	Root       *sectionView
+	SlideRoot  *sectionView
+	Nav        []*navNodeView
+	Diagnostic string
+	Code       *CodeReviewView
+	Manifest   *CoverageManifestView
+	Error      string
+	Files      []*fileDiffView
 	// CoverageTotals is the audit reduced to the numbers the shell states
 	// outright. The audit itself stays on the Coverage tab.
 	CoverageTotals *coverageTotalsView
