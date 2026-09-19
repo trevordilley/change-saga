@@ -322,7 +322,7 @@ func flagWasSet(flags *flag.FlagSet, name string) bool {
 func Init(ctx context.Context, args []string, out io.Writer) error {
 	flags := commandFlags("init", commandUsage["init"], out)
 	base := flags.String("base", "main", "base Git revision")
-	head := flags.String("head", "HEAD", "head Git revision, or WORKTREE")
+	head := flags.String("head", "HEAD", "head Git revision")
 	title := flags.String("title", "", "saga title")
 	id := flags.String("id", "", "stable saga identifier")
 	repoDir := flags.String("repo", ".", "source repository checkout")
