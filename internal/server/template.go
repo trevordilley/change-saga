@@ -26,7 +26,7 @@ var pageTemplate = `{{define "page"}}<!doctype html>
 <style>` + pageStyles + `</style><script src="/theme.js"></script><script src="/app.js" defer></script></head><body data-saga-id="{{.Saga.Manifest.ID}}">` + iconSprite + `
 <header class="topbar"><div class="brand">{{template "icon" "book"}}<span>change-saga</span></div><span class="opening-badge {{if .Comparing}}compare{{else}}observe{{end}}" data-opening="{{if .Comparing}}compare{{else}}observe{{end}}" title="{{if .Comparing}}The living Saga is read-only here; approvals happen in the pull request's review{{else}}Observing the app at one commit{{end}}">{{.Opening}}</span><div class="view-tabs" role="tablist" aria-label="Workspace"><button type="button" role="tab" id="view-tab-saga" class="view-tab active" data-view-tab="saga" aria-controls="view-saga" aria-selected="true" tabindex="0" title="Read the living documentation">{{template "icon" "list"}}Saga</button>{{if .Comparing}}<button type="button" role="tab" id="view-tab-change" class="view-tab" data-view-tab="change" aria-controls="view-change" aria-selected="false" tabindex="-1" title="What this change edited, what it affected, and its code">{{template "icon" "split"}}Change</button>{{end}}<button type="button" role="tab" id="view-tab-code" class="view-tab" data-view-tab="code" aria-controls="view-code" aria-selected="false" tabindex="-1" title="Review the complete comparison">{{template "icon" "diff"}}Code Diff</button><button type="button" role="tab" id="view-tab-manifest" class="view-tab" data-view-tab="manifest" aria-controls="view-manifest" aria-selected="false" tabindex="-1" title="Trace changes to the story and back">{{template "icon" "check"}}Coverage</button></div>{{if .EmbeddedDecks}}<button type="button" class="view-tab slide-present" data-slide-present aria-pressed="false" title="Present the current slide fullscreen">Present</button>{{end}}<a class="view-tab reviews-link" href="/reviews" title="Pull request reviews: where changes are approved, slide by slide">Reviews</a><div class="top-meta" data-code-meta hidden></div><button type="button" class="icon-button theme-toggle" data-theme-toggle aria-pressed="false" aria-label="Toggle dark mode" title="Switch to dark mode">{{template "icon" "half"}}</button></header>
 <div class="shell" data-shell><aside class="sidebar" id="changed-files-panel"><a class="sidebar-title" href="/">{{template "icon" "book"}}<span>{{.Saga.Manifest.Title}}</span></a><div class="saga-side"><nav class="doc-tree" aria-label="Contents">{{template "doc-tree" .Nav}}</nav></div><div class="code-side" data-code-sidebar hidden><div class="surface-placeholder compact" role="status" aria-live="polite"><span class="surface-spinner" aria-hidden="true"></span><span>Changed files load when Code Diff opens.</span></div></div></aside>
-<main class="content"><div class="view active" id="view-saga" role="tabpanel" aria-labelledby="view-tab-saga" data-view="saga">{{if .Error}}<div class="alert" role="alert">{{template "icon" "alert"}}<span><strong>Review readiness check failed</strong>{{.Error}}</span></div>{{else if .Diagnostic}}<div class="alert" role="alert">{{template "icon" "alert"}}<span><strong>Review readiness check failed</strong>{{.Diagnostic}}</span></div>{{end}}{{if .RequirementsMode}}{{template "requirements-page" .Requirements}}{{else}}<header class="page-heading"><h2>{{.Saga.Manifest.Title}}</h2>{{with .CoverageTotals}}<p class="coverage-totals" data-coverage-totals>{{.Files}} {{if eq .Files 1}}file{{else}}files{{end}} · {{.Total}} changed {{if eq .Total 1}}line{{else}}lines{{end}} · {{.Covered}} explained{{if .Uncovered}} · <span class="gap">{{.Uncovered}} unexplained</span>{{end}}</p>{{else}}<p class="coverage-totals loading" data-coverage-loading role="status">Building the review index… Coverage will update when it is ready.</p>{{end}}</header>{{template "overview" .Root}}<section class="chapter-index"><h2>Chapters</h2><div class="chapter-pages">{{range .Root.ChildViews}}{{if eq .Kind "chapter"}}{{template "chapter" .}}{{else}}{{template "section" .}}{{end}}{{end}}</div></section>{{end}}</div>
+<main class="content"><div class="view active" id="view-saga" role="tabpanel" aria-labelledby="view-tab-saga" data-view="saga">{{if .Error}}<div class="alert" role="alert">{{template "icon" "alert"}}<span><strong>Review readiness check failed</strong>{{.Error}}</span></div>{{else if .Diagnostic}}<div class="alert" role="alert">{{template "icon" "alert"}}<span><strong>Review readiness check failed</strong>{{.Diagnostic}}</span></div>{{end}}{{if .RequirementsMode}}{{template "requirements-page" .Requirements}}{{else if .TermsMode}}{{template "terms-page" .Terms}}{{else}}<header class="page-heading"><h2>{{.Saga.Manifest.Title}}</h2>{{with .CoverageTotals}}<p class="coverage-totals" data-coverage-totals>{{.Files}} {{if eq .Files 1}}file{{else}}files{{end}} · {{.Total}} changed {{if eq .Total 1}}line{{else}}lines{{end}} · {{.Covered}} explained{{if .Uncovered}} · <span class="gap">{{.Uncovered}} unexplained</span>{{end}}</p>{{else}}<p class="coverage-totals loading" data-coverage-loading role="status">Building the review index… Coverage will update when it is ready.</p>{{end}}</header>{{template "overview" .Root}}<section class="chapter-index"><h2>Chapters</h2><div class="chapter-pages">{{range .Root.ChildViews}}{{if eq .Kind "chapter"}}{{template "chapter" .}}{{else}}{{template "section" .}}{{end}}{{end}}</div></section>{{end}}</div>
 {{if .EmbeddedDecks}}<div class="view" id="view-slides" role="tabpanel" aria-labelledby="view-tab-saga" data-view="slides"><div class="sidebar-slide-surface">{{template "deck-viewer" .SlideRoot}}</div></div>{{end}}
 <div class="view" id="view-code" role="tabpanel" aria-labelledby="view-tab-code" data-view="code" data-review-surface="code" data-surface-href="/api/code"><div class="surface-placeholder" role="status" aria-live="polite" data-surface-status><span class="surface-spinner" aria-hidden="true"></span><strong>Code Diff is ready when you open it.</strong><span>The comparison stays out of the initial page.</span></div></div></main></div>
 {{if .Comparing}}<main class="change-view view" id="view-change" role="tabpanel" aria-labelledby="view-tab-change" data-view="change" data-review-surface="change" data-surface-href="/api/change"><div class="surface-placeholder" role="status" aria-live="polite" data-surface-status><span class="surface-spinner" aria-hidden="true"></span><strong>The change loads when you open it.</strong><span>Changed, Affected, and Code appear together.</span></div></main>{{end}}<main class="manifest-view view" id="view-manifest" role="tabpanel" aria-labelledby="view-tab-manifest" data-view="manifest" data-review-surface="manifest" data-surface-href="/api/coverage"><div class="surface-placeholder" role="status" aria-live="polite" data-surface-status><span class="surface-spinner" aria-hidden="true"></span><strong>Coverage loads when you open it.</strong><span>Files appear automatically as they are ready.</span></div></main>
@@ -93,6 +93,50 @@ var pageTemplate = `{{define "page"}}<!doctype html>
 {{define "manifest-target"}}<details class="manifest-target" data-manifest-search="{{.Title}} {{.Chapter}}"><summary>{{template "twisty"}}{{if .Slide}}<span class="manifest-target-slide-preview" aria-hidden="true">{{template "slide-mini-media" .Slide}}</span>{{else}}{{template "icon" "book"}}{{end}}<span class="manifest-target-title"><strong>{{if .Slide}}{{.Slide.Title}}{{else}}{{.Title}}{{end}}</strong>{{if .Slide}}<small>{{if ne .Title .Slide.Title}}{{.Title}}{{if .Chapter}} · {{end}}{{end}}{{.Chapter}}</small>{{else if .Chapter}}<small>{{.Chapter}}</small>{{end}}</span><span class="manifest-file-stats">{{.AtomCount}} {{if eq .AtomCount 1}}change{{else}}changes{{end}}</span></summary><div class="manifest-target-files">{{range .Files}}{{template "manifest-target-file" .}}{{end}}<a class="manifest-open-saga" href="{{.Href}}">{{template "icon" "arrow-right"}}Open in Saga</a></div></details>{{end}}
 
 {{define "manifest-target-file"}}<details class="manifest-target-file"><summary>{{template "twisty"}}{{template "ficon" .Path}}<code>{{.Path}}</code><span class="manifest-file-stats">{{template "diff-counts" .}}{{if .Events}} · {{.Events}} file {{if eq .Events 1}}event{{else}}events{{end}}{{end}}</span></summary><div class="manifest-target-file-detail">{{if .HasDiff}}{{template "manifest-diff-surface" .Path}}{{end}}<div class="manifest-target-links"><span>Linked {{if eq (len .Chunks) 1}}range{{else}}ranges{{end}}</span>{{range .Chunks}}<a href="{{.Href}}">{{.Label}}</a>{{end}}<a class="manifest-full-diff" href="{{.Href}}">Open in Code Diff {{template "icon" "arrow-right"}}</a></div></div></details>{{end}}
+
+{{define "terms-page"}}<section class="terms-page" data-terms-page>{{if .Index}}<header class="requirements-header">
+<h1>Terms and vocabulary</h1>
+</header>
+<p class="terms-lede">The words this project uses in its own way, what each one means here, and the code that defines it.</p>
+<dl class="terms-list">{{range .Terms}}<div class="terms-entry{{if .Retired}} retired{{end}}" data-term-target="{{.Target}}">
+<dt><a href="{{.Href}}">{{.Name}}</a>{{if .Aliases}} <small>also {{join .Aliases ", "}}</small>{{end}}{{if .Retired}} <small class="term-state">retired</small>{{end}}</dt>
+<dd>{{.Definition}}</dd>
+</div>{{else}}<div class="requirements-empty">
+<strong>No terms yet.</strong>
+<span>Define the words the team says every day with change-saga term add.</span>
+</div>{{end}}</dl>{{else}}{{with .Term}}<nav class="requirements-breadcrumbs" aria-label="Term breadcrumb">
+<a href="/terms">Terms and vocabulary</a>
+<span>/</span>
+<strong>{{.Name}}</strong></nav>
+<article class="term-page" data-term-target="{{.Target}}">
+<header class="requirement-story-hero">
+<div>
+<h1>{{.Name}}</h1>{{if .Retired}}<p class="term-state">Retired: the project no longer uses this term.</p>{{end}}
+</div>
+</header>
+<section class="term-definition">
+<p>{{.Definition}}</p>
+</section>{{if .Aliases}}
+<section class="term-aliases">
+<h2>Also called</h2>
+<ul class="term-links">{{range .Aliases}}<li>{{.}}</li>{{end}}</ul>
+</section>{{end}}
+<section class="term-stories">
+<h2>Stories</h2>{{if .Stories}}
+<ul class="term-links">{{range .Stories}}<li><a href="{{.Href}}" data-story-target="{{.Target}}">{{.Title}}</a></li>{{end}}</ul>{{else}}
+<p class="term-empty">No story names this term yet.</p>{{end}}
+</section>{{if .Records}}
+<section class="term-records">
+<h2>Related</h2>
+<ul class="term-links">{{range .Records}}<li>{{if .Href}}<a href="{{.Href}}">{{.Title}}</a>{{else}}{{.Title}}{{end}}</li>{{end}}</ul>
+</section>{{end}}
+<section class="term-code-list">
+<h2>Code</h2>{{range .Code}}<figure class="term-code{{if .Stale}} stale{{end}}" data-file-path="{{.Path}}" data-term-code>
+<figcaption>{{template "ficon" .Path}}<code>{{.Location}}</code></figcaption>{{if .Note}}<p class="term-code-note" role="note">{{.Note}}</p>{{end}}
+<table class="term-code-lines"><tbody>{{range .Lines}}<tr{{if .Referenced}} class="referenced"{{end}}><th scope="row">{{.Number}}</th><td><code data-code>{{.Text}}</code></td></tr>{{end}}</tbody></table>
+</figure>{{else}}<p class="term-empty">No code references this term yet.</p>{{end}}
+</section>
+</article>{{end}}{{end}}</section>{{end}}
 
 {{define "requirements-page"}}<section class="requirements-page" data-requirements-page>{{if .Overview}}<header class="requirements-header">
 <h1>Requirements</h1>
@@ -192,6 +236,10 @@ var pageTemplate = `{{define "page"}}<!doctype html>
 </div>
 </div>
 </details>
+{{if .Terms}}<section class="requirement-terms" data-requirement-terms>
+<h2>Terms</h2>
+<ul class="term-links">{{range .Terms}}<li><a href="{{.Href}}" data-term-target="{{.Target}}">{{.Title}}</a></li>{{end}}</ul>
+</section>{{end}}
 <section class="requirement-criteria">
 <header>
 <h2>Acceptance criteria</h2>

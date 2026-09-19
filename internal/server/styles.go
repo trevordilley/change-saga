@@ -215,6 +215,35 @@ body.presentation-mode .deck-viewer-stage:hover .slide-exit-presentation,body.pr
 
 /* Requirements ---------------------------------------------------------- */
 .requirements-page{max-width:940px;margin:0 auto}
+.terms-page{max-width:940px;margin:0 auto}
+.terms-lede{margin:0 0 18px;color:var(--muted);font:14px/1.55 var(--ui)}
+.terms-list{display:grid;gap:10px;margin:0}
+.terms-entry{padding:13px 16px;border:1px solid var(--line);border-radius:9px;background:var(--bg)}
+.terms-entry.retired{opacity:.7}
+.terms-entry dt{font:650 16px/1.3 var(--ui)}
+.terms-entry dt a{color:inherit;text-decoration:none}
+.terms-entry dt a:hover{color:var(--accent)}
+.terms-entry dt small{margin-left:4px;color:var(--muted);font:500 12px var(--ui)}
+.terms-entry dd{margin:6px 0 0;color:var(--muted);font:13.5px/1.55 var(--ui)}
+.term-page{display:grid;gap:22px}
+.term-page h2,.requirement-terms h2{margin:0 0 8px;color:var(--muted);font:650 12px/1.3 var(--ui);letter-spacing:.04em;text-transform:uppercase}
+.term-definition p{max-width:800px;margin:0;font:500 19px/1.5 var(--ui);white-space:pre-line}
+.term-state{color:var(--amber);font:600 12px var(--ui)}
+.term-links{display:flex;flex-wrap:wrap;gap:7px;margin:0;padding:0;list-style:none}
+.term-links li{padding:4px 10px;border:1px solid var(--line-soft);border-radius:999px;background:var(--bg-subtle);font:500 12.5px var(--ui)}
+.term-links a{color:var(--accent);text-decoration:none}
+.term-empty{margin:0;color:var(--muted);font:13px var(--ui)}
+.term-code{margin:0 0 12px;overflow:hidden;border:1px solid var(--line);border-radius:8px;background:var(--bg)}
+.term-code.stale{border-color:var(--warning-line)}
+.term-code figcaption{display:flex;align-items:center;gap:7px;padding:8px 12px;border-bottom:1px solid var(--line-soft);background:var(--bg-subtle);font:12px var(--ui)}
+.term-code figcaption code{font:11.5px var(--mono);overflow-wrap:anywhere}
+.term-code-note{margin:0;padding:8px 12px;border-bottom:1px solid var(--line-soft);background:var(--warning-bg);color:var(--amber);font:12.5px/1.45 var(--ui)}
+.term-code-lines{width:100%;border-collapse:collapse;font:12.5px/1.6 var(--mono)}
+.term-code-lines th{width:1%;padding:0 10px;color:var(--faint);font-weight:400;text-align:right;user-select:none}
+.term-code-lines td{padding:0 12px 0 4px;white-space:pre}
+.term-code-lines tr.referenced{background:var(--accent-soft)}
+.term-code-lines tr.referenced th{color:var(--accent)}
+.requirement-terms{margin:0}
 .requirements-header{margin:0 0 20px;padding-bottom:14px;border-bottom:1px solid var(--line)}
 .requirements-header h1,.requirement-story-hero h1{margin:0;color:var(--ink);font:650 28px/1.15 var(--ui);letter-spacing:-.025em}
 .requirements-rationale{max-width:780px;margin:0 0 24px}

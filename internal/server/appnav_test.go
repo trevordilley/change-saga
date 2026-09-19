@@ -222,13 +222,23 @@ func TestEmptyAppPlacesStateTheirGap(t *testing.T) {
 	if got, want := topTitles(nodes), "Overview|Personas|Design system|Onboarding|Feature flags|Epics"; got != want {
 		t.Fatalf("empty app-level list = %s, want %s", got, want)
 	}
-	for _, node := range nodes {
+	for _, node := range nodes[1:] {
 		if !node.Gap || node.Note == "" || len(node.Children) != 0 {
 			t.Fatalf("empty %s must be a stated gap: %#v", node.Title, node)
 		}
 	}
+	// The overview always has its name; each other part is a stated gap.
+	overview := findNav(t, nodes, "Overview")
+	if overview.Gap || topTitles(overview.Children) != "Name|Elevator pitch|Description|Terms and vocabulary" {
+		t.Fatalf("overview = %#v %s", overview, topTitles(overview.Children))
+	}
+	for _, part := range overview.Children[1:] {
+		if !part.Gap || part.Note == "" {
+			t.Fatalf("an absent overview part is a stated gap: %#v", part)
+		}
+	}
 	for title, note := range map[string]string{
-		"Overview": "no overview yet", "Personas": "no personas yet", "Design system": "no design system yet",
+		"Personas": "no personas yet", "Design system": "no design system yet",
 		"Onboarding": "no onboarding deck yet", "Feature flags": "no feature flags yet", "Epics": "no epics yet",
 	} {
 		if got := findNav(t, nodes, title).Note; got != note {
@@ -245,7 +255,7 @@ func TestEmptyAppPlacesStateTheirGap(t *testing.T) {
 	if err := tmpl.ExecuteTemplate(&rendered, "doc-tree", nodes); err != nil {
 		t.Fatal(err)
 	}
-	for _, note := range []string{"no personas yet", "no design system yet", "no onboarding deck yet", "no feature flags yet", "no epics yet"} {
+	for _, note := range []string{"not written yet", "no terms yet", "no personas yet", "no design system yet", "no onboarding deck yet", "no feature flags yet", "no epics yet"} {
 		if !strings.Contains(rendered.String(), `<span class="doc-note">`+note+`</span>`) {
 			t.Fatalf("rendered app-level list is missing the gap %q: %s", note, rendered.String())
 		}
@@ -389,7 +399,7 @@ func TestPageRendersTheAppLevelListFromAnAppSaga(t *testing.T) {
 	if !strings.Contains(html, `id="`+epicNavID("billing")+`-product" hidden`) {
 		t.Fatal("an epic's Product must stay collapsed on arrival")
 	}
-	for _, note := range []string{"no personas yet", "no design system yet", "no feature flags yet", "No implementation decks yet"} {
+	for _, note := range []string{"not written yet", "no terms yet", "no personas yet", "no design system yet", "no feature flags yet", "No implementation decks yet"} {
 		if !strings.Contains(html, note) {
 			t.Fatalf("the sidebar does not state the gap %q", note)
 		}
