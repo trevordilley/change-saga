@@ -99,14 +99,12 @@ func outlineFingerprint(root string) (string, error) {
 
 func skipOutlineDirectory(rel, base string) bool {
 	switch base {
-	case saga.CodeDirName, "___claims", "___verifications", "___landmarks", "messages":
-		return true
-	}
-	if strings.HasSuffix(base, ".message") {
+	// Reviews are read fresh by the review pages; the shell never shows them.
+	case saga.CodeDirName, saga.ReviewsDir, "___claims", "___verifications", "___landmarks":
 		return true
 	}
 	// Fragment packages may contain arbitrarily large asset trees. The outline
-	// reads only fragment.json and ___approvals from them.
+	// reads only fragment.json from them.
 	parts := strings.Split(rel, "/")
 	for index := 0; index < len(parts)-1; index++ {
 		if strings.HasSuffix(parts[index], ".fragment") && !strings.HasPrefix(base, "___") {

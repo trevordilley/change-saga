@@ -57,7 +57,7 @@ type app struct {
 	// every source atom or the coverage ownership graph.
 	catalogLoader func(context.Context, saga.Manifest) (gitdiff.Catalog, error)
 	// layersLoader is the injectable boundary around the comparison's layers,
-	// which decide where approval is offered.
+	// which the page marks read-only beside the pull request's review.
 	layersLoader func(context.Context) (*changeview.Layers, error)
 	generations  *snapshotcache.Store
 }
@@ -738,9 +738,9 @@ func newPageTemplate() (*template.Template, error) {
 	return newPageTemplateFor(gitdiff.Range{Against: "HEAD"})
 }
 
-// newPageTemplateFor renders a reviewer opened with rng. Approval exists only
-// in compare mode, so an observing reviewer's template renders no approve or
-// reject control anywhere; decisions already recorded remain as history.
+// newPageTemplateFor renders a reviewer opened with rng: comparing adds the
+// Change tab. The documentation it renders carries no approval or comment
+// control in either mode; those live on the pull request's review pages.
 func newPageTemplateFor(rng gitdiff.Range) (*template.Template, error) {
 	funcs := templateFuncs()
 	comparing := !rng.Observe()
