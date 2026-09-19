@@ -90,7 +90,7 @@ func TestATermPinsItsCodeAndGoesStaleWhenTheCodeIsRenamed(t *testing.T) {
 
 func statusOf(t *testing.T, root, repo string, rng gitdiff.Range) statusDocument {
 	t.Helper()
-	document, err := buildStatus(context.Background(), root, repo, rng, true)
+	document, err := buildStatus(context.Background(), root, repo, rng, true, "")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -129,19 +129,22 @@ func TestAComparisonSuggestsNewTerminologyWithoutBlocking(t *testing.T) {
 	if len(compared.NewTerminology) != 1 || compared.NewTerminology[0].Name != "KindGrader" || compared.NewTerminology[0].Location.Start != 8 {
 		t.Fatalf("new terminology = %#v", compared.NewTerminology)
 	}
-	growth := actionsIn(compared, nextaction.CategoryGrowth)
-	if len(growth) != 1 || len(growth[0].Gates) != 0 || growth[0].Command == nil || growth[0].Command.Command != "term add" ||
-		!strings.Contains(growth[0].Reason, "looks like new terminology") || growth[0].ID != compared.NextActions[len(compared.NextActions)-1].ID {
+	growth := []nextaction.Action{}
+	for _, action := range actionsIn(compared, nextaction.CategoryGrowth) {
+		if strings.HasPrefix(action.ID, "growth:term:") {
+			growth = append(growth, action)
+		}
+	}
+	if len(growth) != 1 || growth[0].Command == nil || growth[0].Command.Command != "term add" ||
+		!strings.Contains(growth[0].Reason, "looks like new terminology") || compared.NextActions[len(compared.NextActions)-1].Category != nextaction.CategoryGrowth {
 		t.Fatalf("growth = %#v", growth)
 	}
 	if strings.Join(growth[0].Command.Argv, " ") != "change-saga term add --id kind-grader --name KindGrader --definition TEXT --ref "+compared.NewTerminology[0].Location.String()+" "+root {
 		t.Fatalf("argv = %v", growth[0].Command.Argv)
 	}
-	for _, gate := range compared.Readiness.Gates {
-		for _, blocker := range gate.Blockers {
-			if strings.Contains(blocker.Resource, "kinds.go") || strings.Contains(blocker.Resource, ":term:") {
-				t.Fatalf("terminology must never block %s: %#v", gate.Name, blocker)
-			}
+	for _, action := range compared.NextActions {
+		if strings.Contains(action.Resource, ":term:") && action.Category != nextaction.CategoryGrowth {
+			t.Fatalf("terminology must never be required: %#v", action)
 		}
 	}
 	// Naming the new value in a term, even without referencing it, answers
@@ -160,8 +163,13 @@ func TestAComparisonSuggestsNewTerminologyWithoutBlocking(t *testing.T) {
 	if len(renamed.NewTerminology) != 0 {
 		t.Fatalf("a rename of a termed declaration is not new terminology: %#v", renamed.NewTerminology)
 	}
-	stale := actionsIn(renamed, nextaction.CategoryStale)
-	if len(stale) != 1 || stale[0].Resource != "urn:change-saga:atomic:term:testtaker" || len(stale[0].Gates) != 0 || stale[0].Command.Command != "term revise" {
+	stale := []nextaction.Action{}
+	for _, action := range actionsIn(renamed, nextaction.CategoryStale) {
+		if strings.HasPrefix(action.ID, "stale:term:") {
+			stale = append(stale, action)
+		}
+	}
+	if len(stale) != 1 || stale[0].Resource != "urn:change-saga:atomic:term:testtaker" || stale[0].Area != nextaction.AreaHealth || stale[0].Command.Command != "term revise" {
 		t.Fatalf("stale term action = %#v", stale)
 	}
 	inputs := []string{}

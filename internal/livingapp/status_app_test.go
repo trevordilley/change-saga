@@ -11,7 +11,6 @@ import (
 	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/livingid"
 	"github.com/twentyideas/changesaga/internal/quality"
-	"github.com/twentyideas/changesaga/internal/readiness"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
@@ -158,22 +157,12 @@ func TestAppStatusReportsPersonaGapsAndOneOrphanGroup(t *testing.T) {
 		t.Fatalf("retiring faxer leaves one orphan group with both stories: %+v", status.PersonaOrphans)
 	}
 
-	// Persona coverage is reported, never gating: requirements_ready carries
-	// no persona fact, and the coverage report carries them all.
-	requirementsGate, ok := status.Readiness.Gate(readiness.GateRequirementsReady)
-	if !ok || requirementsGate.Status != readiness.StatusReady {
-		t.Fatalf("requirements_ready = %+v", requirementsGate)
-	}
+	// Persona coverage is reported, never blocking.
 	if status.PersonaCoverage.Blocking {
 		t.Fatal("persona coverage must never block")
 	}
 	clerkURN, _ := requirements.PersonaURN("test", "clerk")
 	orphanFacts, clerkServed := 0, false
-	for _, fact := range requirementsGate.Facts {
-		if strings.Contains(fact.Code, "persona") {
-			t.Fatalf("a persona fact leaked into requirements_ready: %+v", fact)
-		}
-	}
 	for _, fact := range status.PersonaCoverage.Facts {
 		switch fact.Code {
 		case "retired_persona_stories_decided":
@@ -194,7 +183,7 @@ func TestAppStatusReportsPersonaGapsAndOneOrphanGroup(t *testing.T) {
 		}
 	}
 	if orphanFacts != 1 || !clerkServed {
-		t.Fatalf("facts: orphan groups=%d clerk fact=%v in %+v", orphanFacts, clerkServed, requirementsGate.Facts)
+		t.Fatalf("facts: orphan groups=%d clerk fact=%v in %+v", orphanFacts, clerkServed, status.PersonaCoverage.Facts)
 	}
 }
 

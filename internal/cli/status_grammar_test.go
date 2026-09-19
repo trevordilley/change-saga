@@ -32,6 +32,7 @@ func grammarHelp(t *testing.T, name string) string {
 		"sync":       func() error { return Sync(ctx, args, &output) },
 		"validate":   func() error { return Validate(ctx, args, &output) },
 		"status":     func() error { return Status(ctx, args, &output) },
+		"check":      func() error { return Check(ctx, args, &output) },
 		"spec":       func() error { return Spec(args, &output) },
 		"quality":    func() error { return qualityCommand(ctx, args, &output, strings.NewReader("")) },
 		"epic":       func() error { return Epic(ctx, args, &output) },
@@ -127,7 +128,7 @@ func TestStatusJSONKeepsV1KeysAndAddsTheAuthoringGrammar(t *testing.T) {
 			t.Errorf("status dropped version 1 key %q", key)
 		}
 	}
-	for _, key := range []string{"status_schema", "readiness", "axes", "stale", "changed_source", "quality", "next_actions", "authoring_loop"} {
+	for _, key := range []string{"status_schema", "coverage", "axes", "stale", "changed_source", "quality", "next_actions", "authoring_loop"} {
 		if _, ok := document[key]; !ok {
 			t.Errorf("status omits %q", key)
 		}

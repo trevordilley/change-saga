@@ -11,6 +11,7 @@ import (
 	"testing"
 
 	"github.com/twentyideas/changesaga/internal/applayout"
+	"github.com/twentyideas/changesaga/internal/nextaction"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
@@ -516,7 +517,7 @@ func TestStatusReportsPersonaGapsAndOneQuestionPerRetirement(t *testing.T) {
 	}
 	gapAction := false
 	for _, action := range status.NextActions {
-		gapAction = gapAction || (action.ID == "requirements:persona:"+user && action.Resource == user)
+		gapAction = gapAction || (action.ID == "growth:persona:"+user && action.Resource == user)
 	}
 	if !gapAction {
 		t.Fatalf("no next action asks which story serves the persona:\n%s", raw)
@@ -545,14 +546,14 @@ func TestStatusReportsPersonaGapsAndOneQuestionPerRetirement(t *testing.T) {
 	}
 	questions := 0
 	for _, action := range status.NextActions {
-		if strings.HasPrefix(action.ID, "requirements:retired-personas:") {
+		if strings.HasPrefix(action.ID, "growth:retired-personas:") {
 			questions++
 			if action.Resource != user || action.Question == nil || len(action.Question.Options) != 2 {
 				t.Fatalf("retirement question = %#v", action)
 			}
 		}
 		for _, story := range []string{first, second} {
-			if action.Resource == story && !strings.HasPrefix(action.ID, "requirements:retired-personas:") && strings.Contains(action.ID, "persona") {
+			if action.Resource == story && !strings.HasPrefix(action.ID, "growth:retired-personas:") && strings.Contains(action.ID, "persona") {
 				t.Fatalf("an orphaned story got its own persona action %q", action.ID)
 			}
 		}
@@ -702,8 +703,7 @@ func TestFlagGatedStoryIsImplementedButNotEnabled(t *testing.T) {
 
 // The incremental case: a first change names an epic, writes one story, and
 // explains itself with a deck, without defining a single persona. It is
-// valid, and requirements_ready answers exactly what it would without the
-// persona feature: blocked only until the story is accepted.
+// valid, status reports it and exits zero, and personas are only ever growth.
 func TestFirstChangeNeedsNoPersonas(t *testing.T) {
 	repo := t.TempDir()
 	git(t, repo, "init", "-b", "main")
@@ -730,53 +730,36 @@ func TestFirstChangeNeedsNoPersonas(t *testing.T) {
 		t.Fatalf("a first change without personas is invalid: %v\n%s", err, output.String())
 	}
 
-	requirementsReady := func() (string, []string, bool, int) {
-		t.Helper()
-		var document struct {
-			Readiness struct {
-				Gates []struct {
-					Name   string `json:"name"`
-					Status string `json:"status"`
-					Facts  []struct {
-						Code string `json:"code"`
-					} `json:"facts"`
-				} `json:"gates"`
-			} `json:"readiness"`
-			PersonaCoverage struct {
-				Blocking bool              `json:"blocking"`
-				Facts    []json.RawMessage `json:"facts"`
-			} `json:"persona_coverage"`
-		}
-		var status bytes.Buffer
-		if err := Status(ctx, []string{"--against", "main", "--json", "--repo", repo, root}, &status); err != nil && status.Len() == 0 {
-			t.Fatalf("status: %v", err)
-		}
-		if err := json.Unmarshal(status.Bytes(), &document); err != nil {
-			t.Fatalf("status --json: %v\n%s", err, status.String())
-		}
-		for _, gate := range document.Readiness.Gates {
-			if gate.Name == "requirements_ready" {
-				codes := []string{}
-				for _, fact := range gate.Facts {
-					codes = append(codes, fact.Code)
-				}
-				return gate.Status, codes, document.PersonaCoverage.Blocking, len(document.PersonaCoverage.Facts)
-			}
-		}
-		t.Fatal("status has no requirements_ready gate")
-		return "", nil, false, 0
+	var status bytes.Buffer
+	if err := Status(ctx, []string{"--against", "main", "--json", "--repo", repo, root}, &status); err != nil {
+		t.Fatalf("status reports and exits zero for a first change with no personas: %v\n%s", err, status.String())
 	}
-	state, codes, blocking, personaFacts := requirementsReady()
-	if state != "blocked" || blocking || personaFacts != 0 {
-		t.Fatalf("a proposed story blocks requirements_ready on its own: %s %v blocking=%v persona facts=%d", state, codes, blocking, personaFacts)
+	var document struct {
+		Coverage struct {
+			Areas map[string]struct {
+				Total    int  `json:"total"`
+				Complete bool `json:"complete"`
+			} `json:"areas"`
+		} `json:"coverage"`
+		PersonaCoverage struct {
+			Blocking bool              `json:"blocking"`
+			Facts    []json.RawMessage `json:"facts"`
+		} `json:"persona_coverage"`
+		NextActions []nextaction.Action `json:"next_actions"`
 	}
-	for _, code := range codes {
-		if strings.Contains(code, "persona") {
-			t.Fatalf("requirements_ready asks about personas: %v", codes)
+	if err := json.Unmarshal(status.Bytes(), &document); err != nil {
+		t.Fatalf("status --json: %v\n%s", err, status.String())
+	}
+	if document.PersonaCoverage.Blocking || len(document.PersonaCoverage.Facts) != 0 {
+		t.Fatalf("persona coverage with no personas: %+v", document.PersonaCoverage)
+	}
+	if design := document.Coverage.Areas["design"]; design.Total != 1 || design.Complete {
+		t.Fatalf("the story the change added is in scope for design: %+v", design)
+	}
+	for _, action := range document.NextActions {
+		if action.Area == "personas" && action.Category != nextaction.CategoryGrowth {
+			t.Fatalf("personas are never demanded: %#v", action)
 		}
 	}
-	acceptStory(t, root, story)
-	if state, codes, _, _ := requirementsReady(); state != "ready" {
-		t.Fatalf("an accepted story with no personas leaves requirements_ready ready, got %s %v", state, codes)
-	}
+	_ = story
 }

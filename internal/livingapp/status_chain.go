@@ -25,14 +25,20 @@ type Chain struct {
 	// CriterionTests maps a criterion to the active test cases that verify it
 	// through a current relation.
 	CriterionTests map[string][]string
-	// Relations is every active relation with its currency.
-	Relations map[string]requirements.Currency
+	// Relations is every active relation with its currency and target.
+	Relations map[string]RelationState
+}
+
+// RelationState is one active relation's currency and the record it targets.
+type RelationState struct {
+	Currency requirements.Currency
+	To       string
 }
 
 func (a *assembler) chain() Chain {
 	result := Chain{
 		TargetStories: map[string][]string{}, StoryDesign: map[string][]string{},
-		CriterionTests: map[string][]string{}, Relations: map[string]requirements.Currency{},
+		CriterionTests: map[string][]string{}, Relations: map[string]RelationState{},
 	}
 	retiredTests := map[string]bool{}
 	for urn, testCase := range a.testCases {
@@ -44,7 +50,7 @@ func (a *assembler) chain() Chain {
 		if !link.Active {
 			continue
 		}
-		result.Relations[link.URN] = link.Currency
+		result.Relations[link.URN] = RelationState{Currency: link.Currency, To: link.To}
 		if link.Currency != requirements.CurrencyCurrent {
 			continue
 		}

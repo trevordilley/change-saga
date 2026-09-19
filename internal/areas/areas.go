@@ -114,6 +114,8 @@ const (
 // example "4-9,12"), or Event for a file event. Count is how many units the
 // entry stands for, so the counts are always the sums of the entries. Via
 // names what covers a covered entry, and Reason why an uncovered one is not.
+// Targets, on the stories and personas lines, are the documentation targets
+// that reference those lines: where a link to a story would attach.
 type Entry struct {
 	Resource string   `json:"resource"`
 	Title    string   `json:"title,omitempty"`
@@ -124,6 +126,7 @@ type Entry struct {
 	Event    string   `json:"event,omitempty"`
 	Count    int      `json:"count"`
 	Via      []string `json:"via"`
+	Targets  []string `json:"targets,omitempty"`
 	Reason   string   `json:"reason,omitempty"`
 }
 
@@ -323,9 +326,9 @@ func (e evaluator) lineAreas() (Area, Area, Area) {
 		}
 		reached := e.storiesOf(owners)
 		served := e.personasOf(reached)
-		implementation.add(atom, epic, owners, "no deck Item references this changed line")
-		stories.add(atom, epic, reached, "reaches no story: its Item addresses no story")
-		personas.add(atom, epic, served, "reaches no persona: the stories it reaches name none")
+		implementation.add(atom, epic, owners, nil, "no deck Item references this changed line")
+		stories.add(atom, epic, reached, owners, "reaches no story: its Item addresses no story")
+		personas.add(atom, epic, served, owners, "reaches no persona: the stories it reaches name none")
 	}
 	return implementation.finish(), stories.finish(), personas.finish()
 }
@@ -353,7 +356,7 @@ func (e evaluator) targetAreas() (Area, Area, Area) {
 			continue
 		}
 		reached := e.storiesOf([]string{target})
-		entry := Entry{Resource: target, Title: e.in.TargetTitle[target], Epic: epic, Count: 1}
+		entry := Entry{Resource: target, Title: e.in.TargetTitle[target], Epic: epic, Count: 1, Targets: []string{target}}
 		stories.record(entry, reached, "addresses no story")
 		personas.record(entry, e.personasOf(reached), "reaches no persona: the stories it reaches name none")
 	}
@@ -496,19 +499,22 @@ type lineGroup struct {
 	numbers []int
 }
 
-func (l *lines) add(atom gitdiff.Atom, epic string, via []string, reason string) {
+func (l *lines) add(atom gitdiff.Atom, epic string, via, targets []string, reason string) {
 	if l.groups == nil {
 		l.groups = map[string]*lineGroup{}
 	}
-	via = uniqueSorted(via)
+	via, targets = uniqueSorted(via), uniqueSorted(targets)
+	if len(targets) == 0 {
+		targets = nil
+	}
 	path := firstNonEmpty(atom.Path, atom.NewPath, atom.OldPath)
-	key := strings.Join([]string{path, atom.Side, atom.Event, epic, strings.Join(via, "\x00")}, "\x01")
+	key := strings.Join([]string{path, atom.Side, atom.Event, epic, strings.Join(via, "\x00"), strings.Join(targets, "\x00")}, "\x01")
 	if atom.Kind == "event" {
 		key += "\x01" + atom.Key
 	}
 	group, ok := l.groups[key]
 	if !ok {
-		group = &lineGroup{entry: Entry{Resource: path, Epic: epic, Side: atom.Side, Event: atom.Event, Via: via}, covered: len(via) > 0}
+		group = &lineGroup{entry: Entry{Resource: path, Epic: epic, Side: atom.Side, Event: atom.Event, Via: via, Targets: targets}, covered: len(via) > 0}
 		if !group.covered {
 			group.entry.Reason = reason
 		}

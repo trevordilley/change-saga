@@ -114,7 +114,7 @@ var skillCommands = map[string]func(context.Context, []string, io.Writer) error{
 	"add-chapter": AddChapter, "add-fragment": AddFragment, "set-fragment-content": SetFragmentContent,
 	"add-landmark": AddLandmark, "cover": Cover, "remove-coverage": RemoveCoverage,
 	"replace-coverage": ReplaceCoverage, "references": References, "repin": Repin, "sync": Sync,
-	"add-claim": AddClaim, "verify-claim": VerifyClaim, "validate": Validate, "status": Status, "query": Query,
+	"add-claim": AddClaim, "verify-claim": VerifyClaim, "validate": Validate, "status": Status, "check": Check, "query": Query,
 	"serve":         func(ctx context.Context, args []string, out io.Writer) error { return Serve(ctx, args, out, false) },
 	"open":          func(ctx context.Context, args []string, out io.Writer) error { return Serve(ctx, args, out, true) },
 	"install-skill": func(_ context.Context, args []string, out io.Writer) error { return InstallSkill(args, out) },

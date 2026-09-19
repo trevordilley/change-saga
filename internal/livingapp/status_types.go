@@ -10,7 +10,6 @@ import (
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/prototypes"
 	"github.com/twentyideas/changesaga/internal/quality"
-	"github.com/twentyideas/changesaga/internal/readiness"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
@@ -141,22 +140,21 @@ type Status struct {
 	PersonaCoverage PersonaCoverage `json:"persona_coverage"`
 	// Chain is the persona -> story -> design -> code chain the coverage
 	// report walks; the report, not the chain, is the JSON contract.
-	Chain Chain `json:"-"`
-	Flags           []FlagStatus    `json:"flags"`
+	Chain Chain        `json:"-"`
+	Flags []FlagStatus `json:"flags"`
 	// Overview reports the overview's parts and which are gaps; Terms the
 	// project's vocabulary and its code health; NewTerminology the growth
 	// suggestions of a comparison. None of them is part of a readiness gate.
-	Overview       OverviewStatus           `json:"overview"`
-	Terms          []TermStatus             `json:"terms"`
-	NewTerminology []TermSuggestion         `json:"new_terminology"`
-	Stories        []StoryStatus            `json:"stories"`
-	Prototypes     []PrototypeStatus        `json:"prototypes"`
-	Readiness      readiness.GateProjection `json:"readiness"`
-	Axes           coverage.AxisProjection  `json:"axes"`
-	Quality        QualityStatus            `json:"quality"`
-	Stale          []StaleRecord            `json:"stale"`
-	ChangedSource  ChangedSource            `json:"changed_source"`
-	Diagnostics    []Diagnostic             `json:"diagnostics"`
+	Overview       OverviewStatus          `json:"overview"`
+	Terms          []TermStatus            `json:"terms"`
+	NewTerminology []TermSuggestion        `json:"new_terminology"`
+	Stories        []StoryStatus           `json:"stories"`
+	Prototypes     []PrototypeStatus       `json:"prototypes"`
+	Axes           coverage.AxisProjection `json:"axes"`
+	Quality        QualityStatus           `json:"quality"`
+	Stale          []StaleRecord           `json:"stale"`
+	ChangedSource  ChangedSource           `json:"changed_source"`
+	Diagnostics    []Diagnostic            `json:"diagnostics"`
 }
 
 // StoryStatus is the requirement identity an author needs to act on a story.

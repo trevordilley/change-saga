@@ -38,7 +38,7 @@ func (b *builder) terms() {
 		}
 		values = append(values, grammar.V("ref", ""))
 		b.add(Action{
-			ID: "stale:term:" + term.Term, Kind: KindCommand, Category: CategoryStale, Resource: term.Term,
+			ID: "stale:term:" + term.Term, Kind: KindCommand, Category: CategoryStale, Area: AreaHealth, Resource: term.Term,
 			Reason: "the code that defines term \"" + term.Name + "\" changed at " + strings.Join(stale, ", ") +
 				" (renamed?); revise the term to reference the code that defines it now, or retire it",
 			Command: ptr(b.invoke("term revise", values...)),
@@ -52,7 +52,8 @@ func (b *builder) terms() {
 		where := suggestion.Location.Path + lineSuffix(suggestion.Location.Start, suggestion.Location.End)
 		b.add(Action{
 			ID: "growth:term:" + suggestion.Location.String(), Kind: KindCommand, Category: CategoryGrowth, Resource: suggestion.Location.String(),
-			Reason: "this change adds " + name + " (" + where + ") and no term names it: this looks like new terminology; define it while the meaning is fresh?",
+			Practice: practiceTerms,
+			Reason:   "this change adds " + name + " (" + where + ") and no term names it: this looks like new terminology; define it while the meaning is fresh?",
 			Command: ptr(b.invoke("term add", grammar.V("id", termID(suggestion.Name)), grammar.V("name", suggestion.Name),
 				grammar.V("definition", ""), grammar.V("ref", suggestion.Location.String()))),
 		})

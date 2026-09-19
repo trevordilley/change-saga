@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"errors"
 	"os"
 	"path/filepath"
 	"strings"
@@ -393,8 +392,8 @@ func TestValidateFixIsANoOpWhenNothingIsMissing(t *testing.T) {
 
 // The end-to-end shape matters as much as the in-memory one: an agent polls
 // status --json until "uncovered" is empty, and a null there is a crash.
-// Complete changed-source accounting is not readiness: this Saga records no
-// story, so ready_for_review is blocked and status exits 3.
+// Status has no verdict: this Saga records no story, and status still exits
+// zero because its report can be trusted.
 func TestStatusJSONReportsEmptyCollectionsOnSuccess(t *testing.T) {
 	root, repo := coveredSaga(t)
 	// One record references the add event and the added lines exactly, so
@@ -405,9 +404,8 @@ func TestStatusJSONReportsEmptyCollectionsOnSuccess(t *testing.T) {
 	}
 
 	var output bytes.Buffer
-	var exit *StatusError
-	if err := Status(context.Background(), []string{"--against", "main", "--json", "--repo", repo, root}, &output); !errors.As(err, &exit) || exit.Code != 3 {
-		t.Fatalf("status with no accepted story = %v, want exit 3\n%s", err, output.String())
+	if err := Status(context.Background(), []string{"--against", "main", "--json", "--repo", repo, root}, &output); err != nil {
+		t.Fatalf("status with no story = %v, want exit 0\n%s", err, output.String())
 	}
 	var report map[string]json.RawMessage
 	if err := json.Unmarshal(output.Bytes(), &report); err != nil {

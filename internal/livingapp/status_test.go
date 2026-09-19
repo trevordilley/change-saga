@@ -16,7 +16,6 @@ import (
 	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/quality"
-	"github.com/twentyideas/changesaga/internal/readiness"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
@@ -364,15 +363,6 @@ func TestQualityAxisReflectsTestCasesKindsRunsAndExceptions(t *testing.T) {
 	if !orphaned {
 		t.Fatal("a test case with no verifies relation is reported as orphaned")
 	}
-
-	gate, _ := status.Readiness.Gate(readiness.GateQualityReady)
-	if gate.Status != readiness.StatusBlocked {
-		t.Fatalf("quality_ready must block on failed, stale, unrun, and missing kinds: %#v", gate.Status)
-	}
-	review, _ := status.Readiness.Gate(readiness.GateReadyForReview)
-	if !blockedBy(review, "no_failed_required_run") {
-		t.Fatalf("ready_for_review names the failed required run: %#v", review.Blockers)
-	}
 }
 
 func TestStaleSetIsPinDerivedAndNamesWhichHistoryMoved(t *testing.T) {
@@ -412,10 +402,6 @@ func TestChangedSourceAccountingIsSeparateAndCreditsOnlyTestEvidence(t *testing.
 	if source.Complete {
 		t.Fatal("an unowned changed atom keeps changed-source accounting incomplete")
 	}
-	gate, _ := status.Readiness.Gate(readiness.GateImplementationTraceReady)
-	if !blockedBy(gate, "changed_source_accounting_complete") {
-		t.Fatalf("implementation_trace_ready keeps the omission invariant as its own fact: %#v", gate.Blockers)
-	}
 	if got := cell(t, status, "positive-path", coverage.AxisImplementation); got.State != coverage.StateCoveredDirect || len(got.Links[0].Link.Code) != 1 {
 		t.Fatalf("criterion <- addresses - Item -> exact current diff covers implementation: %#v", got)
 	}
@@ -454,9 +440,8 @@ func TestImplementationPathWithStaleReferenceIsStaleSourceHistory(t *testing.T) 
 }
 
 // A Saga with no quality records has no exemption: every accepted criterion's
-// quality axis is a visible gap naming the missing kind, and quality_ready and
-// ready_for_review are blocked.
-func TestNoQualityRecordsIsAVisibleGapThatBlocksReview(t *testing.T) {
+// quality axis is a visible gap naming the missing kind.
+func TestNoQualityRecordsIsAVisibleGap(t *testing.T) {
 	inputs := qualityFixture(t)
 	inputs.Quality = quality.Document{SagaID: fixtureSaga}
 	inputs.Exceptions = nil
@@ -465,14 +450,6 @@ func TestNoQualityRecordsIsAVisibleGapThatBlocksReview(t *testing.T) {
 	got := cell(t, status, "untested", coverage.AxisQuality)
 	if got.State != coverage.StateGap || !containsText(got.Gap.Reasons, "required positive test: missing_kind") {
 		t.Fatalf("a Saga with no quality records is a visible quality gap with its reason: %#v", got)
-	}
-	gate, _ := status.Readiness.Gate(readiness.GateQualityReady)
-	if gate.Status != readiness.StatusBlocked || !blockedBy(gate, "axis_gap") {
-		t.Fatalf("quality_ready is blocked by the quality gaps: %#v", gate)
-	}
-	review, _ := status.Readiness.Gate(readiness.GateReadyForReview)
-	if review.Status != readiness.StatusBlocked {
-		t.Fatalf("ready_for_review passed with no quality records: %#v", review)
 	}
 }
 
@@ -554,15 +531,6 @@ func containsText(values []string, fragment string) bool {
 func hasPin(pins []Pin, field, pinned, current string) bool {
 	for _, pin := range pins {
 		if pin.Field == field && pin.Pinned == pinned && pin.Current == current {
-			return true
-		}
-	}
-	return false
-}
-
-func blockedBy(gate readiness.Gate, code string) bool {
-	for _, blocker := range gate.Blockers {
-		if blocker.Code == code {
 			return true
 		}
 	}

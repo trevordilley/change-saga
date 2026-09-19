@@ -4,6 +4,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/twentyideas/changesaga/internal/areas"
 	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/livingapp"
 )
@@ -52,35 +53,39 @@ func appStatus() livingapp.Status {
 	}
 }
 
-func TestEpicScopedStoryActionNamesItsEpicAndFillsTheCommand(t *testing.T) {
-	action, ok := byID(Derive(appStatus(), saga))["requirements:accept:"+appStory]
+func TestEpicScopedGrowthNamesItsEpicAndFillsTheCommand(t *testing.T) {
+	report := areas.Evaluate(areas.Inputs{
+		Scope:   areas.Scope{Kind: areas.ScopeApp},
+		Stories: []areas.Story{{URN: appStory, Title: "Wallet", Epic: appEpic, Active: true}},
+	})
+	action, ok := byID(Derive(appStatus(), saga, Context{Coverage: report}))["growth:design:"+appStory]
 	if !ok {
-		t.Fatal("a proposed story yields an accept question")
+		t.Fatal("a story with no design yields a growth suggestion")
 	}
-	if action.Epic != appEpic {
-		t.Fatalf("the action names the story's epic: %q", action.Epic)
+	if action.Epic != appEpic || action.Category != CategoryGrowth || action.Area != AreaDesign || action.Practice == "" {
+		t.Fatalf("the suggestion names the story's epic, its area, and its practice: %#v", action)
 	}
 	found := false
 	for _, command := range commandsOf(action) {
-		if command.Command != "story set-state" {
+		if command.Command != "relation add" {
 			continue
 		}
 		found = true
 		assertGrammarShape(t, command)
-		if !hasArgument(command, "epic", appEpic) || !hasArgument(command, "story", appStory) {
-			t.Fatalf("story set-state is aimed at the story's epic: %#v", command)
+		if !hasArgument(command, "epic", appEpic) || !hasArgument(command, "to", appStory) {
+			t.Fatalf("relation add is aimed at the story's epic: %#v", command)
 		}
 		if !containsArg(command.Argv, "--epic", appEpic) {
 			t.Fatalf("argv carries the epic: %v", command.Argv)
 		}
 	}
 	if !found {
-		t.Fatalf("the accept question offers story set-state: %#v", action.Question)
+		t.Fatalf("the design suggestion offers relation add: %#v", action.Question)
 	}
 }
 
 func TestPersonaGapIsAnAppLevelQuestion(t *testing.T) {
-	action, ok := byID(Derive(appStatus(), saga))["requirements:persona:"+appShopper]
+	action, ok := byID(Derive(appStatus(), saga))["growth:persona:"+appShopper]
 	if !ok {
 		t.Fatal("an active persona no accepted story serves yields a question")
 	}
@@ -90,8 +95,8 @@ func TestPersonaGapIsAnAppLevelQuestion(t *testing.T) {
 	if action.Epic != "" {
 		t.Fatalf("a persona concerns the app, not an epic: %q", action.Epic)
 	}
-	if len(action.Gates) != 0 {
-		t.Fatalf("persona coverage gates nothing: %v", action.Gates)
+	if action.Category != CategoryGrowth || action.Area != AreaPersonas {
+		t.Fatalf("persona coverage is growth, never required: %#v", action)
 	}
 	accept := false
 	for _, command := range commandsOf(action) {
@@ -112,7 +117,7 @@ func TestPersonaOrphanGroupIsExactlyOneAction(t *testing.T) {
 	actions := Derive(appStatus(), saga)
 	matches := []Action{}
 	for _, action := range actions {
-		if strings.HasPrefix(action.ID, "requirements:retired-personas:") {
+		if strings.HasPrefix(action.ID, "growth:retired-personas:") {
 			matches = append(matches, action)
 		}
 	}

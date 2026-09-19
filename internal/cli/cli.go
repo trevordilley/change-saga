@@ -89,7 +89,7 @@ func (e *StatusError) Error() string { return "command reported a non-success st
 // overview, the per-command -h banner, and argument errors cannot drift apart.
 var commandOrder = []string{
 	"init", "epic", "overview", "term", "persona", "flag", "prototype", "story", "criterion", "citation", "relation", "design", "plan", "quality", "add-deck", "add-slide", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "cover", "remove-coverage", "replace-coverage", "references", "repin", "sync", "add-claim", "verify-claim",
-	"review", "validate", "status", "query",
+	"review", "validate", "status", "check", "query",
 	"serve", "open", "install-skill", "spec",
 }
 
@@ -183,7 +183,8 @@ var commandUsage = map[string]string{
 	"review withdraw":             "change-saga review withdraw --review ID --slide ID --reviewer-kind human|ai [flags] <saga>",
 	"review comment":              "change-saga review comment --review ID (--target SLIDE[/ITEM] | --reply-to ID) --body TEXT --reviewer-kind human|ai [--resolve|--reopen] [flags] <saga>",
 	"validate":                    "change-saga validate [--json] [--fix] <saga>",
-	"status":                      "change-saga status [--json] [--repo PATH] [--against REV [--head REV]] <saga>",
+	"status":                      "change-saga status [--json] [--repo PATH] [--epic ID] [--against REV [--head REV]] <saga>",
+	"check":                       "change-saga check --covers AREA[,AREA...] [--json] [--repo PATH] [--epic ID] [--against REV [--head REV]] <saga>",
 	"query":                       "change-saga query <operation> --saga PATH [--repo PATH] [operation flags]",
 	"serve":                       "change-saga serve [--addr ADDR] [--repo PATH] [--open] [--detach] [--against REV [--head REV]] <saga>",
 	"open":                        "change-saga open [--addr ADDR] [--repo PATH] [--against REV [--head REV]] <saga>",
@@ -894,13 +895,14 @@ func Status(ctx context.Context, args []string, out io.Writer) error {
 	repoDir := flags.String("repo", "", "source repository checkout; required when separate")
 	opening := registerOpenFlags(flags)
 	allowRepositoryMismatch := flags.Bool("allow-repository-mismatch", false, "use a checkout whose origin differs from the declared repository")
+	epic := flags.String("epic", "", "narrow the report to one epic (id or URN)")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
 	if flags.NArg() != 1 {
 		return fmt.Errorf("usage: %s", commandUsage["status"])
 	}
-	status, err := buildStatus(ctx, flags.Arg(0), *repoDir, opening.rng(), *allowRepositoryMismatch)
+	status, err := buildStatus(ctx, flags.Arg(0), *repoDir, opening.rng(), *allowRepositoryMismatch, *epic)
 	if err != nil {
 		return err
 	}
@@ -913,10 +915,9 @@ func Status(ctx context.Context, args []string, out io.Writer) error {
 		printComparison(out, status.Comparison, *maxItems)
 		printLivingStatus(out, status, *maxItems)
 	}
-	if !status.readyForReview() {
-		return &StatusError{Code: 3}
-	}
-	return nil
+	// Status has no verdict: it exits zero whenever its report can be
+	// trusted, whatever the report finds.
+	return status.trustworthy(flags.Arg(0))
 }
 
 func buildReport(ctx context.Context, root, repoDir string, rng gitdiff.Range, allowRepositoryMismatch ...bool) (coverage.Report, error) {
