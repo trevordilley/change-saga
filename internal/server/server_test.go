@@ -149,7 +149,8 @@ func TestManagedRuntimeEndpointsRequireTokenAndSignalShutdown(t *testing.T) {
 }
 
 func TestColdComparisonEndpointReportsBuildingCacheWithoutMaterializingReviewData(t *testing.T) {
-	application := &app{}
+	// Comparing: observing has no comparison, so its Coverage never waits on one.
+	application := &app{rng: gitdiff.Range{Against: "main"}}
 	application.cache.building = true
 	handler := newMux(application)
 
@@ -454,8 +455,9 @@ func TestPageHandlerShipsAChapterShellAndRedirectsLegacyRoutes(t *testing.T) {
 	writeServerFile(t, filepath.Join(serverEpicDir(root), "beta.chapter", "beta.fragment", "content.md"), "Beta-exclusive narrative\n")
 	application := &app{root: root, sourceDir: root, template: serverTemplate(t)}
 
+	// The chapters belong to the fixture's epic, so its page is their shell.
 	overview := httptest.NewRecorder()
-	application.page(overview, httptest.NewRequest(http.MethodGet, "/", nil))
+	newMux(application).ServeHTTP(overview, httptest.NewRequest(http.MethodGet, epicHref(serverEpic), nil))
 	if overview.Code != http.StatusOK {
 		t.Fatalf("overview status = %d: %s", overview.Code, overview.Body.String())
 	}
@@ -469,7 +471,7 @@ func TestPageHandlerShipsAChapterShellAndRedirectsLegacyRoutes(t *testing.T) {
 			t.Fatalf("first load carried narrative content it was only asked to describe: %q", narrative)
 		}
 	}
-	if !strings.Contains(overviewBody, `href="#`+domID(alphaTarget)+`"`) ||
+	if !strings.Contains(overviewBody, `href="`+epicHref(serverEpic)+`#`+domID(alphaTarget)+`"`) ||
 		!strings.Contains(overviewBody, `data-section-href="/api/section?target=`+template.HTMLEscapeString(url.QueryEscape(alphaTarget))+`"`) {
 		t.Fatal("the shell did not describe its chapters as fetchable summaries")
 	}
@@ -528,7 +530,7 @@ func TestPageHandlerShipsAChapterShellAndRedirectsLegacyRoutes(t *testing.T) {
 	chapterRequest.SetPathValue("chapter", "alpha")
 	chapter := httptest.NewRecorder()
 	application.page(chapter, chapterRequest)
-	if chapter.Code != http.StatusFound || chapter.Header().Get("Location") != "/#"+domID(alphaTarget) {
+	if chapter.Code != http.StatusFound || chapter.Header().Get("Location") != epicHref(serverEpic)+"#"+domID(alphaTarget) {
 		t.Fatalf("legacy chapter route did not redirect to its in-page target: status=%d location=%q", chapter.Code, chapter.Header().Get("Location"))
 	}
 

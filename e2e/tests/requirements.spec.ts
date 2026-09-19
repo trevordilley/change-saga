@@ -38,15 +38,25 @@ test("requirements remain canonical while stories and criteria get dedicated rev
   await story.getByRole("link", { name: /Every story and criterion/ }).click();
 
   await expect(page).toHaveURL(/\/requirements\/canonical-review\/criteria\/stable-targets$/);
+  // A criterion has its own traceability view: its statement, what links to
+  // it and to its story, and a way back to the story.
+  const criterionPage = page.locator("[data-criterion-page]");
+  await expect(criterionPage.getByRole("heading", { name: "Every story and criterion keeps its canonical stable target.", level: 1 })).toBeVisible();
+  await expect(criterionPage).toHaveAttribute("data-requirement-target", "urn:change-saga:wave-one:story:canonical-review:criterion:stable-targets");
+  await expect(criterionPage.locator("[data-criterion-own-trace]")).toBeVisible();
+  await expectNoSeriousAccessibilityViolations(page);
+  await criterionPage.getByRole("link", { name: "Review canonical requirements" }).first().click();
+
+  await expect(page).toHaveURL(/\/requirements\/canonical-review$/);
   await expect(page.getByRole("heading", { name: "Review canonical requirements", level: 1 })).toBeVisible();
   await expect(page.getByText(statement)).toBeVisible();
+  await expect(page.locator("[data-story-context]")).toBeVisible();
   const storyDetails = page.locator("details.requirement-story-details");
   await expect(storyDetails).not.toHaveAttribute("open", "");
   await expect(storyDetails.getByText("Lifecycle", { exact: true })).not.toBeVisible();
   await expectNoSeriousAccessibilityViolations(page);
   const criterion = page.locator('[data-requirement-target="urn:change-saga:wave-one:story:canonical-review:criterion:stable-targets"]');
   await expect(criterion).toBeVisible();
-  await expect(criterion).toHaveClass(/selected/);
   await storyDetails.getByText("Details", { exact: true }).click();
   await expect(storyDetails.getByText("Lifecycle", { exact: true })).toBeVisible();
 });

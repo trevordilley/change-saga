@@ -4,6 +4,7 @@ import (
 	"strings"
 
 	"github.com/twentyideas/changesaga/internal/prototypes"
+	"github.com/twentyideas/changesaga/internal/quality"
 	"github.com/twentyideas/changesaga/internal/requirements"
 	"github.com/twentyideas/changesaga/internal/saga"
 )
@@ -30,6 +31,8 @@ type appNavSources struct {
 	page          *requirementsPageView
 	prototypes    prototypes.Document
 	prototypeNote string
+	// quality holds the test cases each epic's Quality lists.
+	quality quality.Document
 	// decks is every projected deck row, implementation and onboarding.
 	decks []*navNodeView
 	// overviewActive says which overview row the page shows; see overviewNav.
@@ -107,7 +110,7 @@ func makeEpicNav(sources appNavSources, epic *saga.Epic, deckRows map[string]*na
 	if epic.Design != nil {
 		for _, child := range epic.Design.Children {
 			if child.Kind == "chapter" {
-				technical = append(technical, makeChapterNav(child))
+				technical = append(technical, onEpicPage(makeChapterNav(child), epic.ID))
 			}
 		}
 	}
@@ -118,10 +121,28 @@ func makeEpicNav(sources appNavSources, epic *saga.Epic, deckRows map[string]*na
 		prototypeNote:  sources.prototypeNote,
 		uxDecks:        uxDecks,
 		technical:      technical,
+		testCases:      testCaseNav(sources.quality, epic.ID),
 		implementation: implementation,
 	})
-	node := &navNodeView{Title: epic.Title, NodeID: prefix, Icon: "product", Group: true, Expanded: true}
-	node.Children = append(reportRootNav(epic.Report), places...)
+	// The epic row opens the epic's page; its places disclose beneath it.
+	node := &navNodeView{Title: epic.Title, Href: epicHref(epic.ID), NodeID: prefix, Icon: "product", Group: true, Expanded: true}
+	var report []*navNodeView
+	for _, row := range reportRootNav(epic.Report) {
+		report = append(report, onEpicPage(row, epic.ID))
+	}
+	node.Children = append(report, places...)
+	return node
+}
+
+// onEpicPage points a row's in-page anchors, and its outline's, at the epic's
+// page, where the epic's own chapters are rendered.
+func onEpicPage(node *navNodeView, epic string) *navNodeView {
+	if strings.HasPrefix(node.Href, "#") {
+		node.Href = epicHref(epic) + node.Href
+	}
+	for _, child := range node.Children {
+		onEpicPage(child, epic)
+	}
 	return node
 }
 
@@ -139,8 +160,8 @@ func reportRootNav(root *saga.Section) []*navNodeView {
 	return nodes
 }
 
-// personaNav names each persona and whether an accepted story serves it. There
-// is no persona page yet, so rows are names rather than links.
+// personaNav names each persona, links its page, and says when no accepted
+// story serves it yet.
 func personaNav(document requirements.Document) []*navNodeView {
 	served := map[string]bool{}
 	for _, story := range document.Stories {
@@ -158,7 +179,7 @@ func personaNav(document requirements.Document) []*navNodeView {
 		if persona.CurrentRevision != nil && strings.TrimSpace(persona.CurrentRevision.Name) != "" {
 			title = persona.CurrentRevision.Name
 		}
-		node := &navNodeView{Title: title, NodeID: "nav-" + domID(urn), Icon: "story"}
+		node := &navNodeView{Title: title, Href: personaHref(persona.Identity.ID), NodeID: "nav-" + domID(urn), Icon: "story"}
 		switch {
 		case !persona.Active():
 			node.Note = "retired"

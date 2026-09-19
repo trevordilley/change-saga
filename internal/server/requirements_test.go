@@ -67,18 +67,37 @@ func TestRequirementsTemplatesGiveOverviewAndStoryDistinctPresentations(t *testi
 	if err != nil {
 		t.Fatal(err)
 	}
-	overview.Rationale = "Keep product intent and implementation evidence connected."
+	overview.Groups = []requirementGroupView{{Epic: traceLink{Title: "Shop", Href: "/epics/shop", Target: "urn:change-saga:test:epic:shop"}, Description: "Buying things.", Stories: overview.Stories}}
 	var rendered bytes.Buffer
 	if err := tmpl.ExecuteTemplate(&rendered, "requirements-page", overview); err != nil {
 		t.Fatal(err)
 	}
-	for _, expected := range []string{"<h1>Requirements</h1>", "Rationale", overview.Rationale, "requirements-story-card", "1 criterion", "/requirements/checkout"} {
+	if strings.Contains(rendered.String(), "Rationale") {
+		t.Fatal("the requirements overview still titles the elevator pitch as its rationale")
+	}
+	for _, expected := range []string{"<h1>Requirements</h1>", `data-requirements-epic="urn:change-saga:test:epic:shop"`, `<a href="/epics/shop">Shop</a>`, "Buying things.", "requirements-story-card", "1 criterion", "/requirements/checkout"} {
 		if !strings.Contains(rendered.String(), expected) {
 			t.Fatalf("requirements overview missing %q: %s", expected, rendered.String())
 		}
 	}
 
-	detail, _, err := makeRequirementsSurface(document, requirementRoute{active: true, storyID: "checkout", criterionID: "fast"})
+	// A criterion has its own traceability view: its statement, what links
+	// to it, what links to its story, and the story's other criteria.
+	criterion, _, err := makeRequirementsSurface(document, requirementRoute{active: true, storyID: "checkout", criterionID: "fast"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	rendered.Reset()
+	if err := tmpl.ExecuteTemplate(&rendered, "requirements-page", criterion); err != nil {
+		t.Fatal(err)
+	}
+	for _, expected := range []string{"data-criterion-page", "<h1>Checkout completes promptly.</h1>", "data-criterion-own-trace", "data-criterion-story-trace", `href="/requirements/checkout"`, storyURN + ":criterion:fast"} {
+		if !strings.Contains(rendered.String(), expected) {
+			t.Fatalf("criterion view missing %q: %s", expected, rendered.String())
+		}
+	}
+
+	detail, _, err := makeRequirementsSurface(document, requirementRoute{active: true, storyID: "checkout"})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -86,7 +105,7 @@ func TestRequirementsTemplatesGiveOverviewAndStoryDistinctPresentations(t *testi
 	if err := tmpl.ExecuteTemplate(&rendered, "requirements-page", detail); err != nil {
 		t.Fatal(err)
 	}
-	for _, expected := range []string{"Details", "Lifecycle", "Acceptance criteria", "requirement-criterion selected", storyURN + ":criterion:fast"} {
+	for _, expected := range []string{"Details", "Lifecycle", "Acceptance criteria", "data-story-context", "data-story-trace", storyURN + ":criterion:fast"} {
 		if !strings.Contains(rendered.String(), expected) {
 			t.Fatalf("story detail missing %q: %s", expected, rendered.String())
 		}
@@ -98,13 +117,6 @@ func TestRequirementsTemplatesGiveOverviewAndStoryDistinctPresentations(t *testi
 	}
 	if strings.Contains(rendered.String(), `<details class="requirement-story-details" open`) {
 		t.Fatalf("story details must be collapsed by default: %s", rendered.String())
-	}
-}
-
-func TestFirstMarkdownParagraphSkipsTheOverviewHeading(t *testing.T) {
-	source := "# Change overview {#overview}\n\nWhy this product change matters.\nIt preserves intent.\n\n## Status\n\n- proposed\n"
-	if got := firstMarkdownParagraph(source); got != "Why this product change matters. It preserves intent." {
-		t.Fatalf("rationale = %q", got)
 	}
 }
 

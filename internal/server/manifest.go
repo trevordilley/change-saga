@@ -83,7 +83,10 @@ type ManifestOwnerView struct {
 	Kind    string
 	Chapter string
 	Href    string
-	Slide   *SlideReferenceView
+	// Anchor is Href's in-page anchor, which the drawer opens by name even
+	// when Href opens another page, such as an epic's.
+	Anchor string
+	Slide  *SlideReferenceView
 }
 
 type ManifestTargetView struct {
@@ -412,11 +415,13 @@ func manifestOwner(target string, locations map[string]manifestTargetLocation) *
 
 func indexManifestTargets(document *saga.Saga) map[string]manifestTargetLocation {
 	result := map[string]manifestTargetLocation{}
+	epics := epicTargets(document)
 	order := 0
 	add := func(target, title, kind, chapter, href string, slide *SlideReferenceView) {
 		order++
+		href = onEpicPageHref(epics, target, href)
 		result[target] = manifestTargetLocation{ManifestOwnerView: ManifestOwnerView{
-			Target: target, Title: title, Kind: kind, Chapter: chapter, Href: href, Slide: slide,
+			Target: target, Title: title, Kind: kind, Chapter: chapter, Href: href, Anchor: hrefAnchor(href), Slide: slide,
 		}, order: order}
 	}
 	add(document.Section.Target, document.Manifest.Title, "Saga", "Overview", sagaHref(document.Section.Target), nil)
@@ -442,7 +447,7 @@ func indexManifestTargets(document *saga.Saga) map[string]manifestTargetLocation
 			if fragment.SlideMeta != nil {
 				slide = &SlideReferenceView{
 					ID: fragment.ID, Title: title, Target: fragment.Target,
-					Anchor: strings.TrimPrefix(fragmentHref, "#"), Href: fragmentHref,
+					Anchor: hrefAnchor(fragmentHref), Href: fragmentHref,
 					URL: fragmentAssetURL(fragment), MediaType: fragment.MediaType,
 				}
 				kind = "Slide"

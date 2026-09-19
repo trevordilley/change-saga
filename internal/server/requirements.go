@@ -20,9 +20,10 @@ var errRequirementNotFound = errors.New("requirement not found")
 // every target, revision, lifecycle state, and criterion comes from
 // ___requirements.
 type requirementsPageView struct {
-	Active           bool
-	Overview         bool
-	Rationale        string
+	Active   bool
+	Overview bool
+	// Groups is the overview's stories by epic, in epic order.
+	Groups           []requirementGroupView
 	Stories          []*requirementStoryView
 	Story            *requirementStoryView
 	FocusedCriterion *requirementCriterionView
@@ -60,6 +61,27 @@ type requirementStoryView struct {
 	Criteria           []*requirementCriterionView
 	// Terms are the project vocabulary that names this story.
 	Terms []termLinkView
+	// EpicLink, Personas, Citations, and Trace are the story's declared
+	// links, filled for the story a page shows.
+	EpicLink  traceLink
+	Personas  []traceLink
+	Citations []citationView
+	Trace     traceGroups
+}
+
+// requirementGroupView is one epic's stories on the requirements overview.
+type requirementGroupView struct {
+	Epic        traceLink
+	Description string
+	Stories     []*requirementStoryView
+}
+
+// citationView is one source a story cites.
+type citationView struct {
+	Title     string
+	Kind      string
+	Reference string
+	Href      string
 }
 
 type requirementCriterionView struct {
@@ -71,6 +93,9 @@ type requirementCriterionView struct {
 	Href      string
 	Statement string
 	Selected  bool
+	// Trace is what links to this criterion: its design, the slides that
+	// explain it, and the tests that verify it.
+	Trace traceGroups
 }
 
 type requirementHistoryView struct {
@@ -223,8 +248,8 @@ func makeRequirementsNav(page *requirementsPageView) *navNodeView {
 }
 
 // makeEpicRequirementsNav lists one epic's stories, or every story when epic
-// is empty. Story numbering stays app-wide, so a label names one story
-// wherever it appears.
+// is empty. A story row reads as the story's title: an ordinal such as
+// "Story 03" named nothing a reader could recognize.
 func makeEpicRequirementsNav(page *requirementsPageView, epic, prefix string) *navNodeView {
 	root := &navNodeView{
 		Title: "Requirements", Href: "/requirements", NodeID: prefix + "-requirements",
@@ -236,13 +261,13 @@ func makeEpicRequirementsNav(page *requirementsPageView, epic, prefix string) *n
 		}
 		selectedStory := page.Story != nil && page.Story.ID == story.ID
 		node := &navNodeView{
-			Title: story.Label + " · " + story.Title, Href: story.Href, NodeID: "nav-" + story.DOMID,
+			Title: story.Title, Href: story.Href, NodeID: "nav-" + story.DOMID,
 			Icon: "story", Requirement: true, Active: selectedStory && page.FocusedCriterion == nil,
 			Expanded: selectedStory,
 		}
 		for _, criterion := range story.Criteria {
 			node.Children = append(node.Children, &navNodeView{
-				Title: criterion.Label + " · " + criterion.Statement, Href: criterion.Href,
+				Title: criterion.Label + " · " + shortStatement(criterion.Statement, criterionNavRunes), Href: criterion.Href,
 				NodeID: "nav-" + criterion.DOMID, Icon: "criterion", Requirement: true,
 				Active: criterion.Selected,
 			})
@@ -265,4 +290,22 @@ func clearActiveNav(nodes []*navNodeView) {
 		node.Active = false
 		clearActiveNav(node.Children)
 	}
+}
+
+// criterionNavRunes bounds a criterion's sidebar row. Titles wrap rather than
+// truncate, so an unbounded statement became a paragraph in the sidebar; the
+// criterion's page carries the whole statement.
+const criterionNavRunes = 64
+
+// shortStatement cuts statement at a word boundary within limit runes.
+func shortStatement(statement string, limit int) string {
+	runes := []rune(strings.TrimSpace(statement))
+	if len(runes) <= limit {
+		return string(runes)
+	}
+	cut := string(runes[:limit])
+	if space := strings.LastIndex(cut, " "); space > limit/2 {
+		cut = cut[:space]
+	}
+	return strings.TrimRight(cut, " ,;:.") + "…"
 }

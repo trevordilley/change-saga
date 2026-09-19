@@ -84,7 +84,7 @@ test("ships the saga as a shell and fetches each chapter and explanation once, w
     if (url.pathname === "/api/section") sectionRequests.push(url.searchParams.get("target") ?? "");
     if (url.pathname === "/api/fragment") fragmentRequests.push(url.searchParams.get("target") ?? "");
   });
-  await page.goto(largeSaga.baseURL, { waitUntil: "load" });
+  await page.goto(largeSaga.epicURL, { waitUntil: "load" });
 
   const sagaView = page.locator('[data-view="saga"]');
   await expect(sagaView.locator("section.chapter")).toHaveCount(largeSagaScale.chapters);
@@ -124,7 +124,7 @@ test("ships the saga as a shell and fetches each chapter and explanation once, w
   // A deep link into a chapter nobody has opened still resolves: the anchor is
   // located, its chapter is fetched, and the page scrolls to it.
   const deepLink = await chapterExplanations.last().getAttribute("id");
-  await page.goto(`${largeSaga.baseURL}/#${deepLink}`, { waitUntil: "load" });
+  await page.goto(`${largeSaga.epicURL}#${deepLink}`, { waitUntil: "load" });
   const destination = page.locator(`[id="${deepLink}"]`);
   await expect(destination).toBeVisible();
   await expect(destination.locator(".fragment-markdown")).toBeVisible();
@@ -160,7 +160,7 @@ test("loads a coverage file diff only once the reviewer opens that file", async 
 });
 
 test("loads a linked-code file diff on demand and keeps it answerable to its explanation", async ({ page, largeSaga }) => {
-  await page.goto(largeSaga.baseURL, { waitUntil: "load" });
+  await page.goto(largeSaga.epicURL, { waitUntil: "load" });
   const overview = page.locator('[data-view="saga"] article.fragment').first();
   await expect(overview.locator(".fragment-markdown")).toBeVisible();
   await overview.hover();
