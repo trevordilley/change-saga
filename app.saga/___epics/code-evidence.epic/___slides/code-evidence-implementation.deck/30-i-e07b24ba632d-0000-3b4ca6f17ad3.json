@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "pin-missing",
+  "slide": "reference-resolution",
+  "rank": 0,
+  "kind": "node",
+  "label": "Missing pin: digest fallback",
+  "description": "When the pinned commit is not in the repository, the reference is found by searching the viewed file for its content digest; only a unique match counts as current.",
+  "selector": {
+    "type": "element",
+    "element_id": "pin-missing"
+  }
+}

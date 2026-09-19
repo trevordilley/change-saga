@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "ad15b79feb5d404df52c9192d762a34a032a9701",
+      "path": "internal/coderesolve/resolve.go",
+      "start": 120,
+      "end": 130,
+      "digest": "sha256:e0faf0ccb37fb32515b691cbac41838963ba31d23947762b83742a3d3f706922",
+      "note": "Falls back to a unique content-digest match at the viewed commit when the pinned commit is gone, so squash merges and deleted branches keep their references."
+    },
+    {
+      "commit": "ad15b79feb5d404df52c9192d762a34a032a9701",
+      "path": "internal/coderesolve/resolve.go",
+      "start": 249,
+      "end": 267,
+      "digest": "sha256:a2ae630d6fdcd61cf0a7695c99f879b404190b1ce8b0a07ebea736f95c8d54d5",
+      "note": "Falls back to a unique content-digest match at the viewed commit when the pinned commit is gone, so squash merges and deleted branches keep their references."
+    }
+  ]
+}

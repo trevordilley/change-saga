@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "unchanged-path",
+  "slide": "reference-resolution",
+  "rank": 20,
+  "kind": "node",
+  "label": "Untouched path stays current",
+  "description": "When the viewed commit is the pin, or the path did not change between them, the reference is current at the same lines.",
+  "selector": {
+    "type": "element",
+    "element_id": "unchanged-path"
+  }
+}

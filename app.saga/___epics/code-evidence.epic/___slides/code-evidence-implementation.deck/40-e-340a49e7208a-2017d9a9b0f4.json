@@ -1,0 +1,45 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "ad15b79feb5d404df52c9192d762a34a032a9701",
+      "path": "internal/coderesolve/resolve.go",
+      "start": 158,
+      "end": 158,
+      "digest": "sha256:78266f11321f06a11654f2a72f64f90c5c40601b52a7cc4125d6c705714d7c12",
+      "note": "Shifts a line range across hunks wholly before it, so moved lines stay current at their new location."
+    },
+    {
+      "commit": "ad15b79feb5d404df52c9192d762a34a032a9701",
+      "path": "internal/coderesolve/resolve.go",
+      "start": 162,
+      "end": 165,
+      "digest": "sha256:57baaa24c0a21584f8ebf4581f311e635f4cb6d52f4db667be3c918e168f33d3",
+      "note": "Shifts a line range across hunks wholly before it, so moved lines stay current at their new location."
+    },
+    {
+      "commit": "ad15b79feb5d404df52c9192d762a34a032a9701",
+      "path": "internal/coderesolve/resolve.go",
+      "start": 168,
+      "end": 172,
+      "digest": "sha256:fbc8edbcb94f4da4af497d3038322a0893833fbe0e48a0891eff697527a7a1b7",
+      "note": "Shifts a line range across hunks wholly before it, so moved lines stay current at their new location."
+    },
+    {
+      "commit": "ad15b79feb5d404df52c9192d762a34a032a9701",
+      "path": "internal/coderesolve/resolve.go",
+      "start": 184,
+      "end": 187,
+      "digest": "sha256:5c4a533f7671ae5707af9024e6af587bf123227ed38be099f164d6fbaba2ba5a",
+      "note": "Shifts a line range across hunks wholly before it, so moved lines stay current at their new location."
+    },
+    {
+      "commit": "ad15b79feb5d404df52c9192d762a34a032a9701",
+      "path": "internal/coderesolve/resolve.go",
+      "start": 192,
+      "end": 194,
+      "digest": "sha256:0a572d0b95955f23d0fb83b348ae40c9829a5c68e9ad404ee43bbef2a6846ee0",
+      "note": "Shifts a line range across hunks wholly before it, so moved lines stay current at their new location."
+    }
+  ]
+}

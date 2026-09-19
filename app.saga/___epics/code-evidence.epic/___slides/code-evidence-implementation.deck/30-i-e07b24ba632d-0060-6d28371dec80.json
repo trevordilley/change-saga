@@ -1,0 +1,15 @@
+{
+  "version": 4,
+  "id": "insertion-inside",
+  "slide": "reference-resolution",
+  "rank": 60,
+  "kind": "callout",
+  "label": "Insertion inside the range",
+  "description": "Surprise: an insertion inside the range fails the remap, so the owning Item goes stale and must be re-authored.",
+  "selector": {
+    "type": "element",
+    "element_id": "insertion-inside"
+  },
+  "about": "remap-range",
+  "body": "Adding a line inside the referenced range makes the reference stale rather than growing it, because the explanation may no longer describe that code."
+}
