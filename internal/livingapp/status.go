@@ -144,6 +144,7 @@ func Assemble(in StatusInputs) Status {
 		ChangedSource: readiness.ChangedSourceAccounting{Complete: status.ChangedSource.Complete, Uncovered: status.ChangedSource.uncoveredRefs, Stale: staleReferences},
 	})
 	status.Stale = a.staleRecords()
+	status.Chain = a.chain()
 	return status
 }
 

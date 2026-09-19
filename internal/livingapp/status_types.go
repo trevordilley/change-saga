@@ -139,6 +139,9 @@ type Status struct {
 	// PersonaCoverage reports the persona -> story link. It never blocks a
 	// readiness gate.
 	PersonaCoverage PersonaCoverage `json:"persona_coverage"`
+	// Chain is the persona -> story -> design -> code chain the coverage
+	// report walks; the report, not the chain, is the JSON contract.
+	Chain Chain `json:"-"`
 	Flags           []FlagStatus    `json:"flags"`
 	// Overview reports the overview's parts and which are gaps; Terms the
 	// project's vocabulary and its code health; NewTerminology the growth
