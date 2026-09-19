@@ -167,7 +167,10 @@ type sectionView struct {
 	*saga.Section
 	// Deferred marks a chapter summary whose body has not been rendered. The
 	// body arrives from /api/section the first time the chapter is opened.
-	Deferred      bool
+	Deferred bool
+	// DeckRole is a deck's role, which names its slides: an implementation
+	// deck's slides are not review slides; only a review's are.
+	DeckRole      string
 	DOMID         string
 	ChangeCount   int
 	Attached      *attachedCodeView
@@ -855,9 +858,22 @@ func (a *app) page(w http.ResponseWriter, r *http.Request) {
 	}
 	if data.EmbeddedDecks {
 		data.SlideRoot = makeSectionView(slideRoot, scope)
+		labelDeckRoles(data.SlideRoot, document)
 	}
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	renderHTML(w, a.template, "page", data, "The review page could not be rendered.")
+}
+
+// labelDeckRoles records each projected deck's role on its view, so the slide
+// viewer can say what kind of slide it shows.
+func labelDeckRoles(root *sectionView, document *saga.Saga) {
+	roles := map[string]string{}
+	for _, deck := range append(append([]*saga.Deck{}, document.Decks...), document.Onboarding...) {
+		roles[deck.Target] = deck.Role
+	}
+	for _, deck := range root.ChildViews {
+		deck.DeckRole = roles[deck.Target]
+	}
 }
 
 // requirementsRationale projects the first authored overview paragraph into

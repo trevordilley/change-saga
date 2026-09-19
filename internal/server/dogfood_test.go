@@ -4,8 +4,39 @@ import (
 	"errors"
 	"net/http"
 	"net/http/httptest"
+	"path/filepath"
+	"strings"
 	"testing"
+
+	"github.com/twentyideas/changesaga/internal/gitdiff"
 )
+
+// The repository's own app Saga is the real Saga these regressions were
+// found on. The tests assert shapes that hold for any content it grows.
+var dogfoodSaga = filepath.Join("..", "..", "app.saga")
+
+// dogfoodPage renders one reviewer path of the repository's app Saga,
+// observing HEAD.
+func dogfoodPage(t *testing.T, path string) (int, string) {
+	t.Helper()
+	tmpl, err := newPageTemplateFor(gitdiff.Range{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	application := &app{root: dogfoodSaga, sourceDir: filepath.Join("..", ".."), template: tmpl}
+	recorder := httptest.NewRecorder()
+	newMux(application).ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, path, nil))
+	return recorder.Code, recorder.Body.String()
+}
+
+func dogfoodOK(t *testing.T, path string) string {
+	t.Helper()
+	code, body := dogfoodPage(t, path)
+	if code != http.StatusOK {
+		t.Fatalf("GET %s = %d\n%s", path, code, body)
+	}
+	return body
+}
 
 // disconnectedWriter is a browser that went away: every body write fails.
 // It counts status writes, which net/http reports as superfluous after the
@@ -35,5 +66,24 @@ func TestPageWritesItsStatusOnceWhenTheClientGoesAway(t *testing.T) {
 	(&app{root: root, sourceDir: root, template: serverTemplate(t)}).page(writer, httptest.NewRequest(http.MethodGet, "/", nil))
 	if writer.headers > 1 {
 		t.Fatalf("page wrote its status %d times", writer.headers)
+	}
+}
+
+// Only a review's slides are review slides. The slide viewer names an
+// implementation deck's and the onboarding deck's slides for what they are.
+func TestSlideViewerNamesSlidesByTheirDeckRole(t *testing.T) {
+	if strings.Contains(pageStyles, "Review slide") {
+		t.Fatal("the slide viewer still labels documentation slides as review slides")
+	}
+	for _, label := range []string{"'Implementation slide'", "[data-deck-role=onboarding] .fragment-head::before{content:'Onboarding slide'}"} {
+		if !strings.Contains(pageStyles, label) {
+			t.Fatalf("styles lack %s", label)
+		}
+	}
+	page := dogfoodOK(t, "/")
+	for _, role := range []string{`data-deck-role="change"`, `data-deck-role="onboarding"`} {
+		if !strings.Contains(page, role) {
+			t.Fatalf("slide viewer lacks %s", role)
+		}
 	}
 }
