@@ -278,7 +278,7 @@ land after the review's head, exactly those commits are unreviewed. If the
 branch is rebased so the review's head is no longer in its history, the review
 is out of date; approvals of records that did not change can carry forward.
 
-**Reviews chain.** New commits get a follow-up review of just the new range
+**Reviews chain (recommended; see open decision 8).** New commits get a follow-up review of just the new range
 rather than stretching an existing one. A pull request is fully reviewed when
 its completed reviews chain from the merge-base to its head with no gap. Each
 link keeps its own permanent record, and re-review is incremental by
@@ -338,6 +338,9 @@ reconstructs it.
 6. Must every discussion be resolved before a review can complete?
 7. Is a review deck optional? Incremental adoption suggests yes: a small change
    may need only approvals.
+8. Do reviews chain (a review's range never changes, and new commits get a
+   follow-up review), or does one review's head advance as the pull request
+   moves? Chaining is recommended.
 
 ## Execution
 
