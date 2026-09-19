@@ -1,0 +1,21 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "implementation-under-test",
+  "test_case": "urn:change-saga:app:test-case:resolve-remaps-and-stales",
+  "test_revision": "urn:change-saga:app:test-case:resolve-remaps-and-stales:revision:r1",
+  "role": "implementation_under_test",
+  "code": [
+    {
+      "commit": "4d0b4d8dd9048391b7737e0c452759c25333ccb7",
+      "path": "internal/coderesolve/resolve.go",
+      "start": 115,
+      "end": 194,
+      "digest": "sha256:bd3a255ffdcfa1d90beb5d29340b987b735875a2533cca9fdb64257aa4974520"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-09-19T20:54:23Z"
+}
