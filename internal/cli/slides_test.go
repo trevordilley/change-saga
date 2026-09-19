@@ -29,7 +29,7 @@ func TestImplementationDeckAuthoringLoop(t *testing.T) {
 
 	root := filepath.Join(t.TempDir(), "visual.saga")
 	var output bytes.Buffer
-	if err := Init(context.Background(), []string{"--repo", repo, "--base", "main", "--head", "HEAD", "--title", "Visual", root}, &output); err != nil {
+	if err := Init(context.Background(), []string{"--repo", repo, "--title", "Visual", root}, &output); err != nil {
 		t.Fatal(err)
 	}
 	addTestApp(t, root)
@@ -77,10 +77,10 @@ func TestImplementationDeckAuthoringLoop(t *testing.T) {
 	}
 	item := document.Decks[0].Slides[0].Items[0]
 	uri := strings.TrimSpace(git(t, repo, "rev-parse", "HEAD")) + ":README.md#L1"
-	if err := Cover(context.Background(), []string{"--repo", repo, "--target", document.Decks[0].Slides[0].Target, "--ref", uri, root}, &output); err == nil || !strings.Contains(err.Error(), "must target an Item") {
+	if err := Cover(context.Background(), []string{"--against", "main", "--repo", repo, "--target", document.Decks[0].Slides[0].Target, "--ref", uri, root}, &output); err == nil || !strings.Contains(err.Error(), "must target an Item") {
 		t.Fatalf("slide-level coverage was not refused: %v", err)
 	}
-	if err := Cover(context.Background(), []string{"--repo", repo, "--target", item.Target, "--ref", uri, root}, &output); err != nil {
+	if err := Cover(context.Background(), []string{"--against", "main", "--repo", repo, "--target", item.Target, "--ref", uri, root}, &output); err != nil {
 		t.Fatalf("item coverage failed: %v", err)
 	}
 	if err := Review(context.Background(), []string{"--target", item.Path, "--state", "approved", "--reviewer-kind", "human", root}, &output); err == nil || !strings.Contains(err.Error(), "must target a slide") {
@@ -103,7 +103,7 @@ func TestImplementationDeckAuthoringLoop(t *testing.T) {
 		t.Fatalf("slide approval or Item comment was not preserved: valid=%v err=%v slide=%#v", validation.Valid, err, document.Decks[0].Slides[0])
 	}
 	var queryOutput bytes.Buffer
-	if err := Query(context.Background(), []string{"slide", "--saga", root, "--repo", repo, "--target", document.Decks[0].Slides[0].Target}, &queryOutput); err != nil {
+	if err := Query(context.Background(), []string{"slide", "--saga", root, "--repo", repo, "--against", "main", "--target", document.Decks[0].Slides[0].Target}, &queryOutput); err != nil {
 		t.Fatalf("slide query failed: %v\n%s", err, queryOutput.String())
 	}
 	var envelope map[string]any
@@ -135,7 +135,7 @@ func TestSagaEmbedsSeveralIndependentSlideDecks(t *testing.T) {
 
 	root := filepath.Join(t.TempDir(), "decks.saga")
 	var output bytes.Buffer
-	if err := Init(context.Background(), []string{"--repo", repo, "--base", "main", "--head", "HEAD", "--title", "Decks", root}, &output); err != nil {
+	if err := Init(context.Background(), []string{"--repo", repo, "--title", "Decks", root}, &output); err != nil {
 		t.Fatal(err)
 	}
 	personaURN := addTestApp(t, root)
@@ -164,7 +164,7 @@ func TestSagaEmbedsSeveralIndependentSlideDecks(t *testing.T) {
 		}
 	}
 	item := document.Decks[0].Slides[0].Items[0]
-	changes, err := gitdiff.Read(context.Background(), repo, document.Manifest.Source.Repository, document.Manifest.Source.Base, document.Manifest.Source.Head)
+	changes, err := gitdiff.Read(context.Background(), repo, document.Manifest.Source.Repository, "main", "HEAD")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -178,11 +178,11 @@ func TestSagaEmbedsSeveralIndependentSlideDecks(t *testing.T) {
 	if uri == "" {
 		t.Fatalf("fixture has no changed README line: %#v", changes.Atoms)
 	}
-	if err := Cover(context.Background(), []string{"--repo", repo, "--target", item.Target, "--ref", uri, root}, &output); err != nil {
+	if err := Cover(context.Background(), []string{"--against", "main", "--repo", repo, "--target", item.Target, "--ref", uri, root}, &output); err != nil {
 		t.Fatalf("embedded Item coverage failed: %v", err)
 	}
 	var traceOutput bytes.Buffer
-	if err := Query(context.Background(), []string{"traceability", "--saga", root, "--repo", repo, "--ref", uri}, &traceOutput); err != nil || !strings.Contains(traceOutput.String(), `"unlinked_code_evidence":[{"deck":`) {
+	if err := Query(context.Background(), []string{"traceability", "--saga", root, "--repo", repo, "--against", "main", "--ref", uri}, &traceOutput); err != nil || !strings.Contains(traceOutput.String(), `"unlinked_code_evidence":[{"deck":`) {
 		t.Fatalf("unlinked embedded evidence was not exposed: err=%v\n%s", err, traceOutput.String())
 	}
 	if err := Story(context.Background(), []string{"add", "--epic", testEpic, "--persona", personaURN, "--id", "checkout", "--revision", "r1", "--event", "proposed", "--title", "Checkout", "--statement", "As a buyer I can complete checkout", "--priority", "high", "--criterion", "safe=Checkout preserves the validated state", "--criterion", "fast=Checkout does not add a retry delay", root}, &output); err != nil {
@@ -197,14 +197,14 @@ func TestSagaEmbedsSeveralIndependentSlideDecks(t *testing.T) {
 		t.Fatalf("link slide to story: %v", err)
 	}
 	traceOutput.Reset()
-	if err := Query(context.Background(), []string{"traceability", "--saga", root, "--repo", repo, "--ref", uri}, &traceOutput); err != nil || !strings.Contains(traceOutput.String(), `"unlinked_code_evidence":[{"deck":`) {
+	if err := Query(context.Background(), []string{"traceability", "--saga", root, "--repo", repo, "--against", "main", "--ref", uri}, &traceOutput); err != nil || !strings.Contains(traceOutput.String(), `"unlinked_code_evidence":[{"deck":`) {
 		t.Fatalf("evidence linked only to an unaccepted story was incorrectly closed: err=%v\n%s", err, traceOutput.String())
 	}
 	if err := Story(context.Background(), []string{"set-state", "--story", storyURN, "--event", "accepted", "--parent", proposedURN, "--state", "accepted", root}, &output); err != nil {
 		t.Fatalf("accept linked story: %v", err)
 	}
 	traceOutput.Reset()
-	if err := Query(context.Background(), []string{"traceability", "--saga", root, "--repo", repo, "--ref", uri}, &traceOutput); err != nil {
+	if err := Query(context.Background(), []string{"traceability", "--saga", root, "--repo", repo, "--against", "main", "--ref", uri}, &traceOutput); err != nil {
 		t.Fatalf("reverse requirement trace: %v\n%s", err, traceOutput.String())
 	}
 	for _, want := range []string{storyURN, criterionURN, secondCriterionURN, document.Decks[0].Slides[0].Target, item.Target, uri, `"unlinked_code_evidence":[]`} {
@@ -214,7 +214,7 @@ func TestSagaEmbedsSeveralIndependentSlideDecks(t *testing.T) {
 	}
 	headCommit := strings.TrimSpace(git(t, repo, "rev-parse", "HEAD"))
 	traceOutput.Reset()
-	if err := Query(context.Background(), []string{"traceability", "--saga", root, "--repo", repo, "--commit", headCommit}, &traceOutput); err != nil || !strings.Contains(traceOutput.String(), storyURN) || !strings.Contains(traceOutput.String(), item.Target) {
+	if err := Query(context.Background(), []string{"traceability", "--saga", root, "--repo", repo, "--against", "main", "--commit", headCommit}, &traceOutput); err != nil || !strings.Contains(traceOutput.String(), storyURN) || !strings.Contains(traceOutput.String(), item.Target) {
 		t.Fatalf("comparison-head requirement trace failed for %q: err=%v\n%s", headCommit, err, traceOutput.String())
 	}
 	if err := Review(context.Background(), []string{"--target", document.Decks[0].Slides[0].Path, "--state", "approved", "--reviewer-kind", "human", root}, &output); err != nil {
@@ -240,11 +240,11 @@ func TestSagaEmbedsSeveralIndependentSlideDecks(t *testing.T) {
 	}
 
 	var queryOutput bytes.Buffer
-	if err := Query(context.Background(), []string{"slide-diffs", "--saga", root, "--repo", repo, "--target", item.Target}, &queryOutput); err != nil || !strings.Contains(queryOutput.String(), item.Target) || !strings.Contains(queryOutput.String(), "README.md") {
+	if err := Query(context.Background(), []string{"slide-diffs", "--saga", root, "--repo", repo, "--against", "main", "--target", item.Target}, &queryOutput); err != nil || !strings.Contains(queryOutput.String(), item.Target) || !strings.Contains(queryOutput.String(), "README.md") {
 		t.Fatalf("embedded Item did not trace to its code: err=%v\n%s", err, queryOutput.String())
 	}
 	queryOutput.Reset()
-	if err := Query(context.Background(), []string{"diff-owners", "--saga", root, "--repo", repo, "--ref", uri}, &queryOutput); err != nil || !strings.Contains(queryOutput.String(), item.Target) {
+	if err := Query(context.Background(), []string{"diff-owners", "--saga", root, "--repo", repo, "--against", "main", "--ref", uri}, &queryOutput); err != nil || !strings.Contains(queryOutput.String(), item.Target) {
 		t.Fatalf("code did not trace back to its embedded Item: err=%v\n%s", err, queryOutput.String())
 	}
 	queryOutput.Reset()
@@ -260,7 +260,7 @@ func TestSagaEmbedsSeveralIndependentSlideDecks(t *testing.T) {
 		t.Fatalf("overview did not expose both the report and its decks: %#v", envelope)
 	}
 	queryOutput.Reset()
-	if err := Query(context.Background(), []string{"slide", "--saga", root, "--repo", repo, "--target", document.Decks[0].Slides[0].Target}, &queryOutput); err != nil {
+	if err := Query(context.Background(), []string{"slide", "--saga", root, "--repo", repo, "--against", "main", "--target", document.Decks[0].Slides[0].Target}, &queryOutput); err != nil {
 		t.Fatalf("embedded slide query: %v\n%s", err, queryOutput.String())
 	}
 	envelope = map[string]any{}

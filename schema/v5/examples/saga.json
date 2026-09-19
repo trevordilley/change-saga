@@ -4,8 +4,6 @@
   "id": "checkout-refund",
   "title": "Refund window",
   "source": {
-    "repository": "https://github.com/acme/checkout.git",
-    "base": "main",
-    "head": "feature/refund-window"
+    "repository": "https://github.com/acme/checkout.git"
   }
 }

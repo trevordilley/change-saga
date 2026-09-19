@@ -261,7 +261,7 @@ func sourceContent(state string, file, lines int) string {
 func createSagaTree(root, base string, options LargeSagaOptions, fixture *LargeSaga) ([]generatedFragment, error) {
 	manifest := saga.Manifest{
 		Schema: saga.SagaSchemaURL, Version: saga.SagaVersion, ID: "large-benchmark", Title: "Large benchmark saga",
-		Source: saga.Source{Repository: largeSagaRepository, Base: base, Head: "HEAD"},
+		Source: saga.Source{Repository: largeSagaRepository},
 	}
 	if err := writeJSON(filepath.Join(root, "saga.json"), manifest); err != nil {
 		return nil, err

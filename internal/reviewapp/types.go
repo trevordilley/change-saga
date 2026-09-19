@@ -21,6 +21,9 @@ const (
 type OpenOptions struct {
 	SagaRoot  string
 	SourceDir string
+	// Range is how the Saga is opened: observe one commit, or compare a
+	// change against its merge-base. It is never read from the Saga.
+	Range gitdiff.Range
 	// SummaryOnly builds the hierarchy and aggregate coverage/review counts
 	// without retaining atom-level indexes used by focused query operations.
 	SummaryOnly bool
@@ -113,12 +116,12 @@ type Page struct {
 }
 
 type SagaIdentity struct {
-	ID    string   `json:"id"`
-	Title string   `json:"title"`
-	PR    *saga.PR `json:"pr,omitempty"`
+	ID    string `json:"id"`
+	Title string `json:"title"`
 }
 
 type SourceSnapshot struct {
+	Mode       string `json:"mode"`
 	Repository string `json:"repository"`
 	Base       string `json:"base"`
 	Head       string `json:"head"`

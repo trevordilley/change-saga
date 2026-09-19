@@ -28,9 +28,29 @@ const StatusSchema = "change-saga.status/v2"
 type statusDocument struct {
 	coverage.Report
 	Schema string `json:"status_schema"`
+	// Opening is how the Saga was opened. It is never read from the Saga.
+	Opening opening `json:"opening"`
 	livingapp.Status
 	NextActions   []nextaction.Action `json:"next_actions"`
 	AuthoringLoop nextaction.Loop     `json:"authoring_loop"`
+}
+
+// opening names how a Saga was opened: observe one commit, or compare head
+// with its merge-base with against.
+type opening struct {
+	Mode    string `json:"mode"`
+	Against string `json:"against,omitempty"`
+	Head    string `json:"head"`
+	BaseOID string `json:"base_oid,omitempty"`
+	HeadOID string `json:"head_oid"`
+}
+
+func openingOf(changes gitdiff.ChangeSet) opening {
+	value := opening{Mode: changes.Mode, Against: changes.Base, Head: changes.Head, HeadOID: changes.HeadOID}
+	if changes.Mode == gitdiff.ModeCompare {
+		value.BaseOID = changes.BaseOID
+	}
+	return value
 }
 
 // comparison is one Saga snapshot with the source comparison it describes.
@@ -42,13 +62,13 @@ type comparison struct {
 	checkout   string
 }
 
-func readComparison(ctx context.Context, root, repoDir string, allowMismatch bool) (comparison, error) {
+func readComparison(ctx context.Context, root, repoDir string, rng gitdiff.Range, allowMismatch bool) (comparison, error) {
 	document, validation, err := saga.Load(root)
 	if err != nil {
 		return comparison{}, err
 	}
 	checkout := firstNonEmpty(repoDir, document.Root)
-	changes, err := gitdiff.ReadWithOptions(ctx, checkout, document.Manifest.Source.Repository, document.Manifest.Source.Base, document.Manifest.Source.Head, gitdiff.ReadOptions{AllowRepositoryMismatch: allowMismatch})
+	changes, err := gitdiff.ReadRange(ctx, checkout, document.Manifest.Source.Repository, rng, gitdiff.ReadOptions{AllowRepositoryMismatch: allowMismatch})
 	if err != nil {
 		return comparison{}, fmt.Errorf("read source diff (use --repo for a separate saga repository): %w", err)
 	}
@@ -64,8 +84,8 @@ func readComparison(ctx context.Context, root, repoDir string, allowMismatch boo
 // buildStatus composes the complete status document. A living-record load
 // failure never hides changed-source accounting: it becomes a diagnostic and
 // the first next action.
-func buildStatus(ctx context.Context, root, repoDir string, allowMismatch bool) (statusDocument, error) {
-	value, err := readComparison(ctx, root, repoDir, allowMismatch)
+func buildStatus(ctx context.Context, root, repoDir string, rng gitdiff.Range, allowMismatch bool) (statusDocument, error) {
+	value, err := readComparison(ctx, root, repoDir, rng, allowMismatch)
 	if err != nil {
 		return statusDocument{}, err
 	}
@@ -84,7 +104,7 @@ func buildStatus(ctx context.Context, root, repoDir string, allowMismatch bool) 
 		})
 	}
 	return statusDocument{
-		Report: value.report, Schema: StatusSchema, Status: living,
+		Report: value.report, Schema: StatusSchema, Opening: openingOf(value.changes), Status: living,
 		NextActions: nextaction.Derive(living, root), AuthoringLoop: nextaction.AuthoringLoop(root),
 	}, nil
 }

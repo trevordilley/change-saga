@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/base64"
 	"encoding/json"
+	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"strings"
 	"testing"
 	"unicode/utf8"
@@ -28,7 +29,7 @@ func TestSeparateRepositoriesLargeAndActiveContentAreBoundedAndInert(t *testing.
 	fixture.AddEscapingAssetSymlink()
 	before := fixture.State()
 
-	session, err := Open(context.Background(), OpenOptions{SagaRoot: fixture.SagaRoot, SourceDir: fixture.SourceDir})
+	session, err := Open(context.Background(), OpenOptions{SagaRoot: fixture.SagaRoot, SourceDir: fixture.SourceDir, Range: gitdiff.Range{Against: fixture.BaseOID}})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -92,7 +93,7 @@ func TestCursorsAreStableBoundAndIntegrityChecked(t *testing.T) {
 	}
 	cursor := *first.Page.NextCursor
 
-	reopened, err := Open(ctx, OpenOptions{SagaRoot: fixture.root, SourceDir: fixture.repo})
+	reopened, err := Open(ctx, OpenOptions{SagaRoot: fixture.root, SourceDir: fixture.repo, Range: gitdiff.Range{Against: fixture.base}})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -129,7 +130,7 @@ func TestInvalidAndAmbiguousSagasFailBeforeQueries(t *testing.T) {
 		t.Run(testCase.name, func(t *testing.T) {
 			fixture := querytest.New(t)
 			testCase.alter(fixture)
-			_, err := Open(context.Background(), OpenOptions{SagaRoot: fixture.SagaRoot, SourceDir: fixture.SourceDir})
+			_, err := Open(context.Background(), OpenOptions{SagaRoot: fixture.SagaRoot, SourceDir: fixture.SourceDir, Range: gitdiff.Range{Against: fixture.BaseOID}})
 			assertCode(t, err, CodeInvalidSaga)
 		})
 	}

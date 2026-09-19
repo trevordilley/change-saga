@@ -4,6 +4,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"github.com/twentyideas/changesaga/internal/coderef"
 	"io"
 	"os"
 	"strings"
@@ -490,9 +491,9 @@ func qualityRunRecord(args []string, out io.Writer, stdin io.Reader) error {
 	summary := flags.String("summary", "", "what ran and what was observed")
 	command := flags.String("command", "", "command that ran, if any; recorded, never executed")
 	executedAt := flags.String("executed-at", "", "RFC 3339 execution time; defaults to now")
-	repository := flags.String("repository", "", "source repository that ran; defaults to the Saga source")
-	base := flags.String("base", "", "source base that ran; defaults to the Saga source")
-	head := flags.String("head", "", "source head that ran; defaults to the Saga source")
+	repository := flags.String("repository", "", "source repository that ran; defaults to the Saga's repository")
+	commit := flags.String("commit", "HEAD", "code commit the run executed against")
+	repoDir := flags.String("repo", "", "source repository checkout; required when separate")
 	from := flags.String("from", "", "read a structured request from a JSON file, or - for stdin")
 	requestID := flags.String("request-id", "", "idempotency key")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
@@ -525,11 +526,21 @@ func qualityRunRecord(args []string, out io.Writer, stdin io.Reader) error {
 		return fmt.Errorf("--executed-at must be RFC 3339: %w", parseErr)
 	}
 	root := flags.Arg(0)
-	if *repository != "" || *base != "" || *head != "" {
-		if *repository == "" || *base == "" || *head == "" {
-			return fmt.Errorf("--repository, --base, and --head must be provided together")
+	if request.Source == nil || request.Source.Commit == "" || flagWasSet(flags, "commit") || flagWasSet(flags, "repository") {
+		source := quality.SourceIdentity{Repository: *repository}
+		if request.Source != nil && !flagWasSet(flags, "repository") {
+			source.Repository = request.Source.Repository
 		}
-		request.Source = &quality.SourceIdentity{Repository: *repository, Base: *base, Head: *head}
+		ranAt := strings.ToLower(*commit)
+		if !coderef.ValidCommit(ranAt) {
+			resolved, err := resolveCommit(context.Background(), firstNonEmpty(*repoDir, root), *commit)
+			if err != nil {
+				return fmt.Errorf("resolve the commit the run executed against (use --commit and --repo): %w", err)
+			}
+			ranAt = resolved
+		}
+		source.Commit = ranAt
+		request.Source = &source
 	}
 	if strings.TrimSpace(request.TestCase) == "" || strings.TrimSpace(request.Result) == "" || strings.TrimSpace(request.Summary) == "" || len(request.Evidence) == 0 {
 		return fmt.Errorf("usage: %s", commandUsage[name])

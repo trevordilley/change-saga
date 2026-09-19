@@ -7,8 +7,7 @@
   "parents": [],
   "source": {
     "repository": "https://github.com/acme/checkout.git",
-    "base": "0123456789abcdef0123456789abcdef01234567",
-    "head": "product-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    "commit": "0123456789abcdef0123456789abcdef01234567"
   },
   "result": "passed",
   "summary": "Boundary case passed in CI on Linux.",

@@ -37,8 +37,11 @@ import (
 )
 
 type app struct {
-	root          string
-	sourceDir     string
+	root      string
+	sourceDir string
+	// rng is how the reviewer was opened: observe one commit, or compare a
+	// change against its merge-base. It never comes from the Saga.
+	rng           gitdiff.Range
 	template      *template.Template
 	mutationToken string
 	shutdownToken string
@@ -65,6 +68,8 @@ type app struct {
 // stored only in the user's private runtime directory, and never rendered into
 // saga content.
 type ManagedOptions struct {
+	// Range is how the Saga is opened; the zero value observes HEAD.
+	Range         gitdiff.Range
 	ShutdownToken string
 	OnReady       func(string) error
 }
@@ -342,7 +347,7 @@ func ListenManaged(ctx context.Context, root, sourceDir, addr string, openBrowse
 		return fmt.Errorf("open review cache: %w", err)
 	}
 	stopCh := make(chan struct{}, 1)
-	application := &app{root: abs, sourceDir: sourceDir, template: tmpl, mutationToken: mutationToken, shutdownToken: options.ShutdownToken, generations: generations}
+	application := &app{root: abs, sourceDir: sourceDir, rng: options.Range, template: tmpl, mutationToken: mutationToken, shutdownToken: options.ShutdownToken, generations: generations}
 	application.shutdown = func() {
 		select {
 		case stopCh <- struct{}{}:

@@ -894,6 +894,9 @@ func validateMerge(value Merge, name string) error {
 	if !coderef.ValidCommit(value.Commit) || name != MergeFilename(value.Commit) {
 		return fmt.Errorf("merge record must be named <commit>.json for its full landed commit")
 	}
+	if value.Base != "" && !coderef.ValidCommit(value.Base) {
+		return fmt.Errorf("merge record base must be a full commit")
+	}
 	for index, commit := range value.Commits {
 		if !coderef.ValidCommit(commit.Commit) || strings.TrimSpace(commit.Subject) == "" || commit.Date.IsZero() {
 			return fmt.Errorf("merged commit %d requires a full commit, a date, and a subject", index+1)

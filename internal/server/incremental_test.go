@@ -2,6 +2,7 @@ package server
 
 import (
 	"context"
+	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
@@ -30,7 +31,7 @@ func boundedFixture(t *testing.T) (testfixture.LargeSaga, *app, *http.ServeMux) 
 	if err != nil {
 		t.Fatal(err)
 	}
-	application := &app{root: fixture.Root, sourceDir: fixture.Repository, template: tmpl}
+	application := &app{root: fixture.Root, sourceDir: fixture.Repository, rng: gitdiff.Range{Against: fixture.Base}, template: tmpl}
 	return fixture, application, newMux(application)
 }
 
@@ -161,7 +162,7 @@ func TestCodeCatalogListsEveryExplanationThatUsesTheSelectedFile(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	application := &app{root: fixture.Root, sourceDir: fixture.Repository, template: tmpl}
+	application := &app{root: fixture.Root, sourceDir: fixture.Repository, rng: gitdiff.Range{Against: fixture.Base}, template: tmpl}
 	application.comparisonLoader = func(context.Context) (*reviewSnapshot, error) {
 		t.Fatal("reverse evidence links requested the full source comparison")
 		return nil, nil

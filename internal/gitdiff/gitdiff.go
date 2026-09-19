@@ -43,6 +43,9 @@ type Atom struct {
 // merge-base of the declared base and head, and HeadOID the head commit; the
 // comparison is BaseOID..HeadOID excluding every .saga directory.
 type ChangeSet struct {
+	// Mode is observe or compare; see Range. An observed ChangeSet has no
+	// atoms and its BaseOID is its HeadOID.
+	Mode        string `json:"mode,omitempty"`
 	Repository  string `json:"repository"`
 	Base        string `json:"base"`
 	Head        string `json:"head"`
@@ -77,6 +80,7 @@ type ReadOptions struct {
 // atoms: opening Code can therefore enumerate files without constructing the
 // complete comparison first.
 type Catalog struct {
+	Mode       string        `json:"mode,omitempty"`
 	Repository string        `json:"repository"`
 	Base       string        `json:"base"`
 	Head       string        `json:"head"`

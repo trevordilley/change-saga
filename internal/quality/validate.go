@@ -495,8 +495,8 @@ func validateTestCaseGraphs(testCase *TestCase, sagaID string, source SourceIden
 		} else if value.TestRevision != currentRevisionURN {
 			reasons = append(reasons, "test revision changed")
 		}
-		if value.Source != source {
-			reasons = append(reasons, "source comparison changed")
+		if value.Source.Repository != source.Repository {
+			reasons = append(reasons, "source repository changed")
 		}
 		for _, evidenceURN := range value.Evidence {
 			if !currentEvidence[evidenceURN] {
@@ -704,8 +704,8 @@ func validateSource(problems *validationErrors, source SourceIdentity) {
 	if err != nil || canonical != source.Repository {
 		problems.add("source.repository must be a canonical absolute repository URI")
 	}
-	if strings.TrimSpace(source.Base) == "" || strings.TrimSpace(source.Head) == "" {
-		problems.add("source.base and source.head are required")
+	if !coderef.ValidCommit(source.Commit) {
+		problems.add("source.commit must be a full commit object ID")
 	}
 }
 

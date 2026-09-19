@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 	"fmt"
+	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
@@ -338,7 +339,7 @@ func newRootTestServer(tb testing.TB, parent string, options testfixture.LargeSa
 		tb.Fatal(err)
 	}
 	application := &app{
-		root: fixture.Root, sourceDir: fixture.Repository, template: tmpl,
+		root: fixture.Root, sourceDir: fixture.Repository, rng: gitdiff.Range{Against: fixture.Base}, template: tmpl,
 	}
 	return rootTestServer{handler: newMux(application), application: application, fixture: fixture}
 }
@@ -443,7 +444,7 @@ func measureRootFirstLoad(tb testing.TB, name string, options testfixture.LargeS
 	var page string
 	for sample := 0; sample < 3; sample++ {
 		application := &app{
-			root: fixture.Root, sourceDir: fixture.Repository, template: tmpl,
+			root: fixture.Root, sourceDir: fixture.Repository, rng: gitdiff.Range{Against: fixture.Base}, template: tmpl,
 		}
 		handler = newMux(application)
 		started := time.Now()
@@ -546,7 +547,7 @@ func newFirstLoadHandler(tb testing.TB, options testfixture.LargeSagaOptions) *h
 	if err != nil {
 		tb.Fatal(err)
 	}
-	handler := newMux(&app{root: fixture.Root, sourceDir: fixture.Repository, template: tmpl})
+	handler := newMux(&app{root: fixture.Root, sourceDir: fixture.Repository, rng: gitdiff.Range{Against: fixture.Base}, template: tmpl})
 	firstLoadPage(tb, handler)
 	return handler
 }

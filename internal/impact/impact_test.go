@@ -26,7 +26,7 @@ func TestAnalyzeProjectsReplacementAdditionsAndNewFilesWithoutReadingContent(t *
 	flowTarget := saga.FragmentTarget("codebase", "flow")
 	guardTarget := saga.LandmarkTarget("codebase", "flow", "guard")
 	document := &saga.Saga{
-		Manifest: saga.Manifest{ID: "codebase", Title: "Codebase", Source: saga.Source{Repository: "https://example.test/acme/app.git", Base: "root", Head: "documented"}},
+		Manifest: saga.Manifest{ID: "codebase", Title: "Codebase", Source: saga.Source{Repository: "https://example.test/acme/app.git"}},
 		Section: &saga.Section{Target: saga.SagaTarget("codebase"), Fragments: []*saga.Fragment{{
 			ID: "flow", Title: "Request flow", Path: "flow.fragment", Entrypoint: "content.md", Target: flowTarget,
 			Code:      append(codeAt("app.go", 1, 1), codeAt("app.go", 2, 2)...),

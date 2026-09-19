@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"io"
 	"os"
 	"path/filepath"
@@ -177,7 +178,7 @@ func TestQueryDispatchesEveryOperationAndPreservesArguments(t *testing.T) {
 				t.Fatal(err)
 			}
 			wantSummary := test.operation == "overview" || test.operation == "children"
-			if opened != (queryOpenOptions{SagaRoot: "review.saga", SourceDir: "source-repo", SummaryOnly: wantSummary, Operation: test.operation}) {
+			if opened != (queryOpenOptions{SagaRoot: "review.saga", SourceDir: "source-repo", Range: gitdiff.Range{Head: "HEAD"}, SummaryOnly: wantSummary, Operation: test.operation}) {
 				t.Fatalf("open options = %#v", opened)
 			}
 			if session.called != test.operation || !reflect.DeepEqual(session.request, test.want) {

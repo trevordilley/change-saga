@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -23,7 +24,6 @@ func TestAuthoringLoopAgainstGitDiff(t *testing.T) {
 	writeFile(t, filepath.Join(repo, "README.md"), "base\n")
 	git(t, repo, "add", "README.md")
 	git(t, repo, "commit", "-m", "base")
-	base := strings.TrimSpace(git(t, repo, "rev-parse", "HEAD"))
 	git(t, repo, "checkout", "-b", "feature")
 	writeFile(t, filepath.Join(repo, "app.go"), "package app\n\nconst Ready = true\n")
 	git(t, repo, "add", "app.go")
@@ -31,7 +31,7 @@ func TestAuthoringLoopAgainstGitDiff(t *testing.T) {
 
 	root := filepath.Join(t.TempDir(), "pr-1.saga")
 	var output bytes.Buffer
-	if err := Init(context.Background(), []string{"--repo", repo, "--repository", "https://example.test/acme/app.git", "--base", base, "--head", "HEAD", "--title", "Feature", root}, &output); err != nil {
+	if err := Init(context.Background(), []string{"--repo", repo, "--repository", "https://example.test/acme/app.git", "--title", "Feature", root}, &output); err != nil {
 		t.Fatal(err)
 	}
 	bootstrap, err := os.ReadFile(filepath.Join(root, "README.md"))
@@ -76,7 +76,7 @@ func TestAuthoringLoopAgainstGitDiff(t *testing.T) {
 	if err := AddSection(context.Background(), []string{"--epic", testEpic, "--title", "Request flow", root, "backend.chapter/request-flow"}, &output); err != nil {
 		t.Fatal(err)
 	}
-	report, err := buildReport(context.Background(), root, repo)
+	report, err := buildReport(context.Background(), root, repo, gitdiff.Range{Against: "main"})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -84,13 +84,13 @@ func TestAuthoringLoopAgainstGitDiff(t *testing.T) {
 		t.Fatalf("expected an uncovered add event and three lines: %#v", report.Summary)
 	}
 	output.Reset()
-	if err := Cover(context.Background(), []string{"--repo", repo, "--target", "___overview/overview.fragment", "--path", "app.go", "--side", "new", "--lines", "1-3", root}, &output); err != nil {
+	if err := Cover(context.Background(), []string{"--against", "main", "--repo", repo, "--target", "___overview/overview.fragment", "--path", "app.go", "--side", "new", "--lines", "1-3", root}, &output); err != nil {
 		t.Fatal(err)
 	}
-	if err := Cover(context.Background(), []string{"--repo", repo, "--target", "___overview/overview.fragment", "--path", "app.go", "--file", root}, &output); err != nil {
+	if err := Cover(context.Background(), []string{"--against", "main", "--repo", repo, "--target", "___overview/overview.fragment", "--path", "app.go", "--file", root}, &output); err != nil {
 		t.Fatal(err)
 	}
-	report, err = buildReport(context.Background(), root, repo)
+	report, err = buildReport(context.Background(), root, repo, gitdiff.Range{Against: "main"})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -160,7 +160,7 @@ func TestInstallSkillPrintsPortableAuthoringContract(t *testing.T) {
 		"interactive HTML", "data flows", "data models", "Reference only the code a fragment or landmark explains",
 		"zero citations", "code-bearing SVG/HTML", "node, edge, arrow, transition", "SVG element bounds become on-canvas links automatically",
 		"change-saga query mappings --sort scrutiny", "change-saga add-claim", "change-saga verify-claim",
-		"change-saga compare --json", "must_update", "new_content", "source diffs only",
+		"--against REV", "\"affected\"", "change-saga sync",
 		"read the code diff independently", "All-atoms-mapped is an omission invariant",
 		"Storyboard visual questions", "system-context diagram", "state machine", "entity-relationship diagram",
 		"Silhouette test", "Relationship test", "Surprise test", "Contact-sheet test", "Do not use cards as a universal container",
@@ -282,7 +282,7 @@ func TestRepositoryDiscoveryRequiresOptInForLocalOrigin(t *testing.T) {
 func TestCoverRejectsReferenceAbsentFromRepository(t *testing.T) {
 	root, repo := coveredSaga(t)
 	var output bytes.Buffer
-	err := Cover(context.Background(), []string{"--repo", repo, "--ref", strings.Repeat("a", 40) + ":internal/service/handler.go", root}, &output)
+	err := Cover(context.Background(), []string{"--against", "main", "--repo", repo, "--ref", strings.Repeat("a", 40) + ":internal/service/handler.go", root}, &output)
 	if err == nil {
 		t.Fatal("a reference to a commit absent from the repository was accepted")
 	}
@@ -290,7 +290,7 @@ func TestCoverRejectsReferenceAbsentFromRepository(t *testing.T) {
 		t.Fatalf("a refused reference left records: %v", names)
 	}
 	head := strings.TrimSpace(git(t, repo, "rev-parse", "HEAD"))
-	err = Cover(context.Background(), []string{"--repo", repo, "--ref", head + ":internal/service/missing.go", root}, &output)
+	err = Cover(context.Background(), []string{"--against", "main", "--repo", repo, "--ref", head + ":internal/service/missing.go", root}, &output)
 	if err == nil || !strings.Contains(err.Error(), "does not exist at commit") {
 		t.Fatalf("a reference to a missing file was accepted: %v", err)
 	}

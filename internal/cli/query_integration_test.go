@@ -64,7 +64,7 @@ func TestQueryCLIRealSeparateRepositoriesAllOperations(t *testing.T) {
 	fixture.WriteSaga("___verifications/secure-default-check.json", string(verification))
 	fileLocation := coderef.Location{Commit: atomLocation.Commit, Path: atomLocation.Path}.String()
 	before := fixture.State()
-	common := []string{"--saga", fixture.SagaRoot, "--repo", fixture.SourceDir}
+	common := []string{"--saga", fixture.SagaRoot, "--repo", fixture.SourceDir, "--against", fixture.BaseOID}
 
 	tests := []struct {
 		name string
@@ -140,7 +140,7 @@ func TestQueryCLIStaleTamperedAndCrossQueryCursors(t *testing.T) {
 	fixture := querytest.New(t)
 	fixture.AddLargeFragment(32)
 	fixture.AddActiveFragments()
-	common := []string{"--saga", fixture.SagaRoot, "--repo", fixture.SourceDir}
+	common := []string{"--saga", fixture.SagaRoot, "--repo", fixture.SourceDir, "--against", fixture.BaseOID}
 	first, status, body := runRealQuery(t, append([]string{"children", "--parent", saga.SagaTarget("security"), "--limit", "1"}, common...))
 	if status != 0 || first.Page == nil || first.Page.Total < 2 || first.Page.Returned != 1 || !first.Page.HasMore || first.Page.NextCursor == nil {
 		t.Fatalf("first page status=%d envelope=%#v body=%s", status, first, body)
@@ -185,7 +185,7 @@ func TestQueryCLIInvalidAndAmbiguousSagasUseStableEnvelope(t *testing.T) {
 		t.Run(testCase.name, func(t *testing.T) {
 			fixture := querytest.New(t)
 			testCase.alter(fixture)
-			envelope, status, body := runRealQuery(t, []string{"overview", "--saga", fixture.SagaRoot, "--repo", fixture.SourceDir})
+			envelope, status, body := runRealQuery(t, []string{"overview", "--saga", fixture.SagaRoot, "--repo", fixture.SourceDir, "--against", fixture.BaseOID})
 			if status != 3 || envelope.OK || envelope.Error == nil || envelope.Error.Code != "invalid_saga" || strings.Contains(body, fixture.SagaRoot) {
 				t.Fatalf("status=%d envelope=%#v body=%s", status, envelope, body)
 			}
@@ -201,7 +201,7 @@ func TestQueryCLIInvalidAndAmbiguousSagasUseStableEnvelope(t *testing.T) {
 	t.Run("source unavailable", func(t *testing.T) {
 		fixture := querytest.New(t)
 		before := fixture.State()
-		envelope, status, body := runRealQuery(t, []string{"overview", "--saga", fixture.SagaRoot, "--repo", fixture.SourceDir + "-missing"})
+		envelope, status, body := runRealQuery(t, []string{"overview", "--saga", fixture.SagaRoot, "--repo", fixture.SourceDir + "-missing", "--against", fixture.BaseOID})
 		if status != 7 || envelope.Error == nil || envelope.Error.Code != "source_unavailable" || !envelope.Error.Retryable {
 			t.Fatalf("source error status=%d envelope=%#v body=%s", status, envelope, body)
 		}

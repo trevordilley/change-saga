@@ -695,7 +695,7 @@ func TestStickyNoteOverlayRendersSafelyAndDeepLinks(t *testing.T) {
 		Messages: []*saga.Message{{ID: "hostile-message", CreatedAt: created}}}
 	threads := map[string][]*threadView{fragment.Target: {makeThreadView(sticky), makeThreadView(hostile)}}
 	data := pageData{
-		Saga: &saga.Saga{Manifest: saga.Manifest{ID: "test", Title: "Test", Source: saga.Source{Repository: "https://example.test/a.git", Base: "main", Head: "HEAD"}}, Section: section},
+		Saga: &saga.Saga{Manifest: saga.Manifest{ID: "test", Title: "Test", Source: saga.Source{Repository: "https://example.test/a.git"}}, Section: section},
 		Root: makeSectionView(section, viewScope{threads: threads}), Code: &CodeReviewView{},
 	}
 	var output bytes.Buffer
@@ -859,7 +859,7 @@ func TestPageAttributesSagaFromItsOwnRepository(t *testing.T) {
 	repo := t.TempDir()
 	serverGit(t, repo, "init", "-b", "main")
 	root := filepath.Join(repo, "test.saga")
-	writeServerFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"test","title":"Test","source":{"repository":"https://example.test/a.git","base":"main","head":"HEAD"}}`)
+	writeServerFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"test","title":"Test","source":{"repository":"https://example.test/a.git"}}`)
 	writeServerEpic(t, root)
 	writeServerFile(t, filepath.Join(serverEpicDir(root), "overview.fragment", "fragment.json"), `{"version":2,"id":"overview","title":"Overview","media_type":"text/markdown","entrypoint":"content.md"}`)
 	writeServerFile(t, filepath.Join(serverEpicDir(root), "overview.fragment", "content.md"), "# Story\n")
@@ -896,7 +896,7 @@ func TestCommittingReviewRecordsInvalidatesTheReviewSnapshot(t *testing.T) {
 	writeServerFile(t, filepath.Join(source, "app.go"), "package app\n")
 	serverGit(t, source, "add", ".")
 	serverGit(t, source, "commit", "-m", "feature")
-	head := strings.TrimSpace(serverGit(t, source, "rev-parse", "HEAD"))
+	_ = strings.TrimSpace(serverGit(t, source, "rev-parse", "HEAD"))
 	repository, err := coderef.FileRepository(source)
 	if err != nil {
 		t.Fatal(err)
@@ -908,7 +908,7 @@ func TestCommittingReviewRecordsInvalidatesTheReviewSnapshot(t *testing.T) {
 	sagaRepo := t.TempDir()
 	serverGit(t, sagaRepo, "init", "-b", "main")
 	root := filepath.Join(sagaRepo, "test.saga")
-	writeServerFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"test","title":"Test","source":{"repository":"`+repository+`","base":"`+base+`","head":"`+head+`"}}`)
+	writeServerFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"test","title":"Test","source":{"repository":"`+repository+`"}}`)
 	writeServerEpic(t, root)
 	writeServerFile(t, filepath.Join(serverEpicDir(root), "overview.fragment", "fragment.json"), `{"version":2,"id":"overview","title":"Overview","media_type":"text/markdown","entrypoint":"content.md"}`)
 	writeServerFile(t, filepath.Join(serverEpicDir(root), "overview.fragment", "content.md"), "# Story\n")
@@ -919,7 +919,7 @@ func TestCommittingReviewRecordsInvalidatesTheReviewSnapshot(t *testing.T) {
 	}, "commit", "-m", "write the saga")
 
 	tmpl := template.Must(template.New("page").Parse(`{{define "page"}}{{(index .Root.FragmentViews 0).ReviewAuthor}}|{{(index .Root.FragmentViews 0).ReviewDetail}}{{end}}`))
-	application := &app{root: root, sourceDir: source, template: tmpl}
+	application := &app{root: root, sourceDir: source, rng: gitdiff.Range{Against: base}, template: tmpl}
 	render := func() string {
 		recorder := httptest.NewRecorder()
 		application.page(recorder, httptest.NewRequest(http.MethodGet, "/", nil))
@@ -1044,7 +1044,7 @@ func TestPageTemplateAndMarkdown(t *testing.T) {
 		Targets: []*ManifestTargetView{{ManifestOwnerView: ManifestOwnerView{Title: "Overview", Kind: "Fragment", Chapter: "Test", Href: "#overview"}, AtomCount: 1, Chunks: []*ManifestChunkView{{Label: "+1", Path: "internal/app.go", Excerpt: "package app", Href: CodeDiffURL("internal/app.go", lineRef)}}, Files: []*ManifestTargetFileView{{Path: "internal/app.go", AtomCount: 1, Added: 1, Href: CodeDiffURL("internal/app.go", ""), HasDiff: true, Chunks: []*ManifestChunkView{{Label: "+1", Path: "internal/app.go", AtomCount: 1, Href: CodeDiffURL("internal/app.go", lineRef)}}}}}},
 	}
 	data := pageData{
-		Saga: &saga.Saga{Manifest: saga.Manifest{ID: "test", Title: "Test", Source: saga.Source{Repository: "https://example.test/a.git", Base: "main", Head: "HEAD"}}, Section: section},
+		Saga: &saga.Saga{Manifest: saga.Manifest{ID: "test", Title: "Test", Source: saga.Source{Repository: "https://example.test/a.git"}}, Section: section},
 		Root: makeSectionView(section, viewScope{
 			changes: map[string][]gitdiff.Atom{
 				fragment.Target: {{Kind: "line", Ref: lineRef, Path: "app.go", Side: "new", Line: 1, Content: "package app"}},
@@ -1333,11 +1333,11 @@ func TestPageHandlerRendersRealGitComparison(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	writeServerFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"test","title":"Test","source":{"repository":"`+repository+`","base":"`+base+`","head":"HEAD"}}`)
+	writeServerFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"test","title":"Test","source":{"repository":"`+repository+`"}}`)
 	writeServerEpic(t, root)
 	writeServerFile(t, filepath.Join(serverEpicDir(root), "overview.fragment", "fragment.json"), `{"version":2,"id":"overview","media_type":"text/markdown","entrypoint":"content.md"}`)
 	writeServerFile(t, filepath.Join(serverEpicDir(root), "overview.fragment", "content.md"), "# Story\n")
-	application := &app{root: root, sourceDir: repo, template: serverTemplate(t)}
+	application := &app{root: root, sourceDir: repo, rng: gitdiff.Range{Against: base}, template: serverTemplate(t)}
 	handler := newMux(application)
 	request := httptest.NewRequest(http.MethodGet, "/", nil)
 	recorder := httptest.NewRecorder()
@@ -1412,13 +1412,13 @@ func TestTargetCodeLoadsOneNarrativeMappingWithoutGlobalSnapshot(t *testing.T) {
 	}
 
 	root := filepath.Join(repo, "linked.saga")
-	writeServerFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"linked","title":"Linked","source":{"repository":"`+repository+`","base":"`+base+`","head":"HEAD"}}`)
+	writeServerFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"linked","title":"Linked","source":{"repository":"`+repository+`"}}`)
 	writeServerEpic(t, root)
 	writeServerFile(t, filepath.Join(serverEpicDir(root), "story.fragment", "fragment.json"), `{"version":2,"id":"story","title":"Story","media_type":"text/markdown","entrypoint":"content.md"}`)
 	writeServerFile(t, filepath.Join(serverEpicDir(root), "story.fragment", "content.md"), "# Story\n")
 	writeServerFile(t, filepath.Join(serverEpicDir(root), "story.fragment", saga.CodeDirName, "app.json"), codeRecordJSON(t, repo, [2]string{appRef, "Implements the ready path."}))
 	target := saga.FragmentTarget("linked", "story")
-	application := &app{root: root, sourceDir: repo, template: serverTemplate(t)}
+	application := &app{root: root, sourceDir: repo, rng: gitdiff.Range{Against: base}, template: serverTemplate(t)}
 	application.comparisonLoader = func(context.Context) (*reviewSnapshot, error) {
 		t.Fatal("target-scoped linked code requested the global comparison")
 		return nil, nil
@@ -1473,7 +1473,7 @@ func TestSlideTargetCodeRollsUpItemFiles(t *testing.T) {
 	}
 
 	root := filepath.Join(repo, "slides.saga")
-	writeServerFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"slides","title":"Slides","source":{"repository":"`+repository+`","base":"`+base+`","head":"HEAD"}}`)
+	writeServerFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"slides","title":"Slides","source":{"repository":"`+repository+`"}}`)
 	writeServerEpic(t, root)
 	bundle := filepath.Join(serverEpicDir(root), saga.EmbeddedSlidesDir, "review"+saga.EmbeddedDeckSuffix)
 	deckTarget := saga.DeckTarget("slides", "review")
@@ -1503,7 +1503,7 @@ func TestSlideTargetCodeRollsUpItemFiles(t *testing.T) {
 		writeServerFile(t, filepath.Join(bundle, saga.FlatEvidenceFilename(itemTarget, fixture.id)), evidence)
 	}
 
-	application := &app{root: root, sourceDir: repo, template: serverTemplate(t)}
+	application := &app{root: root, sourceDir: repo, rng: gitdiff.Range{Against: base}, template: serverTemplate(t)}
 	application.comparisonLoader = func(context.Context) (*reviewSnapshot, error) {
 		t.Fatal("slide-scoped linked code requested the global comparison")
 		return nil, nil
@@ -1804,7 +1804,7 @@ func codeRecordJSON(t *testing.T, repo string, entries ...[2]string) string {
 func validServerSaga(t *testing.T) string {
 	t.Helper()
 	root := filepath.Join(t.TempDir(), "test.saga")
-	writeServerFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"test","title":"Test","source":{"repository":"https://example.test/a.git","base":"main","head":"HEAD"}}`)
+	writeServerFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"test","title":"Test","source":{"repository":"https://example.test/a.git"}}`)
 	writeServerEpic(t, root)
 	writeServerFile(t, filepath.Join(serverEpicDir(root), "overview.fragment", "fragment.json"), `{"version":2,"id":"overview","title":"Overview","media_type":"text/markdown","entrypoint":"content.md"}`)
 	writeServerFile(t, filepath.Join(serverEpicDir(root), "overview.fragment", "content.md"), "# Story\n")

@@ -444,7 +444,7 @@ func TestReviewMutationAdvancesOnlyTheOverlayGeneration(t *testing.T) {
 
 	// A fresh server owns no prior memory generation. Its first load must replay
 	// the atomic saga records and recover the final edited/withdrawn state.
-	restarted := &app{root: fixture.Root, sourceDir: fixture.Repository, template: application.template, generations: generations}
+	restarted := &app{root: fixture.Root, sourceDir: fixture.Repository, rng: gitdiff.Range{Against: fixture.Base}, template: application.template, generations: generations}
 	restartedSnapshot := restarted.snapshot(context.Background())
 	if restartedSnapshot == nil || len(restartedSnapshot.document.Threads) != initialThreadCount+1 {
 		t.Fatalf("restart did not recover the persisted comment: %#v", restartedSnapshot)
@@ -468,7 +468,7 @@ func BenchmarkLargeSagaRealisticHTTP(b *testing.B) {
 	if err != nil {
 		b.Fatal(err)
 	}
-	handler := newMux(&app{root: fixture.Root, sourceDir: fixture.Repository, template: tmpl, mutationToken: "benchmark-token"})
+	handler := newMux(&app{root: fixture.Root, sourceDir: fixture.Repository, rng: gitdiff.Range{Against: fixture.Base}, template: tmpl, mutationToken: "benchmark-token"})
 	path := ""
 	{
 		recorder := httptest.NewRecorder()
@@ -535,7 +535,7 @@ func budgetFixture(tb testing.TB, options testfixture.LargeSagaOptions) (testfix
 	if err != nil {
 		tb.Fatal(err)
 	}
-	application := &app{root: fixture.Root, sourceDir: fixture.Repository, template: tmpl}
+	application := &app{root: fixture.Root, sourceDir: fixture.Repository, rng: gitdiff.Range{Against: fixture.Base}, template: tmpl}
 	return fixture, application, newMux(application)
 }
 

@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"os"
 	"path/filepath"
 	"strings"
@@ -27,7 +28,6 @@ func coveredSaga(t *testing.T) (root, repo string) {
 	writeFile(t, filepath.Join(repo, "README.md"), "base\n")
 	git(t, repo, "add", ".")
 	git(t, repo, "commit", "-m", "base")
-	base := strings.TrimSpace(git(t, repo, "rev-parse", "HEAD"))
 	git(t, repo, "checkout", "-b", "feature")
 	writeFile(t, filepath.Join(repo, "internal", "service", "handler.go"), "package service\n\nconst A = 1\nconst B = 2\nconst C = 3\n")
 	git(t, repo, "add", ".")
@@ -35,7 +35,7 @@ func coveredSaga(t *testing.T) (root, repo string) {
 
 	root = filepath.Join(t.TempDir(), "batch.saga")
 	var output bytes.Buffer
-	if err := Init(context.Background(), []string{"--repo", repo, "--repository", "https://example.test/acme/app.git", "--base", base, "--head", "HEAD", root}, &output); err != nil {
+	if err := Init(context.Background(), []string{"--repo", repo, "--repository", "https://example.test/acme/app.git", root}, &output); err != nil {
 		t.Fatal(err)
 	}
 	addTestApp(t, root)
@@ -46,8 +46,19 @@ func coveredSaga(t *testing.T) (root, repo string) {
 func runCover(t *testing.T, stdin string, args ...string) (string, error) {
 	t.Helper()
 	var output bytes.Buffer
-	err := cover(context.Background(), args, &output, strings.NewReader(stdin))
+	err := cover(context.Background(), againstMain(args), &output, strings.NewReader(stdin))
 	return output.String(), err
+}
+
+// againstMain compares with main, the branch every fixture forks from, unless
+// the test chooses how to open the Saga itself.
+func againstMain(args []string) []string {
+	for _, arg := range args {
+		if arg == "--against" || arg == "--head" {
+			return args
+		}
+	}
+	return append([]string{"--against", "main"}, args...)
 }
 
 func diffRecords(t *testing.T, dir string) []string {
@@ -85,7 +96,7 @@ func TestCoverBatchAttachesExactAtomsPerRecord(t *testing.T) {
 	}
 	assertValid(t, root)
 
-	report, err := buildReport(context.Background(), root, repo)
+	report, err := buildReport(context.Background(), root, repo, gitdiff.Range{Against: "main"})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -141,7 +152,7 @@ func TestCoverChangedLinesSelectsExactFileAtomsAndAddEvent(t *testing.T) {
 		references[1].Location() != (coderef.Location{Commit: head, Path: "internal/service/handler.go", Start: 1, End: 5}) {
 		t.Fatalf("added file was not referenced as the whole file and its lines at the head commit: %#v", references)
 	}
-	report, err := buildReport(context.Background(), root, repo)
+	report, err := buildReport(context.Background(), root, repo, gitdiff.Range{Against: "main"})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -166,7 +177,7 @@ func TestCoverQuietSuppressesLargeBatchOutput(t *testing.T) {
 func TestCoverJSONReportsFailureWithoutPartialOutput(t *testing.T) {
 	root, repo := coveredSaga(t)
 	var output bytes.Buffer
-	err := Cover(context.Background(), []string{"--repo", repo, "--path", "internal/service/handler.go", "--side", "sideways", "--lines", "1", "--json", root}, &output)
+	err := Cover(context.Background(), []string{"--against", "main", "--repo", repo, "--path", "internal/service/handler.go", "--side", "sideways", "--lines", "1", "--json", root}, &output)
 	var status *StatusError
 	if !errors.As(err, &status) || status.Code != 1 {
 		t.Fatalf("JSON failure status = %#v", err)
@@ -191,7 +202,7 @@ func TestReplaceAndRemoveCoverageCompleteRepairLoop(t *testing.T) {
 		`{"path":"internal/service/handler.go","file":true,"name":"file-add","note":"introduces the service file"}`,
 	}, "\n")
 	var output bytes.Buffer
-	if err := replaceCoverage(context.Background(), []string{"--record", "___code/broad.json", "--repo", repo, "--batch", "-", "--json", root}, &output, strings.NewReader(batch)); err != nil {
+	if err := replaceCoverage(context.Background(), []string{"--against", "main", "--record", "___code/broad.json", "--repo", repo, "--batch", "-", "--json", root}, &output, strings.NewReader(batch)); err != nil {
 		t.Fatalf("replace coverage: %v\n%s", err, output.String())
 	}
 	var replaced coverageRepairOutput
@@ -201,7 +212,7 @@ func TestReplaceAndRemoveCoverageCompleteRepairLoop(t *testing.T) {
 	if _, err := os.Stat(filepath.Join(root, saga.CodeDirName, "broad.json")); !os.IsNotExist(err) {
 		t.Fatalf("replaced record still exists: %v", err)
 	}
-	report, err := buildReport(context.Background(), root, repo)
+	report, err := buildReport(context.Background(), root, repo, gitdiff.Range{Against: "main"})
 	if err != nil || !report.Complete {
 		t.Fatalf("split replacement should preserve complete coverage: %#v, %v", report.Summary, err)
 	}
@@ -213,7 +224,7 @@ func TestReplaceAndRemoveCoverageCompleteRepairLoop(t *testing.T) {
 	if err := RemoveCoverage(context.Background(), []string{"--record", "___code/constants.json", "--json", root}, &output); err != nil {
 		t.Fatal(err)
 	}
-	report, err = buildReport(context.Background(), root, repo)
+	report, err = buildReport(context.Background(), root, repo, gitdiff.Range{Against: "main"})
 	if err != nil || report.Complete || report.Summary.Uncovered != 3 {
 		t.Fatalf("removing the constants should reopen exactly their lines: %#v, %v", report.Summary, err)
 	}
@@ -221,7 +232,7 @@ func TestReplaceAndRemoveCoverageCompleteRepairLoop(t *testing.T) {
 	if err := RemoveCoverage(context.Background(), []string{"--record", "___code/file-add.json", "--json", root}, &output); err != nil {
 		t.Fatal(err)
 	}
-	report, err = buildReport(context.Background(), root, repo)
+	report, err = buildReport(context.Background(), root, repo, gitdiff.Range{Against: "main"})
 	if err != nil || report.Complete || report.Summary.Uncovered != 4 {
 		t.Fatalf("removing focused coverage should reopen exact gaps: %#v, %v", report.Summary, err)
 	}
@@ -234,7 +245,7 @@ func TestReplaceCoverageFailurePreservesOriginalRecord(t *testing.T) {
 	}
 	var output bytes.Buffer
 	badBatch := `{"path":"internal/service/handler.go","side":"sideways","lines":"1","name":"bad"}`
-	err := replaceCoverage(context.Background(), []string{"--record", "___code/broad.json", "--repo", repo, "--batch", "-", root}, &output, strings.NewReader(badBatch))
+	err := replaceCoverage(context.Background(), []string{"--against", "main", "--record", "___code/broad.json", "--repo", repo, "--batch", "-", root}, &output, strings.NewReader(badBatch))
 	if err == nil {
 		t.Fatal("invalid replacement succeeded")
 	}
@@ -252,7 +263,7 @@ func TestReplaceCoverageCanAtomicallyReuseTheRecordName(t *testing.T) {
 		t.Fatal(err)
 	}
 	var output bytes.Buffer
-	if err := replaceCoverage(context.Background(), []string{
+	if err := replaceCoverage(context.Background(), []string{"--against", "main",
 		"--record", "___code/broad.json", "--repo", repo, "--path", "internal/service/handler.go",
 		"--side", "new", "--lines", "1", "--name", "broad", "--note", "package declaration", root,
 	}, &output, strings.NewReader("")); err != nil {
@@ -443,7 +454,6 @@ func TestCoverGeneratedNamesSurviveLongPaths(t *testing.T) {
 	writeFile(t, filepath.Join(repo, "README.md"), "base\n")
 	git(t, repo, "add", ".")
 	git(t, repo, "commit", "-m", "base")
-	base := strings.TrimSpace(git(t, repo, "rev-parse", "HEAD"))
 	git(t, repo, "checkout", "-b", "feature")
 	deep := filepath.Join("internal", "platform", "subsystem", "controller", "reconciliation", "handler_implementation.go")
 	writeFile(t, filepath.Join(repo, deep), "package handler\n\nconst A = 1\nconst B = 2\nconst C = 3\nconst D = 4\n")
@@ -452,7 +462,7 @@ func TestCoverGeneratedNamesSurviveLongPaths(t *testing.T) {
 
 	root := filepath.Join(t.TempDir(), "deep.saga")
 	var output bytes.Buffer
-	if err := Init(context.Background(), []string{"--repo", repo, "--repository", "https://example.test/acme/app.git", "--base", base, "--head", "HEAD", root}, &output); err != nil {
+	if err := Init(context.Background(), []string{"--repo", repo, "--repository", "https://example.test/acme/app.git", root}, &output); err != nil {
 		t.Fatal(err)
 	}
 	slashed := filepath.ToSlash(deep)

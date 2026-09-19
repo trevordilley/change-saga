@@ -51,7 +51,7 @@ func sha256Digest(content string) string {
 func runReferences(t *testing.T, args ...string) referencesOutput {
 	t.Helper()
 	var output bytes.Buffer
-	if err := References(context.Background(), append([]string{"--json"}, args...), &output); err != nil {
+	if err := References(context.Background(), append([]string{"--json"}, againstMain(args)...), &output); err != nil {
 		t.Fatalf("references %v: %v\n%s", args, err, output.String())
 	}
 	var result referencesOutput
@@ -80,7 +80,7 @@ func runRepin(t *testing.T, args ...string) repinOutput {
 func statusComplete(t *testing.T, root string) (bool, map[string]json.RawMessage) {
 	t.Helper()
 	var output bytes.Buffer
-	err := Status(context.Background(), []string{"--json", root}, &output)
+	err := Status(context.Background(), []string{"--against", "main", "--json", root}, &output)
 	var exit *StatusError
 	if err != nil && !errors.As(err, &exit) {
 		t.Fatalf("status: %v\n%s", err, output.String())
@@ -159,7 +159,7 @@ func TestReferencesSurviveShiftsGoStaleOnEditsAndRepinAfterSquash(t *testing.T) 
 
 	root := filepath.Join(repo, "change.saga")
 	var output bytes.Buffer
-	if err := Init(context.Background(), []string{"--repo", repo, "--base", "main", "--head", "HEAD", "--title", "Feature B", root}, &output); err != nil {
+	if err := Init(context.Background(), []string{"--repo", repo, "--title", "Feature B", root}, &output); err != nil {
 		t.Fatal(err)
 	}
 	writeFile(t, filepath.Join(root, "___overview", "overview.fragment", "content.md"), "# Feature B {#feature-b}\n\nAdds B and U.\n")
@@ -229,7 +229,7 @@ func TestReferencesSurviveShiftsGoStaleOnEditsAndRepinAfterSquash(t *testing.T) 
 
 	// Re-author the evidence at the new head and support a claim with it.
 	var replaced bytes.Buffer
-	if err := replaceCoverage(context.Background(), []string{"--record", "___code/app.json", "--path", "app.go", "--changed-lines", "--name", "app", root}, &replaced, strings.NewReader("")); err != nil {
+	if err := replaceCoverage(context.Background(), []string{"--against", "main", "--record", "___code/app.json", "--path", "app.go", "--changed-lines", "--name", "app", root}, &replaced, strings.NewReader("")); err != nil {
 		t.Fatalf("replace-coverage: %v\n%s", err, replaced.String())
 	}
 	edit := strings.TrimSpace(git(t, repo, "rev-parse", "HEAD"))
@@ -403,7 +403,7 @@ func TestRepinOntoTheCurrentPinChangesNothing(t *testing.T) {
 		t.Fatalf("a no-op repin rewrote evidence: %#v", after)
 	}
 	var text bytes.Buffer
-	if err := References(context.Background(), []string{"--repo", repo, root}, &text); err != nil || !strings.Contains(text.String(), "2 references: 2 current (0 remapped), 0 stale") {
+	if err := References(context.Background(), []string{"--against", "main", "--repo", repo, root}, &text); err != nil || !strings.Contains(text.String(), "2 references: 2 current (0 remapped), 0 stale") {
 		t.Fatalf("references text output = %v\n%s", err, text.String())
 	}
 }

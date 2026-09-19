@@ -67,7 +67,7 @@ func New(t testing.TB) *Fixture {
 	fixture.git(fixture.SourceDir, "commit", "-m", "source feature")
 
 	fixture.initRepository(fixture.SagaRepo)
-	fixture.WriteSaga("saga.json", fmt.Sprintf(`{"version":5,"id":"security","title":"Query security","source":{"repository":%q,"base":%q,"head":"HEAD"}}`, Repository, fixture.BaseOID))
+	fixture.WriteSaga("saga.json", fmt.Sprintf(`{"version":5,"id":"security","title":"Query security","source":{"repository":%q}}`, Repository))
 	fixture.WriteSaga(EpicDir+"/epic.json", `{"$schema":"https://changesaga.dev/schema/v5/epic.schema.json","version":5,"id":"core","title":"Core","created_at":"2026-01-02T03:04:05Z"}`)
 	fixture.WriteEpic("overview.fragment/fragment.json", `{"version":2,"id":"overview","title":"Overview","media_type":"text/markdown","entrypoint":"content.md"}`)
 	fixture.WriteEpic("overview.fragment/content.md", "# Query security {#query-security}\n")
@@ -104,7 +104,7 @@ func (f *Fixture) WriteSource(relative, content string) {
 // MakeInvalidManifest adds an unknown field. saga.Load returns a decode error
 // for this case, which the query boundary must normalize to invalid_saga.
 func (f *Fixture) MakeInvalidManifest() {
-	f.WriteSaga("saga.json", fmt.Sprintf(`{"version":5,"id":"security","title":"Query security","unknown":true,"source":{"repository":%q,"base":%q,"head":"HEAD"}}`, Repository, f.BaseOID))
+	f.WriteSaga("saga.json", fmt.Sprintf(`{"version":5,"id":"security","title":"Query security","unknown":true,"source":{"repository":%q}}`, Repository))
 }
 
 // AddAmbiguousTargets creates two structurally distinct fragments with the

@@ -506,7 +506,7 @@ func newSaga(t *testing.T) string {
 	manifest := map[string]any{
 		"$schema": "https://changesaga.dev/schema/v5/saga.schema.json",
 		"version": 5, "id": "test", "title": "Test",
-		"source": map[string]any{"repository": "https://example.com/repo.git", "base": "main", "head": "feature"},
+		"source": map[string]any{"repository": "https://example.com/repo.git"},
 	}
 	if err := store.WriteJSON(filepath.Join(root, "saga.json"), manifest, true); err != nil {
 		t.Fatal(err)

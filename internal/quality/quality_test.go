@@ -365,7 +365,7 @@ func newQualitySaga(t *testing.T, qualityRoot bool) string {
 		"version": Version,
 		"id":      "checkout",
 		"title":   "Checkout",
-		"source":  SourceIdentity{Repository: "https://example.com/repo.git", Base: "base", Head: "head"},
+		"source":  map[string]string{"repository": "https://example.com/repo.git"},
 	})
 	if _, err := applayout.WriteEpic(root, applayout.EpicManifest{ID: "core", Title: "Core", CreatedAt: fixtureTime}); err != nil {
 		t.Fatal(err)
@@ -437,7 +437,7 @@ func runFrom(id string, parents []string, result RunResult) Run {
 	return Run{
 		Schema: RunSchemaURL, Version: Version, ID: id,
 		TestCase: "urn:change-saga:checkout:test-case:deadline", TestRevision: revisionURN("r1"), Parents: nonnil(parents),
-		Source: SourceIdentity{Repository: "https://example.com/repo.git", Base: "base", Head: "head"},
+		Source: SourceIdentity{Repository: "https://example.com/repo.git", Commit: "0123456789abcdef0123456789abcdef01234567"},
 		Result: result, Summary: "CI completed.", Command: "go test ./...", Evidence: []string{"urn:change-saga:checkout:test-case:deadline:evidence:test-code"},
 		ExecutedAt: fixtureTime.Add(time.Hour),
 	}

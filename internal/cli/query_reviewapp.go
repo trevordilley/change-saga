@@ -34,7 +34,7 @@ func openReviewAppSession(ctx context.Context, options queryOpenOptions) (queryS
 		// The existing review application owns the public saga/source snapshot.
 		// Reusing it keeps cursors and envelopes comparable across old and living
 		// query operations while livingapp remains a transport-neutral composer.
-		reviewSession, err := reviewapp.Open(ctx, reviewapp.OpenOptions{SagaRoot: options.SagaRoot, SourceDir: options.SourceDir, SummaryOnly: true})
+		reviewSession, err := reviewapp.Open(ctx, reviewapp.OpenOptions{SagaRoot: options.SagaRoot, SourceDir: options.SourceDir, Range: options.Range, SummaryOnly: true})
 		if err != nil {
 			return nil, err
 		}
@@ -44,7 +44,7 @@ func openReviewAppSession(ctx context.Context, options queryOpenOptions) (queryS
 		}
 		return &reviewAppQuerySession{session: reviewSession, livingSession: session, operation: options.Operation}, nil
 	}
-	session, err := reviewapp.Open(ctx, reviewapp.OpenOptions{SagaRoot: options.SagaRoot, SourceDir: options.SourceDir, SummaryOnly: options.SummaryOnly})
+	session, err := reviewapp.Open(ctx, reviewapp.OpenOptions{SagaRoot: options.SagaRoot, SourceDir: options.SourceDir, Range: options.Range, SummaryOnly: options.SummaryOnly})
 	if err != nil {
 		return nil, err
 	}

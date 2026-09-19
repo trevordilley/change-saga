@@ -19,6 +19,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/twentyideas/changesaga/internal/gitdiff"
 	reviewserver "github.com/twentyideas/changesaga/internal/server"
 	"github.com/twentyideas/changesaga/internal/store"
 )
@@ -35,6 +36,8 @@ const (
 type detachedServerState struct {
 	Saga          string    `json:"saga"`
 	Source        string    `json:"source,omitempty"`
+	Against       string    `json:"against,omitempty"`
+	Head          string    `json:"head,omitempty"`
 	PID           int       `json:"pid"`
 	URL           string    `json:"url"`
 	StartedAt     time.Time `json:"started_at"`
@@ -46,6 +49,8 @@ type detachedServerState struct {
 type detachedServerPublicState struct {
 	Saga      string    `json:"saga"`
 	Source    string    `json:"source,omitempty"`
+	Against   string    `json:"against,omitempty"`
+	Head      string    `json:"head,omitempty"`
 	PID       int       `json:"pid"`
 	URL       string    `json:"url"`
 	StartedAt time.Time `json:"started_at"`
@@ -53,7 +58,7 @@ type detachedServerPublicState struct {
 	Active    bool      `json:"active"`
 }
 
-func startDetachedServer(ctx context.Context, root, sourceDir, addr string, openBrowser bool, out io.Writer) error {
+func startDetachedServer(ctx context.Context, root, sourceDir string, rng gitdiff.Range, addr string, openBrowser bool, out io.Writer) error {
 	absRoot, err := filepath.Abs(root)
 	if err != nil {
 		return err
@@ -63,7 +68,10 @@ func startDetachedServer(ctx context.Context, root, sourceDir, addr string, open
 		return err
 	}
 	if existing, readErr := readDetachedState(statePath); readErr == nil {
-		if detachedServerActive(ctx, existing) {
+		// One reviewer runs per Saga. It is reused only when it was opened the
+		// same way; opening another comparison replaces it.
+		sameOpening := existing.Against == rng.Against && existing.Head == rng.HeadRevision()
+		if sameOpening && detachedServerActive(ctx, existing) {
 			if openBrowser {
 				_ = reviewserver.OpenBrowser(existing.URL)
 			}
@@ -87,7 +95,10 @@ func startDetachedServer(ctx context.Context, root, sourceDir, addr string, open
 	if err != nil {
 		return fmt.Errorf("locate change-saga executable: %w", err)
 	}
-	args := []string{"serve", "--addr", addr}
+	args := []string{"serve", "--addr", addr, "--head", rng.HeadRevision()}
+	if !rng.Observe() {
+		args = append(args, "--against", rng.Against)
+	}
 	if sourceDir != "" {
 		absSource, absErr := filepath.Abs(sourceDir)
 		if absErr != nil {
@@ -136,7 +147,7 @@ func startDetachedServer(ctx context.Context, root, sourceDir, addr string, open
 	return fmt.Errorf("detached server did not become ready within 10s; log %s: %s", logPath, strings.TrimSpace(string(logTail)))
 }
 
-func runManagedServer(ctx context.Context, root, sourceDir, addr string, openBrowser bool, statePath, token string, out io.Writer) error {
+func runManagedServer(ctx context.Context, root, sourceDir string, rng gitdiff.Range, addr string, openBrowser bool, statePath, token string, out io.Writer) error {
 	absRoot, err := filepath.Abs(root)
 	if err != nil {
 		return err
@@ -148,8 +159,8 @@ func runManagedServer(ctx context.Context, root, sourceDir, addr string, openBro
 		}
 	}
 	logPath := strings.TrimSuffix(statePath, ".json") + ".log"
-	options := reviewserver.ManagedOptions{ShutdownToken: token, OnReady: func(url string) error {
-		return writeDetachedState(statePath, detachedServerState{Saga: absRoot, Source: sourceDir, PID: os.Getpid(), URL: url, StartedAt: time.Now().UTC(), ShutdownToken: token, Log: logPath})
+	options := reviewserver.ManagedOptions{Range: rng, ShutdownToken: token, OnReady: func(url string) error {
+		return writeDetachedState(statePath, detachedServerState{Saga: absRoot, Source: sourceDir, Against: rng.Against, Head: rng.HeadRevision(), PID: os.Getpid(), URL: url, StartedAt: time.Now().UTC(), ShutdownToken: token, Log: logPath})
 	}}
 	defer removeDetachedState(statePath, os.Getpid())
 	return reviewserver.ListenManaged(ctx, absRoot, sourceDir, addr, openBrowser, out, options)
@@ -206,7 +217,7 @@ func manageDetachedServers(ctx context.Context, operation string, args []string,
 	if *jsonOutput {
 		public := make([]detachedServerPublicState, 0, len(states))
 		for _, state := range states {
-			public = append(public, detachedServerPublicState{Saga: state.Saga, Source: state.Source, PID: state.PID, URL: state.URL, StartedAt: state.StartedAt, Log: state.Log, Active: state.Active})
+			public = append(public, detachedServerPublicState{Saga: state.Saga, Source: state.Source, Against: state.Against, Head: state.Head, PID: state.PID, URL: state.URL, StartedAt: state.StartedAt, Log: state.Log, Active: state.Active})
 		}
 		return writeJSON(out, public)
 	}

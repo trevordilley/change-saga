@@ -3,6 +3,7 @@ package server
 import (
 	"context"
 	"fmt"
+	"github.com/twentyideas/changesaga/internal/gitdiff"
 	stdhtml "html"
 	"net/http"
 	"net/http/httptest"
@@ -116,7 +117,7 @@ func TestAsyncReviewSurfacesAreBoundedAndCursorPaginated(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	handler := newMux(&app{root: fixture.Root, sourceDir: fixture.Repository, template: tmpl})
+	handler := newMux(&app{root: fixture.Root, sourceDir: fixture.Repository, rng: gitdiff.Range{Against: fixture.Base}, template: tmpl})
 	file := url.QueryEscape("src/component-000.txt")
 	surfaces := []struct {
 		name string
@@ -395,7 +396,7 @@ func newAsyncProjectionFixture(tb testing.TB, sourceFiles int) asyncProjectionFi
 	if err != nil {
 		tb.Fatal(err)
 	}
-	application := &app{root: fixture.Root, sourceDir: fixture.Repository, template: tmpl}
+	application := &app{root: fixture.Root, sourceDir: fixture.Repository, rng: gitdiff.Range{Against: fixture.Base}, template: tmpl}
 	snapshot := application.snapshot(context.Background())
 	if snapshot == nil || snapshot.diffErr != nil {
 		tb.Fatal("could not warm async projection fixture comparison")

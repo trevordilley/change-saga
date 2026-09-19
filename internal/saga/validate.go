@@ -28,20 +28,7 @@ func validateManifest(manifest Manifest, path string, result *Validation) {
 	if manifest.Schema != "" && manifest.Schema != SagaSchemaURL {
 		addIssue(result, "warning", path, fmt.Sprintf("$schema is %q; a Change Saga uses %q", manifest.Schema, SagaSchemaURL))
 	}
-	if manifest.PR != nil {
-		if manifest.PR.Number != nil && *manifest.PR.Number < 1 {
-			addIssue(result, "error", path, "pr.number must be a positive pull request number")
-		}
-		if manifest.PR.URL != "" {
-			if parsed, err := url.Parse(manifest.PR.URL); err != nil || !parsed.IsAbs() {
-				addIssue(result, "error", path, "pr.url must be an absolute URI")
-			}
-		}
-	}
 	validateRepositoryIdentity(manifest.Source.Repository, path, result)
-	if strings.TrimSpace(manifest.Source.Base) == "" || strings.TrimSpace(manifest.Source.Head) == "" {
-		addIssue(result, "error", path, "source.base and source.head are required")
-	}
 }
 
 // validateRepositoryIdentity enforces the portable identity rule: an absolute,

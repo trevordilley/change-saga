@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"net/http"
 	"net/http/httptest"
 	"os"
@@ -96,7 +97,7 @@ func TestManagedServerStatusAndStopLifecycle(t *testing.T) {
 	defer cancel()
 	serverDone := make(chan error, 1)
 	go func() {
-		serverDone <- runManagedServer(ctx, root, "", "127.0.0.1:0", false, statePath, "test-shutdown-token", &bytes.Buffer{})
+		serverDone <- runManagedServer(ctx, root, "", gitdiff.Range{}, "127.0.0.1:0", false, statePath, "test-shutdown-token", &bytes.Buffer{})
 	}()
 
 	var state detachedServerState

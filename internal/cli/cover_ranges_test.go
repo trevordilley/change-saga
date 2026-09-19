@@ -19,7 +19,7 @@ import (
 // comparison, the two commits comparison-side references are pinned at.
 func comparisonCommits(t *testing.T, root, repo string) (base, head string) {
 	t.Helper()
-	report, err := buildReport(context.Background(), root, repo)
+	report, err := buildReport(context.Background(), root, repo, gitdiff.Range{Against: "main"})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -259,7 +259,6 @@ func changedLinesSaga(t *testing.T) (root, repo string) {
 	writeFile(t, filepath.Join(repo, "internal", "service", "legacy.go"), "package service\n\nconst Legacy = true\n")
 	git(t, repo, "add", ".")
 	git(t, repo, "commit", "-m", "base")
-	base := strings.TrimSpace(git(t, repo, "rev-parse", "HEAD"))
 	git(t, repo, "checkout", "-b", "feature")
 	// Two separated edits: lines 3-4 and line 8 change, everything else is
 	// untouched context, so the derived selectors must show a gap.
@@ -273,7 +272,7 @@ func changedLinesSaga(t *testing.T) (root, repo string) {
 
 	root = filepath.Join(t.TempDir(), "ranges.saga")
 	var output bytes.Buffer
-	if err := Init(context.Background(), []string{"--repo", repo, "--repository", rangeRepository, "--base", base, "--head", "HEAD", root}, &output); err != nil {
+	if err := Init(context.Background(), []string{"--repo", repo, "--repository", rangeRepository, root}, &output); err != nil {
 		t.Fatal(err)
 	}
 	writeFile(t, filepath.Join(overviewFragment(root), "content.md"), "# Range change {#range-change}\n\nThe canonical range coverage test change.\n")
@@ -358,7 +357,7 @@ func TestCoverChangedLinesKeepsEventsSeparateAndCoverageExact(t *testing.T) {
 		t.Fatalf("deleted file references = %v", deleted)
 	}
 
-	report, err := buildReport(context.Background(), root, repo)
+	report, err := buildReport(context.Background(), root, repo, gitdiff.Range{Against: "main"})
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -382,7 +381,7 @@ func TestCoverChangedLinesRangesDoNotStealNeighbouringAtoms(t *testing.T) {
 	if output, err := runCover(t, "", "--repo", repo, "--path", "internal/service/added.go", "--changed-lines", "--name", "added", root); err != nil {
 		t.Fatalf("added cover: %v\n%s", err, output)
 	}
-	report, err := buildReport(context.Background(), root, repo)
+	report, err := buildReport(context.Background(), root, repo, gitdiff.Range{Against: "main"})
 	if err != nil {
 		t.Fatal(err)
 	}

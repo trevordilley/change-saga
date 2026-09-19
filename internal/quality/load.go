@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"io"
 	"io/fs"
-	"net/url"
 	"os"
 	"path/filepath"
 	"sort"
@@ -19,17 +18,13 @@ import (
 )
 
 type manifest struct {
-	Schema  string         `json:"$schema,omitempty"`
-	Version int            `json:"version"`
-	ID      string         `json:"id"`
-	Title   string         `json:"title"`
-	PR      *manifestPR    `json:"pr,omitempty"`
-	Source  SourceIdentity `json:"source"`
-}
-
-type manifestPR struct {
-	Number *int   `json:"number,omitempty"`
-	URL    string `json:"url,omitempty"`
+	Schema  string `json:"$schema,omitempty"`
+	Version int    `json:"version"`
+	ID      string `json:"id"`
+	Title   string `json:"title"`
+	Source  struct {
+		Repository string `json:"repository"`
+	} `json:"source"`
 }
 
 // Load strictly reads only saga.json and the bounded ___quality subtree of
@@ -69,7 +64,7 @@ func Load(root string) (Document, error) {
 		return Document{}, err
 	}
 	document := Document{
-		Root: abs, SagaID: identity.ID, Source: identity.Source, Adoption: NotAdopted, Epics: epics,
+		Root: abs, SagaID: identity.ID, Source: SourceIdentity{Repository: identity.Source.Repository}, Adoption: NotAdopted, Epics: epics,
 		TestCases: []TestCase{}, Policies: []Policy{}, PolicySets: []PolicySet{},
 	}
 
@@ -372,20 +367,6 @@ func validateManifest(value manifest) error {
 	}
 	if canonical, err := coderef.CanonicalRepository(value.Source.Repository); err != nil || canonical != value.Source.Repository {
 		problems.add("source.repository must be a canonical absolute repository URI")
-	}
-	if strings.TrimSpace(value.Source.Base) == "" || strings.TrimSpace(value.Source.Head) == "" {
-		problems.add("source.base and source.head are required")
-	}
-	if value.PR != nil {
-		if value.PR.Number != nil && *value.PR.Number < 1 {
-			problems.add("pr.number must be positive")
-		}
-		if value.PR.URL != "" {
-			parsed, err := url.Parse(value.PR.URL)
-			if err != nil || !parsed.IsAbs() {
-				problems.add("pr.url must be an absolute URI")
-			}
-		}
 	}
 	return problems.err()
 }

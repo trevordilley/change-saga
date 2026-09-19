@@ -12,6 +12,7 @@ import (
 	"strings"
 
 	"github.com/twentyideas/changesaga/internal/coderef"
+	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/livingapp"
 	"github.com/twentyideas/changesaga/internal/reviewapp"
 	"github.com/twentyideas/changesaga/internal/saga"
@@ -31,6 +32,7 @@ const (
 type queryOpenOptions struct {
 	SagaRoot    string
 	SourceDir   string
+	Range       gitdiff.Range
 	SummaryOnly bool
 	Operation   string
 }
@@ -247,30 +249,30 @@ var queryPurpose = map[string]string{
 }
 
 var queryUsage = map[string]string{
-	"":                    "change-saga query <operation> --saga PATH [--repo PATH] [operation flags]",
+	"":                    "change-saga query <operation> --saga PATH [--repo PATH] [--against REV [--head REV]] [operation flags]",
 	"schema":              "change-saga query schema <operation>",
-	"overview":            "change-saga query overview --saga PATH [--repo PATH]",
-	"children":            "change-saga query children --saga PATH --parent TARGET [--cursor TOKEN] [--limit N] [--repo PATH]",
-	"fragment":            "change-saga query fragment --saga PATH --target FRAGMENT [--offset N] [--limit N] [--repo PATH]",
-	"fragment-diffs":      "change-saga query fragment-diffs --saga PATH --target TARGET [--cursor TOKEN] [--limit N] [--repo PATH]",
-	"slide":               "change-saga query slide --saga PATH --target SLIDE [--offset N] [--limit N] [--repo PATH]",
-	"slide-diffs":         "change-saga query slide-diffs --saga PATH --target ITEM [--cursor TOKEN] [--limit N] [--repo PATH]",
-	"diff-owners":         "change-saga query diff-owners --saga PATH --ref LOCATION [--cursor TOKEN] [--limit N] [--repo PATH]",
-	"reviews":             "change-saga query reviews --saga PATH [--target TARGET] [--thread ID] [--state STATE] [--cursor TOKEN] [--limit N] [--repo PATH]",
-	"gaps":                "change-saga query gaps --saga PATH [--kind uncovered|stale|overlap] [--cursor TOKEN] [--limit N] [--repo PATH]",
-	"mappings":            "change-saga query mappings --saga PATH [--target TARGET] [--sort scrutiny|target|path] [--minimum-score N] [--cursor TOKEN] [--limit N] [--repo PATH]",
-	"claims":              "change-saga query claims --saga PATH [--target TARGET] [--status unverified|verified|failed|inconclusive] [--cursor TOKEN] [--limit N] [--repo PATH]",
-	"verifications":       "change-saga query verifications --saga PATH [--claim ID] [--status unverified|verified|failed|inconclusive] [--cursor TOKEN] [--limit N] [--repo PATH]",
-	"requirements":        "change-saga query requirements --saga PATH [--requirement ID|URN] [--state STATE] [--cursor TOKEN] [--limit N]",
-	"requirement-history": "change-saga query requirement-history --saga PATH --requirement ID|URN [--cursor TOKEN] [--limit N]",
-	"citations":           "change-saga query citations --saga PATH [--citation ID|URN] [--requirement ID|URN] [--cursor TOKEN] [--limit N]",
-	"relations":           "change-saga query relations --saga PATH [--relation ID|URN] [--type TYPE] [--from URN] [--to URN] [--state STATE] [--cursor TOKEN] [--limit N]",
-	"waves":               "change-saga query waves --saga PATH [--wave ID|URN] [--cursor TOKEN] [--limit N]",
-	"work-items":          "change-saga query work-items --saga PATH [--item ID|URN] [--wave ID|URN] [--status STATE] [--cursor TOKEN] [--limit N]",
-	"work-events":         "change-saga query work-events --saga PATH [--item ID|URN] [--kind KIND] [--cursor TOKEN] [--limit N]",
-	"work-conflicts":      "change-saga query work-conflicts --saga PATH [--item ID|URN] [--wave ID|URN] [--kind KIND] [--cursor TOKEN] [--limit N]",
-	"traceability":        "change-saga query traceability --saga PATH [--requirement ID|URN] [--criterion ID|URN] [--ref LOCATION | --commit OID] [--cursor TOKEN] [--limit N]",
-	"readiness":           "change-saga query readiness --saga PATH [--requirement ID|URN] [--status ready|blocked] [--cursor TOKEN] [--limit N]",
+	"overview":            "change-saga query overview --saga PATH [--repo PATH] [--against REV [--head REV]]",
+	"children":            "change-saga query children --saga PATH --parent TARGET [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]",
+	"fragment":            "change-saga query fragment --saga PATH --target FRAGMENT [--offset N] [--limit N] [--repo PATH] [--against REV [--head REV]]",
+	"fragment-diffs":      "change-saga query fragment-diffs --saga PATH --target TARGET [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]",
+	"slide":               "change-saga query slide --saga PATH --target SLIDE [--offset N] [--limit N] [--repo PATH] [--against REV [--head REV]]",
+	"slide-diffs":         "change-saga query slide-diffs --saga PATH --target ITEM [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]",
+	"diff-owners":         "change-saga query diff-owners --saga PATH --ref LOCATION [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]",
+	"reviews":             "change-saga query reviews --saga PATH [--target TARGET] [--thread ID] [--state STATE] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]",
+	"gaps":                "change-saga query gaps --saga PATH [--kind uncovered|stale|overlap] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]",
+	"mappings":            "change-saga query mappings --saga PATH [--target TARGET] [--sort scrutiny|target|path] [--minimum-score N] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]",
+	"claims":              "change-saga query claims --saga PATH [--target TARGET] [--status unverified|verified|failed|inconclusive] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]",
+	"verifications":       "change-saga query verifications --saga PATH [--claim ID] [--status unverified|verified|failed|inconclusive] [--cursor TOKEN] [--limit N] [--repo PATH] [--against REV [--head REV]]",
+	"requirements":        "change-saga query requirements --saga PATH [--requirement ID|URN] [--state STATE] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
+	"requirement-history": "change-saga query requirement-history --saga PATH --requirement ID|URN [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
+	"citations":           "change-saga query citations --saga PATH [--citation ID|URN] [--requirement ID|URN] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
+	"relations":           "change-saga query relations --saga PATH [--relation ID|URN] [--type TYPE] [--from URN] [--to URN] [--state STATE] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
+	"waves":               "change-saga query waves --saga PATH [--wave ID|URN] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
+	"work-items":          "change-saga query work-items --saga PATH [--item ID|URN] [--wave ID|URN] [--status STATE] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
+	"work-events":         "change-saga query work-events --saga PATH [--item ID|URN] [--kind KIND] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
+	"work-conflicts":      "change-saga query work-conflicts --saga PATH [--item ID|URN] [--wave ID|URN] [--kind KIND] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
+	"traceability":        "change-saga query traceability --saga PATH [--requirement ID|URN] [--criterion ID|URN] [--ref LOCATION | --commit OID] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
+	"readiness":           "change-saga query readiness --saga PATH [--requirement ID|URN] [--status ready|blocked] [--cursor TOKEN] [--limit N] [--against REV [--head REV]]",
 }
 
 // Query executes one read-only application query and writes exactly one JSON
@@ -472,6 +474,7 @@ func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, e
 	flags.SetOutput(io.Discard)
 	sagaRoot := flags.String("saga", "", "saga root")
 	sourceDir := flags.String("repo", "", "source repository checkout")
+	opening := registerOpenFlags(flags)
 
 	var parent, target, ref, cursor, thread, state, kind, sortOrder, claim string
 	var requirement, citation, relation, from, to, wave, item, criterion, commit string
@@ -666,7 +669,7 @@ func parseQuery(operation string, args []string) (any, queryOpenOptions, bool, e
 		return nil, queryOpenOptions{}, false, errors.New("--status must be ready or blocked")
 	}
 
-	options := queryOpenOptions{SagaRoot: *sagaRoot, SourceDir: *sourceDir}
+	options := queryOpenOptions{SagaRoot: *sagaRoot, SourceDir: *sourceDir, Range: opening.rng()}
 	switch operation {
 	case "overview":
 		return overviewQuery{}, options, false, nil

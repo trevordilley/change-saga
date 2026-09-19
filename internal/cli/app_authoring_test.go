@@ -73,7 +73,7 @@ func runAppStatus(t *testing.T, root string, repo ...string) (appStatus, string)
 		args = append(args, "--repo", repo[0])
 	}
 	var output bytes.Buffer
-	_ = Status(context.Background(), append(args, root), &output)
+	_ = Status(context.Background(), append(againstMain(args), root), &output)
 	var status appStatus
 	if err := json.Unmarshal(output.Bytes(), &status); err != nil {
 		t.Fatalf("status --json: %v\n%s", err, output.String())
@@ -687,7 +687,7 @@ func TestFlagGatedStoryIsImplementedButNotEnabled(t *testing.T) {
 		t.Fatalf("mapped gated story = %s gated by %v\n%s", availability, gatedBy, raw)
 	}
 	var text bytes.Buffer
-	_ = Status(ctx, []string{"--repo", repo, root}, &text)
+	_ = Status(ctx, []string{"--against", "main", "--repo", repo, root}, &text)
 	if !strings.Contains(text.String(), "Implemented, not enabled: "+story) {
 		t.Fatalf("text status omits the gated story:\n%s", text.String())
 	}
@@ -749,7 +749,7 @@ func TestFirstChangeNeedsNoPersonas(t *testing.T) {
 			} `json:"persona_coverage"`
 		}
 		var status bytes.Buffer
-		if err := Status(ctx, []string{"--json", "--repo", repo, root}, &status); err != nil && status.Len() == 0 {
+		if err := Status(ctx, []string{"--against", "main", "--json", "--repo", repo, root}, &status); err != nil && status.Len() == 0 {
 			t.Fatalf("status: %v", err)
 		}
 		if err := json.Unmarshal(status.Bytes(), &document); err != nil {

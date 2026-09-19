@@ -102,7 +102,7 @@ func Open(ctx context.Context, options OpenOptions) (Session, error) {
 	if strings.TrimSpace(sourceDir) == "" {
 		sourceDir = document.Root
 	}
-	changes, err := gitdiff.Read(ctx, sourceDir, document.Manifest.Source.Repository, document.Manifest.Source.Base, document.Manifest.Source.Head)
+	changes, err := gitdiff.ReadRange(ctx, sourceDir, document.Manifest.Source.Repository, options.Range, gitdiff.ReadOptions{})
 	if err != nil {
 		return nil, newError(CodeSourceUnavailable, "the source comparison is unavailable", true, nil, err)
 	}
@@ -427,8 +427,8 @@ func (s *session) Overview(ctx context.Context, _ OverviewQuery) (Overview, erro
 	}
 	root := s.document.Section
 	result := Overview{
-		Saga:              SagaIdentity{ID: s.document.Manifest.ID, Title: s.document.Manifest.Title, PR: s.document.Manifest.PR},
-		Source:            SourceSnapshot{Repository: s.changes.Repository, Base: s.changes.Base, Head: s.changes.Head, BaseOID: s.changes.BaseOID, HeadOID: s.changes.HeadOID},
+		Saga:              SagaIdentity{ID: s.document.Manifest.ID, Title: s.document.Manifest.Title},
+		Source:            SourceSnapshot{Mode: s.changes.Mode, Repository: s.changes.Repository, Base: s.changes.Base, Head: s.changes.Head, BaseOID: s.changes.BaseOID, HeadOID: s.changes.HeadOID},
 		Root:              s.finishNode(root.Target, false),
 		OverviewFragments: []Node{},
 		Chapters:          []ChapterSummary{},

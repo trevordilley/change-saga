@@ -20,7 +20,7 @@ func TestFixtureUsesIndependentSagaAndSourceRepositories(t *testing.T) {
 	if err != nil || !validation.Valid {
 		t.Fatalf("load fixture: validation=%#v err=%v", validation, err)
 	}
-	if document.Manifest.Source.Repository != Repository || document.Manifest.Source.Base != fixture.BaseOID {
+	if document.Manifest.Source.Repository != Repository {
 		t.Fatalf("unexpected source identity: %#v", document.Manifest.Source)
 	}
 	changes, err := gitdiff.Read(context.Background(), fixture.SourceDir, Repository, fixture.BaseOID, "HEAD")

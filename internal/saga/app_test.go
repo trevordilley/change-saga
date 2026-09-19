@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-const appTestManifest = `{"$schema":"https://changesaga.dev/schema/v5/saga.schema.json","version":5,"id":"shop","title":"Shop","source":{"repository":"https://example.test/acme/shop.git","base":"main","head":"feature"}}`
+const appTestManifest = `{"$schema":"https://changesaga.dev/schema/v5/saga.schema.json","version":5,"id":"shop","title":"Shop","source":{"repository":"https://example.test/acme/shop.git"}}`
 
 func writeFragment(t *testing.T, dir, id string) {
 	t.Helper()

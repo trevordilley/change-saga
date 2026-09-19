@@ -12,6 +12,10 @@ var (
 	// already holds the record.
 	epicFlag       = Flag{Name: "epic", Value: "ID", Description: "epic id or URN that holds the record"}
 	epicCreateFlag = Flag{Name: "epic", Value: "ID", Required: true, Description: "epic id or URN the new content belongs to"}
+	// againstFlag and headFlag choose how a Saga is opened. The comparison is
+	// never stored: without --against a command observes --head.
+	againstFlag = Flag{Name: "against", Value: "REV", Description: "compare --head with its merge-base with this revision; omit to observe --head"}
+	headFlag    = Flag{Name: "head", Value: "REV", Description: "the commit to observe, or the head of the comparison; defaults to HEAD"}
 )
 
 func required(name, value, description string) Flag {
@@ -250,7 +254,7 @@ var commands = []Command{
 	},
 	{
 		Name: "cover", Status: StatusImplemented, Mutates: true, Writes: []string{"code-evidence"},
-		Usage:   "change-saga cover [flags] [--batch FILE|-] [--dry-run] <saga>",
+		Usage:   "change-saga cover [flags] [--batch FILE|-] [--dry-run] [--against REV [--head REV]] <saga>",
 		Summary: "reference the code a target explains, pinned at a commit, from the smallest target that explains it",
 		Flags: []Flag{
 			optional("target", "TARGET", "section, fragment, landmark, or Item receiving the evidence"), optional("repo", "PATH", "source checkout when separate"),
@@ -259,16 +263,17 @@ var commands = []Command{
 			optional("commit", "REV", "pin at this revision instead of a comparison side"), optional("note", "TEXT", "author note"),
 			optional("name", "NAME", "coverage record filename"), repeatable("ref", "LOCATION", "code location <commit>:<path>[#L<start>[-L<end>]]", false), optional("batch", "FILE|-", "batch request"),
 			optional("dry-run", "", "resolve without writing"), jsonFlag, optional("quiet", "", "suppress successful output"),
-			optional("allow-repository-mismatch", "", "accept a checkout whose origin differs"),
+			optional("allow-repository-mismatch", "", "accept a checkout whose origin differs"), againstFlag, headFlag,
 		},
 		Positionals: sagaOnly,
 	},
 	{
-		Name: "references", Status: StatusImplemented, Usage: "change-saga references [--stale] [--diff] [--json] [--repo PATH] <saga>",
+		Name: "references", Status: StatusImplemented, Usage: "change-saga references [--stale] [--diff] [--json] [--repo PATH] [--against REV [--head REV]] <saga>",
 		Summary: "list every code reference viewed in the comparison: current, remapped, or stale with its reason and diff since the pin",
 		Flags: []Flag{
 			optional("stale", "", "list only stale references"), optional("diff", "", "include each stale reference's diff since its pin"),
 			jsonFlag, optional("repo", "PATH", "source checkout when separate"), optional("allow-repository-mismatch", "", "accept a checkout whose origin differs"),
+			againstFlag, headFlag,
 		},
 		Positionals: sagaOnly,
 	},
@@ -289,11 +294,12 @@ var commands = []Command{
 		Positionals: sagaOnly,
 	},
 	{
-		Name: "status", Status: StatusImplemented, Usage: "change-saga status [--json] [--repo PATH] <saga>",
+		Name: "status", Status: StatusImplemented, Usage: "change-saga status [--json] [--repo PATH] [--against REV [--head REV]] <saga>",
 		Summary: "report changed-source accounting, gates, axis cells, stale pins, and ordered next actions; exits 0 only when ready_for_review is ready, 3 when it is blocked",
 		Flags: []Flag{
 			jsonFlag, optional("repo", "PATH", "source checkout when separate"),
 			optional("max", "N", "maximum uncovered items in text mode"), optional("allow-repository-mismatch", "", "accept a checkout whose origin differs"),
+			againstFlag, headFlag,
 		},
 		Positionals: sagaOnly,
 	},
@@ -365,13 +371,15 @@ var commands = []Command{
 	},
 	{
 		Name: "quality run record", Status: StatusImplemented, Mutates: true, Writes: []string{"test-run"},
-		Usage:   "change-saga quality run record --test URN --result RESULT --summary TEXT --evidence URN... [--parent RUN...] [--test-revision URN] [--command TEXT] [--id ID] [flags] <saga>",
+		Usage:   "change-saga quality run record --test URN --result RESULT --summary TEXT --evidence URN... [--parent RUN...] [--test-revision URN] [--command TEXT] [--commit REV] [--id ID] [flags] <saga>",
 		Summary: "append an immutable run result pinned to the test revision and the source identity; the command is recorded, never executed",
 		Flags: []Flag{epicFlag,
 			required("test", "URN", "canonical test-case URN"), required("result", "RESULT", "passed, failed, blocked, or skipped"),
 			required("summary", "TEXT", "what ran and what was observed"), repeatable("evidence", "URN", "current evidence URN", true),
 			repeatable("parent", "URN", "current run head URN", false), optional("test-revision", "URN", "test revision that ran; defaults to the unique current head"),
-			optional("command", "TEXT", "command that ran"), optional("id", "ID", "stable run id"), fromFileFlag, requestIDFlag, jsonFlag,
+			optional("command", "TEXT", "command that ran"), optional("commit", "REV", "code commit the run executed against; defaults to HEAD"),
+			optional("repository", "URI", "repository that ran; defaults to the Saga's"), optional("repo", "PATH", "source checkout when separate"),
+			optional("id", "ID", "stable run id"), fromFileFlag, requestIDFlag, jsonFlag,
 		},
 		Positionals: sagaOnly,
 	},
