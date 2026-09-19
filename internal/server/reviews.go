@@ -641,7 +641,8 @@ const reviewStyles = `
 .review-decision-form textarea,.review-comment-form textarea{width:100%;box-sizing:border-box}
 .review-decision-buttons{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
 .review-item{border-top:1px solid var(--line,#eee);padding-top:10px;margin-top:10px}
-.review-diff{margin:8px 0}.review-diff table{border-collapse:collapse;width:100%;font:12px/1.4 ui-monospace,monospace}
+.review-diff{margin:8px 0;overflow-x:auto}.review-diff table{border-collapse:collapse;width:100%;font:12px/1.4 var(--mono)}
+.review-surface{min-width:0}.review-layout>*{min-width:0}
 .review-line.add{background:#e6ffed}.review-line.del{background:#ffeef0}.review-hunk{color:#57606a;background:#f6f8fa}
 .review-lineno{width:3em;text-align:right;color:#8b949e;padding-right:6px}.review-code code{white-space:pre}
 .review-thread{border-left:3px solid #2f6fdc;padding-left:8px;margin:8px 0}.review-thread.resolved{border-color:#999;opacity:.8}
