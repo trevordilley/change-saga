@@ -50,14 +50,14 @@
   </g>
 
   <line x1="300" y1="210" x2="366" y2="210" stroke="#475569" stroke-width="2.5" marker-end="url(#a)"/>
-  <text x="333" y="198" font-size="13" text-anchor="middle" fill="#475569">writes</text>
+  <text x="335" y="196" font-size="14" text-anchor="middle" fill="#475569">writes</text>
   <line x1="630" y1="210" x2="696" y2="210" stroke="#475569" stroke-width="2.5" marker-end="url(#a)"/>
   <line x1="960" y1="210" x2="996" y2="210" stroke="#475569" stroke-width="2.5" marker-end="url(#a)"/>
   <line x1="1120" y1="270" x2="560" y2="396" stroke="#475569" stroke-width="2.5" marker-end="url(#a)"/>
-  <text x="870" y="320" font-size="13" fill="#475569">viewed at one commit or between two</text>
+  <text x="600" y="330" font-size="14" fill="#475569">viewed at one commit or between two</text>
   <line x1="630" y1="460" x2="696" y2="460" stroke="#475569" stroke-width="2.5" marker-end="url(#a)"/>
   <line x1="960" y1="460" x2="996" y2="460" stroke="#475569" stroke-width="2.5" marker-end="url(#a)"/>
-  <text x="978" y="448" font-size="13" text-anchor="middle" fill="#475569">shown in</text>
+  <text x="980" y="548" font-size="14" text-anchor="middle" fill="#475569">shown in</text>
 
   <text x="40" y="640" font-size="16" fill="#64748b">Epics are durable areas of the product, not changes; a pull request may touch any number of them.</text>
 </svg>
