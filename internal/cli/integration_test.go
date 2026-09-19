@@ -131,7 +131,7 @@ func TestInstallSkillPrintsPortableAuthoringContract(t *testing.T) {
 	text := output.String()
 	for _, expected := range []string{
 		"project-local agent skill", "existing PR-authoring", "thing to be reviewed, not the review itself",
-		"Do not create review", "change-saga --help", "change-saga status --json", "change-saga add-landmark", "SVG diagram",
+		"Do not record review", "change-saga --help", "change-saga status --json", "change-saga add-landmark", "SVG diagram",
 		"interactive HTML", "data flows", "data models", "Reference only the code a fragment or landmark explains",
 		"zero citations", "code-bearing SVG/HTML", "node, edge, arrow, transition", "SVG element bounds become on-canvas links automatically",
 		"change-saga query mappings --sort scrutiny", "change-saga add-claim", "change-saga verify-claim",

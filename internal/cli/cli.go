@@ -212,7 +212,13 @@ The workflow:
      ("add-deck", "add-slide", "add-item"). Every meaningful node, edge,
      region, and callout is an Item.
   5. Code: reference every changed line from the Item that explains it
-     ("cover"), then "validate", check "status", and "serve" the Saga for review.
+     ("cover"), then "validate", check "status", and "serve" the Saga.
+  6. Review: each pull request has one review, a slide deck explaining what
+     the change did and why ("review create", then "add-slide --review").
+     Approval and comments happen only on review slides ("review approve",
+     "review request-changes", "review comment"); "review list" and "status"
+     report each decision and whether it is out of date. The Saga itself is
+     documentation and carries no approvals.
 
 Stories, prototypes, design, test cases, and deck bundles are Git-native
 records partitioned so parallel workspaces can author them and merge cleanly;
@@ -334,11 +340,11 @@ untouched.`,
 	"remove-coverage":  "Delete one exact coverage record named by query mappings or fragment-diffs.",
 	"replace-coverage": "Atomically replace one coverage record with one or more newly resolved records.\nUse --batch to split or retarget broad evidence without leaving partial coverage.",
 	"references":       "List every code reference: current (remapped when its lines only moved), or stale with the\nreason its code changed. Observing, health is judged at --head; comparing, at both sides.\n--diff adds the patch since the pin.",
-	"repin":            "After a change lands, re-pin evidence references to the landed commit (following moved\nlines, or the content digest when the branch commit is gone) and record the branch's commit\nmessages in ___merges/<commit>.json so a squash merge keeps its reasoning.",
+	"repin":            "After a change lands, re-pin evidence references to the landed commit (following moved\nlines, or the content digest when the branch commit is gone) and record the branch's commit\nmessages in ___merges/<commit>.json so a squash merge keeps its reasoning. It also freezes the\nlanded change's review (--review, or the Saga's only open review) at its exact base and head\nin review.json, so the review stays viewable after the branch is gone.",
 	"sync":             "Move a companion Saga's sync cursor (sync.json) to the code commit it now documents,\ndefault HEAD of --repo. Move it in every Saga commit that updates the documentation, so a\ncomparison reads the Saga that documented its merge-base. A Saga in its code repository\nhas no cursor: it documents the commit it is read at. repin moves it too.",
 	"add-claim":        "Record one falsifiable author assertion and the code that supports it. Claims do not\ncount toward coverage and are independently verified.",
 	"verify-claim":     "Append an independent verification result without rewriting the claim or prior results.",
-	"open":             "Start a managed loopback reviewer, open it in a browser, and return after\nprinting the PID and active URL. Without --against it observes the app at --head: every\nnode current, stale references as health warnings, approvals shown only as history.\nWith --against it compares what --head changes since their merge-base, the way a pull\nrequest does, and highlights the Changed, Affected, and Code layers.",
+	"open":             "Start a managed loopback reviewer, open it in a browser, and return after\nprinting the PID and active URL. Without --against it observes the app at --head: every\nnode current and stale references as health warnings; a node's history links to the reviews\nthat changed it. With --against it compares what --head changes since their merge-base, the\nway a pull request does, and shows the Changed, Affected, and Code layers read-only beside the\npull request's review, where approvals happen. Documentation has no approval or comment\ncontrols in either mode.",
 	"serve":            "Serve the saga on loopback for review. Detached instances are managed with\nchange-saga serve status [SAGA] and change-saga serve stop [SAGA].",
 	"install-skill":    "Print the agent-agnostic prompt that installs the change-saga authoring skill.\nPipe it to a coding agent; it neither writes to this repository nor creates a saga.",
 	"validate":         "Check the format and authoring completeness, including a warning for every Markdown\nfootnote without an evidence-bearing exact-text landmark. --fix adds missing stable\nheading anchors and changes nothing else.",
@@ -805,8 +811,7 @@ type validationOutput struct {
 }
 
 // fixHeadingAnchors is the only mutating part of validate. It rewrites narrative
-// Markdown fragments in place and deliberately never touches review-overlay
-// fragments: thread messages are append-only history, not authored content.
+// Markdown fragments in place and nothing else.
 func fixHeadingAnchors(root string) ([]AnchorFix, error) {
 	var applied []AnchorFix
 	err := authorMutation(root, func(document *saga.Saga) error {
@@ -1069,6 +1074,17 @@ func Spec(args []string, out io.Writer) error {
 				"onboarding":   applayout.OnboardingDir + "/<id>" + saga.EmbeddedDeckSuffix + " with role onboarding; its Items carry a persona, epic, or story record instead of code evidence",
 			},
 			"author_assertions": "one claim per ___claims/*.json; one append-only result per ___verifications/*.json",
+			"reviews": map[string]any{
+				"storage":         saga.ReviewsDir + "/<id>" + saga.ReviewSuffix + "/{" + saga.ReviewManifestName + "," + saga.ReviewDeckDir + "/," + saga.ReviewApprovalsDir + "/<event>.json," + saga.ReviewCommentsDir + "/<event>.json}",
+				"deck_role":       saga.DeckRoleReview,
+				"urns":            "urn:change-saga:<saga>:review:<review>[:deck:<deck>|:slide:<slide>[:item:<item>]]",
+				"decision_states": []string{saga.ApprovalApproved, saga.ApprovalChangesRequested, saga.ApprovalNone},
+				"comment_states":  []string{saga.CommentOpen, saga.CommentResolved},
+				"currency":        []string{"current", "out_of_date", "unknown"},
+				"item_records":    saga.ReviewRecordReferenceKinds,
+				"documentation":   "stories, designs, test cases, and decks carry no approvals and no comments",
+				"verdict":         "none; status and review list report each slide's decisions and currency, and the team decides",
+			},
 			"implementation_deck": map[string]any{
 				"storage": applayout.EpicsDir + "/<epic>" + applayout.EpicSuffix + "/" + saga.EmbeddedSlidesDir + "/<id>" + saga.EmbeddedDeckSuffix, "layout": "flat", "max_basename": saga.FlatMaxBasename, "max_absolute_path": saga.FlatMaxPath,
 				"categories": map[string]string{"10-d": "deck", "20-s": "slide", "30-i": "item", "40-e": "evidence"},
@@ -1878,10 +1894,25 @@ processes, templates, issue context, conventions, and checks, but express the
 result as a Change Saga. Do not replace useful existing authoring discipline;
 extend it into this format.
 
-During authoring, speak as the change author and guide. Do not create review
-comments, findings, approvals, rejections, or other review-overlay records.
-Only perform those actions when the user explicitly asks to conduct a review of
-an already-authored saga.
+During authoring, speak as the change author and guide. Do not record review
+decisions or comments. Only perform those actions when the user explicitly asks
+to conduct a review of a pull request that has a review.
+
+The Saga is documentation: stories, designs, test cases, and decks carry no
+approvals and no comments. A pull request's review is where its change is
+explained, discussed, and approved. Create one review per pull request with
+"change-saga review create --id pr-<n> --pr <n> --url <url> --base <branch it
+merges into> --head <its branch>" and author its slide deck with "add-slide
+--review", "add-item --review", "set-slide-content --review", and "cover
+--target <review Item URN>". The review deck explains what the change did and
+why: the transition and its reasoning (why the queue moved from SQS to a
+Postgres table), which the current documentation no longer shows. Its Items
+reference the code the change touched, shown as a diff against the review's
+base, and may reference the records it revised with "--record" (a story, an
+epic slide) so a reviewer can open them beside the change. Review decks never
+count toward coverage; the implementation deck of each epic still explains the
+current code. After the change lands, "change-saga repin --onto <landed commit>"
+freezes the review at its exact base and head.
 
 Use the installed "change-saga" CLI as the source of truth. Begin with
 "change-saga --help" and "change-saga spec" when necessary. Resolve the exact PR, branch, commit range, or
@@ -2068,14 +2099,21 @@ one, first read the code diff independently and record provisional findings;
 then inspect mappings, claims, verifications, and narrative intent; finally
 reconcile contradictions and independently test author claims. Do not let the
 author's explanation anchor the first correctness pass.
+Decisions are per review slide: "change-saga review approve", "review
+request-changes" (say what should change), or "review withdraw", each with
+"--review" and "--slide"; discuss with "review comment" on a slide or Item.
 When recording a decision, always declare the reviewer persona. Use
 "--reviewer-kind human" only for a decision the human made directly. For the
 agent's own review, use "--reviewer-kind ai" together with an independent
 "--reviewer-name", "--agent", and the exact "--model"; never turn an AI pass
 into a human approval. Give simultaneous passes stable distinct names such as
 "Claude 1" and "Claude 2" even when their model is identical. Multiple reviewers
-may decide the same target, and one persona's later decision supersedes only
-that same persona's prior decision.
+may decide the same slide, and one persona's later decision supersedes only
+that same persona's prior decision. A decision records the pull request head it
+was given at and goes out of date when the slide or the code it references
+changes; "change-saga review list" and "status" report each one's currency.
+Never state that a review is approved: the tool records decisions and the team
+decides what it requires.
 `
 
 const defaultSVGFragment = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300" role="img" aria-label="Diagram placeholder">
@@ -2172,23 +2210,31 @@ Append-only ___verifications/<id>.json records mark them unverified, verified,
 failed, or inconclusive and preserve the method and reproducible command. Claim
 evidence never contributes to coverage. Git history supplies attribution.
 
-Review threads live under ___review/threads. They target stable
-urn:change-saga:* identifiers and anchor to a whole fragment, normalized shapes,
-freehand drawings, quoted text, a placed sticky note, or a code reference.
-A sticky note carries its visible text, a normalized centre point, and an
-optional color; moving, rewording, or recoloring it appends an anchor event. Thread messages contain
-fragments, so replies may include Markdown, HTML, SVG, and images. Suggestion
-threads include replacement code. Append-only whole-file reference events track reviewed
-state, and approvals may target the saga, a chapter, a section, or a fragment.
-Every comment owns a thread directory, every reply owns a message directory, and
-each state transition is a new file; review operations never update shared arrays.
-Approval events declare a human or AI reviewer persona in addition to their
-Git-derived author. AI personas name an independent review seat, their agent
-kind, and model. The latest event is projected per author and persona,
-preserving concurrent decisions by
-other reviewers; legacy events without persona metadata remain unspecified.
-Every decision is an independent file, so parallel review branches add records
-instead of rewriting a shared reviewer list.
+The Saga is documentation. Stories, designs, test cases, and decks carry no
+approvals and no comments. A pull request's review is where a change is
+explained and approved. Each review is ___reviews/<id>.review/: review.json
+names the pull request, the base it merges into, and the ref its head follows
+(the checkout's HEAD when omitted), and after merge the frozen base, head, and
+landed commits; deck/ is one flat deck bundle with role review, whose slide and
+Item URNs are urn:change-saga:<saga>:review:<id>:slide:<slide>[:item:<item>];
+approvals/<event>.json and comments/<event>.json are append-only records. A
+review is viewed from the merge-base of its base and head, so its Items' code
+references show as diffs; an Item may also carry a record URN (a persona,
+epic, story, test case, deck, slide, chapter, section, or fragment) to open
+beside the change. Review decks never count toward coverage.
+
+A decision (approved, changes_requested, or none to withdraw) names one review
+slide, the reviewer persona, the pull request head commit it was given at, and
+the slide's content digest. The latest decision per Git author and persona is
+current. It is out of date when the slide's records changed since, or when the
+code its Items reference changed between that commit and the current head.
+Comments attach to review slides and Items; a reply names its parent and may
+resolve or reopen the thread. Decisions declare a human or AI reviewer persona
+in addition to their Git-derived author; AI personas name an independent
+review seat, their agent kind, and model. status and review list report every
+slide's decisions and currency with no verdict: the team decides what it
+requires. repin freezes the landed change's review, and a record's history
+links to the reviews that changed it.
 
 All-atoms-mapped is an omission invariant, not a correctness or explanation-
 quality verdict. Use query mappings --sort scrutiny to inspect broad or thin

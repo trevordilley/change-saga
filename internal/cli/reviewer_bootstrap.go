@@ -25,9 +25,10 @@ If the saga and source code are in different repositories:
 change-saga open --repo /path/to/source-checkout path/to/change.saga
 ~~~
 
-The application opens on a loopback-only local address. Review comments,
-annotations, approvals, and other progress are written as separate files inside
-the saga so they can be committed normally.
+The application opens on a loopback-only local address. The Saga is the
+application's documentation and has no approvals or comments. A pull request's
+review is a slide deck under ___reviews; its per-slide decisions and comments
+are written as separate files inside the saga so they can be committed normally.
 
 ## Install Change Saga
 
