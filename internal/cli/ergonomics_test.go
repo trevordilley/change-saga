@@ -23,6 +23,9 @@ func landmarkSaga(t *testing.T) (root, repo string) {
 	if err := AddChapter(context.Background(), []string{"--epic", testEpic, "--title", "Service", root, "service"}, &output); err != nil {
 		t.Fatal(err)
 	}
+	if err := AddFragment(context.Background(), []string{"--epic", testEpic, "--section", "service", "--name", "overview", "--title", "Service", root}, &output); err != nil {
+		t.Fatal(err)
+	}
 	fragment := filepath.Join(testEpicDir(root), "service.chapter", "overview.fragment")
 	writeFile(t, filepath.Join(fragment, "content.md"), "# Service {#service-intro}\n\nProse.\n\n## Submit action {#submit-action}\n\nMore.\n")
 	writeFile(t, filepath.Join(fragment, "___landmarks", "submit-action.landmark", "landmark.json"),

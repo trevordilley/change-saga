@@ -520,13 +520,11 @@ func addChapter(_ context.Context, args []string, out io.Writer, scope authoring
 		if chapterID == "" {
 			chapterID = store.Slug(name)
 		}
-		overviewID := chapterID + "-overview"
-		if !saga.ValidID(chapterID) || !saga.ValidID(overviewID) || targetIDExists(document, chapterID) || targetIDExists(document, overviewID) {
-			return fmt.Errorf("chapter id %q or its overview id is invalid or already used", chapterID)
+		if !saga.ValidID(chapterID) || targetIDExists(document, chapterID) {
+			return fmt.Errorf("chapter id %q is invalid or already used", chapterID)
 		}
 		dir := filepath.Join(hierarchyRoot, store.Slug(name)+".chapter")
 		manifest := saga.ChapterManifest{Version: saga.CurrentVersion, ID: chapterID, Title: chapterTitle, Order: *order}
-		overview := saga.FragmentManifest{Version: saga.CurrentVersion, ID: overviewID, MediaType: "text/markdown", Entrypoint: "content.md"}
 		// One staged rename: a failed chapter never leaves a manifest-less
 		// directory behind that would invalidate the saga for every later
 		// command.
@@ -539,10 +537,9 @@ func addChapter(_ context.Context, args []string, out io.Writer, scope authoring
 					return err
 				}
 			}
-			if err := store.WriteJSON(filepath.Join(stage, "chapter.json"), manifest, true); err != nil {
-				return err
-			}
-			return populateFragment(filepath.Join(stage, "overview.fragment"), overview, "", nil)
+			// A chapter starts with no fragment: an empty one would only be
+			// a warning to author or remove it.
+			return store.WriteJSON(filepath.Join(stage, "chapter.json"), manifest, true)
 		})
 		if errors.Is(err, fs.ErrExist) {
 			return fmt.Errorf("chapter %s already exists", filepath.Base(dir))
@@ -558,7 +555,9 @@ func addChapter(_ context.Context, args []string, out io.Writer, scope authoring
 	}
 	fmt.Fprintf(out, "Added chapter %s\n", created)
 	fmt.Fprintf(out, "Target: %s\n", createdTarget)
-	fmt.Fprintf(out, "Next: %s --title \"Section title\" %s%s %s/section-name\n", scope.commandText("add-section"), scope.placeArguments(), flags.Arg(0), createdID)
+	fmt.Fprintf(out, "Next: write the chapter's content, directly or in a section:\n")
+	fmt.Fprintf(out, "  %s --section %s --title \"Fragment title\" --source FILE %s%s\n", scope.commandText("add-fragment"), createdID, scope.placeArguments(), flags.Arg(0))
+	fmt.Fprintf(out, "  %s --title \"Section title\" %s%s %s/section-name\n", scope.commandText("add-section"), scope.placeArguments(), flags.Arg(0), createdID)
 	return nil
 }
 

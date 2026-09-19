@@ -64,15 +64,13 @@ func TestAuthoringLoopAgainstGitDiff(t *testing.T) {
 	if err := AddChapter(context.Background(), []string{"--epic", testEpic, "--title", "Backend behavior", root, "backend"}, &output); err != nil {
 		t.Fatal(err)
 	}
-	chapterScaffold, err := os.ReadFile(filepath.Join(testEpicDir(root), "backend.chapter", "overview.fragment", "content.md"))
-	if err != nil || len(chapterScaffold) != 0 {
-		t.Fatalf("chapter overview should start empty, not expose authoring instructions: content=%q err=%v", chapterScaffold, err)
+	if _, err := os.Stat(filepath.Join(testEpicDir(root), "backend.chapter", "overview.fragment")); !os.IsNotExist(err) {
+		t.Fatalf("a new chapter must not scaffold an empty fragment: %v", err)
 	}
-	chapterManifest, err := os.ReadFile(filepath.Join(testEpicDir(root), "backend.chapter", "overview.fragment", "fragment.json"))
-	if err != nil || strings.Contains(string(chapterManifest), "Chapter overview") {
-		t.Fatalf("chapter overview leaked renderer-facing scaffold metadata: manifest=%q err=%v", chapterManifest, err)
+	if !strings.Contains(output.String(), "add-fragment --section backend") {
+		t.Fatalf("add-chapter did not point at writing the chapter's content:\n%s", output.String())
 	}
-	writeFile(t, filepath.Join(testEpicDir(root), "backend.chapter", "overview.fragment", "content.md"), "# Backend behavior {#backend-behavior}\n\nReview this boundary independently.\n")
+	assertValid(t, root)
 	if err := AddSection(context.Background(), []string{"--epic", testEpic, "--title", "Request flow", root, "backend.chapter/request-flow"}, &output); err != nil {
 		t.Fatal(err)
 	}
