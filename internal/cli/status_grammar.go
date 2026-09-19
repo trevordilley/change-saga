@@ -7,6 +7,7 @@ import (
 	"io"
 	"strings"
 
+	"github.com/twentyideas/changesaga/internal/changeview"
 	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/grammar"
@@ -30,6 +31,9 @@ type statusDocument struct {
 	Schema string `json:"status_schema"`
 	// Opening is how the Saga was opened. It is never read from the Saga.
 	Opening opening `json:"opening"`
+	// Comparison is the Changed, Affected, and Code layers; only a Saga
+	// opened with --against has them.
+	Comparison *changeview.Layers `json:"comparison,omitempty"`
 	livingapp.Status
 	NextActions   []nextaction.Action `json:"next_actions"`
 	AuthoringLoop nextaction.Loop     `json:"authoring_loop"`
@@ -103,10 +107,21 @@ func buildStatus(ctx context.Context, root, repoDir string, rng gitdiff.Range, a
 			Diagnostics: []livingapp.Diagnostic{{Code: "living_records_unavailable", Message: err.Error()}},
 		})
 	}
-	return statusDocument{
+	document := statusDocument{
 		Report: value.report, Schema: StatusSchema, Opening: openingOf(value.changes), Status: living,
 		NextActions: nextaction.Derive(living, root), AuthoringLoop: nextaction.AuthoringLoop(root),
-	}, nil
+	}
+	if value.changes.Mode == gitdiff.ModeCompare {
+		layers, _, err := changeview.Open(ctx, changeview.OpenOptions{
+			SagaRoot: root, Document: value.document, Checkout: value.checkout,
+			Changes: value.changes, Report: value.report, Resolver: resolver,
+		})
+		if err != nil {
+			return statusDocument{}, fmt.Errorf("open the comparison: %w", err)
+		}
+		document.Comparison = &layers
+	}
+	return document, nil
 }
 
 // readyForReview is status's pass/fail: the ready_for_review gate, which
@@ -117,6 +132,34 @@ func buildStatus(ctx context.Context, root, repoDir string, rng gitdiff.Range, a
 func (status statusDocument) readyForReview() bool {
 	gate, ok := status.Readiness.Gate(readiness.GateReadyForReview)
 	return ok && gate.Status == readiness.StatusReady
+}
+
+// printComparison prints the three layers of a compared Saga.
+func printComparison(out io.Writer, layers *changeview.Layers, maxItems int) {
+	if layers == nil {
+		return
+	}
+	limit := func(n int) int {
+		if maxItems > 0 && maxItems < n {
+			return maxItems
+		}
+		return n
+	}
+	fmt.Fprintf(out, "\nChanged (%d records the change added, revised, or retired):\n", len(layers.Changed))
+	for _, change := range layers.Changed[:limit(len(layers.Changed))] {
+		fmt.Fprintf(out, "  %-8s %-10s %s  %s\n", change.Change, change.Kind, change.Title, change.URN)
+	}
+	fmt.Fprintf(out, "\nAffected (%d records the change did not edit but invalidated):\n", len(layers.Affected))
+	for _, affected := range layers.Affected[:limit(len(layers.Affected))] {
+		fmt.Fprintf(out, "  %-10s %s  %s\n", affected.Kind, affected.Title, affected.URN)
+		for _, cause := range affected.Because {
+			fmt.Fprintf(out, "      %s: %s\n", cause.Kind, cause.Detail)
+		}
+	}
+	fmt.Fprintf(out, "\nCode: %d changed lines under %d records; %d lines no record references\n", layers.Summary.ChangedLines, layers.Summary.CodeGroups, layers.Summary.Unreferenced)
+	for _, diagnostic := range layers.Diagnostics {
+		fmt.Fprintf(out, "  note %s: %s\n", diagnostic.Code, diagnostic.Message)
+	}
 }
 
 func printLivingStatus(out io.Writer, status statusDocument, maxItems int) {

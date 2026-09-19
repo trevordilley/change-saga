@@ -985,6 +985,7 @@ func Status(ctx context.Context, args []string, out io.Writer) error {
 		}
 	} else {
 		printReport(out, status.Report, status.Opening, *maxItems)
+		printComparison(out, status.Comparison, *maxItems)
 		printLivingStatus(out, status, *maxItems)
 	}
 	if !status.readyForReview() {

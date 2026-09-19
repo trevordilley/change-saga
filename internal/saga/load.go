@@ -167,6 +167,9 @@ func load(root string, options loadOptions) (*Saga, Validation, error) {
 			}
 		}
 	}
+	if _, _, err := ReadCursor(abs); err != nil {
+		addIssue(&validation, "error", CursorName, err.Error())
+	}
 	if metadataDirectorySafe(abs, abs, "___review", &validation) {
 		reviewDir := filepath.Join(abs, "___review")
 		if metadataDirectorySafe(abs, reviewDir, "threads", &validation) {
