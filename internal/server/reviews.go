@@ -253,11 +253,15 @@ func reviewerSeat(reviewer saga.ReviewerIdentity) string {
 }
 
 // recordHref links a review Item's record into the living Saga: a report or
-// deck node opens in place, a story opens its requirement page.
+// deck node opens in place, a story opens its requirement page, and a term
+// opens its page in the overview's vocabulary.
 func recordHref(document *saga.Saga, record string) string {
 	prefix := "urn:change-saga:" + document.Manifest.ID + ":"
 	if id, ok := strings.CutPrefix(record, prefix+"story:"); ok {
 		return "/requirements/" + id
+	}
+	if id, ok := strings.CutPrefix(record, prefix+"term:"); ok && !strings.Contains(id, ":") {
+		return termHref(id)
 	}
 	return "/" + sagaHref(record)
 }

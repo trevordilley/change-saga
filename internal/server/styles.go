@@ -244,6 +244,8 @@ body.presentation-mode .deck-viewer-stage:hover .slide-exit-presentation,body.pr
 .term-code-lines tr.referenced{background:var(--accent-soft)}
 .term-code-lines tr.referenced th{color:var(--accent)}
 .requirement-terms{margin:0}
+.file-terms{margin-top:12px}
+.file-terms h3{margin:0 0 6px;color:var(--muted);font:650 11px/1.3 var(--ui);letter-spacing:.04em;text-transform:uppercase}
 .requirements-header{margin:0 0 20px;padding-bottom:14px;border-bottom:1px solid var(--line)}
 .requirements-header h1,.requirement-story-hero h1{margin:0;color:var(--ink);font:650 28px/1.15 var(--ui);letter-spacing:-.025em}
 .requirements-rationale{max-width:780px;margin:0 0 24px}

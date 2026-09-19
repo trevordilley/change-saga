@@ -11,7 +11,9 @@ import (
 
 	"github.com/twentyideas/changesaga/internal/applayout"
 	"github.com/twentyideas/changesaga/internal/coderef"
+	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/requirements"
+	"github.com/twentyideas/changesaga/internal/saga"
 )
 
 const serverKinds = "package assessment\n\ntype Kind string\n\nconst (\n\tKindTesttaker Kind = \"testtaker\"\n\tKindProctor   Kind = \"proctor\"\n)\n"
@@ -118,5 +120,24 @@ func TestAStoryPageLinksBackToItsTerms(t *testing.T) {
 	}
 	if _, err := os.Stat(filepath.Join(root, "___overview", "terms", "testtaker.term")); err != nil {
 		t.Fatal(err)
+	}
+}
+
+func TestTheCodeViewNamesTheTermsAFileDefines(t *testing.T) {
+	root, repo := termSaga(t)
+	serverGit(t, repo, "add", ".")
+	serverGit(t, repo, "commit", "-m", "saga")
+	serverGit(t, repo, "remote", "add", "origin", "https://example.test/a.git")
+	serverGit(t, repo, "checkout", "-b", "grader")
+	writeServerFile(t, filepath.Join(repo, "kinds.go"), serverKinds+"\n// graders arrive next\n")
+	serverGit(t, repo, "commit", "-am", "note")
+	application := &app{root: root, sourceDir: repo, template: serverTemplate(t), rng: gitdiff.Range{Against: "main"}}
+	recorder := httptest.NewRecorder()
+	newMux(application).ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, "/api/file-owners?file=kinds.go", nil))
+	if recorder.Code != http.StatusOK || !strings.Contains(recorder.Body.String(), `<a href="/terms/testtaker" data-term-target="urn:change-saga:test:term:testtaker"`) {
+		t.Fatalf("file owners = %d %s", recorder.Code, recorder.Body.String())
+	}
+	if href := recordHref(&saga.Saga{Manifest: saga.Manifest{ID: "test"}}, "urn:change-saga:test:term:testtaker"); href != "/terms/testtaker" {
+		t.Fatalf("a review Item's term record opens the term page: %s", href)
 	}
 }

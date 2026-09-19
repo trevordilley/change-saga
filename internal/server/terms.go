@@ -263,3 +263,45 @@ func overviewNav(document *saga.Saga, vocabulary requirements.Document, active s
 	}
 	return overview
 }
+
+// fileTermView is one term whose code lies in a file, with the lines it names.
+type fileTermView struct {
+	Name     string
+	Href     string
+	Target   string
+	Location string
+}
+
+// fileTerms returns the terms whose code, viewed at any of commits, lies in
+// path: the code view's way back to the vocabulary a file defines.
+func (a *app) fileTerms(ctx context.Context, sagaID string, commits []string, path string) []fileTermView {
+	vocabulary, err := requirements.Load(a.root, sagaID)
+	if err != nil || len(vocabulary.Terms) == 0 {
+		return nil
+	}
+	resolver, err := coderesolve.New(ctx, a.sourceDir)
+	if err != nil {
+		return nil
+	}
+	defer resolver.Close()
+	var result []fileTermView
+	for _, term := range vocabulary.Terms {
+		if term.CurrentRevision == nil {
+			continue
+		}
+		view := makeTermView(vocabulary, term, nil)
+	references:
+		for _, reference := range term.CurrentRevision.Code {
+			for _, commit := range commits {
+				if commit == "" {
+					continue
+				}
+				if at := resolver.Resolve(ctx, reference, commit); at.Current() && at.Location.Path == path {
+					result = append(result, fileTermView{Name: view.Name, Href: view.Href, Target: view.Target, Location: at.Location.String()})
+					break references
+				}
+			}
+		}
+	}
+	return result
+}
