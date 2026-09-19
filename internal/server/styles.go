@@ -251,6 +251,7 @@ body.presentation-mode .deck-viewer-stage:hover .slide-exit-presentation,body.pr
 .test-run.passed{border-left-color:var(--green)}.test-run.failed{border-left-color:var(--red)}.test-run.blocked,.test-run.skipped{border-left-color:var(--amber)}
 .test-run p{margin:5px 0 0}
 .requirement-trace{display:grid;gap:4px}
+.criterion-page h1{font-size:24px;line-height:1.35}
 .criterion-trace{margin-top:8px;font:12.5px/1.45 var(--ui);color:var(--muted)}
 .criterion-trace a{color:var(--accent);text-decoration:none}
 .terms-lede{margin:0 0 18px;color:var(--muted);font:14px/1.55 var(--ui)}

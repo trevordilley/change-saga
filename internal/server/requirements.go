@@ -60,6 +60,20 @@ type requirementStoryView struct {
 	Criteria           []*requirementCriterionView
 	// Terms are the project vocabulary that names this story.
 	Terms []termLinkView
+	// EpicLink, Personas, Citations, and Trace are the story's declared
+	// links, filled for the story a page shows.
+	EpicLink  traceLink
+	Personas  []traceLink
+	Citations []citationView
+	Trace     traceGroups
+}
+
+// citationView is one source a story cites.
+type citationView struct {
+	Title     string
+	Kind      string
+	Reference string
+	Href      string
 }
 
 type requirementCriterionView struct {
@@ -71,6 +85,9 @@ type requirementCriterionView struct {
 	Href      string
 	Statement string
 	Selected  bool
+	// Trace is what links to this criterion: its design, the slides that
+	// explain it, and the tests that verify it.
+	Trace traceGroups
 }
 
 type requirementHistoryView struct {
@@ -242,7 +259,7 @@ func makeEpicRequirementsNav(page *requirementsPageView, epic, prefix string) *n
 		}
 		for _, criterion := range story.Criteria {
 			node.Children = append(node.Children, &navNodeView{
-				Title: criterion.Label + " · " + criterion.Statement, Href: criterion.Href,
+				Title: criterion.Label + " · " + shortStatement(criterion.Statement, criterionNavRunes), Href: criterion.Href,
 				NodeID: "nav-" + criterion.DOMID, Icon: "criterion", Requirement: true,
 				Active: criterion.Selected,
 			})
@@ -265,4 +282,22 @@ func clearActiveNav(nodes []*navNodeView) {
 		node.Active = false
 		clearActiveNav(node.Children)
 	}
+}
+
+// criterionNavRunes bounds a criterion's sidebar row. Titles wrap rather than
+// truncate, so an unbounded statement became a paragraph in the sidebar; the
+// criterion's page carries the whole statement.
+const criterionNavRunes = 64
+
+// shortStatement cuts statement at a word boundary within limit runes.
+func shortStatement(statement string, limit int) string {
+	runes := []rune(strings.TrimSpace(statement))
+	if len(runes) <= limit {
+		return string(runes)
+	}
+	cut := string(runes[:limit])
+	if space := strings.LastIndex(cut, " "); space > limit/2 {
+		cut = cut[:space]
+	}
+	return strings.TrimRight(cut, " ,;:.") + "…"
 }

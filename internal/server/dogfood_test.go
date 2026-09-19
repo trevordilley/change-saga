@@ -260,3 +260,57 @@ func TestEveryTestCaseHasARowAndAPage(t *testing.T) {
 		}
 	}
 }
+
+// Finding 29: a story page names its epic, personas, and citations, and the
+// design, slides, and test cases linked to it and to each criterion; each
+// criterion has its own traceability view; the sidebar names stories by
+// title, not by ordinal.
+func TestStoriesAndCriteriaShowTheirTraceability(t *testing.T) {
+	document, records, _ := dogfoodRecords(t)
+	graph := newAppGraph(document, records, quality.Document{})
+	root := dogfoodOK(t, "/")
+	if strings.Contains(root, ">Story 0") || strings.Contains(root, "Story 01 ·") {
+		t.Fatal("the sidebar still names stories by ordinal")
+	}
+	for _, story := range records.Stories {
+		if story.CurrentRevision == nil {
+			continue
+		}
+		href := requirementStoryHref(story.Identity.ID)
+		page := dogfoodOK(t, href)
+		if !strings.Contains(root, `title="`+template.HTMLEscapeString(story.CurrentRevision.Title)+`"`) {
+			t.Fatalf("the sidebar does not name %s by its title", href)
+		}
+		for _, want := range []string{"data-story-context", "data-story-trace", `href="` + epicHref(story.Epic) + `"`} {
+			if !strings.Contains(page, want) {
+				t.Fatalf("%s lacks %s", href, want)
+			}
+		}
+		for _, persona := range story.CurrentRevision.Personas {
+			if !strings.Contains(page, `data-story-persona="`+persona+`"`) {
+				t.Fatalf("%s does not name persona %s", href, persona)
+			}
+		}
+		if got := strings.Count(page, "data-story-citation"); got != len(story.CurrentRevision.Citations) {
+			t.Fatalf("%s shows %d citations, want %d", href, got, len(story.CurrentRevision.Citations))
+		}
+		storyURN := "urn:change-saga:" + records.SagaID + ":story:" + story.Identity.ID
+		for _, link := range append(append(graph.traceTo(storyURN).Design, graph.traceTo(storyURN).Slides...), graph.traceTo(storyURN).Tests...) {
+			if !strings.Contains(page, `href="`+template.HTMLEscapeString(link.Href)+`"`) {
+				t.Fatalf("%s does not link %s", href, link.Target)
+			}
+		}
+		for _, criterion := range story.CurrentRevision.AcceptanceCriteria {
+			criterionPage := dogfoodOK(t, requirementCriterionHref(story.Identity.ID, criterion.ID))
+			if !strings.Contains(criterionPage, "data-criterion-page") || !strings.Contains(criterionPage, template.HTMLEscapeString(criterion.Statement)) {
+				t.Fatalf("criterion %s/%s has no traceability view", story.Identity.ID, criterion.ID)
+			}
+			trace := graph.traceTo(storyURN + ":criterion:" + criterion.ID)
+			for _, link := range append(append(trace.Design, trace.Slides...), trace.Tests...) {
+				if !strings.Contains(criterionPage, `href="`+template.HTMLEscapeString(link.Href)+`"`) || !strings.Contains(page, `href="`+template.HTMLEscapeString(link.Href)+`"`) {
+					t.Fatalf("criterion %s/%s does not link %s on both pages", story.Identity.ID, criterion.ID, link.Target)
+				}
+			}
+		}
+	}
+}

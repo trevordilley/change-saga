@@ -169,6 +169,25 @@ var pageTemplate = `{{define "page"}}<!doctype html>
 </section>
 </article>{{end}}{{end}}</section>{{end}}
 
+{{define "story-context"}}<dl class="epic-summary story-context" data-story-context><div><dt>Epic</dt><dd>{{if .EpicLink.Href}}<a href="{{.EpicLink.Href}}">{{.EpicLink.Title}}</a>{{else}}<small>none</small>{{end}}</dd></div><div><dt>Personas</dt><dd>{{range $index, $persona := .Personas}}{{if $index}}, {{end}}<a href="{{$persona.Href}}" data-story-persona="{{$persona.Target}}">{{$persona.Title}}</a>{{else}}<small>No persona named yet. Naming who the story serves links it to them.</small>{{end}}</dd></div><div><dt>Citations</dt><dd>{{range .Citations}}<span class="story-citation" data-story-citation>{{if .Href}}<a href="{{.Href}}" rel="noreferrer">{{.Title}}</a>{{else}}{{.Title}}{{end}}{{if .Kind}} <small>{{.Kind}}{{if not .Href}} · {{.Reference}}{{end}}</small>{{end}}</span>{{else}}<small>No citation yet.</small>{{end}}</dd></div></dl>{{end}}
+
+{{define "trace-groups"}}{{if .Empty}}<p class="term-empty">Nothing links to this yet. Design that addresses it, slides that explain it, and test cases that verify it appear here once related (<code>change-saga relation add</code>).</p>{{else}}{{if .Design}}<h3>Design</h3>{{template "trace-links" .Design}}{{end}}{{if .Slides}}<h3>Explained by slides</h3>{{template "trace-links" .Slides}}{{end}}{{if .Tests}}<h3>Verified by test cases</h3>{{template "trace-links" .Tests}}{{end}}{{if .Related}}<h3>Related</h3>{{template "trace-links" .Related}}{{end}}{{end}}{{end}}
+
+{{define "criterion-trace"}}{{if not .Empty}}<p class="criterion-trace" data-criterion-trace>{{if .Design}}Design: {{range $i, $l := .Design}}{{if $i}}, {{end}}<a href="{{$l.Href}}">{{$l.Title}}</a>{{end}}. {{end}}{{if .Slides}}Explained by {{range $i, $l := .Slides}}{{if $i}}, {{end}}<a href="{{$l.Href}}">{{$l.Title}}</a>{{end}}. {{end}}{{if .Tests}}Verified by {{range $i, $l := .Tests}}{{if $i}}, {{end}}<a href="{{$l.Href}}">{{$l.Title}}</a>{{end}}.{{end}}</p>{{end}}{{end}}
+
+{{define "criterion-page"}}{{$story := .Story}}{{with .FocusedCriterion}}<nav class="requirements-breadcrumbs" aria-label="Requirement breadcrumb">
+<a href="/requirements">Requirements</a>
+<span>/</span>{{with $story.EpicLink.Href}}<a href="{{.}}">{{$story.EpicLink.Title}}</a>
+<span>/</span>{{end}}<a href="{{$story.Href}}">{{$story.Title}}</a>
+<span>/</span>
+<strong>{{.Label}}</strong></nav>
+<article class="app-page criterion-page" data-criterion-page data-requirement-target="{{.Target}}">
+<header class="requirement-story-hero"><div><p class="app-page-kind">Acceptance criterion · {{.Label}}</p><h1>{{.Statement}}</h1><p class="trace-rationale">Of the story <a href="{{$story.Href}}">{{$story.Title}}</a>.</p></div></header>
+<section class="requirement-trace" data-criterion-own-trace><h2>Linked to this criterion</h2>{{template "trace-groups" .Trace}}</section>
+<section class="requirement-trace" data-criterion-story-trace><h2>Through its story</h2>{{if $story.Trace.Empty}}<p class="term-empty">Nothing links to the story as a whole.</p>{{else}}{{template "trace-groups" $story.Trace}}{{end}}</section>
+<section class="app-page-section"><h2>The story's other criteria</h2><ul class="trace-links">{{range $story.Criteria}}{{if not .Selected}}<li><a href="{{.Href}}">{{.Label}}</a> <span>{{.Statement}}</span></li>{{end}}{{end}}</ul></section>
+</article>{{end}}{{end}}
+
 {{define "requirements-page"}}<section class="requirements-page" data-requirements-page>{{if .Overview}}<header class="requirements-header">
 <h1>Requirements</h1>
 </header>
@@ -198,17 +217,18 @@ var pageTemplate = `{{define "page"}}<!doctype html>
 </article>{{else}}<div class="requirements-empty">
 <strong>No stories yet.</strong>
 <span>Add the first story through the requirements authoring workflow.</span>
-</div>{{end}}</div>{{else}}{{with .Story}}<nav class="requirements-breadcrumbs" aria-label="Requirement breadcrumb">
+</div>{{end}}</div>{{else if .FocusedCriterion}}{{template "criterion-page" .}}{{else}}{{with .Story}}<nav class="requirements-breadcrumbs" aria-label="Requirement breadcrumb">
 <a href="/requirements">Requirements</a>
-<span>/</span>
-<span>{{.Label}}</span>{{with $.FocusedCriterion}}<span>/</span>
-<strong>{{.Label}}</strong>{{end}}</nav>
+<span>/</span>{{with .EpicLink.Href}}<a href="{{.}}">{{$.Story.EpicLink.Title}}</a>
+<span>/</span>{{end}}
+<strong>{{.Title}}</strong></nav>
 <article class="requirement-story-page" data-requirement-target="{{.Target}}">
 <header class="requirement-story-hero">
 <div>
+<p class="app-page-kind">Story · {{.Lifecycle}}</p>
 <h1>{{.Title}}</h1>
 </div>
-</header>{{if or .RevisionConflict .LifecycleConflict}}<div class="requirements-conflict" role="alert">{{template "icon" "alert"}}<span>This story has {{if .RevisionConflict}}multiple revision heads{{end}}{{if and .RevisionConflict .LifecycleConflict}} and {{end}}{{if .LifecycleConflict}}multiple lifecycle heads{{end}}. No state is being guessed.</span>
+</header>{{template "story-context" .}}{{if or .RevisionConflict .LifecycleConflict}}<div class="requirements-conflict" role="alert">{{template "icon" "alert"}}<span>This story has {{if .RevisionConflict}}multiple revision heads{{end}}{{if and .RevisionConflict .LifecycleConflict}} and {{end}}{{if .LifecycleConflict}}multiple lifecycle heads{{end}}. No state is being guessed.</span>
 </div>{{end}}
 <section class="requirement-need">
 <p>{{.Statement}}</p>
@@ -267,6 +287,7 @@ var pageTemplate = `{{define "page"}}<!doctype html>
 </div>
 </div>
 </details>
+<section class="requirement-trace" data-story-trace><h2>Linked to the whole story</h2>{{template "trace-groups" .Trace}}</section>
 {{if .Terms}}<section class="requirement-terms" data-requirement-terms>
 <h2>Terms</h2>
 <ul class="term-links">{{range .Terms}}<li><a href="{{.Href}}" data-term-target="{{.Target}}">{{.Title}}</a></li>{{end}}</ul>
@@ -279,7 +300,7 @@ var pageTemplate = `{{define "page"}}<!doctype html>
 <header>
 <a class="criterion-label" href="{{.Href}}">{{.Label}}</a>
 </header>
-<p>{{.Statement}}</p>
+<p>{{.Statement}}</p>{{template "criterion-trace" .Trace}}
 </article>{{end}}</div>
 </section>
 </article>{{end}}{{end}}</section>{{end}}

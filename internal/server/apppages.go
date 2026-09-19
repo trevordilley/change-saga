@@ -532,5 +532,43 @@ func testCaseNav(document quality.Document, epic string) []*navNodeView {
 	return nodes
 }
 
-// decorateRequirements adds the traceability a story page shows.
-func (graph *appGraph) decorateRequirements(page *requirementsPageView) {}
+// decorateRequirements adds the links a story page shows: the story's epic,
+// personas, and citations, and what links to it and to each criterion.
+func (graph *appGraph) decorateRequirements(page *requirementsPageView) {
+	for _, view := range page.Stories {
+		if view.Epic != "" {
+			view.EpicLink = graph.link(applayout.EpicURN(graph.requirements.SagaID, view.Epic))
+		}
+	}
+	view := page.Story
+	if view == nil {
+		return
+	}
+	if story := graph.requirements.FindStory(view.ID); story != nil && story.CurrentRevision != nil {
+		for _, persona := range story.CurrentRevision.Personas {
+			view.Personas = append(view.Personas, graph.link(persona))
+		}
+		for _, cited := range story.CurrentRevision.Citations {
+			view.Citations = append(view.Citations, graph.citation(cited))
+		}
+	}
+	view.Trace = graph.traceTo(view.Target)
+	for _, criterion := range view.Criteria {
+		criterion.Trace = graph.traceTo(criterion.Target)
+	}
+}
+
+func (graph *appGraph) citation(urn string) citationView {
+	view := citationView{Title: urn, Reference: urn}
+	for _, citation := range graph.requirements.Citations {
+		target, _ := livingid.Citation(graph.requirements.SagaID, citation.ID)
+		if target != urn {
+			continue
+		}
+		view = citationView{Title: citation.Title, Kind: strings.ReplaceAll(string(citation.Kind), "_", " "), Reference: citation.Reference}
+		if strings.HasPrefix(citation.Reference, "https://") || strings.HasPrefix(citation.Reference, "http://") {
+			view.Href = citation.Reference
+		}
+	}
+	return view
+}
