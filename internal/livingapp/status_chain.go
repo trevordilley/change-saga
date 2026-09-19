@@ -17,7 +17,9 @@ type Chain struct {
 	// TargetStories maps every documentation target (a deck, slide, Item,
 	// or report target) to the stories its current addresses or explains
 	// relations reach. A deck or slide related with scope descendants passes
-	// its stories to the Items it contains, since the Items own the code.
+	// its stories to the Items it contains, since the Items own the code. An
+	// active test case reaches the stories whose criteria it verifies, since
+	// its evidence owns the test code it selects.
 	TargetStories map[string][]string
 	// StoryDesign maps a story to the design sources that address it or one
 	// of its criteria through a current relation.
@@ -77,6 +79,7 @@ func (a *assembler) chain() Chain {
 				continue
 			}
 			result.CriterionTests[link.To] = append(result.CriterionTests[link.To], link.From)
+			result.TargetStories[link.From] = append(result.TargetStories[link.From], story)
 		}
 	}
 	for key, values := range result.TargetStories {

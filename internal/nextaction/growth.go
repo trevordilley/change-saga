@@ -170,6 +170,11 @@ func (b *builder) storyGrowth() {
 	places := map[string]*storyPlace{}
 	for _, entry := range area.UncoveredEntries {
 		for _, target := range entry.Targets {
+			if strings.Contains(target, ":test-case:") {
+				// Test code reaches a story through the criterion its test
+				// case verifies; an orphaned test case is asked about as such.
+				continue
+			}
 			place, ok := b.context.Places[target]
 			if !ok {
 				place = Place{Target: target, Epic: entry.Epic}

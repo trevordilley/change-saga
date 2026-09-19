@@ -6,6 +6,7 @@ import (
 
 	"github.com/twentyideas/changesaga/internal/areas"
 	"github.com/twentyideas/changesaga/internal/coderef"
+	"github.com/twentyideas/changesaga/internal/gitdiff"
 	"github.com/twentyideas/changesaga/internal/livingapp"
 )
 
@@ -221,5 +222,20 @@ func TestNewTerminologyIsOneQuestionPerDeclarationBlock(t *testing.T) {
 	}
 	if single := byID(terms)["growth:term:axes.go#AxisState"]; !strings.Contains(single.Reason, `AxisState.StateExcluded`) || !strings.Contains(single.Reason, `"excluded"`) {
 		t.Fatalf("a single declaration names its identifier and suggested word: %q", single.Reason)
+	}
+}
+
+// Test code reaches a story through the criterion its test case verifies, so
+// story growth never offers to capture a story named after a test case.
+func TestStoryGrowthSkipsTestCaseEvidence(t *testing.T) {
+	report := areas.Evaluate(areas.Inputs{
+		Scope:  areas.Scope{Kind: areas.ScopeChange},
+		Atoms:  []gitdiff.Atom{{Kind: "line", Key: "k", Path: "refund_test.go", Side: "new", Line: 1}},
+		Owners: map[string][]string{"k": {"urn:change-saga:checkout:test-case:refund"}},
+	})
+	for _, action := range Derive(appStatus(), saga, Context{Coverage: report}) {
+		if strings.HasPrefix(action.ID, "growth:story:") {
+			t.Fatalf("story growth for test-case evidence: %#v", action)
+		}
 	}
 }
