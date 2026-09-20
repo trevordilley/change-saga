@@ -24,10 +24,11 @@ var errTermNotFound = errors.New("term not found")
 
 type termsPageView struct {
 	Active bool
-	// Index is the Terms and vocabulary page; otherwise Term is one term.
-	Index bool
-	Terms []*termView
-	Term  *termView
+	// Index is the Terms and vocabulary page, which is the table of every
+	// term; otherwise Term is the one term a page shows.
+	Index     bool
+	Directory *directoryView
+	Term      *termView
 }
 
 type termView struct {
@@ -83,16 +84,14 @@ func termHref(id string) string { return "/terms/" + url.PathEscape(id) }
 
 // makeTermsPage projects the vocabulary for the Terms pages. Code is read
 // only for the one term a page shows.
-func (a *app) makeTermsPage(ctx context.Context, document requirements.Document, stories map[string]string, path, termID string) (*termsPageView, error) {
+func (a *app) makeTermsPage(ctx context.Context, document requirements.Document, stories map[string]string, path, termID, query string) (*termsPageView, error) {
 	page := &termsPageView{Active: isTermsPath(path)}
 	if !page.Active {
 		return page, nil
 	}
 	if termID == "" {
 		page.Index = true
-		for _, term := range document.Terms {
-			page.Terms = append(page.Terms, makeTermView(document, term, stories))
-		}
+		page.Directory = termsDirectory(document, a.termPlaces(ctx, document), query)
 		return page, nil
 	}
 	term := document.FindTerm(termID)
@@ -161,6 +160,60 @@ func recordLink(document requirements.Document, record string) termLinkView {
 		link.Title = "Feature flag: " + id
 	}
 	return link
+}
+
+// termPlace is where one code reference of a term resolves now, and whether
+// it still points at the code the term was written for.
+type termPlace struct {
+	Path string
+	// Where is the reference as a reader reads it: the file, and the lines
+	// inside it when the reference names some. The commit is left out, since
+	// a current reference is at the head a reader is already looking at and a
+	// stale one is stated as stale.
+	Where string
+	Stale bool
+}
+
+// termWhere names a resolved location the way a reader would say it.
+func termWhere(location coderef.Location) string {
+	if location.WholeFile() {
+		return location.Path
+	}
+	if location.Start == location.End {
+		return fmt.Sprintf("%s:%d", location.Path, location.Start)
+	}
+	return fmt.Sprintf("%s:%d-%d", location.Path, location.Start, location.End)
+}
+
+// termPlaces resolves every term's code references to where they are at the
+// head. It reads only what resolving needs and never renders the code, so the
+// vocabulary table can state where each term is defined without opening
+// thirty files' worth of it. A reviewer with no code repository gets no
+// places, which the table states as a gap rather than an error.
+func (a *app) termPlaces(ctx context.Context, document requirements.Document) map[string][]termPlace {
+	places := map[string][]termPlace{}
+	resolver, err := coderesolve.New(ctx, a.sourceDir)
+	if err != nil {
+		return places
+	}
+	defer resolver.Close()
+	head := firstNonEmptyString(a.rng.Head, "HEAD")
+	headOID, _ := gitOutput(ctx, a.sourceDir, "rev-parse", "--verify", "--end-of-options", head+"^{commit}")
+	for _, term := range document.Terms {
+		if term.CurrentRevision == nil {
+			continue
+		}
+		for _, reference := range term.CurrentRevision.Code {
+			place := termPlace{Path: reference.Path, Where: termWhere(reference.Location())}
+			if at := resolver.Resolve(ctx, reference, headOID); at.Current() {
+				place.Path, place.Where = at.Location.Path, termWhere(at.Location)
+			} else {
+				place.Stale = true
+			}
+			places[term.Identity.ID] = append(places[term.Identity.ID], place)
+		}
+	}
+	return places
 }
 
 // termCode renders each reference as code at the head, or at its pin when it

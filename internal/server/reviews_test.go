@@ -154,6 +154,25 @@ func TestReviewPageShowsDiffsDecisionsAndCurrency(t *testing.T) {
 	if !strings.Contains(index, `data-review-summary="pr-7"`) || !strings.Contains(index, `data-currency="out_of_date"`) {
 		t.Fatalf("review index = %s", index)
 	}
+	// Reviews is a section like any other: its header opens the table of
+	// every review, with what each one compares and how much of it has been
+	// decided. The counts are facts; nothing here says a review is done.
+	for _, want := range []string{
+		`<table class="directory-table" id="reviews-table"`,
+		`<th scope="col" class="numeric">Out of date</th>`,
+		`data-directory-row="pr-7"`,
+		`data-directory-filter`,
+	} {
+		if !strings.Contains(index, want) {
+			t.Fatalf("the reviews index is not a filterable table: missing %q", want)
+		}
+	}
+	// The filter runs on the server too, and the per-slide detail beneath the
+	// table follows it rather than contradicting it.
+	filtered := getPage(t, handler, "/reviews?q=nothing-matches-this").Body.String()
+	if !strings.Contains(filtered, `<tr hidden data-directory-row="pr-7"`) || !strings.Contains(filtered, ` hidden data-review-summary="pr-7"`) {
+		t.Fatalf("the reviews filter did not hide the review it ruled out:\n%s", filtered)
+	}
 }
 
 // Finding 32: the reviews sit inside the app shell, styled like every other

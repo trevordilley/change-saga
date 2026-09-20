@@ -34,11 +34,11 @@ func TestV3DesignChapterAndFragmentEnterExistingRenderTree(t *testing.T) {
 	}
 	// In the app-level list the design chapter joins its epic's Technical.
 	app := makeAppNavTree(appNavSources{document: document, page: &requirementsPageView{}})
-	epicTechnical := findNav(t, app, "Core", "Design", "Technical").Children
+	epicTechnical := findNav(t, app, "Epics", "Core", "Design", "Technical").Children
 	if got := topTitles(epicTechnical); got != "ERD|System|Data Flows|Technical architecture" {
 		t.Fatalf("epic technical design = %v", got)
 	}
-	if got := topTitles(findNav(t, app, "Core").Children); got != "Overview|Product|Design|Quality|Implementation" {
+	if got := topTitles(findNav(t, app, "Epics", "Core").Children); got != "Overview|Product|Design|Quality|Implementation" {
 		t.Fatalf("the design chapter left the epic's Design: %s", got)
 	}
 	view := makeSectionView(document.Section, viewScope{})

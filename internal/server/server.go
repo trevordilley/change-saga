@@ -102,12 +102,22 @@ type pageData struct {
 	// TermsMode shows the overview's Terms and vocabulary, or one term.
 	TermsMode bool
 	Terms     *termsPageView
-	// Persona, Epic, TestCase, and Epics are the app-level pages; at most one
+	// Persona, Epic, and TestCase are the app-level record pages, and
+	// Epics, Personas, and Flags the directories that list them. At most one
 	// is set.
 	Persona  *personaPageView
 	Epic     *epicPageView
 	TestCase *testCasePageView
-	Epics    *epicsIndexView
+	Epics    *directoryView
+	Personas *directoryView
+	Flags    *directoryView
+	// DesignSystemMode is the design system's own page; DesignSystem is its
+	// content, which is absent until an author records some.
+	DesignSystemMode bool
+	DesignSystem     *sectionView
+	// OverviewParts is the overview's directory: its parts and what each one
+	// holds.
+	OverviewParts []overviewPartView
 	// CurrentEpic is the epic the sidebar shows; PageEpic is the epic this
 	// page belongs to, empty when the page belongs to none.
 	CurrentEpic string
@@ -331,6 +341,9 @@ func newMux(application *app) *http.ServeMux {
 	mux.HandleFunc("GET /terms", application.page)
 	mux.HandleFunc("GET /chapters/{chapter}", application.page)
 	mux.HandleFunc("GET /personas/{persona}", application.page)
+	mux.HandleFunc("GET /personas", application.page)
+	mux.HandleFunc("GET /flags", application.page)
+	mux.HandleFunc("GET /design-system", application.page)
 	mux.HandleFunc("GET /epics/{epic}", application.page)
 	mux.HandleFunc("GET /epics", application.page)
 	mux.HandleFunc("GET /tests/{test}", application.page)
@@ -776,7 +789,7 @@ func newPageTemplateFor(rng gitdiff.Range) (*template.Template, error) {
 	funcs := templateFuncs()
 	comparing := !rng.Observe()
 	funcs["comparing"] = func() bool { return comparing }
-	return template.New("page").Funcs(funcs).Parse(pageTemplate)
+	return template.New("page").Funcs(funcs).Parse(pageTemplate + directoryTemplates)
 }
 
 // templateFuncs is shared by the server and its rendering tests so a new
@@ -871,8 +884,14 @@ func routeOf(r *http.Request) (appRoute, bool) {
 		return appRoute{kind: "requirements"}, true
 	case isTermsPath(path):
 		return appRoute{kind: "terms"}, true
+	case path == "/personas":
+		return appRoute{kind: "personas"}, true
 	case strings.HasPrefix(path, "/personas/") && r.PathValue("persona") != "":
 		return appRoute{kind: "persona", id: r.PathValue("persona")}, true
+	case path == "/flags":
+		return appRoute{kind: "flags"}, true
+	case path == designSystemPath:
+		return appRoute{kind: "designsystem"}, true
 	case path == "/epics":
 		return appRoute{kind: "epics"}, true
 	case strings.HasPrefix(path, "/epics/") && r.PathValue("epic") != "":
@@ -919,19 +938,31 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 		tests = quality.Document{SagaID: document.Manifest.ID}
 	}
 	graph := newAppGraph(document, requirementsDocument, tests)
-	// An epic's chapters and explanations belong to its page; the overview
-	// holds only the app's own.
+	// An epic's chapters and explanations belong to its page, and the design
+	// system's to its own; the overview holds only the app's own.
 	appReport := *reportRoot
 	appReport.Children, appReport.Fragments = nil, nil
+	designRoot := *reportRoot
+	designRoot.Children, designRoot.Fragments = nil, nil
 	for _, fragment := range reportRoot.Fragments {
-		if _, epic := graph.targetEpic[fragment.Target]; !epic {
-			appReport.Fragments = append(appReport.Fragments, fragment)
+		if _, epic := graph.targetEpic[fragment.Target]; epic {
+			continue
 		}
+		if saga.IsDesignSystemPath(fragment.Path) {
+			designRoot.Fragments = append(designRoot.Fragments, fragment)
+			continue
+		}
+		appReport.Fragments = append(appReport.Fragments, fragment)
 	}
 	for _, child := range reportRoot.Children {
-		if _, epic := graph.epicChapter(child); !epic {
-			appReport.Children = append(appReport.Children, child)
+		if _, epic := graph.epicChapter(child); epic {
+			continue
 		}
+		if saga.IsDesignSystemPath(child.Path) {
+			designRoot.Children = append(designRoot.Children, child)
+			continue
+		}
+		appReport.Children = append(appReport.Children, child)
 	}
 	data := &pageData{
 		Opening:       openingLabel(a.rng),
@@ -954,7 +985,7 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 	for _, story := range requirementsView.Stories {
 		storyTitles[story.Target] = story.Title
 	}
-	data.Terms, err = a.makeTermsPage(r.Context(), requirementsDocument, storyTitles, r.URL.Path, r.PathValue("term"))
+	data.Terms, err = a.makeTermsPage(r.Context(), requirementsDocument, storyTitles, r.URL.Path, r.PathValue("term"), directoryQuery(r))
 	if err != nil {
 		return nil, err
 	}
@@ -963,6 +994,15 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 	case "persona":
 		if data.Persona, err = graph.personaPage(route.id); err != nil {
 			return nil, err
+		}
+	case "personas":
+		data.Personas = personasDirectory(requirementsDocument, directoryQuery(r))
+	case "flags":
+		data.Flags = flagsDirectory(graph, directoryQuery(r))
+	case "designsystem":
+		data.DesignSystemMode = true
+		if len(designRoot.Fragments)+len(designRoot.Children) > 0 {
+			data.DesignSystem = makeSectionView(&designRoot, scope.shell())
 		}
 	case "epic":
 		if data.Epic, err = graph.epicPage(route.id); err != nil {
@@ -988,7 +1028,11 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 	data.PageEpic = pageEpic(route, requirementsView, tests)
 	data.CurrentEpic = resolveCurrentEpic(document, data.PageEpic, r)
 	if route.kind == "epics" {
-		data.Epics = epicsIndex(document, requirementsDocument, tests, data.CurrentEpic)
+		data.Epics = epicsDirectory(document, graph, data.CurrentEpic, directoryQuery(r))
+	}
+	onboarding := onboardingHref(document)
+	if route.kind == "overview" {
+		data.OverviewParts = overviewDirectory(document, requirementsDocument, onboarding)
 	}
 	prototypeDocument, prototypeNote := a.prototypeDocument(document.Manifest.ID)
 	data.Nav = makeAppNavTree(appNavSources{
@@ -996,7 +1040,7 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 		quality:    tests,
 		prototypes: prototypeDocument, prototypeNote: prototypeNote,
 		decks: makeDeckNavTree(slideRoot), overviewActive: overviewActive,
-		currentEpic: data.CurrentEpic,
+		currentEpic: data.CurrentEpic, hasReviews: len(document.Reviews) > 0,
 	})
 	if route.kind != "overview" {
 		// Off the overview, an in-page anchor would point into a page that is

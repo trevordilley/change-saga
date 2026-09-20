@@ -455,11 +455,19 @@ func TestDocumentationPagesHaveNoApprovalOrCommentControls(t *testing.T) {
 	for _, testCase := range tests.TestCases {
 		paths = append(paths, testCaseHref(testCase.Identity.ID))
 	}
+	paths = append(paths, "/personas", "/flags", "/epics", designSystemPath)
 	for _, path := range paths {
 		page := dogfoodOK(t, path)
-		for _, control := range []string{"<form", "data-review-decision", "data-review-comment", "Approve slide", "Request changes", "<textarea"} {
+		for _, control := range []string{`<form method="post"`, "data-review-decision", "data-review-comment", "Approve slide", "Request changes", "<textarea"} {
 			if strings.Contains(page, control) {
 				t.Fatalf("%s carries a review control: %s", path, control)
+			}
+		}
+		// A directory's filter is the one form documentation carries, and it
+		// only ever reads: every form on a documentation page is a GET.
+		for _, form := range strings.Split(page, "<form")[1:] {
+			if !strings.HasPrefix(form, ` class="directory-filter" method="get"`) {
+				t.Fatalf("%s carries a form that is not a directory filter: <form%s", path, form[:min(len(form), 80)])
 			}
 		}
 	}

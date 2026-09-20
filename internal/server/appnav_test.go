@@ -155,23 +155,32 @@ func topTitles(nodes []*navNodeView) string {
 // repository's own sidebar at 238 rows.
 func TestAppNavigationListsAppPlacesThenOneEpicWithItsFourPlaces(t *testing.T) {
 	nodes := makeAppNavTree(appNavFixture(t))
-	if got, want := topTitles(nodes), "Overview|Personas|Design system|Onboarding|Feature flags|Billing|Show all epics"; got != want {
+	if got, want := topTitles(nodes), "Overview|Epics|Reviews"; got != want {
 		t.Fatalf("app-level list = %s, want %s", got, want)
 	}
-	wantIDs := []string{"nav-overview", "nav-personas", "nav-designsystem", "nav-onboarding", "nav-featureflags", epicNavID("billing"), "nav-all-epics"}
+	wantIDs := []string{"nav-overview", "nav-epics", "nav-reviews"}
 	for index, node := range nodes {
 		if node.NodeID != wantIDs[index] {
 			t.Fatalf("app place %q has node ID %q, want %q", node.Title, node.NodeID, wantIDs[index])
 		}
+	}
+	// What describes the whole app hangs off the overview, in order, beneath
+	// the overview's own prose.
+	if got, want := topTitles(findNav(t, nodes, "Overview").Children),
+		"Name|Elevator pitch|Description|Terms and vocabulary|Personas|Design system|Onboarding|Feature flags"; got != want {
+		t.Fatalf("overview parts = %s, want %s", got, want)
+	}
+	if got, want := topTitles(findNav(t, nodes, "Epics").Children), "Billing|Show all epics"; got != want {
+		t.Fatalf("epics section = %s, want %s", got, want)
 	}
 	// Only the current epic is in the tree; the other epic is reachable
 	// through the picker and the full list, not as a second subtree.
 	if findNavByID(nodes, epicNavID("catalog")) != nil {
 		t.Fatalf("the sidebar still expands every epic: %v", navTitles(nodes, 0))
 	}
-	assertEpicSubtree(t, nodes, "Billing", "billing")
+	assertEpicSubtree(t, findNav(t, nodes, "Epics").Children, "Billing", "billing")
 	// Billing's one deck is its Implementation: the slides sit directly beneath.
-	billing := findNav(t, nodes, "Billing", "Implementation")
+	billing := findNav(t, nodes, "Epics", "Billing", "Implementation")
 	if got := topTitles(billing.Children); got != "charge|refund" {
 		t.Fatalf("billing Implementation must list its deck's slides directly: %v", navTitles(billing.Children, 0))
 	}
@@ -180,8 +189,8 @@ func TestAppNavigationListsAppPlacesThenOneEpicWithItsFourPlaces(t *testing.T) {
 	sources := appNavFixture(t)
 	sources.currentEpic = "catalog"
 	chosen := makeAppNavTree(sources)
-	assertEpicSubtree(t, chosen, "Catalog", "catalog")
-	catalog := findNav(t, chosen, "Catalog", "Implementation")
+	assertEpicSubtree(t, findNav(t, chosen, "Epics").Children, "Catalog", "catalog")
+	catalog := findNav(t, chosen, "Epics", "Catalog", "Implementation")
 	if catalog.Gap || len(catalog.Children) != 1 || !catalog.Children[0].Gap ||
 		catalog.Children[0].NodeID != epicNavID("catalog")+"-implementation-empty" {
 		t.Fatalf("an empty epic Implementation must state its gap beneath the header: %v", navTitles(catalog.Children, 0))
@@ -232,7 +241,7 @@ func TestTheCurrentEpicRowCarriesAPickerOverEveryEpic(t *testing.T) {
 	sources := appNavFixture(t)
 	sources.currentEpic = "catalog"
 	nodes := makeAppNavTree(sources)
-	picker := findNav(t, nodes, "Catalog").Picker
+	picker := findNav(t, nodes, "Epics", "Catalog").Picker
 	if picker == nil {
 		t.Fatal("the current epic's row has no picker")
 	}
@@ -304,7 +313,7 @@ func TestEmptyAppPlacesStateTheirGap(t *testing.T) {
 		requirements: requirements.Document{SagaID: appNavSaga},
 		page:         page,
 	})
-	if got, want := topTitles(nodes), "Overview|Personas|Design system|Onboarding|Feature flags|Epics"; got != want {
+	if got, want := topTitles(nodes), "Overview|Epics|Reviews"; got != want {
 		t.Fatalf("empty app-level list = %s, want %s", got, want)
 	}
 	// With no epics there is nothing to pick between, so the row that says so
@@ -312,14 +321,14 @@ func TestEmptyAppPlacesStateTheirGap(t *testing.T) {
 	if findNavByID(nodes, "nav-all-epics") != nil || findNav(t, nodes, "Epics").Picker != nil {
 		t.Fatal("an app with no epics still offers a picker")
 	}
-	for _, node := range nodes[1:] {
+	for _, node := range append(findNav(t, nodes, "Overview").Children[4:], nodes[1:]...) {
 		if !node.Gap || node.Note == "" || len(node.Children) != 0 {
 			t.Fatalf("empty %s must be a stated gap: %#v", node.Title, node)
 		}
 	}
 	// The overview always has its name; each other part is a stated gap.
 	overview := findNav(t, nodes, "Overview")
-	if overview.Gap || topTitles(overview.Children) != "Name|Elevator pitch|Description|Terms and vocabulary" {
+	if overview.Gap || topTitles(overview.Children) != "Name|Elevator pitch|Description|Terms and vocabulary|Personas|Design system|Onboarding|Feature flags" {
 		t.Fatalf("overview = %#v %s", overview, topTitles(overview.Children))
 	}
 	for _, part := range overview.Children[1:] {
@@ -327,12 +336,19 @@ func TestEmptyAppPlacesStateTheirGap(t *testing.T) {
 			t.Fatalf("an absent overview part is a stated gap: %#v", part)
 		}
 	}
-	for title, note := range map[string]string{
-		"Personas": "no personas yet", "Design system": "no design system yet",
-		"Onboarding": "no onboarding deck yet", "Feature flags": "no feature flags yet", "Epics": "no epics yet",
+	for _, want := range []struct {
+		path []string
+		note string
+	}{
+		{[]string{"Overview", "Personas"}, "no personas yet"},
+		{[]string{"Overview", "Design system"}, "no design system yet"},
+		{[]string{"Overview", "Onboarding"}, "no onboarding deck yet"},
+		{[]string{"Overview", "Feature flags"}, "no feature flags yet"},
+		{[]string{"Epics"}, "no epics yet"},
+		{[]string{"Reviews"}, "no reviews yet"},
 	} {
-		if got := findNav(t, nodes, title).Note; got != note {
-			t.Fatalf("%s gap note = %q, want %q", title, got, note)
+		if got := findNav(t, nodes, want.path...).Note; got != want.note {
+			t.Fatalf("%v gap note = %q, want %q", want.path, got, want.note)
 		}
 	}
 
@@ -345,7 +361,7 @@ func TestEmptyAppPlacesStateTheirGap(t *testing.T) {
 	if err := tmpl.ExecuteTemplate(&rendered, "doc-tree", nodes); err != nil {
 		t.Fatal(err)
 	}
-	for _, note := range []string{"not written yet", "no terms yet", "no personas yet", "no design system yet", "no onboarding deck yet", "no feature flags yet", "no epics yet"} {
+	for _, note := range []string{"not written yet", "no terms yet", "no personas yet", "no design system yet", "no onboarding deck yet", "no feature flags yet", "no epics yet", "no reviews yet"} {
 		if !strings.Contains(rendered.String(), `<span class="doc-note">`+note+`</span>`) {
 			t.Fatalf("rendered app-level list is missing the gap %q: %s", note, rendered.String())
 		}
@@ -356,7 +372,7 @@ func TestEmptyAppPlacesStateTheirGap(t *testing.T) {
 // enough, and a retired persona needs no story at all.
 func TestPersonaWithoutAnAcceptedStoryShowsItsGap(t *testing.T) {
 	nodes := makeAppNavTree(appNavFixture(t))
-	personas := findNav(t, nodes, "Personas")
+	personas := findNav(t, nodes, "Overview", "Personas")
 	if personas.Gap || topTitles(personas.Children) != "Buyer|Seller|Auditor" {
 		t.Fatalf("personas = %v", navTitles(personas.Children, 0))
 	}
@@ -374,7 +390,7 @@ func TestPersonaWithoutAnAcceptedStoryShowsItsGap(t *testing.T) {
 
 func TestFeatureFlagRowsShowTheirState(t *testing.T) {
 	nodes := makeAppNavTree(appNavFixture(t))
-	flags := findNav(t, nodes, "Feature flags")
+	flags := findNav(t, nodes, "Overview", "Feature flags")
 	if flags.Gap || len(flags.Children) != 3 {
 		t.Fatalf("feature flags = %v", navTitles(flags.Children, 0))
 	}
@@ -394,18 +410,18 @@ func TestFeatureFlagRowsShowTheirState(t *testing.T) {
 // beneath Onboarding and never under any epic's Implementation.
 func TestOnboardingSlidesSitUnderOnboardingAndNotUnderAnyEpic(t *testing.T) {
 	nodes := makeAppNavTree(appNavFixture(t))
-	onboarding := findNav(t, nodes, "Onboarding")
+	onboarding := findNav(t, nodes, "Overview", "Onboarding")
 	if onboarding.Gap || topTitles(onboarding.Children) != "who-it-serves" {
 		t.Fatalf("Onboarding must list its deck's slides directly: %v", navTitles(onboarding.Children, 0))
 	}
 	slideID := "nav-" + domID(saga.SlideTarget(appNavSaga, "who-it-serves"))
-	for _, epic := range []*navNodeView{findNav(t, nodes, "Billing")} {
+	for _, epic := range []*navNodeView{findNav(t, nodes, "Epics", "Billing")} {
 		if findNavByID(epic.Children, slideID) != nil {
 			t.Fatalf("the onboarding slide appeared under epic %s: %v", epic.Title, navTitles(epic.Children, 0))
 		}
 	}
 	deckID := "nav-" + domID(saga.DeckTarget(appNavSaga, "welcome"))
-	if findNavByID([]*navNodeView{findNav(t, nodes, "Billing")}, deckID) != nil {
+	if findNavByID([]*navNodeView{findNav(t, nodes, "Epics", "Billing")}, deckID) != nil {
 		t.Fatal("the onboarding deck appeared under an epic")
 	}
 	// And an epic's implementation slides stay out of Onboarding.
@@ -418,10 +434,10 @@ func TestOnboardingSlidesSitUnderOnboardingAndNotUnderAnyEpic(t *testing.T) {
 // holds it.
 func TestEpicStoriesAppearOnlyUnderThatEpicsRequirements(t *testing.T) {
 	nodes := makeAppNavTree(appNavFixture(t))
-	billing := findNav(t, nodes, "Billing", "Product", "Requirements")
+	billing := findNav(t, nodes, "Epics", "Billing", "Product", "Requirements")
 	catalogSources := appNavFixture(t)
 	catalogSources.currentEpic = "catalog"
-	catalog := findNav(t, makeAppNavTree(catalogSources), "Catalog", "Product", "Requirements")
+	catalog := findNav(t, makeAppNavTree(catalogSources), "Epics", "Catalog", "Product", "Requirements")
 	if billing.NodeID != epicNavID("billing")+"-requirements" || catalog.NodeID != epicNavID("catalog")+"-requirements" {
 		t.Fatalf("requirements node IDs = %q, %q", billing.NodeID, catalog.NodeID)
 	}
@@ -438,7 +454,7 @@ func TestEpicStoriesAppearOnlyUnderThatEpicsRequirements(t *testing.T) {
 	sources := appNavFixture(t)
 	sources.document.Epics = append(sources.document.Epics, appNavEpic("search", "Search"))
 	sources.currentEpic = "search"
-	search := findNav(t, makeAppNavTree(sources), "Search", "Product", "Requirements")
+	search := findNav(t, makeAppNavTree(sources), "Epics", "Search", "Product", "Requirements")
 	if !search.Gap || search.Note == "" || len(search.Children) != 0 {
 		t.Fatalf("an epic with no stories must state its Requirements gap: %#v", search)
 	}
@@ -609,7 +625,7 @@ func TestPageRendersTheAppLevelListFromAnAppSaga(t *testing.T) {
 	}
 	// The epics index lists both, and is reachable as a page of its own.
 	index := render("/epics")
-	for _, want := range []string{`data-epics-page`, `href="/epics/billing"`, `href="/epics/catalog"`} {
+	for _, want := range []string{`data-directory-page="epics"`, `href="/epics/billing"`, `href="/epics/catalog"`} {
 		if !strings.Contains(index, want) {
 			t.Fatalf("the epics index lacks %q", want)
 		}
