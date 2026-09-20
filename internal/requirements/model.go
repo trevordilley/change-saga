@@ -168,6 +168,11 @@ type Relation struct {
 	SupersededAt       *time.Time    `json:"superseded_at,omitempty"`
 	SupersedeRequestID string        `json:"supersede_request_id,omitempty"`
 
+	// Repins are the confirmations appended beside this relation, oldest
+	// first. They are records of their own, never fields of this one; see
+	// Relation.Confirmed.
+	Repins []RelationRepin `json:"-"`
+
 	Stale        bool     `json:"-"`
 	StaleReasons []string `json:"-"`
 	// Feature is the feature whose directory holds the record.

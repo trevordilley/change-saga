@@ -155,6 +155,7 @@ func LinksFromCurrency(document requirements.Document, currency []requirements.R
 		if index < len(currency) && currency[index].Relation == urn {
 			link.Currency = currency[index].Status
 			link.Reasons = append(link.Reasons, currency[index].Reasons...)
+			link.CarriedForward = append(link.CarriedForward, currency[index].CarriedForward...)
 		}
 		links = append(links, link)
 	}

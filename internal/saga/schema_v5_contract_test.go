@@ -142,8 +142,8 @@ func TestV5GoldenFixturesValidate(t *testing.T) {
 			records = append(records, fixture)
 		}
 	}
-	if len(records) != 13 {
-		t.Fatalf("record fixture count = %d, want 13", len(records))
+	if len(records) != 14 {
+		t.Fatalf("record fixture count = %d, want 14", len(records))
 	}
 	for _, fixture := range records {
 		name := strings.TrimSuffix(filepath.Base(fixture), ".json") + ".schema.json"

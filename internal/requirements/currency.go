@@ -1,6 +1,10 @@
 package requirements
 
-import "sort"
+import (
+	"sort"
+	"strconv"
+	"strings"
+)
 
 // Currency is the derived standing of one relation against current heads.
 // Only CurrencyCurrent may ever count as coverage.
@@ -22,7 +26,36 @@ const (
 	ReasonEndpointMissing       = "endpoint_missing"
 	ReasonCriterionRemoved      = "criterion_removed"
 	ReasonHeadUnresolved        = "head_unresolved"
+	// ReasonCriterionStatementChanged is the criterion a relation points at
+	// being reworded under it: the one revision change that can invalidate
+	// what the relation asserts.
+	ReasonCriterionStatementChanged = "criterion_statement_changed"
+	// ReasonStoryObligationChanged is the story a relation points at changing
+	// what it obliges: its title, its statement, or any acceptance criterion.
+	ReasonStoryObligationChanged = "story_obligation_changed"
 )
+
+// Carry-forward codes. Every carried-forward endpoint has exactly one.
+const (
+	// CarriedCriterionUnchanged is a story revised around a criterion whose id
+	// and statement did not move.
+	CarriedCriterionUnchanged = "criterion_unchanged"
+	// CarriedStoryObligationUnchanged is a story revised without changing what
+	// it obliges.
+	CarriedStoryObligationUnchanged = "story_obligation_unchanged"
+)
+
+// CarriedForward records one endpoint whose pin the tool advanced on its own
+// because what the relation points at did not change. Confirmed stays the
+// revision a person pinned, so a reader can always tell an affirmed relation
+// from one carried past a revision nobody read.
+type CarriedForward struct {
+	Endpoint  string `json:"endpoint"`
+	Code      string `json:"code"`
+	Confirmed string `json:"confirmed"`
+	Current   string `json:"current"`
+	Message   string `json:"message"`
+}
 
 // CurrencyReason explains one way a relation's pins disagree with current
 // heads. Message is the legacy Relation.StaleReasons text.
@@ -46,6 +79,9 @@ type RelationCurrency struct {
 	Version  int              `json:"version"`
 	Status   Currency         `json:"status"`
 	Reasons  []CurrencyReason `json:"reasons"`
+	// CarriedForward names every endpoint whose pin the tool advanced without
+	// a judgment call. It is empty on a relation nothing moved under.
+	CarriedForward []CarriedForward `json:"carried_forward,omitempty"`
 }
 
 // Current reports whether the relation may count as coverage.
@@ -100,10 +136,17 @@ type currencyHeads struct {
 	revisions  map[string]string
 	conflicted map[string][]string
 	removed    map[string]bool
+	// statements is what each criterion said in each revision of its story,
+	// keyed criterion URN then revision URN. It is how a relation to a
+	// criterion is judged by the criterion rather than by the story around it.
+	statements map[string]map[string]string
+	// obligations is what each story required in each of its revisions, keyed
+	// story URN then revision URN.
+	obligations map[string]map[string]string
 }
 
 func newCurrencyHeads(document Document, inputs StaleInputs) currencyHeads {
-	heads := currencyHeads{sagaID: document.SagaID, inputs: inputs, revisions: map[string]string{}, conflicted: map[string][]string{}, removed: map[string]bool{}}
+	heads := currencyHeads{sagaID: document.SagaID, inputs: inputs, revisions: map[string]string{}, conflicted: map[string][]string{}, removed: map[string]bool{}, statements: map[string]map[string]string{}, obligations: map[string]map[string]string{}}
 	for key, value := range inputs.CurrentRevisions {
 		heads.revisions[key] = value
 	}
@@ -112,6 +155,26 @@ func newCurrencyHeads(document Document, inputs StaleInputs) currencyHeads {
 	}
 	for _, story := range document.Stories {
 		storyID, _ := storyURN(document.SagaID, story.Identity.ID)
+		for _, revision := range story.Revisions {
+			revisionID, err := revisionURN(document.SagaID, story.Identity.ID, revision.ID)
+			if err != nil {
+				continue
+			}
+			for _, criterion := range revision.AcceptanceCriteria {
+				id, err := criterionURN(document.SagaID, story.Identity.ID, criterion.ID)
+				if err != nil {
+					continue
+				}
+				if heads.statements[id] == nil {
+					heads.statements[id] = map[string]string{}
+				}
+				heads.statements[id][revisionID] = criterion.Statement
+			}
+			if heads.obligations[storyID] == nil {
+				heads.obligations[storyID] = map[string]string{}
+			}
+			heads.obligations[storyID][revisionID] = obligationOf(revision)
+		}
 		if story.CurrentRevision == nil {
 			heads.conflicted[storyID] = story.RevisionHeads
 			for _, revision := range story.Revisions {
@@ -143,7 +206,10 @@ func newCurrencyHeads(document Document, inputs StaleInputs) currencyHeads {
 }
 
 // evaluate is the single place where relation pins are compared with heads.
-func (heads currencyHeads) evaluate(relation Relation) RelationCurrency {
+func (heads currencyHeads) evaluate(record Relation) RelationCurrency {
+	// A relation is judged against what it is confirmed against, which is its
+	// own pins as its appended repins have moved them.
+	relation := record.Confirmed()
 	urn, _ := relationURN(heads.sagaID, relation.ID)
 	scope := relation.Scope
 	if scope == "" {
@@ -184,7 +250,24 @@ func (heads currencyHeads) evaluate(relation Relation) RelationCurrency {
 		if conflicting, conflicted := heads.conflicted[pin.endpoint]; conflicted && pin.revision != "" {
 			add(ReasonMultipleRevisionHeads, "endpoint has multiple revision heads", pin.revision, sortedCopy(conflicting)...)
 		} else if current, known := heads.revisions[pin.endpoint]; known && pin.revision != "" && current != pin.revision {
-			add(ReasonRevisionChanged, "revision changed", pin.revision, current)
+			switch code := heads.revisionChange(pin.endpoint, pin.revision, current); code {
+			case CarriedCriterionUnchanged:
+				result.CarriedForward = append(result.CarriedForward, CarriedForward{
+					Endpoint: pin.name, Code: code, Confirmed: pin.revision, Current: current,
+					Message: pin.name + " criterion statement is unchanged since the confirmed revision",
+				})
+			case CarriedStoryObligationUnchanged:
+				result.CarriedForward = append(result.CarriedForward, CarriedForward{
+					Endpoint: pin.name, Code: code, Confirmed: pin.revision, Current: current,
+					Message: pin.name + " story obliges what it did at the confirmed revision",
+				})
+			case ReasonCriterionStatementChanged:
+				add(code, "criterion statement changed", pin.revision, current)
+			case ReasonStoryObligationChanged:
+				add(code, "story obligation changed", pin.revision, current)
+			default:
+				add(ReasonRevisionChanged, "revision changed", pin.revision, current)
+			}
 		}
 		if current, known := heads.inputs.CurrentContentDigests[pin.endpoint]; known && pin.digest != "" && current != pin.digest {
 			add(ReasonContentDigestChanged, "content digest changed", pin.digest, current)
@@ -192,6 +275,49 @@ func (heads currencyHeads) evaluate(relation Relation) RelationCurrency {
 	}
 	result.Status = currencyStatus(result.Reasons)
 	return result
+}
+
+// revisionChange says what a moved revision pin means for one endpoint. A
+// relation to a criterion asserts something about that criterion alone, so a
+// revision that leaves the criterion's id and statement alone carries the pin
+// forward; a reworded criterion is stale, and so is anything the criterion
+// index cannot speak for. The comparison is byte-for-byte on purpose:
+// whitespace and typo fixes are judgment calls by definition, and staleness is
+// worth something only when it fires on a call somebody has to make.
+func (heads currencyHeads) revisionChange(endpoint, pinned, current string) string {
+	if byRevision := heads.statements[endpoint]; byRevision != nil {
+		return compareAcross(byRevision, pinned, current, CarriedCriterionUnchanged, ReasonCriterionStatementChanged)
+	}
+	if byRevision := heads.obligations[endpoint]; byRevision != nil {
+		return compareAcross(byRevision, pinned, current, CarriedStoryObligationUnchanged, ReasonStoryObligationChanged)
+	}
+	return ReasonRevisionChanged
+}
+
+func compareAcross(byRevision map[string]string, pinned, current, unchanged, changed string) string {
+	was, knewPinned := byRevision[pinned]
+	now, knewCurrent := byRevision[current]
+	switch {
+	case !knewPinned || !knewCurrent:
+		return ReasonRevisionChanged
+	case was == now:
+		return unchanged
+	default:
+		return changed
+	}
+}
+
+// obligationOf renders what one story revision requires: its title, its
+// statement, and its acceptance criteria in order. Priority, personas, and
+// citations say how urgent the story is, who it serves, and where it came
+// from; none of them changes what a design must address, a slide must explain,
+// or a test must verify, so none of them ages a relation.
+func obligationOf(revision Revision) string {
+	parts := []string{strconv.Quote(revision.Title), strconv.Quote(revision.Statement)}
+	for _, criterion := range revision.AcceptanceCriteria {
+		parts = append(parts, strconv.Quote(criterion.ID), strconv.Quote(criterion.Statement))
+	}
+	return strings.Join(parts, " ")
 }
 
 // currencyStatus ranks reasons: invalid > conflicted > stale > current.

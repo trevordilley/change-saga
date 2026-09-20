@@ -236,7 +236,7 @@ func TestRelationCurrencyIsDerivedFromPins(t *testing.T) {
 		t.Fatalf("missing = %#v", got)
 	}
 
-	// A new story revision makes every relation pinned to the old one stale.
+	// Rewording a criterion makes every relation pinned to the old revision stale.
 	if _, err := ReviseStory(root, "test", ReviseStoryInput{Personas: testPersonas,
 		Story: v5Story, ID: "r2", Parents: []string{v5StoryR1}, Title: "Checkout", Statement: "As a buyer, I check out quickly", Priority: "high",
 		AcceptanceCriteria: []Criterion{{ID: "fast", Statement: "Checkout finishes in two seconds"}}, CreatedAt: testTime.Add(time.Minute),
@@ -247,7 +247,7 @@ func TestRelationCurrencyIsDerivedFromPins(t *testing.T) {
 		t.Fatal(err)
 	}
 	got = evaluate(current)
-	if got.Status != CurrencyStale || got.Current() || !reflect.DeepEqual(got.Reasons, []CurrencyReason{{Endpoint: "to", Code: ReasonRevisionChanged, Pinned: v5StoryR1, Current: []string{"urn:change-saga:test:story:checkout:revision:r2"}, Message: "to revision changed"}}) {
+	if got.Status != CurrencyStale || got.Current() || !reflect.DeepEqual(got.Reasons, []CurrencyReason{{Endpoint: "to", Code: ReasonCriterionStatementChanged, Pinned: v5StoryR1, Current: []string{"urn:change-saga:test:story:checkout:revision:r2"}, Message: "to criterion statement changed"}}) {
 		t.Fatalf("revised story = %#v", got)
 	}
 

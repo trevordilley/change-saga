@@ -364,7 +364,7 @@ func TestTypedRelationPinsExposeStaleInputsAndSupersede(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if !document.Relations[0].Stale || !strings.Contains(strings.Join(document.Relations[0].StaleReasons, ","), "revision changed") {
+	if !document.Relations[0].Stale || !strings.Contains(strings.Join(document.Relations[0].StaleReasons, ","), "criterion statement changed") {
 		t.Fatalf("revision stale projection = %#v", document.Relations[0])
 	}
 	superseded, err := SupersedeRelation(root, "test", result.URN, testTime.Add(2*time.Minute), "supersede-1")

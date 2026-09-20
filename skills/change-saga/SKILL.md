@@ -70,8 +70,13 @@ app.saga/
   links: a story names its personas, a design or test case addresses or
   verifies a criterion, an Item references code. Longer paths are inferred, so
   do not author code-to-story links by hand when a design or test case can
-  carry the path. Every relation pins the revision it relied on, so revising a
-  story makes its dependents visibly stale.
+  carry the path. Every relation pins the revision it relied on, and is judged
+  by what it points at rather than by that revision's id: rewording the
+  criterion a relation names makes it stale, while a revision that leaves the
+  criterion alone carries the pin forward and says so under "Carried-forward
+  pins". When one does go stale and you have read the new wording, `relation
+  repin --relation URN --rationale TEXT` confirms it: the relation keeps its
+  id, its rationale, and the record of every revision it was read against.
 - **The Saga is documentation.** Stories, designs, test cases, and decks carry
   no approvals and no comments. They describe the current state; the reason it
   changed lives in commit messages (a commit that changes a design says why)

@@ -52,10 +52,14 @@ func (b *builder) staleRecords() {
 			action.Question = question("Which exact lines now implement the evidence "+record.Record+" described?", NeedProductJudgment,
 				option("re-record the evidence", "new evidence for the current test revision supersedes the stale record",
 					b.invoke("quality evidence add", grammar.V("test", testCase), grammar.V("test-revision", current(record.Pins, "test_revision")),
-						grammar.V("role", ""), grammar.V("diff", ""), grammar.V("supersedes", record.Record))))
+						grammar.V("role", ""), grammar.V("code", ""), grammar.V("supersedes", record.Record))))
 		default:
+			// No writer in the grammar re-pins this kind, so the honest answer
+			// is where to read its pins rather than a command that would not
+			// run. Every other kind names the command that records the answer.
 			action.Question = question("Does "+record.Record+" still hold against the current heads?", NeedProductJudgment,
-				option("revisit the record", "re-pin or retire it, then re-evaluate"))
+				option("read its pins", "the tool publishes no re-pin writer for this kind; read the record, then re-pin or retire it and re-evaluate",
+					b.invoke("status", grammar.V("json", "true"))))
 		}
 		b.add(action)
 	}
@@ -63,21 +67,16 @@ func (b *builder) staleRecords() {
 
 func (b *builder) relationQuestion(record livingapp.StaleRecord) *Question {
 	subject := b.subjects(record.Affects)
-	values := []grammar.Value{grammar.V("type", record.Type), grammar.V("from", record.From), grammar.V("to", record.To)}
-	if record.Scope != "" {
-		values = append(values, grammar.V("scope", record.Scope))
-	}
+	repin := []grammar.Value{grammar.V("relation", record.Record), grammar.V("rationale", "")}
 	for _, pin := range record.Pins {
 		if pin.Current == "" {
 			continue
 		}
-		flag := strings.ReplaceAll(pin.Field, "_", "-")
-		values = append(values, grammar.V(flag, pin.Current))
+		repin = append(repin, grammar.V(strings.ReplaceAll(pin.Field, "_", "-"), pin.Current))
 	}
 	return question("Does the relation still hold for "+subject+" against the current revision and content?", NeedProductJudgment,
-		option("yes", "retire the stale relation and record one pinned to the current heads",
-			b.invoke("relation supersede", grammar.V("relation", record.Record)),
-			b.invoke("relation add", values...)),
+		option("yes", "the relation keeps its id and its history, and records the revision you read it against",
+			b.invoke("relation repin", repin...)),
 		option("no", "retire the stale relation; the axis it covered becomes a visible gap",
 			b.invoke("relation supersede", grammar.V("relation", record.Record))))
 }

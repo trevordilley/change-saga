@@ -141,18 +141,22 @@ func TestFailingRunAsksForJudgmentAndStaleRunNeedsExternalAccess(t *testing.T) {
 	}
 }
 
-func TestStaleRelationRestatesTheSameClaimAgainstCurrentPins(t *testing.T) {
+func TestStaleRelationIsRepinnedRatherThanRetiredAndRenamed(t *testing.T) {
 	action := byID(Derive(statusFixture(), saga))["stale:urn:change-saga:checkout:relation:old"]
 	if action.Question == nil || len(action.Question.Options) != 2 {
 		t.Fatalf("a stale relation asks whether the claim still holds: %#v", action)
 	}
 	yes := action.Question.Options[0].Commands
-	if len(yes) != 2 || yes[0].Command != "relation supersede" || yes[1].Command != "relation add" {
-		t.Fatalf("yes supersedes then re-records: %#v", yes)
+	if len(yes) != 1 || yes[0].Command != "relation repin" {
+		t.Fatalf("yes re-affirms the relation it already has: %#v", yes)
 	}
-	add := yes[1]
-	if !hasArgument(add, "type", "verifies") || !hasArgument(add, "to-revision", "urn:change-saga:checkout:story:refund:revision:r2") || !hasArgument(add, "to", criterion("done")) {
-		t.Fatalf("the refreshed relation restates type, endpoints, and the current pin: %#v", add)
+	if !hasArgument(yes[0], "relation", "urn:change-saga:checkout:relation:old") ||
+		!hasArgument(yes[0], "to-revision", "urn:change-saga:checkout:story:refund:revision:r2") {
+		t.Fatalf("the repin names the relation and the head it advances to: %#v", yes[0])
+	}
+	no := action.Question.Options[1].Commands
+	if len(no) != 1 || no[0].Command != "relation supersede" {
+		t.Fatalf("no retires it: %#v", no)
 	}
 }
 

@@ -48,7 +48,7 @@ func TestLivingMutationFamilyHelpIsDeterministicAndHasNoPivot(t *testing.T) {
 		{name: "flag", run: FeatureFlag, want: "add\n  revise\n  set-state"},
 		{name: "criterion", run: Criterion, want: "add\n  revise\n  remove"},
 		{name: "citation", run: Citation, want: "  add"},
-		{name: "relation", run: Relation, want: "add\n  supersede"},
+		{name: "relation", run: Relation, want: "add\n  repin\n  supersede"},
 		{name: "plan", run: Plan, want: "record-merge"},
 	}
 	for _, test := range tests {

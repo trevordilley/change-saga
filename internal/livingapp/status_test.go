@@ -155,7 +155,14 @@ func refundStory(criteria ...string) requirements.Story {
 	revision := func(id string, parents []string) requirements.Revision {
 		value := requirements.Revision{ID: id, Story: storyURN, Parents: parents, Title: "Refund window", Statement: "As a buyer I can request a refund.", Priority: "must"}
 		for _, criterion := range criteria {
-			value.AcceptanceCriteria = append(value.AcceptanceCriteria, requirements.Criterion{ID: criterion, Statement: "The " + criterion + " behavior holds."})
+			// r1 words every criterion differently, so a relation still pinned
+			// to it is stale for the reason staleness exists: the criterion it
+			// names was reworded under it.
+			statement := "The " + criterion + " behavior holds."
+			if id == "r1" {
+				statement = "The " + criterion + " behavior holds, in the first wording."
+			}
+			value.AcceptanceCriteria = append(value.AcceptanceCriteria, requirements.Criterion{ID: criterion, Statement: statement})
 		}
 		return value
 	}
