@@ -40,7 +40,7 @@ func areaRank(area string) int {
 // The practice each kind of growth teaches, and why it pays off.
 const (
 	practiceStories   = "Capture the story: a story says who a change serves and what done means. Written while the change is fresh, it lets the next change here say what it refines instead of rediscovering it, and links the code to the reason it exists."
-	practicePersonas  = "Name the persona: a persona is who the app serves. Stories that name one show which people each change affects, and a persona no story serves shows what the app is missing."
+	practicePersonas  = "Name the persona: a persona is a person who gets value from the app, the \"As a ...\" of a user story, never a tool or agent that operates it. Stories that name one show which people each change affects, and a persona no story serves shows what the app is missing."
 	practiceDesign    = "Record the design: design explains how a story is met before the code does. It is what a reviewer compares the code against, and what the next person to change this reads first."
 	practiceQuality   = "Verify the criterion: a test case turns an acceptance criterion into something checkable, so a later change that breaks it is caught rather than discovered."
 	practiceCriteria  = "Write acceptance criteria: a criterion is an observable statement of done. It is what design addresses and a test verifies, so without one neither can be traced."
@@ -255,11 +255,11 @@ func (b *builder) personaGrowth() {
 		}
 		later := option("not now", "nothing is recorded; the personas area keeps reporting the gap")
 		defineOption := option("define the persona they serve", "a persona, and a revision of each story that names it; every other field carries forward", define...)
-		reason := countWords(len(unnamed), "story serves", "stories serve") + " someone you haven't named (" + someOf(titles, 3) + "); define that persona?"
+		reason := countWords(len(unnamed), "story serves", "stories serve") + " someone you haven't named (" + someOf(titles, 3) + "); define the person who gets value from it?"
 		options := []Option{defineOption, later}
 		if len(named) > 0 {
-			reason = countWords(len(unnamed), "story names", "stories name") + " no persona (" + someOf(titles, 3) + "); assign one you have named (" +
-				someOf(named, 4) + "), or define the persona they serve?"
+			reason = countWords(len(unnamed), "story names", "stories name") + " no persona (" + someOf(titles, 3) + "); who gets value from them? Assign one you have named (" +
+				someOf(named, 4) + "), or define that person?"
 			options = []Option{
 				option("a persona you have named", "a revision of each story that names it; every other field carries forward", assign...),
 				defineOption, later,
@@ -268,14 +268,14 @@ func (b *builder) personaGrowth() {
 		b.add(Action{
 			ID: "growth:persona:unnamed", Kind: KindQuestion, Category: CategoryGrowth, Area: AreaPersonas,
 			Reason: reason, Practice: practicePersonas,
-			Question: question("Who do "+strings.Join(titles, ", ")+" serve?", NeedProductJudgment, options...),
+			Question: question("Who gets value from "+strings.Join(titles, ", ")+"?", NeedProductJudgment, options...),
 		})
 		return
 	}
 	if len(b.status.Personas) == 0 && !b.context.Coverage.Areas.Personas.Complete {
 		b.add(Action{
 			ID: "growth:persona:first", Kind: KindCommand, Category: CategoryGrowth, Area: AreaPersonas,
-			Reason:   "no persona is named yet, so no change can say whom it serves; who does this change serve?",
+			Reason:   "no persona is named yet, so no change can say whom it serves; which person gets value from this change?",
 			Practice: practicePersonas,
 			Command:  ptr(b.invoke("persona add", grammar.V("id", ""), grammar.V("name", ""), grammar.V("description", ""))),
 		})

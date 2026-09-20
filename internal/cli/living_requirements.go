@@ -106,7 +106,7 @@ func storyAdd(_ context.Context, args []string, out io.Writer, stdin io.Reader) 
 	var citations, criteria, personas stringList
 	flags.Var(&citations, "citation", "citation URN; repeatable")
 	flags.Var(&criteria, "criterion", "acceptance criterion as ID=STATEMENT; repeatable")
-	flags.Var(&personas, "persona", "persona URN the story serves; repeatable")
+	flags.Var(&personas, "persona", "persona URN the story serves: the \"As a ...\" of its statement; repeatable")
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
 	}

@@ -55,7 +55,7 @@ func onboardingHref(document *saga.Saga) string {
 func personasDirectory(document requirements.Document, query string) *directoryView {
 	view := &directoryView{
 		ID: "personas", Title: "Personas", Action: "/personas",
-		Lede:  "Who the app is for. A persona is served when an accepted story names it.",
+		Lede:  "Who the app is for. A persona is someone who gets value from the app, the \"As a ...\" of a user story, never a tool or agent that operates it. A persona is served when an accepted story names it.",
 		Label: "Filter personas", Noun: "persona", Nouns: "personas",
 		Columns: []directoryColumn{
 			{Title: "Persona"}, {Title: "Description", Wide: true}, {Title: "State"},

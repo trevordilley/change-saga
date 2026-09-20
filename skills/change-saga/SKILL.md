@@ -62,7 +62,11 @@ app.saga/
   reference the code). Revising a story refines its domain in place; `story
   move` moves a story between epics without breaking a link. A pull request is
   not an epic: it may touch any number of them.
-- **The chain is persona → story → design → code.** Declare only adjacent
+- **The chain is persona → story → design → code.** A persona is someone who
+  gets value from the app — the "As a …" of a user story. A tool, an agent, or
+  a system that operates the app is never a persona, however much of the work
+  it does: you would write "As a shop owner, I can …", never "As a coding
+  agent, I can …". Declare only adjacent
   links: a story names its personas, a design or test case addresses or
   verifies a criterion, an Item references code. Longer paths are inferred, so
   do not author code-to-story links by hand when a design or test case can
@@ -122,9 +126,12 @@ the project's terms first. A few shapes are worth knowing:
 - In an epic with no design yet, design growth starts by creating it with
   `change-saga design add-chapter`, then relating it to the story.
 - Stories that name no persona are offered a persona already named as well as
-  a new one. The suggested `story revise` carries every field of the current
-  revision forward: a revision is complete, so a field left off it (a
-  criterion, a citation) is dropped.
+  a new one. Ask who gets value from the story, not who takes part in it. A
+  revision is a complete snapshot, but a `story revise` that names one
+  `--parent` inherits every field it is not given, so revising a title keeps
+  the criteria, citations, and personas; remove a criterion with `criterion
+  remove`. Reconciling several `--parent` heads still takes the whole
+  definition.
 
 What exists must stay healthy. Once a story is accepted or a design references
 code, a change that makes that link stale or breaks it shows up in the
@@ -288,8 +295,9 @@ an authoring task unless it is explicitly justified.
 Product, Design, and Quality grow with the same commands the next actions
 name: `prototype add-html`, `prototype add-external`, and `prototype annotate`
 for prototypes; `story add`, `story revise`, and the `criterion` commands for
-stories with explicit acceptance criteria; `citation add` for where a story or
-decision came from; the `design` and `quality` commands; and `relation add`
+stories with explicit acceptance criteria; `persona add` for the people who
+get value from the app (never the tools or agents that operate it); `citation
+add` for where a story or decision came from; the `design` and `quality` commands; and `relation add`
 to connect them (a test case `verifies` a criterion; a design or deck target
 addresses or explains one). Narrative content (chapters, sections, fragments,
 landmarks, and cited prose) follows the contracts in

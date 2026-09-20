@@ -224,7 +224,7 @@ func personaAdd(_ context.Context, args []string, out io.Writer) error {
 	revision := flags.String("revision", "r1", "initial revision id")
 	event := flags.String("event", "active", "initial active-event id")
 	personaName := flags.String("name", "", "persona name")
-	description := flags.String("description", "", "who the persona is and what they need")
+	description := flags.String("description", "", "who this person is and what value they get from the app")
 	requestID := flags.String("request-id", "", "idempotency key")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
@@ -253,7 +253,7 @@ func personaRevise(_ context.Context, args []string, out io.Writer) error {
 	persona := flags.String("persona", "", "canonical persona URN")
 	revision := flags.String("revision", "", "new revision id")
 	personaName := flags.String("name", "", "complete revised name")
-	description := flags.String("description", "", "complete revised description")
+	description := flags.String("description", "", "complete revised description; keep it a person who gets value from the app")
 	requestID := flags.String("request-id", "", "idempotency key")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
 	var parents stringList

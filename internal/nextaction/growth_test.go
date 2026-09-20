@@ -162,7 +162,7 @@ func TestPersonaGrowthOffersAPersonaYouHaveNamed(t *testing.T) {
 		Stories: []areas.Story{{URN: appStory, Title: "Wallet", Epic: appEpic, Active: true}},
 	})
 	action := byID(Derive(status, saga, Context{Coverage: report}))["growth:persona:unnamed"]
-	if action.Question == nil || !strings.Contains(action.Reason, "assign one you have named (shopper)") {
+	if action.Question == nil || !strings.Contains(action.Reason, "who gets value from them? Assign one you have named (shopper)") {
 		t.Fatalf("the suggestion names the personas already defined: %#v", action)
 	}
 	assign := action.Question.Options[0]
