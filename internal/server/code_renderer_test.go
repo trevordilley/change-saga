@@ -32,7 +32,7 @@ func TestFocusedCodeRendererIncludesAccessibleLocalDiffControls(t *testing.T) {
 	code := codePageView{
 		Tree:     ChangedFileTreeView{Nodes: []*ChangedFileTreeNode{{Name: "src", Kind: "folder", Expanded: true, Children: []*ChangedFileTreeNode{{Name: "app.go", Kind: "file", File: file}}}}, FileCount: 1, Added: 1, Deleted: 1},
 		Selected: file, Owners: []*ManifestOwnerView{{Title: "Request flow", Chapter: "Backend", Href: "#target-flow"}},
-		TotalFiles: 1, Returned: 1,
+		Explanations: true, TotalFiles: 1, Returned: 1,
 	}
 	var output bytes.Buffer
 	if err := tmpl.ExecuteTemplate(&output, "code-page", code); err != nil {

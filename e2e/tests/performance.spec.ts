@@ -67,8 +67,10 @@ test("a large saga's first load stays within its payload budgets", async ({ page
   expect(measured.diffRows, "the root shell must not contain source comparison rows").toBe(0);
   expect(measured.changedFiles, "the root shell must not contain the coverage file model").toBe(0);
   expect(measured.lazyCoverageFiles, "the root shell must not contain deferred coverage-file descriptors").toBe(0);
-  await expect(page.getByRole("tab", { name: "Code Diff" })).toBeVisible();
-  await expect(page.getByRole("tab", { name: "Coverage" })).toBeVisible();
+  // Documentation offers its own views; the comparison ones are one click
+  // away on the Review side and are not part of this page at all.
+  await expect(page.getByRole("tab", { name: "Documented code" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Review", exact: true })).toBeVisible();
 
   expect(
     measured.domInteractive,
@@ -135,7 +137,7 @@ test("loads a coverage file diff only once the reviewer opens that file", async 
   page.on("request", (request) => {
     if (request.url().includes("/api/file-diff")) requested.push(new URL(request.url()).search);
   });
-  await page.goto(largeSaga.baseURL, { waitUntil: "load" });
+  await page.goto(`${largeSaga.baseURL}/reviews`, { waitUntil: "load" });
   await page.click("#view-tab-manifest");
   expect(requested, "switching to Coverage must not fetch any diff body").toEqual([]);
 

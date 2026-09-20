@@ -1,4 +1,4 @@
-import { expectNoSeriousAccessibilityViolations, expect, test } from "../support/test.js";
+import { expectNoSeriousAccessibilityViolations, expect, openReviewSide, test } from "../support/test.js";
 
 test("@critical navigates the saga, linked code, code tree, and coverage in both directions", async ({ page, saga }) => {
   await expect(page).toHaveTitle("Wave One Review · Change Saga");
@@ -6,8 +6,8 @@ test("@critical navigates the saga, linked code, code tree, and coverage in both
   // feature's page.
   await expect(page.getByRole("heading", { name: "Wave One", exact: true })).toBeVisible();
   await expect(page.getByText("Wave 1 connects the story to the exact source changes.")).toBeVisible();
-  // The whole page, chrome included: the workspace tablist and the closed
-  // linked-code drawer are now correct, so nothing is scoped out of this scan.
+  // The whole page, chrome included: the two sides, their tablist, and the
+  // closed linked-code drawer are correct, so nothing is scoped out of this scan.
   await expectNoSeriousAccessibilityViolations(page);
 
   const contents = page.getByRole("navigation", { name: "Contents" });
@@ -29,8 +29,11 @@ test("@critical navigates the saga, linked code, code tree, and coverage in both
   await expect(drawer.getByText("src/app.go", { exact: true })).toBeVisible();
   await expect(drawer.getByText("docs/guide.md", { exact: true })).toBeVisible();
   await drawer.locator("details.attached-file").filter({ hasText: "src/app.go" }).locator("summary").click();
+  // Code Diff is a comparison view, so following linked code into it crosses
+  // to the Review side rather than showing a diff inside the documentation.
   await drawer.getByRole("link", { name: "Open in Code Diff" }).click();
 
+  await expect(page.getByRole("link", { name: "Review", exact: true })).toHaveAttribute("aria-current", "page");
   await expect(page.getByRole("tab", { name: "Code Diff" })).toHaveAttribute("aria-selected", "true");
   await expect(page.locator('[data-file-path="src/app.go"].file-diff')).toBeVisible();
   const changedFiles = page.getByRole("tree", { name: "Changed files" });
@@ -57,9 +60,11 @@ test("@critical navigates the saga, linked code, code tree, and coverage in both
   await expect(page.locator("aside.diff-drawer")).toHaveAttribute("aria-hidden", "true");
 
   await related.locator("a.related-chapter-link").first().click();
+  await expect(page.getByRole("link", { name: "Documentation" })).toHaveAttribute("aria-current", "page");
   await expect(page.getByRole("tab", { name: "Saga" })).toHaveAttribute("aria-selected", "true");
   await expect(overview).toBeVisible();
 
+  await openReviewSide(page);
   await page.getByRole("tab", { name: "Coverage" }).click();
   await expect(page.getByRole("button", { name: "Code → Saga" })).toHaveAttribute("aria-pressed", "true");
   const appCoverage = page.locator('details.manifest-file[data-manifest-search="src/app.go"]');
@@ -68,6 +73,7 @@ test("@critical navigates the saga, linked code, code tree, and coverage in both
   await expect(page.getByRole("tab", { name: "Saga" })).toHaveAttribute("aria-selected", "true");
   await expect(overview).toBeVisible();
 
+  await openReviewSide(page);
   await page.getByRole("tab", { name: "Coverage" }).click();
   await page.getByRole("button", { name: "Saga → Code" }).click();
   const sourceTarget = page.locator("details.manifest-target").filter({
@@ -86,7 +92,7 @@ test("@critical navigates the saga, linked code, code tree, and coverage in both
 });
 
 test("deeply indented Code Diff paths scroll horizontally without truncation", async ({ page, saga }) => {
-  await page.goto(saga.featureURL);
+  await page.goto(`${saga.baseURL}/reviews`);
   await page.getByRole("tab", { name: "Code Diff" }).click();
 
   const tree = page.getByRole("tree", { name: "Changed files" });

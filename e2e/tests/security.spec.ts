@@ -60,7 +60,7 @@ test("@critical rejects cross-origin and foreign-Host requests before any handle
 
 test("@critical refuses malformed, non-canonical, and foreign code locations", async ({ page, saga }) => {
   const { base, head } = saga.identity;
-  await page.goto(`${saga.baseURL}/?view=code&file=${encodeURIComponent("src/app.go")}`);
+  await page.goto(`${saga.baseURL}/reviews?view=code&file=${encodeURIComponent("src/app.go")}`);
   const row = page.locator('article.file-diff[data-file-path="src/app.go"] [data-diff-row][data-side="new"]').first();
   const line = Number(await row.getAttribute("data-line"));
   // Positive control for the whole table below: the location this suite builds

@@ -567,8 +567,20 @@ const appJavaScript = `(() => {
     refresh();
   }
 
-  function applyDiffLayout(mode) {
+  // Unified or side-by-side is how a reader reads a diff, not a fact about one
+  // page: Code Diff is on the Review side and linked code beside the
+  // documentation, so a choice made in either has to survive the crossing.
+  const diffLayoutKey = 'change-saga-diff-layout';
+
+  function rememberedDiffLayout() {
+    try { return localStorage.getItem(diffLayoutKey) === 'split' ? 'split' : 'inline'; } catch { return 'inline'; }
+  }
+
+  function applyDiffLayout(mode, options = {}) {
     diffLayout = mode === 'split' ? 'split' : 'inline';
+    if (options.remember) {
+      try { localStorage.setItem(diffLayoutKey, diffLayout); } catch {}
+    }
     if (innerWidth <= 1050) diffLayout = 'inline';
     qa('[data-diff-surface]').forEach(surface => {
       surface.dataset.layout = diffLayout;
@@ -2031,7 +2043,7 @@ const appJavaScript = `(() => {
     }
     // Scoped to the toolbar buttons: a diff surface also carries data-layout.
     const layout = event.target.closest('button[data-layout]');
-    if (layout) { applyDiffLayout(layout.dataset.layout); return; }
+    if (layout) { applyDiffLayout(layout.dataset.layout, {remember:true}); return; }
     const targetCodeButton = event.target.closest('[data-target-code-href]');
     if (targetCodeButton) { event.preventDefault(); void hydrateTargetCode(targetCodeButton); return; }
     const drawerButton = event.target.closest('[data-open-diffs]');
@@ -2156,7 +2168,7 @@ const appJavaScript = `(() => {
   prepareContext();
   syncSlidePresentation();
   highlightCode();
-  applyDiffLayout('inline');
+  applyDiffLayout(rememberedDiffLayout());
   addEventListener('resize', () => { applyDiffLayout(diffLayout); positionLandmarkHotspots(); });
   document.addEventListener('fullscreenchange', syncSlidePresentation);
   const requestedView = new URL(location.href).searchParams.get('view');

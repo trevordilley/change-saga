@@ -130,6 +130,34 @@ func ReadWithOptions(ctx context.Context, fromDir, repositoryURI, base, head str
 	return changeSetFromPatch(output, prepared)
 }
 
+// ReadPaths is Read limited to the named paths. It resolves the same
+// comparison identity and parses the same atoms; Git is simply asked for the
+// patch of those paths rather than of every changed file. A reader that knows
+// which files it could possibly care about — code references name their file —
+// pays for those files alone.
+func ReadPaths(ctx context.Context, fromDir, repositoryURI, base, head string, options ReadOptions, paths ...string) (ChangeSet, error) {
+	if len(paths) == 0 {
+		return ChangeSet{}, nil
+	}
+	prepared, err := prepareComparison(ctx, fromDir, repositoryURI, base, head, options)
+	if err != nil {
+		return ChangeSet{}, err
+	}
+	args := canonicalDiffArgs(prepared.repo, "--unified=20", prepared.comparison, "--")
+	for _, path := range paths {
+		args = append(args, ":(literal)"+path)
+	}
+	output, err := exec.CommandContext(ctx, "git", args...).Output()
+	if err != nil {
+		var exitErr *exec.ExitError
+		if ok := errorAs(err, &exitErr); ok {
+			return ChangeSet{}, fmt.Errorf("git diff: %s", strings.TrimSpace(string(exitErr.Stderr)))
+		}
+		return ChangeSet{}, fmt.Errorf("git diff: %w", err)
+	}
+	return changeSetFromPatch(output, prepared)
+}
+
 // ReadCatalog resolves the exact same comparison identity as Read while asking
 // Git only for NUL-delimited per-file statistics. Its memory use is therefore
 // proportional to changed files rather than changed lines.

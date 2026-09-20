@@ -344,8 +344,17 @@ func TestPageTemplateAndMarkdown(t *testing.T) {
 	if !strings.Contains(renderedPage, `body data-saga-id="test"`) || !strings.Contains(renderedPage, `data-open-history`) {
 		t.Fatal("the page lost its identity or history controls")
 	}
-	if !strings.Contains(renderedPage, `data-view-tab="manifest"`) || !strings.Contains(renderedPage, `data-review-surface="manifest"`) || !strings.Contains(renderedPage, `data-surface-href="/api/coverage"`) {
-		t.Fatal("bounded coverage navigation was not rendered")
+	// Documentation keeps the documented code: the same references resolved
+	// at the head, never a diff. Code Diff and coverage of a change are
+	// comparison views and belong to the Review side.
+	if !strings.Contains(renderedPage, `data-view-tab="manifest"`) || !strings.Contains(renderedPage, `data-review-surface="manifest"`) || !strings.Contains(renderedPage, `data-surface-href="/api/coverage?scope=documented"`) {
+		t.Fatal("the documented-code view was not rendered")
+	}
+	if strings.Contains(renderedPage, `data-view-tab="code"`) || strings.Contains(renderedPage, `data-review-surface="code"`) {
+		t.Fatal("documentation offered Code Diff, which belongs to the Review side")
+	}
+	if !strings.Contains(renderedPage, `data-side="documentation"`) || !strings.Contains(renderedPage, `data-side="review"`) {
+		t.Fatal("the header lost one of its two sides")
 	}
 	if strings.Contains(renderedPage, `data-manifest-panel="code"`) || strings.Contains(renderedPage, `class="manifest-range"`) {
 		t.Fatal("the root page eagerly rendered coverage details")
@@ -977,7 +986,8 @@ func writeServerFeature(t *testing.T, root string) {
 }
 
 // Documentation has no approve, reject, or comment control in either mode;
-// each record offers its history, and comparing adds the Change tab.
+// each record offers its history, and the comparison views stay on the
+// Review side.
 func TestObservingRendersNoApprovalControls(t *testing.T) {
 	root := validServerSaga(t)
 	render := func(rng gitdiff.Range) string {
@@ -997,7 +1007,12 @@ func TestObservingRendersNoApprovalControls(t *testing.T) {
 		t.Fatal("observe mode rendered approval controls or no history")
 	}
 	compared := render(gitdiff.Range{Against: "main"})
-	if strings.Contains(compared, "data-review-decision=") || strings.Contains(compared, "data-approval-gate") || strings.Contains(compared, "data-review-comment") || !strings.Contains(compared, `data-view-tab="change"`) || !strings.Contains(compared, `data-opening="compare"`) {
-		t.Fatal("compare mode rendered approval controls or lost the Change tab")
+	if strings.Contains(compared, "data-review-decision=") || strings.Contains(compared, "data-approval-gate") || strings.Contains(compared, "data-review-comment") || !strings.Contains(compared, `data-opening="compare"`) {
+		t.Fatal("compare mode rendered approval controls")
+	}
+	// The Change view is a comparison view, so it is offered on the Review
+	// side and not while reading documentation.
+	if strings.Contains(compared, `data-view-tab="change"`) {
+		t.Fatal("documentation offered the Change tab, which belongs to the Review side")
 	}
 }

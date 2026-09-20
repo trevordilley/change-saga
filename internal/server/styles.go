@@ -116,7 +116,15 @@ body.presentation-mode .deck-viewer-stage:hover .slide-exit-presentation,body.pr
 .view-tab{display:flex;align-items:center;gap:6px;border:0;border-bottom:2px solid transparent;border-radius:0;padding:0 10px;background:transparent;color:var(--muted);font-size:12.5px}
 .view-tab:hover{color:var(--ink);background:var(--bg-subtle)}
 .view-tab.active{color:var(--ink);border-color:var(--accent);font-weight:600}
-.view-tab.reviews-link.current{color:var(--ink);border-color:var(--accent);font-weight:600;text-decoration:none}
+/* The two sides. The header's first control is the distinction itself:
+Documentation is what the app is and does, Review what is being changed about
+it. The view tabs beside them belong to whichever side is open. */
+.side-tabs{display:flex;align-self:stretch;gap:2px;padding-right:12px;margin-right:2px;border-right:1px solid var(--line)}
+.side-tab{display:flex;align-items:center;gap:6px;padding:0 12px;border-bottom:2px solid transparent;color:var(--muted);font:600 13px var(--ui);text-decoration:none}
+.side-tab:hover{color:var(--ink);background:var(--bg-subtle)}
+.side-tab.current{color:var(--ink);border-color:var(--accent)}
+.review-coverage-surface{padding:18px 20px 40px}
+.review-coverage-surface .review-coverage{margin-top:8px}
 .top-meta{margin-left:auto;color:var(--faint);font:11px var(--mono)}
 .top-meta[hidden]{display:none}
 .theme-toggle{margin-left:8px}
@@ -315,6 +323,15 @@ body.presentation-mode .deck-viewer-stage:hover .slide-exit-presentation,body.pr
 .criterion-page h1{font-size:24px;line-height:1.35}
 .criterion-trace{margin-top:8px;font:12.5px/1.45 var(--ui);color:var(--muted)}
 .criterion-trace a{color:var(--accent);text-decoration:none}
+/* A footnote reads as one: it sits last, stays small, and never competes with
+the record's own content for the top of the page. */
+.related-reviews{margin:26px 0 0;padding:10px 0 0;border-top:1px solid var(--line)}
+.related-reviews h2{margin:0 0 4px;font:600 12px/1.4 var(--ui);letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.related-reviews ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:4px 14px}
+.related-reviews li{font:13px/1.5 var(--ui)}
+.related-reviews a{color:var(--accent);text-decoration:none}
+.related-review-pr,.related-review-state{color:var(--muted);font-size:12px}
+.related-reviews-note{margin:5px 0 0;color:var(--muted);font:12px/1.45 var(--ui)}
 .terms-lede{margin:0 0 18px;color:var(--muted);font:14px/1.55 var(--ui)}
 .terms-list{display:grid;gap:10px;margin:0}
 .terms-entry{padding:13px 16px;border:1px solid var(--line);border-radius:9px;background:var(--bg)}
@@ -765,6 +782,8 @@ a.layer-changed{font-weight:600}a.layer-affected{font-style:italic}
 .topbar{padding:0 8px;gap:6px}
 .brand span{display:none}
 .view-tab{padding:0 8px}
+.side-tab{padding:0 8px;font-size:12px}
+.side-tabs{padding-right:6px}
 .shell,.shell.code-mode{display:block}
 .sidebar{position:static;height:auto;max-height:42vh;padding:8px}
 .shell.code-mode .sidebar{position:fixed;z-index:25;top:var(--top);bottom:0;left:0;width:min(300px,86vw);max-height:none;height:auto;box-shadow:12px 0 30px #1f232826;transform:none;transition:transform .18s}

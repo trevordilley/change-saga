@@ -1,6 +1,6 @@
 import type { Page } from "@playwright/test";
 import { git, serverRequest, startSagaServer, stopSagaServer, treeSnapshot } from "../support/fixture-builder.js";
-import { expect, test, waitForSettledSaga } from "../support/test.js";
+import { expect, openReviewSide, test, waitForSettledSaga } from "../support/test.js";
 
 // The Saga is documentation. Stories, designs, fragments, chapters, decks,
 // slides, and Items carry no approval, no comment, and no annotation control in
@@ -33,15 +33,26 @@ async function expectDocumentationOnly(page: Page, mode: "observe" | "compare"):
   await expect(page.getByText("Wave 1 connects the story")).toBeVisible();
   await expectNoReviewControls(page, `the ${mode} Saga`);
 
-  await page.getByRole("tab", { name: "Code Diff" }).click();
-  // Observing one commit has no changed files; comparing shows them.
-  if (mode === "compare") await expect(page.locator("article.file-diff").first()).toBeVisible();
-  else await expect(page.getByRole("tabpanel", { name: "Code Diff" })).toContainText("No product code changes");
-  await expectNoReviewControls(page, `${mode} Code Diff`);
+  // Documentation keeps the documented code: the same references resolved at
+  // the head rather than a diff.
+  await page.getByRole("tab", { name: "Documented code" }).click();
+  await expect(page.getByRole("tabpanel", { name: "Documented code" })).toBeVisible();
+  await expectNoReviewControls(page, `${mode} documented code`);
+  await expect(page.getByRole("tab", { name: "Code Diff" })).toHaveCount(0);
 
-  await page.getByRole("tab", { name: "Coverage" }).click();
-  await expect(page.getByRole("tabpanel", { name: "Coverage" })).toBeVisible();
-  await expectNoReviewControls(page, `${mode} Coverage`);
+  // Code Diff and coverage of a change are comparison views: they are on the
+  // Review side, and observing one commit has no comparison to offer at all.
+  await openReviewSide(page);
+  if (mode === "compare") {
+    await page.getByRole("tab", { name: "Code Diff" }).click();
+    await expect(page.locator("article.file-diff").first()).toBeVisible();
+    await expectNoReviewControls(page, `${mode} Code Diff`);
+    await page.getByRole("tab", { name: "Coverage" }).click();
+    await expect(page.getByRole("tabpanel", { name: "Coverage" })).toBeVisible();
+    await expectNoReviewControls(page, `${mode} Coverage`);
+  } else {
+    await expect(page.getByRole("tab", { name: "Code Diff" })).toHaveCount(0);
+  }
 
   await page.goto(new URL("/chapters/architecture", page.url()).toString());
   await waitForSettledSaga(page);
@@ -93,10 +104,11 @@ test("@critical reading the Saga and its history never writes to either reposito
   await expect(drawer).toHaveAttribute("aria-hidden", "true");
   await expect(historyButton).toBeFocused();
 
+  await openReviewSide(page);
   await page.getByRole("tab", { name: "Code Diff" }).click();
   await expect(page.locator("article.file-diff").first()).toBeVisible();
   await page.getByRole("tab", { name: "Coverage" }).click();
-  await page.getByRole("tab", { name: "Saga" }).click();
+  await page.getByRole("tab", { name: "Reviews" }).click();
   await page.reload();
   await waitForSettledSaga(page);
 

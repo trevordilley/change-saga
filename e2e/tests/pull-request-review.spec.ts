@@ -87,7 +87,8 @@ test("shows the living layers read-only beside the review of the compared change
   authorReview(sagaRepositories);
   const running = await startSagaServer(sagaRepositories, "main");
   try {
-    await page.goto(running.baseURL);
+    // The Change view is a comparison view, so it is on the Review side.
+    await page.goto(`${running.baseURL}/reviews`);
     await page.getByRole("tab", { name: "Change" }).click();
     const review = page.locator('[data-change-review] [data-review-summary="pr-1"]');
     await expect(review).toBeVisible();

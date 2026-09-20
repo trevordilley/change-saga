@@ -158,6 +158,15 @@ type codePageView struct {
 	NextCursor   string
 	HasMore      bool
 	Returned     int
+	// DiffHref is where one file's hunks load from, and EmptyNote what the
+	// page says with no changed files. A review's Code Diff is the same page
+	// over the review's own range, so both are given rather than assumed.
+	DiffHref  string
+	EmptyNote string
+	// Explanations offers the documentation that explains the selected file.
+	// A review's Code Diff does not: what explains a review's lines is its own
+	// deck, which is the tab beside it.
+	Explanations bool
 }
 
 func fileSummary(current *reviewSnapshot, filePath string) *FileDiffView {
@@ -210,8 +219,9 @@ func (a *app) codePage(w http.ResponseWriter, r *http.Request) {
 	}
 	result := codePageView{
 		Tree: makeChangedFileTree(files), Selected: selected,
-		RelatedEmpty: "Loading explanations…",
-		TotalFiles:   len(catalog.Files), NextCursor: window.next, HasMore: window.hasMore(), Returned: window.end - window.start,
+		RelatedEmpty: "Loading explanations…", DiffHref: "/api/file-diff", Explanations: true,
+		EmptyNote:  "No product code changes in this comparison.",
+		TotalFiles: len(catalog.Files), NextCursor: window.next, HasMore: window.hasMore(), Returned: window.end - window.start,
 	}
 	writeIncrementalHeaders(w, "text/html; charset=utf-8")
 	writePageHeaders(w, window)
@@ -297,7 +307,11 @@ func (a *app) coveragePage(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "mode must be code or saga", http.StatusBadRequest)
 		return
 	}
-	if a.rng.Observe() {
+	// Documentation asks for the documented code: which code each record
+	// explains, resolved at the head. That is the observed view in both
+	// modes, because it is not a comparison. Coverage of a change belongs to
+	// the Review side and keeps the comparison.
+	if a.rng.Observe() || r.URL.Query().Get("scope") == "documented" {
 		a.observeCoveragePage(w, r, mode)
 		return
 	}

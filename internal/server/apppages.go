@@ -332,6 +332,9 @@ type featurePageView struct {
 	Design *sectionView
 	Tests  []traceLink
 	Decks  []featureDeckView
+	// RelatedReviews are the reviews that touched this feature's code. They
+	// are derived, never authored, and read as a footnote.
+	RelatedReviews []relatedReviewView
 }
 
 // featureSummaryView counts what is linked, as status does: covered of total,

@@ -30,7 +30,7 @@ test("a Saga opens several implementation decks without paginating its documenta
   await page.reload();
   await waitForSettledSaga(page);
 
-  await expect(page.getByRole("tablist", { name: "Workspace" }).getByRole("tab")).toHaveText([/Saga/, /Change/, /Code Diff/, /Coverage/]);
+  await expect(page.getByRole("tablist", { name: "Documentation" }).getByRole("tab")).toHaveText([/Saga/, /Documented code/]);
   await expect(page.getByRole("tabpanel", { name: "Saga" })).toBeVisible();
   await expect(page.getByText("Wave 1 connects the story")).toBeVisible();
 
