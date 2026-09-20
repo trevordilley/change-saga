@@ -347,8 +347,13 @@ reconstructs it.
 
 1. Do feature flags gate stories, epics, or both?
 2. Are retired stories shown in the app view, or only in history?
-3. What is the app-level sidebar above the epics? Partly settled: the overview
-   expands to name, elevator pitch, description, and Terms and Vocabulary.
+3. Settled. The sidebar always shows the overview (name, elevator pitch,
+   description, and Terms and Vocabulary), personas, the design system,
+   onboarding, and feature flags. Only ONE epic is shown at a time: the current
+   epic's title carries a dropdown that opens a searchable picker, and a
+   separate control expands the full list of epics. The current epic's Product,
+   Design, Quality, and Implementation sit beneath it, with Implementation open
+   to its slides and the rest collapsed.
 4. Onboarding deck Items point at records (personas, epics, stories) rather than
    code. Confirm that this is its only kind of evidence.
 
