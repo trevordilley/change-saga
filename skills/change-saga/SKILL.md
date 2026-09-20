@@ -403,11 +403,16 @@ coverage: each feature's implementation deck still explains the current code.
 ## Open the Saga for review
 
 Run `change-saga open app.saga` when asked to present the Saga. Opening it does
-not authorize you to review anything. Without `--against` it observes the app
-at the head, with stale references shown as health warnings; with `--against
-<base>` it shows the Changed, Affected, and Code layers read-only beside the
-pull request's review. The documentation has no comment or approval controls in
-either mode. `change-saga open` starts a managed background reviewer and prints
+not authorize you to review anything. The reviewer has two sides.
+**Documentation** is the overview and the feature set, with the documented code
+— every record's references resolved at the head, stale ones shown as health
+warnings. **Review** is the current and completed reviews; opening one gives
+its deck, its Code Diff, and its coverage, and with `--against <base>` the
+Changed, Affected, and Code layers of the comparison sit there too, read-only.
+Diffs appear only where a change is being reviewed, and the documentation has
+no comment or approval controls in either mode. A feature, a story, and an
+acceptance criterion each footnote the reviews that touched them, derived from
+the code diffs rather than from any link an author wrote. `change-saga open` starts a managed background reviewer and prints
 its PID and URL; inspect or stop it with `change-saga serve status` and
 `change-saga serve stop`. Use `change-saga serve --open` only when the reviewer
 should remain attached to the current terminal.
