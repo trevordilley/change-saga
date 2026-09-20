@@ -1,0 +1,12 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/persona-revision.schema.json",
+  "version": 5,
+  "id": "r2",
+  "persona": "urn:change-saga:app:persona:reviewer",
+  "parents": [
+    "urn:change-saga:app:persona:reviewer:revision:r1"
+  ],
+  "name": "Reviewer",
+  "description": "The person reviewing a pull request. The reviewer reads the review deck, approves or requests changes slide by slide, and still decides whether the change is correct; the tool never declares a review approved. A reviewer may work through an AI reviewer seat, which is a way of working rather than someone the app serves.",
+  "created_at": "2026-09-20T16:35:31.395377Z"
+}

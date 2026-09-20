@@ -282,10 +282,10 @@ func (b *builder) personaGrowth() {
 	}
 }
 
-// reviseStory is a story revision that sets the story's personas and carries
-// every other field of the current revision forward: story revise writes a
-// complete revision, so a field left out would be dropped. An empty persona
-// is an input the author supplies.
+// reviseStory is a story revision that sets the story's personas. It restates
+// every other field of the current revision so the suggested command reads as
+// the complete snapshot it writes, though a single-parent revise would inherit
+// them anyway. An empty persona is an input the author supplies.
 func (b *builder) reviseStory(row livingapp.StoryStatus, personas []string) grammar.Invocation {
 	values := []grammar.Value{grammar.V("story", row.Story), grammar.V("revision", "")}
 	values = append(values, parents(row.RevisionHeads)...)

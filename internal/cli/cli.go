@@ -237,8 +237,9 @@ Growing the Saga, a step at a time and only when it helps:
   - Product: write user stories with acceptance criteria ("story",
     "criterion") and relate the slides that implement them ("relation");
     prototype the experience ("prototype"); cite sources ("citation").
-  - People: name who the app serves ("persona"); a story names the personas
-    it serves. Gate unreleased work with "flag".
+  - People: name who gets value from the app ("persona"), the "As a ..." of a
+    user story and never a tool or agent that operates it; a story names the
+    personas it serves. Gate unreleased work with "flag".
   - Design: UX, UI, and technical design ("design"), related to the stories
     it addresses.
   - Quality: test cases that verify acceptance criteria ("quality").
