@@ -43,7 +43,7 @@ func TestEverySectionHeaderIsADestination(t *testing.T) {
 	}
 	// An epic with no deck has no first slide to open, and says so instead.
 	empty := appNavFixture(t)
-	empty.currentEpic = "catalog"
+	empty.pageEpic = "catalog"
 	catalog := findNav(t, makeAppNavTree(empty), "Epics", "Catalog", "Implementation")
 	if catalog.Href != "" {
 		t.Fatalf("an empty Implementation opens %q, want nowhere", catalog.Href)

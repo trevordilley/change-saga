@@ -197,11 +197,11 @@ func termsDirectory(document requirements.Document, places map[string][]termPlac
 
 // epicsDirectory is every epic with what it holds. The counts are facts and
 // never a score: an epic with nothing in it is listed like any other, and the
-// one the sidebar is showing is marked rather than ranked.
+// epic the reader is already inside is marked rather than ranked.
 func epicsDirectory(document *saga.Saga, graph *appGraph, current, query string) *directoryView {
 	view := &directoryView{
 		ID: "epics", Title: "Epics", Action: "/epics",
-		Lede:  "Every durable area of the product, in the order they were introduced. The sidebar shows one at a time; opening an epic here makes it the one it shows.",
+		Lede:  "Every durable area of the product, in the order they were introduced. Each one opens a page holding its stories, its design, its quality, and its implementation.",
 		Label: "Filter epics", Noun: "epic", Nouns: "epics",
 		Columns: []directoryColumn{
 			{Title: "Epic"}, {Title: "Description", Wide: true},
@@ -224,8 +224,7 @@ func epicsDirectory(document *saga.Saga, graph *appGraph, current, query string)
 	return view
 }
 
-// epicIndexRow is one epic's counts, shared by the directory and the picker's
-// index so the two can never disagree.
+// epicIndexRow is one epic's counts, as the directory states them.
 type epicIndexRow struct {
 	ID          string
 	Title       string
@@ -245,7 +244,7 @@ func epicRows(document *saga.Saga, graph *appGraph, current string) []epicIndexR
 	for _, manifest := range graph.requirements.Epics {
 		descriptions[manifest.ID] = manifest.Description
 	}
-	for _, choice := range epicChoices(document, current) {
+	for _, choice := range epicLinks(document, current) {
 		row := epicIndexRow{
 			ID: choice.ID, Title: choice.Title, Href: choice.Href,
 			Description: descriptions[choice.ID], Current: choice.Current,

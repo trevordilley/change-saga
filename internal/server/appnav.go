@@ -15,8 +15,7 @@ import (
 //	Overview        name, elevator pitch, description, and the parts that
 //	                describe the whole app: terms and vocabulary, personas,
 //	                the design system, onboarding, and feature flags
-//	Epics           the directory of every epic, over the one epic the
-//	                sidebar is currently showing and its four places
+//	Epics           the directory of every epic, over every epic as a row
 //	Reviews         every pull request's review
 //
 // Three sections, because those are the three things a reviewer arrives
@@ -32,15 +31,24 @@ import (
 // header is how a reader reaches one row inside the section without leaving
 // where they are; it is not the only way in.
 //
-// The epics are not all listed. Listing every one of them expanded put this
-// repository's own sidebar at 238 rows, which is a wall rather than an
-// architecture. One epic at a time keeps the list readable, the picker keeps
-// every other epic one keystroke away, and the Epics header opens the table
-// of all of them.
+// Every epic is listed, one row each, in the order an author introduced them.
+// The row links to the epic's page, which is the directory of that epic's
+// stories, design, quality, and implementation, so a reader reaches any epic
+// in one click and reads the whole of it on a page.
 //
-// Within the epic the per-epic rules are unchanged: Implementation is the deck
-// and opens all the way to its slides, the other places stay shut until
+// One of those rows opens: the epic whose content the reader is looking at,
+// whether that is the epic's own page or a story, criterion, test case, slide,
+// or chapter inside it. Every other epic stays a single row. Listing every
+// epic expanded put this repository's own sidebar at 238 rows, which is a wall
+// rather than an architecture; listing them shut costs one row each, and the
+// one epic the reader is already in is the only one that spends more.
+//
+// Within the open epic the per-epic rules are unchanged: Implementation is the
+// deck and opens all the way to its slides, the other places stay shut until
 // something inside them is active, and an empty place states its gap.
+//
+// Nothing about which epic is open is stored. It is a fact about the page
+// being read, not a preference about the reader.
 
 // appNavSources is everything the app-level list reads, already loaded.
 type appNavSources struct {
@@ -55,9 +63,10 @@ type appNavSources struct {
 	decks []*navNodeView
 	// overviewActive says which overview row the page shows; see overviewNav.
 	overviewActive string
-	// currentEpic is the one epic the sidebar shows, already resolved by
-	// resolveCurrentEpic. An unknown or empty ID falls back to the first epic.
-	currentEpic string
+	// pageEpic is the epic the page being read belongs to, and so the one
+	// epic that opens over its four places. Empty on a page that belongs to
+	// no epic, where every epic stays a row.
+	pageEpic string
 	// hasReviews says whether any pull request has a review yet, so the
 	// Reviews section can state the gap without loading one.
 	hasReviews bool
@@ -154,37 +163,35 @@ func onPage(path string, nodes []*navNodeView) []*navNodeView {
 }
 
 // makeEpicsNav is the Epics section: the header opens the table of every
-// epic, the one epic the sidebar is showing sits beneath it over its four
-// places, and the full list is one disclosure away. An app with no epics keeps
-// the section, because a reader has to be able to see that the app has no
-// epics rather than infer it from an absence.
+// epic, and beneath it every epic is a row of its own, in creation order. The
+// epic the reader is inside opens over its four places; the rest are the row
+// alone. An app with no epics keeps the section, because a reader has to be
+// able to see that the app has no epics rather than infer it from an absence.
 func makeEpicsNav(sources appNavSources, deckRows map[string]*navNodeView) *navNodeView {
 	document := sources.document
 	section := navSection("Epics", epicsIndexHref, "nav-epics", "product", "no epics yet", nil)
 	if len(document.Epics) == 0 {
 		return section
 	}
-	current := document.Epics[0]
 	for _, epic := range document.Epics {
-		if epic.ID == sources.currentEpic {
-			current = epic
+		if epic.ID == sources.pageEpic {
+			section.Children = append(section.Children, makeEpicNav(sources, epic, deckRows))
+			continue
 		}
+		section.Children = append(section.Children, makeEpicRowNav(epic))
 	}
-	node := makeEpicNav(sources, current, deckRows)
-	node.Picker = makeEpicPicker(document, current.ID)
 	section.Gap, section.Note = false, ""
-	section.Children = []*navNodeView{node, makeAllEpicsNav(document, current.ID)}
 	section.Expanded = true
 	return section
 }
 
-// makeAllEpicsNav is the browsing list: every epic as one row, shut until a
-// reader opens it. It is a disclosure rather than a tree, so it costs the
-// sidebar one row until it is asked for and never repeats an epic's places.
-func makeAllEpicsNav(document *saga.Saga, current string) *navNodeView {
+// makeEpicRowNav is an epic the reader is not reading: one row, linking to the
+// epic's page. The page is the directory of everything the row would otherwise
+// have had to list, so the row does not have to list any of it.
+func makeEpicRowNav(epic *saga.Epic) *navNodeView {
 	return &navNodeView{
-		Title: "Show all epics", NodeID: "nav-all-epics",
-		Epics: epicChoices(document, current), IndexHref: epicsIndexHref,
+		Title: epicTitle(epic), Href: epicHref(epic.ID),
+		NodeID: "nav-epic-" + domID(epic.ID), Icon: "product",
 	}
 }
 
@@ -234,7 +241,7 @@ func makeEpicNav(sources appNavSources, epic *saga.Epic, deckRows map[string]*na
 		implementation: implementation,
 	})
 	// The epic row opens the epic's page; its places disclose beneath it.
-	node := &navNodeView{Title: epic.Title, Href: epicHref(epic.ID), NodeID: prefix, Icon: "product", Group: true, Expanded: true}
+	node := &navNodeView{Title: epicTitle(epic), Href: epicHref(epic.ID), NodeID: prefix, Icon: "product", Group: true, Expanded: true}
 	var report []*navNodeView
 	for _, row := range reportRootNav(epic.Report) {
 		report = append(report, onEpicPage(row, epic.ID))
@@ -312,4 +319,63 @@ func flagNav(document requirements.Document) []*navNodeView {
 		nodes = append(nodes, &navNodeView{Title: flag.Identity.ID, NodeID: "nav-" + domID(urn), Note: state})
 	}
 	return nodes
+}
+
+// ----- Which epic, and every epic -----
+
+// epicsIndexHref is the browsable table of every epic, which the Epics header
+// opens and every epic row sits beneath.
+const epicsIndexHref = "/epics"
+
+// epicTitle is what an epic's row says: the title an author gave it, or its ID
+// while it has none.
+func epicTitle(epic *saga.Epic) string {
+	if title := strings.TrimSpace(epic.Title); title != "" {
+		return title
+	}
+	return epic.ID
+}
+
+// epicLinkView is one epic as a title and a link to its page.
+type epicLinkView struct {
+	ID      string
+	Title   string
+	Href    string
+	Current bool
+}
+
+// epicLinks names every epic in creation order, marking the one whose content
+// is being read.
+func epicLinks(document *saga.Saga, current string) []epicLinkView {
+	links := make([]epicLinkView, 0, len(document.Epics))
+	for _, epic := range document.Epics {
+		links = append(links, epicLinkView{
+			ID: epic.ID, Title: epicTitle(epic), Href: epicHref(epic.ID),
+			Current: epic.ID == current,
+		})
+	}
+	return links
+}
+
+// pageEpic names the epic of the page being read: an epic's own page, a story
+// or criterion of one, or a test case of one. A chapter redirects to its
+// epic's page before it reaches here, and a slide is read on that page too, so
+// both arrive as "epic". A page that belongs to no epic names none, and then
+// no epic opens.
+func pageEpic(route appRoute, page *requirementsPageView, tests quality.Document) string {
+	switch route.kind {
+	case "epic":
+		return route.id
+	case "requirements":
+		if page != nil && page.Story != nil {
+			return page.Story.Epic
+		}
+	case "test":
+		for _, testCase := range tests.TestCases {
+			if testCase.Identity.ID == route.id {
+				return testCase.Epic
+			}
+		}
+	}
+	return ""
 }

@@ -118,10 +118,9 @@ type pageData struct {
 	// OverviewParts is the overview's directory: its parts and what each one
 	// holds.
 	OverviewParts []overviewPartView
-	// CurrentEpic is the epic the sidebar shows; PageEpic is the epic this
-	// page belongs to, empty when the page belongs to none.
-	CurrentEpic string
-	PageEpic    string
+	// PageEpic is the epic this page belongs to, and so the one epic the
+	// sidebar opens. Empty when the page belongs to none.
+	PageEpic string
 	// Reviews is a review surface rendered inside the app shell.
 	Reviews    template.HTML
 	Root       *sectionView
@@ -184,14 +183,6 @@ type navNodeView struct {
 	Active   bool
 	Expanded bool
 	Children []*navNodeView
-	// Picker marks the current epic's row. The row still links to the epic's
-	// page; the picker is the control beside it that chooses a different one.
-	Picker *epicPickerView
-	// Epics marks the "Show all epics" disclosure and holds what it lists.
-	Epics []epicChoiceView
-	// IndexHref is the epics index, linked from the disclosure so the full
-	// list is reachable as a page too.
-	IndexHref string
 }
 
 type sectionView struct {
@@ -823,13 +814,6 @@ func (a *app) page(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	// Opening a page inside an epic is how a reader chooses one, whether they
-	// clicked it in the picker or followed a link to a story. Remembering it
-	// here is what makes the choice survive a move to the app's own pages,
-	// with or without JavaScript. The sidebar now reads that cookie, so the
-	// page is no longer the same for every reader.
-	w.Header().Add("Vary", "Cookie")
-	rememberEpic(w, r, data.PageEpic)
 	renderHTML(w, a.template, "page", data, "The review page could not be rendered.")
 }
 
@@ -1022,13 +1006,13 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 	case route.kind != "overview":
 		overviewActive = "-"
 	}
-	// The sidebar shows one epic. The page being read names it when it has
-	// one; otherwise the reader's last choice does, and PageEpic stays empty
-	// so nothing is remembered from a page that chose nothing.
+	// The sidebar lists every epic and opens the one this page belongs to.
+	// A page that belongs to none, the epics table among them, opens none:
+	// which epic a reader is in is a fact about the page, never a preference
+	// kept about the reader.
 	data.PageEpic = pageEpic(route, requirementsView, tests)
-	data.CurrentEpic = resolveCurrentEpic(document, data.PageEpic, r)
 	if route.kind == "epics" {
-		data.Epics = epicsDirectory(document, graph, data.CurrentEpic, directoryQuery(r))
+		data.Epics = epicsDirectory(document, graph, data.PageEpic, directoryQuery(r))
 	}
 	onboarding := onboardingHref(document)
 	if route.kind == "overview" {
@@ -1040,7 +1024,7 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 		quality:    tests,
 		prototypes: prototypeDocument, prototypeNote: prototypeNote,
 		decks: makeDeckNavTree(slideRoot), overviewActive: overviewActive,
-		currentEpic: data.CurrentEpic, hasReviews: len(document.Reviews) > 0,
+		pageEpic: data.PageEpic, hasReviews: len(document.Reviews) > 0,
 	})
 	if route.kind != "overview" {
 		// Off the overview, an in-page anchor would point into a page that is
