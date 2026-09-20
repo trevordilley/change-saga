@@ -186,15 +186,15 @@ func TestDeckNavigationFoldsIntoDesignAndImplementationByRole(t *testing.T) {
 	billing.Decks = append(billing.Decks, uxDeck)
 	sources.decks = append(sources.decks, uxRow)
 	app := makeAppNavTree(sources)
-	if ux := findNav(t, app, "Billing", "Design", "UX"); ux.Gap || len(ux.Children) != 1 || ux.Children[0] != uxRow {
+	if ux := findNav(t, app, "Epics", "Billing", "Design", "UX"); ux.Gap || len(ux.Children) != 1 || ux.Children[0] != uxRow {
 		t.Fatalf("an epic's ux deck must fill its Design > UX: %v", navTitles(ux.Children, 0))
 	}
-	if got := topTitles(findNav(t, app, "Billing", "Implementation").Children); got != "charge|refund" {
+	if got := topTitles(findNav(t, app, "Epics", "Billing", "Implementation").Children); got != "charge|refund" {
 		t.Fatalf("a ux deck must leave the epic's Implementation to the change deck: %s", got)
 	}
 	// Catalog is only in the sidebar when it is the epic the reader chose.
 	sources.currentEpic = "catalog"
-	if !findNav(t, makeAppNavTree(sources), "Catalog", "Design", "UX").Gap {
+	if !findNav(t, makeAppNavTree(sources), "Epics", "Catalog", "Design", "UX").Gap {
 		t.Fatal("another epic's ux deck must not fill this epic's Design > UX")
 	}
 }
@@ -254,14 +254,14 @@ func TestProductNavigationSitsInsideEveryEpicBelowItsReportOutline(t *testing.T)
 		{Kind: "chapter", ID: "evidence", Title: "Evidence", Target: saga.ChapterTarget(appNavSaga, "evidence")},
 	}
 	nodes := makeAppNavTree(sources)
-	if got, want := topTitles(nodes), "Overview|Personas|Design system|Onboarding|Feature flags|Billing|Show all epics"; got != want {
+	if got, want := topTitles(nodes), "Overview|Epics|Reviews"; got != want {
 		t.Fatalf("sidebar = %s, want %s", got, want)
 	}
-	if got, want := topTitles(findNav(t, nodes, "Billing").Children), "Billing overview|Delivery|Evidence|Product|Design|Quality|Implementation"; got != want {
+	if got, want := topTitles(findNav(t, nodes, "Epics", "Billing").Children), "Billing overview|Delivery|Evidence|Product|Design|Quality|Implementation"; got != want {
 		t.Fatalf("billing epic = %s, want %s", got, want)
 	}
 	billing.Report = nil
-	if got, want := topTitles(findNav(t, makeAppNavTree(sources), "Billing").Children), "Product|Design|Quality|Implementation"; got != want {
+	if got, want := topTitles(findNav(t, makeAppNavTree(sources), "Epics", "Billing").Children), "Product|Design|Quality|Implementation"; got != want {
 		t.Fatalf("epic without report content = %s, want %s", got, want)
 	}
 }
