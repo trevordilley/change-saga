@@ -17,11 +17,11 @@ const openFeatures = (page: Page) => page.locator("#nav-features > .doc-node:has
 test("@critical lists every feature and opens only the one being read", async ({ page, saga }) => {
   const contents = page.getByRole("navigation", { name: "Contents" });
 
-  // Three sections, in order, and every one of them opens a page.
+  // Documentation holds two sections, in order, and both open a page.
+  // Reviews are the header's other side, never repeated here.
   const places = contents.locator(":scope > .doc-node > .doc-row > .doc-link");
-  await expect(places).toHaveText(["Overview", "Features", "Reviews"]);
+  await expect(places).toHaveText(["Overview", "Features"]);
   await expect(places.nth(1)).toHaveAttribute("href", "/features");
-  await expect(places.nth(2)).toHaveAttribute("href", "/reviews");
   // What describes the whole app hangs off the overview, beneath its prose.
   const overview = contents.locator(":scope > .doc-node").first();
   await expect(overview.locator(":scope > .doc-children > .doc-node > .doc-row > .doc-link")).toHaveText([

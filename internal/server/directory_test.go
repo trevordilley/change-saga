@@ -23,7 +23,6 @@ func TestEverySectionHeaderIsADestination(t *testing.T) {
 		{[]string{"Overview", "Personas"}, "/personas"},
 		{[]string{"Overview", "Design system"}, designSystemPath},
 		{[]string{"Features"}, "/features"},
-		{[]string{"Reviews"}, "/reviews"},
 		{[]string{"Features", "Billing", "Product"}, featureHref("billing") + "#feature-product"},
 		{[]string{"Features", "Billing", "Design"}, featureHref("billing") + "#feature-design"},
 		{[]string{"Features", "Billing", "Quality"}, featureHref("billing") + "#feature-quality"},

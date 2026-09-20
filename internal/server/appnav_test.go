@@ -158,10 +158,10 @@ func TestAppNavigationListsAppPlacesThenEveryFeatureAsARow(t *testing.T) {
 	sources := appNavFixture(t)
 	sources.pageFeature = "billing"
 	nodes := makeAppNavTree(sources)
-	if got, want := topTitles(nodes), "Overview|Features|Reviews"; got != want {
+	if got, want := topTitles(nodes), "Overview|Features"; got != want {
 		t.Fatalf("app-level list = %s, want %s", got, want)
 	}
-	wantIDs := []string{"nav-overview", "nav-features", "nav-reviews"}
+	wantIDs := []string{"nav-overview", "nav-features"}
 	for index, node := range nodes {
 		if node.NodeID != wantIDs[index] {
 			t.Fatalf("app place %q has node ID %q, want %q", node.Title, node.NodeID, wantIDs[index])
@@ -286,7 +286,7 @@ func TestEmptyAppPlacesStateTheirGap(t *testing.T) {
 		requirements: requirements.Document{SagaID: appNavSaga},
 		page:         page,
 	})
-	if got, want := topTitles(nodes), "Overview|Features|Reviews"; got != want {
+	if got, want := topTitles(nodes), "Overview|Features"; got != want {
 		t.Fatalf("empty app-level list = %s, want %s", got, want)
 	}
 	// With no features there is nothing to list, so the row that says so stands
@@ -318,7 +318,6 @@ func TestEmptyAppPlacesStateTheirGap(t *testing.T) {
 		{[]string{"Overview", "Onboarding"}, "no onboarding deck yet"},
 		{[]string{"Overview", "Feature flags"}, "no feature flags yet"},
 		{[]string{"Features"}, "no features yet"},
-		{[]string{"Reviews"}, "no reviews yet"},
 	} {
 		if got := findNav(t, nodes, want.path...).Note; got != want.note {
 			t.Fatalf("%v gap note = %q, want %q", want.path, got, want.note)
@@ -334,7 +333,7 @@ func TestEmptyAppPlacesStateTheirGap(t *testing.T) {
 	if err := tmpl.ExecuteTemplate(&rendered, "doc-tree", nodes); err != nil {
 		t.Fatal(err)
 	}
-	for _, note := range []string{"not written yet", "no terms yet", "no personas yet", "no design system yet", "no onboarding deck yet", "no feature flags yet", "no features yet", "no reviews yet"} {
+	for _, note := range []string{"not written yet", "no terms yet", "no personas yet", "no design system yet", "no onboarding deck yet", "no feature flags yet", "no features yet"} {
 		if !strings.Contains(rendered.String(), `<span class="doc-note">`+note+`</span>`) {
 			t.Fatalf("rendered app-level list is missing the gap %q: %s", note, rendered.String())
 		}

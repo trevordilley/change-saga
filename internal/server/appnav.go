@@ -67,9 +67,6 @@ type appNavSources struct {
 	// feature that opens over its four places. Empty on a page that belongs to
 	// no feature, where every feature stays a row.
 	pageFeature string
-	// hasReviews says whether any pull request has a review yet, so the
-	// Reviews section can state the gap without loading one.
-	hasReviews bool
 }
 
 func makeAppNavTree(sources appNavSources) []*navNodeView {
@@ -101,14 +98,10 @@ func makeAppNavTree(sources appNavSources) []*navNodeView {
 		navSection("Feature flags", "/flags", "nav-featureflags", "", "no feature flags yet", flagNav(sources.requirements)),
 	)
 
-	reviews := navSection("Reviews", "/reviews", "nav-reviews", "diff", "no reviews yet", nil)
-	if sources.hasReviews {
-		// Every review is a page of its own, so the section holds no rows: its
-		// header opens the table of them. The gap is stated only while there
-		// are none to open.
-		reviews.Gap, reviews.Note = false, ""
-	}
-	navigation := []*navNodeView{overview, makeFeaturesNav(sources, deckRows), reviews}
+	// Reviews are the header's other side, so this sidebar holds only the
+	// documentation: repeating them here would offer the same destination
+	// twice and imply reviews are part of what the app is.
+	navigation := []*navNodeView{overview, makeFeaturesNav(sources, deckRows)}
 	for _, node := range navigation {
 		revealActive(node)
 	}
