@@ -119,3 +119,21 @@ func TestLandmarkCodeReachesTheStoryItsFragmentAddresses(t *testing.T) {
 		t.Fatalf("personas = %d/%d, want every landmark to reach the persona its story serves: %+v", personas.Covered, personas.Total, personas)
 	}
 }
+
+// The story is written and the fragment already addresses its criterion, so
+// there is no story gap to suggest. A suggestion never offers to capture a
+// story that exists.
+func TestNoStoryIsSuggestedForCodeItsFragmentAlreadyExplains(t *testing.T) {
+	root, repo, _ := twoSidesSaga(t)
+	var output bytes.Buffer
+	_ = Status(context.Background(), []string{"--json", "--repo", repo, root}, &output)
+	var document statusDocument
+	if err := json.Unmarshal(output.Bytes(), &document); err != nil {
+		t.Fatalf("status --json: %v\n%s", err, output.String())
+	}
+	for _, action := range document.NextActions {
+		if strings.HasPrefix(action.ID, "growth:story:") {
+			t.Fatalf("code its fragment already explains still asks for a story: %s — %s", action.ID, action.Reason)
+		}
+	}
+}
