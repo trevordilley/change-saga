@@ -582,9 +582,10 @@ func relationRepin(_ context.Context, args []string, out io.Writer) error {
 }
 
 // defaultRepinPins fills every omitted pin the relation is behind on with the
-// endpoint's current head or digest, and reports each one. A relation nothing
-// moved under is refused rather than confirmed against itself: re-affirming
-// what never changed is the noise this command exists to stop.
+// endpoint's current head or digest, and reports each one. It never decides
+// whether the repin is worth writing: requirements.RepinRelation refuses one
+// that records the pins already confirmed, so naming a pin explicitly is not a
+// way around that check.
 func defaultRepinPins(root string, input *requirements.RepinRelationInput) ([]string, error) {
 	heads, err := loadRelationHeads(root)
 	if err != nil {
@@ -655,9 +656,6 @@ func defaultRepinPins(root string, input *requirements.RepinRelationInput) ([]st
 			*side.pin = digest
 			defaulted = append(defaulted, fmt.Sprintf("%s from %s to the current digest %s", side.name, side.was, digest))
 		}
-	}
-	if input.FromRevision == "" && input.ToRevision == "" && input.FromContentDigest == "" && input.ToContentDigest == "" {
-		return nil, fmt.Errorf("relation %q is already current against every head; there is nothing to re-pin", input.Relation)
 	}
 	return defaulted, nil
 }
