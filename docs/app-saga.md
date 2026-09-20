@@ -319,6 +319,23 @@ as growth rather than a requirement, that the change may have introduced new
 terminology to define. Recognizing enums and constants is a per-language
 heuristic, and it only ever suggests.
 
+### 13. The reviewer has two sides: Documentation and Review
+
+The header carries the distinction. **Documentation** shows the overview and
+the feature set: what the application is, who it serves, its vocabulary, and
+each feature with its stories, design, quality, and implementation. It also
+shows which code each record explains, resolved at the head. **Review** shows
+the current and completed reviews; opening one gives its deck, its Code Diff,
+and its coverage. Diffs appear only where a change is being reviewed.
+
+**Related reviews are derived, never authored.** A feature, story, or
+acceptance criterion lists the reviews that touched it, computed by
+intersecting the code its records reference with each review's changed lines,
+through the same chain that reaches code (criterion to design or slide Item to
+code reference). No one maintains these links, so they cannot drift or be
+forgotten, and an author cannot inflate them. They are a footnote on the
+record, not a headline.
+
 ### Kept from the current design
 
 One format and no backwards compatibility. Staleness derived only from pins.
