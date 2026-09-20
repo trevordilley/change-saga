@@ -163,6 +163,10 @@ type codePageView struct {
 	// over the review's own range, so both are given rather than assumed.
 	DiffHref  string
 	EmptyNote string
+	// Explanations offers the documentation that explains the selected file.
+	// A review's Code Diff does not: what explains a review's lines is its own
+	// deck, which is the tab beside it.
+	Explanations bool
 }
 
 func fileSummary(current *reviewSnapshot, filePath string) *FileDiffView {
@@ -215,7 +219,7 @@ func (a *app) codePage(w http.ResponseWriter, r *http.Request) {
 	}
 	result := codePageView{
 		Tree: makeChangedFileTree(files), Selected: selected,
-		RelatedEmpty: "Loading explanations…", DiffHref: "/api/file-diff",
+		RelatedEmpty: "Loading explanations…", DiffHref: "/api/file-diff", Explanations: true,
 		EmptyNote:  "No product code changes in this comparison.",
 		TotalFiles: len(catalog.Files), NextCursor: window.next, HasMore: window.hasMore(), Returned: window.end - window.start,
 	}

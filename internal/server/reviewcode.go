@@ -89,8 +89,7 @@ func (a *app) reviewCodeSurface(w http.ResponseWriter, r *http.Request) {
 	}
 	result := codePageView{
 		Tree: makeChangedFileTree(files), Selected: selected,
-		RelatedEmpty: "The deck's Items explain this file; open the deck to read them.",
-		DiffHref:     base + "/file-diff", EmptyNote: "This review's range changes no files.",
+		DiffHref: base + "/file-diff", EmptyNote: "This review's range changes no files.",
 		TotalFiles: len(catalog.Files), NextCursor: window.next, HasMore: window.hasMore(), Returned: window.end - window.start,
 	}
 	writeIncrementalHeaders(w, "text/html; charset=utf-8")
