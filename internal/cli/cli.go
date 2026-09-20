@@ -89,15 +89,15 @@ func (e *StatusError) Error() string { return "command reported a non-success st
 // commandUsage is the single source of each command's usage line so the
 // overview, the per-command -h banner, and argument errors cannot drift apart.
 var commandOrder = []string{
-	"init", "epic", "overview", "term", "persona", "flag", "prototype", "story", "criterion", "citation", "relation", "design", "plan", "quality", "add-deck", "add-slide", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "revise-deck", "remove-deck", "revise-slide", "remove-slide", "revise-item", "remove-item", "revise-chapter", "remove-chapter", "revise-section", "remove-section", "revise-fragment", "remove-fragment", "cover", "remove-coverage", "replace-coverage", "references", "repin", "sync", "add-claim", "verify-claim",
+	"init", "feature", "overview", "term", "persona", "flag", "prototype", "story", "criterion", "citation", "relation", "design", "plan", "quality", "add-deck", "add-slide", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "revise-deck", "remove-deck", "revise-slide", "remove-slide", "revise-item", "remove-item", "revise-chapter", "remove-chapter", "revise-section", "remove-section", "revise-fragment", "remove-fragment", "cover", "remove-coverage", "replace-coverage", "references", "repin", "sync", "add-claim", "verify-claim",
 	"review", "validate", "status", "check", "query",
 	"serve", "open", "install-skill", "spec",
 }
 
 var commandUsage = map[string]string{
 	"init":                        "change-saga init [flags] <name.saga>",
-	"epic":                        "change-saga epic add [flags] <saga>",
-	"epic add":                    "change-saga epic add --id ID --title TEXT [--description TEXT] [flags] <saga>",
+	"feature":                     "change-saga feature add [flags] <saga>",
+	"feature add":                 "change-saga feature add --id ID --title TEXT [--description TEXT] [flags] <saga>",
 	"overview":                    "change-saga overview <set-pitch|set-description> [flags] <saga>",
 	"overview set-pitch":          "change-saga overview set-pitch (--text TEXT | --source FILE|-) [--json|--quiet] <saga>",
 	"overview set-description":    "change-saga overview set-description (--text TEXT | --source FILE|-) [--json|--quiet] <saga>",
@@ -113,14 +113,14 @@ var commandUsage = map[string]string{
 	"flag add":                    "change-saga flag add --id ID --description TEXT --target URN... [--state off|on] [flags] <saga>",
 	"flag revise":                 "change-saga flag revise --flag URN --revision ID --parent URN... --description TEXT --target URN... [flags] <saga>",
 	"flag set-state":              "change-saga flag set-state --flag URN --event ID --parent URN... --state off|on|retired [--reason TEXT] [flags] <saga>",
-	"story move":                  "change-saga story move --story URN --epic ID [--json] <saga>",
+	"story move":                  "change-saga story move --story URN --feature ID [--json] <saga>",
 	"prototype":                   "change-saga prototype <add-html|add-external|revise|annotate> [flags] <saga>",
-	"prototype add-html":          "change-saga prototype add-html --epic ID --id ID --revision ID --title TEXT --source PATH [--state STATE] [flags] <saga>",
-	"prototype add-external":      "change-saga prototype add-external --epic ID --id ID --revision ID --title TEXT --url URL [--embed-url URL --provider ID --embed-origin ORIGIN] [flags] <saga>",
+	"prototype add-html":          "change-saga prototype add-html --feature ID --id ID --revision ID --title TEXT --source PATH [--state STATE] [flags] <saga>",
+	"prototype add-external":      "change-saga prototype add-external --feature ID --id ID --revision ID --title TEXT --url URL [--embed-url URL --provider ID --embed-origin ORIGIN] [flags] <saga>",
 	"prototype revise":            "change-saga prototype revise --prototype URN --revision ID --parent URN... --title TEXT (--source PATH | --url URL) [flags] <saga>",
 	"prototype annotate":          "change-saga prototype annotate --prototype URN --id ID --target URN --rationale TEXT --story-revision URN (--prototype-revision URN | --prototype-content-digest DIGEST) [selector] [flags] <saga>",
 	"story":                       "change-saga story <add|revise|set-state|move> [flags] <saga>",
-	"story add":                   "change-saga story add --epic ID --id ID --revision ID --event ID --title TEXT --statement TEXT [--priority TEXT] [flags] <saga>",
+	"story add":                   "change-saga story add --feature ID --id ID --revision ID --event ID --title TEXT --statement TEXT [--priority TEXT] [flags] <saga>",
 	"story revise":                "change-saga story revise --story URN --revision ID --parent URN... [--title TEXT] [--statement TEXT] [--priority TEXT] [flags] <saga>",
 	"story set-state":             "change-saga story set-state --story URN --event ID --parent URN... --state STATE [flags] <saga>",
 	"criterion":                   "change-saga criterion <add|revise|remove> [flags] <saga>",
@@ -128,44 +128,44 @@ var commandUsage = map[string]string{
 	"criterion revise":            "change-saga criterion revise --story URN --criterion URN --parent REVISION --revision ID (--statement TEXT|--edit) [flags] <saga>",
 	"criterion remove":            "change-saga criterion remove --story URN --criterion URN --parent REVISION --revision ID --reason TEXT [flags] <saga>",
 	"citation":                    "change-saga citation add [flags] <saga>",
-	"citation add":                "change-saga citation add --epic ID --id ID --kind KIND --title TEXT --reference LOCATOR [flags] <saga>",
+	"citation add":                "change-saga citation add --feature ID --id ID --kind KIND --title TEXT --reference LOCATOR [flags] <saga>",
 	"relation":                    "change-saga relation <add|supersede|status> [flags] <saga>",
-	"relation add":                "change-saga relation add --epic ID --id ID --type TYPE --from URN --to URN --rationale TEXT [--scope self|descendants] [flags] <saga>",
-	"relation supersede":          "change-saga relation supersede --relation URN [--epic ID] [--request-id ID] [--json] <saga>",
+	"relation add":                "change-saga relation add --feature ID --id ID --type TYPE --from URN --to URN --rationale TEXT [--scope self|descendants] [flags] <saga>",
+	"relation supersede":          "change-saga relation supersede --relation URN [--feature ID] [--request-id ID] [--json] <saga>",
 	"relation status":             "change-saga relation status [--relation URN] [--json] <saga>",
 	"design":                      "change-saga design <operation> [flags] <saga>",
-	"design-add-chapter":          "change-saga design add-chapter --epic ID [flags] <saga> <name>",
+	"design-add-chapter":          "change-saga design add-chapter --feature ID [flags] <saga> <name>",
 	"design-add-section":          "change-saga design add-section [flags] <saga> <section/path>",
-	"design-add-fragment":         "change-saga design add-fragment (--epic ID | --section TARGET) [flags] <saga>",
-	"design-set-fragment-content": "change-saga design set-fragment-content --target TARGET --source FILE|- [--epic ID] [--json|--quiet] <saga>",
+	"design-add-fragment":         "change-saga design add-fragment (--feature ID | --section TARGET) [flags] <saga>",
+	"design-set-fragment-content": "change-saga design set-fragment-content --target TARGET --source FILE|- [--feature ID] [--json|--quiet] <saga>",
 	"plan":                        "change-saga plan <add-wave|revise-wave|add-item|revise-item|add-dependency|add-contract|assign|progress|record-merge> [flags] <saga>",
-	"plan add-wave":               "change-saga plan add-wave --epic ID --id ID --revision ID --title TEXT --objective TEXT --request-id ID [flags] <saga>",
+	"plan add-wave":               "change-saga plan add-wave --feature ID --id ID --revision ID --title TEXT --objective TEXT --request-id ID [flags] <saga>",
 	"plan revise-wave":            "change-saga plan revise-wave --wave URN --revision ID --parent URN... --title TEXT --objective TEXT --request-id ID [flags] <saga>",
-	"plan add-item":               "change-saga plan add-item --epic ID --id ID --revision ID --title TEXT --objective TEXT --deliverable TEXT... --request-id ID [flags] <saga>",
+	"plan add-item":               "change-saga plan add-item --feature ID --id ID --revision ID --title TEXT --objective TEXT --deliverable TEXT... --request-id ID [flags] <saga>",
 	"plan revise-item":            "change-saga plan revise-item --item URN --revision ID --parent URN... --title TEXT --objective TEXT --deliverable TEXT... --request-id ID [flags] <saga>",
-	"plan add-dependency":         "change-saga plan add-dependency --epic ID --id ID --prerequisite URN --dependent URN --condition KIND --reason TEXT --request-id ID [flags] <saga>",
-	"plan add-contract":           "change-saga plan add-contract --epic ID --id ID --revision ID --kind KIND --provider URN --consumer URN --statement TEXT --acceptance TEXT... --request-id ID [flags] <saga>",
+	"plan add-dependency":         "change-saga plan add-dependency --feature ID --id ID --prerequisite URN --dependent URN --condition KIND --reason TEXT --request-id ID [flags] <saga>",
+	"plan add-contract":           "change-saga plan add-contract --feature ID --id ID --revision ID --kind KIND --provider URN --consumer URN --statement TEXT --acceptance TEXT... --request-id ID [flags] <saga>",
 	"plan assign":                 "change-saga plan assign --item URN --workspace UUID --repository-id ID --branch NAME --request-id ID [flags] <saga>",
 	"plan progress":               "change-saga plan progress --item URN --from EVENT... --to STATE --request-id ID [flags] <saga>",
 	"plan record-merge":           "change-saga plan record-merge --item URN --unit ID --state STATE --request-id ID [flags] <saga>",
 	"quality":                     "change-saga quality <test-case|policy|evidence|run> <operation> [flags] <saga>",
 	"quality test-case":           "change-saga quality test-case <add|revise|set-state> [flags] <saga>",
-	"quality test-case add":       "change-saga quality test-case add --epic ID --id ID [--revision r1] [--event proposed] --title TEXT --kind KIND... --automation MODE --step JSON... --expected-result TEXT [--precondition TEXT...] [--from FILE|-] [flags] <saga>",
+	"quality test-case add":       "change-saga quality test-case add --feature ID --id ID [--revision r1] [--event proposed] --title TEXT --kind KIND... --automation MODE --step JSON... --expected-result TEXT [--precondition TEXT...] [--from FILE|-] [flags] <saga>",
 	"quality test-case revise":    "change-saga quality test-case revise --test URN --parent REVISION... --revision ID [definition flags] [--from FILE|-] [flags] <saga>",
 	"quality test-case set-state": "change-saga quality test-case set-state --test URN --parent EVENT... --state STATE [--event ID] [--reason TEXT] [flags] <saga>",
 	"quality policy":              "change-saga quality policy set [flags] <saga>",
-	"quality policy set":          "change-saga quality policy set --epic ID --criterion URN --story-revision URN --require KIND... --rationale TEXT [--allow MODE...] [--supersedes POLICY...] [--id ID] [flags] <saga>",
+	"quality policy set":          "change-saga quality policy set --feature ID --criterion URN --story-revision URN --require KIND... --rationale TEXT [--allow MODE...] [--supersedes POLICY...] [--id ID] [flags] <saga>",
 	"quality evidence":            "change-saga quality evidence add [flags] <saga>",
 	"quality evidence add":        "change-saga quality evidence add --test URN --role ROLE (--code LOCATION... | --verification URN... | --citation URN...) [--test-revision URN] [--supersedes EVIDENCE...] [--id ID] [--batch FILE|-] [flags] <saga>",
 	"quality run":                 "change-saga quality run record [flags] <saga>",
 	"quality run record":          "change-saga quality run record --test URN --result RESULT --summary TEXT --evidence URN... [--parent RUN...] [--test-revision URN] [--command TEXT] [--commit REV] [--id ID] [flags] <saga>",
-	"add-deck":                    "change-saga add-deck (--epic ID | --role onboarding) [flags] <saga> <name>",
+	"add-deck":                    "change-saga add-deck (--feature ID | --role onboarding) [flags] <saga> <name>",
 	"add-slide":                   "change-saga add-slide (--deck TARGET | --review ID) --intent INTENT --layout LAYOUT [flags] <saga> <name>",
 	"set-slide-content":           "change-saga set-slide-content [--review ID] --target TARGET --source FILE|- [--json|--quiet] <saga>",
 	"add-item":                    "change-saga add-item [--review ID] --slide TARGET --kind KIND [selector] [--record URN] [flags] <saga>",
-	"add-chapter":                 "change-saga add-chapter (--epic ID | --app designsystem) [flags] <saga> <name>",
+	"add-chapter":                 "change-saga add-chapter (--feature ID | --app designsystem) [flags] <saga> <name>",
 	"add-section":                 "change-saga add-section [flags] <saga> <section/path>",
-	"add-fragment":                "change-saga add-fragment (--epic ID | --app designsystem | --section TARGET) [flags] <saga>",
+	"add-fragment":                "change-saga add-fragment (--feature ID | --app designsystem | --section TARGET) [flags] <saga>",
 	"set-fragment-content":        "change-saga set-fragment-content --target TARGET --source FILE|- [--json|--quiet] <saga>",
 	"add-landmark":                "change-saga add-landmark [flags] <saga>",
 	"revise-deck":                 "change-saga revise-deck --deck TARGET [--title TEXT] [--objective TEXT] [--rank N] [--dry-run] [--json] <saga>",
@@ -196,8 +196,8 @@ var commandUsage = map[string]string{
 	"review withdraw":             "change-saga review withdraw --review ID --slide ID --reviewer-kind human|ai [flags] <saga>",
 	"review comment":              "change-saga review comment --review ID (--target SLIDE[/ITEM] | --reply-to ID) --body TEXT --reviewer-kind human|ai [--resolve|--reopen] [flags] <saga>",
 	"validate":                    "change-saga validate [--json] [--fix] <saga>",
-	"status":                      "change-saga status [--json] [--repo PATH] [--epic ID] [--against REV [--head REV]] <saga>",
-	"check":                       "change-saga check --covers AREA[,AREA...] [--json] [--repo PATH] [--epic ID] [--against REV [--head REV]] <saga>",
+	"status":                      "change-saga status [--json] [--repo PATH] [--feature ID] [--against REV [--head REV]] <saga>",
+	"check":                       "change-saga check --covers AREA[,AREA...] [--json] [--repo PATH] [--feature ID] [--against REV [--head REV]] <saga>",
 	"query":                       "change-saga query <operation> --saga PATH [--repo PATH] [operation flags]",
 	"serve":                       "change-saga serve [--addr ADDR] [--repo PATH] [--open] [--detach] [--against REV [--head REV]] <saga>",
 	"open":                        "change-saga open [--addr ADDR] [--repo PATH] [--against REV [--head REV]] <saga>",
@@ -210,7 +210,7 @@ func PrintHelp(out io.Writer) {
 
 A repository has one app Saga. It documents the application: an overview,
 the personas it serves, a design system, an onboarding deck, feature flags,
-and durable epics, the product domains that each hold their own stories,
+and durable features, the product domains that each hold their own stories,
 design, quality, and implementation deck. Every link is pinned, so when a
 story or the code changes, whatever relied on the old version goes visibly
 stale.
@@ -224,8 +224,8 @@ A first change:
   1. "init" the app Saga.
   2. Cover the change: "add-deck", "add-slide", and "add-item" explain it,
      and "cover" references every changed line from the Item that explains
-     it. The first command that needs an epic creates one named after the
-     branch (or pass --epic); with one epic, --epic is implied.
+     it. The first command that needs a feature creates one named after the
+     branch (or pass --feature); with one feature, --feature is implied.
   3. "status --against main" reports coverage by area (implementation,
      stories, personas, design, quality, health) with what is and is not
      covered. It has no verdict: it exits 0 whenever the report can be
@@ -291,10 +291,10 @@ func commandFlags(name, usage string, out io.Writer) *flag.FlagSet {
 }
 
 var commandDescription = map[string]string{
-	"init":                        "Create the app Saga: the saga.json manifest, a reviewer README, and the app\noverview under ___overview. Then either cover the change: explain it with an\nimplementation deck whose Items reference every changed line; or document\nexisting code: observe HEAD with status and reference the code each Item\nexplains at the current commit. Epics, stories, personas, design, and quality\nare optional and can come later.",
+	"init":                        "Create the app Saga: the saga.json manifest, a reviewer README, and the app\noverview under ___overview. Then either cover the change: explain it with an\nimplementation deck whose Items reference every changed line; or document\nexisting code: observe HEAD with status and reference the code each Item\nexplains at the current commit. Features, stories, personas, design, and quality\nare optional and can come later.",
 	"status":                      "Report coverage by area for the change (--against) or the whole app, with the\nlists of what is and is not covered, stale records, and ordered next actions:\nrequired work first (keep what exists healthy, cover every changed line), then\noptional growth suggestions. Status has no verdict: it exits 0 whenever its\nreport can be trusted, and 1 only when the Saga is malformed (for example, a\nduplicate ID) or the checkout does not match the declared repository. Teams\nwrite their own rules over --json, or ask check.",
-	"check":                       "Ask whether the named coverage areas are fully covered in scope: the change\nwith --against, the whole app without, narrowed by --epic. It exits 0 when\nthey are, 3 with only those areas' gaps when they are not, and 1 when the\nreport cannot be trusted. Nothing is required unless someone asks.\n\nAreas follow the chain persona -> story -> design -> code:\n  implementation  every changed line is referenced by the implementation deck\n                  (or narrative), or test code by its test case's evidence\n  stories         every changed line reaches a story through the chain\n  personas        every changed line reaches a persona\n  design          every story in scope has design\n  quality         every acceptance criterion in scope has a test\n  health          nothing that already existed went stale or broke",
-	"epic":                        "Add a durable product domain. An epic holds its own report content, stories,\ndesign, quality, work plan, and implementation deck. Story identity never\nnames an epic, so a story can move between epics without breaking a link.",
+	"check":                       "Ask whether the named coverage areas are fully covered in scope: the change\nwith --against, the whole app without, narrowed by --feature. It exits 0 when\nthey are, 3 with only those areas' gaps when they are not, and 1 when the\nreport cannot be trusted. Nothing is required unless someone asks.\n\nAreas follow the chain persona -> story -> design -> code:\n  implementation  every changed line is referenced by the implementation deck\n                  (or narrative), or test code by its test case's evidence\n  stories         every changed line reaches a story through the chain\n  personas        every changed line reaches a persona\n  design          every story in scope has design\n  quality         every acceptance criterion in scope has a test\n  health          nothing that already existed went stale or broke",
+	"feature":                     "Add a durable product domain. A feature holds its own report content, stories,\ndesign, quality, work plan, and implementation deck. Story identity never\nnames a feature, so a story can move between features without breaking a link.",
 	"overview":                    "Write the overview's elevator pitch and description, as Markdown. The overview\nis formal: the project's name (saga.json's title), an elevator pitch, a\ndescription (a short essay), and its terms and vocabulary (\"term\"). Every part\nis optional; an absent part is shown as a gap, never an error.",
 	"overview set-pitch":          "Write the elevator pitch: what the application is and who it is for, in a few\nsentences. The first write creates ___overview/pitch.fragment; later writes\nreplace its content.",
 	"overview set-description":    "Write the description: a short essay on what the application does and how it is\norganized. The first write creates ___overview/description.fragment; later\nwrites replace its content.",
@@ -305,7 +305,7 @@ var commandDescription = map[string]string{
 	"persona":                     "Author the people the app serves. A persona is someone who gets value from the\napp, the \"As a ...\" of a user story; a tool, agent, or system that operates the\napp is not one, however much of the work it does. Personas are optional living\nrecords: a story revision may name the personas it serves, and status reports\neach active persona no accepted story serves as a coverage gap. Nothing blocks\non personas.",
 	"persona add":                 "Add an active persona: a person or role who gets value from the app, the one a\nuser story is written for. Good: \"Shop owner: runs the store and needs the\nweek's orders in one place.\" Bad: \"Coding agent\" -- it operates the app on\nsomeone else's behalf, so it is a way of working, not someone served.",
 	"persona revise":              "Append a complete persona revision: its name and description. Keep the persona a\nperson who gets value from the app, never a tool, agent, or system that operates\nit: you would write \"As a shop owner, I can ...\", never \"As a coding agent, I\ncan ...\". Retire one that turns out not to be a persona with `persona\nset-state`; it stays as history.",
-	"flag":                        "Author feature flags that gate stories or whole epics. A gated story can be\nimplemented but not enabled; status reports it that way.",
+	"flag":                        "Author feature flags that gate stories or whole features. A gated story can be\nimplemented but not enabled; status reports it that way.",
 	"prototype":                   "Author revisioned interactive HTML experiences or explicitly allowed external\nembeds and pin them to the stories and criteria they clarify. A prototype may lead, follow,\nor evolve alongside its requirements.",
 	"prototype add-html":          "Add an interactive HTML prototype and its first immutable revision. The authored\nsource is copied into the revision package, so later edits outside the Saga never change it.",
 	"prototype add-external":      "Add a prototype that lives outside the Saga. A plain --url is a reference; an --embed-url\nrenders inline only with explicit provider, origin, sandbox, and permission allowlisting.",
@@ -331,7 +331,7 @@ var commandDescription = map[string]string{
 	"criterion revise":            "Revise one criterion's wording without changing its stable identity. Use --edit to\ninspect the complete proposed story revision in $EDITOR.",
 	"criterion remove":            "Remove one criterion through a complete story revision. The required reason is\nreturned as commit guidance; no mutable tombstone is stored.",
 	"citation":                    "Create immutable provenance records for requirements and design decisions.",
-	"citation add":                "Record where a requirement or decision came from: an external URL, issue, document,\nrepository commit, or recorded decision. Provenance is context, not delivery evidence.\n--epic only chooses where the citation is stored: its URN names no epic, so a\nstory in any epic may cite it.",
+	"citation add":                "Record where a requirement or decision came from: an external URL, issue, document,\nrepository commit, or recorded decision. Provenance is context, not delivery evidence.\n--feature only chooses where the citation is stored: its URN names no feature, so a\nstory in any feature may cite it.",
 	"relation":                    "Create, explicitly supersede, or check the currency of pinned traceability relations.",
 	"relation add":                "Link stories and criteria to design, work items, slide explanations, and verification\nevidence with a typed rationale. Pin mutable requirement endpoints so their links go stale\nafter later edits. Test cases may verify criteria,\nscope is self unless a Deck/Slide source declares descendants, and each omitted required\nrevision pin defaults to the endpoint's unique current head (reported as it is pinned).",
 	"relation supersede":          "Retire one relation without erasing it. Add its corrected replacement separately;\na pivot is represented by normal requirement, design, plan, and relation revisions.",
@@ -454,7 +454,7 @@ func Init(ctx context.Context, args []string, out io.Writer) error {
 	}
 	manifest := saga.Manifest{Schema: saga.SagaSchemaURL, Version: saga.SagaVersion, ID: *id, Title: *title, Source: saga.Source{Repository: repositoryURI}}
 	// The overview's name is the manifest title. Its pitch, description, and
-	// terms, like epics and personas, are authored after init; until then each
+	// terms, like features and personas, are authored after init; until then each
 	// is shown as a gap.
 	// A failed init must not leave a half-built .saga behind, because the
 	// directory would then block a retry while never loading.
@@ -500,7 +500,7 @@ Next, one of two paths.
 
 To cover a change (a branch or pull request): explain it with an
 implementation deck, then reference every changed line from the Item that
-explains it (the first command that needs an epic creates one named after the
+explains it (the first command that needs a feature creates one named after the
 branch):
   change-saga add-deck --objective TEXT %[1]s NAME
   change-saga add-slide --deck TARGET --intent INTENT --layout LAYOUT %[1]s NAME
@@ -531,14 +531,14 @@ func addChapter(_ context.Context, args []string, out io.Writer, scope authoring
 	title := flags.String("title", "", "chapter title")
 	id := flags.String("id", "", "stable chapter identifier")
 	order := flags.Int("order", 0, "display order")
-	epic, app := scope.placeFlags(flags)
+	feature, app := scope.placeFlags(flags)
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
 	if flags.NArg() != 2 {
 		return fmt.Errorf("usage: %s", commandUsage[command])
 	}
-	scope, err := scope.placed(epic, app)
+	scope, err := scope.placed(feature, app)
 	if err != nil {
 		return err
 	}
@@ -610,14 +610,14 @@ func addSection(_ context.Context, args []string, out io.Writer, scope authoring
 	title := flags.String("title", "", "section title")
 	id := flags.String("id", "", "stable section identifier")
 	order := flags.Int("order", 0, "display order")
-	epic, app := scope.placeFlags(flags)
+	feature, app := scope.placeFlags(flags)
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
 	if flags.NArg() != 2 {
 		return fmt.Errorf("usage: %s", commandUsage[command])
 	}
-	scope, err := scope.placed(epic, app)
+	scope, err := scope.placed(feature, app)
 	if err != nil {
 		return err
 	}
@@ -691,14 +691,14 @@ func addFragment(_ context.Context, args []string, out io.Writer, scope authorin
 	entrypointFlag := flags.String("entrypoint", "", "entrypoint within a source directory")
 	name := flags.String("name", "", "fragment directory name without .fragment")
 	order := flags.Int("order", 0, "display order")
-	epic, app := scope.placeFlags(flags)
+	feature, app := scope.placeFlags(flags)
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
 	if flags.NArg() != 1 {
 		return fmt.Errorf("usage: %s", commandUsage[command])
 	}
-	scope, err := scope.placed(epic, app)
+	scope, err := scope.placed(feature, app)
 	if err != nil {
 		return err
 	}
@@ -832,7 +832,7 @@ func appendPrototypeIssues(root string, document *saga.Saga, validation *saga.Va
 // appendQualityIssues reports the quality capability. The quality
 // loader validates identities, revision/lifecycle/run graphs, step history,
 // evidence and policy supersession as it reads, so a load failure is the
-// validation result. An epic without a ___quality root has simply not adopted it.
+// validation result. A feature without a ___quality root has simply not adopted it.
 func appendQualityIssues(root string, document *saga.Saga, validation *saga.Validation) {
 	if document == nil {
 		return
@@ -844,7 +844,7 @@ func appendQualityIssues(root string, document *saga.Saga, validation *saga.Vali
 
 // appendAppIssues reports the app-level records and the requirements that
 // depend on them: personas, flags, stories and the personas they serve,
-// app-unique IDs across epics, and the records onboarding Items explain.
+// app-unique IDs across features, and the records onboarding Items explain.
 func appendAppIssues(root string, document *saga.Saga, validation *saga.Validation) {
 	if document == nil {
 		return
@@ -953,14 +953,14 @@ func Status(ctx context.Context, args []string, out io.Writer) error {
 	repoDir := flags.String("repo", "", "source repository checkout; required when separate")
 	opening := registerOpenFlags(flags)
 	allowRepositoryMismatch := flags.Bool("allow-repository-mismatch", false, "use a checkout whose origin differs from the declared repository")
-	epic := flags.String("epic", "", "narrow the report to one epic (id or URN)")
+	feature := flags.String("feature", "", "narrow the report to one feature (id or URN)")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
 	if flags.NArg() != 1 {
 		return fmt.Errorf("usage: %s", commandUsage["status"])
 	}
-	status, err := buildStatus(ctx, flags.Arg(0), *repoDir, opening.rng(), *allowRepositoryMismatch, *epic)
+	status, err := buildStatus(ctx, flags.Arg(0), *repoDir, opening.rng(), *allowRepositoryMismatch, *feature)
 	if err != nil {
 		return err
 	}
@@ -1167,11 +1167,11 @@ func Spec(args []string, out io.Writer) error {
 			"reviewer_bootstrap":   "README.md",
 			"reserved_directories": []string{saga.CodeDirName, "___claims", "___verifications", saga.MergesDir},
 			"app_layout": map[string]any{
-				"app_roots":    applayout.AppRootDirs,
-				"epic_storage": applayout.EpicsDir + "/<id>" + applayout.EpicSuffix + "/" + applayout.EpicManifestName,
-				"epic_roots":   applayout.EpicRootDirs,
-				"epic_content": "report content (chapters and fragments) plus the epic roots; no URN names its epic, so IDs are unique across the app",
-				"onboarding":   applayout.OnboardingDir + "/<id>" + saga.EmbeddedDeckSuffix + " with role onboarding; its Items carry a persona, epic, or story record instead of code evidence",
+				"app_roots":       applayout.AppRootDirs,
+				"feature_storage": applayout.FeaturesDir + "/<id>" + applayout.FeatureSuffix + "/" + applayout.FeatureManifestName,
+				"feature_roots":   applayout.FeatureRootDirs,
+				"feature_content": "report content (chapters and fragments) plus the feature roots; no URN names its feature, so IDs are unique across the app",
+				"onboarding":      applayout.OnboardingDir + "/<id>" + saga.EmbeddedDeckSuffix + " with role onboarding; its Items carry a persona, feature, or story record instead of code evidence",
 			},
 			"author_assertions": "one claim per ___claims/*.json; one append-only result per ___verifications/*.json",
 			"reviews": map[string]any{
@@ -1187,7 +1187,7 @@ func Spec(args []string, out io.Writer) error {
 				"verdict":         "none; status and review list report each slide's decisions and currency and each review's coverage, and the team decides",
 			},
 			"implementation_deck": map[string]any{
-				"storage": applayout.EpicsDir + "/<epic>" + applayout.EpicSuffix + "/" + saga.EmbeddedSlidesDir + "/<id>" + saga.EmbeddedDeckSuffix, "layout": "flat", "max_basename": saga.FlatMaxBasename, "max_absolute_path": saga.FlatMaxPath,
+				"storage": applayout.FeaturesDir + "/<feature>" + applayout.FeatureSuffix + "/" + saga.EmbeddedSlidesDir + "/<id>" + saga.EmbeddedDeckSuffix, "layout": "flat", "max_basename": saga.FlatMaxBasename, "max_absolute_path": saga.FlatMaxPath,
 				"categories": map[string]string{"10-d": "deck", "20-s": "slide", "30-i": "item", "40-e": "evidence"},
 				"content":    "one self-contained visual file sharing its slide manifest stem",
 				"visual_forms": map[string]string{
@@ -1391,7 +1391,7 @@ func resolveTarget(document *saga.Saga, value string, allowFragment bool) (strin
 	targetKinds := map[bool]string{true: "chapter, section, fragment, landmark, or Item", false: "chapter or section"}[allowFragment]
 	dir, err := store.ResolveSection(document.Root, value)
 	if err != nil {
-		// Report content lives beneath reserved roots (___epics, ___overview),
+		// Report content lives beneath reserved roots (___features, ___overview),
 		// so a missing path there fails section resolution; still point the
 		// author at the query API rather than only at the path rule.
 		return "", "", fmt.Errorf("target %q is not a valid %s: %v%s", value, targetKinds, err, targetHint(document, allowFragment))
@@ -1949,7 +1949,7 @@ Item URNs are urn:change-saga:<saga>:review:<id>:slide:<slide>[:item:<item>];
 approvals/<event>.json and comments/<event>.json are append-only records. A
 review is viewed from the merge-base of its base and head, so its Items' code
 references show as diffs; an Item may also carry a record URN (a persona,
-epic, story, test case, deck, slide, chapter, section, or fragment) to open
+feature, story, test case, deck, slide, chapter, section, or fragment) to open
 beside the change. Review decks never count toward the documentation's
 coverage. A review has its own coverage, computed over its range (the frozen
 range after merge) with the same rule: every changed line covered by a review

@@ -33,7 +33,7 @@ import (
 const (
 	KindApp       = "app"
 	KindPersona   = "persona"
-	KindEpic      = "epic"
+	KindFeature   = "feature"
 	KindFlag      = "flag"
 	KindStory     = "story"
 	KindCitation  = "citation"
@@ -67,7 +67,7 @@ type Node struct {
 	URN      string   `json:"urn"`
 	Kind     string   `json:"kind"`
 	Title    string   `json:"title"`
-	Epic     string   `json:"epic,omitempty"`
+	Feature  string   `json:"feature,omitempty"`
 	State    string   `json:"state,omitempty"`
 	Revision string   `json:"revision"`
 	Files    []string `json:"files"`
@@ -207,9 +207,9 @@ func (b *inventoryBuilder) add(node *Node) *Node {
 }
 
 func (b *inventoryBuilder) app(inputs livingapp.StatusInputs) {
-	for _, epic := range inputs.Epics {
-		b.add(&Node{URN: applayout.EpicURN(b.sagaID, epic.ID), Kind: KindEpic, Title: epic.Title, Epic: epic.ID,
-			Files: []string{applayout.EpicRel(epic.ID) + "/" + applayout.EpicManifestName}, Text: epic.Title + "\n\n" + epic.Description})
+	for _, feature := range inputs.Features {
+		b.add(&Node{URN: applayout.FeatureURN(b.sagaID, feature.ID), Kind: KindFeature, Title: feature.Title, Feature: feature.ID,
+			Files: []string{applayout.FeatureRel(feature.ID) + "/" + applayout.FeatureManifestName}, Text: feature.Title + "\n\n" + feature.Description})
 	}
 	for _, persona := range inputs.Personas {
 		urn, _ := requirements.PersonaURN(b.sagaID, persona.Identity.ID)
@@ -252,8 +252,8 @@ func (b *inventoryBuilder) app(inputs livingapp.StatusInputs) {
 	}
 	for _, story := range inputs.Stories {
 		urn, _ := livingid.Story(b.sagaID, story.Identity.ID)
-		node := &Node{URN: urn, Kind: KindStory, Title: story.Identity.ID, Epic: story.Epic,
-			Files: b.tree(applayout.EpicRel(story.Epic) + "/" + applayout.RequirementsDir + "/stories/" + story.Identity.ID + ".story")}
+		node := &Node{URN: urn, Kind: KindStory, Title: story.Identity.ID, Feature: story.Feature,
+			Files: b.tree(applayout.FeatureRel(story.Feature) + "/" + applayout.RequirementsDir + "/stories/" + story.Identity.ID + ".story")}
 		if revision := story.CurrentRevision; revision != nil {
 			node.Title = revision.Title
 			var text strings.Builder
@@ -273,15 +273,15 @@ func (b *inventoryBuilder) app(inputs livingapp.StatusInputs) {
 	}
 	for _, citation := range inputs.Citations {
 		urn, _ := livingid.Citation(b.sagaID, citation.ID)
-		b.add(&Node{URN: urn, Kind: KindCitation, Title: citation.Title, Epic: citation.Epic,
-			Files: []string{applayout.EpicRel(citation.Epic) + "/" + applayout.RequirementsDir + "/citations/" + citation.ID + ".json"}, Text: citation.Title})
+		b.add(&Node{URN: urn, Kind: KindCitation, Title: citation.Title, Feature: citation.Feature,
+			Files: []string{applayout.FeatureRel(citation.Feature) + "/" + applayout.RequirementsDir + "/citations/" + citation.ID + ".json"}, Text: citation.Title})
 	}
 	relations := map[string]livingapp.Link{}
 	for _, link := range inputs.Links {
 		relations[link.URN] = link
 	}
-	for _, epic := range inputs.Epics {
-		dir := applayout.EpicRel(epic.ID) + "/" + applayout.RequirementsDir + "/relations"
+	for _, feature := range inputs.Features {
+		dir := applayout.FeatureRel(feature.ID) + "/" + applayout.RequirementsDir + "/relations"
 		entries, _ := os.ReadDir(filepath.Join(b.root, filepath.FromSlash(dir)))
 		for _, entry := range entries {
 			id := strings.TrimSuffix(entry.Name(), ".json")
@@ -294,15 +294,15 @@ func (b *inventoryBuilder) app(inputs livingapp.StatusInputs) {
 			if !link.Active {
 				state = "superseded"
 			}
-			b.add(&Node{URN: urn, Kind: KindRelation, Title: string(link.Type) + " " + link.From + " -> " + link.To, Epic: epic.ID, State: state,
+			b.add(&Node{URN: urn, Kind: KindRelation, Title: string(link.Type) + " " + link.From + " -> " + link.To, Feature: feature.ID, State: state,
 				Files: []string{dir + "/" + entry.Name()}, Explains: [2]string{link.From, link.To}, relationType: string(link.Type),
 				Text: string(link.Type) + "\nfrom: " + link.From + "\nto: " + link.To})
 		}
 	}
 	for _, prototype := range inputs.Prototypes.Prototypes {
 		urn, _ := prototypes.PrototypeURN(b.sagaID, prototype.Identity.ID)
-		node := &Node{URN: urn, Kind: KindPrototype, Title: prototype.Identity.ID, Epic: prototype.Epic,
-			Files: b.tree(applayout.EpicRel(prototype.Epic) + "/" + applayout.RequirementsDir + "/prototypes/" + prototype.Identity.ID + ".prototype")}
+		node := &Node{URN: urn, Kind: KindPrototype, Title: prototype.Identity.ID, Feature: prototype.Feature,
+			Files: b.tree(applayout.FeatureRel(prototype.Feature) + "/" + applayout.RequirementsDir + "/prototypes/" + prototype.Identity.ID + ".prototype")}
 		if revision := prototype.CurrentRevision; revision != nil {
 			node.Title, node.State, node.Text = revision.Title, string(revision.State), revision.Title
 		}
@@ -310,8 +310,8 @@ func (b *inventoryBuilder) app(inputs livingapp.StatusInputs) {
 	}
 	for _, testCase := range inputs.Quality.TestCases {
 		urn, _ := qualityid.TestCase(b.sagaID, testCase.Identity.ID)
-		node := &Node{URN: urn, Kind: KindTestCase, Title: testCase.Identity.ID, Epic: testCase.Epic,
-			Files: b.tree(applayout.EpicRel(testCase.Epic) + "/" + applayout.QualityDir + "/test-cases/" + testCase.Identity.ID + ".test")}
+		node := &Node{URN: urn, Kind: KindTestCase, Title: testCase.Identity.ID, Feature: testCase.Feature,
+			Files: b.tree(applayout.FeatureRel(testCase.Feature) + "/" + applayout.QualityDir + "/test-cases/" + testCase.Identity.ID + ".test")}
 		if revision := testCase.CurrentRevision; revision != nil {
 			node.Title = revision.Title
 			var text strings.Builder
@@ -333,14 +333,14 @@ func (b *inventoryBuilder) app(inputs livingapp.StatusInputs) {
 }
 
 // report indexes the report tree: the app overview and design system, and
-// every epic's report content and design. Projected decks are indexed from
+// every feature's report content and design. Projected decks are indexed from
 // the typed deck tree instead.
 func (b *inventoryBuilder) report(section *saga.Section, parent string) {
 	if section == nil || section.Kind == "deck" {
 		return
 	}
 	if section.Kind != "saga" && section.Path != "" && section.Path != "." {
-		node := b.add(&Node{URN: section.Target, Kind: b.reportKind(section.Path), Title: section.Title, Epic: epicOf(section.Path),
+		node := b.add(&Node{URN: section.Target, Kind: b.reportKind(section.Path), Title: section.Title, Feature: featureOf(section.Path),
 			Files: b.shallow(section.Path), Code: codeOf(section.Code), Parent: parent})
 		if node != nil {
 			node.Text = section.Title
@@ -351,7 +351,7 @@ func (b *inventoryBuilder) report(section *saga.Section, parent string) {
 		if fragment.SlideMeta != nil {
 			continue
 		}
-		node := b.add(&Node{URN: fragment.Target, Kind: b.reportKind(fragment.Path), Title: firstNonEmpty(fragment.Title, fragment.ID), Epic: epicOf(fragment.Path),
+		node := b.add(&Node{URN: fragment.Target, Kind: b.reportKind(fragment.Path), Title: firstNonEmpty(fragment.Title, fragment.ID), Feature: featureOf(fragment.Path),
 			Files: b.treeExcept(fragment.Path, landmarksDir), Code: codeOf(fragment.Code), Parent: parent})
 		if node == nil {
 			continue
@@ -362,7 +362,7 @@ func (b *inventoryBuilder) report(section *saga.Section, parent string) {
 				continue
 			}
 			landmarkPath := fragment.Path + "/" + landmarksDir + "/" + landmark.ID + ".landmark"
-			b.add(&Node{URN: landmark.Target, Kind: node.Kind, Title: firstNonEmpty(landmark.Label, landmark.ID), Epic: node.Epic,
+			b.add(&Node{URN: landmark.Target, Kind: node.Kind, Title: firstNonEmpty(landmark.Label, landmark.ID), Feature: node.Feature,
 				Files: b.tree(landmarkPath), Code: codeOf(landmark.Code), Parent: node.URN, contained: true, Text: landmark.Label + "\n\n" + landmark.Description})
 		}
 	}
@@ -373,10 +373,10 @@ func (b *inventoryBuilder) report(section *saga.Section, parent string) {
 
 func (b *inventoryBuilder) decks(decks []*saga.Deck) {
 	for _, deck := range decks {
-		deckNode := b.add(&Node{URN: deck.Target, Kind: KindDeck, Title: deck.Title, Epic: epicOf(deck.Path),
+		deckNode := b.add(&Node{URN: deck.Target, Kind: KindDeck, Title: deck.Title, Feature: featureOf(deck.Path),
 			Files: b.stem(deck.Path), Text: deck.Title + "\n\n" + deck.Objective})
 		for _, slide := range deck.Slides {
-			slideNode := b.add(&Node{URN: slide.Target, Kind: KindSlide, Title: slide.Title, Epic: deckNode.Epic, Parent: deck.Target, contained: true,
+			slideNode := b.add(&Node{URN: slide.Target, Kind: KindSlide, Title: slide.Title, Feature: deckNode.Feature, Parent: deck.Target, contained: true,
 				Files: b.stem(slide.Path), Text: slide.Title + "\n\nintent: " + slide.Intent + "\ntakeaway: " + slide.Takeaway})
 			if slideNode != nil && slide.Entrypoint != "" {
 				if text := b.text(path.Join(path.Dir(b.rel(slide.Path)), slide.Entrypoint), slide.MediaType); text != "" {
@@ -384,7 +384,7 @@ func (b *inventoryBuilder) decks(decks []*saga.Deck) {
 				}
 			}
 			for _, item := range slide.Items {
-				node := b.add(&Node{URN: item.Target, Kind: KindItem, Title: firstNonEmpty(item.Label, item.ID), Epic: deckNode.Epic, Parent: slide.Target, contained: true,
+				node := b.add(&Node{URN: item.Target, Kind: KindItem, Title: firstNonEmpty(item.Label, item.ID), Feature: deckNode.Feature, Parent: slide.Target, contained: true,
 					Files: b.stem(item.Path), Code: codeOf(item.Code), Text: item.Label + "\n\n" + item.Description})
 				if node == nil {
 					continue
@@ -513,18 +513,18 @@ func codeOf(files []saga.CodeFile) []coderef.Reference {
 	return references
 }
 
-// epicOf names the epic a slash path lies in, or "" for app-level content.
-func epicOf(value string) string {
+// featureOf names the feature a slash path lies in, or "" for app-level content.
+func featureOf(value string) string {
 	value = filepath.ToSlash(value)
-	index := strings.Index(value, applayout.EpicsDir+"/")
+	index := strings.Index(value, applayout.FeaturesDir+"/")
 	if index < 0 {
 		return ""
 	}
-	rest := value[index+len(applayout.EpicsDir)+1:]
+	rest := value[index+len(applayout.FeaturesDir)+1:]
 	if slash := strings.IndexByte(rest, '/'); slash >= 0 {
 		rest = rest[:slash]
 	}
-	return strings.TrimSuffix(rest, applayout.EpicSuffix)
+	return strings.TrimSuffix(rest, applayout.FeatureSuffix)
 }
 
 func uniqueSorted(values []string) []string {

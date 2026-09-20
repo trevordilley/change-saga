@@ -182,16 +182,16 @@ body.presentation-mode .deck-viewer-stage:hover .slide-exit-presentation,body.pr
 .doc-tree a.doc-link:has(>.i){display:flex;align-items:flex-start;gap:6px}
 .doc-tree a.doc-link>.i{flex:none;width:13px;height:13px;margin-top:2px}
 
-/* The epics index -------------------------------------------------------- */
+/* The features index -------------------------------------------------------- */
 .app-lede{margin:6px 0 0;color:var(--muted);font-size:13px;max-width:60ch}
 .app-empty{color:var(--muted)}
-.epic-index{display:grid;gap:10px;margin:0;padding:0;list-style:none}
-.epic-index-row{padding:12px 14px;border:1px solid var(--line);border-radius:var(--radius);background:var(--bg-subtle)}
-.epic-index-row.current{border-color:var(--accent-line)}
-.epic-index-link{font:650 15px/1.3 var(--ui);color:var(--accent);text-decoration:none}
-.epic-index-badge{margin-left:8px;color:var(--faint);font-size:11px}
-.epic-index-counts{margin:4px 0 0;color:var(--faint);font:11px var(--mono)}
-.epic-index-description{margin:6px 0 0;color:var(--muted);font-size:13px}
+.feature-index{display:grid;gap:10px;margin:0;padding:0;list-style:none}
+.feature-index-row{padding:12px 14px;border:1px solid var(--line);border-radius:var(--radius);background:var(--bg-subtle)}
+.feature-index-row.current{border-color:var(--accent-line)}
+.feature-index-link{font:650 15px/1.3 var(--ui);color:var(--accent);text-decoration:none}
+.feature-index-badge{margin-left:8px;color:var(--faint);font-size:11px}
+.feature-index-counts{margin:4px 0 0;color:var(--faint);font:11px var(--mono)}
+.feature-index-description{margin:6px 0 0;color:var(--muted);font-size:13px}
 
 .review-detail-heading{margin:22px 0 10px;font:600 14px/1.3 var(--ui)}
 .overview-directory{margin:22px 0 0}
@@ -290,11 +290,11 @@ body.presentation-mode .deck-viewer-stage:hover .slide-exit-presentation,body.pr
 .trace-kind{margin-left:6px;padding:1px 7px;border-radius:999px;background:var(--bg-inset);color:var(--muted);font:600 11px var(--ui)}
 .trace-note{margin-left:6px;color:var(--muted);font:12px var(--ui)}
 .trace-rationale{margin:5px 0 0;color:var(--muted);font:13px/1.5 var(--ui)}
-.epic-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:0}
-.epic-summary>div{padding:10px 14px;border:1px solid var(--line-soft);border-radius:8px;background:var(--bg-subtle)}
-.epic-summary dt{color:var(--muted);font:650 11px/1.3 var(--ui);letter-spacing:.04em;text-transform:uppercase}
-.epic-summary dd{margin:4px 0 0;font:600 16px/1.4 var(--ui)}
-.epic-summary dd small{color:var(--muted);font:12px var(--ui)}
+.feature-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:0}
+.feature-summary>div{padding:10px 14px;border:1px solid var(--line-soft);border-radius:8px;background:var(--bg-subtle)}
+.feature-summary dt{color:var(--muted);font:650 11px/1.3 var(--ui);letter-spacing:.04em;text-transform:uppercase}
+.feature-summary dd{margin:4px 0 0;font:600 16px/1.4 var(--ui)}
+.feature-summary dd small{color:var(--muted);font:12px var(--ui)}
 .test-steps{display:grid;gap:8px;margin:0;padding-left:22px;font:14px/1.5 var(--ui)}
 .test-steps p{margin:0}
 .test-runs{display:grid;gap:8px;margin:0;padding:0;list-style:none}
@@ -302,11 +302,11 @@ body.presentation-mode .deck-viewer-stage:hover .slide-exit-presentation,body.pr
 .test-run.passed{border-left-color:var(--green)}.test-run.failed{border-left-color:var(--red)}.test-run.blocked,.test-run.skipped{border-left-color:var(--amber)}
 .test-run p{margin:5px 0 0}
 .requirement-trace{display:grid;gap:4px}
-.requirements-epic{margin:0 0 28px}
-.requirements-epic-head h2{margin:0 0 4px;font:650 18px/1.3 var(--ui)}
-.requirements-epic-head h2 a{color:var(--ink);text-decoration:none}
-.requirements-epic-head h2 a:hover{color:var(--accent)}
-.requirements-epic-head p{margin:0 0 12px;color:var(--muted);font:13.5px/1.55 var(--ui)}
+.requirements-feature{margin:0 0 28px}
+.requirements-feature-head h2{margin:0 0 4px;font:650 18px/1.3 var(--ui)}
+.requirements-feature-head h2 a{color:var(--ink);text-decoration:none}
+.requirements-feature-head h2 a:hover{color:var(--accent)}
+.requirements-feature-head p{margin:0 0 12px;color:var(--muted);font:13.5px/1.55 var(--ui)}
 .observe-coverage-note{margin:0 0 12px;color:var(--muted);font:13px/1.5 var(--ui)}
 .observe-coverage-empty{color:var(--muted);font:13px var(--ui)}
 .observe-references{display:grid;gap:4px;margin:0 0 10px;padding:0;list-style:none;font:12px var(--mono)}

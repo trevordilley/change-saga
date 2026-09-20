@@ -89,10 +89,10 @@ type Summary struct {
 
 // NodeRef names a record.
 type NodeRef struct {
-	URN   string `json:"urn"`
-	Kind  string `json:"kind"`
-	Title string `json:"title"`
-	Epic  string `json:"epic,omitempty"`
+	URN     string `json:"urn"`
+	Kind    string `json:"kind"`
+	Title   string `json:"title"`
+	Feature string `json:"feature,omitempty"`
 }
 
 // Change is one record the change added, revised, or retired, with its
@@ -362,7 +362,7 @@ func diff(base, head *Inventory) []Change {
 }
 
 func refOf(node *Node) NodeRef {
-	return NodeRef{URN: node.URN, Kind: node.Kind, Title: node.Title, Epic: node.Epic}
+	return NodeRef{URN: node.URN, Kind: node.Kind, Title: node.Title, Feature: node.Feature}
 }
 
 func snapshotOf(node *Node) *Snapshot {

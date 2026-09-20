@@ -10,5 +10,5 @@
     "type": "element",
     "element_id": "format"
   },
-  "record": "urn:change-saga:app:epic:format"
+  "record": "urn:change-saga:app:feature:format"
 }

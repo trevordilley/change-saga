@@ -193,13 +193,13 @@ func TestRequestReplayIsIdempotentAndPayloadReuseConflicts(t *testing.T) {
 	}
 }
 
-func TestSameIDInTwoEpicsIsAnError(t *testing.T) {
+func TestSameIDInTwoFeaturesIsAnError(t *testing.T) {
 	root := newSaga(t)
-	writeEpic(t, root, "billing")
+	writeFeature(t, root, "billing")
 	mutator := testMutator()
 	createWave(t, mutator, root, "shared", 10)
 	createItem(t, mutator, root, "shared-item", "shared", nil)
-	billing := filepath.Join(applayout.EpicDir(root, "billing"), applayout.WorkplanDir)
+	billing := filepath.Join(applayout.FeatureDir(root, "billing"), applayout.WorkplanDir)
 	if err := os.CopyFS(billing, os.DirFS(coreWorkplan(root))); err != nil {
 		t.Fatal(err)
 	}
@@ -208,7 +208,7 @@ func TestSameIDInTwoEpicsIsAnError(t *testing.T) {
 		t.Fatalf("Load: %v", err)
 	}
 	if validation.Valid {
-		t.Fatalf("duplicate IDs across epics validated: %+v", validation)
+		t.Fatalf("duplicate IDs across features validated: %+v", validation)
 	}
 	for _, want := range []struct{ kind, id, path string }{
 		{"wave", "shared", "/___workplan/waves/shared.wave"},
@@ -216,13 +216,13 @@ func TestSameIDInTwoEpicsIsAnError(t *testing.T) {
 	} {
 		found := false
 		for _, issue := range validation.Issues {
-			if issue.Severity == "error" && strings.HasPrefix(issue.Path, "___epics/") && strings.HasSuffix(issue.Path, want.path) &&
-				strings.Contains(issue.Message, want.kind+` id "`+want.id+`" is used by epics`) && strings.Contains(issue.Message, "unique across the app") {
+			if issue.Severity == "error" && strings.HasPrefix(issue.Path, "___features/") && strings.HasSuffix(issue.Path, want.path) &&
+				strings.Contains(issue.Message, want.kind+` id "`+want.id+`" is used by features`) && strings.Contains(issue.Message, "unique across the app") {
 				found = true
 			}
 		}
 		if !found {
-			t.Errorf("no cross-epic duplicate %s error: %+v", want.kind, validation.Issues)
+			t.Errorf("no cross-feature duplicate %s error: %+v", want.kind, validation.Issues)
 		}
 	}
 	if _, err := mutator.CreateWave(root, "core", "another", WaveRevision{ID: "v1", Title: "Another", Objective: "More."}, "wave-another"); err == nil {
@@ -230,9 +230,9 @@ func TestSameIDInTwoEpicsIsAnError(t *testing.T) {
 	}
 }
 
-func TestDependencyAcrossEpicsLoadsAndResolves(t *testing.T) {
+func TestDependencyAcrossFeaturesLoadsAndResolves(t *testing.T) {
 	root := newSaga(t)
-	writeEpic(t, root, "billing")
+	writeFeature(t, root, "billing")
 	mutator := testMutator()
 	createItemIn(t, mutator, root, "core", "provider", "", nil)
 	createItemIn(t, mutator, root, "billing", "consumer", "", nil)
@@ -240,54 +240,54 @@ func TestDependencyAcrossEpicsLoadsAndResolves(t *testing.T) {
 	consumer := mustWorkItemURN(t, "test", "consumer")
 	result, err := mutator.CreateDependency(root, "billing", Dependency{ID: "provider-consumer", Prerequisite: provider, Dependent: consumer, Condition: DependencyCondition{Kind: "progress_done"}, Reason: "Billing consumes the core provider."}, "dep-cross")
 	if err != nil {
-		t.Fatalf("cross-epic dependency: %v", err)
+		t.Fatalf("cross-feature dependency: %v", err)
 	}
-	if result.Path != "___epics/billing.epic/___workplan/dependencies/provider-consumer.dependency" {
+	if result.Path != "___features/billing.feature/___workplan/dependencies/provider-consumer.dependency" {
 		t.Fatalf("dependency path = %q", result.Path)
 	}
 	plan := mustLoad(t, root)
-	if plan.WorkItems["provider"].Epic != "core" || plan.WorkItems["consumer"].Epic != "billing" || plan.Dependencies["provider-consumer"].Epic != "billing" {
-		t.Fatalf("epic membership not recorded: provider=%q consumer=%q dependency=%q", plan.WorkItems["provider"].Epic, plan.WorkItems["consumer"].Epic, plan.Dependencies["provider-consumer"].Epic)
+	if plan.WorkItems["provider"].Feature != "core" || plan.WorkItems["consumer"].Feature != "billing" || plan.Dependencies["provider-consumer"].Feature != "billing" {
+		t.Fatalf("feature membership not recorded: provider=%q consumer=%q dependency=%q", plan.WorkItems["provider"].Feature, plan.WorkItems["consumer"].Feature, plan.Dependencies["provider-consumer"].Feature)
 	}
 	if ok, reason := DependencySatisfied(plan, "provider-consumer"); ok || reason != "progress_not_done" {
-		t.Fatalf("unfinished cross-epic dependency = %v %q", ok, reason)
+		t.Fatalf("unfinished cross-feature dependency = %v %q", ok, reason)
 	}
 	heads, _ := progressHeads(plan.WorkItems["provider"])
 	progress := recordProgress(t, mutator, root, "provider", heads[0], "in_progress", "")
 	recordProgress(t, mutator, root, "provider", progress, "done", "")
 	plan = mustLoad(t, root)
 	if ok, reason := DependencySatisfied(plan, "provider-consumer"); !ok || reason != "" {
-		t.Fatalf("finished cross-epic dependency = %v %q", ok, reason)
+		t.Fatalf("finished cross-feature dependency = %v %q", ok, reason)
 	}
 	events, err := os.ReadDir(filepath.Join(coreWorkplan(root), "work-items", "provider.work-item", "events", "progress"))
 	if err != nil || len(events) != 3 {
-		t.Fatalf("progress events were not written into the item's epic: %v %v", events, err)
+		t.Fatalf("progress events were not written into the item's feature: %v %v", events, err)
 	}
 }
 
-func TestCreateRequiresAKnownEpicAndReplayIsEpicSpecific(t *testing.T) {
+func TestCreateRequiresAKnownFeatureAndReplayIsFeatureSpecific(t *testing.T) {
 	root := newSaga(t)
-	writeEpic(t, root, "billing")
+	writeFeature(t, root, "billing")
 	mutator := testMutator()
 	revision := WaveRevision{ID: "v1", Title: "Foundation", Objective: "Build storage.", Order: 10}
-	if _, err := mutator.CreateWave(root, "", "foundation", revision, "no-epic"); err == nil || !strings.Contains(err.Error(), "an epic is required") {
-		t.Fatalf("missing epic error = %v", err)
+	if _, err := mutator.CreateWave(root, "", "foundation", revision, "no-feature"); err == nil || !strings.Contains(err.Error(), "a feature is required") {
+		t.Fatalf("missing feature error = %v", err)
 	}
-	if _, err := mutator.CreateWave(root, "missing", "foundation", revision, "unknown-epic"); err == nil || !strings.Contains(err.Error(), `epic "missing" does not exist`) {
-		t.Fatalf("unknown epic error = %v", err)
+	if _, err := mutator.CreateWave(root, "missing", "foundation", revision, "unknown-feature"); err == nil || !strings.Contains(err.Error(), `feature "missing" does not exist`) {
+		t.Fatalf("unknown feature error = %v", err)
 	}
 	result, err := mutator.CreateWave(root, "billing", "foundation", revision, "wave-billing")
 	if err != nil {
 		t.Fatalf("CreateWave: %v", err)
 	}
-	if result.Path != "___epics/billing.epic/___workplan/waves/foundation.wave" {
+	if result.Path != "___features/billing.feature/___workplan/waves/foundation.wave" {
 		t.Fatalf("wave path = %q", result.Path)
 	}
 	if replay, err := mutator.CreateWave(root, "billing", "foundation", revision, "wave-billing"); err != nil || !replay.Replayed || !strings.HasPrefix(replay.Path, result.Path+"/") {
 		t.Fatalf("replay = %+v %v", replay, err)
 	}
 	if _, err := mutator.CreateWave(root, "core", "foundation", revision, "wave-billing"); err == nil || !strings.Contains(err.Error(), "different payload") {
-		t.Fatalf("replay into another epic error = %v", err)
+		t.Fatalf("replay into another feature error = %v", err)
 	}
 	revised := revision
 	revised.ID, revised.Wave, revised.Parents = "v2", mustWaveURN(t, "foundation"), mustLoad(t, root).Waves["foundation"].Heads
@@ -296,7 +296,7 @@ func TestCreateRequiresAKnownEpicAndReplayIsEpicSpecific(t *testing.T) {
 	if err != nil {
 		t.Fatalf("ReviseWave: %v", err)
 	}
-	if revisedResult.Path != "___epics/billing.epic/___workplan/waves/foundation.wave/revisions/v2.revision" {
+	if revisedResult.Path != "___features/billing.feature/___workplan/waves/foundation.wave/revisions/v2.revision" {
 		t.Fatalf("revision path = %q", revisedResult.Path)
 	}
 }
@@ -306,7 +306,7 @@ func TestLegacyRootWorkplanIsRejected(t *testing.T) {
 	if err := os.Mkdir(filepath.Join(root, "___workplan"), 0o755); err != nil {
 		t.Fatal(err)
 	}
-	if _, _, err := Load(root); err == nil || !strings.Contains(err.Error(), "belongs in an epic") {
+	if _, _, err := Load(root); err == nil || !strings.Contains(err.Error(), "belongs in a feature") {
 		t.Fatalf("legacy root work plan error = %v", err)
 	}
 }
@@ -389,19 +389,19 @@ func newSaga(t *testing.T) string {
 	if err := os.WriteFile(filepath.Join(root, "saga.json"), data, 0o644); err != nil {
 		t.Fatal(err)
 	}
-	writeEpic(t, root, "core")
+	writeFeature(t, root, "core")
 	return root
 }
 
-func writeEpic(t *testing.T, root, id string) {
+func writeFeature(t *testing.T, root, id string) {
 	t.Helper()
-	if _, err := applayout.WriteEpic(root, applayout.EpicManifest{ID: id, Title: "Epic " + id, CreatedAt: testNow}); err != nil {
+	if _, err := applayout.WriteFeature(root, applayout.FeatureManifest{ID: id, Title: "Feature " + id, CreatedAt: testNow}); err != nil {
 		t.Fatal(err)
 	}
 }
 
 func coreWorkplan(root string) string {
-	return filepath.Join(applayout.EpicDir(root, "core"), applayout.WorkplanDir)
+	return filepath.Join(applayout.FeatureDir(root, "core"), applayout.WorkplanDir)
 }
 
 func testMutator() Mutator {
@@ -421,14 +421,14 @@ func createItem(t *testing.T, mutator Mutator, root, id, wave string, units []Me
 	createItemIn(t, mutator, root, "core", id, wave, units)
 }
 
-func createItemIn(t *testing.T, mutator Mutator, root, epic, id, wave string, units []MergeUnit) {
+func createItemIn(t *testing.T, mutator Mutator, root, feature, id, wave string, units []MergeUnit) {
 	t.Helper()
 	waveURN := ""
 	if wave != "" {
 		waveURN, _ = livingid.Wave("test", wave)
 	}
 	revision := WorkItemRevision{ID: "v1", Title: id, Objective: "Deliver " + id + ".", Deliverables: []string{id + " implementation"}, Wave: waveURN, ExpectedTouchAreas: []TouchArea{{Repository: "https://example.com/repo.git", Selector: TouchSelector{Kind: "directory", Value: "internal/" + id}, Intents: []string{"modify", "test"}}}, CompletionChecks: []string{"go test"}, MergeUnits: units}
-	if _, err := mutator.CreateWorkItem(root, epic, id, revision, "item-"+id); err != nil {
+	if _, err := mutator.CreateWorkItem(root, feature, id, revision, "item-"+id); err != nil {
 		t.Fatalf("CreateWorkItem(%s): %v", id, err)
 	}
 }

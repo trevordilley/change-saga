@@ -1,0 +1,8 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/feature.schema.json",
+  "version": 5,
+  "id": "reviewer-app",
+  "title": "The reviewer application",
+  "description": "change-saga open and serve: the local review application that presents the Saga observed or compared, its sidebar, decks, code, coverage, and reviews.",
+  "created_at": "2026-09-19T20:47:03.16806Z"
+}

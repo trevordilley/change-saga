@@ -61,17 +61,17 @@ func TestAuthoringLoopAgainstGitDiff(t *testing.T) {
 	}
 	writeFile(t, filepath.Join(overviewFragment(root), "content.md"), "# Feature {#feature}\n\nThe change at a glance.\n")
 	addTestApp(t, root)
-	if err := AddChapter(context.Background(), []string{"--epic", testEpic, "--title", "Backend behavior", root, "backend"}, &output); err != nil {
+	if err := AddChapter(context.Background(), []string{"--feature", testFeature, "--title", "Backend behavior", root, "backend"}, &output); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := os.Stat(filepath.Join(testEpicDir(root), "backend.chapter", "overview.fragment")); !os.IsNotExist(err) {
+	if _, err := os.Stat(filepath.Join(testFeatureDir(root), "backend.chapter", "overview.fragment")); !os.IsNotExist(err) {
 		t.Fatalf("a new chapter must not scaffold an empty fragment: %v", err)
 	}
 	if !strings.Contains(output.String(), "add-fragment --section backend") {
 		t.Fatalf("add-chapter did not point at writing the chapter's content:\n%s", output.String())
 	}
 	assertValid(t, root)
-	if err := AddSection(context.Background(), []string{"--epic", testEpic, "--title", "Request flow", root, "backend.chapter/request-flow"}, &output); err != nil {
+	if err := AddSection(context.Background(), []string{"--feature", testFeature, "--title", "Request flow", root, "backend.chapter/request-flow"}, &output); err != nil {
 		t.Fatal(err)
 	}
 	report, err := buildReport(context.Background(), root, repo, gitdiff.Range{Against: "main"})
@@ -98,17 +98,17 @@ func TestAuthoringLoopAgainstGitDiff(t *testing.T) {
 	if len(report.Targets) != 1 || !strings.Contains(report.Targets[0].Target, ":fragment:") {
 		t.Fatalf("coverage should belong to a fragment: %#v", report.Targets)
 	}
-	if err := AddFragment(context.Background(), []string{"--epic", testEpic, "--section", ".", "--type", "html", "--title", "Interactive flow", root}, &output); err != nil {
+	if err := AddFragment(context.Background(), []string{"--feature", testFeature, "--section", ".", "--type", "html", "--title", "Interactive flow", root}, &output); err != nil {
 		t.Fatal(err)
 	}
-	writeFile(t, filepath.Join(testEpicDir(root), "interactive-flow.fragment", "index.html"), `<!doctype html><title>Flow</title><p id="flow">Interactive behavior</p>`)
+	writeFile(t, filepath.Join(testFeatureDir(root), "interactive-flow.fragment", "index.html"), `<!doctype html><title>Flow</title><p id="flow">Interactive behavior</p>`)
 	packageDir := filepath.Join(t.TempDir(), "demo")
 	writeFile(t, filepath.Join(packageDir, "index.html"), `<script src="app.js"></script>`)
 	writeFile(t, filepath.Join(packageDir, "app.js"), `document.body.append('interactive')`)
-	if err := AddFragment(context.Background(), []string{"--epic", testEpic, "--section", ".", "--type", "html", "--title", "Bundled demo", "--source", packageDir, root}, &output); err != nil {
+	if err := AddFragment(context.Background(), []string{"--feature", testFeature, "--section", ".", "--type", "html", "--title", "Bundled demo", "--source", packageDir, root}, &output); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := os.Stat(filepath.Join(testEpicDir(root), "bundled-demo.fragment", "app.js")); err != nil {
+	if _, err := os.Stat(filepath.Join(testFeatureDir(root), "bundled-demo.fragment", "app.js")); err != nil {
 		t.Fatalf("fragment package dependency was not copied: %v", err)
 	}
 	document, validation, err := saga.Load(root)

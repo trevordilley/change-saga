@@ -10,5 +10,5 @@
     "type": "element",
     "element_id": "code-evidence"
   },
-  "record": "urn:change-saga:app:epic:code-evidence"
+  "record": "urn:change-saga:app:feature:code-evidence"
 }

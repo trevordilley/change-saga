@@ -152,9 +152,9 @@ func recordLink(document requirements.Document, record string) termLinkView {
 		if persona := document.FindPersona(id); persona != nil && persona.CurrentRevision != nil {
 			link.Title = "Persona: " + persona.CurrentRevision.Name
 		}
-	case "epic":
-		if epic, ok := applayout.Find(document.Epics, id); ok {
-			link.Title = "Epic: " + epic.Title
+	case "feature":
+		if feature, ok := applayout.Find(document.Features, id); ok {
+			link.Title = "Feature: " + feature.Title
 		}
 	case "flag":
 		link.Title = "Feature flag: " + id
@@ -318,7 +318,7 @@ func overviewNav(document *saga.Saga, vocabulary requirements.Document, active s
 		vocabularyNode.Gap, vocabularyNode.Note = true, "no terms yet"
 	}
 	// The vocabulary opens on the terms pages only. Opened on every other
-	// page, its dozens of rows pushed the epics out of sight.
+	// page, its dozens of rows pushed the features out of sight.
 	vocabularyNode.Expanded = active == "/terms" || vocabulary.FindTerm(active) != nil
 	overview.Children = []*navNodeView{
 		name,

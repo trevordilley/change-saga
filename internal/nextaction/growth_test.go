@@ -28,7 +28,7 @@ func TestObservingAFreshAppSuggestsTheOverviewAndTermsFirst(t *testing.T) {
 	status.Overview = livingapp.OverviewStatus{Name: "Checkout", Gaps: []string{"pitch", "description", "terms"}}
 	report := areas.Evaluate(areas.Inputs{
 		Scope:   areas.Scope{Kind: areas.ScopeApp},
-		Stories: []areas.Story{{URN: appStory, Title: "Wallet", Epic: appEpic, Active: true}},
+		Stories: []areas.Story{{URN: appStory, Title: "Wallet", Feature: appFeature, Active: true}},
 	})
 	growth := growthOf(Derive(status, saga, Context{Coverage: report}))
 	want := []struct{ id, command string }{
@@ -62,7 +62,7 @@ func TestComparingPutsTheChangeBeforeTheOverview(t *testing.T) {
 	status.Overview = livingapp.OverviewStatus{Name: "Checkout"}
 	report := areas.Evaluate(areas.Inputs{
 		Scope:   areas.Scope{Kind: areas.ScopeChange},
-		Stories: []areas.Story{{URN: appStory, Title: "Wallet", Epic: appEpic, Active: true}},
+		Stories: []areas.Story{{URN: appStory, Title: "Wallet", Feature: appFeature, Active: true}},
 		InScope: map[string]bool{appStory: true},
 	})
 	growth := growthOf(Derive(status, saga, Context{Coverage: report}))
@@ -92,7 +92,7 @@ func TestQualityGrowthIsOneSuggestionPerStory(t *testing.T) {
 	}
 	report := areas.Evaluate(areas.Inputs{
 		Scope:   areas.Scope{Kind: areas.ScopeApp},
-		Stories: []areas.Story{{URN: appStory, Title: "Wallet", Epic: appEpic, Active: true, Criteria: criteria}},
+		Stories: []areas.Story{{URN: appStory, Title: "Wallet", Feature: appFeature, Active: true, Criteria: criteria}},
 	})
 	quality := []Action{}
 	for _, action := range Derive(status, saga, Context{Coverage: report}) {
@@ -100,7 +100,7 @@ func TestQualityGrowthIsOneSuggestionPerStory(t *testing.T) {
 			quality = append(quality, action)
 		}
 	}
-	if len(quality) != 1 || quality[0].ID != "growth:quality:"+appStory || quality[0].Resource != appStory || quality[0].Epic != appEpic {
+	if len(quality) != 1 || quality[0].ID != "growth:quality:"+appStory || quality[0].Resource != appStory || quality[0].Feature != appFeature {
 		t.Fatalf("three untested criteria of one story are one suggestion: %#v", quality)
 	}
 	if !strings.Contains(quality[0].Reason, "any of the 3 acceptance criteria") {
@@ -125,26 +125,26 @@ func TestQualityGrowthIsOneSuggestionPerStory(t *testing.T) {
 }
 
 // With no design to relate, the one command a design suggestion shows
-// creates design; once its epic has some, relating it comes first.
-func TestDesignGrowthCreatesDesignWhenItsEpicHasNone(t *testing.T) {
+// creates design; once its feature has some, relating it comes first.
+func TestDesignGrowthCreatesDesignWhenItsFeatureHasNone(t *testing.T) {
 	report := areas.Evaluate(areas.Inputs{
 		Scope:   areas.Scope{Kind: areas.ScopeApp},
-		Stories: []areas.Story{{URN: appStory, Title: "Wallet", Epic: appEpic, Active: true}},
+		Stories: []areas.Story{{URN: appStory, Title: "Wallet", Feature: appFeature, Active: true}},
 	})
 	first := func(context Context) string {
 		action := byID(Derive(appStatus(), saga, context))["growth:design:"+appStory]
 		command := action.Question.Options[0].Commands[0]
 		assertGrammarShape(t, command)
-		if !hasArgument(command, "epic", appEpic) {
-			t.Fatalf("the command is aimed at the story's epic: %#v", command)
+		if !hasArgument(command, "feature", appFeature) {
+			t.Fatalf("the command is aimed at the story's feature: %#v", command)
 		}
 		return command.Command
 	}
 	if got := first(Context{Coverage: report}); got != "design add-chapter" {
-		t.Fatalf("with no design in the epic the first command is %q, want design add-chapter", got)
+		t.Fatalf("with no design in the feature the first command is %q, want design add-chapter", got)
 	}
-	if got := first(Context{Coverage: report, DesignEpics: map[string]bool{appEpic: true}}); got != "relation add" {
-		t.Fatalf("with design in the epic the first command is %q, want relation add", got)
+	if got := first(Context{Coverage: report, DesignFeatures: map[string]bool{appFeature: true}}); got != "relation add" {
+		t.Fatalf("with design in the feature the first command is %q, want relation add", got)
 	}
 }
 
@@ -159,7 +159,7 @@ func TestPersonaGrowthOffersAPersonaYouHaveNamed(t *testing.T) {
 	status.Stories[0].Citations = []string{"urn:change-saga:checkout:citation:ticket"}
 	report := areas.Evaluate(areas.Inputs{
 		Scope:   areas.Scope{Kind: areas.ScopeApp},
-		Stories: []areas.Story{{URN: appStory, Title: "Wallet", Epic: appEpic, Active: true}},
+		Stories: []areas.Story{{URN: appStory, Title: "Wallet", Feature: appFeature, Active: true}},
 	})
 	action := byID(Derive(status, saga, Context{Coverage: report}))["growth:persona:unnamed"]
 	if action.Question == nil || !strings.Contains(action.Reason, "who gets value from them? Assign one you have named (shopper)") {
@@ -172,7 +172,7 @@ func TestPersonaGrowthOffersAPersonaYouHaveNamed(t *testing.T) {
 	revise := assign.Commands[0]
 	assertGrammarShape(t, revise)
 	for _, want := range [][2]string{{"story", appStory}, {"title", appStory}, {"statement", "As a shopper I pay from my wallet"}, {"priority", "must"},
-		{"criterion", "paid=The wallet is charged"}, {"citation", "urn:change-saga:checkout:citation:ticket"}, {"epic", appEpic}} {
+		{"criterion", "paid=The wallet is charged"}, {"citation", "urn:change-saga:checkout:citation:ticket"}, {"feature", appFeature}} {
 		if !hasArgument(revise, want[0], want[1]) {
 			t.Fatalf("the revision carries --%s %q forward: %#v", want[0], want[1], revise.Arguments)
 		}

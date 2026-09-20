@@ -35,12 +35,12 @@ func sourcedStory(t *testing.T, root string) string {
 	t.Helper()
 	ctx := context.Background()
 	var output bytes.Buffer
-	if err := Citation(ctx, []string{"add", root, "--epic", testEpic, "--id", "interview", "--kind", "url",
+	if err := Citation(ctx, []string{"add", root, "--feature", testFeature, "--id", "interview", "--kind", "url",
 		"--title", "Buyer interview", "--reference", "https://example.test/interview"}, &output); err != nil {
 		t.Fatalf("citation add: %v\n%s", err, output.String())
 	}
 	output.Reset()
-	if err := Story(ctx, []string{"add", root, "--epic", testEpic, "--persona", testPersonaURN,
+	if err := Story(ctx, []string{"add", root, "--feature", testFeature, "--persona", testPersonaURN,
 		"--id", "checkout", "--revision", "r1", "--event", "proposed",
 		"--title", "Checkout", "--statement", "As a buyer, I can check out", "--priority", "must",
 		"--criterion", "fast=Checkout finishes promptly", "--criterion", "audited=Every purchase is audited",
@@ -148,7 +148,7 @@ func TestStoryReviseWithCompetingHeadsStillNeedsTheWholeDefinition(t *testing.T)
 		AcceptanceCriteria: []requirements.Criterion{{ID: "fast", Statement: "Checkout finishes promptly"}},
 		CreatedAt:          time.Now().UTC(),
 	}
-	path := filepath.Join(testEpicDir(root), "___requirements", "stories", "checkout.story", "revisions", "r2-other.json")
+	path := filepath.Join(testFeatureDir(root), "___requirements", "stories", "checkout.story", "revisions", "r2-other.json")
 	if err := store.WriteJSON(path, competing, true); err != nil {
 		t.Fatal(err)
 	}

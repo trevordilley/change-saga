@@ -42,7 +42,7 @@ test("@critical refuses malformed, non-canonical, and unresolvable code location
 
   const before = treeSnapshot(sagaRoot);
   for (const [label, ref] of malformed) {
-    const result = runCLI(sagaRepositories, ["cover", "--repo", sourceRepo, "--target", "___epics/wave-one.epic/overview.fragment", "--name", "must-not-exist", "--ref", ref, sagaRoot]);
+    const result = runCLI(sagaRepositories, ["cover", "--repo", sourceRepo, "--target", "___features/wave-one.feature/overview.fragment", "--name", "must-not-exist", "--ref", ref, sagaRoot]);
     expect(result.status, `cover with ${label} location`).not.toBe(0);
     expect(`${result.stdout}${result.stderr}`, `cover with ${label} location`).toContain("invalid --ref");
   }
@@ -57,7 +57,7 @@ test("@critical refuses malformed, non-canonical, and unresolvable code location
   // Positive control: the same location, canonically spelled at a commit the
   // repository holds, is accepted and written with the digest of exactly the
   // referenced bytes, so the rejections above are the location check.
-  const accepted = runCLI(sagaRepositories, ["cover", "--repo", sourceRepo, "--target", "___epics/wave-one.epic/overview.fragment", "--name", "accepted-evidence", "--ref", canonical, sagaRoot]);
+  const accepted = runCLI(sagaRepositories, ["cover", "--repo", sourceRepo, "--target", "___features/wave-one.feature/overview.fragment", "--name", "accepted-evidence", "--ref", canonical, sagaRoot]);
   expect(accepted.status, accepted.stderr).toBe(0);
   const records = reviewFiles(sagaRepositories, /___code\/accepted-evidence\.json$/);
   expect(records).toHaveLength(1);
@@ -74,7 +74,7 @@ test("@critical refuses malformed, non-canonical, and unresolvable code location
     ["symbolic", "HEAD:src/app.go#L3-L4"]
   ];
   for (const [label, ref] of revisions) {
-    const resolved = runCLI(sagaRepositories, ["cover", "--repo", sourceRepo, "--target", "___epics/wave-one.epic/overview.fragment", "--name", `${label}-evidence`, "--ref", ref, sagaRoot]);
+    const resolved = runCLI(sagaRepositories, ["cover", "--repo", sourceRepo, "--target", "___features/wave-one.feature/overview.fragment", "--name", `${label}-evidence`, "--ref", ref, sagaRoot]);
     expect(resolved.status, `${label} revision: ${resolved.stderr}`).toBe(0);
     const written = reviewFiles(sagaRepositories, new RegExp(`___code/${label}-evidence\\.json$`));
     expect(written, `${label} revision`).toHaveLength(1);
@@ -87,7 +87,7 @@ test("@critical exposes mapping scrutiny, claims, and verification as an AI revi
   const evidence = codeLocation(identity.head, "src/app.go", 3);
 
   const claim = runCLI(sagaRepositories, [
-    "add-claim", "--repo", sourceRepo, "--id", "greeting-behavior", "--target", "___epics/wave-one.epic/overview.fragment#greeting-input", "--kind", "behavior",
+    "add-claim", "--repo", sourceRepo, "--id", "greeting-behavior", "--target", "___features/wave-one.feature/overview.fragment#greeting-input", "--kind", "behavior",
     "--statement", "Greeting accepts a name in its function signature.", "--ref", evidence, sagaRoot
   ]);
   expect(claim.status, claim.stderr).toBe(0);
@@ -182,13 +182,13 @@ test("@critical refuses a checkout whose origin does not match the declared repo
   expect(status.status, "status against a mismatched checkout").not.toBe(0);
   expect(`${status.stdout}${status.stderr}`).toContain("does not match declared repository");
 
-  const cover = runCLI(sagaRepositories, ["cover", "--repo", sourceRepo, "--against", "main", "--target", "___epics/wave-one.epic/overview.fragment", "--path", "src/app.go", "--side", "new", "--lines", "3", "--name", "must-not-exist", sagaRoot]);
+  const cover = runCLI(sagaRepositories, ["cover", "--repo", sourceRepo, "--against", "main", "--target", "___features/wave-one.feature/overview.fragment", "--path", "src/app.go", "--side", "new", "--lines", "3", "--name", "must-not-exist", sagaRoot]);
   expect(cover.status, "cover against a mismatched checkout").not.toBe(0);
   expect(`${cover.stdout}${cover.stderr}`).toContain("does not match declared repository");
   expect(treeSnapshot(sagaRoot), "saga tree after a refused mismatched checkout").toBe(before);
 
   // The override exists and is explicit; nothing else unblocks the check.
-  const overridden = runCLI(sagaRepositories, ["cover", "--repo", sourceRepo, "--against", "main", "--allow-repository-mismatch", "--target", "___epics/wave-one.epic/overview.fragment", "--path", "src/app.go", "--side", "new", "--lines", "3", "--name", "explicit-override", sagaRoot]);
+  const overridden = runCLI(sagaRepositories, ["cover", "--repo", sourceRepo, "--against", "main", "--allow-repository-mismatch", "--target", "___features/wave-one.feature/overview.fragment", "--path", "src/app.go", "--side", "new", "--lines", "3", "--name", "explicit-override", sagaRoot]);
   expect(overridden.status, overridden.stderr).toBe(0);
 
   git(sourceRepo, "remote", "set-url", "origin", declaredRepository);

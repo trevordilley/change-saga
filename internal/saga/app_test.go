@@ -35,15 +35,15 @@ func writeOnboardingDeck(t *testing.T, root, record string) {
 	writeTestFile(t, filepath.Join(bundle, itemName), fmt.Sprintf(`{"version":4,"id":"buyer","slide":"who","rank":0,"kind":"node","label":"Buyer","description":"The buyer persona.","selector":{"type":"element","element_id":"buyer"}%s}`, recordField))
 }
 
-func TestAppRootsAndEpicsLoadIntoOneTree(t *testing.T) {
+func TestAppRootsAndFeaturesLoadIntoOneTree(t *testing.T) {
 	root := filepath.Join(t.TempDir(), "shop.saga")
 	writeTestFile(t, filepath.Join(root, ManifestName), appTestManifest)
-	writeTestFile(t, filepath.Join(root, "___epics", "billing.epic", "epic.json"), `{"$schema":"https://changesaga.dev/schema/v5/epic.schema.json","version":5,"id":"billing","title":"Billing","created_at":"2026-08-21T12:00:00Z"}`)
+	writeTestFile(t, filepath.Join(root, "___features", "billing.feature", "feature.json"), `{"$schema":"https://changesaga.dev/schema/v5/feature.schema.json","version":5,"id":"billing","title":"Billing","created_at":"2026-08-21T12:00:00Z"}`)
 	writeFragment(t, filepath.Join(root, "___overview", "pitch.fragment"), "pitch")
 	writeFragment(t, filepath.Join(root, "___designsystem", "figma.fragment"), "figma")
-	writeFragment(t, filepath.Join(root, testEpicDir, "overview.fragment"), "core-overview")
-	writeFragment(t, filepath.Join(root, "___epics", "billing.epic", "overview.fragment"), "billing-overview")
-	writeFragment(t, filepath.Join(root, "___epics", "billing.epic", "___design", "ledger.fragment"), "ledger")
+	writeFragment(t, filepath.Join(root, testFeatureDir, "overview.fragment"), "core-overview")
+	writeFragment(t, filepath.Join(root, "___features", "billing.feature", "overview.fragment"), "billing-overview")
+	writeFragment(t, filepath.Join(root, "___features", "billing.feature", "___design", "ledger.fragment"), "ledger")
 	writeOnboardingDeck(t, root, "urn:change-saga:shop:persona:buyer")
 
 	document, validation, err := Load(root)
@@ -53,12 +53,12 @@ func TestAppRootsAndEpicsLoadIntoOneTree(t *testing.T) {
 	if document.Overview == nil || len(document.Overview.Fragments) != 1 || document.DesignSystem == nil || len(document.DesignSystem.Fragments) != 1 {
 		t.Fatalf("app roots = %#v %#v", document.Overview, document.DesignSystem)
 	}
-	if len(document.Epics) != 2 || document.Epics[0].ID != "billing" || document.Epics[0].Title != "Billing" || document.Epics[1].ID != "core" {
-		t.Fatalf("epics = %#v", document.Epics)
+	if len(document.Features) != 2 || document.Features[0].ID != "billing" || document.Features[0].Title != "Billing" || document.Features[1].ID != "core" {
+		t.Fatalf("features = %#v", document.Features)
 	}
-	billing := document.FindEpic("billing")
+	billing := document.FindFeature("billing")
 	if len(billing.Report.Fragments) != 1 || billing.Design == nil || len(billing.Design.Fragments) != 1 || !IsDesignPath(billing.Design.Fragments[0].Path) {
-		t.Fatalf("billing epic = %#v", billing)
+		t.Fatalf("billing feature = %#v", billing)
 	}
 	if len(document.Onboarding) != 1 || len(document.Decks) != 0 {
 		t.Fatalf("onboarding = %d, implementation decks = %d", len(document.Onboarding), len(document.Decks))
@@ -71,21 +71,21 @@ func TestAppRootsAndEpicsLoadIntoOneTree(t *testing.T) {
 	}
 }
 
-func TestReportIDsAreUniqueAcrossEpics(t *testing.T) {
+func TestReportIDsAreUniqueAcrossFeatures(t *testing.T) {
 	root := filepath.Join(t.TempDir(), "shop.saga")
 	writeTestFile(t, filepath.Join(root, ManifestName), appTestManifest)
-	writeTestFile(t, filepath.Join(root, "___epics", "billing.epic", "epic.json"), `{"$schema":"https://changesaga.dev/schema/v5/epic.schema.json","version":5,"id":"billing","title":"Billing","created_at":"2026-08-21T12:00:00Z"}`)
-	writeFragment(t, filepath.Join(root, testEpicDir, "overview.fragment"), "overview")
-	writeFragment(t, filepath.Join(root, "___epics", "billing.epic", "overview.fragment"), "overview")
+	writeTestFile(t, filepath.Join(root, "___features", "billing.feature", "feature.json"), `{"$schema":"https://changesaga.dev/schema/v5/feature.schema.json","version":5,"id":"billing","title":"Billing","created_at":"2026-08-21T12:00:00Z"}`)
+	writeFragment(t, filepath.Join(root, testFeatureDir, "overview.fragment"), "overview")
+	writeFragment(t, filepath.Join(root, "___features", "billing.feature", "overview.fragment"), "overview")
 	_, validation, err := Load(root)
 	if err != nil {
 		t.Fatal(err)
 	}
 	if validation.Valid {
-		t.Fatal("two epics reused one fragment URN")
+		t.Fatal("two features reused one fragment URN")
 	}
 	if _, validation, _ := LoadMutationIndex(root); validation.Valid {
-		t.Fatal("mutation index accepted two epics reusing one fragment URN")
+		t.Fatal("mutation index accepted two features reusing one fragment URN")
 	}
 }
 

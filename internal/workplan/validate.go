@@ -45,7 +45,7 @@ func validateIdentity(validation *Validation, path, expectedSchema string, ident
 }
 
 func validateWave(plan *Plan, validation *Validation, wave *Wave) {
-	base := wavePath(wave.Epic, wave.ID)
+	base := wavePath(wave.Feature, wave.ID)
 	validateIdentity(validation, base+"/wave.json", WaveSchema, wave.Identity)
 	refs := make([]revisionNode, 0, len(wave.Revisions))
 	for i := range wave.Revisions {
@@ -75,7 +75,7 @@ func validateWave(plan *Plan, validation *Validation, wave *Wave) {
 }
 
 func validateWorkItem(plan *Plan, validation *Validation, item *WorkItem) {
-	base := workItemPath(item.Epic, item.ID)
+	base := workItemPath(item.Feature, item.ID)
 	validateIdentity(validation, base+"/work-item.json", WorkItemSchema, item.Identity)
 	refs := make([]revisionNode, 0, len(item.Revisions))
 	for i := range item.Revisions {
@@ -175,7 +175,7 @@ func validateWorkItemRevision(plan *Plan, validation *Validation, itemID, path s
 }
 
 func validateContract(plan *Plan, validation *Validation, contract *Contract) {
-	base := contractPath(contract.Epic, contract.ID)
+	base := contractPath(contract.Feature, contract.ID)
 	validateIdentity(validation, base+"/contract.json", ContractSchema, contract.Identity)
 	refs := make([]revisionNode, 0, len(contract.Revisions))
 	for i := range contract.Revisions {
@@ -231,7 +231,7 @@ func validateContract(plan *Plan, validation *Validation, contract *Contract) {
 }
 
 func validateDependency(plan *Plan, validation *Validation, dependency *Dependency) {
-	path := dependencyPath(dependency.Epic, dependency.ID) + "/dependency.json"
+	path := dependencyPath(dependency.Feature, dependency.ID) + "/dependency.json"
 	if dependency.Schema != DependencySchema || dependency.Version != Version || !validID(dependency.ID) || !validTime(dependency.CreatedAt) || strings.TrimSpace(dependency.Reason) == "" {
 		addIssue(validation, "error", path, "dependency requires the v3 schema, stable id, reason, and UTC creation time")
 	}
@@ -285,7 +285,7 @@ func validateDependencyDAG(plan *Plan, validation *Validation) {
 		dependency := plan.Dependencies[id]
 		key := dependency.Prerequisite + "\x00" + dependency.Dependent + "\x00" + dependency.Condition.Kind + "\x00" + dependency.Condition.ContractRevision
 		if prior, ok := edges[key]; ok {
-			addIssue(validation, "error", dependencyPath(dependency.Epic, id)+"/dependency.json", "duplicates dependency "+prior)
+			addIssue(validation, "error", dependencyPath(dependency.Feature, id)+"/dependency.json", "duplicates dependency "+prior)
 		} else {
 			edges[key] = id
 		}
@@ -311,7 +311,7 @@ func validateDependencyDAG(plan *Plan, validation *Validation) {
 				}
 				cycle := append(append([]string{}, stack[start:]...), next)
 				closing := edgeRecords[node+"\x00"+next]
-				addIssue(validation, "error", dependencyPath(closing.Epic, closing.ID)+"/dependency.json", "dependency cycle: "+strings.Join(cycle, " -> "))
+				addIssue(validation, "error", dependencyPath(closing.Feature, closing.ID)+"/dependency.json", "dependency cycle: "+strings.Join(cycle, " -> "))
 				return true
 			}
 			if state[next] == 0 && visit(next) {
@@ -756,16 +756,16 @@ func findContractEvent(contract *Contract, urn string) *ContractEvent {
 	return nil
 }
 
-// Record paths are app-relative slash paths inside the epic holding the record.
-func wavePath(epic, id string) string {
-	return workplanRel(epic) + "/waves/" + id + ".wave"
+// Record paths are app-relative slash paths inside the feature holding the record.
+func wavePath(feature, id string) string {
+	return workplanRel(feature) + "/waves/" + id + ".wave"
 }
-func workItemPath(epic, id string) string {
-	return workplanRel(epic) + "/work-items/" + id + ".work-item"
+func workItemPath(feature, id string) string {
+	return workplanRel(feature) + "/work-items/" + id + ".work-item"
 }
-func contractPath(epic, id string) string {
-	return workplanRel(epic) + "/contracts/" + id + ".contract"
+func contractPath(feature, id string) string {
+	return workplanRel(feature) + "/contracts/" + id + ".contract"
 }
-func dependencyPath(epic, id string) string {
-	return workplanRel(epic) + "/dependencies/" + id + ".dependency"
+func dependencyPath(feature, id string) string {
+	return workplanRel(feature) + "/dependencies/" + id + ".dependency"
 }

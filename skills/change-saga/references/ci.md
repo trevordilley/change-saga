@@ -24,7 +24,7 @@ is named.
 | `health` | nothing that already existed went stale or broke |
 
 With `--against`, the scope is the change: what it changed and what it
-affected. Without it, the scope is the whole app. `--epic` narrows either.
+affected. Without it, the scope is the whole app. `--feature` narrows either.
 
 ```sh
 # The one thing most teams require of every pull request.
@@ -33,8 +33,8 @@ change-saga check --against origin/main --covers implementation app.saga
 # A team that also keeps existing documentation current.
 change-saga check --against origin/main --covers implementation,health app.saga
 
-# A stricter rule for one mature epic only.
-change-saga check --against origin/main --epic checkout --covers implementation,stories,design,quality app.saga
+# A stricter rule for one mature feature only.
+change-saga check --against origin/main --feature checkout --covers implementation,stories,design,quality app.saga
 ```
 
 ## Write a rule over the JSON
@@ -49,7 +49,7 @@ change-saga check --against origin/main --epic checkout --covers implementation,
       "implementation": {
         "area": "implementation", "unit": "changed_line",
         "total": 412, "covered": 412, "uncovered": 0, "complete": true,
-        "covered_entries": [ { "resource": "src/pay.go", "side": "new", "lines": "4-9,12", "count": 7, "epic": "checkout", "via": ["urn:..."] } ],
+        "covered_entries": [ { "resource": "src/pay.go", "side": "new", "lines": "4-9,12", "count": 7, "feature": "checkout", "via": ["urn:..."] } ],
         "uncovered_entries": []
       },
       "stories": { "...": "the same shape" },

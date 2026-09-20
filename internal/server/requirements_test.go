@@ -67,7 +67,7 @@ func TestRequirementsTemplatesGiveOverviewAndStoryDistinctPresentations(t *testi
 	if err != nil {
 		t.Fatal(err)
 	}
-	overview.Groups = []requirementGroupView{{Epic: traceLink{Title: "Shop", Href: "/epics/shop", Target: "urn:change-saga:test:epic:shop"}, Description: "Buying things.", Stories: overview.Stories}}
+	overview.Groups = []requirementGroupView{{Feature: traceLink{Title: "Shop", Href: "/features/shop", Target: "urn:change-saga:test:feature:shop"}, Description: "Buying things.", Stories: overview.Stories}}
 	var rendered bytes.Buffer
 	if err := tmpl.ExecuteTemplate(&rendered, "requirements-page", overview); err != nil {
 		t.Fatal(err)
@@ -75,7 +75,7 @@ func TestRequirementsTemplatesGiveOverviewAndStoryDistinctPresentations(t *testi
 	if strings.Contains(rendered.String(), "Rationale") {
 		t.Fatal("the requirements overview still titles the elevator pitch as its rationale")
 	}
-	for _, expected := range []string{"<h1>Requirements</h1>", `data-requirements-epic="urn:change-saga:test:epic:shop"`, `<a href="/epics/shop">Shop</a>`, "Buying things.", "requirements-story-card", "1 criterion", "/requirements/checkout"} {
+	for _, expected := range []string{"<h1>Requirements</h1>", `data-requirements-feature="urn:change-saga:test:feature:shop"`, `<a href="/features/shop">Shop</a>`, "Buying things.", "requirements-story-card", "1 criterion", "/requirements/checkout"} {
 		if !strings.Contains(rendered.String(), expected) {
 			t.Fatalf("requirements overview missing %q: %s", expected, rendered.String())
 		}

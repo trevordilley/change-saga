@@ -84,7 +84,7 @@ type ManifestOwnerView struct {
 	Chapter string
 	Href    string
 	// Anchor is Href's in-page anchor, which the drawer opens by name even
-	// when Href opens another page, such as an epic's.
+	// when Href opens another page, such as a feature's.
 	Anchor string
 	Slide  *SlideReferenceView
 }
@@ -415,11 +415,11 @@ func manifestOwner(target string, locations map[string]manifestTargetLocation) *
 
 func indexManifestTargets(document *saga.Saga) map[string]manifestTargetLocation {
 	result := map[string]manifestTargetLocation{}
-	epics := epicTargets(document)
+	features := featureTargets(document)
 	order := 0
 	add := func(target, title, kind, chapter, href string, slide *SlideReferenceView) {
 		order++
-		href = onEpicPageHref(epics, target, href)
+		href = onFeaturePageHref(features, target, href)
 		result[target] = manifestTargetLocation{ManifestOwnerView: ManifestOwnerView{
 			Target: target, Title: title, Kind: kind, Chapter: chapter, Href: href, Anchor: hrefAnchor(href), Slide: slide,
 		}, order: order}

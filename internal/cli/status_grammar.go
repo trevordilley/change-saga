@@ -106,17 +106,17 @@ func readComparison(ctx context.Context, root, repoDir string, rng gitdiff.Range
 // buildStatus composes the complete status document. A living-record load
 // failure never hides changed-source accounting: it becomes a diagnostic and
 // the first next action.
-func buildStatus(ctx context.Context, root, repoDir string, rng gitdiff.Range, allowMismatch bool, epic string) (statusDocument, error) {
+func buildStatus(ctx context.Context, root, repoDir string, rng gitdiff.Range, allowMismatch bool, feature string) (statusDocument, error) {
 	value, err := readComparison(ctx, root, repoDir, rng, allowMismatch)
 	if err != nil {
 		return statusDocument{}, err
 	}
-	if epic != "" {
-		resolved, err := applayout.Require(value.document.Root, value.document.Manifest.ID, epic)
+	if feature != "" {
+		resolved, err := applayout.Require(value.document.Root, value.document.Manifest.ID, feature)
 		if err != nil {
 			return statusDocument{}, err
 		}
-		epic = resolved.ID
+		feature = resolved.ID
 	}
 	resolver, err := coderesolve.New(ctx, value.checkout)
 	if err != nil {
@@ -164,8 +164,8 @@ func buildStatus(ctx context.Context, root, repoDir string, rng gitdiff.Range, a
 		}
 		document.Comparison = &layers
 	}
-	document.Coverage = areas.Evaluate(coverageInputs(value.document, value.changes, value.report, living, document.Comparison, epic))
-	document.NextActions = nextaction.Derive(living, root, nextaction.Context{Coverage: document.Coverage, Places: storyPlaces(value.document), DesignEpics: designEpics(value.document)})
+	document.Coverage = areas.Evaluate(coverageInputs(value.document, value.changes, value.report, living, document.Comparison, feature))
+	document.NextActions = nextaction.Derive(living, root, nextaction.Context{Coverage: document.Coverage, Places: storyPlaces(value.document), DesignFeatures: designFeatures(value.document)})
 	document.NextActions = append(document.NextActions, nextaction.Reviews(document.Reviews, root)...)
 	return document, nil
 }
@@ -289,8 +289,8 @@ func printActions(out io.Writer, actions []nextaction.Action, maxItems int, prac
 		if action.Area != "" && action.Category == nextaction.CategoryGrowth {
 			scope = action.Area
 		}
-		if action.Epic != "" {
-			scope += " · epic " + action.Epic
+		if action.Feature != "" {
+			scope += " · feature " + action.Feature
 		}
 		fmt.Fprintf(out, "  %d. [%s] %s\n", index+1, scope, firstLine(action.Reason))
 		if practice && action.Practice != "" {
@@ -311,20 +311,20 @@ func printActions(out io.Writer, actions []nextaction.Action, maxItems int, prac
 }
 
 // printAppStatus prints the app-level facts: the overview and its terms,
-// epics, persona coverage, the questions persona retirements raise, and
+// features, persona coverage, the questions persona retirements raise, and
 // stories gated off by flags.
 func printAppStatus(out io.Writer, status livingapp.Status) {
 	printOverviewStatus(out, status)
-	if len(status.Epics) > 0 {
-		fmt.Fprintln(out, "\nEpics:")
-		for _, epic := range status.Epics {
+	if len(status.Features) > 0 {
+		fmt.Fprintln(out, "\nFeatures:")
+		for _, feature := range status.Features {
 			stories := "stories"
-			if len(epic.Stories) == 1 {
+			if len(feature.Stories) == 1 {
 				stories = "story"
 			}
-			fmt.Fprintf(out, "  %-28s %d %s", epic.ID, len(epic.Stories), stories)
-			if len(epic.GatedBy) > 0 {
-				fmt.Fprintf(out, ", gated by %s", strings.Join(epic.GatedBy, ", "))
+			fmt.Fprintf(out, "  %-28s %d %s", feature.ID, len(feature.Stories), stories)
+			if len(feature.GatedBy) > 0 {
+				fmt.Fprintf(out, ", gated by %s", strings.Join(feature.GatedBy, ", "))
 			}
 			fmt.Fprintln(out)
 		}
@@ -497,7 +497,7 @@ func livingSpec() map[string]any {
 				"health":         "nothing that already existed went stale or broke",
 			},
 			"units":             []string{string(areas.UnitChangedLine), string(areas.UnitCodeTarget), string(areas.UnitStory), string(areas.UnitCriterion), string(areas.UnitRecord)},
-			"scope":             "with --against, the change: what it changed and what it affected; without, the whole app, where the line areas count documented code targets instead of changed lines; --epic narrows either, keeping changed lines no record owns",
+			"scope":             "with --against, the change: what it changed and what it affected; without, the whole app, where the line areas count documented code targets instead of changed lines; --feature narrows either, keeping changed lines no record owns",
 			"shape":             "status --json .coverage.areas.<area> has total, covered, uncovered, complete, covered_entries, and uncovered_entries; counts are the sums of the entries' counts; never a blended score",
 			"verdict":           "none: status reports every gap as a finding; a team that wants a gap to fail its build asks check --covers or writes its own rule over the JSON",
 			"status_exit_codes": map[string]string{"0": "the report was produced; every gap is a finding", "1": "the report cannot be trusted: a malformed Saga (such as a duplicate ID), unreadable records, or a checkout that does not match the declared repository"},

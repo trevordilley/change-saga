@@ -97,7 +97,7 @@ func TestATermRefusesLinksThatDoNotExistAndMalformedContent(t *testing.T) {
 		"definition is required": func(input *AddTermInput) {
 			input.Definition = " "
 		},
-		"canonical persona, epic, flag, or term URN": func(input *AddTermInput) {
+		"canonical persona, feature, flag, or term URN": func(input *AddTermInput) {
 			input.Stories, input.Records = nil, []string{"urn:change-saga:test:story:checkout"}
 		},
 		"duplicates": func(input *AddTermInput) {
@@ -132,7 +132,7 @@ func TestATermNamingAMissingStoryFailsToLoad(t *testing.T) {
 	if _, err := AddTerm(root, "test", testtakerInput()); err != nil {
 		t.Fatal(err)
 	}
-	if err := os.RemoveAll(filepath.Join(root, "___epics", "core.epic", "___requirements", "stories", "checkout.story")); err != nil {
+	if err := os.RemoveAll(filepath.Join(root, "___features", "core.feature", "___requirements", "stories", "checkout.story")); err != nil {
 		t.Fatal(err)
 	}
 	if _, err := Load(root, "test"); err == nil || !strings.Contains(err.Error(), "___overview/terms/testtaker.term/revisions/r1.json") {

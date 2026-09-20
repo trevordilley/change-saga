@@ -59,14 +59,14 @@ func TestPrototypeAddHTMLCopiesAnImmutableRevisionAndReplays(t *testing.T) {
 	root := newLivingSaga(t)
 	source := newPrototypeSource(t, "<!doctype html><button id=\"buy\">Buy</button>")
 	args := []string{
-		"add-html", root, "--epic", testEpic, "--id", "checkout", "--revision", "r1", "--title", "Checkout",
+		"add-html", root, "--feature", testFeature, "--id", "checkout", "--revision", "r1", "--title", "Checkout",
 		"--source", source, "--state", "ready", "--request-id", "checkout-request",
 	}
 	created := runPrototype(t, args...)
 	if !created.OK || created.Replayed || created.Resource != "urn:change-saga:atomic:prototype:checkout" {
 		t.Fatalf("add-html result = %#v", created)
 	}
-	if created.Path != testEpicRel+"/___requirements/prototypes/checkout.prototype" {
+	if created.Path != testFeatureRel+"/___requirements/prototypes/checkout.prototype" {
 		t.Fatalf("add-html path = %q", created.Path)
 	}
 	if replay := runPrototype(t, args...); !replay.Replayed {
@@ -86,7 +86,7 @@ func TestPrototypeAddHTMLCopiesAnImmutableRevisionAndReplays(t *testing.T) {
 	if revision.Source.Kind != prototypes.SourceHTML || revision.State != prototypes.StateReady {
 		t.Fatalf("revision = %#v", revision)
 	}
-	packaged, err := os.ReadFile(filepath.Join(testEpicDir(root), "___requirements", "prototypes", "checkout.prototype", "revisions", "r1.revision", "html", "index.html"))
+	packaged, err := os.ReadFile(filepath.Join(testFeatureDir(root), "___requirements", "prototypes", "checkout.prototype", "revisions", "r1.revision", "html", "index.html"))
 	if err != nil || !strings.Contains(string(packaged), "id=\"buy\"") {
 		t.Fatalf("packaged html = %q, err = %v", packaged, err)
 	}
@@ -96,7 +96,7 @@ func TestPrototypeAddHTMLCopiesAnImmutableRevisionAndReplays(t *testing.T) {
 func TestPrototypeAuthoringDoesNotRequireAnnotationOrLinkage(t *testing.T) {
 	root := newLivingSaga(t)
 	source := newPrototypeSource(t, "<!doctype html><main id=\"explore\">Exploring</main>")
-	created := runPrototype(t, "add-html", root, "--epic", testEpic, "--id", "explore", "--revision", "r1",
+	created := runPrototype(t, "add-html", root, "--feature", testFeature, "--id", "explore", "--revision", "r1",
 		"--title", "Exploration", "--source", source)
 	if !created.OK {
 		t.Fatalf("unlinked prototype was rejected: %#v", created)
@@ -115,7 +115,7 @@ func TestPrototypeAuthoringDoesNotRequireAnnotationOrLinkage(t *testing.T) {
 	// Story authoring must keep working beside the sibling capability root.
 	var output bytes.Buffer
 	if err := Story(context.Background(), []string{
-		"add", root, "--epic", testEpic, "--persona", testPersonaURN, "--id", "buyer", "--revision", "s1", "--event", "proposed", "--title", "Buyer",
+		"add", root, "--feature", testFeature, "--persona", testPersonaURN, "--id", "buyer", "--revision", "s1", "--event", "proposed", "--title", "Buyer",
 		"--statement", "As a buyer I can explore", "--priority", "must", "--json",
 	}, &output); err != nil {
 		t.Fatalf("story authoring broke beside prototypes: %v\n%s", err, output.String())
@@ -124,13 +124,13 @@ func TestPrototypeAuthoringDoesNotRequireAnnotationOrLinkage(t *testing.T) {
 
 func TestPrototypeAddExternalRequiresExplicitEmbedAllowlisting(t *testing.T) {
 	root := newLivingSaga(t)
-	reference := runPrototype(t, "add-external", root, "--epic", testEpic, "--id", "figma-link", "--revision", "r1",
+	reference := runPrototype(t, "add-external", root, "--feature", testFeature, "--id", "figma-link", "--revision", "r1",
 		"--title", "Figma", "--url", "https://www.figma.com/file/abc")
 	if !reference.OK || reference.Resource != "urn:change-saga:atomic:prototype:figma-link" {
 		t.Fatalf("external reference result = %#v", reference)
 	}
 
-	embed := runPrototype(t, "add-external", root, "--epic", testEpic, "--id", "figma-embed", "--revision", "r1",
+	embed := runPrototype(t, "add-external", root, "--feature", testFeature, "--id", "figma-embed", "--revision", "r1",
 		"--title", "Embedded Figma", "--url", "https://www.figma.com/file/abc",
 		"--embed-url", "https://embed.figma.com/proto/abc", "--provider", "figma",
 		"--embed-origin", "https://embed.figma.com", "--sandbox", "allow-scripts",
@@ -157,7 +157,7 @@ func TestPrototypeAddExternalRequiresExplicitEmbedAllowlisting(t *testing.T) {
 
 	var output bytes.Buffer
 	err = Prototype(context.Background(), []string{
-		"add-external", root, "--epic", testEpic, "--id", "implicit", "--revision", "r1", "--title", "Implicit",
+		"add-external", root, "--feature", testFeature, "--id", "implicit", "--revision", "r1", "--title", "Implicit",
 		"--url", "https://www.figma.com/file/abc", "--embed-url", "https://embed.figma.com/proto/abc",
 	}, &output)
 	if err == nil || !strings.Contains(err.Error(), "explicit allowlist") {
@@ -165,7 +165,7 @@ func TestPrototypeAddExternalRequiresExplicitEmbedAllowlisting(t *testing.T) {
 	}
 	output.Reset()
 	err = Prototype(context.Background(), []string{
-		"add-external", root, "--epic", testEpic, "--id", "stray", "--revision", "r1", "--title", "Stray",
+		"add-external", root, "--feature", testFeature, "--id", "stray", "--revision", "r1", "--title", "Stray",
 		"--url", "https://www.figma.com/file/abc", "--provider", "figma",
 	}, &output)
 	if err == nil || !strings.Contains(err.Error(), "require --embed-url") {
@@ -177,7 +177,7 @@ func TestPrototypeAddExternalRequiresExplicitEmbedAllowlisting(t *testing.T) {
 func TestPrototypeReviseIsAppendOnlyAndReconcilesHeads(t *testing.T) {
 	root := newLivingSaga(t)
 	source := newPrototypeSource(t, "<!doctype html><button id=\"buy\">Buy</button>")
-	runPrototype(t, "add-html", root, "--epic", testEpic, "--id", "checkout", "--revision", "r1", "--title", "Checkout", "--source", source)
+	runPrototype(t, "add-html", root, "--feature", testFeature, "--id", "checkout", "--revision", "r1", "--title", "Checkout", "--source", source)
 
 	prototypeURN := "urn:change-saga:atomic:prototype:checkout"
 	revised := newPrototypeSource(t, "<!doctype html><button id=\"buy\">Buy now</button>")
@@ -194,7 +194,7 @@ func TestPrototypeReviseIsAppendOnlyAndReconcilesHeads(t *testing.T) {
 	if len(document.Prototypes[0].Revisions) != 2 || document.Prototypes[0].CurrentRevision.ID != "r2" {
 		t.Fatalf("revision graph = %#v", document.Prototypes[0])
 	}
-	original, err := os.ReadFile(filepath.Join(testEpicDir(root), "___requirements", "prototypes", "checkout.prototype", "revisions", "r1.revision", "html", "index.html"))
+	original, err := os.ReadFile(filepath.Join(testFeatureDir(root), "___requirements", "prototypes", "checkout.prototype", "revisions", "r1.revision", "html", "index.html"))
 	if err != nil || strings.Contains(string(original), "Buy now") {
 		t.Fatalf("the earlier revision was not immutable: %q, err = %v", original, err)
 	}
@@ -221,11 +221,11 @@ func TestPrototypeReviseIsAppendOnlyAndReconcilesHeads(t *testing.T) {
 func TestPrototypeAnnotatePinsSelectorsToStoriesAndCriteria(t *testing.T) {
 	root := newLivingSaga(t)
 	source := newPrototypeSource(t, "<!doctype html><button id=\"buy\">Buy</button>")
-	runPrototype(t, "add-html", root, "--epic", testEpic, "--id", "checkout", "--revision", "r1", "--title", "Checkout", "--source", source)
+	runPrototype(t, "add-html", root, "--feature", testFeature, "--id", "checkout", "--revision", "r1", "--title", "Checkout", "--source", source)
 
 	var output bytes.Buffer
 	if err := Story(context.Background(), []string{
-		"add", root, "--epic", testEpic, "--persona", testPersonaURN, "--id", "buyer", "--revision", "s1", "--event", "proposed", "--title", "Buyer",
+		"add", root, "--feature", testFeature, "--persona", testPersonaURN, "--id", "buyer", "--revision", "s1", "--event", "proposed", "--title", "Buyer",
 		"--statement", "As a buyer I can check out", "--priority", "must",
 		"--criterion", "fast=Checkout finishes promptly", "--json",
 	}, &output); err != nil {
@@ -289,7 +289,7 @@ func TestPrototypeMutationFailureReportsJSONAndExitStatus(t *testing.T) {
 	root := newLivingSaga(t)
 	var output bytes.Buffer
 	err := Prototype(context.Background(), []string{
-		"add-html", root, "--epic", testEpic, "--id", "checkout", "--revision", "r1", "--title", "Checkout",
+		"add-html", root, "--feature", testFeature, "--id", "checkout", "--revision", "r1", "--title", "Checkout",
 		"--source", filepath.Join(t.TempDir(), "missing"), "--json",
 	}, &output)
 	var status *StatusError
@@ -308,14 +308,14 @@ func TestPrototypeMutationFailureReportsJSONAndExitStatus(t *testing.T) {
 func TestValidateCoversPrototypeRecords(t *testing.T) {
 	root := newLivingSaga(t)
 	source := newPrototypeSource(t, "<!doctype html><button id=\"buy\">Buy</button>")
-	runPrototype(t, "add-html", root, "--epic", testEpic, "--id", "checkout", "--revision", "r1", "--title", "Checkout", "--source", source)
+	runPrototype(t, "add-html", root, "--feature", testFeature, "--id", "checkout", "--revision", "r1", "--title", "Checkout", "--source", source)
 
 	var output bytes.Buffer
 	if err := Validate(context.Background(), []string{"--json", root}, &output); err != nil {
 		t.Fatalf("validate a sound prototype: %v\n%s", err, output.String())
 	}
 
-	packaged := filepath.Join(testEpicDir(root), "___requirements", "prototypes", "checkout.prototype", "revisions", "r1.revision", "html", "index.html")
+	packaged := filepath.Join(testFeatureDir(root), "___requirements", "prototypes", "checkout.prototype", "revisions", "r1.revision", "html", "index.html")
 	writeFile(t, packaged, "tampered after the revision was sealed")
 	output.Reset()
 	err := Validate(context.Background(), []string{"--json", root}, &output)

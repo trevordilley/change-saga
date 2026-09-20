@@ -23,11 +23,11 @@ const (
 	ActiveHTMLTarget = "urn:change-saga:security:fragment:active-html"
 	ActiveSVGTarget  = "urn:change-saga:security:fragment:active-svg"
 
-	// Epic is the one epic holding the fixture's report content, and EpicDir
+	// Feature is the one feature holding the fixture's report content, and FeatureDir
 	// is its slash path relative to SagaRoot. Review records, claims, and
 	// verifications stay at the app root.
-	Epic    = "core"
-	EpicDir = "___epics/" + Epic + ".epic"
+	Feature    = "core"
+	FeatureDir = "___features/" + Feature + ".feature"
 )
 
 // Fixture keeps the saga and its compared source in different Git worktrees.
@@ -44,7 +44,7 @@ type Fixture struct {
 
 // New creates two independent, clean Git repositories. The source repository
 // has a base commit and one product commit. The saga repository contains a
-// minimal valid v5 app saga with one epic which compares those source revisions.
+// minimal valid v5 app saga with one feature which compares those source revisions.
 func New(t testing.TB) *Fixture {
 	t.Helper()
 	root := t.TempDir()
@@ -68,9 +68,9 @@ func New(t testing.TB) *Fixture {
 
 	fixture.initRepository(fixture.SagaRepo)
 	fixture.WriteSaga("saga.json", fmt.Sprintf(`{"version":5,"id":"security","title":"Query security","source":{"repository":%q}}`, Repository))
-	fixture.WriteSaga(EpicDir+"/epic.json", `{"$schema":"https://changesaga.dev/schema/v5/epic.schema.json","version":5,"id":"core","title":"Core","created_at":"2026-01-02T03:04:05Z"}`)
-	fixture.WriteEpic("overview.fragment/fragment.json", `{"version":2,"id":"overview","title":"Overview","media_type":"text/markdown","entrypoint":"content.md"}`)
-	fixture.WriteEpic("overview.fragment/content.md", "# Query security {#query-security}\n")
+	fixture.WriteSaga(FeatureDir+"/feature.json", `{"$schema":"https://changesaga.dev/schema/v5/feature.schema.json","version":5,"id":"core","title":"Core","created_at":"2026-01-02T03:04:05Z"}`)
+	fixture.WriteFeature("overview.fragment/fragment.json", `{"version":2,"id":"overview","title":"Overview","media_type":"text/markdown","entrypoint":"content.md"}`)
+	fixture.WriteFeature("overview.fragment/content.md", "# Query security {#query-security}\n")
 	fixture.git(fixture.SagaRepo, "add", ".")
 	fixture.git(fixture.SagaRepo, "commit", "-m", "saga fixture")
 	return fixture
@@ -82,17 +82,17 @@ func (f *Fixture) WriteSaga(relative, content string) {
 	f.write(filepath.Join(f.SagaRoot, filepath.FromSlash(relative)), []byte(content))
 }
 
-// WriteEpic writes a slash-relative path below the fixture epic, where the
+// WriteFeature writes a slash-relative path below the fixture feature, where the
 // saga's report content lives.
-func (f *Fixture) WriteEpic(relative, content string) {
+func (f *Fixture) WriteFeature(relative, content string) {
 	f.testing.Helper()
-	f.WriteSaga(EpicDir+"/"+relative, content)
+	f.WriteSaga(FeatureDir+"/"+relative, content)
 }
 
-// EpicPath returns the absolute path of a slash-relative path below the
-// fixture epic.
-func (f *Fixture) EpicPath(relative string) string {
-	return filepath.Join(f.SagaRoot, filepath.FromSlash(EpicDir+"/"+relative))
+// FeaturePath returns the absolute path of a slash-relative path below the
+// fixture feature.
+func (f *Fixture) FeaturePath(relative string) string {
+	return filepath.Join(f.SagaRoot, filepath.FromSlash(FeatureDir+"/"+relative))
 }
 
 // WriteSource writes a slash-relative path below the source worktree.
@@ -112,9 +112,9 @@ func (f *Fixture) MakeInvalidManifest() {
 // according to traversal order.
 func (f *Fixture) AddAmbiguousTargets() {
 	for _, chapter := range []string{"alpha", "beta"} {
-		f.WriteEpic(chapter+".chapter/chapter.json", fmt.Sprintf(`{"version":2,"id":%q,"title":%q}`, chapter, strings.ToUpper(chapter)))
-		f.WriteEpic(chapter+".chapter/shared.fragment/fragment.json", `{"version":2,"id":"shared","title":"Shared","media_type":"text/plain","entrypoint":"content.txt"}`)
-		f.WriteEpic(chapter+".chapter/shared.fragment/content.txt", chapter+"\n")
+		f.WriteFeature(chapter+".chapter/chapter.json", fmt.Sprintf(`{"version":2,"id":%q,"title":%q}`, chapter, strings.ToUpper(chapter)))
+		f.WriteFeature(chapter+".chapter/shared.fragment/fragment.json", `{"version":2,"id":"shared","title":"Shared","media_type":"text/plain","entrypoint":"content.txt"}`)
+		f.WriteFeature(chapter+".chapter/shared.fragment/content.txt", chapter+"\n")
 	}
 }
 
@@ -126,9 +126,9 @@ func (f *Fixture) AddLargeFragment(size int) string {
 	if size < 1 {
 		f.testing.Fatal("large fragment size must be positive")
 	}
-	f.WriteEpic("large.fragment/fragment.json", `{"version":2,"id":"large","title":"Large","media_type":"text/plain","entrypoint":"content.txt"}`)
+	f.WriteFeature("large.fragment/fragment.json", `{"version":2,"id":"large","title":"Large","media_type":"text/plain","entrypoint":"content.txt"}`)
 	content := bytes.Repeat([]byte("0123456789abcdef"), (size+15)/16)[:size]
-	f.write(f.EpicPath("large.fragment/content.txt"), content)
+	f.write(f.FeaturePath("large.fragment/content.txt"), content)
 	return LargeTarget
 }
 
@@ -136,10 +136,10 @@ func (f *Fixture) AddLargeFragment(size int) string {
 // effects if evaluated. Read APIs must return bounded inert bytes; they must
 // never load either document into an executing renderer.
 func (f *Fixture) AddActiveFragments() (htmlTarget, svgTarget string) {
-	f.WriteEpic("active-html.fragment/fragment.json", `{"version":2,"id":"active-html","title":"Active HTML","media_type":"text/html","entrypoint":"index.html"}`)
-	f.WriteEpic("active-html.fragment/index.html", `<!doctype html><script>document.documentElement.dataset.aiQueryExecuted="html"</script><p>safe to read</p>`)
-	f.WriteEpic("active-svg.fragment/fragment.json", `{"version":2,"id":"active-svg","title":"Active SVG","media_type":"image/svg+xml","entrypoint":"image.svg"}`)
-	f.WriteEpic("active-svg.fragment/image.svg", `<svg xmlns="http://www.w3.org/2000/svg"><script>document.documentElement.dataset.aiQueryExecuted="svg"</script><text>safe to read</text></svg>`)
+	f.WriteFeature("active-html.fragment/fragment.json", `{"version":2,"id":"active-html","title":"Active HTML","media_type":"text/html","entrypoint":"index.html"}`)
+	f.WriteFeature("active-html.fragment/index.html", `<!doctype html><script>document.documentElement.dataset.aiQueryExecuted="html"</script><p>safe to read</p>`)
+	f.WriteFeature("active-svg.fragment/fragment.json", `{"version":2,"id":"active-svg","title":"Active SVG","media_type":"image/svg+xml","entrypoint":"image.svg"}`)
+	f.WriteFeature("active-svg.fragment/image.svg", `<svg xmlns="http://www.w3.org/2000/svg"><script>document.documentElement.dataset.aiQueryExecuted="svg"</script><text>safe to read</text></svg>`)
 	return ActiveHTMLTarget, ActiveSVGTarget
 }
 
@@ -150,7 +150,7 @@ func (f *Fixture) AddEscapingEntrypointSymlink() string {
 	f.testing.Helper()
 	outside := filepath.Join(filepath.Dir(f.SagaRepo), "entrypoint-secret.txt")
 	f.write(outside, []byte("ENTRYPOINT_SECRET_MUST_NOT_LEAK\n"))
-	entrypoint := f.EpicPath("overview.fragment/content.md")
+	entrypoint := f.FeaturePath("overview.fragment/content.md")
 	if err := os.Remove(entrypoint); err != nil {
 		f.testing.Fatal(err)
 	}
@@ -168,7 +168,7 @@ func (f *Fixture) AddEscapingAssetSymlink() string {
 	f.testing.Helper()
 	outside := filepath.Join(filepath.Dir(f.SagaRepo), "asset-secret.txt")
 	f.write(outside, []byte("ASSET_SECRET_MUST_NOT_LEAK\n"))
-	link := f.EpicPath("overview.fragment/leak.txt")
+	link := f.FeaturePath("overview.fragment/leak.txt")
 	if err := os.Symlink(outside, link); err != nil {
 		f.testing.Skipf("symlinks unavailable: %v", err)
 	}
@@ -179,7 +179,7 @@ func (f *Fixture) AddEscapingAssetSymlink() string {
 // A cursor obtained before this call must not be accepted against the new
 // snapshot.
 func (f *Fixture) AdvanceSagaSnapshot() {
-	f.WriteEpic("overview.fragment/content.md", "# Query security changed {#query-security-changed}\n")
+	f.WriteFeature("overview.fragment/content.md", "# Query security changed {#query-security-changed}\n")
 }
 
 // CursorAttack is a syntactically hostile derivative of a valid opaque cursor.

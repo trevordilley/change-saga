@@ -34,7 +34,7 @@ func writeServerJSON(t *testing.T, path string, value any) {
 
 // newServerReviewFixture is a repository whose feature branch changes one
 // file, holding an app Saga with a review of that branch: one slide whose
-// Item references the changed line and points at an epic.
+// Item references the changed line and points at a feature.
 func newServerReviewFixture(t *testing.T) serverReviewFixture {
 	t.Helper()
 	repo := t.TempDir()
@@ -45,7 +45,7 @@ func newServerReviewFixture(t *testing.T) serverReviewFixture {
 	writeServerFile(t, filepath.Join(repo, "queue.go"), "package queue\n\nfunc Enqueue() string { return \"sqs\" }\n")
 	root := filepath.Join(repo, "app.saga")
 	writeServerJSON(t, filepath.Join(root, saga.ManifestName), saga.Manifest{Schema: saga.SagaSchemaURL, Version: saga.SagaVersion, ID: "app", Title: "App", Source: saga.Source{Repository: "https://example.test/acme/app.git"}})
-	writeServerEpic(t, root)
+	writeServerFeature(t, root)
 	serverGit(t, repo, "add", ".")
 	serverGit(t, repo, "commit", "-m", "base")
 	serverGit(t, repo, "checkout", "-b", "feature/pg")
@@ -63,7 +63,7 @@ func newServerReviewFixture(t *testing.T) serverReviewFixture {
 	writeServerJSON(t, filepath.Join(deckDir, slideName), saga.SlideManifest{Version: saga.DeckRecordVersion, ID: "queue", DeckID: "pr-7", Title: "Queue moves to Postgres", Intent: "explain", Layout: "diagram", MediaType: "image/svg+xml", Entrypoint: asset, Takeaway: "One transaction.", ReadingOrder: []string{"node"}})
 	writeServerFile(t, filepath.Join(deckDir, asset), `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><rect id="node" width="5" height="5"/></svg>`)
 	itemName, _ := saga.FlatItemFilename(slide, item, 0)
-	writeServerJSON(t, filepath.Join(deckDir, itemName), saga.ItemManifest{Version: saga.DeckRecordVersion, ID: "node", SlideID: "queue", Kind: "node", Label: "Enqueue", Description: "Enqueue writes to Postgres.", Selector: saga.LandmarkSelector{Type: "element", ElementID: "node"}, Record: "urn:change-saga:app:epic:" + serverEpic})
+	writeServerJSON(t, filepath.Join(deckDir, itemName), saga.ItemManifest{Version: saga.DeckRecordVersion, ID: "node", SlideID: "queue", Kind: "node", Label: "Enqueue", Description: "Enqueue writes to Postgres.", Selector: saga.LandmarkSelector{Type: "element", ElementID: "node"}, Record: "urn:change-saga:app:feature:" + serverFeature})
 	resolver, err := coderesolve.New(context.Background(), repo)
 	if err != nil {
 		t.Fatal(err)
@@ -130,7 +130,7 @@ func TestReviewPageShowsDiffsDecisionsAndCurrency(t *testing.T) {
 	for _, want := range []string{
 		`data-review-slide="queue"`, `data-decision-state="approved" data-currency="current"`, `data-review-decision-form="queue"`,
 		`data-review-diff=`, `review-line add`, `postgres`, `review-line del`, `sqs`,
-		`data-review-record="urn:change-saga:app:epic:` + serverEpic + `"`, `Index on status?`, `/reviews/pr-7/visual/queue`,
+		`data-review-record="urn:change-saga:app:feature:` + serverFeature + `"`, `Index on status?`, `/reviews/pr-7/visual/queue`,
 		`https://github.com/acme/app/pull/7`,
 	} {
 		if !strings.Contains(body, want) {

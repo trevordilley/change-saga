@@ -1,0 +1,8 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/feature.schema.json",
+  "version": 5,
+  "id": "reviews",
+  "title": "Pull request reviews",
+  "description": "A review is a pull request's slide deck: it explains what the change did and why, accounts for every changed line of its range, and carries per-slide approvals and comments. The documentation itself carries none.",
+  "created_at": "2026-09-19T20:47:03.120383Z"
+}

@@ -24,7 +24,7 @@ func newTermSaga(t *testing.T, repo string) string {
 		t.Fatal(err)
 	}
 	addTestApp(t, root)
-	if err := Story(context.Background(), []string{"add", "--epic", testEpic, "--id", "sit-assessment", "--revision", "r1", "--event", "proposed",
+	if err := Story(context.Background(), []string{"add", "--feature", testFeature, "--id", "sit-assessment", "--revision", "r1", "--event", "proposed",
 		"--title", "Sit an assessment", "--statement", "As a candidate, I sit an assessment", "--priority", "high", root}, &output); err != nil {
 		t.Fatalf("story add: %v\n%s", err, output.String())
 	}

@@ -7,11 +7,11 @@ package grammar
 var contentCommands = []Command{
 	{
 		Name: "add-chapter", Status: StatusImplemented, Mutates: true, Writes: []string{"chapter"},
-		Usage:   "change-saga add-chapter (--epic ID | --app designsystem) [flags] <saga> <name>",
+		Usage:   "change-saga add-chapter (--feature ID | --app designsystem) [flags] <saga> <name>",
 		Summary: "add one independently reviewable narrative chapter to the Saga",
 		Flags: []Flag{
-			optional("app", "APP", "author into the app-level design system instead of an epic: designsystem"),
-			optional("epic", "ID", "epic id or URN; when creating epic content it defaults to the app's only epic (or a first epic named after the branch), otherwise it must name the epic that holds the record"),
+			optional("app", "APP", "author into the app-level design system instead of a feature: designsystem"),
+			optional("feature", "ID", "feature id or URN; when creating feature content it defaults to the app's only feature (or a first feature named after the branch), otherwise it must name the feature that holds the record"),
 			optional("id", "ID", "stable chapter identifier"),
 			optional("order", "N", "display order"),
 			optional("title", "TEXT", "chapter title"),
@@ -34,12 +34,12 @@ var contentCommands = []Command{
 	},
 	{
 		Name: "add-fragment", Status: StatusImplemented, Mutates: true, Writes: []string{"fragment"},
-		Usage:   "change-saga add-fragment (--epic ID | --app designsystem | --section TARGET) [flags] <saga>",
+		Usage:   "change-saga add-fragment (--feature ID | --app designsystem | --section TARGET) [flags] <saga>",
 		Summary: "add a narrative artifact to a chapter or section",
 		Flags: []Flag{
-			optional("app", "APP", "author into the app-level design system instead of an epic: designsystem"),
+			optional("app", "APP", "author into the app-level design system instead of a feature: designsystem"),
 			optional("entrypoint", "ENTRYPOINT", "entrypoint within a source directory"),
-			optional("epic", "ID", "epic id or URN; when creating epic content it defaults to the app's only epic (or a first epic named after the branch), otherwise it must name the epic that holds the record"),
+			optional("feature", "ID", "feature id or URN; when creating feature content it defaults to the app's only feature (or a first feature named after the branch), otherwise it must name the feature that holds the record"),
 			optional("id", "ID", "stable fragment identifier"),
 			optional("media-type", "MEDIA_TYPE", "explicit media type"),
 			optional("name", "NAME", "fragment directory name without .fragment"),
@@ -60,7 +60,7 @@ var contentCommands = []Command{
 			optional("body", "TEXT", "required concise callout body"),
 			optional("description", "TEXT", "non-visual semantic description"),
 			optional("element-id", "ELEMENT_ID", "id of an SVG or HTML element"),
-			optional("epic", "ID", "epic id or URN; when creating epic content it defaults to the app's only epic (or a first epic named after the branch), otherwise it must name the epic that holds the record"),
+			optional("feature", "ID", "feature id or URN; when creating feature content it defaults to the app's only feature (or a first feature named after the branch), otherwise it must name the feature that holds the record"),
 			optional("hotspot", "HOTSPOT", "optional normalized on-canvas hit area"),
 			optional("id", "ID", "stable lowercase item identifier"),
 			required("kind", "KIND", "node, edge, region, transition, statement, risk, metric, example, or callout"),
@@ -68,7 +68,7 @@ var contentCommands = []Command{
 			optional("leader", "LEADER", "none, line, or arrow"),
 			optional("placement", "PLACEMENT", "top, right, bottom, left, or overlay"),
 			optional("rank", "RANK", "non-negative item order; defaults after the last item"),
-			optional("record", "URN", "the record the item points at: required for onboarding items (a persona, epic, or story URN); optional for review items (a story, epic slide, or other record to open beside the change)"),
+			optional("record", "URN", "the record the item points at: required for onboarding items (a persona, feature, or story URN); optional for review items (a story, feature slide, or other record to open beside the change)"),
 			optional("region", "REGION", "normalized image region x,y,width,height"),
 			optional("review", "ID", "the pull request review whose slide receives the item"),
 			required("slide", "TARGET", "containing slide path, id, or URN"),
@@ -99,8 +99,8 @@ var contentCommands = []Command{
 		Usage:   "change-saga add-section [flags] <saga> <section/path>",
 		Summary: "group related narrative content inside a chapter",
 		Flags: []Flag{
-			optional("app", "APP", "author into the app-level design system instead of an epic: designsystem"),
-			optional("epic", "ID", "epic id or URN; when creating epic content it defaults to the app's only epic (or a first epic named after the branch), otherwise it must name the epic that holds the record"),
+			optional("app", "APP", "author into the app-level design system instead of a feature: designsystem"),
+			optional("feature", "ID", "feature id or URN; when creating feature content it defaults to the app's only feature (or a first feature named after the branch), otherwise it must name the feature that holds the record"),
 			optional("id", "ID", "stable section identifier"),
 			optional("order", "N", "display order"),
 			optional("title", "TEXT", "section title"),
@@ -114,7 +114,7 @@ var contentCommands = []Command{
 		Flags: []Flag{
 			optional("deck", "TARGET", "containing deck path, id, or URN"),
 			optional("entrypoint", "ENTRYPOINT", "simple filename whose extension selects the compact slide asset name"),
-			optional("epic", "ID", "epic id or URN; when creating epic content it defaults to the app's only epic (or a first epic named after the branch), otherwise it must name the epic that holds the record"),
+			optional("feature", "ID", "feature id or URN; when creating feature content it defaults to the app's only feature (or a first feature named after the branch), otherwise it must name the feature that holds the record"),
 			optional("exception-rationale", "EXCEPTION_RATIONALE", "required reason for a custom layout"),
 			optional("id", "ID", "stable slide identifier"),
 			required("intent", "INTENT", "reviewer job: orient, explain, compare, trace, prove, risk, or conclude"),
@@ -131,10 +131,10 @@ var contentCommands = []Command{
 	},
 	{
 		Name: "design add-chapter", Status: StatusImplemented, Mutates: true, Writes: []string{"chapter"},
-		Usage:   "change-saga design add-chapter --epic ID [flags] <saga> <name>",
+		Usage:   "change-saga design add-chapter --feature ID [flags] <saga> <name>",
 		Summary: "add one independently authored technical-design concern",
 		Flags: []Flag{
-			required("epic", "ID", "epic id or URN; when creating epic content it defaults to the app's only epic (or a first epic named after the branch), otherwise it must name the epic that holds the record"),
+			required("feature", "ID", "feature id or URN; when creating feature content it defaults to the app's only feature (or a first feature named after the branch), otherwise it must name the feature that holds the record"),
 			optional("id", "ID", "stable chapter identifier"),
 			optional("order", "N", "display order"),
 			optional("title", "TEXT", "chapter title"),
@@ -143,11 +143,11 @@ var contentCommands = []Command{
 	},
 	{
 		Name: "design add-fragment", Status: StatusImplemented, Mutates: true, Writes: []string{"fragment"},
-		Usage:   "change-saga design add-fragment (--epic ID | --section TARGET) [flags] <saga>",
+		Usage:   "change-saga design add-fragment (--feature ID | --section TARGET) [flags] <saga>",
 		Summary: "add an addressable technical-design artifact",
 		Flags: []Flag{
 			optional("entrypoint", "ENTRYPOINT", "entrypoint within a source directory"),
-			optional("epic", "ID", "epic id or URN; when creating epic content it defaults to the app's only epic (or a first epic named after the branch), otherwise it must name the epic that holds the record"),
+			optional("feature", "ID", "feature id or URN; when creating feature content it defaults to the app's only feature (or a first feature named after the branch), otherwise it must name the feature that holds the record"),
 			optional("id", "ID", "stable fragment identifier"),
 			optional("media-type", "MEDIA_TYPE", "explicit media type"),
 			optional("name", "NAME", "fragment directory name without .fragment"),
@@ -164,7 +164,7 @@ var contentCommands = []Command{
 		Usage:   "change-saga design add-section [flags] <saga> <section/path>",
 		Summary: "partition a design chapter around one coherent subsystem, workflow, or decision so concurrent agents can work without contending on a shared fragment",
 		Flags: []Flag{
-			optional("epic", "ID", "epic id or URN; when creating epic content it defaults to the app's only epic (or a first epic named after the branch), otherwise it must name the epic that holds the record"),
+			optional("feature", "ID", "feature id or URN; when creating feature content it defaults to the app's only feature (or a first feature named after the branch), otherwise it must name the feature that holds the record"),
 			optional("id", "ID", "stable section identifier"),
 			optional("order", "N", "display order"),
 			optional("title", "TEXT", "section title"),
@@ -173,10 +173,10 @@ var contentCommands = []Command{
 	},
 	{
 		Name: "design set-fragment-content", Status: StatusImplemented, Mutates: true, Writes: []string{"fragment"},
-		Usage:   "change-saga design set-fragment-content --target TARGET --source FILE|- [--epic ID] [--json|--quiet] <saga>",
+		Usage:   "change-saga design set-fragment-content --target TARGET --source FILE|- [--feature ID] [--json|--quiet] <saga>",
 		Summary: "replace authored design content while preserving its stable target",
 		Flags: []Flag{
-			optional("epic", "ID", "epic id or URN; when creating epic content it defaults to the app's only epic (or a first epic named after the branch), otherwise it must name the epic that holds the record"),
+			optional("feature", "ID", "feature id or URN; when creating feature content it defaults to the app's only feature (or a first feature named after the branch), otherwise it must name the feature that holds the record"),
 			{Name: "json", Description: "emit one machine-readable JSON result"},
 			{Name: "quiet", Description: "suppress successful output"},
 			required("source", "FILE|-", "content file, or - for standard input"),
@@ -220,12 +220,12 @@ var contentCommands = []Command{
 	},
 	{
 		Name: "plan add-contract", Status: StatusImplemented, Mutates: true, Writes: []string{"work-contract"},
-		Usage:   "change-saga plan add-contract --epic ID --id ID --revision ID --kind KIND --provider URN --consumer URN --statement TEXT --acceptance TEXT... --request-id ID [flags] <saga>",
+		Usage:   "change-saga plan add-contract --feature ID --id ID --revision ID --kind KIND --provider URN --consumer URN --statement TEXT --acceptance TEXT... --request-id ID [flags] <saga>",
 		Summary: "define the versioned interface between parallel provider and consumer work items",
 		Flags: []Flag{
 			repeatable("acceptance", "TEXT", "acceptance check; repeatable", true),
 			required("consumer", "URN", "consumer work-item URN"),
-			required("epic", "ID", "epic id or URN; when creating epic content it defaults to the app's only epic (or a first epic named after the branch), otherwise it must name the epic that holds the record"),
+			required("feature", "ID", "feature id or URN; when creating feature content it defaults to the app's only feature (or a first feature named after the branch), otherwise it must name the feature that holds the record"),
 			required("id", "ID", "stable contract id"),
 			{Name: "json", Description: "emit a machine-readable result"},
 			required("kind", "KIND", "deliverable, interface, handoff, or quality_gate"),
@@ -238,13 +238,13 @@ var contentCommands = []Command{
 	},
 	{
 		Name: "plan add-dependency", Status: StatusImplemented, Mutates: true, Writes: []string{"work-dependency"},
-		Usage:   "change-saga plan add-dependency --epic ID --id ID --prerequisite URN --dependent URN --condition KIND --reason TEXT --request-id ID [flags] <saga>",
+		Usage:   "change-saga plan add-dependency --feature ID --id ID --prerequisite URN --dependent URN --condition KIND --reason TEXT --request-id ID [flags] <saga>",
 		Summary: "record a real prerequisite between work items",
 		Flags: []Flag{
 			required("condition", "KIND", "progress_done, merge_integrated, or contract_fulfilled"),
 			optional("contract-revision", "CONTRACT_REVISION", "exact contract revision for contract_fulfilled"),
 			required("dependent", "URN", "dependent work-item URN"),
-			required("epic", "ID", "epic id or URN; when creating epic content it defaults to the app's only epic (or a first epic named after the branch), otherwise it must name the epic that holds the record"),
+			required("feature", "ID", "feature id or URN; when creating feature content it defaults to the app's only feature (or a first feature named after the branch), otherwise it must name the feature that holds the record"),
 			required("id", "ID", "stable dependency id"),
 			{Name: "json", Description: "emit a machine-readable result"},
 			required("prerequisite", "URN", "prerequisite work-item URN"),
@@ -255,14 +255,14 @@ var contentCommands = []Command{
 	},
 	{
 		Name: "plan add-item", Status: StatusImplemented, Mutates: true, Writes: []string{"work-item", "work-item-revision"},
-		Usage:   "change-saga plan add-item --epic ID --id ID --revision ID --title TEXT --objective TEXT --deliverable TEXT... --request-id ID [flags] <saga>",
+		Usage:   "change-saga plan add-item --feature ID --id ID --revision ID --title TEXT --objective TEXT --deliverable TEXT... --request-id ID [flags] <saga>",
 		Summary: "add one independently assignable, mergeable unit of work and link it to the requirements and design it advances",
 		Flags: []Flag{
 			repeatable("completion-check", "COMPLETION_CHECK", "completion check; repeatable", false),
 			repeatable("contract", "CONTRACT", "contract or contract-revision URN; repeatable", false),
 			repeatable("deliverable", "TEXT", "declared deliverable; repeatable", true),
 			repeatable("dependency", "DEPENDENCY", "dependency URN; repeatable", false),
-			required("epic", "ID", "epic id or URN; when creating epic content it defaults to the app's only epic (or a first epic named after the branch), otherwise it must name the epic that holds the record"),
+			required("feature", "ID", "feature id or URN; when creating feature content it defaults to the app's only feature (or a first feature named after the branch), otherwise it must name the feature that holds the record"),
 			required("id", "ID", "stable work-item id"),
 			{Name: "json", Description: "emit a machine-readable result"},
 			repeatable("merge-unit", "MERGE_UNIT", "merge-unit JSON object; repeatable", false),
@@ -279,11 +279,11 @@ var contentCommands = []Command{
 	},
 	{
 		Name: "plan add-wave", Status: StatusImplemented, Mutates: true, Writes: []string{"wave", "wave-revision"},
-		Usage:   "change-saga plan add-wave --epic ID --id ID --revision ID --title TEXT --objective TEXT --request-id ID [flags] <saga>",
+		Usage:   "change-saga plan add-wave --feature ID --id ID --revision ID --title TEXT --objective TEXT --request-id ID [flags] <saga>",
 		Summary: "add one delivery phase with explicit entry and exit conditions",
 		Flags: []Flag{
 			repeatable("entry-condition", "ENTRY_CONDITION", "entry condition; repeatable", false),
-			required("epic", "ID", "epic id or URN; when creating epic content it defaults to the app's only epic (or a first epic named after the branch), otherwise it must name the epic that holds the record"),
+			required("feature", "ID", "feature id or URN; when creating feature content it defaults to the app's only feature (or a first feature named after the branch), otherwise it must name the feature that holds the record"),
 			repeatable("exit-condition", "EXIT_CONDITION", "exit condition; repeatable", false),
 			required("id", "ID", "stable wave id"),
 			{Name: "json", Description: "emit a machine-readable result"},
@@ -301,7 +301,7 @@ var contentCommands = []Command{
 		Summary: "bind a work item to a concrete workspace and branch so progress can be shown in the live Saga",
 		Flags: []Flag{
 			required("branch", "NAME", "workspace branch"),
-			optional("epic", "ID", "epic id or URN; when creating epic content it defaults to the app's only epic (or a first epic named after the branch), otherwise it must name the epic that holds the record"),
+			optional("feature", "ID", "feature id or URN; when creating feature content it defaults to the app's only feature (or a first feature named after the branch), otherwise it must name the feature that holds the record"),
 			optional("event", "ID", "stable event id; generated when omitted"),
 			required("item", "URN", "canonical work-item URN"),
 			{Name: "json", Description: "emit a machine-readable result"},
@@ -321,7 +321,7 @@ var contentCommands = []Command{
 		Usage:   "change-saga plan progress --item URN --from EVENT... --to STATE --request-id ID [flags] <saga>",
 		Summary: "append explicit workspace progress against the item",
 		Flags: []Flag{
-			optional("epic", "ID", "epic id or URN; when creating epic content it defaults to the app's only epic (or a first epic named after the branch), otherwise it must name the epic that holds the record"),
+			optional("feature", "ID", "feature id or URN; when creating feature content it defaults to the app's only feature (or a first feature named after the branch), otherwise it must name the feature that holds the record"),
 			optional("event", "ID", "stable event id; generated when omitted"),
 			repeatable("from", "EVENT", "current progress head event URN; repeatable for reconciliation", true),
 			required("item", "URN", "canonical work-item URN"),
@@ -339,7 +339,7 @@ var contentCommands = []Command{
 		Summary: "append merge evidence for a declared merge unit",
 		Flags: []Flag{
 			optional("commit", "REV", "full merge commit OID (alias for --merge-oid)"),
-			optional("epic", "ID", "epic id or URN; when creating epic content it defaults to the app's only epic (or a first epic named after the branch), otherwise it must name the epic that holds the record"),
+			optional("feature", "ID", "feature id or URN; when creating feature content it defaults to the app's only feature (or a first feature named after the branch), otherwise it must name the feature that holds the record"),
 			optional("event", "ID", "stable event id; generated when omitted"),
 			repeatable("from", "FROM", "current merge head event URN; repeatable for reconciliation", false),
 			optional("head-oid", "HEAD_OID", "full delivered head OID"),
@@ -363,7 +363,7 @@ var contentCommands = []Command{
 			repeatable("contract", "CONTRACT", "contract or contract-revision URN; repeatable", false),
 			repeatable("deliverable", "TEXT", "declared deliverable; repeatable", true),
 			repeatable("dependency", "DEPENDENCY", "dependency URN; repeatable", false),
-			optional("epic", "ID", "epic id or URN; when creating epic content it defaults to the app's only epic (or a first epic named after the branch), otherwise it must name the epic that holds the record"),
+			optional("feature", "ID", "feature id or URN; when creating feature content it defaults to the app's only feature (or a first feature named after the branch), otherwise it must name the feature that holds the record"),
 			required("item", "URN", "canonical work-item URN"),
 			{Name: "json", Description: "emit a machine-readable result"},
 			repeatable("merge-unit", "MERGE_UNIT", "merge-unit JSON object; repeatable", false),
@@ -384,7 +384,7 @@ var contentCommands = []Command{
 		Summary: "append a complete wave revision as sequencing or convergence changes",
 		Flags: []Flag{
 			repeatable("entry-condition", "ENTRY_CONDITION", "complete entry condition; repeatable", false),
-			optional("epic", "ID", "epic id or URN; when creating epic content it defaults to the app's only epic (or a first epic named after the branch), otherwise it must name the epic that holds the record"),
+			optional("feature", "ID", "feature id or URN; when creating feature content it defaults to the app's only feature (or a first feature named after the branch), otherwise it must name the feature that holds the record"),
 			repeatable("exit-condition", "EXIT_CONDITION", "complete exit condition; repeatable", false),
 			{Name: "json", Description: "emit a machine-readable result"},
 			required("objective", "TEXT", "complete revised objective"),
@@ -399,12 +399,12 @@ var contentCommands = []Command{
 	},
 	{
 		Name: "prototype add-external", Status: StatusImplemented, Mutates: true, Writes: []string{"prototype", "prototype-revision"},
-		Usage:   "change-saga prototype add-external --epic ID --id ID --revision ID --title TEXT --url URL [--embed-url URL --provider ID --embed-origin ORIGIN] [flags] <saga>",
+		Usage:   "change-saga prototype add-external --feature ID --id ID --revision ID --title TEXT --url URL [--embed-url URL --provider ID --embed-origin ORIGIN] [flags] <saga>",
 		Summary: "add a prototype that lives outside the Saga",
 		Flags: []Flag{
 			optional("embed-origin", "ORIGIN", "allowlisted embed origin; must equal the --embed-url origin"),
 			optional("embed-url", "URL", "explicitly allowed https embed URL"),
-			required("epic", "ID", "epic id or URN; when creating epic content it defaults to the app's only epic (or a first epic named after the branch), otherwise it must name the epic that holds the record"),
+			required("feature", "ID", "feature id or URN; when creating feature content it defaults to the app's only feature (or a first feature named after the branch), otherwise it must name the feature that holds the record"),
 			optional("fallback-url", "FALLBACK_URL", "link shown when the embed cannot render; defaults to --url"),
 			required("id", "ID", "stable prototype id"),
 			{Name: "json", Description: "emit a machine-readable result"},
@@ -426,7 +426,7 @@ var contentCommands = []Command{
 		Flags: []Flag{
 			optional("embed-origin", "EMBED_ORIGIN", "allowlisted embed origin; must equal the --embed-url origin"),
 			optional("embed-url", "EMBED_URL", "explicitly allowed https embed URL"),
-			optional("epic", "ID", "epic id or URN; when creating epic content it defaults to the app's only epic (or a first epic named after the branch), otherwise it must name the epic that holds the record"),
+			optional("feature", "ID", "feature id or URN; when creating feature content it defaults to the app's only feature (or a first feature named after the branch), otherwise it must name the feature that holds the record"),
 			optional("fallback-url", "FALLBACK_URL", "link shown when the embed cannot render; defaults to --url"),
 			{Name: "json", Description: "emit a machine-readable result"},
 			repeatable("parent", "URN", "current revision head URN; repeatable", true),
@@ -510,8 +510,8 @@ var contentCommands = []Command{
 		Usage:   "change-saga set-fragment-content --target TARGET --source FILE|- [--json|--quiet] <saga>",
 		Summary: "replace a fragment entrypoint through the supported authoring API",
 		Flags: []Flag{
-			optional("app", "APP", "author into the app-level design system instead of an epic: designsystem"),
-			optional("epic", "ID", "epic id or URN; when creating epic content it defaults to the app's only epic (or a first epic named after the branch), otherwise it must name the epic that holds the record"),
+			optional("app", "APP", "author into the app-level design system instead of a feature: designsystem"),
+			optional("feature", "ID", "feature id or URN; when creating feature content it defaults to the app's only feature (or a first feature named after the branch), otherwise it must name the feature that holds the record"),
 			{Name: "json", Description: "emit one machine-readable JSON result"},
 			{Name: "quiet", Description: "suppress successful output"},
 			required("source", "FILE|-", "content file, or - for standard input"),
@@ -524,7 +524,7 @@ var contentCommands = []Command{
 		Usage:   "change-saga set-slide-content [--review ID] --target TARGET --source FILE|- [--json|--quiet] <saga>",
 		Summary: "replace a slide's visual entrypoint while preserving its stable target and items",
 		Flags: []Flag{
-			optional("epic", "ID", "epic id or URN; when creating epic content it defaults to the app's only epic (or a first epic named after the branch), otherwise it must name the epic that holds the record"),
+			optional("feature", "ID", "feature id or URN; when creating feature content it defaults to the app's only feature (or a first feature named after the branch), otherwise it must name the feature that holds the record"),
 			{Name: "json", Description: "emit one machine-readable JSON result"},
 			{Name: "quiet", Description: "suppress successful output"},
 			optional("review", "ID", "the pull request review whose slide is replaced"),

@@ -10,5 +10,5 @@
     "type": "element",
     "element_id": "comparison"
   },
-  "record": "urn:change-saga:app:epic:comparison"
+  "record": "urn:change-saga:app:feature:comparison"
 }

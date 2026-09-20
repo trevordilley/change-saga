@@ -12,7 +12,7 @@ import (
 func TestEveryQueryEnvelopeCarriesTheSchemaAndASnapshot(t *testing.T) {
 	root, repo := coveredSaga(t)
 	var output bytes.Buffer
-	if err := AddDeck(context.Background(), []string{"--epic", testEpic, "--objective", "Explain the change.", root, "implementation"}, &output); err != nil {
+	if err := AddDeck(context.Background(), []string{"--feature", testFeature, "--objective", "Explain the change.", root, "implementation"}, &output); err != nil {
 		t.Fatal(err)
 	}
 	if err := AddSlide(context.Background(), []string{"--deck", "implementation", "--intent", "explain", "--layout", "diagram", root, "flow"}, &output); err != nil {

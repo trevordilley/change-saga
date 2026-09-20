@@ -18,7 +18,7 @@
     "body": { "type": "string", "minLength": 1, "maxLength": 240 },
     "placement": { "enum": ["top", "right", "bottom", "left", "overlay"] },
     "leader": { "enum": ["none", "line", "arrow"] },
-    "record": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:(persona|epic|story|test-case|deck|slide|chapter|section|fragment):[A-Za-z0-9][A-Za-z0-9._-]{0,127}$", "description": "The record the Item points at. Required on onboarding Items (a persona, epic, or story). Optional on review Items: the documentation record to open beside the change. Implementation Items reference code instead." }
+    "record": { "type": "string", "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:(persona|feature|story|test-case|deck|slide|chapter|section|fragment):[A-Za-z0-9][A-Za-z0-9._-]{0,127}$", "description": "The record the Item points at. Required on onboarding Items (a persona, feature, or story). Optional on review Items: the documentation record to open beside the change. Implementation Items reference code instead." }
   },
   "allOf": [
     {

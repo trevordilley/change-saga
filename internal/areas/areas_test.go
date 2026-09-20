@@ -21,12 +21,12 @@ func TestFirstChangeCoversOnlyImplementation(t *testing.T) {
 	for _, atom := range atoms {
 		owners[atom.Key] = []string{"item:one"}
 	}
-	report := Evaluate(Inputs{Scope: Scope{Kind: ScopeChange, Against: "main", Head: "HEAD"}, Atoms: atoms, Owners: owners, TargetEpic: map[string]string{"item:one": "first"}})
+	report := Evaluate(Inputs{Scope: Scope{Kind: ScopeChange, Against: "main", Head: "HEAD"}, Atoms: atoms, Owners: owners, TargetFeature: map[string]string{"item:one": "first"}})
 	implementation := report.Areas.Implementation
 	if implementation.Total != 5 || implementation.Covered != 5 || !implementation.Complete || implementation.Unit != UnitChangedLine {
 		t.Fatalf("implementation = %+v", implementation)
 	}
-	if got := implementation.CoveredEntries[0]; got.Resource != "a.go" || got.Lines != "1-3,7" || got.Count != 4 || got.Epic != "first" {
+	if got := implementation.CoveredEntries[0]; got.Resource != "a.go" || got.Lines != "1-3,7" || got.Count != 4 || got.Feature != "first" {
 		t.Fatalf("covered entry = %+v", got)
 	}
 	for _, area := range []Area{report.Areas.Stories, report.Areas.Personas} {
@@ -73,15 +73,15 @@ func TestChainFollowsEachLink(t *testing.T) {
 	check(report.Areas.Quality, 1, 3)
 }
 
-// --epic keeps the lines the epic's records own plus the lines no record
-// owns, since an unowned line could belong to any epic.
-func TestEpicNarrowsScope(t *testing.T) {
+// --feature keeps the lines the feature's records own plus the lines no record
+// owns, since an unowned line could belong to any feature.
+func TestFeatureNarrowsScope(t *testing.T) {
 	atoms := []gitdiff.Atom{line("a.go", 1), line("b.go", 1), line("c.go", 1)}
 	report := Evaluate(Inputs{
-		Scope: Scope{Kind: ScopeChange, Epic: "one"}, Atoms: atoms,
-		Owners:     map[string][]string{atoms[0].Key: {"item:one"}, atoms[1].Key: {"item:two"}},
-		TargetEpic: map[string]string{"item:one": "one", "item:two": "two"},
-		Problems:   []Problem{{Resource: "rel:two", Epic: "two", Reason: "stale"}, {Resource: "rel:one", Epic: "one", Reason: "stale"}},
+		Scope: Scope{Kind: ScopeChange, Feature: "one"}, Atoms: atoms,
+		Owners:        map[string][]string{atoms[0].Key: {"item:one"}, atoms[1].Key: {"item:two"}},
+		TargetFeature: map[string]string{"item:one": "one", "item:two": "two"},
+		Problems:      []Problem{{Resource: "rel:two", Feature: "two", Reason: "stale"}, {Resource: "rel:one", Feature: "one", Reason: "stale"}},
 	})
 	if area := report.Areas.Implementation; area.Covered != 1 || area.Total != 2 {
 		t.Fatalf("implementation = %+v", area)

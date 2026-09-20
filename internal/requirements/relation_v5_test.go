@@ -34,7 +34,7 @@ func newV5Saga(t *testing.T) string {
 }
 
 func verifiesInput() AddRelationInput {
-	return AddRelationInput{Epic: "core",
+	return AddRelationInput{Feature: "core",
 		ID: "fast-path-verifies-fast", Type: RelationVerifies, From: v5TestCase, To: v5Criterion,
 		Rationale: "The case exercises the fast path.", FromRevision: v5TestCaseR1, ToRevision: v5StoryR1, CreatedAt: testTime,
 	}
@@ -79,7 +79,7 @@ func TestV5SagaWritesSchemaValidTestCaseVerifiesRelation(t *testing.T) {
 	if relation.Version != V5RelationVersion || relation.Schema != V5RelationSchemaURL || relation.Scope != ScopeSelf {
 		t.Fatalf("relation = %#v", relation)
 	}
-	if _, err := AddRelation(root, "test", AddRelationInput{Epic: "core", ID: "fast-path-verifies-fast", Type: RelationVerifies, From: v5TestCase, To: v5Criterion,
+	if _, err := AddRelation(root, "test", AddRelationInput{Feature: "core", ID: "fast-path-verifies-fast", Type: RelationVerifies, From: v5TestCase, To: v5Criterion,
 		Rationale: "The case exercises the fast path.", FromRevision: v5TestCaseR1, ToRevision: v5StoryR1, RequestID: "no-replay"}); err == nil {
 		t.Fatal("duplicate relation id was accepted")
 	}
@@ -119,7 +119,7 @@ func TestV3RelationRecordsStillLoad(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	if err := os.WriteFile(filepath.Join(root, "___epics", "core.epic", "___requirements", "relations", "refines.json"), data, 0o644); err != nil {
+	if err := os.WriteFile(filepath.Join(root, "___features", "core.feature", "___requirements", "relations", "refines.json"), data, 0o644); err != nil {
 		t.Fatal(err)
 	}
 	document, err := Load(root, "test")
@@ -167,12 +167,12 @@ func TestV5RelationMatrixAndScope(t *testing.T) {
 			}
 		})
 	}
-	explains := AddRelationInput{Epic: "core", ID: "deck-explains", Type: RelationExplains, From: "urn:change-saga:test:deck:flow", To: v5Criterion,
+	explains := AddRelationInput{Feature: "core", ID: "deck-explains", Type: RelationExplains, From: "urn:change-saga:test:deck:flow", To: v5Criterion,
 		Rationale: "The deck walks the flow.", ToRevision: v5StoryR1, Scope: ScopeDescendants}
 	if _, err := AddRelation(root, "test", explains); err != nil {
 		t.Fatalf("deck descendants explains: %v", err)
 	}
-	supersedes := AddRelationInput{Epic: "core", ID: "tc-supersedes", Type: RelationSupersedes, From: v5TestCase, To: "urn:change-saga:test:test-case:old-path", Rationale: "Replaces the old case."}
+	supersedes := AddRelationInput{Feature: "core", ID: "tc-supersedes", Type: RelationSupersedes, From: v5TestCase, To: "urn:change-saga:test:test-case:old-path", Rationale: "Replaces the old case."}
 	if _, err := AddRelation(root, "test", supersedes); err != nil {
 		t.Fatalf("test-case supersedes: %v", err)
 	}

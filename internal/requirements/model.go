@@ -113,9 +113,9 @@ type Citation struct {
 	CreatedAt time.Time    `json:"created_at"`
 	RequestID string       `json:"request_id,omitempty"`
 
-	// Epic is the epic whose directory holds the record. It is where the
+	// Feature is the feature whose directory holds the record. It is where the
 	// record lives, never part of its identity.
-	Epic string `json:"-"`
+	Feature string `json:"-"`
 }
 
 type RelationType string
@@ -170,14 +170,14 @@ type Relation struct {
 
 	Stale        bool     `json:"-"`
 	StaleReasons []string `json:"-"`
-	// Epic is the epic whose directory holds the record.
-	Epic string `json:"-"`
+	// Feature is the feature whose directory holds the record.
+	Feature string `json:"-"`
 }
 
 type Story struct {
-	// Epic is the epic whose directory holds the story. Moving a story
-	// between epics changes only this; its URN and every pin stay the same.
-	Epic      string
+	// Feature is the feature whose directory holds the story. Moving a story
+	// between features changes only this; its URN and every pin stay the same.
+	Feature   string
 	Identity  StoryIdentity
 	Revisions []Revision
 	Events    []LifecycleEvent
@@ -194,7 +194,7 @@ func (story Story) LifecycleConflict() bool { return len(story.LifecycleHeads) >
 type Document struct {
 	Root      string
 	SagaID    string
-	Epics     []applayout.Epic
+	Features  []applayout.Feature
 	Personas  []Persona
 	Flags     []Flag
 	Terms     []Term
@@ -225,8 +225,8 @@ type LoadOptions struct {
 }
 
 type AddStoryInput struct {
-	// Epic is the epic the new story is written into.
-	Epic               string
+	// Feature is the feature the new story is written into.
+	Feature            string
 	ID                 string
 	RevisionID         string
 	EventID            string
@@ -302,7 +302,7 @@ type SetStoryStateInput struct {
 }
 
 type AddCitationInput struct {
-	Epic      string
+	Feature   string
 	ID        string
 	Kind      CitationKind
 	Title     string
@@ -312,7 +312,7 @@ type AddCitationInput struct {
 }
 
 type AddRelationInput struct {
-	Epic              string
+	Feature           string
 	ID                string
 	Type              RelationType
 	From              string

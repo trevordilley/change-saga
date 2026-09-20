@@ -15,14 +15,14 @@ import (
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
-// appSaga authors, through the domain writers, an app Saga with two epics:
+// appSaga authors, through the domain writers, an app Saga with two features:
 // main holds wallet (serving shopper, gated by wallet-flag); legacy holds
 // fax-a and fax-b (serving only faxer, gated by legacy-flag through their
-// epic). faxer is retired, and clerk is an active persona nothing serves.
+// feature). faxer is retired, and clerk is an active persona nothing serves.
 func appSaga(t *testing.T) string {
 	t.Helper()
 	root := livingFixture(t)
-	if _, err := applayout.WriteEpic(root, applayout.EpicManifest{ID: "legacy", Title: "Legacy", CreatedAt: fixtureTime}); err != nil {
+	if _, err := applayout.WriteFeature(root, applayout.FeatureManifest{ID: "legacy", Title: "Legacy", CreatedAt: fixtureTime}); err != nil {
 		t.Fatal(err)
 	}
 	persona := func(id string) string {
@@ -35,9 +35,9 @@ func appSaga(t *testing.T) string {
 	}
 	faxer := persona("faxer")
 	persona("clerk")
-	story := func(epic, id string, personas ...string) {
+	story := func(feature, id string, personas ...string) {
 		t.Helper()
-		if _, err := requirements.AddStory(root, "test", requirements.AddStoryInput{Epic: epic, Personas: personas, ID: id, RevisionID: "r1", EventID: "proposed", Title: id, Statement: "Deliver " + id, Priority: "high", Citations: []string{}, AcceptanceCriteria: []requirements.Criterion{{ID: "works", Statement: id + " works"}}, CreatedAt: fixtureTime, RequestID: "story-" + id}); err != nil {
+		if _, err := requirements.AddStory(root, "test", requirements.AddStoryInput{Feature: feature, Personas: personas, ID: id, RevisionID: "r1", EventID: "proposed", Title: id, Statement: "Deliver " + id, Priority: "high", Citations: []string{}, AcceptanceCriteria: []requirements.Criterion{{ID: "works", Statement: id + " works"}}, CreatedAt: fixtureTime, RequestID: "story-" + id}); err != nil {
 			t.Fatal(err)
 		}
 		urn, _ := livingid.Story("test", id)
@@ -46,7 +46,7 @@ func appSaga(t *testing.T) string {
 			t.Fatal(err)
 		}
 	}
-	story(fixtureEpic, "wallet", fixturePersona())
+	story(fixtureFeature, "wallet", fixturePersona())
 	story("legacy", "fax-a", faxer)
 	story("legacy", "fax-b", faxer)
 	parent, _ := requirements.PersonaEventURN("test", "faxer", "active")
@@ -61,7 +61,7 @@ func appSaga(t *testing.T) string {
 		}
 	}
 	flag("wallet-flag", wallet)
-	flag("legacy-flag", applayout.EpicURN("test", "legacy"))
+	flag("legacy-flag", applayout.FeatureURN("test", "legacy"))
 	return root
 }
 
@@ -110,27 +110,27 @@ func flagURN(id string) string {
 	return urn
 }
 
-func TestAppStatusGroupsStoriesByEpic(t *testing.T) {
+func TestAppStatusGroupsStoriesByFeature(t *testing.T) {
 	status := loadAppStatus(t, appSaga(t))
-	if len(status.Epics) != 2 {
-		t.Fatalf("epics = %+v", status.Epics)
+	if len(status.Features) != 2 {
+		t.Fatalf("features = %+v", status.Features)
 	}
-	byID := map[string]EpicStatus{}
-	for _, epic := range status.Epics {
-		byID[epic.ID] = epic
+	byID := map[string]FeatureStatus{}
+	for _, feature := range status.Features {
+		byID[feature.ID] = feature
 	}
-	if got := byID["legacy"]; got.Epic != applayout.EpicURN("test", "legacy") || !reflect.DeepEqual(got.Stories, storyURNs("fax-a", "fax-b")) {
-		t.Fatalf("legacy epic = %+v", got)
+	if got := byID["legacy"]; got.Feature != applayout.FeatureURN("test", "legacy") || !reflect.DeepEqual(got.Stories, storyURNs("fax-a", "fax-b")) {
+		t.Fatalf("legacy feature = %+v", got)
 	}
 	if got := byID["legacy"].GatedBy; !reflect.DeepEqual(got, []string{flagURN("legacy-flag")}) {
-		t.Fatalf("an off flag targeting the epic gates it: %v", got)
+		t.Fatalf("an off flag targeting the feature gates it: %v", got)
 	}
-	if got := byID[fixtureEpic]; !reflect.DeepEqual(got.Stories, storyURNs("wallet")) || len(got.GatedBy) != 0 {
-		t.Fatalf("main epic = %+v", got)
+	if got := byID[fixtureFeature]; !reflect.DeepEqual(got.Stories, storyURNs("wallet")) || len(got.GatedBy) != 0 {
+		t.Fatalf("main feature = %+v", got)
 	}
 	for _, id := range []string{"fax-a", "fax-b"} {
-		if row := storyRow(t, status, id); row.Epic != "legacy" {
-			t.Fatalf("%s epic = %q", id, row.Epic)
+		if row := storyRow(t, status, id); row.Feature != "legacy" {
+			t.Fatalf("%s feature = %q", id, row.Feature)
 		}
 	}
 }
@@ -187,7 +187,7 @@ func TestAppStatusReportsPersonaGapsAndOneOrphanGroup(t *testing.T) {
 	}
 }
 
-func TestOffFlagGatesStoriesDirectlyAndThroughTheirEpic(t *testing.T) {
+func TestOffFlagGatesStoriesDirectlyAndThroughTheirFeature(t *testing.T) {
 	root := appSaga(t)
 	status := loadAppStatus(t, root)
 	wallet := storyRow(t, status, "wallet")
@@ -197,7 +197,7 @@ func TestOffFlagGatesStoriesDirectlyAndThroughTheirEpic(t *testing.T) {
 	for _, id := range []string{"fax-a", "fax-b"} {
 		row := storyRow(t, status, id)
 		if !reflect.DeepEqual(row.GatedBy, []string{flagURN("legacy-flag")}) || row.Availability == AvailabilityEnabled {
-			t.Fatalf("an off flag targeting the epic gates %s: %+v", id, row)
+			t.Fatalf("an off flag targeting the feature gates %s: %+v", id, row)
 		}
 	}
 
@@ -225,12 +225,12 @@ func TestOffFlagGatesStoriesDirectlyAndThroughTheirEpic(t *testing.T) {
 	status = loadAppStatus(t, root)
 	for _, id := range []string{"fax-a", "fax-b"} {
 		if row := storyRow(t, status, id); len(row.GatedBy) != 0 {
-			t.Fatalf("an on flag targeting the epic no longer gates %s: %+v", id, row)
+			t.Fatalf("an on flag targeting the feature no longer gates %s: %+v", id, row)
 		}
 	}
-	for _, epic := range status.Epics {
-		if len(epic.GatedBy) != 0 {
-			t.Fatalf("an epic whose only flag is on is not gated: %+v", epic)
+	for _, feature := range status.Features {
+		if len(feature.GatedBy) != 0 {
+			t.Fatalf("a feature whose only flag is on is not gated: %+v", feature)
 		}
 	}
 }

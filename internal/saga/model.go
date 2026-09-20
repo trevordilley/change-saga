@@ -87,7 +87,7 @@ type ItemManifest struct {
 	Body        string           `json:"body,omitempty"`
 	Placement   string           `json:"placement,omitempty"`
 	Leader      string           `json:"leader,omitempty"`
-	// Record is the persona, epic, or story URN an onboarding Item explains.
+	// Record is the persona, feature, or story URN an onboarding Item explains.
 	// Only onboarding Items carry it; implementation Items reference code.
 	Record string `json:"record,omitempty"`
 }
@@ -299,18 +299,18 @@ type Saga struct {
 	Root     string   `json:"root"`
 	Manifest Manifest `json:"manifest"`
 	// Section is the one app-wide tree every target index walks: the app's
-	// overview and design system, every epic's report content and design,
+	// overview and design system, every feature's report content and design,
 	// and the projected decks, joined beneath the app root.
 	Section *Section `json:"section"`
-	// Decks are every epic's implementation decks.
+	// Decks are every feature's implementation decks.
 	Decks []*Deck `json:"decks,omitempty"`
 	// Overview and DesignSystem are the app-level report roots, or nil.
 	Overview     *Section `json:"overview,omitempty"`
 	DesignSystem *Section `json:"design_system,omitempty"`
 	// Onboarding is the app's onboarding deck, whose Items reference records.
 	Onboarding []*Deck `json:"onboarding,omitempty"`
-	// Epics groups the same nodes by durable product domain.
-	Epics []*Epic `json:"epics,omitempty"`
+	// Features groups the same nodes by durable product domain.
+	Features []*Feature `json:"features,omitempty"`
 	// Reviews are the pull requests' review decks. They are not
 	// documentation and never count toward coverage.
 	Reviews       []*Review      `json:"reviews,omitempty"`

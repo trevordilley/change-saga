@@ -19,70 +19,70 @@ import (
 	"github.com/twentyideas/changesaga/internal/workplan"
 )
 
-// Epic content is always written to an epic. Every command that authors epic
-// content accepts --epic: a command that creates a new top-level record
+// Feature content is always written to a feature. Every command that authors feature
+// content accepts --feature: a command that creates a new top-level record
 // writes into it, and a command that changes an existing record accepts it as
-// an assertion, since the record's own location already decides its epic.
-// A creating command without --epic uses the app's only epic, or creates the
+// an assertion, since the record's own location already decides its feature.
+// A creating command without --feature uses the app's only feature, or creates the
 // first one from the branch name, and says which it chose.
-const epicFlagHelp = "epic id or URN; when creating epic content it defaults to the app's only epic (or a first epic named after the branch), otherwise it must name the epic that holds the record"
+const featureIDFlagHelp = "feature id or URN; when creating feature content it defaults to the app's only feature (or a first feature named after the branch), otherwise it must name the feature that holds the record"
 
-func epicFlag(flags *flag.FlagSet) *string {
-	return flags.String("epic", "", epicFlagHelp)
+func featureIDFlag(flags *flag.FlagSet) *string {
+	return flags.String("feature", "", featureIDFlagHelp)
 }
 
-// epicNotices receives what an omitted --epic resolved to. It is stderr, so
+// featureNotices receives what an omitted --feature resolved to. It is stderr, so
 // a --json result on stdout stays one JSON value.
-var epicNotices io.Writer = os.Stderr
+var featureNotices io.Writer = os.Stderr
 
-// requireEpic resolves the epic a creating command writes into.
-func requireEpic(root, value string) (applayout.Epic, error) {
+// requireFeature resolves the feature a creating command writes into.
+func requireFeature(root, value string) (applayout.Feature, error) {
 	manifest, err := saga.ReadManifest(root)
 	if err != nil {
-		return applayout.Epic{}, err
+		return applayout.Feature{}, err
 	}
 	if strings.TrimSpace(value) != "" {
 		return applayout.Require(root, manifest.ID, value)
 	}
-	return defaultEpic(root, manifest)
+	return defaultFeature(root, manifest)
 }
 
-// defaultEpic is the epic a creating command uses when --epic is omitted:
-// the app's only epic, or, when the app has none, a first epic named after
+// defaultFeature is the feature a creating command uses when --feature is omitted:
+// the app's only feature, or, when the app has none, a first feature named after
 // the branch (the closest thing to the pull request's title that is always
-// at hand). With several epics the author must choose. Nothing is locked in:
-// no story, deck, or slide URN names its epic, so stories can move later.
-func defaultEpic(root string, manifest saga.Manifest) (applayout.Epic, error) {
-	epics, err := applayout.Epics(root)
+// at hand). With several features the author must choose. Nothing is locked in:
+// no story, deck, or slide URN names its feature, so stories can move later.
+func defaultFeature(root string, manifest saga.Manifest) (applayout.Feature, error) {
+	features, err := applayout.Features(root)
 	if err != nil {
-		return applayout.Epic{}, err
+		return applayout.Feature{}, err
 	}
-	switch len(epics) {
+	switch len(features) {
 	case 1:
-		fmt.Fprintf(epicNotices, "Using epic %q, the app's only epic (pass --epic to choose another)\n", epics[0].ID)
-		return epics[0], nil
+		fmt.Fprintf(featureNotices, "Using feature %q, the app's only feature (pass --feature to choose another)\n", features[0].ID)
+		return features[0], nil
 	case 0:
-		id, title, source := firstEpicName(root, manifest)
-		epic, err := applayout.WriteEpic(root, applayout.EpicManifest{ID: id, Title: title, CreatedAt: time.Now().UTC()})
+		id, title, source := firstFeatureName(root, manifest)
+		feature, err := applayout.WriteFeature(root, applayout.FeatureManifest{ID: id, Title: title, CreatedAt: time.Now().UTC()})
 		if err != nil {
-			// A concurrent command may have created the same first epic.
-			if again, findErr := applayout.Epics(root); findErr == nil {
+			// A concurrent command may have created the same first feature.
+			if again, findErr := applayout.Features(root); findErr == nil {
 				if found, ok := applayout.Find(again, id); ok {
 					return found, nil
 				}
 			}
-			return applayout.Epic{}, err
+			return applayout.Feature{}, err
 		}
-		fmt.Fprintf(epicNotices, "Created epic %q (%q), named after %s, for this content; stories can move to other epics later without breaking a link\n", id, title, source)
-		return epic, nil
+		fmt.Fprintf(featureNotices, "Created feature %q (%q), named after %s, for this content; stories can move to other features later without breaking a link\n", id, title, source)
+		return feature, nil
 	}
 	return applayout.Require(root, manifest.ID, "")
 }
 
-// firstEpicName derives the first epic's id and title from the current
+// firstFeatureName derives the first feature's id and title from the current
 // branch, ignoring prefixes such as feature/; on a default branch, or outside
 // Git, it falls back to the app's own name.
-func firstEpicName(root string, manifest saga.Manifest) (id, title, source string) {
+func firstFeatureName(root string, manifest saga.Manifest) (id, title, source string) {
 	output, err := exec.Command("git", "-C", root, "symbolic-ref", "--short", "-q", "HEAD").Output()
 	branch := strings.TrimSpace(string(output))
 	if err == nil && branch != "" {
@@ -112,45 +112,45 @@ func humanTitle(id string) string {
 	return strings.Join(words, " ")
 }
 
-// assertEpic checks an optional --epic against the epic that holds an
+// assertFeature checks an optional --feature against the feature that holds an
 // existing record.
-func assertEpic(root, value, record, holding string) error {
+func assertFeature(root, value, record, holding string) error {
 	if strings.TrimSpace(value) == "" {
 		return nil
 	}
-	epic, err := requireEpic(root, value)
+	feature, err := requireFeature(root, value)
 	if err != nil {
 		return err
 	}
-	if epic.ID != holding {
-		return fmt.Errorf("%s is in epic %q, not %q; --epic must name the epic that holds it", record, holding, epic.ID)
+	if feature.ID != holding {
+		return fmt.Errorf("%s is in feature %q, not %q; --feature must name the feature that holds it", record, holding, feature.ID)
 	}
 	return nil
 }
 
-// Epic dispatches the epic command family.
-func Epic(ctx context.Context, args []string, out io.Writer) error {
+// Feature dispatches the feature command family.
+func Feature(ctx context.Context, args []string, out io.Writer) error {
 	if len(args) == 0 || args[0] == "-h" || args[0] == "--help" {
-		return livingFamilyHelp("epic", []string{"add"}, out)
+		return livingFamilyHelp("feature", []string{"add"}, out)
 	}
 	var err error
 	switch args[0] {
 	case "add":
-		err = epicAdd(ctx, args[1:], out)
+		err = featureAdd(ctx, args[1:], out)
 	default:
-		err = fmt.Errorf("usage: %s", commandUsage["epic"])
+		err = fmt.Errorf("usage: %s", commandUsage["feature"])
 	}
 	if err != nil && jsonFlagRequested(args) {
-		return reportLivingMutationFailure(out, "epic "+args[0], err)
+		return reportLivingMutationFailure(out, "feature "+args[0], err)
 	}
 	return err
 }
 
-func epicAdd(_ context.Context, args []string, out io.Writer) error {
-	name := "epic add"
+func featureAdd(_ context.Context, args []string, out io.Writer) error {
+	name := "feature add"
 	flags := commandFlags(name, commandUsage[name], out)
-	id := flags.String("id", "", "stable epic id")
-	title := flags.String("title", "", "epic title: the product domain it covers")
+	id := flags.String("id", "", "stable feature id")
+	title := flags.String("title", "", "feature title: the product domain it covers")
 	description := flags.String("description", "", "what the domain covers")
 	requestID := flags.String("request-id", "", "idempotency key")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
@@ -168,22 +168,22 @@ func epicAdd(_ context.Context, args []string, out io.Writer) error {
 	if *requestID != "" && !applayout.ValidID(*requestID) {
 		return fmt.Errorf("--request-id must be a stable identifier")
 	}
-	urn := applayout.EpicURN(manifest.ID, *id)
-	path := applayout.EpicRel(*id)
+	urn := applayout.FeatureURN(manifest.ID, *id)
+	path := applayout.FeatureRel(*id)
 	var replayed bool
 	err = store.WithSagaLock(root, store.DefaultLockTimeout, func() error {
-		epics, err := applayout.Epics(root)
+		features, err := applayout.Features(root)
 		if err != nil {
 			return err
 		}
-		if existing, ok := applayout.Find(epics, *id); ok {
+		if existing, ok := applayout.Find(features, *id); ok {
 			if *requestID != "" && existing.RequestID == *requestID && existing.Title == strings.TrimSpace(*title) && existing.Description == strings.TrimSpace(*description) {
 				replayed = true
 				return nil
 			}
-			return fmt.Errorf("epic %q already exists", *id)
+			return fmt.Errorf("feature %q already exists", *id)
 		}
-		_, err = applayout.WriteEpic(root, applayout.EpicManifest{
+		_, err = applayout.WriteFeature(root, applayout.FeatureManifest{
 			ID: *id, Title: strings.TrimSpace(*title), Description: strings.TrimSpace(*description),
 			CreatedAt: time.Now().UTC(), RequestID: *requestID,
 		})
@@ -342,7 +342,7 @@ func flagAdd(_ context.Context, args []string, out io.Writer) error {
 	requestID := flags.String("request-id", "", "idempotency key")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
 	var targets stringList
-	flags.Var(&targets, "target", "story or epic URN the flag gates; repeatable")
+	flags.Var(&targets, "target", "story or feature URN the flag gates; repeatable")
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
 	}
@@ -380,7 +380,7 @@ func flagRevise(_ context.Context, args []string, out io.Writer) error {
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
 	var parents, targets stringList
 	flags.Var(&parents, "parent", "current revision head URN; repeatable")
-	flags.Var(&targets, "target", "complete set of story or epic URNs the flag gates; repeatable")
+	flags.Var(&targets, "target", "complete set of story or feature URNs the flag gates; repeatable")
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
 	}
@@ -436,16 +436,16 @@ func storyMove(_ context.Context, args []string, out io.Writer) error {
 	name := "story move"
 	flags := commandFlags(name, commandUsage[name], out)
 	story := flags.String("story", "", "canonical story URN")
-	epic := flags.String("epic", "", "epic id or URN the story moves to")
+	feature := flags.String("feature", "", "feature id or URN the story moves to")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
 	}
-	if err := requireLivingArgs(flags, *story, *epic); err != nil {
+	if err := requireLivingArgs(flags, *story, *feature); err != nil {
 		return err
 	}
 	root := flags.Arg(0)
-	target, err := requireEpic(root, *epic)
+	target, err := requireFeature(root, *feature)
 	if err != nil {
 		return err
 	}
@@ -453,7 +453,7 @@ func storyMove(_ context.Context, args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
-	result, err := requirements.MoveStory(root, sagaID, requirements.MoveStoryInput{Story: *story, Epic: target.ID})
+	result, err := requirements.MoveStory(root, sagaID, requirements.MoveStoryInput{Story: *story, Feature: target.ID})
 	if err != nil {
 		return err
 	}
@@ -462,15 +462,15 @@ func storyMove(_ context.Context, args []string, out io.Writer) error {
 	}
 	verb := "Moved"
 	if result.Replayed {
-		verb = "Already in epic " + target.ID + ":"
+		verb = "Already in feature " + target.ID + ":"
 	}
 	fmt.Fprintf(out, "%s %s\nPath: %s\n", verb, result.URN, result.Path)
 	return nil
 }
 
-// recordEpic returns the epic that holds the record named by urn. Nested URNs
+// recordFeature returns the feature that holds the record named by urn. Nested URNs
 // (a criterion, revision, Item, or landmark) resolve through their parent.
-func recordEpic(root, urn string) (string, error) {
+func recordFeature(root, urn string) (string, error) {
 	parts := strings.Split(urn, ":")
 	if len(parts) < 5 || parts[0] != "urn" || parts[1] != "change-saga" {
 		return "", fmt.Errorf("%q is not a canonical Saga URN", urn)
@@ -486,18 +486,18 @@ func recordEpic(root, urn string) (string, error) {
 		switch kind {
 		case "story":
 			if story := document.FindStory(id); story != nil {
-				return story.Epic, nil
+				return story.Feature, nil
 			}
 		case "citation":
 			for _, citation := range document.Citations {
 				if citation.ID == id {
-					return citation.Epic, nil
+					return citation.Feature, nil
 				}
 			}
 		case "relation":
 			for _, relation := range document.Relations {
 				if relation.ID == id {
-					return relation.Epic, nil
+					return relation.Feature, nil
 				}
 			}
 		}
@@ -509,7 +509,7 @@ func recordEpic(root, urn string) (string, error) {
 		}
 		for _, prototype := range document.Prototypes {
 			if prototype.Identity.ID == id {
-				return prototype.Epic, nil
+				return prototype.Feature, nil
 			}
 		}
 		return "", missing
@@ -520,12 +520,12 @@ func recordEpic(root, urn string) (string, error) {
 		}
 		for _, testCase := range document.TestCases {
 			if kind == "test-case" && testCase.Identity.ID == id {
-				return testCase.Epic, nil
+				return testCase.Feature, nil
 			}
 		}
 		for _, policy := range document.Policies {
 			if kind == "quality-policy" && policy.ID == id {
-				return policy.Epic, nil
+				return policy.Feature, nil
 			}
 		}
 		return "", missing
@@ -536,17 +536,17 @@ func recordEpic(root, urn string) (string, error) {
 		}
 		switch {
 		case kind == "wave" && plan.Waves[id] != nil:
-			return plan.Waves[id].Epic, nil
+			return plan.Waves[id].Feature, nil
 		case kind == "work-item" && plan.WorkItems[id] != nil:
-			return plan.WorkItems[id].Epic, nil
+			return plan.WorkItems[id].Feature, nil
 		case kind == "dependency" && plan.Dependencies[id] != nil:
-			return plan.Dependencies[id].Epic, nil
+			return plan.Dependencies[id].Feature, nil
 		case kind == "contract" && plan.Contracts[id] != nil:
-			return plan.Contracts[id].Epic, nil
+			return plan.Contracts[id].Feature, nil
 		}
 		return "", missing
 	case "claim":
-		// A claim is an app-level overlay record; it belongs to the epic
+		// A claim is an app-level overlay record; it belongs to the feature
 		// holding the report content it makes a claim about.
 		document, _, err := saga.Load(root)
 		if err != nil {
@@ -554,7 +554,7 @@ func recordEpic(root, urn string) (string, error) {
 		}
 		for _, claim := range document.Claims {
 			if claim.ID == id {
-				return recordEpic(root, claim.Target)
+				return recordFeature(root, claim.Target)
 			}
 		}
 		return "", missing
@@ -583,20 +583,20 @@ func recordEpic(root, urn string) (string, error) {
 	if found == "" {
 		return "", missing
 	}
-	if epic := saga.EpicOf(found); epic != "" {
-		return epic, nil
+	if feature := saga.FeatureOf(found); feature != "" {
+		return feature, nil
 	}
-	return "", fmt.Errorf("%s belongs to the app, not an epic", target)
+	return "", fmt.Errorf("%s belongs to the app, not a feature", target)
 }
 
-// assertRecordEpic checks an optional --epic against the epic holding urn.
-func assertRecordEpic(root, value, urn string) error {
+// assertRecordFeature checks an optional --feature against the feature holding urn.
+func assertRecordFeature(root, value, urn string) error {
 	if strings.TrimSpace(value) == "" {
 		return nil
 	}
-	holding, err := recordEpic(root, urn)
+	holding, err := recordFeature(root, urn)
 	if err != nil {
 		return err
 	}
-	return assertEpic(root, value, urn, holding)
+	return assertFeature(root, value, urn, holding)
 }

@@ -38,7 +38,7 @@ func TestSetFragmentContentSupportsStdinAndJSON(t *testing.T) {
 func TestStableIDsResolveAcrossHierarchyCommands(t *testing.T) {
 	root := newAuthoredSaga(t)
 	var output bytes.Buffer
-	if err := AddChapter(context.Background(), []string{"--epic", testEpic, "--id", "architecture", root, "backend"}, &output); err != nil {
+	if err := AddChapter(context.Background(), []string{"--feature", testFeature, "--id", "architecture", root, "backend"}, &output); err != nil {
 		t.Fatal(err)
 	}
 	output.Reset()
@@ -49,7 +49,7 @@ func TestStableIDsResolveAcrossHierarchyCommands(t *testing.T) {
 	if err := AddFragment(context.Background(), []string{"--section", "request-flow", "--name", "example", "--title", "Example", root}, &output); err != nil {
 		t.Fatalf("add fragment by section ID: %v", err)
 	}
-	if _, err := os.Stat(filepath.Join(testEpicDir(root), "backend.chapter", "request-flow", "example.fragment", "content.md")); err != nil {
+	if _, err := os.Stat(filepath.Join(testFeatureDir(root), "backend.chapter", "request-flow", "example.fragment", "content.md")); err != nil {
 		t.Fatalf("fragment was not created under ID-resolved hierarchy: %v", err)
 	}
 	assertValid(t, root)

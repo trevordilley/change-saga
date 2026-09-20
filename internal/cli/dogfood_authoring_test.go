@@ -14,7 +14,7 @@ import (
 func TestNextHintsAfterSourceSkipSettingContent(t *testing.T) {
 	root, _ := coveredSaga(t)
 	var output bytes.Buffer
-	if err := AddDeck(context.Background(), []string{"--epic", testEpic, "--objective", "Explain the change.", root, "implementation"}, &output); err != nil {
+	if err := AddDeck(context.Background(), []string{"--feature", testFeature, "--objective", "Explain the change.", root, "implementation"}, &output); err != nil {
 		t.Fatal(err)
 	}
 	svg := filepath.Join(t.TempDir(), "flow.svg")
@@ -34,7 +34,7 @@ func TestNextHintsAfterSourceSkipSettingContent(t *testing.T) {
 		t.Fatalf("add-slide without --source should ask for content:\n%s", output.String())
 	}
 	output.Reset()
-	if err := AddFragment(context.Background(), []string{"--epic", testEpic, "--type", "svg", "--source", svg, "--title", "Flow", root}, &output); err != nil {
+	if err := AddFragment(context.Background(), []string{"--feature", testFeature, "--type", "svg", "--source", svg, "--title", "Flow", root}, &output); err != nil {
 		t.Fatal(err)
 	}
 	if hint := output.String(); strings.Contains(hint, "set-fragment-content") || !strings.Contains(hint, "Next: change-saga add-landmark --target ") {
@@ -64,24 +64,24 @@ func TestBadCoverTargetNamesItems(t *testing.T) {
 	}
 }
 
-// A citation's URN names no epic, so a story in any epic may cite it; --epic
+// A citation's URN names no feature, so a story in any feature may cite it; --feature
 // only chooses where it is stored, and the help says so.
-func TestCitationIsCitableFromAnyEpic(t *testing.T) {
+func TestCitationIsCitableFromAnyFeature(t *testing.T) {
 	root, _ := coveredSaga(t)
 	var output bytes.Buffer
-	if err := Epic(context.Background(), []string{"add", "--id", "billing", "--title", "Billing", root}, &output); err != nil {
+	if err := Feature(context.Background(), []string{"add", "--id", "billing", "--title", "Billing", root}, &output); err != nil {
 		t.Fatal(err)
 	}
-	if err := Citation(context.Background(), []string{"add", "--epic", testEpic, "--id", "rfc", "--kind", "url", "--title", "RFC", "--reference", "https://example.test/rfc", root}, &output); err != nil {
+	if err := Citation(context.Background(), []string{"add", "--feature", testFeature, "--id", "rfc", "--kind", "url", "--title", "RFC", "--reference", "https://example.test/rfc", root}, &output); err != nil {
 		t.Fatal(err)
 	}
-	if err := Story(context.Background(), []string{"add", "--epic", "billing", "--id", "pay", "--revision", "r1", "--event", "proposed", "--title", "Pay", "--statement", "As a buyer I want to pay so that I get the goods", "--priority", "must", "--citation", "urn:change-saga:batch:citation:rfc", root}, &output); err != nil {
-		t.Fatalf("a story in another epic could not cite the citation: %v\n%s", err, output.String())
+	if err := Story(context.Background(), []string{"add", "--feature", "billing", "--id", "pay", "--revision", "r1", "--event", "proposed", "--title", "Pay", "--statement", "As a buyer I want to pay so that I get the goods", "--priority", "must", "--citation", "urn:change-saga:batch:citation:rfc", root}, &output); err != nil {
+		t.Fatalf("a story in another feature could not cite the citation: %v\n%s", err, output.String())
 	}
 	assertValid(t, root)
 	output.Reset()
 	_ = Citation(context.Background(), []string{"add", "--help"}, &output)
-	if !strings.Contains(output.String(), "a\nstory in any epic may cite it") {
-		t.Fatalf("citation add help does not say any epic may cite it:\n%s", output.String())
+	if !strings.Contains(output.String(), "a\nstory in any feature may cite it") {
+		t.Fatalf("citation add help does not say any feature may cite it:\n%s", output.String())
 	}
 }

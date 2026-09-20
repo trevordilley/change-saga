@@ -10,5 +10,5 @@
     "type": "element",
     "element_id": "agent-loop"
   },
-  "record": "urn:change-saga:app:epic:agent-loop"
+  "record": "urn:change-saga:app:feature:agent-loop"
 }

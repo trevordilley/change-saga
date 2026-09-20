@@ -50,7 +50,7 @@
             "$ref": "#/$defs/story_urn"
           },
           {
-            "$ref": "#/$defs/epic_urn"
+            "$ref": "#/$defs/feature_urn"
           }
         ]
       }
@@ -80,9 +80,9 @@
       "type": "string",
       "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:story:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
     },
-    "epic_urn": {
+    "feature_urn": {
       "type": "string",
-      "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:epic:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+      "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:feature:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
     }
   }
 }

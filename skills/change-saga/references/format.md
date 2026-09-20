@@ -11,14 +11,14 @@ app.saga/
   saga.json                        # identity and repository only
   ___overview/                     # pitch, description, and terms
   ___personas/  ___designsystem/  ___onboarding/  ___featureflags/
-  ___epics/<epic>.epic/
-    epic.json
+  ___features/<feature>.feature/
+    feature.json
     <chapter>.chapter/             # narrative content
     ___requirements/               # prototypes, stories, citations, relations
     ___design/                     # UX, UI, and technical design
     ___quality/                    # test cases and policies
     ___workplan/
-    ___slides/<deck>.deck/         # the epic's implementation deck
+    ___slides/<deck>.deck/         # the feature's implementation deck
   ___reviews/<id>.review/          # one pull request's review deck and decisions
   ___claims/  ___verifications/  ___merges/
 ```
@@ -29,8 +29,8 @@ coverage report by area (`coverage.areas`), per-criterion axis coverage, the
 stale set, changed-source accounting, overview gaps, reviews, and ordered
 `next_actions`; it has no verdict (see [ci.md](ci.md) for team rules).
 
-No URN names its epic, so story, deck, slide, and Item IDs are unique across
-the app and reorganizing epics breaks no link.
+No URN names its feature, so story, deck, slide, and Item IDs are unique across
+the app and reorganizing features breaks no link.
 
 ## Decks
 
@@ -41,7 +41,7 @@ never in filenames. Each slide owns one self-contained SVG, image, or HTML
 file.
 
 ```sh
-change-saga add-deck --epic checkout --objective "Explain the retry failure path." app.saga retry-flow
+change-saga add-deck --feature checkout --objective "Explain the retry failure path." app.saga retry-flow
 change-saga add-slide --deck retry-flow --intent trace --layout sequence --title "Retry sequence" --takeaway "The second write is conditional." app.saga retry-sequence
 change-saga set-slide-content --target retry-sequence --source ./retry.svg app.saga
 change-saga add-item --slide retry-sequence --kind callout --id hidden-retry --element-id hidden-retry --description "The retry reviewers may not expect." --body "The second write is conditional." app.saga
@@ -59,7 +59,7 @@ Link a deck, slide, or Item to a story or criterion with a relation pinned to
 the revision it relied on (an omitted pin defaults to the current head):
 
 ```sh
-change-saga relation add --epic checkout --id retry-explains-safe-write --type explains \
+change-saga relation add --feature checkout --id retry-explains-safe-write --type explains \
   --from urn:change-saga:app:slide:retry-sequence \
   --to urn:change-saga:app:story:safe-write:criterion:no-duplicate \
   --rationale "The sequence explains how the criterion is implemented." app.saga
@@ -70,15 +70,15 @@ change-saga relation add --epic checkout --id retry-explains-safe-write --type e
 ```sh
 change-saga install-skill
 change-saga init --repo <source-checkout> --title "Title" app.saga
-change-saga epic add --id <epic> --title "Title" app.saga
+change-saga feature add --id <feature> --title "Title" app.saga
 change-saga overview set-pitch --text "<pitch>" app.saga
 change-saga overview set-description --source description.md app.saga
 change-saga term add --id <term> --name "<name>" --definition "<definition>" --story <story> --ref 'HEAD:<path>#L<n>' app.saga
 change-saga term revise --term <term URN> --revision r2 --parent <revision URN> --name "<name>" --definition "<definition>" --ref 'HEAD:<path>#L<n>' app.saga
-change-saga add-chapter --epic <epic> --title "Title" app.saga <chapter>
-change-saga add-section --epic <epic> --title "Title" app.saga <chapter>/<section>
-change-saga add-fragment --epic <epic> --section <section> --type markdown --title "Context" app.saga
-change-saga add-fragment --epic <epic> --section <section> --type html --source ./demo-package --entrypoint index.html app.saga
+change-saga add-chapter --feature <feature> --title "Title" app.saga <chapter>
+change-saga add-section --feature <feature> --title "Title" app.saga <chapter>/<section>
+change-saga add-fragment --feature <feature> --section <section> --type markdown --title "Context" app.saga
+change-saga add-fragment --feature <feature> --section <section> --type html --source ./demo-package --entrypoint index.html app.saga
 change-saga set-fragment-content --target <fragment> --source ./context.md app.saga
 change-saga add-landmark --target <fragment> --element-id submit-action --label "Submit action" --description "The validated request crosses into persistence." app.saga
 change-saga cover --against <base> --target <Item> --path file.go --side new --lines 4-9,12 --note "Adds request validation so malformed input fails before persistence." app.saga

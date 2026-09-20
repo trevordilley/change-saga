@@ -49,7 +49,7 @@ func registerTermDefinition(flags *flag.FlagSet) *termDefinitionFlags {
 	}
 	flags.Var(&value.aliases, "alias", "another spelling the team uses; repeatable")
 	flags.Var(&value.stories, "story", "story URN or ID the term belongs to; repeatable")
-	flags.Var(&value.records, "record", "persona, epic, flag, or term URN the term names; repeatable")
+	flags.Var(&value.records, "record", "persona, feature, flag, or term URN the term names; repeatable")
 	flags.Var(&value.refs, "ref", "code that defines the term: <commit>:<path>[#L<start>[-L<end>]], where the commit may be any revision such as HEAD; repeatable")
 	return value
 }

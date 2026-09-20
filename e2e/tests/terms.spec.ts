@@ -9,7 +9,7 @@ test("the overview expands to its parts, and a term links its code and stories b
 
   // A story names the term, so the term and the story reach each other.
   const story = runCLI(saga, [
-    "story", "add", "--epic", "wave-one", "--id", "greet-by-name", "--revision", "r1", "--event", "proposed",
+    "story", "add", "--feature", "wave-one", "--id", "greet-by-name", "--revision", "r1", "--event", "proposed",
     "--title", "Greet a caller by name", "--statement", "As a caller, I am greeted by my name.", "--priority", "must", saga.sagaRoot
   ]);
   expect(story.status, story.stderr).toBe(0);

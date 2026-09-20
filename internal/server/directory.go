@@ -8,7 +8,7 @@ import (
 
 // Every section of the reviewer is a place a reader can open, and most of
 // those places are a directory: the table of what the section holds. Terms,
-// personas, feature flags, epics, and reviews are all read the same way, so
+// personas, feature flags, features, and reviews are all read the same way, so
 // they are all built the same way here.
 //
 // A directory is a real table with real headers, rendered by the server. A
@@ -18,7 +18,7 @@ import (
 // trip. Both filters read one thing — the text the row already shows — so the
 // two paths can never disagree about what matches.
 //
-// A directory counts and never scores. A cell says how many stories an epic
+// A directory counts and never scores. A cell says how many stories a feature
 // holds, never whether that is enough; a place nothing has been authored into
 // yet states the growth and names the command that acts on it, the way the
 // sidebar's gap rows do.

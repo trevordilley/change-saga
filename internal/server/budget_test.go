@@ -102,9 +102,9 @@ func TestLargeSagaFirstLoadStaysWithinPayloadBudgets(t *testing.T) {
 // explanation's prose has lost the boundary whatever it weighs.
 func TestLargeSagaFirstLoadShipsOnlyTheChapterShell(t *testing.T) {
 	fixture, _, handler := budgetFixture(t, testfixture.DefaultLargeSagaOptions())
-	// The fixture's chapters belong to its one epic, so its page is the
+	// The fixture's chapters belong to its one feature, so its page is the
 	// shell that names them.
-	page := budgetRequest(t, handler, epicHref(testfixture.LargeSagaEpic))
+	page := budgetRequest(t, handler, featureHref(testfixture.LargeSagaFeature))
 	document := sagaDocumentOf(t, page)
 
 	if summaries := strings.Count(document, "data-section-href="); summaries != fixture.Chapters {
@@ -144,7 +144,7 @@ func TestLargeSagaFirstLoadShipsOnlyTheChapterShell(t *testing.T) {
 // explanation response carries exactly one explanation.
 func TestChapterAndExplanationEndpointsStayWithinBudgets(t *testing.T) {
 	fixture, _, handler := budgetFixture(t, testfixture.DefaultLargeSagaOptions())
-	page := budgetRequest(t, handler, epicHref(testfixture.LargeSagaEpic))
+	page := budgetRequest(t, handler, featureHref(testfixture.LargeSagaFeature))
 
 	chapterHref := firstAttributeValue(t, page, "data-section-href")
 	body := budgetRequest(t, handler, chapterHref)

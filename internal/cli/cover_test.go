@@ -21,7 +21,7 @@ import (
 // file, plus the checkout to read it from.
 func coveredSaga(t *testing.T) (root, repo string) {
 	t.Helper()
-	repo = t.TempDir()
+	repo = shortTempDir(t)
 	git(t, repo, "init", "-b", "main")
 	git(t, repo, "config", "user.name", "Test Author")
 	git(t, repo, "config", "user.email", "test@example.test")
@@ -34,7 +34,7 @@ func coveredSaga(t *testing.T) (root, repo string) {
 	git(t, repo, "add", ".")
 	git(t, repo, "commit", "-m", "feature")
 
-	root = filepath.Join(t.TempDir(), "batch.saga")
+	root = filepath.Join(shortTempDir(t), "batch.saga")
 	var output bytes.Buffer
 	if err := Init(context.Background(), []string{"--repo", repo, "--repository", "https://example.test/acme/app.git", root}, &output); err != nil {
 		t.Fatal(err)
@@ -354,19 +354,19 @@ func TestCoverBatchReadsFromAFile(t *testing.T) {
 func TestCoverBatchAppliesTargetAndNoteDefaults(t *testing.T) {
 	root, repo := coveredSaga(t)
 	var output bytes.Buffer
-	if err := AddChapter(context.Background(), []string{"--epic", testEpic, "--title", "Service", root, "service"}, &output); err != nil {
+	if err := AddChapter(context.Background(), []string{"--feature", testFeature, "--title", "Service", root, "service"}, &output); err != nil {
 		t.Fatal(err)
 	}
 	batch := `{"path":"internal/service/handler.go","side":"new","lines":"1","name":"defaulted"}
 {"path":"internal/service/handler.go","side":"new","lines":"3","name":"explicit","note":"its own note"}`
-	if out, err := runCover(t, batch, "--repo", repo, "--batch", "-", "--target", testEpicRel+"/service.chapter", "--note", "shared note", root); err != nil {
+	if out, err := runCover(t, batch, "--repo", repo, "--batch", "-", "--target", testFeatureRel+"/service.chapter", "--note", "shared note", root); err != nil {
 		t.Fatalf("batch with defaults: %v\n%s", err, out)
 	}
-	defaulted := readCodeFile(t, filepath.Join(testEpicDir(root), "service.chapter", saga.CodeDirName, "defaulted.json"))
+	defaulted := readCodeFile(t, filepath.Join(testFeatureDir(root), "service.chapter", saga.CodeDirName, "defaulted.json"))
 	if defaulted[0].Note != "shared note" {
 		t.Fatalf("the batch-wide note was not applied: %#v", defaulted)
 	}
-	explicit := readCodeFile(t, filepath.Join(testEpicDir(root), "service.chapter", saga.CodeDirName, "explicit.json"))
+	explicit := readCodeFile(t, filepath.Join(testFeatureDir(root), "service.chapter", saga.CodeDirName, "explicit.json"))
 	if explicit[0].Note != "its own note" {
 		t.Fatalf("a record note must win over the default: %#v", explicit)
 	}

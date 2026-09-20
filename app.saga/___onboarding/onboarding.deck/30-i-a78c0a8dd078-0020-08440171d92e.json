@@ -10,5 +10,5 @@
     "type": "element",
     "element_id": "requirements"
   },
-  "record": "urn:change-saga:app:epic:requirements"
+  "record": "urn:change-saga:app:feature:requirements"
 }

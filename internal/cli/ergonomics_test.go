@@ -20,13 +20,13 @@ func landmarkSaga(t *testing.T) (root, repo string) {
 	t.Helper()
 	root, repo = coveredSaga(t)
 	var output bytes.Buffer
-	if err := AddChapter(context.Background(), []string{"--epic", testEpic, "--title", "Service", root, "service"}, &output); err != nil {
+	if err := AddChapter(context.Background(), []string{"--feature", testFeature, "--title", "Service", root, "service"}, &output); err != nil {
 		t.Fatal(err)
 	}
-	if err := AddFragment(context.Background(), []string{"--epic", testEpic, "--section", "service", "--name", "overview", "--title", "Service", root}, &output); err != nil {
+	if err := AddFragment(context.Background(), []string{"--feature", testFeature, "--section", "service", "--name", "overview", "--title", "Service", root}, &output); err != nil {
 		t.Fatal(err)
 	}
-	fragment := filepath.Join(testEpicDir(root), "service.chapter", "overview.fragment")
+	fragment := filepath.Join(testFeatureDir(root), "service.chapter", "overview.fragment")
 	writeFile(t, filepath.Join(fragment, "content.md"), "# Service {#service-intro}\n\nProse.\n\n## Submit action {#submit-action}\n\nMore.\n")
 	writeFile(t, filepath.Join(fragment, "___landmarks", "submit-action.landmark", "landmark.json"),
 		`{"version":2,"id":"submit-action","label":"Submit action","selector":{"type":"heading","heading_id":"submit-action"}}`+"\n")
@@ -40,11 +40,11 @@ func landmarkSaga(t *testing.T) (root, repo string) {
 func TestCoverResolvesLandmarkShorthand(t *testing.T) {
 	root, repo := landmarkSaga(t)
 	if output, err := runCover(t, "", "--repo", repo,
-		"--target", testEpicRel+"/service.chapter/overview.fragment#submit-action",
+		"--target", testFeatureRel+"/service.chapter/overview.fragment#submit-action",
 		"--path", "internal/service/handler.go", "--side", "new", "--lines", "3", "--name", "submit", root); err != nil {
 		t.Fatalf("landmark shorthand: %v\n%s", err, output)
 	}
-	recorded := filepath.Join(testEpicDir(root), "service.chapter", "overview.fragment", "___landmarks", "submit-action.landmark", saga.CodeDirName, "submit.json")
+	recorded := filepath.Join(testFeatureDir(root), "service.chapter", "overview.fragment", "___landmarks", "submit-action.landmark", saga.CodeDirName, "submit.json")
 	if _, err := os.Stat(recorded); err != nil {
 		t.Fatalf("evidence was not attached to the landmark: %v", err)
 	}
@@ -62,7 +62,7 @@ func TestCoverResolvesLandmarkShorthand(t *testing.T) {
 func TestCoverLandmarkErrorsNameTheAvailableLandmarks(t *testing.T) {
 	root, repo := landmarkSaga(t)
 	_, err := runCover(t, "", "--repo", repo,
-		"--target", testEpicRel+"/service.chapter/overview.fragment#no-such-landmark",
+		"--target", testFeatureRel+"/service.chapter/overview.fragment#no-such-landmark",
 		"--path", "internal/service/handler.go", "--side", "new", "--lines", "3", root)
 	if err == nil {
 		t.Fatal("an unknown landmark must fail")
@@ -89,7 +89,7 @@ func TestResolveTargetErrorPointsAtTheQueryAPI(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	_, _, err = resolveTarget(document, testEpicRel+"/service.chapter/missing", true)
+	_, _, err = resolveTarget(document, testFeatureRel+"/service.chapter/missing", true)
 	if err == nil {
 		t.Fatal("expected an unresolvable target to fail")
 	}

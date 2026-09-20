@@ -57,10 +57,10 @@ func AxisRules() []AxisRule { return append([]AxisRule(nil), axisRules...) }
 
 var resources = []Resource{
 	{
-		Kind: "epic", URN: "urn:change-saga:<saga>:epic:<epic>", Storage: "___epics/<epic>.epic/epic.json",
-		Schema: schemaBase + "v5/epic.schema.json", Versions: []int{5}, History: "immutable identity of a durable product domain",
-		Writers: []string{"epic add"},
-		Notes:   "holds the domain's report content, requirements, design, quality, work plan, and implementation deck; no resource URN names its epic, so IDs are unique across the app",
+		Kind: "feature", URN: "urn:change-saga:<saga>:feature:<feature>", Storage: "___features/<feature>.feature/feature.json",
+		Schema: schemaBase + "v5/feature.schema.json", Versions: []int{5}, History: "immutable identity of a durable product domain",
+		Writers: []string{"feature add"},
+		Notes:   "holds the domain's report content, requirements, design, quality, work plan, and implementation deck; no resource URN names its feature, so IDs are unique across the app",
 	},
 	{
 		Kind: "overview-pitch", URN: "urn:change-saga:<saga>:fragment:<saga>-pitch", Storage: "___overview/pitch.fragment/{fragment.json,content.md}",
@@ -116,7 +116,7 @@ var resources = []Resource{
 		Kind: "flag-revision", URN: "urn:change-saga:<saga>:flag:<flag>:revision:<revision>", Storage: "___featureflags/<flag>.flag/revisions/<revision>.json",
 		Schema: schemaBase + "v5/flag-revision.schema.json", Versions: []int{5}, History: "append-only complete snapshots with parent heads; multiple heads are a conflict",
 		Writers: []string{"flag add", "flag revise"},
-		Notes:   "targets are story or epic URNs; a flag on an epic gates every story in it",
+		Notes:   "targets are story or feature URNs; a flag on a feature gates every story in it",
 	},
 	{
 		Kind: "flag-event", URN: "urn:change-saga:<saga>:flag:<flag>:event:<event>", Storage: "___featureflags/<flag>.flag/events/<event>.json",
@@ -125,18 +125,18 @@ var resources = []Resource{
 		Notes: "a story gated by a current off flag is implemented but not enabled",
 	},
 	{
-		Kind: "story", URN: "urn:change-saga:<saga>:story:<story>", Storage: "___epics/<epic>.epic/___requirements/stories/<story>.story/story.json",
+		Kind: "story", URN: "urn:change-saga:<saga>:story:<story>", Storage: "___features/<feature>.feature/___requirements/stories/<story>.story/story.json",
 		Schema: schemaBase + "v3/story.schema.json", Versions: []int{5}, History: "immutable identity",
 		Writers: []string{"story add", "story move"},
-		Notes:   "the URN never names the epic; story move changes only which epic's directory holds the package",
+		Notes:   "the URN never names the feature; story move changes only which feature's directory holds the package",
 	},
 	{
-		Kind: "story-revision", URN: "urn:change-saga:<saga>:story:<story>:revision:<revision>", Storage: "___epics/<epic>.epic/___requirements/stories/<story>.story/revisions/<revision>.json",
+		Kind: "story-revision", URN: "urn:change-saga:<saga>:story:<story>:revision:<revision>", Storage: "___features/<feature>.feature/___requirements/stories/<story>.story/revisions/<revision>.json",
 		Schema: schemaBase + "v3/story-revision.schema.json", Versions: []int{5}, History: "append-only complete snapshots with parent heads; multiple heads are a conflict",
 		Writers: []string{"story add", "story revise", "criterion add", "criterion revise", "criterion remove"},
 	},
 	{
-		Kind: "story-event", URN: "urn:change-saga:<saga>:story:<story>:event:<event>", Storage: "___epics/<epic>.epic/___requirements/stories/<story>.story/events/<event>.json",
+		Kind: "story-event", URN: "urn:change-saga:<saga>:story:<story>:event:<event>", Storage: "___features/<feature>.feature/___requirements/stories/<story>.story/events/<event>.json",
 		Schema: schemaBase + "v3/story-event.schema.json", Versions: []int{5}, History: "append-only lifecycle graph with parent heads",
 		Lifecycle: []string{"proposed", "accepted", "deferred", "rejected", "retired"}, Writers: []string{"story add", "story set-state"},
 	},
@@ -147,31 +147,31 @@ var resources = []Resource{
 		Notes:   "inherits the story lifecycle; active only while present in the unique current story revision",
 	},
 	{
-		Kind: "citation", URN: "urn:change-saga:<saga>:citation:<citation>", Storage: "___epics/<epic>.epic/___requirements/citations/<citation>.json",
+		Kind: "citation", URN: "urn:change-saga:<saga>:citation:<citation>", Storage: "___features/<feature>.feature/___requirements/citations/<citation>.json",
 		Schema: schemaBase + "v3/citation.schema.json", Versions: []int{5}, History: "immutable", Writers: []string{"citation add"},
 	},
 	{
-		Kind: "relation", URN: "urn:change-saga:<saga>:relation:<relation>", Storage: "___epics/<epic>.epic/___requirements/relations/<relation>.json",
+		Kind: "relation", URN: "urn:change-saga:<saga>:relation:<relation>", Storage: "___features/<feature>.feature/___requirements/relations/<relation>.json",
 		Schema: schemaBase + "v5/relation.schema.json", Versions: []int{5}, History: "immutable pins; active or superseded",
 		Writers: []string{"relation add", "relation supersede"},
 		Notes:   "v3 relations remain valid history; v5 relations add scope and visual digest pins",
 	},
 	{
-		Kind: "prototype", URN: "urn:change-saga:<saga>:prototype:<prototype>", Storage: "___epics/<epic>.epic/___requirements/prototypes/<prototype>.prototype/prototype.json",
+		Kind: "prototype", URN: "urn:change-saga:<saga>:prototype:<prototype>", Storage: "___features/<feature>.feature/___requirements/prototypes/<prototype>.prototype/prototype.json",
 		Schema: schemaBase + "v3/prototype.schema.json", Versions: []int{5}, History: "immutable identity", Writers: []string{"prototype add-html"},
 	},
 	{
-		Kind: "prototype-revision", URN: "urn:change-saga:<saga>:prototype:<prototype>:revision:<revision>", Storage: "___epics/<epic>.epic/___requirements/prototypes/<prototype>.prototype/revisions/<revision>.revision/",
+		Kind: "prototype-revision", URN: "urn:change-saga:<saga>:prototype:<prototype>:revision:<revision>", Storage: "___features/<feature>.feature/___requirements/prototypes/<prototype>.prototype/revisions/<revision>.revision/",
 		Schema: schemaBase + "v3/prototype-revision.schema.json", Versions: []int{5}, History: "append-only immutable experiences with parent heads",
 		Lifecycle: []string{"draft", "ready", "retired"}, Writers: []string{"prototype add-html"},
 	},
 	{
-		Kind: "prototype-annotation", URN: "urn:change-saga:<saga>:prototype:<prototype>:annotation:<annotation>", Storage: "___epics/<epic>.epic/___requirements/prototypes/annotations/",
+		Kind: "prototype-annotation", URN: "urn:change-saga:<saga>:prototype:<prototype>:annotation:<annotation>", Storage: "___features/<feature>.feature/___requirements/prototypes/annotations/",
 		Schema: schemaBase + "v3/prototype-annotation.schema.json", Versions: []int{5}, History: "immutable; pinned to a prototype revision or digest and a story revision",
 		Writers: []string{"prototype annotate"},
 	},
 	{
-		Kind: "coverage-exception", URN: "urn:change-saga:<saga>:coverage-exception:<exception>", Storage: "___epics/<epic>.epic/___requirements/coverage-exceptions/<exception>.json",
+		Kind: "coverage-exception", URN: "urn:change-saga:<saga>:coverage-exception:<exception>", Storage: "___features/<feature>.feature/___requirements/coverage-exceptions/<exception>.json",
 		Schema: schemaBase + "v5/coverage-exception.schema.json", Versions: []int{5}, History: "immutable decisions; supersession graph with one head per criterion/axis",
 		Writers: []string{"coverage-exception add", "coverage-exception supersede"},
 		Notes:   "pins the current story revision; never excuses changed-source accounting",
@@ -194,32 +194,32 @@ var resources = []Resource{
 		Lifecycle: []string{"open", "resolved"}, Writers: []string{"review comment"},
 	},
 	{
-		Kind: "test-case", URN: "urn:change-saga:<saga>:test-case:<test-case>", Storage: "___epics/<epic>.epic/___quality/test-cases/<test-case>.test/test-case.json",
+		Kind: "test-case", URN: "urn:change-saga:<saga>:test-case:<test-case>", Storage: "___features/<feature>.feature/___quality/test-cases/<test-case>.test/test-case.json",
 		Schema: schemaBase + "v5/test-case.schema.json", Versions: []int{5}, History: "immutable identity", Writers: []string{"quality test-case add"},
 	},
 	{
-		Kind: "test-case-revision", URN: "urn:change-saga:<saga>:test-case:<test-case>:revision:<revision>", Storage: "___epics/<epic>.epic/___quality/test-cases/<test-case>.test/revisions/<revision>.json",
+		Kind: "test-case-revision", URN: "urn:change-saga:<saga>:test-case:<test-case>:revision:<revision>", Storage: "___features/<feature>.feature/___quality/test-cases/<test-case>.test/revisions/<revision>.json",
 		Schema: schemaBase + "v5/test-case-revision.schema.json", Versions: []int{5}, History: "append-only complete definitions with ordered steps; removed step ids are never reused",
 		Writers: []string{"quality test-case add", "quality test-case revise"},
 	},
 	{
-		Kind: "test-case-event", URN: "urn:change-saga:<saga>:test-case:<test-case>:event:<event>", Storage: "___epics/<epic>.epic/___quality/test-cases/<test-case>.test/events/<event>.json",
+		Kind: "test-case-event", URN: "urn:change-saga:<saga>:test-case:<test-case>:event:<event>", Storage: "___features/<feature>.feature/___quality/test-cases/<test-case>.test/events/<event>.json",
 		Schema: schemaBase + "v5/test-case-event.schema.json", Versions: []int{5}, History: "append-only lifecycle graph",
 		Lifecycle: []string{"proposed", "active", "deprecated", "retired"}, Writers: []string{"quality test-case add", "quality test-case set-state"},
 	},
 	{
-		Kind: "quality-policy", URN: "urn:change-saga:<saga>:quality-policy:<policy>", Storage: "___epics/<epic>.epic/___quality/policies/<policy>.json",
+		Kind: "quality-policy", URN: "urn:change-saga:<saga>:quality-policy:<policy>", Storage: "___features/<feature>.feature/___quality/policies/<policy>.json",
 		Schema: schemaBase + "v5/quality-policy.schema.json", Versions: []int{5}, History: "immutable; one unsuperseded head per criterion/story revision",
 		Writers: []string{"quality policy set"}, Notes: "absent policy means positive is required",
 	},
 	{
-		Kind: "quality-evidence", URN: "urn:change-saga:<saga>:test-case:<test-case>:evidence:<evidence>", Storage: "___epics/<epic>.epic/___quality/test-cases/<test-case>.test/evidence/<evidence>.json",
+		Kind: "quality-evidence", URN: "urn:change-saga:<saga>:test-case:<test-case>:evidence:<evidence>", Storage: "___features/<feature>.feature/___quality/test-cases/<test-case>.test/evidence/<evidence>.json",
 		Schema: schemaBase + "v5/quality-evidence.schema.json", Versions: []int{5}, History: "immutable; supersession graph",
 		Writers: []string{"quality evidence add"},
 		Notes:   "roles: test_implementation, implementation_under_test, execution_artifact",
 	},
 	{
-		Kind: "test-run", URN: "urn:change-saga:<saga>:test-case:<test-case>:run:<run>", Storage: "___epics/<epic>.epic/___quality/test-cases/<test-case>.test/runs/<run>.json",
+		Kind: "test-run", URN: "urn:change-saga:<saga>:test-case:<test-case>:run:<run>", Storage: "___features/<feature>.feature/___quality/test-cases/<test-case>.test/runs/<run>.json",
 		Schema: schemaBase + "v5/test-run.schema.json", Versions: []int{5}, History: "append-only results with parent heads; multiple heads are a conflict",
 		Lifecycle: []string{"passed", "failed", "blocked", "skipped"}, Writers: []string{"quality run record"},
 		Notes: "current only for the current test revision, the current source comparison, and current evidence",

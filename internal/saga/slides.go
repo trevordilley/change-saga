@@ -30,7 +30,7 @@ var slideMediaTypes = map[string]bool{
 }
 
 // loadEmbeddedDecks discovers the independently mergeable flat deck bundles
-// under dir: an epic's ___slides/ or the app's ___onboarding/. The Saga
+// under dir: a feature's ___slides/ or the app's ___onboarding/. The Saga
 // manifest remains the only identity; deck, slide, and Item URNs are derived
 // from its ID, so they are unique across the app.
 func loadEmbeddedDecks(root, dir, role string, manifest Manifest, options loadOptions, validation *Validation) ([]*Deck, error) {
@@ -410,10 +410,10 @@ func projectDecks(manifest Manifest, decks []*Deck) *Section {
 	return root
 }
 
-// validateDeckRole enforces what each deck location may hold. An epic's
+// validateDeckRole enforces what each deck location may hold. A feature's
 // implementation deck explains code, so its Items own code evidence and never
 // reference records. The onboarding deck explains the app, so every Item
-// references a persona, epic, or story record and owns no code evidence.
+// references a persona, feature, or story record and owns no code evidence.
 func validateDeckRole(deck *Deck, role, sagaID string, validation *Validation) {
 	if deck.Role != role {
 		addIssue(validation, "error", deck.Path, fmt.Sprintf("a deck in this location must use role %s", role))
@@ -429,7 +429,7 @@ func validateDeckRole(deck *Deck, role, sagaID string, validation *Validation) {
 				}
 			case DeckRoleOnboarding:
 				if !validRecordReference(sagaID, item.Record) {
-					addIssue(validation, "error", item.Path, "onboarding item record must be a canonical persona, epic, or story URN of this Saga")
+					addIssue(validation, "error", item.Path, "onboarding item record must be a canonical persona, feature, or story URN of this Saga")
 				}
 				if item.HasCode {
 					addIssue(validation, "error", item.Path, "onboarding items reference records, not code evidence")
@@ -444,11 +444,11 @@ func validateDeckRole(deck *Deck, role, sagaID string, validation *Validation) {
 }
 
 // RecordReferenceKinds are the record kinds an onboarding Item may reference.
-var RecordReferenceKinds = []string{"persona", "epic", "story"}
+var RecordReferenceKinds = []string{"persona", "feature", "story"}
 
 // ReviewRecordReferenceKinds are the documentation records a review Item may
 // reference so a reviewer can open them beside the change.
-var ReviewRecordReferenceKinds = []string{"persona", "epic", "story", "test-case", "deck", "slide", "chapter", "section", "fragment"}
+var ReviewRecordReferenceKinds = []string{"persona", "feature", "story", "test-case", "deck", "slide", "chapter", "section", "fragment"}
 
 func validReviewRecordReference(sagaID, value string) bool {
 	return validRecordOfKinds(sagaID, value, ReviewRecordReferenceKinds)

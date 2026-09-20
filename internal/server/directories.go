@@ -110,7 +110,7 @@ func flagsDirectory(graph *appGraph, query string) *directoryView {
 	document := graph.requirements
 	view := &directoryView{
 		ID: "flags", Title: "Feature flags", Action: "/flags",
-		Lede:  "What is gated, whether it is on, and the stories and epics each flag gates.",
+		Lede:  "What is gated, whether it is on, and the stories and features each flag gates.",
 		Label: "Filter feature flags", Noun: "feature flag", Nouns: "feature flags",
 		Columns: []directoryColumn{
 			{Title: "Flag"}, {Title: "State"}, {Title: "Gates"}, {Title: "What it is for", Wide: true},
@@ -193,26 +193,26 @@ func termsDirectory(document requirements.Document, places map[string][]termPlac
 	return view
 }
 
-// ----- Epics -----
+// ----- Features -----
 
-// epicsDirectory is every epic with what it holds. The counts are facts and
-// never a score: an epic with nothing in it is listed like any other, and the
-// epic the reader is already inside is marked rather than ranked.
-func epicsDirectory(document *saga.Saga, graph *appGraph, current, query string) *directoryView {
+// featuresDirectory is every feature with what it holds. The counts are facts and
+// never a score: a feature with nothing in it is listed like any other, and the
+// feature the reader is already inside is marked rather than ranked.
+func featuresDirectory(document *saga.Saga, graph *appGraph, current, query string) *directoryView {
 	view := &directoryView{
-		ID: "epics", Title: "Epics", Action: "/epics",
+		ID: "features", Title: "Features", Action: "/features",
 		Lede:  "Every durable area of the product, in the order they were introduced. Each one opens a page holding its stories, its design, its quality, and its implementation.",
-		Label: "Filter epics", Noun: "epic", Nouns: "epics",
+		Label: "Filter features", Noun: "feature", Nouns: "features",
 		Columns: []directoryColumn{
-			{Title: "Epic"}, {Title: "Description", Wide: true},
+			{Title: "Feature"}, {Title: "Description", Wide: true},
 			{Title: "Stories", Numeric: true}, {Title: "Accepted", Numeric: true},
 			{Title: "With design", Numeric: true}, {Title: "Test cases", Numeric: true},
 			{Title: "Slides", Numeric: true},
 		},
-		Empty:   "No epics yet.",
-		Command: "change-saga epic add",
+		Empty:   "No features yet.",
+		Command: "change-saga feature add",
 	}
-	for _, row := range epicRows(document, graph, current) {
+	for _, row := range featureRows(document, graph, current) {
 		view.addRow(directoryRow{Key: row.ID, Current: row.Current, Cells: []directoryCell{
 			{Text: row.Title, Href: row.Href, Note: row.ID},
 			textCell(summarise(row.Description, 120)),
@@ -224,8 +224,8 @@ func epicsDirectory(document *saga.Saga, graph *appGraph, current, query string)
 	return view
 }
 
-// epicIndexRow is one epic's counts, as the directory states them.
-type epicIndexRow struct {
+// featureIndexRow is one feature's counts, as the directory states them.
+type featureIndexRow struct {
 	ID          string
 	Title       string
 	Href        string
@@ -238,19 +238,19 @@ type epicIndexRow struct {
 	Slides      int
 }
 
-func epicRows(document *saga.Saga, graph *appGraph, current string) []epicIndexRow {
-	rows := make([]epicIndexRow, 0, len(document.Epics))
+func featureRows(document *saga.Saga, graph *appGraph, current string) []featureIndexRow {
+	rows := make([]featureIndexRow, 0, len(document.Features))
 	descriptions := map[string]string{}
-	for _, manifest := range graph.requirements.Epics {
+	for _, manifest := range graph.requirements.Features {
 		descriptions[manifest.ID] = manifest.Description
 	}
-	for _, choice := range epicLinks(document, current) {
-		row := epicIndexRow{
+	for _, choice := range featureLinks(document, current) {
+		row := featureIndexRow{
 			ID: choice.ID, Title: choice.Title, Href: choice.Href,
 			Description: descriptions[choice.ID], Current: choice.Current,
 		}
 		for _, story := range graph.requirements.Stories {
-			if story.Epic != choice.ID {
+			if story.Feature != choice.ID {
 				continue
 			}
 			row.Stories++
@@ -262,15 +262,15 @@ func epicRows(document *saga.Saga, graph *appGraph, current string) []epicIndexR
 			}
 		}
 		for _, testCase := range graph.quality.TestCases {
-			if testCase.Epic == choice.ID {
+			if testCase.Feature == choice.ID {
 				row.TestCases++
 			}
 		}
-		for _, epic := range document.Epics {
-			if epic.ID != choice.ID {
+		for _, feature := range document.Features {
+			if feature.ID != choice.ID {
 				continue
 			}
-			for _, deck := range epic.Decks {
+			for _, deck := range feature.Decks {
 				row.Slides += len(deck.Slides)
 			}
 		}
@@ -280,7 +280,7 @@ func epicRows(document *saga.Saga, graph *appGraph, current string) []epicIndexR
 }
 
 // storyHasDesign reports whether anything addresses the story or one of its
-// criteria, which is the same link the epic page counts.
+// criteria, which is the same link the feature page counts.
 func storyHasDesign(graph *appGraph, story requirements.Story) bool {
 	urn, err := livingid.Story(graph.requirements.SagaID, story.Identity.ID)
 	if err != nil {

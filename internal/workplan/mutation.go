@@ -25,32 +25,32 @@ type Mutator struct {
 
 func defaultMutator() Mutator { return Mutator{Now: time.Now, LockTimeout: store.DefaultLockTimeout} }
 
-func CreateWave(root, epic, waveID string, revision WaveRevision, requestID string) (MutationResult, error) {
-	return defaultMutator().CreateWave(root, epic, waveID, revision, requestID)
+func CreateWave(root, feature, waveID string, revision WaveRevision, requestID string) (MutationResult, error) {
+	return defaultMutator().CreateWave(root, feature, waveID, revision, requestID)
 }
 
 func ReviseWave(root string, revision WaveRevision, requestID string) (MutationResult, error) {
 	return defaultMutator().ReviseWave(root, revision, requestID)
 }
 
-func CreateWorkItem(root, epic, itemID string, revision WorkItemRevision, requestID string) (MutationResult, error) {
-	return defaultMutator().CreateWorkItem(root, epic, itemID, revision, requestID)
+func CreateWorkItem(root, feature, itemID string, revision WorkItemRevision, requestID string) (MutationResult, error) {
+	return defaultMutator().CreateWorkItem(root, feature, itemID, revision, requestID)
 }
 
 func ReviseWorkItem(root string, revision WorkItemRevision, requestID string) (MutationResult, error) {
 	return defaultMutator().ReviseWorkItem(root, revision, requestID)
 }
 
-func CreateContract(root, epic, contractID string, revision ContractRevision, requestID string) (MutationResult, error) {
-	return defaultMutator().CreateContract(root, epic, contractID, revision, requestID)
+func CreateContract(root, feature, contractID string, revision ContractRevision, requestID string) (MutationResult, error) {
+	return defaultMutator().CreateContract(root, feature, contractID, revision, requestID)
 }
 
 func ReviseContract(root string, revision ContractRevision, requestID string) (MutationResult, error) {
 	return defaultMutator().ReviseContract(root, revision, requestID)
 }
 
-func CreateDependency(root, epic string, dependency Dependency, requestID string) (MutationResult, error) {
-	return defaultMutator().CreateDependency(root, epic, dependency, requestID)
+func CreateDependency(root, feature string, dependency Dependency, requestID string) (MutationResult, error) {
+	return defaultMutator().CreateDependency(root, feature, dependency, requestID)
 }
 
 func RecordProgress(root, itemID string, event ProgressEvent, requestID string) (MutationResult, error) {
@@ -69,14 +69,14 @@ func RecordContractState(root, contractID string, event ContractEvent, requestID
 	return defaultMutator().RecordContractState(root, contractID, event, requestID)
 }
 
-// CreateWave writes a new wave into epic. The epic is part of the request
-// digest, so replaying a request against a different epic is a conflict.
-func (m Mutator) CreateWave(root, epic, waveID string, revision WaveRevision, requestID string) (MutationResult, error) {
+// CreateWave writes a new wave into feature. The feature is part of the request
+// digest, so replaying a request against a different feature is a conflict.
+func (m Mutator) CreateWave(root, feature, waveID string, revision WaveRevision, requestID string) (MutationResult, error) {
 	digest, err := requestDigest("wave-create", struct {
-		Epic     string
+		Feature  string
 		ID       string
 		Revision WaveRevision
-	}{epic, waveID, revision})
+	}{feature, waveID, revision})
 	if err != nil {
 		return MutationResult{}, err
 	}
@@ -90,7 +90,7 @@ func (m Mutator) CreateWave(root, epic, waveID string, revision WaveRevision, re
 		if len(plan.Waves) >= MaxWaves {
 			return MutationResult{}, fmt.Errorf("wave limit of %d reached", MaxWaves)
 		}
-		target, err := plan.epic(epic)
+		target, err := plan.feature(feature)
 		if err != nil {
 			return MutationResult{}, err
 		}
@@ -106,7 +106,7 @@ func (m Mutator) CreateWave(root, epic, waveID string, revision WaveRevision, re
 		stampRevision(&revision.CreatedAt, &revision.RequestID, &revision.RequestDigest, now, requestID, digest)
 		identity := Identity{Schema: WaveSchema, Version: Version, ID: waveID, CreatedAt: now}
 		probe := plan
-		candidate := &Wave{Identity: identity, Epic: target.ID, Revisions: []WaveRevision{revision}}
+		candidate := &Wave{Identity: identity, Feature: target.ID, Revisions: []WaveRevision{revision}}
 		validation := Validation{Valid: true, Issues: []Issue{}}
 		validateWave(&probe, &validation, candidate)
 		if hasErrors(validation) {
@@ -164,7 +164,7 @@ func (m Mutator) ReviseWave(root string, revision WaveRevision, requestID string
 		if hasErrors(validation) {
 			return MutationResult{}, fmt.Errorf("invalid wave revision: %s", joinIssues(validation))
 		}
-		final := plan.path(wavePath(wave.Epic, ref.ID) + "/revisions/" + revision.ID + ".revision")
+		final := plan.path(wavePath(wave.Feature, ref.ID) + "/revisions/" + revision.ID + ".revision")
 		if err := store.CommitDir(plan.Root, final, func(stage string) error {
 			return store.WriteJSON(filepath.Join(stage, "revision.json"), revision, true)
 		}); err != nil {
@@ -175,13 +175,13 @@ func (m Mutator) ReviseWave(root string, revision WaveRevision, requestID string
 	})
 }
 
-// CreateWorkItem writes a new work item into epic.
-func (m Mutator) CreateWorkItem(root, epic, itemID string, revision WorkItemRevision, requestID string) (MutationResult, error) {
+// CreateWorkItem writes a new work item into feature.
+func (m Mutator) CreateWorkItem(root, feature, itemID string, revision WorkItemRevision, requestID string) (MutationResult, error) {
 	digest, err := requestDigest("work-item-create", struct {
-		Epic     string
+		Feature  string
 		ID       string
 		Revision WorkItemRevision
-	}{epic, itemID, revision})
+	}{feature, itemID, revision})
 	if err != nil {
 		return MutationResult{}, err
 	}
@@ -195,7 +195,7 @@ func (m Mutator) CreateWorkItem(root, epic, itemID string, revision WorkItemRevi
 		if len(plan.WorkItems) >= MaxWorkItems {
 			return MutationResult{}, fmt.Errorf("work-item limit of %d reached", MaxWorkItems)
 		}
-		target, err := plan.epic(epic)
+		target, err := plan.feature(feature)
 		if err != nil {
 			return MutationResult{}, err
 		}
@@ -213,7 +213,7 @@ func (m Mutator) CreateWorkItem(root, epic, itemID string, revision WorkItemRevi
 		identity := Identity{Schema: WorkItemSchema, Version: Version, ID: itemID, CreatedAt: now}
 		probe := plan
 		probe.WorkItems = copyWorkItems(plan.WorkItems)
-		candidate := &WorkItem{Identity: identity, Epic: target.ID, Revisions: []WorkItemRevision{revision}, Progress: []ProgressEvent{progress}, Workspaces: []WorkspaceEvent{}, Merges: []MergeEvent{}}
+		candidate := &WorkItem{Identity: identity, Feature: target.ID, Revisions: []WorkItemRevision{revision}, Progress: []ProgressEvent{progress}, Workspaces: []WorkspaceEvent{}, Merges: []MergeEvent{}}
 		probe.WorkItems[itemID] = candidate
 		validation := Validation{Valid: true, Issues: []Issue{}}
 		validateWorkItem(&probe, &validation, candidate)
@@ -278,7 +278,7 @@ func (m Mutator) ReviseWorkItem(root string, revision WorkItemRevision, requestI
 		if hasErrors(validation) {
 			return MutationResult{}, fmt.Errorf("invalid work-item revision: %s", joinIssues(validation))
 		}
-		final := plan.path(workItemPath(item.Epic, ref.ID) + "/revisions/" + revision.ID + ".revision")
+		final := plan.path(workItemPath(item.Feature, ref.ID) + "/revisions/" + revision.ID + ".revision")
 		if err := store.CommitDir(plan.Root, final, func(stage string) error {
 			return store.WriteJSON(filepath.Join(stage, "revision.json"), revision, true)
 		}); err != nil {
@@ -289,13 +289,13 @@ func (m Mutator) ReviseWorkItem(root string, revision WorkItemRevision, requestI
 	})
 }
 
-// CreateContract writes a new contract into epic.
-func (m Mutator) CreateContract(root, epic, contractID string, revision ContractRevision, requestID string) (MutationResult, error) {
+// CreateContract writes a new contract into feature.
+func (m Mutator) CreateContract(root, feature, contractID string, revision ContractRevision, requestID string) (MutationResult, error) {
 	digest, err := requestDigest("contract-create", struct {
-		Epic     string
+		Feature  string
 		ID       string
 		Revision ContractRevision
-	}{epic, contractID, revision})
+	}{feature, contractID, revision})
 	if err != nil {
 		return MutationResult{}, err
 	}
@@ -309,7 +309,7 @@ func (m Mutator) CreateContract(root, epic, contractID string, revision Contract
 		if len(plan.Contracts) >= MaxContracts {
 			return MutationResult{}, fmt.Errorf("contract limit of %d reached", MaxContracts)
 		}
-		target, err := plan.epic(epic)
+		target, err := plan.feature(feature)
 		if err != nil {
 			return MutationResult{}, err
 		}
@@ -327,7 +327,7 @@ func (m Mutator) CreateContract(root, epic, contractID string, revision Contract
 		identity := Identity{Schema: ContractSchema, Version: Version, ID: contractID, CreatedAt: now}
 		probe := plan
 		probe.Contracts = copyContracts(plan.Contracts)
-		candidate := &Contract{Identity: identity, Epic: target.ID, Revisions: []ContractRevision{revision}, Events: []ContractEvent{event}}
+		candidate := &Contract{Identity: identity, Feature: target.ID, Revisions: []ContractRevision{revision}, Events: []ContractEvent{event}}
 		probe.Contracts[contractID] = candidate
 		validation := Validation{Valid: true, Issues: []Issue{}}
 		validateContract(&probe, &validation, candidate)
@@ -392,7 +392,7 @@ func (m Mutator) ReviseContract(root string, revision ContractRevision, requestI
 		if hasErrors(validation) {
 			return MutationResult{}, fmt.Errorf("invalid contract revision: %s", joinIssues(validation))
 		}
-		final := plan.path(contractPath(contract.Epic, ref.ID) + "/revisions/" + revision.ID + ".revision")
+		final := plan.path(contractPath(contract.Feature, ref.ID) + "/revisions/" + revision.ID + ".revision")
 		if err := store.CommitDir(plan.Root, final, func(stage string) error {
 			return store.WriteJSON(filepath.Join(stage, "revision.json"), revision, true)
 		}); err != nil {
@@ -403,13 +403,13 @@ func (m Mutator) ReviseContract(root string, revision ContractRevision, requestI
 	})
 }
 
-// CreateDependency writes a new dependency into epic. Its endpoints may be
-// work items in any epic of the app.
-func (m Mutator) CreateDependency(root, epic string, dependency Dependency, requestID string) (MutationResult, error) {
+// CreateDependency writes a new dependency into feature. Its endpoints may be
+// work items in any feature of the app.
+func (m Mutator) CreateDependency(root, feature string, dependency Dependency, requestID string) (MutationResult, error) {
 	digest, err := requestDigest("dependency-create", struct {
-		Epic       string
+		Feature    string
 		Dependency Dependency
-	}{epic, dependency})
+	}{feature, dependency})
 	if err != nil {
 		return MutationResult{}, err
 	}
@@ -423,11 +423,11 @@ func (m Mutator) CreateDependency(root, epic string, dependency Dependency, requ
 		if len(plan.Dependencies) >= MaxDependencies {
 			return MutationResult{}, fmt.Errorf("dependency limit of %d reached", MaxDependencies)
 		}
-		target, err := plan.epic(epic)
+		target, err := plan.feature(feature)
 		if err != nil {
 			return MutationResult{}, err
 		}
-		dependency.Epic = target.ID
+		dependency.Feature = target.ID
 		dependency.Schema, dependency.Version = DependencySchema, Version
 		dependency.CreatedAt = m.now()
 		dependency.RequestID, dependency.RequestDigest = requestID, digest
@@ -604,7 +604,7 @@ func (m Mutator) RecordContractState(root, contractID string, event ContractEven
 		if hasErrors(validation) {
 			return MutationResult{}, fmt.Errorf("invalid contract event: %s", joinIssues(validation))
 		}
-		dir := plan.path(contractPath(contract.Epic, contractID) + "/events")
+		dir := plan.path(contractPath(contract.Feature, contractID) + "/events")
 		if _, err := store.EnsureDirWithin(plan.Root, dir); err != nil {
 			return MutationResult{}, err
 		}
@@ -727,16 +727,16 @@ func emptyMergeUnits(values []MergeUnit) []MergeUnit {
 	return values
 }
 
-// epic resolves the epic a create operation writes its new record into.
-func (plan Plan) epic(id string) (applayout.Epic, error) {
+// feature resolves the feature a create operation writes its new record into.
+func (plan Plan) feature(id string) (applayout.Feature, error) {
 	if strings.TrimSpace(id) == "" {
-		return applayout.Epic{}, fmt.Errorf("an epic is required; new epic content is never written to an implied epic")
+		return applayout.Feature{}, fmt.Errorf("a feature is required; new feature content is never written to an implied feature")
 	}
-	epic, ok := applayout.Find(plan.Epics, id)
+	feature, ok := applayout.Find(plan.Features, id)
 	if !ok {
-		return applayout.Epic{}, fmt.Errorf("epic %q does not exist", id)
+		return applayout.Feature{}, fmt.Errorf("feature %q does not exist", id)
 	}
-	return epic, nil
+	return feature, nil
 }
 
 // path returns the absolute path of an app-relative slash path.
@@ -751,7 +751,7 @@ func writeRevisionStage(stage, id string, value any) error {
 	return store.WriteJSON(filepath.Join(dir, "revision.json"), value, true)
 }
 func writeItemEvent(plan Plan, itemID, stream, urn, eventID string, value any) (MutationResult, error) {
-	dir := plan.path(workItemPath(plan.WorkItems[itemID].Epic, itemID) + "/events/" + stream)
+	dir := plan.path(workItemPath(plan.WorkItems[itemID].Feature, itemID) + "/events/" + stream)
 	if _, err := store.EnsureDirWithin(plan.Root, dir); err != nil {
 		return MutationResult{}, err
 	}

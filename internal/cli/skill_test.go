@@ -107,7 +107,7 @@ func TestSkillQueryReferenceListsExactlyTheQueryOperations(t *testing.T) {
 // skillCommands maps each top-level command to the function that runs it, so
 // a test can read the real flag set from its -h output.
 var skillCommands = map[string]func(context.Context, []string, io.Writer) error{
-	"init": Init, "epic": Epic, "review": Review, "overview": Overview, "term": Term, "persona": Persona,
+	"init": Init, "feature": Feature, "review": Review, "overview": Overview, "term": Term, "persona": Persona,
 	"flag": FeatureFlag, "prototype": Prototype, "story": Story, "criterion": Criterion, "citation": Citation,
 	"relation": Relation, "plan": Plan, "design": Design, "quality": Quality, "add-deck": AddDeck,
 	"add-slide": AddSlide, "set-slide-content": SetSlideContent, "add-item": AddItem, "add-section": AddSection,

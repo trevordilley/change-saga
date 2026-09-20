@@ -6,26 +6,26 @@ import (
 	"github.com/twentyideas/changesaga/internal/grammar"
 )
 
-// inEpic names the epic an action concerns and supplies it to every command
-// shape the action suggests, so a shape that writes epic content is already
-// aimed at the right epic.
-func (b *builder) inEpic(action Action) Action {
-	if action.Epic == "" {
-		action.Epic = b.epicOf[action.Resource]
+// inFeature names the feature an action concerns and supplies it to every command
+// shape the action suggests, so a shape that writes feature content is already
+// aimed at the right feature.
+func (b *builder) inFeature(action Action) Action {
+	if action.Feature == "" {
+		action.Feature = b.featureOf[action.Resource]
 	}
-	if action.Epic == "" {
-		for resource, epic := range b.epicOf {
-			if epic != "" && action.Resource != "" && strings.HasPrefix(action.Resource, resource+":") {
-				action.Epic = epic
+	if action.Feature == "" {
+		for resource, feature := range b.featureOf {
+			if feature != "" && action.Resource != "" && strings.HasPrefix(action.Resource, resource+":") {
+				action.Feature = feature
 				break
 			}
 		}
 	}
-	if action.Epic == "" {
+	if action.Feature == "" {
 		return action
 	}
 	if action.Command != nil {
-		action.Command = ptr(action.Command.With("epic", action.Epic))
+		action.Command = ptr(action.Command.With("feature", action.Feature))
 	}
 	if action.Question != nil {
 		copied := *action.Question
@@ -33,7 +33,7 @@ func (b *builder) inEpic(action Action) Action {
 		for index, value := range action.Question.Options {
 			commands := make([]grammar.Invocation, len(value.Commands))
 			for commandIndex, command := range value.Commands {
-				commands[commandIndex] = command.With("epic", action.Epic)
+				commands[commandIndex] = command.With("feature", action.Feature)
 			}
 			value.Commands = commands
 			copied.Options[index] = value
@@ -63,7 +63,7 @@ func (b *builder) personas() {
 			row := b.stories[story]
 			if row.State == "proposed" && len(row.LifecycleHeads) == 1 {
 				options = append(options, option("accept "+story, "the proposed story already serves the persona",
-					b.invoke("story set-state", grammar.V("story", story), grammar.V("parent", row.LifecycleHeads[0]), grammar.V("state", "accepted")).With("epic", row.Epic)))
+					b.invoke("story set-state", grammar.V("story", story), grammar.V("parent", row.LifecycleHeads[0]), grammar.V("state", "accepted")).With("feature", row.Feature)))
 			}
 		}
 		if persona.LifecycleHead != "" {
@@ -83,7 +83,7 @@ func (b *builder) personas() {
 		for _, story := range group.Stories {
 			row := b.stories[story]
 			if len(row.LifecycleHeads) == 1 {
-				retire = append(retire, b.invoke("story set-state", grammar.V("story", story), grammar.V("parent", row.LifecycleHeads[0]), grammar.V("state", "retired")).With("epic", row.Epic))
+				retire = append(retire, b.invoke("story set-state", grammar.V("story", story), grammar.V("parent", row.LifecycleHeads[0]), grammar.V("state", "retired")).With("feature", row.Feature))
 			}
 			reassign = append(reassign, b.reviseStory(row, []string{""}))
 		}

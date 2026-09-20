@@ -24,7 +24,7 @@ import (
 // the one question this architecture exists to answer.
 //
 // The four headers are destinations as well as disclosures. Product, Design,
-// and Quality open the epic's page at the section that lists what they hold,
+// and Quality open the feature's page at the section that lists what they hold,
 // and Implementation opens its deck at the first slide.
 
 // productNavSources is everything the architecture can be filled from. Every
@@ -32,14 +32,14 @@ import (
 // section. Fields with no producer yet are the seams the remaining domains
 // will be joined through, and their TODOs name what is still missing.
 type productNavSources struct {
-	// prefix namespaces the architecture's node IDs, since every epic has
+	// prefix namespaces the architecture's node IDs, since every feature has
 	// its own four places. An empty prefix is "nav".
 	prefix string
-	// epic is the epic these four places belong to, so each place's header
-	// can open that epic's page at the section it names. An empty epic leaves
-	// the headers as disclosures, which is what they were before an epic had
+	// feature is the feature these four places belong to, so each place's header
+	// can open that feature's page at the section it names. An empty feature leaves
+	// the headers as disclosures, which is what they were before a feature had
 	// a page of its own.
-	epic string
+	feature string
 	// requirements is makeRequirementsNav's tree. Requirements is its own
 	// overview and never gains a redundant "Overview" child.
 	requirements *navNodeView
@@ -56,7 +56,7 @@ type productNavSources struct {
 	// dataFlows is individual flow diagrams.
 	// TODO: no diagram resource is recorded yet; nothing fills this.
 	dataFlows []*navNodeView
-	// testCases is the epic's test cases, each opening its page.
+	// testCases is the feature's test cases, each opening its page.
 	testCases      []*navNodeView
 	implementation []*navNodeView
 }
@@ -84,19 +84,19 @@ func makeProductNavTree(sources productNavSources) []*navNodeView {
 		prototypeNote = "no prototypes yet"
 	}
 
-	// Product, Design, and Quality open the epic's page at the section that
+	// Product, Design, and Quality open the feature's page at the section that
 	// lists what they hold: its stories, its design, and its test cases. The
-	// epic's page is already the directory of all three, so a second table
+	// feature's page is already the directory of all three, so a second table
 	// per place would say the same thing twice and go out of step the first
 	// time one of them changed.
 	place := func(title, id, icon, anchor, emptyNote string, children []*navNodeView) *navNodeView {
 		node := navPlace(title, id, icon, emptyNote, children)
-		if sources.epic != "" {
-			node.Href = epicHref(sources.epic) + anchor
+		if sources.feature != "" {
+			node.Href = featureHref(sources.feature) + anchor
 		}
 		return node
 	}
-	product := place("Product", prefix+"-product", "product", "#epic-product", "", []*navNodeView{
+	product := place("Product", prefix+"-product", "product", "#feature-product", "", []*navNodeView{
 		navPlace("Prototypes", prefix+"-prototypes", "prototype", prototypeNote, sources.prototypes),
 		requirements,
 	})
@@ -105,12 +105,12 @@ func makeProductNavTree(sources productNavSources) []*navNodeView {
 		navPlace("System", prefix+"-technical-system", "", "not authored yet", nil),
 		navPlace("Data Flows", prefix+"-technical-data-flows", "", "no flow diagrams yet", sources.dataFlows),
 	}, sources.technical...))
-	design := place("Design", prefix+"-design", "design", "#epic-design", "", []*navNodeView{
+	design := place("Design", prefix+"-design", "design", "#feature-design", "", []*navNodeView{
 		navPlace("UX", prefix+"-design-ux", "", "no flow decks yet", sources.uxDecks),
 		navPlace("UI", prefix+"-design-ui", "", "no references yet", sources.uiDesign),
 		technical,
 	})
-	quality := place("Quality", prefix+"-quality", "quality", "#epic-quality", "", []*navNodeView{
+	quality := place("Quality", prefix+"-quality", "quality", "#feature-quality", "", []*navNodeView{
 		navPlace("Test Cases", prefix+"-test-cases", "", "no test cases yet", sources.testCases),
 	})
 	// Implementation is the one place that opens on arrival, and it opens all

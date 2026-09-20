@@ -1,8 +1,0 @@
-{
-  "$schema": "https://changesaga.dev/schema/v5/epic.schema.json",
-  "version": 5,
-  "id": "agent-loop",
-  "title": "Status, check, and the agent loop",
-  "description": "The CLI grammar an authoring agent drives: the coverage report by area with no verdict, check --covers for yes/no questions, ordered next actions with growth that teaches practices, the query API, and the installable skill.",
-  "created_at": "2026-09-19T20:47:03.245345Z"
-}

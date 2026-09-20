@@ -334,22 +334,22 @@ func newServiceFixture(t *testing.T) serviceFixture {
 		Source: saga.Source{Repository: comparison.Repository},
 	})
 	writeJSON(t, filepath.Join(root, saga.CodeDirName, "root.json"), saga.CodeFile{Version: 2, References: []coderef.Reference{at(current, "root ownership")}})
-	// Report content lives in an epic; root evidence, review records, claims,
+	// Report content lives in a feature; root evidence, review records, claims,
 	// and verifications stay at the app root.
-	epicDir := filepath.Join(root, "___epics", "core.epic")
-	writeFile(t, filepath.Join(epicDir, "epic.json"), `{"$schema":"https://changesaga.dev/schema/v5/epic.schema.json","version":5,"id":"core","title":"Core","created_at":"2026-08-20T09:00:00Z"}`)
-	writeJSON(t, filepath.Join(epicDir, "overview.fragment", "fragment.json"), saga.FragmentManifest{Version: 2, ID: "overview", Title: "Overview", MediaType: "text/markdown", Entrypoint: "content.md", Order: 1})
-	writeFile(t, filepath.Join(epicDir, "overview.fragment", "content.md"), "A café explains the change.\n")
-	writeJSON(t, filepath.Join(epicDir, "overview.fragment", "___landmarks", "readiness.landmark", "landmark.json"), saga.Landmark{
+	featureDir := filepath.Join(root, "___features", "core.feature")
+	writeFile(t, filepath.Join(featureDir, "feature.json"), `{"$schema":"https://changesaga.dev/schema/v5/feature.schema.json","version":5,"id":"core","title":"Core","created_at":"2026-08-20T09:00:00Z"}`)
+	writeJSON(t, filepath.Join(featureDir, "overview.fragment", "fragment.json"), saga.FragmentManifest{Version: 2, ID: "overview", Title: "Overview", MediaType: "text/markdown", Entrypoint: "content.md", Order: 1})
+	writeFile(t, filepath.Join(featureDir, "overview.fragment", "content.md"), "A café explains the change.\n")
+	writeJSON(t, filepath.Join(featureDir, "overview.fragment", "___landmarks", "readiness.landmark", "landmark.json"), saga.Landmark{
 		Version: 2, ID: "readiness", Label: "Readiness", Description: "The readiness statement summarized by this fragment.",
 		Selector: saga.LandmarkSelector{Type: "text", Exact: "café"},
 	})
-	asset := filepath.Join(epicDir, "overview.fragment", "diagram.png")
+	asset := filepath.Join(featureDir, "overview.fragment", "diagram.png")
 	writeFile(t, asset, "not-executed-image-bytes")
-	writeJSON(t, filepath.Join(epicDir, "overview.fragment", saga.CodeDirName, "coverage.json"), saga.CodeFile{Version: 2, References: []coderef.Reference{at(current, "fragment ownership"), stale}})
-	writeJSON(t, filepath.Join(epicDir, "details.chapter", "chapter.json"), saga.ChapterManifest{Version: 2, ID: "details", Title: "Details", Order: 2})
-	writeJSON(t, filepath.Join(epicDir, "details.chapter", "details.fragment", "fragment.json"), saga.FragmentManifest{Version: 2, ID: "details-body", Title: "Details body", MediaType: "text/plain", Entrypoint: "content.txt"})
-	writeFile(t, filepath.Join(epicDir, "details.chapter", "details.fragment", "content.txt"), "Details.\n")
+	writeJSON(t, filepath.Join(featureDir, "overview.fragment", saga.CodeDirName, "coverage.json"), saga.CodeFile{Version: 2, References: []coderef.Reference{at(current, "fragment ownership"), stale}})
+	writeJSON(t, filepath.Join(featureDir, "details.chapter", "chapter.json"), saga.ChapterManifest{Version: 2, ID: "details", Title: "Details", Order: 2})
+	writeJSON(t, filepath.Join(featureDir, "details.chapter", "details.fragment", "fragment.json"), saga.FragmentManifest{Version: 2, ID: "details-body", Title: "Details body", MediaType: "text/plain", Entrypoint: "content.txt"})
+	writeFile(t, filepath.Join(featureDir, "details.chapter", "details.fragment", "content.txt"), "Details.\n")
 	writeJSON(t, filepath.Join(root, "___claims", "ready-claim.json"), saga.Claim{
 		Version: 2, ID: "ready-claim", Target: fragmentTarget, Kind: "behavior", Statement: "The readiness constant becomes true.",
 		Evidence: []coderef.Reference{at(current, "")}, CreatedAt: mustTime("2026-08-20T10:04:00Z"),

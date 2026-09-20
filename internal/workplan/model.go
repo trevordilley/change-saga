@@ -40,9 +40,9 @@ type Identity struct {
 
 type Wave struct {
 	Identity
-	// Epic is the epic whose ___workplan holds the record. It is where the
+	// Feature is the feature whose ___workplan holds the record. It is where the
 	// record lives, never part of its identity.
-	Epic            string         `json:"-"`
+	Feature         string         `json:"-"`
 	Revisions       []WaveRevision `json:"-"`
 	Heads           []string       `json:"-"`
 	CurrentRevision *WaveRevision  `json:"-"`
@@ -66,9 +66,9 @@ type WaveRevision struct {
 
 type WorkItem struct {
 	Identity
-	// Epic is the epic whose ___workplan holds the record. It is where the
+	// Feature is the feature whose ___workplan holds the record. It is where the
 	// record lives, never part of its identity.
-	Epic            string             `json:"-"`
+	Feature         string             `json:"-"`
 	Revisions       []WorkItemRevision `json:"-"`
 	Heads           []string           `json:"-"`
 	Progress        []ProgressEvent    `json:"-"`
@@ -131,9 +131,9 @@ type Dependency struct {
 	RequestID     string              `json:"request_id,omitempty"`
 	RequestDigest string              `json:"request_digest,omitempty"`
 
-	// Epic is the epic whose ___workplan holds the record. It is where the
+	// Feature is the feature whose ___workplan holds the record. It is where the
 	// record lives, never part of its identity.
-	Epic string `json:"-"`
+	Feature string `json:"-"`
 }
 
 type DependencyCondition struct {
@@ -143,9 +143,9 @@ type DependencyCondition struct {
 
 type Contract struct {
 	Identity
-	// Epic is the epic whose ___workplan holds the record. It is where the
+	// Feature is the feature whose ___workplan holds the record. It is where the
 	// record lives, never part of its identity.
-	Epic            string             `json:"-"`
+	Feature         string             `json:"-"`
 	Revisions       []ContractRevision `json:"-"`
 	Heads           []string           `json:"-"`
 	Events          []ContractEvent    `json:"-"`
@@ -227,9 +227,9 @@ type ContractEvent struct {
 type Plan struct {
 	Root   string
 	SagaID string
-	// Epics lists every epic of the app in ID order. The plan holds the work
+	// Features lists every feature of the app in ID order. The plan holds the work
 	// plans of all of them.
-	Epics        []applayout.Epic
+	Features     []applayout.Feature
 	Waves        map[string]*Wave
 	WorkItems    map[string]*WorkItem
 	Dependencies map[string]*Dependency

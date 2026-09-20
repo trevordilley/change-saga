@@ -45,11 +45,11 @@ func setFragmentContentScoped(_ context.Context, args []string, out io.Writer, s
 	source := flags.String("source", "", "content file, or - for standard input")
 	jsonOutput := flags.Bool("json", false, "emit one machine-readable JSON result")
 	quiet := flags.Bool("quiet", false, "suppress successful output")
-	epic, app := scope.placeFlags(flags)
+	feature, app := scope.placeFlags(flags)
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
-	scope, placeErr := scope.placed(epic, app)
+	scope, placeErr := scope.placed(feature, app)
 	if placeErr != nil {
 		return placeErr
 	}

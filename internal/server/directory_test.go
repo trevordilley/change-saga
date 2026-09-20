@@ -22,11 +22,11 @@ func TestEverySectionHeaderIsADestination(t *testing.T) {
 		{[]string{"Overview", "Terms and vocabulary"}, "/terms"},
 		{[]string{"Overview", "Personas"}, "/personas"},
 		{[]string{"Overview", "Design system"}, designSystemPath},
-		{[]string{"Epics"}, "/epics"},
+		{[]string{"Features"}, "/features"},
 		{[]string{"Reviews"}, "/reviews"},
-		{[]string{"Epics", "Billing", "Product"}, epicHref("billing") + "#epic-product"},
-		{[]string{"Epics", "Billing", "Design"}, epicHref("billing") + "#epic-design"},
-		{[]string{"Epics", "Billing", "Quality"}, epicHref("billing") + "#epic-quality"},
+		{[]string{"Features", "Billing", "Product"}, featureHref("billing") + "#feature-product"},
+		{[]string{"Features", "Billing", "Design"}, featureHref("billing") + "#feature-design"},
+		{[]string{"Features", "Billing", "Quality"}, featureHref("billing") + "#feature-quality"},
 	} {
 		if got := findNav(t, nodes, want.path...).Href; got != want.href {
 			t.Fatalf("%v opens %q, want %q", want.path, got, want.href)
@@ -37,14 +37,14 @@ func TestEverySectionHeaderIsADestination(t *testing.T) {
 	if len(onboarding.Children) == 0 || onboarding.Href != onboarding.Children[0].Href {
 		t.Fatalf("Onboarding opens %q, want its first slide %#v", onboarding.Href, onboarding.Children)
 	}
-	implementation := findNav(t, nodes, "Epics", "Billing", "Implementation")
+	implementation := findNav(t, nodes, "Features", "Billing", "Implementation")
 	if len(implementation.Children) == 0 || implementation.Href != implementation.Children[0].Href {
 		t.Fatalf("Implementation opens %q, want its first slide", implementation.Href)
 	}
-	// An epic with no deck has no first slide to open, and says so instead.
+	// A feature with no deck has no first slide to open, and says so instead.
 	empty := appNavFixture(t)
-	empty.pageEpic = "catalog"
-	catalog := findNav(t, makeAppNavTree(empty), "Epics", "Catalog", "Implementation")
+	empty.pageFeature = "catalog"
+	catalog := findNav(t, makeAppNavTree(empty), "Features", "Catalog", "Implementation")
 	if catalog.Href != "" {
 		t.Fatalf("an empty Implementation opens %q, want nowhere", catalog.Href)
 	}
@@ -85,7 +85,7 @@ func TestEachDirectoryRendersAsATableOfCounts(t *testing.T) {
 	for _, page := range []struct{ path, id, column string }{
 		{"/terms", "terms", `<th scope="col">Defined in code</th>`},
 		{"/personas", "personas", `<th scope="col" class="numeric">Stories served</th>`},
-		{"/epics", "epics", `<th scope="col" class="numeric">Accepted</th>`},
+		{"/features", "features", `<th scope="col" class="numeric">Accepted</th>`},
 	} {
 		body := dogfoodOK(t, page.path)
 		for _, want := range []string{
@@ -136,7 +136,7 @@ func TestTheServerAppliesTheFilterItWasGiven(t *testing.T) {
 // /personas used to answer 404 while /personas/{id} answered: the section had
 // records but no directory. Every app-level section has one now.
 func TestEveryAppSectionAnswersAtItsOwnPath(t *testing.T) {
-	for _, path := range []string{"/", "/terms", "/personas", "/flags", "/epics", designSystemPath} {
+	for _, path := range []string{"/", "/terms", "/personas", "/flags", "/features", designSystemPath} {
 		if code, body := dogfoodPage(t, path); code != http.StatusOK {
 			t.Fatalf("GET %s = %d\n%s", path, code, body)
 		}

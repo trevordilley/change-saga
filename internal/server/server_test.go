@@ -189,10 +189,10 @@ func TestBrowserErrorsDoNotExposeFilesystemPaths(t *testing.T) {
 // explanation that owns them.
 func TestDeferredAnchorsResolveToTheirChapterAndExplanation(t *testing.T) {
 	root := validServerSaga(t)
-	writeServerFile(t, filepath.Join(serverEpicDir(root), "alpha.chapter", "chapter.json"), `{"version":2,"id":"alpha","title":"Alpha"}`)
-	writeServerFile(t, filepath.Join(serverEpicDir(root), "alpha.chapter", "story.fragment", "fragment.json"), `{"version":2,"id":"alpha-story","title":"Alpha story","media_type":"text/markdown","entrypoint":"content.md"}`)
-	writeServerFile(t, filepath.Join(serverEpicDir(root), "alpha.chapter", "story.fragment", "content.md"), "# Deep heading {#deep}\n\nAlpha narrative.\n")
-	writeServerFile(t, filepath.Join(serverEpicDir(root), "alpha.chapter", "story.fragment", "___landmarks", "place.landmark", "landmark.json"),
+	writeServerFile(t, filepath.Join(serverFeatureDir(root), "alpha.chapter", "chapter.json"), `{"version":2,"id":"alpha","title":"Alpha"}`)
+	writeServerFile(t, filepath.Join(serverFeatureDir(root), "alpha.chapter", "story.fragment", "fragment.json"), `{"version":2,"id":"alpha-story","title":"Alpha story","media_type":"text/markdown","entrypoint":"content.md"}`)
+	writeServerFile(t, filepath.Join(serverFeatureDir(root), "alpha.chapter", "story.fragment", "content.md"), "# Deep heading {#deep}\n\nAlpha narrative.\n")
+	writeServerFile(t, filepath.Join(serverFeatureDir(root), "alpha.chapter", "story.fragment", "___landmarks", "place.landmark", "landmark.json"),
 		`{"version":2,"id":"place","label":"A marked place","selector":{"type":"text","exact":"Alpha"},"target":""}`)
 	chapterTarget := saga.ChapterTarget("test", "alpha")
 	fragmentTarget := "urn:change-saga:test:fragment:alpha-story"
@@ -259,7 +259,7 @@ func TestFragmentFileRejectsSymlinkOutsidePackage(t *testing.T) {
 	root := validServerSaga(t)
 	outside := filepath.Join(filepath.Dir(root), "secret.txt")
 	writeServerFile(t, outside, "secret")
-	fragmentDir := filepath.Join(serverEpicDir(root), "overview.fragment")
+	fragmentDir := filepath.Join(serverFeatureDir(root), "overview.fragment")
 	if err := os.Symlink(outside, filepath.Join(fragmentDir, "secret.txt")); err != nil {
 		t.Skipf("symlinks unavailable: %v", err)
 	}
@@ -276,8 +276,8 @@ func TestFragmentFileRejectsSymlinkOutsidePackage(t *testing.T) {
 
 func TestInteractiveFragmentIsServedWithSandboxCSP(t *testing.T) {
 	root := validServerSaga(t)
-	writeServerFile(t, filepath.Join(serverEpicDir(root), "demo.fragment", "fragment.json"), `{"version":2,"id":"demo","media_type":"text/html","entrypoint":"index.html"}`)
-	writeServerFile(t, filepath.Join(serverEpicDir(root), "demo.fragment", "index.html"), `<button onclick="this.textContent='ok'">Run</button>`)
+	writeServerFile(t, filepath.Join(serverFeatureDir(root), "demo.fragment", "fragment.json"), `{"version":2,"id":"demo","media_type":"text/html","entrypoint":"index.html"}`)
+	writeServerFile(t, filepath.Join(serverFeatureDir(root), "demo.fragment", "index.html"), `<button onclick="this.textContent='ok'">Run</button>`)
 	application := &app{root: root}
 	request := httptest.NewRequest(http.MethodGet, "/f/demo/index.html", nil)
 	request.SetPathValue("id", "demo")
@@ -446,18 +446,18 @@ The lease is renewed before its midpoint.[^lease-renewal]
 // reviewer reaches it, so the page describes the story instead of containing it.
 func TestPageHandlerShipsAChapterShellAndRedirectsLegacyRoutes(t *testing.T) {
 	root := validServerSaga(t)
-	writeServerFile(t, filepath.Join(serverEpicDir(root), "overview.fragment", "content.md"), "Root-only introduction\n")
-	writeServerFile(t, filepath.Join(serverEpicDir(root), "alpha.chapter", "chapter.json"), `{"version":2,"id":"alpha","title":"Alpha"}`)
-	writeServerFile(t, filepath.Join(serverEpicDir(root), "alpha.chapter", "alpha.fragment", "fragment.json"), `{"version":2,"id":"alpha-story","title":"Alpha story","media_type":"text/markdown","entrypoint":"content.md"}`)
-	writeServerFile(t, filepath.Join(serverEpicDir(root), "alpha.chapter", "alpha.fragment", "content.md"), "Alpha-exclusive narrative\n")
-	writeServerFile(t, filepath.Join(serverEpicDir(root), "beta.chapter", "chapter.json"), `{"version":2,"id":"beta","title":"Beta"}`)
-	writeServerFile(t, filepath.Join(serverEpicDir(root), "beta.chapter", "beta.fragment", "fragment.json"), `{"version":2,"id":"beta-story","title":"Beta story","media_type":"text/markdown","entrypoint":"content.md"}`)
-	writeServerFile(t, filepath.Join(serverEpicDir(root), "beta.chapter", "beta.fragment", "content.md"), "Beta-exclusive narrative\n")
+	writeServerFile(t, filepath.Join(serverFeatureDir(root), "overview.fragment", "content.md"), "Root-only introduction\n")
+	writeServerFile(t, filepath.Join(serverFeatureDir(root), "alpha.chapter", "chapter.json"), `{"version":2,"id":"alpha","title":"Alpha"}`)
+	writeServerFile(t, filepath.Join(serverFeatureDir(root), "alpha.chapter", "alpha.fragment", "fragment.json"), `{"version":2,"id":"alpha-story","title":"Alpha story","media_type":"text/markdown","entrypoint":"content.md"}`)
+	writeServerFile(t, filepath.Join(serverFeatureDir(root), "alpha.chapter", "alpha.fragment", "content.md"), "Alpha-exclusive narrative\n")
+	writeServerFile(t, filepath.Join(serverFeatureDir(root), "beta.chapter", "chapter.json"), `{"version":2,"id":"beta","title":"Beta"}`)
+	writeServerFile(t, filepath.Join(serverFeatureDir(root), "beta.chapter", "beta.fragment", "fragment.json"), `{"version":2,"id":"beta-story","title":"Beta story","media_type":"text/markdown","entrypoint":"content.md"}`)
+	writeServerFile(t, filepath.Join(serverFeatureDir(root), "beta.chapter", "beta.fragment", "content.md"), "Beta-exclusive narrative\n")
 	application := &app{root: root, sourceDir: root, template: serverTemplate(t)}
 
-	// The chapters belong to the fixture's epic, so its page is their shell.
+	// The chapters belong to the fixture's feature, so its page is their shell.
 	overview := httptest.NewRecorder()
-	newMux(application).ServeHTTP(overview, httptest.NewRequest(http.MethodGet, epicHref(serverEpic), nil))
+	newMux(application).ServeHTTP(overview, httptest.NewRequest(http.MethodGet, featureHref(serverFeature), nil))
 	if overview.Code != http.StatusOK {
 		t.Fatalf("overview status = %d: %s", overview.Code, overview.Body.String())
 	}
@@ -471,7 +471,7 @@ func TestPageHandlerShipsAChapterShellAndRedirectsLegacyRoutes(t *testing.T) {
 			t.Fatalf("first load carried narrative content it was only asked to describe: %q", narrative)
 		}
 	}
-	if !strings.Contains(overviewBody, `href="`+epicHref(serverEpic)+`#`+domID(alphaTarget)+`"`) ||
+	if !strings.Contains(overviewBody, `href="`+featureHref(serverFeature)+`#`+domID(alphaTarget)+`"`) ||
 		!strings.Contains(overviewBody, `data-section-href="/api/section?target=`+template.HTMLEscapeString(url.QueryEscape(alphaTarget))+`"`) {
 		t.Fatal("the shell did not describe its chapters as fetchable summaries")
 	}
@@ -530,7 +530,7 @@ func TestPageHandlerShipsAChapterShellAndRedirectsLegacyRoutes(t *testing.T) {
 	chapterRequest.SetPathValue("chapter", "alpha")
 	chapter := httptest.NewRecorder()
 	application.page(chapter, chapterRequest)
-	if chapter.Code != http.StatusFound || chapter.Header().Get("Location") != epicHref(serverEpic)+"#"+domID(alphaTarget) {
+	if chapter.Code != http.StatusFound || chapter.Header().Get("Location") != featureHref(serverFeature)+"#"+domID(alphaTarget) {
 		t.Fatalf("legacy chapter route did not redirect to its in-page target: status=%d location=%q", chapter.Code, chapter.Header().Get("Location"))
 	}
 
@@ -581,9 +581,9 @@ func TestPageHandlerRendersRealGitComparison(t *testing.T) {
 		t.Fatal(err)
 	}
 	writeServerFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"test","title":"Test","source":{"repository":"`+repository+`"}}`)
-	writeServerEpic(t, root)
-	writeServerFile(t, filepath.Join(serverEpicDir(root), "overview.fragment", "fragment.json"), `{"version":2,"id":"overview","media_type":"text/markdown","entrypoint":"content.md"}`)
-	writeServerFile(t, filepath.Join(serverEpicDir(root), "overview.fragment", "content.md"), "# Story\n")
+	writeServerFeature(t, root)
+	writeServerFile(t, filepath.Join(serverFeatureDir(root), "overview.fragment", "fragment.json"), `{"version":2,"id":"overview","media_type":"text/markdown","entrypoint":"content.md"}`)
+	writeServerFile(t, filepath.Join(serverFeatureDir(root), "overview.fragment", "content.md"), "# Story\n")
 	application := &app{root: root, sourceDir: repo, rng: gitdiff.Range{Against: base}, template: serverTemplate(t)}
 	handler := newMux(application)
 	request := httptest.NewRequest(http.MethodGet, "/", nil)
@@ -660,10 +660,10 @@ func TestTargetCodeLoadsOneNarrativeMappingWithoutGlobalSnapshot(t *testing.T) {
 
 	root := filepath.Join(repo, "linked.saga")
 	writeServerFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"linked","title":"Linked","source":{"repository":"`+repository+`"}}`)
-	writeServerEpic(t, root)
-	writeServerFile(t, filepath.Join(serverEpicDir(root), "story.fragment", "fragment.json"), `{"version":2,"id":"story","title":"Story","media_type":"text/markdown","entrypoint":"content.md"}`)
-	writeServerFile(t, filepath.Join(serverEpicDir(root), "story.fragment", "content.md"), "# Story\n")
-	writeServerFile(t, filepath.Join(serverEpicDir(root), "story.fragment", saga.CodeDirName, "app.json"), codeRecordJSON(t, repo, [2]string{appRef, "Implements the ready path."}))
+	writeServerFeature(t, root)
+	writeServerFile(t, filepath.Join(serverFeatureDir(root), "story.fragment", "fragment.json"), `{"version":2,"id":"story","title":"Story","media_type":"text/markdown","entrypoint":"content.md"}`)
+	writeServerFile(t, filepath.Join(serverFeatureDir(root), "story.fragment", "content.md"), "# Story\n")
+	writeServerFile(t, filepath.Join(serverFeatureDir(root), "story.fragment", saga.CodeDirName, "app.json"), codeRecordJSON(t, repo, [2]string{appRef, "Implements the ready path."}))
 	target := saga.FragmentTarget("linked", "story")
 	application := &app{root: root, sourceDir: repo, rng: gitdiff.Range{Against: base}, template: serverTemplate(t)}
 	application.comparisonLoader = func(context.Context) (*reviewSnapshot, error) {
@@ -721,8 +721,8 @@ func TestSlideTargetCodeRollsUpItemFiles(t *testing.T) {
 
 	root := filepath.Join(repo, "slides.saga")
 	writeServerFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"slides","title":"Slides","source":{"repository":"`+repository+`"}}`)
-	writeServerEpic(t, root)
-	bundle := filepath.Join(serverEpicDir(root), saga.EmbeddedSlidesDir, "review"+saga.EmbeddedDeckSuffix)
+	writeServerFeature(t, root)
+	bundle := filepath.Join(serverFeatureDir(root), saga.EmbeddedSlidesDir, "review"+saga.EmbeddedDeckSuffix)
 	deckTarget := saga.DeckTarget("slides", "review")
 	deckName, _ := saga.FlatDeckFilename(deckTarget, 0)
 	writeServerFile(t, filepath.Join(bundle, deckName), `{"version":4,"id":"review","title":"Review","role":"change","rank":0,"objective":"Review the change."}`)
@@ -926,9 +926,9 @@ func validServerSaga(t *testing.T) string {
 	t.Helper()
 	root := filepath.Join(t.TempDir(), "test.saga")
 	writeServerFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"test","title":"Test","source":{"repository":"https://example.test/a.git"}}`)
-	writeServerEpic(t, root)
-	writeServerFile(t, filepath.Join(serverEpicDir(root), "overview.fragment", "fragment.json"), `{"version":2,"id":"overview","title":"Overview","media_type":"text/markdown","entrypoint":"content.md"}`)
-	writeServerFile(t, filepath.Join(serverEpicDir(root), "overview.fragment", "content.md"), "# Story\n")
+	writeServerFeature(t, root)
+	writeServerFile(t, filepath.Join(serverFeatureDir(root), "overview.fragment", "fragment.json"), `{"version":2,"id":"overview","title":"Overview","media_type":"text/markdown","entrypoint":"content.md"}`)
+	writeServerFile(t, filepath.Join(serverFeatureDir(root), "overview.fragment", "content.md"), "# Story\n")
 	return root
 }
 
@@ -962,18 +962,18 @@ func writeServerFile(t *testing.T, path, body string) {
 	}
 }
 
-// serverEpic is the one epic the server fixtures hold their report content in.
+// serverFeature is the one feature the server fixtures hold their report content in.
 // Review records, claims, and verifications stay at the app root.
-const serverEpic = "core"
+const serverFeature = "core"
 
-// serverEpicDir is the fixture epic's directory beneath an app Saga root.
-func serverEpicDir(root string) string { return applayout.EpicDir(root, serverEpic) }
+// serverFeatureDir is the fixture feature's directory beneath an app Saga root.
+func serverFeatureDir(root string) string { return applayout.FeatureDir(root, serverFeature) }
 
-// writeServerEpic writes the fixture epic's manifest.
-func writeServerEpic(t *testing.T, root string) {
+// writeServerFeature writes the fixture feature's manifest.
+func writeServerFeature(t *testing.T, root string) {
 	t.Helper()
-	writeServerFile(t, filepath.Join(serverEpicDir(root), applayout.EpicManifestName),
-		`{"$schema":"https://changesaga.dev/schema/v5/epic.schema.json","version":5,"id":"core","title":"Core","created_at":"2026-08-21T12:00:00Z"}`)
+	writeServerFile(t, filepath.Join(serverFeatureDir(root), applayout.FeatureManifestName),
+		`{"$schema":"https://changesaga.dev/schema/v5/feature.schema.json","version":5,"id":"core","title":"Core","created_at":"2026-08-21T12:00:00Z"}`)
 }
 
 // Documentation has no approve, reject, or comment control in either mode;

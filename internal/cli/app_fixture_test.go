@@ -12,24 +12,24 @@ import (
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
-// Every fixture app Saga gets one epic and one persona so tests can author
-// epic content and stories the way an author would after init.
+// Every fixture app Saga gets one feature and one persona so tests can author
+// feature content and stories the way an author would after init.
 const (
-	testEpic    = "core"
+	testFeature = "core"
 	testPersona = "user"
 	// testPersonaURN is the fixture persona of the "atomic" Saga most tests use.
 	testPersonaURN = "urn:change-saga:atomic:persona:" + testPersona
 )
 
-// testEpicRel is the app-relative directory of the fixture epic.
-var testEpicRel = applayout.EpicRel(testEpic)
+// testFeatureRel is the app-relative directory of the fixture feature.
+var testFeatureRel = applayout.FeatureRel(testFeature)
 
 // personaURNFor returns the fixture persona URN of a Saga with sagaID.
 func personaURNFor(sagaID string) string {
 	return "urn:change-saga:" + sagaID + ":persona:" + testPersona
 }
 
-// addTestApp adds the fixture epic, persona, and overview description to an
+// addTestApp adds the fixture feature, persona, and overview description to an
 // initialized Saga and returns the persona URN.
 func addTestApp(t *testing.T, root string) string {
 	t.Helper()
@@ -38,8 +38,8 @@ func addTestApp(t *testing.T, root string) string {
 		t.Fatal(err)
 	}
 	var output bytes.Buffer
-	if err := Epic(context.Background(), []string{"add", "--id", testEpic, "--title", "Core", root}, &output); err != nil {
-		t.Fatalf("epic add: %v\n%s", err, output.String())
+	if err := Feature(context.Background(), []string{"add", "--id", testFeature, "--title", "Core", root}, &output); err != nil {
+		t.Fatalf("feature add: %v\n%s", err, output.String())
 	}
 	output.Reset()
 	if err := Persona(context.Background(), []string{"add", "--id", testPersona, "--name", "User", "--description", "Someone who uses the app", root}, &output); err != nil {
@@ -49,8 +49,8 @@ func addTestApp(t *testing.T, root string) string {
 	return personaURNFor(manifest.ID)
 }
 
-// testEpicDir returns the absolute directory of the fixture epic.
-func testEpicDir(root string) string { return applayout.EpicDir(root, testEpic) }
+// testFeatureDir returns the absolute directory of the fixture feature.
+func testFeatureDir(root string) string { return applayout.FeatureDir(root, testFeature) }
 
 // overviewFragment returns the overview's description fragment, writing a
 // placeholder description the first time so tests have an app-level fragment
@@ -63,5 +63,19 @@ func overviewFragment(root string) string {
 			panic(fmt.Sprintf("write the overview description: %v\n%s", err, output.String()))
 		}
 	}
+	return dir
+}
+
+// shortTempDir is t.TempDir() with a short leaf name. The portable deck path
+// budget (saga.FlatMaxPath) is measured on the absolute path, and a platform
+// temp prefix plus a long test name can spend most of it before the Saga's own
+// ___features/<id>.feature/___slides/<id>.deck directories are counted.
+func shortTempDir(t *testing.T) string {
+	t.Helper()
+	dir, err := os.MkdirTemp("", "cs")
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { _ = os.RemoveAll(dir) })
 	return dir
 }

@@ -24,7 +24,7 @@ function authorReview(repositories: SagaRepositories): void {
     cli(repositories, "add-slide", "--review", "pr-1", "--intent", "explain", "--layout", "diagram", "--title", slide === "greeting" ? "Greeting takes a name" : "Theme colour", "--source", visual, sagaRoot, slide);
     cli(repositories, "add-item", "--review", "pr-1", "--slide", slide, "--kind", "node", "--element-id", "change", "--label", "The change", "--description", "The code this slide explains", sagaRoot);
   }
-  cli(repositories, "add-item", "--review", "pr-1", "--slide", "greeting", "--kind", "statement", "--element-id", "why", "--label", "Epic", "--description", "The epic this change revises", "--record", "urn:change-saga:wave-one:epic:wave-one", sagaRoot);
+  cli(repositories, "add-item", "--review", "pr-1", "--slide", "greeting", "--kind", "statement", "--element-id", "why", "--label", "Feature", "--description", "The feature this change revises", "--record", "urn:change-saga:wave-one:feature:wave-one", sagaRoot);
   cli(repositories, "cover", "--repo", sourceRepo, "--target", "urn:change-saga:wave-one:review:pr-1:slide:greeting:item:change", "--ref", codeLocation(identity.head, "src/app.go", 4), sagaRoot);
   cli(repositories, "cover", "--repo", sourceRepo, "--target", "urn:change-saga:wave-one:review:pr-1:slide:theme:item:change", "--ref", codeLocation(identity.head, "assets/ui/theme.css", 2), sagaRoot);
   git(repositories.sagaRepo, "add", ".");
@@ -42,7 +42,7 @@ test("@critical approves slide by slide and marks a decision out of date when it
     // The Item's code reference is shown as a diff against the review's base.
     await expect(greeting.locator(".review-line.add").filter({ hasText: `"hello, " + name` })).toHaveCount(1);
     await expect(greeting.locator(".review-line.del").filter({ hasText: `return "hello"` })).toHaveCount(1);
-    await expect(greeting.locator('[data-review-record="urn:change-saga:wave-one:epic:wave-one"]')).toBeVisible();
+    await expect(greeting.locator('[data-review-record="urn:change-saga:wave-one:feature:wave-one"]')).toBeVisible();
 
     await greeting.locator("[data-review-approve]").click();
     await expect(greeting.locator('[data-decision-state="approved"]')).toHaveAttribute("data-currency", "current");

@@ -1,8 +1,0 @@
-{
-  "$schema": "https://changesaga.dev/schema/v5/epic.schema.json",
-  "version": 5,
-  "id": "comparison",
-  "title": "Observe, compare, and history",
-  "description": "Opening a Saga at one commit or comparing two: the Changed, Affected, and Code layers, replacement pairing, commit reasons attached to the records they touched, and each node's history.",
-  "created_at": "2026-09-19T20:47:03.06455Z"
-}

@@ -10,5 +10,5 @@
     "type": "element",
     "element_id": "reviewer-app"
   },
-  "record": "urn:change-saga:app:epic:reviewer-app"
+  "record": "urn:change-saga:app:feature:reviewer-app"
 }

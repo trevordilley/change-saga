@@ -27,7 +27,7 @@ type sagaIdentity struct {
 
 func Load(root, sagaID string) (Document, error) { return LoadWithOptions(root, sagaID, LoadOptions{}) }
 
-// LoadWithOptions reads only saga.json, the epic manifests, and every epic's
+// LoadWithOptions reads only saga.json, the feature manifests, and every feature's
 // ___requirements/prototypes into one app-wide document. It never follows
 // symlinks or opens stories, narrative, design, work-plan, review, or diff
 // data.
@@ -60,18 +60,18 @@ func LoadWithOptions(root, sagaID string, options LoadOptions) (Document, error)
 	if sagaID != manifest.ID {
 		return Document{}, fmt.Errorf("requested saga id %q does not match saga.json id %q", sagaID, manifest.ID)
 	}
-	epics, err := applayout.Epics(abs)
+	features, err := applayout.Features(abs)
 	if err != nil {
 		return Document{}, err
 	}
-	if err := applayout.RejectEpicRootsAtAppRoot(abs); err != nil {
+	if err := applayout.RejectFeatureRootsAtAppRoot(abs); err != nil {
 		return Document{}, err
 	}
-	doc := Document{Root: abs, SagaID: sagaID, Epics: epics, Prototypes: []Prototype{}, Annotations: []Annotation{}}
+	doc := Document{Root: abs, SagaID: sagaID, Features: features, Prototypes: []Prototype{}, Annotations: []Annotation{}}
 	prototypeIDs := applayout.NewUniqueIDs("prototype")
 	annotationIDs := applayout.NewUniqueIDs("annotation")
-	for _, epic := range epics {
-		if err := loadEpic(&doc, epic, prototypeIDs, annotationIDs, options); err != nil {
+	for _, feature := range features {
+		if err := loadFeature(&doc, feature, prototypeIDs, annotationIDs, options); err != nil {
 			return Document{}, err
 		}
 	}
@@ -85,11 +85,11 @@ func LoadWithOptions(root, sagaID string, options LoadOptions) (Document, error)
 	return doc, nil
 }
 
-// loadEpic reads one epic's ___requirements/prototypes into the app-wide
-// document. Prototype and annotation URNs never name an epic, so each must be
+// loadFeature reads one feature's ___requirements/prototypes into the app-wide
+// document. Prototype and annotation URNs never name a feature, so each must be
 // unique across the app.
-func loadEpic(doc *Document, epic applayout.Epic, prototypeIDs, annotationIDs *applayout.UniqueIDs, options LoadOptions) error {
-	requirementsRoot := filepath.Join(epic.Dir, applayout.RequirementsDir)
+func loadFeature(doc *Document, feature applayout.Feature, prototypeIDs, annotationIDs *applayout.UniqueIDs, options LoadOptions) error {
+	requirementsRoot := filepath.Join(feature.Dir, applayout.RequirementsDir)
 	present, err := realDirectory(requirementsRoot)
 	if err != nil || !present {
 		return err
@@ -107,32 +107,32 @@ func loadEpic(doc *Document, epic applayout.Epic, prototypeIDs, annotationIDs *a
 	for _, entry := range entries {
 		path := filepath.Join(prototypeRoot, entry.Name())
 		if entry.Type()&fs.ModeSymlink != 0 {
-			return fmt.Errorf("%s: prototype root contains symlink %q", epic.Rel, entry.Name())
+			return fmt.Errorf("%s: prototype root contains symlink %q", feature.Rel, entry.Name())
 		}
 		if entry.Name() == "annotations" {
 			if !entry.IsDir() {
-				return fmt.Errorf("%s: prototype annotations must be a real directory", epic.Rel)
+				return fmt.Errorf("%s: prototype annotations must be a real directory", feature.Rel)
 			}
-			if err := loadAnnotations(doc, epic.ID, path, annotationIDs); err != nil {
+			if err := loadAnnotations(doc, feature.ID, path, annotationIDs); err != nil {
 				return err
 			}
 			continue
 		}
 		if !entry.IsDir() || !strings.HasSuffix(entry.Name(), ".prototype") {
-			return fmt.Errorf("%s: prototype entry %q must be a real <id>.prototype directory", epic.Rel, entry.Name())
+			return fmt.Errorf("%s: prototype entry %q must be a real <id>.prototype directory", feature.Rel, entry.Name())
 		}
 		id := strings.TrimSuffix(entry.Name(), ".prototype")
 		if !livingid.ValidID(id) {
-			return fmt.Errorf("%s: prototype package %q has an invalid id", epic.Rel, entry.Name())
+			return fmt.Errorf("%s: prototype package %q has an invalid id", feature.Rel, entry.Name())
 		}
-		if err := prototypeIDs.Claim(id, epic.ID); err != nil {
+		if err := prototypeIDs.Claim(id, feature.ID); err != nil {
 			return err
 		}
 		prototype, err := loadPrototypePackage(doc, path, id, options)
 		if err != nil {
 			return err
 		}
-		prototype.Epic = epic.ID
+		prototype.Feature = feature.ID
 		doc.Prototypes = append(doc.Prototypes, prototype)
 		if len(doc.Prototypes) > MaxPrototypes {
 			return fmt.Errorf("prototype limit of %d exceeded", MaxPrototypes)
@@ -288,7 +288,7 @@ func loadRevisionPackage(doc *Document, dir, prototypeID, id string, options Loa
 	return value, nil
 }
 
-func loadAnnotations(doc *Document, epicID, dir string, annotationIDs *applayout.UniqueIDs) error {
+func loadAnnotations(doc *Document, featureID, dir string, annotationIDs *applayout.UniqueIDs) error {
 	entries, err := boundedReadDir(dir, MaxAnnotations)
 	if err != nil {
 		return err
@@ -325,10 +325,10 @@ func loadAnnotations(doc *Document, epicID, dir string, annotationIDs *applayout
 				return fmt.Errorf("%s: annotation prototype must match its package", relative(doc.Root, path))
 			}
 			urn, _ := AnnotationURN(doc.SagaID, prototypeID, value.ID)
-			if err := annotationIDs.Claim(urn, epicID); err != nil {
+			if err := annotationIDs.Claim(urn, featureID); err != nil {
 				return fmt.Errorf("%s: %w", relative(doc.Root, path), err)
 			}
-			value.Epic = epicID
+			value.Feature = featureID
 			doc.Annotations = append(doc.Annotations, value)
 		}
 	}

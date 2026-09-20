@@ -15,8 +15,8 @@ import (
 	"github.com/twentyideas/changesaga/internal/applayout"
 )
 
-// Load reads saga.json and the ___workplan of every epic into one app-wide
-// plan. Resource URNs never name an epic, so an ID two epics share is reported
+// Load reads saga.json and the ___workplan of every feature into one app-wide
+// plan. Resource URNs never name a feature, so an ID two features share is reported
 // as an error. It never follows a symlink and never loads authored
 // narrative/design bodies or diff atoms.
 func Load(root string) (Plan, Validation, error) {
@@ -53,20 +53,20 @@ func Load(root string) (Plan, Validation, error) {
 		addIssue(&validation, "error", "saga.json", "saga id is invalid")
 	}
 
-	if err := applayout.RejectEpicRootsAtAppRoot(abs); err != nil {
+	if err := applayout.RejectFeatureRootsAtAppRoot(abs); err != nil {
 		return Plan{}, validation, err
 	}
-	epics, err := applayout.Epics(abs)
+	features, err := applayout.Features(abs)
 	if err != nil {
 		return Plan{}, validation, err
 	}
-	plan.Epics = epics
+	plan.Features = features
 	ids := loadIDs{
 		waves: applayout.NewUniqueIDs("wave"), workItems: applayout.NewUniqueIDs("work-item"),
 		dependencies: applayout.NewUniqueIDs("dependency"), contracts: applayout.NewUniqueIDs("contract"),
 	}
-	for _, epic := range epics {
-		workplanRoot := filepath.Join(epic.Dir, applayout.WorkplanDir)
+	for _, feature := range features {
+		workplanRoot := filepath.Join(feature.Dir, applayout.WorkplanDir)
 		rootInfo, err := os.Lstat(workplanRoot)
 		if errors.Is(err, fs.ErrNotExist) {
 			continue
@@ -78,7 +78,7 @@ func Load(root string) (Plan, Validation, error) {
 			addIssue(&validation, "error", relative(abs, workplanRoot), "work-plan root must be a real directory")
 			continue
 		}
-		if err := scanWorkplanRoot(&plan, &validation, epic, workplanRoot, ids); err != nil {
+		if err := scanWorkplanRoot(&plan, &validation, feature, workplanRoot, ids); err != nil {
 			return Plan{}, validation, err
 		}
 	}
@@ -87,32 +87,32 @@ func Load(root string) (Plan, Validation, error) {
 	return plan, validation, nil
 }
 
-// loadIDs claims every top-level record ID for the epic holding it. Resource
-// URNs never name an epic, so an ID is unique across the whole app.
+// loadIDs claims every top-level record ID for the feature holding it. Resource
+// URNs never name a feature, so an ID is unique across the whole app.
 type loadIDs struct {
 	waves, workItems, dependencies, contracts *applayout.UniqueIDs
 }
 
-// workplanRel is the app-relative slash path of an epic's work-plan root.
-func workplanRel(epic string) string {
-	return applayout.EpicRel(epic) + "/" + applayout.WorkplanDir
+// workplanRel is the app-relative slash path of a feature's work-plan root.
+func workplanRel(feature string) string {
+	return applayout.FeatureRel(feature) + "/" + applayout.WorkplanDir
 }
 
-func scanWorkplanRoot(plan *Plan, validation *Validation, epic applayout.Epic, root string, ids loadIDs) error {
+func scanWorkplanRoot(plan *Plan, validation *Validation, feature applayout.Feature, root string, ids loadIDs) error {
 	entries, err := os.ReadDir(root)
 	if err != nil {
 		return err
 	}
 	known := map[string]func() error{
-		"waves": func() error { return scanWaves(plan, validation, epic.ID, filepath.Join(root, "waves"), ids.waves) },
+		"waves": func() error { return scanWaves(plan, validation, feature.ID, filepath.Join(root, "waves"), ids.waves) },
 		"work-items": func() error {
-			return scanWorkItems(plan, validation, epic.ID, filepath.Join(root, "work-items"), ids.workItems)
+			return scanWorkItems(plan, validation, feature.ID, filepath.Join(root, "work-items"), ids.workItems)
 		},
 		"dependencies": func() error {
-			return scanDependencies(plan, validation, epic.ID, filepath.Join(root, "dependencies"), ids.dependencies)
+			return scanDependencies(plan, validation, feature.ID, filepath.Join(root, "dependencies"), ids.dependencies)
 		},
 		"contracts": func() error {
-			return scanContracts(plan, validation, epic.ID, filepath.Join(root, "contracts"), ids.contracts)
+			return scanContracts(plan, validation, feature.ID, filepath.Join(root, "contracts"), ids.contracts)
 		},
 		"events": func() error { return scanEmptyCompatibilityEvents(plan, validation, filepath.Join(root, "events")) },
 	}
@@ -134,7 +134,7 @@ func scanWorkplanRoot(plan *Plan, validation *Validation, epic applayout.Epic, r
 	return nil
 }
 
-func scanWaves(plan *Plan, validation *Validation, epic, dir string, ids *applayout.UniqueIDs) error {
+func scanWaves(plan *Plan, validation *Validation, feature, dir string, ids *applayout.UniqueIDs) error {
 	if err := enforceEntryLimit(dir, len(plan.Waves), MaxWaves, "wave"); err != nil {
 		return err
 	}
@@ -144,11 +144,11 @@ func scanWaves(plan *Plan, validation *Validation, epic, dir string, ids *applay
 			return nil
 		}
 		checkPackageID(plan, validation, packageDir, name, wave.ID)
-		if err := ids.Claim(wave.ID, epic); err != nil {
+		if err := ids.Claim(wave.ID, feature); err != nil {
 			addIssue(validation, "error", relative(plan.Root, packageDir), err.Error())
 			return nil
 		}
-		wave.Epic = epic
+		wave.Feature = feature
 		wave.Revisions = []WaveRevision{}
 		if err := scanRevisions(plan, validation, packageDir, func(path string) {
 			var revision WaveRevision
@@ -168,7 +168,7 @@ func scanWaves(plan *Plan, validation *Validation, epic, dir string, ids *applay
 	})
 }
 
-func scanWorkItems(plan *Plan, validation *Validation, epic, dir string, ids *applayout.UniqueIDs) error {
+func scanWorkItems(plan *Plan, validation *Validation, feature, dir string, ids *applayout.UniqueIDs) error {
 	if err := enforceEntryLimit(dir, len(plan.WorkItems), MaxWorkItems, "work-item"); err != nil {
 		return err
 	}
@@ -178,11 +178,11 @@ func scanWorkItems(plan *Plan, validation *Validation, epic, dir string, ids *ap
 			return nil
 		}
 		checkPackageID(plan, validation, packageDir, name, item.ID)
-		if err := ids.Claim(item.ID, epic); err != nil {
+		if err := ids.Claim(item.ID, feature); err != nil {
 			addIssue(validation, "error", relative(plan.Root, packageDir), err.Error())
 			return nil
 		}
-		item.Epic = epic
+		item.Feature = feature
 		item.Revisions = []WorkItemRevision{}
 		item.Progress = []ProgressEvent{}
 		item.Workspaces = []WorkspaceEvent{}
@@ -273,7 +273,7 @@ func scanItemEvents(plan *Plan, validation *Validation, packageDir string, item 
 	return nil
 }
 
-func scanDependencies(plan *Plan, validation *Validation, epic, dir string, ids *applayout.UniqueIDs) error {
+func scanDependencies(plan *Plan, validation *Validation, feature, dir string, ids *applayout.UniqueIDs) error {
 	if err := enforceEntryLimit(dir, len(plan.Dependencies), MaxDependencies, "dependency"); err != nil {
 		return err
 	}
@@ -284,10 +284,10 @@ func scanDependencies(plan *Plan, validation *Validation, epic, dir string, ids 
 			return nil
 		}
 		checkPackageID(plan, validation, packageDir, name, dependency.ID)
-		if err := ids.Claim(dependency.ID, epic); err != nil {
+		if err := ids.Claim(dependency.ID, feature); err != nil {
 			addIssue(validation, "error", relative(plan.Root, path), err.Error())
 		} else {
-			dependency.Epic = epic
+			dependency.Feature = feature
 			plan.Dependencies[dependency.ID] = &dependency
 		}
 		registerRequest(plan, validation, relative(plan.Root, path), dependency.RequestID, dependency.RequestDigest, "dependency-create", dependency.ID, "")
@@ -295,7 +295,7 @@ func scanDependencies(plan *Plan, validation *Validation, epic, dir string, ids 
 	})
 }
 
-func scanContracts(plan *Plan, validation *Validation, epic, dir string, ids *applayout.UniqueIDs) error {
+func scanContracts(plan *Plan, validation *Validation, feature, dir string, ids *applayout.UniqueIDs) error {
 	if err := enforceEntryLimit(dir, len(plan.Contracts), MaxContracts, "contract"); err != nil {
 		return err
 	}
@@ -305,11 +305,11 @@ func scanContracts(plan *Plan, validation *Validation, epic, dir string, ids *ap
 			return nil
 		}
 		checkPackageID(plan, validation, packageDir, name, contract.ID)
-		if err := ids.Claim(contract.ID, epic); err != nil {
+		if err := ids.Claim(contract.ID, feature); err != nil {
 			addIssue(validation, "error", relative(plan.Root, packageDir), err.Error())
 			return nil
 		}
-		contract.Epic = epic
+		contract.Feature = feature
 		contract.Revisions = []ContractRevision{}
 		contract.Events = []ContractEvent{}
 		if err := scanRevisions(plan, validation, packageDir, func(path string) {
@@ -612,7 +612,7 @@ func sortedKeys[V any](values map[string]V) []string {
 }
 
 // enforceEntryLimit bounds a collection before it is read. Limits are
-// app-wide, so loaded counts entries already read from earlier epics.
+// app-wide, so loaded counts entries already read from earlier features.
 func enforceEntryLimit(dir string, loaded, limit int, kind string) error {
 	entries, err := os.ReadDir(dir)
 	if err != nil {

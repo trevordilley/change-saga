@@ -29,14 +29,14 @@ func termSaga(t *testing.T) (root, repo string) {
 	writeServerFile(t, filepath.Join(repo, "kinds.go"), serverKinds)
 	root = filepath.Join(repo, "app.saga")
 	writeServerFile(t, filepath.Join(root, "saga.json"), `{"$schema":"https://changesaga.dev/schema/v5/saga.schema.json","version":5,"id":"test","title":"Assessments","source":{"repository":"https://example.test/a.git"}}`)
-	if _, err := applayout.WriteEpic(root, applayout.EpicManifest{ID: "core", Title: "Core"}); err != nil {
+	if _, err := applayout.WriteFeature(root, applayout.FeatureManifest{ID: "core", Title: "Core"}); err != nil {
 		t.Fatal(err)
 	}
 	serverGit(t, repo, "add", ".")
 	serverGit(t, repo, "commit", "-m", "base")
 	commit := strings.TrimSpace(serverGit(t, repo, "rev-parse", "HEAD"))
 	created := time.Date(2026, 9, 1, 0, 0, 0, 0, time.UTC)
-	if _, err := requirements.AddStory(root, "test", requirements.AddStoryInput{Epic: "core", ID: "sit", RevisionID: "r1", EventID: "proposed",
+	if _, err := requirements.AddStory(root, "test", requirements.AddStoryInput{Feature: "core", ID: "sit", RevisionID: "r1", EventID: "proposed",
 		Title: "Sit an assessment", Statement: "As a candidate, I sit an assessment", Priority: "high", CreatedAt: created}); err != nil {
 		t.Fatal(err)
 	}

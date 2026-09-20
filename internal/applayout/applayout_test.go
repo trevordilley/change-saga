@@ -8,87 +8,87 @@ import (
 	"time"
 )
 
-func TestEpicsListValidatesAndResolves(t *testing.T) {
+func TestFeaturesListValidatesAndResolves(t *testing.T) {
 	root := filepath.Join(t.TempDir(), "app.saga")
 	if err := os.Mkdir(root, 0o755); err != nil {
 		t.Fatal(err)
 	}
-	if epics, err := Epics(root); err != nil || len(epics) != 0 {
-		t.Fatalf("app without epics = %v, %v", epics, err)
+	if features, err := Features(root); err != nil || len(features) != 0 {
+		t.Fatalf("app without features = %v, %v", features, err)
 	}
 	for _, id := range []string{"checkout", "catalog"} {
-		if _, err := WriteEpic(root, EpicManifest{ID: id, Title: strings.ToUpper(id), CreatedAt: time.Unix(0, 0).UTC()}); err != nil {
+		if _, err := WriteFeature(root, FeatureManifest{ID: id, Title: strings.ToUpper(id), CreatedAt: time.Unix(0, 0).UTC()}); err != nil {
 			t.Fatal(err)
 		}
 	}
-	if _, err := WriteEpic(root, EpicManifest{ID: "checkout", Title: "Again"}); err == nil {
-		t.Fatal("a second epic with one id was written")
+	if _, err := WriteFeature(root, FeatureManifest{ID: "checkout", Title: "Again"}); err == nil {
+		t.Fatal("a second feature with one id was written")
 	}
-	epics, err := Epics(root)
-	if err != nil || len(epics) != 2 || epics[0].ID != "catalog" || epics[1].Rel != "___epics/checkout.epic" {
-		t.Fatalf("epics = %+v, %v", epics, err)
+	features, err := Features(root)
+	if err != nil || len(features) != 2 || features[0].ID != "catalog" || features[1].Rel != "___features/checkout.feature" {
+		t.Fatalf("features = %+v, %v", features, err)
 	}
-	if epic, err := Require(root, "app", "urn:change-saga:app:epic:catalog"); err != nil || epic.ID != "catalog" {
-		t.Fatalf("require by URN = %+v, %v", epic, err)
+	if feature, err := Require(root, "app", "urn:change-saga:app:feature:catalog"); err != nil || feature.ID != "catalog" {
+		t.Fatalf("require by URN = %+v, %v", feature, err)
 	}
-	if _, err := Require(root, "app", ""); err == nil || !strings.Contains(err.Error(), "known epics: catalog, checkout") {
-		t.Fatalf("require without an epic = %v", err)
+	if _, err := Require(root, "app", ""); err == nil || !strings.Contains(err.Error(), "known features: catalog, checkout") {
+		t.Fatalf("require without a feature = %v", err)
 	}
-	if got := EpicOfPath("___epics/checkout.epic/___requirements/stories/pay.story"); got != "checkout" {
-		t.Fatalf("EpicOfPath = %q", got)
+	if got := FeatureOfPath("___features/checkout.feature/___requirements/stories/pay.story"); got != "checkout" {
+		t.Fatalf("FeatureOfPath = %q", got)
 	}
-	if got := EpicOfPath("___overview/pitch.fragment"); got != "" {
-		t.Fatalf("app-level path belongs to epic %q", got)
+	if got := FeatureOfPath("___overview/pitch.fragment"); got != "" {
+		t.Fatalf("app-level path belongs to feature %q", got)
 	}
-	if err := os.Mkdir(filepath.Join(root, EpicsDir, "stray"), 0o755); err != nil {
+	if err := os.Mkdir(filepath.Join(root, FeaturesDir, "stray"), 0o755); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := Epics(root); err == nil {
-		t.Fatal("a directory that is not <id>.epic was accepted")
+	if _, err := Features(root); err == nil {
+		t.Fatal("a directory that is not <id>.feature was accepted")
 	}
 }
 
-func TestEpicRootsAtTheAppRootAreRefused(t *testing.T) {
+func TestFeatureRootsAtTheAppRootAreRefused(t *testing.T) {
 	root := t.TempDir()
-	if err := RejectEpicRootsAtAppRoot(root); err != nil {
+	if err := RejectFeatureRootsAtAppRoot(root); err != nil {
 		t.Fatal(err)
 	}
 	if err := os.Mkdir(filepath.Join(root, RequirementsDir), 0o755); err != nil {
 		t.Fatal(err)
 	}
-	if err := RejectEpicRootsAtAppRoot(root); err == nil {
+	if err := RejectFeatureRootsAtAppRoot(root); err == nil {
 		t.Fatal("a root-level ___requirements was accepted")
 	}
 }
 
-func TestUniqueIDsNameBothEpics(t *testing.T) {
+func TestUniqueIDsNameBothFeatures(t *testing.T) {
 	ids := NewUniqueIDs("story")
 	if err := ids.Claim("pay", "checkout"); err != nil {
 		t.Fatal(err)
 	}
 	if err := ids.Claim("pay", "catalog"); err == nil || !strings.Contains(err.Error(), `"checkout" and "catalog"`) {
-		t.Fatalf("duplicate across epics = %v", err)
+		t.Fatalf("duplicate across features = %v", err)
 	}
 }
 
-// Epics are presented in the order they were created, not alphabetically;
-// epics created at the same instant keep ID order.
-func TestInCreationOrderPresentsEpicsAsTheyWereIntroduced(t *testing.T) {
+// Features are presented in the order they were created, not alphabetically;
+// features created at the same instant keep ID order.
+func TestInCreationOrderPresentsFeaturesAsTheyWereIntroduced(t *testing.T) {
 	at := func(second int) time.Time { return time.Date(2026, 9, 19, 20, 47, second, 0, time.UTC) }
-	epics := []Epic{
-		{EpicManifest: EpicManifest{ID: "agent-loop", CreatedAt: at(9)}},
-		{EpicManifest: EpicManifest{ID: "format", CreatedAt: at(1)}},
-		{EpicManifest: EpicManifest{ID: "comparison", CreatedAt: at(5)}},
-		{EpicManifest: EpicManifest{ID: "code-evidence", CreatedAt: at(5)}},
+	features := []Feature{
+		{FeatureManifest: FeatureManifest{ID: "agent-loop", CreatedAt: at(9)}},
+		{FeatureManifest: FeatureManifest{ID: "format", CreatedAt: at(1)}},
+		{FeatureManifest: FeatureManifest{ID: "comparison", CreatedAt: at(5)}},
+		{FeatureManifest: FeatureManifest{ID: "code-evidence", CreatedAt: at(5)}},
 	}
 	got := []string{}
-	for _, epic := range InCreationOrder(epics) {
-		got = append(got, epic.ID)
+	for _, feature := range InCreationOrder(features) {
+		got = append(got, feature.ID)
 	}
 	if strings.Join(got, ",") != "format,code-evidence,comparison,agent-loop" {
 		t.Fatalf("order = %v", got)
 	}
-	if epics[0].ID != "agent-loop" {
+	if features[0].ID != "agent-loop" {
 		t.Fatal("InCreationOrder must not reorder its argument")
 	}
 }

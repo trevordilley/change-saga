@@ -17,7 +17,7 @@ func TestQualityEvidenceCodeAcceptsAnyRevision(t *testing.T) {
 	definition := `{"id":"deadline","title":"Reject at deadline","coverage_kinds":["negative"],"automation":"automated",
 		"steps":[{"id":"submit","action":"Submit a refund request.","expected_result":"The request is rejected."}],
 		"expected_result":"No refund is created."}`
-	runQuality(t, definition, "test-case", "add", root, "--epic", testEpic, "--from", "-")
+	runQuality(t, definition, "test-case", "add", root, "--feature", testFeature, "--from", "-")
 	codeRepo, pinned := qualityCode(t, "internal/refund_test.go")
 	commit, _, _ := strings.Cut(pinned, ":")
 	runQuality(t, "", "evidence", "add", root, "--test", qualityTestURN, "--role", "test_implementation", "--repo", codeRepo, "--code", "HEAD:internal/refund_test.go#L3-L12")
@@ -47,7 +47,7 @@ func TestCoverRefAcceptsAnyRevision(t *testing.T) {
 func TestTraceabilityRefFindsEvidenceAtTheCurrentCommit(t *testing.T) {
 	root, repo := coveredSaga(t)
 	var output bytes.Buffer
-	if err := AddDeck(context.Background(), []string{"--epic", testEpic, "--objective", "Explain the change.", root, "implementation"}, &output); err != nil {
+	if err := AddDeck(context.Background(), []string{"--feature", testFeature, "--objective", "Explain the change.", root, "implementation"}, &output); err != nil {
 		t.Fatal(err)
 	}
 	if err := AddSlide(context.Background(), []string{"--deck", "implementation", "--intent", "explain", "--layout", "diagram", root, "consts"}, &output); err != nil {

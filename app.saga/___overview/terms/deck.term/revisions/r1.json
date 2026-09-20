@@ -10,10 +10,10 @@
     "implementation deck"
   ],
   "stories": [
-    "urn:change-saga:app:story:durable-epics"
+    "urn:change-saga:app:story:durable-features"
   ],
   "records": [
-    "urn:change-saga:app:term:epic"
+    "urn:change-saga:app:term:feature"
   ],
   "code": [
     {

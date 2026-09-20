@@ -1830,7 +1830,7 @@ const appJavaScript = `(() => {
     let fragment = destination?.matches('.fragment') ? destination : destination?.closest('.fragment');
     let borrowed = Boolean(fragment);
     if (!fragment) {
-      // The explanation belongs to another page, such as its epic's: fetch it
+      // The explanation belongs to another page, such as its feature's: fetch it
       // for the drawer instead of moving it out of this page.
       const place = await locateAnchor(anchor);
       if (!place?.target) return;

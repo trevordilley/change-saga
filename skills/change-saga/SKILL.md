@@ -1,6 +1,6 @@
 ---
 name: change-saga
-description: 'Author, update, validate, and open a Change Saga: the Git-native documentation of an application, organized into durable epics that carry prototypes, user stories and acceptance criteria, UX/UI and technical design, test cases, and implementation decks whose Items reference the exact code they explain, plus one review deck per pull request. Drive the work with status --json next actions and ask yes/no coverage questions with check --covers. A first change is asked only for implementation coverage; everything else is growth, offered and never required. The primary purpose is to author what is submitted for human review, not to perform the review; only conduct review actions when explicitly requested.'
+description: 'Author, update, validate, and open a Change Saga: the Git-native documentation of an application, organized into durable features that carry prototypes, user stories and acceptance criteria, UX/UI and technical design, test cases, and implementation decks whose Items reference the exact code they explain, plus one review deck per pull request. Drive the work with status --json next actions and ask yes/no coverage questions with check --covers. A first change is asked only for implementation coverage; everything else is growth, offered and never required. The primary purpose is to author what is submitted for human review, not to perform the review; only conduct review actions when explicitly requested.'
 ---
 
 # Change Saga
@@ -48,20 +48,20 @@ direct, factual explanations with one coherent idea per slide.
 ```text
 app.saga/
   ___overview/  ___personas/  ___designsystem/  ___onboarding/  ___featureflags/
-  ___epics/<epic>.epic/     # Product, Design, Quality, and Implementation
+  ___features/<feature>.feature/     # Product, Design, Quality, and Implementation
   ___reviews/<id>.review/   # one slide deck per pull request
 ```
 
 - **App level.** The overview (the project's name, an elevator pitch, a
   description, and its terms and vocabulary), the personas the app serves, the
   design system, an onboarding deck, and feature flags.
-- **Epics are durable product domains**, not changes. Each holds its own
+- **Features are durable product domains**, not changes. Each holds its own
   **Product** (prototypes, and user stories with acceptance criteria),
   **Design** (UX, UI, and technical design), **Quality** (test cases that
   verify the criteria), and **Implementation** (one living deck whose Items
   reference the code). Revising a story refines its domain in place; `story
-  move` moves a story between epics without breaking a link. A pull request is
-  not an epic: it may touch any number of them.
+  move` moves a story between features without breaking a link. A pull request is
+  not a feature: it may touch any number of them.
 - **The chain is persona → story → design → code.** A persona is someone who
   gets value from the app — the "As a …" of a user story. A tool, an agent, or
   a system that operates the app is never a persona, however much of the work
@@ -91,7 +91,7 @@ implementation becomes an explicit new revision of the story it changes,
 preserving history rather than rewriting it.
 
 Parallel authoring is a core property of the format. Partition ownership by
-epic, story, prototype, design fragment, test case, work item, and deck bundle
+feature, story, prototype, design fragment, test case, work item, and deck bundle
 so agents can fan out and merge their Saga changes alongside the code, and
 consolidate the lanes before the final status and validation passes. Avoid
 aggregating unrelated work into shared files. This localizes Git conflicts; it
@@ -100,13 +100,13 @@ does not make parallel edits conflict-free.
 ## Grow the Saga incrementally
 
 The one thing asked of a change is that its implementation covers it: every
-changed line is referenced by an Item in an epic's implementation deck. That
+changed line is referenced by an Item in a feature's implementation deck. That
 is the whole first run: `init`, cover the change, done. Do not start by
-defining personas, stories, or an epic structure. The first command that
-needs an epic creates one named after the branch (pass `--epic` to name it
-yourself), and with exactly one epic `--epic` is implied; the command says
-which epic it chose. Nothing is locked in: no story, deck, or slide URN names
-its epic, so content can move later.
+defining personas, stories, or a feature structure. The first command that
+needs a feature creates one named after the branch (pass `--feature` to name it
+yourself), and with exactly one feature `--feature` is implied; the command says
+which feature it chose. Nothing is locked in: no story, deck, or slide URN names
+its feature, so content can move later.
 
 Everything else is growth, not debt. Personas, stories, design, test cases,
 the overview, and terms are never demanded up front, and their absence is not
@@ -123,7 +123,7 @@ the project's terms first. A few shapes are worth knowing:
 
 - Test-case growth is one suggestion per story, relating a test case to each
   of its untested criteria.
-- In an epic with no design yet, design growth starts by creating it with
+- In a feature with no design yet, design growth starts by creating it with
   `change-saga design add-chapter`, then relating it to the story.
 - Stories that name no persona are offered a persona already named as well as
   a new one. Ask who gets value from the story, not who takes part in it. A
@@ -154,7 +154,7 @@ scope are covered, with the lists of what is and is not:
 | `health` | nothing that already existed went stale or broke |
 
 With `--against` the scope is the change (what it changed and what it
-affected); without it, the whole app; `--epic` narrows either. Status exits 0
+affected); without it, the whole app; `--feature` narrows either. Status exits 0
 whenever it can produce a trustworthy report, and non-zero only for a
 malformed Saga (such as a duplicate ID), unreadable records, or a checkout
 that does not match the declared repository. Every gap is a finding, never a
@@ -223,9 +223,9 @@ operation are in [references/query.md](references/query.md).
    change-saga init --title "<app name>" app.saga
    ```
 
-   Put the change in the epic it belongs to. With no epic yet, the first
+   Put the change in the feature it belongs to. With no feature yet, the first
    command that needs one creates it from the branch name; name it yourself
-   with `change-saga epic add --id <epic> --title "<product domain>"` when the
+   with `change-saga feature add --id <feature> --title "<product domain>"` when the
    user has a better name, and add another only for a new product domain.
    Comparisons are between commits, so commit in-progress work before
    covering it; uncommitted changes are not part of any comparison.
@@ -240,9 +240,9 @@ operation are in [references/query.md](references/query.md).
    write one reviewer question, intent, and takeaway per slide and choose the
    visual form that truthfully encodes its relationship. Follow the storyboard
    and visual-form guidance in [references/authoring.md](references/authoring.md).
-6. **Build the deck.** An epic has one living implementation deck: when it
+6. **Build the deck.** A feature has one living implementation deck: when it
    already has one, update the slides the change affects instead of adding a
-   deck per change. Create a deck with `change-saga add-deck --epic <epic>`,
+   deck per change. Create a deck with `change-saga add-deck --feature <feature>`,
    slides with `change-saga add-slide --deck <deck>`, and install a
    self-contained SVG, raster image, or sandboxed HTML entrypoint with
    `change-saga set-slide-content`. A slide is one 16:9 visual composition with
@@ -390,7 +390,7 @@ The review deck explains what the change did and why: the transition and its
 reasoning (why the queue moved from SQS to a Postgres table), which the current
 documentation no longer shows. Its Items reference the code the change touched,
 shown as a diff against the review's base, and may name a record it revised
-with `add-item --record` (a story, an epic slide) so a reviewer can open it
+with `add-item --record` (a story, a feature slide) so a reviewer can open it
 beside the change.
 
 A review deck must account for its change: every changed line of the review's
@@ -398,7 +398,7 @@ range is covered by a review Item. Without `--against`, `cover` on a review
 Item compares the review's own range. `change-saga review list` reports each
 review's coverage, and `review list --uncovered` lists only the gaps as
 ready-to-use locations. Review decks never count toward the documentation's
-coverage: each epic's implementation deck still explains the current code.
+coverage: each feature's implementation deck still explains the current code.
 
 ## Open the Saga for review
 

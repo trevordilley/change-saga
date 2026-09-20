@@ -103,7 +103,7 @@
     },
     "app_record_urn": {
       "type": "string",
-      "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:(persona|epic|flag|term):[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+      "pattern": "^urn:change-saga:[A-Za-z0-9][A-Za-z0-9._-]{0,127}:(persona|feature|flag|term):[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
     },
     "code_reference": {
       "type": "object",

@@ -62,13 +62,13 @@ func TestCheckAnswersOnlyTheNamedAreas(t *testing.T) {
 }
 
 // Status exits non-zero only when it cannot produce a trustworthy report,
-// such as when two epics hold the same story ID.
+// such as when two features hold the same story ID.
 func TestStatusFailsOnlyWhenTheReportCannotBeTrusted(t *testing.T) {
 	root, repo := coveredSaga(t)
-	addStory(t, root, testEpic, "pay")
-	mustLiving(t, "epic add", epicCommand, "add", root, "--id", "other", "--title", "Other")
-	stories := filepath.Join(root, "___epics", testEpic+".epic", "___requirements", "stories")
-	duplicate := filepath.Join(root, "___epics", "other.epic", "___requirements", "stories")
+	addStory(t, root, testFeature, "pay")
+	mustLiving(t, "feature add", featureCommand, "add", root, "--id", "other", "--title", "Other")
+	stories := filepath.Join(root, "___features", testFeature+".feature", "___requirements", "stories")
+	duplicate := filepath.Join(root, "___features", "other.feature", "___requirements", "stories")
 	if err := os.MkdirAll(filepath.Dir(duplicate), 0o755); err != nil {
 		t.Fatal(err)
 	}

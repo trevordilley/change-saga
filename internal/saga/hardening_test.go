@@ -74,7 +74,7 @@ func buildSaga(t *testing.T, files map[string]string) string {
 		if body == "" {
 			continue
 		}
-		writeTestFile(t, filepath.Join(root, filepath.FromSlash(inEpic(rel))), body)
+		writeTestFile(t, filepath.Join(root, filepath.FromSlash(inFeature(rel))), body)
 	}
 	return root
 }
