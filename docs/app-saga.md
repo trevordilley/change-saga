@@ -56,7 +56,9 @@ acceptance criteria, design, test cases, and its implementation deck.
 
 ### 3. The traceability chain is persona → story → design → code
 
-Every story applies to one or more personas. Only adjacent links are declared:
+A persona is a person who gets value from the application, the "As a
+<persona>" of a user story; a tool or agent that operates the product is not
+one. Every story applies to one or more personas. Only adjacent links are declared:
 a story names its personas, a design addresses a story, an Item references code.
 Every longer path — code to persona, persona to code — is **inferred**, never
 authored.
