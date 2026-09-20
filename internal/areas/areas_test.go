@@ -142,3 +142,71 @@ func TestParse(t *testing.T) {
 		t.Fatal("empty list accepted")
 	}
 }
+
+// A landmark is a heading inside a fragment, not a separate piece of design.
+// Code attached to that heading is explained by the fragment's design, so it
+// reaches the stories the fragment addresses, and a fragment reaches the
+// stories of the chapter that holds it. A landmark's own relation names which
+// criterion that one heading addresses, so where it exists it is more precise
+// and wins.
+func TestATargetReachesTheStoriesOfWhatContainsIt(t *testing.T) {
+	const (
+		chapter  = "urn:change-saga:app:chapter:two-sides-design"
+		fragment = "urn:change-saga:app:fragment:two-sides"
+		inherits = fragment + ":landmark:documentation-side"
+		owns     = fragment + ":landmark:review-side"
+		sibling  = "urn:change-saga:app:fragment:elsewhere"
+	)
+	report := Evaluate(Inputs{
+		Scope: Scope{Kind: ScopeApp}, CodeTargets: []string{inherits, owns, sibling},
+		TargetParent:   map[string]string{inherits: fragment, owns: fragment, fragment: chapter, sibling: chapter},
+		TargetStories:  map[string][]string{fragment: {"story:two-sides"}, owns: {"story:header"}, chapter: {"story:chapter-wide"}},
+		ActivePersonas: map[string]bool{"persona:reviewer": true},
+		Stories: []Story{
+			{URN: "story:two-sides", Active: true, Personas: []string{"persona:reviewer"}},
+			{URN: "story:header", Active: true},
+			{URN: "story:chapter-wide", Active: true},
+		},
+	})
+	stories := report.Areas.Stories
+	if stories.Covered != 3 || stories.Total != 3 {
+		t.Fatalf("stories = %d/%d: %+v", stories.Covered, stories.Total, stories)
+	}
+	via := map[string][]string{}
+	for _, entry := range stories.CoveredEntries {
+		via[entry.Resource] = entry.Via
+	}
+	for _, want := range []struct {
+		target string
+		story  string
+	}{{inherits, "story:two-sides"}, {owns, "story:header"}, {sibling, "story:chapter-wide"}} {
+		if len(via[want.target]) != 1 || via[want.target][0] != want.story {
+			t.Fatalf("%s reaches %v, want only %s", want.target, via[want.target], want.story)
+		}
+	}
+	// Only the fragment's story names a persona, and only the heading inside
+	// that fragment inherits it.
+	if personas := report.Areas.Personas; personas.Covered != 1 || personas.CoveredEntries[0].Resource != inherits {
+		t.Fatalf("personas = %+v", personas)
+	}
+}
+
+// The same containment applies to the changed lines of a comparison: a line
+// owned by a landmark reaches the stories the fragment holding it addresses.
+func TestChangedLinesReachStoriesThroughContainment(t *testing.T) {
+	const (
+		fragment = "urn:change-saga:app:fragment:two-sides"
+		landmark = fragment + ":landmark:documentation-side"
+	)
+	atoms := []gitdiff.Atom{line("sidebar.go", 1)}
+	report := Evaluate(Inputs{
+		Scope: Scope{Kind: ScopeChange}, Atoms: atoms,
+		Owners:        map[string][]string{atoms[0].Key: {landmark}},
+		TargetParent:  map[string]string{landmark: fragment},
+		TargetStories: map[string][]string{fragment: {"story:two-sides"}},
+		Stories:       []Story{{URN: "story:two-sides", Active: true}},
+	})
+	if area := report.Areas.Stories; area.Covered != 1 || area.Total != 1 {
+		t.Fatalf("stories = %d/%d: %+v", area.Covered, area.Total, area)
+	}
+}
