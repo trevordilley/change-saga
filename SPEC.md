@@ -934,14 +934,20 @@ hide authored content behind a valid-looking saga. Other names beginning with
   manages a pull request's review: its deck is authored with `add-slide`,
   `set-slide-content`, and `add-item` using `--review`, and decisions and
   comments apply to review slides and Items only.
-- `change-saga open` shows one epic at a time. The sidebar always carries the
-  overview (name, elevator pitch, description, and terms), personas, the design
-  system, onboarding, and feature flags; then the current epic, whose row opens
-  a searchable picker of every epic and whose Product, Design, Quality, and
-  Implementation follow beneath it; then a control that expands the full list.
-  `/epics` indexes them. The current epic is the one the open page belongs to,
-  else the reader's last choice, else the first epic created. That choice is a
-  reading preference and is never written into the Saga.
+- `change-saga open` has three top-level sections, and every section header is
+  a destination rather than a row that only expands. **Overview** is the
+  application's prose plus a directory of its parts: personas (`/personas`),
+  terms and vocabulary (`/terms`), the design system (`/design-system`),
+  onboarding, and feature flags (`/flags`). **Epics** (`/epics`) shows one
+  current epic, whose row opens a searchable picker and whose Product, Design,
+  Quality, and Implementation sit beneath it, plus a control that expands the
+  full list. **Reviews** (`/reviews`) lists the pull-request reviews. The
+  current epic is the one the open page belongs to, else the reader's last
+  choice, else the first epic created; that choice is a reading preference and
+  is never written into the Saga. A deck header (onboarding, or an epic's
+  implementation) opens the deck at its first slide. Every directory is a
+  server-rendered table that filters with `?q=` and without JavaScript, showing
+  counts only.
 - `change-saga open` serves a page per record: the overview and its terms,
   each persona, each epic, each story and each acceptance criterion, each test
   case with its steps, the criteria it verifies, its evidence code and its
