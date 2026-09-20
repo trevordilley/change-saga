@@ -150,40 +150,77 @@ func buildRelatedReviews(ctx context.Context, sourceDir string, document *saga.S
 	started := time.Now()
 	index := &relatedReviewIndex{byRecord: map[string][]relatedReviewView{}}
 	chain := newRecordChain(document, records)
-	for _, review := range document.Reviews {
-		if review.Deck == nil && review.Base == "" {
-			continue
-		}
-		rng, err := reviewstate.ResolveRange(ctx, sourceDir, review)
-		if err != nil {
-			continue
-		}
-		changes, err := gitdiff.ReadWithOptions(ctx, sourceDir, document.Manifest.Source.Repository, rng.BaseOID, rng.HeadOID, gitdiff.ReadOptions{AllowRepositoryMismatch: true})
-		if err != nil {
+	documented := documentedPaths(document)
+	if len(documented) == 0 {
+		// Documentation that references no code intersects no review.
+		index.Elapsed = time.Since(started)
+		return index
+	}
+	// Each review is an independent intersection, and most of the cost is Git
+	// reads, so they run together. The resolver is safe for concurrent use and
+	// its blob cache is shared across them.
+	type touchedReview struct {
+		view    relatedReviewView
+		records map[string]bool
+	}
+	results := make([]*touchedReview, len(document.Reviews))
+	jobs := make(chan int)
+	workers := min(len(document.Reviews), 8)
+	var wait sync.WaitGroup
+	for worker := 0; worker < workers; worker++ {
+		wait.Add(1)
+		go func() {
+			defer wait.Done()
+			for position := range jobs {
+				review := document.Reviews[position]
+				rng, err := reviewstate.ResolveRange(ctx, sourceDir, review)
+				if err != nil {
+					continue
+				}
+				changes, err := documentedChanges(ctx, sourceDir, document, documented, rng)
+				if err != nil {
+					continue
+				}
+				view := relatedReviewView{ID: review.ID, Title: review.Title, Href: reviewHref(review.ID), Merged: review.Merged != nil}
+				if view.Title == "" {
+					view.Title = review.ID
+				}
+				if review.PullRequest != nil {
+					view.Number = review.PullRequest.Number
+				}
+				result := &touchedReview{view: view, records: map[string]bool{}}
+				results[position] = result
+				if len(changes.Atoms) == 0 {
+					continue
+				}
+				// The documentation's own coverage of the review's range. Every
+				// target that accounts for a changed line is a place this review
+				// touched. The rest of the report describes only the files read,
+				// so only Targets is used.
+				report := coverage.EvaluateTargets(ctx, changedFileTargets(document, changes), saga.Validation{Valid: true}, changes, resolver)
+				for _, target := range report.Targets {
+					if target.Covered == 0 {
+						continue
+					}
+					for _, record := range chain.recordsFor(target.Target) {
+						result.records[record] = true
+					}
+				}
+			}
+		}()
+	}
+	for position := range document.Reviews {
+		jobs <- position
+	}
+	close(jobs)
+	wait.Wait()
+	for _, result := range results {
+		if result == nil {
 			continue
 		}
 		index.Reviews++
-		// The documentation's own coverage of the review's range. Every target
-		// that accounts for a changed line is a place this review touched.
-		report := coverage.Evaluate(ctx, document, saga.Validation{Valid: true}, changes, resolver)
-		view := relatedReviewView{ID: review.ID, Title: review.Title, Href: reviewHref(review.ID), Merged: review.Merged != nil}
-		if view.Title == "" {
-			view.Title = review.ID
-		}
-		if review.PullRequest != nil {
-			view.Number = review.PullRequest.Number
-		}
-		touched := map[string]bool{}
-		for _, target := range report.Targets {
-			if target.Covered == 0 {
-				continue
-			}
-			for _, record := range chain.recordsFor(target.Target) {
-				touched[record] = true
-			}
-		}
-		for record := range touched {
-			index.byRecord[record] = append(index.byRecord[record], view)
+		for record := range result.records {
+			index.byRecord[record] = append(index.byRecord[record], result.view)
 		}
 	}
 	for record := range index.byRecord {
@@ -348,4 +385,59 @@ func attachRelatedReviews(index *relatedReviewIndex, data *pageData) {
 type relatedReviewsView struct {
 	Kind    string
 	Reviews []relatedReviewView
+}
+
+// documentedPaths is every file the documentation tree references. It bounds
+// the intersection: a reference can only account for changes in a file it
+// names, so no other file of a review's range has to be read at all.
+func documentedPaths(document *saga.Saga) []string {
+	seen := map[string]bool{}
+	var paths []string
+	coverage.WalkDocumentCode(document, func(_ string, code []saga.CodeFile) {
+		for _, file := range code {
+			for _, reference := range file.References {
+				if !seen[reference.Path] {
+					seen[reference.Path] = true
+					paths = append(paths, reference.Path)
+				}
+			}
+		}
+	})
+	sort.Strings(paths)
+	return paths
+}
+
+// documentedChanges reads only the part of a review's range the documentation
+// could possibly explain: the patch of the files its code references name, and
+// of no others. A whole range parsed per review is a pull request's worth of
+// lines, and a documentation page would pay that once per review on the page.
+func documentedChanges(ctx context.Context, sourceDir string, document *saga.Saga, paths []string, rng reviewstate.Range) (gitdiff.ChangeSet, error) {
+	return gitdiff.ReadPaths(ctx, sourceDir, document.Manifest.Source.Repository, rng.BaseOID, rng.HeadOID, gitdiff.ReadOptions{AllowRepositoryMismatch: true}, paths...)
+}
+
+// changedFileTargets walks only the documentation targets whose references
+// name a file this review changed. Resolving a reference is a Git read, and a
+// reference in a file the review never touched can account for nothing, so
+// resolving it would cost the page a round trip for a certainty.
+func changedFileTargets(document *saga.Saga, changes gitdiff.ChangeSet) func(func(string, []saga.CodeFile)) {
+	changed := map[string]bool{}
+	for _, atom := range changes.Atoms {
+		for _, path := range []string{atom.Path, atom.OldPath, atom.NewPath} {
+			if path != "" {
+				changed[path] = true
+			}
+		}
+	}
+	return func(visit func(string, []saga.CodeFile)) {
+		coverage.WalkDocumentCode(document, func(target string, code []saga.CodeFile) {
+			for _, file := range code {
+				for _, reference := range file.References {
+					if changed[reference.Path] {
+						visit(target, code)
+						return
+					}
+				}
+			}
+		})
+	}
 }
