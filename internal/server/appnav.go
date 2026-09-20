@@ -9,20 +9,26 @@ import (
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
-// The reviewer's app-level list sits above the epics:
+// The reviewer's app-level list:
 //
 //	Overview        name, elevator pitch, description, terms and vocabulary
 //	Personas        who the app serves
 //	Design system   Figma links and references
 //	Onboarding      the deck that gets people up to speed
 //	Feature flags   what is gated, and whether it is on
-//	Epics           each epic expands to Product, Design, Quality, Implementation
+//	<current epic>  one epic, chosen from a searchable picker, over its
+//	                Product, Design, Quality, and Implementation
+//	Show all epics  the full list, for browsing, collapsed by default
 //
-// It is deliberately the minimum that keeps every place reachable and every
-// gap stated. Within an epic the per-epic rules are unchanged: Implementation
-// is the deck and opens all the way to its slides, and the other places stay
-// shut until something inside them is active.
-// TODO(app-view): the real app-level view is designed in Phase 4.
+// Everything above the epic is always present, because it describes the whole
+// app and a reader arriving anywhere needs it. The epics are not: listing
+// every one of them expanded put this repository's own sidebar at 238 rows,
+// which is a wall rather than an architecture. One epic at a time keeps the
+// list readable, and the picker keeps every other epic one keystroke away.
+//
+// Within the epic the per-epic rules are unchanged: Implementation is the deck
+// and opens all the way to its slides, the other places stay shut until
+// something inside them is active, and an empty place states its gap.
 
 // appNavSources is everything the app-level list reads, already loaded.
 type appNavSources struct {
@@ -37,6 +43,9 @@ type appNavSources struct {
 	decks []*navNodeView
 	// overviewActive says which overview row the page shows; see overviewNav.
 	overviewActive string
+	// currentEpic is the one epic the sidebar shows, already resolved by
+	// resolveCurrentEpic. An unknown or empty ID falls back to the first epic.
+	currentEpic string
 }
 
 func makeAppNavTree(sources appNavSources) []*navNodeView {
@@ -59,25 +68,48 @@ func makeAppNavTree(sources appNavSources) []*navNodeView {
 		onboarding = onboarding[0].Children
 	}
 
-	epics := make([]*navNodeView, 0, len(document.Epics))
-	for _, epic := range document.Epics {
-		epics = append(epics, makeEpicNav(sources, epic, deckRows))
-	}
-	epicsPlace := navPlace("Epics", "nav-epics", "", "no epics yet", epics)
-	epicsPlace.Expanded = len(epics) > 0
-
 	navigation := []*navNodeView{
 		overview,
 		navPlace("Personas", "nav-personas", "", "no personas yet", personaNav(sources.requirements)),
 		navPlace("Design system", "nav-designsystem", "design", "no design system yet", reportRootNav(document.DesignSystem)),
 		navPlace("Onboarding", "nav-onboarding", "deck", "no onboarding deck yet", onboarding),
 		navPlace("Feature flags", "nav-featureflags", "", "no feature flags yet", flagNav(sources.requirements)),
-		epicsPlace,
 	}
+	navigation = append(navigation, makeEpicNavRegion(sources, deckRows)...)
 	for _, node := range navigation {
 		revealActive(node)
 	}
 	return navigation
+}
+
+// makeEpicNavRegion is the epic end of the sidebar: the current epic over its
+// four places, then the disclosure that lists every epic. An app with no epics
+// keeps the row that says so, because a reader has to be able to see that the
+// app has no epics rather than infer it from an absence.
+func makeEpicNavRegion(sources appNavSources, deckRows map[string]*navNodeView) []*navNodeView {
+	document := sources.document
+	if len(document.Epics) == 0 {
+		return []*navNodeView{navPlace("Epics", "nav-epics", "", "no epics yet", nil)}
+	}
+	current := document.Epics[0]
+	for _, epic := range document.Epics {
+		if epic.ID == sources.currentEpic {
+			current = epic
+		}
+	}
+	node := makeEpicNav(sources, current, deckRows)
+	node.Picker = makeEpicPicker(document, current.ID)
+	return []*navNodeView{node, makeAllEpicsNav(document, current.ID)}
+}
+
+// makeAllEpicsNav is the browsing list: every epic as one row, shut until a
+// reader opens it. It is a disclosure rather than a tree, so it costs the
+// sidebar one row until it is asked for and never repeats an epic's places.
+func makeAllEpicsNav(document *saga.Saga, current string) *navNodeView {
+	return &navNodeView{
+		Title: "Show all epics", NodeID: "nav-all-epics",
+		Epics: epicChoices(document, current), IndexHref: epicsIndexHref,
+	}
 }
 
 // makeEpicNav is one epic: its own report content first, then today's four

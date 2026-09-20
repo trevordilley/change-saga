@@ -51,6 +51,22 @@ func dogfoodPage(t *testing.T, path string) (int, string) {
 	return recorder.Code, recorder.Body.String()
 }
 
+// dogfoodSidebar is the Contents navigation of one rendered page. The sidebar
+// shows one epic at a time, so a row that belongs to an epic is asserted on a
+// page inside that epic rather than on the app overview.
+func dogfoodSidebar(t *testing.T, path string) string {
+	t.Helper()
+	_, rest, ok := strings.Cut(dogfoodOK(t, path), `<nav class="doc-tree"`)
+	if !ok {
+		t.Fatalf("GET %s rendered no sidebar", path)
+	}
+	sidebar, _, ok := strings.Cut(rest, "</nav>")
+	if !ok {
+		t.Fatalf("GET %s rendered an unterminated sidebar", path)
+	}
+	return sidebar
+}
+
 func dogfoodOK(t *testing.T, path string) string {
 	t.Helper()
 	code, body := dogfoodPage(t, path)
@@ -203,7 +219,9 @@ func TestEveryEpicHasAPageHoldingItsDesign(t *testing.T) {
 			if strings.Contains(root, fetch) {
 				t.Fatalf("the overview still lists the epic chapter %s", chapter.ID)
 			}
-			if !strings.Contains(root, `href="`+href+`#`+domID(chapter.Target)+`"`) {
+			// The epic's own page is where its chapters are in the sidebar:
+			// that page's epic is the one the sidebar shows.
+			if !strings.Contains(dogfoodSidebar(t, href), `href="`+href+`#`+domID(chapter.Target)+`"`) {
 				t.Fatalf("the sidebar does not open %s on its epic's page", chapter.ID)
 			}
 		}
@@ -218,13 +236,15 @@ func TestEveryTestCaseHasARowAndAPage(t *testing.T) {
 	if len(tests.TestCases) == 0 {
 		t.Skip("the app Saga has no test cases")
 	}
-	root := dogfoodOK(t, "/")
-	if strings.Contains(root, "no test cases yet") && len(tests.TestCases) == len(tests.Epics) {
-		t.Fatal("an epic with a test case still says it has none")
-	}
 	for _, testCase := range tests.TestCases {
 		href := testCaseHref(testCase.Identity.ID)
-		if !strings.Contains(root, `href="`+href+`"`) {
+		// Quality lists the test cases of the epic the sidebar shows, so the
+		// row is asserted on the test case's own page.
+		sidebar := dogfoodSidebar(t, href)
+		if strings.Contains(sidebar, "no test cases yet") {
+			t.Fatalf("the epic of %s still says it has no test cases", href)
+		}
+		if !strings.Contains(sidebar, `href="`+href+`"`) {
 			t.Fatalf("the sidebar does not list %s", href)
 		}
 		page := dogfoodOK(t, href)
@@ -268,17 +288,19 @@ func TestEveryTestCaseHasARowAndAPage(t *testing.T) {
 func TestStoriesAndCriteriaShowTheirTraceability(t *testing.T) {
 	document, records, _ := dogfoodRecords(t)
 	graph := newAppGraph(document, records, quality.Document{})
-	root := dogfoodOK(t, "/")
-	if strings.Contains(root, ">Story 0") || strings.Contains(root, "Story 01 ·") {
-		t.Fatal("the sidebar still names stories by ordinal")
-	}
 	for _, story := range records.Stories {
 		if story.CurrentRevision == nil {
 			continue
 		}
 		href := requirementStoryHref(story.Identity.ID)
 		page := dogfoodOK(t, href)
-		if !strings.Contains(root, `title="`+template.HTMLEscapeString(story.CurrentRevision.Title)+`"`) {
+		// A story's page shows that story's epic, so its Requirements row is
+		// in that page's own sidebar.
+		sidebar := dogfoodSidebar(t, href)
+		if strings.Contains(sidebar, ">Story 0") || strings.Contains(sidebar, "Story 01 ·") {
+			t.Fatal("the sidebar still names stories by ordinal")
+		}
+		if !strings.Contains(sidebar, `title="`+template.HTMLEscapeString(story.CurrentRevision.Title)+`"`) {
 			t.Fatalf("the sidebar does not name %s by its title", href)
 		}
 		for _, want := range []string{"data-story-context", "data-story-trace", `href="` + epicHref(story.Epic) + `"`} {

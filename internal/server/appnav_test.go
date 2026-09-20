@@ -1,10 +1,14 @@
 package server
 
 import (
+	"crypto/sha256"
 	"fmt"
+	"io/fs"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 	"testing"
 	"time"
@@ -146,54 +150,38 @@ func topTitles(nodes []*navNodeView) string {
 	return strings.Join(titles, "|")
 }
 
-// The app-level list replaces the four-row sidebar: the app's own places come
-// first and every epic keeps Product, Design, Quality, and Implementation.
-func TestAppNavigationListsAppPlacesThenEveryEpicWithItsFourPlaces(t *testing.T) {
+// The app-level list is the app's own places, then ONE epic with its four,
+// then the way to every other epic. Listing every epic expanded put this
+// repository's own sidebar at 238 rows.
+func TestAppNavigationListsAppPlacesThenOneEpicWithItsFourPlaces(t *testing.T) {
 	nodes := makeAppNavTree(appNavFixture(t))
-	if got, want := topTitles(nodes), "Overview|Personas|Design system|Onboarding|Feature flags|Epics"; got != want {
+	if got, want := topTitles(nodes), "Overview|Personas|Design system|Onboarding|Feature flags|Billing|Show all epics"; got != want {
 		t.Fatalf("app-level list = %s, want %s", got, want)
 	}
-	wantIDs := []string{"nav-overview", "nav-personas", "nav-designsystem", "nav-onboarding", "nav-featureflags", "nav-epics"}
+	wantIDs := []string{"nav-overview", "nav-personas", "nav-designsystem", "nav-onboarding", "nav-featureflags", epicNavID("billing"), "nav-all-epics"}
 	for index, node := range nodes {
 		if node.NodeID != wantIDs[index] {
 			t.Fatalf("app place %q has node ID %q, want %q", node.Title, node.NodeID, wantIDs[index])
 		}
 	}
-	epics := findNav(t, nodes, "Epics")
-	if !epics.Expanded || epics.Gap || topTitles(epics.Children) != "Billing|Catalog" {
-		t.Fatalf("Epics must open to every epic in order: %#v %v", epics, navTitles(epics.Children, 0))
+	// Only the current epic is in the tree; the other epic is reachable
+	// through the picker and the full list, not as a second subtree.
+	if findNavByID(nodes, epicNavID("catalog")) != nil {
+		t.Fatalf("the sidebar still expands every epic: %v", navTitles(nodes, 0))
 	}
-	for _, epic := range epics.Children {
-		prefix := epicNavID(strings.ToLower(epic.Title))
-		if epic.NodeID != prefix || !epic.Group || !epic.Expanded {
-			t.Fatalf("epic group %q = %#v", epic.Title, epic)
-		}
-		// The epic's own report outline comes first, then its four places.
-		if got, want := topTitles(epic.Children), epic.Title+" overview|"+epic.Title+" notes|Product|Design|Quality|Implementation"; got != want {
-			t.Fatalf("epic %s = %s, want %s", epic.Title, got, want)
-		}
-		places := epic.Children[2:]
-		for index, suffix := range []string{"-product", "-design", "-quality", "-implementation"} {
-			if places[index].NodeID != prefix+suffix {
-				t.Fatalf("epic %s place %q node ID = %q, want %q", epic.Title, places[index].Title, places[index].NodeID, prefix+suffix)
-			}
-		}
-		for _, place := range places[:3] {
-			if place.Expanded {
-				t.Fatalf("epic %s: %s must stay collapsed on arrival", epic.Title, place.Title)
-			}
-		}
-		if !places[3].Expanded {
-			t.Fatalf("epic %s: Implementation must open on arrival", epic.Title)
-		}
-	}
+	assertEpicSubtree(t, nodes, "Billing", "billing")
 	// Billing's one deck is its Implementation: the slides sit directly beneath.
-	billing := findNav(t, nodes, "Epics", "Billing", "Implementation")
+	billing := findNav(t, nodes, "Billing", "Implementation")
 	if got := topTitles(billing.Children); got != "charge|refund" {
 		t.Fatalf("billing Implementation must list its deck's slides directly: %v", navTitles(billing.Children, 0))
 	}
-	// Catalog has no deck and says so beneath a peer header.
-	catalog := findNav(t, nodes, "Epics", "Catalog", "Implementation")
+	// Choosing the other epic moves the same four places onto it. Catalog has
+	// no deck and says so beneath a peer header.
+	sources := appNavFixture(t)
+	sources.currentEpic = "catalog"
+	chosen := makeAppNavTree(sources)
+	assertEpicSubtree(t, chosen, "Catalog", "catalog")
+	catalog := findNav(t, chosen, "Catalog", "Implementation")
 	if catalog.Gap || len(catalog.Children) != 1 || !catalog.Children[0].Gap ||
 		catalog.Children[0].NodeID != epicNavID("catalog")+"-implementation-empty" {
 		t.Fatalf("an empty epic Implementation must state its gap beneath the header: %v", navTitles(catalog.Children, 0))
@@ -203,6 +191,103 @@ func TestAppNavigationListsAppPlacesThenEveryEpicWithItsFourPlaces(t *testing.T)
 	for _, old := range []string{"nav-product", "nav-design", "nav-quality", "nav-implementation", "nav-requirements"} {
 		if ids[old] {
 			t.Fatalf("the sidebar still carries the single-change place %q", old)
+		}
+	}
+}
+
+// assertEpicSubtree checks the rules that hold beneath whichever epic the
+// sidebar shows: its own report outline first, then the same four places, with
+// only Implementation open.
+func assertEpicSubtree(t *testing.T, nodes []*navNodeView, title, id string) {
+	t.Helper()
+	epic := findNav(t, nodes, title)
+	prefix := epicNavID(id)
+	if epic.NodeID != prefix || !epic.Group || !epic.Expanded || epic.Href != epicHref(id) {
+		t.Fatalf("epic group %q = %#v", title, epic)
+	}
+	if got, want := topTitles(epic.Children), title+" overview|"+title+" notes|Product|Design|Quality|Implementation"; got != want {
+		t.Fatalf("epic %s = %s, want %s", title, got, want)
+	}
+	places := epic.Children[2:]
+	for index, suffix := range []string{"-product", "-design", "-quality", "-implementation"} {
+		if places[index].NodeID != prefix+suffix {
+			t.Fatalf("epic %s place %q node ID = %q, want %q", title, places[index].Title, places[index].NodeID, prefix+suffix)
+		}
+	}
+	for _, place := range places[:3] {
+		if place.Expanded {
+			t.Fatalf("epic %s: %s must stay collapsed on arrival", title, place.Title)
+		}
+	}
+	if !places[3].Expanded {
+		t.Fatalf("epic %s: Implementation must open on arrival", title)
+	}
+}
+
+// The current epic's row carries the picker: every epic, in creation order,
+// searchable by title and by id, with the current one marked. Beside it the
+// full list discloses the same epics as plain rows, and both offer the epics
+// index, which is where a reader with no JavaScript ends up.
+func TestTheCurrentEpicRowCarriesAPickerOverEveryEpic(t *testing.T) {
+	sources := appNavFixture(t)
+	sources.currentEpic = "catalog"
+	nodes := makeAppNavTree(sources)
+	picker := findNav(t, nodes, "Catalog").Picker
+	if picker == nil {
+		t.Fatal("the current epic's row has no picker")
+	}
+	if picker.Current.ID != "catalog" || picker.Current.Title != "Catalog" || !picker.Current.Current {
+		t.Fatalf("picker current = %#v", picker.Current)
+	}
+	if picker.IndexHref != "/epics" {
+		t.Fatalf("picker index href = %q", picker.IndexHref)
+	}
+	var titles []string
+	for _, choice := range picker.Choices {
+		if choice.Href != epicHref(choice.ID) || choice.OptionID == "" {
+			t.Fatalf("picker choice = %#v", choice)
+		}
+		titles = append(titles, choice.Title)
+	}
+	if got := strings.Join(titles, "|"); got != "Billing|Catalog" {
+		t.Fatalf("picker lists %s, want every epic in creation order", got)
+	}
+	// Only the current epic is marked, whichever one that is.
+	marked := 0
+	for _, choice := range picker.Choices {
+		if choice.Current {
+			marked++
+		}
+	}
+	if marked != 1 {
+		t.Fatalf("%d epics are marked current", marked)
+	}
+	// An epic that is not the reader's choice still has no picker of its own.
+	if findNav(t, nodes, "Overview").Picker != nil {
+		t.Fatal("a place that is not an epic carries a picker")
+	}
+	all := findNavByID(nodes, "nav-all-epics")
+	if all == nil || all.Title != "Show all epics" || all.IndexHref != "/epics" || len(all.Epics) != 2 {
+		t.Fatalf("the full list = %#v", all)
+	}
+	if all.Epics[1].ID != "catalog" || !all.Epics[1].Current || all.Epics[0].Current {
+		t.Fatalf("the full list marks the wrong epic: %#v", all.Epics)
+	}
+	// The full list costs the sidebar one row: it never repeats an epic's places.
+	if len(all.Children) != 0 {
+		t.Fatalf("the full list expands into the tree: %v", navTitles(all.Children, 0))
+	}
+}
+
+// An unknown or unset choice falls back to the first epic an author
+// introduced, so the sidebar always shows one.
+func TestAnUnknownCurrentEpicFallsBackToTheFirst(t *testing.T) {
+	for _, current := range []string{"", "not-an-epic"} {
+		sources := appNavFixture(t)
+		sources.currentEpic = current
+		nodes := makeAppNavTree(sources)
+		if findNavByID(nodes, epicNavID("billing")) == nil || findNavByID(nodes, epicNavID("catalog")) != nil {
+			t.Fatalf("current epic %q = %v", current, navTitles(nodes, 0))
 		}
 	}
 }
@@ -221,6 +306,11 @@ func TestEmptyAppPlacesStateTheirGap(t *testing.T) {
 	})
 	if got, want := topTitles(nodes), "Overview|Personas|Design system|Onboarding|Feature flags|Epics"; got != want {
 		t.Fatalf("empty app-level list = %s, want %s", got, want)
+	}
+	// With no epics there is nothing to pick between, so the row that says so
+	// stands alone.
+	if findNavByID(nodes, "nav-all-epics") != nil || findNav(t, nodes, "Epics").Picker != nil {
+		t.Fatal("an app with no epics still offers a picker")
 	}
 	for _, node := range nodes[1:] {
 		if !node.Gap || node.Note == "" || len(node.Children) != 0 {
@@ -309,13 +399,13 @@ func TestOnboardingSlidesSitUnderOnboardingAndNotUnderAnyEpic(t *testing.T) {
 		t.Fatalf("Onboarding must list its deck's slides directly: %v", navTitles(onboarding.Children, 0))
 	}
 	slideID := "nav-" + domID(saga.SlideTarget(appNavSaga, "who-it-serves"))
-	for _, epic := range findNav(t, nodes, "Epics").Children {
+	for _, epic := range []*navNodeView{findNav(t, nodes, "Billing")} {
 		if findNavByID(epic.Children, slideID) != nil {
 			t.Fatalf("the onboarding slide appeared under epic %s: %v", epic.Title, navTitles(epic.Children, 0))
 		}
 	}
 	deckID := "nav-" + domID(saga.DeckTarget(appNavSaga, "welcome"))
-	if findNavByID(findNav(t, nodes, "Epics").Children, deckID) != nil {
+	if findNavByID([]*navNodeView{findNav(t, nodes, "Billing")}, deckID) != nil {
 		t.Fatal("the onboarding deck appeared under an epic")
 	}
 	// And an epic's implementation slides stay out of Onboarding.
@@ -328,8 +418,10 @@ func TestOnboardingSlidesSitUnderOnboardingAndNotUnderAnyEpic(t *testing.T) {
 // holds it.
 func TestEpicStoriesAppearOnlyUnderThatEpicsRequirements(t *testing.T) {
 	nodes := makeAppNavTree(appNavFixture(t))
-	billing := findNav(t, nodes, "Epics", "Billing", "Product", "Requirements")
-	catalog := findNav(t, nodes, "Epics", "Catalog", "Product", "Requirements")
+	billing := findNav(t, nodes, "Billing", "Product", "Requirements")
+	catalogSources := appNavFixture(t)
+	catalogSources.currentEpic = "catalog"
+	catalog := findNav(t, makeAppNavTree(catalogSources), "Catalog", "Product", "Requirements")
 	if billing.NodeID != epicNavID("billing")+"-requirements" || catalog.NodeID != epicNavID("catalog")+"-requirements" {
 		t.Fatalf("requirements node IDs = %q, %q", billing.NodeID, catalog.NodeID)
 	}
@@ -345,16 +437,19 @@ func TestEpicStoriesAppearOnlyUnderThatEpicsRequirements(t *testing.T) {
 	// An epic with no stories keeps its Requirements row as a gap.
 	sources := appNavFixture(t)
 	sources.document.Epics = append(sources.document.Epics, appNavEpic("search", "Search"))
-	search := findNav(t, makeAppNavTree(sources), "Epics", "Search", "Product", "Requirements")
+	sources.currentEpic = "search"
+	search := findNav(t, makeAppNavTree(sources), "Search", "Product", "Requirements")
 	if !search.Gap || search.Note == "" || len(search.Children) != 0 {
 		t.Fatalf("an epic with no stories must state its Requirements gap: %#v", search)
 	}
 }
 
-// The page handler builds the app-level list from a real app Saga on disk:
-// two epics with their own report content, one implementation deck, and the
-// onboarding deck at the app root.
-func TestPageRendersTheAppLevelListFromAnAppSaga(t *testing.T) {
+// writeAppNavSaga is a two-epic app Saga on disk: Billing with its own
+// implementation deck and Catalog without one, plus the app's overview and its
+// onboarding deck. Both epics share a creation instant, so Billing is first by
+// ID and is the epic a reader arrives on.
+func writeAppNavSaga(t *testing.T) string {
+	t.Helper()
 	root := filepath.Join(t.TempDir(), "shop.saga")
 	writeServerFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"shop","title":"Shop","source":{"repository":"https://example.test/acme/shop.git"}}`)
 	for _, epic := range []struct{ id, title string }{{"billing", "Billing"}, {"catalog", "Catalog"}} {
@@ -367,7 +462,102 @@ func TestPageRendersTheAppLevelListFromAnAppSaga(t *testing.T) {
 	writeServerFile(t, filepath.Join(root, applayout.OverviewDir, "pitch.fragment", "content.md"), "# Shop\n")
 	writeAppNavDeck(t, filepath.Join(applayout.EpicDir(root, "billing"), saga.EmbeddedSlidesDir), "billing-flow", saga.DeckRoleChange, "charge", "")
 	writeAppNavDeck(t, filepath.Join(root, applayout.OnboardingDir), "welcome", saga.DeckRoleOnboarding, "who-it-serves", "urn:change-saga:shop:epic:billing")
+	return root
+}
 
+// treeDigest is every file beneath root with its bytes, so a test can say
+// that reading the reviewer wrote nothing.
+func treeDigest(t *testing.T, root string) string {
+	t.Helper()
+	var lines []string
+	if err := filepath.WalkDir(root, func(path string, entry fs.DirEntry, err error) error {
+		if err != nil || entry.IsDir() {
+			return err
+		}
+		body, err := os.ReadFile(path)
+		if err != nil {
+			return err
+		}
+		lines = append(lines, fmt.Sprintf("%s %x", path, sha256.Sum256(body)))
+		return nil
+	}); err != nil {
+		t.Fatal(err)
+	}
+	sort.Strings(lines)
+	return strings.Join(lines, "\n")
+}
+
+// Opening an epic is how a reader chooses one. The choice rides in a cookie,
+// so the app's own pages — which belong to no epic — keep showing it. Nothing
+// about it is written into the Saga.
+func TestOpeningAnEpicIsRememberedForTheAppsOwnPages(t *testing.T) {
+	root := writeAppNavSaga(t)
+	before := treeDigest(t, root)
+	application := &app{root: root, sourceDir: root, template: serverTemplate(t)}
+	get := func(path string, cookies []*http.Cookie) *httptest.ResponseRecorder {
+		t.Helper()
+		request := httptest.NewRequest(http.MethodGet, path, nil)
+		for _, cookie := range cookies {
+			request.AddCookie(cookie)
+		}
+		recorder := httptest.NewRecorder()
+		newMux(application).ServeHTTP(recorder, request)
+		if recorder.Code != http.StatusOK {
+			t.Fatalf("GET %s = %d", path, recorder.Code)
+		}
+		return recorder
+	}
+	// Arriving cold shows the first epic and remembers nothing.
+	cold := get("/", nil)
+	if len(cold.Result().Cookies()) != 0 {
+		t.Fatalf("the overview remembered an epic nobody chose: %#v", cold.Result().Cookies())
+	}
+	if !strings.Contains(cold.Body.String(), `id="`+epicNavID("billing")+`"`) {
+		t.Fatal("a reader arriving cold must see the first epic")
+	}
+	// Opening the other epic is the choice, and it is stored client-side.
+	opened := get(epicHref("catalog"), nil)
+	cookies := opened.Result().Cookies()
+	if len(cookies) != 1 || cookies[0].Name != currentEpicCookie || cookies[0].Value != "catalog" {
+		t.Fatalf("opening an epic stored %#v", cookies)
+	}
+	// It then follows the reader to the app's own pages, and re-opening an
+	// epic already remembered writes nothing more.
+	for _, path := range []string{"/", "/personas/nobody-at-all", "/terms"} {
+		recorder := httptest.NewRecorder()
+		request := httptest.NewRequest(http.MethodGet, path, nil)
+		request.AddCookie(cookies[0])
+		newMux(application).ServeHTTP(recorder, request)
+		if recorder.Code != http.StatusOK {
+			continue
+		}
+		if !strings.Contains(recorder.Body.String(), `id="`+epicNavID("catalog")+`"`) {
+			t.Fatalf("%s lost the reader's epic", path)
+		}
+		if got := recorder.Result().Cookies(); len(got) != 0 {
+			t.Fatalf("%s rewrote the preference: %#v", path, got)
+		}
+	}
+	if after := treeDigest(t, root); after != before {
+		t.Fatal("reading the reviewer wrote to the Saga")
+	}
+}
+
+// The page handler builds the app-level list from a real app Saga on disk:
+// two epics with their own report content, one implementation deck, and the
+// onboarding deck at the app root.
+func TestPageRendersTheAppLevelListFromAnAppSaga(t *testing.T) {
+	root := writeAppNavSaga(t)
+	writeServerFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"shop","title":"Shop","source":{"repository":"https://example.test/acme/shop.git"}}`)
+	for _, epic := range []struct{ id, title string }{{"billing", "Billing"}, {"catalog", "Catalog"}} {
+		dir := applayout.EpicDir(root, epic.id)
+		writeServerFile(t, filepath.Join(dir, applayout.EpicManifestName), fmt.Sprintf(`{"$schema":%q,"version":5,"id":%q,"title":%q,"created_at":"2026-08-21T12:00:00Z"}`, applayout.EpicSchemaURL, epic.id, epic.title))
+		writeServerFile(t, filepath.Join(dir, "overview.fragment", "fragment.json"), fmt.Sprintf(`{"version":2,"id":"%s-overview","title":"%s overview","media_type":"text/markdown","entrypoint":"content.md"}`, epic.id, epic.title))
+		writeServerFile(t, filepath.Join(dir, "overview.fragment", "content.md"), "# "+epic.title+"\n")
+	}
+	writeServerFile(t, filepath.Join(root, applayout.OverviewDir, "pitch.fragment", "fragment.json"), `{"version":2,"id":"pitch","title":"Elevator pitch","media_type":"text/markdown","entrypoint":"content.md"}`)
+	writeServerFile(t, filepath.Join(root, applayout.OverviewDir, "pitch.fragment", "content.md"), "# Shop\n")
+	writeAppNavDeck(t, filepath.Join(applayout.EpicDir(root, "billing"), saga.EmbeddedSlidesDir), "billing-flow", saga.DeckRoleChange, "charge", "")
 	document, validation, err := saga.Load(root)
 	if err != nil || !validation.Valid {
 		t.Fatalf("load app saga: err=%v issues=%#v", err, validation.Issues)
@@ -376,33 +566,62 @@ func TestPageRendersTheAppLevelListFromAnAppSaga(t *testing.T) {
 		t.Fatalf("app saga = %d epics, %d onboarding decks, %d implementation decks", len(document.Epics), len(document.Onboarding), len(document.Decks))
 	}
 
-	recorder := httptest.NewRecorder()
-	(&app{root: root, sourceDir: root, template: serverTemplate(t)}).page(recorder, httptest.NewRequest(http.MethodGet, "/", nil))
-	if recorder.Code != http.StatusOK {
-		t.Fatalf("page status = %d: %s", recorder.Code, recorder.Body.String())
+	render := func(path string) string {
+		t.Helper()
+		recorder := httptest.NewRecorder()
+		newMux(&app{root: root, sourceDir: root, template: serverTemplate(t)}).ServeHTTP(recorder, httptest.NewRequest(http.MethodGet, path, nil))
+		if recorder.Code != http.StatusOK {
+			t.Fatalf("GET %s = %d: %s", path, recorder.Code, recorder.Body.String())
+		}
+		return recorder.Body.String()
 	}
-	html := recorder.Body.String()
+	html := render("/")
+	// The app's own places, then the first epic and the picker over both.
 	for _, id := range []string{
-		"nav-overview", "nav-onboarding", "nav-epics",
+		"nav-overview", "nav-onboarding", "nav-all-epics",
 		epicNavID("billing"), epicNavID("billing") + "-product", epicNavID("billing") + "-implementation",
-		epicNavID("catalog"), epicNavID("catalog") + "-design", epicNavID("catalog") + "-implementation",
 	} {
 		if !strings.Contains(html, `id="`+id+`"`) {
 			t.Fatalf("the sidebar is missing %q", id)
 		}
 	}
-	for _, id := range []string{epicNavID("billing") + "-implementation", epicNavID("catalog") + "-implementation"} {
-		if strings.Contains(html, `id="`+id+`" hidden`) {
-			t.Fatalf("%s must open on arrival", id)
+	// The other epic is a picker option, not a second subtree.
+	if strings.Contains(html, `id="`+epicNavID("catalog")+`"`) {
+		t.Fatal("the sidebar still expands every epic")
+	}
+	for _, want := range []string{
+		`data-epic-picker`, `data-epic-option data-epic-id="catalog"`, `href="/epics"`,
+	} {
+		if !strings.Contains(html, want) {
+			t.Fatalf("the sidebar lacks %q", want)
 		}
+	}
+	if strings.Contains(html, `id="`+epicNavID("billing")+`-implementation" hidden`) {
+		t.Fatal("the epic's Implementation must open on arrival")
 	}
 	if !strings.Contains(html, `id="`+epicNavID("billing")+`-product" hidden`) {
 		t.Fatal("an epic's Product must stay collapsed on arrival")
 	}
-	for _, note := range []string{"not written yet", "no terms yet", "no personas yet", "no design system yet", "no feature flags yet", "No implementation decks yet"} {
+	// Opening the other epic's page moves the whole subtree onto it.
+	catalog := render(epicHref("catalog"))
+	if !strings.Contains(catalog, `id="`+epicNavID("catalog")+`-implementation"`) || strings.Contains(catalog, `id="`+epicNavID("billing")+`-product"`) {
+		t.Fatal("opening an epic must make it the epic the sidebar shows")
+	}
+	// The epics index lists both, and is reachable as a page of its own.
+	index := render("/epics")
+	for _, want := range []string{`data-epics-page`, `href="/epics/billing"`, `href="/epics/catalog"`} {
+		if !strings.Contains(index, want) {
+			t.Fatalf("the epics index lacks %q", want)
+		}
+	}
+	for _, note := range []string{"not written yet", "no terms yet", "no personas yet", "no design system yet", "no feature flags yet"} {
 		if !strings.Contains(html, note) {
 			t.Fatalf("the sidebar does not state the gap %q", note)
 		}
+	}
+	// Catalog has no deck; its gap is stated on the page that shows it.
+	if !strings.Contains(render(epicHref("catalog")), "No implementation decks yet") {
+		t.Fatal("an epic with no deck does not state the gap")
 	}
 	// The onboarding slide renders under Onboarding, before the Feature flags
 	// row and the epics; the billing slide renders inside the epics.
