@@ -187,7 +187,10 @@ body.presentation-mode .deck-viewer-stage:hover .slide-exit-presentation,body.pr
    epic's four places off screen; the sidebar is the scroll container, so a
    panel taller than the remaining space scrolls into view rather than being
    lost. */
-.doc-epic-current{position:relative;margin-top:6px;padding-top:6px;border-top:1px solid var(--line-soft)}
+.doc-epic-current{margin-top:6px;padding-top:6px;border-top:1px solid var(--line-soft)}
+/* The panel hangs from the epic's row, not from the node: the node is as tall
+   as the epic's four places, which would drop the panel below them. */
+.doc-epic-current>.doc-row{position:relative}
 .doc-epic-current>.doc-row>.doc-link{font-weight:650}
 /* The epic's own title is what the row says, so the row cannot also say it is
    an epic. The eyebrow does, once, above it. */

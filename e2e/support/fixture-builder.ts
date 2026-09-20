@@ -195,6 +195,16 @@ function buildSagaRepository(root: string, source: { sourceRepo: string; base: s
   runSaga(["add-fragment", "--epic", "wave-one", "--section", ".", "--type", "image", "--name", "pixel", "--id", "pixel", "--title", "Raster Preview", "--source", join(mediaRoot, "pixel.png"), sagaRoot], sagaRepo);
   runSaga(["add-fragment", "--epic", "wave-one", "--section", ".", "--type", "html", "--name", "interactive", "--id", "interactive", "--title", "Interactive Demo", "--source", interactiveRoot, sagaRoot], sagaRepo);
 
+  // Two more epics, created after Wave One, so the sidebar has something to
+  // pick between: Wave One stays the epic a reader arrives on, and Tide
+  // Charts holds a story of its own to land inside.
+  runSaga(["epic", "add", "--id", "tide-charts", "--title", "Tide Charts", sagaRoot], sagaRepo);
+  runSaga(["epic", "add", "--id", "harbor-lights", "--title", "Harbor Lights", sagaRoot], sagaRepo);
+  runSaga([
+    "story", "add", "--epic", "tide-charts", "--id", "read-the-tide", "--revision", "r1", "--event", "proposed",
+    "--title", "Read the tide", "--statement", "As a skipper, I can read tonight's tide.", "--priority", "must", sagaRoot
+  ], sagaRepo);
+
   const identity = addCoverage(source.sourceRepo, sagaRoot);
   git(sagaRepo, "add", ".");
   git(sagaRepo, "commit", "-m", "add Wave 1 saga fixture");
