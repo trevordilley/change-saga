@@ -98,7 +98,10 @@ order they were created. An epic's `epic.json` is
 immutable and its URN is `urn:change-saga:<saga>:epic:<id>`. Moving a story
 between epics moves its directory and changes nothing else.
 
-**Personas** are application-level living records with an immutable identity,
+**Personas** are the people who get value from the application: the "As a
+<persona>" of a user story. A tool, an agent, or a system that operates the
+product is not a persona, however much the product is built to work with it.
+Personas are application-level living records with an immutable identity,
 append-only revisions (`name`, `description`), and lifecycle events whose root
 state is `active`; a persona can be retired and restored. URNs are
 `urn:change-saga:<saga>:persona:<id>`, with `:revision:<id>` and `:event:<id>`.
