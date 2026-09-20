@@ -1,0 +1,37 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r2",
+  "story": "urn:change-saga:app:story:coverage-report",
+  "parents": [
+    "urn:change-saga:app:story:coverage-report:revision:r1"
+  ],
+  "title": "The coverage report has no verdict",
+  "statement": "The tool reports gaps and teams decide what to do about them: status reports each area's coverage as counts and lists, never one blended score, as text and stable JSON.",
+  "priority": "unspecified",
+  "personas": [
+    "urn:change-saga:app:persona:change-author"
+  ],
+  "citations": [
+    "urn:change-saga:app:citation:app-saga-goals"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "areas",
+      "statement": "For each area (implementation, health, stories, personas, design, quality) status reports how many are covered, with the lists of what is and is not."
+    },
+    {
+      "id": "exit-zero",
+      "statement": "A gap is a finding, never a failure: status exits zero, and non-zero only when it cannot produce a trustworthy report (a malformed Saga, duplicate IDs, or a checkout that does not match the declared repository)."
+    },
+    {
+      "id": "json-contract",
+      "statement": "The report is readable as text and emitted as stable JSON whose shape is a contract; the docs teach common CI rules as recipes rather than flags."
+    },
+    {
+      "id": "ordered-next-actions",
+      "statement": "Status emits ordered next_actions, each a command or one focused question."
+    }
+  ],
+  "created_at": "2026-09-20T20:41:57.153633Z"
+}

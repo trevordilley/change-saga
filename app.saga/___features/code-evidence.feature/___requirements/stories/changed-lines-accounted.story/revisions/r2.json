@@ -1,0 +1,33 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r2",
+  "story": "urn:change-saga:app:story:changed-lines-accounted",
+  "parents": [
+    "urn:change-saga:app:story:changed-lines-accounted:revision:r1"
+  ],
+  "title": "Every changed line is accounted for, per change",
+  "statement": "In compare mode, every changed line must fall inside some reference's range.",
+  "priority": "unspecified",
+  "personas": [
+    "urn:change-saga:app:persona:reviewer"
+  ],
+  "citations": [
+    "urn:change-saga:app:citation:app-saga-goals"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "in-some-range",
+      "statement": "In compare mode, every changed line falls inside some reference's range."
+    },
+    {
+      "id": "computed-not-stored",
+      "statement": "Accounting is computed from references, not stored."
+    },
+    {
+      "id": "ownership-accumulates",
+      "statement": "The app does not require every line of the codebase to be owned; ownership accumulates as changes land."
+    }
+  ],
+  "created_at": "2026-09-20T20:41:57.297826Z"
+}
