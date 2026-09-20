@@ -74,18 +74,39 @@ func TestV5RelationLinksTestCaseToCriterionAndGoesStaleOnRevision(t *testing.T) 
 		t.Fatalf("fresh relation = %#v", got)
 	}
 
+	// Revising everything but the criterion carries the pin forward: the
+	// relation still asserts what it asserted, and the report says which
+	// revision a person actually confirmed.
 	if err := Story(ctx, []string{"revise", root, "--story", story, "--revision", "r2", "--parent", story + ":revision:r1",
 		"--persona", testPersonaURN, "--title", "Checkout", "--statement", "As a buyer I can check out quickly", "--priority", "must",
 		"--criterion", "fast=Checkout finishes promptly", "--json"}, &bytes.Buffer{}); err != nil {
 		t.Fatal(err)
 	}
 	got := status()
-	if got.Status != requirements.CurrencyStale || len(got.Reasons) != 1 || got.Reasons[0].Code != requirements.ReasonRevisionChanged ||
-		got.Reasons[0].Pinned != story+":revision:r1" || !reflect.DeepEqual(got.Reasons[0].Current, []string{story + ":revision:r2"}) {
+	if !got.Current() || len(got.Reasons) != 0 || len(got.CarriedForward) != 1 ||
+		got.CarriedForward[0].Code != requirements.CarriedCriterionUnchanged ||
+		got.CarriedForward[0].Confirmed != story+":revision:r1" || got.CarriedForward[0].Current != story+":revision:r2" {
+		t.Fatalf("relation past an unrelated revision = %#v", got)
+	}
+	var carried bytes.Buffer
+	if err := Relation(ctx, []string{"status", root}, &carried); err != nil ||
+		!strings.Contains(carried.String(), "current\n  carried forward criterion_unchanged: to criterion statement is unchanged since the confirmed revision") {
+		t.Fatalf("carried-forward text status = %v\n%s", err, carried.String())
+	}
+
+	// Reword the criterion and the signal fires, naming what moved.
+	if err := Story(ctx, []string{"revise", root, "--story", story, "--revision", "r3", "--parent", story + ":revision:r2",
+		"--persona", testPersonaURN, "--title", "Checkout", "--statement", "As a buyer I can check out quickly", "--priority", "must",
+		"--criterion", "fast=Checkout finishes in two seconds", "--json"}, &bytes.Buffer{}); err != nil {
+		t.Fatal(err)
+	}
+	got = status()
+	if got.Status != requirements.CurrencyStale || len(got.Reasons) != 1 || got.Reasons[0].Code != requirements.ReasonCriterionStatementChanged ||
+		got.Reasons[0].Pinned != story+":revision:r1" || !reflect.DeepEqual(got.Reasons[0].Current, []string{story + ":revision:r3"}) {
 		t.Fatalf("revised relation = %#v", got)
 	}
 	var text bytes.Buffer
-	if err := Relation(ctx, []string{"status", root}, &text); err != nil || !strings.Contains(text.String(), "stale\n  revision_changed: to revision changed") {
+	if err := Relation(ctx, []string{"status", root}, &text); err != nil || !strings.Contains(text.String(), "stale\n  criterion_statement_changed: to criterion statement changed") {
 		t.Fatalf("text status = %v\n%s", err, text.String())
 	}
 

@@ -205,7 +205,7 @@ func TestStatusReportsAStaleTestCaseLinkOnceAndNeverAsAnOrphan(t *testing.T) {
 		"--to", story + ":criterion:fast", "--rationale", "Exercises the fast path.", "--json"}, &output), &output)
 	mustRun("story revise", Story(ctx, []string{"revise", root, "--story", story, "--revision", "r2", "--parent", story + ":revision:r1",
 		"--persona", personaURNFor(document.SagaID), "--title", "Checkout", "--statement", "As a buyer I can check out quickly", "--priority", "must",
-		"--criterion", "fast=Checkout finishes promptly", "--json"}, &output), &output)
+		"--criterion", "fast=Checkout finishes in two seconds", "--json"}, &output), &output)
 
 	output.Reset()
 	_ = Status(ctx, []string{"--against", "main", "--json", "--repo", repo, root}, &output)
@@ -248,8 +248,8 @@ func TestStatusReportsAStaleTestCaseLinkOnceAndNeverAsAnOrphan(t *testing.T) {
 	for _, record := range status.Stale {
 		if record.Record == relation {
 			found = true
-			if len(record.Reasons) != 1 || record.Reasons[0] != "to revision changed" {
-				t.Fatalf("the only stale reason is the moved story pin: %#v", record.Reasons)
+			if len(record.Reasons) != 1 || record.Reasons[0] != "to criterion statement changed" {
+				t.Fatalf("the only stale reason is the reworded criterion: %#v", record.Reasons)
 			}
 		}
 	}

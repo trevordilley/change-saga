@@ -204,6 +204,9 @@ func relationStatus(_ context.Context, args []string, out io.Writer) error {
 			}
 			fmt.Fprintf(out, "  %s: %s%s\n", reason.Code, reason.Message, detail)
 		}
+		for _, carried := range currency.CarriedForward {
+			fmt.Fprintf(out, "  carried forward %s: %s (confirmed %s, carried to %s)\n", carried.Code, carried.Message, carried.Confirmed, carried.Current)
+		}
 	}
 	return nil
 }
