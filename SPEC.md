@@ -941,13 +941,10 @@ hide authored content behind a valid-looking saga. Other names beginning with
   a destination rather than a row that only expands. **Overview** is the
   application's prose plus a directory of its parts: personas (`/personas`),
   terms and vocabulary (`/terms`), the design system (`/design-system`),
-  onboarding, and feature flags (`/flags`). **Epics** (`/epics`) shows one
-  current epic, whose row opens a searchable picker and whose Product, Design,
-  Quality, and Implementation sit beneath it, plus a control that expands the
-  full list. **Reviews** (`/reviews`) lists the pull-request reviews. The
-  current epic is the one the open page belongs to, else the reader's last
-  choice, else the first epic created; that choice is a reading preference and
-  is never written into the Saga. A deck header (onboarding, or an epic's
+  onboarding, and feature flags (`/flags`). **Epics** (`/epics`) lists every
+  epic in creation order, each opening its own page; the epic whose content is
+  on screen expands over its Product, Design, Quality, and Implementation.
+  **Reviews** (`/reviews`) lists the pull-request reviews. A deck header (onboarding, or an epic's
   implementation) opens the deck at its first slide. Every directory is a
   server-rendered table that filters with `?q=` and without JavaScript, showing
   counts only.
