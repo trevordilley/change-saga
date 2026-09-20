@@ -680,15 +680,18 @@ const appJavaScript = `(() => {
       option.tabIndex = -1;
     });
     input.setAttribute('role', 'combobox');
-    input.setAttribute('aria-expanded', 'true');
     input.setAttribute('aria-controls', list.id);
     input.setAttribute('aria-autocomplete', 'list');
     picker.addEventListener('toggle', () => {
+      input.setAttribute('aria-expanded', String(picker.open));
       if (!picker.open) return;
+      // Every opening starts from the whole list: a filter left over from
+      // last time would hide epics the reader never ruled out.
       input.value = '';
       filterEpicOptions(picker);
       input.focus();
     });
+    input.setAttribute('aria-expanded', String(picker.open));
     input.addEventListener('input', () => filterEpicOptions(picker));
     picker.addEventListener('keydown', event => {
       if (event.key === 'Escape') {

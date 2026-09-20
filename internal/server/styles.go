@@ -207,7 +207,9 @@ body.presentation-mode .deck-viewer-stage:hover .slide-exit-presentation,body.pr
 .epic-picker-search .i{position:absolute;left:7px;width:13px;height:13px;color:var(--faint);pointer-events:none}
 .epic-picker-search input{min-width:0;width:100%;height:26px;padding:0 8px 0 25px;border:1px solid var(--line);border-radius:var(--radius);background:var(--bg);color:var(--ink);font-size:12px}
 .epic-picker-search input::-webkit-search-cancel-button{-webkit-appearance:none}
-.epic-picker-options{display:block;max-height:250px;overflow:auto}
+/* The panel scrolls within itself rather than growing past the sidebar, which
+   is only 42vh tall on a narrow viewport. */
+.epic-picker-options{display:block;max-height:min(250px,32vh);overflow:auto}
 .epic-option{display:block;padding:4px 7px;border-radius:var(--radius);color:var(--ink);text-decoration:none;font-size:12.5px}
 .epic-option[hidden]{display:none}
 .epic-option:hover,.epic-option.active{background:var(--bg-inset)}

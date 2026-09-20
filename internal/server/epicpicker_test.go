@@ -182,5 +182,14 @@ func TestThePickerCarriesEveryEpicWithOneMarked(t *testing.T) {
 		if picker.Choices[0].OptionID == picker.Choices[1].OptionID {
 			t.Fatalf("picker options share a DOM id: %#v", picker.Choices)
 		}
+		marked := 0
+		for _, choice := range picker.Choices {
+			if choice.Current {
+				marked++
+			}
+		}
+		if marked != 1 || !picker.Current.Current {
+			t.Fatalf("picker for %q marks %d epics current: %#v", current, marked, picker.Choices)
+		}
 	}
 }

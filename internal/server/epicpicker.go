@@ -62,11 +62,16 @@ func epicChoices(document *saga.Saga, current string) []epicChoiceView {
 	return choices
 }
 
-// makeEpicPicker builds the dropdown for the current epic.
+// makeEpicPicker builds the dropdown for the current epic. Exactly one epic is
+// always marked, so the control can never say the reader is nowhere: an ID
+// that names no epic falls back to the first, as the sidebar itself does.
 func makeEpicPicker(document *saga.Saga, current string) *epicPickerView {
 	choices := epicChoices(document, current)
 	if len(choices) == 0 {
 		return nil
+	}
+	if !hasEpic(document, current) {
+		choices[0].Current = true
 	}
 	picker := &epicPickerView{Choices: choices, IndexHref: epicsIndexHref, Current: choices[0]}
 	for _, choice := range choices {
@@ -140,8 +145,10 @@ func pageEpic(route appRoute, page *requirementsPageView, tests quality.Document
 }
 
 // rememberEpic stores the epic a reader opened, so the sidebar still shows it
-// on the app's own pages. It is a reading preference: same-site, session
-// scoped, and never read by anything but the sidebar.
+// on the app's own pages. It is a reading preference and nothing more:
+// same-site, scoped to this reviewer session, and read by nothing but the
+// sidebar. A cookie from another Saga served on the same loopback host names
+// an epic this one does not have, which resolveCurrentEpic simply ignores.
 func rememberEpic(w http.ResponseWriter, r *http.Request, epic string) {
 	if epic == "" {
 		return
