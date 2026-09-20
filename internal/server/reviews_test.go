@@ -182,7 +182,7 @@ func TestReviewsRenderInsideTheAppShell(t *testing.T) {
 	_, handler := reviewApp(t, fixture, gitdiff.Range{})
 	for _, path := range []string{"/reviews", "/reviews/pr-7"} {
 		page := getPage(t, handler, path).Body.String()
-		for _, shell := range []string{`<nav class="doc-tree"`, `data-view-tab="manifest"`, `class="view-tab reviews-link current"`, "<style>", ".review-summary{"} {
+		for _, shell := range []string{`<nav class="doc-tree"`, `data-view-tab="saga"`, `class="side-tab current" href="/reviews"`, "<style>", ".review-summary{"} {
 			if !strings.Contains(page, shell) {
 				t.Fatalf("%s is outside the app shell: lacks %q", path, shell)
 			}
@@ -231,13 +231,14 @@ func TestFrozenReviewIsViewableButTakesNoDecisions(t *testing.T) {
 	}
 }
 
-// The review page shows the changes of the review's range no Item explains
-// beside the deck: the fixture's Item references the added line, so the
-// deleted line is uncovered, and a pushed line joins it.
-func TestReviewPageShowsUncoveredChangesBesideTheDeck(t *testing.T) {
+// Opening a review gives its deck, its Code Diff, and its coverage. Coverage
+// reports the changes of the review's range no Item explains: the fixture's
+// Item references the added line, so the deleted line is uncovered, and a
+// pushed line joins it.
+func TestReviewCoverageReportsTheChangesTheDeckDoesNotExplain(t *testing.T) {
 	fixture := newServerReviewFixture(t)
 	_, handler := reviewApp(t, fixture, gitdiff.Range{})
-	body := getPage(t, handler, "/reviews/pr-7").Body.String()
+	body := getPage(t, handler, "/reviews/pr-7/coverage").Body.String()
 	base := strings.TrimSpace(serverGit(t, fixture.repo, "merge-base", "main", "feature/pg"))
 	for _, want := range []string{
 		`data-review-coverage data-total="2" data-covered="1" data-uncovered="1" data-stale="0"`,
@@ -252,7 +253,7 @@ func TestReviewPageShowsUncoveredChangesBesideTheDeck(t *testing.T) {
 	}
 	writeServerFile(t, filepath.Join(fixture.repo, "queue.go"), "package queue\n\nfunc Enqueue() string { return \"postgres\" }\n\nfunc Drain() {}\n")
 	serverGit(t, fixture.repo, "commit", "-am", "Drain the queue")
-	body = getPage(t, handler, "/reviews/pr-7").Body.String()
+	body = getPage(t, handler, "/reviews/pr-7/coverage").Body.String()
 	if !strings.Contains(body, `data-uncovered="3"`) || !strings.Contains(body, "+func Drain() {}") {
 		t.Fatalf("a pushed line is not shown as uncovered:\n%s", body)
 	}
@@ -260,7 +261,7 @@ func TestReviewPageShowsUncoveredChangesBesideTheDeck(t *testing.T) {
 	if err := reviewstore.Freeze(fixture.root, "pr-7", saga.ReviewMerge{Base: base, Head: fixture.head, Landed: fixture.head, MergedAt: time.Now().UTC()}); err != nil {
 		t.Fatal(err)
 	}
-	if body = getPage(t, handler, "/reviews/pr-7").Body.String(); !strings.Contains(body, `data-uncovered="1"`) {
+	if body = getPage(t, handler, "/reviews/pr-7/coverage").Body.String(); !strings.Contains(body, `data-uncovered="1"`) {
 		t.Fatalf("a frozen review does not report its frozen range's coverage:\n%s", body)
 	}
 }

@@ -174,9 +174,11 @@ func TestChapterAndExplanationEndpointsStayWithinBudgets(t *testing.T) {
 // contracts; this change is about the story.
 func sagaDocumentOf(tb testing.TB, page string) string {
 	tb.Helper()
-	start, end := strings.Index(page, `id="view-saga"`), strings.Index(page, `id="view-code"`)
+	// Documentation ends where its deferred coverage panel begins; Code Diff
+	// is on the Review side and not on this page at all.
+	start, end := strings.Index(page, `id="view-saga"`), strings.Index(page, `id="view-manifest"`)
 	if start < 0 || end <= start {
-		tb.Fatal("the page no longer contains a saga document followed by the Code Diff tab")
+		tb.Fatal("the page no longer contains a saga document followed by a deferred surface")
 	}
 	return page[start:end]
 }

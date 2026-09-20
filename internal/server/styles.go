@@ -116,7 +116,15 @@ body.presentation-mode .deck-viewer-stage:hover .slide-exit-presentation,body.pr
 .view-tab{display:flex;align-items:center;gap:6px;border:0;border-bottom:2px solid transparent;border-radius:0;padding:0 10px;background:transparent;color:var(--muted);font-size:12.5px}
 .view-tab:hover{color:var(--ink);background:var(--bg-subtle)}
 .view-tab.active{color:var(--ink);border-color:var(--accent);font-weight:600}
-.view-tab.reviews-link.current{color:var(--ink);border-color:var(--accent);font-weight:600;text-decoration:none}
+/* The two sides. The header's first control is the distinction itself:
+Documentation is what the app is and does, Review what is being changed about
+it. The view tabs beside them belong to whichever side is open. */
+.side-tabs{display:flex;align-self:stretch;gap:2px;padding-right:12px;margin-right:2px;border-right:1px solid var(--line)}
+.side-tab{display:flex;align-items:center;gap:6px;padding:0 12px;border-bottom:2px solid transparent;color:var(--muted);font:600 13px var(--ui);text-decoration:none}
+.side-tab:hover{color:var(--ink);background:var(--bg-subtle)}
+.side-tab.current{color:var(--ink);border-color:var(--accent)}
+.review-coverage-surface{padding:18px 20px 40px}
+.review-coverage-surface .review-coverage{margin-top:8px}
 .top-meta{margin-left:auto;color:var(--faint);font:11px var(--mono)}
 .top-meta[hidden]{display:none}
 .theme-toggle{margin-left:8px}
@@ -774,6 +782,8 @@ a.layer-changed{font-weight:600}a.layer-affected{font-style:italic}
 .topbar{padding:0 8px;gap:6px}
 .brand span{display:none}
 .view-tab{padding:0 8px}
+.side-tab{padding:0 8px;font-size:12px}
+.side-tabs{padding-right:6px}
 .shell,.shell.code-mode{display:block}
 .sidebar{position:static;height:auto;max-height:42vh;padding:8px}
 .shell.code-mode .sidebar{position:fixed;z-index:25;top:var(--top);bottom:0;left:0;width:min(300px,86vw);max-height:none;height:auto;box-shadow:12px 0 30px #1f232826;transform:none;transition:transform .18s}

@@ -125,15 +125,29 @@ type pageData struct {
 	// sidebar opens. Empty when the page belongs to none.
 	PageFeature string
 	// Reviews is a review surface rendered inside the app shell.
-	Reviews    template.HTML
-	Root       *sectionView
-	SlideRoot  *sectionView
-	Nav        []*navNodeView
-	Diagnostic string
-	Code       *CodeReviewView
-	Manifest   *CoverageManifestView
-	Error      string
-	Files      []*fileDiffView
+	Reviews template.HTML
+	// ReviewSide says the page is on the Review side of the header rather
+	// than the Documentation side. The two sides are what the header carries:
+	// Documentation is the overview and the feature set, Review the current
+	// and completed reviews.
+	ReviewSide bool
+	// DeckLabel names the Review side's first view: the reviews themselves,
+	// or one review's deck.
+	DeckLabel string
+	// ReviewCodeHref and ReviewCoverageHref are where the Review side's Code Diff and
+	// coverage load from: a review's own range on a review's page, and the
+	// comparison the reviewer was opened with on the index. Empty means the
+	// view has nothing to show and its tab is not offered.
+	ReviewCodeHref     string
+	ReviewCoverageHref string
+	Root               *sectionView
+	SlideRoot          *sectionView
+	Nav                []*navNodeView
+	Diagnostic         string
+	Code               *CodeReviewView
+	Manifest           *CoverageManifestView
+	Error              string
+	Files              []*fileDiffView
 	// CoverageTotals is the audit reduced to the numbers the shell states
 	// outright. The audit itself stays on the Coverage tab.
 	CoverageTotals *coverageTotalsView
@@ -344,6 +358,9 @@ func newMux(application *app) *http.ServeMux {
 	mux.HandleFunc("GET /", application.page)
 	mux.HandleFunc("GET /reviews", application.reviewIndex)
 	mux.HandleFunc("GET /reviews/{id}", application.reviewPage)
+	mux.HandleFunc("GET /reviews/{id}/code", application.reviewCodeSurface)
+	mux.HandleFunc("GET /reviews/{id}/file-diff", application.reviewFileDiffSurface)
+	mux.HandleFunc("GET /reviews/{id}/coverage", application.reviewCoverageSurface)
 	mux.HandleFunc("GET /reviews/{id}/visual/{slide}", application.reviewVisual)
 	mux.HandleFunc("POST /reviews/{id}/decision", application.reviewDecision)
 	mux.HandleFunc("POST /reviews/{id}/comment", application.reviewComment)
@@ -966,6 +983,15 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 	// arrives from /api/totals as the documented code instead.
 	if data.Comparing {
 		data.CoverageTotals = a.cachedCoverageTotals()
+	}
+	// The header carries the distinction between the two sides. Code Diff and
+	// coverage of a change are comparison views, so they belong to Review;
+	// Documentation keeps the documented code, which is the same references
+	// resolved at the head rather than a diff.
+	data.ReviewSide = route.kind == "reviews"
+	data.DeckLabel = "Reviews"
+	if data.ReviewSide && data.Comparing {
+		data.ReviewCodeHref, data.ReviewCoverageHref = "/api/code", "/api/coverage"
 	}
 	data.RequirementsMode = requirementsView.Active
 	if data.RequirementsMode {

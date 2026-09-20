@@ -19,9 +19,11 @@ func TestRootTemplateDefersCodeAndCoverageModels(t *testing.T) {
 			t.Errorf("root page still renders a bounded review model through %q", eager)
 		}
 	}
+	// Each surface names where it loads from; the Review side's Code Diff and
+	// coverage name the change under review, so their href is templated.
 	for _, contract := range []string{
-		`data-review-surface="code" data-surface-href="/api/code"`,
-		`data-review-surface="manifest" data-surface-href="/api/coverage"`,
+		`data-review-surface="code" data-surface-href="{{.ReviewCodeHref}}"`,
+		`data-review-surface="manifest" data-surface-href="{{if .ReviewSide}}{{.ReviewCoverageHref}}{{else}}/api/coverage?scope=documented{{end}}"`,
 		`data-surface-status`,
 		`aria-live="polite"`,
 	} {
