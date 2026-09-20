@@ -261,8 +261,8 @@ export async function startSagaServer(repositories: SagaRepositories, against: s
 
 /** Builds both Git repositories without starting a server or a browser page. */
 export function createSagaRepositories(testInfo: TestInfo): SagaRepositories {
-  const safeTitle = testInfo.title.replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "").slice(0, 24).toLowerCase() || "test";
-  const root = mkdtempSync(join(tmpdir(), `change-saga-e2e-${testInfo.workerIndex}-${safeTitle}-`));
+  const safeTitle = testInfo.title.replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "").slice(0, 12).toLowerCase() || "test";
+  const root = mkdtempSync(join(tmpdir(), `cs-e2e-${testInfo.workerIndex}-${safeTitle}-`));
   try {
     const tempDir = join(root, "server-tmp");
     mkdirSync(tempDir, { recursive: true });
@@ -565,7 +565,7 @@ function buildLargeSagaRepository(root: string, source: { sourceRepo: string; ba
 
 /** Builds a deliberately large but fixed saga for the performance budgets. */
 export function createLargeSagaRepositories(testInfo: TestInfo): SagaRepositories {
-  const root = mkdtempSync(join(tmpdir(), `change-saga-large-${testInfo.workerIndex}-`));
+  const root = mkdtempSync(join(tmpdir(), `cs-large-${testInfo.workerIndex}-`));
   try {
     const tempDir = join(root, "server-tmp");
     mkdirSync(tempDir, { recursive: true });
