@@ -355,9 +355,9 @@ reconstructs it.
    Every section header opens a page rather than merely expanding: Overview is
    prose, and the rest are filterable tables (epics, reviews, personas, terms,
    flags). Terms and Vocabulary opens the table of terms, and a deck header
-   (Onboarding, or an epic's Implementation) opens at its first slide. Within
-   Epics, one epic is current, its row opens a searchable picker, and its
-   Product, Design, Quality, and Implementation sit beneath it.
+   (Onboarding, or an epic's Implementation) opens at its first slide. Epics
+   lists every epic, each opening its own page; the epic whose content is on
+   screen expands over its Product, Design, Quality, and Implementation.
 4. Onboarding deck Items point at records (personas, epics, stories) rather than
    code. Confirm that this is its only kind of evidence.
 
