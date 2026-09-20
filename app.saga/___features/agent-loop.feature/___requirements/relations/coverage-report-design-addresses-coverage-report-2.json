@@ -1,15 +1,14 @@
 {
   "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
   "version": 5,
-  "id": "coverage-report-design-addresses-coverage-report",
+  "id": "coverage-report-design-addresses-coverage-report-2",
   "type": "addresses",
   "from": "urn:change-saga:app:chapter:coverage-report-design",
   "to": "urn:change-saga:app:story:coverage-report",
   "scope": "self",
   "rationale": "The chapter specifies the coverage areas, the JSON shape, check's exit codes, and the next-action order this story's criteria require.",
   "to_revision": "urn:change-saga:app:story:coverage-report:revision:r1",
-  "from_content_digest": "sha256:71b75aa121a4abd45607be157cf87a75008fcbaca1752fb7bcac92b5fdaa16c6",
-  "state": "superseded",
-  "created_at": "2026-09-19T20:53:49.893007Z",
-  "superseded_at": "2026-09-20T19:04:18.182741Z"
+  "from_content_digest": "sha256:508db81d17b184eb05a2c54539086c3d6c1e711579fc54c137723a261f7d4ff8",
+  "state": "active",
+  "created_at": "2026-09-20T19:04:18.352697Z"
 }

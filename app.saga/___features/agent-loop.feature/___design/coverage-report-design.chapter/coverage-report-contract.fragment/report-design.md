@@ -18,7 +18,7 @@ decides which gaps fail its build, and writes that rule in its own CI.
 | `health` | nothing that already existed went stale or broke |
 
 With `--against`, the scope is the change: what it changed and what it
-affected. Without it, the scope is the whole app. `--epic` narrows either.
+affected. Without it, the scope is the whole app. `--feature` narrows either.
 
 ## JSON shape {#json-shape}
 

@@ -16,7 +16,7 @@
     <rect x="370" y="150" width="260" height="120" rx="12" fill="#e0f2fe" stroke="#0369a1"/>
     <text x="500" y="195" font-size="20" text-anchor="middle" font-weight="bold" fill="#0f172a">Saga format and</text>
     <text x="500" y="222" font-size="20" text-anchor="middle" font-weight="bold" fill="#0f172a">app structure</text>
-    <text x="500" y="250" font-size="15" text-anchor="middle" fill="#475569">one app.saga, durable epics</text>
+    <text x="500" y="250" font-size="15" text-anchor="middle" fill="#475569">one app.saga, durable features</text>
   </g>
   <g id="requirements">
     <rect x="700" y="150" width="260" height="120" rx="12" fill="#e0f2fe" stroke="#0369a1"/>
@@ -59,5 +59,5 @@
   <line x1="960" y1="460" x2="996" y2="460" stroke="#475569" stroke-width="2.5" marker-end="url(#a)"/>
   <text x="980" y="548" font-size="14" text-anchor="middle" fill="#475569">shown in</text>
 
-  <text x="40" y="640" font-size="16" fill="#64748b">Epics are durable areas of the product, not changes; a pull request may touch any number of them.</text>
+  <text x="40" y="640" font-size="16" fill="#64748b">Features are durable areas of the product, not changes; a pull request may touch any number of them.</text>
 </svg>

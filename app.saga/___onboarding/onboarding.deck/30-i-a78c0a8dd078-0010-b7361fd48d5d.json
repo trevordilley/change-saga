@@ -5,7 +5,7 @@
   "rank": 10,
   "kind": "node",
   "label": "format",
-  "description": "The format epic: open it for its stories, design, quality, and implementation deck.",
+  "description": "The format feature: open it for its stories, design, quality, and implementation deck.",
   "selector": {
     "type": "element",
     "element_id": "format"

@@ -9,7 +9,7 @@ A Saga documents one application:
   know, each linked to the stories and the exact code that define it.
 - **Personas**, a **design system**, an **onboarding deck**, and **feature
   flags**.
-- **Epics**, the durable areas of the product. Each has the same four parts:
+- **Features**, the durable areas of the product. Each has the same four parts:
   **Product** (prototypes, and user stories with acceptance criteria),
   **Design** (UX flows, UI references, and technical design), **Quality** (test
   cases and their evidence), and **Implementation** (a slide deck whose visual
