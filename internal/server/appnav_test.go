@@ -1,10 +1,14 @@
 package server
 
 import (
+	"crypto/sha256"
 	"fmt"
+	"io/fs"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 	"testing"
 	"time"
@@ -440,10 +444,12 @@ func TestEpicStoriesAppearOnlyUnderThatEpicsRequirements(t *testing.T) {
 	}
 }
 
-// The page handler builds the app-level list from a real app Saga on disk:
-// two epics with their own report content, one implementation deck, and the
-// onboarding deck at the app root.
-func TestPageRendersTheAppLevelListFromAnAppSaga(t *testing.T) {
+// writeAppNavSaga is a two-epic app Saga on disk: Billing with its own
+// implementation deck and Catalog without one, plus the app's overview and its
+// onboarding deck. Both epics share a creation instant, so Billing is first by
+// ID and is the epic a reader arrives on.
+func writeAppNavSaga(t *testing.T) string {
+	t.Helper()
 	root := filepath.Join(t.TempDir(), "shop.saga")
 	writeServerFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"shop","title":"Shop","source":{"repository":"https://example.test/acme/shop.git"}}`)
 	for _, epic := range []struct{ id, title string }{{"billing", "Billing"}, {"catalog", "Catalog"}} {
@@ -456,7 +462,102 @@ func TestPageRendersTheAppLevelListFromAnAppSaga(t *testing.T) {
 	writeServerFile(t, filepath.Join(root, applayout.OverviewDir, "pitch.fragment", "content.md"), "# Shop\n")
 	writeAppNavDeck(t, filepath.Join(applayout.EpicDir(root, "billing"), saga.EmbeddedSlidesDir), "billing-flow", saga.DeckRoleChange, "charge", "")
 	writeAppNavDeck(t, filepath.Join(root, applayout.OnboardingDir), "welcome", saga.DeckRoleOnboarding, "who-it-serves", "urn:change-saga:shop:epic:billing")
+	return root
+}
 
+// treeDigest is every file beneath root with its bytes, so a test can say
+// that reading the reviewer wrote nothing.
+func treeDigest(t *testing.T, root string) string {
+	t.Helper()
+	var lines []string
+	if err := filepath.WalkDir(root, func(path string, entry fs.DirEntry, err error) error {
+		if err != nil || entry.IsDir() {
+			return err
+		}
+		body, err := os.ReadFile(path)
+		if err != nil {
+			return err
+		}
+		lines = append(lines, fmt.Sprintf("%s %x", path, sha256.Sum256(body)))
+		return nil
+	}); err != nil {
+		t.Fatal(err)
+	}
+	sort.Strings(lines)
+	return strings.Join(lines, "\n")
+}
+
+// Opening an epic is how a reader chooses one. The choice rides in a cookie,
+// so the app's own pages — which belong to no epic — keep showing it. Nothing
+// about it is written into the Saga.
+func TestOpeningAnEpicIsRememberedForTheAppsOwnPages(t *testing.T) {
+	root := writeAppNavSaga(t)
+	before := treeDigest(t, root)
+	application := &app{root: root, sourceDir: root, template: serverTemplate(t)}
+	get := func(path string, cookies []*http.Cookie) *httptest.ResponseRecorder {
+		t.Helper()
+		request := httptest.NewRequest(http.MethodGet, path, nil)
+		for _, cookie := range cookies {
+			request.AddCookie(cookie)
+		}
+		recorder := httptest.NewRecorder()
+		newMux(application).ServeHTTP(recorder, request)
+		if recorder.Code != http.StatusOK {
+			t.Fatalf("GET %s = %d", path, recorder.Code)
+		}
+		return recorder
+	}
+	// Arriving cold shows the first epic and remembers nothing.
+	cold := get("/", nil)
+	if len(cold.Result().Cookies()) != 0 {
+		t.Fatalf("the overview remembered an epic nobody chose: %#v", cold.Result().Cookies())
+	}
+	if !strings.Contains(cold.Body.String(), `id="`+epicNavID("billing")+`"`) {
+		t.Fatal("a reader arriving cold must see the first epic")
+	}
+	// Opening the other epic is the choice, and it is stored client-side.
+	opened := get(epicHref("catalog"), nil)
+	cookies := opened.Result().Cookies()
+	if len(cookies) != 1 || cookies[0].Name != currentEpicCookie || cookies[0].Value != "catalog" {
+		t.Fatalf("opening an epic stored %#v", cookies)
+	}
+	// It then follows the reader to the app's own pages, and re-opening an
+	// epic already remembered writes nothing more.
+	for _, path := range []string{"/", "/personas/nobody-at-all", "/terms"} {
+		recorder := httptest.NewRecorder()
+		request := httptest.NewRequest(http.MethodGet, path, nil)
+		request.AddCookie(cookies[0])
+		newMux(application).ServeHTTP(recorder, request)
+		if recorder.Code != http.StatusOK {
+			continue
+		}
+		if !strings.Contains(recorder.Body.String(), `id="`+epicNavID("catalog")+`"`) {
+			t.Fatalf("%s lost the reader's epic", path)
+		}
+		if got := recorder.Result().Cookies(); len(got) != 0 {
+			t.Fatalf("%s rewrote the preference: %#v", path, got)
+		}
+	}
+	if after := treeDigest(t, root); after != before {
+		t.Fatal("reading the reviewer wrote to the Saga")
+	}
+}
+
+// The page handler builds the app-level list from a real app Saga on disk:
+// two epics with their own report content, one implementation deck, and the
+// onboarding deck at the app root.
+func TestPageRendersTheAppLevelListFromAnAppSaga(t *testing.T) {
+	root := writeAppNavSaga(t)
+	writeServerFile(t, filepath.Join(root, "saga.json"), `{"version":5,"id":"shop","title":"Shop","source":{"repository":"https://example.test/acme/shop.git"}}`)
+	for _, epic := range []struct{ id, title string }{{"billing", "Billing"}, {"catalog", "Catalog"}} {
+		dir := applayout.EpicDir(root, epic.id)
+		writeServerFile(t, filepath.Join(dir, applayout.EpicManifestName), fmt.Sprintf(`{"$schema":%q,"version":5,"id":%q,"title":%q,"created_at":"2026-08-21T12:00:00Z"}`, applayout.EpicSchemaURL, epic.id, epic.title))
+		writeServerFile(t, filepath.Join(dir, "overview.fragment", "fragment.json"), fmt.Sprintf(`{"version":2,"id":"%s-overview","title":"%s overview","media_type":"text/markdown","entrypoint":"content.md"}`, epic.id, epic.title))
+		writeServerFile(t, filepath.Join(dir, "overview.fragment", "content.md"), "# "+epic.title+"\n")
+	}
+	writeServerFile(t, filepath.Join(root, applayout.OverviewDir, "pitch.fragment", "fragment.json"), `{"version":2,"id":"pitch","title":"Elevator pitch","media_type":"text/markdown","entrypoint":"content.md"}`)
+	writeServerFile(t, filepath.Join(root, applayout.OverviewDir, "pitch.fragment", "content.md"), "# Shop\n")
+	writeAppNavDeck(t, filepath.Join(applayout.EpicDir(root, "billing"), saga.EmbeddedSlidesDir), "billing-flow", saga.DeckRoleChange, "charge", "")
 	document, validation, err := saga.Load(root)
 	if err != nil || !validation.Valid {
 		t.Fatalf("load app saga: err=%v issues=%#v", err, validation.Issues)

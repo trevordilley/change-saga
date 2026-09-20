@@ -813,7 +813,9 @@ func (a *app) page(w http.ResponseWriter, r *http.Request) {
 	// Opening a page inside an epic is how a reader chooses one, whether they
 	// clicked it in the picker or followed a link to a story. Remembering it
 	// here is what makes the choice survive a move to the app's own pages,
-	// with or without JavaScript.
+	// with or without JavaScript. The sidebar now reads that cookie, so the
+	// page is no longer the same for every reader.
+	w.Header().Add("Vary", "Cookie")
 	rememberEpic(w, r, data.PageEpic)
 	renderHTML(w, a.template, "page", data, "The review page could not be rendered.")
 }
