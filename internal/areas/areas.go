@@ -237,7 +237,14 @@ type Inputs struct {
 	TargetTitle   map[string]string
 	// TargetStories maps a target to the stories it reaches.
 	TargetStories map[string][]string
-	Stories       []Story
+	// TargetParent maps a documentation target to the target that contains
+	// it: the fragment holding a landmark, the chapter or section holding a
+	// fragment. A target with no relation of its own reaches the stories its
+	// nearest containing target reaches, since a heading inside a fragment is
+	// explained by that fragment's design. Decks, slides, and Items are not
+	// here: descendant reach is declared there with scope descendants.
+	TargetParent map[string]string
+	Stories      []Story
 	// ActivePersonas are the personas the app serves now.
 	ActivePersonas map[string]bool
 	// InScope names the stories a comparison changed or affected; nil when
@@ -291,13 +298,31 @@ func (e evaluator) inFeature(feature string, unowned bool) bool {
 func (e evaluator) storiesOf(targets []string) []string {
 	result := []string{}
 	for _, target := range targets {
-		for _, story := range e.in.TargetStories[target] {
+		for _, story := range e.reaches(target) {
 			if e.stories[story].Active {
 				result = append(result, story)
 			}
 		}
 	}
 	return uniqueSorted(result)
+}
+
+// reaches returns the stories one target reaches: the stories its own
+// relations name, or, when it has none, the stories the nearest target that
+// contains it reaches. A landmark is a heading inside a fragment, so code
+// attached to it is explained by that fragment's design. A relation on the
+// target itself names which criterion that one heading addresses, so it is
+// more precise and always wins over what it inherits.
+func (e evaluator) reaches(target string) []string {
+	seen := map[string]bool{}
+	for target != "" && !seen[target] {
+		if stories := e.in.TargetStories[target]; len(stories) > 0 {
+			return stories
+		}
+		seen[target] = true
+		target = e.in.TargetParent[target]
+	}
+	return nil
 }
 
 // personasOf returns the active personas a set of stories serves.

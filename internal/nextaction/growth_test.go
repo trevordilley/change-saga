@@ -239,3 +239,163 @@ func TestStoryGrowthSkipsTestCaseEvidence(t *testing.T) {
 		}
 	}
 }
+
+// storyGrowthContext is three headings of one fragment, each owning code no
+// story explains, with the fragment's title on each: the shape dogfooding
+// produced, where one command would have to answer three suggestions.
+func storyGrowthContext(title string, targets ...string) (livingapp.Status, Context) {
+	report := areas.Evaluate(areas.Inputs{
+		Scope:       areas.Scope{Kind: areas.ScopeApp},
+		CodeTargets: targets,
+		TargetFeature: func() map[string]string {
+			result := map[string]string{}
+			for _, target := range targets {
+				result[target] = appFeature
+			}
+			return result
+		}(),
+	})
+	places := map[string]Place{}
+	for _, target := range targets {
+		places[target] = Place{Target: target, Title: title, Feature: appFeature}
+	}
+	return appStatus(), Context{Coverage: report, Places: places}
+}
+
+func storySuggestions(actions []Action) []Action {
+	result := []Action{}
+	for _, action := range actions {
+		if strings.HasPrefix(action.ID, "growth:story:") {
+			result = append(result, action)
+		}
+	}
+	return result
+}
+
+// Suggestions are deduplicated by what the author would actually do. Three
+// headings of one fragment ask for one story, not the same story three times:
+// running the command once cannot satisfy three suggestions, and the second
+// run would collide on the id it names.
+func TestStoryGrowthAsksOnceForTheStoryItWouldCapture(t *testing.T) {
+	const fragment = "urn:change-saga:checkout:fragment:documentation-and-review"
+	status, context := storyGrowthContext("Documentation and Review",
+		fragment+":landmark:documentation-side", fragment+":landmark:related-reviews", fragment+":landmark:review-side")
+	growth := storySuggestions(Derive(status, saga, context))
+	if len(growth) != 1 {
+		reasons := []string{}
+		for _, action := range growth {
+			reasons = append(reasons, action.Reason)
+		}
+		t.Fatalf("three headings of one fragment are one suggestion, got %d:\n%s", len(growth), strings.Join(reasons, "\n"))
+	}
+	if !strings.Contains(growth[0].Reason, "documents 3 code targets no story explains") {
+		t.Fatalf("reason = %q", growth[0].Reason)
+	}
+	// The one answer relates every target it named, with a distinct relation id.
+	ids, related := map[string]bool{}, map[string]bool{}
+	adds := 0
+	for _, command := range growth[0].Question.Options[0].Commands {
+		assertGrammarShape(t, command)
+		switch command.Command {
+		case "story add":
+			adds++
+		case "relation add":
+			for _, argument := range command.Arguments {
+				switch argument.Flag {
+				case "id":
+					ids[argument.Value] = true
+				case "from":
+					related[argument.Value] = true
+				}
+			}
+		}
+	}
+	if adds != 1 || len(ids) != 3 || len(related) != 3 {
+		t.Fatalf("one story and a distinct relation per target: %#v", growth[0].Question.Options[0].Commands)
+	}
+}
+
+// One code target is one code target, not "1 code targets".
+func TestStoryGrowthCountsOneCodeTargetInTheSingular(t *testing.T) {
+	status, context := storyGrowthContext("Documentation and Review", "urn:change-saga:checkout:fragment:doc:landmark:only")
+	growth := storySuggestions(Derive(status, saga, context))
+	if len(growth) != 1 || !strings.Contains(growth[0].Reason, "documents 1 code target no story explains") {
+		t.Fatalf("reason = %#v", growth)
+	}
+}
+
+// A suggestion never offers to create a record that exists. When the story the
+// title names is already written, the answer is to relate the code to it.
+func TestStoryGrowthNeverOffersToCaptureAStoryThatExists(t *testing.T) {
+	status, context := storyGrowthContext("wallet", "urn:change-saga:checkout:fragment:doc:landmark:only")
+	growth := storySuggestions(Derive(status, saga, context))
+	if len(growth) != 1 {
+		t.Fatalf("growth = %#v", growth)
+	}
+	action := growth[0]
+	if strings.Contains(action.Reason, "capture its story") {
+		t.Fatalf("the story exists, so the suggestion must not name capturing it: %q", action.Reason)
+	}
+	for _, option := range action.Question.Options {
+		for _, command := range option.Commands {
+			if command.Command == "story add" {
+				t.Fatalf("the suggestion offers to add a story that exists: %#v", command)
+			}
+		}
+	}
+	first := action.Question.Options[0]
+	if len(first.Commands) != 1 || first.Commands[0].Command != "relation add" || !hasArgument(first.Commands[0], "to", appStory) {
+		t.Fatalf("the first answer relates the code to the story that exists: %#v", first)
+	}
+}
+
+// Two suggestions that would run the same commands are one suggestion: the
+// author can only do that work once. This holds across every kind of growth in
+// one report, not just the story gaps that first showed the duplication.
+func TestNoTwoGrowthSuggestionsRunTheSameCommands(t *testing.T) {
+	const fragment = "urn:change-saga:checkout:fragment:documentation-and-review"
+	status := appStatus()
+	criteria := []areas.Criterion{}
+	for _, id := range []string{"a", "b"} {
+		urn := appStory + ":criterion:" + id
+		status.Stories[0].Criteria = append(status.Stories[0].Criteria, livingapp.CriterionStatus{Criterion: urn, ID: id, Statement: "Criterion " + id})
+		criteria = append(criteria, areas.Criterion{URN: urn, Statement: "Criterion " + id})
+	}
+	targets := []string{fragment + ":landmark:documentation-side", fragment + ":landmark:related-reviews", fragment + ":landmark:review-side",
+		"urn:change-saga:checkout:slide:reference:item:one", "urn:change-saga:checkout:slide:reference:item:two"}
+	places := map[string]Place{}
+	feature := map[string]string{}
+	title := map[string]string{}
+	for _, target := range targets[:3] {
+		places[target] = Place{Target: target, Title: "Documentation and Review", Feature: appFeature}
+		feature[target], title[target] = appFeature, "Documentation and Review"
+	}
+	for _, target := range targets[3:] {
+		places[target] = Place{Target: target, Title: "Reference resolution", Feature: appOtherFeature, Slide: true}
+		feature[target], title[target] = appOtherFeature, "Reference resolution"
+	}
+	report := areas.Evaluate(areas.Inputs{
+		Scope: areas.Scope{Kind: areas.ScopeApp}, CodeTargets: targets, TargetFeature: feature, TargetTitle: title,
+		Stories: []areas.Story{
+			{URN: appStory, Title: "Wallet", Feature: appFeature, Active: true, Criteria: criteria},
+			{URN: appOrphanA, Title: "Fax A", Feature: appOtherFeature, Active: true},
+		},
+	})
+	seen := map[string]string{}
+	for _, action := range growthOf(Derive(status, saga, Context{Coverage: report, Places: places})) {
+		// The headline command is the one status prints and the author runs.
+		shape := ""
+		switch {
+		case action.Command != nil:
+			shape = strings.Join(action.Command.Argv, " ")
+		case action.Question != nil && len(action.Question.Options) > 0 && len(action.Question.Options[0].Commands) > 0:
+			shape = strings.Join(action.Question.Options[0].Commands[0].Argv, " ")
+		default:
+			continue
+		}
+		if other, ok := seen[shape]; ok {
+			t.Fatalf("%s and %s both ask the author to run:\n$ %s", other, action.ID, shape)
+		}
+		seen[shape] = action.ID
+	}
+}

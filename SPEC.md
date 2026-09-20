@@ -525,6 +525,17 @@ and focused on one claim so its exact-text selector is durable. Footnote syntax
 does not itself create coverage; the landmark's independent `___code` records
 remain the authoritative association.
 
+A landmark inherits the traceability of what contains it. Code attached to a
+heading inside a fragment reaches the stories that fragment's relations name,
+and a fragment reaches its section's or chapter's, up to the nearest container
+with relations of its own. A relation on the landmark itself names which
+criterion that one heading addresses, so it is more precise and always wins
+over what would be inherited. Decks, slides, and Items are excluded: there,
+reach across descendants is declared with `--scope descendants`, and inheriting
+would override an author's explicit statement. Without inheritance, moving
+evidence onto landmarks as this section recommends would drop that code out of
+the story chain.
+
 A prose diff citation and a code-bearing visual landmark have identical
 completion criteria: a stable addressable landmark plus focused diff evidence.
 A footnote marker or definition without that evidence is an incomplete citation,

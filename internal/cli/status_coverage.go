@@ -19,14 +19,18 @@ import (
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
-// codeTarget is one documentation target with its feature and title.
+// codeTarget is one documentation target with its feature, its title, and the
+// narrative target that contains it. Parent is empty for a deck, slide, or
+// Item: descendant reach is declared there with scope descendants, while a
+// landmark is simply a heading inside its fragment.
 type codeTarget struct {
-	feature, title string
-	references     []string
+	feature, title, parent string
+	references             []string
 }
 
 // documentTargets indexes every documentation target: its feature, its title,
-// and the code references it owns (as evidence-file#index record keys).
+// what contains it, and the code references it owns (as evidence-file#index
+// record keys).
 func documentTargets(document *saga.Saga) map[string]*codeTarget {
 	result := map[string]*codeTarget{}
 	at := func(target, path, title string) *codeTarget {
@@ -56,12 +60,13 @@ func documentTargets(document *saga.Saga) map[string]*codeTarget {
 	visitSection = func(section *saga.Section) {
 		at(section.Target, section.Path, section.Title)
 		for _, fragment := range section.Fragments {
-			at(fragment.Target, fragment.Path, firstNonEmpty(fragment.Title, section.Title))
+			at(fragment.Target, fragment.Path, firstNonEmpty(fragment.Title, section.Title)).parent = section.Target
 			for index := range fragment.Landmarks {
-				at(fragment.Landmarks[index].Target, fragment.Path, firstNonEmpty(fragment.Title, section.Title))
+				at(fragment.Landmarks[index].Target, fragment.Path, firstNonEmpty(fragment.Title, section.Title)).parent = fragment.Target
 			}
 		}
 		for _, child := range section.Children {
+			at(child.Target, child.Path, child.Title).parent = section.Target
 			visitSection(child)
 		}
 	}
@@ -130,13 +135,16 @@ func designFeatures(document *saga.Saga) map[string]bool {
 func coverageInputs(document *saga.Saga, changes gitdiff.ChangeSet, report coverage.Report, living livingapp.Status, layers *changeview.Layers, feature string) areas.Inputs {
 	in := areas.Inputs{
 		Scope:  areas.Scope{Kind: areas.ScopeApp, Head: changes.Head, Feature: feature},
-		Owners: map[string][]string{}, TargetFeature: map[string]string{}, TargetTitle: map[string]string{},
+		Owners: map[string][]string{}, TargetFeature: map[string]string{}, TargetTitle: map[string]string{}, TargetParent: map[string]string{},
 		TargetStories: living.Chain.TargetStories, StoryDesign: living.Chain.StoryDesign, CriterionTests: living.Chain.CriterionTests,
 		ActivePersonas: map[string]bool{}, DesignExcluded: map[string]bool{}, QualityExcluded: map[string]bool{},
 	}
 	targets := documentTargets(document)
 	for target, value := range targets {
 		in.TargetFeature[target], in.TargetTitle[target] = value.feature, value.title
+		if value.parent != "" {
+			in.TargetParent[target] = value.parent
+		}
 		if len(value.references) > 0 {
 			in.CodeTargets = append(in.CodeTargets, target)
 		}
