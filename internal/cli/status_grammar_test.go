@@ -269,9 +269,10 @@ func TestStatusReportsAStaleTestCaseLinkOnceAndNeverAsAnOrphan(t *testing.T) {
 		if action.ID != "stale:"+relation {
 			continue
 		}
-		argv := strings.Join(action.Question.Options[0].Commands[1].Argv, " ")
-		if !strings.Contains(argv, "--to-revision "+story+":revision:r2") || !strings.Contains(argv, "--scope self") || !strings.Contains(argv, "--from "+testCase) {
-			t.Fatalf("the re-pin restates the relation against the current head: %s", argv)
+		argv := strings.Join(action.Question.Options[0].Commands[0].Argv, " ")
+		if !strings.Contains(argv, "relation repin") || !strings.Contains(argv, "--relation "+relation) ||
+			!strings.Contains(argv, "--to-revision "+story+":revision:r2") {
+			t.Fatalf("the re-pin advances the relation it already has: %s", argv)
 		}
 	}
 }

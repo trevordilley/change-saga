@@ -321,13 +321,41 @@ func printActions(out io.Writer, actions []nextaction.Action, maxItems int, prac
 		case action.Command != nil:
 			fmt.Fprintf(out, "     $ %s\n", shellJoin(action.Command.Argv))
 		case action.Question != nil && practice && len(action.Question.Options) > 0 && len(action.Question.Options[0].Commands) > 0:
+			// A growth suggestion's reason already reads as its question, so it
+			// keeps the one-line shape: the command its answer runs.
 			fmt.Fprintf(out, "     $ %s\n", shellJoin(action.Question.Options[0].Commands[0].Argv))
 		case action.Question != nil:
 			fmt.Fprintf(out, "     ? %s\n", action.Question.Text)
+			printAnswers(out, action.Question.Options)
 		}
 	}
 	if limit < len(actions) {
 		fmt.Fprintf(out, "  … and %d more (use --max 0 or --json)\n", len(actions)-limit)
+	}
+}
+
+// printAnswers prints the command each answer runs. A question that printed no
+// command left the reader to work the grammar out from prose, which is the one
+// thing a next action must never do; an answer that records nothing says so.
+func printAnswers(out io.Writer, options []nextaction.Option) {
+	width := 0
+	for _, option := range options {
+		if len(option.Answer) > width {
+			width = len(option.Answer)
+		}
+	}
+	for _, option := range options {
+		label := fmt.Sprintf("     %-*s ->", width, option.Answer)
+		if len(option.Commands) == 0 {
+			fmt.Fprintf(out, "%s nothing to record; %s\n", label, option.Effect)
+			continue
+		}
+		for index, command := range option.Commands {
+			if index > 0 {
+				label = strings.Repeat(" ", len(label))
+			}
+			fmt.Fprintf(out, "%s $ %s\n", label, shellJoin(command.Argv))
+		}
 	}
 }
 
