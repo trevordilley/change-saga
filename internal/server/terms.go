@@ -24,12 +24,11 @@ var errTermNotFound = errors.New("term not found")
 
 type termsPageView struct {
 	Active bool
-	// Index is the Terms and vocabulary page; otherwise Term is one term.
-	Index bool
-	Terms []*termView
-	Term  *termView
-	// Directory is the vocabulary as a table, which is what the index shows.
+	// Index is the Terms and vocabulary page, which is the table of every
+	// term; otherwise Term is the one term a page shows.
+	Index     bool
 	Directory *directoryView
+	Term      *termView
 }
 
 type termView struct {
@@ -92,9 +91,6 @@ func (a *app) makeTermsPage(ctx context.Context, document requirements.Document,
 	}
 	if termID == "" {
 		page.Index = true
-		for _, term := range document.Terms {
-			page.Terms = append(page.Terms, makeTermView(document, term, stories))
-		}
 		page.Directory = termsDirectory(document, a.termPlaces(ctx, document), query)
 		return page, nil
 	}
