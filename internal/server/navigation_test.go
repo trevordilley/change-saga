@@ -192,8 +192,8 @@ func TestDeckNavigationFoldsIntoDesignAndImplementationByRole(t *testing.T) {
 	if got := topTitles(findNav(t, app, "Epics", "Billing", "Implementation").Children); got != "charge|refund" {
 		t.Fatalf("a ux deck must leave the epic's Implementation to the change deck: %s", got)
 	}
-	// Catalog is only in the sidebar when it is the epic the reader chose.
-	sources.currentEpic = "catalog"
+	// Catalog only spends rows on its four places when the reader is in it.
+	sources.pageEpic = "catalog"
 	if !findNav(t, makeAppNavTree(sources), "Epics", "Catalog", "Design", "UX").Gap {
 		t.Fatal("another epic's ux deck must not fill this epic's Design > UX")
 	}
