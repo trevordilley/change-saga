@@ -2,6 +2,7 @@ package cli
 
 import (
 	"context"
+	"flag"
 	"fmt"
 	"io"
 	"os"
@@ -105,7 +106,7 @@ func storyAdd(_ context.Context, args []string, out io.Writer, stdin io.Reader) 
 	var citations, criteria, personas stringList
 	flags.Var(&citations, "citation", "citation URN; repeatable")
 	flags.Var(&criteria, "criterion", "acceptance criterion as ID=STATEMENT; repeatable")
-	flags.Var(&personas, "persona", "persona URN the story serves; repeatable")
+	flags.Var(&personas, "persona", "persona URN the story serves: the \"As a ...\" of its statement; repeatable")
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
 	}
@@ -169,9 +170,9 @@ func storyRevise(ctx context.Context, args []string, out io.Writer, stdin io.Rea
 	flags := commandFlags(name, usage, out)
 	story := flags.String("story", "", "canonical story URN")
 	revision := flags.String("revision", "", "stable revision id")
-	title := flags.String("title", "", "complete revised title")
-	statement := flags.String("statement", "", "complete revised user-story statement")
-	priority := flags.String("priority", "", "optional free-text priority; omit it for none")
+	title := flags.String("title", "", "complete revised title; inherited from a single parent when omitted")
+	statement := flags.String("statement", "", "complete revised user-story statement; inherited from a single parent when omitted")
+	priority := flags.String("priority", "", "optional free-text priority; inherited from a single parent when omitted, so pass an empty value for none")
 	requestID := flags.String("request-id", "", "idempotency key")
 	from := flags.String("from", "", "read a structured complete revision from a JSON file, or - for stdin")
 	edit := flags.Bool("edit", false, "edit the complete proposed revision with $EDITOR")
@@ -179,9 +180,9 @@ func storyRevise(ctx context.Context, args []string, out io.Writer, stdin io.Rea
 	epic := epicFlag(flags)
 	var parents, citations, criteria, personas stringList
 	flags.Var(&parents, "parent", "current revision head URN; repeatable")
-	flags.Var(&citations, "citation", "citation URN; repeatable")
-	flags.Var(&criteria, "criterion", "acceptance criterion as ID=STATEMENT; repeatable")
-	flags.Var(&personas, "persona", "persona URN the revised story serves; repeatable")
+	flags.Var(&citations, "citation", "citation URN; repeatable; the parent's citations are kept when omitted")
+	flags.Var(&criteria, "criterion", "acceptance criterion as ID=STATEMENT; repeatable; the parent's criteria are kept when omitted")
+	flags.Var(&personas, "persona", "persona URN the revised story serves; repeatable; the parent's personas are kept when omitted")
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
 	}
@@ -230,6 +231,17 @@ func storyRevise(ctx context.Context, args []string, out io.Writer, stdin io.Rea
 			return fmt.Errorf("usage: %s", usage)
 		}
 		request, err = editStoryRevision(ctx, root, sagaID, request)
+		if err != nil {
+			return err
+		}
+	}
+	// A revision is a complete snapshot, so a flag-built revise that names one
+	// parent inherits every field it was not given. Otherwise changing a title
+	// would silently drop the criteria and citations nobody restated.
+	if *from == "" && !*edit && request.Story != "" && len(request.Parents) == 1 {
+		given := map[string]bool{}
+		flags.Visit(func(value *flag.Flag) { given[value.Name] = true })
+		request, err = inheritStoryRevision(root, sagaID, request, given)
 		if err != nil {
 			return err
 		}

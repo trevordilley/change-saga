@@ -121,7 +121,7 @@ var commandUsage = map[string]string{
 	"prototype annotate":          "change-saga prototype annotate --prototype URN --id ID --target URN --rationale TEXT --story-revision URN (--prototype-revision URN | --prototype-content-digest DIGEST) [selector] [flags] <saga>",
 	"story":                       "change-saga story <add|revise|set-state|move> [flags] <saga>",
 	"story add":                   "change-saga story add --epic ID --id ID --revision ID --event ID --title TEXT --statement TEXT [--priority TEXT] [flags] <saga>",
-	"story revise":                "change-saga story revise --story URN --revision ID --parent URN... --title TEXT --statement TEXT [--priority TEXT] [flags] <saga>",
+	"story revise":                "change-saga story revise --story URN --revision ID --parent URN... [--title TEXT] [--statement TEXT] [--priority TEXT] [flags] <saga>",
 	"story set-state":             "change-saga story set-state --story URN --event ID --parent URN... --state STATE [flags] <saga>",
 	"criterion":                   "change-saga criterion <add|revise|remove> [flags] <saga>",
 	"criterion add":               "change-saga criterion add --story URN --parent REVISION --revision ID --id ID --statement TEXT [flags] <saga>",
@@ -237,8 +237,9 @@ Growing the Saga, a step at a time and only when it helps:
   - Product: write user stories with acceptance criteria ("story",
     "criterion") and relate the slides that implement them ("relation");
     prototype the experience ("prototype"); cite sources ("citation").
-  - People: name who the app serves ("persona"); a story names the personas
-    it serves. Gate unreleased work with "flag".
+  - People: name who gets value from the app ("persona"), the "As a ..." of a
+    user story and never a tool or agent that operates it; a story names the
+    personas it serves. Gate unreleased work with "flag".
   - Design: UX, UI, and technical design ("design"), related to the stories
     it addresses.
   - Quality: test cases that verify acceptance criteria ("quality").
@@ -301,7 +302,9 @@ var commandDescription = map[string]string{
 	"term add":                    "Add an active term. --ref pins the code that defines it; the commit may be\nany revision (HEAD:internal/kinds.go#L12) and is resolved to a full commit.\nA term's code references are watched for renames and never count toward\nchanged-line coverage.",
 	"term revise":                 "Append a complete term revision: its name, definition, aliases, and every story,\nrecord, and code reference it names. Revise a term whose code reference went\nstale to point at the renamed code.",
 	"term set-state":              "Retire a term the project no longer uses, or restore it. It stays as history.",
-	"persona":                     "Author the people the app serves. Personas are optional living records: a story\nrevision may name the personas it serves, and status reports each active persona\nno accepted story serves as a coverage gap. Nothing blocks on personas.",
+	"persona":                     "Author the people the app serves. A persona is someone who gets value from the\napp, the \"As a ...\" of a user story; a tool, agent, or system that operates the\napp is not one, however much of the work it does. Personas are optional living\nrecords: a story revision may name the personas it serves, and status reports\neach active persona no accepted story serves as a coverage gap. Nothing blocks\non personas.",
+	"persona add":                 "Add an active persona: a person or role who gets value from the app, the one a\nuser story is written for. Good: \"Shop owner: runs the store and needs the\nweek's orders in one place.\" Bad: \"Coding agent\" -- it operates the app on\nsomeone else's behalf, so it is a way of working, not someone served.",
+	"persona revise":              "Append a complete persona revision: its name and description. Keep the persona a\nperson who gets value from the app, never a tool, agent, or system that operates\nit: you would write \"As a shop owner, I can ...\", never \"As a coding agent, I\ncan ...\". Retire one that turns out not to be a persona with `persona\nset-state`; it stays as history.",
 	"flag":                        "Author feature flags that gate stories or whole epics. A gated story can be\nimplemented but not enabled; status reports it that way.",
 	"prototype":                   "Author revisioned interactive HTML experiences or explicitly allowed external\nembeds and pin them to the stories and criteria they clarify. A prototype may lead, follow,\nor evolve alongside its requirements.",
 	"prototype add-html":          "Add an interactive HTML prototype and its first immutable revision. The authored\nsource is copied into the revision package, so later edits outside the Saga never change it.",
@@ -321,7 +324,7 @@ var commandDescription = map[string]string{
 	"quality run record":          "Append an immutable run/result event pinned to a test revision, the code commit it ran against\n(--commit, default HEAD of --repo), and evidence.\nName every current run head: a failed or concurrent run stays visible and is only succeeded by a\nlater run. The command is recorded, never executed.",
 	"story":                       "Create and append revisions or lifecycle events to user stories and acceptance\ncriteria. Stories may lead, follow, or evolve alongside prototypes; cite their source\nand revise them as the feature is clarified.",
 	"story add":                   "Add a sourced user story and its first complete acceptance-criteria revision.\nIt may begin from a prototype, precede one, or evolve alongside one.",
-	"story revise":                "Append a complete story revision as requirements or prototypes evolve. Name every\ncurrent parent head when reconciling concurrent edits; prior revisions remain history.",
+	"story revise":                "Append a complete story revision as requirements or prototypes evolve. Naming one\nparent inherits every field you leave out, so revising a title keeps the criteria,\ncitations, and personas; remove a criterion with `criterion remove`. Name every\ncurrent parent head when reconciling concurrent edits; prior revisions remain history.",
 	"story set-state":             "Append a lifecycle decision without rewriting the story. Acceptance records intent,\nnot implementation completion or peer-review approval.",
 	"criterion":                   "Add, revise, or remove one acceptance criterion by creating a complete immutable\nstory revision from an explicit current parent head.",
 	"criterion add":               "Add one explicitly identified acceptance criterion. Historical criterion IDs are\nnever reusable, including after removal.",
