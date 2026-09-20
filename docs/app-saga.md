@@ -380,6 +380,20 @@ reconstructs it.
    and Implementation.
 4. Onboarding deck Items point at records (personas, features, stories) rather than
    code. Confirm that this is its only kind of evidence.
+5. Is a heading anchor part of a fragment's content? A fragment's digest
+   includes its landmarks' digests, so adding a landmark stales every relation
+   from that fragment — and `validate` actively recommends adding landmarks.
+   That is the same cries-wolf failure the currency rule fixed, reached by a
+   different route. Fixing it means a second digest per fragment, body-only
+   beside body-plus-landmarks, in the frozen digest algorithm. The digest
+   question is the whole decision and should be settled before the algorithm
+   is touched.
+6. Should a stale relation on a *proposed* story be discoverable from `status`?
+   Today it appears only in `relation status`, because coverage is scoped to
+   accepted stories and a proposed story's debt does not move a health count it
+   never contributed to. That scoping is defensible; the open question is
+   whether the report should still mention what it is holding back, and it is a
+   deliberate decision to overturn rather than an oversight to patch.
 
 ## Execution
 
