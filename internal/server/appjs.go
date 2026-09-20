@@ -612,6 +612,120 @@ const appJavaScript = `(() => {
     qa('[data-toggle-related]').forEach(button => button.setAttribute('aria-pressed', String(visible)));
   }
 
+  // ----- The epic picker -----
+  // The server renders the picker as a plain disclosure: a summary, a list of
+  // epic links, and a link to the epics index. That is the whole control for a
+  // reader whose browser runs no JavaScript, and it is what the enhancement
+  // below builds on rather than replaces. Here it gains the filter field, the
+  // combobox and listbox roles, and arrow-key movement, while the options stay
+  // ordinary links so a click still simply follows one.
+  function epicOptions(picker, visibleOnly = true) {
+    return qa('[data-epic-option]', picker).filter(option => !visibleOnly || !option.hidden);
+  }
+
+  function setActiveEpicOption(picker, option) {
+    const input = q('[data-epic-filter]', picker);
+    epicOptions(picker, false).forEach(each => {
+      const active = each === option;
+      each.classList.toggle('active', active);
+      each.setAttribute('aria-selected', String(active));
+    });
+    if (option) input?.setAttribute('aria-activedescendant', option.id);
+    else input?.removeAttribute('aria-activedescendant');
+    option?.scrollIntoView({ block: 'nearest' });
+  }
+
+  function moveEpicOption(picker, step) {
+    const options = epicOptions(picker);
+    if (!options.length) return;
+    const index = options.indexOf(q('[data-epic-option].active', picker));
+    const next = step === Infinity ? options[options.length - 1]
+      : step === -Infinity ? options[0]
+      : options[Math.min(Math.max(index + step, 0), options.length - 1)];
+    setActiveEpicOption(picker, next ?? options[0]);
+  }
+
+  function filterEpicOptions(picker) {
+    const filter = (q('[data-epic-filter]', picker)?.value || '').trim().toLowerCase();
+    epicOptions(picker, false).forEach(option => {
+      option.hidden = !option.dataset.epicSearch.toLowerCase().includes(filter);
+    });
+    const matches = epicOptions(picker);
+    const empty = q('[data-epic-picker-empty]', picker);
+    if (empty) empty.hidden = matches.length > 0;
+    setActiveEpicOption(picker, matches[0] ?? null);
+  }
+
+  function closeEpicPicker(picker, restoreFocus) {
+    if (!picker.open) return;
+    picker.open = false;
+    if (restoreFocus) q('.epic-picker-summary', picker)?.focus();
+  }
+
+  function prepareEpicPicker() {
+    const picker = q('[data-epic-picker]');
+    const search = picker && q('[data-epic-picker-search]', picker);
+    const input = picker && q('[data-epic-filter]', picker);
+    const list = picker && q('[data-epic-options]', picker);
+    if (!picker || !search || !input || !list) return;
+    // The roles arrive with the behaviour behind them. Announcing a listbox
+    // that nothing moves through would be a worse lie than the plain list of
+    // links the server rendered.
+    search.hidden = false;
+    list.setAttribute('role', 'listbox');
+    list.setAttribute('aria-label', 'Epics');
+    epicOptions(picker, false).forEach(option => {
+      option.setAttribute('role', 'option');
+      option.setAttribute('aria-selected', 'false');
+      option.tabIndex = -1;
+    });
+    input.setAttribute('role', 'combobox');
+    input.setAttribute('aria-expanded', 'true');
+    input.setAttribute('aria-controls', list.id);
+    input.setAttribute('aria-autocomplete', 'list');
+    picker.addEventListener('toggle', () => {
+      if (!picker.open) return;
+      input.value = '';
+      filterEpicOptions(picker);
+      input.focus();
+    });
+    input.addEventListener('input', () => filterEpicOptions(picker));
+    picker.addEventListener('keydown', event => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        // The drawer also closes on Escape; an open picker is the nearer
+        // thing the reader meant.
+        event.stopPropagation();
+        closeEpicPicker(picker, true);
+        return;
+      }
+      if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+        event.preventDefault();
+        moveEpicOption(picker, event.key === 'ArrowDown' ? 1 : -1);
+        return;
+      }
+      if (event.key === 'Home' || event.key === 'End') {
+        if (event.target !== input || input.value !== '') return;
+        event.preventDefault();
+        moveEpicOption(picker, event.key === 'End' ? Infinity : -Infinity);
+        return;
+      }
+      if (event.key === 'Enter' && event.target === input) {
+        const active = q('[data-epic-option].active', picker);
+        if (!active) return;
+        event.preventDefault();
+        active.click();
+      }
+    });
+    // Pointer and focus both leave the picker the same way: choosing nothing.
+    document.addEventListener('pointerdown', event => {
+      if (!picker.contains(event.target)) closeEpicPicker(picker, false);
+    });
+    document.addEventListener('focusin', event => {
+      if (!picker.contains(event.target)) closeEpicPicker(picker, false);
+    });
+  }
+
   function filterTree() {
     const filter = (q('[data-file-filter]')?.value || '').trim().toLowerCase();
     const files = qa('[data-tree-file]');
@@ -2107,6 +2221,7 @@ const appJavaScript = `(() => {
   const firstFragment = q('.fragment');
   if (firstFragment) setActiveFragment(firstFragment);
   q('[data-file-filter]')?.addEventListener('input', filterTree);
+  prepareEpicPicker();
   q('[data-manifest-filter]')?.addEventListener('input', filterManifest);
   prepareContext();
   syncSlidePresentation();

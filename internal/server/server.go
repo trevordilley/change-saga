@@ -102,10 +102,16 @@ type pageData struct {
 	// TermsMode shows the overview's Terms and vocabulary, or one term.
 	TermsMode bool
 	Terms     *termsPageView
-	// Persona, Epic, and TestCase are the app-level pages; at most one is set.
+	// Persona, Epic, TestCase, and Epics are the app-level pages; at most one
+	// is set.
 	Persona  *personaPageView
 	Epic     *epicPageView
 	TestCase *testCasePageView
+	Epics    *epicsIndexView
+	// CurrentEpic is the epic the sidebar shows; PageEpic is the epic this
+	// page belongs to, empty when the page belongs to none.
+	CurrentEpic string
+	PageEpic    string
 	// Reviews is a review surface rendered inside the app shell.
 	Reviews    template.HTML
 	Root       *sectionView
@@ -168,6 +174,14 @@ type navNodeView struct {
 	Active   bool
 	Expanded bool
 	Children []*navNodeView
+	// Picker marks the current epic's row. The row still links to the epic's
+	// page; the picker is the control beside it that chooses a different one.
+	Picker *epicPickerView
+	// Epics marks the "Show all epics" disclosure and holds what it lists.
+	Epics []epicChoiceView
+	// IndexHref is the epics index, linked from the disclosure so the full
+	// list is reachable as a page too.
+	IndexHref string
 }
 
 type sectionView struct {
@@ -318,6 +332,7 @@ func newMux(application *app) *http.ServeMux {
 	mux.HandleFunc("GET /chapters/{chapter}", application.page)
 	mux.HandleFunc("GET /personas/{persona}", application.page)
 	mux.HandleFunc("GET /epics/{epic}", application.page)
+	mux.HandleFunc("GET /epics", application.page)
 	mux.HandleFunc("GET /tests/{test}", application.page)
 	mux.HandleFunc("GET /", application.page)
 	mux.HandleFunc("GET /reviews", application.reviewIndex)
@@ -795,6 +810,11 @@ func (a *app) page(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+	// Opening a page inside an epic is how a reader chooses one, whether they
+	// clicked it in the picker or followed a link to a story. Remembering it
+	// here is what makes the choice survive a move to the app's own pages,
+	// with or without JavaScript.
+	rememberEpic(w, r, data.PageEpic)
 	renderHTML(w, a.template, "page", data, "The review page could not be rendered.")
 }
 
@@ -851,6 +871,8 @@ func routeOf(r *http.Request) (appRoute, bool) {
 		return appRoute{kind: "terms"}, true
 	case strings.HasPrefix(path, "/personas/") && r.PathValue("persona") != "":
 		return appRoute{kind: "persona", id: r.PathValue("persona")}, true
+	case path == "/epics":
+		return appRoute{kind: "epics"}, true
 	case strings.HasPrefix(path, "/epics/") && r.PathValue("epic") != "":
 		return appRoute{kind: "epic", id: r.PathValue("epic")}, true
 	case strings.HasPrefix(path, "/tests/") && r.PathValue("test") != "":
@@ -958,12 +980,21 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 	case route.kind != "overview":
 		overviewActive = "-"
 	}
+	// The sidebar shows one epic. The page being read names it when it has
+	// one; otherwise the reader's last choice does, and PageEpic stays empty
+	// so nothing is remembered from a page that chose nothing.
+	data.PageEpic = pageEpic(route, requirementsView, tests)
+	data.CurrentEpic = resolveCurrentEpic(document, data.PageEpic, r)
+	if route.kind == "epics" {
+		data.Epics = epicsIndex(document, requirementsDocument, tests, data.CurrentEpic)
+	}
 	prototypeDocument, prototypeNote := a.prototypeDocument(document.Manifest.ID)
 	data.Nav = makeAppNavTree(appNavSources{
 		document: document, requirements: requirementsDocument, page: requirementsView,
 		quality:    tests,
 		prototypes: prototypeDocument, prototypeNote: prototypeNote,
 		decks: makeDeckNavTree(slideRoot), overviewActive: overviewActive,
+		currentEpic: data.CurrentEpic,
 	})
 	if route.kind != "overview" {
 		// Off the overview, an in-page anchor would point into a page that is

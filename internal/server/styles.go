@@ -182,6 +182,64 @@ body.presentation-mode .deck-viewer-stage:hover .slide-exit-presentation,body.pr
 .doc-tree a.doc-link:has(>.i){display:flex;align-items:flex-start;gap:6px}
 .doc-tree a.doc-link>.i{flex:none;width:13px;height:13px;margin-top:2px}
 
+/* The current epic, its picker, and the full list ------------------------ */
+/* The picker panel is absolutely positioned so opening it never pushes the
+   epic's four places off screen; the sidebar is the scroll container, so a
+   panel taller than the remaining space scrolls into view rather than being
+   lost. */
+.doc-epic-current{position:relative;margin-top:6px;padding-top:6px;border-top:1px solid var(--line-soft)}
+.doc-epic-current>.doc-row>.doc-link{font-weight:650}
+/* The epic's own title is what the row says, so the row cannot also say it is
+   an epic. The eyebrow does, once, above it. */
+.doc-epic-eyebrow{margin:0 0 1px 24px;color:var(--faint);font:650 9px/1.2 var(--ui);letter-spacing:.045em;text-transform:uppercase}
+.epic-picker{flex:none}
+.epic-picker-summary{display:grid;place-items:center;width:22px;height:22px;border-radius:3px;color:var(--faint);cursor:pointer;list-style:none}
+.epic-picker-summary::-webkit-details-marker{display:none}
+.epic-picker-summary:hover{background:var(--bg-inset);color:var(--ink)}
+.epic-picker-summary .i{width:12px;height:12px;transform:rotate(90deg);transition:transform .12s ease}
+.epic-picker[open]>.epic-picker-summary .i{transform:rotate(-90deg)}
+.epic-picker[open]>.epic-picker-summary{background:var(--bg-inset);color:var(--ink)}
+.epic-picker-panel{position:absolute;z-index:5;left:0;right:0;top:100%;margin-top:2px;padding:6px;border:1px solid var(--line);border-radius:var(--radius);background:var(--bg);box-shadow:var(--shadow)}
+.epic-picker-search{position:relative;display:flex;align-items:center;margin-bottom:6px}
+.epic-picker-search .i{position:absolute;left:7px;width:13px;height:13px;color:var(--faint);pointer-events:none}
+.epic-picker-search input{min-width:0;width:100%;height:26px;padding:0 8px 0 25px;border:1px solid var(--line);border-radius:var(--radius);background:var(--bg);color:var(--ink);font-size:12px}
+.epic-picker-search input::-webkit-search-cancel-button{-webkit-appearance:none}
+.epic-picker-options{display:block;max-height:250px;overflow:auto}
+.epic-option{display:block;padding:4px 7px;border-radius:var(--radius);color:var(--ink);text-decoration:none;font-size:12.5px}
+.epic-option[hidden]{display:none}
+.epic-option:hover,.epic-option.active{background:var(--bg-inset)}
+.epic-option.current{color:var(--accent);font-weight:650}
+.epic-option-title{display:block;overflow-wrap:anywhere}
+.epic-option-id{display:block;color:var(--faint);font:10.5px var(--mono);overflow-wrap:anywhere}
+.epic-picker-empty{margin:6px 7px;color:var(--muted);font-size:12px}
+.epic-picker-index{display:block;margin-top:4px;padding:5px 7px;border-top:1px solid var(--line-soft);color:var(--accent);text-decoration:none;font-size:12px}
+.doc-all-epics{margin-top:2px}
+.epic-list-summary{display:flex;align-items:center;gap:4px;min-height:26px;padding-right:8px;border-radius:var(--radius);color:var(--muted);cursor:pointer;font-size:12.5px;list-style:none}
+.epic-list-summary::-webkit-details-marker{display:none}
+.epic-list-summary:hover{background:var(--bg-inset);color:var(--ink)}
+.epic-list-summary .twisty{width:13px;height:13px;flex:none;margin:0 4px 0 3px;color:var(--faint);transition:transform .12s ease}
+.epic-list[open]>.epic-list-summary .twisty{transform:rotate(90deg)}
+.epic-list-open{display:none}
+.epic-list[open]>.epic-list-summary>.epic-list-shut{display:none}
+.epic-list[open]>.epic-list-summary>.epic-list-open{display:inline}
+.epic-list-panel{margin-left:10px;padding-left:4px;border-left:1px solid var(--line)}
+.epic-list-link{display:flex;align-items:flex-start;gap:6px;min-height:26px;padding:4px 8px 4px 0;color:var(--muted);text-decoration:none;font-size:12.5px;overflow-wrap:anywhere}
+.epic-list-link .i{flex:none;width:13px;height:13px;margin-top:2px;color:var(--faint)}
+.epic-list-link:hover{color:var(--ink)}
+.epic-list-link.current{color:var(--accent);font-weight:650}
+.epic-list-index{display:block;padding:4px 0;color:var(--accent);text-decoration:none;font-size:12px}
+
+/* The epics index -------------------------------------------------------- */
+.app-lede{margin:6px 0 0;color:var(--muted);font-size:13px;max-width:60ch}
+.app-empty{color:var(--muted)}
+.epic-index{display:grid;gap:10px;margin:0;padding:0;list-style:none}
+.epic-index-row{padding:12px 14px;border:1px solid var(--line);border-radius:var(--radius);background:var(--bg-subtle)}
+.epic-index-row.current{border-color:var(--accent-line)}
+.epic-index-link{font:650 15px/1.3 var(--ui);color:var(--accent);text-decoration:none}
+.epic-index-badge{margin-left:8px;color:var(--faint);font-size:11px}
+.epic-index-counts{margin:4px 0 0;color:var(--faint);font:11px var(--mono)}
+.epic-index-description{margin:6px 0 0;color:var(--muted);font-size:13px}
+
 /* Changed-file tree ------------------------------------------------------ */
 .tree-tools{display:flex;align-items:center;gap:4px;padding:2px 4px 6px}
 .tree-search{position:relative;flex:1;display:flex;align-items:center}
