@@ -236,6 +236,12 @@ Reference a landmark's code with `change-saga cover --target
 <fragment>#<landmark-id>` or the landmark URN from `query children`. Do not
 duplicate the same lines at fragment scope merely to make them visible.
 
+A landmark is a heading inside its fragment, not a separate piece of design, so
+code attached to it already reaches whatever the fragment's design addresses;
+moving references off fragment scope never costs coverage. Relate a landmark
+itself only to name which criterion that one heading addresses, which is more
+precise and takes precedence over what it would inherit.
+
 ### Cite prose claims
 
 Every concrete prose claim about implementation, behavior, an invariant, or a

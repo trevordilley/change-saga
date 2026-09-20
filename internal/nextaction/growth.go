@@ -159,15 +159,25 @@ func (b *builder) overviewGrowth() {
 	}
 }
 
-type storyPlace struct {
-	place Place
-	count int
-	files []string
+// storyGap is every uncovered code target that one story would explain: the
+// places a link would attach to, how many targets they stand for, and where
+// that code lives.
+type storyGap struct {
+	places  []Place
+	count   int
+	files   []string
+	touched map[string]bool
 }
+
+// storyGroup keys a gap by the story the suggestion would capture, so the same
+// story is asked for once. Running `story add` once cannot answer the same
+// suggestion three times, and the second run would collide on the id.
+func storyGroup(feature, id string) string { return feature + "\x00" + id }
 
 func (b *builder) storyGrowth() {
 	area := b.context.Coverage.Areas.Stories
-	places := map[string]*storyPlace{}
+	gaps := map[string]*storyGap{}
+	order := []string{}
 	for _, entry := range area.UncoveredEntries {
 		for _, target := range entry.Targets {
 			if strings.Contains(target, ":test-case:") {
@@ -179,47 +189,106 @@ func (b *builder) storyGrowth() {
 			if !ok {
 				place = Place{Target: target, Feature: entry.Feature}
 			}
-			value, ok := places[place.Target]
+			key := storyGroup(place.Feature, slug(firstNonEmptyString(place.Title, place.Target)))
+			gap, ok := gaps[key]
 			if !ok {
-				value = &storyPlace{place: place}
-				places[place.Target] = value
+				gap = &storyGap{touched: map[string]bool{}}
+				gaps[key] = gap
+				order = append(order, key)
 			}
-			value.count += entry.Count
-			value.files = append(value.files, entry.Resource)
+			if !gap.touched[place.Target] {
+				gap.touched[place.Target] = true
+				gap.places = append(gap.places, place)
+			}
+			gap.count += entry.Count
+			gap.files = append(gap.files, entry.Resource)
 			break
 		}
 	}
 	change := b.context.Coverage.Scope.Kind == areas.ScopeChange
-	for _, value := range places {
-		place := value.place
+	for _, key := range order {
+		gap := gaps[key]
+		place := gap.places[0]
 		title := firstNonEmptyString(place.Title, place.Target)
 		id := slug(title)
 		story, _ := livingid.Story(b.status.SagaID, id)
-		reason := "\"" + title + "\" documents " + itoa(value.count) + " code targets no story explains; capture its story?"
+		written, exists := b.stories[story]
+		reason := "\"" + title + "\" documents " + countWords(gap.count, "code target", "code targets") + " no story explains; capture its story?"
 		if change {
-			reason = "this change touched \"" + title + "\" (" + countWords(value.count, "changed line", "changed lines") + " in " + fileList(value.files) +
+			reason = "this change touched \"" + title + "\" (" + countWords(gap.count, "changed line", "changed lines") + " in " + fileList(gap.files) +
 				") and no story says why; capture the \"" + title + "\" story?"
 		}
-		link := []grammar.Value{grammar.V("id", id+"-code"), grammar.V("type", "addresses"), grammar.V("from", place.Target), grammar.V("to", story), grammar.V("rationale", "")}
-		if place.Slide {
-			link = append(link, grammar.V("scope", "descendants"))
+		if exists {
+			// The story is written already, so capturing it is not the gap and
+			// `story add` would collide on its id: relate the code instead.
+			told := "\"" + firstNonEmptyString(written.Title, story) + "\""
+			reason = "\"" + title + "\" documents " + countWords(gap.count, "code target", "code targets") + " no story explains, and " + told +
+				" is already written; relate the code to it?"
+			if change {
+				reason = "this change touched \"" + title + "\" (" + countWords(gap.count, "changed line", "changed lines") + " in " + fileList(gap.files) +
+					") and no story says why, though " + told + " is already written; relate the code to it?"
+			}
 		}
-		existing := append([]grammar.Value{}, link...)
-		existing[0], existing[3] = grammar.V("id", ""), grammar.V("to", "")
 		b.add(Action{
 			ID: "growth:story:" + place.Target, Kind: KindQuestion, Category: CategoryGrowth, Area: AreaStories, Resource: place.Target, Feature: place.Feature,
 			Reason: reason, Practice: practiceStories,
 			// The more of the change a story would explain, the more it is worth.
-			value: -value.count,
-			Question: question("Which story does \""+title+"\" deliver?", NeedProductJudgment,
-				option("capture it", "a proposed story, and an addresses relation so the code it explains reaches it",
-					b.invoke("story add", grammar.V("id", id), grammar.V("revision", "r1"), grammar.V("event", "proposed"), grammar.V("title", title),
-						grammar.V("statement", "")),
-					b.invoke("relation add", link...)),
-				option("an existing story covers it", "an addresses relation to that story", b.invoke("relation add", existing...)),
-				option("not now", "nothing is recorded; the stories area keeps reporting the gap")),
+			value:    -gap.count,
+			Question: question("Which story does \""+title+"\" deliver?", NeedProductJudgment, b.storyOptions(gap, id, story, exists)...),
 		})
 	}
+}
+
+// storyOptions offers the answers to one story gap. Capturing the story is
+// offered only when no story already carries the id the title would take: a
+// suggestion never asks the author to create a record that exists.
+func (b *builder) storyOptions(gap *storyGap, id, story string, exists bool) []Option {
+	later := option("not now", "nothing is recorded; the stories area keeps reporting the gap")
+	relate := func(to string) []grammar.Invocation {
+		commands := []grammar.Invocation{}
+		used := map[string]bool{}
+		for _, place := range gap.places {
+			values := []grammar.Value{grammar.V("id", b.relationID(id, place.Target, len(gap.places) > 1, used)),
+				grammar.V("type", "addresses"), grammar.V("from", place.Target), grammar.V("to", to), grammar.V("rationale", "")}
+			if place.Slide {
+				values = append(values, grammar.V("scope", "descendants"))
+			}
+			commands = append(commands, b.invoke("relation add", values...))
+		}
+		return commands
+	}
+	another := option("another story covers it", "an addresses relation to that story", relate("")...)
+	if exists {
+		return []Option{
+			option("that story covers it", "an addresses relation from each place that documents the code", relate(story)...),
+			another, later,
+		}
+	}
+	title := firstNonEmptyString(gap.places[0].Title, gap.places[0].Target)
+	capture := append([]grammar.Invocation{b.invoke("story add", grammar.V("id", id), grammar.V("revision", "r1"), grammar.V("event", "proposed"),
+		grammar.V("title", title), grammar.V("statement", ""))}, relate(story)...)
+	return []Option{
+		option("capture it", "a proposed story, and an addresses relation from each place that documents the code it explains", capture...),
+		option("an existing story covers it", "an addresses relation to that story", relate("")...),
+		later,
+	}
+}
+
+// relationID names one addresses relation. A gap with one place keeps the
+// established <story>-code spelling; a gap with several needs one id per
+// place, since every relation record is its own file.
+func (b *builder) relationID(id, target string, many bool, used map[string]bool) string {
+	value := id + "-code"
+	if many {
+		parts := strings.Split(target, ":")
+		value = slug(id + "-code-" + parts[len(parts)-1])
+	}
+	candidate := value
+	for suffix := 2; used[candidate]; suffix++ {
+		candidate = value + "-" + itoa(suffix)
+	}
+	used[candidate] = true
+	return candidate
 }
 
 func (b *builder) personaGrowth() {
