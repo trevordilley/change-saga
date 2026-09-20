@@ -7,7 +7,7 @@ test("requirements remain canonical while stories and criteria get dedicated rev
   expect(persona.status, persona.stderr).toBe(0);
   const result = runCLI(saga, [
     "story", "add",
-    "--epic", "wave-one",
+    "--feature", "wave-one",
     "--persona", "urn:change-saga:wave-one:persona:reviewer",
     "--id", "canonical-review",
     "--revision", "r1",
@@ -26,7 +26,7 @@ test("requirements remain canonical while stories and criteria get dedicated rev
 
   const contents = page.getByRole("navigation", { name: "Contents" });
   // Product starts collapsed; Requirements sits inside it. The header itself
-  // opens the epic's Product section, so the twisty is what expands it here.
+  // opens the feature's Product section, so the twisty is what expands it here.
   await contents.getByRole("button", { name: "Toggle Product" }).click();
   await contents.getByRole("link", { name: "Requirements", exact: true }).click();
   await expect(page).toHaveURL(/\/requirements$/);

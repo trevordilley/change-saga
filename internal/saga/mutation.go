@@ -86,13 +86,13 @@ func LoadMutationIndex(root string) (MutationIndex, Validation, error) {
 		addIssue(&validation, "error", ".", "saga root directory must end in .saga")
 	}
 	validateManifest(manifest, ManifestName, &validation)
-	epics, epicErr := applayout.Epics(abs)
-	if epicErr != nil {
-		addIssue(&validation, "error", applayout.EpicsDir, epicErr.Error())
+	features, featureErr := applayout.Features(abs)
+	if featureErr != nil {
+		addIssue(&validation, "error", applayout.FeaturesDir, featureErr.Error())
 	}
 	hasDecks := realDirectoryExists(filepath.Join(abs, applayout.OnboardingDir))
-	for _, epic := range epics {
-		hasDecks = hasDecks || realDirectoryExists(filepath.Join(epic.Dir, EmbeddedSlidesDir))
+	for _, feature := range features {
+		hasDecks = hasDecks || realDirectoryExists(filepath.Join(feature.Dir, EmbeddedSlidesDir))
 	}
 	if hasDecks {
 		document, loadedValidation, loadErr := load(abs, loadOptions{skipCoverage: true})
@@ -114,14 +114,14 @@ func LoadMutationIndex(root string) (MutationIndex, Validation, error) {
 		dir       string
 		hierarchy hierarchyRoot
 	}{{filepath.Join(abs, applayout.OverviewDir), overviewHierarchy}, {filepath.Join(abs, applayout.DesignSystemDir), designHierarchy}}
-	for _, epic := range epics {
+	for _, feature := range features {
 		roots = append(roots, struct {
 			dir       string
 			hierarchy hierarchyRoot
-		}{epic.Dir, epicHierarchy}, struct {
+		}{feature.Dir, featureHierarchy}, struct {
 			dir       string
 			hierarchy hierarchyRoot
-		}{filepath.Join(epic.Dir, applayout.DesignDir), designHierarchy})
+		}{filepath.Join(feature.Dir, applayout.DesignDir), designHierarchy})
 	}
 	for _, value := range roots {
 		if !realDirectoryExists(value.dir) {
@@ -170,7 +170,7 @@ func scanMutationSection(root, dir string, hierarchy hierarchyRoot, sagaID strin
 			}
 		}
 		if hierarchy == sagaHierarchy {
-			addIssue(validation, "error", relativePath(root, path), "report content belongs in ___overview, ___designsystem, or an epic under ___epics, not at the app root")
+			addIssue(validation, "error", relativePath(root, path), "report content belongs in ___overview, ___designsystem, or a feature under ___features, not at the app root")
 			continue
 		}
 		if hierarchy != nestedHierarchy && !strings.HasSuffix(name, ".fragment") && !strings.HasSuffix(name, ".chapter") {

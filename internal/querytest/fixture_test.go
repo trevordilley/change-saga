@@ -56,7 +56,7 @@ func TestFixtureAdversarialOverlays(t *testing.T) {
 	t.Run("large content", func(t *testing.T) {
 		fixture := New(t)
 		fixture.AddLargeFragment((1 << 20) + 1)
-		info, err := os.Stat(fixture.EpicPath("large.fragment/content.txt"))
+		info, err := os.Stat(fixture.FeaturePath("large.fragment/content.txt"))
 		if err != nil || info.Size() != (1<<20)+1 {
 			t.Fatalf("large fixture size=%v err=%v", info, err)
 		}
@@ -114,7 +114,7 @@ func TestFixtureNoSideEffectAssertion(t *testing.T) {
 
 func TestFixtureAbsolutePathLeakDetection(t *testing.T) {
 	fixture := New(t)
-	fixture.AssertNoAbsolutePaths(`{"code":"invalid_saga","details":{"path":"___epics/core.epic/overview.fragment/fragment.json"}}`)
+	fixture.AssertNoAbsolutePaths(`{"code":"invalid_saga","details":{"path":"___features/core.feature/overview.fragment/fragment.json"}}`)
 	if leaked := fixture.LeakedAbsolutePath(`{"message":"failed below ` + filepath.ToSlash(fixture.SagaRoot) + `"}`); leaked != fixture.SagaRoot {
 		t.Fatalf("absolute saga root was not detected: %q", leaked)
 	}

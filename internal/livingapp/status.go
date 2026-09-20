@@ -131,7 +131,7 @@ func (a *assembler) indexStories() []StoryStatus {
 		story := &a.in.Stories[i]
 		storyURN, _ := livingid.Story(a.in.SagaID, story.Identity.ID)
 		row := StoryStatus{
-			Story: storyURN, ID: story.Identity.ID, Epic: story.Epic, State: "conflicted", RevisionHeads: copyStrings(story.RevisionHeads),
+			Story: storyURN, ID: story.Identity.ID, Feature: story.Feature, State: "conflicted", RevisionHeads: copyStrings(story.RevisionHeads),
 			LifecycleHeads: copyStrings(story.LifecycleHeads), Criteria: []CriterionStatus{}, Personas: []string{}, GatedBy: []string{},
 		}
 		if story.CurrentLifecycle != nil {
@@ -434,7 +434,7 @@ func (a *assembler) prototypeAxis() ([]PrototypeStatus, map[string][]coverage.Ax
 	for _, prototype := range a.in.Prototypes.Prototypes {
 		urn, _ := prototypes.PrototypeURN(a.in.SagaID, prototype.Identity.ID)
 		row := PrototypeStatus{
-			Prototype: urn, Epic: prototype.Epic, State: "conflicted", Retained: true, RevisionHeads: copyStrings(prototype.RevisionHeads),
+			Prototype: urn, Feature: prototype.Feature, State: "conflicted", Retained: true, RevisionHeads: copyStrings(prototype.RevisionHeads),
 			CurrentLinks: uniqueSorted(current[urn]), StaleLinks: uniqueSorted(staleLinks[urn]),
 		}
 		if prototype.CurrentRevision != nil {

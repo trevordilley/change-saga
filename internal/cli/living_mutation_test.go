@@ -43,7 +43,7 @@ func TestLivingMutationFamilyHelpIsDeterministicAndHasNoPivot(t *testing.T) {
 		want string
 	}{
 		{name: "story", run: Story, want: "add\n  revise\n  set-state\n  move"},
-		{name: "epic", run: Epic, want: "  add"},
+		{name: "feature", run: Feature, want: "  add"},
 		{name: "persona", run: Persona, want: "add\n  revise\n  set-state"},
 		{name: "flag", run: FeatureFlag, want: "add\n  revise\n  set-state"},
 		{name: "criterion", run: Criterion, want: "add\n  revise\n  remove"},
@@ -81,7 +81,7 @@ func TestLivingMutationFamilyHelpIsDeterministicAndHasNoPivot(t *testing.T) {
 		{"criterion add", "add", Criterion}, {"criterion revise", "revise", Criterion}, {"criterion remove", "remove", Criterion},
 		{"story move", "move", Story},
 		{"citation add", "add", Citation}, {"relation add", "add", Relation}, {"relation supersede", "supersede", Relation},
-		{"epic add", "add", Epic},
+		{"feature add", "add", Feature},
 		{"persona add", "add", Persona}, {"persona revise", "revise", Persona}, {"persona set-state", "set-state", Persona},
 		{"flag add", "add", FeatureFlag}, {"flag revise", "revise", FeatureFlag}, {"flag set-state", "set-state", FeatureFlag},
 	}
@@ -113,7 +113,7 @@ func TestCriterionCommandsSupportStructuredInputEditorAndCompleteResults(t *test
 	ctx := context.Background()
 	var output bytes.Buffer
 	if err := Story(ctx, []string{
-		"add", root, "--epic", testEpic, "--persona", testPersonaURN, "--id", "checkout", "--revision", "r1", "--event", "proposed",
+		"add", root, "--feature", testFeature, "--persona", testPersonaURN, "--id", "checkout", "--revision", "r1", "--event", "proposed",
 		"--title", "Checkout", "--statement", "As a buyer I can check out", "--priority", "must",
 		"--criterion", "fast=Checkout finishes promptly", "--request-id", "story-request", "--json",
 	}, &output); err != nil {
@@ -169,7 +169,7 @@ func TestCriterionCommandsSupportStructuredInputEditorAndCompleteResults(t *test
 
 func TestStoryStructuredInputAndEditorUseExistingRevisionWriter(t *testing.T) {
 	root := newLivingSaga(t)
-	payload := `{"epic":"core","personas":["` + testPersonaURN + `"],"id":"checkout","revision":"r1","event":"proposed","title":"Checkout","statement":"As a buyer I can check out","priority":"must","acceptance_criteria":[{"id":"fast","statement":"Checkout finishes promptly"}],"created_at":"2026-09-17T18:00:00Z","request_id":"story-from"}`
+	payload := `{"feature":"core","personas":["` + testPersonaURN + `"],"id":"checkout","revision":"r1","event":"proposed","title":"Checkout","statement":"As a buyer I can check out","priority":"must","acceptance_criteria":[{"id":"fast","statement":"Checkout finishes promptly"}],"created_at":"2026-09-17T18:00:00Z","request_id":"story-from"}`
 	var output bytes.Buffer
 	if err := story(context.Background(), []string{"add", root, "--from", "-", "--json"}, &output, strings.NewReader(payload)); err != nil {
 		t.Fatalf("structured story add: %v\n%s", err, output.String())
@@ -196,7 +196,7 @@ func TestCriterionStructuredInputIsStrictAndFailureWritesNothing(t *testing.T) {
 	root := newLivingSaga(t)
 	var output bytes.Buffer
 	if err := Story(context.Background(), []string{
-		"add", root, "--epic", testEpic, "--persona", testPersonaURN, "--id", "checkout", "--revision", "r1", "--event", "proposed",
+		"add", root, "--feature", testFeature, "--persona", testPersonaURN, "--id", "checkout", "--revision", "r1", "--event", "proposed",
 		"--title", "Checkout", "--statement", "As a buyer I can check out", "--priority", "must",
 		"--criterion", "fast=Checkout finishes promptly",
 	}, &output); err != nil {
@@ -213,7 +213,7 @@ func TestCriterionStructuredInputIsStrictAndFailureWritesNothing(t *testing.T) {
 	if result.OK || result.Error == nil || !strings.Contains(result.Error.Message, "unknown field") {
 		t.Fatalf("structured failure = %#v", result)
 	}
-	path := filepath.Join(testEpicDir(root), "___requirements", "stories", "checkout.story", "revisions", "r2.json")
+	path := filepath.Join(testFeatureDir(root), "___requirements", "stories", "checkout.story", "revisions", "r2.json")
 	if _, statErr := os.Stat(path); !os.IsNotExist(statErr) {
 		t.Fatalf("failed structured mutation wrote %s: %v", path, statErr)
 	}
@@ -230,7 +230,7 @@ func TestInstalledSkillDescribesOneSagaDrivenByStatus(t *testing.T) {
 	text := strings.Join(strings.Fields(output.String()), " ")
 	for _, want := range []string{
 		"A repository has one app Saga",
-		"Epics are durable product domains",
+		"Features are durable product domains",
 		"The chain is persona → story → design → code",
 		"The Saga is documentation",
 		"This is not a waterfall",
@@ -286,7 +286,7 @@ func TestRequirementsMutationCommandsReturnJSONAndReplay(t *testing.T) {
 	ctx := context.Background()
 
 	citationArgs := []string{
-		"add", root, "--epic", testEpic, "--id", "source", "--kind", "url", "--title", "Source",
+		"add", root, "--feature", testFeature, "--id", "source", "--kind", "url", "--title", "Source",
 		"--reference", "https://example.test/source", "--request-id", "citation-request", "--json",
 	}
 	var output bytes.Buffer
@@ -306,7 +306,7 @@ func TestRequirementsMutationCommandsReturnJSONAndReplay(t *testing.T) {
 	}
 
 	storyArgs := []string{
-		"add", "--epic", testEpic, "--persona", testPersonaURN, "--id", "checkout", "--revision", "checkout-r1", "--event", "checkout-proposed",
+		"add", "--feature", testFeature, "--persona", testPersonaURN, "--id", "checkout", "--revision", "checkout-r1", "--event", "checkout-proposed",
 		"--title", "Checkout", "--statement", "As a buyer I can check out", "--priority", "high",
 		"--citation", citation.Resource, "--criterion", "fast=Completes promptly", "--request-id", "story-request",
 		"--json", root,
@@ -340,7 +340,7 @@ func TestRequirementsMutationCommandsReturnJSONAndReplay(t *testing.T) {
 		t.Fatal(err)
 	}
 	relationArgs := []string{
-		"add", root, "--epic", testEpic, "--id", "checkout-refines-fast", "--type", "refines", "--from", story.Resource,
+		"add", root, "--feature", testFeature, "--id", "checkout-refines-fast", "--type", "refines", "--from", story.Resource,
 		"--to", criterion, "--rationale", "The criterion sharpens the story", "--request-id", "relation-request", "--json",
 	}
 	output.Reset()
@@ -369,27 +369,27 @@ func TestRequirementsMutationCommandsReturnJSONAndReplay(t *testing.T) {
 
 func TestMutationFamiliesAdoptOnlyTheirOwnedOptionalRoot(t *testing.T) {
 	root := newLivingSaga(t)
-	epicDir := testEpicDir(root)
+	featureDir := testFeatureDir(root)
 	for _, name := range []string{"___requirements", "___design", "___workplan"} {
-		if err := os.RemoveAll(filepath.Join(epicDir, name)); err != nil {
+		if err := os.RemoveAll(filepath.Join(featureDir, name)); err != nil {
 			t.Fatal(err)
 		}
 	}
 	assertAbsent := func(name string) {
 		t.Helper()
-		if _, err := os.Stat(filepath.Join(epicDir, name)); !os.IsNotExist(err) {
+		if _, err := os.Stat(filepath.Join(featureDir, name)); !os.IsNotExist(err) {
 			t.Fatalf("%s should remain absent, stat error = %v", name, err)
 		}
 	}
 
 	var output bytes.Buffer
 	if err := Citation(context.Background(), []string{
-		"add", root, "--epic", testEpic, "--id", "decision", "--kind", "decision", "--title", "Decision",
+		"add", root, "--feature", testFeature, "--id", "decision", "--kind", "decision", "--title", "Decision",
 		"--reference", "decision-1", "--request-id", "optional-requirements", "--json",
 	}, &output); err != nil {
 		t.Fatalf("adopt requirements root: %v\n%s", err, output.String())
 	}
-	if info, err := os.Stat(filepath.Join(epicDir, "___requirements")); err != nil || !info.IsDir() {
+	if info, err := os.Stat(filepath.Join(featureDir, "___requirements")); err != nil || !info.IsDir() {
 		t.Fatalf("requirements root was not adopted: %v", err)
 	}
 	assertAbsent("___design")
@@ -397,12 +397,12 @@ func TestMutationFamiliesAdoptOnlyTheirOwnedOptionalRoot(t *testing.T) {
 
 	output.Reset()
 	if err := Plan(context.Background(), []string{
-		"add-wave", root, "--epic", testEpic, "--id", "delivery", "--revision", "delivery-r1", "--title", "Delivery",
+		"add-wave", root, "--feature", testFeature, "--id", "delivery", "--revision", "delivery-r1", "--title", "Delivery",
 		"--objective", "Coordinate delivery", "--request-id", "optional-workplan", "--json",
 	}, &output); err != nil {
 		t.Fatalf("adopt work-plan root: %v\n%s", err, output.String())
 	}
-	if info, err := os.Stat(filepath.Join(epicDir, "___workplan")); err != nil || !info.IsDir() {
+	if info, err := os.Stat(filepath.Join(featureDir, "___workplan")); err != nil || !info.IsDir() {
 		t.Fatalf("work-plan root was not adopted: %v", err)
 	}
 	assertAbsent("___design")
@@ -414,7 +414,7 @@ func TestPlanCommandsReturnJSONAndDelegateValidationAndReplay(t *testing.T) {
 	var output bytes.Buffer
 
 	waveArgs := []string{
-		"add-wave", root, "--epic", testEpic, "--id", "delivery", "--revision", "delivery-r1", "--title", "Delivery",
+		"add-wave", root, "--feature", testFeature, "--id", "delivery", "--revision", "delivery-r1", "--title", "Delivery",
 		"--objective", "Ship independently", "--request-id", "wave-request", "--json",
 	}
 	if err := Plan(ctx, waveArgs, &output); err != nil {
@@ -448,7 +448,7 @@ func TestPlanCommandsReturnJSONAndDelegateValidationAndReplay(t *testing.T) {
 
 	mergeUnit := `{"id":"primary","repository":"https://example.test/acme/app.git","source_branch":"feature/item","target_branch":"main","required":true}`
 	itemArgs := []string{
-		"add-item", root, "--epic", testEpic, "--id", "cli", "--revision", "cli-r1", "--title", "CLI", "--objective", "Expose writers",
+		"add-item", root, "--feature", testFeature, "--id", "cli", "--revision", "cli-r1", "--title", "CLI", "--objective", "Expose writers",
 		"--deliverable", "Mutation commands", "--wave", wave.Resource, "--merge-unit", mergeUnit,
 		"--request-id", "item-request", "--json",
 	}
@@ -462,7 +462,7 @@ func TestPlanCommandsReturnJSONAndDelegateValidationAndReplay(t *testing.T) {
 	}
 	output.Reset()
 	if err := Plan(ctx, []string{
-		"add-item", root, "--epic", testEpic, "--id", "docs", "--revision", "docs-r1", "--title", "Docs", "--objective", "Document the CLI",
+		"add-item", root, "--feature", testFeature, "--id", "docs", "--revision", "docs-r1", "--title", "Docs", "--objective", "Document the CLI",
 		"--deliverable", "CLI examples", "--wave", wave.Resource, "--request-id", "docs-item-request", "--json",
 	}, &output); err != nil {
 		t.Fatal(err)
@@ -486,7 +486,7 @@ func TestPlanCommandsReturnJSONAndDelegateValidationAndReplay(t *testing.T) {
 
 	output.Reset()
 	if err := Plan(ctx, []string{
-		"add-dependency", root, "--epic", testEpic, "--id", "cli-before-docs", "--prerequisite", item.Resource, "--dependent", docsItem.Resource,
+		"add-dependency", root, "--feature", testFeature, "--id", "cli-before-docs", "--prerequisite", item.Resource, "--dependent", docsItem.Resource,
 		"--condition", "progress_done", "--reason", "Examples follow the command contract", "--request-id", "dependency-valid-request", "--json",
 	}, &output); err != nil {
 		t.Fatal(err)
@@ -497,7 +497,7 @@ func TestPlanCommandsReturnJSONAndDelegateValidationAndReplay(t *testing.T) {
 
 	output.Reset()
 	if err := Plan(ctx, []string{
-		"add-contract", root, "--epic", testEpic, "--id", "cli-docs", "--revision", "cli-docs-r1", "--kind", "handoff",
+		"add-contract", root, "--feature", testFeature, "--id", "cli-docs", "--revision", "cli-docs-r1", "--kind", "handoff",
 		"--provider", item.Resource, "--consumer", docsItem.Resource, "--statement", "Publish stable help",
 		"--acceptance", "Every command has deterministic help", "--request-id", "contract-request", "--json",
 	}, &output); err != nil {
@@ -580,7 +580,7 @@ func TestPlanCommandsReturnJSONAndDelegateValidationAndReplay(t *testing.T) {
 
 	output.Reset()
 	err = Plan(ctx, []string{
-		"add-dependency", root, "--epic", testEpic, "--id", "self", "--prerequisite", item.Resource, "--dependent", item.Resource,
+		"add-dependency", root, "--feature", testFeature, "--id", "self", "--prerequisite", item.Resource, "--dependent", item.Resource,
 		"--condition", "progress_done", "--reason", "invalid self edge", "--request-id", "dependency-request", "--json",
 	}, &output)
 	var status *StatusError

@@ -28,8 +28,8 @@ type manifest struct {
 }
 
 // Load strictly reads only saga.json and the bounded ___quality subtree of
-// every epic, combined into one app-wide document. Test-case and policy IDs
-// are unique across the app because their URNs never name an epic. It
+// every feature, combined into one app-wide document. Test-case and policy IDs
+// are unique across the app because their URNs never name a feature. It
 // never follows symlinks, writes files, executes commands, fetches URLs, or
 // resolves referenced resources outside the Saga.
 func Load(root string) (Document, error) {
@@ -56,22 +56,22 @@ func Load(root string) (Document, error) {
 	if err := validateManifest(identity); err != nil {
 		return Document{}, fmt.Errorf("saga.json: %w", err)
 	}
-	epics, err := applayout.Epics(abs)
+	features, err := applayout.Features(abs)
 	if err != nil {
 		return Document{}, err
 	}
-	if err := applayout.RejectEpicRootsAtAppRoot(abs); err != nil {
+	if err := applayout.RejectFeatureRootsAtAppRoot(abs); err != nil {
 		return Document{}, err
 	}
 	document := Document{
-		Root: abs, SagaID: identity.ID, Source: SourceIdentity{Repository: identity.Source.Repository}, Adoption: NotAdopted, Epics: epics,
+		Root: abs, SagaID: identity.ID, Source: SourceIdentity{Repository: identity.Source.Repository}, Adoption: NotAdopted, Features: features,
 		TestCases: []TestCase{}, Policies: []Policy{}, PolicySets: []PolicySet{},
 	}
 
 	testCaseIDs := applayout.NewUniqueIDs("test-case")
 	policyIDs := applayout.NewUniqueIDs("policy")
-	for _, epic := range epics {
-		qualityRoot := filepath.Join(epic.Dir, RootDir)
+	for _, feature := range features {
+		qualityRoot := filepath.Join(feature.Dir, RootDir)
 		present, err := realDirectory(qualityRoot)
 		if err != nil {
 			return Document{}, err
@@ -79,7 +79,7 @@ func Load(root string) (Document, error) {
 		if !present {
 			continue
 		}
-		// Quality is adopted when any epic has a quality root.
+		// Quality is adopted when any feature has a quality root.
 		document.Adoption = AdoptedEmpty
 		entries, err := boundedReadDir(qualityRoot, 2)
 		if err != nil {
@@ -87,18 +87,18 @@ func Load(root string) (Document, error) {
 		}
 		for _, entry := range entries {
 			if entry.Type()&fs.ModeSymlink != 0 || !entry.IsDir() {
-				return Document{}, fmt.Errorf("%s: quality entry %q must be a real directory", epic.Rel, entry.Name())
+				return Document{}, fmt.Errorf("%s: quality entry %q must be a real directory", feature.Rel, entry.Name())
 			}
 			switch entry.Name() {
 			case "policies", "test-cases":
 			default:
-				return Document{}, fmt.Errorf("%s: unknown quality entry %q", epic.Rel, entry.Name())
+				return Document{}, fmt.Errorf("%s: unknown quality entry %q", feature.Rel, entry.Name())
 			}
 		}
-		if err := loadPolicies(&document, epic, policyIDs); err != nil {
+		if err := loadPolicies(&document, feature, policyIDs); err != nil {
 			return Document{}, err
 		}
-		if err := loadTestCases(&document, epic, testCaseIDs); err != nil {
+		if err := loadTestCases(&document, feature, testCaseIDs); err != nil {
 			return Document{}, err
 		}
 	}
@@ -119,8 +119,8 @@ func Load(root string) (Document, error) {
 	return document, nil
 }
 
-func loadPolicies(document *Document, epic applayout.Epic, ids *applayout.UniqueIDs) error {
-	dir := filepath.Join(epic.Dir, RootDir, "policies")
+func loadPolicies(document *Document, feature applayout.Feature, ids *applayout.UniqueIDs) error {
+	dir := filepath.Join(feature.Dir, RootDir, "policies")
 	present, err := realDirectory(dir)
 	if err != nil || !present {
 		return err
@@ -131,7 +131,7 @@ func loadPolicies(document *Document, epic applayout.Epic, ids *applayout.Unique
 	}
 	for _, entry := range entries {
 		if entry.Type()&fs.ModeSymlink != 0 || !entry.Type().IsRegular() || filepath.Ext(entry.Name()) != ".json" {
-			return fmt.Errorf("%s: policy entry %q must be a real JSON file", epic.Rel, entry.Name())
+			return fmt.Errorf("%s: policy entry %q must be a real JSON file", feature.Rel, entry.Name())
 		}
 		path := filepath.Join(dir, entry.Name())
 		var value Policy
@@ -145,17 +145,17 @@ func loadPolicies(document *Document, epic applayout.Epic, ids *applayout.Unique
 		if err := validatePolicy(value, document.SagaID, expectedID); err != nil {
 			return fmt.Errorf("%s: %w", relative(document.Root, path), err)
 		}
-		if err := ids.Claim(value.ID, epic.ID); err != nil {
+		if err := ids.Claim(value.ID, feature.ID); err != nil {
 			return err
 		}
-		value.Epic = epic.ID
+		value.Feature = feature.ID
 		document.Policies = append(document.Policies, value)
 	}
 	return nil
 }
 
-func loadTestCases(document *Document, epic applayout.Epic, ids *applayout.UniqueIDs) error {
-	dir := filepath.Join(epic.Dir, RootDir, "test-cases")
+func loadTestCases(document *Document, feature applayout.Feature, ids *applayout.UniqueIDs) error {
+	dir := filepath.Join(feature.Dir, RootDir, "test-cases")
 	present, err := realDirectory(dir)
 	if err != nil || !present {
 		return err
@@ -167,20 +167,20 @@ func loadTestCases(document *Document, epic applayout.Epic, ids *applayout.Uniqu
 	for _, entry := range entries {
 		path := filepath.Join(dir, entry.Name())
 		if entry.Type()&fs.ModeSymlink != 0 || !entry.IsDir() || !strings.HasSuffix(entry.Name(), ".test") {
-			return fmt.Errorf("%s: test-case entry %q must be a real <id>.test directory", epic.Rel, entry.Name())
+			return fmt.Errorf("%s: test-case entry %q must be a real <id>.test directory", feature.Rel, entry.Name())
 		}
 		testCaseID := strings.TrimSuffix(entry.Name(), ".test")
 		if !qualityid.ValidID(testCaseID) {
-			return fmt.Errorf("%s: test-case package %q has an invalid id", epic.Rel, entry.Name())
+			return fmt.Errorf("%s: test-case package %q has an invalid id", feature.Rel, entry.Name())
 		}
-		if err := ids.Claim(testCaseID, epic.ID); err != nil {
+		if err := ids.Claim(testCaseID, feature.ID); err != nil {
 			return err
 		}
 		value, err := loadTestCasePackage(document.Root, document.SagaID, path, testCaseID)
 		if err != nil {
 			return err
 		}
-		value.Epic = epic.ID
+		value.Feature = feature.ID
 		document.TestCases = append(document.TestCases, value)
 	}
 	return nil

@@ -27,11 +27,11 @@ than one linked to the wrong pull request.
 
 ## Decks and traceability
 
-Every deck shares one spine: Deck → Slide → Item. An epic's implementation deck
+Every deck shares one spine: Deck → Slide → Item. A feature's implementation deck
 explains the domain's current implementation and stays valid as the code
 changes: its Items remap, or go stale where the code really changed. A pull
 request's review deck explains the transition and its reasoning. The app's
-onboarding deck gets people up to speed; its Items carry a persona, epic, or
+onboarding deck gets people up to speed; its Items carry a persona, feature, or
 story record instead of code. Never paginate narrative content or turn user
 stories, prototypes, or design into slides.
 
@@ -180,9 +180,9 @@ omission check; it must not rationalize a generic visual after the fact.
 
 ## Narrative content
 
-Chapters, sections, and fragments carry an epic's narrative (design notes,
+Chapters, sections, and fragments carry a feature's narrative (design notes,
 overviews, walkthroughs) and the app-level design system. Create them with
-`change-saga add-chapter --epic <epic>`, `change-saga add-section`, and
+`change-saga add-chapter --feature <feature>`, `change-saga add-section`, and
 `change-saga add-fragment` (Markdown, SVG, image, text, or a self-contained
 HTML package). Write or replace an entrypoint only with `change-saga
 set-fragment-content --target <fragment> --source FILE|-`; do not edit fragment

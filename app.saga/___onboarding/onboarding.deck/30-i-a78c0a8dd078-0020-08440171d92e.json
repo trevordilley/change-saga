@@ -5,10 +5,10 @@
   "rank": 20,
   "kind": "node",
   "label": "requirements",
-  "description": "The requirements epic: open it for its stories, design, quality, and implementation deck.",
+  "description": "The requirements feature: open it for its stories, design, quality, and implementation deck.",
   "selector": {
     "type": "element",
     "element_id": "requirements"
   },
-  "record": "urn:change-saga:app:epic:requirements"
+  "record": "urn:change-saga:app:feature:requirements"
 }

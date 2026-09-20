@@ -191,7 +191,7 @@ func TestReviewItemsReferenceRecordsAndNeverCountAsCoverage(t *testing.T) {
 	fixture := newReviewFixture(t)
 	story := saga.ReviewItemTarget("app", "pr-7", "queue", "note")
 	var output bytes.Buffer
-	if err := AddItem(context.Background(), []string{"--review", "pr-7", "--slide", "queue", "--kind", "statement", "--element-id", "note", "--description", "The epic this revises", "--record", "urn:change-saga:app:epic:" + testEpic, fixture.root}, &output); err != nil {
+	if err := AddItem(context.Background(), []string{"--review", "pr-7", "--slide", "queue", "--kind", "statement", "--element-id", "note", "--description", "The feature this revises", "--record", "urn:change-saga:app:feature:" + testFeature, fixture.root}, &output); err != nil {
 		t.Fatalf("review item record: %v\n%s", err, output.String())
 	}
 	if err := AddItem(context.Background(), []string{"--review", "pr-7", "--slide", "table", "--kind", "statement", "--element-id", "note", "--description", "x", "--record", "urn:change-saga:app:story:missing", fixture.root}, &output); err == nil {
@@ -205,7 +205,7 @@ func TestReviewItemsReferenceRecordsAndNeverCountAsCoverage(t *testing.T) {
 	if review == nil || review.Deck.Role != saga.DeckRoleReview || len(review.Deck.Slides) != 2 {
 		t.Fatalf("review = %#v", review)
 	}
-	if item := review.Slide("queue").Items[1]; item.Target != story || item.Record != "urn:change-saga:app:epic:"+testEpic {
+	if item := review.Slide("queue").Items[1]; item.Target != story || item.Record != "urn:change-saga:app:feature:"+testFeature {
 		t.Fatalf("record item = %#v", item)
 	}
 	// Review decks are not documentation: they are absent from the deck list

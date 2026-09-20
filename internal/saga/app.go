@@ -8,16 +8,16 @@ import (
 	"github.com/twentyideas/changesaga/internal/applayout"
 )
 
-// Epic is the report view of one durable product domain: its report content,
+// Feature is the report view of one durable product domain: its report content,
 // technical design, and implementation deck. Its nodes are the same pointers
 // the app-wide Section tree holds, so target indexes see one tree while
 // readers keep the grouping.
-type Epic struct {
+type Feature struct {
 	ID     string `json:"id"`
 	Title  string `json:"title"`
 	Path   string `json:"path"`
 	Target string `json:"target"`
-	// Report holds the epic's own chapters and fragments.
+	// Report holds the feature's own chapters and fragments.
 	Report *Section `json:"report"`
 	// Design holds the chapters and fragments loaded from its ___design.
 	Design *Section `json:"design"`
@@ -28,10 +28,10 @@ type appContent struct {
 	overview     *Section
 	designSystem *Section
 	onboarding   []*Deck
-	epics        []*Epic
+	features     []*Feature
 }
 
-// DeckRoleChange is an epic's implementation deck; DeckRoleOnboarding is the
+// DeckRoleChange is a feature's implementation deck; DeckRoleOnboarding is the
 // app's onboarding deck, whose Items reference records instead of code;
 // DeckRoleReview is a pull request review's deck, whose Items reference the
 // code the change touched and the records it revised.
@@ -41,7 +41,7 @@ const (
 	DeckRoleReview     = "review"
 )
 
-// loadAppContent loads the app-level report roots, every epic, and the
+// loadAppContent loads the app-level report roots, every feature, and the
 // onboarding deck, joining their nodes into root so each target stays
 // addressable through the one Section tree.
 func loadAppContent(root string, manifest Manifest, section *Section, options loadOptions, validation *Validation) (appContent, []*Deck, error) {
@@ -49,7 +49,7 @@ func loadAppContent(root string, manifest Manifest, section *Section, options lo
 	var decks []*Deck
 	// The app root holds no report content of its own, so the joined tree is
 	// ordered by place rather than by path: the overview, the design system,
-	// then every epic's report and design in epic order. Each part keeps the
+	// then every feature's report and design in feature order. Each part keeps the
 	// authored order its own loader gave it.
 	join := func(part *Section) {
 		if part == nil {
@@ -68,31 +68,31 @@ func loadAppContent(root string, manifest Manifest, section *Section, options lo
 	}
 	join(app.designSystem)
 
-	epics, epicErr := applayout.Epics(root)
-	if epicErr != nil {
-		addIssue(validation, "error", applayout.EpicsDir, epicErr.Error())
+	features, featureErr := applayout.Features(root)
+	if featureErr != nil {
+		addIssue(validation, "error", applayout.FeaturesDir, featureErr.Error())
 	}
-	for _, value := range applayout.InCreationOrder(epics) {
-		epic := &Epic{ID: value.ID, Title: value.Title, Path: value.Rel, Target: applayout.EpicURN(manifest.ID, value.ID)}
-		report, err := loadSection(root, value.Dir, manifest, epicHierarchy, options, validation)
+	for _, value := range applayout.InCreationOrder(features) {
+		feature := &Feature{ID: value.ID, Title: value.Title, Path: value.Rel, Target: applayout.FeatureURN(manifest.ID, value.ID)}
+		report, err := loadSection(root, value.Dir, manifest, featureHierarchy, options, validation)
 		if err != nil {
 			return app, nil, err
 		}
 		report.Title = value.Title
-		epic.Report = report
+		feature.Report = report
 		join(report)
-		if epic.Design, err = loadReportRoot(root, filepath.Join(value.Dir, applayout.DesignDir), manifest, "design", "Technical design", options, validation); err != nil {
+		if feature.Design, err = loadReportRoot(root, filepath.Join(value.Dir, applayout.DesignDir), manifest, "design", "Technical design", options, validation); err != nil {
 			return app, nil, err
 		}
-		join(epic.Design)
+		join(feature.Design)
 		if metadataDirectorySafe(root, value.Dir, EmbeddedSlidesDir, validation) {
-			epic.Decks, err = loadEmbeddedDecks(root, filepath.Join(value.Dir, EmbeddedSlidesDir), DeckRoleChange, manifest, options, validation)
+			feature.Decks, err = loadEmbeddedDecks(root, filepath.Join(value.Dir, EmbeddedSlidesDir), DeckRoleChange, manifest, options, validation)
 			if err != nil {
 				return app, nil, err
 			}
 		}
-		decks = append(decks, epic.Decks...)
-		app.epics = append(app.epics, epic)
+		decks = append(decks, feature.Decks...)
+		app.features = append(app.features, feature)
 	}
 	if metadataDirectorySafe(root, root, applayout.OnboardingDir, validation) {
 		app.onboarding, err = loadEmbeddedDecks(root, filepath.Join(root, applayout.OnboardingDir), DeckRoleOnboarding, manifest, options, validation)
@@ -111,7 +111,7 @@ func loadAppContent(root string, manifest Manifest, section *Section, options lo
 	return app, decks, nil
 }
 
-// loadReportRoot loads one authored report root that is not an epic, or nil
+// loadReportRoot loads one authored report root that is not a feature, or nil
 // when it is absent.
 func loadReportRoot(root, dir string, manifest Manifest, kind, title string, options loadOptions, validation *Validation) (*Section, error) {
 	return loadReportRootAs(root, dir, manifest, designHierarchy, kind, title, options, validation)
@@ -134,7 +134,7 @@ func loadReportRootAs(root, dir string, manifest Manifest, hierarchy hierarchyRo
 }
 
 // IsDesignPath reports whether an app-relative node path was loaded from an
-// epic's ___design root.
+// feature's ___design root.
 func IsDesignPath(path string) bool {
 	return strings.Contains("/"+path+"/", "/"+applayout.DesignDir+"/")
 }
@@ -165,14 +165,14 @@ func (document *Saga) OverviewPart(name string) *Fragment {
 	return nil
 }
 
-// EpicOf returns the epic that holds an app-relative node path, or "".
-func EpicOf(path string) string { return applayout.EpicOfPath(path) }
+// FeatureOf returns the feature that holds an app-relative node path, or "".
+func FeatureOf(path string) string { return applayout.FeatureOfPath(path) }
 
-// FindEpic returns the loaded epic with id.
-func (document *Saga) FindEpic(id string) *Epic {
-	for _, epic := range document.Epics {
-		if epic.ID == id {
-			return epic
+// FindFeature returns the loaded feature with id.
+func (document *Saga) FindFeature(id string) *Feature {
+	for _, feature := range document.Features {
+		if feature.ID == id {
+			return feature
 		}
 	}
 	return nil

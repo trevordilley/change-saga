@@ -95,11 +95,11 @@ func TestInvokeSeparatesKnownValuesFromAuthorInputs(t *testing.T) {
 	for _, input := range invocation.Inputs {
 		inputs = append(inputs, input.Flag)
 	}
-	if strings.Join(inputs, ",") != "epic,id,from,rationale" {
+	if strings.Join(inputs, ",") != "feature,id,from,rationale" {
 		t.Fatalf("required flags without values and empty supplied values become inputs in declaration order: %v", inputs)
 	}
 	argv := strings.Join(invocation.Argv, " ")
-	if argv != "change-saga relation add --epic ID --id ID --type addresses --from URN --to urn:c --rationale TEXT --json s.saga" {
+	if argv != "change-saga relation add --feature ID --id ID --type addresses --from URN --to urn:c --rationale TEXT --json s.saga" {
 		t.Fatalf("argv = %q", argv)
 	}
 }

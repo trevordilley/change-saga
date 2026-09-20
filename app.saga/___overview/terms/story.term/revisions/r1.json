@@ -10,11 +10,11 @@
     "user story"
   ],
   "stories": [
-    "urn:change-saga:app:story:durable-epics",
+    "urn:change-saga:app:story:durable-features",
     "urn:change-saga:app:story:traceability-chain"
   ],
   "records": [
-    "urn:change-saga:app:term:epic",
+    "urn:change-saga:app:term:feature",
     "urn:change-saga:app:term:persona"
   ],
   "code": [

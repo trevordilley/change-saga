@@ -11,7 +11,7 @@ import (
 )
 
 type storyAddRequest struct {
-	Epic               string                   `json:"epic"`
+	Feature            string                   `json:"feature"`
 	ID                 string                   `json:"id"`
 	Revision           string                   `json:"revision"`
 	Event              string                   `json:"event"`

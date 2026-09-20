@@ -145,15 +145,15 @@ type Annotation struct {
 	CreatedAt              time.Time `json:"created_at"`
 	RequestID              string    `json:"request_id,omitempty"`
 
-	// Epic is the epic whose directory holds the record. It is where the
+	// Feature is the feature whose directory holds the record. It is where the
 	// record lives, never part of its identity.
-	Epic string `json:"-"`
+	Feature string `json:"-"`
 }
 
 type Prototype struct {
-	// Epic is the epic whose directory holds the prototype. Its URN and every
+	// Feature is the feature whose directory holds the prototype. Its URN and every
 	// pin are independent of it.
-	Epic            string
+	Feature         string
 	Identity        Identity
 	Revisions       []Revision
 	RevisionHeads   []string
@@ -165,7 +165,7 @@ func (p Prototype) RevisionConflict() bool { return len(p.RevisionHeads) > 1 }
 type Document struct {
 	Root        string
 	SagaID      string
-	Epics       []applayout.Epic
+	Features    []applayout.Feature
 	Adopted     bool
 	Prototypes  []Prototype
 	Annotations []Annotation
@@ -184,8 +184,8 @@ type MutationResult struct {
 }
 
 type AddHTMLInput struct {
-	// Epic is the epic the new prototype is written into.
-	Epic                  string
+	// Feature is the feature the new prototype is written into.
+	Feature               string
 	ID, RevisionID, Title string
 	State                 State
 	SourcePath            string
@@ -194,8 +194,8 @@ type AddHTMLInput struct {
 }
 
 type AddExternalInput struct {
-	// Epic is the epic the new prototype is written into.
-	Epic                  string
+	// Feature is the feature the new prototype is written into.
+	Feature               string
 	ID, RevisionID, Title string
 	State                 State
 	URL                   string
@@ -220,10 +220,10 @@ type ReviseInput struct {
 }
 
 type AddAnnotationInput struct {
-	// Epic is optional when the prototype exists: the annotation is written
-	// into the prototype's epic, and a different Epic is refused. It is
+	// Feature is optional when the prototype exists: the annotation is written
+	// into the prototype's feature, and a different Feature is refused. It is
 	// required for an annotation of a prototype that does not exist yet.
-	Epic                             string
+	Feature                          string
 	ID, Prototype, Target, Rationale string
 	PrototypeRevision                string
 	PrototypeContentDigest           string

@@ -37,7 +37,7 @@ func Check(ctx context.Context, args []string, out io.Writer) error {
 	repoDir := flags.String("repo", "", "source repository checkout; required when separate")
 	opening := registerOpenFlags(flags)
 	allowRepositoryMismatch := flags.Bool("allow-repository-mismatch", false, "use a checkout whose origin differs from the declared repository")
-	epic := flags.String("epic", "", "narrow the question to one epic (id or URN)")
+	feature := flags.String("feature", "", "narrow the question to one feature (id or URN)")
 	if err := flags.Parse(args); err != nil {
 		return err
 	}
@@ -51,7 +51,7 @@ func Check(ctx context.Context, args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
-	status, err := buildStatus(ctx, flags.Arg(0), *repoDir, opening.rng(), *allowRepositoryMismatch, *epic)
+	status, err := buildStatus(ctx, flags.Arg(0), *repoDir, opening.rng(), *allowRepositoryMismatch, *feature)
 	if err != nil {
 		return err
 	}

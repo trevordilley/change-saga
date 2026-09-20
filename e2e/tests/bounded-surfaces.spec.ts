@@ -74,7 +74,7 @@ test("linked code streams every changed hunk and expands collapsed context from 
     });
   });
 
-  await page.goto(saga.epicURL, { waitUntil: "load" });
+  await page.goto(saga.featureURL, { waitUntil: "load" });
   const overview = page.locator('[data-view="saga"] article.fragment[data-fragment-title="Overview"]');
   await expect(overview).toBeVisible();
   await overview.hover();
@@ -134,7 +134,7 @@ test("collapsing a linked file cancels its remaining diff pages", async ({ page,
     });
   });
 
-  await page.goto(saga.epicURL, { waitUntil: "load" });
+  await page.goto(saga.featureURL, { waitUntil: "load" });
   const overview = page.locator('[data-view="saga"] article.fragment[data-fragment-title="Overview"]');
   await overview.hover();
   await overview.locator("[data-open-diffs]:visible").first().click();
@@ -157,7 +157,7 @@ test("a repeated file-diff cursor stops instead of spinning from cache", async (
     });
   });
 
-  await page.goto(saga.epicURL, { waitUntil: "load" });
+  await page.goto(saga.featureURL, { waitUntil: "load" });
   const overview = page.locator('[data-view="saga"] article.fragment[data-fragment-title="Overview"]');
   await overview.hover();
   await overview.locator("[data-open-diffs]:visible").first().click();
@@ -170,7 +170,7 @@ test("a repeated file-diff cursor stops instead of spinning from cache", async (
 
 test("linked code uses the shared side-by-side layout selected in Code Diff", async ({ page, saga }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto(`${saga.epicURL}?view=code`, { waitUntil: "load" });
+  await page.goto(`${saga.featureURL}?view=code`, { waitUntil: "load" });
   const split = page.getByRole("button", { name: "Side-by-side diff" });
   await split.click();
   await expect(split).toHaveAttribute("aria-pressed", "true");

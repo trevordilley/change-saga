@@ -16,7 +16,7 @@ import (
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
-// The app-level pages: a persona, an epic, and a test case. Each is
+// The app-level pages: a persona, a feature, and a test case. Each is
 // documentation, read-only in both modes, and links only along declared
 // relations; longer paths are inferred by following those links, never
 // authored. Like status, the pages report what is and is not linked and never
@@ -25,7 +25,7 @@ import (
 var errAppPageNotFound = errors.New("app page not found")
 
 func personaHref(id string) string  { return "/personas/" + url.PathEscape(id) }
-func epicHref(id string) string     { return "/epics/" + url.PathEscape(id) }
+func featureHref(id string) string  { return "/features/" + url.PathEscape(id) }
 func testCaseHref(id string) string { return "/tests/" + url.PathEscape(id) }
 
 // appGraph is everything the app-level pages link through, loaded once per
@@ -35,9 +35,9 @@ type appGraph struct {
 	requirements requirements.Document
 	quality      quality.Document
 	locations    map[string]manifestTargetLocation
-	// targetEpic names the epic whose design or report holds a target, so a
-	// link to an epic's chapter opens that epic's page.
-	targetEpic map[string]string
+	// targetFeature names the feature whose design or report holds a target, so a
+	// link to a feature's chapter opens that feature's page.
+	targetFeature map[string]string
 	// inbound and outbound are the active relations by endpoint.
 	inbound  map[string][]requirements.Relation
 	outbound map[string][]requirements.Relation
@@ -46,12 +46,12 @@ type appGraph struct {
 func newAppGraph(document *saga.Saga, records requirements.Document, tests quality.Document) *appGraph {
 	graph := &appGraph{
 		document: document, requirements: records, quality: tests,
-		locations:  indexManifestTargets(document),
-		targetEpic: map[string]string{},
-		inbound:    map[string][]requirements.Relation{},
-		outbound:   map[string][]requirements.Relation{},
+		locations:     indexManifestTargets(document),
+		targetFeature: map[string]string{},
+		inbound:       map[string][]requirements.Relation{},
+		outbound:      map[string][]requirements.Relation{},
 	}
-	graph.targetEpic = epicTargets(document)
+	graph.targetFeature = featureTargets(document)
 	for _, relation := range records.Relations {
 		if relation.State != requirements.RelationActive {
 			continue
@@ -62,49 +62,49 @@ func newAppGraph(document *saga.Saga, records requirements.Document, tests quali
 	return graph
 }
 
-// epicTargets names the epic that holds each target of the app-wide tree.
-// An epic's chapters, explanations, and Items render on its page, so every
+// featureTargets names the feature that holds each target of the app-wide tree.
+// A feature's chapters, explanations, and Items render on its page, so every
 // link to one opens there rather than on the app overview.
-func epicTargets(document *saga.Saga) map[string]string {
+func featureTargets(document *saga.Saga) map[string]string {
 	result := map[string]string{}
 	var mark func(*saga.Section, string)
-	mark = func(section *saga.Section, epic string) {
+	mark = func(section *saga.Section, feature string) {
 		if section.Target != "" {
-			result[section.Target] = epic
+			result[section.Target] = feature
 		}
 		for _, fragment := range section.Fragments {
-			result[fragment.Target] = epic
+			result[fragment.Target] = feature
 			for _, landmark := range fragment.Landmarks {
-				result[landmark.Target] = epic
+				result[landmark.Target] = feature
 			}
 		}
 		for _, child := range section.Children {
-			mark(child, epic)
+			mark(child, feature)
 		}
 	}
-	for _, epic := range document.Epics {
-		for _, root := range []*saga.Section{epic.Report, epic.Design} {
+	for _, feature := range document.Features {
+		for _, root := range []*saga.Section{feature.Report, feature.Design} {
 			if root != nil {
-				mark(root, epic.ID)
+				mark(root, feature.ID)
 			}
 		}
 	}
 	return result
 }
 
-// onEpicPageHref moves an in-page anchor to the page of the epic that holds
+// onFeaturePageHref moves an in-page anchor to the page of the feature that holds
 // its target.
-func onEpicPageHref(epics map[string]string, target, href string) string {
-	if epic, ok := epics[target]; ok && strings.HasPrefix(href, "#") {
-		return epicHref(epic) + href
+func onFeaturePageHref(features map[string]string, target, href string) string {
+	if feature, ok := features[target]; ok && strings.HasPrefix(href, "#") {
+		return featureHref(feature) + href
 	}
 	return href
 }
 
-// epicChapter reports the epic holding a chapter of the app-wide tree.
-func (graph *appGraph) epicChapter(section *saga.Section) (string, bool) {
-	epic, ok := graph.targetEpic[section.Target]
-	return epic, ok
+// featureChapter reports the feature holding a chapter of the app-wide tree.
+func (graph *appGraph) featureChapter(section *saga.Section) (string, bool) {
+	feature, ok := graph.targetFeature[section.Target]
+	return feature, ok
 }
 
 // traceLink is one linked record: what it is, where it opens, and, when the
@@ -162,10 +162,10 @@ func (graph *appGraph) link(urn string) traceLink {
 			link.Title = persona.CurrentRevision.Name
 		}
 		return link
-	case "epic":
-		link.Kind, link.Href, link.Title = "Epic", epicHref(id), id
-		if epic, ok := applayout.Find(graph.requirements.Epics, id); ok {
-			link.Title = epic.Title
+	case "feature":
+		link.Kind, link.Href, link.Title = "Feature", featureHref(id), id
+		if feature, ok := applayout.Find(graph.requirements.Features, id); ok {
+			link.Title = feature.Title
 		}
 		return link
 	case "term":
@@ -318,25 +318,25 @@ func sortedStories(stories []requirements.Story) []requirements.Story {
 	return sorted
 }
 
-// ----- Epic -----
+// ----- Feature -----
 
-type epicPageView struct {
+type featurePageView struct {
 	ID          string
 	Target      string
 	Title       string
 	Description string
-	Summary     epicSummaryView
-	Stories     []epicStoryView
-	// Report is the epic's own report content; Design its technical design.
+	Summary     featureSummaryView
+	Stories     []featureStoryView
+	// Report is the feature's own report content; Design its technical design.
 	Report *sectionView
 	Design *sectionView
 	Tests  []traceLink
-	Decks  []epicDeckView
+	Decks  []featureDeckView
 }
 
-// epicSummaryView counts what is linked, as status does: covered of total,
+// featureSummaryView counts what is linked, as status does: covered of total,
 // never a score or a verdict.
-type epicSummaryView struct {
+type featureSummaryView struct {
 	Stories           int
 	Accepted          int
 	StoriesWithDesign int
@@ -348,7 +348,7 @@ type epicSummaryView struct {
 	ItemsWithCode     int
 }
 
-type epicStoryView struct {
+type featureStoryView struct {
 	traceLink
 	Lifecycle string
 	Personas  []traceLink
@@ -357,40 +357,40 @@ type epicStoryView struct {
 	Tested    int
 }
 
-type epicDeckView struct {
+type featureDeckView struct {
 	Title  string
 	Role   string
 	Slides []traceLink
 }
 
-func (graph *appGraph) epicPage(id string) (*epicPageView, error) {
-	var epic *saga.Epic
-	for _, candidate := range graph.document.Epics {
+func (graph *appGraph) featurePage(id string) (*featurePageView, error) {
+	var feature *saga.Feature
+	for _, candidate := range graph.document.Features {
 		if candidate.ID == id {
-			epic = candidate
+			feature = candidate
 		}
 	}
-	if epic == nil {
+	if feature == nil {
 		return nil, errAppPageNotFound
 	}
-	view := &epicPageView{ID: epic.ID, Target: epic.Target, Title: epic.Title}
-	if manifest, ok := applayout.Find(graph.requirements.Epics, id); ok {
+	view := &featurePageView{ID: feature.ID, Target: feature.Target, Title: feature.Title}
+	if manifest, ok := applayout.Find(graph.requirements.Features, id); ok {
 		view.Description = manifest.Description
 	}
 	scope := viewScope{}.shell()
-	if epic.Report != nil && (len(epic.Report.Fragments) > 0 || len(epic.Report.Children) > 0) {
-		view.Report = makeSectionView(epic.Report, scope)
+	if feature.Report != nil && (len(feature.Report.Fragments) > 0 || len(feature.Report.Children) > 0) {
+		view.Report = makeSectionView(feature.Report, scope)
 	}
-	if epic.Design != nil && len(epic.Design.Children)+len(epic.Design.Fragments) > 0 {
-		view.Design = makeSectionView(epic.Design, scope)
+	if feature.Design != nil && len(feature.Design.Children)+len(feature.Design.Fragments) > 0 {
+		view.Design = makeSectionView(feature.Design, scope)
 	}
 	sagaID := graph.requirements.SagaID
 	for _, story := range sortedStories(graph.requirements.Stories) {
-		if story.Epic != id {
+		if story.Feature != id {
 			continue
 		}
 		urn, _ := livingid.Story(sagaID, story.Identity.ID)
-		row := epicStoryView{traceLink: graph.link(urn), Lifecycle: "unresolved"}
+		row := featureStoryView{traceLink: graph.link(urn), Lifecycle: "unresolved"}
 		if story.CurrentLifecycle != nil {
 			row.Lifecycle = string(story.CurrentLifecycle.State)
 		}
@@ -422,15 +422,15 @@ func (graph *appGraph) epicPage(id string) (*epicPageView, error) {
 		view.Stories = append(view.Stories, row)
 	}
 	for _, testCase := range graph.quality.TestCases {
-		if testCase.Epic != id {
+		if testCase.Feature != id {
 			continue
 		}
 		urn, _ := qualityid.TestCase(sagaID, testCase.Identity.ID)
 		view.Tests = append(view.Tests, graph.link(urn))
 	}
 	view.Summary.TestCases = len(view.Tests)
-	for _, deck := range epic.Decks {
-		deckView := epicDeckView{Title: deck.Title, Role: deck.Role}
+	for _, deck := range feature.Decks {
+		deckView := featureDeckView{Title: deck.Title, Role: deck.Role}
 		for _, slide := range deck.Slides {
 			deckView.Slides = append(deckView.Slides, graph.link(slide.Target))
 			view.Summary.Slides++
@@ -453,7 +453,7 @@ type testCasePageView struct {
 	ID             string
 	Target         string
 	Title          string
-	Epic           traceLink
+	Feature        traceLink
 	Lifecycle      string
 	Automation     string
 	CoverageKinds  []string
@@ -489,8 +489,8 @@ func (a *app) testCasePage(ctx context.Context, graph *appGraph, id string) (*te
 	urn, _ := qualityid.TestCase(graph.requirements.SagaID, id)
 	view := &testCasePageView{ID: id, Target: urn, Title: id, Lifecycle: "unresolved",
 		Conflict: testCase.RevisionConflict() || testCase.LifecycleConflict()}
-	if epicURN := applayout.EpicURN(graph.requirements.SagaID, testCase.Epic); testCase.Epic != "" {
-		view.Epic = graph.link(epicURN)
+	if featureURN := applayout.FeatureURN(graph.requirements.SagaID, testCase.Feature); testCase.Feature != "" {
+		view.Feature = graph.link(featureURN)
 	}
 	if testCase.CurrentLifecycle != nil {
 		view.Lifecycle = string(testCase.CurrentLifecycle.State)
@@ -530,11 +530,11 @@ func (a *app) testCasePage(ctx context.Context, graph *appGraph, id string) (*te
 	return view, nil
 }
 
-// testCaseNav lists one epic's test cases for Quality > Test Cases.
-func testCaseNav(document quality.Document, epic string) []*navNodeView {
+// testCaseNav lists one feature's test cases for Quality > Test Cases.
+func testCaseNav(document quality.Document, feature string) []*navNodeView {
 	var nodes []*navNodeView
 	for _, testCase := range document.TestCases {
-		if testCase.Epic != epic {
+		if testCase.Feature != feature {
 			continue
 		}
 		urn, _ := qualityid.TestCase(document.SagaID, testCase.Identity.ID)
@@ -551,19 +551,19 @@ func testCaseNav(document quality.Document, epic string) []*navNodeView {
 	return nodes
 }
 
-// decorateRequirements adds the links a story page shows: the story's epic,
+// decorateRequirements adds the links a story page shows: the story's feature,
 // personas, and citations, and what links to it and to each criterion.
 func (graph *appGraph) decorateRequirements(page *requirementsPageView) {
 	for _, view := range page.Stories {
-		if view.Epic != "" {
-			view.EpicLink = graph.link(applayout.EpicURN(graph.requirements.SagaID, view.Epic))
+		if view.Feature != "" {
+			view.FeatureLink = graph.link(applayout.FeatureURN(graph.requirements.SagaID, view.Feature))
 		}
 	}
 	if page.Overview {
-		for _, epic := range graph.requirements.Epics {
-			group := requirementGroupView{Epic: graph.link(applayout.EpicURN(graph.requirements.SagaID, epic.ID)), Description: epic.Description}
+		for _, feature := range graph.requirements.Features {
+			group := requirementGroupView{Feature: graph.link(applayout.FeatureURN(graph.requirements.SagaID, feature.ID)), Description: feature.Description}
 			for _, story := range page.Stories {
-				if story.Epic == epic.ID {
+				if story.Feature == feature.ID {
 					group.Stories = append(group.Stories, story)
 				}
 			}

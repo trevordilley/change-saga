@@ -55,14 +55,14 @@ func TestFailedAddFragmentLeavesNoPartialPackage(t *testing.T) {
 	writeFile(t, filepath.Join(source, "styles.css"), "body{}\n")
 
 	var output bytes.Buffer
-	err := AddFragment(context.Background(), []string{"--epic", testEpic, "--type", "html", "--name", "walkthrough", "--source", source, root}, &output)
+	err := AddFragment(context.Background(), []string{"--feature", testFeature, "--type", "html", "--name", "walkthrough", "--source", source, root}, &output)
 	if err == nil {
 		t.Fatal("a source directory without the entrypoint must fail")
 	}
 	if !strings.Contains(err.Error(), "entrypoint") {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	for _, dir := range []string{root, testEpicDir(root)} {
+	for _, dir := range []string{root, testFeatureDir(root)} {
 		entries, statErr := os.ReadDir(dir)
 		if statErr != nil {
 			continue
@@ -81,7 +81,7 @@ func TestFailedAddFragmentLeavesNoPartialPackage(t *testing.T) {
 	// The name is still free, so the author can retry after fixing the source.
 	writeFile(t, filepath.Join(source, "index.html"), "<p>ok</p>\n")
 	output.Reset()
-	if err := AddFragment(context.Background(), []string{"--epic", testEpic, "--type", "html", "--name", "walkthrough", "--source", source, root}, &output); err != nil {
+	if err := AddFragment(context.Background(), []string{"--feature", testFeature, "--type", "html", "--name", "walkthrough", "--source", source, root}, &output); err != nil {
 		t.Fatalf("retry after a failed attempt: %v", err)
 	}
 	assertValid(t, root)
@@ -93,11 +93,11 @@ func TestAddFragmentRejectsUnusableEntrypoints(t *testing.T) {
 	for i, entrypoint := range cases {
 		var output bytes.Buffer
 		name := fmt.Sprintf("case-%d", i)
-		err := AddFragment(context.Background(), []string{"--epic", testEpic, "--type", "html", "--name", name, "--entrypoint", entrypoint, root}, &output)
+		err := AddFragment(context.Background(), []string{"--feature", testFeature, "--type", "html", "--name", name, "--entrypoint", entrypoint, root}, &output)
 		if err == nil {
 			t.Fatalf("entrypoint %q was accepted", entrypoint)
 		}
-		if _, statErr := os.Stat(filepath.Join(testEpicDir(root), name+".fragment")); statErr == nil {
+		if _, statErr := os.Stat(filepath.Join(testFeatureDir(root), name+".fragment")); statErr == nil {
 			t.Fatalf("entrypoint %q left a fragment behind", entrypoint)
 		}
 	}
@@ -109,7 +109,7 @@ func TestAddFragmentSupportsNestedEntrypoints(t *testing.T) {
 	source := t.TempDir()
 	writeFile(t, filepath.Join(source, "assets", "index.html"), "<p>ok</p>\n")
 	var output bytes.Buffer
-	if err := AddFragment(context.Background(), []string{"--epic", testEpic, "--type", "html", "--name", "nested", "--source", source, "--entrypoint", "assets/index.html", root}, &output); err != nil {
+	if err := AddFragment(context.Background(), []string{"--feature", testFeature, "--type", "html", "--name", "nested", "--source", source, "--entrypoint", "assets/index.html", root}, &output); err != nil {
 		t.Fatal(err)
 	}
 	assertValid(t, root)
@@ -140,7 +140,7 @@ func TestConcurrentAuthoringKeepsTheSagaValid(t *testing.T) {
 		go func(index int) {
 			defer wait.Done()
 			var output bytes.Buffer
-			failures[index] = AddChapter(context.Background(), []string{"--epic", testEpic, "--title", fmt.Sprintf("Chapter %d", index), root, fmt.Sprintf("chapter-%d", index)}, &output)
+			failures[index] = AddChapter(context.Background(), []string{"--feature", testFeature, "--title", fmt.Sprintf("Chapter %d", index), root, fmt.Sprintf("chapter-%d", index)}, &output)
 		}(i)
 	}
 	wait.Wait()
@@ -171,7 +171,7 @@ func TestConcurrentDuplicateChapterNamesResolveToOne(t *testing.T) {
 		go func(index int) {
 			defer wait.Done()
 			var output bytes.Buffer
-			results[index] = AddChapter(context.Background(), []string{"--epic", testEpic, "--title", "Shared", root, "shared"}, &output)
+			results[index] = AddChapter(context.Background(), []string{"--feature", testFeature, "--title", "Shared", root, "shared"}, &output)
 		}(i)
 	}
 	wait.Wait()
@@ -241,7 +241,7 @@ func TestInitCreatesMissingParentsAndToleratesSymlinkedAncestors(t *testing.T) {
 	assertValid(t, through)
 	addTestApp(t, through)
 	output.Reset()
-	if err := AddChapter(context.Background(), []string{"--epic", testEpic, "--title", "Backend", through, "backend"}, &output); err != nil {
+	if err := AddChapter(context.Background(), []string{"--feature", testFeature, "--title", "Backend", through, "backend"}, &output); err != nil {
 		t.Fatalf("add-chapter under a symlinked ancestor: %v", err)
 	}
 	assertValid(t, through)

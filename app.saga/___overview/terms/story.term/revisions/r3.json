@@ -1,0 +1,32 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/term-revision.schema.json",
+  "version": 5,
+  "id": "r3",
+  "term": "urn:change-saga:app:term:story",
+  "parents": [
+    "urn:change-saga:app:term:story:revision:r2"
+  ],
+  "name": "story",
+  "definition": "A sourced user story with explicit acceptance criteria, the traceability backbone of the Saga. Its identity is independent of feature membership, so it can move between features without breaking a link; its revisions and lifecycle events are append-only.",
+  "aliases": [
+    "user story"
+  ],
+  "stories": [
+    "urn:change-saga:app:story:durable-features",
+    "urn:change-saga:app:story:traceability-chain"
+  ],
+  "records": [
+    "urn:change-saga:app:term:feature",
+    "urn:change-saga:app:term:persona"
+  ],
+  "code": [
+    {
+      "commit": "83f092799d94d4d34b3b69b1e33f00dea4ca3faa",
+      "path": "internal/requirements/model.go",
+      "start": 177,
+      "end": 189,
+      "digest": "sha256:332f90947be215d3de47ca38548232bbd417c96efcab271bf82821482b617632"
+    }
+  ],
+  "created_at": "2026-09-20T19:03:23.423117Z"
+}

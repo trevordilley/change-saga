@@ -5,10 +5,10 @@
   "rank": 30,
   "kind": "node",
   "label": "code-evidence",
-  "description": "The code-evidence epic: open it for its stories, design, quality, and implementation deck.",
+  "description": "The code-evidence feature: open it for its stories, design, quality, and implementation deck.",
   "selector": {
     "type": "element",
     "element_id": "code-evidence"
   },
-  "record": "urn:change-saga:app:epic:code-evidence"
+  "record": "urn:change-saga:app:feature:code-evidence"
 }

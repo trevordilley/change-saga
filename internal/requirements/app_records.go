@@ -94,7 +94,7 @@ func (persona Persona) Active() bool {
 }
 
 // FlagRevision is a complete flag snapshot: what the flag is for and the
-// stories and epics it gates.
+// stories and features it gates.
 type FlagRevision struct {
 	Schema      string    `json:"$schema"`
 	Version     int       `json:"version"`
@@ -568,20 +568,20 @@ func loadFlags(document *Document) error {
 
 // FlagTarget is one parsed gate target.
 type FlagTarget struct {
-	Kind string // "story" or "epic"
+	Kind string // "story" or "feature"
 	ID   string
 }
 
-// ParseFlagTarget accepts a canonical story or epic URN of sagaID.
+// ParseFlagTarget accepts a canonical story or feature URN of sagaID.
 func ParseFlagTarget(sagaID, value string) (FlagTarget, error) {
 	if ref, err := livingid.Parse(value); err == nil && ref.Kind == livingid.KindStory && ref.SagaID == sagaID {
 		return FlagTarget{Kind: "story", ID: ref.ID}, nil
 	}
-	prefix := "urn:change-saga:" + sagaID + ":epic:"
+	prefix := "urn:change-saga:" + sagaID + ":feature:"
 	if id := strings.TrimPrefix(value, prefix); id != value && livingid.ValidID(id) {
-		return FlagTarget{Kind: "epic", ID: id}, nil
+		return FlagTarget{Kind: "feature", ID: id}, nil
 	}
-	return FlagTarget{}, fmt.Errorf("target %q must be a canonical story or epic URN in saga %q", value, sagaID)
+	return FlagTarget{}, fmt.Errorf("target %q must be a canonical story or feature URN in saga %q", value, sagaID)
 }
 
 func validateFlagRevision(value FlagRevision, document *Document, flagID, expectedID string) error {
@@ -606,7 +606,7 @@ func validateFlagRevision(value FlagRevision, document *Document, flagID, expect
 		problems.add("description is required")
 	}
 	if len(value.Targets) == 0 {
-		problems.add("targets must name at least one story or epic")
+		problems.add("targets must name at least one story or feature")
 	}
 	seen := map[string]bool{}
 	for _, target := range value.Targets {
@@ -618,9 +618,9 @@ func validateFlagRevision(value FlagRevision, document *Document, flagID, expect
 			problems.add("target %q is duplicated", target)
 		case parsed.Kind == "story" && findStory(document, parsed.ID) == nil:
 			problems.add("target story %q does not exist", target)
-		case parsed.Kind == "epic":
-			if _, ok := applayout.Find(document.Epics, parsed.ID); !ok {
-				problems.add("target epic %q does not exist", target)
+		case parsed.Kind == "feature":
+			if _, ok := applayout.Find(document.Features, parsed.ID); !ok {
+				problems.add("target feature %q does not exist", target)
 			}
 		}
 		seen[target] = true
@@ -706,21 +706,21 @@ func resolveFlag(flag *Flag, sagaID string) error {
 }
 
 // Gate is the projection of every current flag onto the stories it gates. A
-// story is gated when a current off flag targets it or its epic; it is enabled
+// story is gated when a current off flag targets it or its feature; it is enabled
 // otherwise. Conflicted flags gate conservatively, as if off.
 type Gate struct {
 	// Flags lists the current off (or conflicted) flag URNs gating each story.
 	Off map[string][]string
-	// On lists the on flag URNs that name each story or its epic.
+	// On lists the on flag URNs that name each story or its feature.
 	On map[string][]string
 }
 
 // Gates projects the current flags onto story IDs.
 func (document *Document) Gates() Gate {
 	gate := Gate{Off: map[string][]string{}, On: map[string][]string{}}
-	storiesByEpic := map[string][]string{}
+	storiesByFeature := map[string][]string{}
 	for _, story := range document.Stories {
-		storiesByEpic[story.Epic] = append(storiesByEpic[story.Epic], story.Identity.ID)
+		storiesByFeature[story.Feature] = append(storiesByFeature[story.Feature], story.Identity.ID)
 	}
 	for _, flag := range document.Flags {
 		urn, _ := FlagURN(document.SagaID, flag.Identity.ID)
@@ -745,7 +745,7 @@ func (document *Document) Gates() Gate {
 					if parsed.Kind == "story" {
 						targets[parsed.ID] = true
 					} else {
-						for _, story := range storiesByEpic[parsed.ID] {
+						for _, story := range storiesByFeature[parsed.ID] {
 							targets[story] = true
 						}
 					}

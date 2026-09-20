@@ -69,20 +69,20 @@ func LoadWithOptions(root, sagaID string, options LoadOptions) (Document, error)
 	if sagaID != identity.ID {
 		return Document{}, fmt.Errorf("requested saga id %q does not match saga.json id %q", sagaID, identity.ID)
 	}
-	epics, err := applayout.Epics(abs)
+	features, err := applayout.Features(abs)
 	if err != nil {
 		return Document{}, err
 	}
-	if err := applayout.RejectEpicRootsAtAppRoot(abs); err != nil {
+	if err := applayout.RejectFeatureRootsAtAppRoot(abs); err != nil {
 		return Document{}, err
 	}
-	document := Document{Root: abs, SagaID: sagaID, Epics: epics, Personas: []Persona{}, Stories: []Story{}, Citations: []Citation{}, Relations: []Relation{}, Flags: []Flag{}, Terms: []Term{}}
+	document := Document{Root: abs, SagaID: sagaID, Features: features, Personas: []Persona{}, Stories: []Story{}, Citations: []Citation{}, Relations: []Relation{}, Flags: []Flag{}, Terms: []Term{}}
 	if err := loadPersonas(&document); err != nil {
 		return Document{}, err
 	}
 	stories, citations, relations := applayout.NewUniqueIDs("story"), applayout.NewUniqueIDs("citation"), applayout.NewUniqueIDs("relation")
-	for _, epic := range epics {
-		requirementsRoot := filepath.Join(epic.Dir, applayout.RequirementsDir)
+	for _, feature := range features {
+		requirementsRoot := filepath.Join(feature.Dir, applayout.RequirementsDir)
 		present, err := realDirectory(requirementsRoot)
 		if err != nil {
 			return Document{}, err
@@ -96,7 +96,7 @@ func LoadWithOptions(root, sagaID string, options LoadOptions) (Document, error)
 		}
 		for _, entry := range entries {
 			if entry.Type()&fs.ModeSymlink != 0 || !entry.IsDir() {
-				return Document{}, fmt.Errorf("%s: requirements entry %q must be a real directory", epic.Rel, entry.Name())
+				return Document{}, fmt.Errorf("%s: requirements entry %q must be a real directory", feature.Rel, entry.Name())
 			}
 			switch entry.Name() {
 			case "stories", "citations", "relations":
@@ -109,16 +109,16 @@ func LoadWithOptions(root, sagaID string, options LoadOptions) (Document, error)
 			// deliberately never reads.
 			case "coverage-exceptions":
 			default:
-				return Document{}, fmt.Errorf("%s: unknown requirements entry %q", epic.Rel, entry.Name())
+				return Document{}, fmt.Errorf("%s: unknown requirements entry %q", feature.Rel, entry.Name())
 			}
 		}
-		if err := loadCitations(&document, epic, citations); err != nil {
+		if err := loadCitations(&document, feature, citations); err != nil {
 			return Document{}, err
 		}
-		if err := loadStories(&document, epic, stories); err != nil {
+		if err := loadStories(&document, feature, stories); err != nil {
 			return Document{}, err
 		}
-		if err := loadRelations(&document, epic, relations); err != nil {
+		if err := loadRelations(&document, feature, relations); err != nil {
 			return Document{}, err
 		}
 	}
@@ -152,8 +152,8 @@ func LoadWithOptions(root, sagaID string, options LoadOptions) (Document, error)
 	return document, nil
 }
 
-func loadStories(document *Document, epic applayout.Epic, ids *applayout.UniqueIDs) error {
-	dir := filepath.Join(epic.Dir, applayout.RequirementsDir, "stories")
+func loadStories(document *Document, feature applayout.Feature, ids *applayout.UniqueIDs) error {
+	dir := filepath.Join(feature.Dir, applayout.RequirementsDir, "stories")
 	present, err := realDirectory(dir)
 	if err != nil || !present {
 		return err
@@ -171,14 +171,14 @@ func loadStories(document *Document, epic applayout.Epic, ids *applayout.UniqueI
 		if !livingid.ValidID(storyID) {
 			return fmt.Errorf("story package %q has an invalid id", entry.Name())
 		}
-		if err := ids.Claim(storyID, epic.ID); err != nil {
+		if err := ids.Claim(storyID, feature.ID); err != nil {
 			return err
 		}
 		story, err := loadStoryPackage(document.Root, document.SagaID, path, storyID)
 		if err != nil {
 			return err
 		}
-		story.Epic = epic.ID
+		story.Feature = feature.ID
 		document.Stories = append(document.Stories, story)
 	}
 	return nil
@@ -303,8 +303,8 @@ func loadEvents(root, sagaID, storyID, dir string) ([]LifecycleEvent, error) {
 	return values, nil
 }
 
-func loadCitations(document *Document, epic applayout.Epic, ids *applayout.UniqueIDs) error {
-	dir := filepath.Join(epic.Dir, applayout.RequirementsDir, "citations")
+func loadCitations(document *Document, feature applayout.Feature, ids *applayout.UniqueIDs) error {
+	dir := filepath.Join(feature.Dir, applayout.RequirementsDir, "citations")
 	present, err := realDirectory(dir)
 	if err != nil || !present {
 		return err
@@ -326,10 +326,10 @@ func loadCitations(document *Document, epic applayout.Epic, ids *applayout.Uniqu
 		if err := validateCitation(value, document.SagaID, expectedID); err != nil {
 			return fmt.Errorf("%s: %w", relative(document.Root, path), err)
 		}
-		if err := ids.Claim(value.ID, epic.ID); err != nil {
+		if err := ids.Claim(value.ID, feature.ID); err != nil {
 			return err
 		}
-		value.Epic = epic.ID
+		value.Feature = feature.ID
 		document.Citations = append(document.Citations, value)
 	}
 	if len(document.Citations) > MaxCitations {
@@ -338,8 +338,8 @@ func loadCitations(document *Document, epic applayout.Epic, ids *applayout.Uniqu
 	return nil
 }
 
-func loadRelations(document *Document, epic applayout.Epic, ids *applayout.UniqueIDs) error {
-	dir := filepath.Join(epic.Dir, applayout.RequirementsDir, "relations")
+func loadRelations(document *Document, feature applayout.Feature, ids *applayout.UniqueIDs) error {
+	dir := filepath.Join(feature.Dir, applayout.RequirementsDir, "relations")
 	present, err := realDirectory(dir)
 	if err != nil || !present {
 		return err
@@ -361,10 +361,10 @@ func loadRelations(document *Document, epic applayout.Epic, ids *applayout.Uniqu
 		if err := validateRelation(value, document.SagaID, expectedID); err != nil {
 			return fmt.Errorf("%s: %w", relative(document.Root, path), err)
 		}
-		if err := ids.Claim(value.ID, epic.ID); err != nil {
+		if err := ids.Claim(value.ID, feature.ID); err != nil {
 			return err
 		}
-		value.Epic = epic.ID
+		value.Feature = feature.ID
 		document.Relations = append(document.Relations, value)
 	}
 	if len(document.Relations) > MaxRelations {

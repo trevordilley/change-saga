@@ -32,14 +32,14 @@ type hierarchyRoot uint8
 const (
 	nestedHierarchy hierarchyRoot = iota
 	// sagaHierarchy is the app root: saga.json, the app-level roots, the
-	// epics, and the review overlay. It holds no report content of its own.
+	// features, and the review overlay. It holds no report content of its own.
 	sagaHierarchy
-	// designHierarchy is an authored report root that is not an epic:
-	// an epic's ___design, and the app's ___overview and ___designsystem.
+	// designHierarchy is an authored report root that is not a feature:
+	// a feature's ___design, and the app's ___overview and ___designsystem.
 	designHierarchy
-	// epicHierarchy is one epic directory: report content plus the epic's
+	// featureHierarchy is one feature directory: report content plus the feature's
 	// capability roots.
-	epicHierarchy
+	featureHierarchy
 	// overviewHierarchy is the app's ___overview. It is formal rather than
 	// free report content: an elevator pitch fragment, a description fragment,
 	// and the terms directory the requirements loader owns. The project name
@@ -147,7 +147,7 @@ func load(root string, options loadOptions) (*Saga, Validation, error) {
 	if err != nil {
 		return nil, validation, err
 	}
-	document := &Saga{Root: abs, Manifest: manifest, Section: section, Decks: decks, Overview: app.overview, DesignSystem: app.designSystem, Onboarding: app.onboarding, Epics: app.epics}
+	document := &Saga{Root: abs, Manifest: manifest, Section: section, Decks: decks, Overview: app.overview, DesignSystem: app.designSystem, Onboarding: app.onboarding, Features: app.features}
 	if metadataDirectorySafe(abs, abs, ReviewsDir, &validation) {
 		if document.Reviews, err = loadReviews(abs, manifest, options, &validation); err != nil {
 			return nil, validation, err
@@ -210,12 +210,12 @@ func loadSection(root, dir string, manifest Manifest, hierarchy hierarchyRoot, o
 		section.Kind = "design"
 		section.ID = manifest.ID + "-design-root"
 		section.Title = "Technical design"
-	} else if hierarchy == epicHierarchy {
-		// Like the design root, an epic is a synthetic grouping node. Its
+	} else if hierarchy == featureHierarchy {
+		// Like the design root, a feature is a synthetic grouping node. Its
 		// report content joins the app root so every target index still sees
-		// one tree; Saga.Epics keeps the grouping for readers.
-		section.Kind = "epic"
-		section.ID = strings.TrimSuffix(filepath.Base(dir), applayout.EpicSuffix)
+		// one tree; Saga.Features keeps the grouping for readers.
+		section.Kind = "feature"
+		section.ID = strings.TrimSuffix(filepath.Base(dir), applayout.FeatureSuffix)
 		section.Title = section.ID
 	} else {
 		if strings.HasSuffix(filepath.Base(dir), ".chapter") {
@@ -295,7 +295,7 @@ func loadSection(root, dir string, manifest Manifest, hierarchy hierarchyRoot, o
 			}
 		}
 		if hierarchy == sagaHierarchy {
-			addIssue(validation, "error", displayPath(rel, name), "report content belongs in ___overview, ___designsystem, or an epic under ___epics, not at the app root")
+			addIssue(validation, "error", displayPath(rel, name), "report content belongs in ___overview, ___designsystem, or a feature under ___features, not at the app root")
 			continue
 		}
 		if hierarchy != nestedHierarchy && !strings.HasSuffix(name, ".fragment") && !strings.HasSuffix(name, ".chapter") {
@@ -705,12 +705,12 @@ func knownReservedDirectory(name string, hierarchy hierarchyRoot) bool {
 		switch name {
 		case CodeDirName, ReviewsDir, "___claims", "___verifications", MergesDir,
 			applayout.OverviewDir, applayout.PersonasDir, applayout.DesignSystemDir,
-			applayout.OnboardingDir, applayout.FeatureFlagsDir, applayout.EpicsDir:
+			applayout.OnboardingDir, applayout.FeatureFlagsDir, applayout.FeaturesDir:
 			return true
 		}
 		return false
-	case epicHierarchy:
-		for _, known := range applayout.EpicRootDirs {
+	case featureHierarchy:
+		for _, known := range applayout.FeatureRootDirs {
 			if name == known {
 				return true
 			}

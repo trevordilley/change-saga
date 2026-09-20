@@ -19,13 +19,13 @@ import (
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
-// codeTarget is one documentation target with its epic and title.
+// codeTarget is one documentation target with its feature and title.
 type codeTarget struct {
-	epic, title string
-	references  []string
+	feature, title string
+	references     []string
 }
 
-// documentTargets indexes every documentation target: its epic, its title,
+// documentTargets indexes every documentation target: its feature, its title,
 // and the code references it owns (as evidence-file#index record keys).
 func documentTargets(document *saga.Saga) map[string]*codeTarget {
 	result := map[string]*codeTarget{}
@@ -35,8 +35,8 @@ func documentTargets(document *saga.Saga) map[string]*codeTarget {
 			value = &codeTarget{}
 			result[target] = value
 		}
-		if epic := applayout.EpicOfPath(path); epic != "" {
-			value.epic = epic
+		if feature := applayout.FeatureOfPath(path); feature != "" {
+			value.feature = feature
 		}
 		if value.title == "" {
 			value.title = title
@@ -71,8 +71,8 @@ func documentTargets(document *saga.Saga) map[string]*codeTarget {
 	coverage.WalkDocumentCode(document, func(target string, files []saga.CodeFile) {
 		value := at(target, "", "")
 		for _, file := range files {
-			if value.epic == "" {
-				value.epic = applayout.EpicOfPath(file.Path)
+			if value.feature == "" {
+				value.feature = applayout.FeatureOfPath(file.Path)
 			}
 			for index := range file.References {
 				value.references = append(value.references, file.Path+"#"+strconv.Itoa(index+1))
@@ -88,12 +88,12 @@ func documentTargets(document *saga.Saga) map[string]*codeTarget {
 func storyPlaces(document *saga.Saga) map[string]nextaction.Place {
 	result := map[string]nextaction.Place{}
 	for target, value := range documentTargets(document) {
-		result[target] = nextaction.Place{Target: target, Title: value.title, Epic: value.epic}
+		result[target] = nextaction.Place{Target: target, Title: value.title, Feature: value.feature}
 	}
 	for _, deck := range document.Decks {
-		epic := applayout.EpicOfPath(deck.Path)
+		feature := applayout.FeatureOfPath(deck.Path)
 		for _, slide := range deck.Slides {
-			place := nextaction.Place{Target: slide.Target, Title: firstNonEmpty(slide.Title, deck.Title), Epic: epic, Slide: true}
+			place := nextaction.Place{Target: slide.Target, Title: firstNonEmpty(slide.Title, deck.Title), Feature: feature, Slide: true}
 			result[slide.Target] = place
 			for _, item := range slide.Items {
 				result[item.Target] = place
@@ -103,15 +103,15 @@ func storyPlaces(document *saga.Saga) map[string]nextaction.Place {
 	return result
 }
 
-// designEpics returns each epic that holds design content: a chapter,
+// designFeatures returns each feature that holds design content: a chapter,
 // section, or fragment under its ___design root.
-func designEpics(document *saga.Saga) map[string]bool {
+func designFeatures(document *saga.Saga) map[string]bool {
 	result := map[string]bool{}
 	var visit func(*saga.Section)
 	visit = func(section *saga.Section) {
 		if strings.Contains("/"+filepath.ToSlash(section.Path)+"/", "/"+applayout.DesignDir+"/") {
-			if epic := applayout.EpicOfPath(section.Path); epic != "" {
-				result[epic] = true
+			if feature := applayout.FeatureOfPath(section.Path); feature != "" {
+				result[feature] = true
 			}
 		}
 		for _, child := range section.Children {
@@ -126,17 +126,17 @@ func designEpics(document *saga.Saga) map[string]bool {
 
 // coverageInputs gathers the facts the coverage report reads from one status
 // document. Scope is the change when comparing, the app when observing, and
-// epic narrows either.
-func coverageInputs(document *saga.Saga, changes gitdiff.ChangeSet, report coverage.Report, living livingapp.Status, layers *changeview.Layers, epic string) areas.Inputs {
+// feature narrows either.
+func coverageInputs(document *saga.Saga, changes gitdiff.ChangeSet, report coverage.Report, living livingapp.Status, layers *changeview.Layers, feature string) areas.Inputs {
 	in := areas.Inputs{
-		Scope:  areas.Scope{Kind: areas.ScopeApp, Head: changes.Head, Epic: epic},
-		Owners: map[string][]string{}, TargetEpic: map[string]string{}, TargetTitle: map[string]string{},
+		Scope:  areas.Scope{Kind: areas.ScopeApp, Head: changes.Head, Feature: feature},
+		Owners: map[string][]string{}, TargetFeature: map[string]string{}, TargetTitle: map[string]string{},
 		TargetStories: living.Chain.TargetStories, StoryDesign: living.Chain.StoryDesign, CriterionTests: living.Chain.CriterionTests,
 		ActivePersonas: map[string]bool{}, DesignExcluded: map[string]bool{}, QualityExcluded: map[string]bool{},
 	}
 	targets := documentTargets(document)
 	for target, value := range targets {
-		in.TargetEpic[target], in.TargetTitle[target] = value.epic, value.title
+		in.TargetFeature[target], in.TargetTitle[target] = value.feature, value.title
 		if len(value.references) > 0 {
 			in.CodeTargets = append(in.CodeTargets, target)
 		}
@@ -171,11 +171,11 @@ func coverageInputs(document *saga.Saga, changes gitdiff.ChangeSet, report cover
 			}
 		}
 	}
-	storyEpic := map[string]string{}
+	storyFeature := map[string]string{}
 	for _, story := range living.Stories {
-		storyEpic[story.Story] = story.Epic
+		storyFeature[story.Story] = story.Feature
 		value := areas.Story{
-			URN: story.Story, Title: story.Title, Epic: story.Epic, Personas: story.Personas,
+			URN: story.Story, Title: story.Title, Feature: story.Feature, Personas: story.Personas,
 			Active: story.State != string(requirements.StateRetired) && story.State != string(requirements.StateDeferred),
 		}
 		for _, criterion := range story.Criteria {
@@ -214,10 +214,10 @@ func coverageInputs(document *saga.Saga, changes gitdiff.ChangeSet, report cover
 			}
 		}
 	}
-	examined, problems := healthRecords(targets, living, storyEpic)
+	examined, problems := healthRecords(targets, living, storyFeature)
 	for _, record := range examined {
 		if !added[record.Resource] && !added[record.Owner] {
-			in.Examined = append(in.Examined, areas.Record{Resource: record.Resource, Kind: record.Kind, Epic: record.Epic})
+			in.Examined = append(in.Examined, areas.Record{Resource: record.Resource, Kind: record.Kind, Feature: record.Feature})
 		}
 	}
 	in.Problems = problems
@@ -227,51 +227,51 @@ func coverageInputs(document *saga.Saga, changes gitdiff.ChangeSet, report cover
 // healthRecord is one record health examines; Owner is the documentation
 // target holding a code reference.
 type healthRecord struct {
-	Resource, Kind, Epic, Owner string
+	Resource, Kind, Feature, Owner string
 }
 
 // healthRecords lists the existing records health examines and those that
 // went stale or broke: code references, relations, stories, test cases, and
-// terms. A record's epic is the epic of the story it concerns.
-func healthRecords(targets map[string]*codeTarget, living livingapp.Status, storyEpic map[string]string) ([]healthRecord, []areas.Problem) {
+// terms. A record's feature is the feature of the story it concerns.
+func healthRecords(targets map[string]*codeTarget, living livingapp.Status, storyFeature map[string]string) ([]healthRecord, []areas.Problem) {
 	examined := []healthRecord{}
 	problems := []areas.Problem{}
-	epicOf := func(resources ...string) string {
+	featureOf := func(resources ...string) string {
 		for _, resource := range resources {
 			story := resource
 			if index := strings.Index(resource, ":criterion:"); index >= 0 {
 				story = resource[:index]
 			}
-			if epic := storyEpic[story]; epic != "" {
-				return epic
+			if feature := storyFeature[story]; feature != "" {
+				return feature
 			}
 		}
 		return ""
 	}
 	for target, value := range targets {
 		for _, reference := range value.references {
-			examined = append(examined, healthRecord{Resource: reference, Kind: "code_reference", Epic: value.epic, Owner: target})
+			examined = append(examined, healthRecord{Resource: reference, Kind: "code_reference", Feature: value.feature, Owner: target})
 		}
 	}
 	for relation, state := range living.Chain.Relations {
-		examined = append(examined, healthRecord{Resource: relation, Kind: "relation", Epic: epicOf(state.To)})
+		examined = append(examined, healthRecord{Resource: relation, Kind: "relation", Feature: featureOf(state.To)})
 		switch state.Currency {
 		case requirements.CurrencyConflicted, requirements.CurrencyInvalid:
-			problems = append(problems, areas.Problem{Resource: relation, Kind: "relation", Epic: epicOf(state.To), Reason: "relation is " + string(state.Currency)})
+			problems = append(problems, areas.Problem{Resource: relation, Kind: "relation", Feature: featureOf(state.To), Reason: "relation is " + string(state.Currency)})
 		}
 	}
 	for _, story := range living.Stories {
-		examined = append(examined, healthRecord{Resource: story.Story, Kind: "story", Epic: story.Epic})
+		examined = append(examined, healthRecord{Resource: story.Story, Kind: "story", Feature: story.Feature})
 		if len(story.RevisionHeads) > 1 || len(story.LifecycleHeads) > 1 {
-			problems = append(problems, areas.Problem{Resource: story.Story, Kind: "story", Epic: story.Epic, Reason: "story has competing heads; reconcile them"})
+			problems = append(problems, areas.Problem{Resource: story.Story, Kind: "story", Feature: story.Feature, Reason: "story has competing heads; reconcile them"})
 		}
 	}
 	for _, testCase := range living.Quality.TestCases {
-		examined = append(examined, healthRecord{Resource: testCase.TestCase, Kind: "test_case", Epic: testCase.Epic})
+		examined = append(examined, healthRecord{Resource: testCase.TestCase, Kind: "test_case", Feature: testCase.Feature})
 	}
 	for _, fact := range living.Quality.Facts {
 		if fact.Required && fact.TestCase != "" && (fact.RunResult == "failed" || fact.RunResult == "blocked") {
-			problems = append(problems, areas.Problem{Resource: fact.TestCase, Kind: "test_case", Epic: epicOf(fact.Criterion), Reason: "its current run " + fact.RunResult + " for " + fact.Criterion})
+			problems = append(problems, areas.Problem{Resource: fact.TestCase, Kind: "test_case", Feature: featureOf(fact.Criterion), Reason: "its current run " + fact.RunResult + " for " + fact.Criterion})
 		}
 	}
 	for _, term := range living.Terms {
@@ -286,7 +286,7 @@ func healthRecords(targets map[string]*codeTarget, living livingapp.Status, stor
 		}
 	}
 	for _, stale := range living.Stale {
-		problems = append(problems, areas.Problem{Resource: stale.Record, Kind: stale.Kind, Epic: epicOf(stale.Affects...), Reason: stale.Kind + " is stale: " + strings.Join(stale.Reasons, "; ")})
+		problems = append(problems, areas.Problem{Resource: stale.Record, Kind: stale.Kind, Feature: featureOf(stale.Affects...), Reason: stale.Kind + " is stale: " + strings.Join(stale.Reasons, "; ")})
 	}
 	return examined, problems
 }
@@ -316,8 +316,8 @@ func describeScope(scope areas.Scope) string {
 	if scope.Kind == areas.ScopeChange {
 		text = "the change " + scope.Against + ".." + scope.Head + " (what it changed and what it affected)"
 	}
-	if scope.Epic != "" {
-		text += ", epic " + scope.Epic
+	if scope.Feature != "" {
+		text += ", feature " + scope.Feature
 	}
 	return text
 }
@@ -397,8 +397,8 @@ func describeEntry(entry areas.Entry) string {
 	if entry.Title != "" {
 		text += " \"" + entry.Title + "\""
 	}
-	if entry.Epic != "" {
-		text += " [epic " + entry.Epic + "]"
+	if entry.Feature != "" {
+		text += " [feature " + entry.Feature + "]"
 	}
 	if entry.Reason != "" {
 		text += " — " + entry.Reason

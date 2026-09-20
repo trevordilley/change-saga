@@ -52,8 +52,8 @@ func dogfoodPage(t *testing.T, path string) (int, string) {
 }
 
 // dogfoodSidebar is the Contents navigation of one rendered page. The sidebar
-// shows one epic at a time, so a row that belongs to an epic is asserted on a
-// page inside that epic rather than on the app overview.
+// shows one feature at a time, so a row that belongs to a feature is asserted on a
+// page inside that feature rather than on the app overview.
 func dogfoodSidebar(t *testing.T, path string) string {
 	t.Helper()
 	_, rest, ok := strings.Cut(dogfoodOK(t, path), `<nav class="doc-tree"`)
@@ -142,7 +142,7 @@ func TestSidebarTitlesWrapInsteadOfTruncating(t *testing.T) {
 }
 
 // Terms and vocabulary stays shut away from the terms pages, so a story page's
-// sidebar still shows the epics.
+// sidebar still shows the features.
 func TestVocabularyOpensOnlyOnTheTermsPages(t *testing.T) {
 	vocabularyOpen := func(page string) bool {
 		return strings.Contains(page, `aria-expanded="true" aria-controls="nav-terms"`)
@@ -186,49 +186,49 @@ func TestEveryPersonaHasAPage(t *testing.T) {
 	}
 }
 
-// Findings 28 and 30: every epic has a page with its description, stories,
-// and summary, and an epic's design chapters render there, not as top-level
+// Findings 28 and 30: every feature has a page with its description, stories,
+// and summary, and a feature's design chapters render there, not as top-level
 // chapters of the app overview.
-func TestEveryEpicHasAPageHoldingItsDesign(t *testing.T) {
+func TestEveryFeatureHasAPageHoldingItsDesign(t *testing.T) {
 	document, records, _ := dogfoodRecords(t)
 	root := dogfoodOK(t, "/")
-	for _, epic := range document.Epics {
-		href := epicHref(epic.ID)
+	for _, feature := range document.Features {
+		href := featureHref(feature.ID)
 		if !strings.Contains(root, `href="`+href+`"`) {
 			t.Fatalf("the sidebar does not link %s", href)
 		}
 		page := dogfoodOK(t, href)
-		for _, want := range []string{"data-epic-page", "data-epic-summary", "data-epic-stories", "data-epic-design", "data-epic-quality", "data-epic-implementation"} {
+		for _, want := range []string{"data-feature-page", "data-feature-summary", "data-feature-stories", "data-feature-design", "data-feature-quality", "data-feature-implementation"} {
 			if !strings.Contains(page, want) {
 				t.Fatalf("%s lacks %s", href, want)
 			}
 		}
-		for _, manifest := range records.Epics {
-			if manifest.ID == epic.ID && manifest.Description != "" && !strings.Contains(page, template.HTMLEscapeString(manifest.Description)) {
+		for _, manifest := range records.Features {
+			if manifest.ID == feature.ID && manifest.Description != "" && !strings.Contains(page, template.HTMLEscapeString(manifest.Description)) {
 				t.Fatalf("%s lacks its description", href)
 			}
 		}
-		if epic.Design == nil {
+		if feature.Design == nil {
 			continue
 		}
-		for _, chapter := range epic.Design.Children {
+		for _, chapter := range feature.Design.Children {
 			fetch := `data-section-href="/api/section?target=` + template.HTMLEscapeString(url.QueryEscape(chapter.Target)) + `"`
 			if !strings.Contains(page, fetch) {
 				t.Fatalf("%s does not hold its chapter %s", href, chapter.ID)
 			}
 			if strings.Contains(root, fetch) {
-				t.Fatalf("the overview still lists the epic chapter %s", chapter.ID)
+				t.Fatalf("the overview still lists the feature chapter %s", chapter.ID)
 			}
-			// The epic's own page is where its chapters are in the sidebar:
-			// that page's epic is the one the sidebar shows.
+			// The feature's own page is where its chapters are in the sidebar:
+			// that page's feature is the one the sidebar shows.
 			if !strings.Contains(dogfoodSidebar(t, href), `href="`+href+`#`+domID(chapter.Target)+`"`) {
-				t.Fatalf("the sidebar does not open %s on its epic's page", chapter.ID)
+				t.Fatalf("the sidebar does not open %s on its feature's page", chapter.ID)
 			}
 		}
 	}
 }
 
-// Finding 27: every test case is a sidebar row under its epic's Quality and
+// Finding 27: every test case is a sidebar row under its feature's Quality and
 // has a page with its definition, the criteria it verifies, its evidence
 // code, and its runs.
 func TestEveryTestCaseHasARowAndAPage(t *testing.T) {
@@ -238,11 +238,11 @@ func TestEveryTestCaseHasARowAndAPage(t *testing.T) {
 	}
 	for _, testCase := range tests.TestCases {
 		href := testCaseHref(testCase.Identity.ID)
-		// Quality lists the test cases of the epic the sidebar shows, so the
+		// Quality lists the test cases of the feature the sidebar shows, so the
 		// row is asserted on the test case's own page.
 		sidebar := dogfoodSidebar(t, href)
 		if strings.Contains(sidebar, "no test cases yet") {
-			t.Fatalf("the epic of %s still says it has no test cases", href)
+			t.Fatalf("the feature of %s still says it has no test cases", href)
 		}
 		if !strings.Contains(sidebar, `href="`+href+`"`) {
 			t.Fatalf("the sidebar does not list %s", href)
@@ -275,13 +275,13 @@ func TestEveryTestCaseHasARowAndAPage(t *testing.T) {
 				t.Fatalf("%s lacks run %s", href, run.ID)
 			}
 		}
-		if epicPage := dogfoodOK(t, epicHref(testCase.Epic)); !strings.Contains(epicPage, `href="`+href+`"`) {
-			t.Fatalf("the epic page does not list %s", href)
+		if featurePage := dogfoodOK(t, featureHref(testCase.Feature)); !strings.Contains(featurePage, `href="`+href+`"`) {
+			t.Fatalf("the feature page does not list %s", href)
 		}
 	}
 }
 
-// Finding 29: a story page names its epic, personas, and citations, and the
+// Finding 29: a story page names its feature, personas, and citations, and the
 // design, slides, and test cases linked to it and to each criterion; each
 // criterion has its own traceability view; the sidebar names stories by
 // title, not by ordinal.
@@ -294,7 +294,7 @@ func TestStoriesAndCriteriaShowTheirTraceability(t *testing.T) {
 		}
 		href := requirementStoryHref(story.Identity.ID)
 		page := dogfoodOK(t, href)
-		// A story's page shows that story's epic, so its Requirements row is
+		// A story's page shows that story's feature, so its Requirements row is
 		// in that page's own sidebar.
 		sidebar := dogfoodSidebar(t, href)
 		if strings.Contains(sidebar, ">Story 0") || strings.Contains(sidebar, "Story 01 ·") {
@@ -303,7 +303,7 @@ func TestStoriesAndCriteriaShowTheirTraceability(t *testing.T) {
 		if !strings.Contains(sidebar, `title="`+template.HTMLEscapeString(story.CurrentRevision.Title)+`"`) {
 			t.Fatalf("the sidebar does not name %s by its title", href)
 		}
-		for _, want := range []string{"data-story-context", "data-story-trace", `href="` + epicHref(story.Epic) + `"`} {
+		for _, want := range []string{"data-story-context", "data-story-trace", `href="` + featureHref(story.Feature) + `"`} {
 			if !strings.Contains(page, want) {
 				t.Fatalf("%s lacks %s", href, want)
 			}
@@ -337,9 +337,9 @@ func TestStoriesAndCriteriaShowTheirTraceability(t *testing.T) {
 	}
 }
 
-// Finding 31: /requirements groups stories under their epics and no longer
+// Finding 31: /requirements groups stories under their features and no longer
 // titles the elevator pitch "Rationale".
-func TestRequirementsOverviewIsGroupedByEpic(t *testing.T) {
+func TestRequirementsOverviewIsGroupedByFeature(t *testing.T) {
 	_, records, _ := dogfoodRecords(t)
 	page := dogfoodOK(t, "/requirements")
 	page = page[strings.Index(page, "data-requirements-page"):]
@@ -350,13 +350,13 @@ func TestRequirementsOverviewIsGroupedByEpic(t *testing.T) {
 		if story.CurrentRevision == nil {
 			continue
 		}
-		group := strings.Index(page, `data-requirements-epic="urn:change-saga:`+records.SagaID+`:epic:`+story.Epic+`"`)
+		group := strings.Index(page, `data-requirements-feature="urn:change-saga:`+records.SagaID+`:feature:`+story.Feature+`"`)
 		card := strings.Index(page, `href="`+requirementStoryHref(story.Identity.ID)+`"`)
 		if group < 0 || card < group {
-			t.Fatalf("story %s is not listed under its epic %s", story.Identity.ID, story.Epic)
+			t.Fatalf("story %s is not listed under its feature %s", story.Identity.ID, story.Feature)
 		}
-		if next := strings.Index(page[group+1:], "data-requirements-epic="); next >= 0 && card > group+1+next {
-			t.Fatalf("story %s is listed under another epic", story.Identity.ID)
+		if next := strings.Index(page[group+1:], "data-requirements-feature="); next >= 0 && card > group+1+next {
+			t.Fatalf("story %s is listed under another feature", story.Identity.ID)
 		}
 	}
 }
@@ -449,13 +449,13 @@ func TestDocumentationPagesHaveNoApprovalOrCommentControls(t *testing.T) {
 	for _, persona := range records.Personas {
 		paths = append(paths, personaHref(persona.Identity.ID))
 	}
-	for _, epic := range document.Epics {
-		paths = append(paths, epicHref(epic.ID))
+	for _, feature := range document.Features {
+		paths = append(paths, featureHref(feature.ID))
 	}
 	for _, testCase := range tests.TestCases {
 		paths = append(paths, testCaseHref(testCase.Identity.ID))
 	}
-	paths = append(paths, "/personas", "/flags", "/epics", designSystemPath)
+	paths = append(paths, "/personas", "/flags", "/features", designSystemPath)
 	for _, path := range paths {
 		page := dogfoodOK(t, path)
 		for _, control := range []string{`<form method="post"`, "data-review-decision", "data-review-comment", "Approve slide", "Request changes", "<textarea"} {

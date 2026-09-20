@@ -18,11 +18,11 @@ func TestAddLandmarkMakesDiagramElementsCoverable(t *testing.T) {
 		t.Fatal(err)
 	}
 	var output bytes.Buffer
-	if err := AddFragment(context.Background(), []string{"--epic", testEpic, "--type", "svg", "--title", "System map", "--source", source, root}, &output); err != nil {
+	if err := AddFragment(context.Background(), []string{"--feature", testFeature, "--type", "svg", "--title", "System map", "--source", source, root}, &output); err != nil {
 		t.Fatal(err)
 	}
 	output.Reset()
-	if err := AddLandmark(context.Background(), []string{"--target", testEpicRel + "/system-map.fragment", "--element-id", "worker-pool", "--label", "Worker pool", "--description", "Workers pull one job at a time from the shared queue.", root}, &output); err != nil {
+	if err := AddLandmark(context.Background(), []string{"--target", testFeatureRel + "/system-map.fragment", "--element-id", "worker-pool", "--label", "Worker pool", "--description", "Workers pull one job at a time from the shared queue.", root}, &output); err != nil {
 		t.Fatal(err)
 	}
 	if !strings.Contains(output.String(), "Target: urn:change-saga:") || !strings.Contains(output.String(), "change-saga cover --target") || !strings.Contains(output.String(), "inferred from SVG element #worker-pool") {
@@ -31,7 +31,7 @@ func TestAddLandmarkMakesDiagramElementsCoverable(t *testing.T) {
 
 	repo, commit := sourceRepo(t, map[string]string{"worker.go": "package worker\n\n// one\n// two\n// three\n// four\n// five\n"})
 	reference := commit + ":worker.go#L3-L7"
-	target := testEpicRel + "/system-map.fragment/___landmarks/worker-pool.landmark"
+	target := testFeatureRel + "/system-map.fragment/___landmarks/worker-pool.landmark"
 	if err := Cover(context.Background(), []string{"--against", "main", "--repo", repo, "--target", target, "--ref", reference, "--note", "Implements the worker pool node.", root}, &output); err != nil {
 		t.Fatalf("cover landmark: %v", err)
 	}
@@ -67,14 +67,14 @@ func TestAddLandmarkRejectsMissingElementsWithoutPartialMetadata(t *testing.T) {
 		t.Fatal(err)
 	}
 	var output bytes.Buffer
-	if err := AddFragment(context.Background(), []string{"--epic", testEpic, "--type", "svg", "--title", "System map", "--source", source, root}, &output); err != nil {
+	if err := AddFragment(context.Background(), []string{"--feature", testFeature, "--type", "svg", "--title", "System map", "--source", source, root}, &output); err != nil {
 		t.Fatal(err)
 	}
-	err := AddLandmark(context.Background(), []string{"--target", testEpicRel + "/system-map.fragment", "--element-id", "missing", root}, &output)
+	err := AddLandmark(context.Background(), []string{"--target", testFeatureRel + "/system-map.fragment", "--element-id", "missing", root}, &output)
 	if err == nil || !strings.Contains(err.Error(), "does not appear") {
 		t.Fatalf("missing element error = %v", err)
 	}
-	if _, statErr := os.Stat(filepath.Join(testEpicDir(root), "system-map.fragment", "___landmarks", "missing.landmark")); !os.IsNotExist(statErr) {
+	if _, statErr := os.Stat(filepath.Join(testFeatureDir(root), "system-map.fragment", "___landmarks", "missing.landmark")); !os.IsNotExist(statErr) {
 		t.Fatalf("failed landmark left partial metadata: %v", statErr)
 	}
 }
@@ -86,14 +86,14 @@ func TestAddLandmarkRequiresSemanticDescriptionForVisuals(t *testing.T) {
 		t.Fatal(err)
 	}
 	var output bytes.Buffer
-	if err := AddFragment(context.Background(), []string{"--epic", testEpic, "--type", "svg", "--title", "System map", "--source", source, root}, &output); err != nil {
+	if err := AddFragment(context.Background(), []string{"--feature", testFeature, "--type", "svg", "--title", "System map", "--source", source, root}, &output); err != nil {
 		t.Fatal(err)
 	}
-	err := AddLandmark(context.Background(), []string{"--target", testEpicRel + "/system-map.fragment", "--element-id", "worker-pool", root}, &output)
+	err := AddLandmark(context.Background(), []string{"--target", testFeatureRel + "/system-map.fragment", "--element-id", "worker-pool", root}, &output)
 	if err == nil || !strings.Contains(err.Error(), "--description is required") {
 		t.Fatalf("missing semantic description error = %v", err)
 	}
-	if _, statErr := os.Stat(filepath.Join(testEpicDir(root), "system-map.fragment", "___landmarks", "worker-pool.landmark")); !os.IsNotExist(statErr) {
+	if _, statErr := os.Stat(filepath.Join(testFeatureDir(root), "system-map.fragment", "___landmarks", "worker-pool.landmark")); !os.IsNotExist(statErr) {
 		t.Fatalf("failed landmark left partial metadata: %v", statErr)
 	}
 }

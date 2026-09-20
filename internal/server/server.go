@@ -102,13 +102,13 @@ type pageData struct {
 	// TermsMode shows the overview's Terms and vocabulary, or one term.
 	TermsMode bool
 	Terms     *termsPageView
-	// Persona, Epic, and TestCase are the app-level record pages, and
-	// Epics, Personas, and Flags the directories that list them. At most one
+	// Persona, Feature, and TestCase are the app-level record pages, and
+	// Features, Personas, and Flags the directories that list them. At most one
 	// is set.
 	Persona  *personaPageView
-	Epic     *epicPageView
+	Feature  *featurePageView
 	TestCase *testCasePageView
-	Epics    *directoryView
+	Features *directoryView
 	Personas *directoryView
 	Flags    *directoryView
 	// DesignSystemMode is the design system's own page; DesignSystem is its
@@ -118,9 +118,9 @@ type pageData struct {
 	// OverviewParts is the overview's directory: its parts and what each one
 	// holds.
 	OverviewParts []overviewPartView
-	// PageEpic is the epic this page belongs to, and so the one epic the
+	// PageFeature is the feature this page belongs to, and so the one feature the
 	// sidebar opens. Empty when the page belongs to none.
-	PageEpic string
+	PageFeature string
 	// Reviews is a review surface rendered inside the app shell.
 	Reviews    template.HTML
 	Root       *sectionView
@@ -335,8 +335,8 @@ func newMux(application *app) *http.ServeMux {
 	mux.HandleFunc("GET /personas", application.page)
 	mux.HandleFunc("GET /flags", application.page)
 	mux.HandleFunc("GET /design-system", application.page)
-	mux.HandleFunc("GET /epics/{epic}", application.page)
-	mux.HandleFunc("GET /epics", application.page)
+	mux.HandleFunc("GET /features/{feature}", application.page)
+	mux.HandleFunc("GET /features", application.page)
 	mux.HandleFunc("GET /tests/{test}", application.page)
 	mux.HandleFunc("GET /", application.page)
 	mux.HandleFunc("GET /reviews", application.reviewIndex)
@@ -572,7 +572,7 @@ func (a *app) locateAnchor(w http.ResponseWriter, r *http.Request) {
 	}
 	if place.fragment != "" {
 		response["fragment"] = domID(place.fragment)
-		// An epic's explanation renders on its epic's page. Elsewhere the
+		// A feature's explanation renders on its feature's page. Elsewhere the
 		// browser fetches it by target to show it in the drawer.
 		response["target"] = place.fragment
 	}
@@ -818,7 +818,7 @@ func (a *app) page(w http.ResponseWriter, r *http.Request) {
 }
 
 // chapterRedirect keeps /chapters/{id} links working: an app chapter opens on
-// the overview, and an epic's chapter on that epic's page.
+// the overview, and a feature's chapter on that feature's page.
 func (a *app) chapterRedirect(w http.ResponseWriter, r *http.Request, chapterID string) {
 	document := a.narrativeDocument(r.Context())
 	if document == nil {
@@ -830,9 +830,9 @@ func (a *app) chapterRedirect(w http.ResponseWriter, r *http.Request, chapterID 
 			continue
 		}
 		destination := "/#" + domID(child.Target)
-		for _, epic := range document.Epics {
-			if epic.Design != nil && containsSection(epic.Design, child) || epic.Report != nil && containsSection(epic.Report, child) {
-				destination = epicHref(epic.ID) + "#" + domID(child.Target)
+		for _, feature := range document.Features {
+			if feature.Design != nil && containsSection(feature.Design, child) || feature.Report != nil && containsSection(feature.Report, child) {
+				destination = featureHref(feature.ID) + "#" + domID(child.Target)
 			}
 		}
 		http.Redirect(w, r, destination, http.StatusFound)
@@ -876,10 +876,10 @@ func routeOf(r *http.Request) (appRoute, bool) {
 		return appRoute{kind: "flags"}, true
 	case path == designSystemPath:
 		return appRoute{kind: "designsystem"}, true
-	case path == "/epics":
-		return appRoute{kind: "epics"}, true
-	case strings.HasPrefix(path, "/epics/") && r.PathValue("epic") != "":
-		return appRoute{kind: "epic", id: r.PathValue("epic")}, true
+	case path == "/features":
+		return appRoute{kind: "features"}, true
+	case strings.HasPrefix(path, "/features/") && r.PathValue("feature") != "":
+		return appRoute{kind: "feature", id: r.PathValue("feature")}, true
 	case strings.HasPrefix(path, "/tests/") && r.PathValue("test") != "":
 		return appRoute{kind: "test", id: r.PathValue("test")}, true
 	case path == "/reviews" || strings.HasPrefix(path, "/reviews/"):
@@ -922,14 +922,14 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 		tests = quality.Document{SagaID: document.Manifest.ID}
 	}
 	graph := newAppGraph(document, requirementsDocument, tests)
-	// An epic's chapters and explanations belong to its page, and the design
+	// A feature's chapters and explanations belong to its page, and the design
 	// system's to its own; the overview holds only the app's own.
 	appReport := *reportRoot
 	appReport.Children, appReport.Fragments = nil, nil
 	designRoot := *reportRoot
 	designRoot.Children, designRoot.Fragments = nil, nil
 	for _, fragment := range reportRoot.Fragments {
-		if _, epic := graph.targetEpic[fragment.Target]; epic {
+		if _, feature := graph.targetFeature[fragment.Target]; feature {
 			continue
 		}
 		if saga.IsDesignSystemPath(fragment.Path) {
@@ -939,7 +939,7 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 		appReport.Fragments = append(appReport.Fragments, fragment)
 	}
 	for _, child := range reportRoot.Children {
-		if _, epic := graph.epicChapter(child); epic {
+		if _, feature := graph.featureChapter(child); feature {
 			continue
 		}
 		if saga.IsDesignSystemPath(child.Path) {
@@ -988,8 +988,8 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 		if len(designRoot.Fragments)+len(designRoot.Children) > 0 {
 			data.DesignSystem = makeSectionView(&designRoot, scope.shell())
 		}
-	case "epic":
-		if data.Epic, err = graph.epicPage(route.id); err != nil {
+	case "feature":
+		if data.Feature, err = graph.featurePage(route.id); err != nil {
 			return nil, err
 		}
 	case "test":
@@ -1006,13 +1006,13 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 	case route.kind != "overview":
 		overviewActive = "-"
 	}
-	// The sidebar lists every epic and opens the one this page belongs to.
-	// A page that belongs to none, the epics table among them, opens none:
-	// which epic a reader is in is a fact about the page, never a preference
+	// The sidebar lists every feature and opens the one this page belongs to.
+	// A page that belongs to none, the features table among them, opens none:
+	// which feature a reader is in is a fact about the page, never a preference
 	// kept about the reader.
-	data.PageEpic = pageEpic(route, requirementsView, tests)
-	if route.kind == "epics" {
-		data.Epics = epicsDirectory(document, graph, data.PageEpic, directoryQuery(r))
+	data.PageFeature = pageFeature(route, requirementsView, tests)
+	if route.kind == "features" {
+		data.Features = featuresDirectory(document, graph, data.PageFeature, directoryQuery(r))
 	}
 	onboarding := onboardingHref(document)
 	if route.kind == "overview" {
@@ -1024,7 +1024,7 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 		quality:    tests,
 		prototypes: prototypeDocument, prototypeNote: prototypeNote,
 		decks: makeDeckNavTree(slideRoot), overviewActive: overviewActive,
-		pageEpic: data.PageEpic, hasReviews: len(document.Reviews) > 0,
+		pageFeature: data.PageFeature, hasReviews: len(document.Reviews) > 0,
 	})
 	if route.kind != "overview" {
 		// Off the overview, an in-page anchor would point into a page that is

@@ -36,7 +36,7 @@ export const test = base.extend<Fixtures>({
   },
   saga: async ({ page, browserEvents }, use, testInfo) => {
     const fixture = await createSagaFixture(testInfo);
-    await page.goto(fixture.epicURL);
+    await page.goto(fixture.featureURL);
     await waitForSettledSaga(page);
     try {
       await use(fixture);

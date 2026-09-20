@@ -62,7 +62,7 @@ func planAddWave(_ context.Context, args []string, out io.Writer) error {
 	order := flags.Int("order", 0, "display order (not a dependency)")
 	requestID := flags.String("request-id", "", "required idempotency key")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
-	epic := epicFlag(flags)
+	feature := featureIDFlag(flags)
 	var entry, exit stringList
 	flags.Var(&entry, "entry-condition", "entry condition; repeatable")
 	flags.Var(&exit, "exit-condition", "exit condition; repeatable")
@@ -72,7 +72,7 @@ func planAddWave(_ context.Context, args []string, out io.Writer) error {
 	if err := requireLivingArgs(flags, *id, *revision, *title, *objective, *requestID); err != nil {
 		return err
 	}
-	target, err := requireEpic(flags.Arg(0), *epic)
+	target, err := requireFeature(flags.Arg(0), *feature)
 	if err != nil {
 		return err
 	}
@@ -96,7 +96,7 @@ func planReviseWave(_ context.Context, args []string, out io.Writer) error {
 	order := flags.Int("order", 0, "complete revised display order")
 	requestID := flags.String("request-id", "", "required idempotency key")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
-	epic := epicFlag(flags)
+	feature := featureIDFlag(flags)
 	var parents, entry, exit stringList
 	flags.Var(&parents, "parent", "current revision head URN; repeatable")
 	flags.Var(&entry, "entry-condition", "complete entry condition; repeatable")
@@ -107,7 +107,7 @@ func planReviseWave(_ context.Context, args []string, out io.Writer) error {
 	if err := requireLivingArgs(flags, *wave, *revision, *title, *objective, *requestID); err != nil {
 		return err
 	}
-	if err := assertRecordEpic(flags.Arg(0), *epic, *wave); err != nil {
+	if err := assertRecordFeature(flags.Arg(0), *feature, *wave); err != nil {
 		return err
 	}
 	result, err := workplan.ReviseWave(flags.Arg(0), workplan.WaveRevision{
@@ -121,10 +121,10 @@ func planReviseWave(_ context.Context, args []string, out io.Writer) error {
 }
 
 type itemFlags struct {
-	id, revision, item, title, objective, wave, requestID, epic *string
-	parents, deliverables, relations, dependencies, contracts   stringList
-	touchAreas, completionChecks, mergeUnits                    stringList
-	jsonOutput                                                  *bool
+	id, revision, item, title, objective, wave, requestID, feature *string
+	parents, deliverables, relations, dependencies, contracts      stringList
+	touchAreas, completionChecks, mergeUnits                       stringList
+	jsonOutput                                                     *bool
 }
 
 func addItemFlags(name string, out io.Writer, revise bool) (*itemFlags, interface {
@@ -145,7 +145,7 @@ func addItemFlags(name string, out io.Writer, revise bool) (*itemFlags, interfac
 	value.wave = flags.String("wave", "", "current wave URN")
 	value.requestID = flags.String("request-id", "", "required idempotency key")
 	value.jsonOutput = flags.Bool("json", false, "emit a machine-readable result")
-	value.epic = epicFlag(flags)
+	value.feature = featureIDFlag(flags)
 	flags.Var(&value.parents, "parent", "current revision head URN; repeatable")
 	flags.Var(&value.deliverables, "deliverable", "declared deliverable; repeatable")
 	flags.Var(&value.relations, "relation", "requirements/design relation URN; repeatable")
@@ -194,7 +194,7 @@ func planAddItem(_ context.Context, args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
-	target, err := requireEpic(parser.Arg(0), *value.epic)
+	target, err := requireFeature(parser.Arg(0), *value.feature)
 	if err != nil {
 		return err
 	}
@@ -219,7 +219,7 @@ func planReviseItem(_ context.Context, args []string, out io.Writer) error {
 		return err
 	}
 	revision.WorkItem = *value.item
-	if err := assertRecordEpic(parser.Arg(0), *value.epic, *value.item); err != nil {
+	if err := assertRecordFeature(parser.Arg(0), *value.feature, *value.item); err != nil {
 		return err
 	}
 	result, err := workplan.ReviseWorkItem(parser.Arg(0), revision, *value.requestID)
@@ -240,14 +240,14 @@ func planAddDependency(_ context.Context, args []string, out io.Writer) error {
 	reason := flags.String("reason", "", "why the dependency is necessary")
 	requestID := flags.String("request-id", "", "required idempotency key")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
-	epic := epicFlag(flags)
+	feature := featureIDFlag(flags)
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
 		return err
 	}
 	if err := requireLivingArgs(flags, *id, *prerequisite, *dependent, *condition, *reason, *requestID); err != nil {
 		return err
 	}
-	target, err := requireEpic(flags.Arg(0), *epic)
+	target, err := requireFeature(flags.Arg(0), *feature)
 	if err != nil {
 		return err
 	}
@@ -272,7 +272,7 @@ func planAddContract(_ context.Context, args []string, out io.Writer) error {
 	statement := flags.String("statement", "", "contract statement")
 	requestID := flags.String("request-id", "", "required idempotency key")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
-	epic := epicFlag(flags)
+	feature := featureIDFlag(flags)
 	var acceptance stringList
 	flags.Var(&acceptance, "acceptance", "acceptance check; repeatable")
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
@@ -284,7 +284,7 @@ func planAddContract(_ context.Context, args []string, out io.Writer) error {
 	if len(acceptance) == 0 {
 		return fmt.Errorf("--acceptance is required")
 	}
-	target, err := requireEpic(flags.Arg(0), *epic)
+	target, err := requireFeature(flags.Arg(0), *feature)
 	if err != nil {
 		return err
 	}
@@ -330,7 +330,7 @@ func planAssign(_ context.Context, args []string, out io.Writer) error {
 	summary := flags.String("summary", "", "assignment summary")
 	requestID := flags.String("request-id", "", "required idempotency key")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
-	epic := epicFlag(flags)
+	feature := featureIDFlag(flags)
 	var parents stringList
 	flags.Var(&parents, "parent", "current assignment head URN; repeatable")
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
@@ -344,7 +344,7 @@ func planAssign(_ context.Context, args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
-	if err := assertRecordEpic(root, *epic, *item); err != nil {
+	if err := assertRecordFeature(root, *feature, *item); err != nil {
 		return err
 	}
 	result, err := workplan.RecordWorkspace(root, id, workplan.WorkspaceEvent{
@@ -370,7 +370,7 @@ func planProgress(_ context.Context, args []string, out io.Writer) error {
 	summary := flags.String("summary", "", "progress summary")
 	requestID := flags.String("request-id", "", "required idempotency key")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
-	epic := epicFlag(flags)
+	feature := featureIDFlag(flags)
 	var parents stringList
 	flags.Var(&parents, "from", "current progress head event URN; repeatable for reconciliation")
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
@@ -384,7 +384,7 @@ func planProgress(_ context.Context, args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
-	if err := assertRecordEpic(root, *epic, *item); err != nil {
+	if err := assertRecordFeature(root, *feature, *item); err != nil {
 		return err
 	}
 	result, err := workplan.RecordProgress(root, id, workplan.ProgressEvent{
@@ -410,7 +410,7 @@ func planRecordMerge(_ context.Context, args []string, out io.Writer) error {
 	summary := flags.String("summary", "", "merge-event summary")
 	requestID := flags.String("request-id", "", "required idempotency key")
 	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
-	epic := epicFlag(flags)
+	feature := featureIDFlag(flags)
 	var parents stringList
 	flags.Var(&parents, "from", "current merge head event URN; repeatable for reconciliation")
 	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
@@ -430,7 +430,7 @@ func planRecordMerge(_ context.Context, args []string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
-	if err := assertRecordEpic(root, *epic, *item); err != nil {
+	if err := assertRecordFeature(root, *feature, *item); err != nil {
 		return err
 	}
 	result, err := workplan.RecordMerge(root, id, workplan.MergeEvent{

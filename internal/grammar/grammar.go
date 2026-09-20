@@ -171,7 +171,7 @@ func Invoke(name, sagaPath string, values ...Value) (Invocation, error) {
 
 // With returns the invocation with one more known flag value. It changes
 // nothing when the command does not declare the flag or the flag already has
-// a known value, so a caller can supply context such as the epic an action
+// a known value, so a caller can supply context such as the feature an action
 // concerns to every shape it suggests.
 func (invocation Invocation) With(flag, value string) Invocation {
 	command, ok := Lookup(invocation.Command)

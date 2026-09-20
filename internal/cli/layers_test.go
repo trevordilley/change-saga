@@ -38,15 +38,15 @@ func shopSaga(t *testing.T) (repo, root string) {
 	git(t, repo, "commit", "-m", "Add checkout")
 	root = filepath.Join(repo, "app.saga")
 	mustRun(t, Init, "--repo", repo, "--id", "shop", root)
-	mustRun(t, Epic, "add", "--id", "checkout", "--title", "Checkout", root)
+	mustRun(t, Feature, "add", "--id", "checkout", "--title", "Checkout", root)
 	mustRun(t, Persona, "add", "--id", "shopper", "--name", "Shopper", "--description", "Buys things", root)
-	mustRun(t, Story, "add", "--epic", "checkout", "--id", "pay", "--revision", "r1", "--event", "proposed", "--title", "Pay", "--statement", "As a shopper I pay",
+	mustRun(t, Story, "add", "--feature", "checkout", "--id", "pay", "--revision", "r1", "--event", "proposed", "--title", "Pay", "--statement", "As a shopper I pay",
 		"--priority", "must", "--criterion", "charged=The card is charged once", "--persona", "urn:change-saga:shop:persona:shopper", root)
 	design := filepath.Join(t.TempDir(), "design.md")
 	writeFile(t, design, "# Queue {#queue}\n\nJobs go to SQS.\n")
-	mustRun(t, Design, "add-fragment", "--epic", "checkout", "--id", "queue-design", "--title", "Queue", "--type", "markdown", "--name", "queue-design", "--source", design, root)
-	mustRun(t, Cover, "--target", "___epics/checkout.epic/___design/queue-design.fragment", "--commit", "HEAD", "--path", "src/queue.go", "--lines", "3-6", root)
-	mustRun(t, Relation, "add", "--epic", "checkout", "--id", "design-pay", "--type", "addresses", "--from", "urn:change-saga:shop:fragment:queue-design",
+	mustRun(t, Design, "add-fragment", "--feature", "checkout", "--id", "queue-design", "--title", "Queue", "--type", "markdown", "--name", "queue-design", "--source", design, root)
+	mustRun(t, Cover, "--target", "___features/checkout.feature/___design/queue-design.fragment", "--commit", "HEAD", "--path", "src/queue.go", "--lines", "3-6", root)
+	mustRun(t, Relation, "add", "--feature", "checkout", "--id", "design-pay", "--type", "addresses", "--from", "urn:change-saga:shop:fragment:queue-design",
 		"--to", "urn:change-saga:shop:story:pay", "--rationale", "The queue is how payment reaches fulfilment", root)
 	git(t, repo, "add", ".")
 	git(t, repo, "commit", "-m", "Document checkout")
@@ -174,14 +174,14 @@ func addQueueSlide(t *testing.T, root, id, title string) {
 	writeFile(t, visual, `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 10 10"><text>`+title+`</text></svg>`+"\n")
 	mustRun(t, AddSlide, "--deck", "urn:change-saga:shop:deck:impl", "--id", id, "--title", title, "--intent", "explain", "--layout", "diagram", "--source", visual, "--takeaway", title, root, id)
 	mustRun(t, AddItem, "--slide", "urn:change-saga:shop:slide:"+id, "--id", id+"-item", "--kind", "node", "--label", title, "--description", title, "--region", "0,0,1,1", root)
-	mustRun(t, Relation, "add", "--epic", "checkout", "--id", id+"-charged", "--type", "explains", "--from", "urn:change-saga:shop:slide:"+id,
+	mustRun(t, Relation, "add", "--feature", "checkout", "--id", id+"-charged", "--type", "explains", "--from", "urn:change-saga:shop:slide:"+id,
 		"--to", "urn:change-saga:shop:story:pay:criterion:charged", "--scope", "descendants", "--rationale", "How the charge reaches fulfilment", root)
 }
 
 // removeSlides deletes every slide and Item of the implementation deck.
 func removeSlides(t *testing.T, repo, root string) {
 	t.Helper()
-	deckDir := filepath.Join(root, "___epics", "checkout.epic", "___slides", "impl.deck")
+	deckDir := filepath.Join(root, "___features", "checkout.feature", "___slides", "impl.deck")
 	for _, pattern := range []string{"20-s-*", "30-i-*"} {
 		matches, _ := filepath.Glob(filepath.Join(deckDir, pattern))
 		for _, match := range matches {
@@ -195,7 +195,7 @@ func removeSlides(t *testing.T, repo, root string) {
 // history names what it replaced and the comparison that opens it.
 func TestReplacedSlidePairsWithItsReplacementAndItsReason(t *testing.T) {
 	repo, root := shopSaga(t)
-	mustRun(t, AddDeck, "--epic", "checkout", "--id", "impl", "--title", "Implementation", "--objective", "How payment ships", root, "impl")
+	mustRun(t, AddDeck, "--feature", "checkout", "--id", "impl", "--title", "Implementation", "--objective", "How payment ships", root, "impl")
 	addQueueSlide(t, root, "sqs", "Jobs go through SQS")
 	git(t, repo, "add", ".")
 	git(t, repo, "commit", "-m", "Explain the queue")
@@ -250,7 +250,7 @@ func TestReplacedSlidePairsWithItsReplacementAndItsReason(t *testing.T) {
 // ambiguous until an explicit supersedes relation decides it.
 func TestAmbiguousReplacementNeedsAnExplicitLink(t *testing.T) {
 	repo, root := shopSaga(t)
-	mustRun(t, AddDeck, "--epic", "checkout", "--id", "impl", "--title", "Implementation", "--objective", "How payment ships", root, "impl")
+	mustRun(t, AddDeck, "--feature", "checkout", "--id", "impl", "--title", "Implementation", "--objective", "How payment ships", root, "impl")
 	addQueueSlide(t, root, "sqs", "Jobs go through SQS")
 	git(t, repo, "add", ".")
 	git(t, repo, "commit", "-m", "Explain the queue")
@@ -272,7 +272,7 @@ func TestAmbiguousReplacementNeedsAnExplicitLink(t *testing.T) {
 	if pairing := pairOf("urn:change-saga:shop:slide:table"); pairing == nil || pairing.Basis != changeview.PairAmbiguous || pairing.Link == "" {
 		t.Fatalf("an ambiguous replacement must ask for an explicit link: %#v", pairing)
 	}
-	mustRun(t, Relation, "add", "--epic", "checkout", "--id", "table-replaces-sqs", "--type", "supersedes", "--from", "urn:change-saga:shop:slide:table",
+	mustRun(t, Relation, "add", "--feature", "checkout", "--id", "table-replaces-sqs", "--type", "supersedes", "--from", "urn:change-saga:shop:slide:table",
 		"--to", "urn:change-saga:shop:slide:sqs", "--rationale", "The table holds the jobs the queue held", root)
 	if pairing := pairOf("urn:change-saga:shop:slide:table"); pairing == nil || pairing.Basis != changeview.PairExplicit || pairing.With != "urn:change-saga:shop:slide:sqs" {
 		t.Fatalf("an explicit supersedes relation must decide the pair: %#v", pairing)
@@ -330,14 +330,14 @@ func TestCompanionSagaComparesThroughItsSyncCursor(t *testing.T) {
 	git(t, docs, "config", "user.email", "docs@example.test")
 	root := filepath.Join(docs, "app.saga")
 	mustRun(t, Init, "--repo", code, "--id", "shop", root)
-	mustRun(t, Epic, "add", "--id", "checkout", "--title", "Checkout", root)
-	mustRun(t, Story, "add", "--epic", "checkout", "--id", "pay", "--revision", "r1", "--event", "proposed", "--title", "Pay", "--statement", "As a shopper I pay",
+	mustRun(t, Feature, "add", "--id", "checkout", "--title", "Checkout", root)
+	mustRun(t, Story, "add", "--feature", "checkout", "--id", "pay", "--revision", "r1", "--event", "proposed", "--title", "Pay", "--statement", "As a shopper I pay",
 		"--priority", "must", "--criterion", "charged=The card is charged once", root)
 	design := filepath.Join(t.TempDir(), "design.md")
 	writeFile(t, design, "# Queue {#queue}\n\nJobs go to SQS.\n")
-	mustRun(t, Design, "add-fragment", "--epic", "checkout", "--id", "queue-design", "--title", "Queue", "--type", "markdown", "--name", "queue-design", "--source", design, root)
-	mustRun(t, Cover, "--repo", code, "--target", "___epics/checkout.epic/___design/queue-design.fragment", "--commit", "HEAD", "--path", "src/queue.go", "--lines", "3-6", root)
-	mustRun(t, Relation, "add", "--epic", "checkout", "--id", "design-pay", "--type", "addresses", "--from", "urn:change-saga:shop:fragment:queue-design",
+	mustRun(t, Design, "add-fragment", "--feature", "checkout", "--id", "queue-design", "--title", "Queue", "--type", "markdown", "--name", "queue-design", "--source", design, root)
+	mustRun(t, Cover, "--repo", code, "--target", "___features/checkout.feature/___design/queue-design.fragment", "--commit", "HEAD", "--path", "src/queue.go", "--lines", "3-6", root)
+	mustRun(t, Relation, "add", "--feature", "checkout", "--id", "design-pay", "--type", "addresses", "--from", "urn:change-saga:shop:fragment:queue-design",
 		"--to", "urn:change-saga:shop:story:pay", "--rationale", "How payment reaches fulfilment", root)
 	mustRun(t, Sync, "--repo", code, root)
 	git(t, docs, "add", ".")

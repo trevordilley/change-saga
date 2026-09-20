@@ -9,27 +9,27 @@ import (
 	"github.com/twentyideas/changesaga/internal/applayout"
 )
 
-func addSecondEpic(t *testing.T, root string) {
+func addSecondFeature(t *testing.T, root string) {
 	t.Helper()
-	if _, err := applayout.WriteEpic(root, applayout.EpicManifest{ID: "billing", Title: "Billing", CreatedAt: testTime}); err != nil {
+	if _, err := applayout.WriteFeature(root, applayout.FeatureManifest{ID: "billing", Title: "Billing", CreatedAt: testTime}); err != nil {
 		t.Fatal(err)
 	}
 }
 
-func TestStoryIDsAreUniqueAcrossEpics(t *testing.T) {
+func TestStoryIDsAreUniqueAcrossFeatures(t *testing.T) {
 	root := newSaga(t)
-	addSecondEpic(t, root)
+	addSecondFeature(t, root)
 	if _, err := AddStory(root, "test", storyInput("checkout", "r1", "proposed", nil)); err != nil {
 		t.Fatal(err)
 	}
 	input := storyInput("checkout", "r1", "proposed", nil)
-	input.Epic = "billing"
+	input.Feature = "billing"
 	if _, err := AddStory(root, "test", input); err == nil || !strings.Contains(err.Error(), "already exists") {
-		t.Fatalf("second epic reused a story id: %v", err)
+		t.Fatalf("second feature reused a story id: %v", err)
 	}
 	// A hand-copied package is one URN naming two records, so loading refuses it.
-	from := filepath.Join(root, "___epics", "core.epic", "___requirements", "stories", "checkout.story")
-	to := filepath.Join(root, "___epics", "billing.epic", "___requirements", "stories", "checkout.story")
+	from := filepath.Join(root, "___features", "core.feature", "___requirements", "stories", "checkout.story")
+	to := filepath.Join(root, "___features", "billing.feature", "___requirements", "stories", "checkout.story")
 	if err := os.MkdirAll(filepath.Dir(to), 0o755); err != nil {
 		t.Fatal(err)
 	}
@@ -37,36 +37,36 @@ func TestStoryIDsAreUniqueAcrossEpics(t *testing.T) {
 		t.Fatal(err)
 	}
 	if _, err := Load(root, "test"); err == nil || !strings.Contains(err.Error(), "unique across the app") {
-		t.Fatalf("duplicate story across epics loaded: %v", err)
+		t.Fatalf("duplicate story across features loaded: %v", err)
 	}
 }
 
 func TestMovingAStoryKeepsEveryRelationCurrent(t *testing.T) {
 	root := newSaga(t)
-	addSecondEpic(t, root)
+	addSecondFeature(t, root)
 	if _, err := AddStory(root, "test", storyInput("parent", "r1", "proposed", nil)); err != nil {
 		t.Fatal(err)
 	}
 	if _, err := AddStory(root, "test", storyInput("child", "r1", "proposed", nil)); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := AddRelation(root, "test", AddRelationInput{Epic: "core", ID: "child-refines-parent", Type: RelationRefines,
+	if _, err := AddRelation(root, "test", AddRelationInput{Feature: "core", ID: "child-refines-parent", Type: RelationRefines,
 		From: "urn:change-saga:test:story:child", To: "urn:change-saga:test:story:parent", Rationale: "narrows it",
 		FromRevision: "urn:change-saga:test:story:child:revision:r1", ToRevision: "urn:change-saga:test:story:parent:revision:r1", CreatedAt: testTime}); err != nil {
 		t.Fatal(err)
 	}
-	result, err := MoveStory(root, "test", MoveStoryInput{Story: "urn:change-saga:test:story:parent", Epic: "billing"})
+	result, err := MoveStory(root, "test", MoveStoryInput{Story: "urn:change-saga:test:story:parent", Feature: "billing"})
 	if err != nil {
 		t.Fatal(err)
 	}
-	if result.Path != "___epics/billing.epic/___requirements/stories/parent.story" {
+	if result.Path != "___features/billing.feature/___requirements/stories/parent.story" {
 		t.Fatalf("moved path = %s", result.Path)
 	}
 	document, err := Load(root, "test")
 	if err != nil {
 		t.Fatal(err)
 	}
-	if story := document.FindStory("parent"); story == nil || story.Epic != "billing" {
+	if story := document.FindStory("parent"); story == nil || story.Feature != "billing" {
 		t.Fatalf("story did not move: %+v", story)
 	}
 	for _, currency := range EvaluateRelations(document, StaleInputs{}) {
@@ -74,7 +74,7 @@ func TestMovingAStoryKeepsEveryRelationCurrent(t *testing.T) {
 			t.Fatalf("relation went stale after a move: %+v", currency)
 		}
 	}
-	replay, err := MoveStory(root, "test", MoveStoryInput{Story: "urn:change-saga:test:story:parent", Epic: "billing"})
+	replay, err := MoveStory(root, "test", MoveStoryInput{Story: "urn:change-saga:test:story:parent", Feature: "billing"})
 	if err != nil || !replay.Replayed {
 		t.Fatalf("repeat move = %+v, %v", replay, err)
 	}
@@ -133,21 +133,21 @@ func TestPersonaLifecycleAndRevisions(t *testing.T) {
 	}
 }
 
-func TestFlagsGateStoriesAndEpics(t *testing.T) {
+func TestFlagsGateStoriesAndFeatures(t *testing.T) {
 	root := newSaga(t)
-	addSecondEpic(t, root)
+	addSecondFeature(t, root)
 	if _, err := AddStory(root, "test", storyInput("checkout", "r1", "proposed", nil)); err != nil {
 		t.Fatal(err)
 	}
 	invoice := storyInput("invoice", "r1", "proposed", nil)
-	invoice.Epic = "billing"
+	invoice.Feature = "billing"
 	if _, err := AddStory(root, "test", invoice); err != nil {
 		t.Fatal(err)
 	}
 	if _, err := AddFlag(root, "test", AddFlagInput{ID: "new-checkout", RevisionID: "r1", EventID: "off", Description: "New checkout", Targets: []string{"urn:change-saga:test:story:checkout"}, CreatedAt: testTime}); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := AddFlag(root, "test", AddFlagInput{ID: "billing", RevisionID: "r1", EventID: "on", State: FlagOn, Description: "Billing", Targets: []string{"urn:change-saga:test:epic:billing"}, CreatedAt: testTime}); err != nil {
+	if _, err := AddFlag(root, "test", AddFlagInput{ID: "billing", RevisionID: "r1", EventID: "on", State: FlagOn, Description: "Billing", Targets: []string{"urn:change-saga:test:feature:billing"}, CreatedAt: testTime}); err != nil {
 		t.Fatal(err)
 	}
 	if _, err := AddFlag(root, "test", AddFlagInput{ID: "ghost", RevisionID: "r1", EventID: "off", Description: "Ghost", Targets: []string{"urn:change-saga:test:story:ghost"}, CreatedAt: testTime}); err == nil {

@@ -1,8 +1,0 @@
-{
-  "$schema": "https://changesaga.dev/schema/v5/epic.schema.json",
-  "version": 5,
-  "id": "requirements",
-  "title": "Requirements and traceability",
-  "description": "Personas, stories with acceptance criteria, citations, typed pinned relations, design, and test cases along the persona, story, design, and code chain; and the overview with the project's terms and vocabulary.",
-  "created_at": "2026-09-19T20:47:03.091134Z"
-}

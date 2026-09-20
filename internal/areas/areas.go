@@ -95,13 +95,13 @@ const (
 )
 
 // Scope names what the report covers. Kind is "change" with --against (what
-// the change changed and what it affected) or "app" without; Epic narrows
+// the change changed and what it affected) or "app" without; Feature narrows
 // either.
 type Scope struct {
 	Kind    string `json:"kind"`
 	Against string `json:"against,omitempty"`
 	Head    string `json:"head"`
-	Epic    string `json:"epic,omitempty"`
+	Feature string `json:"feature,omitempty"`
 }
 
 const (
@@ -119,7 +119,7 @@ const (
 type Entry struct {
 	Resource string   `json:"resource"`
 	Title    string   `json:"title,omitempty"`
-	Epic     string   `json:"epic,omitempty"`
+	Feature  string   `json:"feature,omitempty"`
 	Kind     string   `json:"kind,omitempty"`
 	Side     string   `json:"side,omitempty"`
 	Lines    string   `json:"lines,omitempty"`
@@ -194,7 +194,7 @@ func (report Report) All() []Area {
 type Story struct {
 	URN      string
 	Title    string
-	Epic     string
+	Feature  string
 	Active   bool
 	Personas []string
 	Criteria []Criterion
@@ -210,7 +210,7 @@ type Criterion struct {
 type Problem struct {
 	Resource string
 	Kind     string
-	Epic     string
+	Feature  string
 	Reason   string
 }
 
@@ -218,7 +218,7 @@ type Problem struct {
 type Record struct {
 	Resource string
 	Kind     string
-	Epic     string
+	Feature  string
 }
 
 // Inputs is every fact the report reads.
@@ -232,9 +232,9 @@ type Inputs struct {
 	// CodeTargets are the documentation targets that reference code, the
 	// unit of the line areas when observing.
 	CodeTargets []string
-	// TargetEpic is the epic holding each target; TargetTitle its title.
-	TargetEpic  map[string]string
-	TargetTitle map[string]string
+	// TargetFeature is the feature holding each target; TargetTitle its title.
+	TargetFeature map[string]string
+	TargetTitle   map[string]string
 	// TargetStories maps a target to the stories it reaches.
 	TargetStories map[string][]string
 	Stories       []Story
@@ -280,11 +280,11 @@ type evaluator struct {
 	stories map[string]Story
 }
 
-// inEpic reports whether a record in epic belongs to the scope. A changed
-// line no record owns belongs to no epic yet, so it counts in every epic's
+// inFeature reports whether a record in feature belongs to the scope. A changed
+// line no record owns belongs to no feature yet, so it counts in every feature's
 // scope: it could belong to any of them.
-func (e evaluator) inEpic(epic string, unowned bool) bool {
-	return e.in.Scope.Epic == "" || epic == e.in.Scope.Epic || unowned
+func (e evaluator) inFeature(feature string, unowned bool) bool {
+	return e.in.Scope.Feature == "" || feature == e.in.Scope.Feature || unowned
 }
 
 // storiesOf returns the active stories a set of targets reaches.
@@ -320,23 +320,23 @@ func (e evaluator) lineAreas() (Area, Area, Area) {
 	personas := lines{area: Personas}
 	for _, atom := range e.in.Atoms {
 		owners := e.in.Owners[atom.Key]
-		epic := e.epicOf(owners)
-		if !e.inEpic(epic, len(owners) == 0) {
+		feature := e.featureOf(owners)
+		if !e.inFeature(feature, len(owners) == 0) {
 			continue
 		}
 		reached := e.storiesOf(owners)
 		served := e.personasOf(reached)
-		implementation.add(atom, epic, owners, nil, "no deck Item references this changed line")
-		stories.add(atom, epic, reached, owners, "reaches no story: its Item addresses no story")
-		personas.add(atom, epic, served, owners, "reaches no persona: the stories it reaches name none")
+		implementation.add(atom, feature, owners, nil, "no deck Item references this changed line")
+		stories.add(atom, feature, reached, owners, "reaches no story: its Item addresses no story")
+		personas.add(atom, feature, served, owners, "reaches no persona: the stories it reaches name none")
 	}
 	return implementation.finish(), stories.finish(), personas.finish()
 }
 
-func (e evaluator) epicOf(targets []string) string {
+func (e evaluator) featureOf(targets []string) string {
 	for _, target := range targets {
-		if epic := e.in.TargetEpic[target]; epic != "" {
-			return epic
+		if feature := e.in.TargetFeature[target]; feature != "" {
+			return feature
 		}
 	}
 	return ""
@@ -351,12 +351,12 @@ func (e evaluator) targetAreas() (Area, Area, Area) {
 	stories := newArea(Stories, UnitCodeTarget)
 	personas := newArea(Personas, UnitCodeTarget)
 	for _, target := range uniqueSorted(e.in.CodeTargets) {
-		epic := e.in.TargetEpic[target]
-		if !e.inEpic(epic, false) {
+		feature := e.in.TargetFeature[target]
+		if !e.inFeature(feature, false) {
 			continue
 		}
 		reached := e.storiesOf([]string{target})
-		entry := Entry{Resource: target, Title: e.in.TargetTitle[target], Epic: epic, Count: 1, Targets: []string{target}}
+		entry := Entry{Resource: target, Title: e.in.TargetTitle[target], Feature: feature, Count: 1, Targets: []string{target}}
 		stories.record(entry, reached, "addresses no story")
 		personas.record(entry, e.personasOf(reached), "reaches no persona: the stories it reaches name none")
 	}
@@ -364,7 +364,7 @@ func (e evaluator) targetAreas() (Area, Area, Area) {
 }
 
 // scopedStories returns the active stories in scope, sorted: when observing,
-// every active story (in the epic); when comparing, the stories the change
+// every active story (in the feature); when comparing, the stories the change
 // changed or affected plus the stories its changed lines reach.
 func (e evaluator) scopedStories(storyArea Area) []Story {
 	reached := map[string]bool{}
@@ -377,7 +377,7 @@ func (e evaluator) scopedStories(storyArea Area) []Story {
 	}
 	result := []Story{}
 	for _, story := range e.in.Stories {
-		if !story.Active || !e.inEpic(story.Epic, false) {
+		if !story.Active || !e.inFeature(story.Feature, false) {
 			continue
 		}
 		if e.in.Scope.Kind == ScopeChange && !e.in.InScope[story.URN] && !reached[story.URN] {
@@ -392,7 +392,7 @@ func (e evaluator) scopedStories(storyArea Area) []Story {
 func (e evaluator) design(stories []Story) Area {
 	area := newArea(Design, UnitStory)
 	for _, story := range stories {
-		entry := Entry{Resource: story.URN, Title: story.Title, Epic: story.Epic, Count: 1}
+		entry := Entry{Resource: story.URN, Title: story.Title, Feature: story.Feature, Count: 1}
 		via := append([]string{}, e.in.StoryDesign[story.URN]...)
 		if len(via) == 0 && len(story.Criteria) > 0 {
 			excluded := true
@@ -412,7 +412,7 @@ func (e evaluator) quality(stories []Story) Area {
 	area := newArea(Quality, UnitCriterion)
 	for _, story := range stories {
 		for _, criterion := range story.Criteria {
-			entry := Entry{Resource: criterion.URN, Title: criterion.Statement, Epic: story.Epic, Count: 1}
+			entry := Entry{Resource: criterion.URN, Title: criterion.Statement, Feature: story.Feature, Count: 1}
 			via := append([]string{}, e.in.CriterionTests[criterion.URN]...)
 			if len(via) == 0 && e.in.QualityExcluded[criterion.URN] {
 				via = []string{"coverage exception"}
@@ -432,15 +432,15 @@ func (e evaluator) health() Area {
 	seen := map[string]bool{}
 	records := append([]Record{}, e.in.Examined...)
 	for _, problem := range e.in.Problems {
-		records = append(records, Record{Resource: problem.Resource, Kind: problem.Kind, Epic: problem.Epic})
+		records = append(records, Record{Resource: problem.Resource, Kind: problem.Kind, Feature: problem.Feature})
 	}
 	sort.SliceStable(records, func(i, j int) bool { return records[i].Resource < records[j].Resource })
 	for _, record := range records {
-		if seen[record.Resource] || !e.inEpic(record.Epic, false) {
+		if seen[record.Resource] || !e.inFeature(record.Feature, false) {
 			continue
 		}
 		seen[record.Resource] = true
-		entry := Entry{Resource: record.Resource, Kind: record.Kind, Epic: record.Epic, Count: 1, Via: []string{}}
+		entry := Entry{Resource: record.Resource, Kind: record.Kind, Feature: record.Feature, Count: 1, Via: []string{}}
 		found := problems[record.Resource]
 		if len(found) == 0 {
 			area.Covered++
@@ -452,8 +452,8 @@ func (e evaluator) health() Area {
 			reasons = append(reasons, problem.Reason)
 		}
 		entry.Kind = found[0].Kind
-		if entry.Epic == "" {
-			entry.Epic = found[0].Epic
+		if entry.Feature == "" {
+			entry.Feature = found[0].Feature
 		}
 		entry.Reason = strings.Join(uniqueSorted(reasons), "; ")
 		area.Uncovered++
@@ -485,7 +485,7 @@ func (area Area) finish() Area {
 	return area
 }
 
-// lines groups changed lines into entries: one per path, side, epic, and
+// lines groups changed lines into entries: one per path, side, feature, and
 // covering set, with the line numbers compressed into ranges.
 type lines struct {
 	area   Name
@@ -499,7 +499,7 @@ type lineGroup struct {
 	numbers []int
 }
 
-func (l *lines) add(atom gitdiff.Atom, epic string, via, targets []string, reason string) {
+func (l *lines) add(atom gitdiff.Atom, feature string, via, targets []string, reason string) {
 	if l.groups == nil {
 		l.groups = map[string]*lineGroup{}
 	}
@@ -508,13 +508,13 @@ func (l *lines) add(atom gitdiff.Atom, epic string, via, targets []string, reaso
 		targets = nil
 	}
 	path := firstNonEmpty(atom.Path, atom.NewPath, atom.OldPath)
-	key := strings.Join([]string{path, atom.Side, atom.Event, epic, strings.Join(via, "\x00"), strings.Join(targets, "\x00")}, "\x01")
+	key := strings.Join([]string{path, atom.Side, atom.Event, feature, strings.Join(via, "\x00"), strings.Join(targets, "\x00")}, "\x01")
 	if atom.Kind == "event" {
 		key += "\x01" + atom.Key
 	}
 	group, ok := l.groups[key]
 	if !ok {
-		group = &lineGroup{entry: Entry{Resource: path, Epic: epic, Side: atom.Side, Event: atom.Event, Via: via, Targets: targets}, covered: len(via) > 0}
+		group = &lineGroup{entry: Entry{Resource: path, Feature: feature, Side: atom.Side, Event: atom.Event, Via: via, Targets: targets}, covered: len(via) > 0}
 		if !group.covered {
 			group.entry.Reason = reason
 		}

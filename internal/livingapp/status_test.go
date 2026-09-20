@@ -30,8 +30,8 @@ const (
 
 var statusFixtureTime = time.Date(2026, 9, 17, 20, 0, 0, 0, time.UTC)
 
-// statusFixtureEpic holds every hand-authored status fixture record.
-const statusFixtureEpic = "refunds"
+// statusFixtureFeature holds every hand-authored status fixture record.
+const statusFixtureFeature = "refunds"
 
 func criterionURN(id string) string { return storyURN + ":criterion:" + id }
 func testURN(id string) string      { return "urn:change-saga:checkout:test-case:" + id }
@@ -77,7 +77,7 @@ func writeStatusJSON(t *testing.T, path string, value any) {
 	}
 }
 
-// newV5QualitySaga writes a v5 manifest and an epic's ___quality tree in a temp dir. The
+// newV5QualitySaga writes a v5 manifest and a feature's ___quality tree in a temp dir. The
 // core Saga loader does not accept v5 yet, so only quality.Load reads it.
 func newV5QualitySaga(t *testing.T, specs []testCaseSpec, policies []quality.Policy) string {
 	t.Helper()
@@ -86,10 +86,10 @@ func newV5QualitySaga(t *testing.T, specs []testCaseSpec, policies []quality.Pol
 		"$schema": quality.ManifestSchemaURL, "version": quality.Version, "id": fixtureSaga, "title": "Checkout",
 		"source": map[string]string{"repository": fixtureRepo},
 	})
-	if _, err := applayout.WriteEpic(root, applayout.EpicManifest{ID: statusFixtureEpic, Title: "Refunds", CreatedAt: statusFixtureTime}); err != nil {
+	if _, err := applayout.WriteFeature(root, applayout.FeatureManifest{ID: statusFixtureFeature, Title: "Refunds", CreatedAt: statusFixtureTime}); err != nil {
 		t.Fatal(err)
 	}
-	qualityRoot := filepath.Join(applayout.EpicDir(root, statusFixtureEpic), quality.RootDir)
+	qualityRoot := filepath.Join(applayout.FeatureDir(root, statusFixtureFeature), quality.RootDir)
 	for _, dir := range []string{"policies", "test-cases"} {
 		if err := os.MkdirAll(filepath.Join(qualityRoot, dir), 0o755); err != nil {
 			t.Fatal(err)

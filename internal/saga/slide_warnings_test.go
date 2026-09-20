@@ -11,7 +11,7 @@ import (
 // given Items, none of which reference code.
 func writeChangeSlide(t *testing.T, root string, items ...string) string {
 	t.Helper()
-	bundle := filepath.Join(root, testEpicDir, EmbeddedSlidesDir, "implementation"+EmbeddedDeckSuffix)
+	bundle := filepath.Join(root, testFeatureDir, EmbeddedSlidesDir, "implementation"+EmbeddedDeckSuffix)
 	deckTarget := DeckTarget("shop", "implementation")
 	deckName, _ := FlatDeckFilename(deckTarget, 0)
 	writeTestFile(t, filepath.Join(bundle, deckName), `{"version":4,"id":"implementation","title":"Implementation","role":"change","rank":0,"objective":"Explain the change."}`)
@@ -29,7 +29,7 @@ func writeChangeSlide(t *testing.T, root string, items ...string) string {
 		itemName, _ := FlatItemFilename(slideTarget, ItemTarget("shop", "flow", id), index*10)
 		writeTestFile(t, filepath.Join(bundle, itemName), fmt.Sprintf(`{"version":4,"id":%q,"slide":"flow","rank":%d,"kind":"node","label":"Node","description":"A node.","selector":{"type":"element","element_id":%q}}`, id, index*10, id))
 	}
-	return filepath.ToSlash(filepath.Join(testEpicDir, EmbeddedSlidesDir, "implementation"+EmbeddedDeckSuffix, slideName))
+	return filepath.ToSlash(filepath.Join(testFeatureDir, EmbeddedSlidesDir, "implementation"+EmbeddedDeckSuffix, slideName))
 }
 
 func jsonStrings(values []string) string {

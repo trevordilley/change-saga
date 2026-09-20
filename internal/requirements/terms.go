@@ -48,7 +48,7 @@ type TermRevision struct {
 	// Stories are the canonical URNs of the stories the term belongs to.
 	Stories []string `json:"stories,omitempty"`
 	// Records are canonical URNs of other app records the term names: a
-	// persona, an epic, a feature flag, or another term.
+	// persona, a feature, a feature flag, or another term.
 	Records []string `json:"records,omitempty"`
 	// Code is the exact code that defines the term, most often an enum value
 	// or a constant, pinned at a commit.
@@ -128,9 +128,9 @@ func (document *Document) FindTerm(id string) *Term {
 }
 
 // TermRecordKinds are the record kinds a term's records may name.
-var TermRecordKinds = []string{"persona", "epic", "flag", "term"}
+var TermRecordKinds = []string{"persona", "feature", "flag", "term"}
 
-// termRecord parses a canonical persona, epic, flag, or term URN of sagaID.
+// termRecord parses a canonical persona, feature, flag, or term URN of sagaID.
 func termRecord(sagaID, value string) (kind, id string, err error) {
 	for _, kind := range TermRecordKinds {
 		prefix := "urn:change-saga:" + sagaID + ":" + kind + ":"
@@ -138,7 +138,7 @@ func termRecord(sagaID, value string) (kind, id string, err error) {
 			return kind, id, nil
 		}
 	}
-	return "", "", fmt.Errorf("record %q must be a canonical persona, epic, flag, or term URN in saga %q", value, sagaID)
+	return "", "", fmt.Errorf("record %q must be a canonical persona, feature, flag, or term URN in saga %q", value, sagaID)
 }
 
 func loadTerms(document *Document) error {
@@ -283,8 +283,8 @@ func validateTermLinks(document *Document, value TermRevision) error {
 		switch kind {
 		case "persona":
 			exists = document.FindPersona(id) != nil
-		case "epic":
-			_, exists = applayout.Find(document.Epics, id)
+		case "feature":
+			_, exists = applayout.Find(document.Features, id)
 		case "flag":
 			exists = document.FindFlag(id) != nil
 		case "term":

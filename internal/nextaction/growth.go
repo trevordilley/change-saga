@@ -46,8 +46,8 @@ const (
 	practiceCriteria  = "Write acceptance criteria: a criterion is an observable statement of done. It is what design addresses and a test verifies, so without one neither can be traced."
 	practicePrototype = "Annotate the prototype: pinning part of a prototype to the story it clarifies keeps the experience and the requirement saying the same thing as both evolve."
 	practiceTerms     = "Define the term: the words a team says every day are the least documented and fastest to rot. A term references the code that defines it, so renaming that code flags the term."
-	practicePitch     = "Write the elevator pitch: two or three sentences on what the app is and who it is for. It is the first thing a newcomer reads, and every epic and story is read in its light."
-	practiceAbout     = "Write the description: a short essay on what the app does, how it is organized, and the ideas a newcomer needs before the epics make sense. It is the orientation no single story gives."
+	practicePitch     = "Write the elevator pitch: two or three sentences on what the app is and who it is for. It is the first thing a newcomer reads, and every feature and story is read in its light."
+	practiceAbout     = "Write the description: a short essay on what the app does, how it is organized, and the ideas a newcomer needs before the features make sense. It is the orientation no single story gives."
 )
 
 // Context is what growth suggestions read beyond the living status: the
@@ -55,18 +55,18 @@ const (
 type Context struct {
 	Coverage areas.Report
 	// Places maps a documentation target to the slide (or other place) a
-	// story link attaches to, with its title and epic.
+	// story link attaches to, with its title and feature.
 	Places map[string]Place
-	// DesignEpics holds each epic that has design content, so a design
-	// suggestion in an epic with none starts by creating it.
-	DesignEpics map[string]bool
+	// DesignFeatures holds each feature that has design content, so a design
+	// suggestion in a feature with none starts by creating it.
+	DesignFeatures map[string]bool
 }
 
 // Place is where a story link attaches: usually the slide holding an Item.
 type Place struct {
-	Target string
-	Title  string
-	Epic   string
+	Target  string
+	Title   string
+	Feature string
 	// Slide is true for a slide or deck, whose link reaches its Items only
 	// with scope descendants.
 	Slide bool
@@ -80,8 +80,8 @@ func (b *builder) valueOf(resource string) int {
 	if scope.Kind == "" {
 		return 1
 	}
-	epic := b.epicOf[resource]
-	if scope.Epic != "" && epic != "" && epic != scope.Epic {
+	feature := b.featureOf[resource]
+	if scope.Feature != "" && feature != "" && feature != scope.Feature {
 		return 1
 	}
 	if scope.Kind == areas.ScopeApp {
@@ -144,7 +144,7 @@ func (b *builder) overviewGrowth() {
 	if overview.Description == nil {
 		b.add(Action{
 			ID: "growth:overview:description", Kind: KindCommand, Category: CategoryGrowth, Area: AreaOverview, value: value, order: 1,
-			Reason:   "the overview has no description; write the short essay a newcomer reads before the epics?",
+			Reason:   "the overview has no description; write the short essay a newcomer reads before the features?",
 			Practice: practiceAbout,
 			Command:  ptr(b.invoke("overview set-description", grammar.V("text", ""))),
 		})
@@ -177,7 +177,7 @@ func (b *builder) storyGrowth() {
 			}
 			place, ok := b.context.Places[target]
 			if !ok {
-				place = Place{Target: target, Epic: entry.Epic}
+				place = Place{Target: target, Feature: entry.Feature}
 			}
 			value, ok := places[place.Target]
 			if !ok {
@@ -207,7 +207,7 @@ func (b *builder) storyGrowth() {
 		existing := append([]grammar.Value{}, link...)
 		existing[0], existing[3] = grammar.V("id", ""), grammar.V("to", "")
 		b.add(Action{
-			ID: "growth:story:" + place.Target, Kind: KindQuestion, Category: CategoryGrowth, Area: AreaStories, Resource: place.Target, Epic: place.Epic,
+			ID: "growth:story:" + place.Target, Kind: KindQuestion, Category: CategoryGrowth, Area: AreaStories, Resource: place.Target, Feature: place.Feature,
 			Reason: reason, Practice: practiceStories,
 			// The more of the change a story would explain, the more it is worth.
 			value: -value.count,
@@ -302,7 +302,7 @@ func (b *builder) reviseStory(row livingapp.StoryStatus, personas []string) gram
 	for _, citation := range row.Citations {
 		values = append(values, grammar.V("citation", citation))
 	}
-	return b.invoke("story revise", values...).With("epic", row.Epic)
+	return b.invoke("story revise", values...).With("feature", row.Feature)
 }
 
 func (b *builder) designGrowth() {
@@ -315,13 +315,13 @@ func (b *builder) designGrowth() {
 		later := option("not now", "nothing is recorded; the design area keeps reporting the gap")
 		reason := "\"" + title + "\" has no design; add the design that explains how it is met?"
 		options := []Option{existing, write, later}
-		if !b.context.DesignEpics[entry.Epic] {
+		if !b.context.DesignFeatures[entry.Feature] {
 			// With no design to relate, the one command creates it.
-			reason = "\"" + title + "\" has no design, and its epic has none yet; write the design that explains how it is met?"
+			reason = "\"" + title + "\" has no design, and its feature has none yet; write the design that explains how it is met?"
 			options = []Option{write, existing, later}
 		}
 		b.add(Action{
-			ID: "growth:design:" + entry.Resource, Kind: KindQuestion, Category: CategoryGrowth, Area: AreaDesign, Resource: entry.Resource, Epic: entry.Epic,
+			ID: "growth:design:" + entry.Resource, Kind: KindQuestion, Category: CategoryGrowth, Area: AreaDesign, Resource: entry.Resource, Feature: entry.Feature,
 			Reason: reason, Practice: practiceDesign,
 			value:    b.valueOf(entry.Resource),
 			Question: question("What design explains how \""+title+"\" is met?", NeedProductJudgment, options...),
@@ -365,7 +365,7 @@ func (b *builder) qualityGrowth() {
 			reason = "no test case verifies " + itoa(len(entries)) + " of the " + itoa(total) + " acceptance criteria of " + title + "; add one?"
 		}
 		b.add(Action{
-			ID: "growth:quality:" + story, Kind: KindQuestion, Category: CategoryGrowth, Area: AreaQuality, Resource: story, Epic: firstNonEmptyString(row.Epic, entries[0].Epic),
+			ID: "growth:quality:" + story, Kind: KindQuestion, Category: CategoryGrowth, Area: AreaQuality, Resource: story, Feature: firstNonEmptyString(row.Feature, entries[0].Feature),
 			Reason: reason, Practice: practiceQuality, value: value,
 			Question: question("Which test cases verify these acceptance criteria of "+title+": "+strings.Join(statements, "; ")+"?", NeedProductJudgment, b.testOptions(relates)...),
 		})

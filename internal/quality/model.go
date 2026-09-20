@@ -12,7 +12,7 @@ import (
 
 const (
 	Version = 5
-	// RootDir is the quality root beneath each epic directory.
+	// RootDir is the quality root beneath each feature directory.
 	RootDir = applayout.QualityDir
 
 	ManifestSchemaURL       = "https://changesaga.dev/schema/v5/saga.schema.json"
@@ -184,15 +184,15 @@ type Policy struct {
 	CreatedAt         time.Time      `json:"created_at"`
 	RequestID         string         `json:"request_id,omitempty"`
 
-	// Epic is the epic whose directory holds the policy. It is where the
+	// Feature is the feature whose directory holds the policy. It is where the
 	// record lives, never part of its identity.
-	Epic string `json:"-"`
+	Feature string `json:"-"`
 }
 
 type TestCase struct {
-	// Epic is the epic whose directory holds the test case. It is where the
+	// Feature is the feature whose directory holds the test case. It is where the
 	// package lives, never part of its identity.
-	Epic      string
+	Feature   string
 	Identity  TestCaseIdentity
 	Revisions []Revision
 	Events    []LifecycleEvent
@@ -229,7 +229,7 @@ type Document struct {
 	SagaID     string
 	Source     SourceIdentity
 	Adoption   AdoptionState
-	Epics      []applayout.Epic
+	Features   []applayout.Feature
 	TestCases  []TestCase
 	Policies   []Policy
 	PolicySets []PolicySet

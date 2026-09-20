@@ -16,13 +16,13 @@ import (
 
 // authoringScope selects a physical hierarchy root while leaving chapter,
 // section, fragment, landmark, and target behavior in the shared machinery.
-// Report content lives in an epic (its report root, or its ___design root for
+// Report content lives in a feature (its report root, or its ___design root for
 // design authoring) or in one of the app-level report roots.
 type authoringScope struct {
 	design bool
-	// epic and app are the parsed --epic and --app values.
-	epic string
-	app  string
+	// feature and app are the parsed --feature and --app values.
+	feature string
+	app     string
 }
 
 var narrativeAuthoring = authoringScope{}
@@ -34,26 +34,26 @@ var appReportRoots = map[string]string{
 	"designsystem": applayout.DesignSystemDir,
 }
 
-const appFlagHelp = "author into the app-level design system instead of an epic: designsystem"
+const appFlagHelp = "author into the app-level design system instead of a feature: designsystem"
 
 // placeFlags registers the flags that choose where report content goes.
 func (scope authoringScope) placeFlags(flags *flag.FlagSet) (*string, *string) {
-	epic := epicFlag(flags)
+	feature := featureIDFlag(flags)
 	app := new(string)
 	if !scope.design {
 		app = flags.String("app", "", appFlagHelp)
 	}
-	return epic, app
+	return feature, app
 }
 
-func (scope authoringScope) placed(epic, app *string) (authoringScope, error) {
-	scope.epic, scope.app = strings.TrimSpace(*epic), strings.TrimSpace(*app)
+func (scope authoringScope) placed(feature, app *string) (authoringScope, error) {
+	scope.feature, scope.app = strings.TrimSpace(*feature), strings.TrimSpace(*app)
 	if scope.app != "" {
 		if _, ok := appReportRoots[scope.app]; !ok {
 			return scope, fmt.Errorf("--app must be designsystem; write the overview with change-saga overview")
 		}
-		if scope.epic != "" {
-			return scope, fmt.Errorf("--app and --epic cannot be combined; app-level report content belongs to no epic")
+		if scope.feature != "" {
+			return scope, fmt.Errorf("--app and --feature cannot be combined; app-level report content belongs to no feature")
 		}
 	}
 	return scope, nil
@@ -73,14 +73,14 @@ func (scope authoringScope) commandText(operation string) string {
 	return "change-saga " + operation
 }
 
-// placeArguments renders the --epic or --app arguments a follow-up command
+// placeArguments renders the --feature or --app arguments a follow-up command
 // needs to author into the same place.
 func (scope authoringScope) placeArguments() string {
 	if scope.app != "" {
 		return "--app " + scope.app + " "
 	}
-	if scope.epic != "" {
-		return "--epic " + scope.epic + " "
+	if scope.feature != "" {
+		return "--feature " + scope.feature + " "
 	}
 	return ""
 }
@@ -91,16 +91,16 @@ func (scope authoringScope) hierarchyRoot(document *saga.Saga) (string, error) {
 	if scope.app != "" {
 		dir = filepath.Join(document.Root, appReportRoots[scope.app])
 	} else {
-		epic, err := requireEpic(document.Root, scope.epic)
+		feature, err := requireFeature(document.Root, scope.feature)
 		if err != nil {
 			if scope.design {
 				return "", err
 			}
 			return "", fmt.Errorf("%w; app-level report content uses --app designsystem", err)
 		}
-		dir = epic.Dir
+		dir = feature.Dir
 		if scope.design {
-			dir = filepath.Join(epic.Dir, applayout.DesignDir)
+			dir = filepath.Join(feature.Dir, applayout.DesignDir)
 		}
 	}
 	info, err := os.Lstat(dir)
@@ -118,7 +118,7 @@ func (scope authoringScope) hierarchyRoot(document *saga.Saga) (string, error) {
 
 // resolveTarget resolves an existing chapter, section, or fragment. "." names
 // the hierarchy root itself. A stable ID or URN resolves app-wide and then
-// decides the place: --epic, when given, must agree with it. A relative path
+// decides the place: --feature, when given, must agree with it. A relative path
 // is relative to the hierarchy root.
 func (scope authoringScope) resolveTarget(document *saga.Saga, value string, allowFragment bool) (string, string, error) {
 	if value == "." || value == "" {
@@ -144,10 +144,10 @@ func (scope authoringScope) resolveTarget(document *saga.Saga, value string, all
 		if !pathWithin(filepath.Join(document.Root, appReportRoots[scope.app]), dir) {
 			return "", "", fmt.Errorf("target %q is outside the app's %s root", value, scope.app)
 		}
-	case saga.EpicOf(rel) == "":
-		return "", "", fmt.Errorf("target %q belongs to the app, not an epic; use --app designsystem", value)
-	case scope.epic != "":
-		if err := assertEpic(document.Root, scope.epic, target, saga.EpicOf(rel)); err != nil {
+	case saga.FeatureOf(rel) == "":
+		return "", "", fmt.Errorf("target %q belongs to the app, not a feature; use --app designsystem", value)
+	case scope.feature != "":
+		if err := assertFeature(document.Root, scope.feature, target, saga.FeatureOf(rel)); err != nil {
 			return "", "", err
 		}
 	}

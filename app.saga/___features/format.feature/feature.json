@@ -1,0 +1,8 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/feature.schema.json",
+  "version": 5,
+  "id": "format",
+  "title": "Saga format and app structure",
+  "description": "One app Saga per repository: the manifest, the app-level roots, durable features and their contents, app-unique identities, and loading and validation of every record.",
+  "created_at": "2026-09-19T20:47:03.004808Z"
+}

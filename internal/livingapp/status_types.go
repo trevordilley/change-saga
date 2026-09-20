@@ -85,10 +85,10 @@ type StatusInputs struct {
 	Citations []requirements.Citation
 	Links     []Link
 
-	// Epics, Personas, Flags, and Gates are the app-level records: the
+	// Features, Personas, Flags, and Gates are the app-level records: the
 	// durable product domains, who the app serves, and which stories current
 	// flags gate.
-	Epics    []applayout.Epic
+	Features []applayout.Feature
 	Personas []requirements.Persona
 	Flags    []requirements.Flag
 	Gates    requirements.Gate
@@ -132,7 +132,7 @@ type Diagnostic struct {
 type Status struct {
 	SagaID         string           `json:"saga_id"`
 	SagaVersion    int              `json:"saga_version"`
-	Epics          []EpicStatus     `json:"epics"`
+	Features       []FeatureStatus  `json:"features"`
 	Personas       []PersonaStatus  `json:"personas"`
 	PersonaOrphans []PersonaOrphans `json:"persona_orphans"`
 	// PersonaCoverage reports the persona -> story link. It never blocks a
@@ -159,10 +159,10 @@ type Status struct {
 
 // StoryStatus is the requirement identity an author needs to act on a story.
 type StoryStatus struct {
-	Story string `json:"story"`
-	ID    string `json:"id"`
-	Epic  string `json:"epic"`
-	Title string `json:"title,omitempty"`
+	Story   string `json:"story"`
+	ID      string `json:"id"`
+	Feature string `json:"feature"`
+	Title   string `json:"title,omitempty"`
 	// Statement, Priority, and Citations complete the current revision, so a
 	// suggested revision can carry every field forward.
 	Statement       string            `json:"statement,omitempty"`
@@ -188,7 +188,7 @@ type CriterionStatus struct {
 // PrototypeStatus is one prototype's product-discovery linkage.
 type PrototypeStatus struct {
 	Prototype       string   `json:"prototype"`
-	Epic            string   `json:"epic"`
+	Feature         string   `json:"feature"`
 	State           string   `json:"state"`
 	Retained        bool     `json:"retained"`
 	RevisionHeads   []string `json:"revision_heads"`
@@ -247,7 +247,7 @@ type TestLinkRow struct {
 // TestCaseStatus is one test case and what it currently proves.
 type TestCaseStatus struct {
 	TestCase        string         `json:"test_case"`
-	Epic            string         `json:"epic"`
+	Feature         string         `json:"feature"`
 	Title           string         `json:"title,omitempty"`
 	Lifecycle       string         `json:"lifecycle"`
 	RevisionHeads   []string       `json:"revision_heads"`

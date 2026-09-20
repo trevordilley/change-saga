@@ -30,11 +30,11 @@ func TestV5RelationLinksTestCaseToCriterionAndGoesStaleOnRevision(t *testing.T) 
 	}
 	prefix := "urn:change-saga:" + document.SagaID
 	story, testCase := prefix+":story:checkout", prefix+":test-case:fast"
-	runQuality(t, "", "test-case", "add", root, "--epic", testEpic, "--id", "fast", "--title", "Fast checkout", "--kind", "positive",
+	runQuality(t, "", "test-case", "add", root, "--feature", testFeature, "--id", "fast", "--title", "Fast checkout", "--kind", "positive",
 		"--automation", "automated", "--step", `{"id":"s1","action":"Check out","expected_result":"Done"}`, "--expected-result", "Done")
 
 	var output bytes.Buffer
-	if err := Relation(ctx, []string{"add", root, "--epic", testEpic, "--id", "fast-verifies", "--type", "verifies", "--from", testCase,
+	if err := Relation(ctx, []string{"add", root, "--feature", testFeature, "--id", "fast-verifies", "--type", "verifies", "--from", testCase,
 		"--to", story + ":criterion:fast", "--rationale", "Exercises the fast path.", "--json"}, &output); err != nil {
 		t.Fatalf("relation add: %v\n%s", err, output.String())
 	}
@@ -49,7 +49,7 @@ func TestV5RelationLinksTestCaseToCriterionAndGoesStaleOnRevision(t *testing.T) 
 	if !added.OK || added.Resource != prefix+":relation:fast-verifies" || !reflect.DeepEqual(added.DefaultedPins, wantDefaults) {
 		t.Fatalf("relation add output = %s", output.String())
 	}
-	record, err := os.ReadFile(filepath.Join(testEpicDir(root), "___requirements", "relations", "fast-verifies.json"))
+	record, err := os.ReadFile(filepath.Join(testFeatureDir(root), "___requirements", "relations", "fast-verifies.json"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -90,7 +90,7 @@ func TestV5RelationLinksTestCaseToCriterionAndGoesStaleOnRevision(t *testing.T) 
 	}
 
 	// A link to a test case the quality domain does not know is refused.
-	if err := Relation(ctx, []string{"add", root, "--epic", testEpic, "--id", "ghost", "--type", "verifies", "--from", prefix + ":test-case:ghost",
+	if err := Relation(ctx, []string{"add", root, "--feature", testFeature, "--id", "ghost", "--type", "verifies", "--from", prefix + ":test-case:ghost",
 		"--to", story + ":criterion:fast", "--rationale", "No such case."}, &bytes.Buffer{}); err == nil || !strings.Contains(err.Error(), "does not exist") {
 		t.Fatalf("ghost test case error = %v", err)
 	}
@@ -104,7 +104,7 @@ func addCheckoutStory(t *testing.T, root, id string) error {
 	}
 	var output bytes.Buffer
 	err = Story(context.Background(), []string{
-		"add", root, "--epic", testEpic, "--persona", personaURNFor(manifest.ID), "--id", id, "--revision", "r1", "--event", "proposed",
+		"add", root, "--feature", testFeature, "--persona", personaURNFor(manifest.ID), "--id", id, "--revision", "r1", "--event", "proposed",
 		"--title", "Checkout", "--statement", "As a buyer I can check out", "--priority", "must",
 		"--criterion", "fast=Checkout finishes promptly", "--request-id", id + "-request", "--json",
 	}, &output)

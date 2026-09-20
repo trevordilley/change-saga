@@ -63,7 +63,7 @@ test("@critical renders no approval, comment, or annotation control when compari
 test("@critical renders no approval, comment, or annotation control when observing the head", async ({ page, saga }) => {
   const observing = await startSagaServer(saga, null);
   try {
-    await page.goto(`${observing.baseURL}/epics/wave-one`);
+    await page.goto(`${observing.baseURL}/features/wave-one`);
     await waitForSettledSaga(page);
     await expectDocumentationOnly(page, "observe");
   } finally {

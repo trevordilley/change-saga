@@ -13,7 +13,7 @@ test("a Saga opens several implementation decks without paginating its documenta
     { id: "request-flow", title: "Request flow", slides: [["request-enters", "Request enters", "Ingress"], ["response-returns", "Response returns", "Egress"]] },
     { id: "failure-path", title: "Failure path", slides: [["failure-change", "Failure path", "Errors"]] }
   ] as const) {
-    run("add-deck", "--epic", "wave-one", "--objective", `Explain the complex ${deck.title.toLowerCase()}.`, saga.sagaRoot, deck.id);
+    run("add-deck", "--feature", "wave-one", "--objective", `Explain the complex ${deck.title.toLowerCase()}.`, saga.sagaRoot, deck.id);
     for (const [slide, title, section] of deck.slides) {
       run("add-slide", "--deck", deck.id, "--section", section, "--intent", "explain", "--layout", "diagram", "--title", title, "--takeaway", `${title} is explicit.`, saga.sagaRoot, slide);
       if (slide === "request-enters") {

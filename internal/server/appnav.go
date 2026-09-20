@@ -15,39 +15,39 @@ import (
 //	Overview        name, elevator pitch, description, and the parts that
 //	                describe the whole app: terms and vocabulary, personas,
 //	                the design system, onboarding, and feature flags
-//	Epics           the directory of every epic, over every epic as a row
+//	Features           the directory of every feature, over every feature as a row
 //	Reviews         every pull request's review
 //
 // Three sections, because those are the three things a reviewer arrives
 // looking for: what the app is, what it does, and what is being changed about
 // it. Personas, the design system, onboarding, and feature flags all describe
 // the whole app rather than any one part of it, so they belong to the
-// overview and not beside the epics they cut across.
+// overview and not beside the features they cut across.
 //
 // No header in this list is a row that only expands. A section header opens
 // the section: Overview opens its prose and its directory, Terms and
 // vocabulary opens the table of terms, Onboarding opens the deck at its first
-// slide, and Epics and Reviews open their tables. The disclosure beside a
+// slide, and Features and Reviews open their tables. The disclosure beside a
 // header is how a reader reaches one row inside the section without leaving
 // where they are; it is not the only way in.
 //
-// Every epic is listed, one row each, in the order an author introduced them.
-// The row links to the epic's page, which is the directory of that epic's
-// stories, design, quality, and implementation, so a reader reaches any epic
+// Every feature is listed, one row each, in the order an author introduced them.
+// The row links to the feature's page, which is the directory of that feature's
+// stories, design, quality, and implementation, so a reader reaches any feature
 // in one click and reads the whole of it on a page.
 //
-// One of those rows opens: the epic whose content the reader is looking at,
-// whether that is the epic's own page or a story, criterion, test case, slide,
-// or chapter inside it. Every other epic stays a single row. Listing every
-// epic expanded put this repository's own sidebar at 238 rows, which is a wall
+// One of those rows opens: the feature whose content the reader is looking at,
+// whether that is the feature's own page or a story, criterion, test case, slide,
+// or chapter inside it. Every other feature stays a single row. Listing every
+// feature expanded put this repository's own sidebar at 238 rows, which is a wall
 // rather than an architecture; listing them shut costs one row each, and the
-// one epic the reader is already in is the only one that spends more.
+// one feature the reader is already in is the only one that spends more.
 //
-// Within the open epic the per-epic rules are unchanged: Implementation is the
+// Within the open feature the per-feature rules are unchanged: Implementation is the
 // deck and opens all the way to its slides, the other places stay shut until
 // something inside them is active, and an empty place states its gap.
 //
-// Nothing about which epic is open is stored. It is a fact about the page
+// Nothing about which feature is open is stored. It is a fact about the page
 // being read, not a preference about the reader.
 
 // appNavSources is everything the app-level list reads, already loaded.
@@ -57,16 +57,16 @@ type appNavSources struct {
 	page          *requirementsPageView
 	prototypes    prototypes.Document
 	prototypeNote string
-	// quality holds the test cases each epic's Quality lists.
+	// quality holds the test cases each feature's Quality lists.
 	quality quality.Document
 	// decks is every projected deck row, implementation and onboarding.
 	decks []*navNodeView
 	// overviewActive says which overview row the page shows; see overviewNav.
 	overviewActive string
-	// pageEpic is the epic the page being read belongs to, and so the one
-	// epic that opens over its four places. Empty on a page that belongs to
-	// no epic, where every epic stays a row.
-	pageEpic string
+	// pageFeature is the feature the page being read belongs to, and so the one
+	// feature that opens over its four places. Empty on a page that belongs to
+	// no feature, where every feature stays a row.
+	pageFeature string
 	// hasReviews says whether any pull request has a review yet, so the
 	// Reviews section can state the gap without loading one.
 	hasReviews bool
@@ -108,7 +108,7 @@ func makeAppNavTree(sources appNavSources) []*navNodeView {
 		// are none to open.
 		reviews.Gap, reviews.Note = false, ""
 	}
-	navigation := []*navNodeView{overview, makeEpicsNav(sources, deckRows), reviews}
+	navigation := []*navNodeView{overview, makeFeaturesNav(sources, deckRows), reviews}
 	for _, node := range navigation {
 		revealActive(node)
 	}
@@ -162,47 +162,47 @@ func onPage(path string, nodes []*navNodeView) []*navNodeView {
 	return nodes
 }
 
-// makeEpicsNav is the Epics section: the header opens the table of every
-// epic, and beneath it every epic is a row of its own, in creation order. The
-// epic the reader is inside opens over its four places; the rest are the row
-// alone. An app with no epics keeps the section, because a reader has to be
-// able to see that the app has no epics rather than infer it from an absence.
-func makeEpicsNav(sources appNavSources, deckRows map[string]*navNodeView) *navNodeView {
+// makeFeaturesNav is the Features section: the header opens the table of every
+// feature, and beneath it every feature is a row of its own, in creation order. The
+// feature the reader is inside opens over its four places; the rest are the row
+// alone. An app with no features keeps the section, because a reader has to be
+// able to see that the app has no features rather than infer it from an absence.
+func makeFeaturesNav(sources appNavSources, deckRows map[string]*navNodeView) *navNodeView {
 	document := sources.document
-	section := navSection("Epics", epicsIndexHref, "nav-epics", "product", "no epics yet", nil)
-	if len(document.Epics) == 0 {
+	section := navSection("Features", featuresIndexHref, "nav-features", "product", "no features yet", nil)
+	if len(document.Features) == 0 {
 		return section
 	}
-	for _, epic := range document.Epics {
-		if epic.ID == sources.pageEpic {
-			section.Children = append(section.Children, makeEpicNav(sources, epic, deckRows))
+	for _, feature := range document.Features {
+		if feature.ID == sources.pageFeature {
+			section.Children = append(section.Children, makeFeatureNav(sources, feature, deckRows))
 			continue
 		}
-		section.Children = append(section.Children, makeEpicRowNav(epic))
+		section.Children = append(section.Children, makeFeatureRowNav(feature))
 	}
 	section.Gap, section.Note = false, ""
 	section.Expanded = true
 	return section
 }
 
-// makeEpicRowNav is an epic the reader is not reading: one row, linking to the
-// epic's page. The page is the directory of everything the row would otherwise
+// makeFeatureRowNav is a feature the reader is not reading: one row, linking to the
+// feature's page. The page is the directory of everything the row would otherwise
 // have had to list, so the row does not have to list any of it.
-func makeEpicRowNav(epic *saga.Epic) *navNodeView {
+func makeFeatureRowNav(feature *saga.Feature) *navNodeView {
 	return &navNodeView{
-		Title: epicTitle(epic), Href: epicHref(epic.ID),
-		NodeID: "nav-epic-" + domID(epic.ID), Icon: "product",
+		Title: featureTitle(feature), Href: featureHref(feature.ID),
+		NodeID: "nav-feature-" + domID(feature.ID), Icon: "product",
 	}
 }
 
-// makeEpicNav is one epic: its own report content first, then today's four
-// places filled from this epic's records only.
-func makeEpicNav(sources appNavSources, epic *saga.Epic, deckRows map[string]*navNodeView) *navNodeView {
-	prefix := "nav-epic-" + domID(epic.ID)
+// makeFeatureNav is one feature: its own report content first, then today's four
+// places filled from this feature's records only.
+func makeFeatureNav(sources appNavSources, feature *saga.Feature, deckRows map[string]*navNodeView) *navNodeView {
+	prefix := "nav-feature-" + domID(feature.ID)
 	var prototypeRows []*navNodeView
 	for _, row := range makePrototypeNav(sources.prototypes) {
 		for _, prototype := range sources.prototypes.Prototypes {
-			if prototype.Epic == epic.ID {
+			if prototype.Feature == feature.ID {
 				if target, err := prototypes.PrototypeURN(sources.prototypes.SagaID, prototype.Identity.ID); err == nil && row.NodeID == "nav-"+domID(target) {
 					prototypeRows = append(prototypeRows, row)
 				}
@@ -210,7 +210,7 @@ func makeEpicNav(sources appNavSources, epic *saga.Epic, deckRows map[string]*na
 		}
 	}
 	var uxDecks, implementation []*navNodeView
-	for _, deck := range epic.Decks {
+	for _, deck := range feature.Decks {
 		row := deckRows["nav-"+domID(deck.Target)]
 		if row == nil {
 			continue
@@ -222,42 +222,42 @@ func makeEpicNav(sources appNavSources, epic *saga.Epic, deckRows map[string]*na
 		}
 	}
 	var technical []*navNodeView
-	if epic.Design != nil {
-		for _, child := range epic.Design.Children {
+	if feature.Design != nil {
+		for _, child := range feature.Design.Children {
 			if child.Kind == "chapter" {
-				technical = append(technical, onEpicPage(makeChapterNav(child), epic.ID))
+				technical = append(technical, onFeaturePage(makeChapterNav(child), feature.ID))
 			}
 		}
 	}
 	places := makeProductNavTree(productNavSources{
 		prefix:         prefix,
-		epic:           epic.ID,
-		requirements:   makeEpicRequirementsNav(sources.page, epic.ID, prefix),
+		feature:        feature.ID,
+		requirements:   makeFeatureRequirementsNav(sources.page, feature.ID, prefix),
 		prototypes:     prototypeRows,
 		prototypeNote:  sources.prototypeNote,
 		uxDecks:        uxDecks,
 		technical:      technical,
-		testCases:      testCaseNav(sources.quality, epic.ID),
+		testCases:      testCaseNav(sources.quality, feature.ID),
 		implementation: implementation,
 	})
-	// The epic row opens the epic's page; its places disclose beneath it.
-	node := &navNodeView{Title: epicTitle(epic), Href: epicHref(epic.ID), NodeID: prefix, Icon: "product", Group: true, Expanded: true}
+	// The feature row opens the feature's page; its places disclose beneath it.
+	node := &navNodeView{Title: featureTitle(feature), Href: featureHref(feature.ID), NodeID: prefix, Icon: "product", Group: true, Expanded: true}
 	var report []*navNodeView
-	for _, row := range reportRootNav(epic.Report) {
-		report = append(report, onEpicPage(row, epic.ID))
+	for _, row := range reportRootNav(feature.Report) {
+		report = append(report, onFeaturePage(row, feature.ID))
 	}
 	node.Children = append(report, places...)
 	return node
 }
 
-// onEpicPage points a row's in-page anchors, and its outline's, at the epic's
-// page, where the epic's own chapters are rendered.
-func onEpicPage(node *navNodeView, epic string) *navNodeView {
+// onFeaturePage points a row's in-page anchors, and its outline's, at the feature's
+// page, where the feature's own chapters are rendered.
+func onFeaturePage(node *navNodeView, feature string) *navNodeView {
 	if strings.HasPrefix(node.Href, "#") {
-		node.Href = epicHref(epic) + node.Href
+		node.Href = featureHref(feature) + node.Href
 	}
 	for _, child := range node.Children {
-		onEpicPage(child, epic)
+		onFeaturePage(child, feature)
 	}
 	return node
 }
@@ -321,59 +321,59 @@ func flagNav(document requirements.Document) []*navNodeView {
 	return nodes
 }
 
-// ----- Which epic, and every epic -----
+// ----- Which feature, and every feature -----
 
-// epicsIndexHref is the browsable table of every epic, which the Epics header
-// opens and every epic row sits beneath.
-const epicsIndexHref = "/epics"
+// featuresIndexHref is the browsable table of every feature, which the Features header
+// opens and every feature row sits beneath.
+const featuresIndexHref = "/features"
 
-// epicTitle is what an epic's row says: the title an author gave it, or its ID
+// featureTitle is what a feature's row says: the title an author gave it, or its ID
 // while it has none.
-func epicTitle(epic *saga.Epic) string {
-	if title := strings.TrimSpace(epic.Title); title != "" {
+func featureTitle(feature *saga.Feature) string {
+	if title := strings.TrimSpace(feature.Title); title != "" {
 		return title
 	}
-	return epic.ID
+	return feature.ID
 }
 
-// epicLinkView is one epic as a title and a link to its page.
-type epicLinkView struct {
+// featureLinkView is one feature as a title and a link to its page.
+type featureLinkView struct {
 	ID      string
 	Title   string
 	Href    string
 	Current bool
 }
 
-// epicLinks names every epic in creation order, marking the one whose content
+// featureLinks names every feature in creation order, marking the one whose content
 // is being read.
-func epicLinks(document *saga.Saga, current string) []epicLinkView {
-	links := make([]epicLinkView, 0, len(document.Epics))
-	for _, epic := range document.Epics {
-		links = append(links, epicLinkView{
-			ID: epic.ID, Title: epicTitle(epic), Href: epicHref(epic.ID),
-			Current: epic.ID == current,
+func featureLinks(document *saga.Saga, current string) []featureLinkView {
+	links := make([]featureLinkView, 0, len(document.Features))
+	for _, feature := range document.Features {
+		links = append(links, featureLinkView{
+			ID: feature.ID, Title: featureTitle(feature), Href: featureHref(feature.ID),
+			Current: feature.ID == current,
 		})
 	}
 	return links
 }
 
-// pageEpic names the epic of the page being read: an epic's own page, a story
+// pageFeature names the feature of the page being read: a feature's own page, a story
 // or criterion of one, or a test case of one. A chapter redirects to its
-// epic's page before it reaches here, and a slide is read on that page too, so
-// both arrive as "epic". A page that belongs to no epic names none, and then
-// no epic opens.
-func pageEpic(route appRoute, page *requirementsPageView, tests quality.Document) string {
+// feature's page before it reaches here, and a slide is read on that page too, so
+// both arrive as "feature". A page that belongs to no feature names none, and then
+// no feature opens.
+func pageFeature(route appRoute, page *requirementsPageView, tests quality.Document) string {
 	switch route.kind {
-	case "epic":
+	case "feature":
 		return route.id
 	case "requirements":
 		if page != nil && page.Story != nil {
-			return page.Story.Epic
+			return page.Story.Feature
 		}
 	case "test":
 		for _, testCase := range tests.TestCases {
 			if testCase.Identity.ID == route.id {
-				return testCase.Epic
+				return testCase.Feature
 			}
 		}
 	}

@@ -30,8 +30,8 @@ func AddDeck(_ context.Context, args []string, out io.Writer) error {
 	flags := commandFlags("add-deck", commandUsage["add-deck"], out)
 	id := flags.String("id", "", "stable deck identifier")
 	title := flags.String("title", "", "deck title")
-	role := flags.String("role", "change", "deck role: change for an epic's implementation deck, onboarding for the app's onboarding deck")
-	epic := epicFlag(flags)
+	role := flags.String("role", "change", "deck role: change for a feature's implementation deck, onboarding for the app's onboarding deck")
+	feature := featureIDFlag(flags)
 	var rank optionalInt
 	flags.Var(&rank, "rank", "non-negative review order; defaults after the last deck")
 	objective := flags.String("objective", "", "one concise reviewer objective")
@@ -63,17 +63,17 @@ func AddDeck(_ context.Context, args []string, out io.Writer) error {
 		var peers []*saga.Deck
 		switch *role {
 		case saga.DeckRoleChange:
-			target, err := requireEpic(document.Root, *epic)
+			target, err := requireFeature(document.Root, *feature)
 			if err != nil {
 				return err
 			}
 			slidesRoot = filepath.Join(target.Dir, saga.EmbeddedSlidesDir)
-			if found := document.FindEpic(target.ID); found != nil {
+			if found := document.FindFeature(target.ID); found != nil {
 				peers = found.Decks
 			}
 		case saga.DeckRoleOnboarding:
-			if *epic != "" {
-				return fmt.Errorf("the onboarding deck belongs to the app, not an epic; omit --epic")
+			if *feature != "" {
+				return fmt.Errorf("the onboarding deck belongs to the app, not a feature; omit --feature")
 			}
 			if len(document.Onboarding) > 0 {
 				return fmt.Errorf("the app already has onboarding deck %q", document.Onboarding[0].ID)
@@ -147,7 +147,7 @@ func AddSlide(_ context.Context, args []string, out io.Writer) error {
 	source := flags.String("source", "", "SVG, image, or self-contained HTML source")
 	mediaType := flags.String("media-type", "image/svg+xml", "visual media type")
 	entrypoint := flags.String("entrypoint", "slide.svg", "simple filename whose extension selects the compact slide asset name")
-	epic := epicFlag(flags)
+	feature := featureIDFlag(flags)
 	reviewID := flags.String("review", "", "add the slide to this pull request review's deck instead of --deck")
 	if err := flags.Parse(args); err != nil {
 		return err
@@ -211,8 +211,8 @@ func AddSlide(_ context.Context, args []string, out io.Writer) error {
 			if err != nil {
 				return err
 			}
-			if *epic != "" {
-				return fmt.Errorf("a review deck belongs to its review, not an epic; omit --epic")
+			if *feature != "" {
+				return fmt.Errorf("a review deck belongs to its review, not a feature; omit --feature")
 			}
 			deck = review.Deck
 			if !saga.ValidID(*id) || review.Slide(*id) != nil {
@@ -224,7 +224,7 @@ func AddSlide(_ context.Context, args []string, out io.Writer) error {
 			if deck == nil {
 				return fmt.Errorf("--deck must identify an existing deck")
 			}
-			if err := assertDeckEpic(document, *epic, deck.Path, deck.Target); err != nil {
+			if err := assertDeckFeature(document, *feature, deck.Path, deck.Target); err != nil {
 				return err
 			}
 			if !saga.ValidID(*id) || targetIDExists(document, *id) {
@@ -301,8 +301,8 @@ func AddItem(_ context.Context, args []string, out io.Writer) error {
 	body := flags.String("body", "", "required concise callout body")
 	placement := flags.String("placement", "", "top, right, bottom, left, or overlay")
 	leader := flags.String("leader", "", "none, line, or arrow")
-	record := flags.String("record", "", "the record the item points at: required for onboarding items (a persona, epic, or story URN); optional for review items (a story, epic slide, or other record to open beside the change)")
-	epic := epicFlag(flags)
+	record := flags.String("record", "", "the record the item points at: required for onboarding items (a persona, feature, or story URN); optional for review items (a story, feature slide, or other record to open beside the change)")
+	feature := featureIDFlag(flags)
 	reviewID := flags.String("review", "", "the pull request review whose slide receives the item")
 	var rank optionalInt
 	flags.Var(&rank, "rank", "non-negative item order; defaults after the last item")
@@ -371,8 +371,8 @@ func AddItem(_ context.Context, args []string, out io.Writer) error {
 			if slide = findReviewSlide(review, *slideTarget); slide == nil {
 				return fmt.Errorf("review %s has no slide %q", review.ID, *slideTarget)
 			}
-			if *epic != "" {
-				return fmt.Errorf("a review deck belongs to its review, not an epic; omit --epic")
+			if *feature != "" {
+				return fmt.Errorf("a review deck belongs to its review, not a feature; omit --feature")
 			}
 			if *record != "" {
 				if err := requireReviewRecord(document, *record); err != nil {
@@ -384,7 +384,7 @@ func AddItem(_ context.Context, args []string, out io.Writer) error {
 			if slide = findSlide(document, *slideTarget); slide == nil {
 				return fmt.Errorf("--slide must identify an existing slide")
 			}
-			if err := assertDeckEpic(document, *epic, slide.Path, slide.Target); err != nil {
+			if err := assertDeckFeature(document, *feature, slide.Path, slide.Target); err != nil {
 				return err
 			}
 			if err := checkItemRecord(document, slide, *record); err != nil {
@@ -457,7 +457,7 @@ func SetSlideContent(_ context.Context, args []string, out io.Writer) error {
 	source := flags.String("source", "", "content file, or - for standard input")
 	jsonOutput := flags.Bool("json", false, "emit one machine-readable JSON result")
 	quiet := flags.Bool("quiet", false, "suppress successful output")
-	epic := epicFlag(flags)
+	feature := featureIDFlag(flags)
 	reviewID := flags.String("review", "", "the pull request review whose slide is replaced")
 	if err := flags.Parse(args); err != nil {
 		return err
@@ -493,7 +493,7 @@ func SetSlideContent(_ context.Context, args []string, out io.Writer) error {
 			if slide = findSlide(document, *targetValue); slide == nil {
 				return fmt.Errorf("--target must identify a slide")
 			}
-			if err := assertDeckEpic(document, *epic, slide.Path, slide.Target); err != nil {
+			if err := assertDeckFeature(document, *feature, slide.Path, slide.Target); err != nil {
 				return err
 			}
 		}
@@ -517,28 +517,28 @@ func SetSlideContent(_ context.Context, args []string, out io.Writer) error {
 	return nil
 }
 
-// allDecks is every epic's implementation decks plus the onboarding deck.
+// allDecks is every feature's implementation decks plus the onboarding deck.
 func allDecks(document *saga.Saga) []*saga.Deck {
 	return append(append([]*saga.Deck{}, document.Decks...), document.Onboarding...)
 }
 
-// assertDeckEpic checks an optional --epic against the epic holding a deck
-// record. The onboarding deck belongs to the app, so it takes no --epic.
-func assertDeckEpic(document *saga.Saga, epic, path, target string) error {
-	if strings.TrimSpace(epic) == "" {
+// assertDeckFeature checks an optional --feature against the feature holding a deck
+// record. The onboarding deck belongs to the app, so it takes no --feature.
+func assertDeckFeature(document *saga.Saga, feature, path, target string) error {
+	if strings.TrimSpace(feature) == "" {
 		return nil
 	}
-	holding := saga.EpicOf(path)
+	holding := saga.FeatureOf(path)
 	if holding == "" {
-		return fmt.Errorf("%s belongs to the app's onboarding deck, not an epic; omit --epic", target)
+		return fmt.Errorf("%s belongs to the app's onboarding deck, not a feature; omit --feature", target)
 	}
-	return assertEpic(document.Root, epic, target, holding)
+	return assertFeature(document.Root, feature, target, holding)
 }
 
 // checkItemRecord enforces what an Item may point at: onboarding Items
-// explain a persona, epic, or story record; implementation Items explain code.
+// explain a persona, feature, or story record; implementation Items explain code.
 func checkItemRecord(document *saga.Saga, slide *saga.Slide, record string) error {
-	onboarding := saga.EpicOf(slide.Path) == ""
+	onboarding := saga.FeatureOf(slide.Path) == ""
 	if !onboarding {
 		if record != "" {
 			return fmt.Errorf("--record is for onboarding items; implementation items explain code")
@@ -546,13 +546,13 @@ func checkItemRecord(document *saga.Saga, slide *saga.Slide, record string) erro
 		return nil
 	}
 	if record == "" {
-		return fmt.Errorf("--record is required: an onboarding item explains a persona, epic, or story URN")
+		return fmt.Errorf("--record is required: an onboarding item explains a persona, feature, or story URN")
 	}
 	return requireAppRecord(document.Root, document.Manifest.ID, record)
 }
 
 // requireReviewRecord checks that a review Item's record names an existing
-// documentation record: a persona, epic, or story, or a deck, slide, chapter,
+// documentation record: a persona, feature, or story, or a deck, slide, chapter,
 // section, or fragment of the living Saga.
 func requireReviewRecord(document *saga.Saga, record string) error {
 	prefix := "urn:change-saga:" + document.Manifest.ID + ":"
@@ -574,16 +574,16 @@ func requireReviewRecord(document *saga.Saga, record string) error {
 	return requireAppRecord(document.Root, document.Manifest.ID, record)
 }
 
-// requireAppRecord checks that a persona, epic, or story URN names an
+// requireAppRecord checks that a persona, feature, or story URN names an
 // existing record.
 func requireAppRecord(root, sagaID, record string) error {
-	if id, ok := strings.CutPrefix(record, "urn:change-saga:"+sagaID+":epic:"); ok {
-		epics, err := applayout.Epics(root)
+	if id, ok := strings.CutPrefix(record, "urn:change-saga:"+sagaID+":feature:"); ok {
+		features, err := applayout.Features(root)
 		if err != nil {
 			return err
 		}
-		if _, found := applayout.Find(epics, id); !found {
-			return fmt.Errorf("epic %q does not exist", record)
+		if _, found := applayout.Find(features, id); !found {
+			return fmt.Errorf("feature %q does not exist", record)
 		}
 		return nil
 	}
@@ -603,7 +603,7 @@ func requireAppRecord(root, sagaID, record string) error {
 		}
 		return nil
 	}
-	return fmt.Errorf("record %q must be a canonical persona, epic, or story URN of this Saga", record)
+	return fmt.Errorf("record %q must be a canonical persona, feature, or story URN of this Saga", record)
 }
 
 func findDeck(document *saga.Saga, value string) *saga.Deck {

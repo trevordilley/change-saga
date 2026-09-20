@@ -19,10 +19,10 @@ const (
 	AvailabilityEnabled               = "implemented_enabled"
 )
 
-// EpicStatus lists what one durable product domain holds. It is a grouping of
-// the app-wide facts, never a per-epic score.
-type EpicStatus struct {
-	Epic      string   `json:"epic"`
+// FeatureStatus lists what one durable product domain holds. It is a grouping of
+// the app-wide facts, never a per-feature score.
+type FeatureStatus struct {
+	Feature   string   `json:"feature"`
 	ID        string   `json:"id"`
 	Title     string   `json:"title"`
 	Stories   []string `json:"stories"`
@@ -88,7 +88,7 @@ func (a *assembler) appProjection(status *Status) ([]readiness.Persona, []readin
 
 	// Availability: implemented when every current criterion's
 	// implementation cell is covered; enabled unless a current off flag gates
-	// the story or its epic.
+	// the story or its feature.
 	implemented := map[string]bool{}
 	missing := map[string]bool{}
 	for _, criterion := range status.Axes.Criteria {
@@ -212,36 +212,36 @@ func (a *assembler) appProjection(status *Status) ([]readiness.Persona, []readin
 		status.Flags = append(status.Flags, row)
 	}
 
-	// Epics group the app-wide facts by domain.
-	status.Epics = []EpicStatus{}
-	for _, epic := range applayout.InCreationOrder(a.in.Epics) {
-		row := EpicStatus{
-			Epic: applayout.EpicURN(sagaID, epic.ID), ID: epic.ID, Title: epic.Title,
+	// Features group the app-wide facts by domain.
+	status.Features = []FeatureStatus{}
+	for _, feature := range applayout.InCreationOrder(a.in.Features) {
+		row := FeatureStatus{
+			Feature: applayout.FeatureURN(sagaID, feature.ID), ID: feature.ID, Title: feature.Title,
 			Stories: []string{}, TestCases: []string{}, Decks: []string{}, GatedBy: []string{},
 		}
 		for _, story := range status.Stories {
-			if story.Epic == epic.ID {
+			if story.Feature == feature.ID {
 				row.Stories = append(row.Stories, story.Story)
 			}
 		}
 		for _, testCase := range a.in.Quality.TestCases {
-			if testCase.Epic == epic.ID {
+			if testCase.Feature == feature.ID {
 				row.TestCases = append(row.TestCases, testCaseURN(sagaID, testCase.Identity.ID))
 			}
 		}
 		for _, deck := range a.in.Decks {
-			if applayout.EpicOfPath(deck.Path) == epic.ID {
+			if applayout.FeatureOfPath(deck.Path) == feature.ID {
 				row.Decks = append(row.Decks, deck.Target)
 			}
 		}
-		// Like a story, an epic is gated by a current off (or conflicted) flag;
+		// Like a story, a feature is gated by a current off (or conflicted) flag;
 		// an on flag enables it and a retired flag gates nothing.
 		for _, flag := range status.Flags {
-			if flag.State != string(requirements.FlagRetired) && flag.State != string(requirements.FlagOn) && contains(flag.Targets, row.Epic) {
+			if flag.State != string(requirements.FlagRetired) && flag.State != string(requirements.FlagOn) && contains(flag.Targets, row.Feature) {
 				row.GatedBy = append(row.GatedBy, flag.Flag)
 			}
 		}
-		status.Epics = append(status.Epics, row)
+		status.Features = append(status.Features, row)
 	}
 	return personas, orphans
 }

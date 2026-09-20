@@ -24,7 +24,7 @@ func TestAppRecordsValidateAgainstTheirPublishedSchemas(t *testing.T) {
 		t.Fatal(err)
 	}
 	if _, err := AddFlag(root, "test", AddFlagInput{ID: "new-checkout", RevisionID: "r1", EventID: "off", Description: "New checkout",
-		Targets: []string{"urn:change-saga:test:story:checkout", "urn:change-saga:test:epic:core"}, CreatedAt: testTime}); err != nil {
+		Targets: []string{"urn:change-saga:test:story:checkout", "urn:change-saga:test:feature:core"}, CreatedAt: testTime}); err != nil {
 		t.Fatal(err)
 	}
 	if _, err := AddTerm(root, "test", testtakerInput()); err != nil {
@@ -67,7 +67,7 @@ func TestAppRecordsValidateAgainstTheirPublishedSchemas(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	for _, name := range []string{"v5/epic.schema.json", "v5/persona.schema.json", "v5/persona-revision.schema.json", "v5/persona-event.schema.json",
+	for _, name := range []string{"v5/feature.schema.json", "v5/persona.schema.json", "v5/persona-revision.schema.json", "v5/persona-event.schema.json",
 		"v5/flag.schema.json", "v5/flag-revision.schema.json", "v5/flag-event.schema.json", "v3/story-revision.schema.json",
 		"v5/term.schema.json", "v5/term-revision.schema.json", "v5/term-event.schema.json"} {
 		if !checked[name] {

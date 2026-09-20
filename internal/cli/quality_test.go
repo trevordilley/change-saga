@@ -32,8 +32,8 @@ func newQualityFixture(t *testing.T) string {
 	}
 	writeFile(t, filepath.Join(root, "saga.json"), string(data))
 	var output bytes.Buffer
-	if err := Epic(context.Background(), []string{"add", "--id", testEpic, "--title", "Core", root}, &output); err != nil {
-		t.Fatalf("epic add: %v\n%s", err, output.String())
+	if err := Feature(context.Background(), []string{"add", "--id", testFeature, "--title", "Core", root}, &output); err != nil {
+		t.Fatalf("feature add: %v\n%s", err, output.String())
 	}
 	return root
 }
@@ -96,12 +96,12 @@ func TestQualityCommandsAuthorTheFrozenRecordsEndToEnd(t *testing.T) {
 		"preconditions":["A purchase is exactly 30 days old."],
 		"steps":[{"id":"submit","action":"Submit a refund request.","expected_result":"The request is rejected."}],
 		"expected_result":"No refund is created.","request_id":"add-deadline"}`
-	added := runQuality(t, definition, "test-case", "add", root, "--epic", testEpic, "--from", "-")
+	added := runQuality(t, definition, "test-case", "add", root, "--feature", testFeature, "--from", "-")
 	wantCreated := []string{qualityTestURN, qualityTestURN + ":revision:r1", qualityTestURN + ":event:proposed"}
 	if !added.OK || added.Resource != qualityTestURN || !reflect.DeepEqual(added.Created, wantCreated) {
 		t.Fatalf("add = %#v", added)
 	}
-	if replay := runQuality(t, definition, "test", "add", root, "--epic", testEpic, "--from", "-"); !replay.Replayed {
+	if replay := runQuality(t, definition, "test", "add", root, "--feature", testFeature, "--from", "-"); !replay.Replayed {
 		t.Fatalf("identical request did not replay: %#v", replay)
 	}
 
@@ -122,7 +122,7 @@ func TestQualityCommandsAuthorTheFrozenRecordsEndToEnd(t *testing.T) {
 		"--summary", "Wrong reason.", "--evidence", evidence.Resource, "--command", "go test ./internal/refund")
 	passed := runQuality(t, "", "run", "record", root, "--commit", "0123456789abcdef0123456789abcdef01234567", "--test", qualityTestURN, "--id", "ci-2", "--parent", failed.Resource,
 		"--result", "passed", "--summary", "Manual and CI pass.", "--evidence", evidence.Resource, "--evidence", manual.Resource)
-	runQuality(t, "", "policy", "set", root, "--epic", testEpic, "--criterion", "urn:change-saga:checkout:story:refund:criterion:cutoff",
+	runQuality(t, "", "policy", "set", root, "--feature", testFeature, "--criterion", "urn:change-saga:checkout:story:refund:criterion:cutoff",
 		"--story-revision", "urn:change-saga:checkout:story:refund:revision:r2", "--require", "positive", "--require", "edge",
 		"--allow", "automated", "--rationale", "The exact cutoff is a distinct risk.")
 
@@ -156,7 +156,7 @@ func TestQualityCommandsAuthorTheFrozenRecordsEndToEnd(t *testing.T) {
 		t.Fatalf("quality evidence code = %v, want %s", pinned, codeLocation)
 	}
 	for _, record := range []string{"runs/ci-1.json", "evidence/test-implementation.json", "evidence/qa.json"} {
-		if _, err := os.Stat(filepath.Join(testEpicDir(root), "___quality", "test-cases", "deadline.test", filepath.FromSlash(record))); err != nil {
+		if _, err := os.Stat(filepath.Join(testFeatureDir(root), "___quality", "test-cases", "deadline.test", filepath.FromSlash(record))); err != nil {
 			t.Fatalf("missing %s: %v", record, err)
 		}
 	}
@@ -166,7 +166,7 @@ func TestQualityMutationFailureReportsJSONAndWritesNothing(t *testing.T) {
 	root := newQualityFixture(t)
 	var output bytes.Buffer
 	err := Quality(context.Background(), []string{
-		"test-case", "add", root, "--epic", testEpic, "--id", "deadline", "--title", "No kinds", "--automation", "manual",
+		"test-case", "add", root, "--feature", testFeature, "--id", "deadline", "--title", "No kinds", "--automation", "manual",
 		"--expected-result", "Nothing.", "--json",
 	}, &output)
 	var status *StatusError
@@ -177,11 +177,11 @@ func TestQualityMutationFailureReportsJSONAndWritesNothing(t *testing.T) {
 	if decodeErr := json.Unmarshal(output.Bytes(), &failure); decodeErr != nil || failure.OK || failure.Operation != "quality test-case add" || failure.Error == nil {
 		t.Fatalf("failure output = %s (%v)", output.String(), decodeErr)
 	}
-	if _, statErr := os.Lstat(filepath.Join(testEpicDir(root), quality.RootDir)); !errors.Is(statErr, os.ErrNotExist) {
+	if _, statErr := os.Lstat(filepath.Join(testFeatureDir(root), quality.RootDir)); !errors.Is(statErr, os.ErrNotExist) {
 		t.Fatalf("failed add adopted quality: %v", statErr)
 	}
 	output.Reset()
-	if err := qualityCommand(context.Background(), []string{"test-case", "add", root, "--epic", testEpic, "--from", "-"}, &output, strings.NewReader(`{"id":"x","score":1}`)); err == nil || !strings.Contains(err.Error(), "unknown field") {
+	if err := qualityCommand(context.Background(), []string{"test-case", "add", root, "--feature", testFeature, "--from", "-"}, &output, strings.NewReader(`{"id":"x","score":1}`)); err == nil || !strings.Contains(err.Error(), "unknown field") {
 		t.Fatalf("strict structured input error = %v", err)
 	}
 }
@@ -193,7 +193,7 @@ func TestValidateReportsQualityRecords(t *testing.T) {
 		t.Fatalf("validate without quality: %v\n%s", err, output.String())
 	}
 	// A malformed quality root is reported, not ignored.
-	if err := os.MkdirAll(filepath.Join(testEpicDir(root), quality.RootDir, "experiments"), 0o755); err != nil {
+	if err := os.MkdirAll(filepath.Join(testFeatureDir(root), quality.RootDir, "experiments"), 0o755); err != nil {
 		t.Fatal(err)
 	}
 	output.Reset()

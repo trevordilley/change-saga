@@ -26,12 +26,12 @@ func contentSaga(t *testing.T) (root string) {
 		run  func(context.Context, []string, io.Writer) error
 		args []string
 	}{
-		{AddDeck, []string{"--epic", testEpic, "--objective", "Explain the change.", root, "implementation"}},
+		{AddDeck, []string{"--feature", testFeature, "--objective", "Explain the change.", root, "implementation"}},
 		{AddSlide, []string{"--deck", "implementation", "--intent", "explain", "--layout", "diagram", root, "flow"}},
 		{AddItem, []string{"--slide", "flow", "--kind", "node", "--id", "handler", "--element-id", "slide-title", "--label", "Wrong label", "--description", "The handler.", root}},
 		{AddItem, []string{"--slide", "flow", "--kind", "callout", "--id", "why", "--element-id", "slide-desc", "--about", "handler", "--description", "Why.", "--body", "Because.", root}},
-		{AddChapter, []string{"--epic", testEpic, root, "service"}},
-		{AddFragment, []string{"--epic", testEpic, "--section", "service", "--title", "Notes", root}},
+		{AddChapter, []string{"--feature", testFeature, root, "service"}},
+		{AddFragment, []string{"--feature", testFeature, "--section", "service", "--title", "Notes", root}},
 	} {
 		if err := step.run(context.Background(), step.args, &output); err != nil {
 			t.Fatalf("%v: %v\n%s", step.args, err, output.String())
@@ -158,10 +158,10 @@ func TestRemoveItemDeletesEvidenceAndReadingOrder(t *testing.T) {
 func TestRemoveContainers(t *testing.T) {
 	root := contentSaga(t)
 	var output bytes.Buffer
-	if err := Story(context.Background(), []string{"add", "--epic", testEpic, "--id", "handle", "--revision", "r1", "--event", "proposed", "--title", "Handle", "--statement", "As a user I want requests handled so that I am served", "--priority", "must", root}, &output); err != nil {
+	if err := Story(context.Background(), []string{"add", "--feature", testFeature, "--id", "handle", "--revision", "r1", "--event", "proposed", "--title", "Handle", "--statement", "As a user I want requests handled so that I am served", "--priority", "must", root}, &output); err != nil {
 		t.Fatal(err)
 	}
-	if err := Relation(context.Background(), []string{"add", "--epic", testEpic, "--id", "flow-explains-handle", "--type", "explains", "--from", "urn:change-saga:batch:slide:flow", "--to", "urn:change-saga:batch:story:handle", "--rationale", "The slide shows it.", root}, &output); err != nil {
+	if err := Relation(context.Background(), []string{"add", "--feature", testFeature, "--id", "flow-explains-handle", "--type", "explains", "--from", "urn:change-saga:batch:slide:flow", "--to", "urn:change-saga:batch:story:handle", "--rationale", "The slide shows it.", root}, &output); err != nil {
 		t.Fatalf("relation: %v\n%s", err, output.String())
 	}
 	result, err := runContentJSON(t, RemoveSlide, "--slide", "flow", root)
@@ -181,7 +181,7 @@ func TestRemoveContainers(t *testing.T) {
 	if err != nil || !validation.Valid || len(document.Decks) != 0 {
 		t.Fatalf("after removals: err=%v issues=%#v decks=%d", err, validation.Issues, len(document.Decks))
 	}
-	if _, err := os.Stat(filepath.Join(testEpicDir(root), "service.chapter")); !os.IsNotExist(err) {
+	if _, err := os.Stat(filepath.Join(testFeatureDir(root), "service.chapter")); !os.IsNotExist(err) {
 		t.Fatalf("chapter directory survived: %v", err)
 	}
 }

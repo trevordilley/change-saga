@@ -10,30 +10,30 @@ import (
 )
 
 const (
-	appStory     = "urn:change-saga:checkout:story:wallet"
-	appOrphanA   = "urn:change-saga:checkout:story:fax-a"
-	appOrphanB   = "urn:change-saga:checkout:story:fax-b"
-	appShopper   = "urn:change-saga:checkout:persona:shopper"
-	appFaxer     = "urn:change-saga:checkout:persona:faxer"
-	appEpic      = "payments"
-	appOtherEpic = "legacy"
+	appStory        = "urn:change-saga:checkout:story:wallet"
+	appOrphanA      = "urn:change-saga:checkout:story:fax-a"
+	appOrphanB      = "urn:change-saga:checkout:story:fax-b"
+	appShopper      = "urn:change-saga:checkout:persona:shopper"
+	appFaxer        = "urn:change-saga:checkout:persona:faxer"
+	appFeature      = "payments"
+	appOtherFeature = "legacy"
 )
 
-// appStatus holds a proposed story in one epic, an active persona no accepted
+// appStatus holds a proposed story in one feature, an active persona no accepted
 // story serves, and two stories left serving only a retired persona.
 func appStatus() livingapp.Status {
-	story := func(urn, epic, state string, personas ...string) livingapp.StoryStatus {
+	story := func(urn, feature, state string, personas ...string) livingapp.StoryStatus {
 		return livingapp.StoryStatus{
-			Story: urn, Epic: epic, Title: urn, State: state, Personas: personas, GatedBy: []string{},
+			Story: urn, Feature: feature, Title: urn, State: state, Personas: personas, GatedBy: []string{},
 			RevisionHeads: []string{urn + ":revision:r1"}, LifecycleHeads: []string{urn + ":event:" + state},
 			CurrentRevision: urn + ":revision:r1", Criteria: []livingapp.CriterionStatus{},
 		}
 	}
 	return livingapp.Status{
 		SagaID: "checkout", SagaVersion: 5,
-		Epics: []livingapp.EpicStatus{
-			{Epic: "urn:change-saga:checkout:epic:" + appEpic, ID: appEpic, Stories: []string{appStory}},
-			{Epic: "urn:change-saga:checkout:epic:" + appOtherEpic, ID: appOtherEpic, Stories: []string{appOrphanA, appOrphanB}},
+		Features: []livingapp.FeatureStatus{
+			{Feature: "urn:change-saga:checkout:feature:" + appFeature, ID: appFeature, Stories: []string{appStory}},
+			{Feature: "urn:change-saga:checkout:feature:" + appOtherFeature, ID: appOtherFeature, Stories: []string{appOrphanA, appOrphanB}},
 		},
 		Personas: []livingapp.PersonaStatus{
 			{Persona: appShopper, ID: "shopper", Name: "Shopper", State: "active", LifecycleHead: appShopper + ":event:active",
@@ -42,9 +42,9 @@ func appStatus() livingapp.Status {
 		},
 		PersonaOrphans: []livingapp.PersonaOrphans{{Personas: []string{appFaxer}, Stories: []string{appOrphanA, appOrphanB}}},
 		Stories: []livingapp.StoryStatus{
-			story(appStory, appEpic, "proposed", appShopper),
-			story(appOrphanA, appOtherEpic, "accepted", appFaxer),
-			story(appOrphanB, appOtherEpic, "accepted", appFaxer),
+			story(appStory, appFeature, "proposed", appShopper),
+			story(appOrphanA, appOtherFeature, "accepted", appFaxer),
+			story(appOrphanB, appOtherFeature, "accepted", appFaxer),
 		},
 		Axes: coverage.AxisProjection{Criteria: []coverage.CriterionCoverage{}},
 		ChangedSource: livingapp.ChangedSource{
@@ -53,17 +53,17 @@ func appStatus() livingapp.Status {
 	}
 }
 
-func TestEpicScopedGrowthNamesItsEpicAndFillsTheCommand(t *testing.T) {
+func TestFeatureScopedGrowthNamesItsFeatureAndFillsTheCommand(t *testing.T) {
 	report := areas.Evaluate(areas.Inputs{
 		Scope:   areas.Scope{Kind: areas.ScopeApp},
-		Stories: []areas.Story{{URN: appStory, Title: "Wallet", Epic: appEpic, Active: true}},
+		Stories: []areas.Story{{URN: appStory, Title: "Wallet", Feature: appFeature, Active: true}},
 	})
 	action, ok := byID(Derive(appStatus(), saga, Context{Coverage: report}))["growth:design:"+appStory]
 	if !ok {
 		t.Fatal("a story with no design yields a growth suggestion")
 	}
-	if action.Epic != appEpic || action.Category != CategoryGrowth || action.Area != AreaDesign || action.Practice == "" {
-		t.Fatalf("the suggestion names the story's epic, its area, and its practice: %#v", action)
+	if action.Feature != appFeature || action.Category != CategoryGrowth || action.Area != AreaDesign || action.Practice == "" {
+		t.Fatalf("the suggestion names the story's feature, its area, and its practice: %#v", action)
 	}
 	found := false
 	for _, command := range commandsOf(action) {
@@ -72,11 +72,11 @@ func TestEpicScopedGrowthNamesItsEpicAndFillsTheCommand(t *testing.T) {
 		}
 		found = true
 		assertGrammarShape(t, command)
-		if !hasArgument(command, "epic", appEpic) || !hasArgument(command, "to", appStory) {
-			t.Fatalf("relation add is aimed at the story's epic: %#v", command)
+		if !hasArgument(command, "feature", appFeature) || !hasArgument(command, "to", appStory) {
+			t.Fatalf("relation add is aimed at the story's feature: %#v", command)
 		}
-		if !containsArg(command.Argv, "--epic", appEpic) {
-			t.Fatalf("argv carries the epic: %v", command.Argv)
+		if !containsArg(command.Argv, "--feature", appFeature) {
+			t.Fatalf("argv carries the feature: %v", command.Argv)
 		}
 	}
 	if !found {
@@ -92,8 +92,8 @@ func TestPersonaGapIsAnAppLevelQuestion(t *testing.T) {
 	if action.Kind != KindQuestion || action.Question == nil || action.Command != nil {
 		t.Fatalf("a persona gap is a question: %#v", action)
 	}
-	if action.Epic != "" {
-		t.Fatalf("a persona concerns the app, not an epic: %q", action.Epic)
+	if action.Feature != "" {
+		t.Fatalf("a persona concerns the app, not a feature: %q", action.Feature)
 	}
 	if action.Category != CategoryGrowth || action.Area != AreaPersonas {
 		t.Fatalf("persona coverage is growth, never required: %#v", action)
@@ -103,8 +103,8 @@ func TestPersonaGapIsAnAppLevelQuestion(t *testing.T) {
 		assertGrammarShape(t, command)
 		if command.Command == "story set-state" && hasArgument(command, "story", appStory) {
 			accept = true
-			if !hasArgument(command, "epic", appEpic) {
-				t.Fatalf("accepting the serving story is still aimed at its epic: %#v", command)
+			if !hasArgument(command, "feature", appFeature) {
+				t.Fatalf("accepting the serving story is still aimed at its feature: %#v", command)
 			}
 		}
 	}
@@ -135,8 +135,8 @@ func TestPersonaOrphanGroupIsExactlyOneAction(t *testing.T) {
 			for _, story := range []string{appOrphanA, appOrphanB} {
 				if hasArgument(command, "story", story) {
 					stories[story] = true
-					if !hasArgument(command, "epic", appOtherEpic) {
-						t.Fatalf("%s is aimed at the story's epic: %#v", command.Command, command)
+					if !hasArgument(command, "feature", appOtherFeature) {
+						t.Fatalf("%s is aimed at the story's feature: %#v", command.Command, command)
 					}
 				}
 			}

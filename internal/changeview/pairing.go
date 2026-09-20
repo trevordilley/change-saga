@@ -105,9 +105,9 @@ func pair(changes []Change, base, head *Inventory) {
 		sort.Strings(urns)
 		pairing := &Pair{Role: role, Basis: PairAmbiguous, Candidates: urns}
 		if role == PairReplaces && len(urns) > 0 {
-			pairing.Link = "change-saga relation add --type supersedes --from " + changes[index].URN + " --to " + urns[0] + " --epic ID --id ID --rationale TEXT <saga>"
+			pairing.Link = "change-saga relation add --type supersedes --from " + changes[index].URN + " --to " + urns[0] + " --feature ID --id ID --rationale TEXT <saga>"
 		} else if len(urns) > 0 {
-			pairing.Link = "change-saga relation add --type supersedes --from " + urns[0] + " --to " + changes[index].URN + " --epic ID --id ID --rationale TEXT <saga>"
+			pairing.Link = "change-saga relation add --type supersedes --from " + urns[0] + " --to " + changes[index].URN + " --feature ID --id ID --rationale TEXT <saga>"
 		}
 		changes[index].Pair = pairing
 	}

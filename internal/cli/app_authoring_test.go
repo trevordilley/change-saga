@@ -19,11 +19,11 @@ import (
 
 // appStatusFacts are the app-level status facts.
 type appStatusFacts struct {
-	Epics []struct {
+	Features []struct {
 		ID      string   `json:"id"`
 		Stories []string `json:"stories"`
 		GatedBy []string `json:"gated_by"`
-	} `json:"epics"`
+	} `json:"features"`
 	Personas []struct {
 		Persona  string   `json:"persona"`
 		State    string   `json:"state"`
@@ -37,7 +37,7 @@ type appStatusFacts struct {
 	} `json:"persona_orphans"`
 	Stories []struct {
 		Story        string   `json:"story"`
-		Epic         string   `json:"epic"`
+		Feature      string   `json:"feature"`
 		State        string   `json:"state"`
 		Personas     []string `json:"personas"`
 		GatedBy      []string `json:"gated_by"`
@@ -51,7 +51,7 @@ type appStatus struct {
 	appStatusFacts
 	NextActions []struct {
 		ID       string `json:"id"`
-		Epic     string `json:"epic"`
+		Feature  string `json:"feature"`
 		Resource string `json:"resource"`
 		Command  *struct {
 			Argv []string `json:"argv"`
@@ -80,7 +80,7 @@ func runAppStatus(t *testing.T, root string, repo ...string) (appStatus, string)
 	if err := json.Unmarshal(output.Bytes(), &status); err != nil {
 		t.Fatalf("status --json: %v\n%s", err, output.String())
 	}
-	if raw := map[string]json.RawMessage{}; json.Unmarshal(output.Bytes(), &raw) != nil || raw["epics"] == nil || raw["personas"] == nil || raw["persona_orphans"] == nil {
+	if raw := map[string]json.RawMessage{}; json.Unmarshal(output.Bytes(), &raw) != nil || raw["features"] == nil || raw["personas"] == nil || raw["persona_orphans"] == nil {
 		t.Fatalf("status --json has no app facts:\n%s", output.String())
 	}
 	return status, output.String()
@@ -98,8 +98,8 @@ func mustLiving(t *testing.T, name string, run func(context.Context, []string, *
 func storyCommand(ctx context.Context, args []string, out *bytes.Buffer) error {
 	return Story(ctx, args, out)
 }
-func epicCommand(ctx context.Context, args []string, out *bytes.Buffer) error {
-	return Epic(ctx, args, out)
+func featureCommand(ctx context.Context, args []string, out *bytes.Buffer) error {
+	return Feature(ctx, args, out)
 }
 func personaCommand(ctx context.Context, args []string, out *bytes.Buffer) error {
 	return Persona(ctx, args, out)
@@ -111,10 +111,10 @@ func relationCommand(ctx context.Context, args []string, out *bytes.Buffer) erro
 	return Relation(ctx, args, out)
 }
 
-// addStory adds a proposed story with one criterion, "fast", to epic.
-func addStory(t *testing.T, root, epic, id string, personas ...string) livingMutationOutput {
+// addStory adds a proposed story with one criterion, "fast", to feature.
+func addStory(t *testing.T, root, feature, id string, personas ...string) livingMutationOutput {
 	t.Helper()
-	args := []string{"add", root, "--epic", epic, "--id", id, "--revision", "r1", "--event", "proposed",
+	args := []string{"add", root, "--feature", feature, "--id", id, "--revision", "r1", "--event", "proposed",
 		"--title", id, "--statement", "As a user I can " + id, "--priority", "must", "--criterion", "fast=It finishes promptly"}
 	for _, persona := range personas {
 		args = append(args, "--persona", persona)
@@ -153,7 +153,7 @@ func TestInitCreatesOnlyTheAppWithEveryOverviewPartAGap(t *testing.T) {
 	if strings.Index(text, "cover --against main") > strings.Index(text, "optional") {
 		t.Fatalf("init leads with covering the change before anything optional:\n%s", text)
 	}
-	for _, absent := range []string{"overview.fragment", applayout.OverviewDir, applayout.EpicsDir, applayout.PersonasDir, "___requirements"} {
+	for _, absent := range []string{"overview.fragment", applayout.OverviewDir, applayout.FeaturesDir, applayout.PersonasDir, "___requirements"} {
 		if _, err := os.Stat(filepath.Join(root, absent)); !os.IsNotExist(err) {
 			t.Fatalf("init created %s: %v", absent, err)
 		}
@@ -165,8 +165,8 @@ func TestInitCreatesOnlyTheAppWithEveryOverviewPartAGap(t *testing.T) {
 	}
 	// The overview's name is the manifest title; its pitch, description, and
 	// terms are gaps until they are written.
-	if len(document.Epics) != 0 || len(document.Section.Fragments) != 0 || document.OverviewPart(applayout.OverviewPitch) != nil {
-		t.Fatalf("init app = epics %d, fragments %#v", len(document.Epics), document.Section.Fragments)
+	if len(document.Features) != 0 || len(document.Section.Fragments) != 0 || document.OverviewPart(applayout.OverviewPitch) != nil {
+		t.Fatalf("init app = features %d, fragments %#v", len(document.Features), document.Section.Fragments)
 	}
 
 	// Observing the fresh app, the path that documents existing code, has no
@@ -186,42 +186,42 @@ func TestInitCreatesOnlyTheAppWithEveryOverviewPartAGap(t *testing.T) {
 	}
 }
 
-func TestEpicAddCreatesReplaysAndRejectsDuplicates(t *testing.T) {
+func TestFeatureAddCreatesReplaysAndRejectsDuplicates(t *testing.T) {
 	root := newAuthoredSaga(t)
 	args := []string{"add", root, "--id", "billing", "--title", "Billing", "--description", "Invoices and payments", "--request-id", "billing-request"}
-	created := mustLiving(t, "epic add", epicCommand, args...)
-	if !created.OK || created.Replayed || created.Resource != "urn:change-saga:atomic:epic:billing" || created.Path != "___epics/billing.epic" {
-		t.Fatalf("epic add = %#v", created)
+	created := mustLiving(t, "feature add", featureCommand, args...)
+	if !created.OK || created.Replayed || created.Resource != "urn:change-saga:atomic:feature:billing" || created.Path != "___features/billing.feature" {
+		t.Fatalf("feature add = %#v", created)
 	}
-	var manifest applayout.EpicManifest
-	if err := applayout.ReadStrictJSON(filepath.Join(root, "___epics", "billing.epic", "epic.json"), &manifest); err != nil {
+	var manifest applayout.FeatureManifest
+	if err := applayout.ReadStrictJSON(filepath.Join(root, "___features", "billing.feature", "feature.json"), &manifest); err != nil {
 		t.Fatal(err)
 	}
 	if manifest.ID != "billing" || manifest.Title != "Billing" || manifest.Description != "Invoices and payments" || manifest.RequestID != "billing-request" {
-		t.Fatalf("epic.json = %#v", manifest)
+		t.Fatalf("feature.json = %#v", manifest)
 	}
-	if replay := mustLiving(t, "epic add", epicCommand, args...); !replay.OK || !replay.Replayed || replay.Resource != created.Resource {
-		t.Fatalf("identical epic add did not replay: %#v", replay)
+	if replay := mustLiving(t, "feature add", featureCommand, args...); !replay.OK || !replay.Replayed || replay.Resource != created.Resource {
+		t.Fatalf("identical feature add did not replay: %#v", replay)
 	}
 
 	var output bytes.Buffer
 	changed := append(append([]string{}, args...), "--title", "Payments")
-	if err := Epic(context.Background(), changed, &output); err == nil || !strings.Contains(err.Error(), `epic "billing" already exists`) {
+	if err := Feature(context.Background(), changed, &output); err == nil || !strings.Contains(err.Error(), `feature "billing" already exists`) {
 		t.Fatalf("a changed replay must be refused: %v", err)
 	}
-	if err := Epic(context.Background(), []string{"add", root, "--id", testEpic, "--title", "Core again"}, &output); err == nil || !strings.Contains(err.Error(), "already exists") {
-		t.Fatalf("a duplicate epic must be refused: %v", err)
+	if err := Feature(context.Background(), []string{"add", root, "--id", testFeature, "--title", "Core again"}, &output); err == nil || !strings.Contains(err.Error(), "already exists") {
+		t.Fatalf("a duplicate feature must be refused: %v", err)
 	}
-	if err := Epic(context.Background(), []string{"add", root, "--id", "../escape", "--title", "Escape"}, &output); err == nil {
-		t.Fatal("an unstable epic id was accepted")
+	if err := Feature(context.Background(), []string{"add", root, "--id", "../escape", "--title", "Escape"}, &output); err == nil {
+		t.Fatal("an unstable feature id was accepted")
 	}
 	assertValid(t, root)
 	document, _, err := saga.Load(root)
 	if err != nil {
 		t.Fatal(err)
 	}
-	if len(document.Epics) != 2 || document.FindEpic("billing") == nil || document.FindEpic(testEpic) == nil {
-		t.Fatalf("epics = %#v", document.Epics)
+	if len(document.Features) != 2 || document.FindFeature("billing") == nil || document.FindFeature(testFeature) == nil {
+		t.Fatalf("features = %#v", document.Features)
 	}
 }
 
@@ -269,12 +269,12 @@ func TestPersonaAddReviseAndSetState(t *testing.T) {
 	assertValid(t, root)
 }
 
-// When the app has several epics, every command that creates a top-level
-// epic record must name its epic: the choice is the author's.
-func TestCreateCommandsRequireAnEpicAmongSeveral(t *testing.T) {
+// When the app has several features, every command that creates a top-level
+// feature record must name its feature: the choice is the author's.
+func TestCreateCommandsRequireAnFeatureAmongSeveral(t *testing.T) {
 	root := newAuthoredSaga(t)
-	story := addStory(t, root, testEpic, "checkout", testPersonaURN).Resource
-	mustLiving(t, "epic add", epicCommand, "add", root, "--id", "billing", "--title", "Billing")
+	story := addStory(t, root, testFeature, "checkout", testPersonaURN).Resource
+	mustLiving(t, "feature add", featureCommand, "add", root, "--id", "billing", "--title", "Billing")
 	source := newPrototypeSource(t, "<p>prototype</p>")
 	ctx := context.Background()
 	commands := []struct {
@@ -332,8 +332,8 @@ func TestCreateCommandsRequireAnEpicAmongSeveral(t *testing.T) {
 	for _, command := range commands {
 		var output bytes.Buffer
 		err := command.run(&output)
-		if err == nil || !strings.Contains(err.Error(), "--epic is required") || !strings.Contains(err.Error(), "known epics: billing, "+testEpic) {
-			t.Errorf("%s without --epic = %v", command.name, err)
+		if err == nil || !strings.Contains(err.Error(), "--feature is required") || !strings.Contains(err.Error(), "known features: billing, "+testFeature) {
+			t.Errorf("%s without --feature = %v", command.name, err)
 		}
 	}
 	if after := treeListing(t, root); !reflect.DeepEqual(before, after) {
@@ -343,22 +343,22 @@ func TestCreateCommandsRequireAnEpicAmongSeveral(t *testing.T) {
 	// A story needs no persona: personas are optional, so a first story can
 	// be written before anyone is named.
 	var output bytes.Buffer
-	if err := Story(ctx, []string{"add", root, "--epic", testEpic, "--id", "s", "--revision", "r1", "--event", "proposed", "--title", "S", "--statement", "S", "--priority", "must"}, &output); err != nil {
+	if err := Story(ctx, []string{"add", root, "--feature", testFeature, "--id", "s", "--revision", "r1", "--event", "proposed", "--title", "S", "--statement", "S", "--priority", "must"}, &output); err != nil {
 		t.Fatalf("story add without --persona = %v", err)
 	}
 	// Nor a priority: it is optional free text, so incremental adoption never
 	// makes an author invent one.
-	if err := Story(ctx, []string{"add", root, "--epic", testEpic, "--id", "unprioritized", "--revision", "r1", "--event", "proposed", "--title", "U", "--statement", "U"}, &output); err != nil {
+	if err := Story(ctx, []string{"add", root, "--feature", testFeature, "--id", "unprioritized", "--revision", "r1", "--event", "proposed", "--title", "U", "--statement", "U"}, &output); err != nil {
 		t.Fatalf("story add without --priority = %v", err)
 	}
-	revision, err := os.ReadFile(filepath.Join(root, "___epics", testEpic+".epic", "___requirements", "stories", "unprioritized.story", "revisions", "r1.json"))
+	revision, err := os.ReadFile(filepath.Join(root, "___features", testFeature+".feature", "___requirements", "stories", "unprioritized.story", "revisions", "r1.json"))
 	if err != nil || strings.Contains(string(revision), "priority") {
 		t.Fatalf("a story with no priority records none: %v\n%s", err, revision)
 	}
-	// An unknown epic lists the known ones.
-	err = AddChapter(ctx, []string{"--epic", "missing", "--title", "C", root, "chapter"}, &output)
-	if err == nil || !strings.Contains(err.Error(), `epic "missing" does not exist`) || !strings.Contains(err.Error(), "known epics: billing, "+testEpic) {
-		t.Fatalf("unknown epic = %v", err)
+	// An unknown feature lists the known ones.
+	err = AddChapter(ctx, []string{"--feature", "missing", "--title", "C", root, "chapter"}, &output)
+	if err == nil || !strings.Contains(err.Error(), `feature "missing" does not exist`) || !strings.Contains(err.Error(), "known features: billing, "+testFeature) {
+		t.Fatalf("unknown feature = %v", err)
 	}
 }
 
@@ -380,63 +380,63 @@ func treeListing(t *testing.T, root string) []string {
 	return paths
 }
 
-// A command on an existing record accepts --epic only as an assertion of the
-// epic that already holds the record.
-func TestEpicMismatchOnAnExistingRecordIsRejected(t *testing.T) {
+// A command on an existing record accepts --feature only as an assertion of the
+// feature that already holds the record.
+func TestFeatureMismatchOnAnExistingRecordIsRejected(t *testing.T) {
 	root := newAuthoredSaga(t)
-	mustLiving(t, "epic add", epicCommand, "add", root, "--id", "billing", "--title", "Billing")
-	story := addStory(t, root, testEpic, "checkout", testPersonaURN).Resource
+	mustLiving(t, "feature add", featureCommand, "add", root, "--id", "billing", "--title", "Billing")
+	story := addStory(t, root, testFeature, "checkout", testPersonaURN).Resource
 	var output bytes.Buffer
-	err := Story(context.Background(), []string{"set-state", root, "--epic", "billing", "--story", story, "--event", "accepted",
+	err := Story(context.Background(), []string{"set-state", root, "--feature", "billing", "--story", story, "--event", "accepted",
 		"--parent", story + ":event:proposed", "--state", "accepted"}, &output)
-	if err == nil || !strings.Contains(err.Error(), `is in epic "core", not "billing"`) {
-		t.Fatalf("story set-state with the wrong epic = %v", err)
+	if err == nil || !strings.Contains(err.Error(), `is in feature "core", not "billing"`) {
+		t.Fatalf("story set-state with the wrong feature = %v", err)
 	}
-	err = Story(context.Background(), []string{"revise", root, "--epic", "billing", "--story", story, "--revision", "r2",
+	err = Story(context.Background(), []string{"revise", root, "--feature", "billing", "--story", story, "--revision", "r2",
 		"--parent", story + ":revision:r1", "--persona", testPersonaURN, "--title", "T", "--statement", "S", "--priority", "must"}, &output)
-	if err == nil || !strings.Contains(err.Error(), `is in epic "core", not "billing"`) {
-		t.Fatalf("story revise with the wrong epic = %v", err)
+	if err == nil || !strings.Contains(err.Error(), `is in feature "core", not "billing"`) {
+		t.Fatalf("story revise with the wrong feature = %v", err)
 	}
-	// The matching epic, by ID or URN, is accepted.
-	mustLiving(t, "story set-state", storyCommand, "set-state", root, "--epic", "urn:change-saga:atomic:epic:core", "--story", story,
+	// The matching feature, by ID or URN, is accepted.
+	mustLiving(t, "story set-state", storyCommand, "set-state", root, "--feature", "urn:change-saga:atomic:feature:core", "--story", story,
 		"--event", "accepted", "--parent", story+":event:proposed", "--state", "accepted")
 
-	if err := AddChapter(context.Background(), []string{"--epic", testEpic, "--id", "backend", "--title", "Backend", root, "backend"}, &output); err != nil {
+	if err := AddChapter(context.Background(), []string{"--feature", testFeature, "--id", "backend", "--title", "Backend", root, "backend"}, &output); err != nil {
 		t.Fatal(err)
 	}
-	err = AddSection(context.Background(), []string{"--epic", "billing", "--title", "Flow", root, "backend/flow"}, &output)
-	if err == nil || !strings.Contains(err.Error(), `is in epic "core", not "billing"`) {
-		t.Fatalf("add-section into another epic's chapter = %v", err)
+	err = AddSection(context.Background(), []string{"--feature", "billing", "--title", "Flow", root, "backend/flow"}, &output)
+	if err == nil || !strings.Contains(err.Error(), `is in feature "core", not "billing"`) {
+		t.Fatalf("add-section into another feature's chapter = %v", err)
 	}
-	if _, statErr := os.Stat(filepath.Join(testEpicDir(root), "backend.chapter", "flow")); !os.IsNotExist(statErr) {
+	if _, statErr := os.Stat(filepath.Join(testFeatureDir(root), "backend.chapter", "flow")); !os.IsNotExist(statErr) {
 		t.Fatalf("a refused section was written: %v", statErr)
 	}
 	assertValid(t, root)
 }
 
-// Moving a story between epics changes where it is stored, never its
+// Moving a story between features changes where it is stored, never its
 // identity, so a relation pinned to it stays current.
 func TestStoryMoveKeepsRelationsCurrent(t *testing.T) {
 	root, repo := coveredSaga(t)
-	mustLiving(t, "epic add", epicCommand, "add", root, "--id", "billing", "--title", "Billing")
-	story := addStory(t, root, testEpic, "checkout", personaURNFor("batch")).Resource
-	runQuality(t, "", "test-case", "add", root, "--epic", testEpic, "--id", "fast", "--title", "Fast", "--kind", "positive",
+	mustLiving(t, "feature add", featureCommand, "add", root, "--id", "billing", "--title", "Billing")
+	story := addStory(t, root, testFeature, "checkout", personaURNFor("batch")).Resource
+	runQuality(t, "", "test-case", "add", root, "--feature", testFeature, "--id", "fast", "--title", "Fast", "--kind", "positive",
 		"--automation", "automated", "--step", `{"id":"s1","action":"Check out","expected_result":"Done"}`, "--expected-result", "Done")
-	mustLiving(t, "relation add", relationCommand, "add", root, "--epic", testEpic, "--id", "fast-verifies", "--type", "verifies",
+	mustLiving(t, "relation add", relationCommand, "add", root, "--feature", testFeature, "--id", "fast-verifies", "--type", "verifies",
 		"--from", "urn:change-saga:batch:test-case:fast", "--to", story+":criterion:fast", "--rationale", "Exercises the fast path.")
 
-	moved := mustLiving(t, "story move", storyCommand, "move", root, "--story", story, "--epic", "billing")
-	if !moved.OK || moved.Resource != story || !strings.HasPrefix(moved.Path, "___epics/billing.epic/") {
+	moved := mustLiving(t, "story move", storyCommand, "move", root, "--story", story, "--feature", "billing")
+	if !moved.OK || moved.Resource != story || !strings.HasPrefix(moved.Path, "___features/billing.feature/") {
 		t.Fatalf("story move = %#v", moved)
 	}
-	if _, err := os.Stat(filepath.Join(testEpicDir(root), "___requirements", "stories", "checkout.story")); !os.IsNotExist(err) {
-		t.Fatalf("the story stayed in its old epic: %v", err)
+	if _, err := os.Stat(filepath.Join(testFeatureDir(root), "___requirements", "stories", "checkout.story")); !os.IsNotExist(err) {
+		t.Fatalf("the story stayed in its old feature: %v", err)
 	}
 	document, err := requirements.Load(root, "batch")
 	if err != nil {
 		t.Fatal(err)
 	}
-	if found := document.FindStory("checkout"); found == nil || found.Epic != "billing" {
+	if found := document.FindStory("checkout"); found == nil || found.Feature != "billing" {
 		t.Fatalf("moved story = %#v", found)
 	}
 
@@ -450,26 +450,26 @@ func TestStoryMoveKeepsRelationsCurrent(t *testing.T) {
 	}
 	status, raw := runAppStatus(t, root, repo)
 	for _, row := range status.Stories {
-		if row.Story == story && row.Epic != "billing" {
-			t.Fatalf("status reports the moved story in epic %q:\n%s", row.Epic, raw)
+		if row.Story == story && row.Feature != "billing" {
+			t.Fatalf("status reports the moved story in feature %q:\n%s", row.Feature, raw)
 		}
 	}
 
 	output.Reset()
-	if err := Story(context.Background(), []string{"move", root, "--story", story, "--epic", "missing"}, &output); err == nil || !strings.Contains(err.Error(), "does not exist") {
-		t.Fatalf("moving to an unknown epic = %v", err)
+	if err := Story(context.Background(), []string{"move", root, "--story", story, "--feature", "missing"}, &output); err == nil || !strings.Contains(err.Error(), "does not exist") {
+		t.Fatalf("moving to an unknown feature = %v", err)
 	}
 	assertValid(t, root)
 }
 
 // The onboarding deck belongs to the app, and each of its Items explains a
-// persona, epic, or story record rather than code.
+// persona, feature, or story record rather than code.
 func TestOnboardingDeckItemsExplainRecords(t *testing.T) {
 	root := newAuthoredSaga(t)
 	ctx := context.Background()
 	var output bytes.Buffer
-	if err := AddDeck(ctx, []string{"--role", "onboarding", "--epic", testEpic, "--objective", "Orient.", root, "welcome"}, &output); err == nil || !strings.Contains(err.Error(), "omit --epic") {
-		t.Fatalf("an onboarding deck in an epic = %v", err)
+	if err := AddDeck(ctx, []string{"--role", "onboarding", "--feature", testFeature, "--objective", "Orient.", root, "welcome"}, &output); err == nil || !strings.Contains(err.Error(), "omit --feature") {
+		t.Fatalf("an onboarding deck in a feature = %v", err)
 	}
 	if err := AddDeck(ctx, []string{"--role", "onboarding", "--id", "welcome", "--objective", "Orient new contributors.", root, "welcome"}, &output); err != nil {
 		t.Fatal(err)
@@ -487,8 +487,8 @@ func TestOnboardingDeckItemsExplainRecords(t *testing.T) {
 	if err := AddItem(ctx, append(append([]string{}, item...), "--id", "ghost", "--record", "urn:change-saga:atomic:persona:ghost", root), &output); err == nil || !strings.Contains(err.Error(), "does not exist") {
 		t.Fatalf("an onboarding item for a missing record = %v", err)
 	}
-	if err := AddItem(ctx, append(append([]string{}, item...), "--id", "user", "--epic", testEpic, "--record", testPersonaURN, root), &output); err == nil || !strings.Contains(err.Error(), "omit --epic") {
-		t.Fatalf("an onboarding item with --epic = %v", err)
+	if err := AddItem(ctx, append(append([]string{}, item...), "--id", "user", "--feature", testFeature, "--record", testPersonaURN, root), &output); err == nil || !strings.Contains(err.Error(), "omit --feature") {
+		t.Fatalf("an onboarding item with --feature = %v", err)
 	}
 	output.Reset()
 	if err := AddItem(ctx, append(append([]string{}, item...), "--id", "user", "--record", testPersonaURN, root), &output); err != nil {
@@ -497,8 +497,8 @@ func TestOnboardingDeckItemsExplainRecords(t *testing.T) {
 	if !strings.Contains(output.String(), "Record: "+testPersonaURN) || strings.Contains(output.String(), "change-saga cover") {
 		t.Fatalf("onboarding item output = %q", output.String())
 	}
-	if err := AddItem(ctx, append(append([]string{}, item...), "--id", "core", "--record", "urn:change-saga:atomic:epic:core", root), &output); err != nil {
-		t.Fatalf("an onboarding item for an epic: %v", err)
+	if err := AddItem(ctx, append(append([]string{}, item...), "--id", "core", "--record", "urn:change-saga:atomic:feature:core", root), &output); err != nil {
+		t.Fatalf("an onboarding item for a feature: %v", err)
 	}
 
 	assertValid(t, root)
@@ -515,7 +515,7 @@ func TestOnboardingDeckItemsExplainRecords(t *testing.T) {
 	}
 
 	// An implementation Item explains code, not a record.
-	if err := AddDeck(ctx, []string{"--epic", testEpic, "--id", "impl", "--objective", "Explain.", root, "impl"}, &output); err != nil {
+	if err := AddDeck(ctx, []string{"--feature", testFeature, "--id", "impl", "--objective", "Explain.", root, "impl"}, &output); err != nil {
 		t.Fatal(err)
 	}
 	if err := AddSlide(ctx, []string{"--deck", "impl", "--intent", "orient", "--layout", "hero", "--title", "Change", "--takeaway", "It changed.", root, "change"}, &output); err != nil {
@@ -537,9 +537,9 @@ func TestStatusReportsPersonaGapsAndOneQuestionPerRetirement(t *testing.T) {
 	root, repo := coveredSaga(t)
 	user := personaURNFor("batch")
 	admin := mustLiving(t, "persona add", personaCommand, "add", root, "--id", "admin", "--name", "Admin", "--description", "Runs the store").Resource
-	first := addStory(t, root, testEpic, "browse", user).Resource
-	second := addStory(t, root, testEpic, "search", user).Resource
-	shared := addStory(t, root, testEpic, "manage", user, admin).Resource
+	first := addStory(t, root, testFeature, "browse", user).Resource
+	second := addStory(t, root, testFeature, "search", user).Resource
+	shared := addStory(t, root, testFeature, "manage", user, admin).Resource
 
 	status, raw := runAppStatus(t, root, repo)
 	gaps := map[string]bool{}
@@ -602,42 +602,42 @@ func TestStatusReportsPersonaGapsAndOneQuestionPerRetirement(t *testing.T) {
 	}
 }
 
-// Every next action about epic content names its epic, and its commands are
-// aimed at that epic.
-func TestStatusNextActionsNameTheirEpic(t *testing.T) {
+// Every next action about feature content names its feature, and its commands are
+// aimed at that feature.
+func TestStatusNextActionsNameTheirFeature(t *testing.T) {
 	root, repo := coveredSaga(t)
-	mustLiving(t, "epic add", epicCommand, "add", root, "--id", "billing", "--title", "Billing")
-	core := addStory(t, root, testEpic, "checkout", personaURNFor("batch")).Resource
+	mustLiving(t, "feature add", featureCommand, "add", root, "--id", "billing", "--title", "Billing")
+	core := addStory(t, root, testFeature, "checkout", personaURNFor("batch")).Resource
 	billing := addStory(t, root, "billing", "invoice", personaURNFor("batch")).Resource
 	status, raw := runAppStatus(t, root, repo)
 
-	epics := map[string][]string{}
-	for _, epic := range status.Epics {
-		epics[epic.ID] = epic.Stories
+	features := map[string][]string{}
+	for _, feature := range status.Features {
+		features[feature.ID] = feature.Stories
 	}
-	if !reflect.DeepEqual(epics[testEpic], []string{core}) || !reflect.DeepEqual(epics["billing"], []string{billing}) {
-		t.Fatalf("status epics = %#v", status.Epics)
+	if !reflect.DeepEqual(features[testFeature], []string{core}) || !reflect.DeepEqual(features["billing"], []string{billing}) {
+		t.Fatalf("status features = %#v", status.Features)
 	}
 	named, aimed := map[string]bool{}, map[string]bool{}
 	for _, action := range status.NextActions {
 		if action.Resource != core && action.Resource != billing {
 			continue
 		}
-		want := map[string]string{core: testEpic, billing: "billing"}[action.Resource]
-		if action.Epic != want {
-			t.Fatalf("next action %q about %s names epic %q, want %q", action.ID, action.Resource, action.Epic, want)
+		want := map[string]string{core: testFeature, billing: "billing"}[action.Resource]
+		if action.Feature != want {
+			t.Fatalf("next action %q about %s names feature %q, want %q", action.ID, action.Resource, action.Feature, want)
 		}
 		named[want] = true
 		for _, argv := range actionArgv(action.Command, action.Question) {
 			joined := strings.Join(argv, " ")
-			if strings.Contains(joined, "--epic") && !strings.Contains(joined, "--epic "+want) {
-				t.Fatalf("next action %q aims a command at another epic: %s", action.ID, joined)
+			if strings.Contains(joined, "--feature") && !strings.Contains(joined, "--feature "+want) {
+				t.Fatalf("next action %q aims a command at another feature: %s", action.ID, joined)
 			}
-			aimed[want] = aimed[want] || strings.Contains(joined, "--epic "+want)
+			aimed[want] = aimed[want] || strings.Contains(joined, "--feature "+want)
 		}
 	}
-	if !named[testEpic] || !named["billing"] || !aimed[testEpic] || !aimed["billing"] {
-		t.Fatalf("expected epic-scoped next actions with --epic commands for both epics (named %v, aimed %v):\n%s", named, aimed, raw)
+	if !named[testFeature] || !named["billing"] || !aimed[testFeature] || !aimed["billing"] {
+		t.Fatalf("expected feature-scoped next actions with --feature commands for both features (named %v, aimed %v):\n%s", named, aimed, raw)
 	}
 }
 
@@ -670,7 +670,7 @@ func TestFlagGatedStoryIsImplementedButNotEnabled(t *testing.T) {
 	root, repo := coveredSaga(t)
 	persona := personaURNFor("batch")
 	ctx := context.Background()
-	story := addStory(t, root, testEpic, "checkout", persona).Resource
+	story := addStory(t, root, testFeature, "checkout", persona).Resource
 	acceptStory(t, root, story)
 
 	var output bytes.Buffer
@@ -696,7 +696,7 @@ func TestFlagGatedStoryIsImplementedButNotEnabled(t *testing.T) {
 	}
 
 	// Map the whole change to an implementation Item that addresses the criterion.
-	if err := AddDeck(ctx, []string{"--epic", testEpic, "--id", "impl", "--objective", "Explain the change.", root, "impl"}, &output); err != nil {
+	if err := AddDeck(ctx, []string{"--feature", testFeature, "--id", "impl", "--objective", "Explain the change.", root, "impl"}, &output); err != nil {
 		t.Fatal(err)
 	}
 	if err := AddSlide(ctx, []string{"--deck", "impl", "--intent", "explain", "--layout", "diagram", "--title", "Handler", "--takeaway", "The handler is new.", root, "handler"}, &output); err != nil {
@@ -713,7 +713,7 @@ func TestFlagGatedStoryIsImplementedButNotEnabled(t *testing.T) {
 	if out, err := runCover(t, "", "--repo", repo, "--target", item, "--path", "internal/service/handler.go", "--changed-lines", "--name", "handler", root); err != nil {
 		t.Fatalf("cover: %v\n%s", err, out)
 	}
-	mustLiving(t, "relation add", relationCommand, "add", root, "--epic", testEpic, "--id", "handler-explains-fast", "--type", "explains",
+	mustLiving(t, "relation add", relationCommand, "add", root, "--feature", testFeature, "--id", "handler-explains-fast", "--type", "explains",
 		"--from", item, "--to", story+":criterion:fast", "--rationale", "The handler implements the fast path.")
 
 	status, raw = runAppStatus(t, root, repo)
@@ -735,7 +735,7 @@ func TestFlagGatedStoryIsImplementedButNotEnabled(t *testing.T) {
 	assertValid(t, root)
 }
 
-// The incremental case: a first change names an epic, writes one story, and
+// The incremental case: a first change names a feature, writes one story, and
 // explains itself with a deck, without defining a single persona. It is
 // valid, status reports it and exits zero, and personas are only ever growth.
 func TestFirstChangeNeedsNoPersonas(t *testing.T) {
@@ -753,10 +753,10 @@ func TestFirstChangeNeedsNoPersonas(t *testing.T) {
 	if err := Init(ctx, []string{"--repo", repo, "--repository", "https://example.test/acme/app.git", "--id", "first", root}, &output); err != nil {
 		t.Fatal(err)
 	}
-	mustLiving(t, "epic add", epicCommand, "add", root, "--id", "checkout", "--title", "Checkout")
+	mustLiving(t, "feature add", featureCommand, "add", root, "--id", "checkout", "--title", "Checkout")
 	story := addStory(t, root, "checkout", "pay").Resource
 	output.Reset()
-	if err := AddDeck(ctx, []string{"--epic", "checkout", "--objective", "Explain how payment works.", root, "payments"}, &output); err != nil {
+	if err := AddDeck(ctx, []string{"--feature", "checkout", "--objective", "Explain how payment works.", root, "payments"}, &output); err != nil {
 		t.Fatalf("add-deck: %v\n%s", err, output.String())
 	}
 	output.Reset()
@@ -798,11 +798,11 @@ func TestFirstChangeNeedsNoPersonas(t *testing.T) {
 	_ = story
 }
 
-// An omitted --epic uses the app's only epic, and when the app has none, the
+// An omitted --feature uses the app's only feature, and when the app has none, the
 // first command that needs one creates it, named after the branch. Either
 // way the choice is reported.
-func TestOmittedEpicDefaultsAndSaysWhatItChose(t *testing.T) {
-	repo := t.TempDir()
+func TestOmittedFeatureDefaultsAndSaysWhatItChose(t *testing.T) {
+	repo := shortTempDir(t)
 	git(t, repo, "init", "-b", "main")
 	git(t, repo, "checkout", "-b", "feature/checkout-flow")
 	root := filepath.Join(repo, "app.saga")
@@ -811,57 +811,57 @@ func TestOmittedEpicDefaultsAndSaysWhatItChose(t *testing.T) {
 		t.Fatal(err)
 	}
 	var notices bytes.Buffer
-	previous := epicNotices
-	epicNotices = &notices
-	defer func() { epicNotices = previous }()
+	previous := featureNotices
+	featureNotices = &notices
+	defer func() { featureNotices = previous }()
 
 	if err := AddDeck(ctx, []string{"--objective", "Explain.", root, "implementation"}, &bytes.Buffer{}); err != nil {
-		t.Fatalf("add-deck with no epic yet: %v", err)
+		t.Fatalf("add-deck with no feature yet: %v", err)
 	}
-	epics, err := applayout.Epics(root)
-	if err != nil || len(epics) != 1 || epics[0].ID != "checkout-flow" || epics[0].Title != "Checkout flow" {
-		t.Fatalf("the first epic is named after the branch: %+v %v", epics, err)
+	features, err := applayout.Features(root)
+	if err != nil || len(features) != 1 || features[0].ID != "checkout-flow" || features[0].Title != "Checkout flow" {
+		t.Fatalf("the first feature is named after the branch: %+v %v", features, err)
 	}
-	if !strings.Contains(notices.String(), `Created epic "checkout-flow"`) || !strings.Contains(notices.String(), "branch feature/checkout-flow") {
-		t.Fatalf("the created epic is reported: %q", notices.String())
+	if !strings.Contains(notices.String(), `Created feature "checkout-flow"`) || !strings.Contains(notices.String(), "branch feature/checkout-flow") {
+		t.Fatalf("the created feature is reported: %q", notices.String())
 	}
 	notices.Reset()
 	if err := Story(ctx, []string{"add", root, "--id", "pay", "--revision", "r1", "--event", "proposed", "--title", "Pay", "--statement", "S", "--priority", "must"}, &bytes.Buffer{}); err != nil {
-		t.Fatalf("story add with one epic: %v", err)
+		t.Fatalf("story add with one feature: %v", err)
 	}
-	if !strings.Contains(notices.String(), `Using epic "checkout-flow", the app's only epic`) {
-		t.Fatalf("the implied epic is reported: %q", notices.String())
+	if !strings.Contains(notices.String(), `Using feature "checkout-flow", the app's only feature`) {
+		t.Fatalf("the implied feature is reported: %q", notices.String())
 	}
 	assertValid(t, root)
 }
 
-// The reviewer's sidebar and status list epics in the order the author
+// The reviewer's sidebar and status list features in the order the author
 // created them, not alphabetically.
-func TestEpicsArePresentedInCreationOrder(t *testing.T) {
+func TestFeaturesArePresentedInCreationOrder(t *testing.T) {
 	root := newAuthoredSaga(t)
 	for _, id := range []string{"zebra", "accounts"} {
-		mustLiving(t, "epic add", epicCommand, "add", root, "--id", id, "--title", id)
+		mustLiving(t, "feature add", featureCommand, "add", root, "--id", id, "--title", id)
 	}
 	document, _, err := saga.Load(root)
 	if err != nil {
 		t.Fatal(err)
 	}
 	got := []string{}
-	for _, epic := range document.Epics {
-		got = append(got, epic.ID)
+	for _, feature := range document.Features {
+		got = append(got, feature.ID)
 	}
-	if strings.Join(got, ",") != testEpic+",zebra,accounts" {
-		t.Fatalf("document epics = %v", got)
+	if strings.Join(got, ",") != testFeature+",zebra,accounts" {
+		t.Fatalf("document features = %v", got)
 	}
 	status, err := livingapp.LoadStatus(context.Background(), livingapp.StatusOptions{SagaRoot: root, Document: document})
 	if err != nil {
 		t.Fatal(err)
 	}
 	got = got[:0]
-	for _, epic := range status.Epics {
-		got = append(got, epic.ID)
+	for _, feature := range status.Features {
+		got = append(got, feature.ID)
 	}
-	if strings.Join(got, ",") != testEpic+",zebra,accounts" {
-		t.Fatalf("status epics = %v", got)
+	if strings.Join(got, ",") != testFeature+",zebra,accounts" {
+		t.Fatalf("status features = %v", got)
 	}
 }

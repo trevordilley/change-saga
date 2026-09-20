@@ -384,7 +384,7 @@ type narrativeLocation struct {
 }
 
 // hrefAnchor is the in-page anchor of a link that may open another page,
-// such as an epic's.
+// such as a feature's.
 func hrefAnchor(href string) string {
 	if cut := strings.Index(href, "#"); cut >= 0 {
 		return href[cut+1:]
@@ -394,16 +394,16 @@ func hrefAnchor(href string) string {
 
 func indexNarrativeFragments(document *saga.Saga) []narrativeLocation {
 	var result []narrativeLocation
-	epics := epicTargets(document)
-	epicTitles := map[string]*saga.Epic{}
-	for _, epic := range document.Epics {
-		epicTitles[epic.ID] = epic
+	features := featureTargets(document)
+	featureTitles := map[string]*saga.Feature{}
+	for _, feature := range document.Features {
+		featureTitles[feature.ID] = feature
 	}
 	var walk func(*saga.Section, narrativeLocation)
 	walk = func(section *saga.Section, chapter narrativeLocation) {
 		if section.Kind == "chapter" {
 			chapter.chapterID, chapter.chapterTitle, chapter.chapterTarget = section.ID, section.Title, section.Target
-			chapter.chapterHref = onEpicPageHref(epics, section.Target, sagaHref(section.Target))
+			chapter.chapterHref = onFeaturePageHref(features, section.Target, sagaHref(section.Target))
 		} else if section.Kind == "deck" {
 			chapter.deckID, chapter.deckTitle, chapter.deckTarget = section.ID, section.Title, section.Target
 			chapter.deckHref = sagaHref(section.Target)
@@ -411,17 +411,17 @@ func indexNarrativeFragments(document *saga.Saga) []narrativeLocation {
 		for _, fragment := range section.Fragments {
 			location := chapter
 			if location.chapterTitle == "" {
-				// An epic's own explanation belongs to that epic, not to the
+				// A feature's own explanation belongs to that feature, not to the
 				// app overview.
-				if epic := epicTitles[epics[fragment.Target]]; epic != nil {
-					location.chapterTitle, location.chapterTarget, location.chapterHref = epic.Title, epic.Target, epicHref(epic.ID)
+				if feature := featureTitles[features[fragment.Target]]; feature != nil {
+					location.chapterTitle, location.chapterTarget, location.chapterHref = feature.Title, feature.Target, featureHref(feature.ID)
 				} else {
 					location.chapterTitle, location.chapterTarget, location.chapterHref = "Overview", document.Section.Target, sagaHref(document.Section.Target)
 				}
 			}
 			location.fragment = fragment
 			location.target, location.itemID, location.title, location.diffs, location.hasDiffs = fragment.Target, fragment.ID, fragment.Title, fragment.Code, fragment.HasCode
-			location.fragmentHref = onEpicPageHref(epics, fragment.Target, sagaHref(fragment.Target))
+			location.fragmentHref = onFeaturePageHref(features, fragment.Target, sagaHref(fragment.Target))
 			if fragment.SlideMeta != nil {
 				location.slideID, location.slideTitle, location.slideTarget = fragment.ID, fragment.Title, fragment.Target
 				location.slideHref = location.fragmentHref

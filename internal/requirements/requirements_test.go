@@ -41,7 +41,7 @@ func TestRevisionDAGPreservesMergeConflictUntilAllHeadsReconciled(t *testing.T) 
 		Title: "Checkout B", Statement: "As a buyer, I can purchase", Priority: "critical", Citations: []string{},
 		AcceptanceCriteria: []Criterion{{ID: "fast", Statement: "Checkout finishes promptly"}}, CreatedAt: testTime.Add(2 * time.Minute),
 	}
-	path := filepath.Join(root, "___epics", "core.epic", "___requirements", "stories", "checkout.story", "revisions", "r2-b.json")
+	path := filepath.Join(root, "___features", "core.feature", "___requirements", "stories", "checkout.story", "revisions", "r2-b.json")
 	if err := store.WriteJSON(path, concurrent, true); err != nil {
 		t.Fatal(err)
 	}
@@ -101,7 +101,7 @@ func TestStoryCreationIsAtomicAndRequestReplayIsIdempotent(t *testing.T) {
 	if _, err := AddStory(root, "test", missingCitation); err == nil || !strings.Contains(err.Error(), "does not exist") {
 		t.Fatalf("missing citation error = %v", err)
 	}
-	if _, err := os.Lstat(filepath.Join(root, "___epics", "core.epic", "___requirements", "stories", "invalid.story")); !os.IsNotExist(err) {
+	if _, err := os.Lstat(filepath.Join(root, "___features", "core.feature", "___requirements", "stories", "invalid.story")); !os.IsNotExist(err) {
 		t.Fatalf("failed package mutation was visible: %v", err)
 	}
 }
@@ -192,7 +192,7 @@ func TestCriterionWrappersCreateCompleteRevisionsAndReturnCurrentHeads(t *testin
 	if err == nil || !strings.Contains(err.Error(), "cannot be reused") {
 		t.Fatalf("removed criterion reuse error = %v", err)
 	}
-	if _, statErr := os.Stat(filepath.Join(root, "___epics", "core.epic", "___requirements", "stories", "checkout.story", "revisions", "r5.json")); !os.IsNotExist(statErr) {
+	if _, statErr := os.Stat(filepath.Join(root, "___features", "core.feature", "___requirements", "stories", "checkout.story", "revisions", "r5.json")); !os.IsNotExist(statErr) {
 		t.Fatalf("failed reuse wrote a revision: %v", statErr)
 	}
 }
@@ -231,7 +231,7 @@ func TestCriterionWrappersRequireExplicitUniqueCurrentParentAndReplay(t *testing
 		Title: "Checkout", Statement: "The story", Priority: "high", Citations: []string{},
 		AcceptanceCriteria: []Criterion{{ID: "fast", Statement: "Fast"}, {ID: "other", Statement: "Other"}}, CreatedAt: testTime.Add(2 * time.Minute),
 	}
-	path := filepath.Join(root, "___epics", "core.epic", "___requirements", "stories", "checkout.story", "revisions", "r2-other.json")
+	path := filepath.Join(root, "___features", "core.feature", "___requirements", "stories", "checkout.story", "revisions", "r2-other.json")
 	if err := store.WriteJSON(path, concurrent, true); err != nil {
 		t.Fatal(err)
 	}
@@ -257,7 +257,7 @@ func TestLifecycleIsAppendOnlyAndAcceptedRequiresCriteria(t *testing.T) {
 	if err == nil || !strings.Contains(err.Error(), "accepted story") {
 		t.Fatalf("accept empty story error = %v", err)
 	}
-	if _, statErr := os.Stat(filepath.Join(root, "___epics", "core.epic", "___requirements", "stories", "empty.story", "events", "accepted.json")); !os.IsNotExist(statErr) {
+	if _, statErr := os.Stat(filepath.Join(root, "___features", "core.feature", "___requirements", "stories", "empty.story", "events", "accepted.json")); !os.IsNotExist(statErr) {
 		t.Fatalf("rejected lifecycle mutation left a record: %v", statErr)
 	}
 }
@@ -280,7 +280,7 @@ func TestLifecycleMergeConflictRequiresEveryHead(t *testing.T) {
 		Schema: LifecycleEventSchemaURL, Version: Version, ID: "rejected", Story: story, Parents: []string{created},
 		State: StateRejected, Reason: "A concurrent terminal decision", CreatedAt: testTime.Add(2 * time.Minute),
 	}
-	path := filepath.Join(root, "___epics", "core.epic", "___requirements", "stories", "checkout.story", "events", "rejected.json")
+	path := filepath.Join(root, "___features", "core.feature", "___requirements", "stories", "checkout.story", "events", "rejected.json")
 	if err := store.WriteJSON(path, concurrent, true); err != nil {
 		t.Fatal(err)
 	}
@@ -311,7 +311,7 @@ func TestLifecycleMergeConflictRequiresEveryHead(t *testing.T) {
 
 func TestCitationIsImmutableAndRequestReplayIsIdempotent(t *testing.T) {
 	root := newSaga(t)
-	input := AddCitationInput{Epic: "core", ID: "policy", Kind: CitationURL, Title: "Policy", Reference: "https://example.com/policy", CreatedAt: testTime, RequestID: "request-1"}
+	input := AddCitationInput{Feature: "core", ID: "policy", Kind: CitationURL, Title: "Policy", Reference: "https://example.com/policy", CreatedAt: testTime, RequestID: "request-1"}
 	first, err := AddCitation(root, "test", input)
 	if err != nil {
 		t.Fatal(err)
@@ -336,7 +336,7 @@ func TestTypedRelationPinsExposeStaleInputsAndSupersede(t *testing.T) {
 	criterion := "urn:change-saga:test:story:checkout:criterion:fast"
 	revision := "urn:change-saga:test:story:checkout:revision:r1"
 	digest := "sha256:" + strings.Repeat("a", 64)
-	result, err := AddRelation(root, "test", AddRelationInput{Epic: "core",
+	result, err := AddRelation(root, "test", AddRelationInput{Feature: "core",
 		ID: "designs-fast", Type: RelationAddresses, From: design, To: criterion, Rationale: "The flow addresses latency.",
 		FromContentDigest: digest, ToRevision: revision, CreatedAt: testTime, RequestID: "relation-request",
 	})
@@ -390,13 +390,13 @@ func TestExplainsRelationLinksSlideToPinnedCriterion(t *testing.T) {
 	slide := "urn:change-saga:test:slide:checkout-flow"
 	criterion := "urn:change-saga:test:story:checkout:criterion:safe"
 	revision := "urn:change-saga:test:story:checkout:revision:r1"
-	if _, err := AddRelation(root, "test", AddRelationInput{Epic: "core",
+	if _, err := AddRelation(root, "test", AddRelationInput{Feature: "core",
 		ID: "checkout-flow-explains-safe", Type: RelationExplains, From: slide, To: criterion,
 		ToRevision: revision, Rationale: "The slide explains the acceptance path.", CreatedAt: testTime,
 	}); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := AddRelation(root, "test", AddRelationInput{Epic: "core",
+	if _, err := AddRelation(root, "test", AddRelationInput{Feature: "core",
 		ID: "missing-pin", Type: RelationExplains, From: slide, To: criterion,
 		Rationale: "An unpinned criterion link is ambiguous.", CreatedAt: testTime,
 	}); err == nil || !strings.Contains(err.Error(), "target story revision pin") {
@@ -412,7 +412,7 @@ func TestRelationToRemovedCriterionIsStale(t *testing.T) {
 	}
 	design := "urn:change-saga:test:fragment:checkout-flow"
 	digest := "sha256:" + strings.Repeat("a", 64)
-	_, err = AddRelation(root, "test", AddRelationInput{Epic: "core",
+	_, err = AddRelation(root, "test", AddRelationInput{Feature: "core",
 		ID: "designs-fast", Type: RelationAddresses, From: design,
 		To: "urn:change-saga:test:story:checkout:criterion:fast", Rationale: "Designs latency.",
 		FromContentDigest: digest, ToRevision: "urn:change-saga:test:story:checkout:revision:r1", CreatedAt: testTime,
@@ -439,7 +439,7 @@ func TestRelationToRemovedCriterionIsStale(t *testing.T) {
 
 func TestRelationTypeMatrixRejectsInvalidEndpoints(t *testing.T) {
 	root := newSaga(t)
-	_, err := AddRelation(root, "test", AddRelationInput{Epic: "core",
+	_, err := AddRelation(root, "test", AddRelationInput{Feature: "core",
 		ID: "invalid", Type: RelationAddresses,
 		From: "urn:change-saga:test:work-item:one", To: "urn:change-saga:test:work-item:two",
 		Rationale: "Wrong kinds", FromRevision: "urn:change-saga:test:work-item:one:revision:r1",
@@ -453,10 +453,10 @@ func TestRelationTypeMatrixRejectsInvalidEndpoints(t *testing.T) {
 func TestStrictLoadingRejectsSymlinkWithoutMutationSideEffects(t *testing.T) {
 	root := newSaga(t)
 	out := t.TempDir()
-	if err := os.Symlink(out, filepath.Join(root, "___epics", "core.epic", "___requirements")); err != nil {
+	if err := os.Symlink(out, filepath.Join(root, "___features", "core.feature", "___requirements")); err != nil {
 		t.Fatal(err)
 	}
-	_, err := AddCitation(root, "test", AddCitationInput{Epic: "core",
+	_, err := AddCitation(root, "test", AddCitationInput{Feature: "core",
 		ID: "policy", Kind: CitationDecision, Title: "Decision", Reference: "ADR-1", CreatedAt: testTime,
 	})
 	if err == nil || !strings.Contains(err.Error(), "real directory") {
@@ -470,11 +470,11 @@ func TestStrictLoadingRejectsSymlinkWithoutMutationSideEffects(t *testing.T) {
 
 func TestLoaderRejectsUnknownFieldsAndOversizedRecord(t *testing.T) {
 	root := newSaga(t)
-	_, err := AddCitation(root, "test", AddCitationInput{Epic: "core", ID: "policy", Kind: CitationDecision, Title: "Decision", Reference: "ADR-1", CreatedAt: testTime})
+	_, err := AddCitation(root, "test", AddCitationInput{Feature: "core", ID: "policy", Kind: CitationDecision, Title: "Decision", Reference: "ADR-1", CreatedAt: testTime})
 	if err != nil {
 		t.Fatal(err)
 	}
-	path := filepath.Join(root, "___epics", "core.epic", "___requirements", "citations", "policy.json")
+	path := filepath.Join(root, "___features", "core.feature", "___requirements", "citations", "policy.json")
 	var value map[string]any
 	data, _ := os.ReadFile(path)
 	if err := json.Unmarshal(data, &value); err != nil {
@@ -491,7 +491,7 @@ func TestLoaderRejectsUnknownFieldsAndOversizedRecord(t *testing.T) {
 }
 
 func storyInput(id, revision, event string, criteria []Criterion) AddStoryInput {
-	return AddStoryInput{Epic: "core", Personas: testPersonas,
+	return AddStoryInput{Feature: "core", Personas: testPersonas,
 		ID: id, RevisionID: revision, EventID: event, Title: "Checkout", Statement: "As a buyer, I can check out", Priority: "high",
 		Citations: []string{}, AcceptanceCriteria: criteria, CreatedAt: testTime, RequestID: "request-" + id,
 	}
@@ -511,7 +511,7 @@ func newSaga(t *testing.T) string {
 	if err := store.WriteJSON(filepath.Join(root, "saga.json"), manifest, true); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := applayout.WriteEpic(root, applayout.EpicManifest{ID: "core", Title: "Core", CreatedAt: testTime}); err != nil {
+	if _, err := applayout.WriteFeature(root, applayout.FeatureManifest{ID: "core", Title: "Core", CreatedAt: testTime}); err != nil {
 		t.Fatal(err)
 	}
 	if _, err := AddPersona(root, "test", AddPersonaInput{ID: "buyer", RevisionID: "r1", EventID: "active", Name: "Buyer", Description: "Buys things", CreatedAt: testTime}); err != nil {
@@ -527,14 +527,14 @@ var testPersonas = []string{"urn:change-saga:test:persona:buyer"}
 // unrelated directory must still be refused.
 func TestLoadToleratesTheSiblingPrototypeRootOnly(t *testing.T) {
 	root := newSaga(t)
-	if _, err := AddStory(root, "test", AddStoryInput{Epic: "core", Personas: testPersonas,
+	if _, err := AddStory(root, "test", AddStoryInput{Feature: "core", Personas: testPersonas,
 		ID: "buyer", RevisionID: "r1", EventID: "proposed", Title: "Buyer",
 		Statement: "As a buyer I can check out", Priority: "must",
 		AcceptanceCriteria: []Criterion{{ID: "fast", Statement: "Checkout finishes promptly"}},
 	}); err != nil {
 		t.Fatal(err)
 	}
-	if err := os.MkdirAll(filepath.Join(root, "___epics", "core.epic", "___requirements", "prototypes", "checkout.prototype"), 0o755); err != nil {
+	if err := os.MkdirAll(filepath.Join(root, "___features", "core.feature", "___requirements", "prototypes", "checkout.prototype"), 0o755); err != nil {
 		t.Fatal(err)
 	}
 	document, err := Load(root, "test")
@@ -544,7 +544,7 @@ func TestLoadToleratesTheSiblingPrototypeRootOnly(t *testing.T) {
 	if len(document.Stories) != 1 {
 		t.Fatalf("stories = %#v", document.Stories)
 	}
-	if err := os.Mkdir(filepath.Join(root, "___epics", "core.epic", "___requirements", "experiments"), 0o755); err != nil {
+	if err := os.Mkdir(filepath.Join(root, "___features", "core.feature", "___requirements", "experiments"), 0o755); err != nil {
 		t.Fatal(err)
 	}
 	if _, err := Load(root, "test"); err == nil || !strings.Contains(err.Error(), "unknown requirements entry") {
@@ -557,16 +557,16 @@ func TestLoadToleratesTheSiblingPrototypeRootOnly(t *testing.T) {
 // every requirement command breaks once one exception exists.
 func TestLoadToleratesCoverageExceptions(t *testing.T) {
 	root := newSaga(t)
-	exceptions := filepath.Join(root, "___epics", "core.epic", "___requirements", "coverage-exceptions")
+	exceptions := filepath.Join(root, "___features", "core.feature", "___requirements", "coverage-exceptions")
 	for _, name := range []string{"stories", "citations", "relations", "prototypes", "coverage-exceptions"} {
-		if err := os.MkdirAll(filepath.Join(root, "___epics", "core.epic", "___requirements", name), 0o755); err != nil {
+		if err := os.MkdirAll(filepath.Join(root, "___features", "core.feature", "___requirements", name), 0o755); err != nil {
 			t.Fatal(err)
 		}
 	}
 	if err := os.WriteFile(filepath.Join(exceptions, "docs-only.json"), []byte(`{"version":5}`), 0o644); err != nil {
 		t.Fatal(err)
 	}
-	if _, err := AddStory(root, "test", AddStoryInput{Epic: "core", Personas: testPersonas,
+	if _, err := AddStory(root, "test", AddStoryInput{Feature: "core", Personas: testPersonas,
 		ID: "buyer", RevisionID: "r1", EventID: "proposed", Title: "Buyer",
 		Statement: "As a buyer I can check out", Priority: "must",
 		AcceptanceCriteria: []Criterion{{ID: "fast", Statement: "Checkout finishes promptly"}},
@@ -577,10 +577,10 @@ func TestLoadToleratesCoverageExceptions(t *testing.T) {
 	if err != nil || len(document.Stories) != 1 {
 		t.Fatalf("requirements = %#v, err %v", document.Stories, err)
 	}
-	if err := os.Remove(filepath.Join(root, "___epics", "core.epic", "___requirements", "prototypes")); err != nil {
+	if err := os.Remove(filepath.Join(root, "___features", "core.feature", "___requirements", "prototypes")); err != nil {
 		t.Fatal(err)
 	}
-	if err := os.Mkdir(filepath.Join(root, "___epics", "core.epic", "___requirements", "experiments"), 0o755); err != nil {
+	if err := os.Mkdir(filepath.Join(root, "___features", "core.feature", "___requirements", "experiments"), 0o755); err != nil {
 		t.Fatal(err)
 	}
 	if _, err := Load(root, "test"); err == nil || !strings.Contains(err.Error(), "unknown requirements entry") {

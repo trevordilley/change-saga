@@ -75,12 +75,12 @@ type SetFlagStateInput struct {
 	RequestID string
 }
 
-// MoveStoryInput moves a story package to another epic. Identity, revisions,
+// MoveStoryInput moves a story package to another feature. Identity, revisions,
 // lifecycle, and every relation, pin, and reference to the story are
 // unchanged; only the directory that holds it moves.
 type MoveStoryInput struct {
-	Story string
-	Epic  string
+	Story   string
+	Feature string
 }
 
 func personaPackagePath(id string) string {
@@ -408,8 +408,8 @@ func SetFlagState(root, sagaID string, input SetFlagStateInput) (MutationResult,
 	return result, err
 }
 
-// MoveStory renames the story package into another epic's stories directory.
-// Moving a story into the epic that already holds it is a replay.
+// MoveStory renames the story package into another feature's stories directory.
+// Moving a story into the feature that already holds it is a replay.
 func MoveStory(root, sagaID string, input MoveStoryInput) (MutationResult, error) {
 	id, err := parseStoryURN(sagaID, input.Story)
 	if err != nil {
@@ -421,16 +421,16 @@ func MoveStory(root, sagaID string, input MoveStoryInput) (MutationResult, error
 		if story == nil {
 			return fmt.Errorf("story %q does not exist", id)
 		}
-		target, err := document.epic(input.Epic)
+		target, err := document.feature(input.Feature)
 		if err != nil {
 			return err
 		}
 		to := storyPackagePath(target.ID, id)
-		if story.Epic == target.ID {
+		if story.Feature == target.ID {
 			result = MutationResult{URN: input.Story, Path: to, Paths: []string{to}, Replayed: true}
 			return nil
 		}
-		from := storyPackagePath(story.Epic, id)
+		from := storyPackagePath(story.Feature, id)
 		dir, err := store.EnsureDirWithin(document.Root, filepath.Join(target.Dir, applayout.RequirementsDir, "stories"))
 		if err != nil {
 			return err

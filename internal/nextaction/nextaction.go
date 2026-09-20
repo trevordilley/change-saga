@@ -87,11 +87,11 @@ type Action struct {
 	// terms.
 	Area     string `json:"area,omitempty"`
 	Resource string `json:"resource,omitempty"`
-	// Epic is the epic the action concerns, or empty when it concerns the app
+	// Feature is the feature the action concerns, or empty when it concerns the app
 	// as a whole: a persona, a flag, or the app's overall scope.
-	Epic   string `json:"epic,omitempty"`
-	Axis   string `json:"axis,omitempty"`
-	Reason string `json:"reason"`
+	Feature string `json:"feature,omitempty"`
+	Axis    string `json:"axis,omitempty"`
+	Reason  string `json:"reason"`
 	// Practice, on a growth suggestion, is the practice it teaches and why
 	// it pays off.
 	Practice string              `json:"practice,omitempty"`
@@ -138,15 +138,15 @@ func AuthoringLoop(sagaPath string) Loop {
 }
 
 type builder struct {
-	// epicOf maps each story, criterion, test case, and prototype URN to the
-	// epic that holds it.
-	epicOf  map[string]string
-	context Context
-	status  livingapp.Status
-	saga    string
-	actions map[string]Action
-	stories map[string]livingapp.StoryStatus
-	crit    map[string]criterionInfo
+	// featureOf maps each story, criterion, test case, and prototype URN to the
+	// feature that holds it.
+	featureOf map[string]string
+	context   Context
+	status    livingapp.Status
+	saga      string
+	actions   map[string]Action
+	stories   map[string]livingapp.StoryStatus
+	crit      map[string]criterionInfo
 }
 
 type criterionInfo struct {
@@ -156,23 +156,23 @@ type criterionInfo struct {
 // Derive returns the ordered next actions for one status projection. The
 // optional context adds the growth suggestions the coverage report implies.
 func Derive(status livingapp.Status, sagaPath string, context ...Context) []Action {
-	b := &builder{status: status, saga: sagaPath, actions: map[string]Action{}, stories: map[string]livingapp.StoryStatus{}, crit: map[string]criterionInfo{}, epicOf: map[string]string{}}
+	b := &builder{status: status, saga: sagaPath, actions: map[string]Action{}, stories: map[string]livingapp.StoryStatus{}, crit: map[string]criterionInfo{}, featureOf: map[string]string{}}
 	if len(context) > 0 {
 		b.context = context[0]
 	}
 	for _, story := range status.Stories {
 		b.stories[story.Story] = story
-		b.epicOf[story.Story] = story.Epic
+		b.featureOf[story.Story] = story.Feature
 		for _, criterion := range story.Criteria {
 			b.crit[criterion.Criterion] = criterionInfo{story: story.Story, statement: criterion.Statement, revision: story.CurrentRevision}
-			b.epicOf[criterion.Criterion] = story.Epic
+			b.featureOf[criterion.Criterion] = story.Feature
 		}
 	}
 	for _, testCase := range status.Quality.TestCases {
-		b.epicOf[testCase.TestCase] = testCase.Epic
+		b.featureOf[testCase.TestCase] = testCase.Feature
 	}
 	for _, prototype := range status.Prototypes {
-		b.epicOf[prototype.Prototype] = prototype.Epic
+		b.featureOf[prototype.Prototype] = prototype.Feature
 	}
 	b.diagnostics()
 	b.storyConflicts()
@@ -187,7 +187,7 @@ func Derive(status livingapp.Status, sagaPath string, context ...Context) []Acti
 	b.growth()
 	result := make([]Action, 0, len(b.actions))
 	for _, action := range b.actions {
-		result = append(result, b.inEpic(action))
+		result = append(result, b.inFeature(action))
 	}
 	sort.Slice(result, func(i, j int) bool {
 		left, right := result[i], result[j]

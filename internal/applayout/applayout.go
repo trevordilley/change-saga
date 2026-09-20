@@ -1,5 +1,5 @@
 // Package applayout defines the physical layout of an app Saga: one saga.json,
-// the app-level roots, and the durable epics beneath ___epics. It is a leaf
+// the app-level roots, and the durable features beneath ___features. It is a leaf
 // package so every domain loader can locate its records the same way without
 // depending on any other domain.
 //
@@ -13,14 +13,14 @@
 //	  ___personas/        persona records
 //	  ___designsystem/    report content: Figma links and references
 //	  ___onboarding/      a deck whose Items reference records
-//	  ___featureflags/    flags and the epics and stories each one gates
-//	  ___epics/<id>.epic/
-//	    epic.json
+//	  ___featureflags/    flags and the features and stories each one gates
+//	  ___features/<id>.feature/
+//	    feature.json
 //	    <report content, ___requirements, ___design, ___slides, ___quality, ___workplan>
 //
-// Resource identity is independent of epic membership: a story, test case, or
-// deck URN never names its epic. Loaders therefore read every epic into one
-// app-wide model and reject an ID that two epics both use.
+// Resource identity is independent of feature membership: a story, test case, or
+// deck URN never names its feature. Loaders therefore read every feature into one
+// app-wide model and reject an ID that two features both use.
 package applayout
 
 import (
@@ -48,7 +48,7 @@ const (
 	DesignSystemDir = "___designsystem"
 	OnboardingDir   = "___onboarding"
 	FeatureFlagsDir = "___featureflags"
-	EpicsDir        = "___epics"
+	FeaturesDir     = "___features"
 
 	// The overview's formal parts. The project name is saga.json's title; the
 	// elevator pitch and description are fixed report fragments; terms are
@@ -58,20 +58,20 @@ const (
 	OverviewTerms       = "terms"
 	TermsDir            = OverviewDir + "/" + OverviewTerms
 
-	EpicSuffix       = ".epic"
-	EpicManifestName = "epic.json"
+	FeatureSuffix       = ".feature"
+	FeatureManifestName = "feature.json"
 
-	// EpicVersion versions epic.json. App-level records are part of the one
+	// FeatureVersion versions feature.json. App-level records are part of the one
 	// version-5 format.
-	EpicVersion   = 5
-	EpicSchemaURL = "https://changesaga.dev/schema/v5/epic.schema.json"
+	FeatureVersion   = 5
+	FeatureSchemaURL = "https://changesaga.dev/schema/v5/feature.schema.json"
 
-	MaxEpics       = 1_000
+	MaxFeatures    = 1_000
 	maxRecordBytes = 1 << 20
 )
 
-// Epic-level content roots. They are the roots a single-change Saga held at
-// its top level before epics existed.
+// Feature-level content roots. They are the roots a single-change Saga held at
+// its top level before features existed.
 const (
 	RequirementsDir = "___requirements"
 	DesignDir       = "___design"
@@ -82,18 +82,18 @@ const (
 
 // AppRootDirs are the reserved directories allowed directly beneath an app
 // Saga root, besides the review overlay roots the report loader owns.
-var AppRootDirs = []string{OverviewDir, PersonasDir, DesignSystemDir, OnboardingDir, FeatureFlagsDir, EpicsDir}
+var AppRootDirs = []string{OverviewDir, PersonasDir, DesignSystemDir, OnboardingDir, FeatureFlagsDir, FeaturesDir}
 
-// EpicRootDirs are the reserved directories allowed directly beneath an epic.
-var EpicRootDirs = []string{RequirementsDir, DesignDir, SlidesDir, QualityDir, WorkplanDir}
+// FeatureRootDirs are the reserved directories allowed directly beneath a feature.
+var FeatureRootDirs = []string{RequirementsDir, DesignDir, SlidesDir, QualityDir, WorkplanDir}
 
 var stableID = regexp.MustCompile(`^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$`)
 
 // ValidID reports whether value is a stable identifier.
 func ValidID(value string) bool { return stableID.MatchString(value) }
 
-// EpicManifest is the immutable identity of one durable product domain.
-type EpicManifest struct {
+// FeatureManifest is the immutable identity of one durable product domain.
+type FeatureManifest struct {
 	Schema      string    `json:"$schema"`
 	Version     int       `json:"version"`
 	ID          string    `json:"id"`
@@ -103,99 +103,99 @@ type EpicManifest struct {
 	RequestID   string    `json:"request_id,omitempty"`
 }
 
-// Epic is one loaded epic directory.
-type Epic struct {
-	EpicManifest
-	// Dir is the absolute epic directory.
+// Feature is one loaded feature directory.
+type Feature struct {
+	FeatureManifest
+	// Dir is the absolute feature directory.
 	Dir string
-	// Rel is the slash path of the epic directory relative to the app root.
+	// Rel is the slash path of the feature directory relative to the app root.
 	Rel string
 }
 
-// EpicRel returns the app-relative slash path of epic id.
-func EpicRel(id string) string { return EpicsDir + "/" + id + EpicSuffix }
+// FeatureRel returns the app-relative slash path of feature id.
+func FeatureRel(id string) string { return FeaturesDir + "/" + id + FeatureSuffix }
 
-// EpicDir returns the absolute directory of epic id beneath root.
-func EpicDir(root, id string) string {
-	return filepath.Join(root, EpicsDir, id+EpicSuffix)
+// FeatureDir returns the absolute directory of feature id beneath root.
+func FeatureDir(root, id string) string {
+	return filepath.Join(root, FeaturesDir, id+FeatureSuffix)
 }
 
-// EpicURN is the stable target of an epic.
-func EpicURN(sagaID, epicID string) string {
-	return "urn:change-saga:" + sagaID + ":epic:" + epicID
+// FeatureURN is the stable target of a feature.
+func FeatureURN(sagaID, featureID string) string {
+	return "urn:change-saga:" + sagaID + ":feature:" + featureID
 }
 
-// EpicFromURN returns the epic ID named by value, which may be a bare ID or a
-// canonical epic URN of sagaID.
-func EpicFromURN(sagaID, value string) (string, bool) {
+// FeatureFromURN returns the feature ID named by value, which may be a bare ID or a
+// canonical feature URN of sagaID.
+func FeatureFromURN(sagaID, value string) (string, bool) {
 	if ValidID(value) {
 		return value, true
 	}
-	prefix := "urn:change-saga:" + sagaID + ":epic:"
+	prefix := "urn:change-saga:" + sagaID + ":feature:"
 	if id := strings.TrimPrefix(value, prefix); id != value && ValidID(id) {
 		return id, true
 	}
 	return "", false
 }
 
-// Epics lists every epic beneath root in ID order. A missing ___epics
-// directory is an app with no epics yet. Every entry must be a real
-// <id>.epic directory whose epic.json names the same ID.
-func Epics(root string) ([]Epic, error) {
+// Features lists every feature beneath root in ID order. A missing ___features
+// directory is an app with no features yet. Every entry must be a real
+// <id>.feature directory whose feature.json names the same ID.
+func Features(root string) ([]Feature, error) {
 	abs, err := filepath.Abs(root)
 	if err != nil {
 		return nil, err
 	}
-	dir := filepath.Join(abs, EpicsDir)
+	dir := filepath.Join(abs, FeaturesDir)
 	info, err := os.Lstat(dir)
 	if errors.Is(err, os.ErrNotExist) {
-		return []Epic{}, nil
+		return []Feature{}, nil
 	}
 	if err != nil {
 		return nil, err
 	}
 	if info.Mode()&os.ModeSymlink != 0 || !info.IsDir() {
-		return nil, fmt.Errorf("%s must be a real directory", EpicsDir)
+		return nil, fmt.Errorf("%s must be a real directory", FeaturesDir)
 	}
 	entries, err := os.ReadDir(dir)
 	if err != nil {
 		return nil, err
 	}
-	if len(entries) > MaxEpics {
-		return nil, fmt.Errorf("%s has %d entries; maximum is %d", EpicsDir, len(entries), MaxEpics)
+	if len(entries) > MaxFeatures {
+		return nil, fmt.Errorf("%s has %d entries; maximum is %d", FeaturesDir, len(entries), MaxFeatures)
 	}
-	epics := make([]Epic, 0, len(entries))
+	features := make([]Feature, 0, len(entries))
 	for _, entry := range entries {
 		name := entry.Name()
-		rel := EpicsDir + "/" + name
-		if entry.Type()&os.ModeSymlink != 0 || !entry.IsDir() || !strings.HasSuffix(name, EpicSuffix) {
-			return nil, fmt.Errorf("%s: epics must be real <id>%s directories", rel, EpicSuffix)
+		rel := FeaturesDir + "/" + name
+		if entry.Type()&os.ModeSymlink != 0 || !entry.IsDir() || !strings.HasSuffix(name, FeatureSuffix) {
+			return nil, fmt.Errorf("%s: features must be real <id>%s directories", rel, FeatureSuffix)
 		}
-		id := strings.TrimSuffix(name, EpicSuffix)
+		id := strings.TrimSuffix(name, FeatureSuffix)
 		if !ValidID(id) {
-			return nil, fmt.Errorf("%s: epic directory name is not a stable id", rel)
+			return nil, fmt.Errorf("%s: feature directory name is not a stable id", rel)
 		}
-		var manifest EpicManifest
-		if err := ReadStrictJSON(filepath.Join(dir, name, EpicManifestName), &manifest); err != nil {
-			return nil, fmt.Errorf("%s/%s: %w", rel, EpicManifestName, err)
+		var manifest FeatureManifest
+		if err := ReadStrictJSON(filepath.Join(dir, name, FeatureManifestName), &manifest); err != nil {
+			return nil, fmt.Errorf("%s/%s: %w", rel, FeatureManifestName, err)
 		}
-		if err := ValidateEpicManifest(manifest); err != nil {
-			return nil, fmt.Errorf("%s/%s: %w", rel, EpicManifestName, err)
+		if err := ValidateFeatureManifest(manifest); err != nil {
+			return nil, fmt.Errorf("%s/%s: %w", rel, FeatureManifestName, err)
 		}
 		if manifest.ID != id {
-			return nil, fmt.Errorf("%s/%s: epic id %q must match its directory", rel, EpicManifestName, manifest.ID)
+			return nil, fmt.Errorf("%s/%s: feature id %q must match its directory", rel, FeatureManifestName, manifest.ID)
 		}
-		epics = append(epics, Epic{EpicManifest: manifest, Dir: filepath.Join(dir, name), Rel: rel})
+		features = append(features, Feature{FeatureManifest: manifest, Dir: filepath.Join(dir, name), Rel: rel})
 	}
-	sort.Slice(epics, func(i, j int) bool { return epics[i].ID < epics[j].ID })
-	return epics, nil
+	sort.Slice(features, func(i, j int) bool { return features[i].ID < features[j].ID })
+	return features, nil
 }
 
-// InCreationOrder returns epics in the order they were created, which is how
-// an author introduced the app's domains and how they are presented; epics
+// InCreationOrder returns features in the order they were created, which is how
+// an author introduced the app's domains and how they are presented; features
 // created at the same instant keep ID order.
-func InCreationOrder(epics []Epic) []Epic {
-	result := append([]Epic{}, epics...)
+func InCreationOrder(features []Feature) []Feature {
+	result := append([]Feature{}, features...)
 	sort.SliceStable(result, func(i, j int) bool {
 		if !result[i].CreatedAt.Equal(result[j].CreatedAt) {
 			return result[i].CreatedAt.Before(result[j].CreatedAt)
@@ -205,13 +205,13 @@ func InCreationOrder(epics []Epic) []Epic {
 	return result
 }
 
-// ValidateEpicManifest checks one epic identity record.
-func ValidateEpicManifest(manifest EpicManifest) error {
+// ValidateFeatureManifest checks one feature identity record.
+func ValidateFeatureManifest(manifest FeatureManifest) error {
 	switch {
-	case manifest.Schema != EpicSchemaURL:
-		return fmt.Errorf("$schema must be %s", EpicSchemaURL)
-	case manifest.Version != EpicVersion:
-		return fmt.Errorf("version must be %d", EpicVersion)
+	case manifest.Schema != FeatureSchemaURL:
+		return fmt.Errorf("$schema must be %s", FeatureSchemaURL)
+	case manifest.Version != FeatureVersion:
+		return fmt.Errorf("version must be %d", FeatureVersion)
 	case !ValidID(manifest.ID):
 		return fmt.Errorf("id must be a stable identifier")
 	case strings.TrimSpace(manifest.Title) == "":
@@ -222,66 +222,66 @@ func ValidateEpicManifest(manifest EpicManifest) error {
 	return nil
 }
 
-// Find returns the epic with id.
-func Find(epics []Epic, id string) (Epic, bool) {
-	for _, epic := range epics {
-		if epic.ID == id {
-			return epic, true
+// Find returns the feature with id.
+func Find(features []Feature, id string) (Feature, bool) {
+	for _, feature := range features {
+		if feature.ID == id {
+			return feature, true
 		}
 	}
-	return Epic{}, false
+	return Feature{}, false
 }
 
-// Require resolves the epic an authoring command targets. value may be a bare
-// epic ID or its URN; an empty value is refused with the known epics listed,
-// because epic content is never written to an implied epic.
-func Require(root, sagaID, value string) (Epic, error) {
-	epics, err := Epics(root)
+// Require resolves the feature an authoring command targets. value may be a bare
+// feature ID or its URN; an empty value is refused with the known features listed,
+// because feature content is never written to an implied feature.
+func Require(root, sagaID, value string) (Feature, error) {
+	features, err := Features(root)
 	if err != nil {
-		return Epic{}, err
+		return Feature{}, err
 	}
 	if strings.TrimSpace(value) == "" {
-		return Epic{}, fmt.Errorf("--epic is required; %s", known(epics))
+		return Feature{}, fmt.Errorf("--feature is required; %s", known(features))
 	}
-	id, ok := EpicFromURN(sagaID, value)
+	id, ok := FeatureFromURN(sagaID, value)
 	if !ok {
-		return Epic{}, fmt.Errorf("--epic %q is not an epic id or URN", value)
+		return Feature{}, fmt.Errorf("--feature %q is not a feature id or URN", value)
 	}
-	epic, found := Find(epics, id)
+	feature, found := Find(features, id)
 	if !found {
-		return Epic{}, fmt.Errorf("epic %q does not exist; %s", id, known(epics))
+		return Feature{}, fmt.Errorf("feature %q does not exist; %s", id, known(features))
 	}
-	return epic, nil
+	return feature, nil
 }
 
-func known(epics []Epic) string {
-	if len(epics) == 0 {
-		return "the app has no epics yet; add one with change-saga epic add"
+func known(features []Feature) string {
+	if len(features) == 0 {
+		return "the app has no features yet; add one with change-saga feature add"
 	}
-	ids := make([]string, 0, len(epics))
-	for _, epic := range epics {
-		ids = append(ids, epic.ID)
+	ids := make([]string, 0, len(features))
+	for _, feature := range features {
+		ids = append(ids, feature.ID)
 	}
-	return "known epics: " + strings.Join(ids, ", ")
+	return "known features: " + strings.Join(ids, ", ")
 }
 
-// EpicOfPath returns the epic ID containing an app-relative slash path, or ""
+// FeatureOfPath returns the feature ID containing an app-relative slash path, or ""
 // for app-level paths.
-func EpicOfPath(rel string) string {
+func FeatureOfPath(rel string) string {
 	rel = filepath.ToSlash(rel)
-	if !strings.HasPrefix(rel, EpicsDir+"/") {
+	if !strings.HasPrefix(rel, FeaturesDir+"/") {
 		return ""
 	}
-	name := strings.SplitN(strings.TrimPrefix(rel, EpicsDir+"/"), "/", 2)[0]
-	if !strings.HasSuffix(name, EpicSuffix) {
+	name := strings.SplitN(strings.TrimPrefix(rel, FeaturesDir+"/"), "/", 2)[0]
+	if !strings.HasSuffix(name, FeatureSuffix) {
 		return ""
 	}
-	return strings.TrimSuffix(name, EpicSuffix)
+	return strings.TrimSuffix(name, FeatureSuffix)
 }
 
-// UniqueIDs records the epic that owns each app-unique resource ID and reports
-// a second owner as an error. Identity is independent of epic membership, so
-// the same ID in two epics would be one URN naming two records.
+// UniqueIDs records the feature that owns each app-unique resource ID and reports
+// a second owner as an error. Identity is independent of feature membership, so
+// the same ID in two features would be one URN naming two records.
 type UniqueIDs struct {
 	kind   string
 	owners map[string]string
@@ -292,19 +292,19 @@ func NewUniqueIDs(kind string) *UniqueIDs {
 	return &UniqueIDs{kind: kind, owners: map[string]string{}}
 }
 
-// Claim records that epic owns id.
-func (u *UniqueIDs) Claim(id, epic string) error {
+// Claim records that feature owns id.
+func (u *UniqueIDs) Claim(id, feature string) error {
 	if owner, ok := u.owners[id]; ok {
-		if owner == epic {
-			return fmt.Errorf("duplicate %s id %q in epic %q", u.kind, id, epic)
+		if owner == feature {
+			return fmt.Errorf("duplicate %s id %q in feature %q", u.kind, id, feature)
 		}
-		return fmt.Errorf("%s id %q is used by epics %q and %q; %s IDs are unique across the app", u.kind, id, owner, epic, u.kind)
+		return fmt.Errorf("%s id %q is used by features %q and %q; %s IDs are unique across the app", u.kind, id, owner, feature, u.kind)
 	}
-	u.owners[id] = epic
+	u.owners[id] = feature
 	return nil
 }
 
-// Owner returns the epic owning id.
+// Owner returns the feature owning id.
 func (u *UniqueIDs) Owner(id string) (string, bool) {
 	owner, ok := u.owners[id]
 	return owner, ok
@@ -342,48 +342,48 @@ func ReadStrictJSON(path string, target any) error {
 	return nil
 }
 
-// WriteEpic creates the epic directory and its manifest. It is the one writer
-// of epic.json, shared by the CLI and test fixtures.
-func WriteEpic(root string, manifest EpicManifest) (Epic, error) {
+// WriteFeature creates the feature directory and its manifest. It is the one writer
+// of feature.json, shared by the CLI and test fixtures.
+func WriteFeature(root string, manifest FeatureManifest) (Feature, error) {
 	if manifest.Schema == "" {
-		manifest.Schema = EpicSchemaURL
+		manifest.Schema = FeatureSchemaURL
 	}
 	if manifest.Version == 0 {
-		manifest.Version = EpicVersion
+		manifest.Version = FeatureVersion
 	}
 	if manifest.CreatedAt.IsZero() {
 		manifest.CreatedAt = time.Now().UTC()
 	}
-	if err := ValidateEpicManifest(manifest); err != nil {
-		return Epic{}, err
+	if err := ValidateFeatureManifest(manifest); err != nil {
+		return Feature{}, err
 	}
 	abs, err := filepath.Abs(root)
 	if err != nil {
-		return Epic{}, err
+		return Feature{}, err
 	}
-	dir := EpicDir(abs, manifest.ID)
+	dir := FeatureDir(abs, manifest.ID)
 	err = store.CommitDir(abs, dir, func(stage string) error {
 		if err := os.Chmod(stage, 0o755); err != nil {
 			return err
 		}
-		return store.WriteJSON(filepath.Join(stage, EpicManifestName), manifest, true)
+		return store.WriteJSON(filepath.Join(stage, FeatureManifestName), manifest, true)
 	})
 	if errors.Is(err, fs.ErrExist) {
-		return Epic{}, fmt.Errorf("epic %q already exists", manifest.ID)
+		return Feature{}, fmt.Errorf("feature %q already exists", manifest.ID)
 	}
 	if err != nil {
-		return Epic{}, err
+		return Feature{}, err
 	}
-	return Epic{EpicManifest: manifest, Dir: dir, Rel: EpicRel(manifest.ID)}, nil
+	return Feature{FeatureManifest: manifest, Dir: dir, Rel: FeatureRel(manifest.ID)}, nil
 }
 
-// RejectEpicRootsAtAppRoot refuses the single-change layout, in which
+// RejectFeatureRootsAtAppRoot refuses the single-change layout, in which
 // requirements, design, quality, the work plan, and the deck sat directly
-// beneath saga.json. That content now belongs to an epic.
-func RejectEpicRootsAtAppRoot(root string) error {
-	for _, name := range EpicRootDirs {
+// beneath saga.json. That content now belongs to a feature.
+func RejectFeatureRootsAtAppRoot(root string) error {
+	for _, name := range FeatureRootDirs {
 		if _, err := os.Lstat(filepath.Join(root, name)); err == nil {
-			return fmt.Errorf("%s belongs in an epic (%s/<id>%s/%s), not at the app root", name, EpicsDir, EpicSuffix, name)
+			return fmt.Errorf("%s belongs in a feature (%s/<id>%s/%s), not at the app root", name, FeaturesDir, FeatureSuffix, name)
 		} else if !errors.Is(err, os.ErrNotExist) {
 			return err
 		}

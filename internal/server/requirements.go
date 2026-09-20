@@ -22,7 +22,7 @@ var errRequirementNotFound = errors.New("requirement not found")
 type requirementsPageView struct {
 	Active   bool
 	Overview bool
-	// Groups is the overview's stories by epic, in epic order.
+	// Groups is the overview's stories by feature, in feature order.
 	Groups           []requirementGroupView
 	Stories          []*requirementStoryView
 	Story            *requirementStoryView
@@ -34,8 +34,8 @@ type requirementsPageView struct {
 }
 
 type requirementStoryView struct {
-	// Epic is the epic whose directory holds the story.
-	Epic               string
+	// Feature is the feature whose directory holds the story.
+	Feature            string
 	Number             int
 	Label              string
 	ID                 string
@@ -61,17 +61,17 @@ type requirementStoryView struct {
 	Criteria           []*requirementCriterionView
 	// Terms are the project vocabulary that names this story.
 	Terms []termLinkView
-	// EpicLink, Personas, Citations, and Trace are the story's declared
+	// FeatureLink, Personas, Citations, and Trace are the story's declared
 	// links, filled for the story a page shows.
-	EpicLink  traceLink
-	Personas  []traceLink
-	Citations []citationView
-	Trace     traceGroups
+	FeatureLink traceLink
+	Personas    []traceLink
+	Citations   []citationView
+	Trace       traceGroups
 }
 
-// requirementGroupView is one epic's stories on the requirements overview.
+// requirementGroupView is one feature's stories on the requirements overview.
 type requirementGroupView struct {
-	Epic        traceLink
+	Feature     traceLink
 	Description string
 	Stories     []*requirementStoryView
 }
@@ -193,7 +193,7 @@ func makeRequirementStoryView(sagaID string, number int, story requirements.Stor
 		return nil, err
 	}
 	view := &requirementStoryView{
-		Epic: story.Epic, Number: number, Label: fmt.Sprintf("Story %02d", number), ID: story.Identity.ID,
+		Feature: story.Feature, Number: number, Label: fmt.Sprintf("Story %02d", number), ID: story.Identity.ID,
 		Target: target, DOMID: domID(target), Href: requirementStoryHref(story.Identity.ID),
 		Title: story.Identity.ID, CreatedAt: story.Identity.CreatedAt, Lifecycle: "unresolved",
 		RevisionConflict: story.RevisionConflict(), LifecycleConflict: story.LifecycleConflict(),
@@ -244,19 +244,19 @@ func makeRequirementStoryView(sagaID string, number int, story requirements.Stor
 }
 
 func makeRequirementsNav(page *requirementsPageView) *navNodeView {
-	return makeEpicRequirementsNav(page, "", "nav")
+	return makeFeatureRequirementsNav(page, "", "nav")
 }
 
-// makeEpicRequirementsNav lists one epic's stories, or every story when epic
+// makeFeatureRequirementsNav lists one feature's stories, or every story when feature
 // is empty. A story row reads as the story's title: an ordinal such as
 // "Story 03" named nothing a reader could recognize.
-func makeEpicRequirementsNav(page *requirementsPageView, epic, prefix string) *navNodeView {
+func makeFeatureRequirementsNav(page *requirementsPageView, feature, prefix string) *navNodeView {
 	root := &navNodeView{
 		Title: "Requirements", Href: "/requirements", NodeID: prefix + "-requirements",
-		Icon: "requirements", Requirement: true, Active: page.Overview && epic == "", Expanded: page.Active,
+		Icon: "requirements", Requirement: true, Active: page.Overview && feature == "", Expanded: page.Active,
 	}
 	for _, story := range page.Stories {
-		if epic != "" && story.Epic != epic {
+		if feature != "" && story.Feature != feature {
 			continue
 		}
 		selectedStory := page.Story != nil && page.Story.ID == story.ID

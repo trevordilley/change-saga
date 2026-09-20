@@ -58,13 +58,13 @@ test("@critical every section header opens its page rather than only expanding",
   await expect(flags.getByRole("row", { name: /tide-charts-beta/ })).toContainText("Tide Charts");
   await expectNoSeriousAccessibilityViolations(page);
 
-  // Epics: counts of what each epic holds, and never a verdict on them.
-  await contents.getByRole("link", { name: "Epics", exact: true }).click();
-  await expect(page).toHaveURL(`${saga.baseURL}/epics`);
+  // Features: counts of what each feature holds, and never a verdict on them.
+  await contents.getByRole("link", { name: "Features", exact: true }).click();
+  await expect(page).toHaveURL(`${saga.baseURL}/features`);
   await waitForSettledSaga(page);
-  const epics = page.locator('[data-directory="epics"]');
-  await expect(epics.getByRole("columnheader")).toHaveText(["Epic", "Description", "Stories", "Accepted", "With design", "Test cases", "Slides"]);
-  await expect(epics.getByRole("row", { name: /Tide Charts/ })).toContainText("1");
+  const features = page.locator('[data-directory="features"]');
+  await expect(features.getByRole("columnheader")).toHaveText(["Feature", "Description", "Stories", "Accepted", "With design", "Test cases", "Slides"]);
+  await expect(features.getByRole("row", { name: /Tide Charts/ })).toContainText("1");
   await expectNoSeriousAccessibilityViolations(page);
 
   // Reviews: a section of its own, with nothing to list yet.
@@ -80,7 +80,7 @@ test("a deck's header opens it at the first slide", async ({ page, saga }) => {
     const result = runCLI(saga, args, saga.sagaRepo);
     expect(result.status, `${args[0]} failed\n${result.stdout}\n${result.stderr}`).toBe(0);
   };
-  run("add-deck", "--epic", "wave-one", "--objective", "Explain how a request is served.", saga.sagaRoot, "request-flow");
+  run("add-deck", "--feature", "wave-one", "--objective", "Explain how a request is served.", saga.sagaRoot, "request-flow");
   for (const [slide, title] of [["request-enters", "Request enters"], ["response-returns", "Response returns"]] as const) {
     run("add-slide", "--deck", "request-flow", "--intent", "explain", "--layout", "diagram", "--title", title, "--takeaway", `${title} is explicit.`, saga.sagaRoot, slide);
   }
@@ -102,21 +102,21 @@ test("a deck's header opens it at the first slide", async ({ page, saga }) => {
 });
 
 test("@critical a directory filters as it is typed into, and without JavaScript too", async ({ page, browser, saga }) => {
-  await page.goto(`${saga.baseURL}/epics`);
+  await page.goto(`${saga.baseURL}/features`);
   await waitForSettledSaga(page);
-  const epics = page.locator('[data-directory="epics"]');
-  const rows = epics.locator("[data-directory-row]");
+  const features = page.locator('[data-directory="features"]');
+  const rows = features.locator("[data-directory-row]");
   await expect(rows).toHaveCount(3);
-  await expect(epics.locator("caption")).toHaveText("3 epics");
+  await expect(features.locator("caption")).toHaveText("3 features");
   // The submit button belongs to the plain path; typing has replaced it.
-  await expect(epics.locator("[data-directory-submit]")).toBeHidden();
+  await expect(features.locator("[data-directory-submit]")).toBeHidden();
 
-  const filter = epics.getByRole("searchbox", { name: "Filter epics" });
+  const filter = features.getByRole("searchbox", { name: "Filter features" });
   await filter.fill("tide");
   await expect(rows.filter({ visible: true })).toHaveCount(1);
-  await expect(epics.locator("caption")).toHaveText("1 of 3 epics");
+  await expect(features.locator("caption")).toHaveText("1 of 3 features");
   await filter.fill("nothing here");
-  await expect(epics.locator("[data-directory-none]")).toBeVisible();
+  await expect(features.locator("[data-directory-none]")).toBeVisible();
   // Widening the filter brings the rows back: nothing was thrown away.
   await filter.fill("");
   await expect(rows.filter({ visible: true })).toHaveCount(3);
@@ -126,16 +126,16 @@ test("@critical a directory filters as it is typed into, and without JavaScript 
   const context = await browser.newContext({ javaScriptEnabled: false });
   const plain = await context.newPage();
   try {
-    await plain.goto(`${saga.baseURL}/epics`);
-    const plainEpics = plain.locator('[data-directory="epics"]');
-    await plainEpics.getByRole("searchbox", { name: "Filter epics" }).fill("tide");
-    await plainEpics.getByRole("button", { name: "Filter" }).click();
-    await expect(plain).toHaveURL(`${saga.baseURL}/epics?q=tide`);
-    await expect(plainEpics.locator("[data-directory-row]").filter({ visible: true })).toHaveCount(1);
-    await expect(plainEpics.locator("caption")).toHaveText("1 of 3 epics");
+    await plain.goto(`${saga.baseURL}/features`);
+    const plainFeatures = plain.locator('[data-directory="features"]');
+    await plainFeatures.getByRole("searchbox", { name: "Filter features" }).fill("tide");
+    await plainFeatures.getByRole("button", { name: "Filter" }).click();
+    await expect(plain).toHaveURL(`${saga.baseURL}/features?q=tide`);
+    await expect(plainFeatures.locator("[data-directory-row]").filter({ visible: true })).toHaveCount(1);
+    await expect(plainFeatures.locator("caption")).toHaveText("1 of 3 features");
     // And a way back to all of them, which a plain browser also needs.
-    await plainEpics.getByRole("link", { name: "Clear" }).click();
-    await expect(plain).toHaveURL(`${saga.baseURL}/epics`);
+    await plainFeatures.getByRole("link", { name: "Clear" }).click();
+    await expect(plain).toHaveURL(`${saga.baseURL}/features`);
     await expect(plain.locator("[data-directory-row]").filter({ visible: true })).toHaveCount(3);
   } finally {
     await context.close();

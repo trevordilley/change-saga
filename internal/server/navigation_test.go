@@ -179,23 +179,23 @@ func TestDeckNavigationFoldsIntoDesignAndImplementationByRole(t *testing.T) {
 		}
 	}
 
-	// The reviewer applies the same split inside each epic.
+	// The reviewer applies the same split inside each feature.
 	sources := appNavFixture(t)
 	uxDeck, uxRow := appNavDeck("billing-ux", "ux", "happy-path")
-	billing := sources.document.Epics[0]
+	billing := sources.document.Features[0]
 	billing.Decks = append(billing.Decks, uxDeck)
 	sources.decks = append(sources.decks, uxRow)
 	app := makeAppNavTree(sources)
-	if ux := findNav(t, app, "Epics", "Billing", "Design", "UX"); ux.Gap || len(ux.Children) != 1 || ux.Children[0] != uxRow {
-		t.Fatalf("an epic's ux deck must fill its Design > UX: %v", navTitles(ux.Children, 0))
+	if ux := findNav(t, app, "Features", "Billing", "Design", "UX"); ux.Gap || len(ux.Children) != 1 || ux.Children[0] != uxRow {
+		t.Fatalf("a feature's ux deck must fill its Design > UX: %v", navTitles(ux.Children, 0))
 	}
-	if got := topTitles(findNav(t, app, "Epics", "Billing", "Implementation").Children); got != "charge|refund" {
-		t.Fatalf("a ux deck must leave the epic's Implementation to the change deck: %s", got)
+	if got := topTitles(findNav(t, app, "Features", "Billing", "Implementation").Children); got != "charge|refund" {
+		t.Fatalf("a ux deck must leave the feature's Implementation to the change deck: %s", got)
 	}
 	// Catalog only spends rows on its four places when the reader is in it.
-	sources.pageEpic = "catalog"
-	if !findNav(t, makeAppNavTree(sources), "Epics", "Catalog", "Design", "UX").Gap {
-		t.Fatal("another epic's ux deck must not fill this epic's Design > UX")
+	sources.pageFeature = "catalog"
+	if !findNav(t, makeAppNavTree(sources), "Features", "Catalog", "Design", "UX").Gap {
+		t.Fatal("another feature's ux deck must not fill this feature's Design > UX")
 	}
 }
 
@@ -243,26 +243,26 @@ func TestPrototypeNavigationNamesPrototypesFromTheirCurrentRevision(t *testing.T
 }
 
 // The app-level list has the same five app rows on every Saga, then the one
-// epic the reader is on and the way to every other. That epic lists its own
+// feature the reader is on and the way to every other. That feature lists its own
 // report outline and then the same four places, so the architecture sits at a
 // stable place inside it whatever the app-level content is.
-func TestProductNavigationSitsInsideEveryEpicBelowItsReportOutline(t *testing.T) {
+func TestProductNavigationSitsInsideEveryFeatureBelowItsReportOutline(t *testing.T) {
 	sources := appNavFixture(t)
-	billing := sources.document.Epics[0]
+	billing := sources.document.Features[0]
 	billing.Report.Children = []*saga.Section{
 		{Kind: "chapter", ID: "delivery", Title: "Delivery", Target: saga.ChapterTarget(appNavSaga, "delivery")},
 		{Kind: "chapter", ID: "evidence", Title: "Evidence", Target: saga.ChapterTarget(appNavSaga, "evidence")},
 	}
 	nodes := makeAppNavTree(sources)
-	if got, want := topTitles(nodes), "Overview|Epics|Reviews"; got != want {
+	if got, want := topTitles(nodes), "Overview|Features|Reviews"; got != want {
 		t.Fatalf("sidebar = %s, want %s", got, want)
 	}
-	if got, want := topTitles(findNav(t, nodes, "Epics", "Billing").Children), "Billing overview|Delivery|Evidence|Product|Design|Quality|Implementation"; got != want {
-		t.Fatalf("billing epic = %s, want %s", got, want)
+	if got, want := topTitles(findNav(t, nodes, "Features", "Billing").Children), "Billing overview|Delivery|Evidence|Product|Design|Quality|Implementation"; got != want {
+		t.Fatalf("billing feature = %s, want %s", got, want)
 	}
 	billing.Report = nil
-	if got, want := topTitles(findNav(t, makeAppNavTree(sources), "Epics", "Billing").Children), "Product|Design|Quality|Implementation"; got != want {
-		t.Fatalf("epic without report content = %s, want %s", got, want)
+	if got, want := topTitles(findNav(t, makeAppNavTree(sources), "Features", "Billing").Children), "Product|Design|Quality|Implementation"; got != want {
+		t.Fatalf("feature without report content = %s, want %s", got, want)
 	}
 }
 

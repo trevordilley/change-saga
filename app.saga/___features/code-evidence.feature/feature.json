@@ -1,0 +1,8 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/feature.schema.json",
+  "version": 5,
+  "id": "code-evidence",
+  "title": "Code references and coverage",
+  "description": "Nodes reference code at a commit with a content digest; references remap when lines move and go stale when they change; every changed line of a comparison is accounted for; references are re-pinned at merge; companion repositories and the sync cursor.",
+  "created_at": "2026-09-19T20:47:03.038934Z"
+}
