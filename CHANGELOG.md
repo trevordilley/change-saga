@@ -66,6 +66,23 @@ tool, and what they have to do about it.
 
 ### Fixed
 
+- **A relation is stale only when what it points at changed.** Revising a story
+  used to stale every relation to it, so adding a persona — changing no
+  criterion any of them asserted — reported seven false gaps at once. A
+  relation is now judged by the criterion's statement, or by the story's
+  obligation: its title, statement, and acceptance criteria. Priority,
+  personas, and citations do not stale it. The comparison is exact, so a typo
+  fix still asks, because deciding which edits do not count is the reader's
+  judgment to make. Pins that still hold are **carried forward, never silently
+  re-affirmed**: `status` names both the revision somebody confirmed and the one
+  it was carried to.
+- **`status` no longer crashes on a stale quality-evidence record.** It built a
+  command with a flag the grammar does not declare (`--diff` instead of
+  `--code`) and panicked. Every next action's answer is now a runnable command,
+  with a test that derives every stale record kind so the next such mismatch
+  cannot reach a release.
+- **Every judgment-call next action prints the command that answers it.** They
+  used to ask a question and stop, leaving the reader to work out the grammar.
 - **A heading landmark inherits the design that contains it.** `validate`
   recommends moving code evidence onto focused heading landmarks; doing so used
   to drop that code out of the story chain, so following the tool's own advice
@@ -82,6 +99,12 @@ tool, and what they have to do about it.
 
 ### Added
 
+- **`relation repin`** records that a relation still holds after what it points
+  at genuinely changed. Saying so used to cost `relation supersede` plus
+  `relation add` under a new id, which retired a true relation and renamed it.
+  A repin is an immutable record beside the relation; the relation keeps its
+  id, its rationale, and the pins its author confirmed. Re-pinning a relation
+  nothing has moved under is refused.
 - `prototype`, `quality`, and `relation status` commands; test cases can verify
   acceptance criteria through pinned relations.
 - `feature add`, `persona add|revise|set-state`, `flag add|revise|set-state`, and

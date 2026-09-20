@@ -334,9 +334,34 @@ Stories and their acceptance criteria are the traceability backbone. A deck,
 slide, or Item relates to a story or criterion through an active relation that
 pins the exact story revision it relied on. Linking a story applies to every
 acceptance criterion in that pinned revision; linking a criterion is the
-narrower form. A relation becomes stale when its pinned revision is no longer
-current or its visual source disappears, and a stale relation is never
-coverage. Relations never move exact diff ownership away from Items.
+narrower form. A stale relation is never coverage, and relations never move
+exact diff ownership away from Items.
+
+A relation is judged by **what it points at**, not by a revision id. It is
+stale when its visual source disappears, when a pinned criterion's statement is
+no longer byte-identical to the one confirmed, or when a pinned story no longer
+obliges what it did: its title, statement, or acceptance criteria changed.
+A story's priority, personas, and citations do not stale a relation, because
+none of them changes what a design must address, a slide must explain, or a
+test must verify. The comparison is exact: a typo fix or a capitalization
+change is stale, because deciding which edits "do not count" is the judgment
+the reader is there to make.
+
+When a relation still holds but its revision moved on, the pin is **carried
+forward, never silently re-affirmed**. The record keeps the revision a person
+confirmed, and the report names both that revision and the one the relation was
+carried to, so a confirmation somebody made is always distinguishable from one
+the tool carried past. This matters because a staleness signal that fires when
+nothing it asserts has changed trains readers to re-pin without reading, which
+destroys the only thing pinning is for.
+
+`relation repin` records a person's confirmation that a relation still holds
+after what it points at genuinely changed. It appends an immutable record under
+`___requirements/relation-repins/<relation>/<id>.json`; the relation itself is
+never rewritten, keeping its id, its rationale, and the pins its author
+confirmed. A relation's confirmed pins are its own folded with its repins,
+oldest first. Re-pinning a relation nothing has moved under is refused, and a
+superseded relation is retired rather than re-affirmed.
 
 `query traceability` returns the complete current paths from each accepted
 criterion through its linked review targets to Item-owned code references. It can be
@@ -899,6 +924,11 @@ hide authored content behind a valid-looking saga. Other names beginning with
 - `change-saga references [--stale] [--diff]` reports every code reference's
   health, and `change-saga repin --onto REV [--branch REV]` re-pins references
   when a change lands (see section 6.2).
+- `change-saga relation add|repin|supersede|status` authors and maintains
+  pinned traceability edges. `repin --relation URN --rationale TEXT` records
+  that a relation still holds after what it points at changed; omitted pins
+  default to the heads the relation is behind. `status` reports each relation
+  as current, carried forward, stale, or superseded.
 - `change-saga install-skill` prints an agent-agnostic prompt for installing the
   project-local Change Saga authoring skill. It MUST NOT mutate the repository
   or assume an agent-specific skill path.
