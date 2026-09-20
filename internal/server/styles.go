@@ -245,11 +245,23 @@ body.presentation-mode .deck-viewer-stage:hover .slide-exit-presentation,body.pr
 .epic-index-counts{margin:4px 0 0;color:var(--faint);font:11px var(--mono)}
 .epic-index-description{margin:6px 0 0;color:var(--muted);font-size:13px}
 
+.review-detail-heading{margin:22px 0 10px;font:600 14px/1.3 var(--ui)}
+.overview-directory{margin:22px 0 0}
+.overview-directory h2{margin:0 0 8px;font:600 14px/1.3 var(--ui)}
+.overview-parts{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.overview-part{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px;padding:10px 12px;border:1px solid var(--line);border-radius:var(--radius);background:var(--bg-subtle)}
+.overview-part-link{font:650 14px/1.3 var(--ui);color:var(--accent);text-decoration:none}
+.overview-part-link:hover{text-decoration:underline}
+.overview-part-count{color:var(--faint);font:11px var(--mono)}
+.overview-part-note{flex:1 1 100%;margin:0;color:var(--muted);font-size:12px}
+.overview-part.gap .overview-part-note{color:var(--faint)}
+
 /* Directories: the filterable table every section header opens ----------- */
 .directory{margin-top:14px}
 .directory-filter{display:flex;align-items:center;gap:8px;margin:0 0 10px;max-width:520px}
-.directory-filter .tree-search{flex:1}
-.directory-filter input[type=search]{min-width:0;width:100%;height:30px;padding:0 10px 0 27px;border:1px solid var(--line);border-radius:var(--radius);background:var(--bg);color:var(--ink);font-size:13px}
+.directory-search{flex:1;display:flex;align-items:center;gap:8px;min-width:0}
+.directory-search-label{color:var(--muted);font:12px var(--ui);white-space:nowrap}
+.directory-filter input[type=search]{min-width:0;width:100%;height:30px;padding:0 10px;border:1px solid var(--line);border-radius:var(--radius);background:var(--bg);color:var(--ink);font-size:13px}
 .directory-filter input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none}
 .directory-filter-go{height:30px;padding:0 12px;border:1px solid var(--line);border-radius:var(--radius);background:var(--bg-subtle);color:var(--ink);font:13px var(--ui);cursor:pointer}
 .directory-filter-go:hover{background:var(--bg-inset)}
@@ -301,7 +313,7 @@ body.presentation-mode .deck-viewer-stage:hover .slide-exit-presentation,body.pr
 .view{display:none}
 .view.active{display:block}
 .page-heading{margin:0 0 18px}
-.page-heading h2{margin:0;font:600 22px/1.25 var(--ui);letter-spacing:-.01em}
+.page-heading h1,.page-heading h2{margin:0;font:600 22px/1.25 var(--ui);letter-spacing:-.01em}
 .coverage-totals{margin:6px 0 0;color:var(--faint);font:11px var(--mono)}
 .coverage-totals .gap{color:var(--red);font-weight:600}
 .fragment-placeholder,.section-placeholder{margin:0;padding:8px 10px;color:var(--faint);font:11px var(--mono)}

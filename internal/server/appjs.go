@@ -631,6 +631,13 @@ const appJavaScript = `(() => {
     });
     const none = q('[data-directory-none]', directory);
     if (none) none.hidden = shown > 0;
+    // Detail a directory summarises, such as a review's per-slide decisions,
+    // is marked with the row's own key and follows the table's filter. A page
+    // has one directory, so this is scoped by key rather than by container.
+    const matched = new Set(rows.filter(row => !row.hidden).map(row => row.dataset.directoryRow));
+    qa('[data-directory-linked]').forEach(detail => {
+      detail.hidden = !matched.has(detail.dataset.directoryLinked);
+    });
     const caption = q('[data-directory-caption]', directory);
     if (caption) {
       const total = Number(directory.dataset.directoryTotal || rows.length);

@@ -9,22 +9,34 @@ import (
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
-// The reviewer's app-level list:
+// The reviewer's app-level list has three sections, and every one of them is
+// a page:
 //
-//	Overview        name, elevator pitch, description, terms and vocabulary
-//	Personas        who the app serves
-//	Design system   Figma links and references
-//	Onboarding      the deck that gets people up to speed
-//	Feature flags   what is gated, and whether it is on
-//	<current epic>  one epic, chosen from a searchable picker, over its
-//	                Product, Design, Quality, and Implementation
-//	Show all epics  the full list, for browsing, collapsed by default
+//	Overview        name, elevator pitch, description, and the parts that
+//	                describe the whole app: terms and vocabulary, personas,
+//	                the design system, onboarding, and feature flags
+//	Epics           the directory of every epic, over the one epic the
+//	                sidebar is currently showing and its four places
+//	Reviews         every pull request's review
 //
-// Everything above the epic is always present, because it describes the whole
-// app and a reader arriving anywhere needs it. The epics are not: listing
-// every one of them expanded put this repository's own sidebar at 238 rows,
-// which is a wall rather than an architecture. One epic at a time keeps the
-// list readable, and the picker keeps every other epic one keystroke away.
+// Three sections, because those are the three things a reviewer arrives
+// looking for: what the app is, what it does, and what is being changed about
+// it. Personas, the design system, onboarding, and feature flags all describe
+// the whole app rather than any one part of it, so they belong to the
+// overview and not beside the epics they cut across.
+//
+// No header in this list is a row that only expands. A section header opens
+// the section: Overview opens its prose and its directory, Terms and
+// vocabulary opens the table of terms, Onboarding opens the deck at its first
+// slide, and Epics and Reviews open their tables. The disclosure beside a
+// header is how a reader reaches one row inside the section without leaving
+// where they are; it is not the only way in.
+//
+// The epics are not all listed. Listing every one of them expanded put this
+// repository's own sidebar at 238 rows, which is a wall rather than an
+// architecture. One epic at a time keeps the list readable, the picker keeps
+// every other epic one keystroke away, and the Epics header opens the table
+// of all of them.
 //
 // Within the epic the per-epic rules are unchanged: Implementation is the deck
 // and opens all the way to its slides, the other places stay shut until
@@ -46,6 +58,9 @@ type appNavSources struct {
 	// currentEpic is the one epic the sidebar shows, already resolved by
 	// resolveCurrentEpic. An unknown or empty ID falls back to the first epic.
 	currentEpic string
+	// hasReviews says whether any pull request has a review yet, so the
+	// Reviews section can state the gap without loading one.
+	hasReviews bool
 }
 
 func makeAppNavTree(sources appNavSources) []*navNodeView {
@@ -68,28 +83,86 @@ func makeAppNavTree(sources appNavSources) []*navNodeView {
 		onboarding = onboarding[0].Children
 	}
 
-	navigation := []*navNodeView{
-		overview,
-		navPlace("Personas", "nav-personas", "", "no personas yet", personaNav(sources.requirements)),
-		navPlace("Design system", "nav-designsystem", "design", "no design system yet", reportRootNav(document.DesignSystem)),
-		navPlace("Onboarding", "nav-onboarding", "deck", "no onboarding deck yet", onboarding),
-		navPlace("Feature flags", "nav-featureflags", "", "no feature flags yet", flagNav(sources.requirements)),
+	// Everything that describes the whole app hangs off the overview.
+	overview.Children = append(overview.Children,
+		navSection("Personas", "/personas", "nav-personas", "", "no personas yet", personaNav(sources.requirements)),
+		navSection("Design system", designSystemPath, "nav-designsystem", "design", "no design system yet",
+			onPage(designSystemPath, reportRootNav(document.DesignSystem))),
+		navDeck("Onboarding", "nav-onboarding", "deck", "no onboarding deck yet", onboarding),
+		navSection("Feature flags", "/flags", "nav-featureflags", "", "no feature flags yet", flagNav(sources.requirements)),
+	)
+
+	reviews := navSection("Reviews", "/reviews", "nav-reviews", "diff", "no reviews yet", nil)
+	if sources.hasReviews {
+		// Every review is a page of its own, so the section holds no rows: its
+		// header opens the table of them. The gap is stated only while there
+		// are none to open.
+		reviews.Gap, reviews.Note = false, ""
 	}
-	navigation = append(navigation, makeEpicNavRegion(sources, deckRows)...)
+	navigation := []*navNodeView{overview, makeEpicsNav(sources, deckRows), reviews}
 	for _, node := range navigation {
 		revealActive(node)
 	}
 	return navigation
 }
 
-// makeEpicNavRegion is the epic end of the sidebar: the current epic over its
-// four places, then the disclosure that lists every epic. An app with no epics
-// keeps the row that says so, because a reader has to be able to see that the
-// app has no epics rather than infer it from an absence.
-func makeEpicNavRegion(sources appNavSources, deckRows map[string]*navNodeView) []*navNodeView {
+// navSection is a section header that is also a destination. The row opens
+// the section's own page and the twisty beside it discloses what the section
+// holds; a header that only expanded made a reader click twice to reach a
+// page that already existed. A section nothing fills keeps both the link and
+// the stated gap, because the page is where that gap is explained.
+func navSection(title, href, id, icon, emptyNote string, children []*navNodeView) *navNodeView {
+	node := navPlace(title, id, icon, emptyNote, children)
+	node.Href = href
+	return node
+}
+
+// navDeck is a section whose page is a deck: the header opens it at its first
+// slide, and the slides stay beneath it so any one of them is still one click
+// away. A deck already knows where it starts, so a header that only expanded
+// into a list of slides asked the reader a question they had no way to answer.
+func navDeck(title, id, icon, emptyNote string, slides []*navNodeView) *navNodeView {
+	node := navPlace(title, id, icon, emptyNote, slides)
+	node.Href = firstSlideHref(slides)
+	return node
+}
+
+// firstSlideHref is where a deck opens: its first slide, wherever that slide
+// sits among the rows the deck was given.
+func firstSlideHref(nodes []*navNodeView) string {
+	for _, node := range nodes {
+		if node.Slide != nil {
+			return node.Href
+		}
+		if href := firstSlideHref(node.Children); href != "" {
+			return href
+		}
+	}
+	return ""
+}
+
+// onPage moves a row's in-page anchors, and its outline's, onto the page that
+// renders them.
+func onPage(path string, nodes []*navNodeView) []*navNodeView {
+	for _, node := range nodes {
+		if strings.HasPrefix(node.Href, "#") {
+			node.Href = path + node.Href
+		}
+		onPage(path, node.Children)
+	}
+	return nodes
+}
+
+// makeEpicsNav is the Epics section: the header opens the table of every
+// epic, the one epic the sidebar is showing sits beneath it over its four
+// places, and the full list is one disclosure away. An app with no epics keeps
+// the section, because a reader has to be able to see that the app has no
+// epics rather than infer it from an absence.
+func makeEpicsNav(sources appNavSources, deckRows map[string]*navNodeView) *navNodeView {
 	document := sources.document
+	section := navSection("Epics", epicsIndexHref, "nav-epics", "product", "no epics yet", nil)
 	if len(document.Epics) == 0 {
-		return []*navNodeView{navPlace("Epics", "nav-epics", "", "no epics yet", nil)}
+		return section
 	}
 	current := document.Epics[0]
 	for _, epic := range document.Epics {
@@ -99,7 +172,10 @@ func makeEpicNavRegion(sources appNavSources, deckRows map[string]*navNodeView) 
 	}
 	node := makeEpicNav(sources, current, deckRows)
 	node.Picker = makeEpicPicker(document, current.ID)
-	return []*navNodeView{node, makeAllEpicsNav(document, current.ID)}
+	section.Gap, section.Note = false, ""
+	section.Children = []*navNodeView{node, makeAllEpicsNav(document, current.ID)}
+	section.Expanded = true
+	return section
 }
 
 // makeAllEpicsNav is the browsing list: every epic as one row, shut until a
@@ -148,6 +224,7 @@ func makeEpicNav(sources appNavSources, epic *saga.Epic, deckRows map[string]*na
 	}
 	places := makeProductNavTree(productNavSources{
 		prefix:         prefix,
+		epic:           epic.ID,
 		requirements:   makeEpicRequirementsNav(sources.page, epic.ID, prefix),
 		prototypes:     prototypeRows,
 		prototypeNote:  sources.prototypeNote,

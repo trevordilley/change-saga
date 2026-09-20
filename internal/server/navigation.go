@@ -22,6 +22,10 @@ import (
 // A place nothing has been authored into keeps its row and says so. Hiding an
 // empty section would leave a reviewer unable to see what is missing, which is
 // the one question this architecture exists to answer.
+//
+// The four headers are destinations as well as disclosures. Product, Design,
+// and Quality open the epic's page at the section that lists what they hold,
+// and Implementation opens its deck at the first slide.
 
 // productNavSources is everything the architecture can be filled from. Every
 // field is optional: an empty field becomes a visible gap, never a hidden
@@ -31,6 +35,11 @@ type productNavSources struct {
 	// prefix namespaces the architecture's node IDs, since every epic has
 	// its own four places. An empty prefix is "nav".
 	prefix string
+	// epic is the epic these four places belong to, so each place's header
+	// can open that epic's page at the section it names. An empty epic leaves
+	// the headers as disclosures, which is what they were before an epic had
+	// a page of its own.
+	epic string
 	// requirements is makeRequirementsNav's tree. Requirements is its own
 	// overview and never gains a redundant "Overview" child.
 	requirements *navNodeView
@@ -75,7 +84,19 @@ func makeProductNavTree(sources productNavSources) []*navNodeView {
 		prototypeNote = "no prototypes yet"
 	}
 
-	product := navPlace("Product", prefix+"-product", "product", "", []*navNodeView{
+	// Product, Design, and Quality open the epic's page at the section that
+	// lists what they hold: its stories, its design, and its test cases. The
+	// epic's page is already the directory of all three, so a second table
+	// per place would say the same thing twice and go out of step the first
+	// time one of them changed.
+	place := func(title, id, icon, anchor, emptyNote string, children []*navNodeView) *navNodeView {
+		node := navPlace(title, id, icon, emptyNote, children)
+		if sources.epic != "" {
+			node.Href = epicHref(sources.epic) + anchor
+		}
+		return node
+	}
+	product := place("Product", prefix+"-product", "product", "#epic-product", "", []*navNodeView{
 		navPlace("Prototypes", prefix+"-prototypes", "prototype", prototypeNote, sources.prototypes),
 		requirements,
 	})
@@ -84,12 +105,12 @@ func makeProductNavTree(sources productNavSources) []*navNodeView {
 		navPlace("System", prefix+"-technical-system", "", "not authored yet", nil),
 		navPlace("Data Flows", prefix+"-technical-data-flows", "", "no flow diagrams yet", sources.dataFlows),
 	}, sources.technical...))
-	design := navPlace("Design", prefix+"-design", "design", "", []*navNodeView{
+	design := place("Design", prefix+"-design", "design", "#epic-design", "", []*navNodeView{
 		navPlace("UX", prefix+"-design-ux", "", "no flow decks yet", sources.uxDecks),
 		navPlace("UI", prefix+"-design-ui", "", "no references yet", sources.uiDesign),
 		technical,
 	})
-	quality := navPlace("Quality", prefix+"-quality", "quality", "", []*navNodeView{
+	quality := place("Quality", prefix+"-quality", "quality", "#epic-quality", "", []*navNodeView{
 		navPlace("Test Cases", prefix+"-test-cases", "", "no test cases yet", sources.testCases),
 	})
 	// Implementation is the one place that opens on arrival, and it opens all
@@ -120,6 +141,12 @@ func makeProductNavTree(sources productNavSources) []*navNodeView {
 	for _, deck := range implementation.Children {
 		deck.Expanded = len(deck.Children) > 0
 	}
+	// The header opens the deck at its first slide. A deck knows where it
+	// starts; a header that only expanded made the reader pick a slide before
+	// they had read one.
+	if href := firstSlideHref(implementation.Children); href != "" {
+		implementation.Href = href
+	}
 
 	navigation := []*navNodeView{product, design, quality, implementation}
 	for _, node := range navigation {
@@ -128,10 +155,11 @@ func makeProductNavTree(sources productNavSources) []*navNodeView {
 	return navigation
 }
 
-// navPlace is one row of the architecture. It is a disclosure when something
-// fills it and an explicit gap when nothing does. It is never a destination of
-// its own: the architecture names places, and the authored rows beneath them
-// are what a reviewer opens.
+// navPlace is one row of the architecture: a disclosure when something fills
+// it and an explicit gap when nothing does. It carries no destination of its
+// own. navSection is the variant that does, and every section header in the
+// sidebar is one of those; navPlace is what is left for the rows inside a
+// section that name a place rather than a page.
 func navPlace(title, id, icon, emptyNote string, children []*navNodeView) *navNodeView {
 	node := &navNodeView{
 		Title: title, NodeID: id, Icon: icon, Group: true,
