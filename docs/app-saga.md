@@ -15,7 +15,7 @@ be copied or referenced from outside, and "the current version of this story"
 would stop being one answer.
 
 So a repository has **one Saga that documents the application**, organized into
-durable **epics**, and every change is a comparison of that one Saga and its
+durable **features**, and every change is a comparison of that one Saga and its
 code between two commits.
 
 ## Goals
@@ -23,7 +23,7 @@ code between two commits.
 ### 1. One app Saga
 
 A repository has one `app.saga`. It holds material about the whole application
-plus its epics:
+plus its features:
 
 ```text
 app.saga/
@@ -32,27 +32,27 @@ app.saga/
   ___personas/         # structured records, like stories
   ___designsystem/     # Figma links and references
   ___onboarding/       # a deck that gets people up to speed on the app
-  ___featureflags/     # flags, and the epics and stories each one gates
-  ___epics/<epic>.epic/
+  ___featureflags/     # flags, and the features and stories each one gates
+  ___features/<feature>.feature/
     <requirements, design, quality, and the implementation deck>
 ```
 
 Other app-level material may join later. Candidates: architecture (system
-diagram and data model, since every epic changes the same system), constraints
+diagram and data model, since every feature changes the same system), constraints
 that apply everywhere (performance, security, accessibility), and a glossary.
 
-### 2. Epics are durable product domains
+### 2. Features are durable product domains
 
-An epic is an area of the product, not a change. It contains stories with
+A feature is an area of the product, not a change. It contains stories with
 acceptance criteria, design, test cases, and its implementation deck.
 
-- Revising a story from an older epic refines that domain in place. Nothing is
+- Revising a story from an older feature refines that domain in place. Nothing is
   renamed or copied.
-- A story may move between epics. Story identity is independent of epic
+- A story may move between features. Story identity is independent of feature
   membership, so moving a story breaks no link; story IDs are unique across the
   app.
-- A pull request is not an epic. It is a comparison that may touch any number
-  of epics.
+- A pull request is not a feature. It is a comparison that may touch any number
+  of features.
 
 ### 3. The traceability chain is persona → story → design → code
 
@@ -100,7 +100,7 @@ change-saga open app.saga                  # observe the app at HEAD
 change-saga open app.saga --against main   # compare what this branch changes
 ```
 
-**Observe** shows everything current: personas, epics, stories, designs, test
+**Observe** shows everything current: personas, features, stories, designs, test
 cases, and each node's code rendered as code. Stale references show as health
 warnings.
 
@@ -122,7 +122,7 @@ the same `--against`, so an agent's work queue is scoped to one change.
 
 ### 6. The Saga is documentation; approval happens only in reviews
 
-Stories, designs, test cases, and epic decks are documentation. They have no
+Stories, designs, test cases, and feature decks are documentation. They have no
 approvals and no comments, whether the Saga is observed or compared. A review
 may reference them, and that is where a change to them is discussed and
 approved (goal 11).
@@ -204,11 +204,11 @@ thing that happens is not "define the personas of this app".
   | `health` | nothing that already existed went stale or broke |
 
   With `--against`, the scope is the change: what it changed and what it
-  affected. Without it, the scope is the whole app. `--epic` narrows either.
-- **Nothing is locked in.** The first change's deck goes into an epic the author
-  names; the first command that needs an epic creates one named after the
+  affected. Without it, the scope is the whole app. `--feature` narrows either.
+- **Nothing is locked in.** The first change's deck goes into a feature the author
+  names; the first command that needs a feature creates one named after the
   branch. Story, deck, and slide URNs
-  carry no epic, so reorganizing later breaks nothing.
+  carry no feature, so reorganizing later breaks nothing.
 - **The Saga can live in the code repository or in a companion repository, and
   both are first-class.** A companion repository lets a team document a
   codebase, such as a client's, without landing a large documentation change in
@@ -268,7 +268,7 @@ the transition and the reasoning (why the queue moved from SQS to a Postgres
 table) that the current state no longer shows. It is the one part of a Saga that
 speaks in diffs: its Items reference commits, and what a reviewer sees is a diff
 because the review is viewed against its base. Its Items may also reference Saga
-records, such as the story or epic slide a change revises, so the reviewer can
+records, such as the story or feature slide a change revises, so the reviewer can
 open the documentation beside the change.
 
 **Approval is per slide, and only in reviews.** Each slide records its state
@@ -340,7 +340,7 @@ record, not a headline.
 
 One format and no backwards compatibility. Staleness derived only from pins.
 Readiness never reduced to a score. Ordered `next_actions`, each a command or
-one focused question. The epic sidebar: Product, Design, Quality,
+one focused question. The feature sidebar: Product, Design, Quality,
 Implementation, with Implementation as the deck.
 
 ### Not goals
@@ -352,7 +352,7 @@ Implementation, with Implementation as the deck.
 
 ## Decisions this settles
 
-**One living deck per epic.** With references instead of diffs, an epic's
+**One living deck per feature.** With references instead of diffs, a feature's
 implementation deck explains the domain's *current* implementation and stays
 valid as code changes: its Items remap, or go stale where the code really
 changed. A pull request updates the slides it affects, and compare mode shows
@@ -360,22 +360,22 @@ which slides and Items changed and the diffs beneath them. A deck per change is
 no longer needed to preserve history; the comparison between any two commits
 reconstructs it.
 
-**Personas belong to the app; stories belong to epics.**
+**Personas belong to the app; stories belong to features.**
 
 ## Open decisions
 
-1. Do feature flags gate stories, epics, or both?
+1. Do feature flags gate stories, features, or both?
 2. Are retired stories shown in the app view, or only in history?
 3. Settled. There are three top-level sections, and each one is a destination:
-   **Overview**, **Epics**, and **Reviews**. Personas, the design system,
+   **Overview**, **Features**, and **Reviews**. Personas, the design system,
    onboarding, and feature flags belong to the overview, not to the top level.
    Every section header opens a page rather than merely expanding: Overview is
-   prose, and the rest are filterable tables (epics, reviews, personas, terms,
+   prose, and the rest are filterable tables (features, reviews, personas, terms,
    flags). Terms and Vocabulary opens the table of terms, and a deck header
-   (Onboarding, or an epic's Implementation) opens at its first slide. Epics
-   lists every epic, each opening its own page; the epic whose content is on
+   (Onboarding, or a feature's Implementation) opens at its first slide. Features
+   lists every feature, each opening its own page; the feature whose content is on
    screen expands over its Product, Design, Quality, and Implementation.
-4. Onboarding deck Items point at records (personas, epics, stories) rather than
+4. Onboarding deck Items point at records (personas, features, stories) rather than
    code. Confirm that this is its only kind of evidence.
 
 ## Execution
@@ -401,15 +401,15 @@ as pull-request slide decks with per-slide approvals and out-of-date detection,
 replacing the documentation review overlay (goal 11).
 Depends on Phase 1.
 
-**Phase 3 — App structure.** The app-level roots; epics containing today's
-structure; app-unique story identity and moving stories between epics; personas
+**Phase 3 — App structure.** The app-level roots; features containing today's
+structure; app-unique story identity and moving stories between features; personas
 and story-to-persona links; the persona coverage gate; feature flags.
 Independent of Phase 1 and can run beside it.
 
-**Phase 4 — App view.** The reviewer's app-level view above the epics. Needs
+**Phase 4 — App view.** The reviewer's app-level view above the features. Needs
 open decision 4.
 
-**Phase 5 — This repository.** Fold its Sagas into one `app.saga` as epics. If
+**Phase 5 — This repository.** Fold its Sagas into one `app.saga` as features. If
 the fold is awkward, the model is wrong, so this is the model's acceptance test.
 It also decides whether decision records are needed.
 
@@ -428,6 +428,6 @@ verdict: `status` exits zero whenever it can report, and non-zero only when the
 Saga is broken; the report covers implementation, the ratchet on existing
 records, and every growth area as stable JSON teams can script their own rules
 over, with documented CI recipes; `check --covers` for yes/no questions; `init` and first-run next actions that start with coverage; the
-default epic; contextual growth suggestions that teach the practices; and the
+default feature; contextual growth suggestions that teach the practices; and the
 skill, README, and help rewritten for incremental adoption. The first-run experience on a real 30-file pull request is its
 acceptance test.

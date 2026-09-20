@@ -14,9 +14,9 @@ tool, and what they have to do about it.
 
 - **A Saga documents an application.** It holds application-level material
   (overview, personas, design system, onboarding deck, feature flags) and
-  durable epics, each carrying prototypes, stories and acceptance criteria,
+  durable features, each carrying prototypes, stories and acceptance criteria,
   design, test cases, and an implementation deck. Stories keep their identity
-  when they move between epics. `init` creates an application Saga.
+  when they move between features. `init` creates an application Saga.
 - **Evidence references code at a commit instead of storing diffs.** A
   reference follows its code: it is remapped when later commits only move the
   lines and goes stale, with a reason, when the lines change. Merged Sagas keep
@@ -39,7 +39,7 @@ tool, and what they have to do about it.
   six coverage areas (implementation, stories, personas, design, quality, and
   health) with every gap listed, suggests growth without demanding it, and
   exits 0 whenever it can report. `check --covers` answers whether named areas
-  are covered. Commands default to the only epic, or create one from the
+  are covered. Commands default to the only feature, or create one from the
   branch.
 - **A review deck must account for its change.** Every changed line in a
   review's range must be covered by its deck; coverage is reported per review,
@@ -60,7 +60,7 @@ tool, and what they have to do about it.
 
 - `prototype`, `quality`, and `relation status` commands; test cases can verify
   acceptance criteria through pinned relations.
-- `epic add`, `persona add|revise|set-state`, `flag add|revise|set-state`, and
+- `feature add`, `persona add|revise|set-state`, `flag add|revise|set-state`, and
   `story move`. Personas are optional; persona coverage is reported, never
   required.
 - `references` reports each code reference's health, and `repin` re-pins

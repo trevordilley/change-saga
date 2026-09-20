@@ -29,7 +29,7 @@ not a contract — where they disagree with the code, the code is current.
 | [renderer-ui.md](renderer-ui.md) | Conventions the reviewer UI holds to, including the vocabulary boundary between reviewer chrome and format terms. Read before touching `internal/server/`. |
 | [ux-reframe.md](ux-reframe.md) | Why review is structured as a sequence of finishable chapter sessions. |
 | [review-experience-audit.md](review-experience-audit.md) | The audit behind that reframe, with the session and resumption contract. |
-| [app-saga.md](app-saga.md) | The agreed goals and execution plan for one app Saga: durable epics, personas, code references instead of stored diffs, and opening a Saga to observe or to compare. |
+| [app-saga.md](app-saga.md) | The agreed goals and execution plan for one app Saga: durable features, personas, code references instead of stored diffs, and opening a Saga to observe or to compare. |
 | [requirements-design-quality-lifecycle.md](requirements-design-quality-lifecycle.md) | The plan behind the one Saga: from prototypes and requirements through design, exact implementation traceability, quality evidence, and completed review. |
 | [ai-facing-interface.md](ai-facing-interface.md) | The application boundary an AI client uses instead of walking `*.chapter` and `___review` paths directly. |
 | [ai-query-security-test-plan.md](ai-query-security-test-plan.md) | Adversarial acceptance cases and reusable fixture contract for the AI query boundary. |

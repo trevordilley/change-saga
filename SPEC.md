@@ -22,7 +22,7 @@ decisions. Staleness is always derived from pins, never from Git history.
 ### Layout
 
 A Saga documents one application. Material about the whole application sits at
-the root; everything else belongs to an **epic**, a durable area of the
+the root; everything else belongs to a **feature**, a durable area of the
 product. The manifest carries identity and source only: it adds no aggregate
 quality, coverage, relation, or deck fields.
 
@@ -32,10 +32,10 @@ quality, coverage, relation, or deck fields.
   ___overview/                 # pitch, description, and terms and vocabulary
   ___designsystem/             # design-system references
   ___personas/<id>.persona/    # who the application serves
-  ___featureflags/<id>.flag/   # flags and the stories or epics they gate
+  ___featureflags/<id>.flag/   # flags and the stories or features they gate
   ___onboarding/<id>.deck/     # a deck that explains the application
-  ___epics/<id>.epic/
-    epic.json
+  ___features/<id>.feature/
+    feature.json
     <report content>           # chapters, sections, fragments
     ___requirements/
       prototypes/              # revisioned interactive prototypes
@@ -44,7 +44,7 @@ quality, coverage, relation, or deck fields.
       relations/               # typed, pinned edges between resources
       coverage-exceptions/     # immutable per-criterion, per-axis decisions
     ___design/                 # technical design chapters
-    ___slides/                 # the epic's implementation deck
+    ___slides/                 # the feature's implementation deck
     ___workplan/               # waves, work items, dependencies, contracts
     ___quality/
       policies/
@@ -55,9 +55,9 @@ quality, coverage, relation, or deck fields.
   ___reviews/<id>.review/      # pull-request reviews: a deck, approvals, comments
 ```
 
-Report content and epic roots are invalid at the application root. No URN names
-an epic, so every resource ID is unique across the whole Saga: a story, deck,
-slide, fragment, or any other resource can move between epics without breaking
+Report content and feature roots are invalid at the application root. No URN names
+a feature, so every resource ID is unique across the whole Saga: a story, deck,
+slide, fragment, or any other resource can move between features without breaking
 a link to it.
 
 Each record is interpreted by the schema its `$schema` names. Report content
@@ -71,10 +71,10 @@ enforced at runtime, and every ID uses `[A-Za-z0-9][A-Za-z0-9._-]{0,127}`.
 | Record | Schema | Required semantic fields | Runtime-only checks |
 | --- | --- | --- | --- |
 | Manifest | `v5/saga.schema.json` | identity, title, source, `version: 5` | canonical repository identity |
-| Epic | `v5/epic.schema.json` | immutable ID, title, creation time | directory name equals ID |
+| Feature | `v5/feature.schema.json` | immutable ID, title, creation time | directory name equals ID |
 | Persona identity, revision, event | `v5/persona*.schema.json` | name and description; lifecycle `active` or `retired` | one root, acyclic revision and event graphs |
 | Term identity, revision, event | `v5/term*.schema.json` | name and definition; optional aliases, story and record links, and code references; lifecycle `active` or `retired` | linked stories and records exist; aliases distinct from the name |
-| Flag identity, revision, event | `v5/flag*.schema.json` | description and at least one story or epic target; state `off`, `on`, or `retired` | targets exist; `retired` is terminal |
+| Flag identity, revision, event | `v5/flag*.schema.json` | description and at least one story or feature target; state `off`, `on`, or `retired` | targets exist; `retired` is terminal |
 | Relation | `v5/relation.schema.json` | endpoints, type, scope, pins required by the matrix, rationale, state, time | same Saga, no self-edge, canonical conflict ordering, graph acyclicity/currentness |
 | Coverage exception | `v5/coverage-exception.schema.json` | one of six axes, criterion/revision pin, rationale, citation, supersession set | current revision, resolved citations, one unsuperseded head per criterion/axis |
 | Test-case identity | `v5/test-case.schema.json` | immutable ID and creation time | filename/package match and one identity per package |
@@ -92,11 +92,11 @@ yet.
 
 ### Application records
 
-**Epics** are durable areas of the product, not changes: revising a story that
-belongs to an older epic refines that area in place. Epics are listed in the
-order they were created. An epic's `epic.json` is
-immutable and its URN is `urn:change-saga:<saga>:epic:<id>`. Moving a story
-between epics moves its directory and changes nothing else.
+**Features** are durable areas of the product, not changes: revising a story that
+belongs to an older feature refines that area in place. Features are listed in the
+order they were created. A feature's `feature.json` is
+immutable and its URN is `urn:change-saga:<saga>:feature:<id>`. Moving a story
+between features moves its directory and changes nothing else.
 
 **Personas** are the people who get value from the application: the "As a
 <persona>" of a user story. A tool, an agent, or a system that operates the
@@ -112,9 +112,9 @@ personas an accepted story serves, and which stories served only a retired
 persona) is reported and never blocks.
 
 **Feature flags** have an immutable identity, revisions that name at least one
-story or epic target, and lifecycle events with states `off`, `on`, and
+story or feature target, and lifecycle events with states `off`, `on`, and
 `retired`. A current `off` or conflicted flag gates its targets, and a story is
-gated directly or through its epic; a retired flag gates nothing. Status
+gated directly or through its feature; a retired flag gates nothing. Status
 reports each story as `not_implemented`, `implemented_not_enabled`, or
 `implemented_enabled`, where implemented means every current criterion's
 implementation axis is covered.
@@ -131,7 +131,7 @@ are living records like personas: an immutable identity, append-only revisions
 (`name`, `definition`, and optional `aliases`, `stories`, `records`, and `code`),
 and lifecycle events whose root state is `active`. URNs are
 `urn:change-saga:<saga>:term:<id>`, with `:revision:<id>` and `:event:<id>`.
-`stories` and `records` link the term to the stories, personas, epics, flags, or
+`stories` and `records` link the term to the stories, personas, features, flags, or
 other terms it relates to, and must exist. `code` holds code references
 (section 5) to the lines that define the term, usually an enum value or a
 constant. The links run both ways: a term reaches its stories and code, and a
@@ -146,7 +146,7 @@ it never blocks. Recognizing enum values and constants is a conservative
 per-language heuristic.
 
 The **onboarding deck** is a flat deck with role `onboarding`, one per
-application. Its Items carry `record`, the URN of a persona, epic, or story they
+application. Its Items carry `record`, the URN of a persona, feature, or story they
 explain, and never own code references. Implementation decks keep role
 `change` and never carry `record`.
 
@@ -314,8 +314,8 @@ urn:change-saga:<saga-id>:slide:<slide-id>:item:<item-id>
 ```text
 checkout.saga/
   saga.json
-  ___epics/checkout.epic/
-    epic.json
+  ___features/checkout.feature/
+    feature.json
     ___slides/
       validation-flow.deck/
         10-d-....json
@@ -772,7 +772,7 @@ the Git commit that first introduced each file.
 
 ## 8. Reviews
 
-The Saga is documentation: stories, designs, test cases, epic decks, and report
+The Saga is documentation: stories, designs, test cases, feature decks, and report
 content carry no approvals and no comments. Review happens in **reviews**. A
 review is equivalent to a pull request, and it is always a slide deck:
 
@@ -801,7 +801,7 @@ and reasoning that the current documentation no longer shows. Its URNs are
 scoped to the review, `urn:change-saga:<saga>:review:<id>[:deck:<d>|:slide:<s>[:item:<i>]]`,
 so slide IDs never collide across reviews. An Item may reference code, which a
 reviewer sees as a diff against the review's base, and may carry a `record`: the
-URN of a persona, epic, story, test case, deck, slide, chapter, section, or
+URN of a persona, feature, story, test case, deck, slide, chapter, section, or
 fragment in the documentation. Review decks never join the documentation's
 structure, so they have no effect on coverage, readiness, or comparison layers.
 
@@ -862,9 +862,9 @@ reviews that changed it.
 `___code` is reserved on saga/chapter/section/fragment targets.
 `___landmarks` is reserved inside fragments.
 `___overview`, `___designsystem`, `___personas`, `___featureflags`,
-`___onboarding`, `___epics`, `___reviews`, `___claims`, `___verifications`, and
+`___onboarding`, `___features`, `___reviews`, `___claims`, `___verifications`, and
 `___merges` are reserved at the saga root. `___requirements`, `___design`,
-`___workplan`, `___slides`, and `___quality` are reserved at an epic root;
+`___workplan`, `___slides`, and `___quality` are reserved at a feature root;
 `___slides` contains only real `<deck-id>.deck` directories.
 Reserved metadata directories must be
 real directories, not symlinks. So must every entity package: a `.chapter`,
@@ -877,10 +877,10 @@ hide authored content behind a valid-looking saga. Other names beginning with
 
 - `change-saga init SAGA` creates a Saga in the one format, ready for
   prototypes and stories. It never creates any other kind of Saga.
-- `change-saga epic add`, `persona add|revise|set-state`, `flag
-  add|revise|set-state`, and `story move --story URN --epic ID` author the
-  application's structure. Commands that create a record inside an epic
-  require `--epic`; commands that revise one accept it as an assertion.
+- `change-saga feature add`, `persona add|revise|set-state`, `flag
+  add|revise|set-state`, and `story move --story URN --feature ID` author the
+  application's structure. Commands that create a record inside a feature
+  require `--feature`; commands that revise one accept it as an assertion.
 - `change-saga term add|revise|set-state` authors terms, with `--ref
   <rev>:<path>#L<start>[-L<end>]` for their code, and `change-saga overview
   set-pitch|set-description` writes the overview's text. `query terms` finds
@@ -902,7 +902,7 @@ hide authored content behind a valid-looking saga. Other names beginning with
 - `change-saga cover --target ...` attaches code references to a target.
 - `change-saga status --json` (`status_schema` `change-saga.status/v3`) reports
   a **coverage report** under `coverage`: a scope (the change with `--against`,
-  otherwise the whole application; `--epic` narrows either) and six areas.
+  otherwise the whole application; `--feature` narrows either) and six areas.
   `implementation` counts changed lines referenced by the Saga's documentation
   (an implementation deck or narrative), with test code counted when a test
   case's evidence references it;
@@ -919,8 +919,8 @@ hide authored content behind a valid-looking saga. Other names beginning with
   percentage, and the JSON shape is a contract teams may script against.
 - `change-saga check --covers AREA[,AREA...]` answers whether the named areas are
   fully covered in scope, printing only their gaps; it takes the same
-  `--against`, `--head`, and `--epic` as `status`.
-- Commands that need an epic default to the only epic when there is exactly
+  `--against`, `--head`, and `--feature` as `status`.
+- Commands that need a feature default to the only feature when there is exactly
   one. With none, the first such command creates one named after the branch
   (or, on a default branch, after the application).
 - `--against REV [--head REV]` opens `status`, `references`, `cover`,
@@ -941,15 +941,15 @@ hide authored content behind a valid-looking saga. Other names beginning with
   a destination rather than a row that only expands. **Overview** is the
   application's prose plus a directory of its parts: personas (`/personas`),
   terms and vocabulary (`/terms`), the design system (`/design-system`),
-  onboarding, and feature flags (`/flags`). **Epics** (`/epics`) lists every
-  epic in creation order, each opening its own page; the epic whose content is
+  onboarding, and feature flags (`/flags`). **Features** (`/features`) lists every
+  feature in creation order, each opening its own page; the feature whose content is
   on screen expands over its Product, Design, Quality, and Implementation.
-  **Reviews** (`/reviews`) lists the pull-request reviews. A deck header (onboarding, or an epic's
+  **Reviews** (`/reviews`) lists the pull-request reviews. A deck header (onboarding, or a feature's
   implementation) opens the deck at its first slide. Every directory is a
   server-rendered table that filters with `?q=` and without JavaScript, showing
   counts only.
 - `change-saga open` serves a page per record: the overview and its terms,
-  each persona, each epic, each story and each acceptance criterion, each test
+  each persona, each feature, each story and each acceptance criterion, each test
   case with its steps, the criteria it verifies, its evidence code and its
   runs, each slide, and each review. Observing, the Coverage view lists the
   documented code in both directions and does not treat unreferenced code as a

@@ -22,7 +22,7 @@ A Saga documents one application:
   constant) that define it.
 - **Personas**, a **design system**, an **onboarding deck**, and **feature
   flags**.
-- **Epics**, the durable areas of the product. Each has the same four parts,
+- **Features**, the durable areas of the product. Each has the same four parts,
   which never reorder as work progresses: **Product** (prototypes, and user
   stories with acceptance criteria), **Design** (UX flows, UI references, and
   technical design), **Quality** (test cases and their evidence), and
@@ -66,7 +66,7 @@ change-saga help
 ## See a Saga
 
 This repository documents itself with an app Saga: its overview, its terms and
-vocabulary linked to the code that defines them, personas, epics, and stories.
+vocabulary linked to the code that defines them, personas, features, and stories.
 After installing Change Saga, open it from a source checkout with:
 
 ```sh
@@ -329,7 +329,7 @@ change-saga cover --against main --target steps --path checkout/steps.go \
   --changed-lines --note "Adds the checkout steps." app.saga
 ```
 
-The first command that needs an epic creates one named after the branch. Then
+The first command that needs a feature creates one named after the branch. Then
 see what is covered and what could grow, and open the reviewer:
 
 ```sh
