@@ -245,6 +245,32 @@ body.presentation-mode .deck-viewer-stage:hover .slide-exit-presentation,body.pr
 .epic-index-counts{margin:4px 0 0;color:var(--faint);font:11px var(--mono)}
 .epic-index-description{margin:6px 0 0;color:var(--muted);font-size:13px}
 
+/* Directories: the filterable table every section header opens ----------- */
+.directory{margin-top:14px}
+.directory-filter{display:flex;align-items:center;gap:8px;margin:0 0 10px;max-width:520px}
+.directory-filter .tree-search{flex:1}
+.directory-filter input[type=search]{min-width:0;width:100%;height:30px;padding:0 10px 0 27px;border:1px solid var(--line);border-radius:var(--radius);background:var(--bg);color:var(--ink);font-size:13px}
+.directory-filter input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none}
+.directory-filter-go{height:30px;padding:0 12px;border:1px solid var(--line);border-radius:var(--radius);background:var(--bg-subtle);color:var(--ink);font:13px var(--ui);cursor:pointer}
+.directory-filter-go:hover{background:var(--bg-inset)}
+.directory-filter-clear{color:var(--muted);font-size:12px;text-decoration:none}
+.directory-filter-clear:hover{color:var(--accent)}
+.directory-table{width:100%;border-collapse:collapse;font:13px/1.45 var(--ui);table-layout:auto}
+.directory-table caption{caption-side:top;margin-bottom:6px;color:var(--faint);font:11px var(--mono);text-align:left}
+.directory-table th,.directory-table td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.directory-table thead th{position:sticky;top:0;background:var(--bg);color:var(--muted);font:600 11px/1 var(--ui);letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
+.directory-table tbody th{font-weight:600}
+.directory-table tbody tr:hover{background:var(--bg-subtle)}
+.directory-table tr.current{background:var(--bg-subtle)}
+.directory-table tr.current > th{box-shadow:inset 2px 0 0 var(--accent)}
+.directory-table .numeric{text-align:right;font:12px var(--mono);white-space:nowrap}
+.directory-table a{color:var(--accent);text-decoration:none}
+.directory-table a:hover{text-decoration:underline}
+.directory-note{display:block;color:var(--faint);font:11px var(--mono)}
+.directory-gap{color:var(--faint);font-style:italic}
+.directory-none{margin:10px 0 0;color:var(--muted);font-size:13px}
+.directory-growth{margin:10px 0 0;max-width:70ch}
+
 /* Changed-file tree ------------------------------------------------------ */
 .tree-tools{display:flex;align-items:center;gap:4px;padding:2px 4px 6px}
 .tree-search{position:relative;flex:1;display:flex;align-items:center}

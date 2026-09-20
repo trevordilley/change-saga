@@ -612,6 +612,43 @@ const appJavaScript = `(() => {
     qa('[data-toggle-related]').forEach(button => button.setAttribute('aria-pressed', String(visible)));
   }
 
+  // ----- Directories -----
+  // A directory is the table of what a section holds, and the server renders
+  // every row of it. Without this the filter is a form: it submits ?q= and the
+  // server sends the table back filtered. With it, the same field hides the
+  // rows that do not match as the reader types, and the submit button steps
+  // out of the way. Both paths compare the same thing, the text the row shows,
+  // so a reader who turns JavaScript off sees exactly the rows they had.
+  function filterDirectory(directory) {
+    const input = q('[data-directory-filter]', directory);
+    const needle = (input?.value || '').trim().toLowerCase();
+    const rows = qa('[data-directory-row]', directory);
+    let shown = 0;
+    rows.forEach(row => {
+      const matches = !needle || (row.dataset.directoryText || '').toLowerCase().includes(needle);
+      row.hidden = !matches;
+      if (matches) shown += 1;
+    });
+    const none = q('[data-directory-none]', directory);
+    if (none) none.hidden = shown > 0;
+    const caption = q('[data-directory-caption]', directory);
+    if (caption) {
+      const total = Number(directory.dataset.directoryTotal || rows.length);
+      const noun = total === 1 && !needle ? directory.dataset.directoryNoun : directory.dataset.directoryNouns;
+      caption.textContent = needle ? shown + ' of ' + total + ' ' + noun : total + ' ' + noun;
+    }
+  }
+
+  function prepareDirectories() {
+    qa('[data-directory]').forEach(directory => {
+      const input = q('[data-directory-filter]', directory);
+      if (!input) return;
+      // The submit button is the no-JavaScript path; typing has replaced it.
+      q('[data-directory-submit]', directory)?.setAttribute('hidden', '');
+      input.addEventListener('input', () => filterDirectory(directory));
+    });
+  }
+
   // ----- The epic picker -----
   // The server renders the picker as a plain disclosure: a summary, a list of
   // epic links, and a link to the epics index. That is the whole control for a
@@ -2225,6 +2262,7 @@ const appJavaScript = `(() => {
   if (firstFragment) setActiveFragment(firstFragment);
   q('[data-file-filter]')?.addEventListener('input', filterTree);
   prepareEpicPicker();
+  prepareDirectories();
   q('[data-manifest-filter]')?.addEventListener('input', filterManifest);
   prepareContext();
   syncSlidePresentation();
