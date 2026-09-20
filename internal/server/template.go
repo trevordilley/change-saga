@@ -114,6 +114,12 @@ var pageTemplate = `{{define "page"}}<!doctype html>
 
 {{define "trace-links"}}<ul class="trace-links">{{range .}}<li data-trace-target="{{.Target}}">{{if .Href}}<a href="{{.Href}}">{{.Title}}</a>{{else}}<span>{{.Title}}</span>{{end}}{{if .Kind}} <small class="trace-kind">{{.Kind}}</small>{{end}}{{if .Note}} <small class="trace-note">{{.Note}}</small>{{end}}{{if .Rationale}}<p class="trace-rationale">{{.Rationale}}</p>{{end}}</li>{{end}}</ul>{{end}}
 
+{{/* Related reviews are a footnote, never a headline: they sit at the
+bottom of a record's page, below its own content, and appear in no table and no
+header count. They are derived from the code the record's own chain reaches,
+so there is nothing here for an author or an agent to maintain. */}}
+{{define "related-reviews"}}{{if .Reviews}}<aside class="related-reviews" data-related-reviews="{{.Kind}}"><h2>Related reviews</h2><ul>{{range .Reviews}}<li data-related-review="{{.ID}}"><a href="{{.Href}}">{{.Title}}</a>{{if .Number}} <span class="related-review-pr">#{{.Number}}</span>{{end}}{{if .Merged}} <span class="related-review-state">merged</span>{{end}}</li>{{end}}</ul><p class="related-reviews-note">Derived, not authored: these reviews changed lines inside the code this {{.Kind}} explains.</p></aside>{{end}}{{end}}
+
 {{define "persona-page"}}<section class="app-page persona-page" data-persona-page data-persona-target="{{.Target}}"><nav class="requirements-breadcrumbs" aria-label="Persona breadcrumb"><span>Personas</span><span>/</span><strong>{{.Name}}</strong></nav>
 <header class="requirement-story-hero"><div><p class="app-page-kind">Persona</p><h1>{{.Name}}</h1><p class="app-lede">A persona is someone who gets value from the app, the &#34;As a &hellip;&#34; of a user story, never a tool or agent that operates it.</p>{{if .Retired}}<p class="term-state">Retired: the app no longer serves this persona.</p>{{end}}</div></header>
 {{if .Description}}<section class="requirement-need"><p>{{.Description}}</p></section>{{end}}
@@ -137,7 +143,7 @@ the command that fills it, the way the sidebar's gap rows do. */}}
 <section class="app-page-section" id="feature-design" data-feature-design><h2>Design</h2>{{if .Design}}{{if .Design.FragmentViews}}{{template "overview" .Design}}{{end}}{{template "chapter-list" .Design}}{{else}}<p class="term-empty">No technical design yet.</p>{{end}}</section>
 <section class="app-page-section" id="feature-quality" data-feature-quality><h2>Quality</h2>{{if .Tests}}{{template "trace-links" .Tests}}{{else}}<p class="term-empty">No test cases yet.</p>{{end}}</section>
 <section class="app-page-section" id="feature-implementation" data-feature-implementation><h2>Implementation</h2>{{range .Decks}}<h3>{{.Title}}</h3>{{template "trace-links" .Slides}}{{else}}<p class="term-empty">No implementation deck yet.</p>{{end}}</section>
-</section>{{end}}
+{{template "related-reviews" (relatedReviews "feature" .RelatedReviews)}}</section>{{end}}
 
 {{define "test-case-page"}}<section class="app-page test-case-page" data-test-case-page data-test-case-target="{{.Target}}"><nav class="requirements-breadcrumbs" aria-label="Test case breadcrumb">{{with .Feature}}{{if .Href}}<a href="{{.Href}}">{{.Title}}</a><span>/</span>{{end}}{{end}}<span>Test cases</span><span>/</span><strong>{{.Title}}</strong></nav>
 <header class="requirement-story-hero"><div><p class="app-page-kind">Test case</p><h1>{{.Title}}</h1></div></header>{{if .Conflict}}<div class="requirements-conflict" role="alert">{{template "icon" "alert"}}<span>This test case has more than one current revision or lifecycle state. No state is being guessed.</span></div>{{end}}
@@ -203,7 +209,7 @@ the command that fills it, the way the sidebar's gap rows do. */}}
 <section class="requirement-trace" data-criterion-own-trace><h2>Linked to this criterion</h2>{{template "trace-groups" .Trace}}</section>
 <section class="requirement-trace" data-criterion-story-trace><h2>Through its story</h2>{{if $story.Trace.Empty}}<p class="term-empty">Nothing links to the story as a whole.</p>{{else}}{{template "trace-groups" $story.Trace}}{{end}}</section>
 <section class="app-page-section"><h2>The story's other criteria</h2><ul class="trace-links">{{range $story.Criteria}}{{if not .Selected}}<li><a href="{{.Href}}">{{.Label}}</a> <span>{{.Statement}}</span></li>{{end}}{{end}}</ul></section>
-</article>{{end}}{{end}}
+{{template "related-reviews" (relatedReviews "acceptance criterion" .RelatedReviews)}}</article>{{end}}{{end}}
 
 {{define "requirements-page"}}<section class="requirements-page" data-requirements-page>{{if .Overview}}<header class="requirements-header">
 <h1>Requirements</h1>
@@ -316,7 +322,7 @@ the command that fills it, the way the sidebar's gap rows do. */}}
 <p>{{.Statement}}</p>{{template "criterion-trace" .Trace}}
 </article>{{end}}</div>
 </section>
-</article>{{end}}{{end}}</section>{{end}}
+{{template "related-reviews" (relatedReviews "story" .RelatedReviews)}}</article>{{end}}{{end}}</section>{{end}}
 {{define "doc-tree"}}{{range .}}{{if .Slide}}<div class="doc-node doc-slide-thumbnail">{{if .Slide.Section}}<div class="slide-section-divider" data-slide-section>{{.Slide.Section}}</div>{{end}}<div class="slide-thumbnail-card" data-slide-thumbnail-card><div class="slide-thumbnail-preview" aria-hidden="true">{{if eq .Slide.MediaType "text/html"}}<iframe tabindex="-1" sandbox="allow-scripts" loading="lazy" src="{{.Slide.URL}}" title=""></iframe>{{else}}<img loading="lazy" src="{{.Slide.URL}}" alt="">{{end}}</div><span class="slide-thumbnail-caption"><span class="slide-thumbnail-title">{{.Slide.Title}}</span></span><button type="button" class="slide-thumbnail-hit" data-slide-thumbnail data-slide-target="{{.Slide.Target}}" aria-current="false" aria-label="Show slide: {{.Slide.Title}}"></button></div></div>{{else}}<div class="doc-node{{if .Deck}} doc-deck{{end}}{{if .Requirement}} doc-requirement{{end}}{{if .Group}} doc-group{{end}}{{if .Gap}} doc-gap{{end}}"><div class="doc-row {{if .Active}}current{{end}}">{{if .Children}}<button type="button" class="doc-twisty" data-doc-twisty aria-expanded="{{.Expanded}}" aria-controls="{{.NodeID}}" aria-label="Toggle {{.Title}}">{{template "twisty"}}</button>{{else}}<span class="doc-twisty placeholder" aria-hidden="true">{{template "twisty"}}</span>{{end}}{{if .Deck}}<button type="button" class="doc-link doc-deck-link" data-deck-toggle aria-expanded="{{.Expanded}}" aria-controls="{{.NodeID}}" title="{{.Title}}">{{template "icon" .Icon}}<span>{{.Title}}</span></button>{{else if .Href}}<a class="doc-link" href="{{.Href}}" title="{{.Title}}" data-report-nav{{if .Active}} aria-current="page"{{end}}>{{if .Icon}}{{template "icon" .Icon}}{{end}}{{.Title}}</a>{{else if .Children}}<button type="button" class="doc-link doc-group-link" data-doc-toggle aria-expanded="{{.Expanded}}" aria-controls="{{.NodeID}}" title="{{.Title}}">{{if .Icon}}{{template "icon" .Icon}}{{end}}<span>{{.Title}}</span></button>{{else}}<span class="doc-link doc-static" title="{{.Title}}">{{if .Icon}}{{template "icon" .Icon}}{{end}}<span>{{.Title}}</span></span>{{end}}{{if .Note}}<span class="doc-note">{{.Note}}</span>{{end}}</div>{{if .Children}}<div class="doc-children" id="{{.NodeID}}"{{if not .Expanded}} hidden{{end}}>{{template "doc-tree" .Children}}</div>{{end}}</div>{{end}}{{end}}{{end}}
 
 {{/* The picker is a disclosure first and a combobox second. Without

@@ -67,6 +67,9 @@ type requirementStoryView struct {
 	Personas    []traceLink
 	Citations   []citationView
 	Trace       traceGroups
+	// RelatedReviews are the reviews that touched the code this story
+	// reaches. They are derived, never authored.
+	RelatedReviews []relatedReviewView
 }
 
 // requirementGroupView is one feature's stories on the requirements overview.
@@ -96,6 +99,9 @@ type requirementCriterionView struct {
 	// Trace is what links to this criterion: its design, the slides that
 	// explain it, and the tests that verify it.
 	Trace traceGroups
+	// RelatedReviews are the reviews that touched the code this criterion
+	// reaches. They are derived, never authored.
+	RelatedReviews []relatedReviewView
 }
 
 type requirementHistoryView struct {

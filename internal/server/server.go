@@ -50,6 +50,9 @@ type app struct {
 	catalog       sourceCatalogCache
 	evidence      evidenceOwnerCache
 	layers        layersCache
+	// related is the derived related-reviews index, kept while nothing it
+	// reads has changed.
+	related relatedReviewCache
 	// comparisonLoader is the injectable boundary around the expensive source
 	// diff and coverage build. Root and narrative shell handlers must never call
 	// it; focused comparison endpoints reach it through snapshot().
@@ -797,6 +800,9 @@ func templateFuncs() template.FuncMap {
 		"reviewDiffSurface": func(path, codeHref string) reviewDiffSurfaceView {
 			return reviewDiffSurfaceView{Path: path, CodeHref: codeHref}
 		},
+		"relatedReviews": func(kind string, reviews []relatedReviewView) relatedReviewsView {
+			return relatedReviewsView{Kind: kind, Reviews: reviews}
+		},
 	}
 }
 
@@ -996,6 +1002,14 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 		if data.TestCase, err = a.testCasePage(r.Context(), graph, route.id); err != nil {
 			return nil, err
 		}
+	}
+	// Related reviews are a footnote on a feature, a story, and a criterion,
+	// derived from the code those records reference rather than authored. Only
+	// those pages ask for the index, and it is held until the Saga or the
+	// source head changes, so the documentation pages do not pay the cross
+	// product again on every request.
+	if route.kind == "feature" || route.kind == "requirements" {
+		attachRelatedReviews(a.relatedReviews(r.Context(), document, requirementsDocument), data)
 	}
 	overviewActive := ""
 	switch {

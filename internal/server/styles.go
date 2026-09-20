@@ -315,6 +315,15 @@ body.presentation-mode .deck-viewer-stage:hover .slide-exit-presentation,body.pr
 .criterion-page h1{font-size:24px;line-height:1.35}
 .criterion-trace{margin-top:8px;font:12.5px/1.45 var(--ui);color:var(--muted)}
 .criterion-trace a{color:var(--accent);text-decoration:none}
+/* A footnote reads as one: it sits last, stays small, and never competes with
+the record's own content for the top of the page. */
+.related-reviews{margin:26px 0 0;padding:10px 0 0;border-top:1px solid var(--line)}
+.related-reviews h2{margin:0 0 4px;font:600 12px/1.4 var(--ui);letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.related-reviews ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:4px 14px}
+.related-reviews li{font:13px/1.5 var(--ui)}
+.related-reviews a{color:var(--accent);text-decoration:none}
+.related-review-pr,.related-review-state{color:var(--muted);font-size:12px}
+.related-reviews-note{margin:5px 0 0;color:var(--muted);font:12px/1.45 var(--ui)}
 .terms-lede{margin:0 0 18px;color:var(--muted);font:14px/1.55 var(--ui)}
 .terms-list{display:grid;gap:10px;margin:0}
 .terms-entry{padding:13px 16px;border:1px solid var(--line);border-radius:9px;background:var(--bg)}
