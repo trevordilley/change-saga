@@ -9,12 +9,19 @@ import { expectNoSeriousAccessibilityViolations, expect, test, waitForSettledSag
 test("@critical shows one epic and picks another by typing", async ({ page, saga }) => {
   const contents = page.getByRole("navigation", { name: "Contents" });
 
-  // Everything about the app is always present, in order, above the epic.
-  // Only the top-level rows: an epic has its own Overview fragment.
+  // Three sections, in order, and every one of them opens a page.
   const places = contents.locator(":scope > .doc-node > .doc-row > .doc-link");
-  await expect(places).toHaveText(["Overview", "Personas", "Design system", "Onboarding", "Feature flags", "Wave One"]);
-  // Terms stay shut until they are opened.
+  await expect(places).toHaveText(["Overview", "Epics", "Reviews"]);
+  await expect(places.nth(1)).toHaveAttribute("href", "/epics");
+  await expect(places.nth(2)).toHaveAttribute("href", "/reviews");
+  // What describes the whole app hangs off the overview, beneath its prose.
+  const overview = contents.locator(":scope > .doc-node").first();
+  await expect(overview.locator(":scope > .doc-children > .doc-node > .doc-row > .doc-link")).toHaveText([
+    "Name", "Elevator pitch", "Description", "Terms and vocabulary", "Personas", "Design system", "Onboarding", "Feature flags"
+  ]);
+  // Terms stay shut until they are opened, and the header is still the way in.
   await expect(contents.getByRole("button", { name: "Toggle Terms and vocabulary" })).toHaveAttribute("aria-expanded", "false");
+  await expect(contents.getByRole("link", { name: "Terms and vocabulary", exact: true })).toHaveAttribute("href", "/terms");
 
   // One epic, over its four places. The others are not in the tree at all.
   const epic = page.locator(".doc-epic-current");
@@ -124,7 +131,7 @@ test("the full list of epics expands for browsing and collapses again", async ({
   await list.getByRole("link", { name: "Open the epics index" }).click();
   await expect(page).toHaveURL(`${saga.baseURL}/epics`);
   await waitForSettledSaga(page);
-  const index = page.locator(".epics-page");
+  const index = page.locator('[data-directory-page="epics"]');
   await expect(index.getByRole("heading", { name: "Epics", exact: true })).toBeVisible();
   for (const title of ["Wave One", "Tide Charts", "Harbor Lights"]) {
     await expect(index.getByRole("link", { name: title, exact: true })).toBeVisible();
@@ -155,7 +162,7 @@ test("@critical the picker still works with JavaScript disabled", async ({ brows
     await expect(page.locator("[data-epic-list]").getByRole("link", { name: "Harbor Lights", exact: true })).toBeVisible();
     await page.locator("[data-epic-list]").getByRole("link", { name: "Open the epics index" }).click();
     await expect(page).toHaveURL(`${saga.baseURL}/epics`);
-    await expect(page.locator(".epics-page").getByRole("link", { name: "Harbor Lights", exact: true })).toBeVisible();
+    await expect(page.locator('[data-directory-page="epics"]').getByRole("link", { name: "Harbor Lights", exact: true })).toBeVisible();
   } finally {
     await context.close();
   }

@@ -205,6 +205,15 @@ function buildSagaRepository(root: string, source: { sourceRepo: string; base: s
     "--title", "Read the tide", "--statement", "As a skipper, I can read tonight's tide.", "--priority", "must", sagaRoot
   ], sagaRepo);
 
+  // Two personas and a flag, so the directories the sidebar opens have rows
+  // rather than only their growth state. The skipper is served by nothing
+  // accepted yet and the harbour master is retired, which are the two facts
+  // the personas table has to be able to state.
+  runSaga(["persona", "add", "--id", "skipper", "--name", "Skipper", "--description", "Sails on the tide and reads the chart before leaving harbour.", sagaRoot], sagaRepo);
+  runSaga(["persona", "add", "--id", "harbour-master", "--name", "Harbour master", "--description", "Kept the old paper log; the app no longer serves them.", sagaRoot], sagaRepo);
+  runSaga(["persona", "set-state", "--persona", "urn:change-saga:wave-one:persona:harbour-master", "--event", "e2", "--parent", "urn:change-saga:wave-one:persona:harbour-master:event:active", "--state", "retired", "--reason", "the paper log was retired", sagaRoot], sagaRepo);
+  runSaga(["flag", "add", "--id", "tide-charts-beta", "--description", "Gates the tide charts while the data source settles.", "--target", "urn:change-saga:wave-one:epic:tide-charts", "--state", "off", sagaRoot], sagaRepo);
+
   const identity = addCoverage(source.sourceRepo, sagaRoot);
   git(sagaRepo, "add", ".");
   git(sagaRepo, "commit", "-m", "add Wave 1 saga fixture");

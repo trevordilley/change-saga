@@ -25,8 +25,9 @@ test("requirements remain canonical while stories and criteria get dedicated rev
   await expect(page.getByRole("tabpanel", { name: "Saga" }).getByText(statement)).toHaveCount(0);
 
   const contents = page.getByRole("navigation", { name: "Contents" });
-  // Product starts collapsed; Requirements sits inside it.
-  await contents.getByRole("button", { name: "Product", exact: true }).click();
+  // Product starts collapsed; Requirements sits inside it. The header itself
+  // opens the epic's Product section, so the twisty is what expands it here.
+  await contents.getByRole("button", { name: "Toggle Product" }).click();
   await contents.getByRole("link", { name: "Requirements", exact: true }).click();
   await expect(page).toHaveURL(/\/requirements$/);
   await expect(page.getByRole("heading", { name: "Requirements", exact: true })).toBeVisible();
