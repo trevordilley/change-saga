@@ -64,6 +64,22 @@ tool, and what they have to do about it.
   pin-derived staleness, changed-source accounting, and ordered next actions.
   `spec --json` publishes the matching command grammar.
 
+### Fixed
+
+- **A heading landmark inherits the design that contains it.** `validate`
+  recommends moving code evidence onto focused heading landmarks; doing so used
+  to drop that code out of the story chain, so following the tool's own advice
+  made its report worse. A landmark now reaches the stories its fragment's
+  relations name, and a relation on the landmark itself still wins as the more
+  precise statement. Decks, slides, and Items are unaffected, since `--scope
+  descendants` is an author's explicit choice there.
+- **A growth suggestion is asked once, and never for a record that exists.**
+  Several uncovered places in one fragment produced one identical suggestion
+  each, all printing the same command, which only the first run could satisfy.
+  They are now one suggestion that relates every place. When the story it would
+  capture is already written, the suggestion offers to relate the code to it
+  instead of proposing a story that would collide.
+
 ### Added
 
 - `prototype`, `quality`, and `relation status` commands; test cases can verify
