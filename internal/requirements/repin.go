@@ -246,9 +246,6 @@ func RepinRelation(root, sagaID string, input RepinRelationInput) (MutationResul
 			FromContentDigest: input.FromContentDigest, ToContentDigest: input.ToContentDigest,
 			Rationale: strings.TrimSpace(input.Rationale), CreatedAt: mutationTime(input.CreatedAt), RequestID: input.RequestID,
 		}
-		if err := validateRelationRepin(value, sagaID, ref.ID, id); err != nil {
-			return err
-		}
 		urn, err := RelationRepinURN(sagaID, ref.ID, id)
 		if err != nil {
 			return err
@@ -263,10 +260,22 @@ func RepinRelation(root, sagaID string, input RepinRelationInput) (MutationResul
 			}
 			return fmt.Errorf("repin id %q already exists on relation %q", id, ref.ID)
 		}
-		// A repin may never make a relation invalid: the folded record has to
-		// pass exactly the checks the relation passed when it was written.
 		candidate := *existing
 		candidate.Repins = append(append([]RelationRepin{}, existing.Repins...), value)
+		// A repin says somebody read a revision and confirmed the relation
+		// against it. Recording the pins it already confirms says nothing, and
+		// these records are immutable, so the noise would be permanent. The
+		// refusal belongs here rather than where omitted pins are defaulted:
+		// naming the pin explicitly is exactly what the stale next action
+		// prints, so it must not be a way around the check.
+		if samePins(candidate.Confirmed(), existing.Confirmed()) {
+			return fmt.Errorf("relation %q is already confirmed against every pin this would record; there is nothing to re-pin", ref.ID)
+		}
+		if err := validateRelationRepin(value, sagaID, ref.ID, id); err != nil {
+			return err
+		}
+		// A repin may never make a relation invalid: the folded record has to
+		// pass exactly the checks the relation passed when it was written.
 		if err := validateRelation(candidate.Confirmed(), sagaID, ref.ID); err != nil {
 			return err
 		}
@@ -284,6 +293,12 @@ func RepinRelation(root, sagaID string, input RepinRelationInput) (MutationResul
 		return nil
 	})
 	return result, err
+}
+
+// samePins reports whether two folds of a relation confirm the identical pins.
+func samePins(left, right Relation) bool {
+	return left.FromRevision == right.FromRevision && left.ToRevision == right.ToRevision &&
+		left.FromContentDigest == right.FromContentDigest && left.ToContentDigest == right.ToContentDigest
 }
 
 func equalRepinIgnoringTime(left, right RelationRepin) bool {

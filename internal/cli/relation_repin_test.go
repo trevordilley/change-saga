@@ -91,6 +91,14 @@ func TestRelationRepinKeepsTheRelationAndRecordsWhatWasConfirmed(t *testing.T) {
 		t.Fatalf("repinned relation = %s", text.String())
 	}
 
+	// Naming the pin explicitly is no way around the no-op check. This is the
+	// command the stale next action prints, so running it twice has to refuse
+	// the second time; a repin record is immutable, so the noise is permanent.
+	if err := Relation(ctx, []string{"repin", root, "--relation", relation, "--to-revision", story + ":revision:r2",
+		"--rationale", "Saying it again."}, &bytes.Buffer{}); err == nil || !strings.Contains(err.Error(), "nothing to re-pin") {
+		t.Fatalf("repin of the pin already confirmed = %v", err)
+	}
+
 	// Replaying the same request writes nothing new; a second repin under the
 	// same id is refused rather than editing the record.
 	output.Reset()
