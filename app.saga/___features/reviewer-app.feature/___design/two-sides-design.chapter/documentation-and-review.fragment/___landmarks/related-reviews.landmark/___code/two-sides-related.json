@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "b851addd875500f0fb4cc37bb0272a3447bfd5da",
+      "path": "internal/server/relatedreviews.go",
+      "start": 25,
+      "end": 64,
+      "digest": "sha256:1fc2752eceb38f447d31a28141ff1f95b8a3c56127f0f4de3fc0c3536b41ece9",
+      "note": "Related reviews are derived from the diffs: no record, no relation, nothing to maintain."
+    }
+  ]
+}

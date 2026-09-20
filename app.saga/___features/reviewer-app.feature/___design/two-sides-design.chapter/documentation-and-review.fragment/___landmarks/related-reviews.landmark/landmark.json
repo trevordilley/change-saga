@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "related-reviews",
+  "label": "Where the two sides meet",
+  "selector": {
+    "type": "heading",
+    "heading_id": "related-reviews"
+  },
+  "target": ""
+}

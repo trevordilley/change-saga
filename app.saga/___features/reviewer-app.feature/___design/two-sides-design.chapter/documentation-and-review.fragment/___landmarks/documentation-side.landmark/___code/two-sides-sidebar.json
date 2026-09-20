@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "b851addd875500f0fb4cc37bb0272a3447bfd5da",
+      "path": "internal/server/appnav.go",
+      "start": 101,
+      "end": 109,
+      "digest": "sha256:0fb523c757ef9b05eec264f2505e1974351e18e8851fc4f0a4de349127d72cae",
+      "note": "The documentation sidebar is Overview and Features only; reviews live on the header's other side."
+    }
+  ]
+}

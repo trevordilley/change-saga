@@ -1,0 +1,34 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:app:story:two-sides",
+  "parents": [],
+  "title": "The reviewer has two sides",
+  "statement": "The header divides the application into Documentation, what it is, and Review, how it is changing.",
+  "personas": [
+    "urn:change-saga:app:persona:reviewer"
+  ],
+  "citations": [
+    "urn:change-saga:app:citation:app-saga-goals"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "header-splits",
+      "statement": "The header offers Documentation and Review, and each opens its own side."
+    },
+    {
+      "id": "reviews-on-one-side",
+      "statement": "Reviews and the views that read a comparison appear under Review only, never in the documentation sidebar."
+    },
+    {
+      "id": "related-reviews-derived",
+      "statement": "A feature, story, or acceptance criterion lists the reviews that changed the code it explains, derived from the diffs rather than authored."
+    },
+    {
+      "id": "derivation-is-stated",
+      "statement": "The list says it was derived, so a reader does not mistake it for a claim someone made."
+    }
+  ],
+  "created_at": "2026-09-20T20:36:48.226824Z"
+}

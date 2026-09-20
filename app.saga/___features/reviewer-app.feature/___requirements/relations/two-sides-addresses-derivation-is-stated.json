@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "two-sides-addresses-derivation-is-stated",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:two-sides-overview",
+  "to": "urn:change-saga:app:story:two-sides:criterion:derivation-is-stated",
+  "scope": "self",
+  "rationale": "The footnote names itself as derived, because an empty list means the reviews touched no such code, not that someone forgot to link one.",
+  "to_revision": "urn:change-saga:app:story:two-sides:revision:r1",
+  "from_content_digest": "sha256:7513ec1c741cb93b90dccf504fc7c90d4c2cac606ae0f52a95f116086245a0e9",
+  "state": "active",
+  "created_at": "2026-09-20T20:38:15.706878Z"
+}
