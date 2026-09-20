@@ -366,15 +366,18 @@ reconstructs it.
 
 1. Do feature flags gate stories, features, or both?
 2. Are retired stories shown in the app view, or only in history?
-3. Settled. There are three top-level sections, and each one is a destination:
-   **Overview**, **Features**, and **Reviews**. Personas, the design system,
-   onboarding, and feature flags belong to the overview, not to the top level.
-   Every section header opens a page rather than merely expanding: Overview is
-   prose, and the rest are filterable tables (features, reviews, personas, terms,
-   flags). Terms and Vocabulary opens the table of terms, and a deck header
-   (Onboarding, or a feature's Implementation) opens at its first slide. Features
-   lists every feature, each opening its own page; the feature whose content is on
-   screen expands over its Product, Design, Quality, and Implementation.
+3. Settled, then refined by goal 13. The header splits the application into
+   **Documentation** and **Review**, so Reviews is no longer a top-level
+   section beside the others: Documentation holds **Overview** and **Features**,
+   and Review holds the reviews and the views that read a comparison. Personas,
+   the design system, onboarding, and feature flags belong to the overview, not
+   to the top level. Every section header opens a page rather than merely
+   expanding: Overview is prose, and the rest are filterable tables (features,
+   reviews, personas, terms, flags). Terms and Vocabulary opens the table of
+   terms, and a deck header (Onboarding, or a feature's Implementation) opens at
+   its first slide. Features lists every feature, each opening its own page; the
+   feature whose content is on screen expands over its Product, Design, Quality,
+   and Implementation.
 4. Onboarding deck Items point at records (personas, features, stories) rather than
    code. Confirm that this is its only kind of evidence.
 
@@ -382,10 +385,14 @@ reconstructs it.
 
 Each phase leaves the repository valid and tested.
 
-Progress: Phases 1, 2, 3, and 6 are built, as are reviews, review coverage, and
-the overview with terms and vocabulary. Phase 4 waits on the app-level sidebar
-decision. Phase 5 changed course: rather than folding the old Sagas, they were
-removed and this repository is being documented afresh with one app Saga.
+Progress: every phase is built. Phases 1, 2, 3, and 6, plus reviews, review
+coverage, and the overview with terms and vocabulary, landed first. Phase 4 is
+the app view: three sections became the Documentation and Review split of goal
+13, with derived related reviews on features, stories, and criteria. Phase 5
+changed course: rather than folding the old Sagas, they were removed and this
+repository is documented afresh with one app Saga. What remains is open
+decisions 1, 2, and 4, and whatever dogfooding this repository's own Saga
+turns up.
 
 **Phase 1 — Code references.** The reference format; `cover` writing
 references; coverage computed per comparison; remap and staleness; deletions and
