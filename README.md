@@ -204,22 +204,37 @@ shows the documentation as of the current commit; opened with `--against main`
 it compares the branch, showing what the change revised, what it affected, and
 the code, grouped by the documentation that explains it.
 
-- **Saga** presents the whole change. Its sidebar is always Product, Design,
-  Quality, and Implementation, in that order. Implementation is the deck
-  itself, open to its slide thumbnails; the other sections stay collapsed
-  until you need them, and empty places say what is missing.
+The header divides the application in two: **Documentation** is what it is, and
+**Review** is how it is changing.
+
+Documentation has two sections:
+
+- **Overview** is the application's pitch and description, plus its personas,
+  terms and vocabulary, design system, onboarding deck, and feature flags.
+- **Features** lists every feature, each opening its own page. Inside a feature
+  the sidebar is always Product, Design, Quality, and Implementation, in that
+  order. Implementation is the deck itself, open to its slide thumbnails; the
+  other sections stay collapsed until you need them, and empty places say what
+  is missing.
 - **Present** shows the implementation deck full screen, one slide at a time.
   Linked code opens without losing the active slide.
-- **Code Diff** provides a traditional changed-file tree and diff view, with
-  links back to every relevant explanation.
-- **Coverage** shows the mapping in both directions: code to explanations and
-  explanations to code.
+
+Review holds the reviews and everything that reads a comparison:
 
 - **Reviews** lists each pull request's review: a slide deck that explains what
   the change did and why, with the diffs its slides reference. Reviewers approve
   or request changes slide by slide and discuss slides and Items. A decision
   records the commit it was given at and shows as out of date once that slide or
   its code changes.
+- **Code Diff** provides a traditional changed-file tree and diff view, with
+  links back to every relevant explanation.
+- **Coverage** shows the mapping in both directions: code to explanations and
+  explanations to code.
+
+The two sides meet on the documentation pages. A feature, story, or acceptance
+criterion lists the reviews that changed the code it explains. Nobody writes
+that list: it is derived from the diffs themselves, so it is right by
+construction and says on the page that it was derived.
 
 The documentation itself carries no comments or approvals; review happens in
 reviews. The tool records every decision and never declares a review approved:

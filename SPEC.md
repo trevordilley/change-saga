@@ -937,17 +937,25 @@ hide authored content behind a valid-looking saga. Other names beginning with
   manages a pull request's review: its deck is authored with `add-slide`,
   `set-slide-content`, and `add-item` using `--review`, and decisions and
   comments apply to review slides and Items only.
-- `change-saga open` has three top-level sections, and every section header is
-  a destination rather than a row that only expands. **Overview** is the
-  application's prose plus a directory of its parts: personas (`/personas`),
-  terms and vocabulary (`/terms`), the design system (`/design-system`),
-  onboarding, and feature flags (`/flags`). **Features** (`/features`) lists every
-  feature in creation order, each opening its own page; the feature whose content is
-  on screen expands over its Product, Design, Quality, and Implementation.
-  **Reviews** (`/reviews`) lists the pull-request reviews. A deck header (onboarding, or a feature's
-  implementation) opens the deck at its first slide. Every directory is a
-  server-rendered table that filters with `?q=` and without JavaScript, showing
-  counts only.
+- `change-saga open` divides the application in the header, into **Documentation**
+  — what the application is — and **Review** — how it is changing. Review holds
+  the pull-request reviews (`/reviews`) and the views that read a comparison:
+  Code Diff, Coverage, and Change. Documentation holds two sections, and never
+  repeats the reviews: **Overview** is the application's prose plus a directory
+  of its parts — personas (`/personas`), terms and vocabulary (`/terms`), the
+  design system (`/design-system`), onboarding, and feature flags (`/flags`) —
+  and **Features** (`/features`) lists every feature in creation order, each
+  opening its own page; the feature whose content is on screen expands over its
+  Product, Design, Quality, and Implementation. Every section header is a
+  destination rather than a row that only expands, and a deck header
+  (onboarding, or a feature's implementation) opens the deck at its first slide.
+  Every directory is a server-rendered table that filters with `?q=` and without
+  JavaScript, showing counts only.
+- A feature, story, or acceptance criterion page lists its **related reviews**.
+  The list is derived, never authored: a review is related when its range
+  changed lines inside the code that record explains, transitively through the
+  same code references the Coverage view uses. The page says so, so a reader
+  does not mistake a derivation for a claim someone made.
 - `change-saga open` serves a page per record: the overview and its terms,
   each persona, each feature, each story and each acceptance criterion, each test
   case with its steps, the criteria it verifies, its evidence code and its

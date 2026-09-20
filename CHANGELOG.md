@@ -50,8 +50,16 @@ tool, and what they have to do about it.
   vocabulary. A term links to its stories and the exact code that defines it;
   renaming that code makes the term stale, and a change that adds an enum value
   no term names suggests defining one.
-- The reviewer sidebar is always Product, Design, Quality, and Implementation.
-  Implementation is the deck itself, open to its slides.
+- **The reviewer separates documentation from review in its header.**
+  Documentation holds the Overview and the Features; Review holds the reviews
+  and the views that read a comparison (Code Diff, Coverage, Change). Reviews
+  appear on one side only. Inside a feature the sidebar is still Product,
+  Design, Quality, and Implementation, with Implementation the deck itself,
+  open to its slides.
+- **Features, stories, and acceptance criteria list their related reviews.**
+  The list is derived from the diffs — a review is related when it changed
+  lines inside the code that record explains — so it is never authored, never
+  goes stale, and says on the page that it was derived.
 - `status --json` reports readiness gates, per-criterion coverage on six axes,
   pin-derived staleness, changed-source accounting, and ordered next actions.
   `spec --json` publishes the matching command grammar.
