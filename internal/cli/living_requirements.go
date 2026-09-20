@@ -10,6 +10,7 @@ import (
 
 	"github.com/twentyideas/changesaga/internal/saga"
 
+	"github.com/twentyideas/changesaga/internal/livingid"
 	"github.com/twentyideas/changesaga/internal/requirements"
 )
 
@@ -61,13 +62,15 @@ func Citation(ctx context.Context, args []string, out io.Writer) error {
 
 func Relation(ctx context.Context, args []string, out io.Writer) error {
 	if len(args) == 0 || args[0] == "-h" || args[0] == "--help" {
-		return livingFamilyHelp("relation", []string{"add", "supersede", "status"}, out)
+		return livingFamilyHelp("relation", []string{"add", "repin", "supersede", "status"}, out)
 	}
 	operation := "relation " + args[0]
 	var err error
 	switch args[0] {
 	case "add":
 		err = relationAdd(ctx, args[1:], out)
+	case "repin":
+		err = relationRepin(ctx, args[1:], out)
 	case "supersede":
 		err = relationSupersede(ctx, args[1:], out)
 	case "status":
@@ -515,4 +518,146 @@ func relationSupersede(_ context.Context, args []string, out io.Writer) error {
 		return err
 	}
 	return writeLivingMutation(out, name, result.URN, result.Path, []string{result.URN}, nil, result.Replayed, *jsonOutput)
+}
+
+// relationRepin appends one confirmation that a relation still holds. It is
+// the answer to a stale pin that is still true: the relation keeps its id, its
+// rationale, and the record of every revision anyone read it against, instead
+// of being retired and renamed.
+func relationRepin(_ context.Context, args []string, out io.Writer) error {
+	name := "relation repin"
+	usage := commandUsage[name]
+	flags := commandFlags(name, usage, out)
+	relation := flags.String("relation", "", "canonical relation URN")
+	id := flags.String("id", "", "stable repin id; defaults to the next rN")
+	rationale := flags.String("rationale", "", "why the relation still holds against the new pins")
+	fromRevision := flags.String("from-revision", "", "advance the source revision pin")
+	toRevision := flags.String("to-revision", "", "advance the target revision pin")
+	fromDigest := flags.String("from-content-digest", "", "advance the source content digest")
+	toDigest := flags.String("to-content-digest", "", "advance the target content digest")
+	requestID := flags.String("request-id", "", "idempotency key")
+	jsonOutput := flags.Bool("json", false, "emit a machine-readable result")
+	feature := featureIDFlag(flags)
+	if err := flags.Parse(normalizeLivingArgs(args)); err != nil {
+		return err
+	}
+	if err := requireLivingArgs(flags, *relation, *rationale); err != nil {
+		return err
+	}
+	root := flags.Arg(0)
+	sagaID, err := requirementSagaID(root)
+	if err != nil {
+		return err
+	}
+	if err := assertRecordFeature(root, *feature, *relation); err != nil {
+		return err
+	}
+	input := requirements.RepinRelationInput{
+		Relation: *relation, ID: *id, Rationale: *rationale, RequestID: *requestID,
+		FromRevision: *fromRevision, ToRevision: *toRevision,
+		FromContentDigest: *fromDigest, ToContentDigest: *toDigest,
+	}
+	defaulted, err := defaultRepinPins(root, &input)
+	if err != nil {
+		return err
+	}
+	result, err := requirements.RepinRelation(root, sagaID, input)
+	if err != nil {
+		return err
+	}
+	if *jsonOutput {
+		return writeJSON(out, relationAddOutput{
+			livingMutationOutput: livingMutationOutput{OK: true, Operation: name, Resource: result.URN, Path: result.Path,
+				Created: []string{result.URN}, Replayed: result.Replayed},
+			DefaultedPins: append([]string{}, defaulted...),
+		})
+	}
+	if err := writeLivingMutation(out, name, result.URN, result.Path, []string{result.URN}, nil, result.Replayed, false); err != nil {
+		return err
+	}
+	for _, note := range defaulted {
+		fmt.Fprintf(out, "Re-pinned %s\n", note)
+	}
+	return nil
+}
+
+// defaultRepinPins fills every omitted pin the relation is behind on with the
+// endpoint's current head or digest, and reports each one. A relation nothing
+// moved under is refused rather than confirmed against itself: re-affirming
+// what never changed is the noise this command exists to stop.
+func defaultRepinPins(root string, input *requirements.RepinRelationInput) ([]string, error) {
+	heads, err := loadRelationHeads(root)
+	if err != nil {
+		return nil, err
+	}
+	ref, err := livingid.Parse(input.Relation)
+	if err != nil || ref.Kind != livingid.KindRelation {
+		return nil, fmt.Errorf("relation must be a canonical relation URN")
+	}
+	var record *requirements.Relation
+	for index := range heads.document.Relations {
+		if heads.document.Relations[index].ID == ref.ID {
+			record = &heads.document.Relations[index]
+		}
+	}
+	if record == nil {
+		return nil, fmt.Errorf("relation %q does not exist", input.Relation)
+	}
+	// A replayed request re-states the repin it already wrote, so an agent that
+	// retries gets the same answer instead of "nothing moved".
+	if input.RequestID != "" {
+		for _, known := range record.Repins {
+			if known.RequestID != input.RequestID {
+				continue
+			}
+			input.ID = known.ID
+			input.FromRevision, input.ToRevision = known.FromRevision, known.ToRevision
+			input.FromContentDigest, input.ToContentDigest = known.FromContentDigest, known.ToContentDigest
+			return nil, nil
+		}
+	}
+	confirmed := record.Confirmed()
+	var defaulted []string
+	for _, side := range []struct {
+		name, endpoint, was string
+		pin                 *string
+	}{
+		{"from_revision", confirmed.From, confirmed.FromRevision, &input.FromRevision},
+		{"to_revision", confirmed.To, confirmed.ToRevision, &input.ToRevision},
+	} {
+		if *side.pin != "" || side.was == "" {
+			continue
+		}
+		head, revisionBearing, err := heads.currentRevisionHead(side.endpoint)
+		if !revisionBearing {
+			continue
+		}
+		if err != nil {
+			return nil, fmt.Errorf("cannot default %s: %w", side.name, err)
+		}
+		if head == side.was {
+			continue
+		}
+		*side.pin = head
+		defaulted = append(defaulted, fmt.Sprintf("%s from %s to the current head %s", side.name, side.was, head))
+	}
+	for _, side := range []struct {
+		name, endpoint, was string
+		pin                 *string
+	}{
+		{"from_content_digest", confirmed.From, confirmed.FromContentDigest, &input.FromContentDigest},
+		{"to_content_digest", confirmed.To, confirmed.ToContentDigest, &input.ToContentDigest},
+	} {
+		if *side.pin != "" || side.was == "" {
+			continue
+		}
+		if digest, ok := heads.inputs.CurrentContentDigests[side.endpoint]; ok && digest != side.was {
+			*side.pin = digest
+			defaulted = append(defaulted, fmt.Sprintf("%s from %s to the current digest %s", side.name, side.was, digest))
+		}
+	}
+	if input.FromRevision == "" && input.ToRevision == "" && input.FromContentDigest == "" && input.ToContentDigest == "" {
+		return nil, fmt.Errorf("relation %q is already current against every head; there is nothing to re-pin", input.Relation)
+	}
+	return defaulted, nil
 }

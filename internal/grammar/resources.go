@@ -157,6 +157,12 @@ var resources = []Resource{
 		Notes:   "v3 relations remain valid history; v5 relations add scope and visual digest pins",
 	},
 	{
+		Kind: "relation-repin", URN: "urn:change-saga:<saga>:relation:<relation>:repin:<repin>", Storage: "___features/<feature>.feature/___requirements/relation-repins/<relation>/<repin>.json",
+		Schema: schemaBase + "v5/relation-repin.schema.json", Versions: []int{5}, History: "append-only; oldest first by recorded time then id, and the fold is the relation's confirmed pins",
+		Writers: []string{"relation repin"},
+		Notes:   "one immutable confirmation that a relation still holds against the pins it names; the relation record is never rewritten to advance a pin",
+	},
+	{
 		Kind: "prototype", URN: "urn:change-saga:<saga>:prototype:<prototype>", Storage: "___features/<feature>.feature/___requirements/prototypes/<prototype>.prototype/prototype.json",
 		Schema: schemaBase + "v3/prototype.schema.json", Versions: []int{5}, History: "immutable identity", Writers: []string{"prototype add-html"},
 	},

@@ -206,7 +206,10 @@ func newCurrencyHeads(document Document, inputs StaleInputs) currencyHeads {
 }
 
 // evaluate is the single place where relation pins are compared with heads.
-func (heads currencyHeads) evaluate(relation Relation) RelationCurrency {
+func (heads currencyHeads) evaluate(record Relation) RelationCurrency {
+	// A relation is judged against what it is confirmed against, which is its
+	// own pins as its appended repins have moved them.
+	relation := record.Confirmed()
 	urn, _ := relationURN(heads.sagaID, relation.ID)
 	scope := relation.Scope
 	if scope == "" {

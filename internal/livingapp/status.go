@@ -118,6 +118,7 @@ func Assemble(in StatusInputs) Status {
 	status.PersonaCoverage = PersonaCoverage{Facts: readiness.PersonaCoverage(personas, personaOrphans)}
 
 	status.Stale = a.staleRecords()
+	status.CarriedForward = a.carriedForward()
 	status.Chain = a.chain()
 	return status
 }
@@ -507,6 +508,26 @@ func (a *assembler) describeStale(record, kind, from, to, axis, scope string) {
 	if value := a.stale[record]; value != nil {
 		value.Type, value.From, value.To, value.Axis, value.Scope = kind, from, to, axis, scope
 	}
+}
+
+// carriedForward reports every relation pin currency advanced on its own. It
+// is never a next action: nothing is asked of anyone, and the record still
+// names the revision a person confirmed.
+func (a *assembler) carriedForward() []CarriedRecord {
+	result := []CarriedRecord{}
+	for _, link := range a.in.Links {
+		for _, carried := range link.CarriedForward {
+			result = append(result, CarriedRecord{Record: link.URN, Kind: "relation", Endpoint: carried.Endpoint,
+				Code: carried.Code, Confirmed: carried.Confirmed, Current: carried.Current, Reason: carried.Message})
+		}
+	}
+	sort.Slice(result, func(i, j int) bool {
+		if result[i].Record != result[j].Record {
+			return result[i].Record < result[j].Record
+		}
+		return result[i].Endpoint < result[j].Endpoint
+	})
+	return result
 }
 
 func (a *assembler) staleRecords() []StaleRecord {

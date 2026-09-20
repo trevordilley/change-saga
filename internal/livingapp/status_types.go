@@ -36,6 +36,10 @@ type Link struct {
 	// relation ever counts as coverage.
 	Currency requirements.Currency
 	Reasons  []requirements.CurrencyReason
+	// CarriedForward names every pin the tool advanced on its own because what
+	// the relation points at did not change. It is reported, never required:
+	// the record still names the revision a person confirmed.
+	CarriedForward []requirements.CarriedForward
 }
 
 // reasons splits the link's currency into the axis vocabulary: a stale pin, a
@@ -153,8 +157,12 @@ type Status struct {
 	Axes           coverage.AxisProjection `json:"axes"`
 	Quality        QualityStatus           `json:"quality"`
 	Stale          []StaleRecord           `json:"stale"`
-	ChangedSource  ChangedSource           `json:"changed_source"`
-	Diagnostics    []Diagnostic            `json:"diagnostics"`
+	// CarriedForward lists the pins currency advanced without a judgment call,
+	// so a reader can always tell a revision somebody confirmed from one the
+	// tool carried a still-true relation past.
+	CarriedForward []CarriedRecord `json:"carried_forward"`
+	ChangedSource  ChangedSource   `json:"changed_source"`
+	Diagnostics    []Diagnostic    `json:"diagnostics"`
 }
 
 // StoryStatus is the requirement identity an author needs to act on a story.
@@ -306,6 +314,18 @@ type StaleRecord struct {
 	To    string `json:"to,omitempty"`
 	Axis  string `json:"axis,omitempty"`
 	Scope string `json:"scope,omitempty"`
+}
+
+// CarriedRecord is one record whose pin the tool advanced on its own, with the
+// revision a person confirmed and the one it now stands for.
+type CarriedRecord struct {
+	Record    string `json:"record"`
+	Kind      string `json:"kind"`
+	Endpoint  string `json:"endpoint"`
+	Code      string `json:"code"`
+	Confirmed string `json:"confirmed"`
+	Current   string `json:"current"`
+	Reason    string `json:"reason"`
 }
 
 // Pin is one pinned value beside the current value it is compared with.

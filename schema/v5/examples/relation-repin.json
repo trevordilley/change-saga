@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
+  "version": 5,
+  "id": "r2",
+  "relation": "urn:change-saga:checkout-refund:relation:refund-at-deadline-verifies-cutoff",
+  "to_revision": "urn:change-saga:checkout-refund:story:refund-window:revision:r3",
+  "rationale": "r3 reworded the cutoff criterion to name the timezone; the case already asserts it, so the relation still holds.",
+  "created_at": "2026-09-20T18:00:00Z"
+}

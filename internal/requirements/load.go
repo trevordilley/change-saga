@@ -90,7 +90,7 @@ func LoadWithOptions(root, sagaID string, options LoadOptions) (Document, error)
 		if !present {
 			continue
 		}
-		entries, err := boundedReadDir(requirementsRoot, 5)
+		entries, err := boundedReadDir(requirementsRoot, 6)
 		if err != nil {
 			return Document{}, err
 		}
@@ -108,6 +108,11 @@ func LoadWithOptions(root, sagaID string, options LoadOptions) (Document, error)
 			// exception domain. Like prototypes it is a sibling root this loader
 			// deliberately never reads.
 			case "coverage-exceptions":
+			// relation-repins holds the appended confirmations of relations in
+			// this feature, one directory per relation. They are read after
+			// every relation is loaded, so a repin can never name one that is
+			// not there.
+			case RepinsDir:
 			default:
 				return Document{}, fmt.Errorf("%s: unknown requirements entry %q", feature.Rel, entry.Name())
 			}
@@ -120,6 +125,11 @@ func LoadWithOptions(root, sagaID string, options LoadOptions) (Document, error)
 		}
 		if err := loadRelations(&document, feature, relations); err != nil {
 			return Document{}, err
+		}
+	}
+	for _, feature := range features {
+		if err := loadRelationRepins(&document, feature); err != nil {
+			return Document{}, fmt.Errorf("%s: %w", feature.Rel, err)
 		}
 	}
 	if len(document.Stories) > MaxStories {

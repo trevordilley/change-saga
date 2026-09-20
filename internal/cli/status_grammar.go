@@ -251,6 +251,7 @@ func printLivingStatus(out io.Writer, status statusDocument, maxItems int) {
 	if len(status.Stale) > 0 {
 		fmt.Fprintf(out, "\nStale pins: %d records must be revisited\n", len(status.Stale))
 	}
+	printCarriedForward(out, status.Status.CarriedForward, maxItems)
 	work, growth := []nextaction.Action{}, []nextaction.Action{}
 	for _, action := range status.NextActions {
 		if action.Category == nextaction.CategoryGrowth {
@@ -276,6 +277,26 @@ func printLivingStatus(out io.Writer, status statusDocument, maxItems int) {
 		}
 		fmt.Fprintf(out, "\nGrowth (%d optional suggestions, %s; take them a step at a time or ignore them):\n", len(growth), order)
 		printActions(out, growth, maxItems, true)
+	}
+}
+
+// printCarriedForward says which pins the tool advanced on its own, so a
+// reader is never left guessing whether a person affirmed the revision a
+// relation now stands against. Nothing here is asked of anyone.
+func printCarriedForward(out io.Writer, carried []livingapp.CarriedRecord, maxItems int) {
+	if len(carried) == 0 {
+		return
+	}
+	fmt.Fprintf(out, "\nCarried-forward pins: %d relations still hold, and were not re-confirmed by anyone (the record keeps the revision that was)\n", len(carried))
+	limit := len(carried)
+	if maxItems > 0 && maxItems < limit {
+		limit = maxItems
+	}
+	for _, value := range carried[:limit] {
+		fmt.Fprintf(out, "  %s: %s; confirmed at %s, carried to %s\n", value.Record, value.Reason, value.Confirmed, value.Current)
+	}
+	if limit < len(carried) {
+		fmt.Fprintf(out, "  … and %d more (use --max 0 or --json)\n", len(carried)-limit)
 	}
 }
 
