@@ -257,7 +257,7 @@ body.presentation-mode .deck-viewer-stage:hover .slide-exit-presentation,body.pr
 .overview-part.gap .overview-part-note{color:var(--faint)}
 
 /* Directories: the filterable table every section header opens ----------- */
-.directory{margin-top:14px}
+.directory{margin-top:4px}
 .directory-filter{display:flex;align-items:center;gap:8px;margin:0 0 10px;max-width:520px}
 .directory-search{flex:1;display:flex;align-items:center;gap:8px;min-width:0}
 .directory-search-label{color:var(--muted);font:12px var(--ui);white-space:nowrap}
@@ -269,13 +269,14 @@ body.presentation-mode .deck-viewer-stage:hover .slide-exit-presentation,body.pr
 .directory-filter-clear:hover{color:var(--accent)}
 .directory-table{width:100%;border-collapse:collapse;font:13px/1.45 var(--ui);table-layout:auto}
 .directory-table caption{caption-side:top;margin-bottom:6px;color:var(--faint);font:11px var(--mono);text-align:left}
-.directory-table th,.directory-table td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.directory-table th,.directory-table td{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;overflow-wrap:break-word}
 .directory-table thead th{position:sticky;top:0;background:var(--bg);color:var(--muted);font:600 11px/1 var(--ui);letter-spacing:.04em;text-transform:uppercase;white-space:nowrap}
-.directory-table tbody th{font-weight:600}
+.directory-table tbody th{min-width:14ch;font-weight:600}
 .directory-table tbody tr:hover{background:var(--bg-subtle)}
 .directory-table tr.current{background:var(--bg-subtle)}
 .directory-table tr.current > th{box-shadow:inset 2px 0 0 var(--accent)}
-.directory-table .numeric{text-align:right;font:12px var(--mono);white-space:nowrap}
+.directory-table .wide{width:45%}
+.directory-table .numeric{width:1%;text-align:right;font:12px var(--mono);white-space:nowrap}
 .directory-table a{color:var(--accent);text-decoration:none}
 .directory-table a:hover{text-decoration:underline}
 .directory-note{display:block;color:var(--faint);font:11px var(--mono)}

@@ -49,10 +49,13 @@ type directoryView struct {
 }
 
 // directoryColumn is one heading. Numeric marks a column of counts, which are
-// set flush right and never carry a verdict.
+// set flush right and never carry a verdict. Wide marks the one column that
+// takes whatever width is left, so a table of short values does not squeeze
+// the sentence a reader is actually here to read.
 type directoryColumn struct {
 	Title   string
 	Numeric bool
+	Wide    bool
 }
 
 // directoryRow is one record. Text is everything the row shows, which is what
@@ -179,7 +182,7 @@ as that same field is typed into. Both filters read data-directory-text, which
 is the text the row already shows. */}}
 {{define "directory-page"}}<section class="app-page directory-page" data-directory-page="{{.ID}}"><nav class="requirements-breadcrumbs" aria-label="{{.Title}} breadcrumb"><strong>{{.Title}}</strong></nav><header class="page-heading"><h1>{{.Title}}</h1>{{if .Lede}}<p class="app-lede">{{.Lede}}</p>{{end}}</header>{{template "directory" .}}</section>{{end}}
 
-{{define "directory"}}<div class="directory" data-directory="{{.ID}}" data-directory-noun="{{.Noun}}" data-directory-nouns="{{.Nouns}}" data-directory-total="{{.Total}}">{{if .Total}}<form class="directory-filter" method="get" action="{{.Action}}" role="search"><label class="directory-search"><span class="directory-search-label">{{.Label}}</span><input type="search" name="q" value="{{.Query}}" aria-controls="{{.ID}}-table" autocomplete="off" spellcheck="false" data-directory-filter></label><button type="submit" class="directory-filter-go" data-directory-submit>Filter</button>{{if .Filtered}}<a class="directory-filter-clear" href="{{.Action}}">Clear</a>{{end}}</form><table class="directory-table" id="{{.ID}}-table"><caption data-directory-caption>{{.Caption}}</caption><thead><tr>{{range .Columns}}<th scope="col"{{if .Numeric}} class="numeric"{{end}}>{{.Title}}</th>{{end}}</tr></thead><tbody data-directory-rows>{{range .Rows}}<tr{{if .Current}} class="current"{{end}}{{if .Hidden}} hidden{{end}} data-directory-row="{{.Key}}" data-directory-text="{{.Text}}">{{range $index, $cell := .Cells}}{{if $index}}<td{{if $cell.Numeric}} class="numeric"{{end}}{{if $cell.Target}} data-directory-target="{{$cell.Target}}"{{end}}>{{template "directory-cell" $cell}}</td>{{else}}<th scope="row"{{if $cell.Target}} data-directory-target="{{$cell.Target}}"{{end}}>{{template "directory-cell" $cell}}</th>{{end}}{{end}}</tr>{{end}}</tbody></table><p class="directory-none" data-directory-none{{if .Matches}} hidden{{end}} role="status">Nothing matches this filter.</p>{{else}}<p class="app-empty directory-growth">{{.Empty}}{{if .Command}} Run <code>{{.Command}}</code> to add the first one.{{end}}</p>{{end}}</div>{{end}}
+{{define "directory"}}<div class="directory" data-directory="{{.ID}}" data-directory-noun="{{.Noun}}" data-directory-nouns="{{.Nouns}}" data-directory-total="{{.Total}}">{{if .Total}}<form class="directory-filter" method="get" action="{{.Action}}" role="search"><label class="directory-search"><span class="directory-search-label">{{.Label}}</span><input type="search" name="q" value="{{.Query}}" aria-controls="{{.ID}}-table" autocomplete="off" spellcheck="false" data-directory-filter></label><button type="submit" class="directory-filter-go" data-directory-submit>Filter</button>{{if .Filtered}}<a class="directory-filter-clear" href="{{.Action}}">Clear</a>{{end}}</form><table class="directory-table" id="{{.ID}}-table"><caption data-directory-caption>{{.Caption}}</caption><thead><tr>{{range .Columns}}<th scope="col"{{if .Numeric}} class="numeric"{{else if .Wide}} class="wide"{{end}}>{{.Title}}</th>{{end}}</tr></thead><tbody data-directory-rows>{{range .Rows}}<tr{{if .Current}} class="current"{{end}}{{if .Hidden}} hidden{{end}} data-directory-row="{{.Key}}" data-directory-text="{{.Text}}">{{range $index, $cell := .Cells}}{{if $index}}<td{{if $cell.Numeric}} class="numeric"{{end}}{{if $cell.Target}} data-directory-target="{{$cell.Target}}"{{end}}>{{template "directory-cell" $cell}}</td>{{else}}<th scope="row"{{if $cell.Target}} data-directory-target="{{$cell.Target}}"{{end}}>{{template "directory-cell" $cell}}</th>{{end}}{{end}}</tr>{{end}}</tbody></table><p class="directory-none" data-directory-none{{if .Matches}} hidden{{end}} role="status">Nothing matches this filter.</p>{{else}}<p class="app-empty directory-growth">{{.Empty}}{{if .Command}} Run <code>{{.Command}}</code> to add the first one.{{end}}</p>{{end}}</div>{{end}}
 
 {{define "directory-cell"}}{{if .Href}}<a href="{{.Href}}">{{.Text}}</a>{{else if .Gap}}<span class="directory-gap">{{.Text}}</span>{{else}}{{.Text}}{{end}}{{if .Note}} <small class="directory-note">{{.Note}}</small>{{end}}{{end}}
 `

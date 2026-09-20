@@ -58,7 +58,7 @@ func personasDirectory(document requirements.Document, query string) *directoryV
 		Lede:  "Who the app is for. A persona is served when an accepted story names it.",
 		Label: "Filter personas", Noun: "persona", Nouns: "personas",
 		Columns: []directoryColumn{
-			{Title: "Persona"}, {Title: "Description"}, {Title: "State"},
+			{Title: "Persona"}, {Title: "Description", Wide: true}, {Title: "State"},
 			{Title: "Stories served", Numeric: true},
 		},
 		Empty:   "No personas yet.",
@@ -113,7 +113,7 @@ func flagsDirectory(graph *appGraph, query string) *directoryView {
 		Lede:  "What is gated, whether it is on, and the stories and epics each flag gates.",
 		Label: "Filter feature flags", Noun: "feature flag", Nouns: "feature flags",
 		Columns: []directoryColumn{
-			{Title: "Flag"}, {Title: "State"}, {Title: "Gates"}, {Title: "What it is for"},
+			{Title: "Flag"}, {Title: "State"}, {Title: "Gates"}, {Title: "What it is for", Wide: true},
 		},
 		Empty:   "No feature flags yet.",
 		Command: "change-saga flag add",
@@ -155,7 +155,7 @@ func termsDirectory(document requirements.Document, places map[string][]termPlac
 		Lede:  "The words this project uses in its own way, what each one means here, and the code that defines it.",
 		Label: "Filter terms", Noun: "term", Nouns: "terms",
 		Columns: []directoryColumn{
-			{Title: "Term"}, {Title: "Also"}, {Title: "Definition"},
+			{Title: "Term"}, {Title: "Also"}, {Title: "Definition", Wide: true},
 			{Title: "Defined in code"}, {Title: "Reference"},
 		},
 		Empty:   "No terms yet.",
@@ -204,7 +204,7 @@ func epicsDirectory(document *saga.Saga, graph *appGraph, current, query string)
 		Lede:  "Every durable area of the product, in the order they were introduced. The sidebar shows one at a time; opening an epic here makes it the one it shows.",
 		Label: "Filter epics", Noun: "epic", Nouns: "epics",
 		Columns: []directoryColumn{
-			{Title: "Epic"}, {Title: "Description"},
+			{Title: "Epic"}, {Title: "Description", Wide: true},
 			{Title: "Stories", Numeric: true}, {Title: "Accepted", Numeric: true},
 			{Title: "With design", Numeric: true}, {Title: "Test cases", Numeric: true},
 			{Title: "Slides", Numeric: true},
@@ -316,7 +316,7 @@ func reviewsDirectory(reviews []reviewSummaryView, query string) *directoryView 
 		ID: "reviews", Title: "Reviews", Action: "/reviews",
 		Label: "Filter reviews", Noun: "review", Nouns: "reviews",
 		Columns: []directoryColumn{
-			{Title: "Review"}, {Title: "Pull request"}, {Title: "Range"},
+			{Title: "Review", Wide: true}, {Title: "Pull request"}, {Title: "Range"},
 			{Title: "Slides", Numeric: true}, {Title: "Decisions", Numeric: true},
 			{Title: "Out of date", Numeric: true}, {Title: "State"},
 		},
