@@ -129,7 +129,7 @@ type reviewCommentView struct {
 	State     string
 }
 
-func reviewHref(id string) string { return "/reviews/" + id }
+func reviewHref(id string) string { return reviewsIndexPath + "/" + id }
 
 // matchingReview reports whether a review's current head is the head this
 // reviewer compares: the pull request it is the review of.

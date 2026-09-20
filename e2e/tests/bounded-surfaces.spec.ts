@@ -25,14 +25,14 @@ test("bounded Code Diff retries a building snapshot, preserves its deep link, an
     await route.fulfill({
       contentType: "text/html",
       body: `<div data-review-surface-response="code">
-        <div data-code-sidebar-content><div class="file-tree" role="tree" aria-label="Changed files"><a role="treeitem" data-tree-file data-tree-path="${file}" href="/?view=code&amp;file=${encodeURIComponent(file)}">component-000.ts</a></div></div>
+        <div data-code-sidebar-content><div class="file-tree" role="tree" aria-label="Changed files"><a role="treeitem" data-tree-file data-tree-path="${file}" href="/reviews?view=code&amp;file=${encodeURIComponent(file)}">component-000.ts</a></div></div>
         <div data-code-panel-content><span data-code-meta-content hidden>0/2 reviewed</span><div class="code-toolbar"><button type="button" data-layout="inline">Unified</button></div><article class="file-diff" data-file-path="${file}" data-file-diff-href="/api/file-diff?file=${encodeURIComponent(file)}&amp;ref=${encodeURIComponent(ref)}"><div class="diff-surface" data-diff-surface><span data-file-diff-status>Loading every changed hunk…</span><div data-file-diff-rows data-diff-body data-page-items="lines"><p data-diff-placeholder>Loading</p></div></div></article></div>
       </div>`
     });
   });
 
   const ref = codeLocation(largeSaga.identity.head, file, 4);
-  const href = `${largeSaga.baseURL}/?view=code&file=${encodeURIComponent(file)}&ref=${encodeURIComponent(ref)}#thread-deep-link`;
+  const href = `${largeSaga.baseURL}/reviews?view=code&file=${encodeURIComponent(file)}&ref=${encodeURIComponent(ref)}#thread-deep-link`;
   await page.goto(href, { waitUntil: "load" });
   await expect(page.locator('[data-review-surface="code"] [data-surface-status]')).toContainText("Building the source comparison");
   await expect(page).toHaveURL(href);
@@ -170,11 +170,13 @@ test("a repeated file-diff cursor stops instead of spinning from cache", async (
 
 test("linked code uses the shared side-by-side layout selected in Code Diff", async ({ page, saga }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto(`${saga.featureURL}?view=code`, { waitUntil: "load" });
+  // Code Diff is on the Review side; the layout it selects is remembered when
+  // the reader crosses back to the feature's linked code.
+  await page.goto(`${saga.baseURL}/reviews?view=code`, { waitUntil: "load" });
   const split = page.getByRole("button", { name: "Side-by-side diff" });
   await split.click();
   await expect(split).toHaveAttribute("aria-pressed", "true");
-  await page.getByRole("tab", { name: "Saga" }).click();
+  await page.goto(saga.featureURL, { waitUntil: "load" });
   const overview = page.locator('[data-view="saga"] article.fragment[data-fragment-title="Overview"]');
   await overview.hover();
   await overview.locator("[data-open-diffs]:visible").first().click();
@@ -208,7 +210,7 @@ test("Coverage continuously loads one direction at a time and keeps its controls
     });
   });
 
-  await page.goto(largeSaga.baseURL, { waitUntil: "load" });
+  await page.goto(`${largeSaga.baseURL}/reviews`, { waitUntil: "load" });
   expect(requests).toEqual([]);
   await page.getByRole("tab", { name: "Coverage" }).click();
   const coverage = page.locator('[data-review-surface="manifest"]');

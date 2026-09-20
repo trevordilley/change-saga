@@ -79,6 +79,17 @@ export async function waitForSettledSaga(page: Page): Promise<void> {
   await page.locator("body[data-shell-ready]").waitFor();
 }
 
+/**
+ * The header carries two sides: Documentation is the overview and the feature
+ * set, Review the current and completed reviews. Code Diff and coverage of a
+ * change are comparison views and are offered only on the Review side, so a
+ * test that opens one crosses over first.
+ */
+export async function openReviewSide(page: Page): Promise<void> {
+  await page.getByRole("link", { name: "Review", exact: true }).click();
+  await waitForSettledSaga(page);
+}
+
 async function seriousAccessibilityViolations(page: Page, include?: string): Promise<SeriousViolation[]> {
   const builder = new AxeBuilder({ page });
   if (include) builder.include(include);

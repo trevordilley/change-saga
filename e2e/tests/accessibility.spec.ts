@@ -1,4 +1,4 @@
-import { expectNoSeriousAccessibilityViolations, expect, test } from "../support/test.js";
+import { expectNoSeriousAccessibilityViolations, expect, openReviewSide, test } from "../support/test.js";
 
 const focusableSelector = 'a[href], area[href], button, input, select, textarea, iframe, summary, [tabindex], [contenteditable="true"]';
 
@@ -21,34 +21,41 @@ async function focusableDescendants(locator: import("@playwright/test").Locator,
   }, selector);
 }
 
-test("@critical exposes the workspace switcher as a real tablist with selection and keyboard movement", async ({ page, saga }) => {
-  const tablist = page.getByRole("tablist", { name: "Workspace" });
+test("@critical exposes each side's views as a real tablist with selection and keyboard movement", async ({ page, saga }) => {
+  // The header's first control is the distinction between the two sides, and
+  // each side's views are the tablist beside it.
+  await expect(page.getByRole("link", { name: "Documentation" })).toHaveAttribute("aria-current", "page");
+  await expect(page.getByRole("tablist", { name: "Documentation" }).getByRole("tab")).toHaveText([/Saga/, /Documented code/]);
+
+  await openReviewSide(page);
+  await expect(page.getByRole("link", { name: "Review", exact: true })).toHaveAttribute("aria-current", "page");
+  const tablist = page.getByRole("tablist", { name: "Review" });
   const tabs = tablist.getByRole("tab");
   await expect(tabs).toHaveCount(4);
-  await expect(tabs).toHaveText([/Saga/, /Change/, /Code Diff/, /Coverage/]);
+  await expect(tabs).toHaveText([/Reviews/, /Change/, /Code Diff/, /Coverage/]);
 
-  const sagaTab = page.getByRole("tab", { name: "Saga" });
+  const reviewsTab = page.getByRole("tab", { name: "Reviews" });
   const codeTab = page.getByRole("tab", { name: "Code Diff" });
   const coverageTab = page.getByRole("tab", { name: "Coverage" });
 
   const selection = async (): Promise<string[]> => tabs.evaluateAll((elements) => elements.map((element) => `${element.textContent?.trim()}:${element.getAttribute("aria-selected")}:${(element as HTMLElement).tabIndex}`));
   // Exactly one tab is selected, and only that tab is in the sequential tab
   // order; the rest are reached with the arrow keys.
-  expect(await selection()).toEqual(["Saga:true:0", "Change:false:-1", "Code Diff:false:-1", "Coverage:false:-1"]);
+  expect(await selection()).toEqual(["Reviews:true:0", "Change:false:-1", "Code Diff:false:-1", "Coverage:false:-1"]);
 
   // Every tab names the panel it controls, and that panel is the visible one.
-  for (const [tab, name] of [[sagaTab, "Saga"], [page.getByRole("tab", { name: "Change" }), "Change"], [codeTab, "Code Diff"], [coverageTab, "Coverage"]] as const) {
+  for (const [tab, name] of [[reviewsTab, "Reviews"], [page.getByRole("tab", { name: "Change" }), "Change"], [codeTab, "Code Diff"], [coverageTab, "Coverage"]] as const) {
     const controls = await tab.getAttribute("aria-controls");
     await expect(page.locator(`#${controls}`)).toHaveAttribute("aria-labelledby", (await tab.getAttribute("id")) ?? "");
     expect(await page.locator(`#${controls}`).getAttribute("role")).toBe("tabpanel");
     expect(name.length).toBeGreaterThan(0);
   }
-  await expect(page.getByRole("tabpanel", { name: "Saga" })).toBeVisible();
+  await expect(page.getByRole("tabpanel", { name: "Reviews" })).toBeVisible();
 
   await codeTab.click();
-  expect(await selection()).toEqual(["Saga:false:-1", "Change:false:-1", "Code Diff:true:0", "Coverage:false:-1"]);
+  expect(await selection()).toEqual(["Reviews:false:-1", "Change:false:-1", "Code Diff:true:0", "Coverage:false:-1"]);
   await expect(page.getByRole("tabpanel", { name: "Code Diff" })).toBeVisible();
-  await expect(page.getByRole("tabpanel", { name: "Saga" })).toBeHidden();
+  await expect(page.getByRole("tabpanel", { name: "Reviews" })).toBeHidden();
   await expect(page).toHaveURL(/[?&]view=code/);
 
   await codeTab.focus();
@@ -56,18 +63,18 @@ test("@critical exposes the workspace switcher as a real tablist with selection 
   await expect(coverageTab).toBeFocused();
   await expect(page.getByRole("tabpanel", { name: "Coverage" })).toBeVisible();
   await page.keyboard.press("ArrowRight");
-  await expect(sagaTab).toBeFocused();
-  await expect(page.getByRole("tabpanel", { name: "Saga" })).toBeVisible();
+  await expect(reviewsTab).toBeFocused();
+  await expect(page.getByRole("tabpanel", { name: "Reviews" })).toBeVisible();
   await page.keyboard.press("ArrowLeft");
   await expect(coverageTab).toBeFocused();
   await page.keyboard.press("Home");
-  await expect(sagaTab).toBeFocused();
+  await expect(reviewsTab).toBeFocused();
   await page.keyboard.press("End");
   await expect(coverageTab).toBeFocused();
-  expect(await selection()).toEqual(["Saga:false:-1", "Change:false:-1", "Code Diff:false:-1", "Coverage:true:0"]);
+  expect(await selection()).toEqual(["Reviews:false:-1", "Change:false:-1", "Code Diff:false:-1", "Coverage:true:0"]);
 
-  await sagaTab.click();
-  await expect(page.getByRole("tabpanel", { name: "Saga" })).toBeVisible();
+  await reviewsTab.click();
+  await expect(page.getByRole("tabpanel", { name: "Reviews" })).toBeVisible();
   expect(saga.baseURL).toMatch(/^http:\/\/127\.0\.0\.1:/);
 });
 
@@ -113,9 +120,10 @@ test("@critical keeps the closed linked-code drawer inert with no focusable desc
   expect(reclosed.focusable, "focusable descendants after the drawer closed again").toEqual([]);
 });
 
-test("@critical has no serious or critical axe violations on any workspace view", async ({ page, saga }) => {
+test("@critical has no serious or critical axe violations on either side's views", async ({ page, saga }) => {
   await expectNoSeriousAccessibilityViolations(page);
 
+  await openReviewSide(page);
   await page.getByRole("tab", { name: "Code Diff" }).click();
   await expect(page.locator("article.file-diff").first()).toBeVisible();
   await expectNoSeriousAccessibilityViolations(page);
@@ -124,7 +132,6 @@ test("@critical has no serious or critical axe violations on any workspace view"
   await expect(page.getByRole("button", { name: "Code → Saga" })).toHaveAttribute("aria-pressed", "true");
   await expectNoSeriousAccessibilityViolations(page);
 
-  await page.getByRole("tab", { name: "Saga" }).click();
   await page.goto(`${saga.baseURL}/chapters/architecture`);
   await expect(page.getByRole("tabpanel", { name: "Saga" }).getByText("The renderer and persistence boundary stay independent.")).toBeVisible();
   await expectNoSeriousAccessibilityViolations(page);

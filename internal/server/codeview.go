@@ -174,8 +174,15 @@ func codeSelectionFromRequest(r *http.Request) codeSelection {
 // CodeDiffURL creates a stable, escaped URL for a focused file and an optional
 // code-location selection. Paths and locations are never shortened.
 func CodeDiffURL(filePath, ref string) string {
-	return codeDiffURLAt("/", filePath, ref)
+	// Code Diff is a comparison view, so it lives on the Review side. A link
+	// out of the documentation opens the comparison there rather than trying
+	// to show a diff where a reader is reading the current state.
+	return codeDiffURLAt(reviewsIndexPath, filePath, ref)
 }
+
+// reviewsIndexPath is the Review side's own page: every review, and the
+// comparison this reviewer was opened with.
+const reviewsIndexPath = "/reviews"
 
 func codeDiffURLAt(basePath, filePath, ref string) string {
 	if basePath == "" || !strings.HasPrefix(basePath, "/") {
