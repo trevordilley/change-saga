@@ -49,32 +49,71 @@ type storyStateRequest struct {
 	RequestID string
 }
 
-func editStoryRevision(ctx context.Context, root, sagaID string, request storyReviseRequest) (storyReviseRequest, error) {
+// revisedStoryParent returns the revision a single-parent revise descends
+// from. A revision is a complete snapshot, so both --edit and a flag-built
+// revise read the parent to carry forward what the author did not restate.
+func revisedStoryParent(root, sagaID string, request storyReviseRequest) (*requirements.Revision, error) {
 	storyRef, err := livingid.Parse(request.Story)
 	if err != nil || storyRef.Kind != livingid.KindStory || storyRef.SagaID != sagaID {
-		return request, fmt.Errorf("story must be a canonical story URN in saga %q", sagaID)
-	}
-	if len(request.Parents) != 1 {
-		return request, fmt.Errorf("story revise --edit requires exactly one explicit current parent; use structured --from to reconcile multiple heads")
+		return nil, fmt.Errorf("story must be a canonical story URN in saga %q", sagaID)
 	}
 	document, err := requirements.Load(root, sagaID)
 	if err != nil {
-		return request, err
+		return nil, err
 	}
-	var current *requirements.Revision
 	for index := range document.Stories {
 		story := &document.Stories[index]
 		if story.Identity.ID != storyRef.ID {
 			continue
 		}
 		if len(story.RevisionHeads) != 1 || story.RevisionHeads[0] != request.Parents[0] {
-			return request, fmt.Errorf("story revise --edit parent is not the unique current revision head")
+			return nil, fmt.Errorf("revision parents must name every current head (got %v, want %v)", request.Parents, story.RevisionHeads)
 		}
-		current = story.CurrentRevision
-		break
+		if story.CurrentRevision == nil {
+			return nil, fmt.Errorf("story %q does not have a unique current revision", storyRef.ID)
+		}
+		return story.CurrentRevision, nil
 	}
-	if current == nil {
-		return request, fmt.Errorf("story %q does not have a unique current revision", storyRef.ID)
+	return nil, fmt.Errorf("story %q does not exist", storyRef.ID)
+}
+
+// inheritStoryRevision carries every field the caller did not name forward
+// from the single parent. Omitting --criterion means "leave the criteria
+// alone", never "delete them"; removing one stays explicit through
+// `criterion remove`.
+func inheritStoryRevision(root, sagaID string, request storyReviseRequest, given map[string]bool) (storyReviseRequest, error) {
+	parent, err := revisedStoryParent(root, sagaID, request)
+	if err != nil {
+		return request, err
+	}
+	if !given["title"] {
+		request.Title = parent.Title
+	}
+	if !given["statement"] {
+		request.Statement = parent.Statement
+	}
+	if !given["priority"] {
+		request.Priority = parent.Priority
+	}
+	if !given["persona"] {
+		request.Personas = append([]string{}, parent.Personas...)
+	}
+	if !given["citation"] {
+		request.Citations = append([]string{}, parent.Citations...)
+	}
+	if !given["criterion"] {
+		request.AcceptanceCriteria = append([]requirements.Criterion{}, parent.AcceptanceCriteria...)
+	}
+	return request, nil
+}
+
+func editStoryRevision(ctx context.Context, root, sagaID string, request storyReviseRequest) (storyReviseRequest, error) {
+	if len(request.Parents) != 1 {
+		return request, fmt.Errorf("story revise --edit requires exactly one explicit current parent; use structured --from to reconcile multiple heads")
+	}
+	current, err := revisedStoryParent(root, sagaID, request)
+	if err != nil {
+		return request, err
 	}
 	candidate := *current
 	candidate.ID = request.Revision
