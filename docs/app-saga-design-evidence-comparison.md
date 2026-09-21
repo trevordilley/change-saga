@@ -1,9 +1,11 @@
 # App Saga design: evidence, currency, and comparison
 
 Status: canonical UX and technical design for the evidence and comparison
-requirements accepted on `main` at `f3474a0`. This work changes design and
-design-owned relations only. It does not add code references, quality evidence,
-implementation slides, requirements, stories, or personas.
+requirements accepted on `main`. The relevant heads were introduced by
+`f3474a0`; final validation also includes the later `design-intent` requirement
+at `b24f5dd`, which is owned by the product-knowledge design. This work changes
+design and design-owned relations only. It does not add code references,
+quality evidence, implementation slides, requirements, stories, or personas.
 
 ## Inputs and scope
 
@@ -157,12 +159,17 @@ Targeted traceability queries reported:
 | `why-things-changed` | 7 | 0 |
 | **Total** | **49** | **0** |
 
-Before this work, design status covered 4 of 17 accepted stories. Afterward it
-covers 8 of 17: the four newly closed story gaps are `evidence-traversal`,
-`claims-verification`, `companion-repositories`, and `why-things-changed`.
-`evidence-repair` and `observe-or-compare` were already counted through broad or
-adjacent design, but now have criterion-level design. The remaining nine story
-gaps belong to other feature owners.
+Before this work, design status covered 4 of 17 accepted stories. On this
+branch alone it moved to 8 of 17: the four newly closed story gaps are
+`evidence-traversal`, `claims-verification`, `companion-repositories`, and
+`why-things-changed`. `evidence-repair` and `observe-or-compare` were already
+counted through broad or adjacent design, but now have criterion-level design.
+
+After merging the final `main` baseline and the disjoint authoring/review
+design, combined status is 12 of 18 accepted stories covered. The six remaining
+gaps are `controlled-release`, `design-intent`, `evolve-product-knowledge`,
+`overview-and-terms`, `prototype-feedback`, and `quality-evidence`; all belong
+to other design owners.
 
 ## Validation
 
@@ -179,11 +186,13 @@ go test ./internal/cli ./internal/requirements ./internal/saga
 
 Results:
 
-- validation: valid, with zero issues and zero fixes;
-- relation currency: 90 total relations, 74 current, 0 stale; the remainder are
-  intentionally superseded history;
+- validation: valid, with zero errors and zero fixes; three warnings ask other
+  feature owners to add code to their new visual fragments;
+- relation currency: 143 total relations, 127 current, 0 stale, and 16 entries
+  retained as intentionally superseded history;
 - targeted traceability: 49 current criteria, 0 without design;
-- design status: 8/17 accepted stories covered, 9 unrelated gaps remaining;
+- combined design status: 12/18 accepted stories covered, 6 unrelated gaps
+  remaining;
 - implementation-gap query: 0 uncovered atoms in current-state mode;
 - targeted CLI, requirements, and Saga package tests: passed; and
 - no code reference was created or changed by this design work.
