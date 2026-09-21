@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/citation.schema.json",
+  "version": 3,
+  "id": "product-overview",
+  "kind": "document",
+  "title": "Change Saga product overview",
+  "reference": "README.md",
+  "created_at": "2026-09-21T04:25:53.642681Z"
+}

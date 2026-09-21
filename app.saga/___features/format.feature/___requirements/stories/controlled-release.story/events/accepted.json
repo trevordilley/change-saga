@@ -1,0 +1,12 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-event.schema.json",
+  "version": 3,
+  "id": "accepted",
+  "story": "urn:change-saga:app:story:controlled-release",
+  "parents": [
+    "urn:change-saga:app:story:controlled-release:event:proposed"
+  ],
+  "state": "accepted",
+  "reason": "The product overview names feature flags as application-level documentation, and the implemented app view exposes their targets and states.",
+  "created_at": "2026-09-21T04:25:59.323474Z"
+}

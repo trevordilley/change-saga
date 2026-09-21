@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
+  "version": 5,
+  "id": "r2",
+  "relation": "urn:change-saga:app:relation:code-reference-design-addresses",
+  "to_revision": "urn:change-saga:app:story:code-references:revision:r3",
+  "rationale": "The design still specifies how reviewers open current source evidence and recognize stale links under the revised user-focused story.",
+  "created_at": "2026-09-21T04:26:29.203017Z"
+}

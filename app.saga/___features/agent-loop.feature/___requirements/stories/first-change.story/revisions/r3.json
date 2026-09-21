@@ -1,0 +1,41 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r3",
+  "story": "urn:change-saga:app:story:first-change",
+  "parents": [
+    "urn:change-saga:app:story:first-change:revision:r2"
+  ],
+  "title": "Create useful review material on the first change",
+  "statement": "As a first-time change author, I can begin by explaining only the current implementation change, so that I get useful review material without completing the whole documentation model.",
+  "priority": "unspecified",
+  "personas": [
+    "urn:change-saga:app:persona:change-author"
+  ],
+  "citations": [
+    "urn:change-saga:app:citation:app-saga-goals"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "implementation-only",
+      "statement": "A first-change workflow asks the author to explain every changed line."
+    },
+    {
+      "id": "optional-growth",
+      "statement": "The first-change workflow does not require personas, stories, design, or test cases."
+    },
+    {
+      "id": "first-run",
+      "statement": "The first-change workflow ends once the current change is explained."
+    },
+    {
+      "id": "post-run-growth",
+      "statement": "After the first workflow, the author is offered optional documentation growth."
+    },
+    {
+      "id": "not-locked-in",
+      "statement": "The author can reorganize first-run content later without breaking existing links."
+    }
+  ],
+  "created_at": "2026-09-21T04:25:55.235339Z"
+}

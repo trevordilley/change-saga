@@ -1,0 +1,53 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r2",
+  "story": "urn:change-saga:app:story:growth-not-debt",
+  "parents": [
+    "urn:change-saga:app:story:growth-not-debt:revision:r1"
+  ],
+  "title": "Grow documentation incrementally without losing trust",
+  "statement": "As a change author, I can add product context incrementally while existing documentation is protected from decay, so that adoption stays lightweight without losing trust.",
+  "priority": "unspecified",
+  "personas": [
+    "urn:change-saga:app:persona:change-author"
+  ],
+  "citations": [
+    "urn:change-saga:app:citation:app-saga-goals"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "never-block",
+      "statement": "Missing optional documentation is reported without blocking the change."
+    },
+    {
+      "id": "stay-healthy",
+      "statement": "A change flags existing documentation that no longer matches its linked requirements or code."
+    },
+    {
+      "id": "preserve-coverage",
+      "statement": "A change flags previously explained code that becomes unexplained."
+    },
+    {
+      "id": "contextual-guidance",
+      "statement": "Each growth suggestion explains the documentation improvement it offers."
+    },
+    {
+      "id": "growth-command",
+      "statement": "Each actionable growth suggestion provides one command to apply it."
+    },
+    {
+      "id": "growth-separate",
+      "statement": "Growth suggestions are listed separately from current-change requirements."
+    },
+    {
+      "id": "growth-order",
+      "statement": "Growth suggestions are ordered by their relevance to the current change."
+    },
+    {
+      "id": "growth-optional",
+      "statement": "The author can decline a growth suggestion without creating an error."
+    }
+  ],
+  "created_at": "2026-09-21T04:25:55.43187Z"
+}

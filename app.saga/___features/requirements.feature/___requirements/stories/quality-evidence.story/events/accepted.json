@@ -1,0 +1,12 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-event.schema.json",
+  "version": 3,
+  "id": "accepted",
+  "story": "urn:change-saga:app:story:quality-evidence",
+  "parents": [
+    "urn:change-saga:app:story:quality-evidence:event:proposed"
+  ],
+  "state": "accepted",
+  "reason": "The product lifecycle specification defines test cases, runs, evidence currency, and independent readiness axes.",
+  "created_at": "2026-09-21T04:25:58.077423Z"
+}

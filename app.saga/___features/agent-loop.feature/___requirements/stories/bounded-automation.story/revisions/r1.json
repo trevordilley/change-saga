@@ -1,0 +1,42 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:app:story:bounded-automation",
+  "parents": [],
+  "title": "Delegate Saga work through bounded, repeatable operations",
+  "statement": "As a change author, I can let an automated assistant inspect and update the Saga through bounded, deterministic operations, so that large documentation work stays safe and repeatable.",
+  "personas": [
+    "urn:change-saga:app:persona:change-author"
+  ],
+  "citations": [
+    "urn:change-saga:app:citation:ai-facing-interface"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "stable-envelope",
+      "statement": "Every structured read returns a stable success or error envelope."
+    },
+    {
+      "id": "pagination",
+      "statement": "Each paginated read reports whether more results remain."
+    },
+    {
+      "id": "snapshot-cursor",
+      "statement": "A cursor is rejected when the Saga changes beneath it."
+    },
+    {
+      "id": "atomic-batch",
+      "statement": "A batch mutation writes nothing when any requested change is invalid."
+    },
+    {
+      "id": "idempotent-request",
+      "statement": "Repeating a mutation request ID does not create duplicate records."
+    },
+    {
+      "id": "inert-content",
+      "statement": "Structured reads do not execute embedded Saga content."
+    }
+  ],
+  "created_at": "2026-09-21T04:25:58.630607Z"
+}

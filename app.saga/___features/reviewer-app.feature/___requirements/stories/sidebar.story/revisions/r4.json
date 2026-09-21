@@ -1,0 +1,29 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r4",
+  "story": "urn:change-saga:app:story:sidebar",
+  "parents": [
+    "urn:change-saga:app:story:sidebar:revision:r3"
+  ],
+  "title": "Navigate from the application overview into each product domain",
+  "statement": "As a newcomer, I can navigate from the application overview into each feature's product, design, quality, and implementation material, so that I can build a coherent mental model.",
+  "priority": "unspecified",
+  "personas": [
+    "urn:change-saga:app:persona:newcomer"
+  ],
+  "citations": [
+    "urn:change-saga:app:citation:app-saga-goals"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "feature-sections",
+      "statement": "Each feature page presents Product, Design, Quality, and Implementation in a stable order."
+    },
+    {
+      "id": "overview-in-sidebar",
+      "statement": "The navigation exposes the application name, pitch, description, and terms from the Overview."
+    }
+  ],
+  "created_at": "2026-09-21T04:25:56.753201Z"
+}

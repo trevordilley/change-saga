@@ -1,0 +1,49 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r3",
+  "story": "urn:change-saga:app:story:coverage-report",
+  "parents": [
+    "urn:change-saga:app:story:coverage-report:revision:r2"
+  ],
+  "title": "See actionable coverage gaps without a product verdict",
+  "statement": "As a change author, I can see separate, actionable gaps for each documentation area, so that I can improve the Saga without a tool deciding whether the change may ship.",
+  "priority": "unspecified",
+  "personas": [
+    "urn:change-saga:app:persona:change-author"
+  ],
+  "citations": [
+    "urn:change-saga:app:citation:app-saga-goals"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "areas",
+      "statement": "The report shows covered and uncovered entries separately for each supported area."
+    },
+    {
+      "id": "exit-zero",
+      "statement": "A report with coverage gaps is still produced successfully."
+    },
+    {
+      "id": "report-errors",
+      "statement": "The report fails when it cannot evaluate the Saga reliably."
+    },
+    {
+      "id": "json-contract",
+      "statement": "The machine-readable report uses a stable documented shape."
+    },
+    {
+      "id": "human-readable",
+      "statement": "The report is readable without processing machine-readable output."
+    },
+    {
+      "id": "ordered-next-actions",
+      "statement": "The report presents next actions in a stable priority order."
+    },
+    {
+      "id": "focused-actions",
+      "statement": "Each next action offers one command or asks one focused question."
+    }
+  ],
+  "created_at": "2026-09-21T04:25:54.581022Z"
+}

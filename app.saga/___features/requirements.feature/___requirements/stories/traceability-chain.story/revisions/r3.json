@@ -1,0 +1,49 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r3",
+  "story": "urn:change-saga:app:story:traceability-chain",
+  "parents": [
+    "urn:change-saga:app:story:traceability-chain:revision:r2"
+  ],
+  "title": "Follow user intent to design, verification, and code",
+  "statement": "As a reviewer, I can follow user intent through design and verification to the exact implementation, so that I can see what supports a requirement and where evidence is missing.",
+  "priority": "unspecified",
+  "personas": [
+    "urn:change-saga:app:persona:reviewer"
+  ],
+  "citations": [
+    "urn:change-saga:app:citation:app-saga-goals"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "adjacent-links",
+      "statement": "A story shows the personas it serves."
+    },
+    {
+      "id": "design-links",
+      "statement": "A story or criterion shows the design that addresses it."
+    },
+    {
+      "id": "code-links",
+      "statement": "A design element shows the code it explains."
+    },
+    {
+      "id": "inferred-paths",
+      "statement": "The traceability view derives end-to-end paths from the recorded links."
+    },
+    {
+      "id": "link-states",
+      "statement": "The traceability view labels each link as current, missing, or stale."
+    },
+    {
+      "id": "new-persona-gap",
+      "statement": "An active persona with no accepted story appears as a visible gap."
+    },
+    {
+      "id": "removed-persona-question",
+      "statement": "Stories served only by a retired persona are grouped into one reassignment decision."
+    }
+  ],
+  "created_at": "2026-09-21T04:25:56.970832Z"
+}

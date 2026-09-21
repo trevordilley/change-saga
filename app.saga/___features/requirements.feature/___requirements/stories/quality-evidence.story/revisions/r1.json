@@ -1,0 +1,46 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:app:story:quality-evidence",
+  "parents": [],
+  "title": "Judge a requirement from current quality evidence",
+  "statement": "As a reviewer, I can see how each acceptance criterion was tested and whether the evidence is current, so that I can judge confidence without treating progress as proof.",
+  "personas": [
+    "urn:change-saga:app:persona:reviewer"
+  ],
+  "citations": [
+    "urn:change-saga:app:citation:product-lifecycle"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "criterion-tests",
+      "statement": "Each test case lists the acceptance criteria it verifies."
+    },
+    {
+      "id": "ordered-steps",
+      "statement": "Each test case presents its steps in execution order."
+    },
+    {
+      "id": "expected-result",
+      "statement": "Each test case states one expected result."
+    },
+    {
+      "id": "run-revision",
+      "statement": "Each test result identifies the test revision it ran."
+    },
+    {
+      "id": "stale-run",
+      "statement": "Revising a test marks its earlier passing results stale."
+    },
+    {
+      "id": "failed-visible",
+      "statement": "A failed result remains visible until a newer result supersedes it."
+    },
+    {
+      "id": "progress-not-proof",
+      "statement": "Reported work progress does not count as test evidence."
+    }
+  ],
+  "created_at": "2026-09-21T04:25:57.884359Z"
+}

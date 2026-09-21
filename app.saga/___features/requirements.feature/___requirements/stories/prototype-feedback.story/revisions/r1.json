@@ -1,0 +1,42 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:app:story:prototype-feedback",
+  "parents": [],
+  "title": "Refine requirements from prototype feedback",
+  "statement": "As a change author, I can connect prototype states to evolving stories, so that user-visible discoveries refine requirements without losing their history.",
+  "personas": [
+    "urn:change-saga:app:persona:change-author"
+  ],
+  "citations": [
+    "urn:change-saga:app:citation:product-lifecycle"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "local-prototype",
+      "statement": "An author can add a self-contained interactive prototype."
+    },
+    {
+      "id": "external-prototype",
+      "statement": "An author can add a supported external prototype link."
+    },
+    {
+      "id": "annotated-state",
+      "statement": "A prototype annotation links one identifiable part of the experience to a story or criterion."
+    },
+    {
+      "id": "prototype-change-stale",
+      "statement": "Changing the linked prototype marks its annotation stale."
+    },
+    {
+      "id": "requirement-change-stale",
+      "statement": "Changing the linked requirement marks its annotation stale."
+    },
+    {
+      "id": "unlinked-growth",
+      "statement": "An unlinked prototype appears as an optional documentation gap."
+    }
+  ],
+  "created_at": "2026-09-21T04:25:57.539066Z"
+}
