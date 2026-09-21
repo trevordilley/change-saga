@@ -37,7 +37,7 @@ Code references were pinned in two complementary places:
 - implementation Items contain the source and focused tests that substantiate each reviewer-facing claim;
 - 35 of 37 owned design landmarks contain direct references to the named runtime seams they describe.
 
-The two design landmarks without direct code are explicit gaps, not accidental omissions: `portable-evidence` and `mode-indicator`. In total, 113 new pinned references were added (67 on implementation Items and 46 on design landmarks), taking repository-wide reference health from 56 references to 169.
+The two design landmarks without direct code are explicit gaps, not accidental omissions: `portable-evidence` and `mode-indicator`. In total, 113 new pinned references were added (67 on implementation Items and 46 on design landmarks), taking the pre-merge repository-wide reference count from 56 to 169. The required final merge from `main` brought in other work and raised the final count to 383.
 
 The references favor named seams such as `criterionInputs`, `reviewEvidenceIndex`, `AnalyzeGraph`, `EvaluateRelation`, `Resolve`, `ReplaceCoverage`, `AddClaim`, `VerifyClaim`, `VerifyRepository`, `Sync`, `Open`, `companionSides`, `ReadRange`, `codeLayer`, `pair`, `attachReasons`, `NodeHistory`, and `branchCommits`. Runtime and test evidence are separate records so a broad multi-file selector does not obscure ownership.
 
@@ -46,7 +46,7 @@ The references favor named seams such as `criterionInputs`, `reviewEvidenceIndex
 1. `companion-repositories / move-later` has design and an explicit implementation Item, but no code reference. Portable URNs, digests, repository identity, and sync cursors exist; there is no dedicated move preflight or end-to-end relocation test for moving a Saga and later reconnecting it to source. This is the sole owned criterion without code evidence.
 2. The comparison range and all three layers are implemented, but the browser does not yet provide the complete persistent current-versus-comparison mode label and deep-link restoration contract described by `mode-indicator`. The slide calls this out without denying the implemented range-selection behavior.
 3. The repository-wide quality axis remains 2/146. This change maps implementation and tests; it does not fabricate quality test-case/run records.
-4. One stale reference remains under `reviewer-app`, outside this scope: `two-sides-sidebar.json#1` for `internal/server/appnav.go` lines 101-109. It was preserved rather than silently repaired across feature ownership.
+4. Before the required merge from `main`, one stale reference remained under `reviewer-app`, outside this scope: `two-sides-sidebar.json#1` for `internal/server/appnav.go` lines 101-109. It was preserved rather than silently repaired across feature ownership. The upstream merge repaired it; final repository-wide reference health is now fully current.
 
 ## Traceability inspection
 
@@ -63,24 +63,24 @@ For each owned story, `query traceability` reports:
 
 The explicit criterion-to-Item-to-code paths are truthful. Design landmarks were independently checked with `query fragment-diffs`; in observe mode their selectors resolve as `current` while changed-atom counts are correctly zero.
 
-Final observe-mode status before merge:
+Final observe-mode status after merging `main`:
 
 | Axis | Covered | Total | Notes |
 | --- | ---: | ---: | --- |
-| Stories | 75 | 75 | Every implementation code target reaches a story |
-| Personas | 75 | 75 | Every implementation code target reaches a persona |
+| Stories | 140 | 140 | Every implementation code target reaches a story |
+| Personas | 140 | 140 | Every implementation code target reaches a persona |
 | Design | 18 | 18 | Baseline coverage preserved |
 | Quality | 2 | 146 | Baseline unchanged |
-| Health | 459 | 460 | Sole miss is the out-of-scope stale reviewer-app reference |
+| Health | 787 | 787 | All relation and reference health checks pass |
 | Changed-line implementation | 0 | 0 | Correct for observe mode; no product diff is being claimed |
 
-Feature-scoped status is 47/47 story and persona code targets with 154/154 health for `code-evidence`, and 25/25 story and persona code targets with 82/83 health for `comparison`. The comparison health miss is the same cross-feature stale reviewer-app reference.
+Feature-scoped status is 47/47 story and persona code targets with 154/154 health for `code-evidence`, and 25/25 story and persona code targets with 87/87 health for `comparison`.
 
 ## Validation and tests
 
-`change-saga validate --json app.saga` reports `valid: true`, zero errors, and seven warnings. All seven warnings are pre-existing visual fragments outside the two owned features; no new validation warning was introduced.
+`change-saga validate --json app.saga` reports `valid: true`, zero errors, and four warnings. All four warnings are pre-existing visual fragments outside the two owned features; no new validation warning was introduced.
 
-`change-saga references --json app.saga` reports 169 total, 168 current, 6 remapped, and 1 stale. All 113 references introduced here resolve current at the pinned baseline.
+`change-saga references --json app.saga` reports 383 total, 383 current, 6 remapped, and 0 stale after the required merge from `main`. All 113 references introduced here remain current at the merged head.
 
 Focused package tests passed:
 
@@ -110,11 +110,11 @@ Every rough spot encountered is recorded below.
 | Consume structured results from every hierarchy mutation | `/tmp/change-saga-implementation-evidence-comparison add-slide --help` (the same applies to `add-deck` and `add-item`) | These hierarchy mutations do not expose `--json`, while relation, content, and coverage mutations do. | Automation must parse prose or issue follow-up queries to discover the created target/path. | Supplied stable IDs and confirmed the resulting URNs with `query children`/`query slide`. | Give all mutations the same JSON envelope containing operation, target, path, created resources, and replay status. |
 | Select durable named Go seams instead of manually maintaining line ranges | `/tmp/change-saga-implementation-evidence-comparison cover --target urn:change-saga:app:fragment:evidence-traversal:landmark:evidence-path --path internal/livingapp/compose.go --commit HEAD --lines 350-453 --name criterion-inputs --note 'criterionInputs assembles accepted criteria with their design, test, and implementation evidence.' app.saga` | Coverage selection supports file/range/reference locations, but not Go symbols. The digest makes the pin trustworthy and remapping handles pure movement, yet the author must locate function bounds manually. | Selecting many focused functions is accurate but tedious, and later function growth may require a deliberate refresh. | Audited named declarations with `rg`, selected complete focused bodies, separated runtime/tests, and retained the function name in record name and note. | Add language-aware `--symbol` resolution that emits the canonical line range and stores a symbol hint alongside the digest. |
 | Inspect requirement -> design -> code as one transitive path | `/tmp/change-saga-implementation-evidence-comparison query traceability --saga app.saga --requirement evidence-traversal` | The response includes criterion-to-design paths and criterion-to-review-Item-to-code paths, but design-owned code is not appended to the design paths. | A consumer cannot prove the design landmark's direct code evidence from this one response, even though the reference exists and is current. | Paired `query traceability` with `query fragment-diffs --target <design-landmark-urn>` for each owned design landmark. | Include current design-owned code selectors as criterion -> design -> code paths, with stale/remapped state, in traceability output. |
-| Rank weak mappings while observing the current tree | `/tmp/change-saga-implementation-evidence-comparison query mappings --saga app.saga --sort scrutiny --limit 10` | The returned note says that every score is zero because there is no change, while the first mapping correctly has score 50 for a stale selector. Breadth signals are zero in observe mode, but non-change-dependent signals are not. | The note contradicts the structured result and can mislead an auditor about stale or thin mappings. | Trusted each mapping's `scrutiny_score` and `reasons`, and separately inspected `references --stale --diff`. | Change the note to distinguish change-dependent breadth signals from always-on stale/note signals. |
+| Rank weak mappings while observing the current tree | `/tmp/change-saga-implementation-evidence-comparison query mappings --saga app.saga --sort scrutiny --limit 10` | Before the final merge, the returned note said that every score was zero because there was no change, while the first mapping correctly had score 50 for the then-stale out-of-scope selector. Breadth signals were zero in observe mode, but non-change-dependent signals were not. After the upstream repair merged, all observe-mode scores are zero and the note is accurate for the final tree. | During a stale state, the note contradicted the structured result and could mislead an auditor about stale or thin mappings. | Trusted each mapping's `scrutiny_score` and `reasons`, and separately inspected `references --stale --diff`. | Change the note to distinguish change-dependent breadth signals from always-on stale/note signals. |
 
 ## Handoff facts
 
 - No implementation is claimed for the companion move-later workflow.
 - No complete browser mode-label/deep-link contract is claimed.
 - No product source was changed.
-- The only stale reference and all seven validation warnings remain outside the owned features.
+- Final reference health is 383/383; all four remaining validation warnings are outside the owned features.
