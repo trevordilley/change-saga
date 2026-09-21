@@ -86,6 +86,21 @@ the final merge from `main`, status reported 15 current passed runs, zero stale
 or failed authored runs, complete relation/reference health, and no validation
 warnings.
 
+After merging the other two quality domains, the full Saga reports:
+
+- schema-valid with zero validation issues;
+- stories 144/144, personas 144/144, and design 18/18;
+- quality area 141/146, with the more precise required-fact breakdown of 137
+  current passed, 4 inactive planned cases, and 5 missing cases;
+- health 997/997;
+- 43 test cases, 657 current code references, and 538 relations; and
+- zero stale code references.
+
+The five criteria with no quality case are `claims-verification/failed-visible`,
+`companion-repositories/move-later`, `observe-or-compare/same-against`,
+`safe-local-review/bounded-requests`, and
+`safe-local-review/bounded-responses`.
+
 ## Change Saga CLI dogfooding
 
 What worked well:
@@ -115,5 +130,6 @@ Rough spots encountered:
 - No passing run was created for the two proposed lifecycle cases.
 - All 15 active authored cases were rerun successfully.
 - The four owned visual-fragment warnings were eliminated with direct evidence.
-- Final app-wide counts must be taken after merging the other two disjoint
-  quality branches into this workspace.
+- The combined graph has 137 required criteria with current passing evidence,
+  four with explicit inactive cases, and five with no case because the product
+  or executable proof is still missing.
