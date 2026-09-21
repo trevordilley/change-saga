@@ -1,0 +1,43 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "test-implementation",
+  "test_case": "urn:change-saga:app:test-case:bounded-structured-reads",
+  "test_revision": "urn:change-saga:app:test-case:bounded-structured-reads:revision:r1",
+  "role": "test_implementation",
+  "code": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/cli/query_envelope_test.go",
+      "start": 10,
+      "end": 43,
+      "digest": "sha256:a67715db94e16088fd4d51f6ce42a128582aeb088a58d6562d82b2eda78b60f4"
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/reviewapp/adversarial_test.go",
+      "start": 17,
+      "end": 24,
+      "digest": "sha256:fba57c10badad0bb6284dcba5885df2c3d17078d3f62df2f2cca7159094de03b"
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/reviewapp/adversarial_test.go",
+      "start": 26,
+      "end": 74,
+      "digest": "sha256:99539bd384d9e90adbb8ada46dbbbb7222725b12a6448718369ac6675029e22a"
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/reviewapp/adversarial_test.go",
+      "start": 87,
+      "end": 120,
+      "digest": "sha256:6647da0f088ec14fdaf42a220f13a0d825d8d6caf27efbe26128e6f7cea5dde8"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-09-21T05:51:39Z",
+  "request_id": "quality-evidence-bounded-structured-reads-tests"
+}

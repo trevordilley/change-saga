@@ -1,0 +1,43 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "test-implementation",
+  "test_case": "urn:change-saga:app:test-case:first-change-stays-focused",
+  "test_revision": "urn:change-saga:app:test-case:first-change-stays-focused:revision:r1",
+  "role": "test_implementation",
+  "code": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/areas/areas_test.go",
+      "start": 18,
+      "end": 42,
+      "digest": "sha256:d4594b76660627cb8610a1b2c3ca3e29e453db1f0bea73c507202c4c1df03f38"
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/nextaction/growth_test.go",
+      "start": 60,
+      "end": 81,
+      "digest": "sha256:e79ac0577b1efd6e533bea6a13c9ad38b9cb384389d5d5ba20c155bf6facc8df"
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/nextaction/nextaction_test.go",
+      "start": 71,
+      "end": 111,
+      "digest": "sha256:d5e9d5772d3a733164be8afcdccfc847c5b02662f7e405cb2973b51a534c6e71"
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/nextaction/nextaction_test.go",
+      "start": 191,
+      "end": 236,
+      "digest": "sha256:b20da8f13de7c1b95eaafb6a03dc19c8969c15424ec13ba78f52448ad4666f8f"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-09-21T05:51:39Z",
+  "request_id": "quality-evidence-first-change-stays-focused-tests"
+}

@@ -1,0 +1,42 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "implementation-under-test",
+  "test_case": "urn:change-saga:app:test-case:keep-documentation-and-related-reviews-reachable",
+  "test_revision": "urn:change-saga:app:test-case:keep-documentation-and-related-reviews-reachable:revision:r1",
+  "role": "implementation_under_test",
+  "code": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/server/appnav.go",
+      "start": 109,
+      "end": 128,
+      "digest": "sha256:872213ac76912d1a9f1549b3955fa21602256e7bfd39febc29ce82e795fb66e8"
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/server/appnav.go",
+      "start": 224,
+      "end": 257,
+      "digest": "sha256:401860fe0a721a8278be5d9d5eefc23eae518722c99e016d1ab23859150986b7"
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/server/relatedreviews.go",
+      "start": 149,
+      "end": 238,
+      "digest": "sha256:0ce3a0d659494c2f80fbaa8964c1d5a74e63398d43cc4f6173de03bfd434be38"
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/changeview/history.go",
+      "start": 187,
+      "end": 234,
+      "digest": "sha256:759e5942a1c10ef974ae289d5b3d5799caf6508f5f495a60abc8c7095f57c929"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-09-21T05:53:26Z"
+}

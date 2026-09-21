@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "inspect-comparison-layers-verifies-code-layer",
+  "type": "verifies",
+  "from": "urn:change-saga:app:test-case:inspect-comparison-layers",
+  "to": "urn:change-saga:app:story:observe-or-compare:criterion:code-layer",
+  "scope": "self",
+  "rationale": "The case groups changed atoms beneath their current explanations.",
+  "from_revision": "urn:change-saga:app:test-case:inspect-comparison-layers:revision:r1",
+  "to_revision": "urn:change-saga:app:story:observe-or-compare:revision:r4",
+  "state": "active",
+  "created_at": "2026-09-21T05:52:15.792162Z"
+}

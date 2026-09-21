@@ -1,0 +1,65 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "implementation-under-test-r2",
+  "test_case": "urn:change-saga:app:test-case:resolve-remaps-and-stales",
+  "test_revision": "urn:change-saga:app:test-case:resolve-remaps-and-stales:revision:r2",
+  "role": "implementation_under_test",
+  "code": [
+    {
+      "commit": "ad15b79feb5d404df52c9192d762a34a032a9701",
+      "path": "internal/coderesolve/resolve.go",
+      "start": 134,
+      "end": 144,
+      "digest": "sha256:3ce6b1cf6344aa6a36e899673164eb878cf6ccdfaffc6dce57b632d4fd26a6b8"
+    },
+    {
+      "commit": "ad15b79feb5d404df52c9192d762a34a032a9701",
+      "path": "internal/coderesolve/resolve.go",
+      "start": 158,
+      "end": 158,
+      "digest": "sha256:78266f11321f06a11654f2a72f64f90c5c40601b52a7cc4125d6c705714d7c12"
+    },
+    {
+      "commit": "ad15b79feb5d404df52c9192d762a34a032a9701",
+      "path": "internal/coderesolve/resolve.go",
+      "start": 162,
+      "end": 165,
+      "digest": "sha256:57baaa24c0a21584f8ebf4581f311e635f4cb6d52f4db667be3c918e168f33d3"
+    },
+    {
+      "commit": "ad15b79feb5d404df52c9192d762a34a032a9701",
+      "path": "internal/coderesolve/resolve.go",
+      "start": 168,
+      "end": 172,
+      "digest": "sha256:fbc8edbcb94f4da4af497d3038322a0893833fbe0e48a0891eff697527a7a1b7"
+    },
+    {
+      "commit": "ad15b79feb5d404df52c9192d762a34a032a9701",
+      "path": "internal/coderesolve/resolve.go",
+      "start": 159,
+      "end": 161,
+      "digest": "sha256:ec63eab93b7168a06dcc23c89290078fa4ed0374a7fe96b041e609734ca22c65"
+    },
+    {
+      "commit": "ad15b79feb5d404df52c9192d762a34a032a9701",
+      "path": "internal/coderesolve/resolve.go",
+      "start": 188,
+      "end": 191,
+      "digest": "sha256:ad07ba5ddaa908322efa4e6ac4a471661031ea1772709e2d9aefa7ab0439a93a"
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/coderesolve/resolve.go",
+      "start": 198,
+      "end": 209,
+      "digest": "sha256:b74547e05ec709923e06a87678826dab98dec58d9bd5d310f770196ebc6c74a6"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [
+    "urn:change-saga:app:test-case:resolve-remaps-and-stales:evidence:implementation-under-test"
+  ],
+  "created_at": "2026-09-21T05:53:26Z"
+}

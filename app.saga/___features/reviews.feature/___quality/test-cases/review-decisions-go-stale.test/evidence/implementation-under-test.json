@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "implementation-under-test",
+  "test_case": "urn:change-saga:app:test-case:review-decisions-go-stale",
+  "test_revision": "urn:change-saga:app:test-case:review-decisions-go-stale:revision:r1",
+  "role": "implementation_under_test",
+  "code": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/reviewstore/reviewstore.go",
+      "start": 113,
+      "end": 155,
+      "digest": "sha256:6697f5b71bb236207debc3bd22a98f73d7293fa10e680c4e46e63130294679c9"
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/reviewstate/reviewstate.go",
+      "start": 132,
+      "end": 188,
+      "digest": "sha256:0fd1a0d39534c12c11548930dede41e424fbdc87561389b383134b47a1c6c51b"
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/reviewstate/reviewstate.go",
+      "start": 270,
+      "end": 350,
+      "digest": "sha256:57d63558cafb3930d295cb457cc7af6bc9de10f724d520623b3acfd151d2b09e"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-09-21T05:51:39Z",
+  "request_id": "quality-evidence-review-decisions-go-stale-runtime"
+}

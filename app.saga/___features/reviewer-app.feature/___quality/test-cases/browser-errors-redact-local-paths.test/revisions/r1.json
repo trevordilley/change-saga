@@ -1,0 +1,32 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:app:test-case:browser-errors-redact-local-paths",
+  "parents": [],
+  "title": "Keep local filesystem paths out of browser errors",
+  "coverage_kinds": [
+    "positive",
+    "negative",
+    "edge"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "The reviewer can receive missing, malformed, traversal, and foreign-path requests."
+  ],
+  "steps": [
+    {
+      "id": "exercise-errors",
+      "action": "Request missing pages, unsafe fragment paths, malformed code locations, and missing Saga roots.",
+      "expected_result": "Each browser-facing response uses a portable public error without local filesystem details."
+    },
+    {
+      "id": "scan-secrets",
+      "action": "Inspect every response for repository roots, temporary directories, operating-system paths, and internal error phrases.",
+      "expected_result": "No local path or host diagnostic is present."
+    }
+  ],
+  "expected_result": "Pass when browser errors redact portable absolute paths across all exercised failures; fail on any repository, temporary, Windows, UNC, or host path disclosure.",
+  "created_at": "2026-09-21T05:49:59Z",
+  "request_id": "quality-add-browser-errors-redact-local-paths"
+}

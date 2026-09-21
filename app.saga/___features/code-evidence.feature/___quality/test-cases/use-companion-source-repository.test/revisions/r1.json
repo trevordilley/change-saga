@@ -1,0 +1,41 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:app:test-case:use-companion-source-repository",
+  "parents": [],
+  "title": "Use a verified companion source repository",
+  "coverage_kinds": [
+    "positive",
+    "negative",
+    "edge"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "The Saga and source are separate Git repositories and the Saga declares the source repository identity."
+  ],
+  "steps": [
+    {
+      "id": "verify-checkout",
+      "action": "Open equivalent and mismatched source checkouts through the repository verifier.",
+      "expected_result": "Equivalent transport forms are accepted and a foreign or unverifiable checkout is refused unless explicitly overridden."
+    },
+    {
+      "id": "observe-existing",
+      "action": "Author exact references at a selected source commit without a changed-line comparison.",
+      "expected_result": "The references are digested and stored against existing source without requiring a source change."
+    },
+    {
+      "id": "sync",
+      "action": "Synchronize the companion Saga to the verified full source commit.",
+      "expected_result": "The Saga records the documented source cursor and refuses a redundant in-repository cursor."
+    },
+    {
+      "id": "compare",
+      "action": "Change source and Saga history independently and open a comparison through the cursor.",
+      "expected_result": "Code deltas come from source history and documentation deltas come from the cursor-aligned Saga history."
+    }
+  ],
+  "expected_result": "Companion observation and comparison use the selected verified source and an explicit synchronization cursor.",
+  "created_at": "2026-09-21T05:51:30Z"
+}

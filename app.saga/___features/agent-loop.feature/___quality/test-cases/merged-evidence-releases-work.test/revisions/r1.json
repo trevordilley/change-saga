@@ -1,0 +1,37 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:app:test-case:merged-evidence-releases-work",
+  "parents": [],
+  "title": "Release dependent work only from persisted delivery evidence",
+  "coverage_kinds": [
+    "positive",
+    "negative",
+    "edge"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "A plan fixture can create waves, work items, dependencies, progress, contracts, and merge events."
+  ],
+  "steps": [
+    {
+      "id": "author-plan",
+      "action": "Create ordered waves and work items with one objective, deliverables, and an explicit dependency condition.",
+      "expected_result": "The plan preserves each wave, objective, deliverable, and dependency as separate persisted facts."
+    },
+    {
+      "id": "record-progress",
+      "action": "Record progress for the prerequisite without satisfying its release condition.",
+      "expected_result": "The dependent item remains blocked because progress alone is not delivery."
+    },
+    {
+      "id": "record-delivery",
+      "action": "Record the required completion, contract, or integrated merge evidence.",
+      "expected_result": "Only the matching immutable evidence satisfies the dependency and releases the dependent item."
+    }
+  ],
+  "expected_result": "Pass when plan structure persists and dependencies react only to their stated delivery facts; fail if wave order creates an implicit barrier or progress alone releases work.",
+  "created_at": "2026-09-21T05:49:58Z",
+  "request_id": "quality-add-merged-evidence-releases-work"
+}

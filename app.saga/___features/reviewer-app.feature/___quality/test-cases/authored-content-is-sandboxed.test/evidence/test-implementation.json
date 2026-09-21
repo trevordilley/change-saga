@@ -1,0 +1,29 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "test-implementation",
+  "test_case": "urn:change-saga:app:test-case:authored-content-is-sandboxed",
+  "test_revision": "urn:change-saga:app:test-case:authored-content-is-sandboxed:revision:r1",
+  "role": "test_implementation",
+  "code": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/reviewapp/adversarial_test.go",
+      "start": 26,
+      "end": 74,
+      "digest": "sha256:99539bd384d9e90adbb8ada46dbbbb7222725b12a6448718369ac6675029e22a"
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/server/server_test.go",
+      "start": 277,
+      "end": 295,
+      "digest": "sha256:e754c52c2affef15d073f4871be8afd7897d598e7f31cda64a7918d9f9059a02"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-09-21T05:51:39Z",
+  "request_id": "quality-evidence-authored-content-is-sandboxed-tests"
+}

@@ -1,0 +1,35 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "test-implementation",
+  "test_case": "urn:change-saga:app:test-case:explain-comparison-history",
+  "test_revision": "urn:change-saga:app:test-case:explain-comparison-history:revision:r1",
+  "role": "test_implementation",
+  "code": [
+    {
+      "commit": "36b4a21b5d049f272a1f4a0cbbcfdf60ded126c5",
+      "path": "internal/cli/layers_test.go",
+      "start": 196,
+      "end": 247,
+      "digest": "sha256:8fef69185ffcb7cef62a45b906fbe7672364090358ff62bcc16792da71df81d7"
+    },
+    {
+      "commit": "36b4a21b5d049f272a1f4a0cbbcfdf60ded126c5",
+      "path": "internal/cli/layers_test.go",
+      "start": 251,
+      "end": 281,
+      "digest": "sha256:0f01d19c6c7adf151cbf1791dd875f9b5740101ea9a32fef994e2b30dbfacf5a"
+    },
+    {
+      "commit": "36b4a21b5d049f272a1f4a0cbbcfdf60ded126c5",
+      "path": "internal/cli/layers_test.go",
+      "start": 286,
+      "end": 311,
+      "digest": "sha256:f9c3beaa2f0f8d7b44e30fa9ef9852f9c5d06d9ad6d5e03e2ad26dc40a2ab873"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-09-21T05:53:26Z"
+}

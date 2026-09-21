@@ -1,0 +1,22 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "test-implementation",
+  "test_case": "urn:change-saga:app:test-case:story-moves-keep-links",
+  "test_revision": "urn:change-saga:app:test-case:story-moves-keep-links:revision:r1",
+  "role": "test_implementation",
+  "code": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/requirements/app_records_test.go",
+      "start": 44,
+      "end": 81,
+      "digest": "sha256:cd4fcbf641364dd5df2551af14b1f6e67a51c6dfea14cc51284128f79310bfa5"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-09-21T05:51:39Z",
+  "request_id": "quality-evidence-story-moves-keep-links-tests"
+}

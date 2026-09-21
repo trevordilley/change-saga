@@ -1,0 +1,7 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case.schema.json",
+  "version": 5,
+  "id": "coverage-areas-are-readable",
+  "created_at": "2026-09-21T05:48:36Z",
+  "request_id": "quality-add-coverage-areas-are-readable"
+}

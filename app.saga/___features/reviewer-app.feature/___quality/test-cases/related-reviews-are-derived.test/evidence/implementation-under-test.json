@@ -1,0 +1,22 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "implementation-under-test",
+  "test_case": "urn:change-saga:app:test-case:related-reviews-are-derived",
+  "test_revision": "urn:change-saga:app:test-case:related-reviews-are-derived:revision:r1",
+  "role": "implementation_under_test",
+  "code": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/server/relatedreviews.go",
+      "start": 149,
+      "end": 238,
+      "digest": "sha256:0ce3a0d659494c2f80fbaa8964c1d5a74e63398d43cc4f6173de03bfd434be38"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-09-21T05:51:39Z",
+  "request_id": "quality-evidence-related-reviews-are-derived-runtime"
+}

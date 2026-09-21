@@ -1,0 +1,31 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "test-implementation-v2",
+  "test_case": "urn:change-saga:app:test-case:slide-decisions-and-comments",
+  "test_revision": "urn:change-saga:app:test-case:slide-decisions-and-comments:revision:r1",
+  "role": "test_implementation",
+  "code": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/reviewstore/reviewstore_test.go",
+      "start": 67,
+      "end": 100,
+      "digest": "sha256:fea754549ad9013d1b7157385adde2bda3af946057e639ca367dd1e4d4ac75cc"
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/cli/reviews_test.go",
+      "start": 98,
+      "end": 188,
+      "digest": "sha256:6d9293cb590da66fb1c0794867fcede1b48908c98b4117cef503af9a2edb6526"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [
+    "urn:change-saga:app:test-case:slide-decisions-and-comments:evidence:test-implementation"
+  ],
+  "created_at": "2026-09-21T05:55:07Z",
+  "request_id": "quality-evidence-slide-decisions-and-comments-tests-v2"
+}

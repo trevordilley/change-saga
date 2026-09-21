@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:app:test-case:first-change-stays-focused",
+  "parents": [],
+  "title": "Finish a first change before offering optional growth",
+  "coverage_kinds": [
+    "positive",
+    "edge"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "A comparison has changed source whose implementation Items account for every changed line."
+  ],
+  "steps": [
+    {
+      "id": "inspect-required",
+      "action": "Inspect the authoring loop while only implementation coverage is complete.",
+      "expected_result": "The required work ends with explaining the current change and does not require personas, stories, design, or test cases."
+    },
+    {
+      "id": "inspect-order",
+      "action": "Inspect the ordered next actions and their command or question shapes.",
+      "expected_result": "Required actions are stable and each action contains one command or one focused question."
+    },
+    {
+      "id": "reach-fixed-point",
+      "action": "Re-evaluate after the current change is fully explained.",
+      "expected_result": "The first-run loop stops and optional product-knowledge growth is offered separately afterward."
+    }
+  ],
+  "expected_result": "Pass when the first change ends at current source explanation and optional growth follows as focused deterministic suggestions; fail if optional documentation blocks the loop or actions are unstable.",
+  "created_at": "2026-09-21T05:49:58Z",
+  "request_id": "quality-add-first-change-stays-focused"
+}

@@ -1,0 +1,37 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:app:test-case:bounded-structured-reads",
+  "parents": [],
+  "title": "Read bounded snapshots through one safe envelope",
+  "coverage_kinds": [
+    "positive",
+    "negative",
+    "edge"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "A valid Saga fixture contains enough records for pagination and inert active content."
+  ],
+  "steps": [
+    {
+      "id": "read-first-page",
+      "action": "Request a bounded structured page from the current snapshot.",
+      "expected_result": "The response uses the documented success envelope and reports whether another page remains."
+    },
+    {
+      "id": "reuse-cursor",
+      "action": "Reuse its cursor against the same operation and unchanged snapshot.",
+      "expected_result": "The next bounded page is returned without replaying or executing authored content."
+    },
+    {
+      "id": "reject-cursor",
+      "action": "Use the cursor for another operation, alter it, or use it after the snapshot changes.",
+      "expected_result": "The request returns the documented error envelope and no content is executed."
+    }
+  ],
+  "expected_result": "Pass when success, pagination, inert content, and stale or tampered cursor rejection are deterministic; fail on an unbounded page, executable content, or accepted mismatched cursor.",
+  "created_at": "2026-09-21T05:49:58Z",
+  "request_id": "quality-add-bounded-structured-reads"
+}
