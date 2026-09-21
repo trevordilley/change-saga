@@ -1,0 +1,35 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:app:test-case:keep-documentation-and-related-reviews-reachable",
+  "parents": [],
+  "title": "Keep current documentation and derived reviews reachable during comparison",
+  "coverage_kinds": [
+    "positive",
+    "negative"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "A comparison has a pull-request review whose changed lines intersect documented code."
+  ],
+  "steps": [
+    {
+      "id": "open-documentation",
+      "action": "Open current feature documentation while the application is comparing a change.",
+      "expected_result": "Current documentation remains readable without approval, comment, or annotation controls."
+    },
+    {
+      "id": "open-review-side",
+      "action": "Open the review side and inspect the comparison-only code and coverage tabs.",
+      "expected_result": "Comparison surfaces are reachable without turning documentation into an approval surface."
+    },
+    {
+      "id": "inspect-related",
+      "action": "Inspect feature, story, and criterion pages whose explained code was changed by the review.",
+      "expected_result": "Each affected record lists the matching review and unrelated records list none."
+    }
+  ],
+  "expected_result": "A reader can move between current documentation and change review while related reviews remain derived from code history.",
+  "created_at": "2026-09-21T05:51:31Z"
+}

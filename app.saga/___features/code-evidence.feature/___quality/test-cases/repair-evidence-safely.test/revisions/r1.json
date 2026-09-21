@@ -1,0 +1,41 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:app:test-case:repair-evidence-safely",
+  "parents": [],
+  "title": "Diagnose weak evidence and repair it without partial writes",
+  "coverage_kinds": [
+    "positive",
+    "negative",
+    "edge"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "A Saga contains current broad or stale evidence and a source repository with a landed comparison."
+  ],
+  "steps": [
+    {
+      "id": "rank",
+      "action": "Inspect broad, stale, multi-file, and focused mappings.",
+      "expected_result": "Weak mappings receive named scrutiny reasons while focused mappings receive no manufactured warning."
+    },
+    {
+      "id": "reject-invalid",
+      "action": "Attempt to replace an evidence record with an invalid selector.",
+      "expected_result": "The replacement fails and the original evidence remains unchanged with no partial files."
+    },
+    {
+      "id": "replace",
+      "action": "Replace the record atomically with a valid same-name focused selector.",
+      "expected_result": "The focused replacement becomes the sole current record."
+    },
+    {
+      "id": "refresh",
+      "action": "Dry-run and then apply a post-squash evidence refresh onto the landed commit.",
+      "expected_result": "Safe evidence is re-pinned, immutable claim pins remain unchanged, and branch reasons are preserved."
+    }
+  ],
+  "expected_result": "Diagnosis stays advisory and every successful or failed repair preserves an auditable, complete evidence state.",
+  "created_at": "2026-09-21T05:51:30Z"
+}

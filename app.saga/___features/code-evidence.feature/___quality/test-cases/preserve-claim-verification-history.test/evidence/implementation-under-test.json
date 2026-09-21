@@ -1,0 +1,28 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "implementation-under-test",
+  "test_case": "urn:change-saga:app:test-case:preserve-claim-verification-history",
+  "test_revision": "urn:change-saga:app:test-case:preserve-claim-verification-history:revision:r1",
+  "role": "implementation_under_test",
+  "code": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/cli/claims.go",
+      "start": 21,
+      "end": 90,
+      "digest": "sha256:4bb6b777340cca13e921913a43e37329bd75e8bab005f006ee61950e41c17d5e"
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/cli/claims.go",
+      "start": 93,
+      "end": 166,
+      "digest": "sha256:3432fdfc24980c117ce628012f2b3ad74ac7d90fa6fbce0b89e859d69d18a187"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-09-21T05:53:26Z"
+}
