@@ -151,6 +151,9 @@ it. The view tabs beside them belong to whichever side is open. */
 .doc-twisty .i{width:13px;height:13px;transition:transform .12s ease}
 .doc-twisty[aria-expanded=true] .i{transform:rotate(90deg)}
 .doc-twisty.placeholder{visibility:hidden}
+/* A row with no icon in a list where others have one reserves the width,
+   so every row starts at the same place and none reads as a child. */
+.doc-link .icon-placeholder{display:inline-block;visibility:hidden}
 .doc-link{min-width:0;flex:1;padding:4px 8px 4px 0;color:var(--ink);text-decoration:none;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .doc-deck{margin-top:3px}
 .doc-deck-link{display:flex;align-items:center;gap:6px;border:0;background:transparent;text-align:left;font:inherit;cursor:pointer}

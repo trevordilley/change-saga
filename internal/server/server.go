@@ -181,12 +181,17 @@ func makeCoverageTotals(manifest *CoverageManifestView) *coverageTotalsView {
 // navNodeView is the sidebar documentation tree. It exposes titles, links and a
 // quiet review state only: never counts, never the storage hierarchy.
 type navNodeView struct {
-	Title       string
-	Href        string
-	NodeID      string
-	Icon        string
-	Requirement bool
-	Deck        bool
+	Title  string
+	Href   string
+	NodeID string
+	Icon   string
+	// IconPlaceholder reserves the icon's width on a row that has none, so
+	// rows in a list where some carry an icon still start at the same place.
+	// Without it an icon reads as indentation and its row as a child of the
+	// row above. The twisty solves the same problem the same way.
+	IconPlaceholder bool
+	Requirement     bool
+	Deck            bool
 	// Group marks a named place in the stable information architecture rather
 	// than an authored destination: it discloses what it holds instead of
 	// linking anywhere of its own.

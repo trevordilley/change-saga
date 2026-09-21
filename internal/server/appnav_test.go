@@ -186,6 +186,52 @@ func TestEachSideListsWhatItIsAbout(t *testing.T) {
 	if got, want := reviews.Children[0].Href, reviewHref("postgres"); got != want {
 		t.Fatalf("review row opens %q, want %q", got, want)
 	}
+	// The reviews are what the reader came for, so they are open, and the
+	// overview is shut: it is here for reference, not to be read down.
+	if !reviews.Expanded {
+		t.Fatal("Reviews is collapsed on the Review side, want it open")
+	}
+	if findNav(t, nodes, "Overview").Expanded {
+		t.Fatal("Overview is open on the Review side, want it collapsed")
+	}
+}
+
+// An icon sits between the twisty and the title, so a row that has one starts
+// further right than its siblings and reads as nested under the row above it.
+// Design system carried one where Personas did not, and looked like Personas'
+// only child. Within any one list, either every row has an icon or none does.
+func TestRowsInOneListLineUp(t *testing.T) {
+	sources := appNavFixture(t)
+	sources.pageFeature = "billing"
+	var check func(t *testing.T, list string, rows []*navNodeView)
+	check = func(t *testing.T, list string, rows []*navNodeView) {
+		iconed := false
+		for _, row := range rows {
+			if row.Icon != "" {
+				iconed = true
+			}
+		}
+		for _, row := range rows {
+			if row.Slide != nil {
+				continue // a thumbnail, not a row in the tree
+			}
+			// In a list where some row has an icon, every row without one
+			// reserves its width; in a list where none does, nothing is
+			// reserved and the rows keep their tight left edge.
+			if want := iconed && row.Icon == ""; row.IconPlaceholder != want {
+				t.Errorf("%s: row %q reserves icon width = %v, want %v (list has icons: %v)",
+					list, row.Title, row.IconPlaceholder, want, iconed)
+			}
+			check(t, row.Title, row.Children)
+		}
+	}
+	t.Run("documentation", func(t *testing.T) { check(t, "the sidebar", makeAppNavTree(sources)) })
+
+	sources.reviewSide = true
+	sources.document.Reviews = []*saga.Review{
+		{ReviewManifest: saga.ReviewManifest{ID: "postgres", Title: "Move the order queue to Postgres"}},
+	}
+	t.Run("review", func(t *testing.T) { check(t, "the sidebar", makeAppNavTree(sources)) })
 }
 
 // A Saga with no reviews yet keeps the section and says so: a reader has to be

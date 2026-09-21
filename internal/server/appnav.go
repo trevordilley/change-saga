@@ -114,12 +114,41 @@ func makeAppNavTree(sources appNavSources) []*navNodeView {
 	second := makeFeaturesNav(sources, deckRows)
 	if sources.reviewSide {
 		second = makeReviewsNav(document)
+		// The overview is here for reference, not to be read down: a reader
+		// on the Review side came for the reviews, so those are what is open.
+		// No page on this side is the overview or anything inside it, so it
+		// is neither the current page nor holding one, and stays shut.
+		overview.Expanded, overview.Active = false, false
 	}
 	navigation := []*navNodeView{overview, second}
 	for _, node := range navigation {
 		revealActive(node)
 	}
+	alignIcons(navigation)
 	return navigation
+}
+
+// alignIcons keeps every row in one list starting at the same place. An icon
+// sits between the twisty and the title, so a row carrying one where its
+// siblings do not starts further right and reads as their child: Design system
+// looked like the only persona. Where any row in a list has an icon, the rest
+// reserve its width, exactly as a row with no children reserves the twisty's.
+//
+// A list where no row has an icon reserves nothing, so a tree of plain rows
+// keeps its tight left edge.
+func alignIcons(nodes []*navNodeView) {
+	mixed := false
+	for _, node := range nodes {
+		if node.Icon != "" {
+			mixed = true
+		}
+	}
+	for _, node := range nodes {
+		if mixed && node.Icon == "" && node.Slide == nil {
+			node.IconPlaceholder = true
+		}
+		alignIcons(node.Children)
+	}
 }
 
 // navSection is a section header that is also a destination. The row opens
