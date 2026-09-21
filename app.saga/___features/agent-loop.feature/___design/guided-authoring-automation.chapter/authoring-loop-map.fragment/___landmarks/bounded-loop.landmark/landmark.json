@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "id": "bounded-loop",
+  "label": "Bounded delegated step",
+  "description": "Each delegated mutation is enclosed by snapshot-bound read, validation, idempotent write, and re-read.",
+  "selector": {
+    "type": "element",
+    "element_id": "bounded-loop"
+  },
+  "target": ""
+}

@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "entry-boundary",
+  "label": "Loopback entry boundary",
+  "selector": {
+    "type": "heading",
+    "heading_id": "entry-boundary"
+  },
+  "target": ""
+}

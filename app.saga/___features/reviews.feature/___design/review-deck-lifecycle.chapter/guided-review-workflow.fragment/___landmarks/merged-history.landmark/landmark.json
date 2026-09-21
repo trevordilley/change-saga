@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "merged-history",
+  "label": "Merged review history",
+  "selector": {
+    "type": "heading",
+    "heading_id": "merged-history"
+  },
+  "target": ""
+}

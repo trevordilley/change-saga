@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "authoring-omissions",
+  "label": "First-change omission states",
+  "selector": {
+    "type": "heading",
+    "heading_id": "authoring-omissions"
+  },
+  "target": ""
+}

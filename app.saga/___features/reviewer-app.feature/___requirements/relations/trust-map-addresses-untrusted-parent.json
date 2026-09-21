@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "trust-map-addresses-untrusted-parent",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:local-trust-map:landmark:untrusted-content",
+  "to": "urn:change-saga:app:story:safe-local-review:criterion:sandbox-parent",
+  "scope": "self",
+  "rationale": "The diagram shows untrusted branch artifacts never inherit parent application authority.",
+  "to_revision": "urn:change-saga:app:story:safe-local-review:revision:r2",
+  "from_content_digest": "sha256:fa1ed948a6c3729e01e686883b737155da052f897fa5ba15cd4e55664c269627",
+  "state": "active",
+  "created_at": "2026-09-21T04:51:38.900387Z"
+}

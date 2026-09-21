@@ -1,48 +1,54 @@
-# Coverage report contract {#coverage-report-contract}
+# Actionable coverage without a verdict {#coverage-report-contract}
 
-`change-saga status` has no verdict. It reports every gap as a finding and
-exits 0 whenever its report can be trusted; it exits non-zero only when it
-cannot produce one (a malformed Saga such as a duplicate ID, unreadable
-records, or a checkout that does not match the declared repository). A team
-decides which gaps fail its build, and writes that rule in its own CI.
+Coverage helps an author decide what to improve next; it never decides whether
+the change may ship. The primary view is a plain-language set of independent
+areas, each showing what is covered, what is missing, and why the result can be
+trusted. A gap is useful work to consider, not a failed product judgment.
 
-## Areas {#areas}
+## Human reading contract {#human-reading-contract}
 
-| Area | Covered when |
-| --- | --- |
-| `implementation` | every changed line is referenced by the implementation deck |
-| `stories` | every changed line reaches a story through the chain |
-| `personas` | every changed line reaches a persona |
-| `design` | every story in scope has design |
-| `quality` | every acceptance criterion in scope has a test |
-| `health` | nothing that already existed went stale or broke |
+The report leads with the current scope and six separately named areas:
+implementation, stories, personas, design, quality, and health. Each area pairs
+a count with concrete covered and uncovered entries. There is no blended score,
+traffic-light verdict, celebratory completion state, or language that turns
+optional product knowledge into mandatory debt.
 
-With `--against`, the scope is the change: what it changed and what it
-affected. Without it, the scope is the whole app. `--feature` narrows either.
+Every uncovered entry identifies the affected thing, states the missing
+connection in human terms, and offers either one safe next action or one focused
+question. Stable ordering keeps the most consequential integrity failures first,
+then unexplained changed source, unfinished review work, and optional growth.
+An author can stop after understanding the report without mutating the Saga.
 
-## JSON shape {#json-shape}
+## Trust and policy boundary {#trust-and-policy-boundary}
 
-`status --json` carries `.coverage`, the contract rules are written against.
-Every area has `total`, `covered`, `uncovered`, `complete`, and the lists
-`covered_entries` and `uncovered_entries`; the counts are the sums of the
-entries' `count`. `unit` says what is counted: `changed_line`, `code_target`
-(the line areas when observing, which has no change), `story`, `criterion`,
-or `record`. An uncovered entry has a `reason`; a covered entry names what
-covers it in `via`. There is never one blended score.
+Producing a trustworthy report is distinct from applying a team's policy. Gaps
+are a successful report. Malformed records, ambiguous heads, or a checkout that
+cannot be reconciled are report failures because the tool cannot make a reliable
+claim. A separate, explicitly selected policy check answers only whether named
+areas are complete and returns only those areas' gaps.
 
-## Asking a question {#check}
+This separation keeps the product neutral while letting a team encode its own
+standards. It also prevents an automated assistant from silently widening the
+question it was asked.
 
-`change-saga check --covers AREA[,AREA...]` exits 0 when every named area is
-fully covered in scope, 3 when one has a gap (printing only the named areas'
-gaps), and 1 when the report cannot be trusted. Nothing is required unless it
-is named.
+## Deterministic automation contract {#deterministic-automation-contract}
 
-## Next actions {#next-actions}
+Human-readable and structured projections describe the same scope and entries.
+Structured reads use a stable envelope, bounded pages, a snapshot identity, and
+cursors that fail when the underlying Saga changes. Content is data: reading a
+fragment, slide, prototype, or other authored payload never executes it.
 
-`next_actions` are ordered: health first (conflicts, invalid and stale
-records, failed runs), then `changed_source`, then reviews, then `growth`.
-Each action names the `area` it advances and is either a command shape or one
-focused question; a growth action also carries the `practice` it teaches.
+Mutations are explicit and bounded. A batch is all-or-nothing, repeated request
+identities are idempotent, and errors identify the rejected operation without
+leaving partial records. These mechanics exist so an author can delegate safely,
+not as a substitute for the author's judgment.
 
-Source: the change-saga skill's references/ci.md and SKILL.md, and
-docs/app-saga.md goal 9.
+## Protocol appendix {#protocol-appendix}
+
+The supported command surface currently exposes the human report through
+`status` and the selected policy question through `check --covers`. A
+comparison scopes both to the same base and head; a feature selection narrows
+that scope. The structured coverage shape carries, per area, totals, covered and
+uncovered entries, completeness, units, reasons, and covering resources. Exact
+command spelling and field names may evolve while the human, trust, and
+determinism contracts above remain stable.

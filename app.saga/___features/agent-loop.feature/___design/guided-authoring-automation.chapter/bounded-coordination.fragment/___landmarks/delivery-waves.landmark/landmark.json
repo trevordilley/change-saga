@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "delivery-waves",
+  "label": "Dependency-aware delivery waves",
+  "selector": {
+    "type": "heading",
+    "heading_id": "delivery-waves"
+  },
+  "target": ""
+}

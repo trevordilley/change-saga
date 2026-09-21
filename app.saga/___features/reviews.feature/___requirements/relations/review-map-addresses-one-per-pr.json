@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "review-map-addresses-one-per-pr",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:review-state-map:landmark:deck-spine",
+  "to": "urn:change-saga:app:story:review-is-pr-deck:criterion:one-per-pr",
+  "scope": "self",
+  "rationale": "The visual session spine begins from the single review deck associated with a pull request.",
+  "to_revision": "urn:change-saga:app:story:review-is-pr-deck:revision:r5",
+  "from_content_digest": "sha256:c96b5873e6abc0f073726653b9c347c7f626ddf21560714b412ca908bdabce13",
+  "state": "active",
+  "created_at": "2026-09-21T04:51:40.312728Z"
+}

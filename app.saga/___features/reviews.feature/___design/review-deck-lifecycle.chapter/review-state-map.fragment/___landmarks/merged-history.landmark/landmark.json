@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "id": "merged-history",
+  "label": "Frozen merged history",
+  "description": "Merge freezes the review range, deck, omissions, comments, and decision currency as read-only history.",
+  "selector": {
+    "type": "element",
+    "element_id": "merged-history"
+  },
+  "target": ""
+}

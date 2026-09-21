@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "authored-content-boundary",
+  "label": "Authored-content sandbox",
+  "selector": {
+    "type": "heading",
+    "heading_id": "authored-content-boundary"
+  },
+  "target": ""
+}

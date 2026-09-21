@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "offline-guarantee",
+  "label": "Offline review guarantee",
+  "selector": {
+    "type": "heading",
+    "heading_id": "offline-guarantee"
+  },
+  "target": ""
+}

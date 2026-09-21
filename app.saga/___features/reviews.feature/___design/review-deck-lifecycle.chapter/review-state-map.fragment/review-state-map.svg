@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">Review deck session, currency, and merged history</title>
+  <desc id="desc">A reviewer progresses through an ordered deck, comments or decides at slide scope, and resumes at unfinished work. Slide or linked code changes make decisions out of date. Merge freezes the range and append-only history.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 z" fill="#475569"/></marker>
+    <style>.bg{fill:#f8fafc}.card{fill:#fff;stroke:#334155;stroke-width:2}.active{fill:#e0f2fe}.warn{fill:#fef3c7}.done{fill:#dcfce7}.history{fill:#ede9fe}.h{font:700 21px system-ui;fill:#0f172a}.t{font:15px system-ui;fill:#334155}.line{stroke:#475569;stroke-width:3;fill:none;marker-end:url(#arrow)}.dash{stroke-dasharray:9 7}</style>
+  </defs>
+  <rect class="bg" width="1200" height="720"/>
+  <g id="deck-spine"><rect class="card active" x="55" y="90" width="240" height="120" rx="16"/><text class="h" x="82" y="132">Open or resume</text><text class="t" x="82" y="168">First unfinished slide</text>
+    <rect class="card active" x="360" y="90" width="240" height="120" rx="16"/><text class="h" x="387" y="132">Read argument</text><text class="t" x="387" y="168">Visual + exact evidence</text>
+    <rect class="card active" x="665" y="90" width="240" height="120" rx="16"/><text class="h" x="692" y="132">Comment or decide</text><text class="t" x="692" y="168">One slide scope</text>
+    <rect class="card done" x="970" y="90" width="175" height="120" rx="16"/><text class="h" x="997" y="132">Continue</text><text class="t" x="997" y="168">Next unfinished</text>
+    <path class="line" d="M295 150 H350"/><path class="line" d="M600 150 H655"/><path class="line" d="M905 150 H960"/></g>
+  <g id="currency"><rect class="card warn" x="240" y="315" width="300" height="130" rx="16"/><text class="h" x="270" y="358">Slide or code changes</text><text class="t" x="270" y="395">Decision stays in history</text><text class="t" x="270" y="420">and becomes out of date</text>
+    <rect class="card active" x="660" y="315" width="300" height="130" rx="16"/><text class="h" x="690" y="358">Review new head</text><text class="t" x="690" y="395">Append a new decision</text><text class="t" x="690" y="420">Never rewrite the old one</text>
+    <path class="line" d="M540 380 H650"/><path class="line dash" d="M785 215 V305"/></g>
+  <g id="merged-history"><rect class="card history" x="240" y="565" width="720" height="105" rx="18"/><text class="h" x="275" y="608">Merge freezes range, deck, omissions, comments, and decision currency</text><text class="t" x="275" y="642">Read-only history remains reachable from the lasting documentation it changed.</text>
+    <path class="line" d="M810 445 V555"/></g>
+</svg>

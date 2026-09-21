@@ -1,0 +1,8 @@
+{
+  "version": 2,
+  "id": "local-trust-map",
+  "title": "Local review trust map",
+  "media_type": "image/svg+xml",
+  "entrypoint": "local-trust-map.svg",
+  "order": 20
+}

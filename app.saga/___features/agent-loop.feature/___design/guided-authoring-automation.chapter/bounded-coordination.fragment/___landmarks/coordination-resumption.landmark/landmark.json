@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "coordination-resumption",
+  "label": "Coordination resumption",
+  "selector": {
+    "type": "heading",
+    "heading_id": "coordination-resumption"
+  },
+  "target": ""
+}

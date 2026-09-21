@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "first-change-guided-addresses-implementation",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:first-change-journey:landmark:guided-path",
+  "to": "urn:change-saga:app:story:first-change:criterion:implementation-only",
+  "scope": "self",
+  "rationale": "The guided path asks only for a visual explanation connected to every changed line.",
+  "to_revision": "urn:change-saga:app:story:first-change:revision:r3",
+  "from_content_digest": "sha256:571d685e3a0fc1c26d08af9870174589818ea53be5de6cbfc44f5339041003f4",
+  "state": "active",
+  "created_at": "2026-09-21T04:51:35.283391Z"
+}

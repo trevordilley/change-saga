@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "reversible-structure",
+  "label": "Reversible first-run structure",
+  "selector": {
+    "type": "heading",
+    "heading_id": "reversible-structure"
+  },
+  "target": ""
+}

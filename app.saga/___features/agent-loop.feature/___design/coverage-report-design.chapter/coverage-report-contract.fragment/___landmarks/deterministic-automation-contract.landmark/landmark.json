@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "deterministic-automation-contract",
+  "label": "Deterministic automation contract",
+  "selector": {
+    "type": "heading",
+    "heading_id": "deterministic-automation-contract"
+  },
+  "target": ""
+}

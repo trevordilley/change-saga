@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "coordination-resumption-addresses-assignment",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:bounded-coordination:landmark:coordination-resumption",
+  "to": "urn:change-saga:app:story:parallel-delivery-plan:criterion:workspace-assignment",
+  "scope": "self",
+  "rationale": "Resumption begins by reading the branch assignment responsible for the work item.",
+  "to_revision": "urn:change-saga:app:story:parallel-delivery-plan:revision:r1",
+  "from_content_digest": "sha256:1401faa01ef458edc8d6bc853754d7c64c177e95ffa225c18f5bfa4a1247a84c",
+  "state": "active",
+  "created_at": "2026-09-21T04:52:57.113231Z"
+}

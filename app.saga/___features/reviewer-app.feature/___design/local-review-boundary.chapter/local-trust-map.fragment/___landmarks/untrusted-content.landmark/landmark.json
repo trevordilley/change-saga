@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "id": "untrusted-content",
+  "label": "Untrusted authored content",
+  "description": "Branch-authored artifacts enter as untrusted data and never gain executable authority.",
+  "selector": {
+    "type": "element",
+    "element_id": "untrusted-content"
+  },
+  "target": ""
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "coverage-determinism-addresses-pagination",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:coverage-report-contract:landmark:deterministic-automation-contract",
+  "to": "urn:change-saga:app:story:bounded-automation:criterion:pagination",
+  "scope": "self",
+  "rationale": "The deterministic read contract requires bounded pages that report continuation.",
+  "to_revision": "urn:change-saga:app:story:bounded-automation:revision:r2",
+  "from_content_digest": "sha256:618181d14f0b81ecd1633b1d3a72cb0793e051917907f43302c26b500a95d91a",
+  "state": "active",
+  "created_at": "2026-09-21T04:52:54.975541Z"
+}
