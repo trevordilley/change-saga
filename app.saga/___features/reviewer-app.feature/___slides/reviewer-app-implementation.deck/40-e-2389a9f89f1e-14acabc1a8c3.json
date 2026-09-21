@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/server/appnav.go",
+      "start": 109,
+      "end": 128,
+      "digest": "sha256:872213ac76912d1a9f1549b3955fa21602256e7bfd39febc29ce82e795fb66e8",
+      "note": "Documentation selects Features and the focused tests keep its hierarchy free of approval/comment controls."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/server/appnav_test.go",
+      "start": 154,
+      "end": 197,
+      "digest": "sha256:5abad5391d2e9133e3edf9b98fcd5792a39ce4f13f89052b5b5002d5e2d50715",
+      "note": "Documentation selects Features and the focused tests keep its hierarchy free of approval/comment controls."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/server/dogfood_test.go",
+      "start": 440,
+      "end": 455,
+      "digest": "sha256:0144eb053cfc3c812b101c0e3119120d3b545eb1fc9c0fe6aec1ce9629d44545",
+      "note": "Documentation selects Features and the focused tests keep its hierarchy free of approval/comment controls."
+    }
+  ]
+}

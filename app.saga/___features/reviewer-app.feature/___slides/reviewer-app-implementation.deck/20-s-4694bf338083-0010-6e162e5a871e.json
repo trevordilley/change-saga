@@ -1,0 +1,18 @@
+{
+  "version": 4,
+  "id": "two-lasting-sides",
+  "deck": "reviewer-app-implementation",
+  "title": "Documentation and Review stay distinct",
+  "rank": 10,
+  "intent": "compare",
+  "layout": "before-after",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-4694bf338083-0010-6e162e5a871e.svg",
+  "takeaway": "The same shell preserves product truth on one side and comparison-scoped reviews on the other.",
+  "reading_order": [
+    "documentation-side",
+    "review-side",
+    "related-reviews",
+    "resume-context"
+  ]
+}

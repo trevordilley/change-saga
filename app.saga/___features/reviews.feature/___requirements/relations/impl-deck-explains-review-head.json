@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "impl-deck-explains-review-head",
+  "type": "explains",
+  "from": "urn:change-saga:app:slide:review-lifecycle:item:deck-spine",
+  "to": "urn:change-saga:app:story:review-is-pr-deck:criterion:review-head",
+  "scope": "self",
+  "rationale": "The deck-spine Item explains one review deck, its exact range, and its contextual evidence links.",
+  "to_revision": "urn:change-saga:app:story:review-is-pr-deck:revision:r5",
+  "state": "active",
+  "created_at": "2026-09-21T05:18:53.273551Z",
+  "request_id": "impl-deck-explains-review-head"
+}

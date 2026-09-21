@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "impl-prototype-currency-explains-unlinked-growth",
+  "type": "explains",
+  "from": "urn:change-saga:app:slide:knowledge-lifecycle:item:prototype-currency",
+  "to": "urn:change-saga:app:story:prototype-feedback:criterion:unlinked-growth",
+  "scope": "self",
+  "rationale": "The prototype-currency implementation realizes the unlinked-growth obligation represented by the prototype-discovery design landmark.",
+  "to_revision": "urn:change-saga:app:story:prototype-feedback:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-21T05:14:06.077332Z"
+}

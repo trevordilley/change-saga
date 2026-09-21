@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/livingapp/status_terms.go",
+      "start": 181,
+      "end": 273,
+      "digest": "sha256:c73e748ef64f4f69f7844929a519e493eefb04b1965ca386194a5eeb5ba16dba",
+      "note": "Suggests only newly added named declarations after excluding existing spellings, renames, and already referenced source."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/vocabulary/vocabulary.go",
+      "start": 57,
+      "end": 89,
+      "digest": "sha256:c4f719ca7ef22de71f9281e447b54222b429122b9cb2d14358d18c9e6258c402",
+      "note": "Suggests only newly added named declarations after excluding existing spellings, renames, and already referenced source."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/vocabulary/vocabulary_test.go",
+      "start": 186,
+      "end": 198,
+      "digest": "sha256:9b4e2bc6d111fb55c4a7034d07a340289a1060d2b1352be1c1795437668c33ff",
+      "note": "Suggests only newly added named declarations after excluding existing spellings, renames, and already referenced source."
+    }
+  ]
+}

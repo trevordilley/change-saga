@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "overview-projection",
+  "slide": "overview-vocabulary",
+  "rank": 0,
+  "kind": "region",
+  "label": "Current overview and feature slices",
+  "description": "Implements overview-parts, feature-navigation, and current-and-history by projecting current app roots and durable feature sections while retaining lifecycle history elsewhere.",
+  "selector": {
+    "type": "element",
+    "element_id": "overview-projection"
+  }
+}

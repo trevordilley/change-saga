@@ -2,12 +2,20 @@
   "version": 2,
   "references": [
     {
-      "commit": "b851addd875500f0fb4cc37bb0272a3447bfd5da",
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
       "path": "internal/server/appnav.go",
-      "start": 101,
-      "end": 109,
-      "digest": "sha256:0fb523c757ef9b05eec264f2505e1974351e18e8851fc4f0a4de349127d72cae",
-      "note": "The documentation sidebar is Overview and Features only; reviews live on the header's other side."
+      "start": 109,
+      "end": 128,
+      "digest": "sha256:872213ac76912d1a9f1549b3955fa21602256e7bfd39febc29ce82e795fb66e8",
+      "note": "makeAppNavTree selects Features for Documentation and Reviews for Review; TestEachSideListsWhatItIsAbout pins both projections."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/server/appnav_test.go",
+      "start": 154,
+      "end": 197,
+      "digest": "sha256:5abad5391d2e9133e3edf9b98fcd5792a39ce4f13f89052b5b5002d5e2d50715",
+      "note": "makeAppNavTree selects Features for Documentation and Reviews for Review; TestEachSideListsWhatItIsAbout pins both projections."
     }
   ]
 }

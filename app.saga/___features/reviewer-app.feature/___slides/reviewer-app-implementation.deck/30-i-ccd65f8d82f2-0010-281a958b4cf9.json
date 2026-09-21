@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "local-server",
+  "slide": "safe-local-boundary-implementation",
+  "rank": 10,
+  "kind": "region",
+  "label": "Loopback and origin enforcement",
+  "description": "Implements entry-boundary: refuse non-loopback listeners and reject foreign Host, Origin, and site context.",
+  "selector": {
+    "type": "element",
+    "element_id": "local-server"
+  }
+}

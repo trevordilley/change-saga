@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "impl-merge-explains-dependencies",
+  "type": "explains",
+  "from": "urn:change-saga:app:slide:guided-authoring-delivery:item:merge-gate",
+  "to": "urn:change-saga:app:story:parallel-delivery-plan:criterion:dependencies",
+  "scope": "self",
+  "rationale": "The merge-gate Item explains persisted wave, item, dependency, and merge evidence.",
+  "to_revision": "urn:change-saga:app:story:parallel-delivery-plan:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-21T05:16:57.297843Z",
+  "request_id": "impl-merge-explains-dependencies"
+}

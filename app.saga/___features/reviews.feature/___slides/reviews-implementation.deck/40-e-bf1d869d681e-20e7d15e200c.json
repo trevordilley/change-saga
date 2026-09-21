@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/reviewstore/reviewstore.go",
+      "start": 113,
+      "end": 155,
+      "digest": "sha256:6697f5b71bb236207debc3bd22a98f73d7293fa10e680c4e46e63130294679c9",
+      "note": "Decisions pin the slide digest and reviewed head; Build and currency mark only affected slide decisions out of date."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/reviewstate/reviewstate.go",
+      "start": 132,
+      "end": 188,
+      "digest": "sha256:0fd1a0d39534c12c11548930dede41e424fbdc87561389b383134b47a1c6c51b",
+      "note": "Decisions pin the slide digest and reviewed head; Build and currency mark only affected slide decisions out of date."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/reviewstate/reviewstate.go",
+      "start": 270,
+      "end": 350,
+      "digest": "sha256:57d63558cafb3930d295cb457cc7af6bc9de10f724d520623b3acfd151d2b09e",
+      "note": "Decisions pin the slide digest and reviewed head; Build and currency mark only affected slide decisions out of date."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/cli/reviews_test.go",
+      "start": 98,
+      "end": 157,
+      "digest": "sha256:9152ef9bd0d60bffade9190fae309a62ccdc4784434b44bee8e9744f869e6941",
+      "note": "Decisions pin the slide digest and reviewed head; Build and currency mark only affected slide decisions out of date."
+    }
+  ]
+}

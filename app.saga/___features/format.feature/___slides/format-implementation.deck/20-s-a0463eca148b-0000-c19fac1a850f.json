@@ -1,0 +1,16 @@
+{
+  "version": 4,
+  "id": "release-visibility",
+  "deck": "format-implementation",
+  "title": "From flag history to release availability",
+  "rank": 0,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-a0463eca148b-0000-c19fac1a850f.svg",
+  "takeaway": "Flags retain target and lifecycle history while current off state changes availability, not documentation.",
+  "reading_order": [
+    "flag-records",
+    "release-projection"
+  ]
+}

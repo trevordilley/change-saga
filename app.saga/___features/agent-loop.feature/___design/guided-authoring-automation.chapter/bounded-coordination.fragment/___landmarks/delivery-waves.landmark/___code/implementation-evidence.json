@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/workplan/model.go",
+      "start": 41,
+      "end": 142,
+      "digest": "sha256:23a3a8361cda957e9ec919df5d11e47433c88de1c388298826cb0773b7734e62",
+      "note": "Wave, work-item, merge-unit, and dependency records implement the delivery-wave structure."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/workplan/workplan_test.go",
+      "start": 18,
+      "end": 49,
+      "digest": "sha256:32c045358866b51d4eb04af4288e17cedfb9ca6a365f34002ca3e83acbbf4257",
+      "note": "Wave, work-item, merge-unit, and dependency records implement the delivery-wave structure."
+    }
+  ]
+}

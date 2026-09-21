@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/cli/check.go",
+      "start": 27,
+      "end": 77,
+      "digest": "sha256:d4cec09eb6345f2bbcf728edfc7ff3874d450a7ddbc2f6d1e39540022eb6cdb9",
+      "note": "Check evaluates only the named areas and the test asserts only those gaps and their requested ordering."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/cli/check_test.go",
+      "start": 14,
+      "end": 62,
+      "digest": "sha256:9d7626fcb3b204b4482a1386ae8f75581b00d80efc2ef6829c7ae3c594ec75d4",
+      "note": "Check evaluates only the named areas and the test asserts only those gaps and their requested ordering."
+    }
+  ]
+}

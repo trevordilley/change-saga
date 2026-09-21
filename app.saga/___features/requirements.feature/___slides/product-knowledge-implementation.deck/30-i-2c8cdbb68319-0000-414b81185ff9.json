@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "story-history",
+  "slide": "knowledge-lifecycle",
+  "rank": 0,
+  "kind": "region",
+  "label": "Story revisions and lifecycle",
+  "description": "Implements revision-lineage, concurrent-revisions, criterion-identity, citation-provenance, story-lifecycle, and retired-story-history with independent immutable graphs.",
+  "selector": {
+    "type": "element",
+    "element_id": "story-history"
+  }
+}

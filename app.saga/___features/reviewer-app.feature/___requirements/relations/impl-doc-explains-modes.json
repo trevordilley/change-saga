@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "impl-doc-explains-modes",
+  "type": "explains",
+  "from": "urn:change-saga:app:slide:two-lasting-sides:item:documentation-side",
+  "to": "urn:change-saga:app:story:observe-or-compare:criterion:separate-modes",
+  "scope": "self",
+  "rationale": "The Documentation Item explains the lasting product side of the two-mode shell.",
+  "to_revision": "urn:change-saga:app:story:observe-or-compare:revision:r4",
+  "state": "active",
+  "created_at": "2026-09-21T05:16:59.178314Z",
+  "request_id": "impl-doc-explains-modes"
+}

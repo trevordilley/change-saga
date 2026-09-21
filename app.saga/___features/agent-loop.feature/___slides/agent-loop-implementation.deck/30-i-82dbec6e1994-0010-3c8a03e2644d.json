@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "bounded-loop",
+  "slide": "guided-authoring-delivery",
+  "rank": 10,
+  "kind": "region",
+  "label": "Bounded authoring loop",
+  "description": "Implements bounded-loop and safe-delegation-loop: derive an explicit action, validate, write, and re-read.",
+  "selector": {
+    "type": "element",
+    "element_id": "bounded-loop"
+  }
+}

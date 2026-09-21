@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "impl-overview-projection-explains-feature-navigation",
+  "type": "explains",
+  "from": "urn:change-saga:app:slide:overview-vocabulary:item:overview-projection",
+  "to": "urn:change-saga:app:story:overview-and-terms:criterion:feature-navigation",
+  "scope": "self",
+  "rationale": "The overview-projection implementation realizes the feature-navigation obligation represented by the feature-navigation design landmark.",
+  "to_revision": "urn:change-saga:app:story:overview-and-terms:revision:r4",
+  "state": "active",
+  "created_at": "2026-09-21T05:14:02.927685Z"
+}

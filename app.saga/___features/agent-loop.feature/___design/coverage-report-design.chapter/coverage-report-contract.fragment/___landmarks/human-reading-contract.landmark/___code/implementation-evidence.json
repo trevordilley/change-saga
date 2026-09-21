@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/areas/areas.go",
+      "start": 266,
+      "end": 283,
+      "digest": "sha256:c1cb1db21b309ab4bd55195291f9f266597846c4993873d46125f4a5e6dee7c7",
+      "note": "Exact implementation and test evidence for the human-reading contract."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/areas/areas_test.go",
+      "start": 115,
+      "end": 131,
+      "digest": "sha256:2069e606b42c73ee910882a3ef94588b3d940d362188ec7dd04aeea95e60e85e",
+      "note": "Exact implementation and test evidence for the human-reading contract."
+    }
+  ]
+}

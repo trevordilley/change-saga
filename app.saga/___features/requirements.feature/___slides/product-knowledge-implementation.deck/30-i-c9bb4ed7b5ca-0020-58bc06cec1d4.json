@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "vocabulary-suggestions",
+  "slide": "overview-vocabulary",
+  "rank": 20,
+  "kind": "region",
+  "label": "Optional vocabulary suggestions",
+  "description": "Implements vocabulary-growth by detecting newly added named domain declarations while excluding known, renamed, or already referenced terms.",
+  "selector": {
+    "type": "element",
+    "element_id": "vocabulary-suggestions"
+  }
+}

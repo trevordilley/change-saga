@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/reviewstate/coverage.go",
+      "start": 14,
+      "end": 77,
+      "digest": "sha256:7263d4db2cf5c6d57b9c2c4e45466f0b2ddd607021c7ed3ba661d1a32686899d",
+      "note": "Review coverage computes exact uncovered atoms, stale references, and item totals for the review's own range without a verdict."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/cli/reviews_test.go",
+      "start": 288,
+      "end": 327,
+      "digest": "sha256:a25ba1f2d446f65149b05bc6879f228b25b258c0bc2df5f063d56037444e803d",
+      "note": "Review coverage computes exact uncovered atoms, stale references, and item totals for the review's own range without a verdict."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/server/reviews_test.go",
+      "start": 234,
+      "end": 267,
+      "digest": "sha256:d20eb2d8fd4a4baf1383a4054a5e861f918c6a0028533a50a762eae47483d5f2",
+      "note": "Review coverage computes exact uncovered atoms, stale references, and item totals for the review's own range without a verdict."
+    }
+  ]
+}

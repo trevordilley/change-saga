@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "impl-trust-explains-gap-success",
+  "type": "explains",
+  "from": "urn:change-saga:app:slide:coverage-and-policy:item:trustworthy-report",
+  "to": "urn:change-saga:app:story:coverage-report:criterion:exit-zero",
+  "scope": "self",
+  "rationale": "The trustworthy-report Item explains why gaps are successful report output.",
+  "to_revision": "urn:change-saga:app:story:coverage-report:revision:r3",
+  "state": "active",
+  "created_at": "2026-09-21T05:16:55.211573Z",
+  "request_id": "impl-trust-explains-gap-success"
+}

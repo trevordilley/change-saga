@@ -1,0 +1,10 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
+  "version": 5,
+  "id": "r2",
+  "relation": "urn:change-saga:app:relation:offline-guarantee-addresses-network-sandbox",
+  "from_content_digest": "sha256:78c5b8ee8c90d46c06fe517946926e8412d5bb88ef88b00d58343c72eca0bb48",
+  "rationale": "The clarified design now states the implemented no-message-channel boundary; this criterion mapping still holds.",
+  "created_at": "2026-09-21T05:20:13.174022Z",
+  "request_id": "implementation-review-repin-offline-guarantee-addresses-network-sandbox"
+}

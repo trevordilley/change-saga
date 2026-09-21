@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "impl-discussion-explains-per-slide-approval",
+  "type": "explains",
+  "from": "urn:change-saga:app:slide:review-lifecycle:item:decisions-comments",
+  "to": "urn:change-saga:app:story:review-is-pr-deck:criterion:per-slide-approval",
+  "scope": "self",
+  "rationale": "The decisions-comments Item explains append-only slide decisions and threaded review records.",
+  "to_revision": "urn:change-saga:app:story:review-is-pr-deck:revision:r5",
+  "state": "active",
+  "created_at": "2026-09-21T05:18:53.758846Z",
+  "request_id": "impl-discussion-explains-per-slide-approval"
+}

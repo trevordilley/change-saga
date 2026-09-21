@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "impl-reversible-explains-move",
+  "type": "explains",
+  "from": "urn:change-saga:app:slide:guided-authoring-delivery:item:reversible-structure",
+  "to": "urn:change-saga:app:story:first-change:criterion:not-locked-in",
+  "scope": "self",
+  "rationale": "The reversible-structure Item explains stable story identity across feature moves.",
+  "to_revision": "urn:change-saga:app:story:first-change:revision:r3",
+  "state": "active",
+  "created_at": "2026-09-21T05:16:56.720642Z",
+  "request_id": "impl-reversible-explains-move"
+}

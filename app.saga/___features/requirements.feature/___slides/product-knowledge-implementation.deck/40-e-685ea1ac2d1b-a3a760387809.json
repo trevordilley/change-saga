@@ -1,0 +1,45 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/quality/model.go",
+      "start": 128,
+      "end": 172,
+      "digest": "sha256:dcd014e05cfb459927f1dec6637ed6e3d41f4f6d4e08db40181d842c0f5900f1",
+      "note": "Records immutable run results against exact test/evidence/source heads and keeps stale passes and failures visible; readiness excludes progress from proof."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/quality/mutation.go",
+      "start": 468,
+      "end": 531,
+      "digest": "sha256:875dc1cf2aa01cc3b27d8f488171dda3a01bdd0687d0b0919be6e6a4081d4d85",
+      "note": "Records immutable run results against exact test/evidence/source heads and keeps stale passes and failures visible; readiness excludes progress from proof."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/quality/mutation_test.go",
+      "start": 275,
+      "end": 356,
+      "digest": "sha256:04c7529b17aad130d086a263691e0d93e2d806892e90cda9358c2224eed128ff",
+      "note": "Records immutable run results against exact test/evidence/source heads and keeps stale passes and failures visible; readiness excludes progress from proof."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/readiness/readiness.go",
+      "start": 63,
+      "end": 107,
+      "digest": "sha256:6ce17b3819e9dfff5e989064d3f16f938de2d524fc0607cf0f6ad28f2c32bea7",
+      "note": "Records immutable run results against exact test/evidence/source heads and keeps stale passes and failures visible; readiness excludes progress from proof."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/readiness/readiness_test.go",
+      "start": 5,
+      "end": 20,
+      "digest": "sha256:61ac001f6428bf0a50d876061e164e7fde042617fa31f17a501d278218cb49d7",
+      "note": "Records immutable run results against exact test/evidence/source heads and keeps stale passes and failures visible; readiness excludes progress from proof."
+    }
+  ]
+}

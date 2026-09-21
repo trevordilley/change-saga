@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/server/appnav.go",
+      "start": 109,
+      "end": 128,
+      "digest": "sha256:872213ac76912d1a9f1549b3955fa21602256e7bfd39febc29ce82e795fb66e8",
+      "note": "Review selects a review directory, keeps the common overview, and states an empty review set explicitly."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/server/appnav.go",
+      "start": 224,
+      "end": 257,
+      "digest": "sha256:401860fe0a721a8278be5d9d5eefc23eae518722c99e016d1ab23859150986b7",
+      "note": "Review selects a review directory, keeps the common overview, and states an empty review set explicitly."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/server/appnav_test.go",
+      "start": 154,
+      "end": 197,
+      "digest": "sha256:5abad5391d2e9133e3edf9b98fcd5792a39ce4f13f89052b5b5002d5e2d50715",
+      "note": "Review selects a review directory, keeps the common overview, and states an empty review set explicitly."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/server/appnav_test.go",
+      "start": 237,
+      "end": 249,
+      "digest": "sha256:168b128cbc5c7e76fa19842e5ba5d33b088918a7b8aab28a518f71a4c31c4f29",
+      "note": "Review selects a review directory, keeps the common overview, and states an empty review set explicitly."
+    }
+  ]
+}

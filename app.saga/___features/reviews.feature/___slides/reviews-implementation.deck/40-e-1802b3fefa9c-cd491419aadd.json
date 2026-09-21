@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/reviewstore/reviewstore.go",
+      "start": 225,
+      "end": 245,
+      "digest": "sha256:380545a7f1d9434d9a24c48cd5b868d71182f41c1f447bc7139199189bf4b30a",
+      "note": "Freeze persists the exact reviewed range; CLI and server tests keep history readable while refusing new decisions."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/cli/reviews_test.go",
+      "start": 234,
+      "end": 286,
+      "digest": "sha256:207fb4d5bfb8a3bd244e5ae1e63e27c59be74b5d03d8a944582df5661de92fba",
+      "note": "Freeze persists the exact reviewed range; CLI and server tests keep history readable while refusing new decisions."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/server/reviews_test.go",
+      "start": 219,
+      "end": 232,
+      "digest": "sha256:ac4fe10b81b7ca10ca52a778a6a85cf5e1c184d7c9572884a79d795e558e574b",
+      "note": "Freeze persists the exact reviewed range; CLI and server tests keep history readable while refusing new decisions."
+    }
+  ]
+}

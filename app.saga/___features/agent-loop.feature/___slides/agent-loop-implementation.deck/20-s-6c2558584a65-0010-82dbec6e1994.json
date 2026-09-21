@@ -1,0 +1,19 @@
+{
+  "version": 4,
+  "id": "guided-authoring-delivery",
+  "deck": "agent-loop-implementation",
+  "title": "Guidance ends at evidence",
+  "rank": 10,
+  "intent": "trace",
+  "layout": "sequence",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-6c2558584a65-0010-82dbec6e1994.svg",
+  "takeaway": "The required loop explains the change; optional growth and parallel progress never substitute for immutable merged evidence.",
+  "reading_order": [
+    "first-change-flow",
+    "bounded-loop",
+    "merge-gate",
+    "reversible-structure",
+    "coordination-resumption"
+  ]
+}
