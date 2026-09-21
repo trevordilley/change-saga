@@ -1,0 +1,45 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r3",
+  "story": "urn:change-saga:app:story:companion-repositories",
+  "parents": [
+    "urn:change-saga:app:story:companion-repositories:revision:r2"
+  ],
+  "title": "Document a codebase from the repository that fits the team",
+  "statement": "As a change author, I can keep the Saga beside the code or in a companion repository, so that I can document a codebase without first changing its repository.",
+  "priority": "unspecified",
+  "personas": [
+    "urn:change-saga:app:persona:change-author"
+  ],
+  "citations": [
+    "urn:change-saga:app:citation:app-saga-goals"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "verified-checkout",
+      "statement": "A companion Saga refuses a source checkout that does not match its declared repository."
+    },
+    {
+      "id": "companion-source",
+      "statement": "A companion Saga resolves code links from the source checkout the author selects."
+    },
+    {
+      "id": "sync-cursor",
+      "statement": "A companion Saga reports the source revision its documentation describes."
+    },
+    {
+      "id": "companion-compare",
+      "statement": "A companion comparison aligns documentation changes with the corresponding source-code change."
+    },
+    {
+      "id": "observe-existing-code",
+      "statement": "An author can document an existing codebase without creating a source-code change."
+    },
+    {
+      "id": "move-later",
+      "statement": "Moving a companion Saga into its source repository preserves its existing links."
+    }
+  ],
+  "created_at": "2026-09-21T04:25:54.358339Z"
+}

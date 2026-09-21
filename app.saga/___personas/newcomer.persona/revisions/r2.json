@@ -1,0 +1,12 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/persona-revision.schema.json",
+  "version": 5,
+  "id": "r2",
+  "persona": "urn:change-saga:app:persona:newcomer",
+  "parents": [
+    "urn:change-saga:app:persona:newcomer:revision:r1"
+  ],
+  "name": "Newcomer",
+  "description": "An engineer joining or returning to a codebase who needs a current map of its purpose, vocabulary, product domains, and implementation.",
+  "created_at": "2026-09-21T04:26:54.134413Z"
+}

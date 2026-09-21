@@ -1,0 +1,61 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r4",
+  "story": "urn:change-saga:app:story:observe-or-compare",
+  "parents": [
+    "urn:change-saga:app:story:observe-or-compare:revision:r3"
+  ],
+  "title": "Switch between current product truth and one proposed change",
+  "statement": "As a reviewer, I can view the application as it exists now or focus on one proposed change, so that I can switch between lasting context and change-specific evidence.",
+  "priority": "unspecified",
+  "personas": [
+    "urn:change-saga:app:persona:reviewer"
+  ],
+  "citations": [
+    "urn:change-saga:app:citation:app-saga-goals"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "merge-base",
+      "statement": "A comparison uses the proposed change's merge base as its starting point."
+    },
+    {
+      "id": "changed-layer",
+      "statement": "The Changed view shows each documentation record added, revised, or retired by the comparison."
+    },
+    {
+      "id": "affected-layer",
+      "statement": "The Affected view shows unchanged documentation that the comparison may invalidate."
+    },
+    {
+      "id": "code-layer",
+      "statement": "The Code view groups changed lines under the explanations that reference them."
+    },
+    {
+      "id": "unexplained-code",
+      "statement": "The Code view lists changed lines that have no explanation."
+    },
+    {
+      "id": "same-against",
+      "statement": "The same selected comparison scopes the reviewer view, status report, and structured queries."
+    },
+    {
+      "id": "separate-modes",
+      "statement": "The reviewer clearly distinguishes current documentation from change review."
+    },
+    {
+      "id": "documentation-context",
+      "statement": "Change review keeps the current product documentation reachable."
+    },
+    {
+      "id": "related-reviews",
+      "statement": "A feature, story, or criterion lists the reviews that changed its explained code."
+    },
+    {
+      "id": "derived-reviews-label",
+      "statement": "A related-reviews list identifies itself as derived from code links."
+    }
+  ],
+  "created_at": "2026-09-21T04:34:15.148542Z"
+}

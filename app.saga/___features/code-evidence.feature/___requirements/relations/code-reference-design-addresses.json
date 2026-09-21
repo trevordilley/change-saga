@@ -9,6 +9,7 @@
   "rationale": "The chapter specifies the reference fields, the viewing rules that remap or stale a reference, and re-pinning at merge that the story's criteria require.",
   "to_revision": "urn:change-saga:app:story:code-references:revision:r1",
   "from_content_digest": "sha256:09d1101223f819df538e734e87eae650baa63166c874c8e562639b786ea89d79",
-  "state": "active",
-  "created_at": "2026-09-19T20:53:40.747322Z"
+  "state": "superseded",
+  "created_at": "2026-09-19T20:53:40.747322Z",
+  "superseded_at": "2026-09-21T04:34:31.431171Z"
 }

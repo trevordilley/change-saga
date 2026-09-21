@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
+  "version": 5,
+  "id": "r2",
+  "relation": "urn:change-saga:app:relation:two-sides-landmark-review",
+  "to_revision": "urn:change-saga:app:story:two-sides:revision:r2",
+  "rationale": "The review-side landmark still demonstrates the separate Documentation and Review destinations.",
+  "created_at": "2026-09-21T04:26:34.183271Z"
+}

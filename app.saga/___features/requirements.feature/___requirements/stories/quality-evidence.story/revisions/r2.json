@@ -1,0 +1,64 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r2",
+  "story": "urn:change-saga:app:story:quality-evidence",
+  "parents": [
+    "urn:change-saga:app:story:quality-evidence:revision:r1"
+  ],
+  "title": "Judge a requirement from current quality evidence",
+  "statement": "As a reviewer, I can see how each acceptance criterion was tested and whether the evidence is current, so that I can judge confidence without treating progress as proof.",
+  "personas": [
+    "urn:change-saga:app:persona:reviewer"
+  ],
+  "citations": [
+    "urn:change-saga:app:citation:product-lifecycle"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "criterion-tests",
+      "statement": "Each test case lists the acceptance criteria it verifies."
+    },
+    {
+      "id": "ordered-steps",
+      "statement": "Each test case presents its steps in execution order."
+    },
+    {
+      "id": "expected-result",
+      "statement": "Each test case states one expected result."
+    },
+    {
+      "id": "run-revision",
+      "statement": "Each test result identifies the test revision it ran."
+    },
+    {
+      "id": "stale-run",
+      "statement": "Revising a test marks its earlier passing results stale."
+    },
+    {
+      "id": "failed-visible",
+      "statement": "A failed result remains visible until a newer result supersedes it."
+    },
+    {
+      "id": "progress-not-proof",
+      "statement": "Reported work progress does not count as test evidence."
+    },
+    {
+      "id": "required-kinds",
+      "statement": "A quality policy lists the test kinds required for one criterion revision."
+    },
+    {
+      "id": "policy-state",
+      "statement": "The quality view shows each required test kind as satisfied, excluded, or missing."
+    },
+    {
+      "id": "exclusion-rationale",
+      "statement": "Each quality exclusion states its rationale."
+    },
+    {
+      "id": "exclusion-source",
+      "statement": "Each quality exclusion cites its authoritative source."
+    }
+  ],
+  "created_at": "2026-09-21T04:34:17.224492Z"
+}

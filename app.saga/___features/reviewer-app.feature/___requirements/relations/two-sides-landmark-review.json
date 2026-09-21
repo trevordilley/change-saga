@@ -9,6 +9,7 @@
   "rationale": "One flag per page decides the side, which is what makes the header's two sides exclusive.",
   "to_revision": "urn:change-saga:app:story:two-sides:revision:r1",
   "from_content_digest": "sha256:c10c4fb82de11f5390780be7619dc306fc831826b12f8103cf12511e9ece0e36",
-  "state": "active",
-  "created_at": "2026-09-20T20:40:34.002398Z"
+  "state": "superseded",
+  "created_at": "2026-09-20T20:40:34.002398Z",
+  "superseded_at": "2026-09-21T04:34:35.456856Z"
 }

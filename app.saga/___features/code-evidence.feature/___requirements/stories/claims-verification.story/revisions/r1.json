@@ -1,0 +1,42 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:app:story:claims-verification",
+  "parents": [],
+  "title": "Separate author claims from independent verification",
+  "statement": "As a reviewer, I can inspect falsifiable author claims and independent verification history, so that I can distinguish an assertion from the evidence that tested it.",
+  "personas": [
+    "urn:change-saga:app:persona:reviewer"
+  ],
+  "citations": [
+    "urn:change-saga:app:citation:format-spec"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "falsifiable-claim",
+      "statement": "Each author claim states one falsifiable assertion."
+    },
+    {
+      "id": "claim-target",
+      "statement": "Each author claim identifies the explanation it qualifies."
+    },
+    {
+      "id": "claim-evidence",
+      "statement": "Each author claim links to exact supporting source."
+    },
+    {
+      "id": "verification-result",
+      "statement": "Each verification records a result, method, and summary."
+    },
+    {
+      "id": "append-only",
+      "statement": "Recording a verification does not rewrite the claim or earlier verification results."
+    },
+    {
+      "id": "failed-visible",
+      "statement": "A failed verification remains visible in the claim's history."
+    }
+  ],
+  "created_at": "2026-09-21T04:34:24.25506Z"
+}

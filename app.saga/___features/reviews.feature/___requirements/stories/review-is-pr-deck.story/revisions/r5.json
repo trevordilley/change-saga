@@ -1,0 +1,85 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r5",
+  "story": "urn:change-saga:app:story:review-is-pr-deck",
+  "parents": [
+    "urn:change-saga:app:story:review-is-pr-deck:revision:r4"
+  ],
+  "title": "Review a pull request as a guided, complete argument",
+  "statement": "As a reviewer, I can review a pull request as a guided visual argument with complete code coverage, so that I can make and revisit decisions with the right context.",
+  "priority": "unspecified",
+  "personas": [
+    "urn:change-saga:app:persona:reviewer"
+  ],
+  "citations": [
+    "urn:change-saga:app:citation:app-saga-goals"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "one-per-pr",
+      "statement": "Each pull request has at most one review deck."
+    },
+    {
+      "id": "review-range",
+      "statement": "A review deck follows the pull request's current base."
+    },
+    {
+      "id": "review-head",
+      "statement": "A review deck follows the pull request's current head."
+    },
+    {
+      "id": "explains-transition",
+      "statement": "The review deck explains what changed and why."
+    },
+    {
+      "id": "context-links",
+      "statement": "A review item can link to the product documentation it changes."
+    },
+    {
+      "id": "per-slide-approval",
+      "statement": "A reviewer can approve each slide."
+    },
+    {
+      "id": "request-slide-changes",
+      "statement": "A reviewer can request changes on each slide."
+    },
+    {
+      "id": "clear-slide-decision",
+      "statement": "A reviewer can clear the decision on each slide."
+    },
+    {
+      "id": "decision-head",
+      "statement": "Each slide decision records the reviewed head revision."
+    },
+    {
+      "id": "review-comments",
+      "statement": "Review comments can target a slide or one of its items."
+    },
+    {
+      "id": "out-of-date",
+      "statement": "A slide decision becomes out of date when the slide changes."
+    },
+    {
+      "id": "code-out-of-date",
+      "statement": "A slide decision becomes out of date when its linked code changes."
+    },
+    {
+      "id": "review-coverage",
+      "statement": "The review coverage view identifies every changed line not explained by an item."
+    },
+    {
+      "id": "tool-records",
+      "statement": "The product records individual review decisions without declaring the pull request approved."
+    },
+    {
+      "id": "history-after-merge",
+      "statement": "A merged review remains available from the documentation it changed."
+    },
+    {
+      "id": "documentation-read-only",
+      "statement": "Documentation pages do not offer approval or comment controls."
+    }
+  ],
+  "created_at": "2026-09-21T04:36:46.514941Z"
+}

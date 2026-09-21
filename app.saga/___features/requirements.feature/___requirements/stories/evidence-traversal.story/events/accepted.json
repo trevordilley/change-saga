@@ -1,0 +1,12 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-event.schema.json",
+  "version": 3,
+  "id": "accepted",
+  "story": "urn:change-saga:app:story:evidence-traversal",
+  "parents": [
+    "urn:change-saga:app:story:evidence-traversal:event:proposed"
+  ],
+  "state": "accepted",
+  "reason": "The product lifecycle and traceability contracts expose current forward and reverse evidence paths plus explicit gaps and stale links.",
+  "created_at": "2026-09-21T04:34:20.723153Z"
+}

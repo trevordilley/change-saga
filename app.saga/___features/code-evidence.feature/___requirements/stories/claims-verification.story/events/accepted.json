@@ -1,0 +1,12 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-event.schema.json",
+  "version": 3,
+  "id": "accepted",
+  "story": "urn:change-saga:app:story:claims-verification",
+  "parents": [
+    "urn:change-saga:app:story:claims-verification:event:proposed"
+  ],
+  "state": "accepted",
+  "reason": "The format specification defines falsifiable claims with exact evidence and append-only independent verification results.",
+  "created_at": "2026-09-21T04:34:24.928222Z"
+}

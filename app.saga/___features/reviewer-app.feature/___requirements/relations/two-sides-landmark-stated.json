@@ -9,6 +9,7 @@
   "rationale": "The same prose that derives the list explains why the page says it was derived: an empty list means the reviews touched no such code.",
   "to_revision": "urn:change-saga:app:story:two-sides:revision:r1",
   "from_content_digest": "sha256:95e6dac947bd245c67903d93c87c442b322674caada9a97acaffd91f8404fb88",
-  "state": "active",
-  "created_at": "2026-09-20T21:11:32.059258Z"
+  "state": "superseded",
+  "created_at": "2026-09-20T21:11:32.059258Z",
+  "superseded_at": "2026-09-21T04:34:35.752789Z"
 }

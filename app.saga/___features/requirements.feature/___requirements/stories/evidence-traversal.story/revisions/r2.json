@@ -1,0 +1,60 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r2",
+  "story": "urn:change-saga:app:story:evidence-traversal",
+  "parents": [
+    "urn:change-saga:app:story:evidence-traversal:revision:r1"
+  ],
+  "title": "Trace a requirement to current evidence and back",
+  "statement": "As a reviewer, I can traverse from a human requirement to current design, test, and code evidence and back, so that I can judge support and understand change impact.",
+  "personas": [
+    "urn:change-saga:app:persona:reviewer"
+  ],
+  "citations": [
+    "urn:change-saga:app:citation:product-lifecycle"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "persona-context",
+      "statement": "Each story shows the people it serves."
+    },
+    {
+      "id": "criterion-design",
+      "statement": "Each criterion shows its current design path."
+    },
+    {
+      "id": "criterion-tests",
+      "statement": "Each criterion shows its current test path."
+    },
+    {
+      "id": "criterion-code",
+      "statement": "Each criterion shows its current code path."
+    },
+    {
+      "id": "reverse-requirements",
+      "statement": "A source location shows the requirements connected to it."
+    },
+    {
+      "id": "reverse-explanations",
+      "statement": "A source location shows the explanations connected to it."
+    },
+    {
+      "id": "link-health",
+      "statement": "Each evidence path is labeled current, missing, or stale."
+    },
+    {
+      "id": "requirement-impact",
+      "statement": "Changed code lists the requirements it may affect."
+    },
+    {
+      "id": "persona-impact",
+      "statement": "Changed code lists the people it may affect."
+    },
+    {
+      "id": "persona-gap",
+      "statement": "An active persona with no accepted story appears as a visible gap."
+    }
+  ],
+  "created_at": "2026-09-21T04:36:46.028393Z"
+}

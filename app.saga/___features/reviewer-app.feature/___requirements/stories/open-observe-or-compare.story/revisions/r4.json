@@ -1,0 +1,45 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r4",
+  "story": "urn:change-saga:app:story:open-observe-or-compare",
+  "parents": [
+    "urn:change-saga:app:story:open-observe-or-compare:revision:r3"
+  ],
+  "title": "Keep product context available while investigating a change",
+  "statement": "As a reviewer, I can open the Saga in current-state or comparison mode, so that I can keep product context available while investigating a change.",
+  "priority": "unspecified",
+  "personas": [
+    "urn:change-saga:app:persona:reviewer"
+  ],
+  "citations": [
+    "urn:change-saga:app:citation:app-saga-goals"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "observe-view",
+      "statement": "Current-state mode shows the active product documentation."
+    },
+    {
+      "id": "health-warnings",
+      "statement": "Current-state mode marks stale code links as health warnings."
+    },
+    {
+      "id": "compare-view",
+      "statement": "Comparison mode emphasizes changed and affected documentation and code."
+    },
+    {
+      "id": "context-remains",
+      "statement": "Comparison mode keeps unchanged product context reachable."
+    },
+    {
+      "id": "no-doc-controls",
+      "statement": "Documentation pages omit approval and comment controls."
+    },
+    {
+      "id": "uncovered-beside-deck",
+      "statement": "A review shows its unexplained changed lines beside the review deck."
+    }
+  ],
+  "created_at": "2026-09-21T04:25:55.977884Z"
+}

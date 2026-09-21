@@ -1,0 +1,65 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r4",
+  "story": "urn:change-saga:app:story:overview-and-terms",
+  "parents": [
+    "urn:change-saga:app:story:overview-and-terms:revision:r3"
+  ],
+  "title": "Learn the application's purpose and language",
+  "statement": "As a newcomer, I can learn the application's purpose and project language in one place, so that I can understand discussions and source code sooner.",
+  "priority": "unspecified",
+  "personas": [
+    "urn:change-saga:app:persona:newcomer"
+  ],
+  "citations": [
+    "urn:change-saga:app:citation:app-saga-goals"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "overview-parts",
+      "statement": "The overview presents the application name, pitch, description, and terms."
+    },
+    {
+      "id": "term-record",
+      "statement": "Each term provides a name."
+    },
+    {
+      "id": "term-definition",
+      "statement": "Each term provides a definition."
+    },
+    {
+      "id": "term-aliases",
+      "statement": "Each term lists its aliases."
+    },
+    {
+      "id": "term-links",
+      "statement": "Each term links to the stories it describes."
+    },
+    {
+      "id": "term-code-links",
+      "statement": "Each term links to the code it describes."
+    },
+    {
+      "id": "both-directions",
+      "statement": "A story or source location lists the terms it defines."
+    },
+    {
+      "id": "stale-on-rename",
+      "statement": "A term warns the reader when its linked code no longer matches."
+    },
+    {
+      "id": "new-term-suggestion",
+      "statement": "A comparison suggests newly introduced domain vocabulary as optional documentation growth."
+    },
+    {
+      "id": "feature-navigation",
+      "statement": "The overview lets a newcomer open each feature's product, design, quality, and implementation material."
+    },
+    {
+      "id": "current-knowledge",
+      "statement": "Retired product knowledge is separated from the current application view."
+    }
+  ],
+  "created_at": "2026-09-21T04:36:46.273537Z"
+}

@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
+  "version": 5,
+  "id": "r2",
+  "relation": "urn:change-saga:app:relation:reference-resolution-explains-remap",
+  "to_revision": "urn:change-saga:app:story:code-references:revision:r3",
+  "rationale": "The slide still explains that unchanged moved lines remain reachable through a remapped code link.",
+  "created_at": "2026-09-21T04:26:33.204782Z"
+}

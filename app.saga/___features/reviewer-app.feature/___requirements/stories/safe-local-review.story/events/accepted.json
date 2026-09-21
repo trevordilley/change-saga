@@ -1,0 +1,12 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-event.schema.json",
+  "version": 3,
+  "id": "accepted",
+  "story": "urn:change-saga:app:story:safe-local-review",
+  "parents": [
+    "urn:change-saga:app:story:safe-local-review:event:proposed"
+  ],
+  "state": "accepted",
+  "reason": "The security policy and implemented reviewer boundary require loopback-only serving, same-origin requests, sandboxed authored content, redacted paths, and bounded resources.",
+  "created_at": "2026-09-21T04:34:25.783644Z"
+}
