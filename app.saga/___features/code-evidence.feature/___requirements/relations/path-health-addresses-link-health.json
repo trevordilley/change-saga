@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "path-health-addresses-link-health",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:evidence-traversal:landmark:path-health",
+  "to": "urn:change-saga:app:story:evidence-traversal:criterion:link-health",
+  "scope": "self",
+  "rationale": "The path-health design labels each hop current, missing, or stale and identifies the failing hop.",
+  "to_revision": "urn:change-saga:app:story:evidence-traversal:revision:r2",
+  "from_content_digest": "sha256:250953165e64e13b5d8e0d7c1319260a6367d12f73bf02026a137b05e3bb1976",
+  "state": "active",
+  "created_at": "2026-09-21T04:52:38.099017Z"
+}

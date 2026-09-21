@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "impact-path",
+  "label": "Change impact follows the same graph",
+  "selector": {
+    "type": "heading",
+    "heading_id": "impact-path"
+  },
+  "target": ""
+}

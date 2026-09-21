@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "dual-repository-compare",
+  "label": "Compare two histories as one change",
+  "selector": {
+    "type": "heading",
+    "heading_id": "dual-repository-compare"
+  },
+  "target": ""
+}

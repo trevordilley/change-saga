@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "comparison-selection",
+  "label": "One comparison selection scopes every surface",
+  "selector": {
+    "type": "heading",
+    "heading_id": "comparison-selection"
+  },
+  "target": ""
+}

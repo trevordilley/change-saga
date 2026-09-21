@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "portable-evidence",
+  "label": "Moving beside the source preserves evidence",
+  "selector": {
+    "type": "heading",
+    "heading_id": "portable-evidence"
+  },
+  "target": ""
+}

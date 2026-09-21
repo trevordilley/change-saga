@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "id": "code-reference-design-overview",
-  "title": "Technical model overview",
+  "id": "current-and-comparison-modes",
+  "title": "Current-state and comparison modes",
   "media_type": "text/markdown",
   "entrypoint": "content.md",
   "order": 10

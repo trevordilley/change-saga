@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "reverse-evidence-addresses-requirements",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:evidence-traversal:landmark:reverse-evidence",
+  "to": "urn:change-saga:app:story:evidence-traversal:criterion:reverse-requirements",
+  "scope": "self",
+  "rationale": "The reverse source view lists every requirement reached from the selected location.",
+  "to_revision": "urn:change-saga:app:story:evidence-traversal:revision:r2",
+  "from_content_digest": "sha256:a322caabb1bb61b657ea42aae8e119972bb5ff36da04eed4a8f6f5b88501bd36",
+  "state": "active",
+  "created_at": "2026-09-21T04:52:37.825508Z"
+}

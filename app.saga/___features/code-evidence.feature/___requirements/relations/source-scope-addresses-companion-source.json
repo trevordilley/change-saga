@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "source-scope-addresses-companion-source",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:code-reference-format:landmark:source-side-and-scope",
+  "to": "urn:change-saga:app:story:companion-repositories:criterion:companion-source",
+  "scope": "self",
+  "rationale": "The technical source-side rules apply evidence against the verified code checkout rather than the Saga repository.",
+  "to_revision": "urn:change-saga:app:story:companion-repositories:revision:r3",
+  "from_content_digest": "sha256:291ca25fdb131585a5283129408bb9fe4a879afc36cf82a02eaaa242f60fafa3",
+  "state": "active",
+  "created_at": "2026-09-21T04:52:40.840445Z"
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "resolution-outcomes-addresses-doc-only",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:code-reference-format:landmark:resolution-outcomes",
+  "to": "urn:change-saga:app:story:evidence-repair:criterion:documentation-only-change",
+  "scope": "self",
+  "rationale": "The resolution contract excludes Saga-only paths from source movement.",
+  "to_revision": "urn:change-saga:app:story:evidence-repair:revision:r1",
+  "from_content_digest": "sha256:7e09c31a1a1dd188c7c22fd4f93955ecbace4387264ba5afa3536835e8f4dca6",
+  "state": "active",
+  "created_at": "2026-09-21T04:52:41.347599Z"
+}

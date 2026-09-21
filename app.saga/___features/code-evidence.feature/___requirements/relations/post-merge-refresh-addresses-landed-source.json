@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "post-merge-refresh-addresses-landed-source",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:evidence-currency-repair:landmark:post-merge-refresh",
+  "to": "urn:change-saga:app:story:evidence-repair:criterion:post-merge-current",
+  "scope": "self",
+  "rationale": "The post-merge flow previews and rebinds safe evidence to the landed source revision.",
+  "to_revision": "urn:change-saga:app:story:evidence-repair:revision:r1",
+  "from_content_digest": "sha256:9c9ab468c17df226cae4b0f1647018c614abef0cd5acb8c8813f71b5e26bd362",
+  "state": "active",
+  "created_at": "2026-09-21T04:52:38.967615Z"
+}

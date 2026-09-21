@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "currency-states",
+  "label": "Current, remapped, stale, and missing",
+  "selector": {
+    "type": "heading",
+    "heading_id": "currency-states"
+  },
+  "target": ""
+}

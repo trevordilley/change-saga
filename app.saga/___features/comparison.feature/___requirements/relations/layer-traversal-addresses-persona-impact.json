@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "layer-traversal-addresses-persona-impact",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:comparison-layers:landmark:layer-traversal",
+  "to": "urn:change-saga:app:story:evidence-traversal:criterion:persona-impact",
+  "scope": "self",
+  "rationale": "Cross-layer Show impact navigation continues from affected stories to the people they serve.",
+  "to_revision": "urn:change-saga:app:story:evidence-traversal:revision:r2",
+  "from_content_digest": "sha256:71517f80bc184594957276b4171ca3cde50bcf81a920371a94c396ff2c573d44",
+  "state": "active",
+  "created_at": "2026-09-21T04:53:15.237055Z"
+}

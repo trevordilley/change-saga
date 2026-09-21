@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "mode-indicator-addresses-separate-modes",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:current-and-comparison-modes:landmark:mode-indicator",
+  "to": "urn:change-saga:app:story:observe-or-compare:criterion:separate-modes",
+  "scope": "self",
+  "rationale": "The persistent label, title, icon, and announcement visibly distinguish current documentation from a selected comparison.",
+  "to_revision": "urn:change-saga:app:story:observe-or-compare:revision:r4",
+  "from_content_digest": "sha256:ab7087e7e912bf77f28b560a9885c25b8c7fbcfd140f4ad2a2525768e5da4f00",
+  "state": "active",
+  "created_at": "2026-09-21T04:53:13.807223Z"
+}

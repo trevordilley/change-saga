@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "layer-traversal",
+  "label": "Cross-layer evidence traversal",
+  "selector": {
+    "type": "heading",
+    "heading_id": "layer-traversal"
+  },
+  "target": ""
+}

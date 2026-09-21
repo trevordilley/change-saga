@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "evidence-identity-addresses-exact-claim-source",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:code-reference-format:landmark:evidence-identity",
+  "to": "urn:change-saga:app:story:claims-verification:criterion:claim-evidence",
+  "scope": "self",
+  "rationale": "The technical identity contract defines the exact repository, commit, path, scope, and digest a claim source can cite.",
+  "to_revision": "urn:change-saga:app:story:claims-verification:revision:r2",
+  "from_content_digest": "sha256:e26d4f3439b8709e69b5fadbddec2dbe4aac6f2dbe21d4ead4b9e3bc8c66616d",
+  "state": "active",
+  "created_at": "2026-09-21T04:52:40.710561Z"
+}

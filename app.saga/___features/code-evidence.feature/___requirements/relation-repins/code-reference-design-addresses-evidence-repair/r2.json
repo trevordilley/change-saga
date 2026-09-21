@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
+  "version": 5,
+  "id": "r2",
+  "relation": "urn:change-saga:app:relation:code-reference-design-addresses-evidence-repair",
+  "from_content_digest": "sha256:5583bc8944fb2e087dbf9047ffc234ff69fc318cb3c20116db8355484c71784f",
+  "rationale": "The chapter still addresses evidence repair after separating stable user-visible outcomes from the replaceable resolution strategy; heading landmarks now carry the criterion-specific links.",
+  "created_at": "2026-09-21T04:53:29.322825Z"
+}

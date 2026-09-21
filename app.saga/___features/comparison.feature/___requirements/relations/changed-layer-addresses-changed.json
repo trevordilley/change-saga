@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "changed-layer-addresses-changed",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:comparison-layers:landmark:changed-layer",
+  "to": "urn:change-saga:app:story:observe-or-compare:criterion:changed-layer",
+  "scope": "self",
+  "rationale": "The Changed layer lists every added, revised, moved, or retired documentation record with semantic before and after revisions.",
+  "to_revision": "urn:change-saga:app:story:observe-or-compare:revision:r4",
+  "from_content_digest": "sha256:773d27d05cd70cf86e543475b14fd305bcf0ecac92f874ea97f2ab27c73540df",
+  "state": "active",
+  "created_at": "2026-09-21T04:53:14.731951Z"
+}

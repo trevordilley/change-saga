@@ -1,56 +1,83 @@
-# Code reference format {#code-reference-format}
+# Reference identity and resolution {#reference-identity-and-resolution}
 
-Evidence never stores a diff. A code reference says "this node explains these
-lines, as of this commit", and a diff is a way of viewing references against
-two commits.
+## Durable evidence identity {#evidence-identity}
 
-## Fields {#fields}
+Each code evidence record identifies:
 
-| Field | Meaning |
+| Field | Contract |
 | --- | --- |
-| `commit` | a full commit object name, never a symbolic ref |
-| `path` | the repository path |
-| `start`, `end` | a 1-based inclusive line range; both absent for a whole-file reference |
-| `digest` | `sha256:` and the hex digest of the exact referenced bytes |
-| `note` | the reviewer-facing what-and-why, shown before the ranges are expanded |
+| repository | Canonical declared source repository identity. In an in-repository Saga it may be inherited; a companion checkout must still verify it. |
+| commit | Full source commit object name, never a branch or tag. |
+| path | Repository-relative path on the side where the referenced content exists. |
+| start, end | Optional 1-based inclusive range; both are absent for whole-file evidence. |
+| digest | `sha256:` digest of the exact referenced bytes or defined whole-file content. |
+| note | Reader-facing explanation of what the evidence establishes and why this scope is appropriate. |
 
-References do not repeat the repository; it is the Saga's declared
-`source.repository`. The compact location form, used by CLI flags, query
-arguments, URLs, and traceability results, omits the digest:
-`<commit>:<path>[#L<start>[-L<end>]]`.
+The compact location form used at interaction boundaries is
+`<commit>:<path>[#L<start>[-L<end>]]`. The persisted digest is not omitted from
+the evidence record merely because a compact link hides it.
 
-## Deletions and file events {#deletions-and-file-events}
+Evidence identity and explanation identity are separate. Reorganizing a feature
+or moving a Saga does not change an Item or landmark URN, and it does not change
+the source repository, commit, path, range, or digest that evidence names.
 
-Deletions reference the base side of a comparison, since removed lines exist
-only there. Renames, mode and type changes, binary changes, and file additions
-or deletions are referenced by whole-file references.
+## Source side and scope {#source-side-and-scope}
 
-## Viewing a reference at another commit {#viewing}
+Line evidence uses the side on which the bytes exist. Added or modified lines
+use the head side; deleted lines use the base side. A line range is invalid when
+that side has no such content.
 
-A reference pinned at commit P is viewed at commit V by diffing P against V,
-with renames followed and `.saga` paths excluded:
+Renames without content change may retain line evidence after resolution.
+Renames with content change, additions or deletions of whole files, binary
+changes, mode changes, and type changes use whole-file evidence. Whole-file
+evidence describes the event without inventing lines that cannot be rendered.
+The reader always sees the source side and scope before opening code.
 
-1. The pinned digest is verified first; a mismatch makes the reference stale.
-2. Insertions and deletions entirely before the range shift it: the reference
-   is remapped and stays current.
-3. Any change touching the range, including an insertion inside it, makes the
-   reference stale, with the reason and the diff since the pin available.
-4. A whole-file reference remaps only on a pure rename and is stale on any
-   content, mode, or binary change.
-5. Commits that change only `.saga` paths leave the code identical, so they
-   never move or stale a reference.
-6. If the pinned commit is no longer available, the reference is resolved by
-   searching for its digest in the same path at V; only a unique match counts.
+## Resolution outcomes are stable {#resolution-outcomes}
 
-A reference that is current but covers no changed line is not stale: it
-explains unchanged code.
+Resolving a pin P at viewed revision V produces one of four public outcomes:
 
-## Re-pinning at merge {#re-pinning}
+1. **Current:** the same bytes remain at the pinned location.
+2. **Current · remapped:** the same bytes resolve to one different location.
+3. **Stale:** content, identity, availability, or uniqueness no longer supports
+   the pin; a reason and the smallest safe comparison are returned.
+4. **Missing:** no evidence record exists. Missing is produced by traversal,
+   not by the resolver pretending a malformed record is absent.
 
-When a change lands, `change-saga repin --onto REV [--branch REV]` re-pins
-coverage references from branch commits to the landed commit, following moved
-lines exactly as viewing does, and records the branch's commit messages in
-`___merges/<landed-commit>.json`. A squash merge or a deleted branch therefore
-loses nothing.
+Resolution verifies the stored digest before using the evidence. A change that
+touches a ranged reference is stale; a pure move before the range or a pure
+rename may remap. Whole-file evidence remaps only across a content-preserving
+rename. Documentation-only commits do not participate in source resolution.
+A current reference may cover no line in the selected comparison; currency and
+per-change coverage are different questions.
 
-Source: SPEC.md, sections 5, 5.1, and 6.2.
+## The resolution strategy is replaceable {#replaceable-resolution-strategy}
+
+The current implementation may combine Git history, rename detection, range
+translation, and a digest search when the pinned commit is unavailable. Those
+mechanics are replaceable if every implementation preserves the public
+outcomes above and these safety constraints:
+
+- verify the captured digest before asserting continuity;
+- return remapped only for one unambiguous content-equivalent target;
+- never select a candidate by path or proximity alone;
+- exclude Saga-only paths from source movement;
+- bound search and report an unavailable or ambiguous result as stale;
+- return enough provenance to explain the outcome and reproduce it.
+
+A unique same-path digest match is a permissible fallback, not the product
+promise. A future syntax-aware resolver may replace it without changing stored
+evidence or the four user-visible states.
+
+## Rebind to landed source without erasing history {#merge-rebinding}
+
+Post-merge refresh resolves eligible branch evidence against the landed source
+revision, previews every outcome, and atomically records new pins only for safe
+current or remapped results. Stale and ambiguous records retain their prior pins
+and diagnosis. The operation records branch commit reasons with the landed
+change so a squash or deleted branch does not erase the reasoning later shown
+in history.
+
+Rebinding changes where evidence opens; it does not rewrite the explanation,
+claim, verification, or requirement the evidence supports. Repeating the same
+landed revision is a no-op.

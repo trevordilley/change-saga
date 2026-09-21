@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "saga-only-stability-addresses-documentation-only",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:evidence-currency-repair:landmark:saga-only-stability",
+  "to": "urn:change-saga:app:story:evidence-repair:criterion:documentation-only-change",
+  "scope": "self",
+  "rationale": "The design separates relation currency from source currency so documentation-only changes cannot stale unchanged implementation evidence.",
+  "to_revision": "urn:change-saga:app:story:evidence-repair:revision:r1",
+  "from_content_digest": "sha256:9c90969cab277aabb2ea9b63e11f9448f722f31a5620b7aaae84038d92ae4855",
+  "state": "active",
+  "created_at": "2026-09-21T04:52:39.058007Z"
+}

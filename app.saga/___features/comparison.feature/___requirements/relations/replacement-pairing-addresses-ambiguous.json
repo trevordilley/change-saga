@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "replacement-pairing-addresses-ambiguous",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:comparison-history:landmark:replacement-pairing",
+  "to": "urn:change-saga:app:story:why-things-changed:criterion:ambiguous-replacements",
+  "scope": "self",
+  "rationale": "Ambiguous candidates remain separate until an explicit replacement relation resolves them.",
+  "to_revision": "urn:change-saga:app:story:why-things-changed:revision:r3",
+  "from_content_digest": "sha256:9c771dc1c4923314ade82fdb90392506801829ce271574f6921e573708b56fef",
+  "state": "active",
+  "created_at": "2026-09-21T04:53:15.450709Z"
+}

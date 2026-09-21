@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "reason-attribution",
+  "label": "Put commit reasons beside their effects",
+  "selector": {
+    "type": "heading",
+    "heading_id": "reason-attribution"
+  },
+  "target": ""
+}

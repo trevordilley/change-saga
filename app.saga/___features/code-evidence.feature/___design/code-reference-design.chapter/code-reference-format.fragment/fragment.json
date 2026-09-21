@@ -1,7 +1,8 @@
 {
   "version": 2,
   "id": "code-reference-format",
-  "title": "Code reference format",
+  "title": "Reference identity and resolution",
   "media_type": "text/markdown",
-  "entrypoint": "code-ref-design.md"
+  "entrypoint": "code-ref-design.md",
+  "order": 20
 }

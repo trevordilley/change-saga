@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "comparison-selection-addresses-merge-base",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:current-and-comparison-modes:landmark:comparison-selection",
+  "to": "urn:change-saga:app:story:observe-or-compare:criterion:merge-base",
+  "scope": "self",
+  "rationale": "The comparison context resolves the before state from the merge base of against and head.",
+  "to_revision": "urn:change-saga:app:story:observe-or-compare:revision:r4",
+  "from_content_digest": "sha256:3bf9605ec8e8bdbc42d021b814aca74a83835b7365bd73e251633a781e219619",
+  "state": "active",
+  "created_at": "2026-09-21T04:53:14.177874Z"
+}

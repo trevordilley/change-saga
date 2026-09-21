@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "atomic-replacement",
+  "label": "Atomic replacement",
+  "selector": {
+    "type": "heading",
+    "heading_id": "atomic-replacement"
+  },
+  "target": ""
+}

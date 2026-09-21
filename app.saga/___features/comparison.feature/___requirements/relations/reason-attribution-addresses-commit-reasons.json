@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "reason-attribution-addresses-commit-reasons",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:comparison-history:landmark:reason-attribution",
+  "to": "urn:change-saga:app:story:why-things-changed:criterion:commit-reasons",
+  "scope": "self",
+  "rationale": "Commit reasons sit beside the documentation records or code groups the commit actually touched.",
+  "to_revision": "urn:change-saga:app:story:why-things-changed:revision:r3",
+  "from_content_digest": "sha256:8581ba181f496f74219e4ae77a7664610db2946b86115520fce14605b1d62bc4",
+  "state": "active",
+  "created_at": "2026-09-21T04:53:15.548705Z"
+}

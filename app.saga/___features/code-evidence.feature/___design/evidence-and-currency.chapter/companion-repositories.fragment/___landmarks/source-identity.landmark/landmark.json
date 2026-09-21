@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "source-identity",
+  "label": "Verify source identity before reading",
+  "selector": {
+    "type": "heading",
+    "heading_id": "source-identity"
+  },
+  "target": ""
+}

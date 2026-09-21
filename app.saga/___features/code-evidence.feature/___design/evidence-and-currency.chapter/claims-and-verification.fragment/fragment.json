@@ -1,0 +1,8 @@
+{
+  "version": 2,
+  "id": "claims-verification-design",
+  "title": "Claims and independent verification",
+  "media_type": "text/markdown",
+  "entrypoint": "content.md",
+  "order": 30
+}

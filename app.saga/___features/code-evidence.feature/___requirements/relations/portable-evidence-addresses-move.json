@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "portable-evidence-addresses-move",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:companion-repository-evidence:landmark:portable-evidence",
+  "to": "urn:change-saga:app:story:companion-repositories:criterion:move-later",
+  "scope": "self",
+  "rationale": "The move contract preserves Saga identity, target URNs, source pins, digests, and history.",
+  "to_revision": "urn:change-saga:app:story:companion-repositories:revision:r3",
+  "from_content_digest": "sha256:eb65c24d0545d6f3d8ab38817309239a3ce39e6c2351506d2ab56e34c00d9e45",
+  "state": "active",
+  "created_at": "2026-09-21T04:52:40.593264Z"
+}

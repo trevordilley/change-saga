@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "reverse-evidence",
+  "label": "Reverse path from source",
+  "selector": {
+    "type": "heading",
+    "heading_id": "reverse-evidence"
+  },
+  "target": ""
+}

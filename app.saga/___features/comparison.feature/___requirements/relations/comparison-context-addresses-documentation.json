@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "comparison-context-addresses-documentation",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:current-and-comparison-modes:landmark:comparison-context",
+  "to": "urn:change-saga:app:story:observe-or-compare:criterion:documentation-context",
+  "scope": "self",
+  "rationale": "The comparison design keeps unchanged current documentation reachable and restores the selected review context on return.",
+  "to_revision": "urn:change-saga:app:story:observe-or-compare:revision:r4",
+  "from_content_digest": "sha256:3550a2802dcf53d93322b3c34bc2551bffed3eb09cac3885898f610d5193279c",
+  "state": "active",
+  "created_at": "2026-09-21T04:53:14.410905Z"
+}
