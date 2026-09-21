@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "product-knowledge-lifecycle-addresses-traversal",
+  "type": "addresses",
+  "from": "urn:change-saga:app:chapter:product-knowledge-lifecycle",
+  "to": "urn:change-saga:app:story:evidence-traversal",
+  "scope": "self",
+  "rationale": "The chapter defines forward, reverse, and impact traversal through the knowledge graph.",
+  "to_revision": "urn:change-saga:app:story:evidence-traversal:revision:r2",
+  "from_content_digest": "sha256:b52a0ba04d705045d1f8cc3e503caef25160da1c8837d15fc539f824bd3db14d",
+  "state": "active",
+  "created_at": "2026-09-21T04:53:55.536804Z"
+}

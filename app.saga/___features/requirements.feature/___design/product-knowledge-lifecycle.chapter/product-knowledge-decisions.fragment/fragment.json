@@ -1,0 +1,8 @@
+{
+  "version": 2,
+  "id": "product-knowledge-decisions",
+  "title": "Lifecycle decisions and boundaries",
+  "media_type": "text/markdown",
+  "entrypoint": "content.md",
+  "order": 40
+}

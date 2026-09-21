@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
+  "version": 5,
+  "id": "r2",
+  "relation": "urn:change-saga:app:relation:vocabulary-currency-addresses-rename",
+  "from_content_digest": "sha256:40567171052bba4eafb22b935def60eabc73d272808d46d756ec42dba92a3e67",
+  "rationale": "The relation remains accurate after visual legibility edits; the requirement and semantic design node are unchanged.",
+  "created_at": "2026-09-21T04:57:31.71247Z"
+}

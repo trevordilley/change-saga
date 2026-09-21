@@ -1,0 +1,15 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "quality-decision-addresses-story",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:product-knowledge-decisions:landmark:quality-not-progress",
+  "to": "urn:change-saga:app:story:quality-evidence",
+  "scope": "self",
+  "rationale": "The heading defines the cross-cutting distinction among test definitions, run evidence, policy state, and progress.",
+  "to_revision": "urn:change-saga:app:story:quality-evidence:revision:r2",
+  "from_content_digest": "sha256:0f18ee5397eecfde1073b3f569bde85ded07baa7d8f95c6220fd8cd7e8cd76db",
+  "state": "superseded",
+  "created_at": "2026-09-21T04:54:42.317524Z",
+  "superseded_at": "2026-09-21T04:58:57.890026Z"
+}

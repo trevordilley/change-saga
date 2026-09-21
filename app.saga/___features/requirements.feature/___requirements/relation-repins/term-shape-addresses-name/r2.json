@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
+  "version": 5,
+  "id": "r2",
+  "relation": "urn:change-saga:app:relation:term-shape-addresses-name",
+  "from_content_digest": "sha256:d632349d21b8c8c30bc202854384ae8d194b9f1627ca14f5d900c0bd56af23d7",
+  "rationale": "The relation remains accurate after visual legibility edits; the requirement and semantic design node are unchanged.",
+  "created_at": "2026-09-21T04:57:31.591664Z"
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "story-design-lifecycle-addresses-quality",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:story-design-lifecycle",
+  "to": "urn:change-saga:app:story:quality-evidence",
+  "scope": "self",
+  "rationale": "The lifecycle view distinguishes design intent, progress, and quality proof.",
+  "to_revision": "urn:change-saga:app:story:quality-evidence:revision:r2",
+  "from_content_digest": "sha256:a340d8e9dc702806a631856293e1fd0fee1a17d3fd780389c0e8855d506e1b1a",
+  "state": "active",
+  "created_at": "2026-09-21T04:53:57.202759Z"
+}

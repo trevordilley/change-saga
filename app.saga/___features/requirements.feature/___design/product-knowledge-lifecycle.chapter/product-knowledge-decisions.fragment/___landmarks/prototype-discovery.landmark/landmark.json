@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "id": "prototype-discovery",
+  "label": "Prototype discovery",
+  "description": "Prototype states may refine requirements in either order and stale when either linked endpoint changes.",
+  "selector": {
+    "type": "heading",
+    "heading_id": "prototype-discovery"
+  },
+  "target": ""
+}

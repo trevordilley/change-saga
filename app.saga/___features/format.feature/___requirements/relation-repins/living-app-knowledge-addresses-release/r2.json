@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
+  "version": 5,
+  "id": "r2",
+  "relation": "urn:change-saga:app:relation:living-app-knowledge-addresses-release",
+  "from_content_digest": "sha256:79118b3ae13f57a14883db25c51fa55c35239fe1ee4328709914d6962f7d2ca7",
+  "rationale": "The relation remains accurate after visual legibility edits; the requirement and semantic design node are unchanged.",
+  "created_at": "2026-09-21T04:57:27.733259Z"
+}

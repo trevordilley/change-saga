@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "id": "concurrent-revisions",
+  "label": "Concurrent revision heads",
+  "description": "Concurrent story revisions remain visible as separate heads until an author reconciles them with a new revision.",
+  "selector": {
+    "type": "element",
+    "element_id": "concurrent-revisions"
+  },
+  "target": ""
+}

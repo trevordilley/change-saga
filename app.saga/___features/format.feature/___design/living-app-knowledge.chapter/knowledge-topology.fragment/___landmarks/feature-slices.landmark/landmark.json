@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "id": "feature-slices",
+  "label": "Durable feature slices",
+  "description": "Each product domain exposes its Product, Design, Quality, and Implementation material as one navigable slice.",
+  "selector": {
+    "type": "element",
+    "element_id": "feature-slices"
+  },
+  "target": ""
+}

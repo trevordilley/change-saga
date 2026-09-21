@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "id": "source-entry",
+  "label": "Source entry point",
+  "description": "A source location can be traversed backward to the requirements and explanations connected to it.",
+  "selector": {
+    "type": "element",
+    "element_id": "source-entry"
+  },
+  "target": ""
+}

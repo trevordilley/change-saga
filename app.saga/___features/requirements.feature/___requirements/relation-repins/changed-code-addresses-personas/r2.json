@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
+  "version": 5,
+  "id": "r2",
+  "relation": "urn:change-saga:app:relation:changed-code-addresses-personas",
+  "from_content_digest": "sha256:2862c39f819031fe6a9b97b7eddf9aabd1b7e08a127656dc1510df5b0b9841bb",
+  "rationale": "The relation remains accurate after visual legibility edits; the requirement and semantic design node are unchanged.",
+  "created_at": "2026-09-21T04:57:23.996212Z"
+}

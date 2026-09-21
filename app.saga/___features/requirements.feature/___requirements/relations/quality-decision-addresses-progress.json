@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "quality-decision-addresses-progress",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:product-knowledge-decisions:landmark:quality-not-progress",
+  "to": "urn:change-saga:app:story:quality-evidence:criterion:progress-not-proof",
+  "scope": "self",
+  "rationale": "The decision explicitly excludes work progress from test evidence.",
+  "to_revision": "urn:change-saga:app:story:quality-evidence:revision:r2",
+  "from_content_digest": "sha256:0f18ee5397eecfde1073b3f569bde85ded07baa7d8f95c6220fd8cd7e8cd76db",
+  "state": "active",
+  "created_at": "2026-09-21T04:54:42.427548Z"
+}

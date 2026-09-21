@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "id": "criterion-entry",
+  "label": "Criterion entry point",
+  "description": "The acceptance criterion is the preferred target for focused design and verification paths.",
+  "selector": {
+    "type": "element",
+    "element_id": "criterion-entry"
+  },
+  "target": ""
+}

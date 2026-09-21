@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "id": "impact-results",
+  "label": "Derived impact",
+  "description": "Reverse traversal identifies affected requirements, affected people, and active personas with no accepted story.",
+  "selector": {
+    "type": "element",
+    "element_id": "impact-results"
+  },
+  "target": ""
+}

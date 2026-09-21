@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "overview-vocabulary-addresses-story",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:overview-vocabulary-model",
+  "to": "urn:change-saga:app:story:overview-and-terms",
+  "scope": "self",
+  "rationale": "The fragment models the overview, term shape, navigation, currency, and reverse lookup together.",
+  "to_revision": "urn:change-saga:app:story:overview-and-terms:revision:r4",
+  "from_content_digest": "sha256:71937cf158d461d496e1aa3601ef942ec3c763281f7f79d670058adb4bf6f847",
+  "state": "active",
+  "created_at": "2026-09-21T04:53:55.770797Z"
+}

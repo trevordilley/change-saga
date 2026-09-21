@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "criterion-paths-addresses-design",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:evidence-traversal-map:landmark:criterion-paths",
+  "to": "urn:change-saga:app:story:evidence-traversal:criterion:criterion-design",
+  "scope": "self",
+  "rationale": "The criterion path projection exposes current design evidence.",
+  "to_revision": "urn:change-saga:app:story:evidence-traversal:revision:r2",
+  "from_content_digest": "sha256:441eae8f5988452deb635eae20e870e7c5040812f044e01602b0f1173a8c5c4a",
+  "state": "active",
+  "created_at": "2026-09-21T04:54:39.88117Z"
+}

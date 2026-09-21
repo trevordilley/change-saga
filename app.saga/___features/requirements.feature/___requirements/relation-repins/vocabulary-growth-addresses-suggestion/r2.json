@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
+  "version": 5,
+  "id": "r2",
+  "relation": "urn:change-saga:app:relation:vocabulary-growth-addresses-suggestion",
+  "from_content_digest": "sha256:a7e2ec83df51cd3108568126b33c29c50556a75ad395c6baad056cfb01ef1448",
+  "rationale": "The relation remains accurate after visual legibility edits; the requirement and semantic design node are unchanged.",
+  "created_at": "2026-09-21T04:57:31.834584Z"
+}

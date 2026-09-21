@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "off-visible-addresses-off-disabled",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:knowledge-topology:landmark:off-visible",
+  "to": "urn:change-saga:app:story:controlled-release:criterion:off-is-disabled",
+  "scope": "self",
+  "rationale": "The off state keeps the story documented while marking it unavailable.",
+  "to_revision": "urn:change-saga:app:story:controlled-release:revision:r1",
+  "from_content_digest": "sha256:abc4709649d5c48ea375fcc90b60ebc7839080c903296827efec3390c6841a28",
+  "state": "active",
+  "created_at": "2026-09-21T04:53:54.878384Z"
+}

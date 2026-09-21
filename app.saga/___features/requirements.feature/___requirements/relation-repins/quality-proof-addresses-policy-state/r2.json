@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
+  "version": 5,
+  "id": "r2",
+  "relation": "urn:change-saga:app:relation:quality-proof-addresses-policy-state",
+  "from_content_digest": "sha256:98a906de5b5c5be3b7de38acbe61b92d9fa1b9b2f96e28b5f05d4c995a060051",
+  "rationale": "The relation remains accurate after visual legibility edits; the requirement and semantic design node are unchanged.",
+  "created_at": "2026-09-21T04:57:29.646033Z"
+}

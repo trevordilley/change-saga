@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "knowledge-topology-addresses-release",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:knowledge-topology",
+  "to": "urn:change-saga:app:story:controlled-release",
+  "scope": "self",
+  "rationale": "The topology shows flags as an availability overlay on documented behavior.",
+  "to_revision": "urn:change-saga:app:story:controlled-release:revision:r1",
+  "from_content_digest": "sha256:854b41f92f68073b354cd25bab466e1393190b0bf78459a86a74b2780e5a4aee",
+  "state": "active",
+  "created_at": "2026-09-21T04:53:54.138941Z"
+}

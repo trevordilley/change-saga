@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
+  "version": 5,
+  "id": "r2",
+  "relation": "urn:change-saga:app:relation:design-currency-addresses-prototype-change",
+  "from_content_digest": "sha256:aef806c78b0d62827c6cca1a24dab42668a0673fbeca09ac06f17c3caab7a5b5",
+  "rationale": "The relation remains accurate after visual legibility edits; the requirement and semantic design node are unchanged.",
+  "created_at": "2026-09-21T04:57:25.861725Z"
+}

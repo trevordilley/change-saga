@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
+  "version": 5,
+  "id": "r2",
+  "relation": "urn:change-saga:app:relation:citation-addresses-provenance",
+  "from_content_digest": "sha256:fb04f3423a6bb00be3da1b053ae0a95f56176065a5790c813e90012a669a64ac",
+  "rationale": "The relation remains accurate after visual legibility edits; the requirement and semantic design node are unchanged.",
+  "created_at": "2026-09-21T04:57:24.246789Z"
+}

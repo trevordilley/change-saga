@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "flag-state-addresses-flag-state",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:knowledge-topology:landmark:flag-state",
+  "to": "urn:change-saga:app:story:controlled-release:criterion:flag-state",
+  "scope": "self",
+  "rationale": "The flag state node exposes on, off, and retired distinctly.",
+  "to_revision": "urn:change-saga:app:story:controlled-release:revision:r1",
+  "from_content_digest": "sha256:332f5821c4743b00f125578acb44d1709d1472e8b7ab4481f95d8d55af56634a",
+  "state": "active",
+  "created_at": "2026-09-21T04:53:54.782179Z"
+}
