@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "design-currency-addresses-requirement-change",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:story-design-lifecycle:landmark:design-currency",
+  "to": "urn:change-saga:app:story:prototype-feedback:criterion:requirement-change-stale",
+  "scope": "self",
+  "rationale": "The prototype annotation becomes stale when the linked requirement changes.",
+  "to_revision": "urn:change-saga:app:story:prototype-feedback:revision:r1",
+  "from_content_digest": "sha256:ce2371dcde807bee645f88a981b76d85093a41fbf0bf5cdc6d328b78e5b5327f",
+  "state": "active",
+  "created_at": "2026-09-21T04:53:59.382608Z"
+}

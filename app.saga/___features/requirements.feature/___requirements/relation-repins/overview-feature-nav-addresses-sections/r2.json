@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
+  "version": 5,
+  "id": "r2",
+  "relation": "urn:change-saga:app:relation:overview-feature-nav-addresses-sections",
+  "from_content_digest": "sha256:7164c39ebb280b0b8896ecf48cad6b1c1c9ef5e253d188a7fc21fe2cc5fdc939",
+  "rationale": "The relation remains accurate after visual legibility edits; the requirement and semantic design node are unchanged.",
+  "created_at": "2026-09-21T04:57:27.983678Z"
+}

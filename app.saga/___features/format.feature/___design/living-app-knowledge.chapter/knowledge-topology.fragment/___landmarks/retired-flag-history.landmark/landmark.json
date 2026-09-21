@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "id": "retired-flag-history",
+  "label": "Retired flag history",
+  "description": "A retired flag leaves the current release view while its lifecycle remains inspectable.",
+  "selector": {
+    "type": "element",
+    "element_id": "retired-flag-history"
+  },
+  "target": ""
+}

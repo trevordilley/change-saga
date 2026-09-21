@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "quality-decision-addresses-failed-visible",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:product-knowledge-decisions:landmark:quality-not-progress",
+  "to": "urn:change-saga:app:story:quality-evidence:criterion:failed-visible",
+  "scope": "self",
+  "rationale": "The quality decision keeps a failed result visible until a newer result supersedes it.",
+  "to_revision": "urn:change-saga:app:story:quality-evidence:revision:r2",
+  "from_content_digest": "sha256:0f18ee5397eecfde1073b3f569bde85ded07baa7d8f95c6220fd8cd7e8cd76db",
+  "state": "active",
+  "created_at": "2026-09-21T04:58:58.528772Z"
+}

@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
+  "version": 5,
+  "id": "r2",
+  "relation": "urn:change-saga:app:relation:overview-vocabulary-addresses-story",
+  "from_content_digest": "sha256:a9e259df959c3506a251bf6d74de74c7153e5083c549935c56e9312ebfde9f79",
+  "rationale": "The relation remains accurate after visual legibility edits; the requirement and semantic design node are unchanged.",
+  "created_at": "2026-09-21T04:57:28.19593Z"
+}

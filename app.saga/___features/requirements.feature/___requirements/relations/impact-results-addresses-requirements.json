@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "impact-results-addresses-requirements",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:evidence-traversal-map:landmark:impact-results",
+  "to": "urn:change-saga:app:story:evidence-traversal:criterion:requirement-impact",
+  "scope": "self",
+  "rationale": "The impact result lists requirements reached from the changed source.",
+  "to_revision": "urn:change-saga:app:story:evidence-traversal:revision:r2",
+  "from_content_digest": "sha256:764d7296c05733b8e34eda993e69331d6c03134c99f77ef88638fefaf805d70d",
+  "state": "active",
+  "created_at": "2026-09-21T04:54:40.812513Z"
+}

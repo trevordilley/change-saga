@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "id": "failure-and-recovery",
+  "label": "Failure and recovery",
+  "description": "Stale links and concurrent heads stay visible until an author deliberately repairs or reconciles them.",
+  "selector": {
+    "type": "heading",
+    "heading_id": "failure-and-recovery"
+  },
+  "target": ""
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "design-before-code-addresses-criterion",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:story-design-lifecycle:landmark:design-before-implementation",
+  "to": "urn:change-saga:app:story:design-intent:criterion:criterion-target",
+  "scope": "self",
+  "rationale": "The landmark itself demonstrates criterion-precise addressability.",
+  "to_revision": "urn:change-saga:app:story:design-intent:revision:r1",
+  "from_content_digest": "sha256:21523be7e02531506e66ac5185ec77f691ff3ca3818b5a4ad21653ceee1a74ab",
+  "state": "active",
+  "created_at": "2026-09-21T04:53:58.594681Z"
+}

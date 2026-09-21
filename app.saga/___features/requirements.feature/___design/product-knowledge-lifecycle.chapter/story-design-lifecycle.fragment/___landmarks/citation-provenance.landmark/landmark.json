@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "id": "citation-provenance",
+  "label": "Requirement provenance",
+  "description": "A citation identifies the authoritative source from which the story was derived.",
+  "selector": {
+    "type": "element",
+    "element_id": "citation-provenance"
+  },
+  "target": ""
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "living-app-knowledge-addresses-release",
+  "type": "addresses",
+  "from": "urn:change-saga:app:chapter:living-app-knowledge",
+  "to": "urn:change-saga:app:story:controlled-release",
+  "scope": "self",
+  "rationale": "The chapter defines release visibility across the living application model.",
+  "to_revision": "urn:change-saga:app:story:controlled-release:revision:r1",
+  "from_content_digest": "sha256:4446c0436859683e9c465452bfb8c3663ef183d39054e94e96a54f5a305eb518",
+  "state": "active",
+  "created_at": "2026-09-21T04:53:53.928912Z"
+}

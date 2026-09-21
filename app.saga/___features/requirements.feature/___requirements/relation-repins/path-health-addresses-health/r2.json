@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
+  "version": 5,
+  "id": "r2",
+  "relation": "urn:change-saga:app:relation:path-health-addresses-health",
+  "from_content_digest": "sha256:6a92c365e8ea9b27461dcf06f649890b93eb8d75beeb697fc0a9f2b81de2d24b",
+  "rationale": "The relation remains accurate after visual legibility edits; the requirement and semantic design node are unchanged.",
+  "created_at": "2026-09-21T04:57:28.306772Z"
+}

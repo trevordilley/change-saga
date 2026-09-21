@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
+  "version": 5,
+  "id": "r2",
+  "relation": "urn:change-saga:app:relation:retired-flag-addresses-history",
+  "from_content_digest": "sha256:6655616502747d8822edd5e14dbd3cc21a6b0f0d6080c5327c94cef1f84ceff2",
+  "rationale": "The relation remains accurate after visual legibility edits; the requirement and semantic design node are unchanged.",
+  "created_at": "2026-09-21T04:57:29.950762Z"
+}

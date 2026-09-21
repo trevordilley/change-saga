@@ -1,0 +1,8 @@
+{
+  "version": 2,
+  "id": "overview-vocabulary-model",
+  "title": "Overview and vocabulary model",
+  "media_type": "image/svg+xml",
+  "entrypoint": "image.svg",
+  "order": 10
+}

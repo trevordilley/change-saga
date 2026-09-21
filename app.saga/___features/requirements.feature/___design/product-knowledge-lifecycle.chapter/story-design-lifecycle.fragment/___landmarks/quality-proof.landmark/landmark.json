@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "id": "quality-proof",
+  "label": "Quality proof",
+  "description": "Test cases, run results, and policy states form a separate evidence axis; progress is not proof.",
+  "selector": {
+    "type": "element",
+    "element_id": "quality-proof"
+  },
+  "target": ""
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "path-health-addresses-health",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:evidence-traversal-map:landmark:path-health",
+  "to": "urn:change-saga:app:story:evidence-traversal:criterion:link-health",
+  "scope": "self",
+  "rationale": "The path-health legend preserves current, missing, and stale as distinct states.",
+  "to_revision": "urn:change-saga:app:story:evidence-traversal:revision:r2",
+  "from_content_digest": "sha256:c499b90d74ea89469d84420526f0357c5024162994e1e99b9217bc46a9864396",
+  "state": "active",
+  "created_at": "2026-09-21T04:54:40.487271Z"
+}

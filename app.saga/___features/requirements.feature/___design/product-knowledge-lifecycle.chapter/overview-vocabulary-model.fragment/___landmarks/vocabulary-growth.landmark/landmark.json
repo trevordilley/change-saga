@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "id": "vocabulary-growth",
+  "label": "Optional vocabulary growth",
+  "description": "Comparison may suggest newly introduced domain words without turning the suggestion into required debt.",
+  "selector": {
+    "type": "element",
+    "element_id": "vocabulary-growth"
+  },
+  "target": ""
+}

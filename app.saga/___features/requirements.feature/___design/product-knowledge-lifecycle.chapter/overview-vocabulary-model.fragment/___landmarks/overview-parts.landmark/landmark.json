@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "id": "overview-parts",
+  "label": "Overview parts",
+  "description": "The overview presents the application name, pitch, description, and vocabulary as one orientation surface.",
+  "selector": {
+    "type": "element",
+    "element_id": "overview-parts"
+  },
+  "target": ""
+}

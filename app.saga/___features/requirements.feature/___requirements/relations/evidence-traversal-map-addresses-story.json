@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "evidence-traversal-map-addresses-story",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:evidence-traversal-map",
+  "to": "urn:change-saga:app:story:evidence-traversal",
+  "scope": "self",
+  "rationale": "The map defines forward, reverse, health, and impact entry points for the evidence graph.",
+  "to_revision": "urn:change-saga:app:story:evidence-traversal:revision:r2",
+  "from_content_digest": "sha256:12e5c5d3dc08acdad20a4c42df29de5c8cf2969f33e8ce9cc7a8459e3308d029",
+  "state": "active",
+  "created_at": "2026-09-21T04:54:39.458179Z"
+}

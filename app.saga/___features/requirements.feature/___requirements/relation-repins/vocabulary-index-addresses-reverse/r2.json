@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
+  "version": 5,
+  "id": "r2",
+  "relation": "urn:change-saga:app:relation:vocabulary-index-addresses-reverse",
+  "from_content_digest": "sha256:8daf23d65bc7fe554a7cb141ffee91bf5a7fc55e9c91d32317a80c350f30c967",
+  "rationale": "The relation remains accurate after visual legibility edits; the requirement and semantic design node are unchanged.",
+  "created_at": "2026-09-21T04:57:32.080432Z"
+}

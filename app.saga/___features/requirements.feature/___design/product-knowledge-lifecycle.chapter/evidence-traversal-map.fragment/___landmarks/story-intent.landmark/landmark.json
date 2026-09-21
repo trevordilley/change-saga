@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "id": "story-intent",
+  "label": "Story intent",
+  "description": "The story carries the human outcome and connects persona context to criterion obligations.",
+  "selector": {
+    "type": "element",
+    "element_id": "story-intent"
+  },
+  "target": ""
+}

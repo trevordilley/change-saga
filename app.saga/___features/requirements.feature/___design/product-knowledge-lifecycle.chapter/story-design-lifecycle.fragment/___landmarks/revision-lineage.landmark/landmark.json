@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "id": "revision-lineage",
+  "label": "Revision lineage",
+  "description": "A story revision appends a new immutable definition while preserving every earlier revision.",
+  "selector": {
+    "type": "element",
+    "element_id": "revision-lineage"
+  },
+  "target": ""
+}

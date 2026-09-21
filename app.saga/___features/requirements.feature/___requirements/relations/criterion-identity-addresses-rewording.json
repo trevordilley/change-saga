@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "criterion-identity-addresses-rewording",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:story-design-lifecycle:landmark:criterion-identity",
+  "to": "urn:change-saga:app:story:evolve-product-knowledge:criterion:criterion-identity",
+  "scope": "self",
+  "rationale": "The criterion node separates wording changes from obligation identity.",
+  "to_revision": "urn:change-saga:app:story:evolve-product-knowledge:revision:r1",
+  "from_content_digest": "sha256:bdcd6474f9f86dca89c43628c70442681fdf420ceadcbb915c9455e8123d0841",
+  "state": "active",
+  "created_at": "2026-09-21T04:53:57.675017Z"
+}

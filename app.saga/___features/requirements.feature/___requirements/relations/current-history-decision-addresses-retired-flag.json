@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "current-history-decision-addresses-retired-flag",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:product-knowledge-decisions:landmark:current-and-history",
+  "to": "urn:change-saga:app:story:controlled-release:criterion:retired-history",
+  "scope": "self",
+  "rationale": "The decision keeps a retired flag in lifecycle history after it leaves the release view.",
+  "to_revision": "urn:change-saga:app:story:controlled-release:revision:r1",
+  "from_content_digest": "sha256:b11f79708df505923f45165ef3c10895cc9dff0b0b5bfc1aafdcd66400a882fc",
+  "state": "active",
+  "created_at": "2026-09-21T04:54:42.201721Z"
+}

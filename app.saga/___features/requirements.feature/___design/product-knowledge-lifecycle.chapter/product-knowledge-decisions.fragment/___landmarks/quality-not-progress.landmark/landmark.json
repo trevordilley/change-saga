@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "id": "quality-not-progress",
+  "label": "Quality is evidence",
+  "description": "Test definitions, run results, and policy states provide evidence that work progress cannot substitute for.",
+  "selector": {
+    "type": "heading",
+    "heading_id": "quality-not-progress"
+  },
+  "target": ""
+}

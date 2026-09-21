@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "id": "current-and-history",
+  "label": "Current truth and retained history",
+  "description": "Current accepted records lead the application view while non-current states remain available through history.",
+  "selector": {
+    "type": "heading",
+    "heading_id": "current-and-history"
+  },
+  "target": ""
+}

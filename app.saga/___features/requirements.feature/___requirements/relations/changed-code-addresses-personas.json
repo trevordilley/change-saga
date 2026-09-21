@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "changed-code-addresses-personas",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:evidence-traversal-map:landmark:changed-code-impact",
+  "to": "urn:change-saga:app:story:evidence-traversal:criterion:persona-impact",
+  "scope": "self",
+  "rationale": "Changed code starts reverse traversal toward people it may affect.",
+  "to_revision": "urn:change-saga:app:story:evidence-traversal:revision:r2",
+  "from_content_digest": "sha256:815717d89223a0cfa8a1514f6e50bbe9c80e1fa7664392f17f5065cd68cb2b96",
+  "state": "active",
+  "created_at": "2026-09-21T04:54:40.706117Z"
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "criterion-entry-addresses-design",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:evidence-traversal-map:landmark:criterion-entry",
+  "to": "urn:change-saga:app:story:evidence-traversal:criterion:criterion-design",
+  "scope": "self",
+  "rationale": "The criterion is the preferred focused entry point to its current design path.",
+  "to_revision": "urn:change-saga:app:story:evidence-traversal:revision:r2",
+  "from_content_digest": "sha256:d1f3caff96db1307715116dae558a4a69e78762c9957d4832ff278638d0a8305",
+  "state": "active",
+  "created_at": "2026-09-21T04:54:39.777114Z"
+}

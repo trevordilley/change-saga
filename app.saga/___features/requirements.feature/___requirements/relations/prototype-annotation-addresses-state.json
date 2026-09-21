@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "prototype-annotation-addresses-state",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:story-design-lifecycle:landmark:prototype-annotation",
+  "to": "urn:change-saga:app:story:prototype-feedback:criterion:annotated-state",
+  "scope": "self",
+  "rationale": "The annotation binds one identifiable prototype state to a story or criterion.",
+  "to_revision": "urn:change-saga:app:story:prototype-feedback:revision:r1",
+  "from_content_digest": "sha256:b137aba870ef785d84726f91fdc7bde35b7ed3f0edd8f7ab797b3c5a9e882412",
+  "state": "active",
+  "created_at": "2026-09-21T04:53:58.185104Z"
+}

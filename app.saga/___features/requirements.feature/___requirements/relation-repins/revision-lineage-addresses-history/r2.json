@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
+  "version": 5,
+  "id": "r2",
+  "relation": "urn:change-saga:app:relation:revision-lineage-addresses-history",
+  "from_content_digest": "sha256:0ba1e5f30a84553b6ef00a2bb313802cc4f1e1474e1b2ecffc6ebdfe0114da05",
+  "rationale": "The relation remains accurate after visual legibility edits; the requirement and semantic design node are unchanged.",
+  "created_at": "2026-09-21T04:57:30.156596Z"
+}

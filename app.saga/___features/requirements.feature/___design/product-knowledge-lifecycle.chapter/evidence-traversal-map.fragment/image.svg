@@ -1,0 +1,79 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" role="img" aria-labelledby="title desc">
+  <title id="title">Evidence traversal entry points</title>
+  <desc id="desc">A graph showing how people can enter from a persona, story, criterion, design, test, source location, or changed code; traverse current evidence in both directions; and see missing or stale paths and impact.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#7f91bc"/></marker>
+    <style>.bg{fill:#0b1020}.panel{fill:#151e34;stroke:#40557f;stroke-width:2}.blue{fill:#142d43;stroke:#58c6ff;stroke-width:3}.green{fill:#12342f;stroke:#5bd5aa;stroke-width:2}.gold{fill:#33291d;stroke:#f7bc65;stroke-width:2}.purple{fill:#2a2541;stroke:#b89bff;stroke-width:2}.warn{fill:#3b2830;stroke:#ff829d;stroke-width:2}.line{fill:none;stroke:#7f91bc;stroke-width:3;marker-end:url(#arrow)}.bi{fill:none;stroke:#7dcfb6;stroke-width:3;marker-start:url(#arrow);marker-end:url(#arrow)}.dash{fill:none;stroke:#a18bce;stroke-width:2;stroke-dasharray:8 7;marker-end:url(#arrow)}.t{font-family:Inter,system-ui,sans-serif;fill:#f5f7ff}.h{font-size:30px;font-weight:700}.sh{font-size:19px;font-weight:700}.b{font-size:15px}.small{font-size:13px;fill:#c6d0e7}.cap{font-size:12px;fill:#91a2c6;letter-spacing:.08em}.pill{fill:#233150;stroke:#667aa8;stroke-width:1.5}</style>
+  </defs>
+  <rect class="bg" width="1280" height="720" rx="28"/>
+  <text class="t h" x="52" y="60">Trace intent to evidence—and enter the graph from either end</text>
+  <text class="t small" x="52" y="88">The stored links stay adjacent; traversal derives the longer path and labels its health.</text>
+
+  <g id="persona-entry">
+    <rect class="purple" x="52" y="136" width="210" height="112" rx="20"/>
+    <text class="t cap" x="76" y="166">ENTRY: PERSON</text>
+    <text class="t sh" x="76" y="198">Persona</text>
+    <text class="t b" x="76" y="224">Who receives value?</text>
+  </g>
+  <path class="line" d="M262 192 H324"/>
+  <g id="story-intent">
+    <rect class="blue" x="324" y="136" width="210" height="112" rx="20"/>
+    <text class="t cap" x="348" y="166">HUMAN INTENT</text>
+    <text class="t sh" x="348" y="198">Story</text>
+    <text class="t b" x="348" y="224">Outcome and value</text>
+  </g>
+  <path class="line" d="M534 192 H596"/>
+  <g id="criterion-entry">
+    <rect class="gold" x="596" y="136" width="210" height="112" rx="20"/>
+    <text class="t cap" x="620" y="166">ENTRY: OBLIGATION</text>
+    <text class="t sh" x="620" y="198">Criterion</text>
+    <text class="t b" x="620" y="224">Smallest durable target</text>
+  </g>
+
+  <path class="line" d="M701 248 V316"/>
+  <g id="criterion-paths">
+    <rect class="panel" x="412" y="316" width="578" height="154" rx="22"/>
+    <text class="t cap" x="436" y="348">CURRENT EVIDENCE PATHS</text>
+    <rect class="blue" x="438" y="372" width="142" height="64" rx="14"/><text class="t sh" x="476" y="411">Design</text>
+    <rect class="green" x="630" y="372" width="142" height="64" rx="14"/><text class="t sh" x="680" y="411">Test</text>
+    <rect class="purple" x="822" y="372" width="142" height="64" rx="14"/><text class="t sh" x="870" y="411">Code</text>
+    <path class="bi" d="M580 404 H630"/><path class="bi" d="M772 404 H822"/>
+    <text class="t small" x="438" y="456">Missing paths remain visible.</text>
+  </g>
+
+  <g id="source-entry">
+    <rect class="purple" x="1022" y="136" width="210" height="112" rx="20"/>
+    <text class="t cap" x="1046" y="166">ENTRY: SOURCE</text>
+    <text class="t sh" x="1046" y="198">Location</text>
+    <text class="t small" x="1046" y="220">Requirements +</text>
+    <text class="t small" x="1046" y="240">explanations</text>
+  </g>
+  <path class="bi" d="M893 372 C930 290 1014 302 1080 248"/>
+
+  <g id="path-health">
+    <rect class="warn" x="52" y="316" width="304" height="154" rx="22"/>
+    <text class="t cap" x="76" y="348">PATH HEALTH</text>
+    <rect class="green" x="76" y="372" width="80" height="40" rx="12"/><text class="t small" x="92" y="397">current</text>
+    <rect class="panel" x="166" y="372" width="80" height="40" rx="12"/><text class="t small" x="181" y="397">missing</text>
+    <rect class="warn" x="256" y="372" width="76" height="40" rx="12"/><text class="t small" x="273" y="397">stale</text>
+    <text class="t small" x="76" y="442">Health belongs to each link,</text>
+    <text class="t small" x="76" y="462">not to a blanket score.</text>
+  </g>
+
+  <g id="changed-code-impact">
+    <rect class="gold" x="52" y="532" width="500" height="126" rx="20"/>
+    <text class="t cap" x="76" y="564">ENTRY: CHANGED CODE</text>
+    <text class="t sh" x="76" y="596">What might this change affect?</text>
+    <text class="t b" x="76" y="626">Reverse traversal → requirements → people</text>
+  </g>
+  <path class="line" d="M552 594 H624"/>
+  <g id="impact-results">
+    <rect class="blue" x="624" y="532" width="608" height="126" rx="20"/>
+    <text class="t cap" x="648" y="564">DERIVED IMPACT</text>
+    <rect class="pill" x="648" y="584" width="180" height="46" rx="13"/><text class="t b" x="677" y="612">Requirement impact</text>
+    <rect class="pill" x="850" y="584" width="166" height="46" rx="13"/><text class="t b" x="884" y="612">Persona impact</text>
+    <rect class="warn" x="1038" y="584" width="170" height="46" rx="13"/><text class="t b" x="1061" y="612">Persona gap</text>
+  </g>
+  <path class="dash" d="M701 470 C700 500 412 500 412 532"/>
+  <path class="dash" d="M1127 248 C1160 330 1170 490 1124 584"/>
+</svg>

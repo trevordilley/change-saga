@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "id": "flag-state",
+  "label": "Flag state",
+  "description": "The release overlay exposes on, off, and retired as distinct visible states.",
+  "selector": {
+    "type": "element",
+    "element_id": "flag-state"
+  },
+  "target": ""
+}

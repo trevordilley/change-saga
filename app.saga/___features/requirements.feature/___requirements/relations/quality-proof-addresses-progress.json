@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "quality-proof-addresses-progress",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:story-design-lifecycle:landmark:quality-proof",
+  "to": "urn:change-saga:app:story:quality-evidence:criterion:progress-not-proof",
+  "scope": "self",
+  "rationale": "The quality node explicitly separates work progress from evidence.",
+  "to_revision": "urn:change-saga:app:story:quality-evidence:revision:r2",
+  "from_content_digest": "sha256:1eeed0ac701f76fb4086b916a72800049b1a0774a2449bf5abff6d93ec626a2a",
+  "state": "active",
+  "created_at": "2026-09-21T04:53:59.072346Z"
+}

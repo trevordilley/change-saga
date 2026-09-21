@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
+  "version": 5,
+  "id": "r2",
+  "relation": "urn:change-saga:app:relation:impact-results-addresses-requirements",
+  "from_content_digest": "sha256:fc2cf00462ff2f52c95dc9aa9f5d7d68bebb460165f896dbee257eede6252ab9",
+  "rationale": "The relation remains accurate after visual legibility edits; the requirement and semantic design node are unchanged.",
+  "created_at": "2026-09-21T04:57:27.184561Z"
+}
