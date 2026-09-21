@@ -1,0 +1,21 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-run.schema.json",
+  "version": 5,
+  "id": "head-36b4a21b5d04",
+  "test_case": "urn:change-saga:app:test-case:criterion-specific-test-definitions",
+  "test_revision": "urn:change-saga:app:test-case:criterion-specific-test-definitions:revision:r1",
+  "parents": [],
+  "source": {
+    "repository": "https://github.com/trevordilley/change-saga.git",
+    "commit": "36b4a21b5d049f272a1f4a0cbbcfdf60ded126c5"
+  },
+  "result": "passed",
+  "summary": "Passed: ordered test definitions and direct criterion pins loaded, replayed, activated only when valid, and rejected invalid writes atomically.",
+  "command": "go test ./internal/quality ./internal/requirements -run \"^(TestAddTestCaseCreatesLoadablePackageAndReplays|TestInvalidFirstWriteLeavesQualityUnadopted|TestLifecycleTransitionsAndActivationRules|TestV5SagaWritesSchemaValidTestCaseVerifiesRelation)$\" -count=1",
+  "evidence": [
+    "urn:change-saga:app:test-case:criterion-specific-test-definitions:evidence:test-implementation",
+    "urn:change-saga:app:test-case:criterion-specific-test-definitions:evidence:implementation-under-test"
+  ],
+  "executed_at": "2026-09-21T06:00:36Z",
+  "request_id": "qpk-run-criterion-specific-test-definitions"
+}

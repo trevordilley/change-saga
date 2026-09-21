@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "implementation-under-test",
+  "test_case": "urn:change-saga:app:test-case:quality-run-currency",
+  "test_revision": "urn:change-saga:app:test-case:quality-run-currency:revision:r1",
+  "role": "implementation_under_test",
+  "code": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/quality/model.go",
+      "start": 128,
+      "end": 172,
+      "digest": "sha256:dcd014e05cfb459927f1dec6637ed6e3d41f4f6d4e08db40181d842c0f5900f1"
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/quality/mutation.go",
+      "start": 468,
+      "end": 531,
+      "digest": "sha256:875dc1cf2aa01cc3b27d8f488171dda3a01bdd0687d0b0919be6e6a4081d4d85"
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/readiness/readiness.go",
+      "start": 63,
+      "end": 107,
+      "digest": "sha256:6ce17b3819e9dfff5e989064d3f16f938de2d524fc0607cf0f6ad28f2c32bea7"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-09-21T05:59:45Z",
+  "request_id": "qpk-evidence-quality-run-currency-iut"
+}

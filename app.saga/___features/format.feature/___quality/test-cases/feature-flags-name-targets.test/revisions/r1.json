@@ -1,0 +1,35 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:app:test-case:feature-flags-name-targets",
+  "parents": [],
+  "title": "Show what each feature flag gates",
+  "coverage_kinds": [
+    "positive",
+    "negative",
+    "edge"
+  ],
+  "automation": "automated",
+  "preconditions": [],
+  "steps": [
+    {
+      "id": "create-story-flag",
+      "action": "Create an off feature flag that targets one documented story.",
+      "expected_result": "The flag loads with that story as its only target."
+    },
+    {
+      "id": "create-feature-flag",
+      "action": "Create an on feature flag that targets one documented feature.",
+      "expected_result": "The flag loads with that feature as its target and gates no story while on."
+    },
+    {
+      "id": "reject-missing-target",
+      "action": "Try to create a flag for a story that does not exist.",
+      "expected_result": "The mutation fails and no invalid flag is recorded."
+    }
+  ],
+  "expected_result": "Valid flags retain their story or feature targets, and a flag cannot target missing product knowledge.",
+  "created_at": "2026-09-21T05:55:08Z",
+  "request_id": "qpk-add-feature-flags-name-targets"
+}

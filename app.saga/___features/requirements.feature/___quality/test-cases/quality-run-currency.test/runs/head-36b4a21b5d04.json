@@ -1,0 +1,21 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-run.schema.json",
+  "version": 5,
+  "id": "head-36b4a21b5d04",
+  "test_case": "urn:change-saga:app:test-case:quality-run-currency",
+  "test_revision": "urn:change-saga:app:test-case:quality-run-currency:revision:r1",
+  "parents": [],
+  "source": {
+    "repository": "https://github.com/trevordilley/change-saga.git",
+    "commit": "36b4a21b5d049f272a1f4a0cbbcfdf60ded126c5"
+  },
+  "result": "passed",
+  "summary": "Passed: run revision and source pins determined currency, failures stayed visible, stale passes stopped covering, and progress was not proof.",
+  "command": "go test ./internal/quality ./internal/livingapp ./internal/readiness -run \"^(TestRunsAreImmutableEventsAndFailuresStayVisible|TestRevisingATestMakesItsPassingRunStale|TestQualityAxisReflectsTestCasesKindsRunsAndExceptions|TestEvaluateKeepsCoverageAxesIndependentAndProgressOutOfEvidence)$\" -count=1",
+  "evidence": [
+    "urn:change-saga:app:test-case:quality-run-currency:evidence:test-implementation",
+    "urn:change-saga:app:test-case:quality-run-currency:evidence:implementation-under-test"
+  ],
+  "executed_at": "2026-09-21T06:00:36Z",
+  "request_id": "qpk-run-quality-run-currency"
+}

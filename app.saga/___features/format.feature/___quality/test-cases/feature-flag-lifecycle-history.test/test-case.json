@@ -1,0 +1,7 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case.schema.json",
+  "version": 5,
+  "id": "feature-flag-lifecycle-history",
+  "created_at": "2026-09-21T05:55:08Z",
+  "request_id": "qpk-add-feature-flag-lifecycle-history"
+}

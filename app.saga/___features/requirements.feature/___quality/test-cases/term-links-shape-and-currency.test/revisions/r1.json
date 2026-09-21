@@ -1,0 +1,40 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:app:test-case:term-links-shape-and-currency",
+  "parents": [],
+  "title": "Follow vocabulary between language, requirements, and code",
+  "coverage_kinds": [
+    "positive",
+    "negative",
+    "edge"
+  ],
+  "automation": "automated",
+  "preconditions": [],
+  "steps": [
+    {
+      "id": "create-term",
+      "action": "Create a term with a name, definition, alias, story link, record link, and exact defining-code link.",
+      "expected_result": "The complete term loads as active and each linked endpoint can identify it."
+    },
+    {
+      "id": "browse-both-directions",
+      "action": "Open the term, its story, and its defining source location.",
+      "expected_result": "Each surface links back to the same stable term record."
+    },
+    {
+      "id": "rename-definition",
+      "action": "Rename the defining declaration without revising the term.",
+      "expected_result": "The term code link is marked stale and still shows the pinned definition."
+    },
+    {
+      "id": "repair-term",
+      "action": "Revise the term to the renamed declaration.",
+      "expected_result": "The new term revision is current and the code link is no longer stale."
+    }
+  ],
+  "expected_result": "A term preserves its name, definition, aliases, story and code links in both directions, and a changed defining line is visibly stale.",
+  "created_at": "2026-09-21T05:55:08Z",
+  "request_id": "qpk-add-term-links-shape-and-currency"
+}

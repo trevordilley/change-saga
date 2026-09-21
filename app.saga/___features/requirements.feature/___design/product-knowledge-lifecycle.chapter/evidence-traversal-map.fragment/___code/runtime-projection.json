@@ -1,0 +1,53 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/impact/impact.go",
+      "start": 206,
+      "end": 355,
+      "digest": "sha256:4259b8d0e70244edc52e8a63bb6542854260cc962b9f5656afa10b2cbd55622b",
+      "note": "Direct runtime evidence for forward criterion paths, reverse lookup, changed-code impact, and persona gaps shown by this map."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/livingapp/compose.go",
+      "start": 300,
+      "end": 318,
+      "digest": "sha256:c3e1eb548f82e77d09c3031c85c64e3cd5c91c01f4aa0de813d213f3e8b1bb16",
+      "note": "Direct runtime evidence for forward criterion paths, reverse lookup, changed-code impact, and persona gaps shown by this map."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/livingapp/compose.go",
+      "start": 350,
+      "end": 508,
+      "digest": "sha256:0bbfe9a47d9e6af6c9c4c6838bd0465cfb122a6ec5279ac7d9145333a48363e4",
+      "note": "Direct runtime evidence for forward criterion paths, reverse lookup, changed-code impact, and persona gaps shown by this map."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/livingapp/impact_graph.go",
+      "start": 22,
+      "end": 65,
+      "digest": "sha256:c58fba5a1fd79a9e3d6dba7aa4e96044ccdba9319e75d7ad45432d0e4c063539",
+      "note": "Direct runtime evidence for forward criterion paths, reverse lookup, changed-code impact, and persona gaps shown by this map."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/livingapp/session.go",
+      "start": 228,
+      "end": 246,
+      "digest": "sha256:e14d1dcff8f8d17cfac899f0cbe7bcda28c1d564d2f044dd1cc04f86f0b4029e",
+      "note": "Direct runtime evidence for forward criterion paths, reverse lookup, changed-code impact, and persona gaps shown by this map."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/livingapp/status_app.go",
+      "start": 117,
+      "end": 189,
+      "digest": "sha256:39e7906aa4448e177be29976841cb8afccc615478464e95afe9bdf7e4bcdae66",
+      "note": "Direct runtime evidence for forward criterion paths, reverse lookup, changed-code impact, and persona gaps shown by this map."
+    }
+  ]
+}

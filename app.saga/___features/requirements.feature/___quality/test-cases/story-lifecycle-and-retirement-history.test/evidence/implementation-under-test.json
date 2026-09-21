@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "implementation-under-test",
+  "test_case": "urn:change-saga:app:test-case:story-lifecycle-and-retirement-history",
+  "test_revision": "urn:change-saga:app:test-case:story-lifecycle-and-retirement-history:revision:r1",
+  "role": "implementation_under_test",
+  "code": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/requirements/mutation.go",
+      "start": 107,
+      "end": 168,
+      "digest": "sha256:fc2666c670f010534acac52d6c2e61648d79e29ccb259c07a3d0acaf455bdf4c"
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/requirements/mutation.go",
+      "start": 228,
+      "end": 367,
+      "digest": "sha256:a0acadec9c7037903884c57dc69137798a3e2a1986109962ab36588e3f97ca81"
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/requirements/mutation.go",
+      "start": 368,
+      "end": 464,
+      "digest": "sha256:a9ce34e5cf177cc35a1991907bca433e4a309ff1d4bea8809a75cd3e87696136"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-09-21T05:59:45Z",
+  "request_id": "qpk-evidence-story-lifecycle-and-retirement-history-iut"
+}

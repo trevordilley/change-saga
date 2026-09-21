@@ -1,0 +1,29 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "implementation-under-test",
+  "test_case": "urn:change-saga:app:test-case:optional-vocabulary-suggestions",
+  "test_revision": "urn:change-saga:app:test-case:optional-vocabulary-suggestions:revision:r1",
+  "role": "implementation_under_test",
+  "code": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/livingapp/status_terms.go",
+      "start": 181,
+      "end": 273,
+      "digest": "sha256:c73e748ef64f4f69f7844929a519e493eefb04b1965ca386194a5eeb5ba16dba"
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/vocabulary/vocabulary.go",
+      "start": 57,
+      "end": 89,
+      "digest": "sha256:c4f719ca7ef22de71f9281e447b54222b429122b9cb2d14358d18c9e6258c402"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-09-21T05:59:45Z",
+  "request_id": "qpk-evidence-optional-vocabulary-suggestions-iut"
+}

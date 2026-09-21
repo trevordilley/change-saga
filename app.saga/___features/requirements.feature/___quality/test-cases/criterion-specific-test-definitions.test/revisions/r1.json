@@ -1,0 +1,35 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:app:test-case:criterion-specific-test-definitions",
+  "parents": [],
+  "title": "Define criterion-specific tests with ordered outcomes",
+  "coverage_kinds": [
+    "positive",
+    "negative",
+    "edge"
+  ],
+  "automation": "automated",
+  "preconditions": [],
+  "steps": [
+    {
+      "id": "add-definition",
+      "action": "Add a test with stable step IDs, ordered actions and pass-or-fail results, declared coverage kinds, and one overall expected result.",
+      "expected_result": "The complete r1 definition loads unchanged and replay creates no duplicate."
+    },
+    {
+      "id": "link-criterion",
+      "action": "Add a direct verifies relation from the test revision to one criterion revision.",
+      "expected_result": "The relation is schema-valid and pins both current revisions."
+    },
+    {
+      "id": "reject-invalid-definition",
+      "action": "Try to add duplicate step IDs or activate a stepless definition.",
+      "expected_result": "The mutation fails and writes no partial quality package."
+    }
+  ],
+  "expected_result": "Test definitions preserve stable identity, ordered nonblank steps, one overall expected result, and direct criterion pins without partial invalid writes.",
+  "created_at": "2026-09-21T05:55:09Z",
+  "request_id": "qpk-add-criterion-specific-test-definitions"
+}

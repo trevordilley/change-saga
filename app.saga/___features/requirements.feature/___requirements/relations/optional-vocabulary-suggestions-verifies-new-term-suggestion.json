@@ -1,0 +1,15 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "optional-vocabulary-suggestions-verifies-new-term-suggestion",
+  "type": "verifies",
+  "from": "urn:change-saga:app:test-case:optional-vocabulary-suggestions",
+  "to": "urn:change-saga:app:story:overview-and-terms:criterion:new-term-suggestion",
+  "scope": "self",
+  "rationale": "The optional-vocabulary-suggestions case directly checks the new-term-suggestion acceptance obligation.",
+  "from_revision": "urn:change-saga:app:test-case:optional-vocabulary-suggestions:revision:r1",
+  "to_revision": "urn:change-saga:app:story:overview-and-terms:revision:r4",
+  "state": "active",
+  "created_at": "2026-09-21T05:55:45.436178Z",
+  "request_id": "qpk-link-optional-vocabulary-suggestions-new-term-suggestion"
+}

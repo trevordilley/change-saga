@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/livingapp/status_app.go",
+      "start": 82,
+      "end": 249,
+      "digest": "sha256:cb52c65003ba5089018877bcfa6188d0c27801f47653497c1e3d88c08f31c640",
+      "note": "Direct runtime evidence for feature flags and the current application projection shown by this topology."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/requirements/app_mutation.go",
+      "start": 260,
+      "end": 315,
+      "digest": "sha256:2b1031acc945eef5ea2a31616dccd9661cb5a739731ceb8b2bf93b71f01e715f",
+      "note": "Direct runtime evidence for feature flags and the current application projection shown by this topology."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/requirements/app_mutation.go",
+      "start": 364,
+      "end": 409,
+      "digest": "sha256:78e39ef0ff8fb7b7e634c1c68777b6e9565e994d2bb82c345520fde6c89229f9",
+      "note": "Direct runtime evidence for feature flags and the current application projection shown by this topology."
+    }
+  ]
+}

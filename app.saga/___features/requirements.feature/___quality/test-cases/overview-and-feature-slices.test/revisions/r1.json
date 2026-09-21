@@ -1,0 +1,34 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:app:test-case:overview-and-feature-slices",
+  "parents": [],
+  "title": "Open current app knowledge from the overview",
+  "coverage_kinds": [
+    "positive",
+    "edge"
+  ],
+  "automation": "automated",
+  "preconditions": [],
+  "steps": [
+    {
+      "id": "open-overview",
+      "action": "Open the application overview.",
+      "expected_result": "Name, pitch, description, vocabulary, and the other application-level parts are visible or state an explicit gap."
+    },
+    {
+      "id": "open-feature",
+      "action": "Open one feature from the overview navigation.",
+      "expected_result": "That feature exposes Product, Design, Quality, and Implementation while other features stay collapsed."
+    },
+    {
+      "id": "inspect-current-index",
+      "action": "Retire a vocabulary record and inspect the current reverse index.",
+      "expected_result": "The retired record remains loadable in history but no longer appears as current naming knowledge."
+    }
+  ],
+  "expected_result": "The overview presents purpose and vocabulary, every feature opens its four durable slices, and retired knowledge is omitted from current indexes without losing its record.",
+  "created_at": "2026-09-21T05:55:08Z",
+  "request_id": "qpk-add-overview-and-feature-slices"
+}

@@ -1,0 +1,10 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-event.schema.json",
+  "version": 5,
+  "id": "proposed",
+  "test_case": "urn:change-saga:app:test-case:feature-flags-name-targets",
+  "parents": [],
+  "state": "proposed",
+  "created_at": "2026-09-21T05:55:08Z",
+  "request_id": "qpk-add-feature-flags-name-targets"
+}

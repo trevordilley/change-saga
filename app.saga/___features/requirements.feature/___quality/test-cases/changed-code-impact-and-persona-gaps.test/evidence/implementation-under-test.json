@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "implementation-under-test",
+  "test_case": "urn:change-saga:app:test-case:changed-code-impact-and-persona-gaps",
+  "test_revision": "urn:change-saga:app:test-case:changed-code-impact-and-persona-gaps:revision:r1",
+  "role": "implementation_under_test",
+  "code": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/livingapp/impact_graph.go",
+      "start": 22,
+      "end": 65,
+      "digest": "sha256:c58fba5a1fd79a9e3d6dba7aa4e96044ccdba9319e75d7ad45432d0e4c063539"
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/impact/impact.go",
+      "start": 206,
+      "end": 355,
+      "digest": "sha256:4259b8d0e70244edc52e8a63bb6542854260cc962b9f5656afa10b2cbd55622b"
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/livingapp/status_app.go",
+      "start": 117,
+      "end": 189,
+      "digest": "sha256:39e7906aa4448e177be29976841cb8afccc615478464e95afe9bdf7e4bcdae66"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-09-21T05:59:45Z",
+  "request_id": "qpk-evidence-changed-code-impact-and-persona-gaps-iut"
+}

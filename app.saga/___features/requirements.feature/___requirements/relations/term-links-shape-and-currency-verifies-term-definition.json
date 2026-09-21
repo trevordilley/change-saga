@@ -1,0 +1,15 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "term-links-shape-and-currency-verifies-term-definition",
+  "type": "verifies",
+  "from": "urn:change-saga:app:test-case:term-links-shape-and-currency",
+  "to": "urn:change-saga:app:story:overview-and-terms:criterion:term-definition",
+  "scope": "self",
+  "rationale": "The term-links-shape-and-currency case directly checks the term-definition acceptance obligation.",
+  "from_revision": "urn:change-saga:app:test-case:term-links-shape-and-currency:revision:r1",
+  "to_revision": "urn:change-saga:app:story:overview-and-terms:revision:r4",
+  "state": "active",
+  "created_at": "2026-09-21T05:55:44.069501Z",
+  "request_id": "qpk-link-term-links-shape-and-currency-term-definition"
+}

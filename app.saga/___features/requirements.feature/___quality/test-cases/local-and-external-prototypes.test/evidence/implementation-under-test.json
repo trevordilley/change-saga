@@ -1,0 +1,29 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "implementation-under-test",
+  "test_case": "urn:change-saga:app:test-case:local-and-external-prototypes",
+  "test_revision": "urn:change-saga:app:test-case:local-and-external-prototypes:revision:r1",
+  "role": "implementation_under_test",
+  "code": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/prototypes/mutation.go",
+      "start": 19,
+      "end": 95,
+      "digest": "sha256:1b010bebf44174645e495404b7c584f757bf76eb7a52b021629373991d76ec3c"
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/prototypes/mutation.go",
+      "start": 100,
+      "end": 170,
+      "digest": "sha256:7d48938ebff52b696d4f40723b7e280392a0d0b63763f602e736de6ddef06865"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-09-21T05:59:45Z",
+  "request_id": "qpk-evidence-local-and-external-prototypes-iut"
+}

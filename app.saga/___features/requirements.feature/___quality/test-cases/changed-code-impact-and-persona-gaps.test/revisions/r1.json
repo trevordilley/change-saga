@@ -1,0 +1,35 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:app:test-case:changed-code-impact-and-persona-gaps",
+  "parents": [],
+  "title": "Show who and what changed code may affect",
+  "coverage_kinds": [
+    "positive",
+    "negative",
+    "edge"
+  ],
+  "automation": "automated",
+  "preconditions": [],
+  "steps": [
+    {
+      "id": "change-owned-code",
+      "action": "Compare a source change inside code owned by a requirement Item and test case.",
+      "expected_result": "The impact result lists the implicated criterion, test case, story, and active persona reached through recorded edges."
+    },
+    {
+      "id": "change-unowned-code",
+      "action": "Compare a source change with no recorded owner.",
+      "expected_result": "The change remains visible as unowned and no requirement or persona is fabricated."
+    },
+    {
+      "id": "inspect-persona-gap",
+      "action": "Project an active persona that no accepted story serves.",
+      "expected_result": "The persona is reported as a visible nonblocking gap."
+    }
+  ],
+  "expected_result": "Changed owned code names implicated requirements and personas, unowned code remains visible, and an active persona without an accepted story is a gap.",
+  "created_at": "2026-09-21T05:55:09Z",
+  "request_id": "qpk-add-changed-code-impact-and-persona-gaps"
+}

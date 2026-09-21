@@ -1,0 +1,43 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "implementation-under-test",
+  "test_case": "urn:change-saga:app:test-case:quality-policy-states-and-exclusions",
+  "test_revision": "urn:change-saga:app:test-case:quality-policy-states-and-exclusions:revision:r1",
+  "role": "implementation_under_test",
+  "code": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/quality/model.go",
+      "start": 174,
+      "end": 190,
+      "digest": "sha256:65e605681c2d0de40c685bf128c93aa2d57143ffb5c1b261660736299d1d98c0"
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/quality/mutation.go",
+      "start": 293,
+      "end": 368,
+      "digest": "sha256:bd2ff6bc9e545cc5f40cd9119cf62231ea8ca3b57f7971c33b15f637c433cafc"
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/coverage/axes.go",
+      "start": 90,
+      "end": 103,
+      "digest": "sha256:2b4bc3a033af7716bf3d706af015e45431195c4319a732ca1ba05f7f9674863b"
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/coverage/axes.go",
+      "start": 286,
+      "end": 344,
+      "digest": "sha256:5955d5147b4b9f2d3e9450fcbbb32c77432ac641ae1613179cda640ba46fbf70"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-09-21T05:59:45Z",
+  "request_id": "qpk-evidence-quality-policy-states-and-exclusions-iut"
+}

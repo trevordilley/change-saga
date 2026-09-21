@@ -1,0 +1,15 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "move-story-with-links-verifies-move-story",
+  "type": "verifies",
+  "from": "urn:change-saga:app:test-case:move-story-with-links",
+  "to": "urn:change-saga:app:story:evolve-product-knowledge:criterion:move-story",
+  "scope": "self",
+  "rationale": "The move-story-with-links case directly checks the move-story acceptance obligation.",
+  "from_revision": "urn:change-saga:app:test-case:move-story-with-links:revision:r1",
+  "to_revision": "urn:change-saga:app:story:evolve-product-knowledge:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-21T05:55:47.044631Z",
+  "request_id": "qpk-link-move-story-with-links-move-story"
+}

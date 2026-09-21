@@ -1,0 +1,57 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "test-implementation",
+  "test_case": "urn:change-saga:app:test-case:design-links-before-code",
+  "test_revision": "urn:change-saga:app:test-case:design-links-before-code:revision:r1",
+  "role": "test_implementation",
+  "code": [
+    {
+      "commit": "36b4a21b5d049f272a1f4a0cbbcfdf60ded126c5",
+      "path": "internal/requirements/requirements_test.go",
+      "start": 329,
+      "end": 382,
+      "digest": "sha256:b0740fde65d7b091873e34a62c6e8ace672e2cdee3b9778bec51fb79231c946a"
+    },
+    {
+      "commit": "36b4a21b5d049f272a1f4a0cbbcfdf60ded126c5",
+      "path": "internal/requirements/relation_carry_forward_test.go",
+      "start": 15,
+      "end": 58,
+      "digest": "sha256:10a538dcc6d6497ac404fe8de910199dcc78cdc01f920e0b8200693a8d676e1b"
+    },
+    {
+      "commit": "36b4a21b5d049f272a1f4a0cbbcfdf60ded126c5",
+      "path": "internal/requirements/relation_carry_forward_test.go",
+      "start": 62,
+      "end": 88,
+      "digest": "sha256:8d2d2c87101fba13079425f2160849a26a748ae86e9549270662f6c214eb40d5"
+    },
+    {
+      "commit": "36b4a21b5d049f272a1f4a0cbbcfdf60ded126c5",
+      "path": "internal/livingapp/session_test.go",
+      "start": 151,
+      "end": 175,
+      "digest": "sha256:020ba370c55055dfa548b21e5b877cca65c62220ccce2b5dff62a3115130eab5"
+    },
+    {
+      "commit": "36b4a21b5d049f272a1f4a0cbbcfdf60ded126c5",
+      "path": "internal/livingapp/session_test.go",
+      "start": 177,
+      "end": 198,
+      "digest": "sha256:d1c2cc6939ac65fce95cc5373582f29943cfbe64b0b4fdc85f34f3a20663ffc6"
+    },
+    {
+      "commit": "36b4a21b5d049f272a1f4a0cbbcfdf60ded126c5",
+      "path": "internal/server/dogfood_test.go",
+      "start": 288,
+      "end": 338,
+      "digest": "sha256:4e25ab4150237e533c40ff553298bd964d5c5c428590402292025ece50407800"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-09-21T05:59:45Z",
+  "request_id": "qpk-evidence-design-links-before-code-tests"
+}

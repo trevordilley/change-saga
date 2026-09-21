@@ -1,0 +1,40 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:app:test-case:design-links-before-code",
+  "parents": [],
+  "title": "Navigate reviewed design before code and detect stale intent",
+  "coverage_kinds": [
+    "positive",
+    "negative",
+    "edge"
+  ],
+  "automation": "automated",
+  "preconditions": [],
+  "steps": [
+    {
+      "id": "link-design",
+      "action": "Add a pinned design relation from an addressable design element to one criterion before any implementation evidence exists.",
+      "expected_result": "The relation is current and identifies the criterion it addresses."
+    },
+    {
+      "id": "navigate-both-directions",
+      "action": "Open the linked requirement from design and the linked design from the requirement.",
+      "expected_result": "Both surfaces reach the same pinned relation and target."
+    },
+    {
+      "id": "change-unrelated-intent",
+      "action": "Revise unrelated story context without changing the criterion statement.",
+      "expected_result": "The criterion relation remains current with carried-forward context reported."
+    },
+    {
+      "id": "change-linked-intent",
+      "action": "Change the criterion statement or linked design content.",
+      "expected_result": "The relation becomes stale and names the pin that changed."
+    }
+  ],
+  "expected_result": "UX and technical design link precisely and bidirectionally to criteria before code exists, and changed intent or design content makes the path stale.",
+  "created_at": "2026-09-21T05:55:09Z",
+  "request_id": "qpk-add-design-links-before-code"
+}

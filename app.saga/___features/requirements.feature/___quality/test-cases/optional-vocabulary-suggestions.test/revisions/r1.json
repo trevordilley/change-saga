@@ -1,0 +1,35 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:app:test-case:optional-vocabulary-suggestions",
+  "parents": [],
+  "title": "Suggest new domain vocabulary without making it a gate",
+  "coverage_kinds": [
+    "positive",
+    "negative",
+    "edge"
+  ],
+  "automation": "automated",
+  "preconditions": [],
+  "steps": [
+    {
+      "id": "add-declaration",
+      "action": "Compare code that adds a new named domain declaration plus an unrelated constant.",
+      "expected_result": "Only the domain declaration is suggested as optional vocabulary growth."
+    },
+    {
+      "id": "record-term",
+      "action": "Record a term that names the suggested declaration.",
+      "expected_result": "The vocabulary suggestion disappears."
+    },
+    {
+      "id": "rename-known-term",
+      "action": "Compare a rename of a declaration already named by a term.",
+      "expected_result": "The existing term becomes stale and no duplicate new-term suggestion appears."
+    }
+  ],
+  "expected_result": "Only genuinely new named domain declarations are suggested, and recording or renaming known vocabulary removes the suggestion.",
+  "created_at": "2026-09-21T05:55:08Z",
+  "request_id": "qpk-add-optional-vocabulary-suggestions"
+}
