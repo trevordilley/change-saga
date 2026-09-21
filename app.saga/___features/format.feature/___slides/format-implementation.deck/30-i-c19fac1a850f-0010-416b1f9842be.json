@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "release-projection",
+  "slide": "release-visibility",
+  "rank": 10,
+  "kind": "node",
+  "label": "Release availability projection",
+  "description": "Implements the off-visible landmark by expanding feature and story gates into an explicit implemented-not-enabled state while retaining documentation.",
+  "selector": {
+    "type": "element",
+    "element_id": "release-projection"
+  }
+}

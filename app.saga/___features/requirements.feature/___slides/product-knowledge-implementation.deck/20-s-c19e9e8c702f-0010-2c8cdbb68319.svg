@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" font-family="Inter,Helvetica,Arial,sans-serif">
+  <rect width="1280" height="720" fill="#f8fafc"/>
+  <text x="48" y="56" font-size="29" font-weight="700" fill="#0f172a">Intent evolves through independent, pinned graphs</text>
+  <text x="48" y="89" font-size="16" fill="#475569">Definitions, lifecycle, prototypes, and design relations retain history and expose disagreement or staleness.</text>
+  <g id="story-history">
+    <rect x="48" y="132" width="360" height="230" rx="18" fill="#eef2ff" stroke="#4f46e5" stroke-width="2"/>
+    <text x="72" y="172" font-size="20" font-weight="700" fill="#312e81">Story history</text>
+    <text x="72" y="208" font-size="15" fill="#334155">complete immutable revisions</text>
+    <text x="72" y="237" font-size="15" fill="#334155">concurrent heads remain visible</text>
+    <text x="72" y="266" font-size="15" fill="#334155">append-only lifecycle events</text>
+    <text x="72" y="295" font-size="15" fill="#334155">criterion identity + citations retained</text>
+    <text x="72" y="332" font-size="13" fill="#64748b">revision-lineage · concurrent-revisions · story-lifecycle</text>
+  </g>
+  <g id="stable-move">
+    <rect x="452" y="132" width="360" height="230" rx="18" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+    <text x="476" y="172" font-size="20" font-weight="700" fill="#1e3a8a">Stable feature move</text>
+    <rect x="490" y="210" width="112" height="66" rx="10" fill="#fff" stroke="#60a5fa"/>
+    <text x="546" y="250" text-anchor="middle" font-size="15" fill="#1e3a8a">feature A</text>
+    <path d="M612 243 H664" stroke="#2563eb" stroke-width="3" marker-end="url(#blueArrow)"/>
+    <rect x="674" y="210" width="100" height="66" rx="10" fill="#fff" stroke="#60a5fa"/>
+    <text x="724" y="250" text-anchor="middle" font-size="15" fill="#1e3a8a">feature B</text>
+    <text x="632" y="310" text-anchor="middle" font-size="15" fill="#334155">same story URN and relations</text>
+    <text x="476" y="337" font-size="13" fill="#64748b">Landmark: stable-story-move</text>
+  </g>
+  <g id="design-relations">
+    <rect x="856" y="132" width="376" height="230" rx="18" fill="#fff7ed" stroke="#ea580c" stroke-width="2"/>
+    <text x="880" y="172" font-size="20" font-weight="700" fill="#9a3412">Pinned design relation</text>
+    <text x="880" y="210" font-size="15" fill="#334155">design digest → criterion revision</text>
+    <text x="880" y="244" font-size="15" fill="#334155">precise addressable endpoint</text>
+    <text x="880" y="278" font-size="15" fill="#334155">endpoint change → stale, not inherited</text>
+    <text x="880" y="318" font-size="13" fill="#64748b">design-before-implementation · design-navigation</text>
+  </g>
+  <g id="prototypes">
+    <rect x="48" y="410" width="560" height="230" rx="18" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+    <text x="72" y="450" font-size="20" font-weight="700" fill="#064e3b">Prototype inputs</text>
+    <rect x="84" y="488" width="208" height="76" rx="11" fill="#fff" stroke="#34d399"/>
+    <text x="188" y="520" text-anchor="middle" font-size="16" font-weight="600" fill="#064e3b">self-contained HTML</text>
+    <text x="188" y="545" text-anchor="middle" font-size="13" fill="#475569">digest-verified package</text>
+    <rect x="340" y="488" width="224" height="76" rx="11" fill="#fff" stroke="#34d399"/>
+    <text x="452" y="520" text-anchor="middle" font-size="16" font-weight="600" fill="#064e3b">supported external link</text>
+    <text x="452" y="545" text-anchor="middle" font-size="13" fill="#475569">allowlisted provider</text>
+    <text x="72" y="610" font-size="13" fill="#64748b">Landmark: prototype-loop</text>
+  </g>
+  <g id="prototype-currency">
+    <rect x="652" y="410" width="580" height="230" rx="18" fill="#fdf4ff" stroke="#c026d3" stroke-width="2"/>
+    <text x="676" y="450" font-size="20" font-weight="700" fill="#86198f">Annotation currency</text>
+    <text x="676" y="489" font-size="15" fill="#334155">one prototype state ⇄ one story or criterion revision</text>
+    <line x1="676" y1="514" x2="1200" y2="514" stroke="#e879f9"/>
+    <text x="676" y="548" font-size="15" fill="#334155">prototype changes → stale</text>
+    <text x="930" y="548" font-size="15" fill="#334155">requirement changes → stale</text>
+    <text x="676" y="579" font-size="15" fill="#334155">unlinked prototype → optional growth</text>
+    <text x="676" y="610" font-size="13" fill="#64748b">prototype-annotation · design-currency · prototype-discovery</text>
+  </g>
+  <defs><marker id="blueArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#2563eb"/></marker></defs>
+</svg>

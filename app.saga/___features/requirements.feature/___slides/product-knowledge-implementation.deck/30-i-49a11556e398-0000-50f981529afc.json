@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "test-definitions",
+  "slide": "quality-evidence-runtime",
+  "rank": 0,
+  "kind": "region",
+  "label": "Criterion-specific test definitions",
+  "description": "Implements quality-proof for criterion links, stable ordered steps, one expected result, and append-only test definition history.",
+  "selector": {
+    "type": "element",
+    "element_id": "test-definitions"
+  }
+}

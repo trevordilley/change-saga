@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "impl-prototype-currency-explains-prototype-change-stale",
+  "type": "explains",
+  "from": "urn:change-saga:app:slide:knowledge-lifecycle:item:prototype-currency",
+  "to": "urn:change-saga:app:story:prototype-feedback:criterion:prototype-change-stale",
+  "scope": "self",
+  "rationale": "The prototype-currency implementation realizes the prototype-change-stale obligation represented by the design-currency design landmark.",
+  "to_revision": "urn:change-saga:app:story:prototype-feedback:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-21T05:14:05.79037Z"
+}

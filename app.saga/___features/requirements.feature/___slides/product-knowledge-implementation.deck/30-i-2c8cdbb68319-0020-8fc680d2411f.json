@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "prototypes",
+  "slide": "knowledge-lifecycle",
+  "rank": 20,
+  "kind": "region",
+  "label": "Local and external prototypes",
+  "description": "Implements prototype-loop through digest-verified self-contained HTML packages and allowlisted external provider links.",
+  "selector": {
+    "type": "element",
+    "element_id": "prototypes"
+  }
+}

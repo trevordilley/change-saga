@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" font-family="Inter,Helvetica,Arial,sans-serif">
+  <rect width="1280" height="720" fill="#f8fafc"/>
+  <text x="52" y="58" font-size="30" font-weight="700" fill="#0f172a">Overview and vocabulary are one navigable projection</text>
+  <text x="52" y="92" font-size="17" fill="#475569">The app model, term graph, and source comparison are composed without copying product knowledge.</text>
+  <g id="overview-projection">
+    <rect x="56" y="146" width="350" height="430" rx="20" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+    <text x="82" y="190" font-size="22" font-weight="700" fill="#1e3a8a">Overview projection</text>
+    <text x="82" y="226" font-size="16" fill="#334155">• application name</text>
+    <text x="82" y="258" font-size="16" fill="#334155">• pitch + description</text>
+    <text x="82" y="290" font-size="16" fill="#334155">• active terms</text>
+    <text x="82" y="322" font-size="16" fill="#334155">• durable feature slices</text>
+    <line x1="82" y1="350" x2="380" y2="350" stroke="#93c5fd"/>
+    <text x="82" y="388" font-size="15" fill="#475569">Current records lead.</text>
+    <text x="82" y="416" font-size="15" fill="#475569">Retired records remain in history.</text>
+    <text x="82" y="468" font-size="14" font-weight="600" fill="#1e3a8a">Landmarks</text>
+    <text x="82" y="495" font-size="14" fill="#475569">overview-parts · feature-navigation</text>
+    <text x="82" y="520" font-size="14" fill="#475569">current-and-history</text>
+  </g>
+  <g id="term-index">
+    <rect x="462" y="146" width="350" height="430" rx="20" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2"/>
+    <text x="488" y="190" font-size="22" font-weight="700" fill="#4c1d95">Bidirectional term index</text>
+    <rect x="496" y="232" width="282" height="112" rx="12" fill="#fff" stroke="#a78bfa"/>
+    <text x="637" y="265" text-anchor="middle" font-size="17" font-weight="600" fill="#4c1d95">term revision</text>
+    <text x="637" y="292" text-anchor="middle" font-size="14" fill="#475569">name · definition · aliases</text>
+    <text x="637" y="318" text-anchor="middle" font-size="14" fill="#475569">stories · records · exact code</text>
+    <path d="M540 378 H734" stroke="#7c3aed" stroke-width="3" marker-start="url(#arrowPurple)" marker-end="url(#arrowPurple)"/>
+    <text x="637" y="414" text-anchor="middle" font-size="15" fill="#475569">story and source surfaces</text>
+    <text x="488" y="468" font-size="14" font-weight="600" fill="#4c1d95">Landmarks</text>
+    <text x="488" y="495" font-size="14" fill="#475569">term-shape · bidirectional-links</text>
+    <text x="488" y="520" font-size="14" fill="#475569">vocabulary-currency</text>
+  </g>
+  <g id="vocabulary-suggestions">
+    <rect x="868" y="146" width="350" height="430" rx="20" fill="#ecfdf5" stroke="#059669" stroke-width="2"/>
+    <text x="894" y="190" font-size="22" font-weight="700" fill="#064e3b">Optional growth</text>
+    <text x="894" y="232" font-size="15" fill="#334155">Compare added source lines.</text>
+    <path d="M1043 258 V312" stroke="#059669" stroke-width="3" marker-end="url(#arrowGreen)"/>
+    <rect x="902" y="320" width="282" height="94" rx="12" fill="#fff" stroke="#34d399"/>
+    <text x="1043" y="353" text-anchor="middle" font-size="16" font-weight="600" fill="#064e3b">detect named declarations</text>
+    <text x="1043" y="380" text-anchor="middle" font-size="14" fill="#475569">exclude known, renamed, referenced</text>
+    <path d="M1043 424 V466" stroke="#059669" stroke-width="3" marker-end="url(#arrowGreen)"/>
+    <text x="1043" y="504" text-anchor="middle" font-size="16" fill="#334155">suggest; never require</text>
+    <text x="894" y="544" font-size="14" fill="#475569">Landmark: vocabulary-growth</text>
+  </g>
+  <text x="52" y="650" font-size="16" fill="#64748b">A stale defining-code pin is shown as stale; it is never silently accepted as current vocabulary.</text>
+  <defs>
+    <marker id="arrowPurple" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="#7c3aed"/></marker>
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#059669"/></marker>
+  </defs>
+</svg>

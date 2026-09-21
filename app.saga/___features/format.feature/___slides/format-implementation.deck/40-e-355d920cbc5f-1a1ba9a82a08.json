@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/requirements/app_mutation.go",
+      "start": 260,
+      "end": 315,
+      "digest": "sha256:2b1031acc945eef5ea2a31616dccd9661cb5a739731ceb8b2bf93b71f01e715f",
+      "note": "Creates flag definitions with explicit targets and appends lifecycle events without rewriting history; the focused test covers story and feature gates."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/requirements/app_mutation.go",
+      "start": 364,
+      "end": 409,
+      "digest": "sha256:78e39ef0ff8fb7b7e634c1c68777b6e9565e994d2bb82c345520fde6c89229f9",
+      "note": "Creates flag definitions with explicit targets and appends lifecycle events without rewriting history; the focused test covers story and feature gates."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/requirements/app_records_test.go",
+      "start": 136,
+      "end": 172,
+      "digest": "sha256:c4bde9a489550f11cf3ee1b05372fa5cc2ad35257b65d41c11802ba913b9b634",
+      "note": "Creates flag definitions with explicit targets and appends lifecycle events without rewriting history; the focused test covers story and feature gates."
+    }
+  ]
+}

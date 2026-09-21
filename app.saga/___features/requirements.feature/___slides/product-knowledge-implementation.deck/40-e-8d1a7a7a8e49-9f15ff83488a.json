@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/requirements/terms.go",
+      "start": 37,
+      "end": 58,
+      "digest": "sha256:3752281cd7bfed8d293f5207a64278b03acfa8629e9c8100b189c92a041daf82",
+      "note": "Defines the complete term snapshot, creates term packages, resolves defining-code health, and tests story, record, and code links together."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/requirements/terms_mutation.go",
+      "start": 79,
+      "end": 133,
+      "digest": "sha256:b892c821292ed334ea5b91837e86b5728dae207216521d96431fa111e6489e9f",
+      "note": "Defines the complete term snapshot, creates term packages, resolves defining-code health, and tests story, record, and code links together."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/livingapp/status_terms.go",
+      "start": 297,
+      "end": 299,
+      "digest": "sha256:47ce28531e7a0dab5aab8b91ec05dfe7b2dbc9a4d092cfc0e8a110fd28186af5",
+      "note": "Defines the complete term snapshot, creates term packages, resolves defining-code health, and tests story, record, and code links together."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/requirements/terms_test.go",
+      "start": 30,
+      "end": 87,
+      "digest": "sha256:7455f17d7779c1ceebc8e91acb26d196f26b71329723a280a48ec9ab9afd5c63",
+      "note": "Defines the complete term snapshot, creates term packages, resolves defining-code health, and tests story, record, and code links together."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "run-currency",
+  "slide": "quality-evidence-runtime",
+  "rank": 10,
+  "kind": "region",
+  "label": "Run and evidence currency",
+  "description": "Implements quality-proof and quality-not-progress by pinning runs to test/evidence/source revisions, staling old passes, and keeping failures visible.",
+  "selector": {
+    "type": "element",
+    "element_id": "run-currency"
+  }
+}

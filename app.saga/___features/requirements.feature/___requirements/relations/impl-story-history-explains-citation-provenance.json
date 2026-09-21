@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "impl-story-history-explains-citation-provenance",
+  "type": "explains",
+  "from": "urn:change-saga:app:slide:knowledge-lifecycle:item:story-history",
+  "to": "urn:change-saga:app:story:evolve-product-knowledge:criterion:citation-provenance",
+  "scope": "self",
+  "rationale": "The story-history implementation realizes the citation-provenance obligation represented by the citation-provenance design landmark.",
+  "to_revision": "urn:change-saga:app:story:evolve-product-knowledge:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-21T05:14:05.067327Z"
+}

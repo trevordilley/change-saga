@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/prototypes/mutation.go",
+      "start": 19,
+      "end": 95,
+      "digest": "sha256:1b010bebf44174645e495404b7c584f757bf76eb7a52b021629373991d76ec3c",
+      "note": "Creates digest-verified HTML prototypes and validated external-provider prototypes with focused executable coverage."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/prototypes/mutation.go",
+      "start": 100,
+      "end": 170,
+      "digest": "sha256:7d48938ebff52b696d4f40723b7e280392a0d0b63763f602e736de6ddef06865",
+      "note": "Creates digest-verified HTML prototypes and validated external-provider prototypes with focused executable coverage."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/prototypes/prototypes_test.go",
+      "start": 38,
+      "end": 105,
+      "digest": "sha256:f8bb76eebca2edd50f15501affc79208e89f892ba1191aecb78338fbe2f87604",
+      "note": "Creates digest-verified HTML prototypes and validated external-provider prototypes with focused executable coverage."
+    }
+  ]
+}

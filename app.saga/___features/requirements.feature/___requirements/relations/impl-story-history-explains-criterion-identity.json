@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "impl-story-history-explains-criterion-identity",
+  "type": "explains",
+  "from": "urn:change-saga:app:slide:knowledge-lifecycle:item:story-history",
+  "to": "urn:change-saga:app:story:evolve-product-knowledge:criterion:criterion-identity",
+  "scope": "self",
+  "rationale": "The story-history implementation realizes the criterion-identity obligation represented by the criterion-identity design landmark.",
+  "to_revision": "urn:change-saga:app:story:evolve-product-knowledge:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-21T05:14:04.919711Z"
+}

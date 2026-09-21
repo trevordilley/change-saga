@@ -1,0 +1,19 @@
+{
+  "version": 4,
+  "id": "knowledge-lifecycle",
+  "deck": "product-knowledge-implementation",
+  "title": "Story, prototype, and design lifecycle",
+  "rank": 10,
+  "intent": "explain",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-c19e9e8c702f-0010-2c8cdbb68319.svg",
+  "takeaway": "Separate append-only graphs preserve history, expose conflicts, and make endpoint changes visibly stale.",
+  "reading_order": [
+    "story-history",
+    "stable-move",
+    "prototypes",
+    "prototype-currency",
+    "design-relations"
+  ]
+}
