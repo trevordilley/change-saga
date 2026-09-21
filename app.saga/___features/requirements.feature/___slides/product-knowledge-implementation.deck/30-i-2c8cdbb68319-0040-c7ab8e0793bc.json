@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "design-relations",
+  "slide": "knowledge-lifecycle",
+  "rank": 40,
+  "kind": "region",
+  "label": "Pinned design-to-requirement relations",
+  "description": "Implements design-before-implementation, design-navigation, and design-currency with typed relations pinned to design content and requirement revisions.",
+  "selector": {
+    "type": "element",
+    "element_id": "design-relations"
+  }
+}

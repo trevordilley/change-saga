@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "stable-move",
+  "slide": "knowledge-lifecycle",
+  "rank": 10,
+  "kind": "transition",
+  "label": "Move without changing identity",
+  "description": "Implements stable-story-move by relocating the feature-owned package while retaining the story URN and validating every existing relation.",
+  "selector": {
+    "type": "element",
+    "element_id": "stable-move"
+  }
+}

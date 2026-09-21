@@ -1,0 +1,8 @@
+{
+  "version": 4,
+  "id": "product-knowledge-implementation",
+  "title": "Product knowledge implementation",
+  "role": "change",
+  "rank": 0,
+  "objective": "Trace the current overview, lifecycle, evidence, and quality models to the Go boundaries that implement them."
+}

@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" font-family="Inter,Helvetica,Arial,sans-serif">
+  <rect width="1280" height="720" fill="#f8fafc"/>
+  <text x="52" y="58" font-size="30" font-weight="700" fill="#0f172a">Traceability composes adjacent links; impact traverses them backward</text>
+  <text x="52" y="92" font-size="17" fill="#475569">Current, missing, and stale paths remain distinct throughout the projection.</text>
+  <g id="traceability-projection">
+    <rect x="56" y="140" width="742" height="466" rx="20" fill="#eff6ff" stroke="#2563eb" stroke-width="2"/>
+    <text x="84" y="184" font-size="22" font-weight="700" fill="#1e3a8a">Requirement → evidence</text>
+    <g fill="#fff" stroke="#60a5fa">
+      <rect x="90" y="244" width="112" height="70" rx="11"/><rect x="244" y="244" width="112" height="70" rx="11"/>
+      <rect x="398" y="244" width="112" height="70" rx="11"/><rect x="552" y="190" width="172" height="70" rx="11"/>
+      <rect x="552" y="298" width="172" height="70" rx="11"/><rect x="552" y="406" width="172" height="70" rx="11"/>
+    </g>
+    <text x="146" y="285" text-anchor="middle" font-size="15" fill="#1e3a8a">persona</text>
+    <text x="300" y="285" text-anchor="middle" font-size="15" fill="#1e3a8a">story</text>
+    <text x="454" y="285" text-anchor="middle" font-size="15" fill="#1e3a8a">criterion</text>
+    <text x="638" y="232" text-anchor="middle" font-size="15" fill="#1e3a8a">design</text>
+    <text x="638" y="340" text-anchor="middle" font-size="15" fill="#1e3a8a">test</text>
+    <text x="638" y="448" text-anchor="middle" font-size="15" fill="#1e3a8a">code</text>
+    <g stroke="#2563eb" stroke-width="3" marker-end="url(#blueArrow)">
+      <path d="M202 279 H238"/><path d="M356 279 H392"/><path d="M510 271 L546 230"/>
+      <path d="M510 279 H546"/><path d="M510 288 L546 430"/>
+    </g>
+    <rect x="90" y="516" width="634" height="54" rx="10" fill="#dbeafe"/>
+    <text x="407" y="549" text-anchor="middle" font-size="15" fill="#1e3a8a">every path: current · missing · stale</text>
+    <text x="84" y="588" font-size="13" fill="#64748b">story-intent · criterion-paths · source-entry · path-health</text>
+  </g>
+  <g id="impact-projection">
+    <rect x="842" y="140" width="382" height="466" rx="20" fill="#fff7ed" stroke="#ea580c" stroke-width="2"/>
+    <text x="870" y="184" font-size="22" font-weight="700" fill="#9a3412">Changed code → impact</text>
+    <rect x="884" y="226" width="298" height="70" rx="11" fill="#fff" stroke="#fb923c"/>
+    <text x="1033" y="268" text-anchor="middle" font-size="16" font-weight="600" fill="#9a3412">owned changed atoms</text>
+    <path d="M1033 306 V356" stroke="#ea580c" stroke-width="3" marker-end="url(#orangeArrow)"/>
+    <rect x="884" y="364" width="298" height="116" rx="11" fill="#fff" stroke="#fb923c"/>
+    <text x="1033" y="400" text-anchor="middle" font-size="16" fill="#334155">affected criteria + stories</text>
+    <text x="1033" y="432" text-anchor="middle" font-size="16" fill="#334155">affected people</text>
+    <text x="1033" y="461" text-anchor="middle" font-size="14" fill="#64748b">with route and confidence</text>
+    <text x="870" y="522" font-size="15" fill="#334155">Active persona without an accepted</text>
+    <text x="870" y="548" font-size="15" fill="#334155">story remains a visible gap.</text>
+    <text x="870" y="584" font-size="13" fill="#64748b">changed-code-impact · impact-results · persona-entry</text>
+  </g>
+  <defs>
+    <marker id="blueArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#2563eb"/></marker>
+    <marker id="orangeArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#ea580c"/></marker>
+  </defs>
+</svg>

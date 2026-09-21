@@ -1,0 +1,45 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/requirements/mutation.go",
+      "start": 107,
+      "end": 168,
+      "digest": "sha256:fc2666c670f010534acac52d6c2e61648d79e29ccb259c07a3d0acaf455bdf4c",
+      "note": "Appends complete story revisions, lifecycle events, criterion mutations, and immutable citations; focused tests prove conflicts and history remain explicit."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/requirements/mutation.go",
+      "start": 228,
+      "end": 367,
+      "digest": "sha256:a0acadec9c7037903884c57dc69137798a3e2a1986109962ab36588e3f97ca81",
+      "note": "Appends complete story revisions, lifecycle events, criterion mutations, and immutable citations; focused tests prove conflicts and history remain explicit."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/requirements/mutation.go",
+      "start": 368,
+      "end": 464,
+      "digest": "sha256:a9ce34e5cf177cc35a1991907bca433e4a309ff1d4bea8809a75cd3e87696136",
+      "note": "Appends complete story revisions, lifecycle events, criterion mutations, and immutable citations; focused tests prove conflicts and history remain explicit."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/requirements/requirements_test.go",
+      "start": 18,
+      "end": 74,
+      "digest": "sha256:2378fb780388e69313ddd5db338e7e74923373e2d1ae41506b3218ceafcaf96d",
+      "note": "Appends complete story revisions, lifecycle events, criterion mutations, and immutable citations; focused tests prove conflicts and history remain explicit."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/requirements/requirements_test.go",
+      "start": 246,
+      "end": 328,
+      "digest": "sha256:4f357582438e7578ed2c2b9fd2213791dc0599e642da75769d663932dcffbd33",
+      "note": "Appends complete story revisions, lifecycle events, criterion mutations, and immutable citations; focused tests prove conflicts and history remain explicit."
+    }
+  ]
+}

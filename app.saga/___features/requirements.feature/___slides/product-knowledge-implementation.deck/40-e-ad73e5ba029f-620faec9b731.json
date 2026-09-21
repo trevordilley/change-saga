@@ -1,0 +1,45 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/livingapp/impact_graph.go",
+      "start": 22,
+      "end": 65,
+      "digest": "sha256:c58fba5a1fd79a9e3d6dba7aa4e96044ccdba9319e75d7ad45432d0e4c063539",
+      "note": "Projects persisted explanation and verification edges onto source owners, analyzes incoming atoms, and reports affected requirements, test cases, people, and visible persona gaps."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/impact/impact.go",
+      "start": 206,
+      "end": 355,
+      "digest": "sha256:4259b8d0e70244edc52e8a63bb6542854260cc962b9f5656afa10b2cbd55622b",
+      "note": "Projects persisted explanation and verification edges onto source owners, analyzes incoming atoms, and reports affected requirements, test cases, people, and visible persona gaps."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/impact/impact_test.go",
+      "start": 84,
+      "end": 120,
+      "digest": "sha256:b7246c2ffebe4f108166bd3de496f9fadd8fe6b9cac3fe9622d079d349c1f0a9",
+      "note": "Projects persisted explanation and verification edges onto source owners, analyzes incoming atoms, and reports affected requirements, test cases, people, and visible persona gaps."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/livingapp/status_app.go",
+      "start": 117,
+      "end": 189,
+      "digest": "sha256:39e7906aa4448e177be29976841cb8afccc615478464e95afe9bdf7e4bcdae66",
+      "note": "Projects persisted explanation and verification edges onto source owners, analyzes incoming atoms, and reports affected requirements, test cases, people, and visible persona gaps."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/livingapp/status_app_test.go",
+      "start": 138,
+      "end": 189,
+      "digest": "sha256:cb699f6bdff790720018665610cf1443183f394d9bac988e3a588bb2d1cc2c47",
+      "note": "Projects persisted explanation and verification edges onto source owners, analyzes incoming atoms, and reports affected requirements, test cases, people, and visible persona gaps."
+    }
+  ]
+}

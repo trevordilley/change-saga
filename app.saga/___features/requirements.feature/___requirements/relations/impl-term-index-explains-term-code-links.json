@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "impl-term-index-explains-term-code-links",
+  "type": "explains",
+  "from": "urn:change-saga:app:slide:overview-vocabulary:item:term-index",
+  "to": "urn:change-saga:app:story:overview-and-terms:criterion:term-code-links",
+  "scope": "self",
+  "rationale": "The term-index implementation realizes the term-code-links obligation represented by the bidirectional-links design landmark.",
+  "to_revision": "urn:change-saga:app:story:overview-and-terms:revision:r4",
+  "state": "active",
+  "created_at": "2026-09-21T05:14:03.7885Z"
+}

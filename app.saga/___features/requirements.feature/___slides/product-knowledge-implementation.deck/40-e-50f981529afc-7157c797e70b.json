@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/quality/model.go",
+      "start": 76,
+      "end": 97,
+      "digest": "sha256:e0ad6313ac927c9fa5aa6057e4aed30058f852b08e292c05f1a162b06ef13eb1",
+      "note": "Stores complete test revisions with ordered steps and one expected result, then links active test cases to exact criterion revisions."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/quality/mutation.go",
+      "start": 118,
+      "end": 202,
+      "digest": "sha256:ab672be2ff223b0d721948cc57d1a320759d7b095ad9f63cbfc8f4090d426875",
+      "note": "Stores complete test revisions with ordered steps and one expected result, then links active test cases to exact criterion revisions."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/quality/mutation_test.go",
+      "start": 57,
+      "end": 89,
+      "digest": "sha256:953656ffe6201448c37431f41d2647c4a795e8c2df32926278c4d31e737d7c65",
+      "note": "Stores complete test revisions with ordered steps and one expected result, then links active test cases to exact criterion revisions."
+    }
+  ]
+}

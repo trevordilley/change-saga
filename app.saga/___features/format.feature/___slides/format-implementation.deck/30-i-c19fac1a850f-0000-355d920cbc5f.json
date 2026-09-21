@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "flag-records",
+  "slide": "release-visibility",
+  "rank": 0,
+  "kind": "node",
+  "label": "Flag identity, targets, and lifecycle",
+  "description": "Implements the flag-targets, flag-state, and retired-flag-history design landmarks with immutable definitions and append-only state events.",
+  "selector": {
+    "type": "element",
+    "element_id": "flag-records"
+  }
+}
