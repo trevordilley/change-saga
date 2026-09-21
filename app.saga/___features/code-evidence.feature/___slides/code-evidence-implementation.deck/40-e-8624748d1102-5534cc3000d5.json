@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/cli/coverage_repair.go",
+      "start": 86,
+      "end": 145,
+      "digest": "sha256:4fbb05f4ea5ee173b6c59fef2ffcbaeefae5b9b12c6110362b8de7da833a200b",
+      "note": "Plans and commits replacement evidence under one lock and restores the original record after a failed write."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/cli/coverage_repair.go",
+      "start": 199,
+      "end": 237,
+      "digest": "sha256:e48e820b02a0586accf5d76f48cb8c21020c5be4e3f1a8f74cd0dd82172f4c13",
+      "note": "Plans and commits replacement evidence under one lock and restores the original record after a failed write."
+    }
+  ]
+}

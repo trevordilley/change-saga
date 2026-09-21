@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "stale-diagnosis-explains-stale-change",
+  "type": "explains",
+  "from": "urn:change-saga:app:slide:evidence-repair-flow:item:stale-diagnosis",
+  "to": "urn:change-saga:app:story:evidence-repair:criterion:stale-change",
+  "scope": "self",
+  "rationale": "Reference inspection resolves each pin and reports the content change and diff that made it stale.",
+  "to_revision": "urn:change-saga:app:story:evidence-repair:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-21T05:15:56.835615Z"
+}

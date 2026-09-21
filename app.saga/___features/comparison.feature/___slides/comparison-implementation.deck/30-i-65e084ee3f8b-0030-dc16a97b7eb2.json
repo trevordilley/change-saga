@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "branch-reasons",
+  "slide": "comparison-history-reasons",
+  "rank": 30,
+  "kind": "transition",
+  "label": "Branch reasons survive landing",
+  "description": "Stores ordered branch commits beside the landed source pin so squash merges retain their individual reasons.",
+  "selector": {
+    "type": "element",
+    "element_id": "branch-reasons"
+  }
+}

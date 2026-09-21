@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/cli/layers_test.go",
+      "start": 78,
+      "end": 108,
+      "digest": "sha256:dc9956d28435e59cb0f5e35e7a5e05f3ee744e42693139f5043e175e5c2ac3de",
+      "note": "Proves a code-only edit reaches its design, story, and persona with explicit causes."
+    }
+  ]
+}

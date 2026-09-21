@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/livingapp/traceability_test.go",
+      "start": 14,
+      "end": 54,
+      "digest": "sha256:3632e3620a702373a9e41a8e648273228d9ed55490edd017e578dfc43a09ee4e",
+      "note": "Proves traceability retains broad design paths and only applicable passing test evidence."
+    }
+  ]
+}

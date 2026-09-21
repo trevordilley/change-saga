@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "conservative-pairing-explains-pairs",
+  "type": "explains",
+  "from": "urn:change-saga:app:slide:comparison-history-reasons:item:conservative-pairing",
+  "to": "urn:change-saga:app:story:why-things-changed:criterion:paired-replacements",
+  "scope": "self",
+  "rationale": "A removed and added record pair automatically only when one shared traceability role identifies one match.",
+  "to_revision": "urn:change-saga:app:story:why-things-changed:revision:r3",
+  "state": "active",
+  "created_at": "2026-09-21T05:16:01.473568Z"
+}

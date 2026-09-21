@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "code-ownership-explains-layer",
+  "type": "explains",
+  "from": "urn:change-saga:app:slide:comparison-three-layers:item:code-ownership",
+  "to": "urn:change-saga:app:story:observe-or-compare:criterion:code-layer",
+  "scope": "self",
+  "rationale": "The Code layer groups each changed atom beneath every current explanation owner.",
+  "to_revision": "urn:change-saga:app:story:observe-or-compare:revision:r4",
+  "state": "active",
+  "created_at": "2026-09-21T05:16:01.197734Z"
+}

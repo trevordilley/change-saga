@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/coderesolve/resolve.go",
+      "start": 114,
+      "end": 193,
+      "digest": "sha256:ec74dd0c917a02a02e84775ec7d2991546a72910a7171f287099f7b07e2b90dd",
+      "note": "Resolution verifies the pin, remaps untouched ranges, and falls back to a unique digest match."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/coderesolve/resolve.go",
+      "start": 208,
+      "end": 266,
+      "digest": "sha256:2f77ec07bd9646d26619356ad96b424cab450a5cbe2bd01f0682406404a9fcb2",
+      "note": "Resolution verifies the pin, remaps untouched ranges, and falls back to a unique digest match."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/cli/layers_test.go",
+      "start": 110,
+      "end": 137,
+      "digest": "sha256:8b4bc25186d1ab063003db8af13a65b968f2fd7dd42548d7cbc9e395664806a6",
+      "note": "Proves a story revision appears in Changed with before and after snapshots while its pinned relation becomes Affected."
+    }
+  ]
+}

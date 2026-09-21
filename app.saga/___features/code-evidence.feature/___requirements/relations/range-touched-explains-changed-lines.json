@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "range-touched-explains-changed-lines",
+  "type": "explains",
+  "from": "urn:change-saga:app:slide:reference-resolution:item:range-touched",
+  "to": "urn:change-saga:app:story:evidence-repair:criterion:changed-lines",
+  "scope": "self",
+  "rationale": "A touched range becomes stale with its reason and diff rather than silently following changed bytes.",
+  "to_revision": "urn:change-saga:app:story:evidence-repair:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-21T05:15:57.463033Z"
+}

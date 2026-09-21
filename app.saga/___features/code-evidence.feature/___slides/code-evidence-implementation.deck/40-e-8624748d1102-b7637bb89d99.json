@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/cli/cover_test.go",
+      "start": 242,
+      "end": 280,
+      "digest": "sha256:c4d2ff6f45a71135bce0c52fe6f652f2158de8524614a30c14805cf18d857e32",
+      "note": "Proves invalid replacement preserves the original and same-name replacement commits atomically."
+    }
+  ]
+}

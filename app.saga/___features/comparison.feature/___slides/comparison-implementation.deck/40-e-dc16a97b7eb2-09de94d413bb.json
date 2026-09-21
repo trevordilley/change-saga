@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/cli/references.go",
+      "start": 533,
+      "end": 590,
+      "digest": "sha256:27191ece5e8cdccfb31c7daeb3da25e9c67083a8264e22f25a53aecc654b9964",
+      "note": "Collects branch commits in deterministic ancestor order for durable merge metadata."
+    }
+  ]
+}

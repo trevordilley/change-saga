@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "node-history",
+  "slide": "comparison-history-reasons",
+  "rank": 20,
+  "kind": "node",
+  "label": "Node history",
+  "description": "Reports introduction, replacement, chronological events, and commands that reopen the introducing comparison.",
+  "selector": {
+    "type": "element",
+    "element_id": "node-history"
+  }
+}

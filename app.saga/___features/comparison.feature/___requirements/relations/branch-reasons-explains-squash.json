@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "branch-reasons-explains-squash",
+  "type": "explains",
+  "from": "urn:change-saga:app:slide:comparison-history-reasons:item:branch-reasons",
+  "to": "urn:change-saga:app:story:why-things-changed:criterion:squash-keeps-reasons",
+  "scope": "self",
+  "rationale": "Repin captures ordered branch commits and messages beside the landed commit before the branch disappears.",
+  "to_revision": "urn:change-saga:app:story:why-things-changed:revision:r3",
+  "state": "active",
+  "created_at": "2026-09-21T05:16:02.323663Z"
+}

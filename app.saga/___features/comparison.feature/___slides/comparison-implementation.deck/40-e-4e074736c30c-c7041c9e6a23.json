@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/server/layers.go",
+      "start": 94,
+      "end": 148,
+      "digest": "sha256:e07dd45d374a28f7f5111d77879868f8de2f841ecb0daac4699e2e08f7259b37",
+      "note": "Returns empty layer metadata while observing and exposes the read-only Change page only for a selected comparison."
+    }
+  ]
+}

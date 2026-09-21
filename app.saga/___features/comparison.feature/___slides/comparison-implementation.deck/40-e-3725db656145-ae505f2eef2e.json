@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/cli/layers_test.go",
+      "start": 193,
+      "end": 247,
+      "digest": "sha256:bfcacddaa2482a34a1c7d67ef299c315b18cb01488fd90bdad6f8b9c1f66a250",
+      "note": "Proves a unique shared criterion pairs replacement slides and their history names the transition."
+    }
+  ]
+}

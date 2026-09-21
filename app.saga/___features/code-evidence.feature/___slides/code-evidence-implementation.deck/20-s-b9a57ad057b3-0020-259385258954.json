@@ -1,0 +1,19 @@
+{
+  "version": 4,
+  "id": "evidence-repair-flow",
+  "deck": "code-evidence-implementation",
+  "title": "Repair is inspectable and atomic",
+  "rank": 20,
+  "intent": "explain",
+  "layout": "sequence",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-b9a57ad057b3-0020-259385258954.svg",
+  "takeaway": "Scrutiny identifies weak mappings; replacement and landing refresh either finish safely or preserve the old evidence.",
+  "reading_order": [
+    "scrutiny-ranking",
+    "stale-diagnosis",
+    "atomic-replacement",
+    "post-merge-refresh",
+    "failure-preserves"
+  ]
+}

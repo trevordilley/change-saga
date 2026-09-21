@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "claim-contract",
+  "slide": "claims-verification-flow",
+  "rank": 0,
+  "kind": "node",
+  "label": "Author claim contract",
+  "description": "Creates one immutable falsifiable statement tied to one explanation target and exact digest-pinned source.",
+  "selector": {
+    "type": "element",
+    "element_id": "claim-contract"
+  }
+}

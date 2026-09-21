@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/livingapp/traceability_test.go",
+      "start": 56,
+      "end": 75,
+      "digest": "sha256:8ecf9f7655a9cf9fbf5e65ea8afacce3b1880d071d18d115c2cab2a08db4299d",
+      "note": "Proves reverse lookup follows an unambiguous remap and rejects stale evidence."
+    }
+  ]
+}

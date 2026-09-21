@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/changeview/layers.go",
+      "start": 487,
+      "end": 538,
+      "digest": "sha256:f6d161bb22cb10c0ce1b40965783491e38b64a794e70bc596b6009492f81e421",
+      "note": "Groups every changed atom beneath all current owners and places uncovered atoms in the unreferenced group."
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "version": 4,
+  "id": "mode-ui-gap",
+  "slide": "comparison-opening-context",
+  "rank": 40,
+  "kind": "callout",
+  "label": "Mode continuity gap",
+  "description": "Records the incomplete browser mode-label and navigation-continuity behavior without claiming code.",
+  "selector": {
+    "type": "element",
+    "element_id": "mode-ui-gap"
+  },
+  "about": "current-vs-compare",
+  "body": "The comparison range is implemented, but the designed persistent mode label and full deep-link restoration contract are not.",
+  "placement": "bottom",
+  "leader": "line"
+}

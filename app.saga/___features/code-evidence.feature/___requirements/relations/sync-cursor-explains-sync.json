@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "sync-cursor-explains-sync",
+  "type": "explains",
+  "from": "urn:change-saga:app:slide:companion-evidence-boundary:item:sync-cursor",
+  "to": "urn:change-saga:app:story:companion-repositories:criterion:sync-cursor",
+  "scope": "self",
+  "rationale": "Sync stores the full source commit documented by the companion Saga.",
+  "to_revision": "urn:change-saga:app:story:companion-repositories:revision:r3",
+  "state": "active",
+  "created_at": "2026-09-21T05:15:59.346872Z"
+}

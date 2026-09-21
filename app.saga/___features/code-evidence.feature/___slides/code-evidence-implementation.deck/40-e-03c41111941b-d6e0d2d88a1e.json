@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/cli/sync.go",
+      "start": 24,
+      "end": 83,
+      "digest": "sha256:b0be90db8bda6a891732a54108c86b39f9a9da646c7e2a2ae909bd9c14454fd6",
+      "note": "Moves a companion Saga sync cursor to one verified full source commit and refuses in-repository cursors."
+    }
+  ]
+}

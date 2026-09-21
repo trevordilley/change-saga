@@ -1,0 +1,19 @@
+{
+  "version": 4,
+  "id": "companion-evidence-boundary",
+  "deck": "code-evidence-implementation",
+  "title": "Companion evidence crosses a verified boundary",
+  "rank": 40,
+  "intent": "risk",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-b9a57ad057b3-0040-ee98a4659f6d.svg",
+  "takeaway": "Repository identity and sync cursors align source history; relocation portability still lacks an end-to-end workflow.",
+  "reading_order": [
+    "repository-identity",
+    "sync-cursor",
+    "aligned-comparison",
+    "observe-existing",
+    "relocation-gap"
+  ]
+}

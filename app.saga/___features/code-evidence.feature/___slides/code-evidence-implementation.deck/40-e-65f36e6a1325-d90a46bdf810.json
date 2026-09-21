@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/cli/references.go",
+      "start": 108,
+      "end": 205,
+      "digest": "sha256:98721e8058df6e296ccc394be3adadd853d53cbf9cac626061eac2e5afb2a46c",
+      "note": "Reports every reference at the viewed range and includes the reason and patch for stale source."
+    }
+  ]
+}

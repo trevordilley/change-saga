@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "relocation-gap-explains-move-gap",
+  "type": "explains",
+  "from": "urn:change-saga:app:slide:companion-evidence-boundary:item:relocation-gap",
+  "to": "urn:change-saga:app:story:companion-repositories:criterion:move-later",
+  "scope": "self",
+  "rationale": "This no-code callout records that portable identities exist but the dedicated move workflow and end-to-end proof do not.",
+  "to_revision": "urn:change-saga:app:story:companion-repositories:revision:r3",
+  "state": "active",
+  "created_at": "2026-09-21T05:15:59.797805Z"
+}

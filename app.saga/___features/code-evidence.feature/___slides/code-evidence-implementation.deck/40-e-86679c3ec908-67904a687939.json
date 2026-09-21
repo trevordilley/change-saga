@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/reviewapp/mappings.go",
+      "start": 68,
+      "end": 184,
+      "digest": "sha256:431c9cf7b4769721e0468d314dd207d0a29a8275b4ae94c5309ba94c4c07ff14",
+      "note": "Scores mapping breadth, staleness, file spread, and note quality as advisory scrutiny signals."
+    }
+  ]
+}

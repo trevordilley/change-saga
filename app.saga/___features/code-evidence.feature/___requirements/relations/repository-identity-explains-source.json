@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "repository-identity-explains-source",
+  "type": "explains",
+  "from": "urn:change-saga:app:slide:companion-evidence-boundary:item:repository-identity",
+  "to": "urn:change-saga:app:story:companion-repositories:criterion:companion-source",
+  "scope": "self",
+  "rationale": "After repository verification, source references resolve from the explicitly selected checkout.",
+  "to_revision": "urn:change-saga:app:story:companion-repositories:revision:r3",
+  "state": "active",
+  "created_at": "2026-09-21T05:15:59.208556Z"
+}

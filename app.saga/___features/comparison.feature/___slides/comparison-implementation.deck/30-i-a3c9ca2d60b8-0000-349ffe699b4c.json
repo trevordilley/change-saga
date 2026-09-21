@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "changed-records",
+  "slide": "comparison-three-layers",
+  "rank": 0,
+  "kind": "region",
+  "label": "Changed records",
+  "description": "Diffs stable Saga inventory identities into added, revised, retired, and removed semantic records.",
+  "selector": {
+    "type": "element",
+    "element_id": "changed-records"
+  }
+}

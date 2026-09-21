@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/cli/sync.go",
+      "start": 17,
+      "end": 83,
+      "digest": "sha256:2203b5c11f19ce024425ad6efaba13c6a91a414b9d2bce3f7956304be9a35db4",
+      "note": "Sync verifies the companion checkout and persists the explicit commit cursor used for later comparisons."
+    }
+  ]
+}

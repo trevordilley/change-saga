@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/cli/layers_test.go",
+      "start": 193,
+      "end": 228,
+      "digest": "sha256:30898875b35ca01ffb2d3982a5611209409fc2f218cf3e6facb7127d48ea63e5",
+      "note": "Proves the replacing commit subject and body sit beside both sides of the paired transition."
+    }
+  ]
+}

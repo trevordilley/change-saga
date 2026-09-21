@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "visible-gap",
+  "slide": "evidence-paths",
+  "rank": 40,
+  "kind": "risk",
+  "label": "Persona gap remains visible",
+  "description": "Reports an active persona with no accepted story as a focused, navigable documentation gap.",
+  "selector": {
+    "type": "element",
+    "element_id": "visible-gap"
+  }
+}

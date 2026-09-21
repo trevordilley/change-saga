@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/changeview/layers.go",
+      "start": 490,
+      "end": 538,
+      "digest": "sha256:07a82e30a1c1ec9a53478041629e580098618571442eb5d37c337e149691aa46",
+      "note": "codeLayer groups implementation hunks by changed and affected ownership and leaves unexplained code explicit."
+    }
+  ]
+}

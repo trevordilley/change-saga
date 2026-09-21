@@ -1,0 +1,17 @@
+{
+  "version": 4,
+  "id": "failure-preserves",
+  "slide": "evidence-repair-flow",
+  "rank": 40,
+  "kind": "callout",
+  "label": "Failure preserves evidence",
+  "description": "The repair failure path rolls back partial records and never guesses a landed pin.",
+  "selector": {
+    "type": "element",
+    "element_id": "failure-preserves"
+  },
+  "about": "atomic-replacement",
+  "body": "Invalid replacement input or a failed write leaves the original evidence record in place; landing ambiguity leaves the old pin stale.",
+  "placement": "bottom",
+  "leader": "arrow"
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/server/layers.go",
+      "start": 69,
+      "end": 115,
+      "digest": "sha256:e632135998a301444eec61a809023be52d6c3685cc940e127e478df210b4bd28",
+      "note": "Feeds the reviewer API from the same cached ChangeView opening and echoes mode plus resolved commits."
+    }
+  ]
+}

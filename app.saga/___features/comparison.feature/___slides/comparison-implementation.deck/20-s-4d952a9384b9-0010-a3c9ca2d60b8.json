@@ -1,0 +1,18 @@
+{
+  "version": 4,
+  "id": "comparison-three-layers",
+  "deck": "comparison-implementation",
+  "title": "One range, three complementary layers",
+  "rank": 10,
+  "intent": "trace",
+  "layout": "diagram",
+  "media_type": "image/svg+xml",
+  "entrypoint": "20-s-4d952a9384b9-0010-a3c9ca2d60b8.svg",
+  "takeaway": "Record deltas, invalidated knowledge, and code ownership are derived separately from the same comparison.",
+  "reading_order": [
+    "changed-records",
+    "affected-records",
+    "code-ownership",
+    "layer-query"
+  ]
+}

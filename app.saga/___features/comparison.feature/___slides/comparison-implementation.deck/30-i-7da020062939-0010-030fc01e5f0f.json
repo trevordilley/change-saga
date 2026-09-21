@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "same-context-surfaces",
+  "slide": "comparison-opening-context",
+  "rank": 10,
+  "kind": "region",
+  "label": "Shared consumers",
+  "description": "Feeds the resolved base and head into the browser layers, status evaluation, and structured query surfaces.",
+  "selector": {
+    "type": "element",
+    "element_id": "same-context-surfaces"
+  }
+}

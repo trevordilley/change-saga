@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "impact-projection",
+  "slide": "evidence-paths",
+  "rank": 20,
+  "kind": "edge",
+  "label": "Changed-code impact",
+  "description": "Projects changed atoms through current evidence owners to implicated criteria, stories, personas, and test cases.",
+  "selector": {
+    "type": "element",
+    "element_id": "impact-projection"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "repository-identity",
+  "slide": "companion-evidence-boundary",
+  "rank": 0,
+  "kind": "region",
+  "label": "Verified repository identity",
+  "description": "Canonicalizes and compares the selected source checkout with the repository declared by the Saga before source-derived work.",
+  "selector": {
+    "type": "element",
+    "element_id": "repository-identity"
+  }
+}

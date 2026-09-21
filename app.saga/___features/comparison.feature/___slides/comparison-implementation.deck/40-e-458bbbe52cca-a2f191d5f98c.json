@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/cli/layers_test.go",
+      "start": 249,
+      "end": 280,
+      "digest": "sha256:eb2fe219cabeeb3693db132148d7010cdb2b78d816032d21652a2bf42927a0c4",
+      "note": "Proves several replacement candidates stay ambiguous until an explicit supersedes relation decides the pair."
+    }
+  ]
+}

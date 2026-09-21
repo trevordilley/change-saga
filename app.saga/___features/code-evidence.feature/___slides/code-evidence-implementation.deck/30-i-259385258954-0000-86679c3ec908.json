@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "scrutiny-ranking",
+  "slide": "evidence-repair-flow",
+  "rank": 0,
+  "kind": "node",
+  "label": "Scrutiny ranking",
+  "description": "Ranks broad, stale, overlapping, and thinly justified mappings as advisory review signals.",
+  "selector": {
+    "type": "element",
+    "element_id": "scrutiny-ranking"
+  }
+}

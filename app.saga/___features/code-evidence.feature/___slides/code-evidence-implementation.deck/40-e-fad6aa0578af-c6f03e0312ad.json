@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/cli/claims_test.go",
+      "start": 38,
+      "end": 63,
+      "digest": "sha256:48e88b7eae64859bb1c69ce9e560ec5f4a0d5740ecb9d1f61300abb9063a4e98",
+      "note": "Proves results accumulate independently and a rejected verification writes no partial history."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/cli/claims_test.go",
+      "start": 92,
+      "end": 101,
+      "digest": "sha256:de1c785c883c42678a7c82bc3c519c923f5cfe935670796ba9cb2c30a1250ddb",
+      "note": "Proves results accumulate independently and a rejected verification writes no partial history."
+    }
+  ]
+}

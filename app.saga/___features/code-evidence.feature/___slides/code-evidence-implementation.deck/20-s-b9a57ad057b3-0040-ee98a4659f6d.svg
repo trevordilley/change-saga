@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720" font-family="Arial, sans-serif">
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#334155"/></marker></defs>
+<rect width="1280" height="720" fill="#f8fafc"/>
+<text x="48" y="54" font-size="30" font-weight="700" fill="#0f172a">Companion evidence crosses a verified boundary</text>
+<text x="48" y="85" font-size="17" fill="#475569">Documentation and source have separate histories; identity and the sync cursor are the join.</text>
+<rect x="55" y="145" width="480" height="420" rx="22" fill="#e0f2fe" stroke="#0369a1" stroke-width="3"/>
+<text x="85" y="190" font-size="23" font-weight="700" fill="#075985">Saga repository</text>
+<text x="85" y="230" font-size="16">stories · design · decks · evidence records</text>
+<rect x="745" y="145" width="480" height="420" rx="22" fill="#dcfce7" stroke="#15803d" stroke-width="3"/>
+<text x="850" y="190" font-size="23" font-weight="700" fill="#166534">Selected source checkout</text>
+<text x="850" y="230" font-size="16">commits · paths · bytes · diffs</text>
+<g id="repository-identity"><rect x="455" y="185" width="370" height="95" rx="18" fill="#fff7ed" stroke="#c2410c" stroke-width="2"/><text x="640" y="220" text-anchor="middle" font-size="19" font-weight="700" fill="#9a3412">Canonical repository identity</text><text x="640" y="252" text-anchor="middle" font-size="15">mismatch blocks reads and writes</text></g>
+<g id="sync-cursor"><rect x="455" y="315" width="370" height="95" rx="18" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/><text x="640" y="350" text-anchor="middle" font-size="19" font-weight="700" fill="#6d28d9">Documented source revision</text><text x="640" y="382" text-anchor="middle" font-size="15">sync cursor: Saga commit ↔ source commit</text></g>
+<g id="observe-existing"><rect x="105" y="335" width="340" height="126" rx="18" fill="#ffffff" stroke="#0369a1" stroke-width="2"/><text x="275" y="375" text-anchor="middle" font-size="19" font-weight="700">Observe existing code</text><text x="275" y="407" text-anchor="middle" font-size="16">attach exact refs without a diff</text><text x="275" y="438" text-anchor="middle" font-size="14" fill="#475569">no manufactured source change</text></g>
+<g id="aligned-comparison"><text x="640" y="465" text-anchor="middle" font-size="18" font-weight="700">Aligned comparison</text><path d="M535 485H745" stroke="#334155" stroke-width="4" marker-end="url(#arrow)"/><path d="M745 525H535" stroke="#334155" stroke-width="4" marker-end="url(#arrow)"/><text x="640" y="550" text-anchor="middle" font-size="14" fill="#475569">missing or ambiguous alignment stops</text></g>
+<g id="relocation-gap"><rect x="220" y="590" width="840" height="80" rx="14" fill="#fff1f2" stroke="#be123c" stroke-width="2"/><text x="250" y="625" font-size="18" font-weight="700" fill="#9f1239">Known gap</text><text x="365" y="625" font-size="16">portable IDs and pins exist, but no dedicated move preflight or end-to-end relocation test exists.</text><text x="250" y="652" font-size="14" fill="#475569">The deck does not claim the complete “move later” experience is implemented.</text></g>
+</svg>

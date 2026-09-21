@@ -1,0 +1,17 @@
+{
+  "version": 4,
+  "id": "relocation-gap",
+  "slide": "companion-evidence-boundary",
+  "rank": 40,
+  "kind": "callout",
+  "label": "Relocation workflow gap",
+  "description": "Records the honest boundary around the unimplemented companion-to-in-repository relocation workflow.",
+  "selector": {
+    "type": "element",
+    "element_id": "relocation-gap"
+  },
+  "about": "repository-identity",
+  "body": "Portable URNs and pins exist, but no dedicated move preflight or end-to-end relocation test implements the complete move-later experience.",
+  "placement": "bottom",
+  "leader": "line"
+}

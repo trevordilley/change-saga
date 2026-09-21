@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/gitdiff/gitdiff_test.go",
+      "start": 469,
+      "end": 534,
+      "digest": "sha256:68867faca6ee16521fe59c4583b207ee992c061ece48ac0ec46e4a2232b83da8",
+      "note": "Proves explicit checkout verification accepts equivalent transport forms and rejects a foreign repository."
+    }
+  ]
+}

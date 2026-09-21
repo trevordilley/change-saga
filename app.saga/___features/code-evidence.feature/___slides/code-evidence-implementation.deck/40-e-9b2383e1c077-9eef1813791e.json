@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/cli/claims_test.go",
+      "start": 14,
+      "end": 63,
+      "digest": "sha256:4c637c85b25ab525e04830de0065f273d6303bb83c1c8d57a0a64aeebf4dde10",
+      "note": "Proves claim source is pinned with its digest and stored independently from verification results."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/changeview/layers.go",
+      "start": 340,
+      "end": 362,
+      "digest": "sha256:494676c5a2cd3d09087601a3574ce6861495c95a7a68687d4ba9c1804e6bba7c",
+      "note": "diff emits the changed documentation nodes and their before and after snapshots."
+    }
+  ]
+}

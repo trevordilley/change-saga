@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/livingapp/status_test.go",
+      "start": 375,
+      "end": 401,
+      "digest": "sha256:ad281c1f6c1e4dbe33d165da0366f698685dd63c377153333f064477d0feb32e",
+      "note": "Proves relation and source-reference staleness remain explicit and identify the affected criterion."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/livingapp/status_test.go",
+      "start": 420,
+      "end": 439,
+      "digest": "sha256:693181306ad7bc8f6409f4099ffd83ddcd55cf60a536e42e4ea87f78f807b825",
+      "note": "Proves relation and source-reference staleness remain explicit and identify the affected criterion."
+    }
+  ]
+}

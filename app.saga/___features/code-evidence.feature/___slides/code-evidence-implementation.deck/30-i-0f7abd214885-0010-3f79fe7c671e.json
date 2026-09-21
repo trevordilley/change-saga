@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "reverse-lookup",
+  "slide": "evidence-paths",
+  "rank": 10,
+  "kind": "edge",
+  "label": "Reverse source lookup",
+  "description": "Matches a source location, including a safely remapped range, back to its owning explanations and requirements.",
+  "selector": {
+    "type": "element",
+    "element_id": "reverse-lookup"
+  }
+}

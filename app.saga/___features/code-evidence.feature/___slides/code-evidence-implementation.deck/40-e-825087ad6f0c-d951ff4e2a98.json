@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/impact/impact.go",
+      "start": 203,
+      "end": 350,
+      "digest": "sha256:a4109eb6ee5a16e06ca274b2b41ba541f3c35daa90fbda78820741f6dcae8ded",
+      "note": "Projects changed source through exact evidence owners and recorded graph edges to requirements, personas, and tests."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/impact/impact.go",
+      "start": 356,
+      "end": 421,
+      "digest": "sha256:1c731f42e6180c6e21883639a069497c3730418ff6e27ab70c623896c693364b",
+      "note": "Projects changed source through exact evidence owners and recorded graph edges to requirements, personas, and tests."
+    }
+  ]
+}

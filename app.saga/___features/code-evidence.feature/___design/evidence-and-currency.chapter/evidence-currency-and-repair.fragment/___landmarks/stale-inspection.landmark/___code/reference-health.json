@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/cli/references.go",
+      "start": 86,
+      "end": 205,
+      "digest": "sha256:d24ab8e35f6d0dbb2ac496d24bf2bf7075c013204722a4af63e63b10a6519113",
+      "note": "The references command resolves every pin and reports stale reasons and remapped locations."
+    }
+  ]
+}

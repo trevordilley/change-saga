@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "affected-records",
+  "slide": "comparison-three-layers",
+  "rank": 10,
+  "kind": "region",
+  "label": "Affected knowledge",
+  "description": "Follows changed pins, code ownership, containment, typed relations, and personas to unchanged records at risk.",
+  "selector": {
+    "type": "element",
+    "element_id": "affected-records"
+  }
+}

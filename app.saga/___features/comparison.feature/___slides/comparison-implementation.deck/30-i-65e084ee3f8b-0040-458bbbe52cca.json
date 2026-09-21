@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "ambiguity-stop",
+  "slide": "comparison-history-reasons",
+  "rank": 40,
+  "kind": "risk",
+  "label": "Ambiguity stops inference",
+  "description": "Leaves replacement and landing candidates unresolved when evidence does not select exactly one safe answer.",
+  "selector": {
+    "type": "element",
+    "element_id": "ambiguity-stop"
+  }
+}

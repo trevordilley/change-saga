@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/cli/query_layers.go",
+      "start": 15,
+      "end": 69,
+      "digest": "sha256:3a889a500f59d1661d02b1e07d288a95aa0f4c10b4af70396c612d12da4d5dda",
+      "note": "Feeds the structured layers query from the same opened source comparison and ChangeView projection."
+    }
+  ]
+}

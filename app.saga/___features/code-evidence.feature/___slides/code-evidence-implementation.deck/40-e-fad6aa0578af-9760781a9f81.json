@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/cli/claims.go",
+      "start": 93,
+      "end": 166,
+      "digest": "sha256:3432fdfc24980c117ce628012f2b3ad74ac7d90fa6fbce0b89e859d69d18a187",
+      "note": "Creates a new verification file without editing the claim or any prior result."
+    }
+  ]
+}

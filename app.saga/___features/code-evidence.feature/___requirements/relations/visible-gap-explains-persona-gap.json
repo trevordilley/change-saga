@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "visible-gap-explains-persona-gap",
+  "type": "explains",
+  "from": "urn:change-saga:app:slide:evidence-paths:item:visible-gap",
+  "to": "urn:change-saga:app:story:evidence-traversal:criterion:persona-gap",
+  "scope": "self",
+  "rationale": "The status projection preserves active personas without accepted stories as a visible grouped gap.",
+  "to_revision": "urn:change-saga:app:story:evidence-traversal:revision:r2",
+  "state": "active",
+  "created_at": "2026-09-21T05:15:56.529117Z"
+}

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "merge-base-context-explains-base",
+  "type": "explains",
+  "from": "urn:change-saga:app:slide:comparison-opening-context:item:merge-base-context",
+  "to": "urn:change-saga:app:story:observe-or-compare:criterion:merge-base",
+  "scope": "self",
+  "rationale": "Git range opening resolves the actual merge base before comparison projections are built.",
+  "to_revision": "urn:change-saga:app:story:observe-or-compare:revision:r4",
+  "state": "active",
+  "created_at": "2026-09-21T05:15:59.969225Z"
+}

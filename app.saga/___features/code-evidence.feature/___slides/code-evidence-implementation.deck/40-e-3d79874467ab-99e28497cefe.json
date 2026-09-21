@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/gitdiff/gitdiff.go",
+      "start": 440,
+      "end": 459,
+      "digest": "sha256:9d3a2cc8a0c66faad93f7b350c07a8ffb0c77ab9f8028eeda2d5595992878367",
+      "note": "Canonicalizes and compares the checkout origin with the Saga declared repository before reading source."
+    }
+  ]
+}

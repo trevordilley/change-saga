@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/coderesolve/resolve.go",
+      "start": 21,
+      "end": 43,
+      "digest": "sha256:30f24d2c17990a6245627e80c2ddc493668793525b8b647670ad301a4616472f",
+      "note": "Resolution returns current, moved, or stale outcomes with a concrete location and reason."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/coderesolve/resolve.go",
+      "start": 114,
+      "end": 166,
+      "digest": "sha256:00fa071e4bcb2f3d314774924d0bf1a52239fdb295d26a0c7304b1a5e30c9398",
+      "note": "Resolution returns current, moved, or stale outcomes with a concrete location and reason."
+    }
+  ]
+}

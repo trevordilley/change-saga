@@ -1,0 +1,8 @@
+{
+  "version": 4,
+  "id": "comparison-implementation",
+  "title": "Current state, comparison, and history",
+  "role": "change",
+  "rank": 0,
+  "objective": "Explain how one merge-base range produces Changed, Affected, Code, and durable reasoning without polluting current truth."
+}

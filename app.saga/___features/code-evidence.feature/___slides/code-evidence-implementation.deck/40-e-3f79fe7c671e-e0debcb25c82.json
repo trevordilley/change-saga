@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/livingapp/compose.go",
+      "start": 553,
+      "end": 587,
+      "digest": "sha256:b5de5186a34ce832ac2372a836c3080ba4ff2f103d73e0ab02f21aea64e32196",
+      "note": "Matches a requested source range against pinned or safely remapped implementation evidence."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "same-context-explains-surfaces",
+  "type": "explains",
+  "from": "urn:change-saga:app:slide:comparison-opening-context:item:same-context-surfaces",
+  "to": "urn:change-saga:app:story:observe-or-compare:criterion:same-against",
+  "scope": "self",
+  "rationale": "Browser, status, and query construction receive the same resolved comparison range.",
+  "to_revision": "urn:change-saga:app:story:observe-or-compare:revision:r4",
+  "state": "active",
+  "created_at": "2026-09-21T05:16:00.156994Z"
+}

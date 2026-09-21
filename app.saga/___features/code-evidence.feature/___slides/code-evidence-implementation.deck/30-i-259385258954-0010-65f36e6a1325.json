@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "stale-diagnosis",
+  "slide": "evidence-repair-flow",
+  "rank": 10,
+  "kind": "node",
+  "label": "Stale diagnosis",
+  "description": "Resolves every evidence reference at the viewed revision and returns a reason plus the smallest safe diff when it is stale.",
+  "selector": {
+    "type": "element",
+    "element_id": "stale-diagnosis"
+  }
+}

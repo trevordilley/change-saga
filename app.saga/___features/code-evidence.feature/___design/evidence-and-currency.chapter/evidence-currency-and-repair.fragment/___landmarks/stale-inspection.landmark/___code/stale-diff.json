@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/coderesolve/resolve.go",
+      "start": 196,
+      "end": 205,
+      "digest": "sha256:3cbfb1df3d2e50bb58f760faf4ea3823ef83397b10199eba762a874e481b1259",
+      "note": "DiffSince exposes the file patch between a reference pin and the viewed commit for diagnosis."
+    }
+  ]
+}

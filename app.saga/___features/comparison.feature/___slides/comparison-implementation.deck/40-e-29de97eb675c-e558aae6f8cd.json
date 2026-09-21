@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/changeview/history.go",
+      "start": 187,
+      "end": 234,
+      "digest": "sha256:759e5942a1c10ef974ae289d5b3d5799caf6508f5f495a60abc8c7095f57c929",
+      "note": "Derives related reviews from commits in their range, landed commits, and review Items that point at the record."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/coverage/coverage.go",
+      "start": 231,
+      "end": 247,
+      "digest": "sha256:34e289082e6467f84a29a53af5e7432510538745e570ef49a42e155a3050e31e",
+      "note": "Sides resolves a pin independently against the old and new sides of a comparison."
+    }
+  ]
+}

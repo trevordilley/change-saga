@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "current-vs-compare-explains-context",
+  "type": "explains",
+  "from": "urn:change-saga:app:slide:comparison-opening-context:item:current-vs-compare",
+  "to": "urn:change-saga:app:story:observe-or-compare:criterion:documentation-context",
+  "scope": "self",
+  "rationale": "Comparison is projected beside the opened living Saga rather than replacing its current documentation.",
+  "to_revision": "urn:change-saga:app:story:observe-or-compare:revision:r4",
+  "state": "active",
+  "created_at": "2026-09-21T05:16:00.48439Z"
+}

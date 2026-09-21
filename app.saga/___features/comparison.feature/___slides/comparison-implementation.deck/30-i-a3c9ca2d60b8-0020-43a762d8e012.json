@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "code-ownership",
+  "slide": "comparison-three-layers",
+  "rank": 20,
+  "kind": "region",
+  "label": "Code ownership and gaps",
+  "description": "Groups changed atoms under all current evidence owners and keeps unreferenced atoms separate.",
+  "selector": {
+    "type": "element",
+    "element_id": "code-ownership"
+  }
+}
