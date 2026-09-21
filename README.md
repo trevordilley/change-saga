@@ -207,7 +207,12 @@ the code, grouped by the documentation that explains it.
 The header divides the application in two: **Documentation** is what it is, and
 **Review** is how it is changing.
 
-Documentation has two sections:
+Each side's sidebar lists what that side is about. The **Overview** is on both,
+because it is what the application is: a reader reviewing a change needs the
+same vocabulary and personas as one learning the app. What differs is the
+second section — the features, or the reviews.
+
+Documentation holds:
 
 - **Overview** is the application's pitch and description, plus its personas,
   terms and vocabulary, design system, onboarding deck, and feature flags.
@@ -219,7 +224,8 @@ Documentation has two sections:
 - **Present** shows the implementation deck full screen, one slide at a time.
   Linked code opens without losing the active slide.
 
-Review holds the reviews and everything that reads a comparison:
+Review holds the reviews and everything that reads a comparison. Its sidebar is
+the Overview again, then every review as a row in place of the features:
 
 - **Reviews** lists each pull request's review: a slide deck that explains what
   the change did and why, with the diffs its slides reference. Reviewers approve

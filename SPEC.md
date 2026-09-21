@@ -981,13 +981,19 @@ hide authored content behind a valid-looking saga. Other names beginning with
 - `change-saga open` divides the application in the header, into **Documentation**
   — what the application is — and **Review** — how it is changing. Review holds
   the pull-request reviews (`/reviews`) and the views that read a comparison:
-  Code Diff, Coverage, and Change. Documentation holds two sections, and never
-  repeats the reviews: **Overview** is the application's prose plus a directory
-  of its parts — personas (`/personas`), terms and vocabulary (`/terms`), the
-  design system (`/design-system`), onboarding, and feature flags (`/flags`) —
-  and **Features** (`/features`) lists every feature in creation order, each
+  Code Diff, Coverage, and Change. Each side's sidebar has two sections, and
+  lists what that side is about. **Overview** is on both, because it is what
+  the application is: the application's prose plus a directory of its parts —
+  personas (`/personas`), terms and vocabulary (`/terms`), the design system
+  (`/design-system`), onboarding, and feature flags (`/flags`). The second
+  section is the distinction the header draws. On Documentation it is
+  **Features** (`/features`), listing every feature in creation order, each
   opening its own page; the feature whose content is on screen expands over its
-  Product, Design, Quality, and Implementation. Every section header is a
+  Product, Design, Quality, and Implementation. On Review it is **Reviews**
+  (`/reviews`), listing every review as a row naming its pull request. Neither
+  section appears on the other side, so no destination is offered twice. The
+  Reviews sidebar opens no review, so it costs no range resolution: a review's
+  slides, decisions, and coverage belong to its own page. Every section header is a
   destination rather than a row that only expands, and a deck header
   (onboarding, or a feature's implementation) opens the deck at its first slide.
   Every directory is a server-rendered table that filters with `?q=` and without
