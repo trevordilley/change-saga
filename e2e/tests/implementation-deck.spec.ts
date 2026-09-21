@@ -72,6 +72,11 @@ test("a Saga opens several implementation decks without paginating its documenta
   await expect(unlinkedItem).toHaveCSS("border-color", "rgba(0, 0, 0, 0)");
   await page.locator(".brand").hover();
   await expect(linkedItem).toHaveCSS("border-color", "rgba(0, 0, 0, 0)");
+  await linkedItem.click({ position: { x: 8, y: 8 } });
+  const linkedCodeDrawer = page.getByRole("complementary", { name: "Linked code" });
+  await expect(linkedCodeDrawer).toHaveAttribute("aria-hidden", "false");
+  await expect(linkedCodeDrawer.getByText("src/app.go", { exact: true })).toBeVisible();
+  await linkedCodeDrawer.getByRole("button", { name: "Close linked code" }).click();
 
   // A deck is documentation: its slides and Items carry no approval, comment,
   // or annotation control.

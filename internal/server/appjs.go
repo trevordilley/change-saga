@@ -35,7 +35,16 @@ const appJavaScript = `(() => {
   }
 
   function markLandmarkDiffOwnership(target, visual) {
-    if (visual) visual.dataset.landmarkHasDiffs = String(landmarkOwnsDiffs(target));
+    if (!visual) return;
+    const ownsCode = landmarkOwnsDiffs(target);
+    visual.dataset.landmarkHasDiffs = String(ownsCode);
+  }
+
+  function activateLandmarkCode(visual) {
+    const control = q('[data-open-diffs],[data-target-code-href]', visual);
+    if (!control) return false;
+    control.click();
+    return true;
   }
 
   function deckViewerSlides() { return qa('[data-deck-slide]'); }
@@ -2048,6 +2057,8 @@ const appJavaScript = `(() => {
     if (targetCodeButton) { event.preventDefault(); void hydrateTargetCode(targetCodeButton); return; }
     const drawerButton = event.target.closest('[data-open-diffs]');
     if (drawerButton) { event.preventDefault(); openDrawer(drawerButton.dataset.openDiffs, drawerButton); return; }
+    const landmarkVisual = event.target.closest?.('[data-landmark-visual]');
+    if (landmarkVisual && activateLandmarkCode(landmarkVisual)) { event.preventDefault(); return; }
     if (event.target.closest('[data-close-drawer]')) { closeDrawer(); return; }
     const fragment = event.target.closest('.fragment');
     if (fragment) setActiveFragment(fragment);

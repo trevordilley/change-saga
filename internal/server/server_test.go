@@ -698,6 +698,18 @@ func TestTargetCodeLoadsOneNarrativeMappingWithoutGlobalSnapshot(t *testing.T) {
 	if file.Code != http.StatusOK || !strings.Contains(file.Body.String(), "linked-evidence") || !strings.Contains(file.Body.String(), `data-target="`+target+`"`) || strings.Contains(file.Body.String(), "unrelated.go") {
 		t.Fatalf("target file body lost its scoped evidence: status=%d body=%s", file.Code, file.Body.String())
 	}
+
+	observedApplication := &app{root: root, sourceDir: repo, template: serverTemplate(t)}
+	observedApplication.catalogLoader = func(context.Context, saga.Manifest) (gitdiff.Catalog, error) {
+		t.Fatal("observed linked code requested a comparison catalog")
+		return gitdiff.Catalog{}, nil
+	}
+	observed := httptest.NewRecorder()
+	newMux(observedApplication).ServeHTTP(observed, httptest.NewRequest(http.MethodGet, "/api/target-code?target="+url.QueryEscape(target), nil))
+	observedBody := observed.Body.String()
+	if observed.Code != http.StatusOK || !strings.Contains(observedBody, `data-target-code-count="1"`) || !strings.Contains(observedBody, `data-open-diffs="diffs-`+domID(target)+`"`) || !strings.Contains(observedBody, `aria-label="Open linked code with 1 reference"`) || !strings.Contains(observedBody, "data-reference-code") || !strings.Contains(observedBody, "func Ready() bool") || strings.Contains(observedBody, "unrelated.go") {
+		t.Fatalf("observed target code did not render its current source: status=%d body=%s", observed.Code, observedBody)
+	}
 }
 
 func TestSlideTargetCodeRollsUpItemFiles(t *testing.T) {
@@ -777,6 +789,13 @@ func TestSlideTargetCodeRollsUpItemFiles(t *testing.T) {
 	handler.ServeHTTP(file, httptest.NewRequest(http.MethodGet, "/api/file-diff?file=guide.md&target="+url.QueryEscape(slideTarget), nil))
 	if file.Code != http.StatusOK || !strings.Contains(file.Body.String(), `data-file-path="guide.md"`) || !strings.Contains(file.Body.String(), "linked-evidence") || strings.Contains(file.Body.String(), "app.go") {
 		t.Fatalf("slide linked-file body was not scoped to the requested referenced file: status=%d body=%s", file.Code, file.Body.String())
+	}
+
+	observed := httptest.NewRecorder()
+	newMux(&app{root: root, sourceDir: repo, template: serverTemplate(t)}).ServeHTTP(observed, httptest.NewRequest(http.MethodGet, "/api/target-code?target="+url.QueryEscape(slideTarget), nil))
+	observedBody := observed.Body.String()
+	if observed.Code != http.StatusOK || !strings.Contains(observedBody, `data-target-code-count="3"`) || !strings.Contains(observedBody, `aria-label="Open linked code with 3 references"`) || !strings.Contains(observedBody, "app.go") || !strings.Contains(observedBody, "guide.md") || !strings.Contains(observedBody, "func Ready() bool") || !strings.Contains(observedBody, "# Guide") {
+		t.Fatalf("observed slide linked code did not aggregate current Item source: status=%d body=%s", observed.Code, observedBody)
 	}
 }
 

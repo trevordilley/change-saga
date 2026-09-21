@@ -7,6 +7,7 @@ import (
 	"sort"
 	"sync"
 
+	"github.com/twentyideas/changesaga/internal/coderef"
 	"github.com/twentyideas/changesaga/internal/coderesolve"
 	"github.com/twentyideas/changesaga/internal/coverage"
 	"github.com/twentyideas/changesaga/internal/gitdiff"
@@ -14,11 +15,13 @@ import (
 )
 
 type targetCodeView struct {
-	DOMID       string
-	Target      string
-	Title       string
-	ChangeCount int
-	Attached    *attachedCodeView
+	DOMID          string
+	Target         string
+	Title          string
+	ChangeCount    int
+	ReferenceCount int
+	Attached       *attachedCodeView
+	Observed       []*termCodeView
 }
 
 type targetSelection struct {
@@ -55,6 +58,24 @@ func (a *app) targetCode(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "unknown narrative target", http.StatusBadRequest)
 		return
 	}
+	if a.rng.Observe() {
+		evidence, err := loadNarrativeEvidence(document, target)
+		if err != nil {
+			http.Error(w, "Linked code could not be loaded.", http.StatusInternalServerError)
+			return
+		}
+		var references []coderef.Reference
+		for _, file := range evidence {
+			references = append(references, file.References...)
+		}
+		view := targetCodeView{
+			DOMID: domID(target), Target: target, Title: title,
+			ReferenceCount: len(references), Observed: a.referenceCode(r.Context(), references, "record"),
+		}
+		writeIncrementalHeaders(w, "text/html; charset=utf-8")
+		renderHTML(w, a.template, "target-code", view, "Linked code could not be rendered.")
+		return
+	}
 	selection, err := a.selectTargetCode(r.Context(), document, target, "")
 	if err != nil {
 		http.Error(w, "Linked code could not be loaded.", http.StatusInternalServerError)
@@ -74,17 +95,9 @@ func (a *app) targetCode(w http.ResponseWriter, r *http.Request) {
 // expanded linked file. filePath limits source reading to a single catalog
 // entry; an empty path reads each changed file named by this target.
 func (a *app) selectTargetCode(ctx context.Context, document *saga.Saga, target, filePath string) (targetSelection, error) {
-	index := saga.MutationIndexFromDocument(document)
-	evidence := make([]saga.CodeFile, 0)
-	for _, evidenceTarget := range narrativeEvidenceTargets(document.Section, target) {
-		loaded, validation, err := saga.LoadTargetCode(index, evidenceTarget)
-		if err != nil {
-			return targetSelection{}, err
-		}
-		if !validation.Valid {
-			return targetSelection{}, fmt.Errorf("target evidence is invalid")
-		}
-		evidence = append(evidence, loaded...)
+	evidence, err := loadNarrativeEvidence(document, target)
+	if err != nil {
+		return targetSelection{}, err
 	}
 	catalog, err := a.sourceCatalog(ctx, document.Manifest)
 	if err != nil {
@@ -126,6 +139,22 @@ func (a *app) selectTargetCode(ctx context.Context, document *saga.Saga, target,
 		catalog: catalog, evidence: evidence, changes: changes,
 		matched: coverage.SelectTarget(ctx, evidence, changes, resolver),
 	}, nil
+}
+
+func loadNarrativeEvidence(document *saga.Saga, target string) ([]saga.CodeFile, error) {
+	index := saga.MutationIndexFromDocument(document)
+	evidence := make([]saga.CodeFile, 0)
+	for _, evidenceTarget := range narrativeEvidenceTargets(document.Section, target) {
+		loaded, validation, err := saga.LoadTargetCode(index, evidenceTarget)
+		if err != nil {
+			return nil, err
+		}
+		if !validation.Valid {
+			return nil, fmt.Errorf("target evidence is invalid")
+		}
+		evidence = append(evidence, loaded...)
+	}
+	return evidence, nil
 }
 
 // narrativeEvidenceTargets keeps the roll-up narrow: ordinary targets load
