@@ -1,6 +1,7 @@
 package server
 
 import (
+	"strconv"
 	"strings"
 
 	"github.com/twentyideas/changesaga/internal/prototypes"
@@ -9,20 +10,24 @@ import (
 	"github.com/twentyideas/changesaga/internal/saga"
 )
 
-// The reviewer's app-level list has three sections, and every one of them is
-// a page:
+// The reviewer's app-level list has two sections, and every one of them is
+// a page. The first is the same on both sides of the header; the second is
+// what that side is about:
 //
 //	Overview        name, elevator pitch, description, and the parts that
 //	                describe the whole app: terms and vocabulary, personas,
 //	                the design system, onboarding, and feature flags
-//	Features           the directory of every feature, over every feature as a row
-//	Reviews         every pull request's review
+//	Features        (Documentation) the directory of every feature, over
+//	                every feature as a row
+//	Reviews         (Review) every pull request's review, one row each
 //
-// Three sections, because those are the three things a reviewer arrives
-// looking for: what the app is, what it does, and what is being changed about
-// it. Personas, the design system, onboarding, and feature flags all describe
-// the whole app rather than any one part of it, so they belong to the
-// overview and not beside the features they cut across.
+// The overview is on both sides because it is what the application is, and a
+// reader reviewing a change needs the same vocabulary and personas as one
+// learning the app. What differs is the second section, which is the whole
+// distinction the header draws: what the app does, or what is being changed
+// about it. Personas, the design system, onboarding, and feature flags all
+// describe the whole app rather than any one part of it, so they belong to
+// the overview and not beside the features they cut across.
 //
 // No header in this list is a row that only expands. A section header opens
 // the section: Overview opens its prose and its directory, Terms and
@@ -67,6 +72,9 @@ type appNavSources struct {
 	// feature that opens over its four places. Empty on a page that belongs to
 	// no feature, where every feature stays a row.
 	pageFeature string
+	// reviewSide says the page is on the Review side of the header, which
+	// lists the reviews where Documentation lists the features.
+	reviewSide bool
 }
 
 func makeAppNavTree(sources appNavSources) []*navNodeView {
@@ -98,10 +106,16 @@ func makeAppNavTree(sources appNavSources) []*navNodeView {
 		navSection("Feature flags", "/flags", "nav-featureflags", "", "no feature flags yet", flagNav(sources.requirements)),
 	)
 
-	// Reviews are the header's other side, so this sidebar holds only the
-	// documentation: repeating them here would offer the same destination
-	// twice and imply reviews are part of what the app is.
-	navigation := []*navNodeView{overview, makeFeaturesNav(sources, deckRows)}
+	// Each side lists what it is about, and the overview is on both because
+	// it is what the application is: a reader reviewing a change needs the
+	// same pitch, vocabulary, and personas a reader learning the app does.
+	// Only the second section differs, which is the whole distinction the
+	// header draws — Documentation lists the features, Review the reviews.
+	second := makeFeaturesNav(sources, deckRows)
+	if sources.reviewSide {
+		second = makeReviewsNav(document)
+	}
+	navigation := []*navNodeView{overview, second}
 	for _, node := range navigation {
 		revealActive(node)
 	}
@@ -176,6 +190,41 @@ func makeFeaturesNav(sources appNavSources, deckRows map[string]*navNodeView) *n
 	section.Gap, section.Note = false, ""
 	section.Expanded = true
 	return section
+}
+
+// makeReviewsNav is the Review side's second section: every review, one row
+// each, in the order they were created. It reads the reviews the Saga already
+// holds and opens none of them, so the sidebar costs no range resolution: a
+// review's slides, decisions, and coverage all belong to its own page.
+func makeReviewsNav(document *saga.Saga) *navNodeView {
+	section := navSection("Reviews", reviewsIndexPath, "nav-reviews", "diff", "no reviews yet", nil)
+	for _, review := range document.Reviews {
+		section.Children = append(section.Children, &navNodeView{
+			Title: reviewNavTitle(review), Href: reviewHref(review.ID),
+			NodeID: "nav-review-" + domID(review.ID), Icon: "diff",
+		})
+	}
+	if len(section.Children) == 0 {
+		return section
+	}
+	section.Gap, section.Note = false, ""
+	section.Expanded = true
+	return section
+}
+
+// reviewNavTitle names a review by its title, with the pull request it is the
+// review of. A review is a pull request, so the number is how a reader
+// recognizes it; a review missing both falls back to its ID rather than
+// rendering an empty row.
+func reviewNavTitle(review *saga.Review) string {
+	title := strings.TrimSpace(review.Title)
+	if title == "" {
+		title = review.ID
+	}
+	if review.PullRequest != nil && review.PullRequest.Number != 0 {
+		title += " #" + strconv.Itoa(review.PullRequest.Number)
+	}
+	return title
 }
 
 // makeFeatureRowNav is a feature the reader is not reading: one row, linking to the

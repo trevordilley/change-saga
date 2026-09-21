@@ -151,6 +151,57 @@ func topTitles(nodes []*navNodeView) string {
 	return strings.Join(titles, "|")
 }
 
+// Each side of the header lists what it is about. The overview is on both,
+// because it is what the application is and a reader reviewing a change needs
+// the same vocabulary and personas as one learning the app; only the second
+// section differs. Reviews appear on the Review side alone, so the
+// Documentation sidebar never offers the same destination twice.
+func TestEachSideListsWhatItIsAbout(t *testing.T) {
+	sources := appNavFixture(t)
+	sources.document.Reviews = []*saga.Review{
+		{ReviewManifest: saga.ReviewManifest{ID: "postgres", Title: "Move the order queue to Postgres",
+			PullRequest: &saga.PullRequest{Number: 1}}},
+		{ReviewManifest: saga.ReviewManifest{ID: "untitled"}},
+	}
+
+	if got, want := topTitles(makeAppNavTree(sources)), "Overview|Features"; got != want {
+		t.Fatalf("documentation sidebar = %s, want %s", got, want)
+	}
+
+	sources.reviewSide = true
+	nodes := makeAppNavTree(sources)
+	if got, want := topTitles(nodes), "Overview|Reviews"; got != want {
+		t.Fatalf("review sidebar = %s, want %s", got, want)
+	}
+	reviews := findNav(t, nodes, "Reviews")
+	if reviews.Href != reviewsIndexPath {
+		t.Fatalf("Reviews header opens %q, want %q", reviews.Href, reviewsIndexPath)
+	}
+	// A review is a pull request, so the number is how a reader recognizes it.
+	// One with neither title nor number still gets a row, named by its ID,
+	// because a review a reader cannot see listed is harder to ask about.
+	if got, want := topTitles(reviews.Children), "Move the order queue to Postgres #1|untitled"; got != want {
+		t.Fatalf("review rows = %s, want %s", got, want)
+	}
+	if got, want := reviews.Children[0].Href, reviewHref("postgres"); got != want {
+		t.Fatalf("review row opens %q, want %q", got, want)
+	}
+}
+
+// A Saga with no reviews yet keeps the section and says so: a reader has to be
+// able to see that there are none rather than infer it from an absent section.
+func TestTheReviewSideStatesTheGapWhenThereAreNoReviews(t *testing.T) {
+	sources := appNavFixture(t)
+	sources.reviewSide = true
+	reviews := findNav(t, makeAppNavTree(sources), "Reviews")
+	if !reviews.Gap || reviews.Note != "no reviews yet" {
+		t.Fatalf("empty Reviews section = gap %v note %q, want gap with \"no reviews yet\"", reviews.Gap, reviews.Note)
+	}
+	if reviews.Href != reviewsIndexPath {
+		t.Fatalf("empty Reviews header opens %q, want %q", reviews.Href, reviewsIndexPath)
+	}
+}
+
 // The app-level list is the app's own places, then every feature as a row, with
 // only the feature the reader is inside opened over its four places. Listing
 // every feature expanded put this repository's own sidebar at 238 rows.

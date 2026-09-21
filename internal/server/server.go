@@ -1064,7 +1064,7 @@ func (a *app) shell(r *http.Request) (*pageData, error) {
 		quality:    tests,
 		prototypes: prototypeDocument, prototypeNote: prototypeNote,
 		decks: makeDeckNavTree(slideRoot), overviewActive: overviewActive,
-		pageFeature: data.PageFeature,
+		pageFeature: data.PageFeature, reviewSide: data.ReviewSide,
 	})
 	if route.kind != "overview" {
 		// Off the overview, an in-page anchor would point into a page that is
