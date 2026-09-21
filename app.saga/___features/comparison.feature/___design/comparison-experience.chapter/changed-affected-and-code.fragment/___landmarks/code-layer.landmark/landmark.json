@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "code-layer",
+  "label": "Code: explanation ownership and gaps",
+  "selector": {
+    "type": "heading",
+    "heading_id": "code-layer"
+  },
+  "target": ""
+}

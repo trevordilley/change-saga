@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "related-context-addresses-related-reviews",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:current-and-comparison-modes:landmark:related-review-context",
+  "to": "urn:change-saga:app:story:observe-or-compare:criterion:related-reviews",
+  "scope": "self",
+  "rationale": "Current feature, story, and criterion pages derive the reviews that changed code reached through their evidence.",
+  "to_revision": "urn:change-saga:app:story:observe-or-compare:revision:r4",
+  "from_content_digest": "sha256:0b5caacd8dd4ef6d06acdb4b9d1003ba1f08a779368baf3e70a17abbb72a81c7",
+  "state": "active",
+  "created_at": "2026-09-21T04:53:14.531817Z"
+}

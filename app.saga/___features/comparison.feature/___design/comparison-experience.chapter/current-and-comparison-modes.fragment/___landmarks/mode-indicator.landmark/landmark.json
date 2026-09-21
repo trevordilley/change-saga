@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "mode-indicator",
+  "label": "The active mode is always visible",
+  "selector": {
+    "type": "heading",
+    "heading_id": "mode-indicator"
+  },
+  "target": ""
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "evidence-path-addresses-criterion-code",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:evidence-traversal:landmark:evidence-path",
+  "to": "urn:change-saga:app:story:evidence-traversal:criterion:criterion-code",
+  "scope": "self",
+  "rationale": "The forward-path design opens exact code through the criterion’s evidence chain.",
+  "to_revision": "urn:change-saga:app:story:evidence-traversal:revision:r2",
+  "from_content_digest": "sha256:6e524c26ca0be280d662d4ba654d2535cc8c980584dd0dc4fc1738168b03f7cb",
+  "state": "active",
+  "created_at": "2026-09-21T04:52:37.703295Z"
+}

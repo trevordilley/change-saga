@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "current-state-mode",
+  "label": "Current state is the default product truth",
+  "selector": {
+    "type": "heading",
+    "heading_id": "current-state-mode"
+  },
+  "target": ""
+}

@@ -1,3 +1,11 @@
-# Code reference format {#overview}
+# Code evidence technical model {#code-evidence-technical-model}
 
-The technical design behind the story "Nodes reference code at a commit, not diffs": what a code reference records, how it is viewed at another commit, and how it survives a merge. The rules are the format's, from SPEC.md sections 5, 5.1, and 6.2; the implementation deck's reference-resolution slide shows the code that applies them.
+This chapter is the technical contract beneath the user-facing evidence,
+currency, and repair experience. The experience owns observable states and safe
+outcomes; this chapter owns durable evidence identity, source-side rules, and
+the boundary around replaceable resolution algorithms.
+
+A code reference records source, never a diff. A diff is a view used to explain
+why a reference is current, remapped, or stale at another source revision. The
+implementation deck may illustrate the current resolver, but neither its
+package structure nor one line-matching algorithm is part of the UX contract.

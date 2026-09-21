@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "merge-reasons-addresses-squash",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:comparison-history:landmark:merge-reason-preservation",
+  "to": "urn:change-saga:app:story:why-things-changed:criterion:squash-keeps-reasons",
+  "scope": "self",
+  "rationale": "Post-merge refresh retains ordered branch commit reasons alongside the landed source identity.",
+  "to_revision": "urn:change-saga:app:story:why-things-changed:revision:r3",
+  "from_content_digest": "sha256:eb2b69556035998df0ffb458a06418bf2179a6426886aded6db696d329db5954",
+  "state": "active",
+  "created_at": "2026-09-21T04:53:15.952648Z"
+}

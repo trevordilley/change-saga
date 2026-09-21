@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "node-history",
+  "label": "Node history answers three questions",
+  "selector": {
+    "type": "heading",
+    "heading_id": "node-history"
+  },
+  "target": ""
+}

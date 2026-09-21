@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "verification-entry",
+  "label": "Verification entry",
+  "selector": {
+    "type": "heading",
+    "heading_id": "verification-entry"
+  },
+  "target": ""
+}

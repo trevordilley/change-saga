@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "post-merge-refresh",
+  "label": "Refresh after merge",
+  "selector": {
+    "type": "heading",
+    "heading_id": "post-merge-refresh"
+  },
+  "target": ""
+}

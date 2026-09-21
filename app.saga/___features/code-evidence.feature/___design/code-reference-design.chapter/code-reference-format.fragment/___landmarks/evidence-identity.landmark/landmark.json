@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "evidence-identity",
+  "label": "Durable evidence identity",
+  "selector": {
+    "type": "heading",
+    "heading_id": "evidence-identity"
+  },
+  "target": ""
+}

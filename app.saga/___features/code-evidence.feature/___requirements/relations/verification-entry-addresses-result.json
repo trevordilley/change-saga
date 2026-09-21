@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "verification-entry-addresses-result",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:claims-verification-design:landmark:verification-entry",
+  "to": "urn:change-saga:app:story:claims-verification:criterion:verification-result",
+  "scope": "self",
+  "rationale": "The verification form records exactly one verified, failed, or inconclusive result.",
+  "to_revision": "urn:change-saga:app:story:claims-verification:revision:r2",
+  "from_content_digest": "sha256:b6f854d2a8a990b55ac1f5279bb658dcad6c9e761a4a1e7affd0e3beda2fe7b7",
+  "state": "active",
+  "created_at": "2026-09-21T04:52:39.435224Z"
+}

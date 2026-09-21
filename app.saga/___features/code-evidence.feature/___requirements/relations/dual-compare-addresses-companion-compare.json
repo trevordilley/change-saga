@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "dual-compare-addresses-companion-compare",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:companion-repository-evidence:landmark:dual-repository-compare",
+  "to": "urn:change-saga:app:story:companion-repositories:criterion:companion-compare",
+  "scope": "self",
+  "rationale": "The dual-history design aligns the Saga range to the source merge base through the sync cursor.",
+  "to_revision": "urn:change-saga:app:story:companion-repositories:revision:r3",
+  "from_content_digest": "sha256:d08eb59da57dcca7245d1759812def5bc2561e9d4b0e31f08d06d52145999f79",
+  "state": "active",
+  "created_at": "2026-09-21T04:52:40.381586Z"
+}

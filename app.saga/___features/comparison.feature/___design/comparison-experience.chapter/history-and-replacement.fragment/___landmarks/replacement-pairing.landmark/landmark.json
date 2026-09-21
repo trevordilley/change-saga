@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "replacement-pairing",
+  "label": "Pair replacements conservatively",
+  "selector": {
+    "type": "heading",
+    "heading_id": "replacement-pairing"
+  },
+  "target": ""
+}

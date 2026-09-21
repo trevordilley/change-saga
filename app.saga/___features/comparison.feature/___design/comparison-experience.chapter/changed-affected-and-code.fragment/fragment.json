@@ -1,0 +1,8 @@
+{
+  "version": 2,
+  "id": "comparison-layers",
+  "title": "Changed, Affected, and Code",
+  "media_type": "text/markdown",
+  "entrypoint": "content.md",
+  "order": 20
+}

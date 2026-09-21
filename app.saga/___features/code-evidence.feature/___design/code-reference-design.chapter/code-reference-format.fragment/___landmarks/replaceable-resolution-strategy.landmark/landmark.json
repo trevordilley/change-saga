@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "replaceable-resolution-strategy",
+  "label": "The resolution strategy is replaceable",
+  "selector": {
+    "type": "heading",
+    "heading_id": "replaceable-resolution-strategy"
+  },
+  "target": ""
+}

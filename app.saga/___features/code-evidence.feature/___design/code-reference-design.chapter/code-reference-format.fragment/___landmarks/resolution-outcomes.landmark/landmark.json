@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "resolution-outcomes",
+  "label": "Resolution outcomes are stable",
+  "selector": {
+    "type": "heading",
+    "heading_id": "resolution-outcomes"
+  },
+  "target": ""
+}

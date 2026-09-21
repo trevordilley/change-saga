@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "merge-rebinding-addresses-refresh",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:code-reference-format:landmark:merge-rebinding",
+  "to": "urn:change-saga:app:story:evidence-repair:criterion:post-merge-current",
+  "scope": "self",
+  "rationale": "The rebinding contract safely records landed pins while retaining stale diagnoses and branch reasoning.",
+  "to_revision": "urn:change-saga:app:story:evidence-repair:revision:r1",
+  "from_content_digest": "sha256:931cdf059c876a1084af9643d1dc47a31ff8e56b7c412e18953844db720bffd8",
+  "state": "active",
+  "created_at": "2026-09-21T04:52:41.635029Z"
+}

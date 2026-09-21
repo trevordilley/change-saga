@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "source-scope-addresses-changed-reference",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:code-reference-format:landmark:source-side-and-scope",
+  "to": "urn:change-saga:app:story:evidence-repair:criterion:changed-lines",
+  "scope": "self",
+  "rationale": "The side and scope contract makes content changes and unavailable line sides diagnosable as stale rather than silently redirecting them.",
+  "to_revision": "urn:change-saga:app:story:evidence-repair:revision:r1",
+  "from_content_digest": "sha256:291ca25fdb131585a5283129408bb9fe4a879afc36cf82a02eaaa242f60fafa3",
+  "state": "active",
+  "created_at": "2026-09-21T04:52:40.950494Z"
+}

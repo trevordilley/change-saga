@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "impact-path-addresses-requirement-impact",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:evidence-traversal:landmark:impact-path",
+  "to": "urn:change-saga:app:story:evidence-traversal:criterion:requirement-impact",
+  "scope": "self",
+  "rationale": "The impact path derives possibly affected requirements from changed source through current evidence.",
+  "to_revision": "urn:change-saga:app:story:evidence-traversal:revision:r2",
+  "from_content_digest": "sha256:0938c53f359b4995e1179bd949a224e1f8140b1085cdbb977aaad27f25c24691",
+  "state": "active",
+  "created_at": "2026-09-21T04:52:38.199716Z"
+}

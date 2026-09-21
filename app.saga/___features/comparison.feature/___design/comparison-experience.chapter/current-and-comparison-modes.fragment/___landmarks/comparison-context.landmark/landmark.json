@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "comparison-context",
+  "label": "Product context stays reachable during review",
+  "selector": {
+    "type": "heading",
+    "heading_id": "comparison-context"
+  },
+  "target": ""
+}

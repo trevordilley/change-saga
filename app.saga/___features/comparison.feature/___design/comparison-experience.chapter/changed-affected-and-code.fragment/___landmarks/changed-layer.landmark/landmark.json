@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "changed-layer",
+  "label": "Changed: authored documentation delta",
+  "selector": {
+    "type": "heading",
+    "heading_id": "changed-layer"
+  },
+  "target": ""
+}
