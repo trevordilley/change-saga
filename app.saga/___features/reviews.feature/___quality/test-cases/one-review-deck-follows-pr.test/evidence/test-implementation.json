@@ -1,0 +1,57 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "test-implementation",
+  "test_case": "urn:change-saga:app:test-case:one-review-deck-follows-pr",
+  "test_revision": "urn:change-saga:app:test-case:one-review-deck-follows-pr:revision:r1",
+  "role": "test_implementation",
+  "code": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/cli/reviews_test.go",
+      "start": 190,
+      "end": 221,
+      "digest": "sha256:6bfa0a5bbfdfcd4a510a5fe46d0b7ab47ffc48f9a83a124dffd318ba3e5d51ad"
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/cli/reviews_test.go",
+      "start": 223,
+      "end": 232,
+      "digest": "sha256:55f35ca0664a77730ad9162afa002e3bcc85ce55915468945ae57484679dc2b0"
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/cli/reviews_test.go",
+      "start": 234,
+      "end": 286,
+      "digest": "sha256:207fb4d5bfb8a3bd244e5ae1e63e27c59be74b5d03d8a944582df5661de92fba"
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/cli/reviews_test.go",
+      "start": 288,
+      "end": 327,
+      "digest": "sha256:a25ba1f2d446f65149b05bc6879f228b25b258c0bc2df5f063d56037444e803d"
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/server/reviews_test.go",
+      "start": 106,
+      "end": 176,
+      "digest": "sha256:25ba6b3ee7718a3cfe897c2eace8277959c4cbb1c59172cc2a53f4f1c3f4f8bd"
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "e2e/tests/pull-request-review.spec.ts",
+      "start": 34,
+      "end": 84,
+      "digest": "sha256:ae705372636b2a28fd3b2413f011a227598c6eaa6d77c4cac9dcac2d5111d7ca"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-09-21T05:51:39Z",
+  "request_id": "quality-evidence-one-review-deck-follows-pr-tests"
+}

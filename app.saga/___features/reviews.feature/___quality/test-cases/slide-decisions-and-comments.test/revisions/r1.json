@@ -1,0 +1,37 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:app:test-case:slide-decisions-and-comments",
+  "parents": [],
+  "title": "Record slide decisions and item discussion without a pull-request verdict",
+  "coverage_kinds": [
+    "positive",
+    "negative",
+    "edge"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "A live review has multiple slides, addressable Items, and an authenticated reviewer seat."
+  ],
+  "steps": [
+    {
+      "id": "decide-slides",
+      "action": "Approve one slide, request changes on another, and clear a prior decision.",
+      "expected_result": "Each append-only decision targets only its slide and records the reviewed head and reviewer identity."
+    },
+    {
+      "id": "discuss-item",
+      "action": "Comment on a slide Item, reply, and resolve the thread.",
+      "expected_result": "The discussion remains attached to that slide or Item and its open-thread count updates."
+    },
+    {
+      "id": "reject-invalid",
+      "action": "Attempt a decision without reviewer identity and a comment on Documentation or a missing target.",
+      "expected_result": "Each invalid write is rejected without creating a record or product-wide approval verdict."
+    }
+  ],
+  "expected_result": "Pass when slide decisions and threaded comments remain scoped, append-only, and verdict-free; fail on an invalid write, lost reviewed head, or pull-request approval claim.",
+  "created_at": "2026-09-21T05:50:00Z",
+  "request_id": "quality-add-slide-decisions-and-comments"
+}

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "test-implementation",
+  "test_case": "urn:change-saga:app:test-case:trustworthy-selected-coverage",
+  "test_revision": "urn:change-saga:app:test-case:trustworthy-selected-coverage:revision:r1",
+  "role": "test_implementation",
+  "code": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/cli/check_test.go",
+      "start": 17,
+      "end": 62,
+      "digest": "sha256:6249ab312df9c334071f5f2b0caf842d642e6047f6d553939adf0a9d293f7c92"
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/cli/check_test.go",
+      "start": 66,
+      "end": 87,
+      "digest": "sha256:37c47769ad1715bbb6a309081e9108fd1d853bc286616150eacdaa95ef9e2d70"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-09-21T05:51:39Z",
+  "request_id": "quality-evidence-trustworthy-selected-coverage-tests"
+}

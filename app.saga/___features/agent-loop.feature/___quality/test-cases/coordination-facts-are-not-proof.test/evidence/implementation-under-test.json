@@ -1,0 +1,29 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "implementation-under-test",
+  "test_case": "urn:change-saga:app:test-case:coordination-facts-are-not-proof",
+  "test_revision": "urn:change-saga:app:test-case:coordination-facts-are-not-proof:revision:r1",
+  "role": "implementation_under_test",
+  "code": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/workplan/model.go",
+      "start": 175,
+      "end": 226,
+      "digest": "sha256:68a339dac25ba1d4d15b3153c29c0acd78e4591fafa22d6973a04915c2d9073e"
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/workplan/mutation.go",
+      "start": 457,
+      "end": 571,
+      "digest": "sha256:baac3ef27861974ee41d55f12181efa2497aa69e1edaa5430d55d86d28d66b02"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-09-21T05:51:39Z",
+  "request_id": "quality-evidence-coordination-facts-are-not-proof-runtime"
+}

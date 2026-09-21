@@ -1,0 +1,22 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "implementation-under-test",
+  "test_case": "urn:change-saga:app:test-case:coverage-areas-are-readable",
+  "test_revision": "urn:change-saga:app:test-case:coverage-areas-are-readable:revision:r1",
+  "role": "implementation_under_test",
+  "code": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/areas/areas.go",
+      "start": 266,
+      "end": 283,
+      "digest": "sha256:c1cb1db21b309ab4bd55195291f9f266597846c4993873d46125f4a5e6dee7c7"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-09-21T05:51:39Z",
+  "request_id": "quality-evidence-coverage-areas-are-readable-runtime"
+}

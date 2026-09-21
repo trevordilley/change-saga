@@ -1,0 +1,37 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:app:test-case:merged-review-freezes-history",
+  "parents": [],
+  "title": "Freeze a merged review as reachable read-only history",
+  "coverage_kinds": [
+    "positive",
+    "negative",
+    "edge"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "A reviewed pull request can be merged and repinned to its landed commit."
+  ],
+  "steps": [
+    {
+      "id": "freeze-review",
+      "action": "Record the landed merge and open the historical review.",
+      "expected_result": "The original base, reviewed head, landed commit, deck, decisions, comments, and coverage remain viewable."
+    },
+    {
+      "id": "reject-write",
+      "action": "Attempt a new decision on the frozen review and inspect Documentation pages.",
+      "expected_result": "The historical review rejects the write and Documentation still offers no approval or comment controls."
+    },
+    {
+      "id": "follow-history",
+      "action": "Open history from documentation changed by the review.",
+      "expected_result": "The merged review remains reachable without becoming current product truth."
+    }
+  ],
+  "expected_result": "Pass when merge freezes the review and history links remain readable while all later review writes are refused; fail if frozen evidence changes or Documentation gains decision controls.",
+  "created_at": "2026-09-21T05:49:59Z",
+  "request_id": "quality-add-merged-review-freezes-history"
+}

@@ -1,0 +1,22 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "implementation-under-test",
+  "test_case": "urn:change-saga:app:test-case:documentation-and-review-stay-distinct",
+  "test_revision": "urn:change-saga:app:test-case:documentation-and-review-stay-distinct:revision:r1",
+  "role": "implementation_under_test",
+  "code": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/server/appnav.go",
+      "start": 109,
+      "end": 128,
+      "digest": "sha256:872213ac76912d1a9f1549b3955fa21602256e7bfd39febc29ce82e795fb66e8"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-09-21T05:51:39Z",
+  "request_id": "quality-evidence-documentation-and-review-stay-distinct-runtime"
+}

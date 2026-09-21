@@ -1,0 +1,15 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "q-first-change-stays-focused-verifies-optional-growth",
+  "type": "verifies",
+  "from": "urn:change-saga:app:test-case:first-change-stays-focused",
+  "to": "urn:change-saga:app:story:first-change:criterion:optional-growth",
+  "scope": "self",
+  "rationale": "The case verifies that first-run work ends at current implementation coverage and offers product knowledge as later optional growth.",
+  "from_revision": "urn:change-saga:app:test-case:first-change-stays-focused:revision:r1",
+  "to_revision": "urn:change-saga:app:story:first-change:revision:r3",
+  "state": "active",
+  "created_at": "2026-09-21T05:52:16.069387Z",
+  "request_id": "q-first-change-stays-focused-verifies-optional-growth"
+}

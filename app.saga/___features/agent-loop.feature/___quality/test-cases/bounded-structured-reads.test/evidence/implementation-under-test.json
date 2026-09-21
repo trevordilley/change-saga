@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "implementation-under-test",
+  "test_case": "urn:change-saga:app:test-case:bounded-structured-reads",
+  "test_revision": "urn:change-saga:app:test-case:bounded-structured-reads:revision:r1",
+  "role": "implementation_under_test",
+  "code": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/cli/query.go",
+      "start": 128,
+      "end": 158,
+      "digest": "sha256:4235aab26733e3f8d99626da948a6439a5833ac382e7efd85f5dee3f73d81d0d"
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/cli/query.go",
+      "start": 769,
+      "end": 825,
+      "digest": "sha256:8dc5404c9dd3c7d6961a104b51e49995df5a4418bb1465bfebad036499d5e7b8"
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/reviewapp/session.go",
+      "start": 901,
+      "end": 959,
+      "digest": "sha256:8d9beb1fb5c3ddba4708fd1344947b10c107fc946750699f25978c4b82885577"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-09-21T05:51:39Z",
+  "request_id": "quality-evidence-bounded-structured-reads-runtime"
+}

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "q-story-moves-keep-links-verifies-not-locked-in",
+  "type": "verifies",
+  "from": "urn:change-saga:app:test-case:story-moves-keep-links",
+  "to": "urn:change-saga:app:story:first-change:criterion:not-locked-in",
+  "scope": "self",
+  "rationale": "The case verifies that a supported feature move preserves the story identity and its current links.",
+  "from_revision": "urn:change-saga:app:test-case:story-moves-keep-links:revision:r1",
+  "to_revision": "urn:change-saga:app:story:first-change:revision:r3",
+  "state": "active",
+  "created_at": "2026-09-21T05:52:19.11656Z",
+  "request_id": "q-story-moves-keep-links-verifies-not-locked-in"
+}

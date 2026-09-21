@@ -1,0 +1,29 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "implementation-under-test",
+  "test_case": "urn:change-saga:app:test-case:merged-evidence-releases-work",
+  "test_revision": "urn:change-saga:app:test-case:merged-evidence-releases-work:revision:r1",
+  "role": "implementation_under_test",
+  "code": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/workplan/model.go",
+      "start": 41,
+      "end": 142,
+      "digest": "sha256:23a3a8361cda957e9ec919df5d11e47433c88de1c388298826cb0773b7734e62"
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/workplan/readiness.go",
+      "start": 5,
+      "end": 68,
+      "digest": "sha256:0de14ad6c018e30e030fbc1efe678a0026fcbbef6f8463a87d2d4bf4e264e222"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-09-21T05:51:39Z",
+  "request_id": "quality-evidence-merged-evidence-releases-work-runtime"
+}

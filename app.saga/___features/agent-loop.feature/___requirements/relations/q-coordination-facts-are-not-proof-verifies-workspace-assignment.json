@@ -1,0 +1,15 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "q-coordination-facts-are-not-proof-verifies-workspace-assignment",
+  "type": "verifies",
+  "from": "urn:change-saga:app:test-case:coordination-facts-are-not-proof",
+  "to": "urn:change-saga:app:story:parallel-delivery-plan:criterion:workspace-assignment",
+  "scope": "self",
+  "rationale": "The case verifies durable workspace responsibility and that progress facts do not substitute for delivery evidence.",
+  "from_revision": "urn:change-saga:app:test-case:coordination-facts-are-not-proof:revision:r1",
+  "to_revision": "urn:change-saga:app:story:parallel-delivery-plan:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-21T05:52:19.37858Z",
+  "request_id": "q-coordination-facts-are-not-proof-verifies-workspace-assignment"
+}

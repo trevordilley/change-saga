@@ -1,0 +1,31 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:app:test-case:review-keeps-documentation-reachable",
+  "parents": [],
+  "title": "Keep product documentation reachable during change review",
+  "coverage_kinds": [
+    "positive",
+    "edge"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "A comparison has a matching pull-request review and current product documentation."
+  ],
+  "steps": [
+    {
+      "id": "open-review",
+      "action": "Open the Review side for the selected comparison.",
+      "expected_result": "The matching review and change views appear inside the application shell."
+    },
+    {
+      "id": "follow-context",
+      "action": "Navigate from Review to the corresponding Documentation entry.",
+      "expected_result": "The current product context remains reachable without changing or fabricating the selected comparison."
+    }
+  ],
+  "expected_result": "Pass when review context and product documentation remain linked but distinct; fail if opening Review hides lasting context or mutates the comparison.",
+  "created_at": "2026-09-21T05:49:59Z",
+  "request_id": "quality-add-review-keeps-documentation-reachable"
+}

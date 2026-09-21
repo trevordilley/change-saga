@@ -1,0 +1,37 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:app:test-case:bounded-mutations-rollback-replay",
+  "parents": [],
+  "title": "Roll back invalid batches and replay requests safely",
+  "coverage_kinds": [
+    "positive",
+    "negative",
+    "edge"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "A writable Saga fixture and an idempotency request ID are available."
+  ],
+  "steps": [
+    {
+      "id": "reject-batch",
+      "action": "Submit a batch containing valid entries and one invalid entry.",
+      "expected_result": "The complete batch is rejected and none of its records are written."
+    },
+    {
+      "id": "apply-request",
+      "action": "Submit a valid mutation with a new request ID.",
+      "expected_result": "Exactly one record graph is written."
+    },
+    {
+      "id": "replay-request",
+      "action": "Repeat the identical request ID and then reuse it with a different payload.",
+      "expected_result": "The identical request replays without duplicates and the conflicting payload is rejected."
+    }
+  ],
+  "expected_result": "Pass when invalid batches leave zero partial writes and request replay is deterministic; fail on a partial write, duplicate record, or accepted payload conflict.",
+  "created_at": "2026-09-21T05:49:58Z",
+  "request_id": "quality-add-bounded-mutations-rollback-replay"
+}

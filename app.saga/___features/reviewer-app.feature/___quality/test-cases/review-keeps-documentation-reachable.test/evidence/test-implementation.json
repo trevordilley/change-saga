@@ -1,0 +1,43 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "test-implementation",
+  "test_case": "urn:change-saga:app:test-case:review-keeps-documentation-reachable",
+  "test_revision": "urn:change-saga:app:test-case:review-keeps-documentation-reachable:revision:r1",
+  "role": "test_implementation",
+  "code": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/server/appnav_test.go",
+      "start": 154,
+      "end": 197,
+      "digest": "sha256:5abad5391d2e9133e3edf9b98fcd5792a39ce4f13f89052b5b5002d5e2d50715"
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/server/appnav_test.go",
+      "start": 237,
+      "end": 249,
+      "digest": "sha256:168b128cbc5c7e76fa19842e5ba5d33b088918a7b8aab28a518f71a4c31c4f29"
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/server/reviews_test.go",
+      "start": 195,
+      "end": 217,
+      "digest": "sha256:1f7bb670d4893ace7a96523ca6a11bd8f8b3de225db5bb46939554d8e068b439"
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "e2e/tests/pull-request-review.spec.ts",
+      "start": 86,
+      "end": 101,
+      "digest": "sha256:1de80f1877924073eab09f187341d407c199b7214fb13e3ffc05c7d39dfe132d"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-09-21T05:51:39Z",
+  "request_id": "quality-evidence-review-keeps-documentation-reachable-tests"
+}
