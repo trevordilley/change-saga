@@ -8,6 +8,7 @@
   "scope": "self",
   "rationale": "The digest fallback is what lets a reference survive when its pinned commit is gone after a squash merge.",
   "to_revision": "urn:change-saga:app:story:code-references:revision:r1",
-  "state": "active",
-  "created_at": "2026-09-19T20:52:54.397122Z"
+  "state": "superseded",
+  "created_at": "2026-09-19T20:52:54.397122Z",
+  "superseded_at": "2026-09-21T04:34:32.252663Z"
 }

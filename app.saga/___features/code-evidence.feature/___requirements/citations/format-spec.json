@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/citation.schema.json",
+  "version": 3,
+  "id": "format-spec",
+  "kind": "document",
+  "title": "Change Saga format specification",
+  "reference": "SPEC.md",
+  "created_at": "2026-09-21T04:34:13.17322Z"
+}

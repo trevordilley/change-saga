@@ -1,0 +1,13 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "pin-missing-explains-evidence-refresh",
+  "type": "explains",
+  "from": "urn:change-saga:app:slide:reference-resolution:item:pin-missing",
+  "to": "urn:change-saga:app:story:evidence-repair:criterion:post-merge-current",
+  "scope": "self",
+  "rationale": "The digest fallback explains why evidence can be refreshed to landed source when the branch pin is gone.",
+  "to_revision": "urn:change-saga:app:story:evidence-repair:revision:r1",
+  "state": "active",
+  "created_at": "2026-09-21T04:34:26.6431Z"
+}
