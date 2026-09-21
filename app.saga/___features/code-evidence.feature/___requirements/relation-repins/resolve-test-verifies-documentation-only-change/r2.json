@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
+  "version": 5,
+  "id": "r2",
+  "relation": "urn:change-saga:app:relation:resolve-test-verifies-documentation-only-change",
+  "from_revision": "urn:change-saga:app:test-case:resolve-remaps-and-stales:revision:r2",
+  "rationale": "The revised case preserves the Saga-only change assertion and adds exact current evidence.",
+  "created_at": "2026-09-21T05:51:46.671856Z"
+}

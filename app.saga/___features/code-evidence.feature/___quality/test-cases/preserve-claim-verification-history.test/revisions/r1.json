@@ -1,0 +1,40 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:app:test-case:preserve-claim-verification-history",
+  "parents": [],
+  "title": "Keep author claims separate from verification history",
+  "coverage_kinds": [
+    "positive",
+    "negative"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "A valid Saga target and an exact source range are available for a new claim."
+  ],
+  "steps": [
+    {
+      "id": "claim",
+      "action": "Record one falsifiable claim for the target with the exact source range.",
+      "expected_result": "One immutable claim stores the target, statement, location, and computed digest."
+    },
+    {
+      "id": "verify",
+      "action": "Record a verified result with its method, summary, and command.",
+      "expected_result": "A separate verification record stores the complete result without rewriting the claim."
+    },
+    {
+      "id": "recheck",
+      "action": "Record a later inconclusive result with a different method and summary.",
+      "expected_result": "Both verification results remain present as independent history beside the unchanged claim."
+    },
+    {
+      "id": "reject-missing",
+      "action": "Attempt to verify a claim that does not exist.",
+      "expected_result": "The command fails and writes no verification record."
+    }
+  ],
+  "expected_result": "The claim remains immutable while complete independent verification results accumulate append-only.",
+  "created_at": "2026-09-21T05:51:30Z"
+}

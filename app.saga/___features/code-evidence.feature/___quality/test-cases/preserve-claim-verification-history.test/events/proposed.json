@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-event.schema.json",
+  "version": 5,
+  "id": "proposed",
+  "test_case": "urn:change-saga:app:test-case:preserve-claim-verification-history",
+  "parents": [],
+  "state": "proposed",
+  "created_at": "2026-09-21T05:51:30Z"
+}

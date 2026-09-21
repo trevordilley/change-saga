@@ -1,0 +1,42 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "implementation-under-test",
+  "test_case": "urn:change-saga:app:test-case:inspect-comparison-layers",
+  "test_revision": "urn:change-saga:app:test-case:inspect-comparison-layers:revision:r1",
+  "role": "implementation_under_test",
+  "code": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/gitdiff/opening.go",
+      "start": 5,
+      "end": 58,
+      "digest": "sha256:d913bc3871fcd364257623709a54612cf20c428e710ab813506f28302e36025d"
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/changeview/layers.go",
+      "start": 339,
+      "end": 362,
+      "digest": "sha256:428230f5bd4ab461c55342b5fabb74737413d6a33c88ed665c42732779c9abd7"
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/changeview/layers.go",
+      "start": 418,
+      "end": 485,
+      "digest": "sha256:87ce77db2689fe88e889adfe824c7dd4154399a4a53f23f66f5aaf884711c061"
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/changeview/layers.go",
+      "start": 487,
+      "end": 538,
+      "digest": "sha256:f6d161bb22cb10c0ce1b40965783491e38b64a794e70bc596b6009492f81e421"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-09-21T05:53:26Z"
+}
