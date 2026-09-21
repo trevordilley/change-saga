@@ -82,6 +82,8 @@ Feature-scoped status is 47/47 story and persona code targets with 154/154 healt
 
 `change-saga references --json app.saga` reports 383 total, 383 current, 6 remapped, and 0 stale after the required merge from `main`. All 113 references introduced here remain current at the merged head.
 
+`change-saga relation status --json app.saga` reports 397 relations: 379 current and 18 explicitly superseded, with zero stale, conflicted, or invalid relations. No relation in either owned feature is non-current.
+
 Focused package tests passed:
 
 ```text
