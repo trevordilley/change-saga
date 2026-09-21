@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "first-change-reversible-addresses-reorganization",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:first-change-journey:landmark:reversible-structure",
+  "to": "urn:change-saga:app:story:first-change:criterion:not-locked-in",
+  "scope": "self",
+  "rationale": "Stable identities keep first-run links intact when content is reorganized.",
+  "to_revision": "urn:change-saga:app:story:first-change:revision:r3",
+  "from_content_digest": "sha256:cbbab633026a968725f8701198ff50a19d634723cc689cce93b7669e5796eb1d",
+  "state": "active",
+  "created_at": "2026-09-21T04:51:35.735155Z"
+}

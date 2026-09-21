@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "resource-boundary-addresses-responses",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:safe-local-rendering:landmark:resource-boundary",
+  "to": "urn:change-saga:app:story:safe-local-review:criterion:bounded-responses",
+  "scope": "self",
+  "rationale": "The failure boundary applies explicit limits to rendered and decoded responses.",
+  "to_revision": "urn:change-saga:app:story:safe-local-review:revision:r2",
+  "from_content_digest": "sha256:05c6dfd153028fdd58738764c0e8f24086cf7722a5d42606f7ba1675ec622d45",
+  "state": "active",
+  "created_at": "2026-09-21T04:52:57.531765Z"
+}

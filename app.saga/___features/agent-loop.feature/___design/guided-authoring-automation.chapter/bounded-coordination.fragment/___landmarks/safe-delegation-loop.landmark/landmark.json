@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "safe-delegation-loop",
+  "label": "Safe delegation loop",
+  "selector": {
+    "type": "heading",
+    "heading_id": "safe-delegation-loop"
+  },
+  "target": ""
+}

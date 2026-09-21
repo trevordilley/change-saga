@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "trust-map-addresses-foreign-host",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:local-trust-map:landmark:local-server",
+  "to": "urn:change-saga:app:story:safe-local-review:criterion:foreign-host",
+  "scope": "self",
+  "rationale": "The visual enforcement zone rejects foreign host authority at the local server boundary.",
+  "to_revision": "urn:change-saga:app:story:safe-local-review:revision:r2",
+  "from_content_digest": "sha256:a7014322572e278e7508e364e691051afe5fb4b97cf4cc9931a9eb9e79600edc",
+  "state": "active",
+  "created_at": "2026-09-21T04:51:38.698205Z"
+}

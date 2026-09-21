@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "resource-boundary",
+  "label": "Bounded resource failures",
+  "selector": {
+    "type": "heading",
+    "heading_id": "resource-boundary"
+  },
+  "target": ""
+}

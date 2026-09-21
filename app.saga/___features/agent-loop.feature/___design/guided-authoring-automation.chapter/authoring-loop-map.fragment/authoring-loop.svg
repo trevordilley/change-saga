@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc">
+  <title id="title">Guided authoring and parallel delivery loop</title>
+  <desc id="desc">A first-change path flows from selecting a comparison through visual explanation and omission review to optional growth. A bounded automation loop surrounds each mutation, and delivery waves accept only merged evidence.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 z" fill="#475569"/></marker>
+    <style>.bg{fill:#f8fafc}.card{fill:white;stroke:#334155;stroke-width:2}.human{fill:#e0f2fe}.safe{fill:#dcfce7}.warn{fill:#fef3c7}.title{font:700 34px system-ui;fill:#0f172a}.h{font:700 22px system-ui;fill:#0f172a}.t{font:16px system-ui;fill:#334155}.line{stroke:#475569;stroke-width:3;fill:none;marker-end:url(#arrow)}.dash{stroke-dasharray:10 8}</style>
+  </defs>
+  <rect class="bg" width="1200" height="680"/>
+  <text class="title" x="60" y="64">Value first; mechanics stay bounded</text>
+  <g id="first-change">
+    <rect class="card human" x="60" y="120" width="230" height="120" rx="16"/><text class="h" x="85" y="160">Choose scope</text><text class="t" x="85" y="195">Saga + comparison</text>
+    <rect class="card human" x="355" y="120" width="230" height="120" rx="16"/><text class="h" x="380" y="160">Explain visually</text><text class="t" x="380" y="195">What changed and why</text>
+    <rect class="card human" x="650" y="120" width="230" height="120" rx="16"/><text class="h" x="675" y="160">Close omissions</text><text class="t" x="675" y="195">Every changed line</text>
+    <rect class="card safe" x="945" y="120" width="195" height="120" rx="16"/><text class="h" x="970" y="160">Done</text><text class="t" x="970" y="195">Offer growth</text>
+    <path class="line" d="M290 180 H345"/><path class="line" d="M585 180 H640"/><path class="line" d="M880 180 H935"/>
+  </g>
+  <g id="bounded-loop">
+    <rect class="card" x="210" y="320" width="780" height="150" rx="24"/>
+    <text class="h" x="245" y="360">Bound every delegated step</text>
+    <text class="t" x="245" y="398">Read snapshot → choose one action → preview/validate → idempotent write → re-read</text>
+    <text class="t" x="245" y="432">Snapshot changed or batch invalid? Stop, preserve state, and replan.</text>
+    <path class="line dash" d="M1040 245 C1060 300 1015 385 995 395"/><path class="line dash" d="M205 395 C120 375 105 260 170 245"/>
+  </g>
+  <g id="merge-gate">
+    <rect class="card warn" x="210" y="540" width="300" height="90" rx="16"/><text class="h" x="235" y="577">Progress</text><text class="t" x="235" y="605">Visible, never proof</text>
+    <rect class="card safe" x="690" y="540" width="300" height="90" rx="16"/><text class="h" x="715" y="577">Merged evidence</text><text class="t" x="715" y="605">Releases the next wave</text>
+    <path class="line" d="M510 585 H680"/>
+  </g>
+</svg>

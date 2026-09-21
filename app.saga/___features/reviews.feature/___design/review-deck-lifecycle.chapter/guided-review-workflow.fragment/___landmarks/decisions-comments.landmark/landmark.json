@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "decisions-comments",
+  "label": "Slide decisions and comments",
+  "selector": {
+    "type": "heading",
+    "heading_id": "decisions-comments"
+  },
+  "target": ""
+}

@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "local-entry-addresses-cross-site",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:safe-local-rendering:landmark:entry-boundary",
+  "to": "urn:change-saga:app:story:safe-local-review:criterion:cross-site",
+  "scope": "self",
+  "rationale": "The entry boundary rejects browser site context outside the local reviewer origin.",
+  "to_revision": "urn:change-saga:app:story:safe-local-review:revision:r2",
+  "from_content_digest": "sha256:935d0b53d8e1f2fa21a5c2b4917ba3968f382dfd3a3d322166de314a00eac9b9",
+  "state": "active",
+  "created_at": "2026-09-21T04:52:57.326609Z"
+}

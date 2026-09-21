@@ -1,0 +1,8 @@
+{
+  "version": 2,
+  "id": "guided-review-workflow",
+  "title": "Guided review workflow",
+  "media_type": "text/markdown",
+  "entrypoint": "content.md",
+  "order": 10
+}

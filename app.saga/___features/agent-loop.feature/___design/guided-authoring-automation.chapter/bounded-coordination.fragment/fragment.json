@@ -1,0 +1,8 @@
+{
+  "version": 2,
+  "id": "bounded-coordination",
+  "title": "Bounded automation and parallel delivery",
+  "media_type": "text/markdown",
+  "entrypoint": "content.md",
+  "order": 20
+}

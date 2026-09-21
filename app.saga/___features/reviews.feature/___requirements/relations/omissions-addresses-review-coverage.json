@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "omissions-addresses-review-coverage",
+  "type": "addresses",
+  "from": "urn:change-saga:app:fragment:guided-review-workflow:landmark:review-omissions",
+  "to": "urn:change-saga:app:story:review-is-pr-deck:criterion:review-coverage",
+  "scope": "self",
+  "rationale": "The omission model identifies every changed line without an explaining item.",
+  "to_revision": "urn:change-saga:app:story:review-is-pr-deck:revision:r5",
+  "from_content_digest": "sha256:d586376f420b5d1f684cfb3a826a7b74f841e9cf60b61d087227c5809fb1b828",
+  "state": "active",
+  "created_at": "2026-09-21T04:51:39.893532Z"
+}

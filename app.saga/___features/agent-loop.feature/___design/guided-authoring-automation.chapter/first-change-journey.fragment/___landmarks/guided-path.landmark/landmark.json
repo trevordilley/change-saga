@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "guided-path",
+  "label": "Guided first-change path",
+  "selector": {
+    "type": "heading",
+    "heading_id": "guided-path"
+  },
+  "target": ""
+}

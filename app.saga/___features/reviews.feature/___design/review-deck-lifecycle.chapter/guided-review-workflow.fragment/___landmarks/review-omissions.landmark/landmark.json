@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "review-omissions",
+  "label": "Review omission model",
+  "selector": {
+    "type": "heading",
+    "heading_id": "review-omissions"
+  },
+  "target": ""
+}

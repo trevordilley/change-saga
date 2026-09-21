@@ -1,0 +1,8 @@
+{
+  "version": 2,
+  "id": "review-state-map",
+  "title": "Review decision and history map",
+  "media_type": "image/svg+xml",
+  "entrypoint": "review-state-map.svg",
+  "order": 20
+}

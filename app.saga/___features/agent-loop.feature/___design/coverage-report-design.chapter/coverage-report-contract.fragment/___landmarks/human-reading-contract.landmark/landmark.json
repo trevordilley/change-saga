@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "human-reading-contract",
+  "label": "Actionable area report",
+  "selector": {
+    "type": "heading",
+    "heading_id": "human-reading-contract"
+  },
+  "target": ""
+}

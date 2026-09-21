@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
+  "version": 5,
+  "id": "r2",
+  "relation": "urn:change-saga:app:relation:two-sides-addresses-separate-modes",
+  "from_content_digest": "sha256:d263116c59468ded58ead706b79eb5fefb9910af54966eccd3eb037b905829e5",
+  "rationale": "The revised review landmark still makes current documentation and comparison review visibly distinct.",
+  "created_at": "2026-09-21T04:51:55.693923Z"
+}

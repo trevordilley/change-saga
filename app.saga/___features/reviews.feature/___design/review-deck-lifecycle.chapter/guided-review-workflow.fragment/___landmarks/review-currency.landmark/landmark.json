@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "id": "review-currency",
+  "label": "Decision currency model",
+  "selector": {
+    "type": "heading",
+    "heading_id": "review-currency"
+  },
+  "target": ""
+}
