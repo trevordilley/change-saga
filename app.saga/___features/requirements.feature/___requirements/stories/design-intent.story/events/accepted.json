@@ -1,0 +1,12 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-event.schema.json",
+  "version": 3,
+  "id": "accepted",
+  "story": "urn:change-saga:app:story:design-intent",
+  "parents": [
+    "urn:change-saga:app:story:design-intent:event:proposed"
+  ],
+  "state": "accepted",
+  "reason": "The product lifecycle contract makes UX and technical design first-class, requirement-linked surfaces that may precede implementation.",
+  "created_at": "2026-09-21T04:42:11.762265Z"
+}

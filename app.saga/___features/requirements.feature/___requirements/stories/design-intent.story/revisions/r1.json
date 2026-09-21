@@ -1,0 +1,46 @@
+{
+  "$schema": "https://changesaga.dev/schema/v3/story-revision.schema.json",
+  "version": 3,
+  "id": "r1",
+  "story": "urn:change-saga:app:story:design-intent",
+  "parents": [],
+  "title": "Align contributors on design before implementation",
+  "statement": "As a change author, I can explain the intended experience and system behavior before implementation, so that contributors share a clear direction and reviewers can connect design choices to requirements.",
+  "personas": [
+    "urn:change-saga:app:persona:change-author"
+  ],
+  "citations": [
+    "urn:change-saga:app:citation:product-lifecycle"
+  ],
+  "acceptance_criteria": [
+    {
+      "id": "ux-design",
+      "statement": "An author can connect user-experience design to the requirement it addresses."
+    },
+    {
+      "id": "technical-design",
+      "statement": "An author can connect technical design to the requirement it addresses."
+    },
+    {
+      "id": "criterion-target",
+      "statement": "An addressable design element can identify the acceptance criterion it addresses."
+    },
+    {
+      "id": "pre-implementation",
+      "statement": "Design can be reviewed before implementation evidence exists."
+    },
+    {
+      "id": "requirement-change",
+      "statement": "Changing a linked requirement marks the design relationship stale."
+    },
+    {
+      "id": "requirement-from-design",
+      "statement": "A reader can open the linked requirement from its design."
+    },
+    {
+      "id": "design-from-requirement",
+      "statement": "A reader can open the linked design from its requirement."
+    }
+  ],
+  "created_at": "2026-09-21T04:42:11.478797Z"
+}

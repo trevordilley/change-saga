@@ -7,15 +7,17 @@ Audited the product contract, CLI surface, reviewer behavior, tests, and the com
 - The three active personas are valid human beneficiaries but were underspecified. `change-author`, `reviewer`, and `newcomer` now state the value each person needs; the already-retired non-human `coding-agent` remains historical.
 - Seven existing story identities remain accepted and were revised in place around human outcomes: `companion-repositories`, `coverage-report`, `first-change`, `observe-or-compare`, `overview-and-terms`, `review-is-pr-deck`, and `why-things-changed`.
 - Eleven technical or duplicate story IDs were retired with explicit replacement reasons: `changed-lines-accounted`, `check-covers`, `code-references`, `documentation-not-approval`, `durable-features`, `growth-not-debt`, `one-app-saga`, `open-observe-or-compare`, `sidebar`, `traceability-chain`, and `two-sides`. Their surviving value moved into criteria or the replacement stories below; their history remains intact.
-- Ten accepted stories now cover missing human-value workflows: `bounded-automation`, `claims-verification`, `controlled-release`, `evidence-repair`, `evidence-traversal`, `evolve-product-knowledge`, `parallel-delivery-plan`, `prototype-feedback`, `quality-evidence`, and `safe-local-review`.
+- Eleven accepted stories now cover missing human-value workflows: `bounded-automation`, `claims-verification`, `controlled-release`, `design-intent`, `evidence-repair`, `evidence-traversal`, `evolve-product-knowledge`, `parallel-delivery-plan`, `prototype-feedback`, `quality-evidence`, and `safe-local-review`.
 - Six immutable provenance citations were added for the product overview, lifecycle, format, work-plan, automation-interface, and security contracts.
 - Existing design and quality links were repinned while obligations were refined. Ten links that targeted retired technical stories were superseded only after equivalent links to current human-outcome stories were added. No story relation remains stale.
 
-Validation passes with 17 accepted persona-focused stories, 11 explicitly retired historical stories, and 139 one-line acceptance criteria.
+Three implemented capabilities received an explicit final disposition because each has distinct human value: `design-intent` covers requirement-linked UX and technical design before implementation; `claims-verification` separates falsifiable author assertions from independent verification and test-run evidence; `safe-local-review` covers local isolation for untrusted authored content. None was folded into a storage or command story.
+
+Validation passes with 18 accepted persona-focused stories, 11 explicitly retired historical stories, and 146 one-line acceptance criteria.
 
 ## Out-of-scope follow-up
 
-The requirements now expose the expected downstream work rather than fabricating it: 13 accepted stories lack design coverage and 137 criteria lack test-case coverage. One pre-existing stale code reference remains in the `two-sides` design landmark because its source lines changed; repairing design evidence is outside this audit's ownership.
+The requirements now expose the expected downstream work rather than fabricating it: 14 accepted stories lack design coverage and 144 criteria lack test-case coverage. One pre-existing stale code reference remains in the `two-sides` design landmark because its source lines changed; repairing design evidence is outside this audit's ownership.
 
 ## CLI dogfooding findings
 
