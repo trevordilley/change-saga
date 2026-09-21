@@ -1,6 +1,6 @@
 ---
 name: change-saga
-description: 'Author, update, validate, and open a Change Saga: the Git-native documentation of an application, organized into durable features that carry prototypes, user stories and acceptance criteria, UX/UI and technical design, test cases, and implementation decks whose Items reference the exact code they explain, plus one review deck per pull request. Drive the work with status --json next actions and ask yes/no coverage questions with check --covers. A first change is asked only for implementation coverage; everything else is growth, offered and never required. The primary purpose is to author what is submitted for human review, not to perform the review; only conduct review actions when explicitly requested.'
+description: 'Author, update, inspect, validate, and open a Change Saga: Git-native product, design, quality, implementation, and pull-request documentation linked to exact code. Follow the scope the user asks for, from one story or a lightweight code review through a complete requirements-to-design-to-code lifecycle. Author what is submitted for human review; perform review actions only when explicitly requested.'
 ---
 
 # Change Saga
@@ -25,6 +25,30 @@ During authoring:
 
 Only enter reviewer mode when the user explicitly asks you to conduct the
 review of a pull request that has a review (see the last section).
+
+## Follow the user's scope
+
+Do what the user asks, at the smallest scope that completely satisfies the
+request. A Change Saga supports an entire product lifecycle, but using one part
+does not require inventing all the others.
+
+- For a simple code review, inspect and explain the change with the evidence
+  needed for that review. Do not invent personas, requirements, a design, or a
+  delivery plan merely to fill every area of the Saga.
+- For a user story, capture a persona-focused outcome that delivers real value
+  and observable, pass/fail acceptance criteria. Do not require a design,
+  implementation deck, or test plan unless the user asks to continue the work.
+- For new work whose requirements and implementation are in scope, begin with
+  personas, user stories, and acceptance criteria; develop the relevant design
+  and quality plan; then connect implementation evidence as the work is built.
+- For an existing code change that needs documentation, it is valid to begin
+  with the implementation or review deck and offer missing product context as
+  optional follow-up.
+
+Never expand a small task into a mandate to document the whole application.
+Conversely, do not use the lightweight path to stop early when the user asked
+for the complete lifecycle. Recover product intent from the user and available
+source material; do not fabricate it to make coverage look complete.
 
 Optimize for reviewer understanding and information gain, not exhaustive
 retelling. Establish enough of the surrounding system that a reviewer can form
@@ -104,23 +128,27 @@ does not make parallel edits conflict-free.
 
 ## Grow the Saga incrementally
 
-The one thing asked of a change is that its implementation covers it: every
-changed line is referenced by an Item in a feature's implementation deck. That
-is the whole first run: `init`, cover the change, done. Do not start by
-defining personas, stories, or a feature structure. The first command that
-needs a feature creates one named after the branch (pass `--feature` to name it
-yourself), and with exactly one feature `--feature` is implied; the command says
-which feature it chose. Nothing is locked in: no story, deck, or slide URN names
-its feature, so content can move later.
+Start from the part of the lifecycle the user is working on. For new planned
+work, that will often be requirements: personas, user stories, and acceptance
+criteria before the design and implementation they guide. For an existing
+change or a lightweight review, it may be implementation evidence: every
+changed line is referenced by an Item in the relevant implementation or review
+deck. Neither entry point obligates the user to author unrelated parts of the
+Saga.
 
-Everything else is growth, not debt. Personas, stories, design, test cases,
-the overview, and terms are never demanded up front, and their absence is not
-failure. After the change is covered, offer the growth `status` suggests, one
-contextual step at a time ("this change touched checkout; capture the
-checkout story?"), each with the practice it teaches and the command that acts
-on the answer. The user may decline any of it. Recover product intent from
-the source material and the user; never invent a story, criterion, persona,
-or definition the user did not give you.
+The first command that needs a feature creates one named after the branch (pass
+`--feature` to name it yourself), and with exactly one feature `--feature` is
+implied; the command says which feature it chose. Nothing is locked in: no
+story, deck, or slide URN names its feature, so content can move later.
+
+Treat missing areas outside the requested scope as growth, not debt. Offer the
+growth `status` suggests one contextual step at a time ("this change touched
+checkout; capture the checkout story?"), with the practice it teaches and the
+command that acts on the answer. The user may decline it. When the user asks
+for a complete lifecycle, those areas are part of the requested work rather
+than optional growth. Recover product intent from the source material and the
+user; never invent a story, criterion, persona, or definition merely to fill a
+gap.
 
 Documenting existing code needs no change: run `status` without `--against`.
 There is no change to cover, so the queue is growth alone, the overview and
@@ -184,7 +212,8 @@ the `practice` it teaches. Loop:
    their answer. A `growth` action is an offer the user may decline;
 4. run `validate`, then repeat from step 2.
 
-Stop when only growth remains, or earlier if the user's team requires less.
+Stop when the user's requested outcome is complete. If only unrequested growth
+remains, offer it without treating it as required work.
 A clean status proves nothing is missing or stale; it never proves the Saga
 is good. Status never reduces coverage to a score, and neither should you.
 
