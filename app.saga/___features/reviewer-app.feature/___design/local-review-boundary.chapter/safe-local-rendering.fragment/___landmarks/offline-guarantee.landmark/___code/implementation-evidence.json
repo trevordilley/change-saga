@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/server/server.go",
+      "start": 1557,
+      "end": 1605,
+      "digest": "sha256:3d82bc24d09bd4938ae3d218a864dd898acbc9fa9b0d0e1097ae469677a69cfc",
+      "note": "Local asset serving, restrictive CSP, and no-CDN renderer assertions support offline review."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/server/server.go",
+      "start": 1750,
+      "end": 1759,
+      "digest": "sha256:46f2c95c19060be1b45be38397242a8e49d9a6d6686cc204f0a14ce323a57247",
+      "note": "Local asset serving, restrictive CSP, and no-CDN renderer assertions support offline review."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/server/code_renderer_test.go",
+      "start": 23,
+      "end": 60,
+      "digest": "sha256:a0d4f68b77cacb9b41563a104c10c5ed842a924856f151e8e6387958f70d52a5",
+      "note": "Local asset serving, restrictive CSP, and no-CDN renderer assertions support offline review."
+    }
+  ]
+}

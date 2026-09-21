@@ -24,10 +24,10 @@ document with no same-origin privilege, parent access, top navigation,
 downloads, popups, forms, or network capability. A restrictive content policy
 blocks remote scripts, styles, fonts, media, frames, and connections.
 
-The parent application communicates through a narrow message contract that
-accepts only expected origin, source window, message kind, target identity, and
-bounded payload. Authored content cannot synthesize review mutations or read
-application state.
+The current reviewer establishes no message channel between authored content
+and the parent application. If a future interactive contract needs one, it must
+validate the source window, origin, message kind, target identity, and bounded
+payload before authored content can affect application state.
 
 ## Resource and failure boundary {#resource-boundary}
 

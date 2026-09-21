@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "impl-local-explains-foreign-host",
+  "type": "explains",
+  "from": "urn:change-saga:app:slide:safe-local-boundary-implementation:item:local-server",
+  "to": "urn:change-saga:app:story:safe-local-review:criterion:foreign-host",
+  "scope": "self",
+  "rationale": "The local-server Item explains loopback and request-origin enforcement.",
+  "to_revision": "urn:change-saga:app:story:safe-local-review:revision:r2",
+  "state": "active",
+  "created_at": "2026-09-21T05:16:58.048264Z",
+  "request_id": "impl-local-explains-foreign-host"
+}

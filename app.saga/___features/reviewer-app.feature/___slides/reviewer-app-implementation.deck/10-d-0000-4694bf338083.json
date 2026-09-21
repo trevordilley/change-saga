@@ -1,0 +1,8 @@
+{
+  "version": 4,
+  "id": "reviewer-app-implementation",
+  "title": "Local reviewer implementation",
+  "role": "change",
+  "rank": 0,
+  "objective": "Show the enforced local trust boundary and the distinct Documentation and Review navigation spaces."
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "merge-gate",
+  "slide": "guided-authoring-delivery",
+  "rank": 20,
+  "kind": "region",
+  "label": "Merged evidence releases work",
+  "description": "Implements merge-gate and delivery-waves: dependency release is evaluated from persisted completion, contract, or merge evidence.",
+  "selector": {
+    "type": "element",
+    "element_id": "merge-gate"
+  }
+}

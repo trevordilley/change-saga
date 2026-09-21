@@ -1,0 +1,45 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/cli/query.go",
+      "start": 128,
+      "end": 158,
+      "digest": "sha256:4235aab26733e3f8d99626da948a6439a5833ac382e7efd85f5dee3f73d81d0d",
+      "note": "Structured envelopes, snapshot-bound pagination, atomic batch planning, and inert content are pinned at their implementation and focused tests."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/reviewapp/session.go",
+      "start": 901,
+      "end": 959,
+      "digest": "sha256:8d9beb1fb5c3ddba4708fd1344947b10c107fc946750699f25978c4b82885577",
+      "note": "Structured envelopes, snapshot-bound pagination, atomic batch planning, and inert content are pinned at their implementation and focused tests."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/cli/cover.go",
+      "start": 49,
+      "end": 59,
+      "digest": "sha256:b8606d9cf6bd9ab6af07cf00514fad2d56ce78f8967ba8785d0d0ec39dec20ab",
+      "note": "Structured envelopes, snapshot-bound pagination, atomic batch planning, and inert content are pinned at their implementation and focused tests."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/cli/cover_test.go",
+      "start": 285,
+      "end": 322,
+      "digest": "sha256:8acec65c9c71571a3c28d2644ea55d97984ea3779618a8e15625a29e7fc96b44",
+      "note": "Structured envelopes, snapshot-bound pagination, atomic batch planning, and inert content are pinned at their implementation and focused tests."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/reviewapp/adversarial_test.go",
+      "start": 26,
+      "end": 74,
+      "digest": "sha256:99539bd384d9e90adbb8ada46dbbbb7222725b12a6448718369ac6675029e22a",
+      "note": "Structured envelopes, snapshot-bound pagination, atomic batch planning, and inert content are pinned at their implementation and focused tests."
+    }
+  ]
+}

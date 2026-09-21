@@ -1,0 +1,45 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/nextaction/nextaction.go",
+      "start": 129,
+      "end": 193,
+      "digest": "sha256:bb6799fe246ffb04182470303e3dc90e7f5fb0c68dbd3f53667b34cfe720ee57",
+      "note": "The derived authoring loop, plan-before-write coverage batch, atomic failure test, and request replay test implement bounded repeatable mutations."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/cli/cover.go",
+      "start": 25,
+      "end": 59,
+      "digest": "sha256:ade3966ee106e8e37b09810bac5d28931038178f1104b3b05eda5b40d0e7024a",
+      "note": "The derived authoring loop, plan-before-write coverage batch, atomic failure test, and request replay test implement bounded repeatable mutations."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/cli/cover.go",
+      "start": 119,
+      "end": 194,
+      "digest": "sha256:33fe6dfb420dcc3ba50f1d52ac63a0f123b1fe5383046e5f2a20823862c66556",
+      "note": "The derived authoring loop, plan-before-write coverage batch, atomic failure test, and request replay test implement bounded repeatable mutations."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/cli/cover_test.go",
+      "start": 285,
+      "end": 322,
+      "digest": "sha256:8acec65c9c71571a3c28d2644ea55d97984ea3779618a8e15625a29e7fc96b44",
+      "note": "The derived authoring loop, plan-before-write coverage batch, atomic failure test, and request replay test implement bounded repeatable mutations."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/workplan/workplan_test.go",
+      "start": 172,
+      "end": 194,
+      "digest": "sha256:58a87cacdbc3dc465c62e7f25072bc36ac628c287f088ad1d27dc541074a22dd",
+      "note": "The derived authoring loop, plan-before-write coverage batch, atomic failure test, and request replay test implement bounded repeatable mutations."
+    }
+  ]
+}

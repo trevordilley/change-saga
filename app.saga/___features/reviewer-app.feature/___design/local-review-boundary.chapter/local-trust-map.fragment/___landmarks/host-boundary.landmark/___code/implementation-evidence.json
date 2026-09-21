@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/reviewapp/session.go",
+      "start": 660,
+      "end": 699,
+      "digest": "sha256:c67c3df780e2baa106c9eaaab2e51a9cc4178c85452302cefd2dffde2cf646e7",
+      "note": "The visual's host-boundary region is backed by path redaction and contained-file reads."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/reviewapp/session.go",
+      "start": 732,
+      "end": 754,
+      "digest": "sha256:9e78d6e5d0e0d84b4611c6233faa35b8d82621b39cdb6f80c7ea8283f95bb82c",
+      "note": "The visual's host-boundary region is backed by path redaction and contained-file reads."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/reviewapp/selectorindex_test.go",
+      "start": 117,
+      "end": 129,
+      "digest": "sha256:75d2e72e59537729fa9967160b8515b93e7db5f041edf18d04a79e97f111ee99",
+      "note": "The visual's host-boundary region is backed by path redaction and contained-file reads."
+    }
+  ]
+}

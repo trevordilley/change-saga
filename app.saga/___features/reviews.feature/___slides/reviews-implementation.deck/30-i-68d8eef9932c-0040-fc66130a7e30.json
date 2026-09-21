@@ -1,0 +1,15 @@
+{
+  "version": 4,
+  "id": "review-omissions",
+  "slide": "review-lifecycle",
+  "rank": 40,
+  "kind": "callout",
+  "label": "Exact omissions",
+  "description": "Implements review-omissions without converting completeness into a verdict.",
+  "selector": {
+    "type": "element",
+    "element_id": "deck-spine"
+  },
+  "about": "deck-spine",
+  "body": "Review coverage is computed from the deck against its own range and lists exact unexplained atoms and stale evidence."
+}

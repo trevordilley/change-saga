@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "impl-structured-explains-json",
+  "type": "explains",
+  "from": "urn:change-saga:app:slide:coverage-and-policy:item:structured-reads",
+  "to": "urn:change-saga:app:story:coverage-report:criterion:json-contract",
+  "scope": "self",
+  "rationale": "The structured-reads Item explains the stable machine envelope.",
+  "to_revision": "urn:change-saga:app:story:coverage-report:revision:r3",
+  "state": "active",
+  "created_at": "2026-09-21T05:16:55.487044Z",
+  "request_id": "impl-structured-explains-json"
+}

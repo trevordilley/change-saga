@@ -1,0 +1,10 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
+  "version": 5,
+  "id": "r2",
+  "relation": "urn:change-saga:app:relation:local-entry-addresses-loopback",
+  "from_content_digest": "sha256:a99fd53493a0ef092df53d0c6c651c071ae5a7e44b7ea77ee5b1d21cc99d37f3",
+  "rationale": "The clarified design now states the implemented no-message-channel boundary; this criterion mapping still holds.",
+  "created_at": "2026-09-21T05:20:12.985227Z",
+  "request_id": "implementation-review-repin-local-entry-addresses-loopback"
+}

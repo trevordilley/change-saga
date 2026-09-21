@@ -1,0 +1,8 @@
+{
+  "version": 4,
+  "id": "agent-loop-implementation",
+  "title": "Authoring loop implementation",
+  "role": "change",
+  "rank": 0,
+  "objective": "Show how coverage, bounded automation, first-change guidance, and merged delivery evidence are implemented."
+}

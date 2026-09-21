@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/reviewapp/session.go",
+      "start": 436,
+      "end": 519,
+      "digest": "sha256:7932fb7d57fe57d2758ce167f43eac0621a12f76916f2f5c476456f8ff06e6f9",
+      "note": "Bounded reads return authored bytes as data and interactive fragments use an opaque allow-scripts-only iframe. There is no implemented parent/iframe message channel."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/reviewapp/adversarial_test.go",
+      "start": 26,
+      "end": 74,
+      "digest": "sha256:99539bd384d9e90adbb8ada46dbbbb7222725b12a6448718369ac6675029e22a",
+      "note": "Bounded reads return authored bytes as data and interactive fragments use an opaque allow-scripts-only iframe. There is no implemented parent/iframe message channel."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/server/template.go",
+      "start": 363,
+      "end": 363,
+      "digest": "sha256:a6e2c9b53e80f74bb8ff97197099156c93aba9ac03f3424d75e5f89a10941faf",
+      "note": "Bounded reads return authored bytes as data and interactive fragments use an opaque allow-scripts-only iframe. There is no implemented parent/iframe message channel."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/server/server_test.go",
+      "start": 277,
+      "end": 295,
+      "digest": "sha256:e754c52c2affef15d073f4871be8afd7897d598e7f31cda64a7918d9f9059a02",
+      "note": "Bounded reads return authored bytes as data and interactive fragments use an opaque allow-scripts-only iframe. There is no implemented parent/iframe message channel."
+    }
+  ]
+}

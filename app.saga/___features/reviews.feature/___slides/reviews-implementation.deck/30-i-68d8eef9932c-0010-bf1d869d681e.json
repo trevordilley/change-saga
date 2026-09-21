@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "currency",
+  "slide": "review-lifecycle",
+  "rank": 10,
+  "kind": "region",
+  "label": "Evidence-sensitive currency",
+  "description": "Implements review-currency: a decision becomes out of date when slide content or linked code changes.",
+  "selector": {
+    "type": "element",
+    "element_id": "currency"
+  }
+}

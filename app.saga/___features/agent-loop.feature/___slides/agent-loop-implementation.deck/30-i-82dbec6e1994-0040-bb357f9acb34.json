@@ -1,0 +1,15 @@
+{
+  "version": 4,
+  "id": "coordination-resumption",
+  "slide": "guided-authoring-delivery",
+  "rank": 40,
+  "kind": "callout",
+  "label": "Explicit coordination state",
+  "description": "Implements coordination-resumption: assignment and progress remain facts, not delivery proof.",
+  "selector": {
+    "type": "element",
+    "element_id": "merge-gate"
+  },
+  "about": "merge-gate",
+  "body": "Workspaces, progress, merge units, and dependency conditions are persisted independently and conflicts remain visible."
+}

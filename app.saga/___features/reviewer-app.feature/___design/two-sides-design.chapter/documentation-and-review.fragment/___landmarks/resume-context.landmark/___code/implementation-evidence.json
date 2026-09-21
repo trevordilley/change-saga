@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/server/server.go",
+      "start": 885,
+      "end": 923,
+      "digest": "sha256:1a385ced39895c8f6b92bc41893b00ac42d91d6a41938209ad783c58134c47a4",
+      "note": "Stable routes and anchor redirects support URL-owned context and normal history."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/server/server_test.go",
+      "start": 456,
+      "end": 554,
+      "digest": "sha256:16dcc751b43b400b20f73bea1c42c045ced87903028f0c6c51f185fa3c7a438c",
+      "note": "Stable routes and anchor redirects support URL-owned context and normal history."
+    }
+  ]
+}

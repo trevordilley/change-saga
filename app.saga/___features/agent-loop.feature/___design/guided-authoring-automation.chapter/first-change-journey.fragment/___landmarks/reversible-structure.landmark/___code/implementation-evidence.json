@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/requirements/app_mutation.go",
+      "start": 411,
+      "end": 449,
+      "digest": "sha256:e25f2fdf912777f1d1a4122e444d2d64a31189c073ca214b826aa84fa04746a4",
+      "note": "Story moves preserve stable identity and current relations."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/requirements/app_records_test.go",
+      "start": 44,
+      "end": 81,
+      "digest": "sha256:cd4fcbf641364dd5df2551af14b1f6e67a51c6dfea14cc51284128f79310bfa5",
+      "note": "Story moves preserve stable identity and current relations."
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/areas/areas_test.go",
+      "start": 18,
+      "end": 46,
+      "digest": "sha256:f7d08886dcf2156bae3363a3edc42ec225d007c542ffded2afb82a19b43f32e7",
+      "note": "Focused tests separate implementation omissions from optional growth."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/nextaction/growth_test.go",
+      "start": 60,
+      "end": 84,
+      "digest": "sha256:b834f3c7497c385be439af66bab0e8a73a15dbbde9068ac32108c1d83b218d3f",
+      "note": "Focused tests separate implementation omissions from optional growth."
+    }
+  ]
+}

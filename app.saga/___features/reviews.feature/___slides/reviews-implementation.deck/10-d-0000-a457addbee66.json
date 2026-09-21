@@ -1,0 +1,8 @@
+{
+  "version": 4,
+  "id": "reviews-implementation",
+  "title": "Pull request review implementation",
+  "role": "change",
+  "rank": 0,
+  "objective": "Show how one review deck owns a range, records slide-scoped discussion, detects stale decisions, measures omissions, and freezes history."
+}

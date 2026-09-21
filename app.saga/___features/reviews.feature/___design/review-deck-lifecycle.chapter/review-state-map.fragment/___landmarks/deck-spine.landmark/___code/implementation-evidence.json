@@ -1,0 +1,29 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/reviewstore/reviewstore.go",
+      "start": 39,
+      "end": 93,
+      "digest": "sha256:1ad235c58a661cd2e28d781065369efe6c5cf92561507f357aca43cf0d78e21b",
+      "note": "The visual deck-spine region is backed by one-review creation, range resolution, and deck-only coverage."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/reviewstate/reviewstate.go",
+      "start": 46,
+      "end": 72,
+      "digest": "sha256:9e017186f3c36f02383ffca9af7fcf10c2b1caebf99b52158be5322bf23144aa",
+      "note": "The visual deck-spine region is backed by one-review creation, range resolution, and deck-only coverage."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/reviewstate/coverage.go",
+      "start": 51,
+      "end": 77,
+      "digest": "sha256:081bd5187351083a05742ca0c4c02d22dd8decbb66aae1568e4b5ffc27ec5ac4",
+      "note": "The visual deck-spine region is backed by one-review creation, range resolution, and deck-only coverage."
+    }
+  ]
+}

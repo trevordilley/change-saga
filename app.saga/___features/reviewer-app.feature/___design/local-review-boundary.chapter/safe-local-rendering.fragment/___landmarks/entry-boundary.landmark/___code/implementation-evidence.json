@@ -1,0 +1,37 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/server/server.go",
+      "start": 264,
+      "end": 330,
+      "digest": "sha256:52f7de867aa4affefe5b771c785fc9a97d82e47c59ec4478bb36ec3afacae30d",
+      "note": "Exact loopback, Host, origin, and bounded HTTP server evidence for the entry boundary."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/server/server.go",
+      "start": 740,
+      "end": 792,
+      "digest": "sha256:d7f1d35788a9a79fdbe8cf77b84ed81b193014373c9c2f6296836b196e24fd67",
+      "note": "Exact loopback, Host, origin, and bounded HTTP server evidence for the entry boundary."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/server/server_test.go",
+      "start": 26,
+      "end": 75,
+      "digest": "sha256:d717f20e0601b74d32a774340599e5a9d9b3c46068eaf0925f7cf3a4a6e320cd",
+      "note": "Exact loopback, Host, origin, and bounded HTTP server evidence for the entry boundary."
+    },
+    {
+      "commit": "58541107888381e0d7f0332bee4f1ad353b0399e",
+      "path": "internal/server/server_test.go",
+      "start": 113,
+      "end": 119,
+      "digest": "sha256:47bf36f4853f2e2d115e43d4d962d36a491207081fd4fc1bb95c92a2c8270dea",
+      "note": "Exact loopback, Host, origin, and bounded HTTP server evidence for the entry boundary."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "first-change-flow",
+  "slide": "guided-authoring-delivery",
+  "rank": 0,
+  "kind": "region",
+  "label": "Explain the current change first",
+  "description": "Implements first-change and guided-path: changed source is required; optional product-knowledge growth follows the explanation.",
+  "selector": {
+    "type": "element",
+    "element_id": "first-change"
+  }
+}

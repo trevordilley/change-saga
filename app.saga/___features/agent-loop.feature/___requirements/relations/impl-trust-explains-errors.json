@@ -1,0 +1,14 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation.schema.json",
+  "version": 5,
+  "id": "impl-trust-explains-errors",
+  "type": "explains",
+  "from": "urn:change-saga:app:slide:coverage-and-policy:item:trustworthy-report",
+  "to": "urn:change-saga:app:story:coverage-report:criterion:report-errors",
+  "scope": "self",
+  "rationale": "The trustworthy-report Item explains failure on unreliable evaluation.",
+  "to_revision": "urn:change-saga:app:story:coverage-report:revision:r3",
+  "state": "active",
+  "created_at": "2026-09-21T05:16:55.348255Z",
+  "request_id": "impl-trust-explains-errors"
+}

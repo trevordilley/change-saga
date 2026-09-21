@@ -1,0 +1,13 @@
+{
+  "version": 4,
+  "id": "six-areas",
+  "slide": "coverage-and-policy",
+  "rank": 0,
+  "kind": "region",
+  "label": "Six independent areas",
+  "description": "Implements human-reading-contract: the coverage engine keeps implementation, stories, personas, design, quality, and health separate.",
+  "selector": {
+    "type": "element",
+    "element_id": "six-areas"
+  }
+}

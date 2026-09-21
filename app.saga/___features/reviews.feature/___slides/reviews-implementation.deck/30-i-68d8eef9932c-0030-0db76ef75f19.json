@@ -1,0 +1,15 @@
+{
+  "version": 4,
+  "id": "decisions-comments",
+  "slide": "review-lifecycle",
+  "rank": 30,
+  "kind": "callout",
+  "label": "Slide-scoped discussion",
+  "description": "Implements decisions-comments with reviewer identity, target, and reviewed head.",
+  "selector": {
+    "type": "element",
+    "element_id": "currency"
+  },
+  "about": "currency",
+  "body": "Decisions append at slide scope; comments remain on their slide or Item thread, never on Documentation."
+}
