@@ -20,6 +20,10 @@ func TestSetupInitialSagaPrintsOneTimeWorkflowWhenNoSagaExists(t *testing.T) {
 		"Use this workflow only once",
 		"Stories added solely at the user's request are fully valid requirements",
 		"Interview the user in short rounds",
+		"Offer a feature-led parallel code deep dive",
+		"one lane per feature",
+		"evidence-backed candidate stories and criteria",
+		"silently promote code-derived candidates into requirements",
 		"Review before quality expansion",
 	} {
 		if !strings.Contains(text, expected) {

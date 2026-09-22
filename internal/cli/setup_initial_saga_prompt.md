@@ -62,12 +62,45 @@ are authoritative product requirements even when no code exists.
 Do not present a long questionnaire all at once. Summarize each short round
 and let the answer determine the next useful question.
 
+## Offer a feature-led parallel code deep dive
+
+Once the user has supplied the high-level feature map, summarize it and, when
+implementation exists, offer to investigate those features in parallel before
+asking the user to enumerate every detailed story. This is an optional,
+read-only discovery pass: it does not require a Saga commit or authorize code
+changes. If the user accepts, divide the investigation into bounded lanes:
+
+- one lane per feature, tracing its user-visible paths end to end and proposing
+  persona-focused stories plus independent, pass/fail acceptance criteria;
+- a cross-cutting lane for behavior, entry points, and user value that do not
+  fit the supplied features and may justify another feature-level entry; and
+- when useful, a documentation lane that treats existing documents as leads
+  and checks their claims against current behavior.
+
+Every proposed story or criterion must name the exact code or observable
+behavior that suggested it, the persona and value it appears to serve, and any
+uncertainty or contradiction. Compare the implementation with the user's
+feature boundaries: identify behavior that aligns, behavior that is missing or
+materially different, and behavior that has no current feature home. Do not
+equate every endpoint or internal subsystem with a product feature.
+
+Synthesize the lanes into three clearly separated groups: user-confirmed
+requirements, evidence-backed candidate stories and criteria, and unexplained
+behavior that might warrant a new or revised feature. Present that synthesis
+to the user and ask what should become authoritative product intent. Never
+silently promote code-derived candidates into requirements.
+
+If the repository is greenfield or prototype-only, offer the analogous
+parallel deep dive across prototypes, product boundaries, and intended design
+instead of pretending there is code to trace.
+
 ## Confirm and record the starting model
 
-Before broad investigation, show a compact inventory of the app purpose,
-personas and their value, durable features, supplied stories and criteria,
-uncertain boundaries, and intentionally empty areas. Separate the user's
-assertions from agent interpretations and ask for corrections.
+After the interview and any accepted discovery pass, show a compact inventory
+of the app purpose, personas and their value, durable features, supplied
+stories and criteria, code-derived candidates, unexplained behavior, uncertain
+boundaries, and intentionally empty areas. Separate the user's assertions from
+agent interpretations and ask for corrections.
 
 Once confirmed, create or update the one app Saga through the installed
 `change-saga` CLI. Never create a second Saga because the first is incomplete.
@@ -75,11 +108,13 @@ Use `change-saga --help`, command-specific `-h`, and
 `change-saga spec --json` rather than guessing commands or editing metadata
 directly.
 
-Validate the initial records. If the investigation will use parallel
-workspaces, explain that they need a common baseline, inspect Git status, and
-ask before committing only the Saga files produced by this workflow. Never
-include unrelated user changes. If the user declines a baseline commit,
-continue sequentially or pause rather than branching from ambiguous state.
+Validate the initial records. If later authoring will use parallel workspaces
+that mutate the Saga, explain that they need a common baseline, inspect Git
+status, and ask before committing only the Saga files produced by this
+workflow. Never include unrelated user changes. If the user declines a
+baseline commit, continue sequentially or pause rather than branching from
+ambiguous state. The earlier read-only discovery pass does not require a
+baseline commit.
 
 ## Investigate at the maturity the repository supports
 
