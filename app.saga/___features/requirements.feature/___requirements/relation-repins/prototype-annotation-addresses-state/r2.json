@@ -1,9 +1,0 @@
-{
-  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
-  "version": 5,
-  "id": "r2",
-  "relation": "urn:change-saga:app:relation:prototype-annotation-addresses-state",
-  "from_content_digest": "sha256:229f743c72716535b89ec05f865671097bd030f68148e48c8f56269f058e96e1",
-  "rationale": "The relation remains accurate after visual legibility edits; the requirement and semantic design node are unchanged.",
-  "created_at": "2026-09-21T04:57:29.308553Z"
-}

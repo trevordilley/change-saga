@@ -1,8 +1,0 @@
-{
-  "version": 4,
-  "id": "code-evidence-implementation",
-  "title": "Evidence, currency, and source trust",
-  "role": "change",
-  "rank": 0,
-  "objective": "Explain how requirements reach exact source, how evidence is repaired, and where companion-repository guarantees stop."
-}

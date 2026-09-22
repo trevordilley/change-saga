@@ -1,8 +1,0 @@
-{
-  "version": 4,
-  "id": "format-implementation",
-  "title": "Release visibility implementation",
-  "role": "change",
-  "rank": 0,
-  "objective": "Explain how feature-flag records become current, explicit release availability without forking product knowledge."
-}

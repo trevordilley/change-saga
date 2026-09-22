@@ -1,9 +1,0 @@
-{
-  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
-  "version": 5,
-  "id": "r2",
-  "relation": "urn:change-saga:app:relation:knowledge-topology-addresses-overview",
-  "from_content_digest": "sha256:f74a18e0737d85f8693ef0672562385abb5ba3b28a544ba5c5013ca391326844",
-  "rationale": "The relation remains accurate after visual legibility edits; the requirement and semantic design node are unchanged.",
-  "created_at": "2026-09-21T04:57:27.338809Z"
-}

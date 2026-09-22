@@ -1,9 +1,0 @@
-{
-  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
-  "version": 5,
-  "id": "r2",
-  "relation": "urn:change-saga:app:relation:portable-evidence-addresses-move",
-  "from_content_digest": "sha256:0e43d3156278ee1042443e329b951a275a750c4817121d7bc8d1e85017f91576",
-  "rationale": "Reviewed after the companion relocation design was updated with its end-to-end proof; this relation still matches the current heading.",
-  "created_at": "2026-09-22T00:11:08.633528Z"
-}

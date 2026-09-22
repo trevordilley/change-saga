@@ -1,7 +1,6 @@
 package server
 
 import (
-	"bytes"
 	"strings"
 	"testing"
 	"time"
@@ -35,50 +34,10 @@ func findNav(t *testing.T, nodes []*navNodeView, path ...string) *navNodeView {
 	return nil
 }
 
-// An empty Saga still has to show every place work can go. The reviewer's
-// question is what is missing, and a hidden section cannot answer it.
-func TestProductNavigationProjectsTheStableOrderWithNothingAuthored(t *testing.T) {
+func TestProductNavigationHidesEveryEmptySection(t *testing.T) {
 	nodes := makeProductNavTree(productNavSources{})
-	want := []string{
-		"Product",
-		"  Prototypes",
-		"  Requirements",
-		"Design",
-		"  UX",
-		"  UI",
-		"  Technical",
-		"    ERD",
-		"    System",
-		"    Data Flows",
-		"Quality",
-		"  Test Cases",
-		"Implementation",
-		"  No implementation decks yet",
-	}
-	if got := navTitles(nodes, 0); strings.Join(got, "\n") != strings.Join(want, "\n") {
-		t.Fatalf("architecture =\n%s\nwant\n%s", strings.Join(got, "\n"), strings.Join(want, "\n"))
-	}
-	for _, path := range [][]string{{"Product", "Prototypes"}, {"Design", "UX"}, {"Design", "UI"},
-		{"Design", "Technical", "ERD"}, {"Design", "Technical", "Data Flows"}, {"Quality", "Test Cases"}} {
-		node := findNav(t, nodes, path...)
-		if !node.Gap || node.Note == "" {
-			t.Fatalf("%v is not an explicit gap: %#v", path, node)
-		}
-	}
-	// Implementation is a top-level peer: empty, it keeps the same header as
-	// Product, Design, and Quality, stays open, and states its gap beneath.
-	implementation := findNav(t, nodes, "Implementation")
-	if implementation.Gap || implementation.Note != "" || !implementation.Expanded {
-		t.Fatalf("an empty Implementation must keep a peer header: %#v", implementation)
-	}
-	if empty := findNav(t, nodes, "Implementation", "No implementation decks yet"); !empty.Gap {
-		t.Fatalf("an empty Implementation must state its gap beneath the header: %#v", empty)
-	}
-	// A place in the architecture is never a destination of its own.
-	for _, node := range nodes {
-		if node.Href != "" || !node.Group {
-			t.Fatalf("top-level place = %#v", node)
-		}
+	if len(nodes) != 0 {
+		t.Fatalf("empty architecture rendered %v", navTitles(nodes, 0))
 	}
 }
 
@@ -89,15 +48,11 @@ func TestProductNavigationDoesNotReorderAsWorkProgresses(t *testing.T) {
 		testCases: []*navNodeView{{Title: "Retry preserves the cart"}},
 	}
 	nodes := makeProductNavTree(sources)
-	if len(nodes) != 4 || nodes[0].Title != "Product" || nodes[1].Title != "Design" ||
-		nodes[2].Title != "Quality" || nodes[3].Title != "Implementation" {
+	if len(nodes) != 1 || nodes[0].Title != "Quality" {
 		t.Fatalf("authoring order changed the architecture: %v", navTitles(nodes, 0))
 	}
 	if findNav(t, nodes, "Quality", "Test Cases").Gap {
 		t.Fatal("an authored test case must fill its place rather than stay a gap")
-	}
-	if !findNav(t, nodes, "Design", "UX").Gap {
-		t.Fatal("UX must still state its gap once quality work exists")
 	}
 }
 
@@ -131,11 +86,10 @@ func TestProductPutsPrototypesBeforeRequirementsAndKeepsRequirementsItsOwnOvervi
 	}
 }
 
-func TestRequirementsWithoutStoriesStaysVisibleAsAGap(t *testing.T) {
+func TestRequirementsWithoutStoriesIsHidden(t *testing.T) {
 	nodes := makeProductNavTree(productNavSources{requirements: makeRequirementsNav(&requirementsPageView{})})
-	stories := findNav(t, nodes, "Product", "Requirements")
-	if !stories.Gap || stories.Note == "" || stories.Href != "/requirements" {
-		t.Fatalf("empty requirements = %#v", stories)
+	if len(nodes) != 0 {
+		t.Fatalf("empty requirements rendered %v", navTitles(nodes, 0))
 	}
 }
 
@@ -194,14 +148,14 @@ func TestDeckNavigationFoldsIntoDesignAndImplementationByRole(t *testing.T) {
 	}
 	// Catalog only spends rows on its four places when the reader is in it.
 	sources.pageFeature = "catalog"
-	if !findNav(t, makeAppNavTree(sources), "Features", "Catalog", "Design", "UX").Gap {
-		t.Fatal("another feature's ux deck must not fill this feature's Design > UX")
+	if findNavByID(makeAppNavTree(sources), featureNavID("catalog")+"-design") != nil {
+		t.Fatal("an empty Design section must not render for another feature")
 	}
 }
 
 // ___design is the only recorded signal that a chapter is technical design.
-// Which of ERD, System, or Data Flows it satisfies is not recorded, so the
-// chapter keeps its authored title and those three stay explicit gaps.
+// Which technical category it satisfies is not recorded, so the chapter keeps
+// its authored title without inventing empty categories around it.
 func TestDesignChaptersJoinTechnicalWithoutClaimingAFixedRole(t *testing.T) {
 	root := &saga.Section{ID: "root", Target: saga.SagaTarget("test"), Children: []*saga.Section{
 		{Kind: "chapter", ID: "delivery", Title: "Delivery", Path: "delivery.chapter", Target: saga.ChapterTarget("test", "delivery")},
@@ -217,13 +171,8 @@ func TestDesignChaptersJoinTechnicalWithoutClaimingAFixedRole(t *testing.T) {
 	}
 	nodes := makeProductNavTree(productNavSources{technical: technical})
 	children := findNav(t, nodes, "Design", "Technical").Children
-	if got := navTitles(children, 0); strings.Join(got, "|") != "ERD|System|Data Flows|Technical architecture" {
+	if got := navTitles(children, 0); strings.Join(got, "|") != "Technical architecture" {
 		t.Fatalf("technical order = %v", got)
-	}
-	for _, title := range []string{"ERD", "System", "Data Flows"} {
-		if !findNav(t, nodes, "Design", "Technical", title).Gap {
-			t.Fatalf("%s must stay an explicit gap until it is recorded", title)
-		}
 	}
 }
 
@@ -257,38 +206,26 @@ func TestProductNavigationSitsInsideEveryFeatureBelowItsReportOutline(t *testing
 	if got, want := topTitles(nodes), "Overview|Features"; got != want {
 		t.Fatalf("sidebar = %s, want %s", got, want)
 	}
-	if got, want := topTitles(findNav(t, nodes, "Features", "Billing").Children), "Billing overview|Delivery|Evidence|Product|Design|Quality|Implementation"; got != want {
+	if got, want := topTitles(findNav(t, nodes, "Features", "Billing").Children), "Billing overview|Delivery|Evidence|Product|Implementation"; got != want {
 		t.Fatalf("billing feature = %s, want %s", got, want)
 	}
 	billing.Report = nil
-	if got, want := topTitles(findNav(t, makeAppNavTree(sources), "Features", "Billing").Children), "Product|Design|Quality|Implementation"; got != want {
+	if got, want := topTitles(findNav(t, makeAppNavTree(sources), "Features", "Billing").Children), "Product|Implementation"; got != want {
 		t.Fatalf("feature without report content = %s, want %s", got, want)
 	}
 }
 
-// The gap rows have to survive rendering: a place that is only a struct field
-// tells a reviewer nothing.
-func TestGapRowsRenderAsVisibleNonNavigableText(t *testing.T) {
+func TestEmptySectionsDoNotRender(t *testing.T) {
 	tmpl, err := newPageTemplate()
 	if err != nil {
 		t.Fatal(err)
 	}
-	var rendered bytes.Buffer
+	var rendered strings.Builder
 	if err := tmpl.ExecuteTemplate(&rendered, "doc-tree", makeProductNavTree(productNavSources{})); err != nil {
 		t.Fatal(err)
 	}
-	html := rendered.String()
-	for _, expected := range []string{"Prototypes", "Requirements", "Data Flows", "Test Cases",
-		"Implementation", `class="doc-note"`, "no test cases yet", `class="doc-link doc-static"`} {
-		if !strings.Contains(html, expected) {
-			t.Fatalf("rendered architecture missing %q: %s", expected, html)
-		}
-	}
-	if strings.Contains(html, `href=""`) {
-		t.Fatalf("a place in the architecture was rendered as an empty link: %s", html)
-	}
-	if !strings.Contains(html, "data-doc-toggle") {
-		t.Fatalf("a filled place must disclose its children: %s", html)
+	if html := rendered.String(); strings.TrimSpace(html) != "" {
+		t.Fatalf("empty architecture rendered markup: %s", html)
 	}
 }
 
@@ -314,7 +251,7 @@ func TestOnlyImplementationOpensOnArrival(t *testing.T) {
 	if len(implementation.Children) != 1 || implementation.Children[0].Title != "Architecture and storage" {
 		t.Fatalf("implementation must list the deck's slides directly: %v", navTitles(implementation.Children, 0))
 	}
-	for _, title := range []string{"Product", "Design", "Quality"} {
+	for _, title := range []string{"Product", "Design"} {
 		if findNav(t, nodes, title).Expanded {
 			t.Fatalf("%s must stay collapsed on arrival", title)
 		}
@@ -353,7 +290,7 @@ func TestActivePageOpensThePlacesThatContainIt(t *testing.T) {
 	if requirements := findNav(t, nodes, "Product", "Requirements"); !requirements.Expanded {
 		t.Fatal("Requirements must open around the active story")
 	}
-	if findNav(t, nodes, "Design").Expanded || findNav(t, nodes, "Quality").Expanded {
-		t.Fatal("a place that does not contain the current page must stay collapsed")
+	if findNavByID(nodes, "nav-design") != nil || findNavByID(nodes, "nav-quality") != nil {
+		t.Fatal("empty places must not render")
 	}
 }

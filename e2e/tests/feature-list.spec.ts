@@ -4,14 +4,14 @@ import { expectNoSeriousAccessibilityViolations, expect, test, waitForSettledSag
 /**
  * The Features section is a plain list: every feature, one row each, in the order
  * they were introduced. The feature whose content is on screen opens over its
- * four places; every other feature is the row alone. Nothing about which one is
- * open is stored, so the list only ever says what the page already says.
+ * authored contents; every other feature is the row alone. Nothing about which
+ * one is open is stored, so the list only ever says what the page already says.
  */
 
 /** Every feature's row, in order. */
 const featureRows = (page: Page) => page.locator("#nav-features > .doc-node");
 
-/** The title of each feature that is opened over its four places. */
+/** The title of each feature that is opened over its authored contents. */
 const openFeatures = (page: Page) => page.locator("#nav-features > .doc-node:has(> .doc-children) > .doc-row > .doc-link");
 
 test("@critical lists every feature and opens only the one being read", async ({ page, saga }) => {
@@ -25,7 +25,7 @@ test("@critical lists every feature and opens only the one being read", async ({
   // What describes the whole app hangs off the overview, beneath its prose.
   const overview = contents.locator(":scope > .doc-node").first();
   await expect(overview.locator(":scope > .doc-children > .doc-node > .doc-row > .doc-link")).toHaveText([
-    "Name", "Elevator pitch", "Description", "Terms and vocabulary", "Personas", "Design system", "Onboarding", "Feature flags"
+    "Name", "Elevator pitch", "Description", "Terms and vocabulary", "Personas", "Feature flags"
   ]);
   // Terms stay shut until they are opened, and the header is still the way in.
   await expect(contents.getByRole("button", { name: "Toggle Terms and vocabulary" })).toHaveAttribute("aria-expanded", "false");
@@ -40,18 +40,16 @@ test("@critical lists every feature and opens only the one being read", async ({
   // Exactly one of them is opened: the feature this page belongs to.
   await expect(openFeatures(page)).toHaveText(["Wave One"]);
   const waveOne = featureRows(page).first();
-  // Its own report outline, then the same four places, in that order.
+  // Its own report outline is present; all four empty product places are not.
   await expect(waveOne.locator(":scope > .doc-children > .doc-node > .doc-row > .doc-link")).toHaveText([
     "Overview", "Architecture Diagram", "Interactive Demo", "Raster Preview",
-    "Architecture", "Product", "Design", "Quality", "Implementation"
+    "Architecture"
   ]);
-  // Implementation opens to its slides; the other three stay collapsed.
-  for (const place of ["Product", "Design", "Quality"]) {
-    await expect(waveOne.getByRole("button", { name: `Toggle ${place}` })).toHaveAttribute("aria-expanded", "false");
-  }
-  await expect(waveOne.getByRole("button", { name: "Toggle Implementation" })).toHaveAttribute("aria-expanded", "true");
   // The closed features spend nothing: one row, no twisty, no places.
-  await expect(contents.getByRole("button", { name: "Toggle Product" })).toHaveCount(1);
+  await expect(contents.getByRole("button", { name: /Toggle (Product|Design|Quality|Implementation)/ })).toHaveCount(0);
+  // Every ordinary row gets a real icon; slide rows use thumbnails instead.
+  const ordinaryRows = contents.locator(".doc-row > .doc-link");
+  await expect(ordinaryRows.locator(":scope > svg.i")).toHaveCount(await ordinaryRows.count());
   await expectNoSeriousAccessibilityViolations(page);
 
   // Nothing that served the old picker is left: no dropdown, no filter, no
@@ -99,7 +97,13 @@ test("@critical the list is plain links, so it works with JavaScript disabled", 
     await expect(openFeatures(page)).toHaveText(["Wave One"]);
     await contents.getByRole("link", { name: "Harbor Lights", exact: true }).click();
     await expect(page).toHaveURL(`${saga.baseURL}/features/harbor-lights`);
-    await expect(openFeatures(page)).toHaveText(["Harbor Lights"]);
+    // Harbor Lights has no authored contents yet, so its page opens without
+    // inventing an empty subtree in the sidebar.
+    await expect(openFeatures(page)).toHaveCount(0);
+    await expect(page.getByRole("heading", { name: "Harbor Lights", exact: true })).toBeVisible();
+    for (const empty of ["[data-feature-stories]", "[data-feature-design]", "[data-feature-quality]", "[data-feature-implementation]"]) {
+      await expect(page.locator(empty)).toHaveCount(0);
+    }
 
     // The Features header still opens the table of all of them.
     await contents.getByRole("link", { name: "Features", exact: true }).click();

@@ -1,7 +1,0 @@
-{
-  "version": 2,
-  "id": "coverage-report-contract",
-  "title": "Coverage report contract",
-  "media_type": "text/markdown",
-  "entrypoint": "report-design.md"
-}

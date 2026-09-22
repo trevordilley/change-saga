@@ -48,9 +48,9 @@ import (
 // rather than an architecture; listing them shut costs one row each, and the
 // one feature the reader is already in is the only one that spends more.
 //
-// Within the open feature the per-feature rules are unchanged: Implementation is the
-// deck and opens all the way to its slides, the other places stay shut until
-// something inside them is active, and an empty place states its gap.
+// Within the open feature, Implementation is the deck and opens all the way to
+// its slides. Other authored places stay shut until something inside is active;
+// empty places are omitted.
 //
 // Nothing about which feature is open is stored. It is a fact about the page
 // being read, not a preference about the reader.
@@ -97,14 +97,21 @@ func makeAppNavTree(sources appNavSources) []*navNodeView {
 		onboarding = onboarding[0].Children
 	}
 
-	// Everything that describes the whole app hangs off the overview.
-	overview.Children = append(overview.Children,
-		navSection("Personas", "/personas", "nav-personas", "", "no personas yet", personaNav(sources.requirements)),
-		navSection("Design system", designSystemPath, "nav-designsystem", "design", "no design system yet",
-			onPage(designSystemPath, reportRootNav(document.DesignSystem))),
-		navDeck("Onboarding", "nav-onboarding", "deck", "no onboarding deck yet", onboarding),
-		navSection("Feature flags", "/flags", "nav-featureflags", "", "no feature flags yet", flagNav(sources.requirements)),
-	)
+	// Everything that describes the whole app hangs off the overview, when it
+	// actually exists.
+	if personas := personaNav(sources.requirements); len(personas) > 0 {
+		overview.Children = append(overview.Children, navSection("Personas", "/personas", "nav-personas", "story", personas))
+	}
+	if document.DesignSystem != nil {
+		overview.Children = append(overview.Children, navSection("Design system", designSystemPath, "nav-designsystem", "design",
+			onPage(designSystemPath, reportRootNav(document.DesignSystem))))
+	}
+	if len(onboarding) > 0 {
+		overview.Children = append(overview.Children, navDeck("Onboarding", "nav-onboarding", "deck", onboarding))
+	}
+	if flags := flagNav(sources.requirements); len(flags) > 0 {
+		overview.Children = append(overview.Children, navSection("Feature flags", "/flags", "nav-featureflags", "flag", flags))
+	}
 
 	// Each side lists what it is about, and the overview is on both because
 	// it is what the application is: a reader reviewing a change needs the
@@ -120,7 +127,10 @@ func makeAppNavTree(sources appNavSources) []*navNodeView {
 		// is neither the current page nor holding one, and stays shut.
 		overview.Expanded, overview.Active = false, false
 	}
-	navigation := []*navNodeView{overview, second}
+	navigation := []*navNodeView{overview}
+	if len(second.Children) > 0 {
+		navigation = append(navigation, second)
+	}
 	for _, node := range navigation {
 		revealActive(node)
 	}
@@ -128,24 +138,12 @@ func makeAppNavTree(sources appNavSources) []*navNodeView {
 	return navigation
 }
 
-// alignIcons keeps every row in one list starting at the same place. An icon
-// sits between the twisty and the title, so a row carrying one where its
-// siblings do not starts further right and reads as their child: Design system
-// looked like the only persona. Where any row in a list has an icon, the rest
-// reserve its width, exactly as a row with no children reserves the twisty's.
-//
-// A list where no row has an icon reserves nothing, so a tree of plain rows
-// keeps its tight left edge.
+// alignIcons gives every ordinary navigation row a real icon. Slide rows carry
+// thumbnails instead, so they intentionally remain iconless.
 func alignIcons(nodes []*navNodeView) {
-	mixed := false
 	for _, node := range nodes {
-		if node.Icon != "" {
-			mixed = true
-		}
-	}
-	for _, node := range nodes {
-		if mixed && node.Icon == "" && node.Slide == nil {
-			node.IconPlaceholder = true
+		if node.Icon == "" && node.Slide == nil {
+			node.Icon = "list"
 		}
 		alignIcons(node.Children)
 	}
@@ -154,10 +152,9 @@ func alignIcons(nodes []*navNodeView) {
 // navSection is a section header that is also a destination. The row opens
 // the section's own page and the twisty beside it discloses what the section
 // holds; a header that only expanded made a reader click twice to reach a
-// page that already existed. A section nothing fills keeps both the link and
-// the stated gap, because the page is where that gap is explained.
-func navSection(title, href, id, icon, emptyNote string, children []*navNodeView) *navNodeView {
-	node := navPlace(title, id, icon, emptyNote, children)
+// page that already existed. Callers omit sections that have no content.
+func navSection(title, href, id, icon string, children []*navNodeView) *navNodeView {
+	node := navPlace(title, id, icon, children)
 	node.Href = href
 	return node
 }
@@ -166,8 +163,8 @@ func navSection(title, href, id, icon, emptyNote string, children []*navNodeView
 // slide, and the slides stay beneath it so any one of them is still one click
 // away. A deck already knows where it starts, so a header that only expanded
 // into a list of slides asked the reader a question they had no way to answer.
-func navDeck(title, id, icon, emptyNote string, slides []*navNodeView) *navNodeView {
-	node := navPlace(title, id, icon, emptyNote, slides)
+func navDeck(title, id, icon string, slides []*navNodeView) *navNodeView {
+	node := navPlace(title, id, icon, slides)
 	node.Href = firstSlideHref(slides)
 	return node
 }
@@ -200,12 +197,11 @@ func onPage(path string, nodes []*navNodeView) []*navNodeView {
 
 // makeFeaturesNav is the Features section: the header opens the table of every
 // feature, and beneath it every feature is a row of its own, in creation order. The
-// feature the reader is inside opens over its four places; the rest are the row
-// alone. An app with no features keeps the section, because a reader has to be
-// able to see that the app has no features rather than infer it from an absence.
+// feature the reader is inside opens over its authored places; the rest are the
+// row alone. An app with no features omits the section.
 func makeFeaturesNav(sources appNavSources, deckRows map[string]*navNodeView) *navNodeView {
 	document := sources.document
-	section := navSection("Features", featuresIndexHref, "nav-features", "product", "no features yet", nil)
+	section := navSection("Features", featuresIndexHref, "nav-features", "product", nil)
 	if len(document.Features) == 0 {
 		return section
 	}
@@ -216,7 +212,6 @@ func makeFeaturesNav(sources appNavSources, deckRows map[string]*navNodeView) *n
 		}
 		section.Children = append(section.Children, makeFeatureRowNav(feature))
 	}
-	section.Gap, section.Note = false, ""
 	section.Expanded = true
 	return section
 }
@@ -226,7 +221,7 @@ func makeFeaturesNav(sources appNavSources, deckRows map[string]*navNodeView) *n
 // holds and opens none of them, so the sidebar costs no range resolution: a
 // review's slides, decisions, and coverage all belong to its own page.
 func makeReviewsNav(document *saga.Saga) *navNodeView {
-	section := navSection("Reviews", reviewsIndexPath, "nav-reviews", "diff", "no reviews yet", nil)
+	section := navSection("Reviews", reviewsIndexPath, "nav-reviews", "diff", nil)
 	for _, review := range document.Reviews {
 		section.Children = append(section.Children, &navNodeView{
 			Title: reviewNavTitle(review), Href: reviewHref(review.ID),
@@ -236,7 +231,6 @@ func makeReviewsNav(document *saga.Saga) *navNodeView {
 	if len(section.Children) == 0 {
 		return section
 	}
-	section.Gap, section.Note = false, ""
 	section.Expanded = true
 	return section
 }
@@ -387,7 +381,7 @@ func flagNav(document requirements.Document) []*navNodeView {
 		if flag.CurrentLifecycle != nil {
 			state = string(flag.CurrentLifecycle.State)
 		}
-		nodes = append(nodes, &navNodeView{Title: flag.Identity.ID, NodeID: "nav-" + domID(urn), Note: state})
+		nodes = append(nodes, &navNodeView{Title: flag.Identity.ID, NodeID: "nav-" + domID(urn), Icon: "flag", Note: state})
 	}
 	return nodes
 }

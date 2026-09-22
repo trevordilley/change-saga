@@ -1,9 +1,0 @@
-{
-  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
-  "version": 5,
-  "id": "r2",
-  "relation": "urn:change-saga:app:relation:evidence-traversal-map-addresses-story",
-  "from_content_digest": "sha256:1ae6232c2764cb1fcc8277c489020fd46c3e479f5e69e239f56f8f01af894b0b",
-  "rationale": "The relation remains accurate after visual legibility edits; the requirement and semantic design node are unchanged.",
-  "created_at": "2026-09-21T04:57:26.356348Z"
-}

@@ -1,9 +1,0 @@
-{
-  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
-  "version": 5,
-  "id": "r2",
-  "relation": "urn:change-saga:app:relation:story-intent-addresses-persona-context",
-  "from_content_digest": "sha256:e4f8c2aba6a7dc327c6ec66b11180ccef8c60d75e676063c00b783d4bd936f09",
-  "rationale": "The relation remains accurate after visual legibility edits; the requirement and semantic design node are unchanged.",
-  "created_at": "2026-09-21T04:57:31.107923Z"
-}

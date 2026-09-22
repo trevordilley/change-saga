@@ -1,9 +1,0 @@
-{
-  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
-  "version": 5,
-  "id": "r2",
-  "relation": "urn:change-saga:app:relation:retired-story-addresses-history",
-  "from_content_digest": "sha256:a68fa2c7577d1aeaf96e17c3c05be60ebf6201e1b825e2f58797930d128c12bb",
-  "rationale": "The relation remains accurate after visual legibility edits; the requirement and semantic design node are unchanged.",
-  "created_at": "2026-09-21T04:57:30.052383Z"
-}

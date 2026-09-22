@@ -37,6 +37,8 @@ func run(args []string, stdout, stderr io.Writer) int {
 		return 0
 	case "init":
 		err = cli.Init(ctx, args[1:], stdout)
+	case "setup-initial-saga":
+		err = cli.SetupInitialSaga(args[1:], stdout)
 	case "feature":
 		err = cli.Feature(ctx, args[1:], stdout)
 	case "review":

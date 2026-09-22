@@ -1,8 +1,0 @@
-{
-  "version": 4,
-  "id": "onboarding",
-  "title": "Getting up to speed on Change Saga",
-  "role": "onboarding",
-  "rank": 0,
-  "objective": "Show a newcomer the product's domains and where each one lives in the Saga."
-}

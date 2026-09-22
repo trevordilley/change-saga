@@ -1,9 +1,0 @@
-{
-  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
-  "version": 5,
-  "id": "r2",
-  "relation": "urn:change-saga:app:relation:two-sides-addresses-related-reviews",
-  "from_content_digest": "sha256:2d0b53b1d19817608494eb06970f77aca43459c3bbf837826df4b59655870f78",
-  "rationale": "The revised bridge landmark still designs derived related-review navigation.",
-  "created_at": "2026-09-21T04:51:55.476318Z"
-}

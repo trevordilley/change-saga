@@ -289,42 +289,40 @@ func firstNonEmptyString(values ...string) string {
 }
 
 // overviewNav is the Overview place: the project's name, elevator pitch,
-// description, and terms and vocabulary. Each absent part is a stated gap.
+// description, and terms and vocabulary. Absent parts are omitted.
 // active is "" on the overview itself, "/terms" on the vocabulary page, the
 // term ID on a term's page, and anything else elsewhere.
 func overviewNav(document *saga.Saga, vocabulary requirements.Document, active string) *navNodeView {
-	overview := &navNodeView{Title: "Overview", Href: sagaHref(document.Section.Target), NodeID: "nav-overview", Expanded: true, Active: active == ""}
-	name := &navNodeView{Title: "Name", Note: document.Manifest.Title, Href: sagaHref(document.Section.Target), NodeID: "nav-overview-name"}
+	overview := &navNodeView{Title: "Overview", Href: sagaHref(document.Section.Target), NodeID: "nav-overview", Icon: "book", Expanded: true, Active: active == ""}
+	name := &navNodeView{Title: "Name", Note: firstNonEmptyString(document.Manifest.Title, document.Manifest.ID), Href: sagaHref(document.Section.Target), NodeID: "nav-overview-name", Icon: "book"}
 	part := func(title, id, pkg string) *navNodeView {
-		node := &navNodeView{Title: title, NodeID: id}
 		if fragment := document.OverviewPart(pkg); fragment != nil {
-			node.Href = sagaHref(fragment.Target)
-		} else {
-			node.Gap, node.Note = true, "not written yet"
+			return &navNodeView{Title: title, NodeID: id, Icon: "list", Href: sagaHref(fragment.Target)}
 		}
-		return node
+		return nil
 	}
 	var terms []*navNodeView
 	for _, term := range vocabulary.Terms {
 		view := makeTermView(vocabulary, term, nil)
-		node := &navNodeView{Title: view.Name, Href: view.Href, NodeID: "nav-" + domID(view.Target), Active: active == view.ID}
+		node := &navNodeView{Title: view.Name, Href: view.Href, NodeID: "nav-" + domID(view.Target), Icon: "book", Active: active == view.ID}
 		if view.Retired {
 			node.Note = "retired"
 		}
 		terms = append(terms, node)
 	}
-	vocabularyNode := &navNodeView{Title: "Terms and vocabulary", Href: "/terms", NodeID: "nav-terms", Children: terms, Active: active == "/terms"}
-	if len(terms) == 0 {
-		vocabularyNode.Gap, vocabularyNode.Note = true, "no terms yet"
-	}
+	vocabularyNode := &navNodeView{Title: "Terms and vocabulary", Href: "/terms", NodeID: "nav-terms", Icon: "book", Children: terms, Active: active == "/terms"}
 	// The vocabulary opens on the terms pages only. Opened on every other
 	// page, its dozens of rows pushed the features out of sight.
 	vocabularyNode.Expanded = active == "/terms" || vocabulary.FindTerm(active) != nil
-	overview.Children = []*navNodeView{
-		name,
-		part("Elevator pitch", "nav-overview-pitch", applayout.OverviewPitch),
-		part("Description", "nav-overview-description", applayout.OverviewDescription),
-		vocabularyNode,
+	overview.Children = append(overview.Children, name)
+	if node := part("Elevator pitch", "nav-overview-pitch", applayout.OverviewPitch); node != nil {
+		overview.Children = append(overview.Children, node)
+	}
+	if node := part("Description", "nav-overview-description", applayout.OverviewDescription); node != nil {
+		overview.Children = append(overview.Children, node)
+	}
+	if len(terms) > 0 {
+		overview.Children = append(overview.Children, vocabularyNode)
 	}
 	return overview
 }

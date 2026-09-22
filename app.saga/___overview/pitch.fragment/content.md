@@ -1,1 +1,0 @@
-Change Saga is living documentation for an application, kept honest by the code. It records what the application is for, who it serves, what it must do, how it is designed and verified, and exactly which code implements it, and it stays current as the application changes.

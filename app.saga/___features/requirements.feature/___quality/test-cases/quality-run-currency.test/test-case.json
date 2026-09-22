@@ -1,7 +1,0 @@
-{
-  "$schema": "https://changesaga.dev/schema/v5/test-case.schema.json",
-  "version": 5,
-  "id": "quality-run-currency",
-  "created_at": "2026-09-21T05:55:09Z",
-  "request_id": "qpk-add-quality-run-currency"
-}

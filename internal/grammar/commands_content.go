@@ -199,6 +199,16 @@ var contentCommands = []Command{
 		Positionals: []string{"<name.saga>"},
 	},
 	{
+		Name: "setup-initial-saga", Status: StatusImplemented,
+		Usage:   "change-saga setup-initial-saga [--repo PATH] [--overhaul]",
+		Summary: "print the guarded, one-time agent workflow for establishing or intentionally overhauling the app Saga",
+		Flags: []Flag{
+			{Name: "overhaul", Description: "emit the workflow despite an existing Saga; use only for an intentional documentation overhaul"},
+			optional("repo", "PATH", "repository to inspect for an existing app Saga"),
+		},
+		Positionals: []string(nil),
+	},
+	{
 		Name: "install-skill", Status: StatusImplemented,
 		Usage:       "change-saga install-skill",
 		Summary:     "print the agent-agnostic prompt that installs the change-saga authoring skill",

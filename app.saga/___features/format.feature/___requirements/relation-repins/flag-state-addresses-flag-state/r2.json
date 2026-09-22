@@ -1,9 +1,0 @@
-{
-  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
-  "version": 5,
-  "id": "r2",
-  "relation": "urn:change-saga:app:relation:flag-state-addresses-flag-state",
-  "from_content_digest": "sha256:369d42dd3ef2a8703c2750b87a23f21d2bc031d523ee32a8c6eed6b72487c08b",
-  "rationale": "The relation remains accurate after visual legibility edits; the requirement and semantic design node are unchanged.",
-  "created_at": "2026-09-21T04:57:26.658113Z"
-}

@@ -196,31 +196,17 @@ func TestEachSideListsWhatItIsAbout(t *testing.T) {
 	}
 }
 
-// An icon sits between the twisty and the title, so a row that has one starts
-// further right than its siblings and reads as nested under the row above it.
-// Design system carried one where Personas did not, and looked like Personas'
-// only child. Within any one list, either every row has an icon or none does.
-func TestRowsInOneListLineUp(t *testing.T) {
+func TestEveryNavigationRowHasAnIcon(t *testing.T) {
 	sources := appNavFixture(t)
 	sources.pageFeature = "billing"
 	var check func(t *testing.T, list string, rows []*navNodeView)
 	check = func(t *testing.T, list string, rows []*navNodeView) {
-		iconed := false
-		for _, row := range rows {
-			if row.Icon != "" {
-				iconed = true
-			}
-		}
 		for _, row := range rows {
 			if row.Slide != nil {
 				continue // a thumbnail, not a row in the tree
 			}
-			// In a list where some row has an icon, every row without one
-			// reserves its width; in a list where none does, nothing is
-			// reserved and the rows keep their tight left edge.
-			if want := iconed && row.Icon == ""; row.IconPlaceholder != want {
-				t.Errorf("%s: row %q reserves icon width = %v, want %v (list has icons: %v)",
-					list, row.Title, row.IconPlaceholder, want, iconed)
+			if row.Icon == "" {
+				t.Errorf("%s: row %q has no icon", list, row.Title)
 			}
 			check(t, row.Title, row.Children)
 		}
@@ -234,17 +220,11 @@ func TestRowsInOneListLineUp(t *testing.T) {
 	t.Run("review", func(t *testing.T) { check(t, "the sidebar", makeAppNavTree(sources)) })
 }
 
-// A Saga with no reviews yet keeps the section and says so: a reader has to be
-// able to see that there are none rather than infer it from an absent section.
-func TestTheReviewSideStatesTheGapWhenThereAreNoReviews(t *testing.T) {
+func TestTheReviewSideHidesReviewsWhenThereAreNone(t *testing.T) {
 	sources := appNavFixture(t)
 	sources.reviewSide = true
-	reviews := findNav(t, makeAppNavTree(sources), "Reviews")
-	if !reviews.Gap || reviews.Note != "no reviews yet" {
-		t.Fatalf("empty Reviews section = gap %v note %q, want gap with \"no reviews yet\"", reviews.Gap, reviews.Note)
-	}
-	if reviews.Href != reviewsIndexPath {
-		t.Fatalf("empty Reviews header opens %q, want %q", reviews.Href, reviewsIndexPath)
+	if got := topTitles(makeAppNavTree(sources)); got != "Overview" {
+		t.Fatalf("empty review sidebar = %s, want Overview", got)
 	}
 }
 
@@ -267,7 +247,7 @@ func TestAppNavigationListsAppPlacesThenEveryFeatureAsARow(t *testing.T) {
 	// What describes the whole app hangs off the overview, in order, beneath
 	// the overview's own prose.
 	if got, want := topTitles(findNav(t, nodes, "Overview").Children),
-		"Name|Elevator pitch|Description|Terms and vocabulary|Personas|Design system|Onboarding|Feature flags"; got != want {
+		"Name|Personas|Onboarding|Feature flags"; got != want {
 		t.Fatalf("overview parts = %s, want %s", got, want)
 	}
 	// Every feature is a row, in the order they were introduced.
@@ -286,9 +266,9 @@ func TestAppNavigationListsAppPlacesThenEveryFeatureAsARow(t *testing.T) {
 	if got := topTitles(billing.Children); got != "charge|refund" {
 		t.Fatalf("billing Implementation must list its deck's slides directly: %v", navTitles(billing.Children, 0))
 	}
-	// Reading the other feature moves the same four places onto it, and leaves
-	// Billing the single row. Catalog has no deck and says so beneath a peer
-	// header.
+	// Reading the other feature moves its authored places onto it and leaves
+	// Billing as a single row. Catalog has no deck, so it has no Implementation
+	// section.
 	other := appNavFixture(t)
 	other.pageFeature = "catalog"
 	chosen := makeAppNavTree(other)
@@ -296,10 +276,8 @@ func TestAppNavigationListsAppPlacesThenEveryFeatureAsARow(t *testing.T) {
 	if billingRow := findNav(t, chosen, "Features", "Billing"); len(billingRow.Children) != 0 {
 		t.Fatalf("both features opened at once: %v", navTitles(chosen, 0))
 	}
-	catalog := findNav(t, chosen, "Features", "Catalog", "Implementation")
-	if catalog.Gap || len(catalog.Children) != 1 || !catalog.Children[0].Gap ||
-		catalog.Children[0].NodeID != featureNavID("catalog")+"-implementation-empty" {
-		t.Fatalf("an empty feature Implementation must state its gap beneath the header: %v", navTitles(catalog.Children, 0))
+	if findNavByID(chosen, featureNavID("catalog")+"-implementation") != nil {
+		t.Fatal("an empty feature Implementation must be hidden")
 	}
 	// The old unprefixed places are gone: every one belongs to a feature.
 	ids := navIDs(nodes)
@@ -310,9 +288,7 @@ func TestAppNavigationListsAppPlacesThenEveryFeatureAsARow(t *testing.T) {
 	}
 }
 
-// assertFeatureSubtree checks the rules that hold beneath whichever feature the
-// sidebar shows: its own report outline first, then the same four places, with
-// only Implementation open.
+// assertFeatureSubtree checks the authored places beneath the open feature.
 func assertFeatureSubtree(t *testing.T, nodes []*navNodeView, title, id string) {
 	t.Helper()
 	feature := findNav(t, nodes, title)
@@ -320,21 +296,27 @@ func assertFeatureSubtree(t *testing.T, nodes []*navNodeView, title, id string) 
 	if feature.NodeID != prefix || !feature.Group || !feature.Expanded || feature.Href != featureHref(id) {
 		t.Fatalf("feature group %q = %#v", title, feature)
 	}
-	if got, want := topTitles(feature.Children), title+" overview|"+title+" notes|Product|Design|Quality|Implementation"; got != want {
+	want := title + " overview|" + title + " notes|Product"
+	if id == "billing" {
+		want += "|Implementation"
+	}
+	if got := topTitles(feature.Children); got != want {
 		t.Fatalf("feature %s = %s, want %s", title, got, want)
 	}
 	places := feature.Children[2:]
-	for index, suffix := range []string{"-product", "-design", "-quality", "-implementation"} {
+	suffixes := []string{"-product"}
+	if id == "billing" {
+		suffixes = append(suffixes, "-implementation")
+	}
+	for index, suffix := range suffixes {
 		if places[index].NodeID != prefix+suffix {
 			t.Fatalf("feature %s place %q node ID = %q, want %q", title, places[index].Title, places[index].NodeID, prefix+suffix)
 		}
 	}
-	for _, place := range places[:3] {
-		if place.Expanded {
-			t.Fatalf("feature %s: %s must stay collapsed on arrival", title, place.Title)
-		}
+	if places[0].Expanded {
+		t.Fatalf("feature %s: Product must stay collapsed on arrival", title)
 	}
-	if !places[3].Expanded {
+	if id == "billing" && !places[1].Expanded {
 		t.Fatalf("feature %s: Implementation must open on arrival", title)
 	}
 }
@@ -371,9 +353,7 @@ func TestEveryFeatureIsARowAndOnlyThePagesFeatureOpens(t *testing.T) {
 	}
 }
 
-// An app nothing has been authored into still shows every app-level place, and
-// each one says what is missing.
-func TestEmptyAppPlacesStateTheirGap(t *testing.T) {
+func TestEmptyAppHidesEmptyPlaces(t *testing.T) {
 	page, _, err := makeRequirementsSurface(requirements.Document{SagaID: appNavSaga}, requirementRoute{})
 	if err != nil {
 		t.Fatal(err)
@@ -383,57 +363,15 @@ func TestEmptyAppPlacesStateTheirGap(t *testing.T) {
 		requirements: requirements.Document{SagaID: appNavSaga},
 		page:         page,
 	})
-	if got, want := topTitles(nodes), "Overview|Features"; got != want {
+	if got, want := topTitles(nodes), "Overview"; got != want {
 		t.Fatalf("empty app-level list = %s, want %s", got, want)
 	}
-	// With no features there is nothing to list, so the row that says so stands
-	// alone.
-	if features := findNav(t, nodes, "Features"); len(features.Children) != 0 {
-		t.Fatalf("an app with no features still listed some: %v", navTitles(features.Children, 0))
-	}
-	for _, node := range append(findNav(t, nodes, "Overview").Children[4:], nodes[1:]...) {
-		if !node.Gap || node.Note == "" || len(node.Children) != 0 {
-			t.Fatalf("empty %s must be a stated gap: %#v", node.Title, node)
-		}
-	}
-	// The overview always has its name; each other part is a stated gap.
 	overview := findNav(t, nodes, "Overview")
-	if overview.Gap || topTitles(overview.Children) != "Name|Elevator pitch|Description|Terms and vocabulary|Personas|Design system|Onboarding|Feature flags" {
+	if overview.Gap || topTitles(overview.Children) != "Name" {
 		t.Fatalf("overview = %#v %s", overview, topTitles(overview.Children))
 	}
-	for _, part := range overview.Children[1:] {
-		if !part.Gap || part.Note == "" {
-			t.Fatalf("an absent overview part is a stated gap: %#v", part)
-		}
-	}
-	for _, want := range []struct {
-		path []string
-		note string
-	}{
-		{[]string{"Overview", "Personas"}, "no personas yet"},
-		{[]string{"Overview", "Design system"}, "no design system yet"},
-		{[]string{"Overview", "Onboarding"}, "no onboarding deck yet"},
-		{[]string{"Overview", "Feature flags"}, "no feature flags yet"},
-		{[]string{"Features"}, "no features yet"},
-	} {
-		if got := findNav(t, nodes, want.path...).Note; got != want.note {
-			t.Fatalf("%v gap note = %q, want %q", want.path, got, want.note)
-		}
-	}
-
-	// The gaps survive rendering as visible, non-navigable text.
-	tmpl, err := newPageTemplate()
-	if err != nil {
-		t.Fatal(err)
-	}
-	var rendered strings.Builder
-	if err := tmpl.ExecuteTemplate(&rendered, "doc-tree", nodes); err != nil {
-		t.Fatal(err)
-	}
-	for _, note := range []string{"not written yet", "no terms yet", "no personas yet", "no design system yet", "no onboarding deck yet", "no feature flags yet", "no features yet"} {
-		if !strings.Contains(rendered.String(), `<span class="doc-note">`+note+`</span>`) {
-			t.Fatalf("rendered app-level list is missing the gap %q: %s", note, rendered.String())
-		}
+	if overview.Children[0].Icon == "" || overview.Icon == "" {
+		t.Fatal("the remaining overview rows must have icons")
 	}
 }
 
@@ -519,13 +457,12 @@ func TestFeatureStoriesAppearOnlyUnderThatFeaturesRequirements(t *testing.T) {
 	if billing.Gap || catalog.Gap {
 		t.Fatal("a feature with a story must not show its Requirements as a gap")
 	}
-	// A feature with no stories keeps its Requirements row as a gap.
+	// A feature with no stories omits Product and Requirements.
 	sources := appNavFixture(t)
 	sources.document.Features = append(sources.document.Features, appNavFeature("search", "Search"))
 	sources.pageFeature = "search"
-	search := findNav(t, makeAppNavTree(sources), "Features", "Search", "Product", "Requirements")
-	if !search.Gap || search.Note == "" || len(search.Children) != 0 {
-		t.Fatalf("a feature with no stories must state its Requirements gap: %#v", search)
+	if findNavByID(makeAppNavTree(sources), featureNavID("search")+"-product") != nil {
+		t.Fatal("a feature with no stories must hide Product")
 	}
 }
 
@@ -677,10 +614,9 @@ func TestPageRendersTheAppLevelListFromAnAppSaga(t *testing.T) {
 	if !strings.Contains(html, `href="/features"`) {
 		t.Fatal("the Features header does not open the features table")
 	}
-	// Opening a feature's page opens that feature, and only that one, over its
-	// four places, with Implementation open to its slides.
+	// Opening a feature's page opens that feature, and only its authored places.
 	billing := render(featureHref("billing"))
-	for _, id := range []string{featureNavID("billing"), featureNavID("billing") + "-product", featureNavID("billing") + "-implementation"} {
+	for _, id := range []string{featureNavID("billing"), featureNavID("billing") + "-implementation"} {
 		if !strings.Contains(billing, `id="`+id+`"`) {
 			t.Fatalf("the feature's page is missing %q", id)
 		}
@@ -691,12 +627,12 @@ func TestPageRendersTheAppLevelListFromAnAppSaga(t *testing.T) {
 	if strings.Contains(billing, `id="`+featureNavID("billing")+`-implementation" hidden`) {
 		t.Fatal("the feature's Implementation must open on arrival")
 	}
-	if !strings.Contains(billing, `id="`+featureNavID("billing")+`-product" hidden`) {
-		t.Fatal("a feature's Product must stay collapsed on arrival")
+	if strings.Contains(billing, `id="`+featureNavID("billing")+`-product"`) {
+		t.Fatal("an empty Product section must be hidden")
 	}
 	// Opening the other feature's page moves the whole subtree onto it.
 	catalog := render(featureHref("catalog"))
-	if !strings.Contains(catalog, `id="`+featureNavID("catalog")+`-implementation"`) || strings.Contains(catalog, `id="`+featureNavID("billing")+`-product"`) {
+	if strings.Contains(catalog, `id="`+featureNavID("catalog")+`-implementation"`) || strings.Contains(catalog, `id="`+featureNavID("billing")+`-product"`) {
 		t.Fatal("opening a feature must be the only feature the sidebar opens")
 	}
 	// The features index lists both, and is reachable as a page of its own.
@@ -706,18 +642,14 @@ func TestPageRendersTheAppLevelListFromAnAppSaga(t *testing.T) {
 			t.Fatalf("the features index lacks %q", want)
 		}
 	}
-	for _, note := range []string{"not written yet", "no terms yet", "no personas yet", "no design system yet", "no feature flags yet"} {
-		if !strings.Contains(html, note) {
-			t.Fatalf("the sidebar does not state the gap %q", note)
+	for _, note := range []string{"not written yet", "no terms yet", "no personas yet", "no design system yet", "no feature flags yet", "No implementation decks yet"} {
+		if strings.Contains(html, note) || strings.Contains(catalog, note) {
+			t.Fatalf("the sidebar still renders the empty-state label %q", note)
 		}
 	}
-	// Catalog has no deck; its gap is stated on the page that shows it.
-	if !strings.Contains(render(featureHref("catalog")), "No implementation decks yet") {
-		t.Fatal("a feature with no deck does not state the gap")
-	}
-	// The onboarding slide renders under Onboarding, before the Feature flags
-	// row and the features. The billing slide renders inside Billing, on the
-	// page that opens it, and nowhere else.
+	// The onboarding slide renders under Onboarding, before the features. The
+	// billing slide renders inside Billing, on the page that opens it, and
+	// nowhere else.
 	sidebarSlide := func(body, slide string) int {
 		marker := `class="slide-thumbnail-hit" data-slide-thumbnail data-slide-target="` + saga.SlideTarget("shop", slide) + `"`
 		if count := strings.Count(body, marker); count != 1 {
@@ -725,9 +657,9 @@ func TestPageRendersTheAppLevelListFromAnAppSaga(t *testing.T) {
 		}
 		return strings.Index(body, marker)
 	}
-	onboarding, flags := strings.Index(html, `id="nav-onboarding"`), strings.Index(html, `title="Feature flags"`)
-	if welcome := sidebarSlide(html, "who-it-serves"); welcome < onboarding || welcome > flags {
-		t.Fatalf("the onboarding slide is not under Onboarding: onboarding=%d slide=%d flags=%d", onboarding, welcome, flags)
+	onboarding, features := strings.Index(html, `id="nav-onboarding"`), strings.Index(html, `id="nav-features"`)
+	if welcome := sidebarSlide(html, "who-it-serves"); welcome < onboarding || welcome > features {
+		t.Fatalf("the onboarding slide is not under Onboarding: onboarding=%d slide=%d features=%d", onboarding, welcome, features)
 	}
 	chargeMarker := `class="slide-thumbnail-hit" data-slide-thumbnail data-slide-target="` + saga.SlideTarget("shop", "charge") + `"`
 	if strings.Contains(html, chargeMarker) {

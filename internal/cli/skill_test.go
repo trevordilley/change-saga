@@ -15,10 +15,17 @@ import (
 	"github.com/twentyideas/changesaga/skills"
 )
 
-// The skill files under skills/change-saga are the one source of the
-// authoring skill. These tests keep "change-saga install-skill" printing them
-// verbatim and keep every command, flag, and query operation they name true
-// to the CLI, so the skill cannot drift from the product again.
+// The skill files under skills are the one source of the shipped authoring
+// skill. These tests keep "change-saga install-skill" printing them verbatim
+// and keep every command, flag, and query operation they name true to the CLI,
+// so the skill cannot drift from the product again.
+
+var shippedSkills = []struct {
+	name  string
+	files []skills.File
+}{
+	{name: "change-saga", files: skills.ChangeSaga()},
+}
 
 func TestInstallSkillPrintsTheSkillFilesVerbatim(t *testing.T) {
 	var output bytes.Buffer
@@ -26,38 +33,50 @@ func TestInstallSkillPrintsTheSkillFilesVerbatim(t *testing.T) {
 		t.Fatal(err)
 	}
 	want := installSkillPreamble
-	for _, file := range skills.ChangeSaga() {
-		want += fmt.Sprintf(installSkillFileHeader, file.Path) + file.Content
+	for _, skill := range shippedSkills {
+		for _, file := range skill.files {
+			want += fmt.Sprintf(installSkillFileHeader, skill.name+"/"+file.Path) + file.Content
+		}
 	}
 	if output.String() != want {
 		t.Fatal("install-skill output is not the preamble followed by the skill files")
 	}
-	root := filepath.Join("..", "..", "skills", "change-saga")
-	var paths []string
-	for _, file := range skills.ChangeSaga() {
-		paths = append(paths, file.Path)
-		onDisk, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(file.Path)))
-		if err != nil || string(onDisk) != file.Content {
-			t.Fatalf("embedded %s differs from the file on disk (err=%v)", file.Path, err)
-		}
-	}
-	if len(paths) == 0 || paths[0] != "SKILL.md" {
-		t.Fatalf("install-skill must lead with SKILL.md: %v", paths)
-	}
-	for _, file := range skills.ChangeSaga() {
-		for _, link := range regexp.MustCompile(`\]\((references/[^)]+)\)`).FindAllStringSubmatch(file.Content, -1) {
-			if !containsString(paths, link[1]) {
-				t.Errorf("%s links to %s, which install-skill does not print", file.Path, link[1])
+	for _, skill := range shippedSkills {
+		root := filepath.Join("..", "..", "skills", skill.name)
+		var paths []string
+		for _, file := range skill.files {
+			paths = append(paths, file.Path)
+			onDisk, err := os.ReadFile(filepath.Join(root, filepath.FromSlash(file.Path)))
+			if err != nil || string(onDisk) != file.Content {
+				t.Fatalf("embedded %s/%s differs from the file on disk (err=%v)", skill.name, file.Path, err)
 			}
 		}
-	}
-	references, err := filepath.Glob(filepath.Join(root, "references", "*"))
-	if err != nil {
-		t.Fatal(err)
-	}
-	for _, reference := range references {
-		if rel := "references/" + filepath.Base(reference); !containsString(paths, rel) {
-			t.Errorf("%s is not embedded; install-skill would omit it", rel)
+		if len(paths) == 0 || paths[0] != "SKILL.md" {
+			t.Fatalf("install-skill must lead %s with SKILL.md: %v", skill.name, paths)
+		}
+		for _, file := range skill.files {
+			for _, link := range regexp.MustCompile(`\]\((references/[^)]+)\)`).FindAllStringSubmatch(file.Content, -1) {
+				if !containsString(paths, link[1]) {
+					t.Errorf("%s/%s links to %s, which install-skill does not print", skill.name, file.Path, link[1])
+				}
+			}
+		}
+		err := filepath.WalkDir(root, func(path string, entry os.DirEntry, err error) error {
+			if err != nil || entry.IsDir() {
+				return err
+			}
+			rel, err := filepath.Rel(root, path)
+			if err != nil {
+				return err
+			}
+			rel = filepath.ToSlash(rel)
+			if !containsString(paths, rel) {
+				t.Errorf("%s/%s is not embedded; install-skill would omit it", skill.name, rel)
+			}
+			return nil
+		})
+		if err != nil {
+			t.Fatal(err)
 		}
 	}
 }
@@ -108,7 +127,8 @@ func TestSkillQueryReferenceListsExactlyTheQueryOperations(t *testing.T) {
 // a test can read the real flag set from its -h output.
 var skillCommands = map[string]func(context.Context, []string, io.Writer) error{
 	"init": Init, "feature": Feature, "review": Review, "overview": Overview, "term": Term, "persona": Persona,
-	"flag": FeatureFlag, "prototype": Prototype, "story": Story, "criterion": Criterion, "citation": Citation,
+	"setup-initial-saga": func(_ context.Context, args []string, out io.Writer) error { return SetupInitialSaga(args, out) },
+	"flag":               FeatureFlag, "prototype": Prototype, "story": Story, "criterion": Criterion, "citation": Citation,
 	"relation": Relation, "plan": Plan, "design": Design, "quality": Quality, "add-deck": AddDeck,
 	"add-slide": AddSlide, "set-slide-content": SetSlideContent, "add-item": AddItem, "add-section": AddSection,
 	"add-chapter": AddChapter, "add-fragment": AddFragment, "set-fragment-content": SetFragmentContent,
@@ -252,29 +272,34 @@ func skillInvocations(content string) []string {
 func TestSkillNamesOnlyRealCommandsAndFlags(t *testing.T) {
 	mention := regexp.MustCompile(`(?:^|[^\w:/-])change-saga ([a-z][a-z0-9 -]*)`)
 	frontmatter := regexp.MustCompile(`(?s)\A---\n.*?\n---\n`)
-	for _, file := range skills.ChangeSaga() {
-		body := frontmatter.ReplaceAllString(normalizeSkillNewlines(file.Content), "")
-		flat := strings.Join(strings.Fields(body), " ")
-		for _, match := range mention.FindAllStringSubmatch(flat, -1) {
-			if _, err := resolveSkillCommand(strings.Fields(match[1])); err != nil {
-				t.Errorf("%s: %q %v", file.Path, strings.TrimSpace(match[0]), err)
-			}
-		}
-		flagPattern := regexp.MustCompile(`(?:^|\s)--([a-z][a-z0-9-]*)`)
-		for _, invocation := range skillInvocations(body) {
-			words := strings.Fields(strings.TrimPrefix(invocation, "change-saga "))
-			path, err := resolveSkillCommand(words)
-			if err != nil {
-				t.Errorf("%s: %q %v", file.Path, invocation, err)
+	for _, skill := range shippedSkills {
+		for _, file := range skill.files {
+			if filepath.Ext(file.Path) != ".md" {
 				continue
 			}
-			if path == nil {
-				continue
+			body := frontmatter.ReplaceAllString(normalizeSkillNewlines(file.Content), "")
+			flat := strings.Join(strings.Fields(body), " ")
+			for _, match := range mention.FindAllStringSubmatch(flat, -1) {
+				if _, err := resolveSkillCommand(strings.Fields(match[1])); err != nil {
+					t.Errorf("%s/%s: %q %v", skill.name, file.Path, strings.TrimSpace(match[0]), err)
+				}
 			}
-			flags := realFlags(t, path)
-			for _, flag := range flagPattern.FindAllStringSubmatch(invocation, -1) {
-				if !flags[flag[1]] {
-					t.Errorf("%s: %q passes --%s, which %q does not accept", file.Path, invocation, flag[1], strings.Join(path, " "))
+			flagPattern := regexp.MustCompile(`(?:^|\s)--([a-z][a-z0-9-]*)`)
+			for _, invocation := range skillInvocations(body) {
+				words := strings.Fields(strings.TrimPrefix(invocation, "change-saga "))
+				path, err := resolveSkillCommand(words)
+				if err != nil {
+					t.Errorf("%s/%s: %q %v", skill.name, file.Path, invocation, err)
+					continue
+				}
+				if path == nil {
+					continue
+				}
+				flags := realFlags(t, path)
+				for _, flag := range flagPattern.FindAllStringSubmatch(invocation, -1) {
+					if !flags[flag[1]] {
+						t.Errorf("%s/%s: %q passes --%s, which %q does not accept", skill.name, file.Path, invocation, flag[1], strings.Join(path, " "))
+					}
 				}
 			}
 		}

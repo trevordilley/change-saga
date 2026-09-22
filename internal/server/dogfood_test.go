@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"net/url"
+	"os"
 	"path/filepath"
 	"strings"
 	"testing"
@@ -18,6 +19,7 @@ import (
 
 func dogfoodRecords(t *testing.T) (*saga.Saga, requirements.Document, quality.Document) {
 	t.Helper()
+	requireDogfoodSaga(t)
 	document, _, err := saga.LoadNarrative(dogfoodSaga)
 	if err != nil {
 		t.Fatal(err)
@@ -37,10 +39,20 @@ func dogfoodRecords(t *testing.T) (*saga.Saga, requirements.Document, quality.Do
 // found on. The tests assert shapes that hold for any content it grows.
 var dogfoodSaga = filepath.Join("..", "..", "app.saga")
 
+func requireDogfoodSaga(t *testing.T) {
+	t.Helper()
+	if _, err := os.Stat(filepath.Join(dogfoodSaga, saga.ManifestName)); os.IsNotExist(err) {
+		t.Skip("the repository's app Saga is intentionally absent during initial-Saga setup")
+	} else if err != nil {
+		t.Fatal(err)
+	}
+}
+
 // dogfoodPage renders one reviewer path of the repository's app Saga,
 // observing HEAD.
 func dogfoodPage(t *testing.T, path string) (int, string) {
 	t.Helper()
+	requireDogfoodSaga(t)
 	tmpl, err := newPageTemplateFor(gitdiff.Range{})
 	if err != nil {
 		t.Fatal(err)
@@ -190,7 +202,7 @@ func TestEveryPersonaHasAPage(t *testing.T) {
 // and summary, and a feature's design chapters render there, not as top-level
 // chapters of the app overview.
 func TestEveryFeatureHasAPageHoldingItsDesign(t *testing.T) {
-	document, records, _ := dogfoodRecords(t)
+	document, records, tests := dogfoodRecords(t)
 	root := dogfoodOK(t, "/")
 	for _, feature := range document.Features {
 		href := featureHref(feature.ID)
@@ -198,9 +210,27 @@ func TestEveryFeatureHasAPageHoldingItsDesign(t *testing.T) {
 			t.Fatalf("the sidebar does not link %s", href)
 		}
 		page := dogfoodOK(t, href)
-		for _, want := range []string{"data-feature-page", "data-feature-summary", "data-feature-stories", "data-feature-design", "data-feature-quality", "data-feature-implementation"} {
+		for _, want := range []string{"data-feature-page", "data-feature-summary"} {
 			if !strings.Contains(page, want) {
 				t.Fatalf("%s lacks %s", href, want)
+			}
+		}
+		hasStories, hasTests := false, false
+		for _, story := range records.Stories {
+			hasStories = hasStories || story.Feature == feature.ID
+		}
+		for _, testCase := range tests.TestCases {
+			hasTests = hasTests || testCase.Feature == feature.ID
+		}
+		hasDesign := feature.Design != nil && len(feature.Design.Children)+len(feature.Design.Fragments) > 0
+		for marker, want := range map[string]bool{
+			"data-feature-stories":        hasStories,
+			"data-feature-design":         hasDesign,
+			"data-feature-quality":        hasTests,
+			"data-feature-implementation": len(feature.Decks) > 0,
+		} {
+			if got := strings.Contains(page, marker); got != want {
+				t.Fatalf("%s renders %s = %v, want %v", href, marker, got, want)
 			}
 		}
 		for _, manifest := range records.Features {
@@ -365,6 +395,7 @@ func TestRequirementsOverviewIsGroupedByFeature(t *testing.T) {
 // references code is a Saga → Code row whose code renders at the head, and
 // every referenced file is a Code → Saga row.
 func TestObservedCoverageShowsTheDocumentedCode(t *testing.T) {
+	requireDogfoodSaga(t)
 	document, _, err := saga.Load(dogfoodSaga)
 	if err != nil {
 		t.Fatal(err)

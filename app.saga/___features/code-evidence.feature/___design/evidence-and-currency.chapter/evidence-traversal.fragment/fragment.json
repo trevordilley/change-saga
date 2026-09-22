@@ -1,8 +1,0 @@
-{
-  "version": 2,
-  "id": "evidence-traversal",
-  "title": "Evidence traversal",
-  "media_type": "text/markdown",
-  "entrypoint": "content.md",
-  "order": 10
-}

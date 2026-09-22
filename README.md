@@ -114,6 +114,10 @@ these prompts from the repository containing your change:
 
 > Use the change-saga cli to install its skill for this coding agent
 
+**To build the first app-wide Saga through a guided interview (once per app):**
+
+> Run change-saga setup-initial-saga and follow its guided setup workflow
+
 **To author a PR's saga:**
 
 > Use the change-saga cli to create a Saga for this PR

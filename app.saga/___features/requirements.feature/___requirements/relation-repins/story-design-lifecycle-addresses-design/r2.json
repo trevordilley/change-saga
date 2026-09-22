@@ -1,9 +1,0 @@
-{
-  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
-  "version": 5,
-  "id": "r2",
-  "relation": "urn:change-saga:app:relation:story-design-lifecycle-addresses-design",
-  "from_content_digest": "sha256:8c25616967744ca9fc62be2305a47397a44d5a93e3bf9e05712d9ba823deb58b",
-  "rationale": "The relation remains accurate after visual legibility edits; the requirement and semantic design node are unchanged.",
-  "created_at": "2026-09-21T04:57:30.654365Z"
-}

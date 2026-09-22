@@ -185,10 +185,8 @@ type navNodeView struct {
 	Href   string
 	NodeID string
 	Icon   string
-	// IconPlaceholder reserves the icon's width on a row that has none, so
-	// rows in a list where some carry an icon still start at the same place.
-	// Without it an icon reads as indentation and its row as a child of the
-	// row above. The twisty solves the same problem the same way.
+	// IconPlaceholder remains as a defensive rendering fallback for callers
+	// outside the app navigation builder. App navigation assigns real icons.
 	IconPlaceholder bool
 	Requirement     bool
 	Deck            bool
@@ -196,9 +194,8 @@ type navNodeView struct {
 	// than an authored destination: it discloses what it holds instead of
 	// linking anywhere of its own.
 	Group bool
-	// Gap marks a place the architecture reserves that nothing has been
-	// authored into yet. The row stays visible so a reviewer can see what is
-	// missing instead of having to know it should exist.
+	// Gap marks an authored record whose state is incomplete (for example, a
+	// persona with no accepted story). Empty sections never reach this tree.
 	Gap      bool
 	Note     string
 	Slide    *SlideReferenceView
@@ -1183,7 +1180,7 @@ func requestedChapter(r *http.Request) (string, bool) {
 // navigate into a chapter that has not been fetched yet. Titles and targets come
 // from the saga's own manifests, so building the whole outline reads no content.
 func makeNavTree(root *saga.Section) []*navNodeView {
-	overview := &navNodeView{Title: "Overview", Href: sagaHref(root.Target), NodeID: "nav-overview", Active: true}
+	overview := &navNodeView{Title: "Overview", Href: sagaHref(root.Target), NodeID: "nav-overview", Icon: "book", Active: true}
 	overview.Children = withoutRedundantLead(fragmentOutline(root), overview.Title)
 	overview.Expanded = len(overview.Children) > 0
 	nodes := []*navNodeView{overview}
@@ -1201,7 +1198,7 @@ func makeNavTree(root *saga.Section) []*navNodeView {
 // makeChapterNav is one chapter as a sidebar destination with its collapsed
 // outline beneath it, wherever the architecture places that chapter.
 func makeChapterNav(chapter *saga.Section) *navNodeView {
-	node := &navNodeView{Title: chapter.Title, Href: sagaHref(chapter.Target), NodeID: "nav-" + domID(chapter.Target)}
+	node := &navNodeView{Title: chapter.Title, Href: sagaHref(chapter.Target), NodeID: "nav-" + domID(chapter.Target), Icon: "book"}
 	node.Children = withoutRedundantLead(documentOutline(chapter), node.Title)
 	return node
 }
@@ -1263,7 +1260,7 @@ func documentOutline(section *saga.Section) []*navNodeView {
 			continue
 		}
 		id := domID(child.Target)
-		node := &navNodeView{Title: child.Title, Href: "#" + id, NodeID: "nav-" + id}
+		node := &navNodeView{Title: child.Title, Href: "#" + id, NodeID: "nav-" + id, Icon: "list"}
 		node.Children = documentOutline(child)
 		node.Expanded = len(node.Children) > 0
 		nodes = append(nodes, node)
@@ -1282,7 +1279,7 @@ func fragmentOutline(section *saga.Section) []*navNodeView {
 			continue
 		}
 		id := domID(fragment.Target)
-		nodes = append(nodes, &navNodeView{Title: fragment.Title, Href: "#" + id, NodeID: "nav-" + id})
+		nodes = append(nodes, &navNodeView{Title: fragment.Title, Href: "#" + id, NodeID: "nav-" + id, Icon: "list"})
 	}
 	return nodes
 }

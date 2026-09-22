@@ -1,8 +1,0 @@
-{
-  "version": 2,
-  "id": "first-change-journey",
-  "title": "First-change journey",
-  "media_type": "text/markdown",
-  "entrypoint": "content.md",
-  "order": 10
-}

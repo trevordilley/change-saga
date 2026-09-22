@@ -66,13 +66,15 @@ func termPage(t *testing.T, root, repo, path string) string {
 func TestTheOverviewExpandsToItsPartsAndEveryTerm(t *testing.T) {
 	root, repo := termSaga(t)
 	html := termPage(t, root, repo, "/")
-	for _, want := range []string{`id="nav-overview"`, `title="Name"`, `title="Elevator pitch"`, `title="Description"`, `href="/terms"`, `href="/terms/testtaker"`, "Assessments"} {
+	for _, want := range []string{`id="nav-overview"`, `title="Name"`, `href="/terms"`, `href="/terms/testtaker"`, "Assessments"} {
 		if !strings.Contains(html, want) {
 			t.Fatalf("the overview is missing %s", want)
 		}
 	}
-	if strings.Count(html, "not written yet") != 2 {
-		t.Fatal("the absent pitch and description are stated gaps")
+	for _, absent := range []string{`title="Elevator pitch"`, `title="Description"`, "not written yet"} {
+		if strings.Contains(html, absent) {
+			t.Fatalf("the overview renders empty part %s", absent)
+		}
 	}
 }
 

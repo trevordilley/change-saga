@@ -1,9 +1,0 @@
-{
-  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
-  "version": 5,
-  "id": "r2",
-  "relation": "urn:change-saga:app:relation:off-visible-addresses-off-disabled",
-  "from_content_digest": "sha256:593d0dff6c8e27e1977fbd4889489d931d62cc25dbd98ba96b4768d21d88e440",
-  "rationale": "The relation remains accurate after visual legibility edits; the requirement and semantic design node are unchanged.",
-  "created_at": "2026-09-21T04:57:27.856854Z"
-}

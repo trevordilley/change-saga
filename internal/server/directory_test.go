@@ -19,13 +19,9 @@ func TestEverySectionHeaderIsADestination(t *testing.T) {
 		href string
 	}{
 		{[]string{"Overview"}, sagaHref(sources.document.Section.Target)},
-		{[]string{"Overview", "Terms and vocabulary"}, "/terms"},
 		{[]string{"Overview", "Personas"}, "/personas"},
-		{[]string{"Overview", "Design system"}, designSystemPath},
 		{[]string{"Features"}, "/features"},
 		{[]string{"Features", "Billing", "Product"}, featureHref("billing") + "#feature-product"},
-		{[]string{"Features", "Billing", "Design"}, featureHref("billing") + "#feature-design"},
-		{[]string{"Features", "Billing", "Quality"}, featureHref("billing") + "#feature-quality"},
 	} {
 		if got := findNav(t, nodes, want.path...).Href; got != want.href {
 			t.Fatalf("%v opens %q, want %q", want.path, got, want.href)
@@ -40,12 +36,11 @@ func TestEverySectionHeaderIsADestination(t *testing.T) {
 	if len(implementation.Children) == 0 || implementation.Href != implementation.Children[0].Href {
 		t.Fatalf("Implementation opens %q, want its first slide", implementation.Href)
 	}
-	// A feature with no deck has no first slide to open, and says so instead.
+	// A feature with no deck has no Implementation section.
 	empty := appNavFixture(t)
 	empty.pageFeature = "catalog"
-	catalog := findNav(t, makeAppNavTree(empty), "Features", "Catalog", "Implementation")
-	if catalog.Href != "" {
-		t.Fatalf("an empty Implementation opens %q, want nowhere", catalog.Href)
+	if findNavByID(makeAppNavTree(empty), featureNavID("catalog")+"-implementation") != nil {
+		t.Fatal("an empty Implementation must be hidden")
 	}
 }
 

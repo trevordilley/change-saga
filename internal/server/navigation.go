@@ -14,23 +14,22 @@ import (
 //	Quality          Test Cases
 //	Implementation   the slide deck that explains the change
 //
-// The order is fixed. It is an information architecture, not a phase gate: it
-// never reorders as authoring progresses, so it never implies waterfall.
+// The order is fixed among the sections that have content. It is an information
+// architecture, not a phase gate: it never reorders as authoring progresses,
+// so it never implies waterfall.
 // Within Product, Prototypes precedes Requirements because prototype-first is
 // the common discovery path, not because prototypes come due first.
 //
-// A place nothing has been authored into keeps its row and says so. Hiding an
-// empty section would leave a reviewer unable to see what is missing, which is
-// the one question this architecture exists to answer.
+// A place nothing has been authored into is omitted. The sidebar describes the
+// Saga that exists; authoring and coverage surfaces are where missing work is
+// made explicit.
 //
 // The four headers are destinations as well as disclosures. Product, Design,
 // and Quality open the feature's page at the section that lists what they hold,
 // and Implementation opens its deck at the first slide.
 
 // productNavSources is everything the architecture can be filled from. Every
-// field is optional: an empty field becomes a visible gap, never a hidden
-// section. Fields with no producer yet are the seams the remaining domains
-// will be joined through, and their TODOs name what is still missing.
+// field is optional: empty fields do not produce navigation rows.
 type productNavSources struct {
 	// prefix namespaces the architecture's node IDs, since every feature has
 	// its own four places. An empty prefix is "nav".
@@ -70,66 +69,71 @@ func makeProductNavTree(sources productNavSources) []*navNodeView {
 		prefix = "nav"
 	}
 	requirements := sources.requirements
-	if requirements == nil {
-		requirements = &navNodeView{
-			Title: "Requirements", Href: "/requirements", NodeID: prefix + "-requirements",
-			Icon: "requirements", Requirement: true,
-		}
-	}
-	if len(requirements.Children) == 0 {
-		requirements.Gap, requirements.Note = true, "no stories yet"
-	}
-	prototypeNote := sources.prototypeNote
-	if prototypeNote == "" {
-		prototypeNote = "no prototypes yet"
-	}
 
 	// Product, Design, and Quality open the feature's page at the section that
 	// lists what they hold: its stories, its design, and its test cases. The
 	// feature's page is already the directory of all three, so a second table
 	// per place would say the same thing twice and go out of step the first
 	// time one of them changed.
-	place := func(title, id, icon, anchor, emptyNote string, children []*navNodeView) *navNodeView {
-		node := navPlace(title, id, icon, emptyNote, children)
+	place := func(title, id, icon, anchor string, children []*navNodeView) *navNodeView {
+		node := navPlace(title, id, icon, children)
 		if sources.feature != "" {
 			node.Href = featureHref(sources.feature) + anchor
 		}
 		return node
 	}
-	product := place("Product", prefix+"-product", "product", "#feature-product", "", []*navNodeView{
-		navPlace("Prototypes", prefix+"-prototypes", "prototype", prototypeNote, sources.prototypes),
-		requirements,
-	})
-	technical := navPlace("Technical", prefix+"-technical", "", "", append([]*navNodeView{
-		navPlace("ERD", prefix+"-technical-erd", "", "not authored yet", nil),
-		navPlace("System", prefix+"-technical-system", "", "not authored yet", nil),
-		navPlace("Data Flows", prefix+"-technical-data-flows", "", "no flow diagrams yet", sources.dataFlows),
-	}, sources.technical...))
-	design := place("Design", prefix+"-design", "design", "#feature-design", "", []*navNodeView{
-		navPlace("UX", prefix+"-design-ux", "", "no flow decks yet", sources.uxDecks),
-		navPlace("UI", prefix+"-design-ui", "", "no references yet", sources.uiDesign),
-		technical,
-	})
-	quality := place("Quality", prefix+"-quality", "quality", "#feature-quality", "", []*navNodeView{
-		navPlace("Test Cases", prefix+"-test-cases", "", "no test cases yet", sources.testCases),
-	})
+	var productChildren []*navNodeView
+	if len(sources.prototypes) > 0 || sources.prototypeNote != "" {
+		prototypes := navPlace("Prototypes", prefix+"-prototypes", "prototype", sources.prototypes)
+		if len(sources.prototypes) == 0 {
+			prototypes.Gap, prototypes.Note = true, sources.prototypeNote
+		}
+		productChildren = append(productChildren, prototypes)
+	}
+	if requirements != nil && len(requirements.Children) > 0 {
+		productChildren = append(productChildren, requirements)
+	}
+
+	var designChildren []*navNodeView
+	if len(sources.uxDecks) > 0 {
+		designChildren = append(designChildren, navPlace("UX", prefix+"-design-ux", "deck", sources.uxDecks))
+	}
+	if len(sources.uiDesign) > 0 {
+		designChildren = append(designChildren, navPlace("UI", prefix+"-design-ui", "design", sources.uiDesign))
+	}
+	var technicalChildren []*navNodeView
+	if len(sources.dataFlows) > 0 {
+		technicalChildren = append(technicalChildren, navPlace("Data Flows", prefix+"-technical-data-flows", "design", sources.dataFlows))
+	}
+	technicalChildren = append(technicalChildren, sources.technical...)
+	if len(technicalChildren) > 0 {
+		designChildren = append(designChildren, navPlace("Technical", prefix+"-technical", "implementation", technicalChildren))
+	}
+
+	var navigation []*navNodeView
+	if len(productChildren) > 0 {
+		navigation = append(navigation, place("Product", prefix+"-product", "product", "#feature-product", productChildren))
+	}
+	if len(designChildren) > 0 {
+		navigation = append(navigation, place("Design", prefix+"-design", "design", "#feature-design", designChildren))
+	}
+	if len(sources.testCases) > 0 {
+		navigation = append(navigation, place("Quality", prefix+"-quality", "quality", "#feature-quality", []*navNodeView{
+			navPlace("Test Cases", prefix+"-test-cases", "quality", sources.testCases),
+		}))
+	}
 	// Implementation is the one place that opens on arrival, and it opens all
 	// the way to the slides. The deck that explains the change is what a
 	// reviewer came for, so the sidebar shows what is actually there instead of
 	// a row to click first. Everything else stays shut: four short rows read as
 	// one architecture, where four open ones read as a wall.
-	implementation := navPlace("Implementation", prefix+"-implementation", "implementation", "", sources.implementation)
-	if len(implementation.Children) == 0 {
-		// A top-level place is a peer of the others and has to read as one. As
-		// a gap row it lost its disclosure, its weight, and most of its title
-		// to the note, so an empty Implementation looked like a leftover rather
-		// than a quarter of the architecture. It keeps the header every
-		// section has and states the gap beneath it instead.
-		implementation.Gap, implementation.Note = false, ""
-		implementation.Children = []*navNodeView{{
-			Title: "No implementation decks yet", NodeID: prefix + "-implementation-empty", Gap: true,
-		}}
+	if len(sources.implementation) == 0 {
+		for _, node := range navigation {
+			revealActive(node)
+		}
+		return navigation
 	}
+	implementation := navPlace("Implementation", prefix+"-implementation", "implementation", sources.implementation)
 	// Implementation is the deck. With the one deck a Saga normally has, its
 	// slides sit directly beneath the section instead of under a deck row that
 	// only restates the section and costs a click. Several decks keep their
@@ -148,27 +152,20 @@ func makeProductNavTree(sources productNavSources) []*navNodeView {
 		implementation.Href = href
 	}
 
-	navigation := []*navNodeView{product, design, quality, implementation}
+	navigation = append(navigation, implementation)
 	for _, node := range navigation {
 		revealActive(node)
 	}
 	return navigation
 }
 
-// navPlace is one row of the architecture: a disclosure when something fills
-// it and an explicit gap when nothing does. It carries no destination of its
-// own. navSection is the variant that does, and every section header in the
-// sidebar is one of those; navPlace is what is left for the rows inside a
-// section that name a place rather than a page.
-func navPlace(title, id, icon, emptyNote string, children []*navNodeView) *navNodeView {
-	node := &navNodeView{
+// navPlace is one filled row of the architecture. Empty places are filtered by
+// the caller before they reach the rendered tree.
+func navPlace(title, id, icon string, children []*navNodeView) *navNodeView {
+	return &navNodeView{
 		Title: title, NodeID: id, Icon: icon, Group: true,
 		Children: children,
 	}
-	if len(children) == 0 {
-		node.Gap, node.Note = true, emptyNote
-	}
-	return node
 }
 
 // revealActive opens the places containing the current page. A collapsed place
@@ -261,10 +258,9 @@ func splitDeckNavByRole(nodes []*navNodeView, decks []*saga.Deck) (ux, implement
 	return ux, implementation
 }
 
-// spliceProductNav puts the architecture immediately below the report
-// overview, which keeps it at the same four rows on every Saga. Narrative
-// chapters follow it: their number varies with what was written, so anything
-// placed after them would move.
+// spliceProductNav puts the authored architecture immediately below the report
+// overview. Narrative chapters follow it: their number varies with what was
+// written, so anything placed after them would move.
 func spliceProductNav(narrative, product []*navNodeView) []*navNodeView {
 	if len(narrative) == 0 {
 		return product

@@ -35,10 +35,10 @@ func TestV3DesignChapterAndFragmentEnterExistingRenderTree(t *testing.T) {
 	// In the app-level list the design chapter joins its feature's Technical.
 	app := makeAppNavTree(appNavSources{document: document, page: &requirementsPageView{}, pageFeature: serverFeature})
 	featureTechnical := findNav(t, app, "Features", "Core", "Design", "Technical").Children
-	if got := topTitles(featureTechnical); got != "ERD|System|Data Flows|Technical architecture" {
+	if got := topTitles(featureTechnical); got != "Technical architecture" {
 		t.Fatalf("feature technical design = %v", got)
 	}
-	if got := topTitles(findNav(t, app, "Features", "Core").Children); got != "Overview|Product|Design|Quality|Implementation" {
+	if got := topTitles(findNav(t, app, "Features", "Core").Children); got != "Overview|Design" {
 		t.Fatalf("the design chapter left the feature's Design: %s", got)
 	}
 	view := makeSectionView(document.Section, viewScope{})

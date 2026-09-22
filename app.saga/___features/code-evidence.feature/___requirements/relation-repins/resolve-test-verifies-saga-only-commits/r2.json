@@ -1,9 +1,0 @@
-{
-  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
-  "version": 5,
-  "id": "r2",
-  "relation": "urn:change-saga:app:relation:resolve-test-verifies-saga-only-commits",
-  "to_revision": "urn:change-saga:app:story:code-references:revision:r3",
-  "rationale": "The test still verifies that Saga-only commits leave unchanged code links current.",
-  "created_at": "2026-09-21T04:26:33.608253Z"
-}

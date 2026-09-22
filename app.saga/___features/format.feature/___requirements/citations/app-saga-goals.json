@@ -1,9 +1,0 @@
-{
-  "$schema": "https://changesaga.dev/schema/v3/citation.schema.json",
-  "version": 3,
-  "id": "app-saga-goals",
-  "kind": "document",
-  "title": "The app Saga: agreed goals and execution plan (docs/app-saga.md)",
-  "reference": "docs/app-saga.md",
-  "created_at": "2026-09-19T20:47:10.13396Z"
-}

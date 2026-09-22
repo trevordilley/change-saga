@@ -1,9 +1,0 @@
-{
-  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
-  "version": 5,
-  "id": "r2",
-  "relation": "urn:change-saga:app:relation:two-sides-landmark-related",
-  "to_revision": "urn:change-saga:app:story:two-sides:revision:r2",
-  "rationale": "The related-reviews landmark still demonstrates the derived list of reviews that changed explained code.",
-  "created_at": "2026-09-21T04:26:33.986353Z"
-}

@@ -1,9 +1,0 @@
-{
-  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
-  "version": 5,
-  "id": "r2",
-  "relation": "urn:change-saga:app:relation:criterion-paths-addresses-code",
-  "from_content_digest": "sha256:fda5248a378b5481bf621eda75e3c1644a99c030e8fae5a2e19a7e6703d46822",
-  "rationale": "The relation remains accurate after visual legibility edits; the requirement and semantic design node are unchanged.",
-  "created_at": "2026-09-21T04:57:24.732837Z"
-}

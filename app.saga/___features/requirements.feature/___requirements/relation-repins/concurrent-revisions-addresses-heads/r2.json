@@ -1,9 +1,0 @@
-{
-  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
-  "version": 5,
-  "id": "r2",
-  "relation": "urn:change-saga:app:relation:concurrent-revisions-addresses-heads",
-  "from_content_digest": "sha256:26a12d880b79d6a2b187ee70a52e819d9e14eeaed6ca858eb8fcb00da6144505",
-  "rationale": "The relation remains accurate after visual legibility edits; the requirement and semantic design node are unchanged.",
-  "created_at": "2026-09-21T04:57:24.37076Z"
-}

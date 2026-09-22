@@ -89,13 +89,14 @@ func (e *StatusError) Error() string { return "command reported a non-success st
 // commandUsage is the single source of each command's usage line so the
 // overview, the per-command -h banner, and argument errors cannot drift apart.
 var commandOrder = []string{
-	"init", "feature", "overview", "term", "persona", "flag", "prototype", "story", "criterion", "citation", "relation", "design", "plan", "quality", "add-deck", "add-slide", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "revise-deck", "remove-deck", "revise-slide", "remove-slide", "revise-item", "remove-item", "revise-chapter", "remove-chapter", "revise-section", "remove-section", "revise-fragment", "remove-fragment", "cover", "remove-coverage", "replace-coverage", "references", "repin", "sync", "add-claim", "verify-claim",
+	"init", "setup-initial-saga", "feature", "overview", "term", "persona", "flag", "prototype", "story", "criterion", "citation", "relation", "design", "plan", "quality", "add-deck", "add-slide", "set-slide-content", "add-item", "add-chapter", "add-section", "add-fragment", "set-fragment-content", "add-landmark", "revise-deck", "remove-deck", "revise-slide", "remove-slide", "revise-item", "remove-item", "revise-chapter", "remove-chapter", "revise-section", "remove-section", "revise-fragment", "remove-fragment", "cover", "remove-coverage", "replace-coverage", "references", "repin", "sync", "add-claim", "verify-claim",
 	"review", "validate", "status", "check", "query",
 	"serve", "open", "install-skill", "spec",
 }
 
 var commandUsage = map[string]string{
 	"init":                        "change-saga init [flags] <name.saga>",
+	"setup-initial-saga":          "change-saga setup-initial-saga [--repo PATH] [--overhaul]",
 	"feature":                     "change-saga feature add [flags] <saga>",
 	"feature add":                 "change-saga feature add --id ID --title TEXT [--description TEXT] [flags] <saga>",
 	"overview":                    "change-saga overview <set-pitch|set-description> [flags] <saga>",
@@ -264,11 +265,18 @@ Usage:
 	fmt.Fprint(out, `
 Run "change-saga <command> -h" for command-specific options.
 
+Starting an app-wide Saga with a coding agent?
+  Run "change-saga setup-initial-saga" once. It inspects the repository and
+  prints the guided interview and investigation workflow. If a Saga already
+  exists, it recommends ordinary updates unless the user requests an overhaul.
+
 Using a coding agent?
+  For ongoing authoring, use the regular Change Saga skill.
   If its Change Saga skill is not installed or current, run
   "change-saga install-skill" and give the resulting agent-agnostic bootstrap
   prompt to the agent. The command does not modify the repository or create a Saga.
 `)
+	printInitialSagaHelp(out)
 }
 
 // commandFlags builds a flag set whose -h output always leads with the command
@@ -295,6 +303,7 @@ func commandFlags(name, usage string, out io.Writer) *flag.FlagSet {
 
 var commandDescription = map[string]string{
 	"init":                        "Create the app Saga: the saga.json manifest, a reviewer README, and the app\noverview under ___overview. Then either cover the change: explain it with an\nimplementation deck whose Items reference every changed line; or document\nexisting code: observe HEAD with status and reference the code each Item\nexplains at the current commit. Features, stories, personas, design, and quality\nare optional and can come later.",
+	"setup-initial-saga":          "Print a repository-aware, one-time agent workflow for establishing the app's\ninitial Saga through a product interview and evidence gathering. The command\ndoes not modify the repository. If it finds an existing Saga, it stops and\nrecommends normal authoring unless --overhaul explicitly requests a major\ndocumentation rebuild.",
 	"status":                      "Report coverage by area for the change (--against) or the whole app, with the\nlists of what is and is not covered, stale records, and ordered next actions:\nrequired work first (keep what exists healthy, cover every changed line), then\noptional growth suggestions. Status has no verdict: it exits 0 whenever its\nreport can be trusted, and 1 only when the Saga is malformed (for example, a\nduplicate ID) or the checkout does not match the declared repository. Teams\nwrite their own rules over --json, or ask check.",
 	"check":                       "Ask whether the named coverage areas are fully covered in scope: the change\nwith --against, the whole app without, narrowed by --feature. It exits 0 when\nthey are, 3 with only those areas' gaps when they are not, and 1 when the\nreport cannot be trusted. Nothing is required unless someone asks.\n\nAreas follow the chain persona -> story -> design -> code:\n  implementation  every changed line is referenced by the implementation deck\n                  (or narrative), or test code by its test case's evidence\n  stories         every changed line reaches a story through the chain\n  personas        every changed line reaches a persona\n  design          every story in scope has design\n  quality         every acceptance criterion in scope has a test\n  health          nothing that already existed went stale or broke",
 	"feature":                     "Add a durable product domain. A feature holds its own report content, stories,\ndesign, quality, work plan, and implementation deck. Story identity never\nnames a feature, so a story can move between features without breaking a link.",
@@ -1830,10 +1839,9 @@ const defaultHTMLFragment = `<!doctype html>
 `
 
 // installSkillPreamble tells the agent how to install the skill files that
-// follow it. The files are the skills package's embedded copy of
-// skills/change-saga, so the installed skill and the repository's reference
-// skill are the same bytes.
-const installSkillPreamble = `Install or update a project-local agent skill named "change-saga" using this coding agent's native skill mechanism. Do not create a Change Saga as part of installation. Write each file below into the skill's directory at the relative path in its header, exactly as given: SKILL.md is the skill's entrypoint, and it links to the files under references/.
+// follow it. The files are the skills package's embedded copies, so the
+// installed skills and the repository's reference skills are the same bytes.
+const installSkillPreamble = `Install or update a project-local agent skill named "change-saga" using this coding agent's native skill mechanism. Do not create a Change Saga as part of installation. Each file header begins with the skill directory and then the path relative to it. Write every file exactly as given: SKILL.md is the skill's entrypoint, agents/openai.yaml carries its interface metadata, and SKILL.md links to its files under references/.
 `
 
 // installSkillFileHeader introduces one skill file in the install-skill prompt.
@@ -1843,7 +1851,7 @@ func installSkillPrompt() string {
 	var prompt strings.Builder
 	prompt.WriteString(installSkillPreamble)
 	for _, file := range skills.ChangeSaga() {
-		fmt.Fprintf(&prompt, installSkillFileHeader, file.Path)
+		fmt.Fprintf(&prompt, installSkillFileHeader, "change-saga/"+file.Path)
 		prompt.WriteString(file.Content)
 	}
 	return prompt.String()

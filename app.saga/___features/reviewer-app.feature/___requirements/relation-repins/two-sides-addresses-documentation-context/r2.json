@@ -1,9 +1,0 @@
-{
-  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
-  "version": 5,
-  "id": "r2",
-  "relation": "urn:change-saga:app:relation:two-sides-addresses-documentation-context",
-  "from_content_digest": "sha256:6862aebb10a769ef478c57bc9e5c6cf5915097c2e550c518c31c6f5a2842cf25",
-  "rationale": "The revised documentation landmark still keeps current product context reachable from review.",
-  "created_at": "2026-09-21T04:51:55.265374Z"
-}

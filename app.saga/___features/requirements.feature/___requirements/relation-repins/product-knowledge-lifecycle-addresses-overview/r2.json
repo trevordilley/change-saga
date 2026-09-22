@@ -1,9 +1,0 @@
-{
-  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
-  "version": 5,
-  "id": "r2",
-  "relation": "urn:change-saga:app:relation:product-knowledge-lifecycle-addresses-overview",
-  "from_content_digest": "sha256:eb63759a277b86920b8ccc5af165078e2834f8164e72fa01193899fde9dfd96c",
-  "rationale": "The relation remains accurate after visual legibility edits; the requirement and semantic design node are unchanged.",
-  "created_at": "2026-09-21T04:57:28.81227Z"
-}

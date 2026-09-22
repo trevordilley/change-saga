@@ -1,7 +1,0 @@
-{
-  "$schema": "https://changesaga.dev/schema/v5/test-case.schema.json",
-  "version": 5,
-  "id": "local-review-rejects-foreign-requests",
-  "created_at": "2026-09-21T05:49:59Z",
-  "request_id": "quality-add-local-review-rejects-foreign-requests"
-}

@@ -1,8 +1,0 @@
-{
-  "version": 2,
-  "id": "evidence-traversal-map",
-  "title": "Evidence traversal entry points",
-  "media_type": "image/svg+xml",
-  "entrypoint": "image.svg",
-  "order": 30
-}

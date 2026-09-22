@@ -46,7 +46,8 @@ const uiIconSymbols = `` +
 	`<symbol id="i-design" viewBox="0 0 16 16"><path d="M3 13.4 13 3.4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><path d="M3 13.4h4.6L3 8.8z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><circle cx="11.6" cy="4.8" r="2.2" fill="none" stroke="currentColor" stroke-width="1.4"/></symbol>` +
 	`<symbol id="i-quality" viewBox="0 0 16 16"><path d="M6.4 2.4v4L3.1 11.9a1.5 1.5 0 0 0 1.3 2.3h7.2a1.5 1.5 0 0 0 1.3-2.3L9.6 6.4v-4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M5.4 2.4h5.2M4.9 10.2h6.2" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></symbol>` +
 	`<symbol id="i-implementation" viewBox="0 0 16 16"><path d="M5.6 4.6 2.4 8l3.2 3.4M10.4 4.6 13.6 8l-3.2 3.4M9.2 2.9 6.8 13.1" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>` +
-	`<symbol id="i-list" viewBox="0 0 16 16"><path d="M5.4 4.4h8M5.4 8h8M5.4 11.6h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="2.8" cy="4.4" r="1" fill="currentColor"/><circle cx="2.8" cy="8" r="1" fill="currentColor"/><circle cx="2.8" cy="11.6" r="1" fill="currentColor"/></symbol>`
+	`<symbol id="i-list" viewBox="0 0 16 16"><path d="M5.4 4.4h8M5.4 8h8M5.4 11.6h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="2.8" cy="4.4" r="1" fill="currentColor"/><circle cx="2.8" cy="8" r="1" fill="currentColor"/><circle cx="2.8" cy="11.6" r="1" fill="currentColor"/></symbol>` +
+	`<symbol id="i-flag" viewBox="0 0 16 16"><path d="M3.5 14V2.2M4 3h7.8l-1.5 2.4 1.5 2.4H4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>`
 
 // fileIconSymbols renders language badges. Two-character monograms stay legible
 // at 16px and keep white-on-colour contrast above 4.5:1.

@@ -1,9 +1,0 @@
-{
-  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
-  "version": 5,
-  "id": "r2",
-  "relation": "urn:change-saga:app:relation:sync-state-addresses-sync-cursor",
-  "from_content_digest": "sha256:715fbadc231101da82d0275eccc5a8a705af10d0bc9a6281b6f74420c2510969",
-  "rationale": "Reviewed after the companion relocation design was updated with its end-to-end proof; this relation still matches the current heading.",
-  "created_at": "2026-09-22T00:11:10.055362Z"
-}

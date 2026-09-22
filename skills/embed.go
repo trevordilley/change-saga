@@ -9,8 +9,8 @@ import (
 	"sort"
 )
 
-//go:embed change-saga/SKILL.md change-saga/references/*.md
-var changeSaga embed.FS
+//go:embed change-saga/SKILL.md change-saga/agents/*.yaml change-saga/references/*.md
+var bundled embed.FS
 
 // File is one file of a skill, named by its path relative to the skill's
 // directory.
@@ -19,10 +19,10 @@ type File struct {
 	Content string
 }
 
-// ChangeSaga returns the change-saga skill: SKILL.md first, then its
-// references in path order.
-func ChangeSaga() []File {
-	skill, err := fs.Sub(changeSaga, "change-saga")
+// skillFiles returns one embedded skill with SKILL.md first, then its
+// remaining files in path order.
+func skillFiles(name string) []File {
+	skill, err := fs.Sub(bundled, name)
 	if err != nil {
 		panic(err)
 	}
@@ -49,3 +49,6 @@ func ChangeSaga() []File {
 	})
 	return files
 }
+
+// ChangeSaga returns the general-purpose authoring skill.
+func ChangeSaga() []File { return skillFiles("change-saga") }

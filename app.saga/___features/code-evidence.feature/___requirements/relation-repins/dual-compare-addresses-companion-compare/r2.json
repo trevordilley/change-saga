@@ -1,9 +1,0 @@
-{
-  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
-  "version": 5,
-  "id": "r2",
-  "relation": "urn:change-saga:app:relation:dual-compare-addresses-companion-compare",
-  "from_content_digest": "sha256:61d374b9438a350973fa0ce60522a6ba471567d34233f7b84f78f92dcdc3b510",
-  "rationale": "Reviewed after the companion relocation design was updated with its end-to-end proof; this relation still matches the current heading.",
-  "created_at": "2026-09-22T00:11:07.761509Z"
-}

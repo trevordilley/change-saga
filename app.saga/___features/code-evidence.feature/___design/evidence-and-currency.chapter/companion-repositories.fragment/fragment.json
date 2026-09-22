@@ -1,8 +1,0 @@
-{
-  "version": 2,
-  "id": "companion-repository-evidence",
-  "title": "Companion repository evidence",
-  "media_type": "text/markdown",
-  "entrypoint": "content.md",
-  "order": 40
-}

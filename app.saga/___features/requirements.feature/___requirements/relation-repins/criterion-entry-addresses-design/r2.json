@@ -1,9 +1,0 @@
-{
-  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
-  "version": 5,
-  "id": "r2",
-  "relation": "urn:change-saga:app:relation:criterion-entry-addresses-design",
-  "from_content_digest": "sha256:6bac9a9849d4ca23ac3fdabbf68f2e7e78430d16cb40454ec6c384142d697521",
-  "rationale": "The relation remains accurate after visual legibility edits; the requirement and semantic design node are unchanged.",
-  "created_at": "2026-09-21T04:57:24.489901Z"
-}
