@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "f5ac1012eda625ae3032e3532ccfcc3f89f0e150",
+      "path": "README.md",
+      "start": 384,
+      "end": 385,
+      "digest": "sha256:80737b783e319f9170a734774b16e3016d6f2d87770391fb8fcf8841882788b0",
+      "note": "Reviewer service examples now open and manage the canonical app Saga."
+    },
+    {
+      "commit": "f5ac1012eda625ae3032e3532ccfcc3f89f0e150",
+      "path": "README.md",
+      "start": 388,
+      "end": 388,
+      "digest": "sha256:aa015e1fa30f8941939688d5d133085897411cf87eba5ceeb551b3818928ef0a",
+      "note": "Reviewer service examples now open and manage the canonical app Saga."
+    }
+  ]
+}

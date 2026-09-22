@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "f5ac1012eda625ae3032e3532ccfcc3f89f0e150",
+      "path": "README.md",
+      "start": 304,
+      "end": 307,
+      "digest": "sha256:ea64b3870e4f4150131bdef4fba183a12052816208ca492db922fc6ee6286745",
+      "note": "The structured query examples now inspect this repository app Saga."
+    }
+  ]
+}

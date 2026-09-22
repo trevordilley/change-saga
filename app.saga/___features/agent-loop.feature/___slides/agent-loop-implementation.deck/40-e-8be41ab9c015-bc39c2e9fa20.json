@@ -1,0 +1,45 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "f5ac1012eda625ae3032e3532ccfcc3f89f0e150",
+      "path": "README.md",
+      "start": 41,
+      "end": 44,
+      "digest": "sha256:85b56c36100c57ecaf57e0c43f64f578420b46283789edbf068f754db1b26b3e",
+      "note": "The README now starts from the user-requested scope while keeping implementation-first changes lightweight."
+    },
+    {
+      "commit": "f5ac1012eda625ae3032e3532ccfcc3f89f0e150",
+      "path": "README.md",
+      "start": 114,
+      "end": 118,
+      "digest": "sha256:32f224ebd185d73d3dd97a5f7b8d39588d9350218c43359b02ab725ed0cad186",
+      "note": "The README now starts from the user-requested scope while keeping implementation-first changes lightweight."
+    },
+    {
+      "commit": "f5ac1012eda625ae3032e3532ccfcc3f89f0e150",
+      "path": "README.md",
+      "start": 357,
+      "end": 358,
+      "digest": "sha256:84c0de752c78799d577b578a5a701f982fa3dc1d3457543e3d5b36259d6a7f75",
+      "note": "The README now starts from the user-requested scope while keeping implementation-first changes lightweight."
+    },
+    {
+      "commit": "f5ac1012eda625ae3032e3532ccfcc3f89f0e150",
+      "path": "README.md",
+      "start": 361,
+      "end": 369,
+      "digest": "sha256:4b6de4ee044cdf46d26129913aad970096ebbe7c6c170e9fdb597ffe66c03039",
+      "note": "The README now starts from the user-requested scope while keeping implementation-first changes lightweight."
+    },
+    {
+      "commit": "f5ac1012eda625ae3032e3532ccfcc3f89f0e150",
+      "path": "README.md",
+      "start": 376,
+      "end": 377,
+      "digest": "sha256:9eb0774aec002ee697f08844cc189fe4c2bd611cd1173d33b5480b5653ff665d",
+      "note": "The README now starts from the user-requested scope while keeping implementation-first changes lightweight."
+    }
+  ]
+}

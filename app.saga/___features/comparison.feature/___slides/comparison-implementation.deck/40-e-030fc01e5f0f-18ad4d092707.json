@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "f5ac1012eda625ae3032e3532ccfcc3f89f0e150",
+      "path": "README.md",
+      "start": 400,
+      "end": 401,
+      "digest": "sha256:7516844c0bce7771f725d4e955218c2705d6e680565b901ea49abd4b9f95c37c",
+      "note": "Codebase comparison examples now query this repository app Saga."
+    }
+  ]
+}

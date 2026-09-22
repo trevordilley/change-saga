@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "references": [
+    {
+      "commit": "f5ac1012eda625ae3032e3532ccfcc3f89f0e150",
+      "path": "README.md",
+      "start": 70,
+      "end": 73,
+      "digest": "sha256:a5bac5f1c8546fb97a0051c5d29d248cce4ac05ad6997b4cc521bc0460821587",
+      "note": "The README walks one real requirement through design, quality, an implementation Item, and exact source."
+    },
+    {
+      "commit": "f5ac1012eda625ae3032e3532ccfcc3f89f0e150",
+      "path": "README.md",
+      "start": 79,
+      "end": 94,
+      "digest": "sha256:86451237a9041f6c5767f58e8ea85773cf42a949d9151071f0d22f0d77f5c607",
+      "note": "The README walks one real requirement through design, quality, an implementation Item, and exact source."
+    }
+  ]
+}
