@@ -56,6 +56,13 @@ are suggestions, not a demand to create a documentation-sized source change.
 
 Moving the Saga into its source repository changes storage location, not Saga
 identity, target URNs, declared repository identity, source commits, digests, or
-history. A preflight lists any environment-specific checkout settings that will
-become unnecessary. After the move, resolving the same evidence produces the
-same source targets; only the implicit checkout replaces the explicit one.
+history. Existing code links therefore need no rewrite. With `--repo`, source
+operations resolve through an explicitly selected checkout; without it, they
+start from the Saga root, and Git discovers the containing source checkout.
+
+The relocation regression authors and queries a code link while the Saga is a
+companion, moves the populated Saga beside its source, drops `--repo`, and
+asserts that the same Item still resolves to the same current code reference.
+The move also changes sync semantics automatically: an in-repository Saga
+documents the commit at which it is read and no longer advances a companion
+sync cursor.

@@ -8,7 +8,7 @@
   "layout": "diagram",
   "media_type": "image/svg+xml",
   "entrypoint": "20-s-b9a57ad057b3-0040-ee98a4659f6d.svg",
-  "takeaway": "Repository identity and sync cursors align source history; relocation portability still lacks an end-to-end workflow.",
+  "takeaway": "Portable pins and checkout detection preserve existing links when a companion Saga moves beside its source repository.",
   "reading_order": [
     "repository-identity",
     "sync-cursor",

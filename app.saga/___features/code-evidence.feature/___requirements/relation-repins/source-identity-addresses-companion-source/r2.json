@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
+  "version": 5,
+  "id": "r2",
+  "relation": "urn:change-saga:app:relation:source-identity-addresses-companion-source",
+  "from_content_digest": "sha256:24f4b46bd1ec5534098004a4d47ea63e38ff2bdb7d362ab7da3318888556be00",
+  "rationale": "Reviewed after the companion relocation design was updated with its end-to-end proof; this relation still matches the current heading.",
+  "created_at": "2026-09-22T00:11:09.047102Z"
+}
