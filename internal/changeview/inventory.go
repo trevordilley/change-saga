@@ -7,6 +7,7 @@
 package changeview
 
 import (
+	"bytes"
 	"crypto/sha256"
 	"encoding/hex"
 	"io/fs"
@@ -498,6 +499,13 @@ func (b *inventoryBuilder) digest(files []string) string {
 		data, err := os.ReadFile(filepath.Join(b.root, filepath.FromSlash(file)))
 		if err != nil {
 			continue
+		}
+		// Git normalizes CRLF to LF for text files in its object database, while
+		// a Windows checkout may contain CRLF. A record revision describes the
+		// authored content, not the checkout's line-ending convention, so hash
+		// UTF-8 text in Git's normalized form. Non-text content remains byte exact.
+		if utf8.Valid(data) {
+			data = bytes.ReplaceAll(data, []byte("\r\n"), []byte("\n"))
 		}
 		sum := sha256.Sum256(data)
 		hash.Write([]byte(file + "\x00" + hex.EncodeToString(sum[:]) + "\n"))

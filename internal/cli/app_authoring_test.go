@@ -176,7 +176,7 @@ func TestInitCreatesOnlyTheAppWithEveryOverviewPartAGap(t *testing.T) {
 		t.Fatal(err)
 	}
 	for _, want := range []string{"Next actions: none. Observing, there is no change to cover", "for the app as it is, the overview and vocabulary first",
-		"[overview] the overview has no elevator pitch", "$ change-saga overview set-pitch --text TEXT " + root, "[terms] no term is defined yet"} {
+		"[overview] the overview has no elevator pitch", "$ " + shellJoin([]string{"change-saga", "overview", "set-pitch", "--text", "TEXT", root}), "[terms] no term is defined yet"} {
 		if !strings.Contains(status.String(), want) {
 			t.Fatalf("observed status lacks %q:\n%s", want, status.String())
 		}
