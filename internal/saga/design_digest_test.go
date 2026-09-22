@@ -87,8 +87,8 @@ func TestCurrentDesignContentDigestsCanonicalEmbeddedVisualTargets(t *testing.T)
 	}
 	// These vectors freeze the canonical byte contract. Each part is prefixed
 	// by its uint64 big-endian byte length after the versioned domain:
-	//   Item  = canonical Item manifest JSON, exact slide asset bytes
-	//   Slide = canonical Slide manifest JSON, exact entrypoint bytes,
+	//   Item  = canonical Item manifest JSON, normalized text or exact binary asset bytes
+	//   Slide = canonical Slide manifest JSON, normalized text or exact binary entrypoint bytes,
 	//           JSON array of rank/path-ordered Item-manifest digests
 	//   Deck  = canonical Deck manifest JSON, JSON array of ordered Slide digests
 	want := map[string]string{
@@ -225,6 +225,46 @@ func TestEmbeddedVisualDigestsExcludeEvidenceAndClaims(t *testing.T) {
 	}
 	if !reflect.DeepEqual(after, before) {
 		t.Fatalf("code, claim, or verification records changed visual digests:\nbefore: %#v\n after: %#v", before, after)
+	}
+}
+
+func TestSlideDigestIgnoresCheckoutLineEndings(t *testing.T) {
+	document, fixture := loadVisualDigestFixture(t)
+	slide := document.Decks[0].Slides[0]
+	lf := []byte("<svg>\n  <g id=\"first\"/>\n  <g id=\"second\"/>\n</svg>\n")
+	if err := os.WriteFile(fixture.assetPath, lf, 0o644); err != nil {
+		t.Fatal(err)
+	}
+	before, err := SlideDigest(slide)
+	if err != nil {
+		t.Fatal(err)
+	}
+	beforeDesign, err := CurrentDesignContentDigests(document)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(fixture.assetPath, []byte(strings.ReplaceAll(string(lf), "\n", "\r\n")), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	after, err := SlideDigest(slide)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if after != before {
+		t.Fatalf("checkout line endings changed slide digest: LF %s, CRLF %s", before, after)
+	}
+	afterDesign, err := CurrentDesignContentDigests(document)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(afterDesign, beforeDesign) {
+		t.Fatalf("checkout line endings changed visual design digests:\n LF: %#v\nCRLF: %#v", beforeDesign, afterDesign)
+	}
+	if err := os.WriteFile(fixture.assetPath, []byte("<svg>\r\n  <g id=\"changed\"/>\r\n</svg>\r\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if changed, err := SlideDigest(slide); err != nil || changed == before {
+		t.Fatalf("authored slide change kept digest %s (err=%v)", changed, err)
 	}
 }
 

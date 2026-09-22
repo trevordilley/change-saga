@@ -1,6 +1,7 @@
 package saga
 
 import (
+	"bytes"
 	"crypto/sha256"
 	"encoding/binary"
 	"encoding/json"
@@ -11,6 +12,7 @@ import (
 	"path/filepath"
 	"sort"
 	"strings"
+	"unicode/utf8"
 )
 
 const (
@@ -275,7 +277,7 @@ func readVisualAsset(slide *Slide) ([]byte, error) {
 	if len(data) > MaxDesignDigestBytesPerTarget {
 		return nil, fmt.Errorf("entrypoint %q exceeds %d bytes", slide.Entrypoint, MaxDesignDigestBytesPerTarget)
 	}
-	return data, nil
+	return normalizeCheckoutText(data), nil
 }
 
 func designAuthoredFiles(root string) ([]designFileDigest, error) {
@@ -320,7 +322,7 @@ func designAuthoredFiles(root string) ([]designFileDigest, error) {
 		if err != nil {
 			return err
 		}
-		sum := sha256.Sum256(data)
+		sum := sha256.Sum256(normalizeCheckoutText(data))
 		files = append(files, designFileDigest{Path: filepath.ToSlash(rel), SHA256: fmt.Sprintf("sha256:%x", sum)})
 		return nil
 	})
@@ -329,6 +331,16 @@ func designAuthoredFiles(root string) ([]designFileDigest, error) {
 	}
 	sort.Slice(files, func(i, j int) bool { return files[i].Path < files[j].Path })
 	return files, nil
+}
+
+// normalizeCheckoutText gives authored text one digest on every platform.
+// Git stores text with LF in commits but may materialize it with CRLF in a
+// Windows checkout. Non-text content remains byte exact.
+func normalizeCheckoutText(data []byte) []byte {
+	if !utf8.Valid(data) {
+		return data
+	}
+	return bytes.ReplaceAll(data, []byte("\r\n"), []byte("\n"))
 }
 
 func canonicalDesignDigest(domain string, value any) (string, error) {
@@ -342,8 +354,9 @@ func canonicalDesignDigest(domain string, value any) (string, error) {
 
 // canonicalDesignDigestParts hashes exact byte inputs with an eight-byte
 // big-endian length before every part. This makes boundaries unambiguous while
-// keeping binary slide assets byte-for-byte significant. The versioned domain
-// separates Item manifests, Items, Slides, and Decks from one another.
+// keeping non-text slide assets byte-for-byte significant; callers normalize
+// checkout line endings in text assets first. The versioned domain separates
+// Item manifests, Items, Slides, and Decks from one another.
 func canonicalDesignDigestParts(domain string, parts ...[]byte) string {
 	h := sha256.New()
 	_, _ = h.Write([]byte("change-saga-design-" + domain + "\x00"))

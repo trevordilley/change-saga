@@ -465,6 +465,7 @@ func SlideDigest(slide *Slide) (string, error) {
 		if err != nil {
 			return "", err
 		}
+		data = normalizeCheckoutText(data)
 		fmt.Fprintf(hash, "%s\x00%d\x00", name, len(data))
 		hash.Write(data)
 	}

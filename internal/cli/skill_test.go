@@ -85,7 +85,7 @@ func TestSkillQueryReferenceListsExactlyTheQueryOperations(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	text := string(data)
+	text := normalizeSkillNewlines(string(data))
 	begin, end := strings.Index(text, queryOperationsBegin), strings.Index(text, queryOperationsEnd)
 	if begin < 0 || end < begin {
 		t.Fatalf("%s has no query-operations markers", path)
@@ -253,7 +253,7 @@ func TestSkillNamesOnlyRealCommandsAndFlags(t *testing.T) {
 	mention := regexp.MustCompile(`(?:^|[^\w:/-])change-saga ([a-z][a-z0-9 -]*)`)
 	frontmatter := regexp.MustCompile(`(?s)\A---\n.*?\n---\n`)
 	for _, file := range skills.ChangeSaga() {
-		body := frontmatter.ReplaceAllString(file.Content, "")
+		body := frontmatter.ReplaceAllString(normalizeSkillNewlines(file.Content), "")
 		flat := strings.Join(strings.Fields(body), " ")
 		for _, match := range mention.FindAllStringSubmatch(flat, -1) {
 			if _, err := resolveSkillCommand(strings.Fields(match[1])); err != nil {
@@ -279,6 +279,10 @@ func TestSkillNamesOnlyRealCommandsAndFlags(t *testing.T) {
 			}
 		}
 	}
+}
+
+func normalizeSkillNewlines(value string) string {
+	return strings.ReplaceAll(value, "\r\n", "\n")
 }
 
 func containsString(values []string, value string) bool {
