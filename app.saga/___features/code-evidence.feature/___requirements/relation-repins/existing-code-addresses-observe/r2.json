@@ -1,0 +1,9 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/relation-repin.schema.json",
+  "version": 5,
+  "id": "r2",
+  "relation": "urn:change-saga:app:relation:existing-code-addresses-observe",
+  "from_content_digest": "sha256:ce5d15a4434ab233fd2a65170466f90aae76d02a5adf395126a691986dbedb78",
+  "rationale": "Reviewed after the companion relocation design was updated with its end-to-end proof; this relation still matches the current heading.",
+  "created_at": "2026-09-22T00:11:08.231268Z"
+}
