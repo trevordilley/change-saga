@@ -38,8 +38,10 @@ cases rather than hand-written code-to-story links. Every link pins what it
 relied on: evidence pins code at a commit and follows it as it moves, and
 records pin the revisions they depend on. When a story or the code changes,
 whatever depended on the old version becomes visibly stale, and the tool says
-exactly what to revisit. Nothing is demanded up front: a first change needs only
-its implementation explained, and the rest of the Saga grows from there.
+exactly what to revisit. A Saga starts at the scope the work actually needs:
+requirements first for planned product work, implementation first for an
+existing change, or a focused review of just the evidence in question. It can
+grow from there without requiring you to invent the whole product up front.
 Change Saga is experimental, and its format may change before 1.0.
 
 ## Install
@@ -65,13 +67,30 @@ change-saga help
 
 ## See a Saga
 
-This repository documents itself with an app Saga: its overview, its terms and
-vocabulary linked to the code that defines them, personas, features, and stories.
-After installing Change Saga, open it from a source checkout with:
+This repository documents itself with [`app.saga`](app.saga), the canonical
+self-hosting example. It contains the product requirements, designs, quality
+cases, implementation explanations, and exact code references for Change Saga
+itself. After installing Change Saga, open it from a source checkout with:
 
 ```sh
 change-saga open app.saga
 ```
+
+For one concrete path through it, inspect the reviewer story **Trace a
+requirement to current evidence and back** and its pass/fail criterion **Each
+criterion shows its current code path**:
+
+```sh
+change-saga query requirements --saga app.saga --requirement evidence-traversal
+change-saga query traceability --saga app.saga \
+  --criterion urn:change-saga:app:story:evidence-traversal:criterion:criterion-code
+```
+
+In the reviewer, open
+`/requirements/evidence-traversal/criteria/criterion-code`. Follow **Current
+criterion evidence paths** to its implementation Item, then select the Item to
+open the exact source it references. That live chain is the example used
+throughout this README: requirement → design → quality → implementation → code.
 
 ## Quick start
 
@@ -92,11 +111,11 @@ these prompts from the repository containing your change:
 
 ### How a Saga grows
 
-Start with the change in front of you. The first time you use Change Saga on a
-pull request, the only thing it asks is that the implementation is explained:
-`init`, author a deck, and reference every changed line from the Item that
-explains it. Nothing else is demanded up front: no personas, no stories, no
-design.
+Start with the work the user asked for. New product work often begins with
+personas, valuable user stories, and pass/fail acceptance criteria before design
+and implementation. An existing pull request or a focused code review may begin
+with the implementation and its exact changed-line references. A small story or
+review does not require you to invent the entire product model first.
 
 From there the Saga grows a step at a time. `change-saga status` reports a
 coverage report for six areas (implementation, stories, personas, design,
@@ -282,10 +301,10 @@ read-only JSON interface for the overview, hierarchy, content, reviews,
 coverage gaps, diff ownership, mapping quality, author claims, and verification:
 
 ```sh
-change-saga query overview --saga checkout.saga
-change-saga query gaps --saga checkout.saga --kind uncovered
-change-saga query mappings --saga checkout.saga --sort scrutiny
-change-saga query claims --saga checkout.saga --status unverified
+change-saga query overview --saga app.saga
+change-saga query gaps --saga app.saga --kind uncovered
+change-saga query mappings --saga app.saga --sort scrutiny
+change-saga query claims --saga app.saga --status unverified
 ```
 
 `mappings` ranks broad or thin evidence so an AI can start with the weakest
@@ -302,7 +321,7 @@ before writing anything, and leaves the saga untouched if any record fails:
 printf '%s\n' \
   '{"target":"api.chapter","path":"api.go","side":"new","lines":"18-24","note":"validates the request"}' \
   '{"target":"api.chapter/flow.fragment#submit-action","path":"ui.ts","side":"new","lines":"9","note":"wires the control"}' \
-  | change-saga cover --batch - checkout.saga
+  | change-saga cover --batch - my-change.saga
 ```
 
 See [the AI-facing interface](docs/ai-facing-interface.md) for the complete
@@ -325,8 +344,8 @@ automatically; when the lines change, it goes stale and says why. After a change
 lands, re-pin references to the landed commit before the branch is deleted:
 
 ```sh
-change-saga references --stale --diff --repo ../source checkout.saga
-change-saga repin --onto <landed-commit> --branch <branch> --repo ../source checkout.saga
+change-saga references --stale --diff --repo ../source my-change.saga
+change-saga repin --onto <landed-commit> --branch <branch> --repo ../source my-change.saga
 ```
 
 `repin` also records the branch's commit messages, so a squash merge keeps the
@@ -335,38 +354,38 @@ reasoning in its individual commits.
 ## Manual CLI workflow
 
 Most people should let their coding agent manage these commands. If you want to
-author a Saga directly, a first change on a branch needs only its
-implementation explained:
+author a Saga directly, use a new or intentionally editable Saga rather than
+the repository's canonical `app.saga` example:
 
 ```sh
-change-saga init app.saga
-change-saga add-deck --objective "Explain the checkout steps." app.saga checkout-flow
-change-saga add-slide --deck checkout-flow --intent explain --layout hero \
-  --title "Checkout flow" app.saga flow
-change-saga set-slide-content --target flow --source ./flow.svg app.saga
-change-saga add-item --slide flow --kind node --id steps --element-id steps \
-  --description "The checkout steps" app.saga
-change-saga cover --against main --target steps --path checkout/steps.go \
-  --changed-lines --note "Adds the checkout steps." app.saga
+change-saga init my-change.saga
+change-saga add-deck --objective "Explain this change." my-change.saga implementation
+change-saga add-slide --deck implementation --intent explain --layout hero \
+  --title "Implementation" my-change.saga implementation
+change-saga set-slide-content --target implementation --source ./implementation.svg my-change.saga
+change-saga add-item --slide implementation --kind node --id change --element-id change \
+  --description "The behavior introduced by this change" my-change.saga
+change-saga cover --against main --target change --path path/to/file.go \
+  --changed-lines --note "Implements the described behavior." my-change.saga
 ```
 
 The first command that needs a feature creates one named after the branch. Then
 see what is covered and what could grow, and open the reviewer:
 
 ```sh
-change-saga status --against main app.saga
-change-saga open --against main app.saga
+change-saga status --against main my-change.saga
+change-saga open --against main my-change.saga
 ```
 
 `open` leaves the reviewer running in the background so it remains available
 after the command returns. Manage it later with:
 
 ```sh
-change-saga serve status checkout.saga
-change-saga serve stop checkout.saga
+change-saga serve status app.saga
+change-saga serve stop app.saga
 ```
 
-Use `change-saga serve --open checkout.saga` when you deliberately want the
+Use `change-saga serve --open app.saga` when you deliberately want the
 reviewer attached to the current terminal instead.
 
 Run these commands from the changed repository on the branch containing the
@@ -378,8 +397,8 @@ work. If the saga lives in a separate repository, pass
 See what a PR's change does to an existing Saga:
 
 ```sh
-change-saga status --repo /path/to/checkout --against <pr-base> --head <pr-head> codebase.saga
-change-saga query layers --saga codebase.saga --repo /path/to/checkout \
+change-saga status --against <pr-base> --head <pr-head> app.saga
+change-saga query layers --saga app.saga \
   --against <pr-base> --head <pr-head> --layer affected
 ```
 
