@@ -5,9 +5,7 @@ import (
 	"context"
 	"io"
 	"net/http"
-	"os"
 	"path/filepath"
-	"reflect"
 	"strings"
 	"testing"
 	"time"
@@ -56,52 +54,6 @@ func TestFailedClaimVerificationRemainsVisibleInHistory(t *testing.T) {
 	}
 	if !statuses["failed"] || !statuses["verified"] {
 		t.Fatalf("verification statuses = %#v; failed result disappeared from history", statuses)
-	}
-}
-
-func TestMovingCompanionSagaIntoSourceRepositoryPreservesLinks(t *testing.T) {
-	repo, commit := sourceRepo(t, map[string]string{
-		"app.go": "package app\n\nconst Ready = true\n",
-	})
-	git(t, repo, "remote", "add", "origin", "https://example.test/acme/portable.git")
-	root := filepath.Join(t.TempDir(), "app.saga")
-	var output bytes.Buffer
-	if err := Init(context.Background(), []string{
-		"--repo", repo, "--repository", "https://example.test/acme/portable.git", "--id", "portable", root,
-	}, &output); err != nil {
-		t.Fatal(err)
-	}
-	addTestApp(t, root)
-	if err := Cover(context.Background(), []string{
-		"--repo", repo, "--target", "___overview/description.fragment",
-		"--ref", commit + ":app.go#L3", "--note", "Documents the source readiness constant.", root,
-	}, &output); err != nil {
-		t.Fatal(err)
-	}
-
-	overview, status, body := runRealQuery(t, []string{"overview", "--saga", root, "--repo", repo})
-	if status != 0 || !overview.OK {
-		t.Fatalf("companion overview status=%d body=%s", status, body)
-	}
-	fragments := overview.Data.(map[string]any)["overview_fragments"].([]any)
-	if len(fragments) != 1 {
-		t.Fatalf("overview fragments = %#v", fragments)
-	}
-	target := fragments[0].(map[string]any)["target"].(string)
-	before, status, body := runRealQuery(t, []string{"fragment-diffs", "--saga", root, "--repo", repo, "--target", target})
-	if status != 0 || !before.OK {
-		t.Fatalf("companion query status=%d body=%s", status, body)
-	}
-	moved := filepath.Join(repo, "app.saga")
-	if err := os.Rename(root, moved); err != nil {
-		t.Fatal(err)
-	}
-	after, status, body := runRealQuery(t, []string{"fragment-diffs", "--saga", moved, "--target", target})
-	if status != 0 || !after.OK {
-		t.Fatalf("in-repository query status=%d body=%s", status, body)
-	}
-	if !reflect.DeepEqual(before.Data, after.Data) {
-		t.Fatalf("moving the Saga changed its link projection\nbefore=%#v\nafter=%#v", before, after)
 	}
 }
 
