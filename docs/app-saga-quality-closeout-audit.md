@@ -55,6 +55,22 @@ executed against `acc53ef`:
 go test ./internal/cli -run TestCompanionSagaLinksSurviveMoveIntoSourceRepository -count=1
 ```
 
+A broader regression sweep was also run:
+
+```text
+hivecontrol exec oneshot 15m -- go test ./...
+```
+
+It completed with every package passing except `internal/cli`. That package's
+pre-existing `TestInstalledSkillDescribesOneSagaDrivenByStatus` assertion
+failed because `skills/change-saga/SKILL.md` omits the expected sentence `The
+one thing asked of a change is that its implementation covers it`.
+`internal/cli` finished in 124.150s and `internal/server` passed in 425.955s.
+The skill file has no diff from source commit
+`aef2db858cb1e8c34b2c16d88940009bbb21f186`; this closeout did not edit it.
+The focused commands above, which exercise all five closed criteria, remained
+green.
+
 ## Navigability audit
 
 `query relations --state current` returned all 525 current relations in one
