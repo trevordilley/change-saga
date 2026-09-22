@@ -44,8 +44,8 @@ hivecontrol exec oneshot 10m -- go test ./internal/cli ./internal/server -run '^
 Observed result:
 
 ```text
-ok  github.com/twentyideas/changesaga/internal/cli     1.996s
-ok  github.com/twentyideas/changesaga/internal/server  4.642s
+ok  github.com/twentyideas/changesaga/internal/cli     2.800s
+ok  github.com/twentyideas/changesaga/internal/server  4.177s
 ```
 
 The move case's current successor run records the narrower command actually
