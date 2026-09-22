@@ -196,6 +196,14 @@ the command that fills it, the way the sidebar's gap rows do. */}}
 
 {{define "trace-groups"}}{{if .Empty}}<p class="term-empty">Nothing links to this yet. Design that addresses it, slides that explain it, and test cases that verify it appear here once related (<code>change-saga relation add</code>).</p>{{else}}{{if .Design}}<h3>Design</h3>{{template "trace-links" .Design}}{{end}}{{if .Slides}}<h3>Explained by slides</h3>{{template "trace-links" .Slides}}{{end}}{{if .Tests}}<h3>Verified by test cases</h3>{{template "trace-links" .Tests}}{{end}}{{if .Related}}<h3>Related</h3>{{template "trace-links" .Related}}{{end}}{{end}}{{end}}
 
+{{define "historical-requirement"}}<aside class="historical-requirement" data-historical-requirement role="note">
+<header><span>Historical</span><h2>Retired {{.Kind}}</h2></header>
+<p>This {{.Kind}} is preserved for context and is not current product intent.</p>
+<p class="historical-requirement-date"><strong>Retired:</strong> <time datetime="{{.RetiredAt.Format "2006-01-02T15:04:05Z07:00"}}">{{.RetiredAt.Format "2 Jan 2006"}}</time></p>
+{{if .Reason}}<p class="historical-requirement-reason"><strong>Recorded reason:</strong> {{.Reason}}</p>{{end}}
+{{if .Replacements}}<div class="historical-replacements" data-explicit-replacements><h3>Current replacement</h3>{{template "trace-links" .Replacements}}</div>{{else}}<p class="historical-no-replacement" data-no-explicit-replacement>No current replacement is explicitly linked in the Saga.</p>{{end}}
+</aside>{{end}}
+
 {{define "criterion-trace"}}{{if not .Empty}}<p class="criterion-trace" data-criterion-trace>{{if .Design}}Design: {{range $i, $l := .Design}}{{if $i}}, {{end}}<a href="{{$l.Href}}">{{$l.Title}}</a>{{end}}. {{end}}{{if .Slides}}Explained by {{range $i, $l := .Slides}}{{if $i}}, {{end}}<a href="{{$l.Href}}">{{$l.Title}}</a>{{end}}. {{end}}{{if .Tests}}Verified by {{range $i, $l := .Tests}}{{if $i}}, {{end}}<a href="{{$l.Href}}">{{$l.Title}}</a>{{end}}.{{end}}</p>{{end}}{{end}}
 
 {{define "criterion-page"}}{{$story := .Story}}{{with .FocusedCriterion}}<nav class="requirements-breadcrumbs" aria-label="Requirement breadcrumb">
@@ -206,6 +214,7 @@ the command that fills it, the way the sidebar's gap rows do. */}}
 <strong>{{.Label}}</strong></nav>
 <article class="app-page criterion-page" data-criterion-page data-requirement-target="{{.Target}}">
 <header class="requirement-story-hero"><div><p class="app-page-kind">Acceptance criterion · {{.Label}}</p><h1>{{.Statement}}</h1><p class="trace-rationale">Of the story <a href="{{$story.Href}}">{{$story.Title}}</a>.</p></div></header>
+{{with .Historical}}{{template "historical-requirement" .}}{{end}}
 <section class="requirement-trace" data-criterion-own-trace><h2>Linked to this criterion</h2>{{template "trace-groups" .Trace}}</section>
 <section class="requirement-trace" data-criterion-story-trace><h2>Through its story</h2>{{if $story.Trace.Empty}}<p class="term-empty">Nothing links to the story as a whole.</p>{{else}}{{template "trace-groups" $story.Trace}}{{end}}</section>
 <section class="app-page-section"><h2>The story's other criteria</h2><ul class="trace-links">{{range $story.Criteria}}{{if not .Selected}}<li><a href="{{.Href}}">{{.Label}}</a> <span>{{.Statement}}</span></li>{{end}}{{end}}</ul></section>
@@ -214,12 +223,13 @@ the command that fills it, the way the sidebar's gap rows do. */}}
 {{define "requirements-page"}}<section class="requirements-page" data-requirements-page>{{if .Overview}}<header class="requirements-header">
 <h1>Requirements</h1>
 </header>
-{{range .Groups}}<section class="requirements-feature" data-requirements-feature="{{.Feature.Target}}"><header class="requirements-feature-head"><h2><a href="{{.Feature.Href}}">{{.Feature.Title}}</a></h2>{{if .Description}}<p>{{.Description}}</p>{{end}}</header><div class="requirements-story-list">{{range .Stories}}<article class="requirements-story-card" data-requirement-target="{{.Target}}">
+{{range .Groups}}<section class="requirements-feature" data-requirements-feature="{{.Feature.Target}}"><header class="requirements-feature-head"><h2><a href="{{.Feature.Href}}">{{.Feature.Title}}</a></h2>{{if .Description}}<p>{{.Description}}</p>{{end}}</header><div class="requirements-story-list">{{range .Stories}}<article class="requirements-story-card{{if .Historical}} historical{{end}}" data-requirement-target="{{.Target}}">
 <header>
 <div>
 <h2>
 <a href="{{.Href}}">{{.Title}}</a>
 </h2>
+{{if .Historical}}<span class="requirement-history-badge">Historical · retired</span>{{end}}
 </div>
 </header>
 <p class="requirement-story-statement">{{.Statement}}</p>
@@ -247,7 +257,7 @@ the command that fills it, the way the sidebar's gap rows do. */}}
 <p class="app-page-kind">Story · {{.Lifecycle}}</p>
 <h1>{{.Title}}</h1>
 </div>
-</header>{{template "story-context" .}}{{if or .RevisionConflict .LifecycleConflict}}<div class="requirements-conflict" role="alert">{{template "icon" "alert"}}<span>This story has {{if .RevisionConflict}}multiple revision heads{{end}}{{if and .RevisionConflict .LifecycleConflict}} and {{end}}{{if .LifecycleConflict}}multiple lifecycle heads{{end}}. No state is being guessed.</span>
+</header>{{with .Historical}}{{template "historical-requirement" .}}{{end}}{{template "story-context" .}}{{if or .RevisionConflict .LifecycleConflict}}<div class="requirements-conflict" role="alert">{{template "icon" "alert"}}<span>This story has {{if .RevisionConflict}}multiple revision heads{{end}}{{if and .RevisionConflict .LifecycleConflict}} and {{end}}{{if .LifecycleConflict}}multiple lifecycle heads{{end}}. No state is being guessed.</span>
 </div>{{end}}
 <section class="requirement-need">
 <p>{{.Statement}}</p>

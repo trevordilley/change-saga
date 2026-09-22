@@ -6,7 +6,9 @@ import (
 	"testing"
 	"time"
 
+	"github.com/twentyideas/changesaga/internal/quality"
 	"github.com/twentyideas/changesaga/internal/requirements"
+	"github.com/twentyideas/changesaga/internal/saga"
 )
 
 func TestRequirementsSurfaceProjectsStoriesAndCriteriaAsStableEntities(t *testing.T) {
@@ -145,5 +147,98 @@ func TestRequirementsPathDoesNotCaptureOrdinaryRoutesWithTheSamePrefix(t *testin
 		if isRequirementsPath(value) {
 			t.Fatalf("ordinary path %q was captured as requirements", value)
 		}
+	}
+}
+
+func TestRetiredRequirementsShowOnlyExplicitCurrentReplacements(t *testing.T) {
+	created := time.Date(2026, 9, 21, 12, 0, 0, 0, time.UTC)
+	oldURN := "urn:change-saga:test:story:old-checkout"
+	newURN := "urn:change-saga:test:story:new-checkout"
+	document := requirements.Document{SagaID: "test", Stories: []requirements.Story{
+		{
+			Identity:         requirements.StoryIdentity{ID: "old-checkout", CreatedAt: created},
+			CurrentRevision:  &requirements.Revision{ID: "r1", Story: oldURN, Title: "Old checkout", Statement: "As a buyer, I can use the old checkout.", AcceptanceCriteria: []requirements.Criterion{{ID: "confirmation", Statement: "The old flow confirms the order."}}},
+			CurrentLifecycle: &requirements.LifecycleEvent{ID: "retired", Story: oldURN, State: requirements.StateRetired, Reason: "The new flow replaces it.", CreatedAt: created.Add(time.Hour)},
+		},
+		{
+			Identity:         requirements.StoryIdentity{ID: "new-checkout", CreatedAt: created.Add(2 * time.Hour)},
+			CurrentRevision:  &requirements.Revision{ID: "r1", Story: newURN, Title: "Current checkout", Statement: "As a buyer, I can use the current checkout.", AcceptanceCriteria: []requirements.Criterion{{ID: "receipt", Statement: "The current flow shows a receipt."}}},
+			CurrentLifecycle: &requirements.LifecycleEvent{ID: "accepted", Story: newURN, State: requirements.StateAccepted},
+		},
+	}, Relations: []requirements.Relation{
+		{ID: "new-replaces-old", Type: requirements.RelationSupersedes, From: newURN, To: oldURN, Rationale: "The current flow replaces the retired flow.", State: requirements.RelationActive},
+		{ID: "receipt-replaces-confirmation", Type: requirements.RelationSupersedes, From: newURN + ":criterion:receipt", To: oldURN + ":criterion:confirmation", Rationale: "The receipt is the current confirmation contract.", State: requirements.RelationActive},
+	}}
+
+	page, navigation, err := makeRequirementsSurface(document, requirementRoute{active: true, storyID: "old-checkout", criterionID: "confirmation"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	newAppGraph(&saga.Saga{Section: &saga.Section{}}, document, quality.Document{}).decorateRequirements(page)
+	if page.Story.Historical == nil || page.FocusedCriterion.Historical == nil {
+		t.Fatalf("retired story and criterion were not marked historical: %#v", page.Story)
+	}
+	if got := page.Story.Historical.Replacements; len(got) != 1 || got[0].Target != newURN || got[0].Href != "/requirements/new-checkout" || got[0].Note != "accepted" {
+		t.Fatalf("story replacements = %#v", got)
+	}
+	if got := page.FocusedCriterion.Historical.Replacements; len(got) != 1 || got[0].Target != newURN+":criterion:receipt" || got[0].Href != "/requirements/new-checkout/criteria/receipt" {
+		t.Fatalf("criterion replacements = %#v", got)
+	}
+	if navigation.Children[0].Note != "retired" || navigation.Children[0].Children[0].Note != "historical" {
+		t.Fatalf("historical navigation is not labelled: %#v", navigation.Children[0])
+	}
+
+	tmpl, err := newPageTemplate()
+	if err != nil {
+		t.Fatal(err)
+	}
+	var rendered bytes.Buffer
+	if err := tmpl.ExecuteTemplate(&rendered, "requirements-page", page); err != nil {
+		t.Fatal(err)
+	}
+	for _, expected := range []string{"Historical", "Retired acceptance criterion", "not current product intent", "Current replacement", "Current checkout", "The receipt is the current confirmation contract."} {
+		if !strings.Contains(rendered.String(), expected) {
+			t.Fatalf("historical criterion page missing %q: %s", expected, rendered.String())
+		}
+	}
+	overview, _, err := makeRequirementsSurface(document, requirementRoute{active: true})
+	if err != nil {
+		t.Fatal(err)
+	}
+	overview.Groups = []requirementGroupView{{Feature: traceLink{Title: "Checkout", Href: "/features/checkout"}, Stories: overview.Stories}}
+	rendered.Reset()
+	if err := tmpl.ExecuteTemplate(&rendered, "requirements-page", overview); err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(rendered.String(), "requirements-story-card historical") || !strings.Contains(rendered.String(), "Historical · retired") {
+		t.Fatalf("requirements overview does not mark retired stories: %s", rendered.String())
+	}
+}
+
+func TestRetiredRequirementDoesNotInferReplacementFromItsReason(t *testing.T) {
+	oldURN := "urn:change-saga:test:story:old-checkout"
+	document := requirements.Document{SagaID: "test", Stories: []requirements.Story{{
+		Identity:         requirements.StoryIdentity{ID: "old-checkout"},
+		CurrentRevision:  &requirements.Revision{ID: "r1", Story: oldURN, Title: "Old checkout", Statement: "As a buyer, I can use the old checkout."},
+		CurrentLifecycle: &requirements.LifecycleEvent{ID: "retired", Story: oldURN, State: requirements.StateRetired, Reason: "Use new-checkout instead."},
+	}}}
+	page, _, err := makeRequirementsSurface(document, requirementRoute{active: true, storyID: "old-checkout"})
+	if err != nil {
+		t.Fatal(err)
+	}
+	newAppGraph(&saga.Saga{Section: &saga.Section{}}, document, quality.Document{}).decorateRequirements(page)
+	if len(page.Story.Historical.Replacements) != 0 {
+		t.Fatalf("replacement was inferred from prose: %#v", page.Story.Historical.Replacements)
+	}
+	tmpl, err := newPageTemplate()
+	if err != nil {
+		t.Fatal(err)
+	}
+	var rendered bytes.Buffer
+	if err := tmpl.ExecuteTemplate(&rendered, "requirements-page", page); err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(rendered.String(), "No current replacement is explicitly linked in the Saga.") || strings.Contains(rendered.String(), `href="/requirements/new-checkout"`) {
+		t.Fatalf("no-successor state is not truthful: %s", rendered.String())
 	}
 }

@@ -313,6 +313,15 @@ it. The view tabs beside them belong to whichever side is open. */
 .test-run.passed{border-left-color:var(--green)}.test-run.failed{border-left-color:var(--red)}.test-run.blocked,.test-run.skipped{border-left-color:var(--amber)}
 .test-run p{margin:5px 0 0}
 .requirement-trace{display:grid;gap:4px}
+.historical-requirement{display:grid;gap:8px;padding:15px 17px;border:1px solid color-mix(in srgb,var(--red) 45%,var(--line));border-left:5px solid var(--red);border-radius:9px;background:color-mix(in srgb,var(--del-bg) 70%,var(--bg));color:var(--ink)}
+.historical-requirement header{display:flex;align-items:baseline;gap:9px}
+.historical-requirement header span,.requirement-history-badge{padding:3px 7px;border-radius:999px;background:var(--red);color:#fff;font:750 9px/1.2 var(--ui);letter-spacing:.06em;text-transform:uppercase}
+.historical-requirement h2{margin:0;font:700 17px/1.3 var(--ui)}
+.historical-requirement p{margin:0;font:13.5px/1.5 var(--ui)}
+.historical-requirement-date,.historical-requirement-reason{color:var(--muted)}
+.historical-replacements{display:grid;gap:6px;margin-top:2px;padding-top:10px;border-top:1px solid color-mix(in srgb,var(--red) 25%,var(--line-soft))}
+.historical-replacements h3{margin:0;font:700 12px/1.3 var(--ui);letter-spacing:.04em;text-transform:uppercase}
+.historical-no-replacement{margin-top:2px!important;padding-top:10px;border-top:1px solid color-mix(in srgb,var(--red) 25%,var(--line-soft));font-weight:600!important}
 .requirements-feature{margin:0 0 28px}
 .requirements-feature-head h2{margin:0 0 4px;font:650 18px/1.3 var(--ui)}
 .requirements-feature-head h2 a{color:var(--ink);text-decoration:none}
@@ -370,7 +379,9 @@ the record's own content for the top of the page. */
 .requirements-story-list{display:grid;gap:10px}
 .requirements-story-card{overflow:hidden;border:1px solid var(--line);border-radius:9px;background:var(--bg);transition:border-color .14s}
 .requirements-story-card:hover{border-color:var(--accent-line)}
+.requirements-story-card.historical{border-color:color-mix(in srgb,var(--red) 32%,var(--line));background:color-mix(in srgb,var(--del-bg) 35%,var(--bg))}
 .requirements-story-card>header{padding:16px 17px 0}
+.requirements-story-card>header>div{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
 .requirements-story-card h2{margin:0;font:650 17px/1.3 var(--ui)}
 .requirements-story-card h2 a{color:inherit;text-decoration:none}
 .requirements-story-card h2 a:hover{color:var(--accent)}
