@@ -63,7 +63,10 @@ jobs:
       - name: go vet
         run: go vet ./...
       - name: go test
-        run: go test ${{ matrix.race }} ./...
+        # The race-enabled server package is intentionally broad and can take
+        # longer than Go's default 10-minute per-package timeout on shared CI
+        # runners. Keep the full suite and race detector; give them headroom.
+        run: go test -timeout 20m ${{ matrix.race }} ./...
       - name: release reproducibility
         if: runner.os != 'Windows'
         run: ./scripts/build_release_test.sh
