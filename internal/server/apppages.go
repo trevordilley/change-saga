@@ -260,6 +260,65 @@ func (graph *appGraph) traceTo(urn string) traceGroups {
 	return groups
 }
 
+// currentRequirementReplacements returns links only for explicit, current
+// supersedes edges whose source still resolves to a non-historical requirement.
+// Lifecycle prose is deliberately not searched for names or IDs.
+func (graph *appGraph) currentRequirementReplacements(target string) []traceLink {
+	var replacements []traceLink
+	for _, relation := range graph.inbound[target] {
+		if relation.Type != requirements.RelationSupersedes || relation.Stale {
+			continue
+		}
+		lifecycle, ok := graph.currentRequirement(relation.From)
+		if !ok {
+			continue
+		}
+		link := graph.link(relation.From)
+		if link.Href == "" {
+			continue
+		}
+		link.Rationale, link.Relation, link.Note = relation.Rationale, string(relation.Type), lifecycle
+		replacements = append(replacements, link)
+	}
+	return replacements
+}
+
+// currentRequirement verifies that an explicit replacement endpoint is still
+// a current story or criterion. Retired/rejected stories and criteria removed
+// from the current revision are historical, so they cannot be presented as a
+// current replacement.
+func (graph *appGraph) currentRequirement(urn string) (string, bool) {
+	reference, err := livingid.Parse(urn)
+	if err != nil || (reference.Kind != livingid.KindStory && reference.Kind != livingid.KindCriterion) {
+		return "", false
+	}
+	storyID := reference.ID
+	if reference.Kind == livingid.KindCriterion {
+		storyID = reference.ParentID
+	}
+	story := graph.requirements.FindStory(storyID)
+	if story == nil || story.CurrentRevision == nil || story.CurrentLifecycle == nil {
+		return "", false
+	}
+	switch story.CurrentLifecycle.State {
+	case requirements.StateRetired, requirements.StateRejected:
+		return "", false
+	}
+	if reference.Kind == livingid.KindCriterion {
+		found := false
+		for _, criterion := range story.CurrentRevision.AcceptanceCriteria {
+			if criterion.ID == reference.ID {
+				found = true
+				break
+			}
+		}
+		if !found {
+			return "", false
+		}
+	}
+	return string(story.CurrentLifecycle.State), true
+}
+
 // ----- Persona -----
 
 type personaPageView struct {
@@ -588,8 +647,14 @@ func (graph *appGraph) decorateRequirements(page *requirementsPageView) {
 		}
 	}
 	view.Trace = graph.traceTo(view.Target)
+	if view.Historical != nil {
+		view.Historical.Replacements = graph.currentRequirementReplacements(view.Target)
+	}
 	for _, criterion := range view.Criteria {
 		criterion.Trace = graph.traceTo(criterion.Target)
+		if criterion.Historical != nil {
+			criterion.Historical.Replacements = graph.currentRequirementReplacements(criterion.Target)
+		}
 	}
 }
 

@@ -70,6 +70,10 @@ type requirementStoryView struct {
 	// RelatedReviews are the reviews that touched the code this story
 	// reaches. They are derived, never authored.
 	RelatedReviews []relatedReviewView
+	// Historical is present only when this story has been explicitly retired.
+	// Its replacement links are populated from active supersedes relations,
+	// never inferred from the lifecycle reason.
+	Historical *requirementHistoricalView
 }
 
 // requirementGroupView is one feature's stories on the requirements overview.
@@ -102,6 +106,19 @@ type requirementCriterionView struct {
 	// RelatedReviews are the reviews that touched the code this criterion
 	// reaches. They are derived, never authored.
 	RelatedReviews []relatedReviewView
+	// A criterion in a retired story remains readable as historical context.
+	Historical *requirementHistoricalView
+}
+
+// requirementHistoricalView makes a retired requirement's status and its
+// explicitly authored successors visible. Replacements is intentionally empty
+// when the graph has no current supersedes edge, even if prose names something
+// that sounds like a successor.
+type requirementHistoricalView struct {
+	Kind         string
+	Reason       string
+	RetiredAt    time.Time
+	Replacements []traceLink
 }
 
 type requirementHistoryView struct {
@@ -228,6 +245,16 @@ func makeRequirementStoryView(sagaID string, number int, story requirements.Stor
 		view.Lifecycle = string(story.CurrentLifecycle.State)
 		view.LifecycleReason = story.CurrentLifecycle.Reason
 		view.LifecycleAt = story.CurrentLifecycle.CreatedAt
+		if story.CurrentLifecycle.State == requirements.StateRetired {
+			view.Historical = &requirementHistoricalView{
+				Kind: "story", Reason: story.CurrentLifecycle.Reason, RetiredAt: story.CurrentLifecycle.CreatedAt,
+			}
+			for _, criterion := range view.Criteria {
+				criterion.Historical = &requirementHistoricalView{
+					Kind: "acceptance criterion", Reason: story.CurrentLifecycle.Reason, RetiredAt: story.CurrentLifecycle.CreatedAt,
+				}
+			}
+		}
 	}
 	for _, revision := range story.Revisions {
 		target, _ := livingid.Revision(sagaID, story.Identity.ID, revision.ID)
@@ -271,12 +298,19 @@ func makeFeatureRequirementsNav(page *requirementsPageView, feature, prefix stri
 			Icon: "story", Requirement: true, Active: selectedStory && page.FocusedCriterion == nil,
 			Expanded: selectedStory,
 		}
+		if story.Historical != nil {
+			node.Note = "retired"
+		}
 		for _, criterion := range story.Criteria {
-			node.Children = append(node.Children, &navNodeView{
+			child := &navNodeView{
 				Title: criterion.Label + " · " + shortStatement(criterion.Statement, criterionNavRunes), Href: criterion.Href,
 				NodeID: "nav-" + criterion.DOMID, Icon: "criterion", Requirement: true,
 				Active: criterion.Selected,
-			})
+			}
+			if criterion.Historical != nil {
+				child.Note = "historical"
+			}
+			node.Children = append(node.Children, child)
 		}
 		root.Children = append(root.Children, node)
 	}
