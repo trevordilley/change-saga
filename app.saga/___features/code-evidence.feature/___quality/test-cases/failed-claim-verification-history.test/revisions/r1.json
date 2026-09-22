@@ -1,0 +1,32 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:app:test-case:failed-claim-verification-history",
+  "parents": [],
+  "title": "Keep failed claim verification in history",
+  "coverage_kinds": [
+    "positive",
+    "negative",
+    "edge"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "A claim can receive a failed result and a later successful result."
+  ],
+  "steps": [
+    {
+      "id": "record-results",
+      "action": "Record a failed verification for a claim, then record a later verified result.",
+      "expected_result": "Both immutable results are accepted without rewriting the claim."
+    },
+    {
+      "id": "read-history",
+      "action": "Query the claim verification history.",
+      "expected_result": "The history includes both the failed and verified results."
+    }
+  ],
+  "expected_result": "A later success does not hide the earlier failed claim verification.",
+  "created_at": "2026-09-22T00:06:04Z",
+  "request_id": "failed-claim-verification-history"
+}

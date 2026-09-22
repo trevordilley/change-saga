@@ -1,0 +1,29 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "focused-test",
+  "test_case": "urn:change-saga:app:test-case:bounded-local-review-resources",
+  "test_revision": "urn:change-saga:app:test-case:bounded-local-review-resources:revision:r1",
+  "role": "test_implementation",
+  "code": [
+    {
+      "commit": "427ae01f1ccbaa355f23911582b3ed28fd61d7d5",
+      "path": "internal/server/server_test.go",
+      "start": 70,
+      "end": 75,
+      "digest": "sha256:6ad15ecc3cb7f61a93c9d506b5856b748fa9222be91a8545556dfb5c57270b74"
+    },
+    {
+      "commit": "427ae01f1ccbaa355f23911582b3ed28fd61d7d5",
+      "path": "internal/server/incremental_ssr_budget_test.go",
+      "start": 102,
+      "end": 205,
+      "digest": "sha256:a1119ee7fe455c3a5e32f16edd6dff3e5ba0d7e31b784e9d1aaab3bacc95d035"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-09-22T00:07:54Z",
+  "request_id": "bounded-local-review-resources-focused-test"
+}

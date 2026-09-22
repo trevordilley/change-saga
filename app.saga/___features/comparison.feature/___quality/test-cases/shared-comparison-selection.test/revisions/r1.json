@@ -1,0 +1,36 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:app:test-case:shared-comparison-selection",
+  "parents": [],
+  "title": "Use one selected comparison across every read surface",
+  "coverage_kinds": [
+    "positive",
+    "edge"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "A committed feature branch can be compared with main."
+  ],
+  "steps": [
+    {
+      "id": "read-status",
+      "action": "Read status with --against main.",
+      "expected_result": "Status reports compare mode with the selected base, head, and resolved object IDs."
+    },
+    {
+      "id": "read-query",
+      "action": "Read the query overview with the same --against value.",
+      "expected_result": "The query reports the same mode, base, head, and object IDs as status."
+    },
+    {
+      "id": "read-reviewer",
+      "action": "Open the reviewer change endpoint with the same comparison.",
+      "expected_result": "The visible comparison names the same head, base, and merge-base."
+    }
+  ],
+  "expected_result": "Status, structured queries, and the reviewer are scoped by one identical selected comparison.",
+  "created_at": "2026-09-22T00:06:05Z",
+  "request_id": "shared-comparison-selection"
+}

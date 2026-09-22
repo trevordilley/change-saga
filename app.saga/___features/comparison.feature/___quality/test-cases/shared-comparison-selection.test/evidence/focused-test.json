@@ -1,0 +1,22 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "focused-test",
+  "test_case": "urn:change-saga:app:test-case:shared-comparison-selection",
+  "test_revision": "urn:change-saga:app:test-case:shared-comparison-selection:revision:r1",
+  "role": "test_implementation",
+  "code": [
+    {
+      "commit": "427ae01f1ccbaa355f23911582b3ed28fd61d7d5",
+      "path": "internal/cli/quality_closeout_test.go",
+      "start": 108,
+      "end": 181,
+      "digest": "sha256:d87083fe67abe18f107751bffc01f824f7e7225a1f91e87171b59d30dd9625e9"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-09-22T00:07:54Z",
+  "request_id": "shared-comparison-selection-focused-test"
+}

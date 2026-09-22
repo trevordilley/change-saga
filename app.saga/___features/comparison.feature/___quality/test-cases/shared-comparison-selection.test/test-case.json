@@ -1,0 +1,7 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case.schema.json",
+  "version": 5,
+  "id": "shared-comparison-selection",
+  "created_at": "2026-09-22T00:06:05Z",
+  "request_id": "shared-comparison-selection"
+}

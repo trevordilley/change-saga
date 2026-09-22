@@ -1,0 +1,22 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "runtime",
+  "test_case": "urn:change-saga:app:test-case:move-companion-saga-in-repository",
+  "test_revision": "urn:change-saga:app:test-case:move-companion-saga-in-repository:revision:r1",
+  "role": "implementation_under_test",
+  "code": [
+    {
+      "commit": "427ae01f1ccbaa355f23911582b3ed28fd61d7d5",
+      "path": "internal/reviewapp/session.go",
+      "start": 105,
+      "end": 113,
+      "digest": "sha256:a77dadac0ac13e5b85bb88d0fce10cb2de97e0a0f617f77dd26cc408a2810830"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-09-22T00:07:54Z",
+  "request_id": "move-companion-saga-in-repository-runtime"
+}

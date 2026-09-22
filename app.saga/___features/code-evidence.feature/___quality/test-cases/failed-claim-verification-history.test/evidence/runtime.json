@@ -1,0 +1,29 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "runtime",
+  "test_case": "urn:change-saga:app:test-case:failed-claim-verification-history",
+  "test_revision": "urn:change-saga:app:test-case:failed-claim-verification-history:revision:r1",
+  "role": "implementation_under_test",
+  "code": [
+    {
+      "commit": "427ae01f1ccbaa355f23911582b3ed28fd61d7d5",
+      "path": "internal/cli/claims.go",
+      "start": 93,
+      "end": 166,
+      "digest": "sha256:3432fdfc24980c117ce628012f2b3ad74ac7d90fa6fbce0b89e859d69d18a187"
+    },
+    {
+      "commit": "427ae01f1ccbaa355f23911582b3ed28fd61d7d5",
+      "path": "internal/reviewapp/claims.go",
+      "start": 74,
+      "end": 106,
+      "digest": "sha256:0ca6432484556e237c12b10d739d025a417b4a9451677971bdc282e84c41fc55"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-09-22T00:07:54Z",
+  "request_id": "failed-claim-verification-history-runtime"
+}

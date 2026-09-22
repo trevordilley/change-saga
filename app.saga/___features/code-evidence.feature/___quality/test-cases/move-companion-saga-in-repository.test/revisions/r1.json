@@ -1,0 +1,31 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:app:test-case:move-companion-saga-in-repository",
+  "parents": [],
+  "title": "Move a companion Saga without breaking code links",
+  "coverage_kinds": [
+    "positive",
+    "edge"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "A companion Saga contains a current code link resolved from its selected source checkout."
+  ],
+  "steps": [
+    {
+      "id": "read-companion",
+      "action": "Read the linked fragment while the Saga is separate from the source checkout.",
+      "expected_result": "The code selector resolves as current."
+    },
+    {
+      "id": "move-saga",
+      "action": "Move the unchanged Saga directory into the source repository and read the same fragment without --repo.",
+      "expected_result": "The same selector projection remains current at the same target."
+    }
+  ],
+  "expected_result": "Repository-relative code links survive moving the companion Saga into its source repository.",
+  "created_at": "2026-09-22T00:06:05Z",
+  "request_id": "move-companion-saga-in-repository"
+}

@@ -1,0 +1,37 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/test-case-revision.schema.json",
+  "version": 5,
+  "id": "r1",
+  "test_case": "urn:change-saga:app:test-case:bounded-local-review-resources",
+  "parents": [],
+  "title": "Bound local review requests and responses",
+  "coverage_kinds": [
+    "positive",
+    "negative",
+    "edge"
+  ],
+  "automation": "automated",
+  "preconditions": [
+    "The local reviewer is serving a large Saga with comparison-scale code and coverage surfaces."
+  ],
+  "steps": [
+    {
+      "id": "inspect-server-limits",
+      "action": "Inspect the configured HTTP server resource limits.",
+      "expected_result": "Read, write, idle, and header timeouts plus the maximum header size are all finite and positive."
+    },
+    {
+      "id": "request-large-pages",
+      "action": "Request default, maximum, and oversized pages from every comparison-scale surface.",
+      "expected_result": "The server caps requested rows and every maximum page remains within its byte budget."
+    },
+    {
+      "id": "walk-cursors",
+      "action": "Follow one bounded cursor page at a time until each surface is exhausted.",
+      "expected_result": "Every response stays within the requested page size and continuation reaches all results without repetition."
+    }
+  ],
+  "expected_result": "The local reviewer bounds inbound server resources and outbound comparison-scale response pages.",
+  "created_at": "2026-09-22T00:06:05Z",
+  "request_id": "bounded-local-review-resources"
+}
