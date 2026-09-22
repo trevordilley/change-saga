@@ -71,6 +71,45 @@ The skill file has no diff from source commit
 The focused commands above, which exercise all five closed criteria, remained
 green.
 
+## Final immutable-evidence audit
+
+A final delivered-traceability pass found four more criteria whose relations
+made the quality area read 146/146 even though their proposed test cases had no
+immutable evidence or run:
+
+- `controlled-release / flag-state`
+- `controlled-release / retired-history`
+- `evolve-product-knowledge / lifecycle`
+- `evolve-product-knowledge / retired-history`
+
+The existing tests covered only flag on/off behavior and portions of the story
+lifecycle, so they were not broad enough to claim these criteria. Two focused
+regressions now supply the missing executable proof:
+
+| Saga test case | Executable proof |
+| --- | --- |
+| `feature-flag-lifecycle-history` | `TestFeatureFlagStatesAndRetirementHistory` exercises off, on, and retired flag states, reloads the Saga, confirms every event remains in history, and confirms a retired flag no longer gates its target. |
+| `story-lifecycle-and-retirement-history` | `TestStoryLifecycleStatesAndRetirementHistory` exercises proposed, accepted, deferred, rejected, and retired stories, reloads the Saga, and confirms the retired story retains its proposed, accepted, and retired history. |
+
+Both cases were independently rerun against commit `1dc7474` with the exact
+command recorded in their current passed runs:
+
+```text
+hivecontrol exec oneshot 3m -- go test ./internal/requirements -run '^(TestFeatureFlagStatesAndRetirementHistory|TestStoryLifecycleStatesAndRetirementHistory)$' -count=1
+```
+
+Observed result:
+
+```text
+ok  github.com/twentyideas/changesaga/internal/requirements  0.928s
+```
+
+Each case is now active and has exact `test_implementation` and
+`implementation_under_test` evidence plus a current passed run. Forward
+traceability for all four criteria reports `delivered: true`; the only remaining
+informational blocker is `work_item_missing`, which is planning context rather
+than a delivery-evidence failure.
+
 ## Navigability audit
 
 `query relations --state current` returned all 525 current relations in one
@@ -105,3 +144,4 @@ improvement.
 | Add eight exact evidence records atomically | `/tmp/change-saga-quality-closeout quality evidence add --batch - --json app.saga` | The write succeeded, but each evidence pair appeared twice in `current_heads` even though `created` and the persisted graph contained eight unique records. | The receipt looks like duplicate evidence heads and cannot be trusted as a concise state projection. | Treated `created` as the mutation receipt and confirmed unique current cases/runs through status and relations/traceability queries. | Deduplicate `current_heads` in batch output and add a regression assertion for one entry per current evidence head. |
 | Prove relocation without assuming snapshot identity | `query fragment-diffs --saga <companion> --repo <source> --target <fragment>` before the move, then `query fragment-diffs --saga <source>/app.saga --target <fragment>` | The selector data stayed byte-for-byte equivalent and current, but the query snapshot changed solely across the checkout-placement transition. | A relocation test cannot use snapshot equality to distinguish link preservation from content changes. | Compared the complete returned link projection and asserted every selector remained current. | Document whether companion/in-repository placement is part of snapshot identity, or expose a separate content/evidence snapshot stable across relocation. |
 | Navigate from exact test code back to the verified criterion | `query traceability --saga app.saga --ref 427ae01f1ccbaa355f23911582b3ed28fd61d7d5:internal/cli/quality_closeout_test.go#L19-L60 --limit 100` and `query traceability --saga app.saga --ref acc53ef:internal/cli/companion_relocation_test.go#L16-L74 --limit 100` | Every reverse query returned an empty criterion list although forward criterion queries reached the corresponding case and passed run. | Reviewers can navigate criterion-to-test, but not source-test-to-criterion through the supported API. | Audited forward paths per criterion and the five current direct relations; retained exact source selectors in current quality evidence. | Extend traceability and reverse lookup through `test_implementation` and `implementation_under_test` evidence, returning the test case, criterion, and current run. |
+| Distinguish linked quality coverage from delivered immutable evidence | `/tmp/change-saga-quality-closeout status --json app.saga`; four `query traceability --saga app.saga --criterion <criterion>` calls for the lifecycle/history criteria | Status reported quality 146/146 while the traceability audit found only 142/146 criteria delivered; the four linked proposed cases had no immutable evidence or run and reported `immutable_evidence_missing`. | A status-only closeout could incorrectly claim all acceptance criteria had executable delivery evidence. | Audited every criterion with `query traceability`, added focused executable proof only where existing tests were insufficient, and required `delivered: true` before closeout. | Report linked and delivered quality totals separately in status, or make the quality-area summary explicitly distinguish relation coverage from immutable passed evidence. |

@@ -1,0 +1,43 @@
+{
+  "$schema": "https://changesaga.dev/schema/v5/quality-evidence.schema.json",
+  "version": 5,
+  "id": "runtime",
+  "test_case": "urn:change-saga:app:test-case:story-lifecycle-and-retirement-history",
+  "test_revision": "urn:change-saga:app:test-case:story-lifecycle-and-retirement-history:revision:r1",
+  "role": "implementation_under_test",
+  "code": [
+    {
+      "commit": "1dc74741c84070cd503137cff9351000c1092a77",
+      "path": "internal/requirements/mutation.go",
+      "start": 19,
+      "end": 104,
+      "digest": "sha256:05ef7a9b9b64871560b47a365f539f45d8ff743f28795ffb3c937e01daba64c4"
+    },
+    {
+      "commit": "1dc74741c84070cd503137cff9351000c1092a77",
+      "path": "internal/requirements/mutation.go",
+      "start": 368,
+      "end": 417,
+      "digest": "sha256:71d1f8ebb1706f7b46ac12e02c28444334dc2ac1e7a969839f47573cdbda4c3d"
+    },
+    {
+      "commit": "1dc74741c84070cd503137cff9351000c1092a77",
+      "path": "internal/requirements/validate.go",
+      "start": 391,
+      "end": 439,
+      "digest": "sha256:2fd543936d2a2d8753c47b9925fc169e2f8cdbbc1fda7087d389b2e675d7a7f5"
+    },
+    {
+      "commit": "1dc74741c84070cd503137cff9351000c1092a77",
+      "path": "internal/requirements/validate.go",
+      "start": 650,
+      "end": 672,
+      "digest": "sha256:9f83b550f478656209d75147dfadf9f8f7db0bf6bc05d737f36fbf13b200545f"
+    }
+  ],
+  "verifications": [],
+  "citations": [],
+  "supersedes": [],
+  "created_at": "2026-09-22T00:34:12Z",
+  "request_id": "closeout-story-lifecycle-runtime"
+}
